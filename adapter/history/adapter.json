@@ -1,0 +1,44 @@
+{
+    "common": {
+        "name":                     "history",
+        "desc":                     "manages state history",
+        "version":                  "0.0.0",
+        "mode":                     "daemon",
+        "platform":                 "javascript/Node.js",
+        "loglevel":                 "info"
+    },
+    "native": {
+        "fifo": {
+            "defaultMin": 16,
+            "defaultMax": 32
+        },
+        "transports": {
+            "couchdb": {
+                "enabled": true
+            },
+            "file": {
+                "enabled": false
+            },
+            "graphite": {
+                "enabled": false
+            },
+            "rrd": {
+                "enabled": false
+            },
+            "mysql": {
+                "enabled": false
+            }
+        }
+    },
+    "objects": [
+        {
+            "_id": "_design/history",
+            "language": "javascript",
+            "views": {
+                "state": {
+                    "map": "function(doc) { if (doc.type=='state' && doc.common.history) emit(doc._id, doc.common.history) }"
+                }
+            }
+        }
+    ]
+}

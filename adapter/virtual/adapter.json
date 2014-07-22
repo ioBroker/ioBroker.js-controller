@@ -1,0 +1,18 @@
+{
+    "common": {
+        "name":                     "virtual",
+        "version":                  "0.0.0",
+        "title":                    "Virtual Namespace Adapter",
+        "desc":                     "maps objects to virtual namespaces",
+        "platform":                 "javascript/Node.js",
+        "mode":                     "daemon",
+        "loglevel":                 "info"
+    },
+    "native": {
+        "test1": true,
+        "test2": 42
+    },
+    "objects": [
+
+    ]
+}

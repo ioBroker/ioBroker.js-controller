@@ -1,0 +1,11 @@
+{
+    "hm-rega": {
+        "url": "https://github.com/hobbyquaker/ioBroker.hm-rega"
+    },
+    "hm-rpc": {
+            "url": "https://github.com/hobbyquaker/ioBroker.hm-rpc"
+    },
+    "hue": {
+        "url": "https://github.com/hobbyquaker/ioBroker.hue"
+    }
+}

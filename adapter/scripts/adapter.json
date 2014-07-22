@@ -1,0 +1,17 @@
+{
+    "common": {
+        "name":                     "scripts",
+        "version":                  "0.0.0",
+        "title":                    "Script-Engine",
+        "desc":                     "executes javascript",
+        "platform":                 "javascript/Node.js",
+        "mode":                     "daemon",
+        "loglevel":                 "info"
+    },
+    "native": {
+
+    },
+    "objects": [
+
+    ]
+}

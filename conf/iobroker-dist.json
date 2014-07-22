@@ -1,0 +1,41 @@
+{
+    "network": {
+        "IPv4": true,
+        "IPv6": true,
+        "bindAddress": null
+    }
+    "couch": {
+        "host": "127.0.0.1",
+        "port": 5984,
+        "user": "",
+        "pass": ""
+    },
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "options": {
+            "auth_pass": null,
+            "retry_max_delay": 15000
+        }
+    },
+    "log": {
+        "level": "info",
+        "transport": {
+            "syslog1": {
+               "type": "syslog",
+               "enabled": false,
+               "host": "127.0.0.1",
+               "port": "514",
+               "protocol": "udp4",
+               "facility": "local0"
+            },
+            "file1": {
+               "type": "file",
+               "enabled": true,
+               "filename": "log/iobroker.log",
+               "maxsize": null,
+               "maxFiles": null
+            }
+        }
+    }
+}
