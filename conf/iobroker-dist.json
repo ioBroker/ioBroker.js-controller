@@ -3,7 +3,7 @@
         "IPv4": true,
         "IPv6": true,
         "bindAddress": null
-    }
+    },
     "couch": {
         "host": "127.0.0.1",
         "port": 5984,
