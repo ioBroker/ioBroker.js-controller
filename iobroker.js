@@ -144,15 +144,15 @@ function downloadAdapter(adapter, callback) {
 function installAdapter(adapter, callback) {
     var fs = require('fs');
 
-    if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/adapter.json')) {
+    if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
         console.log('error: adapter ' + adapter + ' not found');
         process.exit(1);
     }
 
     try {
-        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/adapter.json').toString());
+        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
     } catch (e) {
-        console.log('error: reading adapter.json ' + e);
+        console.log('error: reading io-package.json ' + e);
         process.exit(1);
     }
 

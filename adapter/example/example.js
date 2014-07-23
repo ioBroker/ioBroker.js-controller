@@ -3,7 +3,7 @@
  * example adapter
  *
  *
- *  file adapter.json comments:
+ *  file io-package.json comments:
  *
  *  {
  *      "common": {

@@ -119,6 +119,7 @@ fifo length is reduced to min when max is hit. set to null or leave undefined to
 for a list of transports see history adapter README
 
 * common.history (optional)
+* common.history.changesOnly (optional, boolean, if true only value changes are logged)
 * common.history.fifo (optional, high speed history storage)
 * common.history.fifo.enabled (boolean)
 * common.history.fifo.min (integer, min fifo length)
@@ -209,6 +210,10 @@ possible values:
 * light.dimmer
 * light.switch
 * light.color
+* light.color.rgb
+* light.color.hsl
+* light.color.hslct
+* light.color.ct
 * ...
 
 
