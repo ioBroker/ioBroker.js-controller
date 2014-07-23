@@ -10,7 +10,10 @@
  *          "name":         "example",                  // name has to be set and has to be equal to adapters folder name and main file name excluding extension
  *          "version":      "0.0.0",                    // use "Semantic Versioning"! see http://semver.org/
  *          "title":        "Node.js Example Adapter",  // Adapter title shown in User Interfaces
- *          "desc":         "Example adapter",          // Adapter description shown in User Interfaces
+ *          "authors":  [                               // Array of authord
+ *              "name <mail@example.com>"
+ *          ]
+ *          "desc":         "Example adapter",          // Adapter description shown in User Interfaces. Can be a language object {de:"...",ru:"..."} or a string
  *          "platform":     "javascript/Node.js",       // possible values "javascript", "javascript/Node.js" - more coming
  *          "mode":         "daemon",                   // possible values "daemon", "schedule", "subscribe"
  *          "loglevel":     "info"                      // Adapters Log Level
@@ -48,7 +51,7 @@ var adapter = require(__dirname + '/../../modules/adapter.js')({
     // is called when adapter shuts down - callback has to be called under any circumstances!
     unload: function (callback) {
         try {
-            adapter.log.info('terminating');
+            adapter.log.info('cleaned everything up...');
             callback();
         } catch (e) {
             callback();

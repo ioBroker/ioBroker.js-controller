@@ -1,9 +1,9 @@
 {
     "common": {
-        "name":                     "web",
+        "name":                     "socketio",
         "version":                  "0.0.0",
-        "title":                    "Node.js Webserver Adapter",
-        "desc":                     "provides a Node.js based webserver for serving static files",
+        "title":                    "Socket.io Adapter",
+        "desc":                     "provides a pure Socket.io server without webserver",
         "platform":                 "javascript/Node.js",
         "mode":                     "daemon",
         "loglevel":                 "info"
