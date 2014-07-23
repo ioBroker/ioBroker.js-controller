@@ -1,5 +1,4 @@
 
-
 ## Installation prerequisites
 
 * a [Node.js](http://nodejs.org) installation including npm
