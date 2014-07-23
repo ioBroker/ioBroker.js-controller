@@ -44,7 +44,7 @@ function StateRedis(settings) {
      *
      *
      *      an object containing the actual value and some metadata:<br>
-     *      setState(id, {'val': val, 'ts': ts, 'ack': ack, 'lc': lc})
+     *      setState(id, {'val': val, 'ts': ts, 'ack': ack, 'from': from, 'lc': lc})
      *
      *      if no object is given state is treated as val:<br>
      *      setState(id, val)
@@ -112,6 +112,7 @@ function StateRedis(settings) {
                 obj.ts = Math.round((new Date()).getTime() / 1000);
             }
 
+            obj.from = state.from;
 
             var hasChanged;
 

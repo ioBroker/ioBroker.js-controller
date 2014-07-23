@@ -206,9 +206,9 @@ possible values:
 * thermo.heat
 * thermo.cool
 * blind
-* lamp.dimmer
-* lamp.switch
-* lamp.color
+* light.dimmer
+* light.switch
+* light.color
 * ...
 
 

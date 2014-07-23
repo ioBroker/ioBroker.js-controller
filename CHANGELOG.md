@@ -1,3 +1,8 @@
+# 0.0.7
+
+* (hobbyquaker) fix Admin UI - handle IDs with spaces
+
+
 # 0.0.6
 
 * (hobbyquaker) download adapters via ```iobroker.js add <adapter-name>``` (has to be defined in conf/sources.json)
