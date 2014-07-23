@@ -48,11 +48,26 @@ var adapter = require(__dirname + '/../../modules/adapter.js')({
     // is called when adapter shuts down - callback has to be called under any circumstances!
     unload: function (callback) {
         try {
-            adapter.log.info('example terminating');
+            adapter.log.info('terminating');
             callback();
         } catch (e) {
             callback();
         }
+    },
+
+    // todo
+    discover: function (callback) {
+
+    },
+
+    // todo
+    install: function (callback) {
+
+    },
+
+    // todo
+    uninstall: function (callback) {
+
     },
 
     // is called when databases are connected and adapter received configuration.
