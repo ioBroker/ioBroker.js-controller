@@ -170,11 +170,14 @@ function Adapter(options) {
             });
 
         that.setState = function setState(id, state, callback) {
+            if (typeof state !== 'object') state = {val: state};
             state.from = that.namespace;
             that.states.setState(that.namespace + '.' + id, state, callback);
         };
 
         that.setForeignState = function setForeignState(id, state, callback) {
+            if (typeof state !== 'object') state = {val: state};
+            state.from = that.namespace;
             that.states.setState(id, state, callback);
         };
 
