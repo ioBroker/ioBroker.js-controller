@@ -1,9 +1,9 @@
 {
     "common": {
-        "name":                     "web",
+        "name":                     "legacy",
         "version":                  "0.0.0",
-        "title":                    "Node.js Webserver Adapter",
-        "desc":                     "provides a Node.js based webserver for serving static files",
+        "title":                    "Legacy Web Adapter",
+        "desc":                     "provides a CCU.IO-compatible Webserver",
         "platform":                 "javascript/Node.js",
         "mode":                     "daemon",
         "loglevel":                 "info"

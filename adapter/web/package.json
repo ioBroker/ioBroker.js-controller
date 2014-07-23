@@ -1,9 +1,8 @@
 {
     "name": "ioBroker.web",
-    "version": "0.0.1",
+    "version": "0.0.0",
     "private": true,
     "dependencies": {
-        "express": "~4.4.4",
-        "socket.io": "~1.0.6"
+        "express": "~4.4.4"
     }
 }
