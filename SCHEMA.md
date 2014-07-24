@@ -238,6 +238,12 @@ possible values:
 
 * ...
 
+
+#### Channel descriptions
+"W" - common.oper.write=true
+
+"M" - Mandatory
+
 ##### light.switch - Attributes description
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
@@ -277,11 +283,7 @@ possible values:
 | -------------- |:-------------------------|:-----:|:-----:|-----------------|---
 | ringing_number | text.phone_number        |       |       | string          |
 
-
-"W" - common.oper.write=true
-"M" - Mandatory
-
-*...
+...
 
 
 #### device
