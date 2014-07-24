@@ -127,10 +127,10 @@ function Adapter(options) {
             that.objects.subscribe(pattern);
         };
 
-        that.setObjectNotExists = function setObjectNotExists(id, obj, callback) {
+        that.setObjectNotExists = function setObjectNotExists(id, object, callback) {
             that.objects.getObject(that.namespace + '.' + id, function (err, obj) {
                 if (!obj) {
-                    that.objects.setObject(that.namespace + '.' + id, obj, callback);
+                    that.objects.setObject(that.namespace + '.' + id, object, callback);
                 }
             });
         };
@@ -149,7 +149,7 @@ function Adapter(options) {
 
     // initRedis is called from initAdapter
     function initRedis(cb) {
-            logger.info(that.namespace + ' couchdb connected');
+            logger.debug(that.namespace + ' couchdb connected');
 
             that.states = new StatesRedis({
                 redis: {
@@ -255,7 +255,7 @@ function Adapter(options) {
             that.states.lenFifo(id, callback);
         };
 
-        logger.info(that.namespace + ' redis connected');
+        logger.debug(that.namespace + ' redis connected');
         if (typeof cb === 'function') cb();
     }
 

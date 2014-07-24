@@ -1,3 +1,10 @@
+# 0.0.8
+
+* (hobbyquaker) ctrl: instance mode schedule
+* (hobbyquaker) iobroker.js add: set instanceObjects (new attribute in io-package.json)
+* (hobbyquaker) added meta attribute to sources.json
+* (hobbyquaker) added adapter yr to sources.json
+
 # 0.0.7
 
 * (hobbyquaker) fix Admin UI - handle IDs with spaces

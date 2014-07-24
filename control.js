@@ -66,6 +66,7 @@ var design = {
     }
 };
 
+var schedule = require('node-schedule');
 
 var os = require('os');
 
@@ -293,49 +294,113 @@ function initInstances() {
     }
 }
 
+
+
 function startInstance(id) {
     var instance = procs[id].config;
     var name = id.split('.')[2];
-    if (!procs[id].process) {
-        var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-        procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
-        procs[id].process.on('exit', function (code, signal) {
-            states.setState(id + '.alive', {val: false, ack: true});
-            if (signal) {
-                logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
-            } else if (code === null) {
-                logger.error('ctrl instance ' + id + ' terminated abnormally');
+
+    switch (instance.common.mode) {
+        case 'daemon':
+            if (!procs[id].process) {
+                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
+                procs[id].process.on('exit', function (code, signal) {
+                    states.setState(id + '.alive', {val: false, ack: true});
+                    if (signal) {
+                        logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
+                    } else if (code === null) {
+                        logger.error('ctrl instance ' + id + ' terminated abnormally');
+                    } else {
+                        if (procs[id].stopping) {
+                            logger.info('ctrl instance ' + id + ' terminated with code ' + code);
+                            delete procs[id].stopping;
+                            return;
+                        } else {
+                            logger.error('ctrl instance ' + id + ' terminated with code ' + code);
+                        }
+                    }
+                    delete procs[id].process;
+                    startInstance(id);
+                });
+                logger.info('ctrl instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
-                if (procs[id].stopping) {
-                    logger.info('ctrl instance ' + id + ' terminated with code ' + code);
-                    delete procs[id].stopping;
-                    return;
-                } else {
-                    logger.error('ctrl instance ' + id + ' terminated with code ' + code);
-                }
+                logger.warn('ctrl instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
-            delete procs[id].process;
-            startInstance(id);
-        });
-        logger.info('ctrl started ' + instance._id + ' with pid ' + procs[id].process.pid);
-    } else {
-        logger.warn('ctrl started ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+            break;
+        case 'schedule':
+            if (!instance.common.schedule) {
+                logger.error(instance._id + ' schedule attribute missing');
+                break;
+            }
+            if (procs[id].schedule) {
+                procs[id].schedule.cancel();
+                logger.info('ctrl instance canceled schedule ' + instance._id);
+            }
+            procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
+
+                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
+                logger.info('ctrl instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+
+                procs[id].process.on('exit', function (code, signal) {
+                    states.setState(id + '.alive', {val: false, ack: true});
+                    if (signal) {
+                        logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
+                    } else if (code === null) {
+                        logger.error('ctrl instance ' + id + ' terminated abnormally');
+                    } else {
+                        if (code == 0) {
+                            logger.info('ctrl instance ' + id + ' terminated with code ' + code);
+                            return;
+                        } else {
+                            logger.error('ctrl instance ' + id + ' terminated with code ' + code);
+                        }
+                    }
+                    delete procs[id].process;
+                });
+
+            });
+            logger.info('ctrl instance scheduled ' + instance._id + ' ' + instance.common.schedule);
+
+            break;
+        case 'subscribe':
+            // TODO
+            break;
+        default:
+            logger.error(instance._id + ' invalid mode');
     }
+
+
 }
 
 function stopInstance(id, callback) {
     var instance = procs[id].config;
-    if (!procs[id].process) {
-        logger.warn('ctrl instance ' + instance._id + ' not running');
-        if (typeof callback === 'function') callback();
-    } else {
-        logger.info('ctrl stopping instance ' + instance._id + ' with pid ' + procs[id].process.pid);
-        procs[id].stopping = true;
-        setTimeout(function (_id) {
-            procs[_id].process.kill();
-            delete(procs[_id].process);
+    switch (instance.common.mode) {
+        case 'daemon':
+            if (!procs[id].process) {
+                logger.warn('ctrl instance ' + instance._id + ' not running');
+                if (typeof callback === 'function') callback();
+            } else {
+                logger.info('ctrl instance ' + instance._id + ' stopping with pid ' + procs[id].process.pid);
+                procs[id].stopping = true;
+                setTimeout(function (_id) {
+                    procs[_id].process.kill();
+                    delete(procs[_id].process);
+                    if (typeof callback === 'function') callback();
+                }, 200, id);
+            }
+            break;
+        case 'schedule':
+            if (!procs[id].schedule) {
+                logger.warn('ctrl instance ' + instance._id + ' not scheduled');
+            } else {
+                procs[id].schedule.cancel();
+                delete procs[id].schedule;
+                logger.info('ctrl instance canceled schedule ' + instance._id);
+            }
             if (typeof callback === 'function') callback();
-        }, 200, id);
+            break;
     }
 }
 
