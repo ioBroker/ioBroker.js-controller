@@ -250,27 +250,27 @@ possible values:
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
-| value         | value                     |               | number          | "level" to control and "value" to read actual state ?
-| min           | value.min                 |       X       | number          |
-| max           | value.max                 |       X       | number          |
-| working       | indicator.working         |               | boolean         | If light now changes
-| default       | value.default             |               | number          |
-| direction     | direction                 |               | string          | "up"/"down"/""
-| description   | text.description          |               | string          |
-| mmm           | indicator.maintenance.mmm |               | string          | mmm = lowbat or unreach or whatever
+| value         | value                     |       |       | number          | "level" to control and "value" to read state ?
+| min           | value.min                 |   X   |       | number          |
+| max           | value.max                 |   X   |       | number          |
+| working       | indicator.working         |       |       | boolean         | If light now changes
+| default       | value.default             |       |       | number          |
+| direction     | direction                 |       |       | string          | "up"/"down"/""
+| description   | text.description          |       |       | string          |
+| mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
 
 ##### blind - Attributes description
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
-| value         | value                     |               | number          | "level" to control and "value" to read actual state ?
-| min           | value.min                 |       X       | number          |
-| max           | value.max                 |       X       | number          |
-| working       | indicator.working         |               | boolean         | If blind moves now
-| default       | value.default             |               | number          |
-| direction     | direction                 |               | string          | "up"/"down"/""
-| description   | text.description          |               | string          |
-| mmm           | indicator.maintenance.mmm |               | string          | mmm = lowbat or unreach or whatever
+| value         | value                     |       |       | number          | "level" to control and "value" to read state ?
+| min           | value.min                 |   X   |       | number          |
+| max           | value.max                 |   X   |       | number          |
+| working       | indicator.working         |       |       | boolean         | If blind moves now
+| default       | value.default             |       |       | number          |
+| direction     | direction                 |       |       | string          | "up"/"down"/""
+| description   | text.description          |       |       | string          |
+| mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
 
 ##### phone - Attributes description
 | **Name**       | **common.role**          | **M** | **W** | **common.type** | **Description**
