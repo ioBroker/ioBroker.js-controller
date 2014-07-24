@@ -28,7 +28,7 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * system.host.        - Controller processes
 * system.config.      - System settings, like default language
 * system.meta.        - System meta data
-* system.meta.translations.
+* system.meta.translations. - (QUESTION) What is that?
 * system.adapter.     - Adapter processes
 * system.adapter.&lt;adapter-name&gt; - default config of an adapter
 * &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters namespace
@@ -72,7 +72,7 @@ Following attributes have to exist in every object:
 ### Optional attributes
 
 * name
-* parent
+* parent   - ID of parent object
 
 ### Tree structure
 
@@ -87,7 +87,7 @@ limited to 3 levels (except for objects of type path)
 * enum     - objects holding a array in common.members that points to states, channels, devices or files. enums can have a parent enum (tree-structure possible)
 * host     - a host that runs a controller process
 * adapter  - the default config of an adapter. presence also indicates that the adapter is successfully installed. (suggestion: should have an attribute holding an array of the hosts where it is installed)
-* instance - parent has to be of type adapter
+* instance - instance of adapter. Parent has to be of type adapter
 * meta     - rarely changing meta information that a adapter or his instances needs
 * config   - configurations
 * path     - a virtual path. parent has to be another path or an ancestor of vfs.root
@@ -128,16 +128,17 @@ for a list of transports see history adapter README
 * common.history.direct.enabled (boolean)
 * common.history.direct.transports (array of strings, log-transports data should be sent on change)
 
-
-
 * common.role (indicates how this state should be represented in user interfaces)
 
 ##### state common.role
 
 possible values:
 
+* (QUESTION) WHERE is the normal state? (common.type=boolean)
+
 * text (common.type = string)
 * html (common.type = string)
+* json (common.type = string)
 * list (common.type = array)
 * list.horizontal
 * ...
@@ -146,15 +147,20 @@ possible values:
 * value.temperature (common.type=number, common.oper.write=false, common.unit='°C' or '°F' or 'K')
 * value.humidity    (common.type=number, common.oper.write=false)
 * value.brightness  (common.type=number, common.oper.write=false)
+* value.min         (common.type=number, common.oper.write=false)
+* value.max         (common.type=number, common.oper.write=false)
+* value.default     (common.type=number, common.oper.write=false)
 * ...
+* value.power.consumption or power.consumption ?
 
 * direction   (common.type=number or string, indicates up/down, left/right, 4-way switches, wind-direction, ... )
-
 
 * button (common.type=boolean)
 * button.long
 * button.stop
 * button.play
+* button.next
+* button.prev
 * button.pause
 * button.forward
 * button.reverse
@@ -164,9 +170,9 @@ possible values:
 
 * indicator             (common.type=boolean)
 * indicator.working     (common.type=boolean, indicates that something the target systems is doing changes on the parent channel)
-* indicator.maintenance (common.type=boolean, indicates system warnings/errors, alarms, service messages, battery empty or stuff like that)
 * indicator.reachable
 * indicator.connected
+* indicator.maintenance (common.type=boolean, indicates system warnings/errors, alarms, service messages, battery empty or stuff like that)
 * indicator.maintenance.lowbat (description texts for stuff like that can be stored in adapter- or system-metadata)
 * indicator.maintenance.unreach
 * indicator.maintenance.alarm
@@ -197,26 +203,72 @@ suggestion: the channel-objects common.role should/could imply a set of mandator
 
 possible values:
 
-* info
-* forecast
-* media
-* media.music
-* media.tv
+* info          - (QUESTION) Currency or shares rate? What else?
+* forecast      - weather forecast
+
+* media         - common media channel
+* media.music   - media player, like sonos, yamaha and so on
+* media.tv      - TV 
 * media...
-* thermo
-* thermo.heat
+
+* thermo        - Monitor or control the temperature, humidity and so on
+* thermo.heat 
 * thermo.cool
-* blind
-* light.dimmer
-* light.switch
-* light.color
-* light.color.rgb
-* light.color.hsl
-* light.color.hslct
-* light.color.ct
+*
+* blind         - Window blind control  
+* sunblind      - Marquee control
+
+* light
+* light.dimmer      - Light dimmer
+* light.switch      - Light switch.
+* light.color       - Light control with ability of color changing
+* light.color.rgb   - Set color in RGB
+* light.color.hsl   - Set color in Hue/Saturation/Lightness
+* light.color.hslct - Set color in Hue/Saturation/Lightness with Kelvin
+* light.color.ct    - color temperature K 
+
+* contact           - E.g. window or door contact, water leak sensor, fire sensor
+* contact.doorwindow
+* contact.water
+* contact.fire
+* contact.CO2
+
+* phone         - fritz box, speedport and so on
+
+* remote        - (QUESTION) ??? Button on the wall? Remote with buttons? (Possible names: keyPad, buttons, remote, keySwitch, switch - if other switch will be "relay")
+
 * ...
 
+##### light.switch - Attributes description
+| **Name**      | **common.role**            | **Mandatory** | **Description**
+| ------------- |:--------------------------:| --------------|----------:
+| state         | switch                     |       X       | (common.type=boolean, common.oper.write=true)
+| description   | text.description           |               |
+| lowbat        | indicator.maintenance.xxx  |               |
 
+
+##### light.dimmer - Attributes description
+* level.dimmer                 - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
+* value.min                    - mandatory
+* value.max                    - mandatory
+* value.default                - optional
+* direction                    - optional - actual direction of light changing ("up"/"down"/"")
+* text.description             - optional
+* indicator.maintenance        - optional
+
+##### blind - Attributes description
+* level.blind                  - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
+* value.min                    - mandatory
+* value.max                    - mandatory
+* value.default                - optional
+* direction                    - optional
+* text.description             - optional
+* indicator.maintenance        - optional
+
+##### phone - Attributes description
+* text                         - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
+
+*...
 
 
 #### device
