@@ -240,11 +240,11 @@ possible values:
 * ...
 
 ##### light.switch - Attributes description
-| **Name**      | **common.role**            | **Mandatory** | **Description**
-| ------------- |:--------------------------:| --------------|----------:
-| state         | switch                     |       X       | (common.type=boolean, common.oper.write=true)
-| description   | text.description           |               |
-| lowbat        | indicator.maintenance.xxx  |               |
+| **Name**      | **common.role**           | **Mandatory** | **Description**
+| ------------- |:--------------------------|:-------------:|----------
+| state         | switch                    |       X       | (common.type=boolean, common.oper.write=true)
+| description   | text.description          |               |
+| lowbat        | indicator.maintenance.xxx |               |
 
 
 ##### light.dimmer - Attributes description
