@@ -216,7 +216,6 @@ possible values:
 * thermo.cool
 *
 * blind         - Window blind control  
-* sunblind      - Marquee control
 
 * light
 * light.dimmer      - Light dimmer
@@ -244,26 +243,34 @@ possible values:
 | ------------- |:--------------------------|:-------------:|----------
 | state         | switch                    |       X       | (common.type=boolean, common.oper.write=true)
 | description   | text.description          |               |
-| lowbat        | indicator.maintenance.xxx |               |
+| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
 
 
 ##### light.dimmer - Attributes description
-* level.dimmer                 - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
-* value.min                    - mandatory
-* value.max                    - mandatory
-* value.default                - optional
-* direction                    - optional - actual direction of light changing ("up"/"down"/"")
-* text.description             - optional
-* indicator.maintenance        - optional
+| **Name**      | **common.role**           | **Mandatory** | **Description**
+| ------------- |:--------------------------|:-------------:|----------
+| level         | level.dimmer              |       X       | (common.type=boolean, common.oper.write=true)
+| value         | value                     |               | "level" to control and "value" to read actual state ?
+| min           | value.min                 |       X       |
+| max           | value.max                 |       X       |
+| working       | indicator.working         |               | If light now changes
+| default       | value.default             |               |
+| direction     | direction                 |               |
+| description   | text.description          |               |
+| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
 
 ##### blind - Attributes description
-* level.blind                  - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
-* value.min                    - mandatory
-* value.max                    - mandatory
-* value.default                - optional
-* direction                    - optional
-* text.description             - optional
-* indicator.maintenance        - optional
+| **Name**      | **common.role**           | **Mandatory** | **Description**
+| ------------- |:--------------------------|:-------------:|----------
+| level         | level.blind               |       X       | (common.type=boolean, common.oper.write=true)
+| value         | value                     |               | "level" to control and "value" to read actual state ?
+| min           | value.min                 |       X       |
+| max           | value.max                 |       X       |
+| working       | indicator.working         |               | If light now changes
+| default       | value.default             |               |
+| direction     | direction                 |               |
+| description   | text.description          |               |
+| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
 
 ##### phone - Attributes description
 * text                         - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
