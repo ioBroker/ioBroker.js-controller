@@ -5,6 +5,9 @@
         "title":                    "Legacy Web Adapter",
         "desc":                     "provides a CCU.IO-compatible Webserver",
         "platform":                 "javascript/Node.js",
+        "depends": [
+            "www"
+        ],
         "mode":                     "daemon",
         "loglevel":                 "info"
     },
