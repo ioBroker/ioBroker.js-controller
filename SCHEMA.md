@@ -282,6 +282,7 @@ possible values:
 | **Name**       | **common.role**          | **M** | **W** | **common.type** | **Description**
 | -------------- |:-------------------------|:-----:|:-----:|-----------------|---
 | ringing_number | text.phone_number        |       |       | string          |
+| ringing        | indicator                |       |       | boolean         |
 
 ...
 
