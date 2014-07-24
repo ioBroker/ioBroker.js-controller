@@ -140,6 +140,8 @@ function downloadAdapter(adapter, callback) {
 
 }
 
+
+
 function installAdapter(adapter, callback) {
     var fs = require('fs');
 
@@ -168,6 +170,7 @@ function installAdapter(adapter, callback) {
             common: adapterConf.common,
             native: adapterConf.native
         });
+
 
         function setObject(callback) {
             if (objs.length === 0) {
@@ -264,7 +267,25 @@ function createInstance(adapter, callback) {
                     });
                 });
             });
+
+            try {
+                var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+            } catch (e) {
+                console.log('error: reading io-package.json ' + e);
+                process.exit(1);
+            }
+
+            if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
+                for (var i = 0, l = adapterConf.instanceObjects.length; i < l; i++) {
+                    var obj = adapterConf.instanceObjects[i];
+                    obj._id = adapter + '.' + instance + '.' + obj._id;
+                    console.log('object ' + obj._id + ' created');
+                    objects.setObject(obj._id, obj);
+                }
+            }
+
         });
+
     });
 
 }

@@ -1,15 +1,16 @@
 {
-    "name": "ioBroker.ctrl",
-    "version": "0.0.6",
-    "private": true,
-    "dependencies": {
-        "daemonize2": "~0.4.2",
-        "nano": "~5.10.0",
-        "node.extend": "~1.0.10",
-        "redis": "~0.10.3",
-        "winston": "~0.7.3",
-        "ncp": "~0.6.0",
-        "adm-zip": "~0.4.4",
-        "request": "~2.38.0"
-    }
+  "name": "ioBroker.ctrl",
+  "version": "0.0.6",
+  "private": true,
+  "dependencies": {
+    "adm-zip": "~0.4.4",
+    "daemonize2": "~0.4.2",
+    "nano": "~5.10.0",
+    "ncp": "~0.6.0",
+    "node-schedule": "https://github.com/hobbyquaker/node-schedule/tarball/master",
+    "node.extend": "~1.0.10",
+    "redis": "~0.10.3",
+    "request": "~2.38.0",
+    "winston": "~0.7.3"
+  }
 }
