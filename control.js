@@ -204,7 +204,7 @@ function setMeta() {
     };
     objects.setObject(id, obj);
     var idMem = id + ".mem";
-    var obj = {
+    obj = {
         _id: idMem,
         type: 'state',
         parent: id,
@@ -219,7 +219,7 @@ function setMeta() {
     };
     objects.setObject(idMem, obj);
     var idLoad = id + ".load";
-    var obj = {
+    obj = {
         _id: idLoad,
         type: 'state',
         parent: id,
@@ -232,7 +232,7 @@ function setMeta() {
     };
     objects.setObject(idLoad, obj);
     var idAlive = id + ".alive";
-    var obj = {
+    obj = {
         _id: idAlive,
         type: 'state',
         parent: id,
@@ -364,7 +364,7 @@ function stop() {
                 callback();
             } else {
                 stopInstance(stopArr.pop(), function () {
-                    stopAll(callback)
+                    stopAll(callback);
                 });
             }
         }
