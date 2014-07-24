@@ -107,7 +107,6 @@ function downloadAdapter(adapter, callback) {
     var ncp =       require('ncp').ncp;
     ncp.limit = 16;
 
-    url = url + '/archive/master.zip';
     console.log('download ' + url);
 
     var tmpDir = __dirname + '/tmp/';

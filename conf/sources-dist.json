@@ -1,11 +1,14 @@
 {
     "hm-rega": {
-        "url": "https://github.com/ioBroker/ioBroker.hm-rega"
+        "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json"
     },
     "hm-rpc": {
-        "url": "https://github.com/ioBroker/ioBroker.hm-rpc"
+        "url": "https://github.com/ioBroker/ioBroker.hm-rpc/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/io-package.json"
     },
     "hue": {
-        "url": "https://github.com/ioBroker/ioBroker.hue"
+        "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json"
     }
 }
