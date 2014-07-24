@@ -1,7 +1,4 @@
 {
-  "name": "ioBroker.ctrl",
-  "version": "0.0.6",
-  "private": true,
   "dependencies": {
     "adm-zip": "~0.4.4",
     "daemonize2": "~0.4.2",
