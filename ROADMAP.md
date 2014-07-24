@@ -1,7 +1,5 @@
 # 0.1.0
 
-* (hobbyquaker) Adapter hm-rpc
-* (hobbyquaker) Adapter hm-rega
 * (hobbyquaker) enum Objekte
 * (hobbyquaker) state history
 * (hobbyquaker) system logging concept... full winston config or simplify via wrappers?
@@ -13,17 +11,14 @@
 
 # 0.2.0
 
-* (hobbyquaker) ctrl: Adapter start via schedule
+* (hobbyquaker) Files (Attachments) in CouchDB / Virtual Filesystem
 * (hobbyquaker) ctrl: Adapter start/stop via subscribe
-* (hobbyquaker) Adapter hue
-* (hobbyquaker) Adapter yr
 * (hobbyquaker) Adapter BControl
 * (hobbyquaker) Adapter geofency
 
 # 0.3.0
 
 
-* (hobbyquaker) Files (Attachments) in CouchDB / Virtual Filesystem
 * (hobbyquaker) Adapter scripts - scripts are saved in CouchDB
 * (hobbyquaker) Adapter scripts - subscribe/on/schedule/getState/setState/getObject/setObject/extendObject/... HTTP GET/POST/PUT/DELETE..., Telnet, WOL, ...
 
