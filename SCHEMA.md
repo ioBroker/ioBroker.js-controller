@@ -192,7 +192,7 @@ possible values:
 
 * switch (common.type=boolean, common.oper.write=true)
 * ...
-
+* text.phone_number
 
 
 #### channel
@@ -239,41 +239,47 @@ possible values:
 * ...
 
 ##### light.switch - Attributes description
-| **Name**      | **common.role**           | **Mandatory** | **Description**
-| ------------- |:--------------------------|:-------------:|----------
-| state         | switch                    |       X       | (common.type=boolean, common.oper.write=true)
-| description   | text.description          |               |
-| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
+| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
+| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
+| state         | switch                    |   X   |   X   | boolean         |
+| description   | text.description          |       |       |                 |
+| mmm           | indicator.maintenance.mmm |       |       |                 | mmm = lowbat or unreach or whatever
 
 
 ##### light.dimmer - Attributes description
-| **Name**      | **common.role**           | **Mandatory** | **Description**
-| ------------- |:--------------------------|:-------------:|----------
-| level         | level.dimmer              |       X       | (common.type=boolean, common.oper.write=true)
-| value         | value                     |               | "level" to control and "value" to read actual state ?
-| min           | value.min                 |       X       |
-| max           | value.max                 |       X       |
-| working       | indicator.working         |               | If light now changes
-| default       | value.default             |               |
-| direction     | direction                 |               |
-| description   | text.description          |               |
-| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
+| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
+| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
+| level         | level.dimmer              |   X   |   X   | number          |
+| value         | value                     |               | number          | "level" to control and "value" to read actual state ?
+| min           | value.min                 |       X       | number          |
+| max           | value.max                 |       X       | number          |
+| working       | indicator.working         |               | boolean         | If light now changes
+| default       | value.default             |               | number          |
+| direction     | direction                 |               | string          | "up"/"down"/""
+| description   | text.description          |               | string          |
+| mmm           | indicator.maintenance.mmm |               | string          | mmm = lowbat or unreach or whatever
 
 ##### blind - Attributes description
-| **Name**      | **common.role**           | **Mandatory** | **Description**
-| ------------- |:--------------------------|:-------------:|----------
-| level         | level.blind               |       X       | (common.type=boolean, common.oper.write=true)
-| value         | value                     |               | "level" to control and "value" to read actual state ?
-| min           | value.min                 |       X       |
-| max           | value.max                 |       X       |
-| working       | indicator.working         |               | If light now changes
-| default       | value.default             |               |
-| direction     | direction                 |               |
-| description   | text.description          |               |
-| mmm           | indicator.maintenance.mmm |               | mmm = lowbat or unreach or whatever
+| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
+| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
+| level         | level.dimmer              |   X   |   X   | number          |
+| value         | value                     |               | number          | "level" to control and "value" to read actual state ?
+| min           | value.min                 |       X       | number          |
+| max           | value.max                 |       X       | number          |
+| working       | indicator.working         |               | boolean         | If blind moves now
+| default       | value.default             |               | number          |
+| direction     | direction                 |               | string          | "up"/"down"/""
+| description   | text.description          |               | string          |
+| mmm           | indicator.maintenance.mmm |               | string          | mmm = lowbat or unreach or whatever
 
 ##### phone - Attributes description
-* text                         - mandatory (common.type=boolean, common.oper.write=true) - (QUESTION) Must it be readable too? 
+| **Name**       | **common.role**          | **M** | **W** | **common.type** | **Description**
+| -------------- |:-------------------------|:-----:|:-----:|-----------------|---
+| ringing_number | text.phone_number        |       |       | string          |
+
+
+"W" - common.oper.write=true
+"M" - Mandatory
 
 *...
 
