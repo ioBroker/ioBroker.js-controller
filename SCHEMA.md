@@ -67,17 +67,17 @@ Following attributes have to exist in every object:
 * _id
 * type (see below for possible values)
 * common (includes an object with mandatory attributes for specific type)
-* native
+* common.name (the name of the object)
+* native (includes an object with 1:1 attributes of the target system)
 
 ### Optional attributes
 
-* name
-* parent   - ID of parent object
+* parent   - ID of parent object (see below)
 
 ### Tree structure
 
 Objects can have a *parent* attribute containing the *id* of their parent to build a tree structure. This should be
-limited to 3 levels (except for objects of type path)
+limited to 3 levels (except for objects of type path and enum)
 
 ### Object types
 
@@ -106,8 +106,8 @@ attributes:
 * common.unit (optional)
 * common.def  (optional - the default value)
 * common.desc (optional, string)
-* common.oper.read  (boolean, mandatory) - true if read is possible for this state
-* common.oper.write (boolean, mandatory) - true if write is possible for this state
+* common.read  (boolean, mandatory) - true if state is readable
+* common.write (boolean, mandatory) - true if state is writeable
 
 
 ##### state common.history
@@ -239,6 +239,7 @@ possible values:
 
 * phone         - fritz box, speedport and so on
 
+* button
 * remote        - (QUESTION) ??? Button on the wall? Remote with buttons? (Possible names: keyPad, buttons, remote, keySwitch, switch - if other switch will be "relay")
 
 * ...
