@@ -10,13 +10,13 @@ var version = '0.0.8';
 var title = 'iobroker.ctrl';
 process.title = title;
 
-var logger = require('./modules/logger.js');
+var logger = require(__dirname + '/lib/logger.js');
 logger.info('ioBroker.ctrl version ' + version + ' starting');
 
 
 var fs = require('fs');
 var config;
-if (!fs.existsSync('./conf/iobroker.json')) {
+if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     config = fs.readFileSync(__dirname + '/conf/iobroker-dist.json');
     logger.info('creating conf/iobroker.json');
     fs.writeFileSync(__dirname + '/conf/iobroker.json', config);
@@ -86,8 +86,8 @@ var cp = require('child_process');
 var procs = {};
 
 
-var ObjectsCouch = require('./modules/couch.js');
-var StatesRedis = require('./modules/redis.js');
+var ObjectsCouch = require(__dirname + '/lib/couch.js');
+var StatesRedis = require(__dirname + '/lib/redis.js');
 
 var states = new StatesRedis({
 

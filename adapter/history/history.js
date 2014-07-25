@@ -1,4 +1,4 @@
-var adapter = require('../../modules/adapter.js')({
+var adapter = require('.././adapter.js')({
 
     name:           'history',
 

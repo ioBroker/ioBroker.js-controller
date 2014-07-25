@@ -23,7 +23,7 @@ switch (process.argv[2]) {
     case "add":
         var name = process.argv[3];
 
-        ObjectsCouch = require('./modules/couch.js');
+        ObjectsCouch = require(__dirname + '/lib/couch.js');
         os = require('os');
         fs = require('fs');
 
