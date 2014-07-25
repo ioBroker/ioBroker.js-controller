@@ -134,7 +134,7 @@ for a list of transports see history adapter README
 
 possible values:
 
-* (QUESTION) WHERE is the normal state? (common.type=boolean)
+* (QUESTION) WHERE is the normal state? (common.type=boolean) - What do you mean by normal state? Simple value (ro) / switch (rw)?
 
 * text (common.type = string)
 * html (common.type = string)
@@ -203,7 +203,8 @@ suggestion: the channel-objects common.role should/could imply a set of mandator
 
 possible values:
 
-* info          - (QUESTION) Currency or shares rate? What else?
+* info          - (QUESTION) Currency or shares rate? What else? - f.e. sprit prices, post box insertion and stuff like that
+* calendar      -
 * forecast      - weather forecast
 
 * media         - common media channel
@@ -222,15 +223,19 @@ possible values:
 * light.switch      - Light switch.
 * light.color       - Light control with ability of color changing
 * light.color.rgb   - Set color in RGB
-* light.color.hsl   - Set color in Hue/Saturation/Lightness
-* light.color.hslct - Set color in Hue/Saturation/Lightness with Kelvin
+* light.color.rgbw  - Set color in RGBW
+* light.color.hsl   - Set color in Hue/Saturation/Luminance (Hue color light - LivingColors...)
+* light.color.hslct - Set color in Hue/Saturation/Luminance or Color Temperature (Hue extended color light)
 * light.color.ct    - color temperature K 
 
-* contact           - E.g. window or door contact, water leak sensor, fire sensor
-* contact.doorwindow
-* contact.water
-* contact.fire
-* contact.CO2
+* sensor           - E.g. window or door contact, water leak sensor, fire sensor
+* sensor.door      - open, close
+* sensor.door.lock - open, close, locked
+* sensor.window    - open, close
+* sensor.window.3  - open, tilt, close
+* sensor.water
+* sensor.fire
+* sensor.CO2
 
 * phone         - fritz box, speedport and so on
 
@@ -244,6 +249,8 @@ possible values:
 
 "M" - Mandatory
 
+@bluefox - I would not standardize names. This is why we have the role attribute so we don't need to rely on names.
+
 ##### light.switch - Attributes description
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
@@ -256,9 +263,9 @@ possible values:
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
-| value         | value                     |       |       | number          | "level" to control and "value" to read state ?
-| min           | value.min                 |   X   |       | number          |
-| max           | value.max                 |   X   |       | number          |
+| value         | value                     |       |       | number          | "level" to control and "value" to read state? - I would prefer to combine. If level is present value is not necessary
+| ~~min~~       | value.min                 |   X   |       | number          | @bluefox - let's talk via phone
+| ~~max~~       | value.max                 |   X   |       | number          |
 | working       | indicator.working         |       |       | boolean         | If light now changes
 | default       | value.default             |       |       | number          |
 | direction     | direction                 |       |       | string          | "up"/"down"/""
@@ -269,7 +276,7 @@ possible values:
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
-| value         | value                     |       |       | number          | "level" to control and "value" to read state ?
+| value         | value                     |       |       | number          | "level" to control and "value" to read state ? - see above
 | min           | value.min                 |   X   |       | number          |
 | max           | value.max                 |   X   |       | number          |
 | working       | indicator.working         |       |       | boolean         | If blind moves now
