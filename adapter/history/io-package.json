@@ -2,7 +2,7 @@
     "common": {
         "name":                     "history",
         "desc":                     "manages state history",
-        "version":                  "0.0.0",
+        "version":                  "0.0.1",
         "mode":                     "daemon",
         "platform":                 "javascript/Node.js",
         "loglevel":                 "info"
@@ -14,19 +14,37 @@
         },
         "transports": {
             "couchdb": {
+                "type": "couchdb",
                 "enabled": true
             },
-            "file": {
-                "enabled": false
+            "file1": {
+                "type": "file",
+                "enabled": false,
+                "name": 'foo.log'
+
+            },
+            "file2": {
+                "type": "file",
+                "enabled": false,
+                "name": 'bar.log'
+
             },
             "graphite": {
+                "type": "graphite",
                 "enabled": false
+                "host": "172.16.23.180"
             },
             "rrd": {
+                "type": "rrd",
                 "enabled": false
             },
             "mysql": {
-                "enabled": false
+                "type": "mysql",
+                "enabled": false,
+                "host": "172.16.23.180",
+                "user": "user",
+                "pass": "xyz",
+                "db": "iobroker"
             }
         }
     },

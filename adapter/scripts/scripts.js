@@ -1,4 +1,4 @@
-var adapter = require(__dirname + '/../../modules/adapter.js')({
+var adapter = require(__dirname + '/../../lib/adapter.js')({
 
     name:           'scripts',
 
