@@ -1,0 +1,11 @@
+{
+	"name":      "ioBroker.nodejs",
+	"version":   "0.0.7",
+	"platforms": "windows, linux, macOS",
+	"hardware":  "RaspberryPi, PC, Mac",
+	"description": {
+		"en": "Basis core of the ioBroker",
+		"de": "Kern von ioBroker",
+		"ru": "Основное ядро ioBroker"
+	}
+}

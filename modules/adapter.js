@@ -33,7 +33,7 @@ function Adapter(options) {
                     callback(port);
                 }
             });
-            server.close()
+            server.close();
         });
         server.on('error', function (err) {
             that.getPort(port + 1, callback);
@@ -200,8 +200,8 @@ function Adapter(options) {
             if (pattern && pattern !== '*') {
                 params = {
                     startkey: pattern.replace('*', ''),
-                    endkey: pattern.replace('*', '\u9999')
-                }
+                    endkey:   pattern.replace('*', '\u9999')
+                };
             }
             that.objects.getObjectView('system', 'state', params, function (err, res) {
                 if (err) {
@@ -221,7 +221,7 @@ function Adapter(options) {
                         if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
                         list[keys[i]] =  arr[i] || {};
                     }
-                    callback(null, list)
+                    callback(null, list);
                 });
 
             });

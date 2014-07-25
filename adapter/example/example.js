@@ -43,7 +43,7 @@ var adapter = require(__dirname + '/../../modules/adapter.js')({
 
         // you can use the ack flag to detect if state is desired or acknowledged
         if (!state.ack) {
-            adapter.log.info('ack is not set!')
+            adapter.log.info('ack is not set!');
         }
 
     },

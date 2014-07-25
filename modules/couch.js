@@ -11,7 +11,7 @@ function ObjectsCouch(settings) {
     var nano =      require('nano')({
         url: 'http://' + (settings.host || 'localhost') + ':' + (settings.port || 5984),
         log: function (id, args) {
-            log.debug(id + ' ' + JSON.stringify(args))
+            log.debug(id + ' ' + JSON.stringify(args));
         }
     });
     var couch;

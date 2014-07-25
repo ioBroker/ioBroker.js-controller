@@ -66,9 +66,9 @@ function dbConnect(callback) {
     objects = new ObjectsCouch({
         logger: {
             debug: function (msg) { },
-            info: function (msg) { },
-            warn: function (msg) { console.log(msg) },
-            error: function (msg) { console.log(msg) }
+            info:  function (msg) { },
+            warn:  function (msg) { console.log(msg); },
+            error: function (msg) { console.log(msg); }
         },
         connected: function () {
             console.log('couchdb connected');
@@ -80,9 +80,10 @@ function dbConnect(callback) {
 function downloadAdapter(adapter, callback) {
     var name;
     var url;
+    var sources;
 
     if (!fs.existsSync(__dirname + '/conf/sources.json')) {
-        var sources = fs.readFileSync(__dirname + '/conf/sources-dist.json');
+        sources = fs.readFileSync(__dirname + '/conf/sources-dist.json');
         console.log('creating conf/sources.json');
         fs.writeFileSync(__dirname + '/conf/sources.json', sources);
         sources = JSON.parse(sources);
@@ -125,7 +126,7 @@ function downloadAdapter(adapter, callback) {
         ncp(source, destination, function (err) {
             if (err) {
                 console.log('ncp error: ' + err);
-                return
+                return;
             }
 
             console.log('delete tmp file ' + tmpFile);
