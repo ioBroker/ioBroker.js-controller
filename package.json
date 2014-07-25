@@ -1,13 +1,26 @@
 {
-  "dependencies": {
-    "adm-zip": "~0.4.4",
-    "daemonize2": "~0.4.2",
-    "nano": "~5.10.0",
-    "ncp": "~0.6.0",
-    "node-schedule": "https://github.com/hobbyquaker/node-schedule/tarball/master",
-    "node.extend": "~1.0.10",
-    "redis": "~0.10.3",
-    "request": "~2.38.0",
-    "winston": "~0.7.3"
-  }
+    "dependencies": {
+        "adm-zip": "~0.4.4",
+        "daemonize2": "~0.4.2",
+        "nano": "~5.10.0",
+        "ncp": "~0.6.0",
+        "node-schedule": "https://github.com/hobbyquaker/node-schedule/tarball/master",
+        "node.extend": "~1.0.10",
+        "redis": "~0.10.3",
+        "request": "~2.38.0",
+        "winston": "~0.7.3"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.4",
+        "grunt-replace": "~0.7.6",
+        "grunt-contrib-compress": "~0.8.0",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-concat": "~0.4.0",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-contrib-commands": "~0.1.6",
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-jscs-checker": "~0.4.1",
+        "grunt-exec": "~0.4.5",
+        "grunt-zip": "~0.13.0"
+    }
 }
