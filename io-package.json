@@ -1,11 +1,51 @@
 {
-	"name":      "ioBroker.nodejs",
-	"version":   "0.0.7",
-	"platforms": "windows, linux, macOS",
-	"hardware":  "RaspberryPi, PC, Mac",
-	"description": {
-		"en": "Basis core of the ioBroker",
-		"de": "Kern von ioBroker",
+	"name":      "controller",
+    "version":   "0.0.9",
+	"platform":  "Javascript/Node.js",
+	"title":     "ioBroker.nodejs: controller and base adapters",
+    "description": {
+		"en": "Javascript/Node.js implementation of ioBroker controller and base adapters",
+		"de": "Javascript/Node.js Implementierung des ioBroker-Controllers und der Basis-Adapter",
 		"ru": "Основное ядро ioBroker"
-	}
+	},
+    "objects": [
+        {
+            "_id": "_design/system",
+            "language": "javascript",
+            "views": {
+                "host": {
+                    "map": "function(doc) { if (doc.type=='host') emit(doc.common.name, doc) }"
+                },
+                "adapter": {
+                    "map": "function(doc) { if (doc.type=='adapter') emit(doc.common.name, doc) }"
+                },
+                "instance": {
+                    "map": "function(doc) { if (doc.type=='instance') emit(doc.common.name, doc) }"
+                },
+                "instanceStats": {
+                    "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
+                    "reduce": "_stats"
+                },
+                "meta": {
+                    "map": "function(doc) { if (doc.type=='meta') emit(doc.common.name, doc) }"
+                },
+                "device": {
+                    "map": "function(doc) { if (doc.type=='device') emit(doc.common.name, doc) }"
+                },
+                "channel": {
+                    "map": "function(doc) { if (doc.type=='channel') emit(doc.common.name, doc) }"
+                },
+                "state": {
+                    "map": "function(doc) { if (doc.type=='state') emit(doc.common.name, doc) }"
+                },
+                "enum": {
+                    "map": "function(doc) { if (doc.type=='enum') emit(doc.common.name, doc) }"
+                },
+                "config": {
+                    "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
+                }
+
+            }
+        }
+    ]
 }

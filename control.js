@@ -6,7 +6,7 @@
  *
  */
 
-var version = '0.0.8';
+var version = '0.0.9';
 var title = 'iobroker.ctrl';
 process.title = title;
 
@@ -31,32 +31,32 @@ var design = {
         "language": "javascript",
         "views": {
             "host": {
-                "map": "function(doc) { if (doc.type=='host') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='host') emit(doc.common.name, doc) }"
             },
             "adapter": {
-                "map": "function(doc) { if (doc.type=='adapter') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='adapter') emit(doc.common.name, doc) }"
             },
             "instance": {
-                "map": "function(doc) { if (doc.type=='instance') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='instance') emit(doc.common.name, doc) }"
             },
             "instanceStats": {
                 "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
                 "reduce": "_stats"
             },
             "meta": {
-                "map": "function(doc) { if (doc.type=='meta') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='meta') emit(doc.common.name, doc) }"
             },
             "device": {
-                "map": "function(doc) { if (doc.type=='device') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='device') emit(doc.common.name, doc) }"
             },
             "channel": {
-                "map": "function(doc) { if (doc.type=='channel') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='channel') emit(doc.common.name, doc) }"
             },
             "state": {
-                "map": "function(doc) { if (doc.type=='state') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='state') emit(doc.common.name, doc) }"
             },
             "enum": {
-                "map": "function(doc) { if (doc.type=='enum') emit(doc.name, doc) }"
+                "map": "function(doc) { if (doc.type=='enum') emit(doc.common.name, doc) }"
             },
             "config": {
                 "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
