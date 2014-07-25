@@ -195,10 +195,10 @@ module.exports = function(grunt) {
                     "requireSpaceAfterKeywords": ["if","else","for","while","do","switch","return","try","catch"],
 //                    "requireSpaceBeforeBlockStatements": true,
                     "requireParenthesesAroundIIFE": true,
-                    "requireSpacesInFunctionExpression": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true },
+                    "requireSpacesInFunctionExpression": {"beforeOpeningCurlyBrace": true },
                     "requireSpacesInAnonymousFunctionExpression": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true},
-                    "requireSpacesInNamedFunctionExpression": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true},
-                    "requireSpacesInFunctionDeclaration": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true},
+                    "requireSpacesInNamedFunctionExpression": {"beforeOpeningCurlyBrace": true},
+                    "requireSpacesInFunctionDeclaration": {"beforeOpeningCurlyBrace": true},
                     "disallowMultipleVarDecl": true,
                     "requireBlocksOnNewline": true,
                     "disallowEmptyBlocks": true,
@@ -219,8 +219,7 @@ module.exports = function(grunt) {
                     //"validateIndentation": 4,
                     //"validateQuoteMarks": { "mark": "\"", "escape": true },
                     "disallowMixedSpacesAndTabs": true,
-                    "disallowKeywordsOnNewLine": true
-
+                    "disallowKeywordsOnNewLine": ["else", "catch"]
                 }
             }
         },
