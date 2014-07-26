@@ -34,6 +34,8 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters namespace
 * enum.               - Enumerations
 * hist.               - History Data
+* scripts.            - Scripts
+* scripts.js.         - Javascript Scripts
 
 ## States
 
@@ -92,6 +94,7 @@ limited to 3 levels (except for objects of type path and enum)
 * config   - configurations
 * path     - a virtual path. parent has to be another path or an ancestor of vfs.root
 * file     - a object with an attached file - parent has to be of type path
+* script
 
 
 ### Attributes for specific types
@@ -358,3 +361,10 @@ id *system.vfs.&lt;name&gt;
 * common.mine (mime-type)
 
 one CouchDB-Attachment - the file itself
+
+#### script
+
+* common.platform   - possible Values 'Javascript/Node.js' (more to come)
+* common.enabled
+* common.source     - the script source
+* common.engine     - scriptengine instance that should run this script (f.e. 'javascript.0')
