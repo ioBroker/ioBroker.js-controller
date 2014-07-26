@@ -9,7 +9,7 @@
 
 * Clone the repository or download and unzip the [zip-file]()
 * Change to the iobroker root directory
-* run ```npm install``` to install dependencies
+* run ```npm install --production``` to install dependencies
 * if CouchDB and/or Redis aren't running on localhost you need to edit conf/iobroker.json according to your needs
 * start ioBroker.ctrl for a first time to setup the database ```node control.js``` - end with ctrl-c when database setup is done
 
