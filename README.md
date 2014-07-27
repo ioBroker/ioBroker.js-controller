@@ -33,12 +33,12 @@ handled with care, for example with additional security measures like a reverse 
 
 ## Getting Started
 
-* [Installation](INSTALL.md)
+* [Installation](doc/INSTALL.md)
 
 
 ## More docs for (adapter) developers
 
-* [Core Concepts and Database Schema](SCHEMA.md)
+* [Core Concepts and Database Schema](doc/SCHEMA.md)
 * [Example Javascript/Node.js Adapter](adapter/example/example.js)
 * [Changelog](CHANGELOG.md)
 * [Roadmap](ROADMAP.md)

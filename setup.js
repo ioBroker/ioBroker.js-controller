@@ -12,7 +12,8 @@ var yargs = require('yargs')
         '$0 setup [--couch <host>] [--redis <host>]\n' +
         '$0 start\n' +
         '$0 stop\n' +
-        '$0 add <adapter> [--enabled] [--host <host>]')
+        '$0 add <adapter> [--enabled] [--host <host>]' +
+        '$0 del <adapter> [--delmeta]')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -24,6 +25,7 @@ var ObjectsCouch;
 var objects;
 var fs;
 var os;
+var tools;
 
 switch (yargs.argv._[0]) {
 
@@ -39,8 +41,8 @@ switch (yargs.argv._[0]) {
 
 
     case "setup":
-        fs = require('fs');
-        ObjectsCouch = require(__dirname + '/lib/couch.js');
+        fs =            require('fs');
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
 
         var config;
         if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
@@ -67,12 +69,14 @@ switch (yargs.argv._[0]) {
 
 
     case "add":
-        ObjectsCouch = require(__dirname + '/lib/couch.js');
-        fs = require('fs');
 
-        var name = argv._[1];
-        var ipArr = findIPs();
-        var firstIp = ipArr[0];
+        fs =            require('fs');
+        tools =         require(__dirname + '/lib/tools.js');
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+
+        var name =      yargs.argv._[1];
+        var ipArr =     tools.findIPs();
+        var firstIp =   ipArr[0];
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadAdapter(name, function () {
@@ -86,7 +90,10 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
+    case "del":
 
+
+       break;
 
     default:
        yargs.showHelp();
@@ -102,7 +109,6 @@ function dbConnect(callback) {
             error: function (msg) { console.log(msg); }
         },
         connected: function () {
-            console.log('couchdb connected');
             if (typeof callback === 'function') callback();
         }
     });
@@ -140,7 +146,6 @@ function downloadAdapter(adapter, callback) {
 
     console.log('download ' + url);
 
-    var tmpDir = __dirname + '/tmp/';
     var tmpFile = __dirname + '/tmp/' + name + '.zip';
     request(url).pipe(fs.createWriteStream(tmpFile)).on('close', function () {
         console.log('unzip ' + tmpFile);
@@ -162,7 +167,7 @@ function downloadAdapter(adapter, callback) {
             console.log('delete ' + tmpFile);
             fs.unlinkSync(tmpFile);
             console.log('delete ' + __dirname + '/tmp/' + repoName + '-master');
-            rmdirRecursiveSync(__dirname + '/tmp/' + repoName + '-master');
+            tools.rmdirRecursiveSync(__dirname + '/tmp/' + repoName + '-master');
 
             if (typeof callback === 'function') callback(name);
 
@@ -195,15 +200,12 @@ function installAdapter(adapter, callback) {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
 
-        adapterConf.common.enabled = false;
-
         objs.push({
             _id: 'system.adapter.' + adapterConf.common.name,
             type: 'adapter',
             common: adapterConf.common,
             native: adapterConf.native
         });
-
 
         function setObject(callback) {
             if (objs.length === 0) {
@@ -216,7 +218,9 @@ function installAdapter(adapter, callback) {
                         process.exit(1);
                     } else {
                         console.log('object ' + obj._id + ' created');
-                        setObject(callback);
+                        setTimeout(function (_cb) {
+                            setObject(_cb);
+                        }, 50, callback);
                     }
                 });
             }
@@ -249,7 +253,7 @@ function createInstance(adapter, enabled, host, callback) {
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
         if (err || !doc) {
             installAdapter(adapter, function () {
-                createInstance(adapter, callback);
+                createInstance(adapter, enabled, host, callback);
             });
             return;
         }
@@ -266,7 +270,7 @@ function createInstance(adapter, enabled, host, callback) {
                 obj.type = 'instance';
                 obj.parent = 'system.adapter.' + adapter;
                 delete obj._rev;
-                obj.common.enabled = enabled;
+                obj.common.enabled = enabled || false;
                 obj.common.host = host;
                 objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
                     console.log('object ' + 'system.adapter.' + adapter + '.' + instance + ' created');
@@ -318,34 +322,4 @@ function createInstance(adapter, enabled, host, callback) {
 
     });
 
-}
-
-function rmdirRecursiveSync(path) {
-    if (fs.existsSync(path) ) {
-        fs.readdirSync(path).forEach(function (file, index){
-            var curPath = path + '/' + file;
-            if(fs.statSync(curPath).isDirectory()) {
-                // recurse
-                rmdirRecursiveSync(curPath);
-            } else {
-                // delete file
-                fs.unlinkSync(curPath);
-            }
-        });
-        // delete (hopefully) empty folder
-        fs.rmdirSync(path);
-    }
-};
-
-function findIPs() {
-    os = require('os');
-
-    var ifaces = os.networkInterfaces();
-    var ipArr = [];
-    for (var dev in ifaces) {
-        ifaces[dev].forEach(function (details) {
-            if (!details.internal) ipArr.push(details.address);
-        });
-    }
-    return ipArr;
 }

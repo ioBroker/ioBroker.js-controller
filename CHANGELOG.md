@@ -1,3 +1,18 @@
+# 0.0.10
+
+* (hobbyquaker) refactoring controller.js and setup.js
+* (hobbyquaker) iobroker.js command line options
+* (hobbyquaker) iobroker with shebang (needs chmod +x)
+* (hobbyquaker) added dbdump.js
+* (hobbyquaker) fixes and other stuff...
+
+# 0.0.9
+
+* (hobbyquaker) Javascript Script Engine
+* (bluefox) Gruntfile.js
+* (bluefox) SCHEMA.md
+
+
 # 0.0.8
 
 * (hobbyquaker) ctrl: instance mode schedule
