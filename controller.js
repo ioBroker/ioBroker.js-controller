@@ -260,6 +260,7 @@ function startInstance(id) {
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
+                allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
@@ -272,6 +273,15 @@ function startInstance(id) {
                         if (procs[id].stopping || isStopping) {
                             logger.info('ctrl instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
+                            delete procs[id].process;
+                            if (isStopping) {
+                                for (var i in procs) {
+                                    if (procs[i].process) {
+                                        return;
+                                    }
+                                }
+                                allInstancesStopped = true
+                            }
                             return;
                         } else {
                             logger.error('ctrl instance ' + id + ' terminated with code ' + code);
@@ -365,48 +375,43 @@ function restartInstance(id) {
     });
 }
 
-var isStopping = true;
+var isStopping = false;
 var stopArr = [];
+var allInstancesStopped = false;
 
 function stop() {
     if (isStopping) {
-        logger.info('ctrl terminating');
-        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true});
-        process.exit();
-        return;
-    }
-    try {
-        for (var id in procs) {
-            if (procs[id].process) stopArr.push(id);
-        }
-        function stopAll(callback) {
-            if (stopArr.length === 0) {
-                callback();
-            } else {
-                stopInstance(stopArr.pop(), function () {
-                    stopAll(callback);
-                });
-            }
-        }
-        stopAll(function() {
-            setTimeout(function () {
-                logger.info('ctrl terminating');
-                states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true});
-                process.exit();
-            }, 1000);
+
+        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+            logger.info('ctrl force terminating');
+            process.exit(1);
+            return;
         });
-    } catch (e) {
-        logger.error('ctrl ' + e);
-        logger.info('ctrl terminating');
-        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true});
-        process.exit();
+
     }
+
+    isStopping = true;
+
+    function waitForInstances() {
+        if (!allInstancesStopped) {
+            setTimeout(waitForInstances, 100);
+        } else {
+            states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+                logger.info('ctrl terminated');
+                process.exit(0);
+            });
+
+        }
+    }
+
+    waitForInstances();
 
     // force after 5s
     setTimeout(function () {
-        logger.info('ctrl terminating');
-        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true});
-        process.exit();
+        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+            logger.info('ctrl force terminated after 5s');
+            process.exit(1);
+        });
     }, 5000);
 }
 
