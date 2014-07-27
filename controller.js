@@ -1,74 +1,33 @@
 /**
- *      ioBroker.ctrl
+ *      ioBroker.ctrl (ioBroker Controller)
  *
  *      Controls Adapter-Processes
  *
  *
  */
 
-var version = '0.0.9';
+var version = '0.0.10';
 var title = 'iobroker.ctrl';
 process.title = title;
 
-var logger = require(__dirname + '/lib/logger.js');
-logger.info('ioBroker.ctrl version ' + version + ' starting');
+
+var schedule =      require('node-schedule');
+var os =            require('os');
+var fs =            require('fs');
+var cp =            require('child_process');
+var ObjectsCouch =  require(__dirname + '/lib/couch.js');
+var StatesRedis =   require(__dirname + '/lib/redis.js');
+var logger =        require(__dirname + '/lib/logger.js');
 
 
-var fs = require('fs');
 var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
-    config = fs.readFileSync(__dirname + '/conf/iobroker-dist.json');
-    logger.info('creating conf/iobroker.json');
-    fs.writeFileSync(__dirname + '/conf/iobroker.json', config);
-    config = JSON.parse(config);
+    logger.error('ctrl conf/iobroker.json missing - call node iobroker.js setup');
+    process.exit(1);
 } else {
     config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
 }
 
-var design = {
-    system: {
-        "_id": "_design/system",
-        "language": "javascript",
-        "views": {
-            "host": {
-                "map": "function(doc) { if (doc.type=='host') emit(doc.common.name, doc) }"
-            },
-            "adapter": {
-                "map": "function(doc) { if (doc.type=='adapter') emit(doc.common.name, doc) }"
-            },
-            "instance": {
-                "map": "function(doc) { if (doc.type=='instance') emit(doc.common.name, doc) }"
-            },
-            "instanceStats": {
-                "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
-                "reduce": "_stats"
-            },
-            "meta": {
-                "map": "function(doc) { if (doc.type=='meta') emit(doc.common.name, doc) }"
-            },
-            "device": {
-                "map": "function(doc) { if (doc.type=='device') emit(doc.common.name, doc) }"
-            },
-            "channel": {
-                "map": "function(doc) { if (doc.type=='channel') emit(doc.common.name, doc) }"
-            },
-            "state": {
-                "map": "function(doc) { if (doc.type=='state') emit(doc.common.name, doc) }"
-            },
-            "enum": {
-                "map": "function(doc) { if (doc.type=='enum') emit(doc.common.name, doc) }"
-            },
-            "config": {
-                "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
-            }
-
-        }
-    }
-};
-
-var schedule = require('node-schedule');
-
-var os = require('os');
 
 // Find first non-loopback ip
 var ifaces = os.networkInterfaces();
@@ -79,15 +38,16 @@ for (var dev in ifaces) {
     });
 }
 var firstIp = ipArr[0];
+
+logger.info('ioBroker.ctrl version ' + version + ' starting');
 logger.info('ctrl ip: ' + ipArr.join(' '));
 
 
-var cp = require('child_process');
+
 var procs = {};
 
 
-var ObjectsCouch = require(__dirname + '/lib/couch.js');
-var StatesRedis = require(__dirname + '/lib/redis.js');
+
 
 var states = new StatesRedis({
 
@@ -250,11 +210,8 @@ function getInstances() {
 
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
-            logger.info('ctrl creating _design/system');
-            objects.setObject("_design/system", design.system, function () {
-                getInstances();
-
-            });
+            logger.error('ctrl _design/system missing - call node iobroker.js setup');
+            process.exit(1);
             return;
         } else if (doc.rows.length === 0) {
             logger.info('ctrl no instances found');
@@ -303,6 +260,7 @@ function startInstance(id) {
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
+                allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
@@ -312,9 +270,18 @@ function startInstance(id) {
                     } else if (code === null) {
                         logger.error('ctrl instance ' + id + ' terminated abnormally');
                     } else {
-                        if (procs[id].stopping) {
+                        if (procs[id].stopping || isStopping) {
                             logger.info('ctrl instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
+                            delete procs[id].process;
+                            if (isStopping) {
+                                for (var i in procs) {
+                                    if (procs[i].process) {
+                                        return;
+                                    }
+                                }
+                                allInstancesStopped = true
+                            }
                             return;
                         } else {
                             logger.error('ctrl instance ' + id + ' terminated with code ' + code);
@@ -384,11 +351,9 @@ function stopInstance(id, callback) {
             } else {
                 logger.info('ctrl instance ' + instance._id + ' stopping with pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
-                setTimeout(function (_id) {
-                    procs[_id].process.kill();
-                    delete(procs[_id].process);
-                    if (typeof callback === 'function') callback();
-                }, 200, id);
+                procs[id].process.kill();
+                delete(procs[id].process);
+                if (typeof callback === 'function') callback();
             }
             break;
         case 'schedule':
@@ -410,48 +375,43 @@ function restartInstance(id) {
     });
 }
 
-var stopFirst = true;
+var isStopping = false;
 var stopArr = [];
+var allInstancesStopped = false;
 
 function stop() {
-    if (!stopFirst) {
-        logger.info('ctrl terminating');
-        states.setState(id + '.alive', {val: false, ack: true});
-        process.exit();
-        return;
-    }
-    try {
-        for (var id in procs) {
-            if (procs[id].process) stopArr.push(id);
-        }
-        function stopAll(callback) {
-            if (stopArr.length === 0) {
-                callback();
-            } else {
-                stopInstance(stopArr.pop(), function () {
-                    stopAll(callback);
-                });
-            }
-        }
-        stopAll(function() {
-            setTimeout(function () {
-                logger.info('ctrl terminating');
-                states.setState(id + '.alive', {val: false, ack: true});
-                process.exit();
-            }, 1000);
+    if (isStopping) {
+
+        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+            logger.info('ctrl force terminating');
+            process.exit(1);
+            return;
         });
-    } catch (e) {
-        logger.error('ctrl ' + e);
-        logger.info('ctrl terminating');
-        states.setState(id + '.alive', {val: false, ack: true});
-        process.exit();
+
     }
+
+    isStopping = true;
+
+    function waitForInstances() {
+        if (!allInstancesStopped) {
+            setTimeout(waitForInstances, 100);
+        } else {
+            states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+                logger.info('ctrl terminated');
+                process.exit(0);
+            });
+
+        }
+    }
+
+    waitForInstances();
 
     // force after 5s
     setTimeout(function () {
-        logger.info('ctrl terminating');
-        states.setState(id + '.alive', {val: false, ack: true});
-        process.exit();
+        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
+            logger.info('ctrl force terminated after 5s');
+            process.exit(1);
+        });
     }, 5000);
 }
 

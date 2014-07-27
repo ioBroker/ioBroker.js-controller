@@ -28,14 +28,17 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * system.host.        - Controller processes
 * system.config.      - System settings, like default language
 * system.meta.        - System meta data
-* system.meta.translations. - (QUESTION) What is that?
-* system.adapter.     - Adapter processes
+* system.translations. - system wide translation objects
+* system.adapter.     - Adapter
 * system.adapter.&lt;adapter-name&gt; - default config of an adapter
-* &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters namespace
+* &lt;adapter-name&gt;.meta. - An adapters meta Data namespace
+* &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters instance namespace
 * enum.               - Enumerations
-* hist.               - History Data
-* scripts.            - Scripts
-* scripts.js.         - Javascript Scripts
+* hist.               - History Data (only states, no objects)
+* iofs.               - The ioBroker virtual filesystem
+* scripts.            - Script Engine Scripts
+* scripts.js.         - javascript Script Engine Scripts
+* scripts.py.         - python Script Engine Scripts
 
 ## States
 
@@ -92,8 +95,7 @@ limited to 3 levels (except for objects of type path and enum)
 * instance - instance of adapter. Parent has to be of type adapter
 * meta     - rarely changing meta information that a adapter or his instances needs
 * config   - configurations
-* path     - a virtual path. parent has to be another path or an ancestor of vfs.root
-* file     - a object with an attached file - parent has to be of type path
+* vfs      - a virtual path. parent has to be of type vfs.
 * script
 
 
