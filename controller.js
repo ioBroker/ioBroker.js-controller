@@ -6,7 +6,7 @@
  *
  */
 
-var version = '0.0.10';
+var version = '0.0.11';
 var title = 'iobroker.ctrl';
 process.title = title;
 
@@ -265,6 +265,7 @@ function startInstance(id) {
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true});
+                    states.setState(id + '.connected', {val: false, ack: true});
                     if (signal) {
                         logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
