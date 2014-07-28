@@ -33,6 +33,7 @@ if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
 var ifaces = os.networkInterfaces();
 var ipArr = [];
 for (var dev in ifaces) {
+    /*jshint loopfunc:true */
     ifaces[dev].forEach(function (details) {
         if (!details.internal) ipArr.push(details.address);
     });
@@ -77,7 +78,7 @@ var objects = new ObjectsCouch({
     },
     change: function (id, obj) {
         if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-        logger.info('ctrl object change '+id);
+        logger.info('ctrl object change ' + id);
         if (procs[id]) {
             // known adapter
             procs[id].config = obj;
@@ -240,11 +241,9 @@ function initInstances() {
     for (var id in procs) {
         if (procs[id].config.common.enabled) {
 
-            (function (_id) {
-                setTimeout(function () {
-                    startInstance(_id);
-                }, 2000 * c++);
-            })(id);
+            setTimeout(function () {
+                startInstance(_id);
+            }, 2000 * c++, id);
 
             c += 1;
         }
@@ -258,7 +257,7 @@ function startInstance(id) {
     var name = id.split('.')[2];
 
     switch (instance.common.mode) {
-        case 'daemon':
+        case 'daemon': {
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
@@ -280,7 +279,7 @@ function startInstance(id) {
                                         return;
                                     }
                                 }
-                                allInstancesStopped = true
+                                allInstancesStopped = true;
                             }
                             return;
                         } else {
@@ -295,7 +294,8 @@ function startInstance(id) {
                 logger.warn('ctrl instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
-        case 'schedule':
+        }
+        case 'schedule': {
             if (!instance.common.schedule) {
                 logger.error(instance._id + ' schedule attribute missing');
                 break;
@@ -317,7 +317,7 @@ function startInstance(id) {
                     } else if (code === null) {
                         logger.error('ctrl instance ' + id + ' terminated abnormally');
                     } else {
-                        if (code == 0) {
+                        if (code === 0 || code === '0') {
                             logger.info('ctrl instance ' + id + ' terminated with code ' + code);
                             return;
                         } else {
@@ -331,11 +331,14 @@ function startInstance(id) {
             logger.info('ctrl instance scheduled ' + instance._id + ' ' + instance.common.schedule);
 
             break;
-        case 'subscribe':
+        }
+        case 'subscribe': {
             // TODO
             break;
-        default:
+        }
+        default: {
             logger.error(instance._id + ' invalid mode');
+        }
     }
 
 
@@ -344,7 +347,7 @@ function startInstance(id) {
 function stopInstance(id, callback) {
     var instance = procs[id].config;
     switch (instance.common.mode) {
-        case 'daemon':
+        case 'daemon': {
             if (!procs[id].process) {
                 logger.warn('ctrl instance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
@@ -356,7 +359,8 @@ function stopInstance(id, callback) {
                 if (typeof callback === 'function') callback();
             }
             break;
-        case 'schedule':
+        }
+        case 'schedule': {
             if (!procs[id].schedule) {
                 logger.warn('ctrl instance ' + instance._id + ' not scheduled');
             } else {
@@ -366,6 +370,7 @@ function stopInstance(id, callback) {
             }
             if (typeof callback === 'function') callback();
             break;
+        }
     }
 }
 

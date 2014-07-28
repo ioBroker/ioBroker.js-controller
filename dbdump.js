@@ -31,8 +31,12 @@ var db = new ObjectsCouch({
     logger: {
         debug: function (msg) { },
         info:  function (msg) { },
-        warn:  function (msg) { console.log(msg); },
-        error: function (msg) { console.log(msg); }
+        warn:  function (msg) {
+            console.log(msg);
+        },
+        error: function (msg) {
+            console.log(msg);
+        }
     },
     connected: function () {
 
