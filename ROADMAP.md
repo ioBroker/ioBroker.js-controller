@@ -1,23 +1,25 @@
 # 0.1.0
 
 * (hobbyquaker) system logging concept... full winston config or simplify via wrappers?
-* (hobbyquaker) Adapter history: target couchdb and file
-* (hobbyquaker) Adapter javascript: enum in eventObj and patternMatching
+* (hobbyquaker) adapter history: target couchdb and file
+* (hobbyquaker) adapter javascript: enum in eventObj and patternMatching
+* (hobbyquaker) admin-ui: adapter instance: add/edit/delete
+* (hobbyquaker) admin-ui: adapter instance: html-config
 
 # 0.2.0
 
-* (hobbyquaker) Files (Attachments) in CouchDB / Virtual Filesystem
-* (hobbyquaker) ctrl: Adapter start/stop via subscribe
-
-
-# 0.3.0
-
+* (hobbyquaker) admin-ui: scripts
 * (hobbyquaker) admin-ui: states: show checkbox if state common.type=boolean
-* (hobbyquaker) admin-ui: states: show dropdown if state common.valueTexts
+* (hobbyquaker) admin-ui: states: show dropdown if state common.values
 * (hobbyquaker) admin-ui: states: show history data
 * (hobbyquaker) admin-ui: objects: add, edit, delete
 * (hobbyquaker) admin-ui: enums: add, edit, delete, move, assign and remove members
 
+
+# 0.3.0
+
+* (hobbyquaker) files (Attachments) in CouchDB / virtual filesystem
+* (hobbyquaker) ctrl: Adapter start/stop via subscribe
 
 # 0.4.0
 
@@ -32,8 +34,7 @@
 * (hobbyquaker) Adapter virtual
 * (hobbyquaker) admin-ui: objects: add/remove to/from virtual adapters
 * io-package.json - pre/post install hooks
-* admin-ui: adapter: add/update/remove
-* admin-ui: adapter: html-config
+
 
 # 0.6.0
 

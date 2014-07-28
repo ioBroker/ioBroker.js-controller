@@ -1,3 +1,6 @@
+# 0.0.11
+* (hobbyquaker) admin ui: instances
+
 # 0.0.10
 
 * (hobbyquaker) refactoring controller.js and setup.js
