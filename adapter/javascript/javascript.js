@@ -4,7 +4,7 @@ var suncalc =   require('suncalc');
 var request =   require('request');
 var fs =        require('fs');
 var wol =       require('wake_on_lan');
-var cp =        require('child_process')
+var cp =        require('child_process');
 
 var adapter =   require(__dirname + '/../../lib/adapter.js')({
 
@@ -155,14 +155,15 @@ function execute(script, name) {
             if (typeof callbackOrId === "function") {
                 callback = callbackOrId;
             } else {
+                var that = this;
                 if (typeof value === 'undefined') {
                     callback = function (obj) {
-                        setState(callbackOrId, adapter.getForeignState(obj.id));
-                    }
+                        that.setState(callbackOrId, adapter.getForeignState(obj.id));
+                    };
                 } else {
                     callback = function (obj) {
-                        setState(callbackOrId, value);
-                    }
+                        that.setState(callbackOrId, value);
+                    };
                 }
             }
 
@@ -332,6 +333,7 @@ function patternMatching(event, pattern) {
                     if (pattern.logic === "and") return false;
                 }
                 break;
+            default:
         }
     }
 

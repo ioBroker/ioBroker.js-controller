@@ -33,6 +33,7 @@ if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
 var ifaces = os.networkInterfaces();
 var ipArr = [];
 for (var dev in ifaces) {
+    /*jshint loopfunc:true */
     ifaces[dev].forEach(function (details) {
         if (!details.internal) ipArr.push(details.address);
     });
@@ -77,7 +78,7 @@ var objects = new ObjectsCouch({
     },
     change: function (id, obj) {
         if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-        logger.info('ctrl object change '+id);
+        logger.info('ctrl object change ' + id);
         if (procs[id]) {
             // known adapter
             procs[id].config = obj;
@@ -240,11 +241,9 @@ function initInstances() {
     for (var id in procs) {
         if (procs[id].config.common.enabled) {
 
-            (function (_id) {
-                setTimeout(function () {
-                    startInstance(_id);
-                }, 2000 * c++);
-            })(id);
+            setTimeout(function (_id) {
+                startInstance(_id);
+            }, 2000 * c++, id);
 
             c += 1;
         }
@@ -281,7 +280,7 @@ function startInstance(id) {
                                         return;
                                     }
                                 }
-                                allInstancesStopped = true
+                                allInstancesStopped = true;
                             }
                             return;
                         } else {
@@ -318,7 +317,7 @@ function startInstance(id) {
                     } else if (code === null) {
                         logger.error('ctrl instance ' + id + ' terminated abnormally');
                     } else {
-                        if (code == 0) {
+                        if (code === 0 || code === '0') {
                             logger.info('ctrl instance ' + id + ' terminated with code ' + code);
                             return;
                         } else {
@@ -337,6 +336,7 @@ function startInstance(id) {
             break;
         default:
             logger.error(instance._id + ' invalid mode');
+
     }
 
 
@@ -367,6 +367,7 @@ function stopInstance(id, callback) {
             }
             if (typeof callback === 'function') callback();
             break;
+        default:
     }
 }
 

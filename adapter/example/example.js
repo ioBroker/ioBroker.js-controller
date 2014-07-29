@@ -27,7 +27,9 @@
  *
  */
 
-
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+"use strict";
 // you have to require the adapter module and pass a options object
 var adapter = require(__dirname + '/../../modules/adapter.js')({
 
@@ -100,7 +102,7 @@ function main() {
      *
      */
 
-    setObject('testVariable', {
+    adapter.setObject('testVariable', {
         type: 'state',
         common: {
             type: 'boolean'

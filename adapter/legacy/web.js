@@ -1,11 +1,15 @@
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+"use strict";
+
 var express = require('express');
 var socketio = require('socket.io');
-var app,
-    appSsl,
-    server,
-    serverSsl,
-    io,
-    ioSsl;
+var app;
+var appSsl;
+var server;
+var serverSsl;
+var io;
+var ioSsl;
 
 var objects = {};
 var states = {};
@@ -70,16 +74,18 @@ function main() {
 
 function initWebserver() {
     if (adapter.config.listenPort) {
-        app = express();
-        server =    require('http').createServer(app)
+        app    = express();
+        server = require('http').createServer(app);
     }
     if (adapter.config.listenPortSsl) {
+        var fs = require('fs');
+        var options;
         try {
             options = {
-                key: fs.readFileSync(__dirname+'/ssl/privatekey.pem'),
-                cert: fs.readFileSync(__dirname+'/ssl/certificate.pem')
+                key:  fs.readFileSync(__dirname + '/ssl/privatekey.pem'),
+                cert: fs.readFileSync(__dirname + '/ssl/certificate.pem')
             };
-        } catch(err) {
+        } catch (err) {
             adapter.log.error(err.message);
         }
         if (options) {
@@ -89,7 +95,7 @@ function initWebserver() {
     }
 
     if (adapter.config.cache) {
-        app.use('/', express.static(__dirname + '/../www/htdocs', { maxAge: 30758400000 }));
+        app.use('/', express.static(__dirname + '/../www/htdocs', {maxAge: 30758400000}));
     } else {
         app.use('/', express.static(__dirname + '/../www/htdocs'));
     }
@@ -155,6 +161,8 @@ function initSocket(socket) {
                 break;
             case 'error':
                 adapter.log.error(msg);
+                break;
+            default:
         }
     });
 
@@ -163,15 +171,16 @@ function initSocket(socket) {
     });
 
     socket.on('execCmd', function (cmd, callback) {
-        adapter.log.info('exec '+cmd);
+        adapter.log.info('exec ' + cmd);
+        // TODO childProcess
         childProcess.exec(cmd, callback);
     });
 
     socket.on('execScript', function (script, arg, callback) {
-        adapter.log.info('script '+script + '['+arg+']');
+        adapter.log.info('script ' + script + '[' + arg + ']');
         var scr_prc = childProcess.fork(__dirname + script, arg);
         var result = null;
-        scr_prc.on('message', function(obj) {
+        scr_prc.on('message', function (obj) {
             // Receive results from child process
             console.log ('Message: ' + obj);
             adapter.log.debug('script result: ' + obj);
@@ -186,7 +195,8 @@ function initSocket(socket) {
     });
 
     socket.on('restartAdapter', function (adapter) { // deprecated (should be implemented in admin-adapter)
-        return restartAdapter(adapter)
+        // TODO
+        return restartAdapter(adapter);
     });
 
     socket.on('updateAddon', function (url, name) { // deprecated (should be implemented in admin-adapter)
@@ -225,6 +235,7 @@ function initSocket(socket) {
 
     // Get list of all IP address on device
     socket.on('getIpAddresses', function (callback) {
+        /*jshint loopfunc:true */
         var ifaces = os.networkInterfaces();
         var ipArr = [];
         for (var dev in ifaces) {
@@ -273,22 +284,22 @@ function initSocket(socket) {
 
     });
 
-    socket.on('readdirStat', function(path, callback) {
+    socket.on('readdirStat', function (path, callback) {
 
 
     });
 
-    socket.on('rename', function(path_old,path, callback) {
+    socket.on('rename', function (path_old, path, callback) {
 
 
     });
 
-    socket.on('mkDir', function(path, callback) {
+    socket.on('mkDir', function (path, callback) {
 
 
     });
 
-    socket.on('removeRecursive', function(path, callback) {
+    socket.on('removeRecursive', function (path, callback) {
 
 
     });
@@ -344,9 +355,9 @@ function initSocket(socket) {
     });
 
     socket.on('getUrl', function (url, callback) {
-        adapter.log.info('GET '+url);
+        adapter.log.info('GET ' + url);
         if (url.match(/^https/)) {
-            https.get(url, function(res) {
+            https.get(url, function (res) {
                 var body = '';
                 res.on('data', function (data) {
                     body += data;
@@ -355,11 +366,11 @@ function initSocket(socket) {
                     callback(body);
                 });
 
-            }).on('error', function(e) {
-                adapter.log.error('GET '+url+' '+ e.message);
+            }).on('error', function (e) {
+                adapter.log.error('GET ' + url + ' ' + e.message);
             });
         } else {
-            http.get(url, function(res) {
+            http.get(url, function (res) {
                 var body = '';
                 res.on('data', function (data) {
                     body += data;
@@ -367,8 +378,8 @@ function initSocket(socket) {
                 res.on('end', function () {
                     callback(body);
                 });
-            }).on('error', function(e) {
-                adapter.log.error('GET '+url+' '+ e.message);
+            }).on('error', function (e) {
+                adapter.log.error('GET ' + url + ' ' + e.message);
             });
         }
     });
@@ -386,32 +397,32 @@ function initSocket(socket) {
 
     });
 
-    socket.on('getVersion', function(callback) {
+    socket.on('getVersion', function (callback) {
 
     });
 
-    socket.on('getDatapoints', function(callback) {
+    socket.on('getDatapoints', function (callback) {
         adapter.log.verbose('socket.io <-- getDatapoints');
 
         callback(states);
     });
 
-    socket.on('getDatapoint', function(id, callback) {
+    socket.on('getDatapoint', function (id, callback) {
         adapter.log.verbose('socket.io <-- getDatapoint ' + id);
 
         callback(id, states[id]);
     });
 
-    socket.on('getObjects', function(callback) {
+    socket.on('getObjects', function (callback) {
         adapter.log.verbose('socket.io <-- getObjects');
         callback(objects);
     });
 
-    socket.on('getIndex', function(callback) {
+    socket.on('getIndex', function (callback) {
 
     });
 
-    socket.on('getStringtable', function(callback) { // was this ever used?
+    socket.on('getStringtable', function (callback) { // was this ever used?
         adapter.log.verbose('socket.io <-- getStringtable');
 
     });
@@ -435,6 +446,7 @@ function initSocket(socket) {
 
     });
 
+    // TODO
     socket.on('programExecute', programExecute); // deprecated
 
     socket.on('runScript', function (script, callback) { // deprecated
