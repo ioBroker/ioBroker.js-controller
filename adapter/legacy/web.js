@@ -153,17 +153,16 @@ function getData() {
 function initSocket(socket) {
     socket.on('log', function (sev, msg) {
         switch (sev) {
-            case 'info': {
+            case 'info':
                 adapter.log.info(msg);
                 break;
-            }
-            case 'warn': {
+            case 'warn':
                 adapter.log.warn(msg);
                 break;
-            }
-            case 'error': {
+            case 'error':
                 adapter.log.error(msg);
-            }
+                break;
+            default:
         }
     });
 
