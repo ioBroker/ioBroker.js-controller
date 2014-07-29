@@ -34,7 +34,7 @@ var tools;
 switch (yargs.argv._[0]) {
 
     case "start":
-    case "stop":{
+    case "stop":
         var daemon = require("daemonize2").setup({
             main: "control.js",
             name: "iobroker.ctrl",
@@ -42,9 +42,8 @@ switch (yargs.argv._[0]) {
         });
         daemon[process.argv._]();
         break;
-    }
 
-    case "setup": {
+    case "setup":
         fs =            require('fs');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
 
@@ -70,9 +69,9 @@ switch (yargs.argv._[0]) {
         });
 
         break;
-    }
 
-    case "add": {
+
+    case "add":
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
@@ -93,16 +92,16 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
-    }
 
-    case "del": {
+
+    case "del":
 
         break;
-    }
 
-    default: {
+
+    default:
         yargs.showHelp();
-    }
+
 }
 
 function dbConnect(callback) {
