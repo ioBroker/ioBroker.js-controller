@@ -23,12 +23,9 @@ var yargs = require('yargs')
     .default('lang',    'en')
     ;
 
-//console.log(JSON.stringify(yargs.argv, null, '  '));
-
 var ObjectsCouch;
 var objects;
 var fs;
-var os;
 var tools;
 
 switch (yargs.argv._[0]) {
@@ -60,12 +57,8 @@ switch (yargs.argv._[0]) {
         var iopkg = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
 
         dbConnect(function () {
-            // todo - loop over array - object could have more than 1 elem
-            objects.setObject("_design/system", iopkg.objects[0], function () {
-                console.log('object _design/system created');
-                console.log('database setup done. you can add adapters and start iobroker now');
-                process.exit(0);
-            });
+            dbSetup();
+
         });
 
         break;
@@ -330,4 +323,18 @@ function createInstance(adapter, enabled, host, callback) {
 
     });
 
+}
+
+
+function dbSetup() {
+    if (iopkg.objects.length > 0) {
+        var obj = iopkg.objects.pop();
+        objects.setObject("_design/system", obj, function () {
+            dbSetup();
+        });
+    } else {
+        console.log('object _design/system created');
+        console.log('database setup done. you can add adapters and start iobroker now');
+        process.exit(0);
+    }
 }

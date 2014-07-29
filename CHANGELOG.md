@@ -1,3 +1,8 @@
+# 0.0.12
+* (hobbyquaker) setup.js fixes
+* (hobbyquaker) setup.js create multiple system objects
+
+
 # 0.0.11
 * (hobbyquaker) admin ui: instances
 
