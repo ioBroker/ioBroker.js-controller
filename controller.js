@@ -119,7 +119,7 @@ function startAliveInterval() {
 }
 
 function reportStatus() {
-    var id = 'system.host.' + firstIp;
+    var id = 'system.host.' + hostname;
     states.setState(id + '.alive', {val: true, ack: true, expire: 30});
     states.setState(id + '.load', {val: os.loadavg()[0].toFixed(2), ack: true});
     states.setState(id + '.memfree', {val: (100 * os.freemem() / os.totalmem()).toFixed(0), ack: true});
