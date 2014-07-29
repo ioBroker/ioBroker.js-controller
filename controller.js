@@ -241,7 +241,7 @@ function initInstances() {
     for (var id in procs) {
         if (procs[id].config.common.enabled) {
 
-            setTimeout(function () {
+            setTimeout(function (_id) {
                 startInstance(_id);
             }, 2000 * c++, id);
 
@@ -257,7 +257,7 @@ function startInstance(id) {
     var name = id.split('.')[2];
 
     switch (instance.common.mode) {
-        case 'daemon': {
+        case 'daemon':
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
@@ -295,8 +295,7 @@ function startInstance(id) {
                 logger.warn('ctrl instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
-        }
-        case 'schedule': {
+        case 'schedule':
             if (!instance.common.schedule) {
                 logger.error(instance._id + ' schedule attribute missing');
                 break;
@@ -332,14 +331,12 @@ function startInstance(id) {
             logger.info('ctrl instance scheduled ' + instance._id + ' ' + instance.common.schedule);
 
             break;
-        }
-        case 'subscribe': {
+        case 'subscribe':
             // TODO
             break;
-        }
-        default: {
+        default:
             logger.error(instance._id + ' invalid mode');
-        }
+
     }
 
 
@@ -348,7 +345,7 @@ function startInstance(id) {
 function stopInstance(id, callback) {
     var instance = procs[id].config;
     switch (instance.common.mode) {
-        case 'daemon': {
+        case 'daemon':
             if (!procs[id].process) {
                 logger.warn('ctrl instance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
@@ -360,8 +357,7 @@ function stopInstance(id, callback) {
                 if (typeof callback === 'function') callback();
             }
             break;
-        }
-        case 'schedule': {
+        case 'schedule':
             if (!procs[id].schedule) {
                 logger.warn('ctrl instance ' + instance._id + ' not scheduled');
             } else {
@@ -371,7 +367,7 @@ function stopInstance(id, callback) {
             }
             if (typeof callback === 'function') callback();
             break;
-        }
+        default:
     }
 }
 
