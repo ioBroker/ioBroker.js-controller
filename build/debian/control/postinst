@@ -1,0 +1,39 @@
+#!/bin/bash
+#Create empty directories
+if [ ! -d "/opt/ioBroker/tmp" ]; then
+  mkdir /opt/ioBroker/tmp
+fi
+if [ ! -d "/opt/ioBroker/datastore" ]; then
+  mkdir /opt/ioBroker/datastore
+fi
+if [ ! -d "/opt/ioBroker/log" ]; then
+  mkdir /opt/ioBroker/log
+fi
+
+#Check if user @@user exists
+if [ $(cat /etc/passwd | grep "/home" |cut -d: -f1 | grep '^pi$' | wc -l) -eq 0 ]
+then
+    read -p "User pi does not exist. Create?" yn
+    case $yn in
+        [Yy]* ) echo "Create user @@user ...";
+		        apt-get install sudo;
+		        adduser @@user;
+				adduser @@user sudo;
+				visudo -f /etc/sudoers;
+				break;;
+        [Nn]* ) echo "The start of ioBroker at system start will not work!";;
+        * ) echo "Please answer yes or no.";;
+    esac
+fi
+
+#Set rights
+echo "Set permissions..."
+find /opt/ioBroker/ -type d -exec chmod 777 {} \;
+find /opt/ioBroker/ -type f -exec chmod 777 {} \;
+chown -R @@user:@@user /opt/ioBroker/
+chmod 777 /etc/init.d/ioBroker.sh
+chown root:root /etc/init.d/ioBroker.sh
+
+# Start the service!
+echo "Start ioBroker..."
+node /opt/ioBroker/ioBroker.js start

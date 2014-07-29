@@ -1,21 +1,26 @@
 // To use this file in WebStorm, right click on the file name in the Project Panel (normally left) and select "Open Grunt Console"
 
 /** @namespace __dirname */
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+"use strict";
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-    var srcDir = __dirname + "/../";
-    var dstDir = __dirname + "/../delivery/";
-    var pkg    = grunt.file.readJSON('package.json');
-    var iocore = grunt.file.readJSON('../io-package.json');
+    var srcDir   = __dirname + "/";
+    var dstDir   = __dirname + "/delivery/";
+    var gruntDir = __dirname + "/build/";
+    var pkg      = grunt.file.readJSON('package.json');
+    var iocore   = grunt.file.readJSON('io-package.json');
+    var words    = null;
 
     // Project configuration.
     grunt.initConfig({
         pkg: pkg,
         clean: {
-            all: ['.build', '.debian-pi-control', '.debian-pi-ready', '.windows-ready'],
-            'debian-pi-control': ['.debian-pi-ready/DEBIAN'],
-            'debian-pi-control-sysroot': ['.debian-pi-ready/sysroot']
+            all: [gruntDir + '.build', gruntDir + '.debian-pi-control', gruntDir + '.debian-pi-ready', gruntDir + '.windows-ready'],
+            'debian-pi-control': [gruntDir + '.debian-pi-ready/DEBIAN'],
+            'debian-pi-control-sysroot': [gruntDir + '.debian-pi-ready/sysroot']
         },
         replace: {
             core: {
@@ -23,7 +28,7 @@ module.exports = function(grunt) {
                     patterns: [
                         {
                             match: /settings\.version             = "[\.0-9]*";/g,
-                            replacement: 'settings.version = "'+iocore.version+'";'
+                            replacement: 'settings.version = "' + iocore.version + '";'
                         }
                     ]
                 },
@@ -32,7 +37,7 @@ module.exports = function(grunt) {
                         expand:  true,
                         flatten: true,
                         src:     [srcDir + 'main.js'],
-                        dest:    '.build/'
+                        dest:    gruntDir + '.build/'
                     }
                 ]
             },
@@ -62,20 +67,20 @@ module.exports = function(grunt) {
                     {
                         expand:  true,
                         flatten: true,
-                        src:     ['debian-pi/control/*'],
-                        dest:    '.debian-pi-control/control/'
+                        src:     [gruntDir + 'debian-pi/control/*'],
+                        dest:    gruntDir + '.debian-pi-control/control/'
                     },
                     {
                         expand:  true,
                         flatten: true,
-                        src:     ['debian-pi/redeb.sh'],
-                        dest:    '.debian-pi-ready/'
+                        src:     [gruntDir + './build/debian-pi/redeb.sh'],
+                        dest:    gruntDir + '.debian-pi-ready/'
                     },
                     {
                         expand:  true,
                         flatten: true,
-                        src:     ['debian-pi/etc/init.d/ioBroker.sh'],
-                        dest:    '.debian-pi-control/'
+                        src:     [gruntDir + 'debian-pi/etc/init.d/ioBroker.sh'],
+                        dest:    gruntDir + '.debian-pi-control/'
                     }
                 ]
             },
@@ -93,8 +98,8 @@ module.exports = function(grunt) {
                     {
                         expand:  true,
                         flatten: true,
-                        src:     ['windows/ioBroker.iss'],
-                        dest:    '.windows-ready/'
+                        src:     [gruntDir + 'windows/ioBroker.iss'],
+                        dest:    gruntDir + '.windows-ready/'
                     }
                 ]
             }
@@ -131,21 +136,21 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: '.build',
+                        cwd: gruntDir + '.build',
                         src: ['**/*', '!node_modules/node-windows/**/*', '!node_modules/optimist/**/*', '!node_modules/wordwrap/**/*'],
                         dest: '.debian-pi-ready/sysroot/opt/ioBroker/'
                     },
                     {
                         expand: true,
-                        cwd: '.debian-pi-control/control',
+                        cwd: gruntDir + '.debian-pi-control/control',
                         src: ['**/*'],
-                        dest: '.debian-pi-ready/DEBIAN/'
+                        dest: gruntDir + '.debian-pi-ready/DEBIAN/'
                     },
                     {
                         expand: true,
-                        cwd: '.debian-pi-control/',
+                        cwd: gruntDir + '.debian-pi-control/',
                         src: ['ioBroker.sh'],
-                        dest: '.debian-pi-ready/sysroot/etc/init.d/'
+                        dest: gruntDir + '.debian-pi-ready/sysroot/etc/init.d/'
                     }
                 ]
             },
@@ -153,29 +158,29 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'windows',
+                        cwd: gruntDir + 'windows',
                         src: ['*.js', 'v0*/**/*', '*.ico', '*.bat', '!service_ioBroker.bat'],
-                        dest: '.windows-ready/'
+                        dest: gruntDir + '.windows-ready/'
                     },
                     {
                         expand: true,
-                        cwd: '.build',
+                        cwd: gruntDir + '.build',
                         src: ['**/*'],
-                        dest: '.windows-ready/data/'
+                        dest: gruntDir + '.windows-ready/data/'
                     },
                     {
                         expand: true,
-                        cwd: 'windows',
+                        cwd: gruntDir + 'windows',
                         src: ['service_ioBroker.bat'],
-                        dest: '.windows-ready/data/'
+                        dest: gruntDir + '.windows-ready/data/'
                     }
                 ]
             },
             localRepository: {
                 files: [
                     {
-                        src: ['io-repository.json'],
-                        dest: '../delivery/'
+                        src: [gruntDir + 'io-repository.json'],
+                        dest: './delivery/'
                     }
                 ]
             }
@@ -184,18 +189,21 @@ module.exports = function(grunt) {
         // Javascript code styler
         jscs: {
             all: {
-                src: [ "../*.js"//,
-                       //"../module/*.js",
-                       //"../adapter/**/*.js",
-                       //"Gruntfile.js"
+                src: [
+                    srcDir + "*.js",
+                    srcDir + "lib/*.js",
+                    srcDir + "adapter/**/*.js",
+                    '!' + srcDir + 'node_modules/**/*.js',
+                    '!' + srcDir + 'adapter/admin/www/lib/**/*.js',
+                    '!' + srcDir + 'adapter/*/node_modules/**/*.js'
                 ],
                 options: {
                     force: true,
-                    "requireCurlyBraces": ["if","else","for","while","do","try","catch","case","default"],
-                    "requireSpaceAfterKeywords": ["if","else","for","while","do","switch","return","try","catch"],
+                    "requireCurlyBraces": ["else", "for", "while", "do", "try", "catch", "case", "default"], /*"if",*/
+                    "requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
 //                    "requireSpaceBeforeBlockStatements": true,
                     "requireParenthesesAroundIIFE": true,
-                    "requireSpacesInFunctionExpression": {"beforeOpeningCurlyBrace": true },
+                    "requireSpacesInFunctionExpression": {"beforeOpeningCurlyBrace": true},
                     "requireSpacesInAnonymousFunctionExpression": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true},
                     "requireSpacesInNamedFunctionExpression": {"beforeOpeningCurlyBrace": true},
                     "requireSpacesInFunctionDeclaration": {"beforeOpeningCurlyBrace": true},
@@ -207,15 +215,15 @@ module.exports = function(grunt) {
                     "disallowSpaceAfterObjectKeys": true,
                     "requireCommaBeforeLineBreak": true,
                     //"requireAlignedObjectValues": "all",
-                    "requireOperatorBeforeLineBreak": ["?", "+", "-", "/","*", "=", "==", "===", "!=", "!==", ">", ">=", "<","<="],
-                    "disallowLeftStickedOperators": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-                    "requireRightStickedOperators": ["!"],
-                    "disallowRightStickedOperators": ["?", "+", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-                    "requireLeftStickedOperators": [","],
+                    "requireOperatorBeforeLineBreak": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+//                    "disallowLeftStickedOperators": ["?", "+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+//                    "requireRightStickedOperators": ["!"],
+//                    "requireSpaceAfterBinaryOperators": ["?", "+", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+                    //"disallowSpaceAfterBinaryOperators": [","],
                     "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
                     "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
-                    "requireSpaceBeforeBinaryOperators": ["+","-","/","*","=","==","===","!=","!=="],
-                    "requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+                    "requireSpaceBeforeBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
+                    "requireSpaceAfterBinaryOperators": ["?", ">", ",", ">=", "<=", "<", "+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
                     //"validateIndentation": 4,
                     //"validateQuoteMarks": { "mark": "\"", "escape": true },
                     "disallowMixedSpacesAndTabs": true,
@@ -226,16 +234,15 @@ module.exports = function(grunt) {
         // Lint
         jshint: {
             options: {
-                force:true
+                force: true
             },
-            all: [ "../*.js",
-                "../modules/*.js",
-                "../adapter/**/*.js",
-                "Gruntfile.js",
-                '!../speech.js',
-                '!../node_modules/**/*.js',
-                '!../adapter/admin/www/lib/**/*.js',
-                '!../adapter/*/node_modules/**/*.js']
+            all: [srcDir + "*.js",
+                  srcDir + "lib/*.js",
+                  srcDir + "adapter/**/*.js",
+                  '!' + srcDir + 'node_modules/**/*.js',
+                  '!' + srcDir + 'adapter/admin/www/lib/**/*.js',
+                  '!' + srcDir + 'adapter/*/node_modules/**/*.js'
+            ]
         },
         compress: {
             main: {
@@ -243,7 +250,12 @@ module.exports = function(grunt) {
                     archive: dstDir + 'ioBroker.core.' + iocore.version + '.zip'
                 },
                 files: [
-                    {expand: true, src: ['**'],  dest: '/', cwd:'.build/'}
+                    {
+                        expand: true,
+                        src: ['**'],
+                        dest: '/',
+                        cwd: gruntDir + '.build/'
+                    }
                 ]
             },
             adapter: {
@@ -256,41 +268,40 @@ module.exports = function(grunt) {
             },
             'debian-pi-control': {
                 options: {
-                    archive: '.debian-pi-ready/control.tar.gz'
+                    archive: gruntDir + '.debian-pi-ready/control.tar.gz'
                 },
                 files: [
                     {
                         expand: true,
                         src: ['**/*'],
                         dest: '/',
-                        cwd: '.debian-pi-control/control/'
+                        cwd: gruntDir + '.debian-pi-control/control/'
                     }
                 ]
             },
             'debian-pi-data': {
                 options: {
-                    archive: '.debian-pi-ready/data.tar.gz'
+                    archive: gruntDir + '.debian-pi-ready/data.tar.gz'
                 },
                 files: [
                     {
                         expand: true,
                         src: ['**/*'],
                         dest: '/',
-                        cwd: '.debian-pi-ready/sysroot/'
+                        cwd: gruntDir + '.debian-pi-ready/sysroot/'
                     }
                 ]
             }
         },
-        command : {
+        command: {
             makeWindowsMSI: {
                 // type : 'bat',
-                cmd  :'"'+__dirname+'\\windows\\InnoSetup5\\ISCC.exe" "'+__dirname+'\\.windows-ready\\ioBroker.iss" > "'+__dirname+'\\.windows-ready\\setup.log"'
+                cmd: '"' + gruntDir + 'windows\\InnoSetup5\\ISCC.exe" "' + gruntDir + '.windows-ready\\ioBroker.iss" > "' + gruntDir + '.windows-ready\\setup.log"'
             }
         },
 
-
         // Used for build repository
-        'unzip': {
+        unzip: {
             // Skip/exclude files via `router`
             unzipIo: {
                 // If router returns a falsy varaible, the file will be skipped
@@ -352,12 +363,13 @@ module.exports = function(grunt) {
                 console.log (srcDir + 'adapter/' + t + '/io-adapter.json');
                 var adp = grunt.file.readJSON(srcDir + 'adapter/' + t + '/io-adapter.json');
                 console.log(adp.name + adp.version);
-                grunt.task.run(['compress:adapter:'+ t + ':ioBroker.adapter.' + adp.ident + '.' + adp.version +'.zip']);
+                grunt.task.run(['compress:adapter:' + t + ':ioBroker.adapter.' + adp.ident + '.' + adp.version + '.zip']);
                 grunt.file.copy(srcDir + 'adapter/' + t + '/io-adapter.json', dstDir + 'ioBroker.adapter.' + adp.ident + '.' + adp.version + '.json');
-            } else
+            } /*else
             if (dirs[t].grunt) {
                 // Start gruntfile
-            }
+
+            }*/
         }
     });
 
@@ -375,23 +387,22 @@ module.exports = function(grunt) {
 
     function translate (text, lang) {
         lang = lang || 'en';
-        if (!this.words) {
-            this.words = {
-                'Adapters'            : {'en': 'Adapters',           'de': 'Adapters',             'ru': 'Драйвера'},
-                'Add-ons'             : {'en': 'Add-ons',            'de': 'Add-ons',              'ru': 'Модули'},
-                'Core'                : {'en': 'Core updates',       'de': 'Updates für Kern',     'ru': 'Обновления ядра'},
-                'Install'             : {'en': 'Install packets',    'de': 'Installationspakete',  'ru': 'Файлы для инсталляции'},
-                'ioBroker Repository' : {'en': 'ioBroker Downloads', 'de': 'ioBroker Downloads.',  'ru': 'Модули для ioBroker'}
+        if (!words) {
+            words = {
+                'Adapters':            {'en': 'Adapters',           'de': 'Adapters',             'ru': 'Драйвера'},
+                'Add-ons':             {'en': 'Add-ons',            'de': 'Add-ons',              'ru': 'Модули'},
+                'Core':                {'en': 'Core updates',       'de': 'Updates für Kern',     'ru': 'Обновления ядра'},
+                'Install':             {'en': 'Install packets',    'de': 'Installationspakete',  'ru': 'Файлы для инсталляции'},
+                'ioBroker Repository': {'en': 'ioBroker Downloads', 'de': 'ioBroker Downloads.',  'ru': 'Модули для ioBroker'}
             };
         }
-        if (this.words[text]) {
-            var newText = this.words[text][lang];
+        if (words[text]) {
+            var newText = words[text][lang];
             if (newText){
                 return newText;
-            }
-            else
+            } else
             if (lang != 'en') {
-                newText = this.words[text].en;
+                newText = words[text].en;
                 if (newText){
                     return newText;
                 }
@@ -418,13 +429,13 @@ module.exports = function(grunt) {
                 var tmpDir = parts.join('.');
                 // Check if json description file exists for this packet
                 if (grunt.file.exists(repositoryDir + tmpDir + '.json')) {
-                    grunt.task.run(['jsonInfo:'+tmpDir]);
+                    grunt.task.run(['jsonInfo:' + tmpDir]);
                 } else {
-                    grunt.task.run(['unzip:unzipIo:'+filename+':'+tmpDir]);
-                    grunt.task.run(['assembleInfo:'+tmpDir]);
+                    grunt.task.run(['unzip:unzipIo:' + filename + ':' + tmpDir]);
+                    grunt.task.run(['assembleInfo:' + tmpDir]);
                 }
             } else if (filename.indexOf('.deb') != -1 || filename.indexOf('.exe') != -1) {
-                grunt.task.run(['packetInfo:'+filename]);
+                grunt.task.run(['packetInfo:' + filename]);
             }
         });
         for (var i = 0; i < repMain.languages.length; i++) {
@@ -456,18 +467,18 @@ module.exports = function(grunt) {
             if (!repObject.installs.windows){
                 repObject.installs.windows = {name: 'Windows x86 x64',
                     description: {
-                        'en' : "Windows installer for ioBroker",
-                        'de' : "Windows installer für ioBroker",
-                        'ru' : "Windows installer для ioBroker"
+                        'en': "Windows installer for ioBroker",
+                        'de': "Windows installer für ioBroker",
+                        'ru': "Windows installer для ioBroker"
                     },
                     versions: {}
                 };
             }
             repObject.installs.windows.versions[version] = {name: 'ioBroker Windows installer',
                 description: {
-                    'en' : "Windows installer for ioBroker",
-                    'de' : "Windows installer für ioBroker",
-                    'ru' : "Windows installer для ioBroker"
+                    'en': "Windows installer for ioBroker",
+                    'de': "Windows installer für ioBroker",
+                    'ru': "Windows installer для ioBroker"
                 }
             };
             repObject.installs.windows.versions[version].urlDownload = repMain.link + '/' + grunt.task.current.args[0];
@@ -476,18 +487,18 @@ module.exports = function(grunt) {
             if (!repObject.installs.pi){
                 repObject.installs.pi = {name: 'Raspbian on Raspberry PI',
                     description: {
-                        'en' : "Installation package ioBroker for Raspberry PI",
-                        'de' : "Installation Paket ioBroker für Raspberry PI",
-                        'ru' : "ioBroker для Raspberry PI"
+                        'en': "Installation package ioBroker for Raspberry PI",
+                        'de': "Installation Paket ioBroker für Raspberry PI",
+                        'ru': "ioBroker для Raspberry PI"
                     },
                     versions: {}
                 };
             }
             repObject.installs.pi.versions[version] = {name: 'ioBroker for Raspberry PI',
                 description: {
-                    'en' : "Installation package ioBroker for Raspberry PI",
-                    'de' : "Installation Paket ioBroker für Raspberry PI",
-                    'ru' : "ioBroker для Raspberry PI"
+                    'en': "Installation package ioBroker for Raspberry PI",
+                    'de': "Installation Paket ioBroker für Raspberry PI",
+                    'ru': "ioBroker для Raspberry PI"
                 }
             };
             repObject.installs.pi.versions[version].urlDownload = repMain.link + '/' + grunt.task.current.args[0];
@@ -496,29 +507,29 @@ module.exports = function(grunt) {
 
     grunt.registerTask('assembleInfo', function () {
         var ioInfo;
-        if (grunt.file.exists('.rep-work/' + grunt.task.current.args[0] + '/io-addon.json')) {
-            ioInfo = grunt.file.readJSON('.rep-work/'+grunt.task.current.args[0] + '/io-addon.json');
+        if (grunt.file.exists(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-addon.json')) {
+            ioInfo = grunt.file.readJSON(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-addon.json');
             if (!repObject.addons[ioInfo.name]) {
                 repObject.addons[ioInfo.name] = {};
             }
             repObject.addons[ioInfo.name][ioInfo.version] = ioInfo;
-            repObject.addons[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.addons[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         } else
-        if (grunt.file.exists('.rep-work/'+grunt.task.current.args[0] + '/io-adapter.json')) {
-            ioInfo = grunt.file.readJSON('.rep-work/'+grunt.task.current.args[0] + '/io-adapter.json');
+        if (grunt.file.exists(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-adapter.json')) {
+            ioInfo = grunt.file.readJSON(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-adapter.json');
             if (!repObject.adapters[ioInfo.name]) {
                 repObject.adapters[ioInfo.name] = {};
             }
             repObject.adapters[ioInfo.name][ioInfo.version] = ioInfo;
-            repObject.adapters[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.adapters[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         }else
-        if (grunt.file.exists('.rep-work/'+grunt.task.current.args[0] + '/io-core.json')) {
-            ioInfo = grunt.file.readJSON('.rep-work/'+grunt.task.current.args[0] + '/io-core.json');
+        if (grunt.file.exists(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-core.json')) {
+            ioInfo = grunt.file.readJSON(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/io-core.json');
             repObject.cores[ioInfo.version] = ioInfo;
-            repObject.cores[ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.cores[ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         }
-        grunt.file.write(repositoryDir + grunt.task.current.args[0] + '.json', JSON.stringify(ioInfo, null,'\t'));
-        grunt.file.delete('.rep-work/' + grunt.task.current.args[0] + '/');
+        grunt.file.write(repositoryDir + grunt.task.current.args[0] + '.json', JSON.stringify(ioInfo, null, '\t'));
+        grunt.file.delete(gruntDir + '.rep-work/' + grunt.task.current.args[0] + '/');
     });
 
     grunt.registerTask('jsonInfo', function () {
@@ -528,18 +539,18 @@ module.exports = function(grunt) {
                 repObject.addons[ioInfo.name] = {};
             }
             repObject.addons[ioInfo.name][ioInfo.version] = ioInfo;
-            repObject.addons[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.addons[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         } else
         if (grunt.task.current.args[0].indexOf('.adapter.') != -1) {
             if (!repObject.adapters[ioInfo.name]) {
                 repObject.adapters[ioInfo.name] = {};
             }
             repObject.adapters[ioInfo.name][ioInfo.version] = ioInfo;
-            repObject.adapters[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.adapters[ioInfo.name][ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         }else
         if (grunt.task.current.args[0].indexOf('.core.') != -1) {
             repObject.cores[ioInfo.version] = ioInfo;
-            repObject.cores[ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0]+".zip";
+            repObject.cores[ioInfo.version].urlDownload = repMain.link + '/' + grunt.task.current.args[0] + ".zip";
         }
     });
 
@@ -558,7 +569,7 @@ module.exports = function(grunt) {
             desc = infoObj.name;
         }
 
-        return '<p>' +desc+ '</p>';
+        return '<p>' + desc + '</p>';
     }
 
     grunt.registerTask('writeRepository', function () {
@@ -566,7 +577,7 @@ module.exports = function(grunt) {
         if (repMain.htmlFile) {
             var text = '<html><header><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>' +
                 '<link rel="stylesheet" href="repository.css" type="text/css"/></header>' +
-                '<body><h1>'+(repMain.name[lang] || repMain.name)+'</h1>\n';
+                '<body><h1>' + (repMain.name[lang] || repMain.name) + '</h1>\n';
 
             if (repMain.description) {
                 text += createDescription(repMain, lang);
@@ -576,13 +587,13 @@ module.exports = function(grunt) {
             var headerAdded = false;
             for (var os_platform in repObject.installs) {
                 if (!headerAdded) {
-                    text += '<h2>'+translate('Install', lang)+'</h2>\n';
+                    text += '<h2>' + translate('Install', lang) + '</h2>\n';
                     headerAdded = true;
                 }
 
                 text += '<h3>' + (repObject.installs[os_platform].name || os_platform) + '</h3>\n';
                 for (var ver in repObject.installs[os_platform].versions) {
-                    text += '<tr><td><a href="'+repObject.installs[os_platform].versions[ver].urlDownload +'">'+ver+'</a></td></td>\n';
+                    text += '<tr><td><a href="' + repObject.installs[os_platform].versions[ver].urlDownload + '">' + ver + '</a></td></td>\n';
                 }
             }
 
@@ -605,11 +616,11 @@ module.exports = function(grunt) {
             headerAdded = false;
             for (var addon in repObject.addons) {
                 if (!headerAdded) {
-                    text += '<h2>'+translate('Add-ons', lang)+'</h2>\n';
+                    text += '<h2>' + translate('Add-ons', lang) + '</h2>\n';
                     headerAdded = true;
                 }
 
-                text += '<h3>'+addon+'</h3>\n';
+                text += '<h3>' + addon + '</h3>\n';
                 var headerAdded2 = false;
                 for (verr in repObject.addons[addon]) {
                     if (!headerAdded2) {
@@ -618,7 +629,7 @@ module.exports = function(grunt) {
                         text += "<table>\n";
                     }
 
-                    text += '<tr><td><a href="'+repObject.addons[addon][verr].urlDownload +'">'+verr+'</a></td></td>\n';
+                    text += '<tr><td><a href="' + repObject.addons[addon][verr].urlDownload + '">' + verr + '</a></td></td>\n';
                 }
                 if (headerAdded2) {
                     text += "</table>\n";
@@ -629,11 +640,11 @@ module.exports = function(grunt) {
             headerAdded = false;
             for (var adapter in repObject.adapters) {
                 if (!headerAdded) {
-                    text += '<h2>'+translate('Adapters', lang)+'</h2>';
+                    text += '<h2>' + translate('Adapters', lang) + '</h2>';
                     headerAdded = true;
                 }
 
-                text += '<h3>'+adapter+'</h3>';
+                text += '<h3>' + adapter + '</h3>';
                 var headerAdded3 = false;
                 for (verr in repObject.adapters[adapter]) {
                     if (!headerAdded3) {
@@ -642,7 +653,7 @@ module.exports = function(grunt) {
                         text += "<table>";
                     }
 
-                    text += '<tr><td><a href="'+repObject.adapters[adapter][verr].urlDownload +'">'+verr+'</a></td></td>\n';
+                    text += '<tr><td><a href="' + repObject.adapters[adapter][verr].urlDownload + '">' + verr + '</a></td></td>\n';
                 }
                 if (headerAdded3) {
                     text += "</table>";
@@ -654,7 +665,7 @@ module.exports = function(grunt) {
         if (!repMain.jsonCreated) {
             repMain.repository = repObject;
             grunt.file.write (repositoryDir + (repMain.jsonFile || 'repository') + '.json', JSON.stringify(repMain, null, '\t'));
-            repMain.jsonCreated= true;
+            repMain.jsonCreated = true;
         }
     });
     grunt.registerTask('rep', ['createRepository']);
@@ -667,9 +678,9 @@ module.exports = function(grunt) {
 
 
     grunt.registerTask('makeEmptyDirs', function () {
-        grunt.file.mkdir('.build/log');
-        grunt.file.mkdir('.build/datastore');
-        grunt.file.mkdir('.build/tmp');
+        grunt.file.mkdir(gruntDir + '.build/log');
+        grunt.file.mkdir(gruntDir + '.build/datastore');
+        grunt.file.mkdir(gruntDir + '.build/tmp');
     });
 
 
@@ -688,7 +699,7 @@ module.exports = function(grunt) {
         'grunt-contrib-compress',
         'grunt-contrib-commands',
         'grunt-contrib-jshint',
-        'grunt-jscs-checker',
+        'grunt-jscs',
         'grunt-exec',
         'grunt-zip'
     ];
@@ -700,8 +711,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('debian-pi-packet', function () {
         // Calculate size of directory
-        var fs = require('fs'),
-            path = require('path');
+        var fs = require('fs');
+        var path = require('path');
 
         function readDirSize(item) {
             var stats = fs.lstatSync(item);
@@ -713,8 +724,7 @@ module.exports = function(grunt) {
                     total += readDirSize(path.join(item, list[i]));
                 }
                 return total;
-            }
-            else {
+            } else {
                 return total;
             }
         }
@@ -723,7 +733,7 @@ module.exports = function(grunt) {
 
         grunt.task.run([
             'clean:debian-pi-control',
-                'replace:debian-pi-version:' + (Math.round(size / 1024) + 8) + ':pi:armhf', // Settings for raspbian
+            'replace:debian-pi-version:' + (Math.round(size / 1024) + 8) + ':pi:armhf', // Settings for raspbian
             'copy:debian-pi',
             'compress:debian-pi-data',
             'clean:debian-pi-control-sysroot'
@@ -741,7 +751,7 @@ module.exports = function(grunt) {
             console.log('========= Please wait a little (ca 1 min). The msi file will be created in ioBroker/delivery directory after the grunt is finished.');
             console.log('========= you can start batch file .windows-ready\\createSetup.bat manually');
             // Sometimes command:makeWindowsMSI does not work, you can start batch file manually
-            grunt.file.write(__dirname + '\\.windows-ready\\createSetup.bat', '"' + __dirname + '\\windows\\InnoSetup5\\ISCC.exe" "' + __dirname + '\\.windows-ready\\ioBroker.iss"');
+            grunt.file.write(gruntDir + '.windows-ready\\createSetup.bat', '"' + gruntDir + 'windows\\InnoSetup5\\ISCC.exe" "' + gruntDir + '.windows-ready\\ioBroker.iss"');
         } else {
             console.log('Cannot create windows setup, while host is not windows');
         }
@@ -753,7 +763,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'jshint',
-        //'jscs',
+        'jscs',
         'clean:all'//,
 /*        'exec:npm',
         'replace:core',

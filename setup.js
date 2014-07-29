@@ -7,6 +7,10 @@
  *
  */
 
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+"use strict";
+
 var yargs = require('yargs')
     .usage('Commands:\n' +
         '$0 setup [--couch <host>] [--redis <host>]\n' +
@@ -30,24 +34,24 @@ var tools;
 switch (yargs.argv._[0]) {
 
     case "start":
-    case "stop":
+    case "stop":{
         var daemon = require("daemonize2").setup({
             main: "control.js",
             name: "iobroker.ctrl",
             pidfile: "iobroker.pid"
         });
-        daemon[argv._]();
+        daemon[process.argv._]();
         break;
+    }
 
-
-    case "setup":
+    case "setup": {
         fs =            require('fs');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
 
         var config;
         if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
             config = fs.readFileSync(__dirname + '/conf/iobroker-dist.json');
-            logger.info('creating conf/iobroker.json');
+            console.log('creating conf/iobroker.json');
             config = JSON.parse(config);
             config.couch.host = yargs.argv.couch || '127.0.0.1';
             config.redis.host = yargs.argv.redis || '127.0.0.1';
@@ -66,10 +70,9 @@ switch (yargs.argv._[0]) {
         });
 
         break;
+    }
 
-
-    case "add":
-
+    case "add": {
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
@@ -90,14 +93,16 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
-    case "del":
+    }
 
+    case "del": {
 
-       break;
+        break;
+    }
 
-    default:
-       yargs.showHelp();
-
+    default: {
+        yargs.showHelp();
+    }
 }
 
 function dbConnect(callback) {
@@ -105,8 +110,12 @@ function dbConnect(callback) {
         logger: {
             debug: function (msg) { },
             info:  function (msg) { },
-            warn:  function (msg) { console.log(msg); },
-            error: function (msg) { console.log(msg); }
+            warn:  function (msg) {
+                console.log(msg);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
         },
         connected: function () {
             if (typeof callback === 'function') callback();
@@ -153,8 +162,8 @@ function downloadAdapter(adapter, callback) {
         var zip = new AdmZip(tmpFile);
         zip.extractAllTo(__dirname + '/tmp', true);
 
-        var source =        __dirname + '/tmp/' + repoName + '-master',
-            destination =   __dirname + '/adapter/' + name;
+        var source =        __dirname + '/tmp/' + repoName + '-master';
+        var destination =   __dirname + '/adapter/' + name;
 
         console.log('copying ' + source + ' to ' + destination);
 
@@ -257,7 +266,7 @@ function createInstance(adapter, enabled, host, callback) {
             });
             return;
         }
-        objects.getObjectView('system', 'instanceStats', { startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999' }, function (err, res) {
+        objects.getObjectView('system', 'instanceStats', {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, res) {
             if (err || !res) {
                 console.log('error: view instanceStats ' + err);
                 process.exit(1);
@@ -301,9 +310,9 @@ function createInstance(adapter, enabled, host, callback) {
                     });
                 });
             });
-
+            var adapterConf;
             try {
-                var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+                adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
             } catch (e) {
                 console.log('error: reading io-package.json ' + e);
                 process.exit(1);
