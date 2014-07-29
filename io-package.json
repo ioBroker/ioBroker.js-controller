@@ -43,6 +43,15 @@
                 },
                 "config": {
                     "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
+                },
+                "vfs": {
+                    "map": "function(doc) { if (doc.type=='vfs') emit(doc.common.name, doc) }"
+                },
+                "group": {
+                    "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
+                },
+                "user": {
+                    "map": "function(doc) { if (doc.type=='user') emit(doc.common.name, doc) }"
                 }
 
             }

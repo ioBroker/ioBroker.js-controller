@@ -26,6 +26,7 @@ var yargs = require('yargs')
 var ObjectsCouch;
 var objects;
 var fs;
+var password;
 var tools;
 
 switch (yargs.argv._[0]) {
@@ -42,6 +43,7 @@ switch (yargs.argv._[0]) {
 
     case "setup":
         fs =            require('fs');
+        password =      require(__dirname + '/lib/password.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
 
         var config;
@@ -53,6 +55,11 @@ switch (yargs.argv._[0]) {
             config.redis.host = yargs.argv.redis || '127.0.0.1';
             fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(config));
         }
+
+
+
+
+
 
         var iopkg = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
 
@@ -329,12 +336,38 @@ function createInstance(adapter, enabled, host, callback) {
 function dbSetup() {
     if (iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
-        objects.setObject("_design/system", obj, function () {
+        objects.setObject(obj._id, obj, function () {
+            console.log('object ' + obj._id + ' created');
             dbSetup();
         });
     } else {
-        console.log('object _design/system created');
-        console.log('database setup done. you can add adapters and start iobroker now');
-        process.exit(0);
+        // Default Password for user 'admin' is 'iobroker'
+        password('iobroker').hash(null, null, function (err, res) {
+            objects.setObject('system.user.admin', {
+                type: 'user',
+                common: {
+                    name: 'admin',
+                    password: res
+                },
+                native: {}
+            }, function () {
+                console.log('object system.user.admin created');
+                objects.setObject('system.group.admin', {
+                    type: 'group',
+                    common: {
+                        name: 'admin',
+                        members: ['system.user.admin']
+                    },
+                    native: {}
+                }, function () {
+                    console.log('object system.group.admin created');
+                    console.log('database setup done. you can add adapters and start iobroker now');
+                    process.exit(0);
+                });
+
+            });
+        });
+
+
     }
 }
