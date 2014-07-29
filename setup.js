@@ -30,6 +30,7 @@ var objects;
 var fs;
 var os;
 var tools;
+var logger = require('./lib/logger.js');
 
 switch (yargs.argv._[0]) {
 
