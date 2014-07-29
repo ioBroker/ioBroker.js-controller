@@ -1,3 +1,8 @@
+
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+"use strict";
+
 var adapter = require(__dirname + '/../../lib/adapter.js')({
 
     name:           'history',
@@ -66,7 +71,7 @@ function pushHistory(id, state) {
     // Todo other Targets
     if (history[id] && history[id].direct && history[id].direct.enabled && history[id].direct.targets) {
         for (var i = 0; i < history[id].direct.targets.length; i++) {
-            send(history[id].direct.targets[i], state)
+            send(history[id].direct.targets[i], state);
         }
 
     }
