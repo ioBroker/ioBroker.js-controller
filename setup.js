@@ -36,11 +36,11 @@ switch (yargs.argv._[0]) {
     case "start":
     case "stop":
         var daemon = require("daemonize2").setup({
-            main: "control.js",
+            main: "controller.js",
             name: "iobroker.ctrl",
             pidfile: "iobroker.pid"
         });
-        daemon[process.argv._]();
+        daemon[yargs.argv._[0]]();
         break;
 
     case "setup":
