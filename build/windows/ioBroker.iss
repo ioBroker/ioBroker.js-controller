@@ -46,6 +46,8 @@ Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 [Files]
 Source: "v0.10.29\node.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode
 Source: "v0.10.29\nodex64.exe"; DestDir: "{app}"; DestName: "node.exe"; Flags: ignoreversion; Check: Is64BitInstallMode
+Source: "v0.10.29\node.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: "v0.10.29\nodex64.exe"; DestDir: "{app}"; DestName: "node.exe"; Flags: ignoreversion; Check: Is64BitInstallMode
 Source: "install.js"; DestDir: "{app}"; Flags: ignoreversion
 Source: "uninstall.js"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
