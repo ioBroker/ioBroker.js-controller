@@ -6,7 +6,7 @@
  *
  */
 
-var version = '0.0.11';
+var version = '0.0.13';
 var title = 'iobroker.ctrl';
 process.title = title;
 
