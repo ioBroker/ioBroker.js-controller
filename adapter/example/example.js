@@ -31,7 +31,7 @@
 /*jslint node: true */
 "use strict";
 // you have to require the adapter module and pass a options object
-var adapter = require(__dirname + '/../../modules/adapter.js')({
+var adapter = require(__dirname + '/../../lib/adapter.js')({
 
     // name has to be set and has to be equal to adapters folder name and main file name excluding extension
     name:           'example',
@@ -129,5 +129,18 @@ function main() {
 
     // same thing, but the state is deleted after 30s (getState will return null afterwards)
     adapter.setState('testVariable', {val: true, ack: true, expire: 30});
+
+
+
+    // examples for the checkPassword/checkGroup functions
+    adapter.checkPassword('admin', 'iobroker', function (res) {
+        console.log('check user admin pw ioboker: ' + res);
+    });
+
+    adapter.checkGroup('admin', 'admin', function (res) {
+        console.log('check group user admin group admin: ' + res);
+    });
+
+
 
 }

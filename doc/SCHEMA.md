@@ -28,6 +28,8 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * system.host.        - Controller processes
 * system.config.      - System settings, like default language
 * system.meta.        - System meta data
+* system.user.
+* system.group.
 * system.translations. - system wide translation objects
 * system.adapter.     - Adapter
 * system.adapter.&lt;adapter-name&gt; - default config of an adapter
@@ -97,6 +99,8 @@ limited to 3 levels (except for objects of type path and enum)
 * config   - configurations
 * vfs      - a virtual path. parent has to be of type vfs.
 * script
+* user
+* group
 
 
 ### Attributes for specific types
@@ -348,21 +352,15 @@ id *system.host.&lt;host&gt;*
 
 #### config
 
-#### path (better name it dir?)
+#### vfs
 
 id *system.vfs.&lt;name&gt;
 
 * common.name (name of the directory)
 * common.children (better name it common.subdirs?) (array of child objects with type path)
-* common.files (array of child objects with type file)
 
-#### file
+Files: CouchDB-Attachments
 
-* parent (id of a path object)
-* common.size (size in kBytes)
-* common.mine (mime-type)
-
-one CouchDB-Attachment - the file itself
 
 #### script
 
@@ -370,3 +368,13 @@ one CouchDB-Attachment - the file itself
 * common.enabled
 * common.source     - the script source
 * common.engine     - scriptengine instance that should run this script (f.e. 'javascript.0')
+
+#### user
+
+* common.name
+* common.password
+
+#### group
+
+* common.name
+* common.members    - array of user-object IDs
