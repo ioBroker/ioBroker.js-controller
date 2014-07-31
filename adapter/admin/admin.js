@@ -16,31 +16,21 @@ var objects =   {};
 var states =    {};
 
 var adapter = require(__dirname + '/../../lib/adapter.js')({
-
-    // Ein paar Attribute die jeder Adapter mitbringen muss
     name:           'admin',
-
-    // Event-Handler für Adapter-Installation
     install: function (callback) {
         if (typeof callback === 'function') callback();
     },
-
-    // Wird aufgerufen wenn sich ein Objekt - das via adapter.subscribeObjects aboniert wurde - ändert.
     objectChange: function (id, obj) {
         objects[id] = obj;
 
         if (io)     io.sockets.emit('objectChange', id, obj);
         if (ioSsl)  ioSsl.sockets.emit('objectChange', id, obj);
     },
-
-    // Wird aufgerufen wenn sich ein Status - der via adapter.subscribeStates aboniert wurde - ändert.
     stateChange: function (id, state) {
         states[id] = state;
         if (io)     io.sockets.emit('stateChange', id, state);
         if (ioSsl)  ioSsl.sockets.emit('stateChange', id, state);
     },
-
-    // Wird aufgerufen bevor der Adapter beendet wird - callback muss unbedingt aufgerufen werden!
     unload: function (callback) {
         try {
             if (server) {
@@ -58,16 +48,10 @@ var adapter = require(__dirname + '/../../lib/adapter.js')({
             callback();
         }
     },
-
-    // Wird aufgerufen wenn der Adapter mit den Datenbanken verbunden ist und seine Konfiguration erhalten hat.
-    // Hier einsteigen!
     ready: function () {
         main();
     }
-
 });
-
-
 
 function main() {
 
@@ -78,13 +62,92 @@ function main() {
 
     getData();
 
+}
+function unauthorized (res, realm) {
+    res.statusCode = 401;
+    res.setHeader('WWW-Authenticate', 'Basic realm="' + realm + '"');
+    res.end('Unauthorized');
+};
 
+function basicAuth(callback, realm) {
+    var username, password;
+
+    // user / pass strings
+    if ('string' == typeof callback) {
+        username = callback;
+        password = realm;
+        if ('string' != typeof password) throw new Error('password argument required');
+        realm = arguments[2];
+        callback = function(user, pass){
+            return user == username && pass == password;
+        }
+    }
+
+    realm = realm || 'Authorization Required';
+
+    return function(req, res, next) {
+        var authorization = req.headers.authorization;
+
+        if (req.user) return next();
+        if (!authorization) return unauthorized(res, realm);
+
+        var parts = authorization.split(' ');
+
+        if (parts.length !== 2) return next(utils.error(400));
+
+        var scheme = parts[0]
+            , credentials = new Buffer(parts[1], 'base64').toString()
+            , index = credentials.indexOf(':');
+
+        if ('Basic' != scheme || index < 0) return next(utils.error(400));
+
+        var user = credentials.slice(0, index)
+            , pass = credentials.slice(index + 1);
+
+        // async
+        if (callback.length >= 3) {
+            callback(user, pass, function(err, user){
+                if (err || !user)  return unauthorized(res, realm);
+                req.user = req.remoteUser = user;
+                next();
+            });
+            // sync
+        } else {
+            if (callback(user, pass)) {
+                req.user = req.remoteUser = user;
+                next();
+            } else {
+                unauthorized(res, realm);
+            }
+        }
+    }
+};
 
 function initWebserver() {
+    if ((adapter.config.listenPort && adapter.config.auth) ||
+        (adapter.config.listenPortSsl && adapter.config.authSsl)) {
+        // Check if "admin" user exists
+        adapter.getForeignObject('system.user.admin', function (err, obj) {
+            if (err) {
+                adapter.setPassword("admin", "password");
+            }
+        });
+    }
+
     if (adapter.config.listenPort) {
-        app    = express();
+        app = express();
+        if (adapter.config.auth) {
+            // Authenticator
+            app.use(basicAuth(function(user, pass, callback) {
+                adapter.checkPassword(user, pass, function (res) {
+                    adapter.log.debug('Authenticate "' + user + '": result - ' + res);
+                    callback (!res, user);
+                });
+            }));
+        }
         server = require('http').createServer(app);
     }
+
     if (adapter.config.listenPortSsl) {
         var fs = require('fs');
         var options;
@@ -98,6 +161,15 @@ function initWebserver() {
         }
         if (options) {
             appSsl = express();
+            if (adapter.config.authSsl) {
+                // Authenticator
+                appSsl.use(basicAuth(function(user, pass, callback) {
+                    adapter.checkPassword(user, pass, function (res) {
+                        adapter.log.debug('Authenticate SSL "' + user + '": result - ' + res);
+                        callback (!res, user);
+                    });
+                }));
+            }
             serverSsl = require('https').createServer(options, appSsl);
         }
     }
