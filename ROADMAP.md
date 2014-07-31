@@ -5,6 +5,8 @@
 * (hobbyquaker) adapter javascript: enum in eventObj and patternMatching
 * (hobbyquaker) admin-ui: adapter instance: add/edit/delete
 * (hobbyquaker) admin-ui: adapter instance: html-config
+* (hobbyquaker) admin-ui: user and group management
+* (bluefox) admin-ui: auth and ssl
 
 # 0.2.0
 
