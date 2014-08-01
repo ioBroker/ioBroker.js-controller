@@ -26,7 +26,7 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 
 * system.
 * system.host.        - Controller processes
-* system.config.      - System settings, like default language
+* system.config.      - System settings, like default language (HQ: We need to define default host IP address, so by the adapter activation this IP will be taken)
 * system.meta.        - System meta data
 * system.translations. - system wide translation objects
 * system.adapter.     - Adapter
@@ -39,6 +39,13 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * scripts.            - Script Engine Scripts
 * scripts.js.         - javascript Script Engine Scripts
 * scripts.py.         - python Script Engine Scripts
+
+#### Namespace system.config.
+| **Name**      | **common.type** | **Description**
+| ------------- |:----------------|---
+| language      | string          | Default language for the system: "en", "de", "ru".
+| hostIP        | string          | Default host ip. Can be IPv4 or IPv6
+
 
 ## States
 
