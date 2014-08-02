@@ -26,7 +26,7 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 
 * system.
 * system.host.        - Controller processes
-* system.config.      - System settings, like default language
+* system.config.      - System settings, like default language (HQ: We need to define default host IP address, so by the adapter activation this IP will be taken)
 * system.meta.        - System meta data
 * system.user.
 * system.group.
@@ -41,6 +41,71 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * scripts.            - Script Engine Scripts
 * scripts.js.         - javascript Script Engine Scripts
 * scripts.py.         - python Script Engine Scripts
+
+#### Namespace system.config.
+| **Name**      | **common.type** | **Description**
+| ------------- |:----------------|---
+| language      | string          | Default language for the system: "en", "de", "ru".
+| hostIP        | string          | Default host ip. Can be IPv4 or IPv6
+
+
+#### Namespace system.config.
+| **Name**      | **common.type** | **Description**
+| ------------- |:----------------|---
+| language      | string          | Default language for the system: "en", "de", "ru".
+| hostIP        | string          | Default host ip. Can be IPv4 or IPv6 (It can be of course in system.host.defaultIP)
+
+#### Namespace system.host.&lt;hostname&gt;
+| **Name**        |  **Description or Value**
+| -------------   |:---
+| type            |  host
+| common.name     |  system.host.&lt;hostname&gt
+| common.process  |  iobroker.ctrl
+| common.version  |  Vx.xx.xx
+| common.platform |  "javascript/Node.js" or something else
+| common.cmd      |  "node controller.js"
+| common.hostname |  &lt;hostname&gt
+| common.address  |  { "**First Network Adapter**":  <br>[ { address: '::1', family: 'IPv6', internal: true },<br>{ address: 'fe80::1',family: 'IPv6', internal: true },<br>{ address: '127.0.0.1', family: 'IPv4', internal: true } ],<br>"**Second Network Adapter**": <br>[ { address: 'fe80::cabc:c8ff:feef:f996', family: 'IPv6', internal: false },<br>{ address: '10.0.1.123', family: 'IPv4', internal: false } ]// **Example**
+| native          | 
+<pre>
+{
+        _id:   id,
+        type: 'host',
+        common: {
+            name:       id,
+            process:    title,           // iobroker.ctrl
+            version:    version,         // Vx.xx.xx
+            platform:   'javascript/Node.js',
+            cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+            hostname:   hostname,
+            address:    ipArr
+        },
+        native: {
+            process: {
+                title:      process.title,
+                pid:        process.pid,
+                versions:   process.versions,
+                env:        process.env
+            },
+            os: {
+                hostname:   hostname,
+                type:       os.type(),
+                platform:   os.platform(),
+                arch:       os.arch(),
+                release:    os.release(),
+                uptime:     os.uptime(),
+                endianness: os.endianness(),
+                tmpdir:     os.tmpdir()
+            },
+            hardware: {
+                cpus:       os.cpus(),
+                totalmem:   os.totalmem(),
+                networkInterfaces: os.networkInterfaces()
+            }
+        }
+    };
+    </pre>
+
 
 ## States
 
@@ -111,7 +176,7 @@ attributes:
 * common.def   (optional - the default value)
 * common.desc  (optional, string)
 * common.read  (boolean, mandatory) - true if state is readable
-* common.write (boolean, mandatory) - true if state is writable
+* common.write (boolean, mandatory) - true if state is writeable
 
 
 ##### state common.history
