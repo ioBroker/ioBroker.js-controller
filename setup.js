@@ -302,6 +302,21 @@ function createInstance(adapter, enabled, host, callback) {
                             process.exit(0);
                         });
                     });
+
+                    try {
+                        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+                    } catch (e) {
+                        console.log('error: reading io-package.json ' + e);
+                        process.exit(1);
+                    }
+                    // Create only for this instance the predefined in io-package.json objects
+                    // It is not necessary to write "system.adapter.name.N." in the object '_id'
+                    if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
+                        var obj = adapterConf.instanceObjects.pop();
+                        objects.setObject("system.adapter." + adapter + '.' + instance + '.' + obj._id, obj, function () {
+                            console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.' + obj._id + ' created');
+                        });
+                    }
                 });
             });
             var adapterConf;
@@ -329,7 +344,7 @@ function createInstance(adapter, enabled, host, callback) {
 
 
 function dbSetup() {
-    if (iopkg.objects.length > 0) {
+    if (iopkg.objects && iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
         objects.setObject(obj._id, obj, function () {
             console.log('object ' + obj._id + ' created');
@@ -338,6 +353,7 @@ function dbSetup() {
     } else {
         // Default Password for user 'admin' is 'iobroker'
         password('iobroker').hash(null, null, function (err, res) {
+            // Create user here and not in io-package.js because of hash password
             objects.setObject('system.user.admin', {
                 type: 'user',
                 common: {
@@ -347,22 +363,9 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                objects.setObject('system.group.admin', {
-                    type: 'group',
-                    common: {
-                        name: 'admin',
-                        members: ['system.user.admin']
-                    },
-                    native: {}
-                }, function () {
-                    console.log('object system.group.admin created');
-                    console.log('database setup done. you can add adapters and start iobroker now');
-                    process.exit(0);
-                });
-
+                console.log('database setup done. you can add adapters and start iobroker now');
+                process.exit(0);
             });
         });
-
-
     }
 }
