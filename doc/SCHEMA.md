@@ -44,6 +44,13 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 | **Name**      | **common.type** | **Description**
 | ------------- |:----------------|---
 | language      | string          | Default language for the system: "en", "de", "ru".
+| hostIP        | string          | Default host ip. Can be IPv4 or IPv6
+
+
+#### Namespace system.config.
+| **Name**      | **common.type** | **Description**
+| ------------- |:----------------|---
+| language      | string          | Default language for the system: "en", "de", "ru".
 | hostIP        | string          | Default host ip. Can be IPv4 or IPv6 (It can be of course in system.host.defaultIP)
 
 #### Namespace system.host.&lt;hostname&gt;
