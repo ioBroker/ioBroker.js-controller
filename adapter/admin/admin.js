@@ -2,9 +2,17 @@
 /*jslint node: true */
 "use strict";
 
-var express =   require('express');
-var socketio =  require('socket.io');
-var password =  require(__dirname + '/../../lib/password.js');
+var express =           require('express');
+var cookieParser =      require('cookie-parser');
+var bodyParser =        require('body-parser');
+var session =           require('express-session');
+var AdapterStore =      require(__dirname + '/../../lib/session.js')(session);
+var socketio =          require('socket.io');
+var password =          require(__dirname + '/../../lib/password.js');
+var passport =          require('passport');
+var LocalStrategy =     require('passport-local').Strategy;
+
+
 var app;
 var appSsl;
 var server;
@@ -16,31 +24,21 @@ var objects =   {};
 var states =    {};
 
 var adapter = require(__dirname + '/../../lib/adapter.js')({
-
-    // Ein paar Attribute die jeder Adapter mitbringen muss
     name:           'admin',
-
-    // Event-Handler für Adapter-Installation
     install: function (callback) {
         if (typeof callback === 'function') callback();
     },
-
-    // Wird aufgerufen wenn sich ein Objekt - das via adapter.subscribeObjects aboniert wurde - ändert.
     objectChange: function (id, obj) {
         objects[id] = obj;
 
         if (io)     io.sockets.emit('objectChange', id, obj);
         if (ioSsl)  ioSsl.sockets.emit('objectChange', id, obj);
     },
-
-    // Wird aufgerufen wenn sich ein Status - der via adapter.subscribeStates aboniert wurde - ändert.
     stateChange: function (id, state) {
         states[id] = state;
         if (io)     io.sockets.emit('stateChange', id, state);
         if (ioSsl)  ioSsl.sockets.emit('stateChange', id, state);
     },
-
-    // Wird aufgerufen bevor der Adapter beendet wird - callback muss unbedingt aufgerufen werden!
     unload: function (callback) {
         try {
             if (server) {
@@ -58,16 +56,10 @@ var adapter = require(__dirname + '/../../lib/adapter.js')({
             callback();
         }
     },
-
-    // Wird aufgerufen wenn der Adapter mit den Datenbanken verbunden ist und seine Konfiguration erhalten hat.
-    // Hier einsteigen!
     ready: function () {
         main();
     }
-
 });
-
-
 
 function main() {
 
@@ -81,10 +73,76 @@ function main() {
 }
 
 function initWebserver() {
+
+    // route middleware to make sure a user is logged in
+    function isLoggedIn(req, res, next) {
+        if (req.isAuthenticated() || req.originalUrl === '/login/') return next();
+        res.redirect('/login/');
+    }
+
+
+
+
     if (adapter.config.listenPort) {
         app    = express();
+        if (adapter.config.auth) {
+
+            passport.use(new LocalStrategy(
+                function (username, password, done) {
+
+                    adapter.checkPassword(username, password, function (res) {
+                        if (res) {
+                            return done(null, username);
+                        } else {
+                            return done(null, false);
+                        }
+                    });
+
+                }
+            ));
+
+            passport.serializeUser(function (user, done) {
+                done(null, user);
+            });
+
+            passport.deserializeUser(function (user, done) {
+                done(null, user);
+            });
+
+
+            app.use(cookieParser());
+            app.use(bodyParser.urlencoded({
+                extended: true
+            }));
+            app.use(bodyParser.json());
+            app.use(session({
+                secret: 'Zgfr56gFe87jJOM',
+                saveUninitialized: true,
+                resave: true,
+                store: new AdapterStore({adapter:adapter})
+            }));
+            app.use(passport.initialize());
+            app.use(passport.session());
+
+
+            app.post('/login',
+                passport.authenticate('local', { successRedirect: '/',
+                    failureRedirect: '/login',
+                    failureFlash: true })
+            );
+
+            app.get('/logout', function (req, res) {
+                req.logout();
+                res.redirect('/index/login.html');
+            });
+
+            app.use(isLoggedIn);
+
+
+        }
         server = require('http').createServer(app);
     }
+
     if (adapter.config.listenPortSsl) {
         var fs = require('fs');
         var options;
@@ -98,6 +156,9 @@ function initWebserver() {
         }
         if (options) {
             appSsl = express();
+            if (adapter.config.auth && adapter.config.authUser) {
+                appSsl.use(express.basicAuth(adapter.config.authUser, adapter.config.authPassword));
+            }
             serverSsl = require('https').createServer(options, appSsl);
         }
     }
