@@ -6,6 +6,7 @@
  *
  */
 
+// Change version in io-package.json and start grunt task to modify the version
 var version = '0.0.13';
 var title = 'iobroker.ctrl';
 process.title = title;
