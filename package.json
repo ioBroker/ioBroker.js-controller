@@ -1,5 +1,5 @@
 {
-  "name": "iobroker",
+  "name": "iobroker.nodejs",
   "version": "0.0.13",
   "repository": {
     "type": "git",
