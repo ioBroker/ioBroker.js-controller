@@ -26,10 +26,8 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 
 * system.
 * system.host.        - Controller processes
-* system.config.      - System settings, like default language
+* system.config.      - System settings, like default language (HQ: We need to define default host IP address, so by the adapter activation this IP will be taken)
 * system.meta.        - System meta data
-* system.user.
-* system.group.
 * system.translations. - system wide translation objects
 * system.adapter.     - Adapter
 * system.adapter.&lt;adapter-name&gt; - default config of an adapter
@@ -42,6 +40,64 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * scripts.js.         - javascript Script Engine Scripts
 * scripts.py.         - python Script Engine Scripts
 
+#### Namespace system.config.
+| **Name**      | **common.type** | **Description**
+| ------------- |:----------------|---
+| language      | string          | Default language for the system: "en", "de", "ru".
+| hostIP        | string          | Default host ip. Can be IPv4 or IPv6 (It can be of course in system.host.defaultIP)
+
+#### Namespace system.host.&lt;hostname&gt;
+| **Name**        |  **Description or Value**
+| -------------   |:---
+| type            |  host
+| common.name     |  system.host.&lt;hostname&gt
+| common.process  |  iobroker.ctrl
+| common.version  |  Vx.xx.xx
+| common.platform |  "javascript/Node.js" or something else
+| common.cmd      |  "node controller.js"
+| common.hostname |  &lt;hostname&gt
+| common.address  |  { "**First Network Adapter**":  <br>[ { address: '::1', family: 'IPv6', internal: true },<br>{ address: 'fe80::1',family: 'IPv6', internal: true },<br>{ address: '127.0.0.1', family: 'IPv4', internal: true } ],<br>"**Second Network Adapter**": <br>[ { address: 'fe80::cabc:c8ff:feef:f996', family: 'IPv6', internal: false },<br>{ address: '10.0.1.123', family: 'IPv4', internal: false } ]// **Example**
+| native          | 
+<pre>
+{
+        _id:   id,
+        type: 'host',
+        common: {
+            name:       id,
+            process:    title,           // iobroker.ctrl
+            version:    version,         // Vx.xx.xx
+            platform:   'javascript/Node.js',
+            cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+            hostname:   hostname,
+            address:    ipArr
+        },
+        native: {
+            process: {
+                title:      process.title,
+                pid:        process.pid,
+                versions:   process.versions,
+                env:        process.env
+            },
+            os: {
+                hostname:   hostname,
+                type:       os.type(),
+                platform:   os.platform(),
+                arch:       os.arch(),
+                release:    os.release(),
+                uptime:     os.uptime(),
+                endianness: os.endianness(),
+                tmpdir:     os.tmpdir()
+            },
+            hardware: {
+                cpus:       os.cpus(),
+                totalmem:   os.totalmem(),
+                networkInterfaces: os.networkInterfaces()
+            }
+        }
+    };
+    </pre>
+
+
 ## States
 
 getState method and stateChange event delivers an object with all attributes except expire
@@ -50,15 +106,20 @@ for "setState" method everything except "val" is optional, "from" is set automat
 
 attributes for getState/stateChange/setState object:
 
-* val    - the actual value - can be any type that is JSON-encodable
-* ack    - a boolean flag indicating if the target system has acknowledged the value
-* ts     - a unix timestamp indicating the last update of the state
-* lc     - a unix timestamp indicating the last change of the state's actual value
-* from   - adapter instance that did the "setState"
+* val  - the actual value - can be any type that is JSON-encodable
+* ack  - a boolean flag indicating if the target system has acknowledged the value
+* ts   - a unix timestamp indicating the last update of the state
+* lc   - a unix timestamp indicating the last change of the state's actual value
+* from - adapter instance that did the "setState"
 * expire - a integer value that can be used to set states that expire after a given number of seconds. Can be used ony with setValue. After the value expires, it disappears from redisDB.
 
 
+
+
+
 Every *state* has to be represented by an object of the type state containing Meta-Data for the state. see below.
+
+
 
 ## Objects
 
@@ -67,10 +128,10 @@ Every *state* has to be represented by an object of the type state containing Me
 Following attributes have to exist in every object:
 
 * _id
-* type        (see below for possible values)
-* common      (includes an object with mandatory attributes for specific type)
+* type (see below for possible values)
+* common (includes an object with mandatory attributes for specific type)
 * common.name (the name of the object)
-* native      (includes an object with 1:1 attributes of the target system)
+* native (includes an object with 1:1 attributes of the target system)
 
 ### Optional attributes
 
@@ -94,8 +155,6 @@ limited to 3 levels (except for objects of type path and enum)
 * config   - configurations
 * vfs      - a virtual path. parent has to be of type vfs.
 * script
-* user
-* group
 
 
 ### Attributes for specific types
@@ -104,14 +163,14 @@ limited to 3 levels (except for objects of type path and enum)
 
 attributes:
 
-* common.type  (optional - default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
-* common.min   (optional)
-* common.max   (optional)
-* common.unit  (optional)
-* common.def   (optional - the default value)
-* common.desc  (optional, string)
+* common.type (optional - default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
+* common.min  (optional)
+* common.max  (optional)
+* common.unit (optional)
+* common.def  (optional - the default value)
+* common.desc (optional, string)
 * common.read  (boolean, mandatory) - true if state is readable
-* common.write (boolean, mandatory) - true if state is writable
+* common.write (boolean, mandatory) - true if state is writeable
 
 
 ##### state common.history
@@ -137,6 +196,8 @@ for a list of transports see history adapter README
 ##### state common.role
 
 possible values:
+
+* (QUESTION) WHERE is the normal state? (common.type=boolean) - What do you mean by normal state? Simple value (ro) / switch (rw)?
 
 * text (common.type = string)
 * html (common.type = string)
@@ -205,12 +266,12 @@ suggestion: the channel-objects common.role should/could imply a set of mandator
 
 possible values:
 
-* info          - Currency or shares rate, fuel prices, post box insertion and stuff like that
+* info          - (QUESTION) Currency or shares rate? What else? - f.e. sprit prices, post box insertion and stuff like that
 * calendar      -
 * forecast      - weather forecast
 
 * media         - common media channel
-* media.music   - media player, like SONOS, YAMAHA and so on
+* media.music   - media player, like sonos, yamaha and so on
 * media.tv      - TV 
 * media...
 
@@ -218,7 +279,7 @@ possible values:
 * thermo.heat 
 * thermo.cool
 *
-* blind             - Window blind control
+* blind         - Window blind control  
 
 * light
 * light.dimmer      - Light dimmer
@@ -230,29 +291,29 @@ possible values:
 * light.color.hslct - Set color in Hue/Saturation/Luminance or Color Temperature (Hue extended color light)
 * light.color.ct    - color temperature K 
 
-* sensor            - E.g. window or door contact, water leak sensor, fire sensor
-* sensor.door       - open, close
-* sensor.door.lock  - open, close, locked
-* sensor.window     - open, close
-* sensor.window.3   - open, tilt, close
-* sensor.water      - true(alarm), false (no alarm)
-* sensor.fire       - true(alarm), false (no alarm)
-* sensor.CO2        - true(alarm), false (no alarm)
+* sensor           - E.g. window or door contact, water leak sensor, fire sensor
+* sensor.door      - open, close
+* sensor.door.lock - open, close, locked
+* sensor.window    - open, close
+* sensor.window.3  - open, tilt, close
+* sensor.water
+* sensor.fire
+* sensor.CO2
 
-* phone             - fritz box, speedport and so on
+* phone         - fritz box, speedport and so on
 
-* button            - like wall switch or TV remote, where every button is a state like .play, .stop, .pause
-* remote            - TV or other remotes with state is string with pressed values, e.g. "PLAY", "STOP", "PAUSE"
+* button
+* remote        - (QUESTION) ??? Button on the wall? Remote with buttons? (Possible names: keyPad, buttons, remote, keySwitch, switch - if other switch will be "relay")
 
 * ...
 
 
 #### Channel descriptions
-The names of the attributes can be free defined by adapter, except ones written with **bold** font.
-
 "W" - common.oper.write=true
 
 "M" - Mandatory
+
+@bluefox - I would not standardize names. This is why we have the role attribute so we don't need to rely on names.
 
 ##### light.switch - Attributes description
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
@@ -266,7 +327,11 @@ The names of the attributes can be free defined by adapter, except ones written 
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
+| value         | value                     |       |       | number          | "level" to control and "value" to read state? - I would prefer to combine. If level is present value is not necessary
+| ~~min~~       | value.min                 |   X   |       | number          | @bluefox - let's talk via phone
+| ~~max~~       | value.max                 |   X   |       | number          |
 | working       | indicator.working         |       |       | boolean         | If light now changes
+| default       | value.default             |       |       | number          |
 | direction     | direction                 |       |       | string          | "up"/"down"/""
 | description   | text.description          |       |       | string          |
 | mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
@@ -275,7 +340,11 @@ The names of the attributes can be free defined by adapter, except ones written 
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
 | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 | level         | level.dimmer              |   X   |   X   | number          |
+| value         | value                     |       |       | number          | "level" to control and "value" to read state ? - see above
+| min           | value.min                 |   X   |       | number          |
+| max           | value.max                 |   X   |       | number          |
 | working       | indicator.working         |       |       | boolean         | If blind moves now
+| default       | value.default             |       |       | number          |
 | direction     | direction                 |       |       | string          | "up"/"down"/""
 | description   | text.description          |       |       | string          |
 | mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
@@ -337,15 +406,21 @@ id *system.host.&lt;host&gt;*
 
 #### config
 
-#### vfs
+#### path (better name it dir?)
 
 id *system.vfs.&lt;name&gt;
 
 * common.name (name of the directory)
 * common.children (better name it common.subdirs?) (array of child objects with type path)
+* common.files (array of child objects with type file)
 
-Files: CouchDB-Attachments
+#### file
 
+* parent (id of a path object)
+* common.size (size in kBytes)
+* common.mine (mime-type)
+
+one CouchDB-Attachment - the file itself
 
 #### script
 
@@ -353,13 +428,3 @@ Files: CouchDB-Attachments
 * common.enabled
 * common.source     - the script source
 * common.engine     - scriptengine instance that should run this script (f.e. 'javascript.0')
-
-#### user
-
-* common.name
-* common.password
-
-#### group
-
-* common.name
-* common.members    - array of user-object IDs
