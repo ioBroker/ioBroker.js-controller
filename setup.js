@@ -56,11 +56,6 @@ switch (yargs.argv._[0]) {
             fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(config));
         }
 
-
-
-
-
-
         var iopkg = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
 
         dbConnect(function () {
