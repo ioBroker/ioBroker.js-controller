@@ -1,10 +1,11 @@
 var vm =        require('vm');
+var fs =        require('fs');
+var cp =        require('child_process');
+
 var scheduler = require('node-schedule');
 var suncalc =   require('suncalc');
 var request =   require('request');
-var fs =        require('fs');
 var wol =       require('wake_on_lan');
-var cp =        require('child_process');
 
 var adapter =   require(__dirname + '/../../lib/adapter.js')({
 
@@ -40,47 +41,49 @@ var adapter =   require(__dirname + '/../../lib/adapter.js')({
             if (objects[channelId]) {
                 channelName = objects[channelId].common ? objects[channelId].common.name : null;
                 if (objects[channelId].parent) {
-                    deviceId = objects[channelId].parent;
-                    deviceName = objects[deviceId].common ? objects[deviceId].common.name : null;
+                    deviceId = objects[channelId] ? objects[channelId].parent : null;
+                    deviceName = objects[channelId] && objects[deviceId].common ? objects[deviceId].common.name : null;
                 }
             }
         }
 
-        // TODO find enum memberships
+        getObjectEnums(id, function (enumIds, enumNames) {
+            var eventObj = {
+                id:             id,
+                name:           name,
+                common:         common,
+                native:         native,
+                channelId:      channelId,
+                channelName:    channelName,
+                deviceId:       deviceId,
+                deviceName:     deviceName,
+                enumIds:        enumIds,       // Array of Strings
+                enumNames:      enumNames,       // Array of Strings
+                newState: {
+                    val:        state.val,
+                    ts:         state.ts,
+                    ack:        state.ack,
+                    lc:         state.lc,
+                    from:       state.from
+                },
+                oldState: {
+                    val:        oldState.val,
+                    ts:         oldState.ts,
+                    ack:        oldState.ack,
+                    lc:         oldState.lc,
+                    from:       oldState.from
+                }
 
-        var eventObj = {
-            id:             id,
-            name:           name,
-            common:         common,
-            native:         native,
-            channelId:      channelId,
-            channelName:    channelName,
-            deviceId:       deviceId,
-            deviceName:     deviceName,
-            enumIds:        null,       // Array of Strings
-            enumNames:      null,       // Array of Strings
-            newState: {
-                val:        state.val,
-                ts:         state.ts,
-                ack:        state.ack,
-                lc:         state.lc,
-                from:       state.from
-            },
-            oldState: {
-                val:        oldState.val,
-                ts:         oldState.ts,
-                ack:        oldState.ack,
-                lc:         oldState.lc,
-                from:       oldState.from
+            };
+
+            for (var i = 0, l = subscriptions.length; i < l; i++) {
+                if (patternMatching(eventObj, subscriptions[i].pattern)) {
+                    subscriptions[i].callback(eventObj);
+                }
             }
+        });
 
-        };
 
-        for (var i = 0, l = subscriptions.length; i < l; i++) {
-            if (patternMatching(eventObj, subscriptions[i].pattern)) {
-                subscriptions[i].callback(eventObj);
-            }
-        }
 
     },
 
@@ -109,6 +112,7 @@ var objects =       {};
 var states =        {};
 var scripts =       {};
 var subscriptions = [];
+var enums =         [];
 
 function compile(source, name) {
     source += "\n;\nlog('registered ' + engine.subscriptions + ' subscription' + (engine.subscriptions === 1 ? '' : 's' ) + ' and ' + engine.schedules + ' schedule' + (engine.schedules === 1 ? '' : 's' ));\n";
@@ -148,11 +152,11 @@ function execute(script, name) {
 
             sandbox.engine.subscriptions += 1;
 
-            if (typeof pattern != "object") {
-                pattern = {id: pattern, change: "ne"};
+            if (typeof pattern !== 'object') {
+                pattern = {id: pattern, change: 'ne'};
             }
 
-            if (typeof callbackOrId === "function") {
+            if (typeof callbackOrId === 'function') {
                 callback = callbackOrId;
             } else {
                 var that = this;
@@ -268,6 +272,9 @@ function load(name) {
 }
 
 function patternMatching(event, pattern) {
+
+
+
     if (!pattern.logic) {
         pattern.logic = "and";
     }
@@ -580,9 +587,43 @@ function getData(callback) {
         objects = {};
         for (var i = 0; i < res.length; i++) {
             objects[res[i].doc._id] = res[i].doc;
+            if (objects[res[i].doc.type] === 'enum') enums.push(res[i].doc._id);
         }
         objectsReady = true;
         adapter.log.info('received all objects');
         if (statesReady && typeof callback === 'function') callback();
     });
 }
+
+
+function isMember(idObj, idEnum) {
+
+}
+
+function isMemberRecursive(idObj, idEnum) {
+
+}
+
+function getObjectEnums(idObj, callback, enumIds, enumNames) {
+    if (!enumIds) {
+        enumIds = [];
+        enumNames = [];
+    }
+    for (var i = 0, l = enums.length; i < l; i++) {
+        if (objects[enums[i]] && objects[enums[i]].common.members.indexOf(idObj) !== -1) {
+            enumIds.push(obj);
+            enumNames.push(objects[enums[i]].common.name);
+        }
+    }
+    if (objects[idObj].parent) {
+        getObjectEnums(objects[idObj].parent, callback, enumIds, enumNames);
+    } else {
+        if (typeof callback === 'function') callback(enumIds, enumNames);
+    }
+}
+
+function getObjectEnumsRecursive(idObj, callback, enumIds, enumNames) {
+
+}
+
+
