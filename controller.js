@@ -18,7 +18,15 @@ var fs =            require('fs');
 var cp =            require('child_process');
 var ObjectsCouch =  require(__dirname + '/lib/couch.js');
 var StatesRedis =   require(__dirname + '/lib/redis.js');
-var logger =        require(__dirname + '/lib/logger.js');
+
+
+
+if (process.argv === 'start') {
+    var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+} else {
+    var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+}
+
 
 
 var config;
