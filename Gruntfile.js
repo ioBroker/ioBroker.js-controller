@@ -344,12 +344,12 @@ module.exports = function (grunt) {
         }
         if (words[text]) {
             var newText = words[text][lang];
-            if (newText){
+            if (newText) {
                 return newText;
             } else
             if (lang != 'en') {
                 newText = words[text].en;
-                if (newText){
+                if (newText) {
                     return newText;
                 }
             }
@@ -410,7 +410,7 @@ module.exports = function (grunt) {
         }
 
         if (grunt.task.current.args[0].indexOf('.exe') != -1) {
-            if (!repObject.installs.windows){
+            if (!repObject.installs.windows) {
                 repObject.installs.windows = {name: 'Windows x86 x64',
                     description: {
                         'en': "Windows installer for ioBroker",
@@ -430,7 +430,7 @@ module.exports = function (grunt) {
             repObject.installs.windows.versions[version].urlDownload = repMain.link + '/' + grunt.task.current.args[0];
         } else
         if (grunt.task.current.args[0].indexOf('.deb') != -1) {
-            if (!repObject.installs.pi){
+            if (!repObject.installs.pi) {
                 repObject.installs.pi = {name: 'Raspbian on Raspberry PI',
                     description: {
                         'en': "Installation package ioBroker for Raspberry PI",
