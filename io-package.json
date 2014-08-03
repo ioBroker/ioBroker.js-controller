@@ -47,6 +47,9 @@
                 "vfs": {
                     "map": "function(doc) { if (doc.type=='vfs') emit(doc.common.name, doc) }"
                 },
+                "script": {
+                    "map": "function(doc) { if (doc.type=='script') emit(doc.common.name, doc) }"
+                },
                 "group": {
                     "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
                 },
