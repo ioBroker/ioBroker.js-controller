@@ -6,7 +6,7 @@ Assisted Living, Process Automation, Visualization and Data Logging. It aims to 
 like f.e. OpenHAB or The Thing System. ioBroker will be the successor of [CCU.IO](http://ccu.io), a project quite
 popular in the german HomeMatic community.
 
-## Core Concept
+## Concept
 ioBroker is not just an application, it's more of a a concept, a database schema, and offers a very easy way for systems
 to interoperate. ioBroker defines some common rules for a pair of databases used to exchange data and publish events
 between different systems.
@@ -27,8 +27,8 @@ rarely changing and larger data, like metadata of systems and things, configurat
 ioBroker is designed to be accessed by trusted adapters inside trusted networks. This means that usually it is not a
 good idea to expose the ioBroker databases directly to the internet or, in general, to an environment where untrusted
 clients can directly access ioBroker databases network services. There are different special adapters that offer
-services needed to be exposed to the internet, for example webserver-adapters for user interfaces. These should be
-handled with care, for example with additional security measures like a reverse proxy.
+services supposed to be exposed to the internet, for example webserver-adapters for user interfaces. These should be
+handled with care, for example with additional security measures like VPN and VLAN usage or reverse proxys.
 
 
 ## Getting Started
@@ -40,9 +40,10 @@ handled with care, for example with additional security measures like a reverse 
 
 * [Core Concepts and Database Schema](doc/SCHEMA.md)
 * [Example Javascript/Node.js Adapter](adapter/example/example.js)
+* [ioBroker styleguides](doc/STYLE.md)
 * [Changelog](CHANGELOG.md)
 * [Roadmap](ROADMAP.md)
-* [Javascript styleguide](http://github.com/hobbyquaker/javascript)
+
 
 
 ## License

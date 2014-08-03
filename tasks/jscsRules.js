@@ -4,6 +4,8 @@ module.exports = {
     "requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
     "requireSpaceBeforeBlockStatements": true,
     "requireParenthesesAroundIIFE": true,
+    "disallowSpacesInFunctionDeclaration": {"beforeOpeningRoundBrace": true},
+    "disallowSpacesInNamedFunctionExpression": {"beforeOpeningRoundBrace": true},
     "requireSpacesInFunctionExpression": {"beforeOpeningCurlyBrace": true},
     "requireSpacesInAnonymousFunctionExpression": {"beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true},
     "requireSpacesInNamedFunctionExpression": {"beforeOpeningCurlyBrace": true},
