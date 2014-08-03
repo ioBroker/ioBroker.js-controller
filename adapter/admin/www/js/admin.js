@@ -17,8 +17,15 @@ $(document).ready(function () {
     var children =  {};
     var objects =   {};
 
+    function navigation() {
+        var tab = 'tab-' + window.location.hash.slice(1);
+        var index = $('#tabs a[href="#' + tab + '"]').parent().index() - 1;
+        $('#tabs').tabs('option', 'active', index);
+    }
+
     $('#tabs').tabs({
         activate: function (event, ui) {
+            window.location.hash = '#' + ui.newPanel.selector.slice(5);
             switch (ui.newPanel.selector) {
                 case '#tab-objects':
                     break;
@@ -31,23 +38,30 @@ $(document).ready(function () {
                     break;
 
                 case '#tab-instances':
-                    initInstances ();
+                    initInstances();
                     break;
 
                 case '#tab-users':
-                    initUsers ();
+                    initUsers();
                     break;
             }
         },
         create: function () {
             $('#tabs ul.ui-tabs-nav').prepend('<li class="header">ioBroker.admin</li>');
+
             $(".ui-tabs-nav").
                 append("<button title='Logout' value='Logout' class='menu-button' id='button-logout'>Logout</button>");
-            $("#button-logout").click(function () {
+            $("#button-logout").button().click(function () {
                 window.location.href = "/logout/";
             });
+
+            window.onhashchange = navigation;
+            navigation();
+
         }
     });
+
+
 
 
 
@@ -361,6 +375,7 @@ $(document).ready(function () {
         onSelectRow: function (id, e) {
             $('#del-instance').removeClass('ui-state-disabled');
             $('#edit-instance').removeClass('ui-state-disabled');
+            $('#reload-instance').removeClass('ui-state-disabled');
 
             var rowData = $gridInstances.jqGrid('getRowData', id);
             rowData.ack = false;
@@ -397,6 +412,7 @@ $(document).ready(function () {
         gridComplete: function () {
             $('#del-instance').addClass('ui-state-disabled');
             $('#edit-instance').addClass('ui-state-disabled');
+            $('#reload-instance').addClass('ui-state-disabled');
         }
     }).jqGrid('filterToolbar', {
         defaultSearch: 'cn',
@@ -457,7 +473,21 @@ $(document).ready(function () {
         id: 'add-instance',
         title: 'new instance',
         cursor: 'pointer'
+    }).jqGrid('navButtonAdd', '#pager-instances', {
+        caption: '',
+        buttonicon: 'ui-icon-refresh',
+        onClickButton: function () {
+            var objSelected = $gridInstances.jqGrid('getGridParam', 'selrow');
+            var id = $('tr#' + objSelected.replace(/\./g, '\\.').replace(/\:/g, '\\:')).find('td[aria-describedby$="_id"]').html();
+            socket.emit('extendObject', id, {});
+        },
+        position: 'first',
+        id: 'reload-instance',
+        title: 'reload instance',
+        cursor: 'pointer'
     });
+
+
 
     var userLastSelected;
     var userEdit;
@@ -538,6 +568,30 @@ $(document).ready(function () {
         cursor: 'pointer'
     });
 
+
+
+    var $dialogScript = $('#dialog-script');
+    $dialogScript.dialog({
+        autoOpen:   false,
+        modal:      true,
+        width: 640,
+        height: 480,
+        buttons: [
+            {
+                text: 'Save',
+                click: saveScript
+            },
+            {
+                text: 'Cancel',
+                click: function () {
+                    $dialogScript.dialog('close');
+
+                }
+            }
+        ]
+    });
+
+
     var scriptLastSelected;
     var scriptEdit;
 
@@ -581,16 +635,11 @@ $(document).ready(function () {
                 // afterSave
                 scriptEdit = false;
                 var obj = {common:{}};
-                obj.common.host = $gridScripts.jqGrid("getCell", scriptLastSelected, "host");
-                obj.common.loglevel = $gridScripts.jqGrid("getCell", scriptLastSelected, "loglevel");
+                obj.common.engine = $gridScripts.jqGrid("getCell", scriptLastSelected, "engine");
                 obj.common.enabled = $gridScripts.jqGrid("getCell", scriptLastSelected, "enabled");
                 if (obj.common.enabled === 'true') obj.common.enabled = true;
                 if (obj.common.enabled === 'false') obj.common.enabled = false;
-
-
-
                 var id = $('tr#' + scriptLastSelected.replace(/\./g, '\\.').replace(/\:/g, '\\:')).find('td[aria-describedby$="_id"]').html();
-
                 socket.emit('extendObject', id, obj);
             });
 
@@ -616,7 +665,7 @@ $(document).ready(function () {
         onClickButton: function () {
             var objSelected = $gridScripts.jqGrid('getGridParam', 'selrow');
             if (!objSelected) {
-                $('[id^="grid-objects"][id$="_t"]').each(function () {
+                $('[id^="grid-scripts"][id$="_t"]').each(function () {
                     if ($(this).jqGrid('getGridParam', 'selrow')) {
                         objSelected = $(this).jqGrid('getGridParam', 'selrow');
                     }
@@ -635,14 +684,14 @@ $(document).ready(function () {
         onClickButton: function () {
             var objSelected = $gridScripts.jqGrid('getGridParam', 'selrow');
             if (!objSelected) {
-                $('[id^="grid-objects"][id$="_t"]').each(function () {
+                $('[id^="grid-scripts"][id$="_t"]').each(function () {
                     if ($(this).jqGrid('getGridParam', 'selrow')) {
                         objSelected = $(this).jqGrid('getGridParam', 'selrow');
                     }
                 });
             }
             var id = $('tr#' + objSelected.replace(/\./g, '\\.').replace(/\:/g, '\\:')).find('td[aria-describedby$="_id"]').html();
-            alert('todo edit script ' + id);
+            editScript(id);
         },
         position: 'first',
         id: 'edit-script',
@@ -652,7 +701,7 @@ $(document).ready(function () {
         caption: '',
         buttonicon: 'ui-icon-plus',
         onClickButton: function () {
-            alert('TODO add script'); //TODO
+            editScript();
         },
         position: 'first',
         id: 'add-script',
@@ -661,6 +710,7 @@ $(document).ready(function () {
     });
 
 
+    var objectsLoaded = false;
 
     function getObjects(callback) {
         $gridObjects.jqGrid('clearGridData');
@@ -682,6 +732,7 @@ $(document).ready(function () {
                     if (obj.type === 'group') groups.push(id);
                 }
             }
+            objectsLoaded = true;
             for (var i = 0; i < toplevel.length; i++) {
                 $gridObjects.jqGrid('addRowData', 'object_' + toplevel[i].replace(/ /g, '_'), {
                     _id: objects[toplevel[i]]._id,
@@ -696,7 +747,7 @@ $(document).ready(function () {
         });
     }
 
-    function getStates (callback) {
+    function getStates(callback) {
         $gridStates.jqGrid('clearGridData');
         socket.emit('getStates', function (err, res) {
             var i = 0;
@@ -727,6 +778,45 @@ $(document).ready(function () {
         $dialogObject.dialog('open');
     }
 
+    function editScript(id) {
+        if (id) {
+            $dialogScript.dialog('option', 'title', id);
+            $('#edit-script-id').val(obj._id);
+            $('#edit-script-name').val(obj.common.name);
+            $('#edit-script-platform').val(obj.common.platform);
+            $('#edit-script-source').val(obj.common.source);
+            $dialogScript.dialog('open');
+        } else {
+            $dialogScript.dialog('option', 'title', 'new script');
+            $('#edit-script-id').val('');
+            $('#edit-script-name').val('');
+            $('#edit-script-platform').val('Javascript/Node.js');
+            $('#edit-script-source').val('');
+            $dialogScript.dialog('open');
+        }
+    }
+
+    function saveScript() {
+        var obj = {common: {}};
+        obj._id = $('#edit-script-id').val();
+        obj.type = 'script';
+        obj.common.name = $('#edit-script-name').val();
+        obj.common.source = $('#edit-script-source').val();
+        obj.common.platform = $('#edit-script-platform').val() || '';
+        var extension;
+
+        if (!obj._id) {
+            if (obj.common.platform.match(/^[jJ]avascript/)) {
+                extension = 'js.';
+                obj.common.engine = 'system.adapter.javascript.0';
+            }
+            obj._id = 'script.' + extension + obj.common.name;
+        }
+
+        socket.emit('extendObject', obj._id, obj);
+        $dialogScript.dialog('close');
+    }
+
     function saveObject() {
         var obj = {common: {}, native: {}};
         obj._id = $('#edit-object-id').val();
@@ -755,7 +845,15 @@ $(document).ready(function () {
     }
 
     function initInstances() {
-        if (typeof $gridInstances != 'undefined' && $gridInstances[0]._isInited) {
+
+        if (!$gridInstances[0]._isInited) $("#load_grid-instances").show();
+
+        if (!objectsLoaded) {
+            setTimeout(initInstances, 250);
+            return;
+        }
+
+        if (typeof $gridInstances !== 'undefined' && !$gridInstances[0]._isInited) {
             $gridInstances[0]._isInited = true;
             for (var i = 0; i < instances.length; i++) {
                 var obj = objects[instances[i]];
@@ -803,6 +901,14 @@ $(document).ready(function () {
     }
 
     function initScripts() {
+
+        if (!$gridScripts[0]._isInited) $("#load_grid-scripts").show();
+
+        if (!objectsLoaded) {
+            setTimeout(initScripts, 250);
+            return;
+        }
+
         if (typeof $gridScripts != 'undefined' && !$gridScripts[0]._isInited) {
             $gridScripts[0]._isInited = true;
 
@@ -889,8 +995,6 @@ $(document).ready(function () {
             // Here we go!
             $("#load_grid-objects").show();
             $("#load_grid-states").show();
-            $("#load_grid-instances").show();
-            //$("#load_grid-scripts").show();
             //$("#load_grid-enums").show();
             getObjects(getStates);
         }

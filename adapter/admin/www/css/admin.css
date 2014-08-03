@@ -63,3 +63,21 @@ table#events {
     box-shadow: none;
     resize:none;
 }
+
+#edit-script-source {
+    font-size: 12px;
+    width: 600px;
+    height: 240px;
+    padding:0;
+    margin:0;
+    border: 1px solid grey;
+    outline: none;
+    box-shadow: none;
+    resize:none;
+}
+
+.menu-button {
+    float: right;
+    height: 26px;
+    margin: 1px 2px 1px 2px;
+}
