@@ -8,7 +8,7 @@
 
 // Change version in io-package.json and start grunt task to modify the version
 var version = '0.0.13';
-var title = 'iobroker.ctrl';
+var title = 'io.controller';
 process.title = title;
 
 
@@ -49,7 +49,9 @@ for (var dev in ifaces) {
 }
 var firstIp = ipArr[0];
 
-logger.info('ioBroker.ctrl version ' + version + ' starting');
+logger.info('ioBroker.nodejs version ' + version);
+logger.info('copyright 2014 hobbyquaker, bluefox');
+logger.info(title + ' starting');
 logger.info('ctrl ip: ' + ipArr.join(' '));
 
 
