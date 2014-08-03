@@ -18,9 +18,14 @@
 #### Prerequisites
 
 * git command line client
-* [Node.js](http://nodejs.org) (including npm)
+* [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 * [CouchDB](http://couchdb.apache.org/)
 * [Redis](http://redis.io/)
+
+
+* Install Node.js and npm - Raspbian example: ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb```
+* Install Redis and CouchDB - Debian/Raspbian/Ubuntu example: ```sudo apt-get install redis-server couchdb```
+
 
 #### Download and Install
 
