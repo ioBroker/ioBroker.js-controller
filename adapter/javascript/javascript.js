@@ -282,11 +282,41 @@ function patternMatching(event, pattern) {
     var matched = false;
 
     // state id matching
-    if (pattern.id && pattern.id === event.id) {
-        if (pattern.logic == "or") return true;
-        matched = true;
-    } else if (pattern.id) {
-        if (pattern.logic == "and") return false;
+    if (pattern.id) {
+        if (pattern.id instanceof RegExp) {
+            if (event.id && event.id.match(pattern.id)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.id && pattern.id === event.id) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
+
+    // state name matching
+    if (pattern.name) {
+        if (pattern.name instanceof RegExp) {
+            if (event.common.name && event.common.name.match(pattern.id)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.common.name && pattern.name === event.common.name) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
     }
 
     // change matching
@@ -549,21 +579,162 @@ function patternMatching(event, pattern) {
     }
 
     // newState.from matching
+    if (pattern.from && pattern.from === event.newState.from) {
+        if (pattern.logic == "or") return true;
+        matched = true;
+    } else if (pattern.from) {
+        if (pattern.logic == "and") return false;
+    }
+
+    if (pattern.fromNe && pattern.fromNe !== event.newState.from) {
+        if (pattern.logic == "or") return true;
+        matched = true;
+    } else if (pattern.fromNe) {
+        if (pattern.logic == "and") return false;
+    }
 
     // oldState.from matching
+    if (pattern.oldFrom && pattern.oldFrom === event.oldState.from) {
+        if (pattern.logic == "or") return true;
+        matched = true;
+    } else if (pattern.oldFrom) {
+        if (pattern.logic == "and") return false;
+    }
+
+    if (pattern.oldFromNe && pattern.oldFromNe !== event.oldState.from) {
+        if (pattern.logic == "or") return true;
+        matched = true;
+    } else if (pattern.oldFromNe) {
+        if (pattern.logic == "and") return false;
+    }
 
     // channelId matching
+    if (pattern.channelId) {
+        if (pattern.channelId instanceof RegExp) {
+            if (event.channelId && event.channelId.match(pattern.channelId)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.channelId && pattern.channelId === event.channelId) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
     // channelName matching
+    if (pattern.channelName) {
+        if (pattern.channelName instanceof RegExp) {
+            if (event.channelName && event.channelName.match(pattern.channelName)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.channelName && pattern.channelName === event.channelName) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
     // deviceId matching
+    if (pattern.deviceId) {
+        if (pattern.deviceId instanceof RegExp) {
+            if (event.deviceId && event.deviceId.match(pattern.deviceId)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.deviceId && pattern.deviceId === event.deviceId) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
     // deviceName matching
+    if (pattern.deviceName) {
+        if (pattern.deviceName instanceof RegExp) {
+            if (event.deviceName && event.deviceName.match(pattern.deviceName)) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.deviceName && pattern.deviceName === event.deviceName) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
     // enumIds matching
+    if (pattern.enumId) {
+        if (pattern.enumId instanceof RegExp) {
+            var subMatched = false;
+            for (var i = 0; i < event.enumIds.length; i++) {
+                if (event.enumIds[i].match(pattern.enumId)) {
+                    subMatched = true;
+                    break;
+                }
+            }
+            if (subMatched) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.enumIds && event.enumIds.indexOf(pattern.enumId) !== -1) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
     // enumNames matching
-
+    if (pattern.enumName) {
+        if (pattern.enumName instanceof RegExp) {
+            var subMatched = false;
+            for (var i = 0; i < event.enumNames.length; i++) {
+                if (event.enumNames[i].match(pattern.enumName)) {
+                    subMatched = true;
+                    break;
+                }
+            }
+            if (subMatched) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        } else {
+            if (event.enumNames && event.enumNames.indexOf(pattern.enumName) !== -1) {
+                if (pattern.logic === "or") return true;
+                matched = true;
+            } else {
+                if (pattern.logic === "and") return false;
+            }
+        }
+    }
 
 
     return matched;
@@ -587,8 +758,9 @@ function getData(callback) {
         objects = {};
         for (var i = 0; i < res.length; i++) {
             objects[res[i].doc._id] = res[i].doc;
-            if (objects[res[i].doc.type] === 'enum') enums.push(res[i].doc._id);
+            if (res[i].doc.type === 'enum') enums.push(res[i].doc._id);
         }
+
         objectsReady = true;
         adapter.log.info('received all objects');
         if (statesReady && typeof callback === 'function') callback();
@@ -610,8 +782,8 @@ function getObjectEnums(idObj, callback, enumIds, enumNames) {
         enumNames = [];
     }
     for (var i = 0, l = enums.length; i < l; i++) {
-        if (objects[enums[i]] && objects[enums[i]].common.members.indexOf(idObj) !== -1) {
-            enumIds.push(obj);
+        if (objects[enums[i]] && objects[enums[i]].common && objects[enums[i]].common.members && objects[enums[i]].common.members.indexOf(idObj) !== -1) {
+            enumIds.push(enums[i]);
             enumNames.push(objects[enums[i]].common.name);
         }
     }

@@ -780,6 +780,7 @@ $(document).ready(function () {
 
     function editScript(id) {
         if (id) {
+            var obj = objects[id];
             $dialogScript.dialog('option', 'title', id);
             $('#edit-script-id').val(obj._id);
             $('#edit-script-name').val(obj.common.name);
@@ -846,7 +847,6 @@ $(document).ready(function () {
 
     function initInstances() {
 
-        if (!$gridInstances[0]._isInited) $("#load_grid-instances").show();
 
         if (!objectsLoaded) {
             setTimeout(initInstances, 250);
@@ -854,7 +854,7 @@ $(document).ready(function () {
         }
 
         if (typeof $gridInstances !== 'undefined' && !$gridInstances[0]._isInited) {
-            $gridInstances[0]._isInited = true;
+             $gridInstances[0]._isInited = true;
             for (var i = 0; i < instances.length; i++) {
                 var obj = objects[instances[i]];
                 $gridInstances.jqGrid('addRowData', 'instance_' + instances[i].replace(/ /g, '_'), {
@@ -902,7 +902,7 @@ $(document).ready(function () {
 
     function initScripts() {
 
-        if (!$gridScripts[0]._isInited) $("#load_grid-scripts").show();
+
 
         if (!objectsLoaded) {
             setTimeout(initScripts, 250);
@@ -995,6 +995,9 @@ $(document).ready(function () {
             // Here we go!
             $("#load_grid-objects").show();
             $("#load_grid-states").show();
+            $("#load_grid-scripts").show();
+            $("#load_grid-instances").show()
+
             //$("#load_grid-enums").show();
             getObjects(getStates);
         }
