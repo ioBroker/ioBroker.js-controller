@@ -81,7 +81,7 @@ To edit the adapters configuration mark the adapter row and click the pencil ico
 ## Currently available adapters:
 
 * admin
-* scripts (a Javascript script engine)
+* javascript (a Javascript script engine)
 * history (manages state history)
 * hm-rpc (Homematic RPC Adapter)
 * hm-rega (Homematic CCU/ReGaHSS Adapter)
