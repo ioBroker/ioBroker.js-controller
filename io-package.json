@@ -55,6 +55,28 @@
                 }
 
             }
+        },
+        {
+            "_id": "system.group.administrator",
+            "common": {
+                "name": "Administrator",
+                "description": {
+                    "en": "Can do everything with ioBroker"
+                },
+                "members": [
+                    "system.user.admin"
+                ]
+            }
+        },
+        {
+            "_id": "system.group.user",
+            "common": {
+                "name": "User",
+                "description": {
+                    "en": "Cannot modify anything"
+                },
+                "members": []
+            }
         }
     ]
 }
