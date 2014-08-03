@@ -16,7 +16,7 @@ var yargs = require('yargs')
         '$0 setup [--couch <host>] [--redis <host>]\n' +
         '$0 start\n' +
         '$0 stop\n' +
-        '$0 add <adapter> [--enabled] [--host <host>]' +
+        '$0 add <adapter> [--enabled] [--host <host>]\n' +
         '$0 del <adapter> [--delmeta]')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
