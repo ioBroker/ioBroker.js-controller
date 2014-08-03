@@ -6,6 +6,7 @@
  *
  */
 
+// Change version in io-package.json and start grunt task to modify the version
 var version = '0.0.13';
 var title = 'iobroker.ctrl';
 process.title = title;
@@ -134,6 +135,7 @@ function reportStatus() {
     states.setState(id + '.mem', {val: (100 * os.freemem() / os.totalmem()).toFixed(0), ack: true});
 
 }
+
 function setMeta() {
     var hostname = os.hostname();
     var id = 'system.host.' + hostname;
@@ -258,8 +260,6 @@ function initInstances() {
         }
     }
 }
-
-
 
 function startInstance(id) {
     var instance = procs[id].config;
