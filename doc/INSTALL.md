@@ -26,6 +26,7 @@
 
 * Create and change to the directory under which you want to install ioBroker. On Raspbian f.e.: ```sudo mkdir /opt/iobroker ; sudo chown pi.pi /opt/iobroker ; cd /opt/iobroker```
 * Clone the repository ```git clone https://github.com/ioBroker/ioBroker.nodejs```
+* Install Node dependencies ```npm install --production```
 * Grant execute rights ```chmod +x iobroker```
 * Do initial database setup ```./iobroker setup```
 
@@ -44,7 +45,7 @@ This adapter is needed to do basic system administration
 
 or
 
-* run ```node control.js``` to start iobroker.ctrl in foreground and watch the log on console
+* run ```node controller.js``` to start iobroker.ctrl in foreground and watch the log on console
 
 
 ### Admin UI
