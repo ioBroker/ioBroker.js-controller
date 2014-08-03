@@ -297,7 +297,9 @@ function startInstance(id) {
                         }
                     }
                     delete procs[id].process;
-                    startInstance(id);
+                    setTimeout(function (_id) {
+                        startInstance(_id);
+                    }, 30000, id);
                 });
                 logger.info('ctrl instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
