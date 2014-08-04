@@ -26,7 +26,7 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 
 * system.
 * system.host.        - Controller processes
-* system.config.      - System settings, like default language (HQ: We need to define default host IP address, so by the adapter activation this IP will be taken)
+* system.config.      - System settings, like default language
 * system.meta.        - System meta data
 * system.user.
 * system.group.
@@ -43,49 +43,56 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * scripts.py.         - python Script Engine Scripts
 
 #### Namespace system.config.
-| **Name**      | **common.type** | **Description**
-| ------------- |:----------------|---
-| language      | string          | Default language for the system: "en", "de", "ru".
+<pre>
+{
+    _id:   id,
+    type: 'config',
+    common: {
+        language:   'en'   // Default language for adapters. Adapters can use different values.
+    }
+}
+</pre>
 
 #### Namespace system.host.&lt;hostname&gt;
 <pre>
 {
-        _id:   id,
-        type: 'host',
-        common: {
-            name:       id,
-            process:    title,           // iobroker.ctrl
-            version:    version,         // Vx.xx.xx
-            platform:   'javascript/Node.js',
-            cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
-            hostname:   hostname,
-            address:    ipArr,
+    _id:   id,
+    type: 'host',
+    common: {
+        name:       id,
+        process:    title,           // iobroker.ctrl
+        version:    version,         // Vx.xx.xx
+        platform:   'javascript/Node.js',
+        cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+        hostname:   hostname,
+        address:    ipArr,
+        defaultIP:  ???
+    },
+    native: {
+        process: {
+            title:      process.title,
+            pid:        process.pid,
+            versions:   process.versions,
+            env:        process.env
         },
-        native: {
-            process: {
-                title:      process.title,
-                pid:        process.pid,
-                versions:   process.versions,
-                env:        process.env
-            },
-            os: {
-                hostname:   hostname,
-                type:       os.type(),
-                platform:   os.platform(),
-                arch:       os.arch(),
-                release:    os.release(),
-                uptime:     os.uptime(),
-                endianness: os.endianness(),
-                tmpdir:     os.tmpdir()
-            },
-            hardware: {
-                cpus:       os.cpus(),
-                totalmem:   os.totalmem(),
-                networkInterfaces: os.networkInterfaces()
-            }
+        os: {
+            hostname:   hostname,
+            type:       os.type(),
+            platform:   os.platform(),
+            arch:       os.arch(),
+            release:    os.release(),
+            uptime:     os.uptime(),
+            endianness: os.endianness(),
+            tmpdir:     os.tmpdir()
+        },
+        hardware: {
+            cpus:       os.cpus(),
+            totalmem:   os.totalmem(),
+            networkInterfaces: os.networkInterfaces()
         }
-    };
-    </pre>
+    }
+};
+</pre>
 
 
 ## States
@@ -158,6 +165,7 @@ attributes:
 * common.desc  (optional, string)
 * common.read  (boolean, mandatory) - true if state is readable
 * common.write (boolean, mandatory) - true if state is writeable
+* common.role  (string, mandatory) - role of the state (see below)
 
 
 ##### state common.history
@@ -309,13 +317,113 @@ The names of the attributes can be free defined by adapter, except ones written 
 
 
 ##### light.dimmer - Attributes description
-| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
-| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
-| level         | level.dimmer              |   X   |   X   | number          |
-| working       | indicator.working         |       |       | boolean         | If light now changes
-| direction     | direction                 |       |       | string          | "up"/"down"/""
-| description   | text.description          |       |       | string          |
-| mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
+<pre>
+// DIMMER CHANNEL
+{
+   "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205612:1"
+   "type": "channel",
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
+   "common": {
+       "name":  'Name of channel",      // mandatory, default _id ??
+       "children": [
+            "adapter.instance.channelName.stateName-level",               // mandatory
+            "adapter.instance.channelName.stateName-working",             // optional
+            "adapter.instance.channelName.stateName-direction",           // optional
+            "adapter.instance.channelName.stateName-maintenance"          // optional
+            "adapter.instance.channelName.stateName-maintenance-unreach"  // optional
+       ],
+       "desc":  ''                      // optional,  default undefined
+   }
+},
+// DIMMER STATES
+{
+   "_id": "adapter.instance.channelName.stateName-level", // e.g. "hm-rpc.0.JEQ0205612:1.LEVEL"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  'Name of state",        // mandatory, default _id ??
+       "def":   0,                      // optional,  default 0
+       "type":  "number",               // optional,  default "number"
+       "read":  true,                   // mandatory, default true
+       "write": true,                   // mandatory, default true
+       "min":   0,                      // optional,  default 0
+       "max":   100,                    // optional,  default 100
+       "unit":  "%",                    // optional,  default %
+       "role":  "level.dimmer"          // mandatory
+       "desc":  ''                      // optional,  default undefined
+   }
+},
+// following object is optional
+{
+   "_id": "adapter.instance.channelName.stateName-working", // e.g. "hm-rpc.0.JEQ0205612:1.WORKING"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  'Name of state",        // mandatory, default _id ??
+       "def":   false,                  // optional,  default false
+       "type":  "boolean",              // optional,  default "boolean"
+       "read":  true,                   // mandatory, default true
+       "write": false,                  // mandatory, default false
+       "min":   false,                  // optional,  default false
+       "max":   true,                   // optional,  default true
+       "role":  "indicator.working"     // mandatory
+       "desc":  ''                      // optional,  default undefined
+   }
+}
+,
+// following object is optional. The state can have following states: "up"/"down"/""
+{
+   "_id": "adapter.instance.channelName.stateName-direction", // e.g. "hm-rpc.0.JEQ0205612:1.DIRECTION"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  'Name of state",        // mandatory, default _id ??
+       "def":   '',                     // optional,  default ""
+       "type":  "string",               // optional,  default "string"
+       "read":  true,                   // mandatory, default true
+       "write": false,                  // mandatory, default false
+       "role":  "direction"             // mandatory
+       "desc":  ''                      // optional,  default undefined
+   }
+}
+,
+// following object is optional.
+{
+   "_id": "adapter.instance.channelName.stateName-maintenance", //e.g. "hm-rpc.0.JEQ0205612:1.DIRECTION"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  'Name of state",        // mandatory, default _id ??
+       "def":   false,                  // optional,  default false
+       "type":  "boolean",              // optional,  default "boolean"
+       "read":  true,                   // mandatory, default true
+       "write": false,                  // mandatory, default false
+       "min":   false,                  // optional,  default false
+       "max":   true,                   // optional,  default true
+       "role":  "indicator.maintenance" // mandatory
+       "desc":  'Problem description'   // optional,  default undefined
+   }
+}
+,
+// following object is optional.
+{
+   "_id": "adapter.instance.channelName.stateName-maintenance-unreach", //e.g. "hm-rpc.0.JEQ0205612:0.UNREACH"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  'Name of state",        // mandatory, default _id ??
+       "def":   false,                  // optional,  default false
+       "type":  "boolean",              // optional,  default "boolean"
+       "read":  true,                   // mandatory, default true
+       "write": false,                  // mandatory, default false
+       "min":   false,                  // optional,  default false
+       "max":   true,                   // optional,  default true
+       "role":  "indicator.maintenance.unreach" // mandatory
+       "desc":  'Device unreachable'    // optional,  default 'Device unreachable'
+   }
+}
+</pre>
+
 
 ##### blind - Attributes description
 | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
