@@ -61,6 +61,7 @@
         },
         {
             "_id": "system.group.administrator",
+            "type": "group",
             "common": {
                 "name": "Administrator",
                 "description": {
@@ -68,17 +69,20 @@
                 },
                 "members": [
                     "system.user.admin"
-                ]
+                ],
+                "dontDelete": true
             }
         },
         {
             "_id": "system.group.user",
+            "type": "group",
             "common": {
                 "name": "User",
                 "description": {
                     "en": "Cannot modify anything"
                 },
-                "members": []
+                "members": [],
+                "dontDelete": true
             }
         }
     ]
