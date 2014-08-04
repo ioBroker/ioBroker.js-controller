@@ -46,27 +46,8 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 | **Name**      | **common.type** | **Description**
 | ------------- |:----------------|---
 | language      | string          | Default language for the system: "en", "de", "ru".
-| hostIP        | string          | Default host ip. Can be IPv4 or IPv6
-
-
-#### Namespace system.config.
-| **Name**      | **common.type** | **Description**
-| ------------- |:----------------|---
-| language      | string          | Default language for the system: "en", "de", "ru".
-| hostIP        | string          | Default host ip. Can be IPv4 or IPv6 (It can be of course in system.host.defaultIP)
 
 #### Namespace system.host.&lt;hostname&gt;
-| **Name**        |  **Description or Value**
-| -------------   |:---
-| type            |  host
-| common.name     |  system.host.&lt;hostname&gt
-| common.process  |  iobroker.ctrl
-| common.version  |  Vx.xx.xx
-| common.platform |  "javascript/Node.js" or something else
-| common.cmd      |  "node controller.js"
-| common.hostname |  &lt;hostname&gt
-| common.address  |  { "**First Network Adapter**":  <br>[ { address: '::1', family: 'IPv6', internal: true },<br>{ address: 'fe80::1',family: 'IPv6', internal: true },<br>{ address: '127.0.0.1', family: 'IPv4', internal: true } ],<br>"**Second Network Adapter**": <br>[ { address: 'fe80::cabc:c8ff:feef:f996', family: 'IPv6', internal: false },<br>{ address: '10.0.1.123', family: 'IPv4', internal: false } ]// **Example**
-| native          | 
 <pre>
 {
         _id:   id,
@@ -78,7 +59,7 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
             platform:   'javascript/Node.js',
             cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
             hostname:   hostname,
-            address:    ipArr
+            address:    ipArr,
         },
         native: {
             process: {
