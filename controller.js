@@ -18,6 +18,7 @@ var fs =            require('fs');
 var cp =            require('child_process');
 var ObjectsCouch =  require(__dirname + '/lib/couch.js');
 var StatesRedis =   require(__dirname + '/lib/redis.js');
+var memwatch =      require('memwatch'); // will be removed by production
 
 
 
@@ -27,7 +28,11 @@ if (process.argv === 'start') {
     var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
 }
 
-
+if (typeof memwatch != 'undefined') {
+    memwatch.on('leak', function (info) {
+        logger.error('leak detection warning: grow on ' + info.growth + ' - '+  info.reason);
+    });
+}
 
 var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
