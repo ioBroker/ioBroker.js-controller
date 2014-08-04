@@ -12,8 +12,7 @@
         "listenPort":               8080,
         "listenPortSsl":            null,
         "auth":                     false,
-        "authSsl":                  false,
-        "cache":                    false
+        "authSsl":                  false
     },
     "objects": [
 
