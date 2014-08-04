@@ -48,7 +48,11 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
     _id:   id,
     type: 'config',
     common: {
-        language:   'en'   // Default language for adapters. Adapters can use different values.
+        language:     'en',         // Default language for adapters. Adapters can use different values.
+        tempUnit:     '°C',         // Default temperature units.
+        currency:     '€',          // Default currency sign.
+        dateFormat:   'DD.MM.YYYY'  // Default date format.
+        isFloatComma: true,         // Default float divider ('.' - false, ',' - true)
     }
 }
 </pre>
@@ -389,7 +393,7 @@ The names of the attributes can be free defined by adapter, except ones written 
 ,
 // following object is optional.
 {
-   "_id": "adapter.instance.channelName.stateName-maintenance", //e.g. "hm-rpc.0.JEQ0205612:1.DIRECTION"
+   "_id": "adapter.instance.channelName.stateName-maintenance", //e.g. "hm-rpc.0.JEQ0205612:1.MAINTENANCE"
    "type": "state",
    "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
    "common": {
