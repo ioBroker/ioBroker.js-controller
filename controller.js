@@ -27,8 +27,6 @@ if (process.argv === 'start') {
     var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
 }
 
-
-
 var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     logger.error('ctrl conf/iobroker.json missing - call node iobroker.js setup');

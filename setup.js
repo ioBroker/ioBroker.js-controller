@@ -266,6 +266,7 @@ function createInstance(adapter, enabled, host, callback) {
                 process.exit(1);
                 return;
             }
+            var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
             objects.getObject('system.adapter.' + adapter, function (err, res) {
                 var obj = res;
@@ -303,11 +304,13 @@ function createInstance(adapter, enabled, host, callback) {
                         });
                     });
 
-                    try {
-                        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
-                    } catch (e) {
-                        console.log('error: reading io-package.json ' + e);
-                        process.exit(1);
+                    if (!adapterConf) {
+                        try {
+                            adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+                        } catch (e) {
+                            console.log('error: reading io-package.json ' + e);
+                            process.exit(1);
+                        }
                     }
                     // Create only for this instance the predefined in io-package.json objects
                     // It is not necessary to write "system.adapter.name.N." in the object '_id'
@@ -319,12 +322,13 @@ function createInstance(adapter, enabled, host, callback) {
                     }
                 });
             });
-            var adapterConf;
-            try {
-                adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
-            } catch (e) {
-                console.log('error: reading io-package.json ' + e);
-                process.exit(1);
+            if (!adapterConf) {
+                try {
+                    adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+                } catch (e) {
+                    console.log('error: reading io-package.json ' + e);
+                    process.exit(1);
+                }
             }
 
             if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
@@ -357,8 +361,10 @@ function dbSetup() {
             objects.setObject('system.user.admin', {
                 type: 'user',
                 common: {
-                    name: 'admin',
-                    password: res
+                    name:      'admin',
+                    password:   res,
+                    groups:     ['system.group.administrator'],
+                    dontDelete: true
                 },
                 native: {}
             }, function () {
