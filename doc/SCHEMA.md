@@ -572,7 +572,6 @@ Files: CouchDB-Attachments
 
 * common.name       - (mandatory) Name of user (@HQ: Case insensitive ?) 
 * common.password   - (mandatory) MD5 Hash of password
-* common.groups     - (@HQ: or members too? ) (mandatory) - Array of group-object IDs
 
 #### group
 
