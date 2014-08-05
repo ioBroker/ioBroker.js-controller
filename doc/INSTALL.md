@@ -1,18 +1,5 @@
 # Installation
 
-
-## ioBroker.nodejs Debian/Ubuntu Linux installation
-
-...todo
-
-## ioBroker.nodejs Mac OSX installation
-
-...todo
-
-##  ioBroker.nodejs Windows installation
-
-...todo
-
 ## Manual install ioBroker.nodejs on Debian based Linux (Raspbian, Ubuntu, ...)
 
 ### Prerequisites
