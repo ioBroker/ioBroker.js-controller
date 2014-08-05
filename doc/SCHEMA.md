@@ -318,59 +318,16 @@ possible values:
 
 "M" - Mandatory
 
-##### light.switch - Attributes description
-| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
-| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
-| state         | switch                    |   X   |   X   | boolean         |
-| description   | text.description          |       |       |                 |
-| mmm           | indicator.maintenance.mmm |       |       |                 | mmm = lowbat or unreach or whatever
+##### Optional states for every channel/device
 
-
-##### light.dimmer - Attributes description
-<pre>
-// DIMMER CHANNEL
-{
-   "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205612:1"
-   "type": "channel",
-   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
-   "common": {
-       "name":  'Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.stateName-level",               // mandatory
-            "adapter.instance.channelName.stateName-working",             // optional
-            "adapter.instance.channelName.stateName-direction",           // optional
-            "adapter.instance.channelName.stateName-maintenance"          // optional
-            "adapter.instance.channelName.stateName-maintenance-unreach"  // optional
-       ],
-       "role":  "light.dimmer"          // optional   default undefined (@HQ: is it ok??)
-       "desc":  ''                      // optional,  default undefined
-   }
-},
-// DIMMER STATES
-{
-   "_id": "adapter.instance.channelName.stateName-level", // e.g. "hm-rpc.0.JEQ0205612:1.LEVEL"
-   "type": "state",
-   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
-   "common": {
-       "name":  'Name of state",        // mandatory, default _id ??
-       "def":   0,                      // optional,  default 0
-       "type":  "number",               // optional,  default "number"
-       "read":  true,                   // mandatory, default true
-       "write": true,                   // mandatory, default true
-       "min":   0,                      // optional,  default 0
-       "max":   100,                    // optional,  default 100
-       "unit":  "%",                    // optional,  default %
-       "role":  "level.dimmer"          // mandatory
-       "desc":  ''                      // optional,  default undefined
-   }
-},
-// following object is optional
+```javascript
+// state-working (optional)
 {
    "_id": "adapter.instance.channelName.stateName-working", // e.g. "hm-rpc.0.JEQ0205612:1.WORKING"
    "type": "state",
    "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
    "common": {
-       "name":  'Name of state",        // mandatory, default _id ??
+       "name":  "Name of state",        // mandatory, default _id ??
        "def":   false,                  // optional,  default false
        "type":  "boolean",              // optional,  default "boolean"
        "read":  true,                   // mandatory, default true
@@ -378,27 +335,27 @@ possible values:
        "min":   false,                  // optional,  default false
        "max":   true,                   // optional,  default true
        "role":  "indicator.working"     // mandatory
-       "desc":  ''                      // optional,  default undefined
+       "desc":  ""                      // optional,  default undefined
    }
 }
 ,
-// following object is optional. The state can have following states: "up"/"down"/""
+// state-direction (optional). The state can have following states: "up"/"down"/""
 {
    "_id": "adapter.instance.channelName.stateName-direction", // e.g. "hm-rpc.0.JEQ0205612:1.DIRECTION"
    "type": "state",
    "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
    "common": {
-       "name":  'Name of state",        // mandatory, default _id ??
-       "def":   '',                     // optional,  default ""
+       "name":  "Name of state",        // mandatory, default _id ??
+       "def":   "",                     // optional,  default ""
        "type":  "string",               // optional,  default "string"
        "read":  true,                   // mandatory, default true
        "write": false,                  // mandatory, default false
        "role":  "direction"             // mandatory
-       "desc":  ''                      // optional,  default undefined
+       "desc":  ""                      // optional,  default undefined
    }
 }
 ,
-// following object is optional.
+// state-maintenance (optional).
 {
    "_id": "adapter.instance.channelName.stateName-maintenance", //e.g. "hm-rpc.0.JEQ0205612:1.MAINTENANCE"
    "type": "state",
@@ -416,13 +373,13 @@ possible values:
    }
 }
 ,
-// following object is optional.
+// state-maintenance-unreach (optional).
 {
    "_id": "adapter.instance.channelName.stateName-maintenance-unreach", //e.g. "hm-rpc.0.JEQ0205612:0.UNREACH"
    "type": "state",
    "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
    "common": {
-       "name":  'Name of state",        // mandatory, default _id ??
+       "name":  "Name of state",        // mandatory, default _id ??
        "def":   false,                  // optional,  default false
        "type":  "boolean",              // optional,  default "boolean"
        "read":  true,                   // mandatory, default true
@@ -430,10 +387,100 @@ possible values:
        "min":   false,                  // optional,  default false
        "max":   true,                   // optional,  default true
        "role":  "indicator.maintenance.unreach" // mandatory
-       "desc":  'Device unreachable'    // optional,  default 'Device unreachable'
+       "desc":  "Device unreachable"    // optional,  default 'Device unreachable'
    }
 }
-</pre>
+```
+
+##### light.switch - Attributes description
+| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
+| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
+| state         | switch                    |   X   |   X   | boolean         |
+| description   | text.description          |       |       |                 |
+| mmm           | indicator.maintenance.mmm |       |       |                 | mmm = lowbat or unreach or whatever
+```javascript
+// SWITCH CHANNEL
+{
+   "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205614:1"
+   "type": "channel",
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205614"
+   "common": {
+       "name":  "Name of channel",      // mandatory, default _id ??
+       "members": [
+            "adapter.instance.channelName.state-switch",              // mandatory
+            "adapter.instance.channelName.state-maintenance"          // optional
+            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+       ],
+       "role":  "light.switch"          // optional   default undefined
+       "desc":  ""                      // optional,  default undefined
+   }
+},
+// SWITCH STATES
+{
+   "_id": "adapter.instance.channelName.state-switch", // e.g. "hm-rpc.0.JEQ0205614:1.STATE"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205614:1"
+   "common": {
+       "name":  "Name of state",        // mandatory, default _id ??
+       "def":   false,                  // optional,  default false
+       "type":  "boolean",              // optional,  default "boolean"
+       "read":  true,                   // mandatory, default true
+       "write": true,                   // mandatory, default true
+       "role":  "switch"                // mandatory
+       "desc":  ""                      // optional,  default undefined
+   }
+}
+// see "Optional states for every channel/device" for description of optional states
+//            "adapter.instance.channelName.state-maintenance"          // optional
+//            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+
+```
+
+##### light.dimmer - Attributes description
+```javascript
+// DIMMER CHANNEL
+{
+   "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205612:1"
+   "type": "channel",
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
+   "common": {
+       "name":  "Name of channel",      // mandatory, default _id ??
+       "members": [
+            "adapter.instance.channelName.state-level",               // mandatory
+            "adapter.instance.channelName.state-working",             // optional
+            "adapter.instance.channelName.state-direction",           // optional
+            "adapter.instance.channelName.state-maintenance"          // optional
+            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+       ],
+       "role":  "light.dimmer"          // optional   default undefined
+       "desc":  ""                      // optional,  default undefined
+   }
+},
+// DIMMER STATES
+{
+   "_id": "adapter.instance.channelName.state-level", // e.g. "hm-rpc.0.JEQ0205612:1.LEVEL"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205612:1"
+   "common": {
+       "name":  "Name of state",        // mandatory, default _id ??
+       "def":   0,                      // optional,  default 0
+       "type":  "number",               // optional,  default "number"
+       "read":  true,                   // mandatory, default true
+       "write": true,                   // mandatory, default true
+       "min":   0,                      // optional,  default 0
+       "max":   100,                    // optional,  default 100
+       "unit":  "%",                    // optional,  default %
+       "role":  "level.dimmer"          // mandatory
+       "desc":  ""                      // optional,  default undefined
+   }
+}
+// see "Optional states for every channel/device" for description of optional states
+//            "adapter.instance.channelName.state-working",             // optional
+//            "adapter.instance.channelName.state-direction",           // optional
+//            "adapter.instance.channelName.state-maintenance"          // optional
+//            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+
+```
 
 
 ##### blind - Attributes description
