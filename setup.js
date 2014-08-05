@@ -369,9 +369,35 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                console.log('database setup done. you can add adapters and start iobroker now');
-                process.exit(0);
+                objects.getObject('system.meta.uuid', function (err, res) {
+                    if (!err && res && res.native && res.native.uuid) {
+                        console.log('database setup done. you can add adapters and start iobroker now');
+                        process.exit(0);
+                    } else {
+                        objects.setObject('system.meta.uuid', {
+                            type: 'meta',
+                            common: {
+                                name: 'uuid',
+                                type: 'uuid'
+                            },
+                            native: {
+                                uuid: uuid()
+                            }
+                        }, function () {
+                            console.log('object system.meta.uuid created');
+                            console.log('database setup done. you can add adapters and start iobroker now');
+                            process.exit(0);
+                        });
+                    }
+                });
+
             });
         });
     }
+}
+
+// Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
+function uuid(a, b) {
+    for (b = a = ''; a++ < 36; b += a * 51 & 52 ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-');
+    return b;
 }
