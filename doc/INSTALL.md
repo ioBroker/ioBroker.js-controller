@@ -1,12 +1,12 @@
 # Installation
 
-## Manual install ioBroker.nodejs on Debian based Linux (Raspbian, Ubuntu, ...)
+## Manual installation of ioBroker.nodejs on Debian based Linux (Raspbian, Ubuntu, ...)
 
 ### Prerequisites
 
 * [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 
-    ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb```
+    ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
 * [CouchDB](http://couchdb.apache.org/) and [Redis](http://redis.io/)
 
     ```sudo apt-get install redis-server couchdb```
@@ -39,12 +39,12 @@ This adapter is needed to do basic system administration
 
 # Start ioBroker controller
 
-* run ```./iobroker start``` to start iobroker.ctrl in the background
+* run ```./iobroker start``` to start the ioBroker controller in the background
 * watch the logfile ```tail -f log/iobroker.log```
 
 or
 
-* run ```node controller.js``` to start iobroker.ctrl in foreground and watch the log on console
+* run ```node controller.js``` to start the ioBroker controller in foreground and watch the log on console
 
 
 ## Admin UI
