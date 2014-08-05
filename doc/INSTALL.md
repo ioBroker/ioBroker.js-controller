@@ -13,19 +13,14 @@
 
 ...todo
 
-### Manual install ioBroker.nodejs on Linux/OSX
+### Manual install ioBroker.nodejs on Debian based Linux (Raspbian, Ubuntu, ...)
 
 #### Prerequisites
 
-* git command line client
-* [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
-* [CouchDB](http://couchdb.apache.org/)
-* [Redis](http://redis.io/)
-
-
-* Install Node.js and npm - Raspbian example: ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb```
-* Install Redis and CouchDB - Debian/Raspbian/Ubuntu example: ```sudo apt-get install redis-server couchdb```
-
+* git command line client (already available in default installed on most Linux distributions)
+* [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm) ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb```
+* [CouchDB](http://couchdb.apache.org/) ```sudo apt-get install redis-server couchdb```
+* [Redis](http://redis.io/) ```sudo apt-get install redis-server couchdb```
 
 #### Download and Install
 
@@ -55,17 +50,16 @@ or
 
 ### Admin UI
 
-The admin adapter starts a webserver that hosts the Admin UI
+The admin adapter starts a webserver that hosts the Admin UI. Default port is 8080, so just open http://&lt;iobroker&gt;:8080/
 
-* watch the logfile for the line ```info: admin.0 http server listening on port ...``` and open http://&lt;ioBroker&gt;:&lt;port&gt;
 
 ### Access Objects
 
-Direct access to all ioBroker Objects via the CouchDB-Webinterface "Futon" http://&lt;couch&gt;:5984/_utils/
+Direct access to all ioBroker Objects is possible via the CouchDB-Webinterface "Futon": http://&lt;couch&gt;:5984/_utils/
 
 ### See Events
 
-you can use redis_cli command ```PSUBSCRIBE *``` to watch all stateChange Events on the Console
+you can use ```redis_cli``` and issue the command ```PSUBSCRIBE *``` to watch all stateChange Events on the Console
 
 
 ## Install more adapters
