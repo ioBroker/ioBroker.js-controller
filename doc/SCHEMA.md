@@ -124,14 +124,14 @@ Every *state* has to be represented by an object of the type state containing Me
 Following attributes have to exist in every object:
 
 * _id
-* type        (see below for possible values)
-* common      (includes an object with mandatory attributes for specific type)
-* common.name (the name of the object)
-* native      (includes an object with 1:1 attributes of the target system)
+* type        - see below for possible values
+* common      - includes an object with mandatory attributes for specific type
+* common.name - the name of the object
 
 ### Optional attributes
 
 * parent   - ID of parent object (see below)
+* native   - includes an object with 1:1 attributes of the target system
 
 ### Tree structure
 
@@ -257,7 +257,13 @@ possible values:
 
 #### channel
 
-##### channel common.role
+Additional to mandatory object attributes:
+
+* common.members - (mandatory) Array with members's IDs (offten with channels IDs)
+* common.parent  - (optional, but welcome) Parent device ID
+
+
+##### channel common.role - (HQ: Is it mandatory? I think no.)
 
 suggestion: the channel-objects common.role should/could imply a set of mandatory and/or optional state-child-objects
 
@@ -306,7 +312,7 @@ possible values:
 
 
 #### Channel descriptions
-The names of the attributes can be free defined by adapter, except ones written with **bold** font.
+~~The names of the attributes can be free defined by adapter, except ones written with **bold** font.~~
 
 "W" - common.oper.write=true
 
@@ -329,13 +335,14 @@ The names of the attributes can be free defined by adapter, except ones written 
    "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
    "common": {
        "name":  'Name of channel",      // mandatory, default _id ??
-       "children": [
+       "members": [
             "adapter.instance.channelName.stateName-level",               // mandatory
             "adapter.instance.channelName.stateName-working",             // optional
             "adapter.instance.channelName.stateName-direction",           // optional
             "adapter.instance.channelName.stateName-maintenance"          // optional
             "adapter.instance.channelName.stateName-maintenance-unreach"  // optional
        ],
+       "role":  "light.dimmer"          // optional   default undefined (@HQ: is it ok??)
        "desc":  ''                      // optional,  default undefined
    }
 },
@@ -449,9 +456,11 @@ The names of the attributes can be free defined by adapter, except ones written 
 
 #### device
 
+* common.members - (mandatory) array of channel IDs
+
 #### enum
 
-* common.members - optional array of member IDs
+* common.members - (optional) array of member IDs
 
 
 #### meta
@@ -469,23 +478,23 @@ id
 id *system.adapter.&lt;adapter.name&gt;*
 
 * common.mode
-* common.enabled (value should be false so new instances are disabled by default)
-* common.language (possible values: javascript, other)
+* common.enabled  - value should be false so new instances are disabled by default
+* common.language - possible values: javascript, other
 
 
 #### instance
 
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-* common.host (host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
-* common.enabled
-* common.mode (possible values see below)
+* common.host     - host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
+* common.enabled  - 
+* common.mode     - possible values see below
 
 ##### instance common.mode
 
-* **daemon** - always running process (will be restarted if process exits)
-* **subscribe** - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
-* **schedule** - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
+* **daemon**      - always running process (will be restarted if process exits)
+* **subscribe**   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
+* **schedule**    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
 
 
 
@@ -500,24 +509,26 @@ id *system.host.&lt;host&gt;*
 id *system.vfs.&lt;name&gt;
 
 * common.name (name of the directory)
-* common.children (better name it common.subdirs?) (array of child objects with type path)
+* common.children (better name it common.subdirs?> (Bluefox: May be members, like all others?)) (array of child objects with type path)
 
 Files: CouchDB-Attachments
 
 
 #### script
 
-* common.platform   - possible Values 'Javascript/Node.js' (more to come)
-* common.enabled
-* common.source     - the script source
-* common.engine     - scriptengine instance that should run this script (f.e. 'javascript.0')
+* common.platform   - (mandatory) possible Values 'Javascript/Node.js' (more to come)
+* common.enabled    - (mandatory) is script activated or not
+* common.source     - (mandatory) the script source
+* common.engine     - (@HQ: optional or mandatory?) scriptengine instance that should run this script (f.e. 'javascript.0')
 
 #### user
 
-* common.name
-* common.password
+* common.name       - (mandatory) Name of user (@HQ: Case insensitive ?) 
+* common.password   - (mandatory) MD5 Hash of password
+* common.groups     - (@HQ: or members too? ) (mandatory) - Array of group-object IDs
 
 #### group
 
-* common.name
-* common.members    - array of user-object IDs
+* common.name       - (mandatory) name of the group
+* common.members    - (mandatory) array of user-object IDs
+* common.desc       - (optional) group purpose description
