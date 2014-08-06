@@ -17,7 +17,10 @@ var yargs = require('yargs')
         '$0 start\n' +
         '$0 stop\n' +
         '$0 add <adapter> [--enabled] [--host <host>]\n' +
-        '$0 del <adapter> [--delmeta]')
+        '$0 del <adapter>' +
+        '$0 del <adapter>.<instance>' +
+        '$0 update' +
+        '$0 update <adapter>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -90,9 +93,12 @@ switch (yargs.argv._[0]) {
 
 
     case "del":
-
+        console.log("...TODO"); // TODO
         break;
 
+    case "update":
+        console.log("...TODO"); // TODO
+        break;
 
     default:
         yargs.showHelp();
