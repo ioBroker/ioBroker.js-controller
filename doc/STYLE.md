@@ -12,7 +12,7 @@ Follow this [Javascript styleguide](http://github.com/hobbyquaker/javascript)!
 
 ### Adapters
 
-Please use lowercase only for adapter names. Allowed Chars are: "a-z" and "-", nothing else.
+Please use lowercase only for adapter names. Allowed chars are: a-z, 0-9 and -, nothing else.
 The Github repo has to be named ioBroker.&lt;adapter-name&gt;.
 
 
