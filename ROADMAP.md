@@ -5,8 +5,10 @@
 * (hobbyquaker) adapter javascript: enum in eventObj and patternMatching
 * (hobbyquaker) admin-ui: adapter instance: add/edit/delete
 * (hobbyquaker) admin-ui: adapter instance: html-config
-* (hobbyquaker) admin-ui: user and group management
-* (bluefox) admin-ui: auth and ssl
+* (hobbyquaker) admin-ui: user and group management (HQ: Have you seen users and groups management? Can we remove this point from roadmap?)
+* (bluefox) ioBroker.build.
+* (bluefox) Windows installation package.
+* (bluefox) Debian installation package.
 
 # 0.2.0
 

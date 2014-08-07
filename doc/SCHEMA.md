@@ -484,13 +484,53 @@ possible values:
 
 
 ##### blind - Attributes description
-| **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description**
-| ------------- |:--------------------------|:-----:|:-----:|-----------------|---
-| level         | level.dimmer              |   X   |   X   | number          |
-| working       | indicator.working         |       |       | boolean         | If blind moves now
-| direction     | direction                 |       |       | string          | "up"/"down"/""
-| description   | text.description          |       |       | string          |
-| mmm           | indicator.maintenance.mmm |       |       | string          | mmm = lowbat or unreach or whatever
+
+```javascript
+// BLIND CHANNEL
+{
+   "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205615:1"
+   "type": "channel",
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205615"
+   "common": {
+       "name":  "Name of channel",      // mandatory, default _id ??
+       "members": [
+            "adapter.instance.channelName.state-level",               // mandatory
+            "adapter.instance.channelName.state-working",             // optional
+            "adapter.instance.channelName.state-direction",           // optional
+            "adapter.instance.channelName.state-maintenance"          // optional
+            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+       ],
+       "role":  "blind"                 // optional   default undefined
+       "desc":  ""                      // optional,  default undefined
+   }
+},
+// BLIND STATES
+// Important: 0% - blind is fully closed, 100% blind is fully opened
+{
+   "_id": "adapter.instance.channelName.state-level", // e.g. "hm-rpc.0.JEQ0205615:1.LEVEL"
+   "type": "state",
+   "parent": "channel or device",       // e.g. "hm-rpc.0.JEQ0205615:1"
+   "common": {
+       "name":  "Name of state",        // mandatory, default _id ??
+       "def":   0,                      // optional,  default 0
+       "type":  "number",               // optional,  default "number"
+       "read":  true,                   // mandatory, default true
+       "write": true,                   // mandatory, default true
+       "min":   0,                      // optional,  default 0
+       "max":   100,                    // optional,  default 100
+       "unit":  "%",                    // optional,  default %
+       "role":  "level.blind"           // mandatory
+       "desc":  ""                      // optional,  default undefined
+   }
+}
+// see "Optional states for every channel/device" for description of optional states
+//            "adapter.instance.channelName.state-working",             // optional
+//            "adapter.instance.channelName.state-direction",           // optional
+//            "adapter.instance.channelName.state-maintenance"          // optional
+//            "adapter.instance.channelName.state-maintenance-unreach"  // optional
+
+```
+
 
 ##### phone - Attributes description
 | **Name**       | **common.role**          | **M** | **W** | **common.type** | **Description**
