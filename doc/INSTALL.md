@@ -18,7 +18,7 @@
     ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
 * Clone the repository
 
-    ```git clone https://github.com/ioBroker/ioBroker.nodejs ./```
+    ```git clone https://github.com/ioBroker/ioBroker.nodejs /opt/iobroker/```
 * Install Node dependencies
 
     ```npm install --production```
