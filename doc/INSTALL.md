@@ -15,7 +15,7 @@
 
 * Create and change to the directory under which you want to install ioBroker.
 
-    ```sudo mkdir /opt/iobroker ; sudo chown pi.pi /opt/iobroker ; cd /opt/iobroker```
+    ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
 * Clone the repository
 
     ```git clone https://github.com/ioBroker/ioBroker.nodejs ./```
