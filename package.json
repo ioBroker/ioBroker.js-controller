@@ -10,7 +10,8 @@
     "node": ">=0.8"
   },
   "optionalDependencies": {
-    "hiredis": "~0.1.17"
+    "hiredis": "~0.1.17",
+    "node-windows": "~0.1.5"
   },
   "dependencies": {
     "adm-zip": "~0.4.4",
@@ -23,7 +24,6 @@
     "request": "~2.38.0",
     "wake_on_lan": "0.0.3",
     "winston": "~0.7.3",
-    "node-windows": "~0.1.5",
     "yargs": "~1.2.6"
   },
   "devDependencies": {
