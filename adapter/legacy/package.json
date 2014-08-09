@@ -1,9 +1,0 @@
-{
-    "name": "ioBroker.legacy",
-    "version": "0.0.0",
-    "private": true,
-    "dependencies": {
-        "express": "~4.4.4",
-        "socket.io": "~1.0.6"
-    }
-}
