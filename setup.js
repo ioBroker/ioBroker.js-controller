@@ -365,8 +365,6 @@ function createInstance(adapter, enabled, host, callback) {
 
 function updateRepo() {
 
-
-
     var result = {};
 
     console.log('loading system.adapter.*');
@@ -382,6 +380,13 @@ function updateRepo() {
             console.log(e);
             process.exit(1);
             return;
+        }
+        try {
+            console.log('loading conf/sources-dist.json');
+            var sourcesDist = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
+            sources = extend(true, sourcesDist, sources);
+        } catch (e) {
+
         }
 
         var downloads = [];
