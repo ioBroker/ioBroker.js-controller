@@ -1,4 +1,8 @@
 {
+    "dwd": {
+        "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json"
+    },
     "hm-rega": {
         "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json"
@@ -14,6 +18,10 @@
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json"
+    },
+    "mobile": {
+        "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json"
     },
     "yr": {
         "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
