@@ -384,7 +384,7 @@ function updateRepo() {
         try {
             console.log('loading conf/sources-dist.json');
             var sourcesDist = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
-            sources = extend(true, sourcesDist, sources);
+            sources = extend(sourcesDist, sources);
         } catch (e) {
 
         }
@@ -424,7 +424,7 @@ function updateRepo() {
                         }
 
                     } else {
-                        console.log('http ' + response.statusCode + ' error');
+                        console.log('http ' + response.statusCode + ' ' + elem.url);
                         download();
                     }
                 });
