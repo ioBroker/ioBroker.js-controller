@@ -31,6 +31,8 @@ var objects;
 var fs;
 var password;
 var tools;
+var request;
+var extend;
 
 switch (yargs.argv._[0]) {
 
@@ -44,7 +46,16 @@ switch (yargs.argv._[0]) {
         });
         daemon[yargs.argv._[0]]();
         break;
-
+    case "update-repo":
+        fs =            require('fs');
+        tools =         require(__dirname + '/lib/tools.js');
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        request =       require('request');
+        extend =        require('node.extend');
+        dbConnect(function () {
+            updateRepo();
+        });
+        break;
     case "setup":
         fs =            require('fs');
         password =      require(__dirname + '/lib/password.js');
@@ -209,7 +220,7 @@ function installAdapter(adapter, callback) {
     function install() {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
-
+        adapterConf.common.installedVersion = adapterConf.common.version;
         objs.push({
             _id: 'system.adapter.' + adapterConf.common.name,
             type: 'adapter',
@@ -350,11 +361,81 @@ function createInstance(adapter, enabled, host, callback) {
         });
 
     });
+}
 
+function updateRepo() {
+
+
+
+    var result = {};
+
+    console.log('loading system.adapter.*');
+    objects.getObjectView('system', 'adapter', {}, function (err, res) {
+        for (var i = 0; i < res.total_rows; i++) {
+            result[res.rows[i].key] = res.rows[i].value;
+        }
+
+        console.log('loading conf/sources.json');
+        try {
+            var sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
+        } catch (e) {
+            console.log(e);
+            process.exit(1);
+            return;
+        }
+
+        var downloads = [];
+
+        for (var name in sources) {
+            downloads.push({name: name, url: sources[name].meta});
+        }
+
+
+
+        function download() {
+            if (downloads.length < 1) {
+                for (var name in result) {
+                    console.log(name + ' ' + result[name].common.title + ' installed=' + result[name].common.installedVersion + ' available=' + result[name].common.version);
+                }
+            } else {
+                var elem = downloads.pop();
+                console.log('http GET ' + elem.url);
+                request(elem.url, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log('http 200 ' + elem.url);
+                        var body = JSON.parse(body);
+                        if (!result[elem.name]) {
+                            body.type = 'adapter';
+                            delete body.objects;
+                            objects.setObject('system.adapter.' + body.common.name, body, function (err, res) {
+                                console.log('object ' + res.id + ' created');
+                                result[elem.name] = body;
+                                download();
+                            });
+
+                        } else {
+                            result[elem.name] = extend(true, result[elem.name], body);
+                            download();
+                        }
+
+                    } else {
+                        console.log('http ' + response.statusCode + ' error');
+                        download();
+                    }
+                });
+            }
+
+        }
+
+        download();
+
+    });
 }
 
 
-function dbSetup() {
+
+
+    function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
         objects.setObject(obj._id, obj, function () {
