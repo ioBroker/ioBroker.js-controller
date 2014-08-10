@@ -19,17 +19,21 @@ var cp =            require('child_process');
 var ObjectsCouch =  require(__dirname + '/lib/couch.js');
 var StatesRedis =   require(__dirname + '/lib/redis.js');
 
+var logger;
+var isDaemon;
+var hostname =      os.hostname();
 
 
 if (process.argv === 'start') {
-    var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+    isDaemon =      true;
+    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
 } else {
-    var logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
 }
 
 var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
-    logger.error('ctrl conf/iobroker.json missing - call node iobroker.js setup');
+    logger.error('controller conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
 } else {
     config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
@@ -50,7 +54,7 @@ var firstIp = ipArr[0];
 logger.info('ioBroker.nodejs version ' + version);
 logger.info('copyright 2014 hobbyquaker, bluefox');
 logger.info(title + ' starting');
-logger.info('ctrl ip: ' + ipArr.join(' '));
+logger.info('controller ip: ' + ipArr.join(' '));
 
 
 
@@ -80,14 +84,14 @@ var objects = new ObjectsCouch({
     pass: config.couch.pass,
     logger: logger,
     connected: function () {
-        logger.info('ctrl couchdb connected');
+        logger.info('controller couchdb connected');
         setMeta();
         getInstances();
         startAliveInterval();
     },
     change: function (id, obj) {
         if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-        logger.info('ctrl object change ' + id);
+        logger.info('controller object change ' + id);
         if (procs[id]) {
             // known adapter
             procs[id].config = obj;
@@ -128,7 +132,6 @@ function startAliveInterval() {
 }
 
 function reportStatus() {
-    var hostname = os.hostname();
     var id = 'system.host.' + hostname;
     states.setState(id + '.alive', {val: true, ack: true, expire: 30});
     states.setState(id + '.load', {val: os.loadavg()[0].toFixed(2), ack: true});
@@ -137,7 +140,6 @@ function reportStatus() {
 }
 
 function setMeta() {
-    var hostname = os.hostname();
     var id = 'system.host.' + hostname;
     var obj = {
         _id: id,
@@ -149,7 +151,12 @@ function setMeta() {
             platform:   'javascript/Node.js',
             cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
             hostname:   hostname,
-            address:    ipArr
+            address:    ipArr,
+            children: [
+                id + '.alive',
+                id + '.load',
+                id + '.mem'
+            ]
         },
         native: {
             process: {
@@ -222,13 +229,13 @@ function getInstances() {
 
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
-            logger.error('ctrl _design/system missing - call node iobroker.js setup');
+            logger.error('controller _design/system missing - call node iobroker.js setup');
             process.exit(1);
             return;
         } else if (doc.rows.length === 0) {
-            logger.info('ctrl no instances found');
+            logger.info('controller no instances found');
         } else {
-            logger.info('ctrl ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
+            logger.info('controller ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             for (var i = 0; i < doc.rows.length; i++) {
 
                 var instance = doc.rows[i].value;
@@ -238,7 +245,7 @@ function getInstances() {
                 }
             }
             if (procs.length > 0) {
-                logger.info('ctrl starting ' + procs.length + ' instances');
+                logger.info('controller starting ' + procs.length + ' instances');
             }
 
         }
@@ -275,12 +282,12 @@ function startInstance(id) {
                     states.setState(id + '.alive', {val: false, ack: true});
                     states.setState(id + '.connected', {val: false, ack: true});
                     if (signal) {
-                        logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
+                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
-                        logger.error('ctrl instance ' + id + ' terminated abnormally');
+                        logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
                         if (procs[id].stopping || isStopping) {
-                            logger.info('ctrl instance ' + id + ' terminated with code ' + code);
+                            logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
                             delete procs[id].process;
                             if (isStopping) {
@@ -293,7 +300,7 @@ function startInstance(id) {
                             }
                             return;
                         } else {
-                            logger.error('ctrl instance ' + id + ' terminated with code ' + code);
+                            logger.error('controller instance ' + id + ' terminated with code ' + code);
                         }
                     }
                     delete procs[id].process;
@@ -301,9 +308,9 @@ function startInstance(id) {
                         startInstance(_id);
                     }, 30000, id);
                 });
-                logger.info('ctrl instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
-                logger.warn('ctrl instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
         case 'schedule':
@@ -313,33 +320,33 @@ function startInstance(id) {
             }
             if (procs[id].schedule) {
                 procs[id].schedule.cancel();
-                logger.info('ctrl instance canceled schedule ' + instance._id);
+                logger.info('controller instance canceled schedule ' + instance._id);
             }
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
 
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
-                logger.info('ctrl instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true});
                     if (signal) {
-                        logger.warn('ctrl instance ' + id + ' terminated due to ' + signal);
+                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
-                        logger.error('ctrl instance ' + id + ' terminated abnormally');
+                        logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
                         if (code === 0 || code === '0') {
-                            logger.info('ctrl instance ' + id + ' terminated with code ' + code);
+                            logger.info('controller instance ' + id + ' terminated with code ' + code);
                             return;
                         } else {
-                            logger.error('ctrl instance ' + id + ' terminated with code ' + code);
+                            logger.error('controller instance ' + id + ' terminated with code ' + code);
                         }
                     }
                     delete procs[id].process;
                 });
 
             });
-            logger.info('ctrl instance scheduled ' + instance._id + ' ' + instance.common.schedule);
+            logger.info('controller instance scheduled ' + instance._id + ' ' + instance.common.schedule);
 
             break;
         case 'subscribe':
@@ -358,10 +365,10 @@ function stopInstance(id, callback) {
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
-                logger.warn('ctrl instance ' + instance._id + ' not running');
+                logger.warn('controller instance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
-                logger.info('ctrl instance ' + instance._id + ' stopping with pid ' + procs[id].process.pid);
+                logger.info('controller instance ' + instance._id + ' stopping with pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
                 procs[id].process.kill();
                 delete(procs[id].process);
@@ -370,11 +377,11 @@ function stopInstance(id, callback) {
             break;
         case 'schedule':
             if (!procs[id].schedule) {
-                logger.warn('ctrl instance ' + instance._id + ' not scheduled');
+                logger.warn('controller instance ' + instance._id + ' not scheduled');
             } else {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
-                logger.info('ctrl instance canceled schedule ' + instance._id);
+                logger.info('controller instance canceled schedule ' + instance._id);
             }
             if (typeof callback === 'function') callback();
             break;
@@ -395,8 +402,8 @@ var allInstancesStopped = false;
 function stop() {
     if (isStopping) {
 
-        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
-            logger.info('ctrl force terminating');
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+            logger.info('controller force terminating');
             process.exit(1);
             return;
         });
@@ -409,8 +416,8 @@ function stop() {
         if (!allInstancesStopped) {
             setTimeout(waitForInstances, 100);
         } else {
-            states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
-                logger.info('ctrl terminated');
+            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+                logger.info('controller terminated');
                 process.exit(0);
             });
 
@@ -421,12 +428,18 @@ function stop() {
 
     // force after 5s
     setTimeout(function () {
-        states.setState('system.host.' + firstIp + '.alive', {val: false, ack: true}, function () {
-            logger.info('ctrl force terminated after 5s');
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+            logger.info('controller force terminated after 5s');
             process.exit(1);
         });
     }, 5000);
 }
 
-process.on('SIGINT', stop);
-process.on('SIGTERM', stop);
+process.on('SIGINT', function () {
+    logger.info('controller received SIGINT');
+    stop();
+});
+process.on('SIGTERM', function () {
+    logger.info('controller received SIGTERM');
+    stop();
+});
