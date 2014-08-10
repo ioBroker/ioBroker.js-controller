@@ -31,7 +31,8 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * system.user.
 * system.group.
 * system.translations. - system wide translation objects
-* &lt;adapter-name&gt; - default config of an adapter, can have attachments that are accessible via http://&lt;couch&gt;:5984/&lt;adapter-name&gt;/path/file
+* system.adapter.&lt;adapter-name&gt; - default config of an adapter
+* &lt;adapter-name&gt; - object holding attachments that are accessible via http://&lt;couch&gt;:5984/iobroker/&lt;adapter-name&gt;/path
 * &lt;adapter-name&gt;.meta. - common meta-data used by all instances of this adapter
 * &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters instance namespace
 * enum.               - Enumerations
@@ -136,7 +137,7 @@ Following attributes have to exist in every object:
 
 Objects can have a *parent* attribute containing the *id* of their parent to build a tree structure. This should be
 limited to 3 levels (except for objects of type enum). An object referenced as a parent has to have a children property
-with an array of children IDs.
+with an array of children IDs - if parent is used children is mandatory and vice versa.
 
 ### Object types
 
