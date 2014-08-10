@@ -158,7 +158,7 @@ with an array of children IDs
 * group
 
 
-### Attributes for specific types
+### Attributes for specific object types
 
 #### state
 
@@ -262,8 +262,8 @@ possible values:
 
 Additional to mandatory object attributes:
 
-* children - (mandatory) Array with children IDs (children should be objects of type state)
-* parent  - (mandatory) Parent device ID
+* children - (optional) Array with children IDs (children should be objects of type state)
+* parent  - (optional) Parent device ID (parent should be object of type device)
 
 
 ##### channel common.role - (HQ: Is it mandatory? I think no.)
@@ -546,12 +546,13 @@ possible values:
 
 #### device
 
-* common.children - (mandatory) array of children IDs (children should be objects of type channel or state)
+* children - (optional) array of children IDs (children should be objects of type channel or state)
 
 #### enum
 
+* parent - (optional) parent ID (parent has to be object of type enum)
 * children - (optional) array of children IDs (children have to be objects of type enum)
-* common.members - (optional) array of member IDs (members should be objects of type device, channel or state)
+* common.members - (optional) array of enum member IDs
 
 
 #### meta
