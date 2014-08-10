@@ -24,7 +24,7 @@ var isDaemon;
 var hostname =      os.hostname();
 
 
-if (process.argv === 'start') {
+if (process.argv.indexOf('start') !== -1) {
     isDaemon =      true;
     logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
 } else {
@@ -282,6 +282,7 @@ function startInstance(id) {
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                logger.info('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true});
@@ -370,10 +371,10 @@ function stopInstance(id, callback) {
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
-                logger.warn('controller instance ' + instance._id + ' not running');
+                logger.warn('controller stopInstance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
-                logger.info('controller instance ' + instance._id + ' stopping with pid ' + procs[id].process.pid);
+                logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
                 procs[id].process.kill();
                 delete(procs[id].process);
@@ -382,11 +383,11 @@ function stopInstance(id, callback) {
             break;
         case 'schedule':
             if (!procs[id].schedule) {
-                logger.warn('controller instance ' + instance._id + ' not scheduled');
+                logger.warn('controller stopInstance ' + instance._id + ' not scheduled');
             } else {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
-                logger.info('controller instance canceled schedule ' + instance._id);
+                logger.info('controller stopInstance canceled schedule ' + instance._id);
             }
             if (typeof callback === 'function') callback();
             break;
@@ -405,6 +406,7 @@ var stopArr = [];
 var allInstancesStopped = false;
 
 function stop() {
+    logger.info('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
 
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
@@ -416,6 +418,13 @@ function stop() {
     }
 
     isStopping = true;
+
+    if (isDaemon) {
+        // send instances SIGTERM, only needed if running in backround (isDaemon)
+        for (var id in procs) {
+            stopInstance(id);
+        }
+    }
 
     function waitForInstances() {
         if (!allInstancesStopped) {
@@ -431,13 +440,13 @@ function stop() {
 
     waitForInstances();
 
-    // force after 5s
+    // force after 10s
     setTimeout(function () {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
-            logger.info('controller force terminated after 5s');
+            logger.info('controller force terminated after 10s');
             process.exit(1);
         });
-    }, 5000);
+    }, 10000);
 }
 
 process.on('SIGINT', function () {
