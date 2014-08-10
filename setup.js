@@ -38,8 +38,9 @@ switch (yargs.argv._[0]) {
     case "stop":
         var daemon = require("daemonize2").setup({
             main: "controller.js",
-            name: "iobroker.ctrl",
-            pidfile: "iobroker.pid"
+            name: "ioBroker controller",
+            pidfile: "iobroker.pid",
+            stopTimeout: 10000
         });
         daemon[yargs.argv._[0]]();
         break;
