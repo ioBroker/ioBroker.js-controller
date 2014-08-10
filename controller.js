@@ -229,16 +229,21 @@ function getInstances() {
             logger.info('ctrl no instances found');
         } else {
             logger.info('ctrl ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
+            var count = 0;
             for (var i = 0; i < doc.rows.length; i++) {
 
                 var instance = doc.rows[i].value;
+                logger.info('ctrl check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (ipArr.indexOf(instance.common.host) !== -1) {
                     procs[instance._id] = {config: instance};
+                    count++;
                 }
             }
-            if (procs.length > 0) {
-                logger.info('ctrl starting ' + procs.length + ' instances');
+            if (count > 0) {
+                logger.info('ctrl starting ' + count + ' instances');
+            } else {
+                logger.warn('ctrl does not start any instances on this host');
             }
 
         }
