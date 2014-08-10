@@ -259,7 +259,7 @@ possible values:
 
 Additional to mandatory object attributes:
 
-* common.members - (mandatory) Array with members's IDs (offten with channels IDs)
+* common.children - (mandatory) Array with children IDs (children should be objects of type state)
 * common.parent  - (optional, but welcome) Parent device ID
 
 
@@ -543,11 +543,12 @@ possible values:
 
 #### device
 
-* common.members - (mandatory) array of channel IDs
+* common.children - (mandatory) array of children IDs (children should be objects of type channel or state)
 
 #### enum
 
-* common.members - (optional) array of member IDs
+* common.children - (optional) array of children IDs (children have to be objects of type enum)
+* common.members - (optional) array of member IDs (members should be objects of type device, channel or state)
 
 
 #### meta
