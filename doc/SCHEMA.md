@@ -126,17 +126,21 @@ Following attributes have to exist in every object:
 * _id
 * type        - see below for possible values
 * common      - includes an object with mandatory attributes for specific type
+* native      - includes an object with 1:1 attributes of the target system
 * common.name - the name of the object
 
 ### Optional attributes
 
 * parent   - ID of parent object (see below)
-* native   - includes an object with 1:1 attributes of the target system
+* children - Array of children IDs
+* ancestors - Array of ancestor IDs
+
 
 ### Tree structure
 
 Objects can have a *parent* attribute containing the *id* of their parent to build a tree structure. This should be
-limited to 3 levels (except for objects of type path and enum)
+limited to 3 levels (except for objects of type enum). An object referenced as a parent has to have a children property
+with an array of children IDs
 
 ### Object types
 
