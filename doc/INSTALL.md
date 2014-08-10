@@ -4,12 +4,21 @@
 
 ### Prerequisites
 
-* [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
+#### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 
-    ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
-* [CouchDB](http://couchdb.apache.org/) and [Redis](http://redis.io/)
+* ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
 
-    ```sudo apt-get install redis-server couchdb```
+#### Install [Redis](http://redis.io/)
+
+* ```sudo apt-get install redis-server```
+
+#### Install and configure [CouchDB](http://couchdb.apache.org/)
+
+* ```sudo apt-get install couchdb```
+
+* open the file /etc/couchdb/local.ini and replace the line ```;bind_address = 127.0.0.1``` by ```bind_address = 0.0.0.0``` (make sure to remove the semicolon at the beginning of the line)
+
+
 
 ### Download and Install
 
@@ -30,6 +39,10 @@
     ```./iobroker setup```
 
     (if your CouchDB and/or Redis is not running on localhost you can supply optional arguments --couch &lt;host&gt; --redis &lt;host&gt;)
+
+* Load available adapter information
+
+    ```./iobroker update-repo```
 
 # Install admin adapter
 
