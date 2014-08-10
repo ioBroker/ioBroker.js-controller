@@ -40,7 +40,7 @@ switch (yargs.argv._[0]) {
             main: "controller.js",
             name: "ioBroker controller",
             pidfile: "iobroker.pid",
-            stopTimeout: 10000
+            stopTimeout: 12000
         });
         daemon[yargs.argv._[0]]();
         break;
