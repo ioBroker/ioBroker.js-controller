@@ -11,6 +11,10 @@
         "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json"
     },
+    "legacy": {
+        "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json"
+    },
     "yr": {
         "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json"
