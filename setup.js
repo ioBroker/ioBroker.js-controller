@@ -244,7 +244,7 @@ function installAdapter(adapter, callback) {
     if (fs.existsSync(__dirname + '/adapter/' + adapter + '/package.json') && !fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
         // Install node modules
         var exec = require('child_process').exec;
-        var cmd = 'npm install ' + __dirname + '/adapter/' + adapter + ' --prefix ' + __dirname + '/adapter/' + adapter;
+        var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --prefix "' + __dirname + '/adapter/' + adapter + '"';
         console.log(cmd);
         var child = exec(cmd);
         child.stderr.pipe(process.stderr);

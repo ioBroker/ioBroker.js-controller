@@ -236,16 +236,21 @@ function getInstances() {
             logger.info('controller no instances found');
         } else {
             logger.info('controller ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
+            var count = 0;
             for (var i = 0; i < doc.rows.length; i++) {
 
                 var instance = doc.rows[i].value;
+                logger.info('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (ipArr.indexOf(instance.common.host) !== -1) {
                     procs[instance._id] = {config: instance};
+                    count++;
                 }
             }
-            if (procs.length > 0) {
-                logger.info('controller starting ' + procs.length + ' instances');
+            if (count > 0) {
+                logger.info('controller starting ' + count + ' instances');
+            } else {
+                logger.warn('controller does not start any instances on this host');
             }
 
         }
