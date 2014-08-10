@@ -133,7 +133,7 @@ Following attributes have to exist in every object:
 
 * parent   - ID of parent object (see below)
 * children - Array of children IDs
-* ancestors - Array of ancestor IDs
+
 
 
 ### Tree structure
@@ -153,7 +153,6 @@ with an array of children IDs
 * instance - instance of adapter. Parent has to be of type adapter
 * meta     - rarely changing meta information that a adapter or his instances needs
 * config   - configurations
-* vfs      - a virtual path. parent has to be of type vfs.
 * script
 * user
 * group
@@ -165,7 +164,7 @@ with an array of children IDs
 
 attributes:
 
-* common.type  (optional - default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
+* common.type  (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
 * common.min   (optional)
 * common.max   (optional)
 * common.unit  (optional)
@@ -173,7 +172,7 @@ attributes:
 * common.desc  (optional, string)
 * common.read  (boolean, mandatory) - true if state is readable
 * common.write (boolean, mandatory) - true if state is writeable
-* common.role  (string, mandatory) - role of the state (see below)
+* common.role  (string, mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
 
 
 ##### state common.history
@@ -263,8 +262,8 @@ possible values:
 
 Additional to mandatory object attributes:
 
-* common.children - (mandatory) Array with children IDs (children should be objects of type state)
-* common.parent  - (optional, but welcome) Parent device ID
+* children - (mandatory) Array with children IDs (children should be objects of type state)
+* parent  - (mandatory) Parent device ID
 
 
 ##### channel common.role - (HQ: Is it mandatory? I think no.)
@@ -408,13 +407,13 @@ possible values:
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205614:1"
    "type": "channel",
    "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205614"
+   "children": [
+       "adapter.instance.channelName.state-switch",              // mandatory
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+   ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-switch",              // mandatory
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
        "role":  "light.switch"          // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
@@ -447,15 +446,15 @@ possible values:
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205612:1"
    "type": "channel",
    "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
+    "children": [
+       "adapter.instance.channelName.state-level",               // mandatory
+       "adapter.instance.channelName.state-working",             // optional
+       "adapter.instance.channelName.state-direction",           // optional
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+    ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-level",               // mandatory
-            "adapter.instance.channelName.state-working",             // optional
-            "adapter.instance.channelName.state-direction",           // optional
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
        "role":  "light.dimmer"          // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
@@ -494,17 +493,17 @@ possible values:
 {
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205615:1"
    "type": "channel",
-   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205615"
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205615",
+    "children": [
+       "adapter.instance.channelName.state-level",               // mandatory
+       "adapter.instance.channelName.state-working",             // optional
+       "adapter.instance.channelName.state-direction",           // optional
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+   ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-level",               // mandatory
-            "adapter.instance.channelName.state-working",             // optional
-            "adapter.instance.channelName.state-direction",           // optional
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
-       "role":  "blind"                 // optional   default undefined
+      "role":  "blind"                 // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
 },
@@ -551,7 +550,7 @@ possible values:
 
 #### enum
 
-* common.children - (optional) array of children IDs (children have to be objects of type enum)
+* children - (optional) array of children IDs (children have to be objects of type enum)
 * common.members - (optional) array of member IDs (members should be objects of type device, channel or state)
 
 
@@ -596,14 +595,6 @@ id *system.host.&lt;host&gt;*
 
 #### config
 
-#### vfs
-
-id *system.vfs.&lt;name&gt;
-
-* common.name (name of the directory)
-* common.children (better name it common.subdirs?> (Bluefox: May be members, like all others?)) (array of child objects with type path)
-
-Files: CouchDB-Attachments
 
 
 #### script
