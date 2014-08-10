@@ -124,7 +124,7 @@ Following attributes have to exist in every object:
 
 * _id
 * type        - see below for possible values
-* common      - an object containing type specific abstraction properties
+* common      - an object containing iobroker specific abstraction properties
 * native      - an object containing congruent properties of the target system
 
 ### Optional attributes
@@ -566,21 +566,25 @@ id
 
 id *system.adapter.&lt;adapter.name&gt;*
 
+* common.children   - array of adapter instance IDs
 * common.mode
-* common.enabled  - value should be false so new instances are disabled by default
-* common.language - possible values: javascript, other
+* common.enabled    - value should be false so new instances are disabled by default
+* common.platform   - possible values: Javascript/Node.js, more coming
+* common.webserver  - array of webserver instances that should serve content from the adapters www folder
 
 
 #### instance
 
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
+* parent          - adapter id
 * common.host     - host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
 * common.enabled  - 
 * common.mode     - possible values see below
 
-##### instance common.mode
+##### adapter/instance common.mode
 
+* **none**        - this adapter doesnt start a process
 * **daemon**      - always running process (will be restarted if process exits)
 * **subscribe**   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
 * **schedule**    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
@@ -591,24 +595,36 @@ id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
 id *system.host.&lt;host&gt;*
 
+* common.name       - f.e. "system.host.banana"
+* common.process
+* common.version
+* common.platform
+* common.cmd
+* common.hostname   - f.e. "banana"
+* common.address    - array of ip address strings
+* common.children
+
 #### config
 
 
 
 #### script
 
+
 * common.platform   - (mandatory) possible Values 'Javascript/Node.js' (more to come)
 * common.enabled    - (mandatory) is script activated or not
 * common.source     - (mandatory) the script source
-* common.engine     - (@HQ: optional or mandatory?) scriptengine instance that should run this script (f.e. 'javascript.0')
+* common.engine     - (optional) scriptengine instance that should run this script (f.e. 'javascript.0') - if ommited engine is automatically selected
 
 #### user
 
-* common.name       - (mandatory) Name of user (@HQ: Case insensitive ?) 
+* common.name       - (mandatory) Name of user (@HQ: Case insensitive ? @Bluefox your choice, i think case sensitive is ok too)
 * common.password   - (mandatory) MD5 Hash of password
 
 #### group
 
+* parent            - (optional) ID of parent group
+* children          - (optional) array of group IDs
 * common.name       - (mandatory) name of the group
 * common.members    - (mandatory) array of user-object IDs
 * common.desc       - (optional) group purpose description
