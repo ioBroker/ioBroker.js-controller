@@ -1,4 +1,8 @@
 {
+    "cul": {
+        "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json"
+    },
     "dwd": {
         "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json"

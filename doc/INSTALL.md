@@ -41,7 +41,7 @@
 
 * Load available adapter information
 
-    ```./iobroker update-repo```
+    ```./iobroker update```
 
 # Install admin adapter
 
@@ -83,14 +83,5 @@ By clicking a adapter instance you can directly enable it by checking the enable
 to cancel.
 To edit the adapters configuration mark the adapter row and click the pencil icon (lower left).
 
-# Currently available adapters:
-
-* admin
-* javascript (a Javascript script engine)
-* history (manages state history)
-* hm-rpc (Homematic RPC Adapter)
-* hm-rega (Homematic CCU/ReGaHSS Adapter)
-* hue (Philips Hue Adapter)
-* yr (48h weather forecast from yr.no)
 
 

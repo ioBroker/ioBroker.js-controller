@@ -20,7 +20,8 @@ var yargs = require('yargs')
         '$0 del <adapter>' +
         '$0 del <adapter>.<instance>' +
         '$0 update' +
-        '$0 update <adapter>')
+        '$0 upgrade' +
+        '$0 upgrade <adapter>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -46,7 +47,7 @@ switch (yargs.argv._[0]) {
         });
         daemon[yargs.argv._[0]]();
         break;
-    case "update-repo":
+    case "update":
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
@@ -108,7 +109,7 @@ switch (yargs.argv._[0]) {
         console.log("...TODO"); // TODO
         break;
 
-    case "update":
+    case "upgrade":
         console.log("...TODO"); // TODO
         break;
 
