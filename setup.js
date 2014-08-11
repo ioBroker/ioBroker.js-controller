@@ -221,7 +221,9 @@ function downloadAdapter(adapter, callback) {
 }
 
 function installAdapter(adapter, callback) {
-    var fs = require('fs');
+    var fs  = require('fs');
+    var ncp = require('ncp').ncp;
+    ncp.limit = 16;
 
     console.log('install adapter ' + adapter);
 
@@ -237,6 +239,15 @@ function installAdapter(adapter, callback) {
         process.exit(1);
     }
 
+    function copyFiles(source, dest) {
+        console.log('copying ' + source + ' to ' + dest);
+        ncp(source, dest, function (err) {
+            if (err) {
+                console.log('ncp error: ' + err);
+                return;
+            }
+        });
+    }
 
     function install() {
         var objs = [];
@@ -271,12 +282,12 @@ function installAdapter(adapter, callback) {
         setObject(callback);
 
         // Copy files to web adapters
-        if(fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
+        if (fs.existsSync(__dirname + '/adapter/' + adapter + '/web/') && adapterConf.common.webservers) {
             if (typeof adapterConf.common.webservers == "string") adapterConf.common.webservers = [adapterConf.common.webservers];
             for (var i = 0; i < adapterConf.common.webservers.length; i++) {
-                if(fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[i] + '/')) {
-                    // Copy files from adapter/<name>/web to adapter/<webName>/??? TODO
-
+                if (fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[i] + '/')) {
+                    // Copy files from adapter/<name>/web to adapter/<webName>/
+                    copyFiles(__dirname + '/adapter/' + adapter + '/web/', __dirname + '/adapter/' + adapterConf.common.webservers[i] + '/' + adapter + '/');
                 }
             }
         }
@@ -404,8 +415,9 @@ function updateRepo() {
         }
 
         console.log('loading conf/sources.json');
+        var sources = {};
         try {
-            var sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
+            sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
         } catch (e) {
             console.log(e);
             process.exit(1);
@@ -438,18 +450,18 @@ function updateRepo() {
                 request(elem.url, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log('http 200 ' + elem.url);
-                        var body = JSON.parse(body);
+                        var _body = JSON.parse(body);
                         if (!result[elem.name]) {
-                            body.type = 'adapter';
-                            delete body.objects;
-                            objects.setObject('system.adapter.' + body.common.name, body, function (err, res) {
+                            _body.type = 'adapter';
+                            delete _body.objects;
+                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
                                 console.log('object ' + res.id + ' created');
-                                result[elem.name] = body;
+                                result[elem.name] = _body;
                                 download();
                             });
 
                         } else {
-                            result[elem.name] = extend(true, result[elem.name], body);
+                            result[elem.name] = extend(true, result[elem.name], _body);
                             download();
                         }
 
@@ -492,6 +504,8 @@ function deleteAdapter(adapter, callback) {
             if (doc.rows.length === 0) {
                 console.log('no adapter ' + adapter + ' found');
             } else {
+                var tools = require(__dirname + '/lib/tools.js');
+                var fs    = require('fs');
                 var count = 0;
 
                 for (var i = 0; i < doc.rows.length; i++) {
@@ -500,24 +514,28 @@ function deleteAdapter(adapter, callback) {
                     count++;
 
                     // Delete files from web adapters
-                    if(fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
+                    if (fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
                         if (typeof adapterConf.common.webservers == "string") adapterConf.common.webservers = [adapterConf.common.webservers];
-                        for (var i = 0; i < adapterConf.common.webservers.length; i++) {
-                            if(fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[i] + '/')) {
-                                // Delete files from adapter/<name>/web to adapter/<webName>/??? TODO
-
+                        for (var j = 0; j < adapterConf.common.webservers.length; j++) {
+                            if (fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/')) {
+                                // Delete files from adapter/<name>/web to adapter/<webName>/
+                                console.log('delete ' + __dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/');
+                                tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/');
                             }
                         }
                     }
 
-                    // Delete adapter folder if it was installed
-                    //TODO 
-
+                    // Delete adapter folder
+                    if (!adapterConf.common.noRepository) {
+                        console.log('delete ' + __dirname + '/adapter/' + adapter);
+                        tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
+                    }
                 }
                 console.log('deleted ' + count + ' objects of ' + adapter);
             }
         }
     });
+
     objects.getObjectView("system", "state", {}, function (err, doc) {
         if (err) {
             console.log(err);

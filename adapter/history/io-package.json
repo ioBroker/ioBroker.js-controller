@@ -5,6 +5,7 @@
         "version":                  "0.0.1",
         "mode":                     "daemon",
         "platform":                 "javascript/Node.js",
+        "noRepository":             true,
         "loglevel":                 "info"
     },
     "native": {
