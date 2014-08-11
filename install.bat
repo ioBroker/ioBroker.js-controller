@@ -25,6 +25,6 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :--------------------------------------
 
-call npm install --production
+call npm install
 node iobroker.js setup
 node iobroker.js add admin --enabled
