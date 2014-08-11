@@ -566,21 +566,23 @@ id
 
 id *system.adapter.&lt;adapter.name&gt;*
 
-* common.children   - array of adapter instance IDs
-* common.mode
-* common.enabled    - value should be false so new instances are disabled by default
-* common.platform   - possible values: Javascript/Node.js, more coming
-* common.webserver  - array of webserver instances that should serve content from the adapters www folder
+* common.children           - (optional) array of adapter instance IDs
+* common.mode               - (mandatory) possible values see below
+* common.version            - (mandatory) available version
+* common.installedVersion   - (mandatory) installed version
+* common.enabled            - (mandatory) value should be false so new instances are disabled by default
+* common.platform           - (mandatory) possible values: Javascript/Node.js, more coming
+* common.webserver          - (optional) array of webserver instances that should serve content from the adapters www folder
 
 
 #### instance
 
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-* parent          - adapter id
-* common.host     - host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
-* common.enabled  - 
-* common.mode     - possible values see below
+* parent          - (mandatory) adapter id
+* common.host     - (mandatory) host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
+* common.enabled  - (mandatory)
+* common.mode     - (mandatory) possible values see below
 
 ##### adapter/instance common.mode
 
