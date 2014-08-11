@@ -17,7 +17,10 @@ var yargs = require('yargs')
         '$0 start\n' +
         '$0 stop\n' +
         '$0 add <adapter> [--enabled] [--host <host>]\n' +
-        '$0 del <adapter> [--delmeta]')
+        '$0 del <adapter>' +
+        '$0 del <adapter>.<instance>' +
+        '$0 update' +
+        '$0 update <adapter>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -106,9 +109,11 @@ switch (yargs.argv._[0]) {
                 deleteAdapter(name);
             });
         }
-
         break;
 
+    case "update":
+        console.log("...TODO"); // TODO
+        break;
 
     default:
         yargs.showHelp();
@@ -253,7 +258,7 @@ function installAdapter(adapter, callback) {
     if (fs.existsSync(__dirname + '/adapter/' + adapter + '/package.json') && !fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
         // Install node modules
         var exec = require('child_process').exec;
-        var cmd = 'npm install ' + __dirname + '/adapter/' + adapter + ' --prefix ' + __dirname + '/adapter/' + adapter;
+        var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --prefix "' + __dirname + '/adapter/' + adapter + '"';
         console.log(cmd);
         var child = exec(cmd);
         child.stderr.pipe(process.stderr);
