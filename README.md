@@ -36,6 +36,19 @@ handled with care, for example with additional security measures like VPN and VL
 * [Installation](doc/INSTALL.md)
 
 
+### Currently available adapters:
+
+* admin (incomplete)
+* cul (FS20, HMS, FHT, Max, ... via CUL/culfw) (incomplete)
+* javascript (a Javascript script engine)
+* history (manages state history) (incomplete)
+* hm-rpc (Homematic RPC Adapter)
+* hm-rega (Homematic CCU/ReGaHSS Adapter)
+* hue (Philips Hue Adapter)
+* yr (48h weather forecast from yr.no)
+
+
+
 ## More docs for (adapter) developers
 
 * [Core Concepts and Database Schema](doc/SCHEMA.md)
