@@ -90,6 +90,22 @@ switch (yargs.argv._[0]) {
 
 
     case "del":
+        var name = yargs.argv._[1];
+        var instance = null;
+        if (name && name.indexOf('.') != -1) {
+            var parts = name.split('.');
+            name = parts[0];
+            instance = parts[1];
+        }
+        if (instance !== null && instance !== undefined && instance !== "") {
+            dbConnect(function () {
+                deleteInstance(name, instance);
+            });
+        } else {
+            dbConnect(function () {
+                deleteAdapter(name);
+            });
+        }
 
         break;
 
@@ -346,6 +362,47 @@ function createInstance(adapter, enabled, host, callback) {
 
 }
 
+function deleteAdapter(adapter, callback) {
+    objects.getObjectView("system.adapter." + adapter, "*", {}, function (err, res) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no instances of adapter ' + adapter + ' found');
+            } else {
+                var procs = {};
+                var count = 0;
+
+                for (var i = 0; i < doc.rows.length; i++) {
+
+                    var instance = doc.rows[i].value;
+
+                    if (instance.type == "adapter") {
+                        objects.delObject(instance._id);
+                    } else {
+                        var num = instance._id.substring(0, "system.adapter.".length + adapter.length + 1);
+                        deleteInstance(adapter, num);
+                    }
+                    count++;
+                }
+                if (count > 0) {
+                    logger.info('ctrl starting ' + procs.length + ' instances');
+                }
+            }
+        }
+    });
+}
+
+function deleteInstance(adapter, instance, callback) {
+    objects.getObject('system.adapter.' + adapter + '.' + instance, function (err, doc) {
+        if (err || !obj) {
+            console.log('adapter "' + adapter + '.' + instance + ' does not exist!');
+            if (callback) callback('Object does not exist.');
+        } else {
+
+        }
+    });
+}
 
 function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {
