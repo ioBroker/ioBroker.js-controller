@@ -1,3 +1,10 @@
+# 0.0.14 (2014-08-11)
+* (bluefox) adapter admin: https
+* (bluefox) adapter admin: auth
+* (bluefox) admin-ui: user and group management
+* (hobbyquaker) fixes
+* (hobbyquaker) added adapter cul to sources-dist.json
+
 # 0.0.13 (2014-07-31)
 * (hobbyquaker) new object types user and group
 * (hobbyquaker) iobroker setup: create user and group admin. Default password: iobroker

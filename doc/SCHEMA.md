@@ -31,13 +31,12 @@ a string with a maximum length of 240 bytes, hierarchically structured, levels s
 * system.user.
 * system.group.
 * system.translations. - system wide translation objects
-* system.adapter.     - Adapter
 * system.adapter.&lt;adapter-name&gt; - default config of an adapter
-* &lt;adapter-name&gt;.meta. - An adapters meta Data namespace
+* &lt;adapter-name&gt; - object holding attachments that are accessible via http://&lt;couch&gt;:5984/iobroker/&lt;adapter-name&gt;/path
+* &lt;adapter-name&gt;.meta. - common meta-data used by all instances of this adapter
 * &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters instance namespace
 * enum.               - Enumerations
 * hist.               - History Data (only states, no objects)
-* iofs.               - The ioBroker virtual filesystem
 * scripts.            - Script Engine Scripts
 * scripts.js.         - javascript Script Engine Scripts
 * scripts.py.         - python Script Engine Scripts
@@ -125,18 +124,20 @@ Following attributes have to exist in every object:
 
 * _id
 * type        - see below for possible values
-* common      - includes an object with mandatory attributes for specific type
-* common.name - the name of the object
+* common      - an object containing iobroker specific abstraction properties
+* native      - an object containing congruent properties of the target system
 
 ### Optional attributes
 
 * parent   - ID of parent object (see below)
-* native   - includes an object with 1:1 attributes of the target system
+* children - Array of children IDs
+* common.name - the name of the object
 
 ### Tree structure
 
 Objects can have a *parent* attribute containing the *id* of their parent to build a tree structure. This should be
-limited to 3 levels (except for objects of type path and enum)
+limited to 3 levels (except for objects of type enum). An object referenced as a parent has to have a children property
+with an array of children IDs - if parent is used children is mandatory and vice versa.
 
 ### Object types
 
@@ -149,19 +150,18 @@ limited to 3 levels (except for objects of type path and enum)
 * instance - instance of adapter. Parent has to be of type adapter
 * meta     - rarely changing meta information that a adapter or his instances needs
 * config   - configurations
-* vfs      - a virtual path. parent has to be of type vfs.
 * script
 * user
 * group
 
 
-### Attributes for specific types
+### Attributes for specific object types
 
 #### state
 
 attributes:
 
-* common.type  (optional - default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
+* common.type  (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed)
 * common.min   (optional)
 * common.max   (optional)
 * common.unit  (optional)
@@ -169,7 +169,7 @@ attributes:
 * common.desc  (optional, string)
 * common.read  (boolean, mandatory) - true if state is readable
 * common.write (boolean, mandatory) - true if state is writeable
-* common.role  (string, mandatory) - role of the state (see below)
+* common.role  (string, mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
 
 
 ##### state common.history
@@ -259,8 +259,8 @@ possible values:
 
 Additional to mandatory object attributes:
 
-* common.members - (mandatory) Array with members's IDs (offten with channels IDs)
-* common.parent  - (optional, but welcome) Parent device ID
+* children - (optional) Array with children IDs (children should be objects of type state)
+* parent  - (optional) Parent device ID (parent should be object of type device)
 
 
 ##### channel common.role - (HQ: Is it mandatory? I think no.)
@@ -404,13 +404,13 @@ possible values:
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205614:1"
    "type": "channel",
    "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205614"
+   "children": [
+       "adapter.instance.channelName.state-switch",              // mandatory
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+   ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-switch",              // mandatory
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
        "role":  "light.switch"          // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
@@ -443,15 +443,15 @@ possible values:
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205612:1"
    "type": "channel",
    "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205612"
+    "children": [
+       "adapter.instance.channelName.state-level",               // mandatory
+       "adapter.instance.channelName.state-working",             // optional
+       "adapter.instance.channelName.state-direction",           // optional
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+    ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-level",               // mandatory
-            "adapter.instance.channelName.state-working",             // optional
-            "adapter.instance.channelName.state-direction",           // optional
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
        "role":  "light.dimmer"          // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
@@ -490,17 +490,17 @@ possible values:
 {
    "_id": "adapter.instance.channelName", // e.g. "hm-rpc.0.JEQ0205615:1"
    "type": "channel",
-   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205615"
+   "parent": "device or empty",         // e.g. "hm-rpc.0.JEQ0205615",
+    "children": [
+       "adapter.instance.channelName.state-level",               // mandatory
+       "adapter.instance.channelName.state-working",             // optional
+       "adapter.instance.channelName.state-direction",           // optional
+       "adapter.instance.channelName.state-maintenance"          // optional
+       "adapter.instance.channelName.state-maintenance-unreach"  // optional
+   ],
    "common": {
        "name":  "Name of channel",      // mandatory, default _id ??
-       "members": [
-            "adapter.instance.channelName.state-level",               // mandatory
-            "adapter.instance.channelName.state-working",             // optional
-            "adapter.instance.channelName.state-direction",           // optional
-            "adapter.instance.channelName.state-maintenance"          // optional
-            "adapter.instance.channelName.state-maintenance-unreach"  // optional
-       ],
-       "role":  "blind"                 // optional   default undefined
+      "role":  "blind"                 // optional   default undefined
        "desc":  ""                      // optional,  default undefined
    }
 },
@@ -543,11 +543,13 @@ possible values:
 
 #### device
 
-* common.members - (mandatory) array of channel IDs
+* children - (optional) array of children IDs (children should be objects of type channel or state)
 
 #### enum
 
-* common.members - (optional) array of member IDs
+* parent - (optional) parent ID (parent has to be object of type enum)
+* children - (optional) array of children IDs (children have to be objects of type enum)
+* common.members - (optional) array of enum member IDs
 
 
 #### meta
@@ -564,21 +566,27 @@ id
 
 id *system.adapter.&lt;adapter.name&gt;*
 
-* common.mode
-* common.enabled  - value should be false so new instances are disabled by default
-* common.language - possible values: javascript, other
+* common.children           - (optional) array of adapter instance IDs
+* common.mode               - (mandatory) possible values see below
+* common.version            - (mandatory) available version
+* common.installedVersion   - (mandatory) installed version
+* common.enabled            - (mandatory) value should be false so new instances are disabled by default
+* common.platform           - (mandatory) possible values: Javascript/Node.js, more coming
+* common.webserver          - (optional) array of webserver instances that should serve content from the adapters www folder
 
 
 #### instance
 
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-* common.host     - host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
-* common.enabled  - 
-* common.mode     - possible values see below
+* parent          - (mandatory) adapter id
+* common.host     - (mandatory) host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
+* common.enabled  - (mandatory)
+* common.mode     - (mandatory) possible values see below
 
-##### instance common.mode
+##### adapter/instance common.mode
 
+* **none**        - this adapter doesnt start a process
 * **daemon**      - always running process (will be restarted if process exits)
 * **subscribe**   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
 * **schedule**    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
@@ -589,32 +597,36 @@ id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
 id *system.host.&lt;host&gt;*
 
+* common.name       - f.e. "system.host.banana"
+* common.process
+* common.version
+* common.platform
+* common.cmd
+* common.hostname   - f.e. "banana"
+* common.address    - array of ip address strings
+* common.children
+
 #### config
 
-#### vfs
-
-id *system.vfs.&lt;name&gt;
-
-* common.name (name of the directory)
-* common.children (better name it common.subdirs?> (Bluefox: May be members, like all others?)) (array of child objects with type path)
-
-Files: CouchDB-Attachments
 
 
 #### script
 
+
 * common.platform   - (mandatory) possible Values 'Javascript/Node.js' (more to come)
 * common.enabled    - (mandatory) is script activated or not
 * common.source     - (mandatory) the script source
-* common.engine     - (@HQ: optional or mandatory?) scriptengine instance that should run this script (f.e. 'javascript.0')
+* common.engine     - (optional) scriptengine instance that should run this script (f.e. 'javascript.0') - if ommited engine is automatically selected
 
 #### user
 
-* common.name       - (mandatory) Name of user (@HQ: Case insensitive ?) 
+* common.name       - (mandatory) Name of user (@HQ: Case insensitive ? @Bluefox your choice, i think case sensitive is ok too)
 * common.password   - (mandatory) MD5 Hash of password
 
 #### group
 
+* parent            - (optional) ID of parent group
+* children          - (optional) array of group IDs
 * common.name       - (mandatory) name of the group
 * common.members    - (mandatory) array of user-object IDs
 * common.desc       - (optional) group purpose description
