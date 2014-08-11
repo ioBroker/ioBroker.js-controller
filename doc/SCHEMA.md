@@ -197,6 +197,7 @@ for a list of transports see history adapter README
 possible values:
 
 * text (common.type = string)
+* text.url (common.type = string) state val contains a url for usage in an anchor, iframe or img
 * html (common.type = string)
 * json (common.type = string)
 * list (common.type = array)
