@@ -601,7 +601,7 @@ function deleteInstance(adapter, instance, callback) {
 
 
 
-    function dbSetup() {
+function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
         objects.setObject(obj._id, obj, function () {
@@ -617,7 +617,8 @@ function deleteInstance(adapter, instance, callback) {
                 common: {
                     name:      'admin',
                     password:   res,
-                    dontDelete: true
+                    dontDelete: true,
+                    enabled:    true
                 },
                 native: {}
             }, function () {
