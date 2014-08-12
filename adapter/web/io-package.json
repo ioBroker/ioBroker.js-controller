@@ -5,6 +5,7 @@
         "title":                    "Node.js Webserver Adapter",
         "desc":                     "provides a Node.js based webserver for serving static files",
         "platform":                 "javascript/Node.js",
+        "noRepository":             true,
         "depends": [
             "www"
         ],

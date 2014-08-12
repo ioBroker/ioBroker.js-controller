@@ -105,8 +105,30 @@ switch (yargs.argv._[0]) {
         break;
 
 
+    case "delete":
     case "del":
-        console.log("...TODO"); // TODO
+        var name     = yargs.argv._[1];
+        var instance = yargs.argv._[2];
+        if (!name) {
+            yargs.showHelp();
+            process.exit(1);
+        }
+
+        if (name && name.indexOf('.') != -1) {
+            var parts = name.split('.');
+            name = parts[0];
+            instance = parts[1];
+        }
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        if (instance !== null && instance !== undefined && instance !== "") {
+            dbConnect(function () {
+                deleteInstance(name, instance);
+            });
+        } else {
+            dbConnect(function () {
+                deleteAdapter(name);
+            });
+        }
         break;
 
     case "upgrade":
@@ -198,10 +220,10 @@ function downloadAdapter(adapter, callback) {
 
 }
 
-
-
 function installAdapter(adapter, callback) {
-    var fs = require('fs');
+    var fs  = require('fs');
+    var ncp = require('ncp').ncp;
+    ncp.limit = 16;
 
     console.log('install adapter ' + adapter);
 
@@ -217,14 +239,23 @@ function installAdapter(adapter, callback) {
         process.exit(1);
     }
 
+    function copyFiles(source, dest) {
+        console.log('copying ' + source + ' to ' + dest);
+        ncp(source, dest, function (err) {
+            if (err) {
+                console.log('ncp error: ' + err);
+                return;
+            }
+        });
+    }
 
     function install() {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
         adapterConf.common.installedVersion = adapterConf.common.version;
         objs.push({
-            _id: 'system.adapter.' + adapterConf.common.name,
-            type: 'adapter',
+            _id:    'system.adapter.' + adapterConf.common.name,
+            type:   'adapter',
             common: adapterConf.common,
             native: adapterConf.native
         });
@@ -250,6 +281,16 @@ function installAdapter(adapter, callback) {
 
         setObject(callback);
 
+        // Copy files to web adapters
+        if (fs.existsSync(__dirname + '/adapter/' + adapter + '/web/') && adapterConf.common.webservers) {
+            if (typeof adapterConf.common.webservers == "string") adapterConf.common.webservers = [adapterConf.common.webservers];
+            for (var i = 0; i < adapterConf.common.webservers.length; i++) {
+                if (fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[i] + '/')) {
+                    // Copy files from adapter/<name>/web to adapter/<webName>/
+                    copyFiles(__dirname + '/adapter/' + adapter + '/web/', __dirname + '/adapter/' + adapterConf.common.webservers[i] + '/' + adapter + '/');
+                }
+            }
+        }
     }
 
 
@@ -268,7 +309,6 @@ function installAdapter(adapter, callback) {
     }
 
 }
-
 
 function createInstance(adapter, enabled, host, callback) {
 
@@ -375,8 +415,9 @@ function updateRepo() {
         }
 
         console.log('loading conf/sources.json');
+        var sources = {};
         try {
-            var sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
+            sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
         } catch (e) {
             console.log(e);
             process.exit(1);
@@ -409,18 +450,18 @@ function updateRepo() {
                 request(elem.url, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log('http 200 ' + elem.url);
-                        var body = JSON.parse(body);
+                        var _body = JSON.parse(body);
                         if (!result[elem.name]) {
-                            body.type = 'adapter';
-                            delete body.objects;
-                            objects.setObject('system.adapter.' + body.common.name, body, function (err, res) {
+                            _body.type = 'adapter';
+                            delete _body.objects;
+                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
                                 console.log('object ' + res.id + ' created');
-                                result[elem.name] = body;
+                                result[elem.name] = _body;
                                 download();
                             });
 
                         } else {
-                            result[elem.name] = extend(true, result[elem.name], body);
+                            result[elem.name] = extend(true, result[elem.name], _body);
                             download();
                         }
 
@@ -438,6 +479,125 @@ function updateRepo() {
     });
 }
 
+function deleteAdapter(adapter, callback) {
+    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no instances of adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+
+                for (var i = 0; i < doc.rows.length; i++) {
+                    objects.delObject(doc.rows[i].value._id);
+                    count++;
+                }
+                console.log('deleted ' + count + ' objects of ' + adapter);
+            }
+        }
+    });
+    objects.getObjectView("system", "adapter", {startkey: adapter}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                var tools = require(__dirname + '/lib/tools.js');
+                var fs    = require('fs');
+                var count = 0;
+
+                for (var i = 0; i < doc.rows.length; i++) {
+                    var adapterConf = doc.rows[i].value;
+                    objects.delObject(adapterConf._id);
+                    count++;
+
+                    // Delete files from web adapters
+                    if (fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
+                        if (typeof adapterConf.common.webservers == "string") adapterConf.common.webservers = [adapterConf.common.webservers];
+                        for (var j = 0; j < adapterConf.common.webservers.length; j++) {
+                            if (fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/')) {
+                                // Delete files from adapter/<name>/web to adapter/<webName>/
+                                console.log('delete ' + __dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/');
+                                tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapterConf.common.webservers[j] + '/' + adapter + '/');
+                            }
+                        }
+                    }
+
+                    // Delete adapter folder
+                    if (!adapterConf.common.noRepository) {
+                        console.log('delete ' + __dirname + '/adapter/' + adapter);
+                        tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
+                    }
+                }
+                console.log('deleted ' + count + ' objects of ' + adapter);
+            }
+        }
+    });
+
+    objects.getObjectView("system", "state", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = "system.adapter." + adapter;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' objects of ' + adapter);
+            }
+        }
+    });
+}
+
+function deleteInstance(adapter, instance, callback) {
+    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no instances of adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = "system.adapter." + adapter + '.' + instance;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (name == doc.rows[i].value._id.substring(0, doc.rows[i].value._id.length)) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' objects of ' + adapter);
+            }
+        }
+    });
+
+    objects.getObjectView("system", "state", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = "system.adapter." + adapter + '.' + instance;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' objects of ' + adapter);
+            }
+        }
+    });
+}
 
 
 

@@ -133,5 +133,6 @@ function walk(dir, done) {
             });
         })();
     });
-};
+}
+
 

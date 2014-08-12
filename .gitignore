@@ -1,2 +1,4 @@
 .idea
 node_modules
+/conf/iobroker.json
+/log/iobroker.log
