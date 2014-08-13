@@ -240,7 +240,7 @@ function getInstances() {
             for (var i = 0; i < doc.rows.length; i++) {
 
                 var instance = doc.rows[i].value;
-                logger.info('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
+                logger.debug('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (ipArr.indexOf(instance.common.host) !== -1) {
                     procs[instance._id] = {config: instance};
@@ -248,7 +248,7 @@ function getInstances() {
                 }
             }
             if (count > 0) {
-                logger.info('controller starting ' + count + ' instances');
+                logger.info('controller starting ' + count + ' instance' + (count > 1 ? 's' : ''));
             } else {
                 logger.warn('controller does not start any instances on this host');
             }
@@ -282,7 +282,7 @@ function startInstance(id) {
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                logger.info('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
+                logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true});

@@ -141,11 +141,14 @@ function execute(script, name) {
         exec: function (cmd, callback) {
             return cp.exec(cmd, callback);
         },
-        email: function () {
-
+        email: function (msg) {
+            that.sendTo("email", msg);
         },
-        pushover: function () {
-
+        pushover: function (msg) {
+            that.sendTo('pushover', msg);
+        },
+        sendTo: function (adapter, command, message, callback) {
+            adapter.sendTo(adapter, command, message, callback);
         },
         subscribe: function (pattern, callbackOrId, value) {
 
@@ -178,6 +181,7 @@ function execute(script, name) {
             });
 
         },
+        to: this.sendTo,
         on: this.subscribe,
         schedule: function (pattern, callback) {
 
