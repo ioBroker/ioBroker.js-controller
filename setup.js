@@ -21,6 +21,10 @@ var yargs = require('yargs')
         '$0 del <adapter>.<instance>' +
         '$0 update' +
         '$0 upgrade' +
+        '$0 state get <id>'
+        '$0 state getplain <id>'
+        '$0 state set <id> <value>'
+        '$0 state setplain <id> <value>'
         '$0 upgrade <adapter>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
@@ -128,6 +132,78 @@ switch (yargs.argv._[0]) {
             dbConnect(function () {
                 deleteAdapter(name);
             });
+        }
+        break;
+        
+    case "state"
+        var cmd = yargs.argv._[1];
+        var id  = yargs.argv._[2];
+        if (id) {
+            var StatesRedis = require(__dirname + '/redis.js');
+            var states = new StatesRedis({
+                redis: {
+                    host: config.redis.host,
+                    port: config.redis.port,
+                    options: config.redis.options
+                }
+            });            
+            if (cmd == "get") {
+                states.getState(id, function(err, obj) {
+                    if (err) {
+                        console.log("Error: " + err);
+                    } else {
+                        console.log(JSON.stringify(obj));
+                    }
+                    process.exit();
+                });
+            } else if (cmd == "getplain") {
+                states.getState(id, function(err, obj) {
+                    if (err) {
+                        console.log("Error: " + err);
+                    } else {
+                        console.log(obj.val);
+                        console.log(obj.ack);
+                        console.log(obj.from);
+                        console.log(obj.ts);
+                        console.log(obj.lc);
+                    }
+                    process.exit();
+                });
+            } else if (cmd == "set") {
+                var val = yargs.argv._[3];
+                if (!val) {
+                    console.log("Invalid format: No value found.");
+                    yargs.showHelp();
+                    process.exit();
+                } else {
+                    try {
+                        val = JSON.parse(val);
+                    } catch(e) {
+                        console.log("Invalid format: Cannot parse json object: " + val);
+                    }
+                    
+                    states.setState(id, val, callback() {
+                        process.exit();
+                    });
+                }
+            } else if (cmd == "setplain") {
+                var val = yargs.argv._[3];
+                if (!val) {
+                    console.log("Invalid format: No value found.");
+                    yargs.showHelp();
+                    process.exit();
+                } else {
+                    states.setState(id, val, callback() {
+                        process.exit();
+                    });
+                }
+            } else {
+                console.log("Invalid format: unknown state command");
+                yargs.showHelp();
+            }
+        } else {
+            console.log("Invalid format: no id found");
+            yargs.showHelp();
         }
         break;
 
