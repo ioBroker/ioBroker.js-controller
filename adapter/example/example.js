@@ -80,8 +80,18 @@ var adapter = require(__dirname + '/../../lib/adapter.js')({
     // start here!
     ready: function () {
         main();
+    },
+    
+    // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
+    message: function (obj, callback) {
+        if (typeof obj != "object") { // some error
+            
+        } else if (obj.message) {
+            if (obj.command == "send") {
+                // e.g. send email or pushover or whatever
+            } 
+        }
     }
-
 });
 
 function main() {
