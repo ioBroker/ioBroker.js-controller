@@ -333,7 +333,8 @@ function installAdapter(adapter, callback) {
             _id:    'system.adapter.' + adapterConf.common.name,
             type:   'adapter',
             common: adapterConf.common,
-            native: adapterConf.native
+            native: adapterConf.native,
+            children: []
         });
 
         function setObject(callback) {
@@ -403,8 +404,8 @@ function createInstance(adapter, enabled, host, callback) {
             }
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
-            objects.getObject('system.adapter.' + adapter, function (err, res) {
-                var obj = res;
+            /*objects.getObject('system.adapter.' + adapter, function (err, res)*/ {
+                var obj = doc;
                 obj._id = 'system.adapter.' + adapter + '.' + instance;
                 obj.type = 'instance';
                 obj.parent = 'system.adapter.' + adapter;
@@ -413,6 +414,12 @@ function createInstance(adapter, enabled, host, callback) {
                 obj.common.host = host;
                 objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
                     console.log('object ' + 'system.adapter.' + adapter + '.' + instance + ' created');
+                    if (!obj.children || obj.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) {
+                        obj.children = obj.children || [];
+                        obj.children.push('system.adapter.' + adapter + '.' + instance);
+                        objects.extendObject(obj._id, {children: obj.children});
+                    }
+                    
                     objects.setObject('system.adapter.' + adapter + '.' + instance + '.alive', {
                         type: 'state',
                         name: adapter + '.' + instance + '.alive',
@@ -435,7 +442,23 @@ function createInstance(adapter, enabled, host, callback) {
                             native: {}
                         }, function () {
                             console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.connected created');
-                            process.exit(0);
+                            if (obj.common.messagebox) {
+                                objects.setObject('system.adapter.' + adapter + '.' + instance + '.messagebox', {
+                                    type: 'state',
+                                    name: adapter + '.' + instance + '.messagebox',
+                                    parent: 'system.adapter.' + adapter + '.' + instance,
+                                    common: {
+                                        type: 'bool',
+                                        role: 'messagebox'
+                                    },
+                                    native: {}
+                                }, function () {
+                                    console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.messagebox created');
+                                    process.exit(0);
+                                });
+                            } else {
+                                process.exit(0);
+                            }
                         });
                     });
 
@@ -456,7 +479,7 @@ function createInstance(adapter, enabled, host, callback) {
                         });
                     }
                 });
-            });
+            };//);
             if (!adapterConf) {
                 try {
                     adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
@@ -647,6 +670,16 @@ function deleteInstance(adapter, instance, callback) {
                     if (name == doc.rows[i].value._id.substring(0, doc.rows[i].value._id.length)) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
+                        // Remove id from the adapter children
+                        objects.getObject("system.adapter." + adapter, function(err, obj) {
+                            if (obj.children) {
+                                var pos = obj.children.indexOf(name);
+                                if (pos != -1) {
+                                    obj.children.splice(pos, 1);
+                                    objects.extendObject(obj._id, {children: obj.children});
+                                }
+                            }
+                        });
                     }
                 }
                 console.log('deleted ' + count + ' objects of ' + adapter);
