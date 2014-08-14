@@ -59,20 +59,27 @@ logger.info('controller ip: ' + ipArr.join(' '));
 
 
 var procs     = {};
-var subscribe = [];
+var subscribe = {};
 
 var states = new StatesRedis({
 
     redis: {
-        host: config.redis.host,
-        port: config.redis.port,
+        host:    config.redis.host,
+        port:    config.redis.port,
         options: config.redis.options
     },
     logger: logger,
     change: function (id, state) {
-        if (subscribe.indexOf(id) != -1 && procs[id]) {
-            // wake up adapter
-            startInstance(id, true);
+        if (subscribe[id]) {
+            for (var i = 0; i < subscribe[id].length; i++) {
+                // wake up adapter
+                if (procs[subscribe[id][i]]) {
+                    console.log("Wake up " + id +' ' + JSON.stringify(state));
+                    startInstance(subscribe[id][i], true);
+                } else {
+                    logger.warn("Adapter subscribed on " + id + " does not exist!");
+                }
+            }
         }
     }
 });
@@ -281,6 +288,14 @@ function startInstance(id, wakeUp) {
 
     if (wakeUp) mode = 'daemon';
 
+    if (instance.common.wakeup) {
+        // TODO
+    }
+
+    if (instance.common.run) {
+        // TODO
+    }
+
     switch (mode) {
         case 'daemon':
             if (!procs[id].process) {
@@ -296,7 +311,7 @@ function startInstance(id, wakeUp) {
                     } else if (code === null) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
-                        if (procs[id].stopping || isStopping) {
+                        if (procs[id].stopping || isStopping || wakeUp) {
                             logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
                             delete procs[id].process;
@@ -362,19 +377,19 @@ function startInstance(id, wakeUp) {
 
             break;
         case 'subscribe':
-            if (!instance.common.subscribe) {
-                logger.error(instance._id + ' subscribe attribute missing');
-                break;
-            }
-            procs[id].subscribe = instance.common.subscribe;
-            if (procs[id].subscribe.indexOf('.') == -1) {
-                procs[id].subscribe = instance._id + '.' + procs[id].subscribe;
+            procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
+            var parts = instance._id.split('.');
+            var instanceId = parts[parts.length - 1];
+            procs[id].subscribe = procs[id].subscribe.replace("<INSTANCE>", instanceId);
+
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) == -1) {
+                subscribe[procs[id].subscribe].push(procs[id].subscribe);
+            } else {
+                subscribe[procs[id].subscribe] = [id];
             }
 
-            if (subscribe.indexOf(procs[id].subscribe) == -1) {
-                subscribe.push(procs[id].subscribe);
-            }
-            if (procs[id].subscribe.indexOf("messagebox") != -1) {
+            // Subscribe on changes
+            if (procs[id].subscribe == instance._id + ".messagebox") {
                 states.subscribeMessage(procs[id].subscribe);
             } else {
                 states.subscribe(procs[id].subscribe);

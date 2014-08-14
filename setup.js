@@ -119,7 +119,7 @@ switch (yargs.argv._[0]) {
         }
 
         if (adpr && adpr.indexOf('.') != -1) {
-            var parts = name.split('.');
+            var parts = adpr.split('.');
             adpr = parts[0];
             instance = parts[1];
         }
@@ -230,7 +230,7 @@ switch (yargs.argv._[0]) {
                 yargs.showHelp();
                 process.exit();
             } else {
-                states.pushMessage("system.adapter." + id + ".messagebox", {command: "send", message: msg}, function () {
+                states.pushMessage("system.adapter." + id + ".messagebox", {command: "send", message: msg, from: "setup"}, function () {
                     process.exit();
                 });
             }
@@ -420,6 +420,15 @@ function installAdapter(adapter, callback) {
 
 }
 
+var waitFor = 0;
+function isFinished(err, res, obj) {
+    console.log('object ' + obj + ' created');
+    waitFor--;
+    if (!waitFor) {
+        process.exit();
+    }
+}
+
 function createInstance(adapter, enabled, host, callback) {
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
@@ -437,82 +446,89 @@ function createInstance(adapter, enabled, host, callback) {
             }
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
-            /*objects.getObject('system.adapter.' + adapter, function (err, res)*/ {
-                var obj = doc;
-                obj._id = 'system.adapter.' + adapter + '.' + instance;
-                obj.type = 'instance';
-                obj.parent = 'system.adapter.' + adapter;
-                delete obj._rev;
-                obj.common.enabled = enabled || false;
-                obj.common.host = host;
-                objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
-                    console.log('object ' + 'system.adapter.' + adapter + '.' + instance + ' created');
-                    if (!obj.children || obj.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) {
-                        obj.children = obj.children || [];
-                        obj.children.push('system.adapter.' + adapter + '.' + instance);
-                        objects.extendObject(obj._id, {children: obj.children});
-                    }
-                    
-                    objects.setObject('system.adapter.' + adapter + '.' + instance + '.alive', {
-                        type: 'state',
-                        name: adapter + '.' + instance + '.alive',
-                        parent: 'system.adapter.' + adapter + '.' + instance,
-                        common: {
-                            type: 'bool',
-                            role: 'indicator.state'
-                        },
-                        native: {}
-                    }, function () {
-                        console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.alive created');
-                        objects.setObject('system.adapter.' + adapter + '.' + instance + '.connected', {
-                            type: 'state',
-                            name: adapter + '.' + instance + '.connected',
-                            parent: 'system.adapter.' + adapter + '.' + instance,
-                            common: {
-                                type: 'bool',
-                                role: 'indicator.state'
-                            },
-                            native: {}
-                        }, function () {
-                            console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.connected created');
-                            if (obj.common.messagebox) {
-                                objects.setObject('system.adapter.' + adapter + '.' + instance + '.messagebox', {
-                                    type: 'state',
-                                    name: adapter + '.' + instance + '.messagebox',
-                                    parent: 'system.adapter.' + adapter + '.' + instance,
-                                    common: {
-                                        type: 'bool',
-                                        role: 'messagebox'
-                                    },
-                                    native: {}
-                                }, function () {
-                                    console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.messagebox created');
-                                    process.exit(0);
-                                });
-                            } else {
-                                process.exit(0);
-                            }
-                        });
-                    });
+            var obj = doc;
+            obj._id    = 'system.adapter.' + adapter + '.' + instance;
+            obj.type   = 'instance';
+            obj.parent = 'system.adapter.' + adapter;
+            delete obj._rev;
+            obj.common.enabled = enabled || false;
+            obj.common.host    = host;
 
-                    if (!adapterConf) {
-                        try {
-                            adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
-                        } catch (e) {
-                            console.log('error: reading io-package.json ' + e);
-                            process.exit(1);
-                        }
-                    }
-                    // Create only for this instance the predefined in io-package.json objects
-                    // It is not necessary to write "system.adapter.name.N." in the object '_id'
-                    if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
-                        var _obj = adapterConf.instanceObjects.pop();
-                        objects.setObject("system.adapter." + adapter + '.' + instance + '.' + _obj._id, _obj, function () {
-                            console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.' + _obj._id + ' created');
-                        });
-                    }
-                });
-            }  //);
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
+                if (!obj.children || obj.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) {
+                    obj.children = obj.children || [];
+                    obj.children.push('system.adapter.' + adapter + '.' + instance);
+                    objects.extendObject(obj._id, {children: obj.children});
+                }
+                isFinished(null, null, 'system.adapter.' + adapter + '.' + instance);
+            });
+
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance + '.alive', {
+                type: 'state',
+                name: adapter + '.' + instance + '.alive',
+                parent: 'system.adapter.' + adapter + '.' + instance,
+                common: {
+                    type: 'bool',
+                    role: 'indicator.state'
+                },
+                native: {}
+            }, isFinished);
+
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance + '.connected', {
+                type: 'state',
+                name: adapter + '.' + instance + '.connected',
+                parent: 'system.adapter.' + adapter + '.' + instance,
+                common: {
+                    type: 'bool',
+                    role: 'indicator.state'
+                },
+                native: {}
+            }, isFinished);
+
+            if (obj.common.messagebox) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.messagebox', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.messagebox',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.messagebox'
+                    },
+                    native: {}
+                }, isFinished);
+            }
+
+            if (obj.common.wakeup) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.wakeup', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.wakeup',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.wakeup'
+                    },
+                    native: {}
+                }, isFinished);
+            }
+
+            if (obj.common.run) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.run', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.run',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.run'
+                    },
+                    native: {}
+                }, isFinished);
+            }
 
             if (!adapterConf) {
                 try {
@@ -522,13 +538,21 @@ function createInstance(adapter, enabled, host, callback) {
                     process.exit(1);
                 }
             }
+            // Create only for this instance the predefined in io-package.json objects
+            // It is not necessary to write "system.adapter.name.N." in the object '_id'
+            if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
+                var _obj = adapterConf.instanceObjects.pop();
+                waitFor++;
+                objects.setObject("system.adapter." + adapter + '.' + instance + '.' + _obj._id, _obj, isFinished);
+            }
 
             if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
                 for (var i = 0, l = adapterConf.instanceObjects.length; i < l; i++) {
                     var _obj_ = adapterConf.instanceObjects[i];
                     _obj_._id = adapter + '.' + instance + '.' + _obj_._id;
                     console.log('object ' + _obj_._id + ' created');
-                    objects.setObject(_obj_._id, _obj_);
+                    waitFor++;
+                    objects.setObject(_obj_._id, _obj_, isFinished);
                 }
             }
 
