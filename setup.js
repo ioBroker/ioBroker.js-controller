@@ -21,10 +21,10 @@ var yargs = require('yargs')
         '$0 del <adapter>.<instance>' +
         '$0 update' +
         '$0 upgrade' +
-        '$0 state get <id>'
-        '$0 state getplain <id>'
-        '$0 state set <id> <value>'
-        '$0 state setplain <id> <value>'
+        '$0 state get <id>' +
+        '$0 state getplain <id>' +
+        '$0 state set <id> <value>' +
+        '$0 state setplain <id> <value>' +
         '$0 upgrade <adapter>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
@@ -111,44 +111,47 @@ switch (yargs.argv._[0]) {
 
     case "delete":
     case "del":
-        var name     = yargs.argv._[1];
+        var adpr     = yargs.argv._[1];
         var instance = yargs.argv._[2];
-        if (!name) {
+        if (!adpr) {
             yargs.showHelp();
             process.exit(1);
         }
 
-        if (name && name.indexOf('.') != -1) {
-            var parts = name.split('.');
-            name = parts[0];
+        if (adpr && adpr.indexOf('.') != -1) {
+            var parts = adpr.split('.');
+            adpr = parts[0];
             instance = parts[1];
         }
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
         if (instance !== null && instance !== undefined && instance !== "") {
             dbConnect(function () {
-                deleteInstance(name, instance);
+                deleteInstance(adpr, instance);
             });
         } else {
             dbConnect(function () {
-                deleteAdapter(name);
+                deleteAdapter(adpr);
             });
         }
         break;
         
-    case "state"
+    case "state":
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
         if (id) {
-            var StatesRedis = require(__dirname + '/redis.js');
+            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+            config = JSON.parse(config);
+
+            var StatesRedis = require(__dirname + '/lib/redis.js');
             var states = new StatesRedis({
                 redis: {
-                    host: config.redis.host,
-                    port: config.redis.port,
+                    host:    config.redis.host,
+                    port:    config.redis.port,
                     options: config.redis.options
                 }
             });            
             if (cmd == "get") {
-                states.getState(id, function(err, obj) {
+                states.getState(id, function (err, obj) {
                     if (err) {
                         console.log("Error: " + err);
                     } else {
@@ -157,7 +160,7 @@ switch (yargs.argv._[0]) {
                     process.exit();
                 });
             } else if (cmd == "getplain") {
-                states.getState(id, function(err, obj) {
+                states.getState(id, function (err, obj) {
                     if (err) {
                         console.log("Error: " + err);
                     } else {
@@ -178,11 +181,11 @@ switch (yargs.argv._[0]) {
                 } else {
                     try {
                         val = JSON.parse(val);
-                    } catch(e) {
+                    } catch (e) {
                         console.log("Invalid format: Cannot parse json object: " + val);
                     }
                     
-                    states.setState(id, val, callback() {
+                    states.setState(id, val, function () {
                         process.exit();
                     });
                 }
@@ -193,13 +196,43 @@ switch (yargs.argv._[0]) {
                     yargs.showHelp();
                     process.exit();
                 } else {
-                    states.setState(id, val, callback() {
+                    states.setState(id, val, function () {
                         process.exit();
                     });
                 }
             } else {
                 console.log("Invalid format: unknown state command");
                 yargs.showHelp();
+            }
+        } else {
+            console.log("Invalid format: no id found");
+            yargs.showHelp();
+        }
+        break;
+
+    case "message":
+        var id  = yargs.argv._[1];
+        if (id) {
+            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+            config = JSON.parse(config);
+
+            var StatesRedis = require(__dirname + '/lib/redis.js');
+            var states = new StatesRedis({
+                redis: {
+                    host:    config.redis.host,
+                    port:    config.redis.port,
+                    options: config.redis.options
+                }
+            });
+            var msg = yargs.argv._[2];
+            if (!msg) {
+                console.log("Invalid format: No message found.");
+                yargs.showHelp();
+                process.exit();
+            } else {
+                states.pushMessage("system.adapter." + id + ".messagebox", {command: "send", message: msg, from: "setup"}, function () {
+                    process.exit();
+                });
             }
         } else {
             console.log("Invalid format: no id found");
@@ -387,6 +420,15 @@ function installAdapter(adapter, callback) {
 
 }
 
+var waitFor = 0;
+function isFinished(err, res, obj) {
+    console.log('object ' + obj + ' created');
+    waitFor--;
+    if (!waitFor) {
+        process.exit();
+    }
+}
+
 function createInstance(adapter, enabled, host, callback) {
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
@@ -404,82 +446,90 @@ function createInstance(adapter, enabled, host, callback) {
             }
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
-            /*objects.getObject('system.adapter.' + adapter, function (err, res)*/ {
-                var obj = doc;
-                obj._id = 'system.adapter.' + adapter + '.' + instance;
-                obj.type = 'instance';
-                obj.parent = 'system.adapter.' + adapter;
-                delete obj._rev;
-                obj.common.enabled = enabled || false;
-                obj.common.host = host;
-                objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
-                    console.log('object ' + 'system.adapter.' + adapter + '.' + instance + ' created');
-                    if (!obj.children || obj.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) {
-                        obj.children = obj.children || [];
-                        obj.children.push('system.adapter.' + adapter + '.' + instance);
-                        objects.extendObject(obj._id, {children: obj.children});
-                    }
-                    
-                    objects.setObject('system.adapter.' + adapter + '.' + instance + '.alive', {
-                        type: 'state',
-                        name: adapter + '.' + instance + '.alive',
-                        parent: 'system.adapter.' + adapter + '.' + instance,
-                        common: {
-                            type: 'bool',
-                            role: 'indicator.state'
-                        },
-                        native: {}
-                    }, function () {
-                        console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.alive created');
-                        objects.setObject('system.adapter.' + adapter + '.' + instance + '.connected', {
-                            type: 'state',
-                            name: adapter + '.' + instance + '.connected',
-                            parent: 'system.adapter.' + adapter + '.' + instance,
-                            common: {
-                                type: 'bool',
-                                role: 'indicator.state'
-                            },
-                            native: {}
-                        }, function () {
-                            console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.connected created');
-                            if (obj.common.messagebox) {
-                                objects.setObject('system.adapter.' + adapter + '.' + instance + '.messagebox', {
-                                    type: 'state',
-                                    name: adapter + '.' + instance + '.messagebox',
-                                    parent: 'system.adapter.' + adapter + '.' + instance,
-                                    common: {
-                                        type: 'bool',
-                                        role: 'messagebox'
-                                    },
-                                    native: {}
-                                }, function () {
-                                    console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.messagebox created');
-                                    process.exit(0);
-                                });
-                            } else {
-                                process.exit(0);
-                            }
-                        });
-                    });
+            var obj = doc;
+            obj._id    = 'system.adapter.' + adapter + '.' + instance;
+            obj.type   = 'instance';
+            obj.parent = 'system.adapter.' + adapter;
+            delete obj._rev;
+            obj.common.enabled = enabled || false;
+            obj.common.host    = host;
 
-                    if (!adapterConf) {
-                        try {
-                            adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
-                        } catch (e) {
-                            console.log('error: reading io-package.json ' + e);
-                            process.exit(1);
-                        }
-                    }
-                    // Create only for this instance the predefined in io-package.json objects
-                    // It is not necessary to write "system.adapter.name.N." in the object '_id'
-                    if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
-                        var obj = adapterConf.instanceObjects.pop();
-                        objects.setObject("system.adapter." + adapter + '.' + instance + '.' + obj._id, obj, function () {
-                            console.log('object ' + 'system.adapter.' + adapter + '.' + instance + '.' + obj._id + ' created');
-                        });
-                    }
-                });
-            };//);
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance, obj, function () {
+                if (!obj.children || obj.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) {
+                    obj.children = obj.children || [];
+                    obj.children.push('system.adapter.' + adapter + '.' + instance);
+                    objects.extendObject(obj._id, {children: obj.children});
+                }
+                isFinished(null, null, 'system.adapter.' + adapter + '.' + instance);
+            });
+
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance + '.alive', {
+                type: 'state',
+                name: adapter + '.' + instance + '.alive',
+                parent: 'system.adapter.' + adapter + '.' + instance,
+                common: {
+                    type: 'bool',
+                    role: 'indicator.state'
+                },
+                native: {}
+            }, isFinished);
+
+            waitFor++;
+            objects.setObject('system.adapter.' + adapter + '.' + instance + '.connected', {
+                type: 'state',
+                name: adapter + '.' + instance + '.connected',
+                parent: 'system.adapter.' + adapter + '.' + instance,
+                common: {
+                    type: 'bool',
+                    role: 'indicator.state'
+                },
+                native: {}
+            }, isFinished);
+
+            if (obj.common.messagebox) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.messagebox', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.messagebox',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.messagebox'
+                    },
+                    native: {}
+                }, isFinished);
+            }
+
+            if (obj.common.wakeup) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.wakeup', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.wakeup',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.wakeup'
+                    },
+                    native: {}
+                }, isFinished);
+            }
+
+            if (obj.common.run) {
+                waitFor++;
+                objects.setObject('system.adapter.' + adapter + '.' + instance + '.run', {
+                    type: 'state',
+                    name: adapter + '.' + instance + '.run',
+                    parent: 'system.adapter.' + adapter + '.' + instance,
+                    common: {
+                        type: 'bool',
+                        role: 'adapter.run'
+                    },
+                    native: {}
+                }, isFinished);
+            }
+
             if (!adapterConf) {
                 try {
                     adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
@@ -488,13 +538,21 @@ function createInstance(adapter, enabled, host, callback) {
                     process.exit(1);
                 }
             }
+            // Create only for this instance the predefined in io-package.json objects
+            // It is not necessary to write "system.adapter.name.N." in the object '_id'
+            if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
+                var _obj = adapterConf.instanceObjects.pop();
+                waitFor++;
+                objects.setObject("system.adapter." + adapter + '.' + instance + '.' + _obj._id, _obj, isFinished);
+            }
 
             if (adapterConf.instanceObjects && adapterConf.instanceObjects.length > 0) {
                 for (var i = 0, l = adapterConf.instanceObjects.length; i < l; i++) {
-                    var obj = adapterConf.instanceObjects[i];
-                    obj._id = adapter + '.' + instance + '.' + obj._id;
-                    console.log('object ' + obj._id + ' created');
-                    objects.setObject(obj._id, obj);
+                    var _obj_ = adapterConf.instanceObjects[i];
+                    _obj_._id = adapter + '.' + instance + '.' + _obj_._id;
+                    console.log('object ' + _obj_._id + ' created');
+                    waitFor++;
+                    objects.setObject(_obj_._id, _obj_, isFinished);
                 }
             }
 
@@ -656,6 +714,16 @@ function deleteAdapter(adapter, callback) {
     });
 }
 
+function correctChildren(err, obj) {
+    if (!err && obj && obj.children) {
+        var pos = obj.children.indexOf(name);
+        if (pos != -1) {
+            obj.children.splice(pos, 1);
+            objects.extendObject(obj._id, {children: obj.children});
+        }
+    }
+}
+
 function deleteInstance(adapter, instance, callback) {
     objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
         if (err) {
@@ -671,15 +739,7 @@ function deleteInstance(adapter, instance, callback) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
                         // Remove id from the adapter children
-                        objects.getObject("system.adapter." + adapter, function(err, obj) {
-                            if (obj.children) {
-                                var pos = obj.children.indexOf(name);
-                                if (pos != -1) {
-                                    obj.children.splice(pos, 1);
-                                    objects.extendObject(obj._id, {children: obj.children});
-                                }
-                            }
-                        });
+                        objects.getObject("system.adapter." + adapter, correctChildren);
                     }
                 }
                 console.log('deleted ' + count + ' objects of ' + adapter);

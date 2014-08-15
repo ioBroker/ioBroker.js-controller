@@ -58,21 +58,29 @@ logger.info('controller ip: ' + ipArr.join(' '));
 
 
 
-var procs = {};
-
-
-
+var procs     = {};
+var subscribe = {};
 
 var states = new StatesRedis({
 
     redis: {
-        host: config.redis.host,
-        port: config.redis.port,
+        host:    config.redis.host,
+        port:    config.redis.port,
         options: config.redis.options
     },
     logger: logger,
     change: function (id, state) {
-        //console.log('state ' + id + ' = ' + state);
+        if (subscribe[id]) {
+            for (var i = 0; i < subscribe[id].length; i++) {
+                // wake up adapter
+                if (procs[subscribe[id][i]]) {
+                    console.log("Wake up " + id +' ' + JSON.stringify(state));
+                    startInstance(subscribe[id][i], true);
+                } else {
+                    logger.warn("Adapter subscribed on " + id + " does not exist!");
+                }
+            }
+        }
     }
 });
 //states.subscribe('*');
@@ -273,11 +281,22 @@ function initInstances() {
     }
 }
 
-function startInstance(id) {
+function startInstance(id, wakeUp) {
     var instance = procs[id].config;
     var name = id.split('.')[2];
+    var mode = instance.common.mode;
 
-    switch (instance.common.mode) {
+    if (wakeUp) mode = 'daemon';
+
+    if (instance.common.wakeup) {
+        // TODO
+    }
+
+    if (instance.common.run) {
+        // TODO
+    }
+
+    switch (mode) {
         case 'daemon':
             if (!procs[id].process) {
                 allInstancesStopped = false;
@@ -285,14 +304,14 @@ function startInstance(id) {
                 logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
                 procs[id].process.on('exit', function (code, signal) {
-                    states.setState(id + '.alive', {val: false, ack: true});
+                    states.setState(id + '.alive',     {val: false, ack: true});
                     states.setState(id + '.connected', {val: false, ack: true});
                     if (signal) {
                         logger.warn('controller instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
-                        if (procs[id].stopping || isStopping) {
+                        if (procs[id].stopping || isStopping || wakeUp) {
                             logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
                             delete procs[id].process;
@@ -310,13 +329,15 @@ function startInstance(id) {
                         }
                     }
                     delete procs[id].process;
-                    setTimeout(function (_id) {
-                        startInstance(_id);
-                    }, 30000, id);
+                    if (!wakeUp) {
+                        setTimeout(function (_id) {
+                            startInstance(_id);
+                        }, 30000, id);
+                    }
                 });
-                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
-                logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                if (!wakeUp) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
         case 'schedule':
@@ -356,8 +377,26 @@ function startInstance(id) {
 
             break;
         case 'subscribe':
-            // TODO
+            procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
+            var parts = instance._id.split('.');
+            var instanceId = parts[parts.length - 1];
+            procs[id].subscribe = procs[id].subscribe.replace("<INSTANCE>", instanceId);
+
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) == -1) {
+                subscribe[procs[id].subscribe].push(procs[id].subscribe);
+            } else {
+                subscribe[procs[id].subscribe] = [id];
+            }
+
+            // Subscribe on changes
+            if (procs[id].subscribe == instance._id + ".messagebox") {
+                states.subscribeMessage(procs[id].subscribe);
+            } else {
+                states.subscribe(procs[id].subscribe);
+            }
+
             break;
+
         default:
             logger.error(instance._id + ' invalid mode');
 
@@ -391,6 +430,22 @@ function stopInstance(id, callback) {
             }
             if (typeof callback === 'function') callback();
             break;
+        case 'subscribe':
+            if (subscribe.indexOf(procs[id].subscribe) != -1) {
+                subscribe.splice(subscribe.indexOf(procs[id].subscribe).subscribe, 1);
+            }
+            if (!procs[id].process) {
+                if (typeof callback === 'function') callback();
+            } else {
+                logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                procs[id].stopping = true;
+                procs[id].process.kill();
+                delete(procs[id].process);
+                if (typeof callback === 'function') callback();
+            }
+            //states.unsubscribeMessage(procs[id].subscribe);
+            break;
+
         default:
     }
 }

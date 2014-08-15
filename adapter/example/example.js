@@ -84,11 +84,10 @@ var adapter = require(__dirname + '/../../lib/adapter.js')({
     
     // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
     message: function (obj, callback) {
-        if (typeof obj != "object") { // some error
-            
-        } else if (obj.message) {
+        if (typeof obj == "object" && obj.message) {
             if (obj.command == "send") {
                 // e.g. send email or pushover or whatever
+                console.log("send command");
             } 
         }
     }
