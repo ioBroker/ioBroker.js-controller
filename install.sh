@@ -1,3 +1,3 @@
-npm install
+npm install  --production
 node iobroker.js setup
-node iobroker.js add admin --enabled
+node iobroker.js setup add admin --enabled
