@@ -1,5 +1,7 @@
 # 0.0.15 (2014-08-17)
-* (hobbyquaker) adapter-settings
+* (hobbyquaker) admin-ui: adapter-settings
+* (hobbyquaker) admin-ui: add instance
+* (hobbyquaker) admin-ui: cmd execution
 
 # 0.0.14 (2014-08-11)
 * (bluefox) adapter admin: https
