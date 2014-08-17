@@ -17,14 +17,14 @@ var yargs = require('yargs')
         '$0 start\n' +
         '$0 stop\n' +
         '$0 add <adapter> [--enabled] [--host <host>]\n' +
-        '$0 del <adapter>' +
-        '$0 del <adapter>.<instance>' +
-        '$0 update' +
-        '$0 upgrade' +
-        '$0 upgrade <adapter>' +
-        '$0 state get <id>' +
-        '$0 state getplain <id>' +
-        '$0 state set <id> <value>' +
+        '$0 del <adapter>\n' +
+        '$0 del <adapter>.<instance>\n' +
+        '$0 update\n' +
+        '$0 upgrade\n' +
+        '$0 upgrade <adapter>\n' +
+        '$0 state get <id>\n' +
+        '$0 state getplain <id>\n' +
+        '$0 state set <id> <value>\n' +
         '$0 state setplain <id> <value>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
@@ -295,7 +295,10 @@ function uploadAdapter(adapter, isAdmin, callback) {
     var files = [];
 
     // do not upload www dir of admin adapter
-    if (adapter === 'admin' && !isAdmin) return;
+    if (adapter === 'admin' && !isAdmin) {
+        if (typeof callback === 'function') callback();
+        return;
+    }
 
     function done(err, res) {
         if (err) {
