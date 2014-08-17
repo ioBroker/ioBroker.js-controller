@@ -1,6 +1,6 @@
 {
 	"name":      "controller",
-    "version":   "0.0.14",
+    "version":   "0.0.15",
 	"platform":  "Javascript/Node.js",
 	"title":     "ioBroker.nodejs: controller and base adapters",
     "description": {

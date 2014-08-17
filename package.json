@@ -1,6 +1,6 @@
 {
   "name": "iobroker.nodejs",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.nodejs.git"
@@ -10,8 +10,8 @@
     "node": ">=0.8"
   },
   "optionalDependencies": {
-    "node-windows": "~0.1.5",
-    "hiredis": "~0.1.17"
+      "node-windows": "~0.1.5",
+      "hiredis": "~0.1.17"
   },
   "dependencies": {
     "adm-zip": "~0.4.4",
@@ -24,7 +24,8 @@
     "request": "~2.38.0",
     "wake_on_lan": "0.0.3",
     "winston": "~0.7.3",
-    "yargs": "~1.2.6"
+    "yargs": "~1.2.6",
+    "mime": "~1.2.11"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
