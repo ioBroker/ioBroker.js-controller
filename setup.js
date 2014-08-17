@@ -744,9 +744,7 @@ function updateRepo() {
 
         function download() {
             if (downloads.length < 1) {
-                for (var name in result) {
-                    console.log(name + ' ' + result[name].common.title + ' installed=' + result[name].common.installedVersion + ' available=' + result[name].common.version);
-                }
+                console.log('update done');
             } else {
                 var elem = downloads.pop();
                 console.log('http GET ' + elem.url);
