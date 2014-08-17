@@ -224,13 +224,18 @@ switch (yargs.argv._[0]) {
                     options: config.redis.options
                 }
             });
-            var msg = yargs.argv._[2];
+            var cmd = yargs.argv._[2];
+            var msg = yargs.argv._[3];
+            if (!msg) {
+                msg = cmd;
+                cmd = "send";
+            }
             if (!msg) {
                 console.log("Invalid format: No message found.");
                 yargs.showHelp();
                 process.exit();
             } else {
-                states.pushMessage("system.adapter." + id + ".messagebox", {command: "send", message: msg, from: "setup"}, function () {
+                states.pushMessage("system.adapter." + id + ".messagebox", {command: cmd, message: msg, from: "setup"}, function () {
                     process.exit();
                 });
             }
@@ -556,6 +561,8 @@ function createInstance(adapter, enabled, host, callback) {
                 }
             }
 
+            // call install of adapter
+
         });
 
     });
@@ -808,8 +815,6 @@ function deleteInstance(adapter, instance, callback) {
         }
     });
 }
-
-
 
 function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {
