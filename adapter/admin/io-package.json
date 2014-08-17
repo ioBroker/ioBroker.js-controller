@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "admin",
-        "version":                  "0.0.3",
+        "version":                  "0.0.4",
         "title":                    "ioBroker Admin Adapter",
         "desc": {
             "en":                   "opens a webserver for the ioBroker admin UI",
@@ -15,7 +15,7 @@
         "keywords":                 ["admin", "setup"]
     },
     "native": {
-        "port":                     8080,
+        "port":                     8081,
         "auth":                     false,
         "secure":                   false,
         "bind":                     "0.0.0.0",

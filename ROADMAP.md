@@ -1,7 +1,6 @@
 # 0.1.0
 
 * (hobbyquaker) adapter history: target couchdb and file
-* (hobbyquaker) adapter javascript: enum in eventObj and patternMatching
 * (hobbyquaker) admin-ui: states: show history data
 * (hobbyquaker) admin-ui: objects: add, edit, delete
 * (hobbyquaker) admin-ui: enums: add, edit, delete, move, assign and remove members
@@ -11,7 +10,6 @@
 * (bluefox) Debian installation package.
 * io-package.json - pre/post install hooks
 * admin-ui: adapter instance: add/edit/delete
-* admin-ui: adapter instance: html-config
 
 
 

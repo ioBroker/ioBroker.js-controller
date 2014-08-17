@@ -1,3 +1,6 @@
+# 0.0.15 (2014-08-17)
+* (hobbyquaker) adapter-settings
+
 # 0.0.14 (2014-08-11)
 * (bluefox) adapter admin: https
 * (bluefox) adapter admin: auth
