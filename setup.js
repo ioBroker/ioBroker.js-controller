@@ -245,13 +245,18 @@ switch (yargs.argv._[0]) {
                     options: config.redis.options
                 }
             });
-            var msg = yargs.argv._[2];
+            var cmd = yargs.argv._[2];
+            var msg = yargs.argv._[3];
+            if (!msg) {
+                msg = cmd;
+                cmd = "send";
+            }
             if (!msg) {
                 console.log("Invalid format: No message found.");
                 yargs.showHelp();
                 process.exit();
             } else {
-                states.pushMessage("system.adapter." + id + ".messagebox", {command: "send", message: msg, from: "setup"}, function () {
+                states.pushMessage("system.adapter." + id + ".messagebox", {command: cmd, message: msg, from: "setup"}, function () {
                     process.exit();
                 });
             }
@@ -530,7 +535,7 @@ function installAdapter(adapter, callback) {
     if (fs.existsSync(__dirname + '/adapter/' + adapter + '/package.json') && !fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
         // Install node modules
         var exec = require('child_process').exec;
-        var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --prefix "' + __dirname + '/adapter/' + adapter + '"';
+        var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --production --prefix "' + __dirname + '/adapter/' + adapter + '"';
         console.log(cmd);
         var child = exec(cmd);
         child.stderr.pipe(process.stderr);
@@ -672,6 +677,8 @@ function createInstance(adapter, enabled, host, callback) {
                 }
             }
 
+            // call install of adapter
+
 
             function setObjs() {
                 if (objs.length > 0) {
@@ -794,7 +801,7 @@ function deleteAdapter(adapter, callback) {
                     objects.delObject(doc.rows[i].value._id);
                     count++;
                 }
-                console.log('deleted ' + count + ' objects of ' + adapter);
+                console.log('deleted ' + count + ' instances of ' + adapter);
             }
         }
     });
@@ -832,7 +839,7 @@ function deleteAdapter(adapter, callback) {
                         tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
                     }
                 }
-                console.log('deleted ' + count + ' objects of ' + adapter);
+                console.log('deleted ' + count + ' adapters for ' + adapter);
             }
         }
     });
@@ -852,7 +859,26 @@ function deleteAdapter(adapter, callback) {
                         count++;
                     }
                 }
-                console.log('deleted ' + count + ' objects of ' + adapter);
+                console.log('deleted ' + count + ' system.states of ' + adapter);
+            }
+        }
+    });
+    objects.getObjectView(adapter, "state", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = adapter;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' states of ' + adapter);
             }
         }
     });
@@ -886,7 +912,7 @@ function deleteInstance(adapter, instance, callback) {
                         objects.getObject("system.adapter." + adapter, correctChildren);
                     }
                 }
-                console.log('deleted ' + count + ' objects of ' + adapter);
+                console.log('deleted ' + count + ' instances of ' + adapter + '.' + instance);
             }
         }
     });
@@ -906,13 +932,33 @@ function deleteInstance(adapter, instance, callback) {
                         count++;
                     }
                 }
-                console.log('deleted ' + count + ' objects of ' + adapter);
+                console.log('deleted ' + count + ' system.states of ' + adapter + '.' + instance);
+            }
+        }
+    });
+
+    objects.getObjectList({include_docs: true}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = adapter + '.' + instance;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i] &&
+                        doc.rows[i].id !== undefined &&
+                        doc.rows[i].id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' states of ' + adapter + '.' + instance);
             }
         }
     });
 }
-
-
 
 function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {

@@ -2,3 +2,5 @@
 node_modules
 /conf/iobroker.json
 /log/iobroker.log
+/adapter/email
+/adapter/sonos
