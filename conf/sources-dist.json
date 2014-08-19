@@ -1,4 +1,8 @@
 {
+    "artnet": {
+        "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json"
+    },
     "cul": {
         "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json"
