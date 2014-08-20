@@ -1,4 +1,12 @@
 {
+    "admin": {
+        "url": "https://github.com/ioBroker/ioBroker.admin/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json"
+    },
+    "artnet": {
+        "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json"
+    },
     "cul": {
         "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json"
@@ -6,6 +14,10 @@
     "dwd": {
         "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json"
+    },
+    "history": {
+        "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json"
     },
     "hm-rega": {
         "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
@@ -19,6 +31,10 @@
         "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json"
     },
+    "javascript": {
+        "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json"
+    },
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json"
@@ -26,6 +42,18 @@
     "mobile": {
         "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json"
+    },
+    "socketio": {
+        "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
+    },
+    "virtual": {
+        "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.virtual/master/io-package.json"
+    },
+    "web": {
+        "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json"
     },
     "yr": {
         "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
