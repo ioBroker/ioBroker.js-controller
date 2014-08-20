@@ -500,18 +500,6 @@ function installAdapter(adapter, callback) {
         process.exit(1);
     }
 
-/* @bluefox see below
-    function copyFiles(source, dest) {
-        console.log('copying ' + source + ' to ' + dest);
-        ncp(source, dest, function (err) {
-            if (err) {
-                console.log('ncp error: ' + err);
-                return;
-            }
-        });
-    }
-*/
-
     function install() {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
