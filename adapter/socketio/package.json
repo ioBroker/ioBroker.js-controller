@@ -1,8 +1,0 @@
-{
-  "name": "ioBroker.socketio",
-  "version": "0.0.0",
-  "private": true,
-  "dependencies": {
-    "socket.io": "^1.0.6"
-  }
-}
