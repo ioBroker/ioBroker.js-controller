@@ -67,7 +67,7 @@ or
 
 ### Admin UI
 
-The admin adapter starts a webserver that hosts the Admin UI. Default port is 8080, so just open http://&lt;iobroker&gt;:8080/
+The admin adapter starts a webserver that hosts the Admin UI. Default port is 8081, so just open http://&lt;iobroker&gt;:8081/
 
 
 ### Install more adapters
