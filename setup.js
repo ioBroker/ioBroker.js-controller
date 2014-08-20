@@ -22,6 +22,7 @@ var yargs = require('yargs')
         '$0 update\n' +
         '$0 upgrade\n' +
         '$0 upgrade <adapter>\n' +
+        '$0 object get <id>\n' +
         '$0 state get <id>\n' +
         '$0 state getplain <id>\n' +
         '$0 state set <id> <value>\n' +
@@ -155,7 +156,30 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
-        
+    case "object":
+        var cmd = yargs.argv._[1];
+        var id  = yargs.argv._[2];
+        if (id) {
+            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+            config = JSON.parse(config);
+            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+
+            if (cmd == "get") {
+                dbConnect(function () {
+                    objects.getObject(id, function (err, res) {
+                        if (err) {
+                            console.log("not found");
+                            process.exit(1);
+                        } else {
+                            console.log(JSON.stringify(res));
+                            process.exit();
+                        }
+                    });
+                });
+            }
+        }
+        break;
+
     case "state":
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
@@ -185,11 +209,15 @@ switch (yargs.argv._[0]) {
                     if (err) {
                         console.log("Error: " + err);
                     } else {
-                        console.log(obj.val);
-                        console.log(obj.ack);
-                        console.log(obj.from);
-                        console.log(obj.ts);
-                        console.log(obj.lc);
+                        if (obj) {
+                            console.log(obj.val);
+                            console.log(obj.ack);
+                            console.log(obj.from);
+                            console.log(obj.ts);
+                            console.log(obj.lc);
+                        } else {
+                            console.log(null);
+                        }
                     }
                     process.exit();
                 });
@@ -729,9 +757,8 @@ function updateRepo() {
         try {
             sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
         } catch (e) {
-            console.log(e);
-            process.exit(1);
-            return;
+            console.log('/conf/sources.json does not exits - ignore');
+            sources = {};
         }
         try {
             console.log('loading conf/sources-dist.json');

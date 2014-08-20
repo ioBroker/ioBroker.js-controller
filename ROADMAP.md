@@ -10,6 +10,8 @@
 * (bluefox) Debian installation package.
 * io-package.json - pre/post install hooks
 * admin-ui: adapter instance: add/edit/delete
+* (bluefox) adapter dependencies check
+* (bluefox) admin.js make call of node platform independent
 
 
 
