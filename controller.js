@@ -311,7 +311,7 @@ function startInstance(id, wakeUp) {
                     } else if (code === null) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
-                        if (procs[id].stopping || isStopping || wakeUp) {
+                        if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
                             delete procs[id].process;
