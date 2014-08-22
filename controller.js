@@ -461,7 +461,7 @@ var stopArr = [];
 var allInstancesStopped = true;
 
 function stop() {
-    logger.info('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+    logger.debug('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
 
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
