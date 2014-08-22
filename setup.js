@@ -105,8 +105,7 @@ switch (yargs.argv._[0]) {
         ncp.limit =     16;
 
         var name =      yargs.argv._[1];
-        var ipArr =     tools.findIPs();
-        var firstIp =   ipArr[0];
+        var hostname =  os.hostname();
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadAdapter(name, function () {
