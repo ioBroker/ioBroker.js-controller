@@ -321,9 +321,10 @@ function dbConnect(callback) {
     });
 }
 
+// Upload www folder of adapter into couchDB
 function uploadAdapter(adapter, isAdmin, callback) {
-    var id = adapter + (isAdmin ? '.admin' : '');
     var rev;
+    var id = adapter + (isAdmin ? '.admin' : '');
     var dir = __dirname + '/adapter/' + adapter + (isAdmin ? '/admin' : '/www');
     var files = [];
 
@@ -418,8 +419,6 @@ function uploadAdapter(adapter, isAdmin, callback) {
         });
     }
 
-
-
 }
 
 function downloadAdapter(adapter, callback) {
@@ -441,6 +440,11 @@ function downloadAdapter(adapter, callback) {
         url = sources[adapter].url;
     } else {
         url = adapter;
+        if (url.indexOf("http://") == -1 && uri.indexOf("https://") == -1) {
+            console.log("Unknown adapter " + adapter);
+            process.exit(1);
+        }
+
         // Todo set name if cmd called with adapter-url
     }
 
@@ -503,12 +507,17 @@ function installAdapter(adapter, callback) {
     function install() {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
+
+        if (adapterConf.common.dependencies) {
+            checkDependencies(adapterConf.common.dependencies);
+        }
+
         adapterConf.common.installedVersion = adapterConf.common.version;
         objs.push({
-            _id:    'system.adapter.' + adapterConf.common.name,
-            type:   'adapter',
-            common: adapterConf.common,
-            native: adapterConf.native,
+            _id:      'system.adapter.' + adapterConf.common.name,
+            type:     'adapter',
+            common:   adapterConf.common,
+            native:   adapterConf.native,
             children: []
         });
 
@@ -569,12 +578,31 @@ function installAdapter(adapter, callback) {
             });
         });
     }
-
 }
 
-
-
 function createInstance(adapter, enabled, host, callback) {
+
+    function checkDependencies(deps, _enabled, _host) {
+        if (!deps || !deps.length) return;
+
+        // Get all installed adapters
+        objects.getObjectView("system", "instance", {}, function (err, objs) {
+            if (objs.rows.length) {
+                for (var i = 0; i < deps.length; i++) {
+                    var isFound = false;
+                    for (var t = 0; t < objs.rows.length; t++) {
+                        if (objs.rows[t].common.name == deps[i]) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        createInstance(deps[i], _enabled, _host);
+                    }
+                }
+            }
+        });
+    }
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
         if (err || !doc) {
@@ -583,7 +611,6 @@ function createInstance(adapter, enabled, host, callback) {
             });
             return;
         }
-
 
         objects.getObjectView('system', 'instanceStats', {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, res) {
             if (err || !res) {
@@ -594,6 +621,7 @@ function createInstance(adapter, enabled, host, callback) {
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
             var instanceObj = doc;
+            doc = JSON.parse(JSON.stringify(doc));
             instanceObj._id    = 'system.adapter.' + adapter + '.' + instance;
             instanceObj.type   = 'instance';
             instanceObj.parent = 'system.adapter.' + adapter;
@@ -716,9 +744,18 @@ function createInstance(adapter, enabled, host, callback) {
                             console.log('object ' + instanceObj._id + ' created');
                         }
 
-                        // done
-                        process.exit(0);
-
+                        // Update system.adapter.name children
+                        doc.children = doc.children || [];
+                        if (doc.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) doc.children.push('system.adapter.' + adapter + '.' + instance);
+                        objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('object system.adapter.' + adapter + ' extended');
+                            }
+                            // done
+                            process.exit(0);
+                        });
                     });
                 }
             }
@@ -878,7 +915,7 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-    objects.getObjectView(adapter, "state", {}, function (err, doc) {
+    objects.getObjectView("system", "state", {}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -897,7 +934,22 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-}
+    // Delete WWW pages
+    objects.delObject(adapter, function (err, obj, id) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (obj) console.log('object ' + adapter + ' deleted');
+        }
+    });
+    // Delete WWW/admin pages
+    objects.delObject(adapter + '.admin', function (err, obj, id) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (obj) console.log('object ' + adapter + '.admin deleted');
+        }
+    });}
 
 function correctChildren(err, obj) {
     if (!err && obj && obj.children) {
@@ -971,6 +1023,25 @@ function deleteInstance(adapter, instance, callback) {
                 }
                 console.log('deleted ' + count + ' states of ' + adapter + '.' + instance);
             }
+        }
+    });
+
+    // Update children of system.adapter.adaptername
+    objects.getObject('system.adapter.' + adapter, function (err, doc) {
+        if (!doc.children) return;
+        var pos = doc.children.indexOf('system.adapter.' + adapter + '.' + instance);
+        if (pos != -1) {
+            doc.children.splice(pos, 1);
+            objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('object system.adapter.' + adapter + ' extended');
+                }
+            });
+
+        } else {
+            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
         }
     });
 }

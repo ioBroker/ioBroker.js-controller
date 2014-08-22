@@ -10,7 +10,7 @@ This is the Javascript/Node.js implementation of an ioBroker controller and base
 ### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 
 on Raspbian/Cubian:
-* ```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
+* ```wget http://download.iobroker.org/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
 
 ### Install [Redis](http://redis.io/)
 
