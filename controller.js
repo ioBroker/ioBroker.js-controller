@@ -458,7 +458,7 @@ function restartInstance(id) {
 
 var isStopping = false;
 var stopArr = [];
-var allInstancesStopped = false;
+var allInstancesStopped = true;
 
 function stop() {
     logger.info('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
