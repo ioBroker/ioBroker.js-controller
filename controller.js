@@ -54,7 +54,7 @@ var firstIp = ipArr[0];
 logger.info('ioBroker.nodejs version ' + version);
 logger.info('copyright 2014 hobbyquaker, bluefox');
 logger.info(title + ' starting');
-logger.info('controller ip: ' + ipArr.join(' '));
+logger.info('controller hostname: ' + hostname + ' IPs: ' + ipArr.join(' '));
 
 
 
@@ -250,9 +250,9 @@ function getInstances() {
                 var instance = doc.rows[i].value;
                 logger.debug('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
-                if (ipArr.indexOf(instance.common.host) !== -1) {
+                if (ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = {config: instance};
-                    count++;
+                    if (instance.common.enabled) count++;
                 }
             }
             if (count > 0) {
