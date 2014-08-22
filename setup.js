@@ -42,6 +42,7 @@ var request;
 var extend;
 var mime;
 var os;
+var states;
 
 switch (yargs.argv._[0]) {
 
@@ -149,7 +150,19 @@ switch (yargs.argv._[0]) {
             adpr = parts[0];
             instance = parts[1];
         }
+        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+        config = JSON.parse(config);
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        var StatesRedis = require(__dirname + '/lib/redis.js');
+        states = new StatesRedis({
+            redis: {
+                host:    config.redis.host,
+                port:    config.redis.port,
+                options: config.redis.options
+            }
+        });
+
+
         if (instance !== null && instance !== undefined && instance !== "") {
             dbConnect(function () {
                 deleteInstance(adpr, instance);
@@ -192,7 +205,7 @@ switch (yargs.argv._[0]) {
             config = JSON.parse(config);
 
             var StatesRedis = require(__dirname + '/lib/redis.js');
-            var states = new StatesRedis({
+            states = new StatesRedis({
                 redis: {
                     host:    config.redis.host,
                     port:    config.redis.port,
@@ -270,7 +283,7 @@ switch (yargs.argv._[0]) {
             config = JSON.parse(config);
 
             var StatesRedis = require(__dirname + '/lib/redis.js');
-            var states = new StatesRedis({
+            states = new StatesRedis({
                 redis: {
                     host:    config.redis.host,
                     port:    config.redis.port,
@@ -864,6 +877,7 @@ function updateRepo() {
 }
 
 function deleteAdapter(adapter, callback) {
+    // Delete instances
     objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
@@ -881,6 +895,7 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
+    // Delete adapter objects
     objects.getObjectView("system", "adapter", {startkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
@@ -919,37 +934,55 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-
-    objects.getObjectView("system", "state", {}, function (err, doc) {
+    // Delete devices
+    objects.getObjectView("system", "device", {}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
             if (doc.rows.length === 0) {
-                console.log('no adapter ' + adapter + ' found');
+                console.log('no devices ' + adapter + ' found');
             } else {
                 var count = 0;
-                var name = "system.adapter." + adapter;
                 for (var i = 0; i < doc.rows.length; i++) {
-                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                    if (doc.rows[i].value._id.substring(0, adapter.length) == adapter) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
                     }
                 }
-                console.log('deleted ' + count + ' system.states of ' + adapter);
+                console.log('deleted ' + count + ' devices of ' + adapter);
             }
         }
     });
+    // Delete channels
+    objects.getObjectView("system", "channel", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no channels ' + adapter + ' found');
+            } else {
+                var count = 0;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, adapter.length) == adapter) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' channels of ' + adapter);
+            }
+        }
+    });
+    // Delete states
     objects.getObjectView("system", "state", {}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
             if (doc.rows.length === 0) {
-                console.log('no adapter ' + adapter + ' found');
+                console.log('no states ' + adapter + ' found');
             } else {
                 var count = 0;
-                var name = adapter;
                 for (var i = 0; i < doc.rows.length; i++) {
-                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                    if (doc.rows[i].value._id.substring(0, adapter.length) == adapter) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
                     }
@@ -973,7 +1006,25 @@ function deleteAdapter(adapter, callback) {
         } else {
             if (obj) console.log('object ' + adapter + '.admin deleted');
         }
-    });}
+    });
+
+    states.getKeys(adapter + '.*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            states.delState(obj[i]);
+        }
+        console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
+    });
+    states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            states.delState(obj[i]);
+        }
+        console.log ('Deleted ' + obj.length + ' states (system.adapter.' + adapter + '.*) from redis');
+    });
+
+    setTimeout(function () {
+        process.exit();
+    }, 2000);
+}
 
 function correctChildren(err, obj) {
     if (!err && obj && obj.children) {
@@ -986,6 +1037,7 @@ function correctChildren(err, obj) {
 }
 
 function deleteInstance(adapter, instance, callback) {
+    // Delete instance
     objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
@@ -1008,12 +1060,13 @@ function deleteInstance(adapter, instance, callback) {
         }
     });
 
-    objects.getObjectView("system", "state", {}, function (err, doc) {
+    // Delete devices
+    objects.getObjectView("system", "device", {}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
             if (doc.rows.length === 0) {
-                console.log('no adapter ' + adapter + ' found');
+                console.log('no devices ' + adapter + ' found');
             } else {
                 var count = 0;
                 var name = "system.adapter." + adapter + '.' + instance;
@@ -1023,7 +1076,47 @@ function deleteInstance(adapter, instance, callback) {
                         count++;
                     }
                 }
-                console.log('deleted ' + count + ' system.states of ' + adapter + '.' + instance);
+                console.log('deleted ' + count + ' devices of ' + adapter);
+            }
+        }
+    });
+    // Delete channels
+    objects.getObjectView("system", "channel", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no channels ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = "system.adapter." + adapter + '.' + instance;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' channels of ' + adapter);
+            }
+        }
+    });
+    // Delete states
+    objects.getObjectView("system", "state", {}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no states ' + adapter + ' found');
+            } else {
+                var count = 0;
+                var name = "system.adapter." + adapter + '.' + instance;
+                for (var i = 0; i < doc.rows.length; i++) {
+                    if (doc.rows[i].value._id.substring(0, name.length) == name) {
+                        objects.delObject(doc.rows[i].value._id);
+                        count++;
+                    }
+                }
+                console.log('deleted ' + count + ' states of ' + adapter);
             }
         }
     });
@@ -1067,6 +1160,13 @@ function deleteInstance(adapter, instance, callback) {
         } else {
             console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
         }
+    });
+
+    states.getKeys(adapter + '.' + instance + '*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            states.delState(obj[i]);
+        }
+        console.log ('Deleted ' + obj.length + ' states from redis');
     });
 }
 
