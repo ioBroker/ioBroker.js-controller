@@ -41,6 +41,7 @@ var tools;
 var request;
 var extend;
 var mime;
+var os;
 
 switch (yargs.argv._[0]) {
 
@@ -92,26 +93,29 @@ switch (yargs.argv._[0]) {
     case "add":
     case "install":
         fs =            require('fs');
+        os =            require('os');
+
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
+
         mime =          require('mime');
-        fs  =           require('fs');
+        extend =        require('node.extend');
         ncp =           require('ncp').ncp;
+
         ncp.limit =     16;
 
         var name =      yargs.argv._[1];
-        var ipArr =     tools.findIPs();
-        var firstIp =   ipArr[0];
+        var hostname =  os.hostname();
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadAdapter(name, function () {
                 dbConnect(function () {
-                    createInstance(name, yargs.argv.enabled, yargs.argv.host || firstIp);
+                    createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
             });
         } else {
             dbConnect(function () {
-                createInstance(name, yargs.argv.enabled, yargs.argv.host || firstIp);
+                createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
             });
         }
         break;
@@ -432,7 +436,7 @@ function downloadAdapter(adapter, callback) {
         fs.writeFileSync(__dirname + '/conf/sources.json', sources);
         sources = JSON.parse(sources);
     } else {
-        sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
+        sources = extend(true, JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json')), JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json')));
     }
 
     if (sources[adapter]) {
@@ -513,6 +517,7 @@ function installAdapter(adapter, callback) {
         }
 
         adapterConf.common.installedVersion = adapterConf.common.version;
+
         objs.push({
             _id:      'system.adapter.' + adapterConf.common.name,
             type:     'adapter',
@@ -605,7 +610,7 @@ function createInstance(adapter, enabled, host, callback) {
     }
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
-        if (err || !doc) {
+        if (err || !doc || !doc.common.installedVersion) {
             installAdapter(adapter, function () {
                 createInstance(adapter, enabled, host, callback);
             });
@@ -629,6 +634,9 @@ function createInstance(adapter, enabled, host, callback) {
             delete instanceObj._rev;
             instanceObj.common.enabled = enabled || false;
             instanceObj.common.host    = host;
+
+            console.log('create instance ' + adapter);
+
 
             var objs = [
                 {
@@ -721,7 +729,6 @@ function createInstance(adapter, enabled, host, callback) {
                 }
             }
 
-            // call install of adapter
 
 
             function setObjs() {
@@ -810,15 +817,32 @@ function updateRepo() {
                 request(elem.url, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log('http 200 ' + elem.url);
-                        var _body = JSON.parse(body);
+                        try {
+                            var _body = JSON.parse(body);
+                        } catch (e) {
+                            console.log('error: json parse failed');
+                            download();
+                            return;
+                        }
                         if (!result[elem.name]) {
                             _body.type = 'adapter';
                             delete _body.objects;
-                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                console.log('object ' + res.id + ' created dl');
-                                result[elem.name] = _body;
-                                download();
+                            objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
+                                if (err || !res) {
+                                    objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
+                                        console.log('object ' + res.id + ' created');
+                                        result[elem.name] = _body;
+                                        download();
+                                    });
+                                } else {
+                                    objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
+                                        console.log('object ' + res.id + ' extended');
+                                        result[elem.name] = _body;
+                                        download();
+                                    });
+                                }
                             });
+
 
                         } else {
                             result[elem.name] = extend(true, result[elem.name], _body);

@@ -54,7 +54,8 @@ var firstIp = ipArr[0];
 logger.info('ioBroker.nodejs version ' + version);
 logger.info('copyright 2014 hobbyquaker, bluefox');
 logger.info(title + ' starting');
-logger.info('controller ip: ' + ipArr.join(' '));
+logger.info('controller hostname: ' + hostname);
+logger.info('controller ip addresses: ' + ipArr.join(' '));
 
 
 
@@ -105,14 +106,14 @@ var objects = new ObjectsCouch({
             procs[id].config = obj;
             if (procs[id].process) {
                 stopInstance(id, function () {
-                    if (ipArr.indexOf(obj.common.host) !== -1) {
+                    if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                         if (obj.common.enabled) startInstance(id);
                     } else {
                         delete procs[id];
                     }
                 });
             } else {
-                if (ipArr.indexOf(obj.common.host) !== -1) {
+                if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                     if (obj.common.enabled) startInstance(id);
                 } else {
                     delete procs[id];
@@ -121,7 +122,7 @@ var objects = new ObjectsCouch({
 
         } else {
             // unknown adapter
-            if (ipArr.indexOf(obj.common.host) !== -1) {
+            if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                 procs[id] = {config: obj};
                 if (obj.common.enabled) startInstance(id);
             }
@@ -250,9 +251,9 @@ function getInstances() {
                 var instance = doc.rows[i].value;
                 logger.debug('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
-                if (ipArr.indexOf(instance.common.host) !== -1) {
+                if (ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = {config: instance};
-                    count++;
+                    if (instance.common.enabled) count++;
                 }
             }
             if (count > 0) {
@@ -311,7 +312,7 @@ function startInstance(id, wakeUp) {
                     } else if (code === null) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
-                        if (procs[id].stopping || isStopping || wakeUp) {
+                        if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
                             delete procs[id].process;
@@ -458,10 +459,10 @@ function restartInstance(id) {
 
 var isStopping = false;
 var stopArr = [];
-var allInstancesStopped = false;
+var allInstancesStopped = true;
 
 function stop() {
-    logger.info('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+    logger.debug('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
 
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {

@@ -1,6 +1,6 @@
 # ioBroker.nodejs
 
-This is the Javascript/Node.js implementation of an ioBroker controller and base adapters.
+This is a Javascript/Node.js implementation of an ioBroker controller.
 
 **see ioBroker Readme: https://github.com/iobroker/iobroker**
 
@@ -9,8 +9,16 @@ This is the Javascript/Node.js implementation of an ioBroker controller and base
 
 ### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 
-on Raspbian/Cubian:
 * ```wget http://download.iobroker.org/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
+#### x86/amd64 Linux, Windows, OSX
+[http://nodejs.org/download/](http://nodejs.org/download/)
+
+#### Debian package for ARM (Raspbian, Cubian, ...)
+```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb
+sudo dpkg -i nodejs_0.10.22-1_armhf.deb
+rm nodejs_0.10.22-1_armhf.deb```
+
+
 
 ### Install [Redis](http://redis.io/)
 
@@ -67,7 +75,7 @@ or
 
 ### Admin UI
 
-The admin adapter starts a webserver that hosts the Admin UI. Default port is 8080, so just open http://&lt;iobroker&gt;:8080/
+The admin adapter starts a webserver that hosts the Admin UI. Default port is 8081, so just open http://&lt;iobroker&gt;:8081/
 
 
 ### Install more adapters
