@@ -14,41 +14,35 @@
             "language": "javascript",
             "views": {
                 "host": {
-                    "map": "function(doc) { if (doc.type=='host') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='host') emit(doc._id, doc) }"
                 },
                 "adapter": {
-                    "map": "function(doc) { if (doc.type=='adapter') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='adapter') emit(doc._id, doc) }"
                 },
                 "instance": {
-                    "map": "function(doc) { if (doc.type=='instance') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='instance') emit(doc._id, doc) }"
                 },
                 "instanceStats": {
                     "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
                     "reduce": "_stats"
                 },
                 "meta": {
-                    "map": "function(doc) { if (doc.type=='meta') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='meta') emit(doc._id, doc) }"
                 },
                 "device": {
-                    "map": "function(doc) { if (doc.type=='device') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='device') emit(doc._id, doc) }"
                 },
                 "channel": {
-                    "map": "function(doc) { if (doc.type=='channel') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='channel') emit(doc._id, doc) }"
                 },
                 "state": {
-                    "map": "function(doc) { if (doc.type=='state') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='state') emit(doc._id, doc) }"
                 },
                 "enum": {
-                    "map": "function(doc) { if (doc.type=='enum') emit(doc.common.name, doc) }"
-                },
-                "config": {
-                    "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
-                },
-                "vfs": {
-                    "map": "function(doc) { if (doc.type=='vfs') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='enum') emit(doc._id, doc) }"
                 },
                 "script": {
-                    "map": "function(doc) { if (doc.type=='script') emit(doc.common.name, doc) }"
+                    "map": "function(doc) { if (doc.type=='script') emit(doc._id, doc) }"
                 },
                 "group": {
                     "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
