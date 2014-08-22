@@ -41,6 +41,7 @@ var tools;
 var request;
 var extend;
 var mime;
+var os;
 
 switch (yargs.argv._[0]) {
 
@@ -92,27 +93,29 @@ switch (yargs.argv._[0]) {
     case "add":
     case "install":
         fs =            require('fs');
+        os =            require('os');
+
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
+
         mime =          require('mime');
         extend =        require('node.extend');
-        fs  =           require('fs');
         ncp =           require('ncp').ncp;
+
         ncp.limit =     16;
 
         var name =      yargs.argv._[1];
-        var ipArr =     tools.findIPs();
-        var firstIp =   ipArr[0];
+        var hostname =  os.hostname();
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadAdapter(name, function () {
                 dbConnect(function () {
-                    createInstance(name, yargs.argv.enabled, yargs.argv.host || firstIp);
+                    createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
             });
         } else {
             dbConnect(function () {
-                createInstance(name, yargs.argv.enabled, yargs.argv.host || firstIp);
+                createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
             });
         }
         break;
