@@ -105,7 +105,7 @@ var objects = new ObjectsCouch({
             procs[id].config = obj;
             if (procs[id].process) {
                 stopInstance(id, function () {
-                    if (ipArr.indexOf(obj.common.host) !== -1) {
+                    if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host == hostname) {
                         if (obj.common.enabled) startInstance(id);
                     } else {
                         delete procs[id];
