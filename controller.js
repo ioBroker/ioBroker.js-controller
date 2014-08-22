@@ -54,7 +54,8 @@ var firstIp = ipArr[0];
 logger.info('ioBroker.nodejs version ' + version);
 logger.info('copyright 2014 hobbyquaker, bluefox');
 logger.info(title + ' starting');
-logger.info('controller hostname: ' + hostname + ' IPs: ' + ipArr.join(' '));
+logger.info('controller hostname: ' + hostname);
+logger.info('controller ip addresses: ' + ipArr.join(' '));
 
 
 
