@@ -127,13 +127,19 @@ switch (yargs.argv._[0]) {
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
         var name =      yargs.argv._[1];
-        dbConnect(function () {
-            uploadAdapter(name, true, function () {
-                uploadAdapter(name, false, function () {
+        if (name) {
+            dbConnect(function () {
+                uploadAdapter(name, true, function () {
+                    uploadAdapter(name, false, function () {
 
+                    });
                 });
             });
-        });
+        } else {
+            console.log("No adapter name found!");
+            yargs.showHelp();
+            process.exit(1);
+        }
         break;
 
     case "delete":
@@ -457,7 +463,7 @@ function downloadAdapter(adapter, callback) {
         url = sources[adapter].url;
     } else {
         url = adapter;
-        if (url.indexOf("http://") == -1 && uri.indexOf("https://") == -1) {
+        if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
             console.log("Unknown adapter " + adapter);
             process.exit(1);
         }
@@ -519,6 +525,28 @@ function installAdapter(adapter, callback) {
     } catch (e) {
         console.log('error: reading io-package.json ' + e);
         process.exit(1);
+    }
+
+    function checkDependencies(deps, _enabled, _host) {
+        if (!deps || !deps.length) return;
+
+        // Get all installed adapters
+        objects.getObjectView("system", "instance", {}, function (err, objs) {
+            if (objs.rows.length) {
+                for (var i = 0; i < deps.length; i++) {
+                    var isFound = false;
+                    for (var t = 0; t < objs.rows.length; t++) {
+                        if (objs.rows[t].common.name == deps[i]) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        createInstance(deps[i], _enabled, _host);
+                    }
+                }
+            }
+        });
     }
 
     function install() {
@@ -599,28 +627,6 @@ function installAdapter(adapter, callback) {
 }
 
 function createInstance(adapter, enabled, host, callback) {
-
-    function checkDependencies(deps, _enabled, _host) {
-        if (!deps || !deps.length) return;
-
-        // Get all installed adapters
-        objects.getObjectView("system", "instance", {}, function (err, objs) {
-            if (objs.rows.length) {
-                for (var i = 0; i < deps.length; i++) {
-                    var isFound = false;
-                    for (var t = 0; t < objs.rows.length; t++) {
-                        if (objs.rows[t].common.name == deps[i]) {
-                            isFound = true;
-                            break;
-                        }
-                    }
-                    if (!isFound) {
-                        createInstance(deps[i], _enabled, _host);
-                    }
-                }
-            }
-        });
-    }
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
         if (err || !doc || !doc.common.installedVersion) {
@@ -737,8 +743,8 @@ function createInstance(adapter, enabled, host, callback) {
             }
 
             if (adapterConf.objects && adapterConf.objects.length > 0) {
-                for (var i = 0, l = adapterConf.objects.length; i < l; i++) {
-                    objs.push(adapterConf.objects[i]);
+                for (var j = 0, l = adapterConf.objects.length; j < l; j++) {
+                    objs.push(adapterConf.objects[j]);
                 }
             }
 
@@ -828,10 +834,11 @@ function updateRepo() {
                 request(elem.url, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log('http 200 ' + elem.url);
+                        var _body = {};
                         try {
-                            var _body = JSON.parse(body);
+                            _body = JSON.parse(body);
                         } catch (e) {
-                            console.log('error: json parse failed');
+                            console.log('error: json parse failed for ' + elem.url);
                             download();
                             return;
                         }
@@ -1187,6 +1194,11 @@ function deleteInstance(adapter, instance, callback) {
     });
 }
 
+function setupReady() {
+    console.log('database setup done. you can add adapters and start iobroker now');
+    process.exit(0);
+}
+
 function dbSetup() {
     if (iopkg.objects && iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
@@ -1198,6 +1210,9 @@ function dbSetup() {
         // Default Password for user 'admin' is 'iobroker'
         password('iobroker').hash(null, null, function (err, res) {
             // Create user here and not in io-package.js because of hash password
+            var tasks = 0;
+
+            tasks++;
             objects.setObject('system.user.admin', {
                 type: 'user',
                 common: {
@@ -1209,28 +1224,51 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                objects.getObject('system.meta.uuid', function (err, res) {
-                    if (!err && res && res.native && res.native.uuid) {
-                        console.log('database setup done. you can add adapters and start iobroker now');
-                        process.exit(0);
-                    } else {
-                        objects.setObject('system.meta.uuid', {
-                            type: 'meta',
-                            common: {
-                                name: 'uuid',
-                                type: 'uuid'
-                            },
-                            native: {
-                                uuid: uuid()
-                            }
-                        }, function () {
-                            console.log('object system.meta.uuid created');
-                            console.log('database setup done. you can add adapters and start iobroker now');
-                            process.exit(0);
-                        });
-                    }
-                });
+                if (!(--tasks))setupReady();
+            });
 
+            // TODO create enum "rooms" if not exist
+            /*
+            tasks++;
+            objects.getObject('enum.rooms', function (err, res) {
+             if (!err && res) {
+                 if (!(--tasks))setupReady();
+             } else {
+                 objects.setObject('enum.rooms', {
+                     type: 'enum',
+                     common: {
+                         name: 'uuid',
+                         type: 'uuid'
+                     },
+                     native: {
+                         uuid: uuid()
+                     }
+                 }, function () {
+                     console.log('object enum.rooms created');
+                     if (!(--tasks))setupReady();
+                 });
+             }
+            });*/
+
+            tasks++;
+            objects.getObject('system.meta.uuid', function (err, res) {
+                if (!err && res && res.native && res.native.uuid) {
+                    if (!(--tasks))setupReady();
+                } else {
+                    objects.setObject('system.meta.uuid', {
+                        type: 'meta',
+                        common: {
+                            name: 'uuid',
+                            type: 'uuid'
+                        },
+                        native: {
+                            uuid: uuid()
+                        }
+                    }, function () {
+                        console.log('object system.meta.uuid created');
+                        if (!(--tasks))setupReady();
+                    });
+                }
             });
         });
     }
