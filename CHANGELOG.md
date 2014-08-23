@@ -1,3 +1,8 @@
+# 0.0.16 (2014-08-22)
+* (hobbyquaker) admin-ui: enums
+* (hobbyquaker) admin-ui: ...
+* (hobbyquaker) fixes
+
 # 0.0.15 (2014-08-17)
 * (hobbyquaker) admin-ui: adapter-settings
 * (hobbyquaker) admin-ui: add instance

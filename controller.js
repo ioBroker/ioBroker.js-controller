@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.15';
+var version = '0.0.16';
 var title = 'io.controller';
 process.title = title;
 
@@ -39,8 +39,6 @@ if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
 }
 
-
-// Find first non-loopback ip
 var ifaces = os.networkInterfaces();
 var ipArr = [];
 for (var dev in ifaces) {
@@ -49,15 +47,11 @@ for (var dev in ifaces) {
         if (!details.internal) ipArr.push(details.address);
     });
 }
-var firstIp = ipArr[0];
 
-logger.info('ioBroker.nodejs version ' + version);
-logger.info('copyright 2014 hobbyquaker, bluefox');
-logger.info(title + ' starting');
+logger.info('ioBroker.nodejs version ' + version + ' ' + title + ' starting');
+logger.info('Copyright (c) 2014 hobbyquaker, bluefox');
 logger.info('controller hostname: ' + hostname);
 logger.info('controller ip addresses: ' + ipArr.join(' '));
-
-
 
 var procs     = {};
 var subscribe = {};
@@ -283,6 +277,8 @@ function initInstances() {
 }
 
 function startInstance(id, wakeUp) {
+    if (isStopping) return;
+
     var instance = procs[id].config;
     var name = id.split('.')[2];
     var mode = instance.common.mode;
@@ -451,29 +447,21 @@ function stopInstance(id, callback) {
     }
 }
 
-function restartInstance(id) {
-    stopInstance(id, function () {
-        startInstance(id);
-    });
-}
 
 var isStopping = false;
-var stopArr = [];
 var allInstancesStopped = true;
 
 function stop() {
     logger.debug('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
-
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
             logger.info('controller force terminating');
             process.exit(1);
             return;
         });
-
+    } else {
+        isStopping = true;
     }
-
-    isStopping = true;
 
     if (isDaemon) {
         // send instances SIGTERM, only needed if running in backround (isDaemon)
