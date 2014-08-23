@@ -47,6 +47,10 @@
         "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
     },
+    "sonos": {
+        "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json"
+    },
     "virtual": {
         "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.virtual/master/io-package.json"

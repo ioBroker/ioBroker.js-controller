@@ -9,6 +9,7 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 
 ### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
 
+* ```wget http://download.iobroker.org/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
 #### x86/amd64 Linux, Windows, OSX
 [http://nodejs.org/download/](http://nodejs.org/download/)
 
