@@ -816,10 +816,8 @@ function updateRepo() {
         var downloads = [];
 
         for (var name in sources) {
-            downloads.push({name: name, url: sources[name].meta});
+            downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon});
         }
-
-
 
         function download() {
             if (downloads.length < 1) {
@@ -839,6 +837,11 @@ function updateRepo() {
                         }
                         if (!result[elem.name]) {
                             _body.type = 'adapter';
+                            // Add external link to icon
+                            if (elem.icon) {
+                                _body.common = _body.common || {};
+                                _body.common.extIcon = elem.icon;
+                            }
                             delete _body.objects;
                             objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
                                 if (err || !res) {
@@ -858,7 +861,21 @@ function updateRepo() {
 
 
                         } else {
-                            result[elem.name] = extend(true, result[elem.name], _body);
+                            if (elem.icon) {
+                                _body.common = _body.common || {};
+                                _body.common.extIcon = elem.icon;
+                            }
+                            delete _body.objects;
+                            delete result[elem.name]._rev;
+                            delete result[elem.name]._id;
+                            delete result[elem.name].type;
+                            delete result[elem.name].children;
+                            if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
+                            if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
+                            if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
+                                result[elem.name] = extend(true, result[elem.name], _body);
+                                objects.extendObject('system.adapter.' + _body.common.name, _body);
+                            }
                             download();
                         }
 

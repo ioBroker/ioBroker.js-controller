@@ -1,7 +1,8 @@
 {
     "admin": {
         "url": "https://github.com/ioBroker/ioBroker.admin/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png"
     },
     "artnet": {
         "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
@@ -49,7 +50,8 @@
     },
     "sonos": {
         "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
     },
     "virtual": {
         "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip",
