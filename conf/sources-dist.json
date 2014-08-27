@@ -16,6 +16,11 @@
         "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json"
     },
+    "email": {
+        "url": "https://github.com/ioBroker/ioBroker.email/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
+    },
     "history": {
         "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json"
