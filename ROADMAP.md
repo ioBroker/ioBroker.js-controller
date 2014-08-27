@@ -5,14 +5,9 @@
 * (hobbyquaker) admin-ui: objects: add, edit, delete
 * (hobbyquaker) admin-ui: enums: add, edit, delete, move, assign and remove members
 * (hobbyquaker) adapter legacy
-* (bluefox) ioBroker.build.
-* (bluefox) Windows installation package.
-* (bluefox) Debian installation package.
+* (bluefox) adapter package
 * io-package.json - pre/post install hooks
-* admin-ui: adapter instance: add/edit/delete
 * (bluefox) adapter dependencies check
-* (bluefox) admin.js make call of node platform independent
-
 
 
 # 0.2.0
