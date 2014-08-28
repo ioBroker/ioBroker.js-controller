@@ -39,7 +39,8 @@
     },
     "javascript": {
         "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/javascript.png"
     },
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
@@ -52,6 +53,11 @@
     "socketio": {
         "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
+    },
+    "pushover": {
+        "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
     },
     "sonos": {
         "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
