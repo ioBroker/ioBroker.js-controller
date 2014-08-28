@@ -127,13 +127,19 @@ switch (yargs.argv._[0]) {
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
         var name =      yargs.argv._[1];
-        dbConnect(function () {
-            uploadAdapter(name, true, function () {
-                uploadAdapter(name, false, function () {
+        if (name) {
+            dbConnect(function () {
+                uploadAdapter(name, true, function () {
+                    uploadAdapter(name, false, function () {
 
+                    });
                 });
             });
-        });
+        } else {
+            console.log("No adapter name found!");
+            yargs.showHelp();
+            process.exit(1);
+        }
         break;
 
     case "delete":
@@ -279,6 +285,11 @@ switch (yargs.argv._[0]) {
     case "message":
         var id  = yargs.argv._[1];
         if (id) {
+            if (id.indexOf('.') == -1) {
+                console.log('Set the instance of adapter, like "email.0" and not just "email"');
+                return;
+            }
+
             var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
             config = JSON.parse(config);
 
@@ -457,7 +468,7 @@ function downloadAdapter(adapter, callback) {
         url = sources[adapter].url;
     } else {
         url = adapter;
-        if (url.indexOf("http://") == -1 && uri.indexOf("https://") == -1) {
+        if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
             console.log("Unknown adapter " + adapter);
             process.exit(1);
         }
@@ -519,6 +530,28 @@ function installAdapter(adapter, callback) {
     } catch (e) {
         console.log('error: reading io-package.json ' + e);
         process.exit(1);
+    }
+
+    function checkDependencies(deps, _enabled, _host) {
+        if (!deps || !deps.length) return;
+
+        // Get all installed adapters
+        objects.getObjectView("system", "instance", {}, function (err, objs) {
+            if (objs.rows.length) {
+                for (var i = 0; i < deps.length; i++) {
+                    var isFound = false;
+                    for (var t = 0; t < objs.rows.length; t++) {
+                        if (objs.rows[t].common.name == deps[i]) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        createInstance(deps[i], _enabled, _host);
+                    }
+                }
+            }
+        });
     }
 
     function install() {
@@ -600,28 +633,6 @@ function installAdapter(adapter, callback) {
 
 function createInstance(adapter, enabled, host, callback) {
 
-    function checkDependencies(deps, _enabled, _host) {
-        if (!deps || !deps.length) return;
-
-        // Get all installed adapters
-        objects.getObjectView("system", "instance", {}, function (err, objs) {
-            if (objs.rows.length) {
-                for (var i = 0; i < deps.length; i++) {
-                    var isFound = false;
-                    for (var t = 0; t < objs.rows.length; t++) {
-                        if (objs.rows[t].common.name == deps[i]) {
-                            isFound = true;
-                            break;
-                        }
-                    }
-                    if (!isFound) {
-                        createInstance(deps[i], _enabled, _host);
-                    }
-                }
-            }
-        });
-    }
-
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
         if (err || !doc || !doc.common.installedVersion) {
             installAdapter(adapter, function () {
@@ -691,7 +702,7 @@ function createInstance(adapter, enabled, host, callback) {
             }
             if (instanceObj.common.wakeup) {
                 objs.push({
-                    id: 'system.adapter.' + adapter + '.' + instance + '.wakeup',
+                    _id: 'system.adapter.' + adapter + '.' + instance + '.wakeup',
                     type: 'state',
                     name: adapter + '.' + instance + '.wakeup',
                     parent: 'system.adapter.' + adapter + '.' + instance,
@@ -737,8 +748,8 @@ function createInstance(adapter, enabled, host, callback) {
             }
 
             if (adapterConf.objects && adapterConf.objects.length > 0) {
-                for (var i = 0, l = adapterConf.objects.length; i < l; i++) {
-                    objs.push(adapterConf.objects[i]);
+                for (var j = 0, l = adapterConf.objects.length; j < l; j++) {
+                    objs.push(adapterConf.objects[j]);
                 }
             }
 
@@ -808,7 +819,7 @@ function updateRepo() {
         try {
             console.log('loading conf/sources-dist.json');
             var sourcesDist = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
-            sources = extend(sourcesDist, sources);
+            sources = extend(sourcesDist, sources, true);
         } catch (e) {
 
         }
@@ -816,10 +827,8 @@ function updateRepo() {
         var downloads = [];
 
         for (var name in sources) {
-            downloads.push({name: name, url: sources[name].meta});
+            downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon});
         }
-
-
 
         function download() {
             if (downloads.length < 1) {
@@ -830,15 +839,21 @@ function updateRepo() {
                 request(elem.url, function (error, response, body) {
                     if (!error && response.statusCode == 200) {
                         console.log('http 200 ' + elem.url);
+                        var _body = {};
                         try {
-                            var _body = JSON.parse(body);
+                            _body = JSON.parse(body);
                         } catch (e) {
-                            console.log('error: json parse failed');
+                            console.log('error: json parse failed for ' + elem.url);
                             download();
                             return;
                         }
                         if (!result[elem.name]) {
                             _body.type = 'adapter';
+                            // Add external link to icon
+                            if (elem.icon) {
+                                _body.common = _body.common || {};
+                                _body.common.extIcon = elem.icon;
+                            }
                             delete _body.objects;
                             objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
                                 if (err || !res) {
@@ -858,7 +873,21 @@ function updateRepo() {
 
 
                         } else {
-                            result[elem.name] = extend(true, result[elem.name], _body);
+                            if (elem.icon) {
+                                _body.common = _body.common || {};
+                                _body.common.extIcon = elem.icon;
+                            }
+                            delete _body.objects;
+                            delete result[elem.name]._rev;
+                            delete result[elem.name]._id;
+                            delete result[elem.name].type;
+                            delete result[elem.name].children;
+                            if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
+                            if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
+                            if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
+                                result[elem.name] = extend(true, result[elem.name], _body);
+                                objects.extendObject('system.adapter.' + _body.common.name, _body);
+                            }
                             download();
                         }
 
@@ -1009,21 +1038,26 @@ function deleteAdapter(adapter, callback) {
     });
 
     states.getKeys(adapter + '.*', function (err, obj) {
-        for (var i = 0; i < obj.length; i++) {
-            states.delState(obj[i]);
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                states.delState(obj[i]);
+            }
+            console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
         }
-        console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
     });
     states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
-        for (var i = 0; i < obj.length; i++) {
-            states.delState(obj[i]);
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                states.delState(obj[i]);
+            }
+            console.log ('Deleted ' + obj.length + ' states (system.adapter.' + adapter + '.*) from redis');
         }
-        console.log ('Deleted ' + obj.length + ' states (system.adapter.' + adapter + '.*) from redis');
-    });
 
-    setTimeout(function () {
-        process.exit();
-    }, 2000);
+        // Force setup to terminate
+        setTimeout(function () {
+            process.exit();
+        }, 2000);
+    });
 }
 
 function correctChildren(err, obj) {
@@ -1167,7 +1201,19 @@ function deleteInstance(adapter, instance, callback) {
             states.delState(obj[i]);
         }
         console.log ('Deleted ' + obj.length + ' states from redis');
+
+        // Force setup to terminate
+        setTimeout(function () {
+            process.exit();
+        }, 2000);
     });
+
+
+}
+
+function setupReady() {
+    console.log('database setup done. you can add adapters and start iobroker now');
+    process.exit(0);
 }
 
 function dbSetup() {
@@ -1181,6 +1227,9 @@ function dbSetup() {
         // Default Password for user 'admin' is 'iobroker'
         password('iobroker').hash(null, null, function (err, res) {
             // Create user here and not in io-package.js because of hash password
+            var tasks = 0;
+
+            tasks++;
             objects.setObject('system.user.admin', {
                 type: 'user',
                 common: {
@@ -1192,28 +1241,51 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                objects.getObject('system.meta.uuid', function (err, res) {
-                    if (!err && res && res.native && res.native.uuid) {
-                        console.log('database setup done. you can add adapters and start iobroker now');
-                        process.exit(0);
-                    } else {
-                        objects.setObject('system.meta.uuid', {
-                            type: 'meta',
-                            common: {
-                                name: 'uuid',
-                                type: 'uuid'
-                            },
-                            native: {
-                                uuid: uuid()
-                            }
-                        }, function () {
-                            console.log('object system.meta.uuid created');
-                            console.log('database setup done. you can add adapters and start iobroker now');
-                            process.exit(0);
-                        });
-                    }
-                });
+                if (!(--tasks))setupReady();
+            });
 
+            // TODO create enum "rooms" if not exist
+            /*
+            tasks++;
+            objects.getObject('enum.rooms', function (err, res) {
+             if (!err && res) {
+                 if (!(--tasks))setupReady();
+             } else {
+                 objects.setObject('enum.rooms', {
+                     type: 'enum',
+                     common: {
+                         name: 'uuid',
+                         type: 'uuid'
+                     },
+                     native: {
+                         uuid: uuid()
+                     }
+                 }, function () {
+                     console.log('object enum.rooms created');
+                     if (!(--tasks))setupReady();
+                 });
+             }
+            });*/
+
+            tasks++;
+            objects.getObject('system.meta.uuid', function (err, res) {
+                if (!err && res && res.native && res.native.uuid) {
+                    if (!(--tasks))setupReady();
+                } else {
+                    objects.setObject('system.meta.uuid', {
+                        type: 'meta',
+                        common: {
+                            name: 'uuid',
+                            type: 'uuid'
+                        },
+                        native: {
+                            uuid: uuid()
+                        }
+                    }, function () {
+                        console.log('object system.meta.uuid created');
+                        if (!(--tasks))setupReady();
+                    });
+                }
             });
         });
     }
