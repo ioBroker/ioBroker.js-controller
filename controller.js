@@ -293,13 +293,22 @@ function startInstance(id, wakeUp) {
         // TODO
     }
 
+    var fileName = instance.common.main || "main.js";
+    if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
+        fileName = name + '.js';
+        if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
+            logger.error('controller startInstance cannot find start file for adapter "' + name + '"');
+            return;
+        }
+    }
+
     switch (mode) {
         case 'daemon':
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
-                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
+                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true});
                     states.setState(id + '.connected', {val: false, ack: true});
@@ -349,7 +358,7 @@ function startInstance(id, wakeUp) {
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
 
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + name + '.js', args);
+                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
                 logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {

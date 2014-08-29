@@ -1273,11 +1273,12 @@ function dbSetup() {
             objects.setObject('system.config', {
                 type: 'config',
                 common: {
-                    language:     'en',         // Default language for adapters. Adapters can use different values.
-                    tempUnit:     '°C',         // Default temperature units.
-                    currency:     '€',          // Default currency sign.
-                    dateFormat:   'DD.MM.YYYY', // Default date format.
-                    isFloatComma: true          // Default float divider ('.' - false, ',' - true)
+                    language:         '',           // Default language for adapters. Adapters can use different values.
+                    tempUnit:         '°C',         // Default temperature units.
+                    currency:         '€',          // Default currency sign.
+                    dateFormat:       'DD.MM.YYYY', // Default date format.
+                    isFloatComma:     true,         // Default float divider ('.' - false, ',' - true)
+                    licenseConfirmed: false         // If license agreement confirmed
                 }
             }, function () {
                 console.log('object system.config created');
