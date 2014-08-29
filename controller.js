@@ -398,8 +398,6 @@ function startInstance(id, wakeUp) {
             logger.error(instance._id + ' invalid mode');
 
     }
-
-
 }
 
 function stopInstance(id, callback) {
@@ -417,6 +415,7 @@ function stopInstance(id, callback) {
                 if (typeof callback === 'function') callback();
             }
             break;
+
         case 'schedule':
             if (!procs[id].schedule) {
                 logger.warn('controller stopInstance ' + instance._id + ' not scheduled');
@@ -427,10 +426,27 @@ function stopInstance(id, callback) {
             }
             if (typeof callback === 'function') callback();
             break;
+
         case 'subscribe':
-            if (subscribe.indexOf(procs[id].subscribe) != -1) {
-                subscribe.splice(subscribe.indexOf(procs[id].subscribe).subscribe, 1);
+            // Remove this id from subsribed on this message
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
+                subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
+
+                // If no one subscribed
+                if (!subscribe[procs[id].subscribe].length) {
+                    // Delete item
+                    delete subscribe[procs[id].subscribe];
+
+                    // Unsubscribe
+                    if (procs[id].subscribe == instance._id + ".messagebox") {
+                        states.unsubscribeMessage(procs[id].subscribe);
+                    } else {
+                        states.unsubscribe(procs[id].subscribe);
+                    }
+                }
             }
+
+
             if (!procs[id].process) {
                 if (typeof callback === 'function') callback();
             } else {
@@ -440,7 +456,6 @@ function stopInstance(id, callback) {
                 delete(procs[id].process);
                 if (typeof callback === 'function') callback();
             }
-            //states.unsubscribeMessage(procs[id].subscribe);
             break;
 
         default:

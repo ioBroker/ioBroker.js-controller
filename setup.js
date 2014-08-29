@@ -283,41 +283,64 @@ switch (yargs.argv._[0]) {
         break;
 
     case "message":
-        var id  = yargs.argv._[1];
-        if (id) {
-            if (id.indexOf('.') == -1) {
-                console.log('Set the instance of adapter, like "email.0" and not just "email"');
-                return;
+        var adapter = yargs.argv._[1];
+        var instances = [];
+        if (adapter) {
+            if (adapter.indexOf('.') != -1) {
+                instances.push('system.adapter.' + adapter);
             }
 
             var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
             config = JSON.parse(config);
+            ObjectsCouch =  require(__dirname + '/lib/couch.js');
 
-            var StatesRedis = require(__dirname + '/lib/redis.js');
-            states = new StatesRedis({
-                redis: {
-                    host:    config.redis.host,
-                    port:    config.redis.port,
-                    options: config.redis.options
-                }
-            });
-            var cmd = yargs.argv._[2];
-            var msg = yargs.argv._[3];
-            if (!msg) {
-                msg = cmd;
-                cmd = "send";
-            }
-            if (!msg) {
-                console.log("Invalid format: No message found.");
-                yargs.showHelp();
-                process.exit();
-            } else {
-                states.pushMessage("system.adapter." + id + ".messagebox", {command: cmd, message: msg, from: "setup"}, function () {
-                    process.exit();
+            dbConnect(function () {
+                objects.getObject('system.adapter.' + adapter, function (err, res) {
+                    if (err || !res) {
+                        console.log("Adapter not found");
+                        process.exit(1);
+                    } else {
+                        if (instances.length === 0) {
+                            instances = res.children;
+                        }
+                        if (!instances.length) {
+                            console.log("Error: no one instance installed!");
+                            process.exit(1);
+                        }
+
+                        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+                        config = JSON.parse(config);
+
+                        var StatesRedis = require(__dirname + '/lib/redis.js');
+                        states = new StatesRedis({
+                            redis: {
+                                host:    config.redis.host,
+                                port:    config.redis.port,
+                                options: config.redis.options
+                            }
+                        });
+                        var cmd = yargs.argv._[2];
+                        var msg = yargs.argv._[3];
+                        if (!msg) {
+                            msg = cmd;
+                            cmd = "send";
+                        }
+                        if (!msg) {
+                            console.log("Invalid format: No message found.");
+                            yargs.showHelp();
+                            process.exit();
+                        } else {
+                            for(var i = 0; i < instances.length; i++) {
+                                states.pushMessage(instances[i] + '.messagebox', {command: cmd, message: msg, from: 'setup'}, function () {
+                                    process.exit();
+                                });
+                            }
+                        }
+                    }
                 });
-            }
+            });
         } else {
-            console.log("Invalid format: no id found");
+            console.log("Invalid format: no adapter found");
             yargs.showHelp();
         }
         break;
@@ -647,6 +670,8 @@ function createInstance(adapter, enabled, host, callback) {
                 process.exit(1);
                 return;
             }
+            if (enabled === "true")  enabled = true;
+            if (enabled === "false") enabled = false;
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
             var instanceObj = doc;
@@ -656,11 +681,11 @@ function createInstance(adapter, enabled, host, callback) {
             instanceObj.parent = 'system.adapter.' + adapter;
             instanceObj.children = [];
             delete instanceObj._rev;
-            instanceObj.common.enabled = enabled || false;
+            instanceObj.common.enabled = (enabled === true || enabled === false) ? enabled :
+                ((instanceObj.common.enabled === true || instanceObj.common.enabled === false) ? instanceObj.common.enabled : false);
             instanceObj.common.host    = host;
 
             console.log('create instance ' + adapter);
-
 
             var objs = [
                 {
@@ -1241,7 +1266,22 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                if (!(--tasks))setupReady();
+                if (!(--tasks)) setupReady();
+            });
+
+            tasks++;
+            objects.setObject('system.config', {
+                type: 'config',
+                common: {
+                    language:     'en',         // Default language for adapters. Adapters can use different values.
+                    tempUnit:     '°C',         // Default temperature units.
+                    currency:     '€',          // Default currency sign.
+                    dateFormat:   'DD.MM.YYYY', // Default date format.
+                    isFloatComma: true          // Default float divider ('.' - false, ',' - true)
+                }
+            }, function () {
+                console.log('object system.config created');
+                if (!(--tasks)) setupReady();
             });
 
             // TODO create enum "rooms" if not exist
@@ -1262,7 +1302,7 @@ function dbSetup() {
                      }
                  }, function () {
                      console.log('object enum.rooms created');
-                     if (!(--tasks))setupReady();
+                     if (!(--tasks)) setupReady();
                  });
              }
             });*/
@@ -1270,7 +1310,7 @@ function dbSetup() {
             tasks++;
             objects.getObject('system.meta.uuid', function (err, res) {
                 if (!err && res && res.native && res.native.uuid) {
-                    if (!(--tasks))setupReady();
+                    if (!(--tasks)) setupReady();
                 } else {
                     objects.setObject('system.meta.uuid', {
                         type: 'meta',
@@ -1283,7 +1323,7 @@ function dbSetup() {
                         }
                     }, function () {
                         console.log('object system.meta.uuid created');
-                        if (!(--tasks))setupReady();
+                        if (!(--tasks)) setupReady();
                     });
                 }
             });
