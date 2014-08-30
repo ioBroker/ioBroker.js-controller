@@ -20,11 +20,23 @@
 
 <!-- these two file always have to be included -->
 <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
 
 <!-- you have to define 2 functions in the global scope: -->
 <script type="text/javascript">
+
+    // Dictionary
+    systemDictionary = {
+        "example adapter settings": {"de": "Beispiel", "ru": "Пример"},
+        "test1":                    {"en": "Test 1", "de": "Test 1", "ru": "Тест 1"},
+        "test2":                    {"en": "Test 2", "de": "Test 2", "ru": "Тест 2"},
+        "on save adapter restarts with new config immediately": {
+            "de": "Beim Speichern von Einstellungen der Adapter wird sofort neu gestartet.",
+            "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
+        }
+    };
 
     // the function loadSettings has to exist ...
     function load(settings) {
@@ -50,16 +62,16 @@
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
 
-    <h3>example adapter settings</h3>
-
+    <table><tr>
+        <td><img src="example.png"/></td>
+        <td><h3 class="translate">example adapter settings</h3></td>
+    </tr></table>
     <p>
-        test1 <input class="value" id="test1"/><br>
-        test2 <input class="value" id="test2"/><br>
+        <span class="translate">test1</span> <input class="value" id="test1"/><br>
+        <span class="translate">test2</span> <input class="value" id="test2"/><br>
     </p>
 
-    <p>
-        on save adapter restarts with new config immediately
-    </p>
+    <p class="translate">on save adapter restarts with new config immediately</p>
 
 </div>
 
