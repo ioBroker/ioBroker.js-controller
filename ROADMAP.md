@@ -22,10 +22,11 @@
 * (hobbyquaker) files (Attachments) in CouchDB
 * (hobbyquaker) ctrl: Adapter start/stop via subscribe
 
+
 # 0.4.0
 
 * Beginn Portierung ioBroker.vis (DashUI), ioBroker.mobile (yahui), ScriptGUI, ...
-
+* Wizard: language, admin port and pass, web, and then select adapters to add (vis, mobile, JS, ...)
 
 
 # 0.5.0

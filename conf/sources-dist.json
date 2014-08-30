@@ -23,7 +23,7 @@
     },
     "example": {
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/example.png"
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
     },
     "history": {
         "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
@@ -74,7 +74,8 @@
     },
     "web": {
         "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
     },
     "yr": {
         "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
