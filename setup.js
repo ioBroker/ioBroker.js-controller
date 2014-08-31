@@ -1119,6 +1119,9 @@ function deleteInstance(adapter, instance, callback) {
         }
     });
 
+    // TODO delete meta objects - i think a recursive deletion of all child object would be less effort.
+    // Todo delete everything in adapters namespace (f.e. yr.0 and not system.adapter.yr.0)
+
     // Delete devices
     objects.getObjectView("system", "device", {}, function (err, doc) {
         if (err) {
