@@ -891,7 +891,7 @@ function updateRepo() {
                                     objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
                                         console.log('object ' + res.id + ' extended');
                                         result[elem.name] = _body;
-                                        download();
+                                        setTimeout(download, 25);
                                     });
                                 }
                             });
