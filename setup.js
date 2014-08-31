@@ -637,7 +637,7 @@ function installAdapter(adapter, callback) {
         var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --production --prefix "' + __dirname + '/adapter/' + adapter + '"';
         console.log(cmd);
         var child = exec(cmd);
-        child.stderr.pipe(process.stderr);
+        child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
         child.on('exit', function () {
             uploadAdapter(name, true, function () {
                 uploadAdapter(name, false, function () {
@@ -646,6 +646,7 @@ function installAdapter(adapter, callback) {
             });
         });
     } else {
+        console.log('no node modules to install')
         uploadAdapter(name, true, function () {
             uploadAdapter(name, false, function () {
                 install();
