@@ -637,7 +637,7 @@ function installAdapter(adapter, callback) {
         var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --production --prefix "' + __dirname + '/adapter/' + adapter + '"';
         console.log(cmd);
         var child = exec(cmd);
-        child.stderr.pipe(process.stderr);
+        child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
         child.on('exit', function () {
             uploadAdapter(name, true, function () {
                 uploadAdapter(name, false, function () {
@@ -646,6 +646,7 @@ function installAdapter(adapter, callback) {
             });
         });
     } else {
+        console.log('no node modules to install')
         uploadAdapter(name, true, function () {
             uploadAdapter(name, false, function () {
                 install();
@@ -891,7 +892,7 @@ function updateRepo() {
                                     objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
                                         console.log('object ' + res.id + ' extended');
                                         result[elem.name] = _body;
-                                        download();
+                                        setTimeout(download, 25);
                                     });
                                 }
                             });
@@ -1097,7 +1098,7 @@ function correctChildren(err, obj) {
 
 function deleteInstance(adapter, instance, callback) {
     // Delete instance
-    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1118,6 +1119,8 @@ function deleteInstance(adapter, instance, callback) {
             }
         }
     });
+
+    // TODO delete meta objects - i think a recursive deletion of all child object would be less effort.
 
     // Delete devices
     objects.getObjectView("system", "device", {}, function (err, doc) {
