@@ -1097,7 +1097,7 @@ function correctChildren(err, obj) {
 
 function deleteInstance(adapter, instance, callback) {
     // Delete instance
-    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
