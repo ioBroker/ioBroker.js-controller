@@ -638,6 +638,7 @@ function installAdapter(adapter, callback) {
         console.log(cmd);
         var child = exec(cmd);
         child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
+        // liner.js from http://strongloop.com/strongblog/practical-examples-of-the-new-node-js-streams-api/ could solve this
         child.on('exit', function () {
             uploadAdapter(name, true, function () {
                 uploadAdapter(name, false, function () {
