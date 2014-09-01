@@ -774,11 +774,13 @@ function createInstance(adapter, enabled, host, callback) {
                 objs.push(adapterConf.instanceObjects[i]);
             }
 
+            /* these are already created on adapter install
             if (adapterConf.objects && adapterConf.objects.length > 0) {
                 for (var j = 0, l = adapterConf.objects.length; j < l; j++) {
                     objs.push(adapterConf.objects[j]);
                 }
             }
+            */
 
 
 
