@@ -391,7 +391,9 @@ function uploadAdapter(adapter, isAdmin, callback) {
         } else {
             console.log('got ' + dir);
             files = res;
-            upload(adapter, isAdmin, callback);
+            setTimeout(function (_adapter, _isAdmin, _callback) {
+                upload(_adapter, _isAdmin, _callback);
+            }, 25, adapter, isAdmin, callback);
         }
     }
 
@@ -794,7 +796,7 @@ function createInstance(adapter, enabled, host, callback) {
                         } else {
                             console.log('object ' + obj._id + ' created');
                         }
-                        setObjs();
+                        setTimeout(setObjs, 25);
                     });
                 } else {
                     objects.setObject(instanceObj._id, instanceObj, function (err, res) {
@@ -889,7 +891,7 @@ function updateRepo() {
                                     objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
                                         console.log('object ' + res.id + ' created');
                                         result[elem.name] = _body;
-                                        download();
+                                        setTimeout(download, 25);
                                     });
                                 } else {
                                     objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
@@ -1252,7 +1254,7 @@ function dbSetup() {
         var obj = iopkg.objects.pop();
         objects.setObject(obj._id, obj, function () {
             console.log('object ' + obj._id + ' created');
-            dbSetup();
+            setTimeout(dbSetup, 25);
         });
     } else {
         // Default Password for user 'admin' is 'iobroker'
