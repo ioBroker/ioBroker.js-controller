@@ -346,12 +346,96 @@ switch (yargs.argv._[0]) {
         break;
 
     case "upgrade":
-        console.log("...TODO"); // TODO
+        fs = require('fs');
+        tools =         require(__dirname + '/lib/tools.js');
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        request =       require('request');
+        extend =        require('node.extend');
+        mime =          require('mime');
+
+        var adapter = yargs.argv._[1];
+        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
+        config = JSON.parse(config);
+
+        dbConnect(function () {
+            if (adapter) {
+                upgradeAdapter(adapter);
+            } else {
+                console.log('loading system.adapter.*');
+                objects.getObjectView('system', 'adapter', {}, function (err, res) {
+                    var result = [];
+                    for (var i = 0; i < res.total_rows; i++) {
+                        result.push(res.rows[i].key);
+                    }
+                    var i = -1;
+                    if (result.length) {
+                        upgradeAdapterHelper(result, 0, function () {
+                           console('All adapter are processed!');
+                        });
+                    } else {
+                        console.log('No one installed adapter found!');
+                    }
+                });
+            }
+        });
+
+
         break;
 
     default:
         yargs.showHelp();
 
+}
+
+function upgradeAdapterHelper(list, i, callback) {
+    upgradeAdapter(list[i], function () {
+        i++;
+        if (list[i]) {
+            upgradeAdapterHelper(list, i, callback);
+        } else if (callback) {
+            callback();
+        }
+    });
+}
+function upgradeAdapter(adapter, callback) {
+    // Read actual adapter version
+    objects.getObject('system.adapter.' + adapter, function (err, obj) {
+        if (err || !obj) {
+            console.log('Cannot find adapter "' + adapter + '" or it is not installed');
+            if (callback) callback();
+        } else {
+            if (!obj.common.installedVersion) {
+                console.log('Adpater "' + adapter + '" is not installed.');
+                if (callback) callback();
+            } else
+            if (obj.common.version == obj.common.installedVersion) {
+                console.log('Adpater "' + adapter + '" is up to date.');
+                if (callback) callback();
+            } else {
+                // Get the adapter from web site
+                downloadAdapter(adapter, function (name) {
+                    var count = 0;
+                    // Upload www and admin files of adapter into CouchDB
+                    uploadAdapter(adapter, false, function () {
+                        objects.extendObject('system.adapter.' + adapter, {common: {installedVersion: obj.common.version}}, function () {
+                            count++;
+                            if (count == 2) {
+                                console.log('Adapter "' + adapter + '" updated');
+                            }
+                            if (callback) callback(adapter);
+                        });
+                    });
+                    uploadAdapter(adapter, true, function () {
+                        count++;
+                        if (count == 2) {
+                            console.log('Adapter "' + adapter + '" updated');
+                            if (callback) callback(adapter);
+                        }
+                    });
+                });
+            }
+        }
+    });
 }
 
 function dbConnect(callback) {
