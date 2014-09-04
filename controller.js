@@ -416,7 +416,6 @@ function startInstance(id, wakeUp) {
 function stopInstance(id, callback) {
     logger.info('stopInstance ' + id);
     var instance = procs[id].config;
-    logger.info('stopInstance ' + procs[id].process);
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
