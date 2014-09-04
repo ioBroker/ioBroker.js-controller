@@ -1,3 +1,7 @@
+# 0.0.17 (2014-09-04)
+* (hobbyquaker) trimFifo calls callback with trimmed data
+* (hobbyquaker) fix instance restart
+
 # 0.0.16 (2014-08-22)
 * (hobbyquaker) admin-ui: enums
 * (hobbyquaker) admin-ui: ...
