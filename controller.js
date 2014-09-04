@@ -101,7 +101,11 @@ var objects = new ObjectsCouch({
             if (procs[id].process) {
                 stopInstance(id, function () {
                     if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
-                        if (obj.common.enabled) startInstance(id);
+                        if (obj.common.enabled) {
+                            setTimeout(function (_id) {
+                                startInstance(_id);
+                            }, 2500, id);
+                        }
                     } else {
                         delete procs[id];
                     }
@@ -359,7 +363,7 @@ function startInstance(id, wakeUp) {
 
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
-                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true});
@@ -410,6 +414,7 @@ function startInstance(id, wakeUp) {
 }
 
 function stopInstance(id, callback) {
+    logger.info('stopInstance ' + id);
     var instance = procs[id].config;
     switch (instance.common.mode) {
         case 'daemon':

@@ -28,7 +28,7 @@ rm nodejs_0.10.22-1_armhf.deb```
 
 * ```sudo apt-get install couchdb```
 * open the file /etc/couchdb/local.ini and replace the line ```;bind_address = 127.0.0.1``` by ```bind_address = 0.0.0.0``` (make sure to remove the semicolon at the beginning of the line)
-* ```sudo /etc/init.d/couchdb restart```
+* ```sudo /etc/init.d/couchdb restart``` or ```sudo service couchdb restart``` on systems using upstart (ubuntu, ...)
 
 
 ### Download and Install
