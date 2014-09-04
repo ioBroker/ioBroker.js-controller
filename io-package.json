@@ -76,7 +76,9 @@
                     "en": "Cannot modify anything"
                 },
                 "members": [],
-                "dontDelete": true
+                "dontDelete": true,
+                "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
+                "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
             }
         }
     ]
