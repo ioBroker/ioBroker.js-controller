@@ -370,7 +370,7 @@ switch (yargs.argv._[0]) {
                     var i = -1;
                     if (result.length) {
                         upgradeAdapterHelper(result, 0, function () {
-                           console('All adapter are processed!');
+                           console.log('All adapters are processed!');
                         });
                     } else {
                         console.log('No one installed adapter found!');
@@ -421,8 +421,8 @@ function upgradeAdapter(adapter, callback) {
                             count++;
                             if (count == 2) {
                                 console.log('Adapter "' + adapter + '" updated');
+                                if (callback) callback(adapter);
                             }
-                            if (callback) callback(adapter);
                         });
                     });
                     uploadAdapter(adapter, true, function () {
@@ -575,6 +575,13 @@ function downloadAdapter(adapter, callback) {
     if (sources[adapter]) {
         name = adapter;
         url = sources[adapter].url;
+
+        // Adapter
+        if(!url) {
+            console.log('Adapter "' + adapter + '" can be updated only together with ioBroker.nodejs');
+            if (typeof callback === 'function') callback(name);
+            return;
+        }
     } else {
         url = adapter;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
@@ -945,72 +952,92 @@ function updateRepo() {
             downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon});
         }
 
+        function processFile(elem, error, response, body) {
+            if (!error && (!response || response.statusCode == 200)) {
+                if (!response) {
+                    console.log('Read ' + __dirname + '/adapter/' + elem.url);
+                } else {
+                    console.log('http 200 ' + elem.url);
+                }
+                var _body = {};
+                try {
+                    _body = JSON.parse(body);
+                } catch (e) {
+                    console.log('error: json parse failed for ' + elem.url);
+                    setTimeout(download, 0);
+                    return;
+                }
+                if (!result[elem.name]) {
+                    _body.type = 'adapter';
+                    // Add external link to icon
+                    if (elem.icon) {
+                        _body.common = _body.common || {};
+                        _body.common.extIcon = elem.icon;
+                    }
+                    delete _body.objects;
+                    objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
+                        if (err || !res) {
+                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
+                                console.log('object ' + res.id + ' created');
+                                result[elem.name] = _body;
+                                setTimeout(download, 25);
+                            });
+                        } else {
+                            objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
+                                console.log('object ' + res.id + ' extended');
+                                result[elem.name] = _body;
+                                setTimeout(download, 25);
+                            });
+                        }
+                    });
+
+
+                } else {
+                    if (elem.icon) {
+                        _body.common = _body.common || {};
+                        _body.common.extIcon = elem.icon;
+                    }
+                    delete _body.objects;
+                    delete result[elem.name]._rev;
+                    delete result[elem.name]._id;
+                    delete result[elem.name].type;
+                    delete result[elem.name].children;
+                    if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
+                    if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
+                    if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
+                        result[elem.name] = extend(true, result[elem.name], _body);
+                        objects.extendObject('system.adapter.' + _body.common.name, _body);
+                    }
+                    setTimeout(download, 0);
+                }
+
+            } else {
+                console.log('http ' + response.statusCode + ' ' + elem.url);
+                setTimeout(download, 0);
+            }
+        }
+
         function download() {
             if (downloads.length < 1) {
                 console.log('update done');
             } else {
                 var elem = downloads.pop();
-                console.log('http GET ' + elem.url);
-                request(elem.url, function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log('http 200 ' + elem.url);
-                        var _body = {};
-                        try {
-                            _body = JSON.parse(body);
-                        } catch (e) {
-                            console.log('error: json parse failed for ' + elem.url);
-                            download();
-                            return;
-                        }
-                        if (!result[elem.name]) {
-                            _body.type = 'adapter';
-                            // Add external link to icon
-                            if (elem.icon) {
-                                _body.common = _body.common || {};
-                                _body.common.extIcon = elem.icon;
-                            }
-                            delete _body.objects;
-                            objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
-                                if (err || !res) {
-                                    objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                        console.log('object ' + res.id + ' created');
-                                        result[elem.name] = _body;
-                                        setTimeout(download, 25);
-                                    });
-                                } else {
-                                    objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                        console.log('object ' + res.id + ' extended');
-                                        result[elem.name] = _body;
-                                        setTimeout(download, 25);
-                                    });
-                                }
-                            });
-
-
-                        } else {
-                            if (elem.icon) {
-                                _body.common = _body.common || {};
-                                _body.common.extIcon = elem.icon;
-                            }
-                            delete _body.objects;
-                            delete result[elem.name]._rev;
-                            delete result[elem.name]._id;
-                            delete result[elem.name].type;
-                            delete result[elem.name].children;
-                            if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
-                            if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
-                            if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
-                                result[elem.name] = extend(true, result[elem.name], _body);
-                                objects.extendObject('system.adapter.' + _body.common.name, _body);
-                            }
-                            download();
-                        }
-
-                    } else {
-                        console.log('http ' + response.statusCode + ' ' + elem.url);
-                        download();
+                if (elem.url.substring(0, 'https://'.length) == 'https://' ||
+                    elem.url.substring(0, 'http://'.length)  == 'http://') {
+                    console.log('http GET ' + elem.url);
+                    request(elem.url, function (error, response, body) {
+                        processFile(elem, error, response, body);
+                    });
+                } else {
+                    try {
+                        fs.readFile(__dirname + '/adapter/' + elem.url, function (error, body) {
+                            processFile(elem, error, null, body);
+                        });
+                    } catch (e) {
+                        console.log('Cannot read file "' + __dirname + '/adapter/' + elem.url + '"');
+                        setTimeout(download, 0);
                     }
-                });
+                }
             }
 
         }

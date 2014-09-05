@@ -22,7 +22,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
     },
     "example": {
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/io-package.json",
+        "meta": "example/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
     },
     "history": {
@@ -83,6 +83,7 @@
     },
     "yr": {
         "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png"
     }
 }
