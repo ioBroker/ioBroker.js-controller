@@ -60,7 +60,7 @@
     },
     "knx": {
         "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json"
     },
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
