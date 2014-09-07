@@ -657,7 +657,7 @@ function installAdapter(adapter, callback) {
                 for (var i = 0; i < deps.length; i++) {
                     var isFound = false;
                     for (var t = 0; t < objs.rows.length; t++) {
-                        if (objs.rows[t].common.name == deps[i]) {
+                        if (objs.rows[t] && objs.rows[t].common && objs.rows[t].common.name == deps[i]) {
                             isFound = true;
                             break;
                         }
