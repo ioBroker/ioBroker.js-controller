@@ -58,6 +58,10 @@
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/javascript.png"
     },
+    "knx": {
+        "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
+    },
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json"
