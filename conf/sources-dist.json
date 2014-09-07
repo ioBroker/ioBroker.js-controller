@@ -8,6 +8,10 @@
         "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json"
     },
+    "b-control-em": {
+        "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json"
+    },
     "cul": {
         "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json"
@@ -24,6 +28,14 @@
     "example": {
         "meta": "example/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
+    },
+    "geofency": {
+        "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json"
+    },
+    "graphite": {
+        "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.graphite/master/io-package.json"
     },
     "history": {
         "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
@@ -57,6 +69,10 @@
     "socketio": {
         "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
+    },
+    "telnet": {
+        "url": "https://github.com/ioBroker/ioBroker.telnet/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/io-package.json"
     },
     "pushover": {
         "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
