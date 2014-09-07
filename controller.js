@@ -189,7 +189,7 @@ function setMeta() {
             }
         }
     };
-    objects.setObject(id, obj);
+    objects.extendObject(id, obj);
     var idMem = id + ".mem";
     obj = {
         _id: idMem,
@@ -204,7 +204,7 @@ function setMeta() {
         },
         native: {}
     };
-    objects.setObject(idMem, obj);
+    objects.extendObject(idMem, obj);
     var idLoad = id + ".load";
     obj = {
         _id: idLoad,
@@ -217,7 +217,7 @@ function setMeta() {
         },
         native: {}
     };
-    objects.setObject(idLoad, obj);
+    objects.extendObject(idLoad, obj);
     var idAlive = id + ".alive";
     obj = {
         _id: idAlive,
@@ -229,7 +229,7 @@ function setMeta() {
         },
         native: {}
     };
-    objects.setObject(idAlive, obj);
+    objects.extendObject(idAlive, obj);
 }
 
 function getInstances() {
