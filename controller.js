@@ -245,8 +245,10 @@ function getInstances() {
             logger.info('controller ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             var count = 0;
             for (var i = 0; i < doc.rows.length; i++) {
-
                 var instance = doc.rows[i].value;
+
+                if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
+
                 logger.debug('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
