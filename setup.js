@@ -657,7 +657,7 @@ function installAdapter(adapter, callback) {
                 for (var i = 0; i < deps.length; i++) {
                     var isFound = false;
                     for (var t = 0; t < objs.rows.length; t++) {
-                        if (objs.rows[t].common.name == deps[i]) {
+                        if (objs.rows[t] && objs.rows[t].common && objs.rows[t].common.name == deps[i]) {
                             isFound = true;
                             break;
                         }
@@ -752,6 +752,8 @@ function installAdapter(adapter, callback) {
 function createInstance(adapter, enabled, host, callback) {
 
     objects.getObject('system.adapter.' + adapter, function (err, doc) {
+
+        // Adapter is not installed - install it now
         if (err || !doc || !doc.common.installedVersion) {
             installAdapter(adapter, function () {
                 createInstance(adapter, enabled, host, callback);
@@ -769,8 +771,16 @@ function createInstance(adapter, enabled, host, callback) {
             if (enabled === "false") enabled = false;
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
+
+            if (doc.common.singleton && instance > 0) {
+                console.log('error: this adapter does not allow multiple instances');
+                process.exit(1);
+                return;
+            }
+
             var instanceObj = doc;
             doc = JSON.parse(JSON.stringify(doc));
+
             instanceObj._id    = 'system.adapter.' + adapter + '.' + instance;
             instanceObj.type   = 'instance';
             instanceObj.parent = 'system.adapter.' + adapter;

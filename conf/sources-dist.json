@@ -37,6 +37,11 @@
         "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.graphite/master/io-package.json"
     },
+    "highcharts": {
+        "url": "https://github.com/hobbyquaker/ioBroker.highcharts/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.highcharts/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.highcharts/master/admin/highcharts.png"
+    },
     "history": {
         "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json"
@@ -82,6 +87,11 @@
         "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
+    },
+    "rickshaw": {
+        "url": "https://github.com/ioBroker/ioBroker.rickshaw/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
     },
     "sonos": {
         "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
