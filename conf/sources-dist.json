@@ -6,7 +6,8 @@
     },
     "artnet": {
         "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.jpeg"
     },
     "b-control-em": {
         "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip",
