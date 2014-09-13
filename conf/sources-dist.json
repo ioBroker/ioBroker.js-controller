@@ -10,15 +10,19 @@
     },
     "b-control-em": {
         "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png"
     },
     "cul": {
         "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.png"
     },
     "dwd": {
         "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png"
+
     },
     "email": {
         "url": "https://github.com/ioBroker/ioBroker.email/archive/master.zip",
@@ -31,7 +35,8 @@
     },
     "geofency": {
         "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/admin/geofency.png"
     },
     "graphite": {
         "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip",
@@ -44,19 +49,23 @@
     },
     "history": {
         "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png"
     },
     "hm-rega": {
         "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png"
     },
     "hm-rpc": {
         "url": "https://github.com/ioBroker/ioBroker.hm-rpc/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/admin/homematic.png"
     },
     "hue": {
         "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.png"
     },
     "javascript": {
         "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
@@ -65,7 +74,8 @@
     },
     "knx": {
         "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
     },
     "legacy": {
         "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
@@ -73,7 +83,8 @@
     },
     "mobile": {
         "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png"
     },
     "socketio": {
         "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
@@ -81,7 +92,8 @@
     },
     "telnet": {
         "url": "https://github.com/ioBroker/ioBroker.telnet/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/io-package.json"
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/admin/telnet.png"
     },
     "pushover": {
         "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
