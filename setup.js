@@ -93,7 +93,6 @@ switch (yargs.argv._[0]) {
 
         break;
 
-
     case "add":
     case "install":
         fs =            require('fs');
@@ -618,7 +617,7 @@ function downloadPacket(packetName, callback) {
             if (typeof callback === 'function') callback(packetName);
             return;
         }
-        name = packetName;
+        name = packetName.replace(/[\/ $&*\\]/g, '_');
     } else {
         url = packetName;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
@@ -650,7 +649,7 @@ function downloadPacket(packetName, callback) {
             if (fs.existsSync(source + '/io-package.json')) {
                 var packetIo;
                 try {
-                    packetIo = JSON.stringify(fs.readFileSync(source + '/io-package.json'));
+                    packetIo = JSON.parse(fs.readFileSync(source + '/io-package.json'));
                 } catch (e) {
                     console.log('io-package.json has invalid format! Installation terminated.');
                     if (typeof callback === 'function') callback(name, 'Invalid io-package.json!');
