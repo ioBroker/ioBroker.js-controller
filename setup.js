@@ -19,10 +19,10 @@ var yargs = require('yargs')
         '$0 add <adapter> [--enabled] [--host <host>]\n' +
         '$0 del <adapter>\n' +
         '$0 del <adapter>.<instance>\n' +
-        '$0 update\n' +
-        '$0 upgrade\n' +
-        '$0 upgrade self\n' +
-        '$0 upgrade <adapter>\n' +
+        '$0 update <repository url>\n' +
+        '$0 upgrade <repository url>\n' +
+        '$0 upgrade self <repository url>\n' +
+        '$0 upgrade <adapter> <repository url>\n' +
         '$0 object get <id>\n' +
         '$0 state get <id>\n' +
         '$0 state getplain <id>\n' +
@@ -109,9 +109,10 @@ switch (yargs.argv._[0]) {
 
         var name =      yargs.argv._[1];
         var hostname =  os.hostname();
+        var repoUrl =   yargs.argv._[2];
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
-            downloadPacket(name, function () {
+            downloadPacket(repoUrl, name, function () {
                 dbConnect(function () {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
@@ -124,11 +125,11 @@ switch (yargs.argv._[0]) {
         break;
 
     case "upload":
-        fs =            require('fs');
-        mime =          require('mime');
-        tools =         require(__dirname + '/lib/tools.js');
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        var name =      yargs.argv._[1];
+        fs =           require('fs');
+        mime =         require('mime');
+        tools =        require(__dirname + '/lib/tools.js');
+        ObjectsCouch = require(__dirname + '/lib/couch.js');
+        var name =     yargs.argv._[1];
         if (name) {
             dbConnect(function () {
                 uploadAdapter(name, true, function () {
@@ -155,12 +156,11 @@ switch (yargs.argv._[0]) {
 
         if (adpr && adpr.indexOf('.') != -1) {
             var parts = adpr.split('.');
-            adpr = parts[0];
-            instance = parts[1];
+            adpr      = parts[0];
+            instance  = parts[1];
         }
-        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-        config = JSON.parse(config);
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        var config =      require(__dirname + '/conf/iobroker.json');
+        ObjectsCouch =    require(__dirname + '/lib/couch.js');
         var StatesRedis = require(__dirname + '/lib/redis.js');
         states = new StatesRedis({
             redis: {
@@ -186,9 +186,8 @@ switch (yargs.argv._[0]) {
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
         if (id) {
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+            var config   = require(__dirname + '/conf/iobroker.json');
+            ObjectsCouch = require(__dirname + '/lib/couch.js');
 
             if (cmd == "get") {
                 dbConnect(function () {
@@ -210,9 +209,7 @@ switch (yargs.argv._[0]) {
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
         if (id) {
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-
+            var config =      require(__dirname + '/conf/iobroker.json');
             var StatesRedis = require(__dirname + '/lib/redis.js');
             states = new StatesRedis({
                 redis: {
@@ -293,9 +290,8 @@ switch (yargs.argv._[0]) {
                 instances.push('system.adapter.' + adapter);
             }
 
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+            var config =   require(__dirname + '/conf/iobroker.json');
+            ObjectsCouch = require(__dirname + '/lib/couch.js');
 
             dbConnect(function () {
                 objects.getObject('system.adapter.' + adapter, function (err, res) {
@@ -311,9 +307,7 @@ switch (yargs.argv._[0]) {
                             process.exit(1);
                         }
 
-                        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-                        config = JSON.parse(config);
-
+                        var config =      require(__dirname + '/conf/iobroker.json');
                         var StatesRedis = require(__dirname + '/lib/redis.js');
                         states = new StatesRedis({
                             redis: {
@@ -349,23 +343,28 @@ switch (yargs.argv._[0]) {
         break;
 
     case "upgrade":
-        fs = require('fs');
-        tools =         require(__dirname + '/lib/tools.js');
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        request =       require('request');
-        extend =        require('node.extend');
-        mime =          require('mime');
+        fs =           require('fs');
+        tools =        require(__dirname + '/lib/tools.js');
+        ObjectsCouch = require(__dirname + '/lib/couch.js');
+        request =      require('request');
+        extend =       require('node.extend');
+        mime =         require('mime');
 
         var adapter = yargs.argv._[1];
-        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-        config = JSON.parse(config);
+        var repoUrl = yargs.argv._[2];
+        var config  = require(__dirname + '/conf/iobroker.json');
+
+        if (adapter && !repoUrl && adapter.indexOf('/') != -1) {
+            adapter = null;
+            repoUrl = adapter;
+        }
 
         dbConnect(function () {
             if (adapter) {
                 if (adapter == 'self'){
-                    upgradeController();
+                    upgradeController(repoUrl);
                 } else {
-                    upgradeAdapter(adapter);
+                    upgradeAdapter(repoUrl, adapter);
                 }
             } else {
                 console.log('loading system.adapter.*');
@@ -376,13 +375,13 @@ switch (yargs.argv._[0]) {
                     }
                     var i = -1;
                     if (result.length) {
-                        upgradeAdapterHelper(result, 0, function () {
+                        upgradeAdapterHelper(repoUrl, result, 0, function () {
                            console.log('All adapters are processed!');
-                           upgradeController();
+                           upgradeController(repoUrl);
                         });
                     } else {
                         console.log('No one installed adapter found!');
-                        upgradeController();
+                        upgradeController(repoUrl);
                     }
                 });
             }
@@ -396,18 +395,18 @@ switch (yargs.argv._[0]) {
 
 }
 
-function upgradeAdapterHelper(list, i, callback) {
-    upgradeAdapter(list[i], function () {
+function upgradeAdapterHelper(repoUrl, list, i, callback) {
+    upgradeAdapter(repoUrl, list[i], function () {
         i++;
         if (list[i]) {
-            upgradeAdapterHelper(list, i, callback);
+            upgradeAdapterHelper(repoUrl, list, i, callback);
         } else if (callback) {
             callback();
         }
     });
 }
 
-function upgradeAdapter(adapter, callback) {
+function upgradeAdapter(repoUrl, adapter, callback) {
     // Read actual adapter version
     objects.getObject('system.adapter.' + adapter, function (err, obj) {
         if (err || !obj) {
@@ -423,7 +422,7 @@ function upgradeAdapter(adapter, callback) {
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadPacket(adapter, function (name) {
+                downloadPacket(repoUrl, adapter, function (name) {
                     var count = 0;
                     // Upload www and admin files of adapter into CouchDB
                     uploadAdapter(adapter, false, function () {
@@ -448,7 +447,7 @@ function upgradeAdapter(adapter, callback) {
     });
 }
 
-function upgradeController(callback) {
+function upgradeController(repoUrl, callback) {
     var hostname = require("os").hostname();
     // Read actual adapter version
     objects.getObject('system.host.' + hostname, function (err, obj) {
@@ -456,16 +455,17 @@ function upgradeController(callback) {
             console.log('Cannot find host "' + hostname + '" or it is not installed');
             if (callback) callback();
         } else {
-            if (!obj.common.installedVersion) {
+            var ioPackage = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+            if (!ioPackage.common.version) {
                 console.log('Hots "' + hostname + '" is not installed.');
                 if (callback) callback();
             }
-            if (obj.common.version == obj.common.installedVersion) {
+            if (obj.common.version == ioPackage.common.version) {
                 console.log('Host "' + hostname + '" is up to date.');
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadPacket(obj.common.type, function (name) {
+                downloadPacket(repoUrl, obj.common.type, function (name) {
                     console.log('Host "' + hostname + '" updated');
                     if (callback) callback();
                 });
@@ -594,7 +594,7 @@ function uploadAdapter(adapter, isAdmin, callback) {
 
 }
 
-function downloadPacket(packetName, callback) {
+function downloadPacket(repoUrl, packetName, callback) {
     var url;
     var sources;
     var name;
@@ -990,7 +990,11 @@ function createInstance(adapter, enabled, host, callback) {
     });
 }
 
-function updateRepo() {
+function getFile(urlOrPath) {
+
+}
+
+function updateRepo(repoUrl) {
 
     var result = {};
 
