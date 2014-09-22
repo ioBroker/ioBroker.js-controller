@@ -21,6 +21,7 @@ var yargs = require('yargs')
         '$0 del <adapter>.<instance>\n' +
         '$0 update\n' +
         '$0 upgrade\n' +
+        '$0 upgrade self\n' +
         '$0 upgrade <adapter>\n' +
         '$0 object get <id>\n' +
         '$0 state get <id>\n' +
@@ -56,6 +57,7 @@ switch (yargs.argv._[0]) {
         });
         daemon[yargs.argv._[0]]();
         break;
+
     case "update":
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
@@ -66,6 +68,7 @@ switch (yargs.argv._[0]) {
             updateRepo();
         });
         break;
+
     case "setup":
         fs =            require('fs');
         password =      require(__dirname + '/lib/password.js');
@@ -179,6 +182,7 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
+
     case "object":
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
@@ -359,7 +363,11 @@ switch (yargs.argv._[0]) {
 
         dbConnect(function () {
             if (adapter) {
-                upgradeAdapter(adapter);
+                if (adapter == 'self'){
+                    upgradeController();
+                } else {
+                    upgradeAdapter(adapter);
+                }
             } else {
                 console.log('loading system.adapter.*');
                 objects.getObjectView('system', 'adapter', {}, function (err, res) {
@@ -371,9 +379,11 @@ switch (yargs.argv._[0]) {
                     if (result.length) {
                         upgradeAdapterHelper(result, 0, function () {
                            console.log('All adapters are processed!');
+                           upgradeController();
                         });
                     } else {
                         console.log('No one installed adapter found!');
+                        upgradeController();
                     }
                 });
             }
@@ -440,6 +450,7 @@ function upgradeAdapter(adapter, callback) {
 }
 
 function upgradeController(callback) {
+    var hostname = require("os").hostname();
     // Read actual adapter version
     objects.getObject('system.host.' + hostname, function (err, obj) {
         if (err || !obj) {
@@ -587,6 +598,7 @@ function uploadAdapter(adapter, isAdmin, callback) {
 function downloadPacket(packetName, callback) {
     var url;
     var sources;
+    var name;
 
     if (!fs.existsSync(__dirname + '/conf/sources.json')) {
         sources = fs.readFileSync(__dirname + '/conf/sources-dist.json');
@@ -606,47 +618,45 @@ function downloadPacket(packetName, callback) {
             if (typeof callback === 'function') callback(packetName);
             return;
         }
+        name = packetName;
     } else {
         url = packetName;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
             console.log("Unknown packetName " + packetName);
             process.exit(1);
         }
+        name = Math.floor(Math.random() * 0xFFFFFFE);
     }
 
-    var repoName = Math.floor(Math.random() * 0xFFFFFFE);
-
-    var request =   require('request');
-    var AdmZip =    require('adm-zip');
-    var ncp =       require('ncp').ncp;
-    ncp.limit = 16;
+    var request = require('request');
+    var AdmZip =  require('adm-zip');
+    var ncp =     require('ncp').ncp;
+    ncp.limit =   16;
 
     console.log('download ' + url);
 
-    var tmpFile = __dirname + '/tmp/' + repoName + '.zip';
+    var tmpFile = __dirname + '/tmp/' + name + '.zip';
     request(url).pipe(fs.createWriteStream(tmpFile)).on('close', function () {
         console.log('unzip ' + tmpFile);
 
         // Extract files into tmp/
         var zip = new AdmZip(tmpFile);
-        zip.extractAllTo(__dirname + '/tmp/' + repoName, true);
+        zip.extractAllTo(__dirname + '/tmp/' + name, true);
         // Find out the first directory
-        var dirs = fs.readdirSync(__dirname + '/tmp/' + repoName);
+        var dirs = fs.readdirSync(__dirname + '/tmp/' + name);
         if (dirs.length) {
-            repoName += '/' + dirs[0];
+            var source = __dirname + '/tmp/' + name + '/' + dirs[0];
             // Copy files into adapter or controller
-            if (fs.existsSync(__dirname + '/tmp/' + repoName + '/io-package.json')) {
+            if (fs.existsSync(source + '/io-package.json')) {
                 var packetIo;
                 try {
-                    packetIo = JSON.stringify(fs.readFileSync(__dirname + '/tmp/' + repoName + '/io-package.json'));
+                    packetIo = JSON.stringify(fs.readFileSync(source + '/io-package.json'));
                 } catch (e) {
                     console.log('io-package.json has invalid format! Installation terminated.');
                     if (typeof callback === 'function') callback(name, 'Invalid io-package.json!');
                     process.exit(1);
                 }
 
-
-                var source = __dirname + '/tmp/' + repoName;
                 var destination;
                 if (packetIo.common.controller) {
                     destination =   __dirname;
@@ -662,16 +672,16 @@ function downloadPacket(packetName, callback) {
                         process.exit(1);
                     }
 
-                    console.log('delete ' + tmpFile);
+                    console.log('delete ' + __dirname + '/tmp/' + name);
                     fs.unlinkSync(tmpFile);
-                    console.log('delete ' + __dirname + '/tmp/' + repoName);
-                    tools.rmdirRecursiveSync(__dirname + '/tmp/' + repoName);
+                    console.log('delete ' + __dirname + '/tmp/' + name);
+                    tools.rmdirRecursiveSync(__dirname + '/tmp/' + name);
 
                     if (typeof callback === 'function') callback(name);
 
                 });
             } else {
-                console.log('io-package.json not found in ' + __dirname + '/tmp/' + repoName + '/io-package.json. Invalid packet! Installation terminated.');
+                console.log('io-package.json not found in ' + source + '/io-package.json. Invalid packet! Installation terminated.');
                 if (typeof callback === 'function') callback(name, 'Invalid packet!');
                 process.exit(1);
             }

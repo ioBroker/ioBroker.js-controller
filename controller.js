@@ -179,7 +179,7 @@ function setMeta() {
             name:             id,
             process:          title,
             installedVersion: version,
-            platform:         'javascript/Node.js',
+            platform:         'Javascript/Node.js',
             cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
             hostname:         hostname,
             address:          ipArr,

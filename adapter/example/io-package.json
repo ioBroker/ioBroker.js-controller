@@ -4,7 +4,7 @@
         "version":                  "0.1.1",
         "title":                    "Node.js Example Adapter",
         "desc":                     "Javascript/Node.js based example adapter",
-        "platform":                 "javascript/Node.js",
+        "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "example.png",
         "loglevel":                 "info"
