@@ -2,6 +2,7 @@
 	"name":      "controller",
     "version":   "0.0.17",
 	"platform":  "Javascript/Node.js",
+    "controller": true,
 	"title":     "ioBroker.nodejs: controller and base adapters",
     "description": {
 		"en": "Javascript/Node.js implementation of ioBroker controller and base adapters",

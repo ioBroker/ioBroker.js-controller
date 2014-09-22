@@ -109,7 +109,7 @@ switch (yargs.argv._[0]) {
         var hostname =  os.hostname();
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
-            downloadAdapter(name, function () {
+            downloadPacket(name, function () {
                 dbConnect(function () {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
@@ -397,6 +397,7 @@ function upgradeAdapterHelper(list, i, callback) {
         }
     });
 }
+
 function upgradeAdapter(adapter, callback) {
     // Read actual adapter version
     objects.getObject('system.adapter.' + adapter, function (err, obj) {
@@ -413,7 +414,7 @@ function upgradeAdapter(adapter, callback) {
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadAdapter(adapter, function (name) {
+                downloadPacket(adapter, function (name) {
                     var count = 0;
                     // Upload www and admin files of adapter into CouchDB
                     uploadAdapter(adapter, false, function () {
@@ -432,6 +433,31 @@ function upgradeAdapter(adapter, callback) {
                             if (callback) callback(adapter);
                         }
                     });
+                });
+            }
+        }
+    });
+}
+
+function upgradeController(callback) {
+    // Read actual adapter version
+    objects.getObject('system.host.' + hostname, function (err, obj) {
+        if (err || !obj) {
+            console.log('Cannot find host "' + hostname + '" or it is not installed');
+            if (callback) callback();
+        } else {
+            if (!obj.common.installedVersion) {
+                console.log('Hots "' + hostname + '" is not installed.');
+                if (callback) callback();
+            }
+            if (obj.common.version == obj.common.installedVersion) {
+                console.log('Host "' + hostname + '" is up to date.');
+                if (callback) callback();
+            } else {
+                // Get the adapter from web site
+                downloadPacket(obj.common.platform, function (name) {
+                    console.log('Host "' + hostname + '" updated');
+                    if (callback) callback();
                 });
             }
         }
@@ -558,8 +584,7 @@ function uploadAdapter(adapter, isAdmin, callback) {
 
 }
 
-function downloadAdapter(adapter, callback) {
-    var name;
+function downloadPacket(packetName, callback) {
     var url;
     var sources;
 
@@ -572,28 +597,24 @@ function downloadAdapter(adapter, callback) {
         sources = extend(true, JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json')), JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json')));
     }
 
-    if (sources[adapter]) {
-        name = adapter;
-        url = sources[adapter].url;
+    if (sources[packetName]) {
+        url = sources[packetName].url;
 
         // Adapter
         if(!url) {
-            console.log('Adapter "' + adapter + '" can be updated only together with ioBroker.nodejs');
-            if (typeof callback === 'function') callback(name);
+            console.log('Adapter "' + packetName + '" can be updated only together with ioBroker.nodejs');
+            if (typeof callback === 'function') callback(packetName);
             return;
         }
     } else {
-        url = adapter;
+        url = packetName;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
-            console.log("Unknown adapter " + adapter);
+            console.log("Unknown packetName " + packetName);
             process.exit(1);
         }
-
-        // Todo set name if cmd called with adapter-url
     }
 
-    var urlParts = url.split('/');
-    var repoName = urlParts[4];
+    var repoName = Math.floor(Math.random() * 0xFFFFFFE);
 
     var request =   require('request');
     var AdmZip =    require('adm-zip');
@@ -602,34 +623,64 @@ function downloadAdapter(adapter, callback) {
 
     console.log('download ' + url);
 
-    var tmpFile = __dirname + '/tmp/' + name + '.zip';
+    var tmpFile = __dirname + '/tmp/' + repoName + '.zip';
     request(url).pipe(fs.createWriteStream(tmpFile)).on('close', function () {
         console.log('unzip ' + tmpFile);
 
+        // Extract files into tmp/
         var zip = new AdmZip(tmpFile);
-        zip.extractAllTo(__dirname + '/tmp', true);
+        zip.extractAllTo(__dirname + '/tmp/' + repoName, true);
+        // Find out the first directory
+        var dirs = fs.readdirSync(__dirname + '/tmp/' + repoName);
+        if (dirs.length) {
+            repoName += '/' + dirs[0];
+            // Copy files into adapter or controller
+            if (fs.existsSync(__dirname + '/tmp/' + repoName + '/io-package.json')) {
+                var packetIo;
+                try {
+                    packetIo = JSON.stringify(fs.readFileSync(__dirname + '/tmp/' + repoName + '/io-package.json'));
+                } catch (e) {
+                    console.log('io-package.json has invalid format! Installation terminated.');
+                    if (typeof callback === 'function') callback(name, 'Invalid io-package.json!');
+                    process.exit(1);
+                }
 
-        var source =        __dirname + '/tmp/' + repoName + '-master';
-        var destination =   __dirname + '/adapter/' + name;
 
-        console.log('copying ' + source + ' to ' + destination);
+                var source = __dirname + '/tmp/' + repoName;
+                var destination;
+                if (packetIo.common.controller) {
+                    destination =   __dirname;
+                } else {
+                    destination =   __dirname + '/adapter/' + packetIo.common.name;
+                }
 
-        ncp(source, destination, function (err) {
-            if (err) {
-                console.log('ncp error: ' + err);
-                return;
+                console.log('copying ' + source + ' to ' + destination);
+
+                ncp(source, destination, function (err) {
+                    if (err) {
+                        console.log('ncp error: ' + err);
+                        process.exit(1);
+                    }
+
+                    console.log('delete ' + tmpFile);
+                    fs.unlinkSync(tmpFile);
+                    console.log('delete ' + __dirname + '/tmp/' + repoName);
+                    tools.rmdirRecursiveSync(__dirname + '/tmp/' + repoName);
+
+                    if (typeof callback === 'function') callback(name);
+
+                });
+            } else {
+                console.log('io-package.json not found in ' + __dirname + '/tmp/' + repoName + '/io-package.json. Invalid packet! Installation terminated.');
+                if (typeof callback === 'function') callback(name, 'Invalid packet!');
+                process.exit(1);
             }
-
-            console.log('delete ' + tmpFile);
-            fs.unlinkSync(tmpFile);
-            console.log('delete ' + __dirname + '/tmp/' + repoName + '-master');
-            tools.rmdirRecursiveSync(__dirname + '/tmp/' + repoName + '-master');
-
-            if (typeof callback === 'function') callback(name);
-
-        });
+        } else {
+            console.log('Packet is empty! Installation terminated.');
+            if (typeof callback === 'function') callback(name, 'Packet is empty');
+            process.exit(1);
+        }
     });
-
 }
 
 function installAdapter(adapter, callback) {
@@ -959,7 +1010,7 @@ function updateRepo() {
         var downloads = [];
 
         for (var name in sources) {
-            downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon});
+            downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon, controller: sources[name].controller});
         }
 
         function processFile(elem, error, response, body) {
@@ -977,7 +1028,19 @@ function updateRepo() {
                     setTimeout(download, 0);
                     return;
                 }
-                if (!result[elem.name]) {
+                if (elem.controller) {
+                    objects.getObjectView("system", "host", {}, function (err, doc) {
+                        if (doc.rows.length) {
+                            for (var i = 0; i < doc.rows.length; i++) {
+                                if (doc.rows[i].value.platform == elem.name) {
+                                    var host = doc.rows[i].value;
+                                    objects.extendObject(host._id, {common: {version: _body.common.version}});
+                                }
+                            }
+                        }
+                    });
+                }
+                else if (!result[elem.name]) {
                     _body.type = 'adapter';
                     // Add external link to icon
                     if (elem.icon) {
@@ -1022,7 +1085,7 @@ function updateRepo() {
                 }
 
             } else {
-                console.log('http ' + response.statusCode + ' ' + elem.url);
+                console.log('http ' + (response ? response.statusCode : 'no answer for ') + ' ' + elem.url + ': ' + error);
                 setTimeout(download, 0);
             }
         }
@@ -1059,7 +1122,7 @@ function updateRepo() {
 
 function deleteAdapter(adapter, callback) {
     // Delete instances
-    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1077,7 +1140,7 @@ function deleteAdapter(adapter, callback) {
         }
     });
     // Delete adapter objects
-    objects.getObjectView("system", "adapter", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "adapter", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1090,8 +1153,6 @@ function deleteAdapter(adapter, callback) {
 
                 for (var i = 0; i < doc.rows.length; i++) {
                     var adapterConf = doc.rows[i].value;
-                    objects.delObject(adapterConf._id);
-                    count++;
 
                     // Delete files from web adapters
                     if (fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
@@ -1104,6 +1165,20 @@ function deleteAdapter(adapter, callback) {
                             }
                         }
                     }
+
+
+                    if (adapterConf.common.nondelitable) {
+                        console.log('Adapter ' + adapter + ' cannot be deleted completely, because non-deletable.');
+                        objects.extendObject(adapterConf._id, {
+                            children: [],
+                            common: {installedVersion: ''}
+                        });
+
+                        continue;
+                    }
+
+                    objects.delObject(adapterConf._id);
+                    count++;
 
                     // Delete adapter folder
                     if (!adapterConf.common.noRepository) {
@@ -1197,7 +1272,7 @@ function deleteAdapter(adapter, callback) {
             console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
         }
     });
-    states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
+    states.getKeys('system.adapter.' + adapter + '.*', function (err, obj) {
         if (obj) {
             for (var i = 0; i < obj.length; i++) {
                 states.delState(obj[i]);
@@ -1224,7 +1299,7 @@ function correctChildren(err, obj) {
 
 function deleteInstance(adapter, instance, callback) {
     // Delete instance
-    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
