@@ -465,7 +465,7 @@ function upgradeController(callback) {
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadPacket(obj.common.platform, function (name) {
+                downloadPacket(obj.common.type, function (name) {
                     console.log('Host "' + hostname + '" updated');
                     if (callback) callback();
                 });
@@ -1041,7 +1041,7 @@ function updateRepo() {
                     objects.getObjectView("system", "host", {}, function (err, doc) {
                         if (doc.rows.length) {
                             for (var i = 0; i < doc.rows.length; i++) {
-                                if (doc.rows[i].value.platform == elem.name) {
+                                if (doc.rows[i].value.type == elem.name) {
                                     var host = doc.rows[i].value;
                                     objects.extendObject(host._id, {common: {version: _body.common.version}});
                                 }

@@ -178,7 +178,8 @@ function setMeta() {
         type: 'host',
         common: {
             name:             id,
-            process:          process.title,
+//            process:          process.title, // actually not required, because there is type now
+            title:            ioPackage.common.title,
             installedVersion: version,
             platform:         ioPackage.common.platform,
             cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
@@ -189,8 +190,7 @@ function setMeta() {
                 id + '.load',
                 id + '.mem'
             ],
-            type:             ""
-
+            type:             ioPackage.common.name
         },
         native: {
             process: {
