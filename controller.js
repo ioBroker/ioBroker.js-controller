@@ -8,27 +8,28 @@
 
 // Change version in io-package.json and start grunt task to modify the version
 var version = '0.0.16';
-var title = 'io.controller';
-process.title = title;
 
 
-var schedule =      require('node-schedule');
-var os =            require('os');
-var fs =            require('fs');
-var cp =            require('child_process');
-var ObjectsCouch =  require(__dirname + '/lib/couch.js');
-var StatesRedis =   require(__dirname + '/lib/redis.js');
+var schedule =     require('node-schedule');
+var os =           require('os');
+var fs =           require('fs');
+var cp =           require('child_process');
+var ObjectsCouch = require(__dirname + '/lib/couch.js');
+var StatesRedis =  require(__dirname + '/lib/redis.js');
+var ioPackage =    require(__dirname + '/io-package.json');
+
+process.title = ioPackage.common.name;
 
 var logger;
 var isDaemon;
-var hostname =      os.hostname();
+var hostname = os.hostname();
 
 
 if (process.argv.indexOf('start') !== -1) {
-    isDaemon =      true;
-    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+    isDaemon = true;
+    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
 } else {
-    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
 }
 
 var config;
@@ -48,7 +49,7 @@ for (var dev in ifaces) {
     });
 }
 
-logger.info('ioBroker.nodejs version ' + version + ' ' + title + ' starting');
+logger.info('ioBroker.nodejs version ' + version + ' ' + ioPackage.common.name + ' starting');
 logger.info('Copyright (c) 2014 hobbyquaker, bluefox');
 logger.info('controller hostname: ' + hostname);
 logger.info('controller ip addresses: ' + ipArr.join(' '));
@@ -167,19 +168,19 @@ function reportStatus() {
     states.setState(id + '.alive', {val: true, ack: true, expire: 30});
     states.setState(id + '.load', {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true});
     states.setState(id + '.mem', {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true});
-
 }
 
 function setMeta() {
     var id = 'system.host.' + hostname;
+
     var obj = {
         _id: id,
         type: 'host',
         common: {
             name:             id,
-            process:          title,
+            process:          process.title,
             installedVersion: version,
-            platform:         'Javascript/Node.js',
+            platform:         ioPackage.common.platform,
             cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
             hostname:         hostname,
             address:          ipArr,
@@ -187,7 +188,9 @@ function setMeta() {
                 id + '.alive',
                 id + '.load',
                 id + '.mem'
-            ]
+            ],
+            type:             ""
+
         },
         native: {
             process: {

@@ -106,7 +106,7 @@
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
     },
-    "Javascript/Node.js": {
+    "jsController": {
         "controller": true,
         "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
