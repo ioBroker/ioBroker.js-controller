@@ -3,9 +3,17 @@
  *  ioBroker.nodejs Controller start/stop and install script
  *
  *  7'2014 hobbyquaker <hq@ccu.io>
+ *         bluefox <bluefox@ccu.io>
  *
  *
  */
+
+// TODO:
+// - update only lists the versions of adapters and controllers
+// - collect versions of all adapters and controllers for specific host
+// - select hots on controller page and manage adapters for this host
+// - install adapter automatically if adapter must be started on some host
+// - list of repositories and active repository in CouchDB (belong to controller)
 
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
