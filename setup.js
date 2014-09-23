@@ -423,6 +423,8 @@ switch (yargs.argv._[0]) {
 function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
     upgradeAdapter(repoUrl, list[i], forceDowngrade, function () {
         i++;
+        while (repoUrl[list[i]] && repoUrl[list[i]].controller) i++;
+
         if (list[i]) {
             upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback);
         } else if (callback) {
