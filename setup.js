@@ -592,37 +592,46 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
 
 function upgradeController(repoUrl, forceDowngrade, callback) {
     var hostname = require("os").hostname();
-    var ioPackage = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
-    if (!repoUrl[ioPackage.common.name]) {
+    var installed = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+    if (!installed.common.version) {
+        console.log('Hots    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is not installed.');
+        if (callback) callback();
+        return;
+    }
+    if (!repoUrl[installed.common.name]) {
         // no info for controller
         if (callback) callback();
         return;
     }
-
-    // Read actual adapter version
-    objects.getObject('system.host.' + hostname, function (err, obj) {
-        if (err || !obj) {
-            console.log('Cannot find host "' + hostname + '" or it is not installed');
+    if (repoUrl[installed.common.name].version) {
+        if (repoUrl[installed.common.name].version == installed.common.version ||
+            (!forceDowngrade && upToDate(repoUrl[installed.common.name].version, installed.common.version))) {
+            console.log('Host    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is up to date.');
             if (callback) callback();
         } else {
-            var ioPackage = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
-            if (!ioPackage.common.version) {
-                console.log('Hots    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is not installed.');
+            // Get the adapter from web site
+            downloadPacket(repoUrl, installed.common.name, function (name) {
+                console.log('Host "' + hostname + '" updated');
                 if (callback) callback();
-            }
-            if (obj.common.version == ioPackage.common.version ||
-                (!forceDowngrade && upToDate(obj.common.version, ioPackage.common.version))) {
+            });
+        }
+    } else {
+        getJson(repoUrl[installed.common.name].meta, function (ioPack) {
+            if (ioPack.common.version == installed.common.version ||
+                (!forceDowngrade && upToDate(ioPack.common.version, installed.common.version))) {
                 console.log('Host    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is up to date.');
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadPacket(repoUrl, obj.common.type, function (name) {
+                downloadPacket(repoUrl, ioPack.common.name, function (name) {
                     console.log('Host "' + hostname + '" updated');
                     if (callback) callback();
                 });
             }
-        }
-    });
+
+        });
+    }
+
 }
 
 function dbConnect(callback) {
