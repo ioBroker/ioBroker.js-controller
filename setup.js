@@ -363,8 +363,8 @@ switch (yargs.argv._[0]) {
         var config  = require(__dirname + '/conf/iobroker.json');
 
         if (adapter && !repoUrl && adapter.indexOf('/') != -1) {
-            adapter = null;
             repoUrl = adapter;
+            adapter = null;
         }
 
         dbConnect(function () {
@@ -375,8 +375,25 @@ switch (yargs.argv._[0]) {
                     upgradeAdapter(repoUrl, adapter, true);
                 }
             } else {
-                console.log('loading system.adapter.*');
-                objects.getObjectView('system', 'adapter', {}, function (err, res) {
+                getRepositoryFile(repoUrl, function (links) {
+                    var result = [];
+                    for (var name in links) {
+                        result.push(name);
+                    }
+                    upgradeAdapterHelper(links, result, 0, false, function () {
+                        upgradeController(links, false);
+                        //console.log('All is processed!');
+                    });
+                });
+                //var ioPack = require(__dirname + '/io-package.json');
+                /*if (links[ioPack]) {
+                    upgradeController(links, false);
+                }*/
+                /*for (var name in links) {
+                    if (!links[name].controller) upgradeController(repoUrl, false);
+                }*/
+                //console.log('loading system.adapter.*');
+                /*objects.getObjectView('system', 'adapter', {}, function (err, res) {
                     var result = [];
                     for (var i = 0; i < res.total_rows; i++) {
                         result.push(res.rows[i].key);
@@ -391,7 +408,7 @@ switch (yargs.argv._[0]) {
                         console.log('No one installed adapter found!');
                         upgradeController(repoUrl, false);
                     }
-                });
+                });*/
             }
         });
 
@@ -443,6 +460,66 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         });
     }
 
+    var sources = repoUrl;
+
+    // Read actual description of installed adapter with version
+    if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
+        console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is not installed.');
+        if (callback) callback();
+        return;
+    }
+    // Get the url of io-package.json or direct the version
+    if (!repoUrl[adapter]) {
+        console.log('Adpater "' + adapter + '" is not in the repository and cannot be updated.');
+        if (callback) callback();
+        return;
+    }
+
+    var ioInstalled = require(__dirname + '/adapter/' + adapter + '/io-package.json');
+
+    // If version is included in repository
+    if (repoUrl[adapter].version) {
+        if (repoUrl[adapter].version == ioInstalled.common.version ||
+            (!forceDowngrade && upToDate(repoUrl[adapter].version, ioInstalled.common.version))) {
+            console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
+            if (callback) callback();
+        } else {
+            // Get the adapter from web site
+            downloadPacket(sources, adapter, function(name, ioPack) {
+                finishUpgrade(name, ioPack, callback);
+            });
+        }
+    } else if (repoUrl[adapter].meta) {
+        // Read repository from url or file
+        getJson(repoUrl[adapter].meta, function(iopack) {
+            if (!iopack) {
+                console.log('Cannot parse file' + repoUrl[adapter].meta);
+                if (callback) callback();
+                return;
+            }
+            if (iopack.common.version == ioInstalled.common.version ||
+                (!forceDowngrade && upToDate(iopack.common.version, ioInstalled.common.version))) {
+                console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
+                if (callback) callback();
+            } else {
+                // Get the adapter from web site
+                downloadPacket(sources, adapter, function(name, ioPack) {
+                    finishUpgrade(name, ioPack, callback);
+                });
+            }
+        });
+    } else {
+        if (forceDowngrade) {
+            console.log('Unable to get version for "' + adapter + '". Update anyway.');
+            // Get the adapter from web site
+            downloadPacket(sources, adapter, function(name, ioPack) {
+                finishUpgrade(name, ioPack, callback);
+            });
+        } else {
+            console.log('Unable to get version for "' + adapter + '".');
+        }
+    }
+    /*
     // Read actual adapter version
     objects.getObject('system.adapter.' + adapter, function (err, obj) {
         if (err || !obj) {
@@ -508,11 +585,18 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
                 }
             }
         }
-    });
+    });*/
 }
 
 function upgradeController(repoUrl, forceDowngrade, callback) {
     var hostname = require("os").hostname();
+    var ioPackage = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+    if (!repoUrl[ioPackage.common.name]) {
+        // no info for controller
+        if (callback) callback();
+        return;
+    }
+
     // Read actual adapter version
     objects.getObject('system.host.' + hostname, function (err, obj) {
         if (err || !obj) {
@@ -727,9 +811,10 @@ function downloadPacket(repoUrl, packetName, callback) {
                         console.log('ncp error: ' + err);
                         process.exit(1);
                     }
-
-                    console.log('delete ' + tmpFile);
-                    fs.unlinkSync(tmpFile);
+                    if (tmpFile.substring(__dirname + '/tmp/') == __dirname + '/tmp/') {
+                        console.log('delete ' + tmpFile);
+                        fs.unlinkSync(tmpFile);
+                    }
                     console.log('delete ' + __dirname + '/tmp/' + name);
                     tools.rmdirRecursiveSync(__dirname + '/tmp/' + name);
 
@@ -1047,8 +1132,30 @@ function createInstance(adapter, enabled, host, callback) {
     });
 }
 
+function findPath(path, url) {
+    if (url.substring(0, 'http://'.length) == 'http://' ||
+        url.substring(0, 'https://'.length) == 'https://') {
+        return url;
+    } else {
+        if (path.substring(0, 'http://'.length) == 'http://' ||
+            path.substring(0, 'https://'.length) == 'https://') {
+            return path + url;
+        } else {
+            return __dirname + '/' + path + url;
+        }
+    }
+}
+
 function getRepositoryFile(urlOrPath, callback) {
     var sources = {};
+    var path = "";
+
+    if (urlOrPath) {
+        var parts = urlOrPath.split('/');
+        path  = parts.splice(0, parts.length - 1).join('/') + '/';
+    }
+
+
     // If object was read
     if (urlOrPath && typeof urlOrPath == 'object') {
         if (callback) callback(urlOrPath);
@@ -1066,9 +1173,23 @@ function getRepositoryFile(urlOrPath, callback) {
         } catch (e) {
 
         }
+
+        for (var name in sources) {
+            if (sources[name].url)  sources[name].url  = findPath(path, sources[name].url);
+            if (sources[name].meta) sources[name].meta = findPath(path, sources[name].meta);
+            if (sources[name].icon) sources[name].icon = findPath(path, sources[name].icon);
+        }
+
         if (callback) callback(sources);
     } else {
-        getJson(urlOrPath, callback);
+        getJson(urlOrPath, function (sources) {
+            for (var name in sources) {
+                if (sources[name].url)  sources[name].url  = findPath(path, sources[name].url);
+                if (sources[name].meta) sources[name].meta = findPath(path, sources[name].meta);
+                if (sources[name].icon) sources[name].icon = findPath(path, sources[name].icon);
+            }
+            if (callback) callback(sources);
+        });
     }
 }
 
@@ -1083,6 +1204,9 @@ function getFile(urlOrPath, fileName, callback) {
             if (callback) callback(tmpFile);
         });
     } else {
+        if (fs.existsSync(urlOrPath)) {
+            if (callback) callback(urlOrPath);
+        } else
         if (fs.existsSync(__dirname + '/' + urlOrPath)) {
             if (callback) callback(__dirname + '/' + urlOrPath);
         } else if (fs.existsSync(__dirname + '/tmp/' + urlOrPath)) {
@@ -1126,6 +1250,16 @@ function getJson(urlOrPath, callback) {
                 if (callback) callback(sources);
             });
         } else {
+            if (fs.existsSync(urlOrPath)) {
+                try {
+                    sources = JSON.parse(fs.readFileSync(urlOrPath));
+                } catch (e) {
+                    console.log('Cannot parse json file from ' + urlOrPath + '. Error: ' + e);
+                    if (callback) callback(null);
+                    return;
+                }
+                if (callback) callback(sources);
+            } else
             if (fs.existsSync(__dirname + '/' + urlOrPath)) {
                 try {
                     sources = JSON.parse(fs.readFileSync(__dirname + '/' + urlOrPath));
