@@ -31,7 +31,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
     },
     "example": {
-        "meta": "example/io-package.json",
+        "meta": "adapter/example/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
     },
     "geofency": {

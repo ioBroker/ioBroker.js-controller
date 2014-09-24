@@ -70,7 +70,6 @@ switch (yargs.argv._[0]) {
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        request =       require('request');
         extend =        require('node.extend');
         var repoUrl =   yargs.argv._[1];
         dbConnect(function () {
@@ -354,7 +353,6 @@ switch (yargs.argv._[0]) {
         fs =           require('fs');
         tools =        require(__dirname + '/lib/tools.js');
         ObjectsCouch = require(__dirname + '/lib/couch.js');
-        request =      require('request');
         extend =       require('node.extend');
         mime =         require('mime');
 
@@ -375,43 +373,17 @@ switch (yargs.argv._[0]) {
                     upgradeAdapter(repoUrl, adapter, true);
                 }
             } else {
-                getRepositoryFile(repoUrl, function (links) {
+                tools.getRepositoryFile(repoUrl, function (links) {
                     var result = [];
                     for (var name in links) {
                         result.push(name);
                     }
                     upgradeAdapterHelper(links, result, 0, false, function () {
                         upgradeController(links, false);
-                        //console.log('All is processed!');
                     });
                 });
-                //var ioPack = require(__dirname + '/io-package.json');
-                /*if (links[ioPack]) {
-                    upgradeController(links, false);
-                }*/
-                /*for (var name in links) {
-                    if (!links[name].controller) upgradeController(repoUrl, false);
-                }*/
-                //console.log('loading system.adapter.*');
-                /*objects.getObjectView('system', 'adapter', {}, function (err, res) {
-                    var result = [];
-                    for (var i = 0; i < res.total_rows; i++) {
-                        result.push(res.rows[i].key);
-                    }
-                    var i = -1;
-                    if (result.length) {
-                        upgradeAdapterHelper(repoUrl, result, 0, false, function () {
-                            upgradeController(repoUrl, false);
-                            //console.log('All is processed!');
-                        });
-                    } else {
-                        console.log('No one installed adapter found!');
-                        upgradeController(repoUrl, false);
-                    }
-                });*/
             }
         });
-
 
         break;
 
@@ -435,7 +407,7 @@ function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
 
 function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
     if (!repoUrl || typeof repoUrl != 'object') {
-        getRepositoryFile(repoUrl, function(sources) {
+        tools.getRepositoryFile(repoUrl, function(sources) {
             upgradeAdapter(sources, adapter, forceDowngrade, callback);
         });
         return;
@@ -493,7 +465,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         }
     } else if (repoUrl[adapter].meta) {
         // Read repository from url or file
-        getJson(repoUrl[adapter].meta, function(iopack) {
+        tools.getJson(repoUrl[adapter].meta, function(iopack) {
             if (!iopack) {
                 console.log('Cannot parse file' + repoUrl[adapter].meta);
                 if (callback) callback();
@@ -521,73 +493,6 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
             console.log('Unable to get version for "' + adapter + '".');
         }
     }
-    /*
-    // Read actual adapter version
-    objects.getObject('system.adapter.' + adapter, function (err, obj) {
-        if (err || !obj) {
-            console.log('Cannot find adapter "' + adapter + '" or it is not installed');
-            if (callback) callback();
-        } else {
-            var sources = repoUrl;
-            // Read actual description of installed adapter with version
-            if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
-                console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is not installed.');
-                if (callback) callback();
-                return;
-            }
-            // Get the url of io-package.json or direct the version
-            if (!repoUrl[adapter]) {
-                console.log('Adpater "' + adapter + '" is not in the repository and cannot be updated.');
-                if (callback) callback();
-                return;
-            }
-
-            var ioInstalled = require(__dirname + '/adapter/' + adapter + '/io-package.json');
-
-            // If version is included in repository
-            if (repoUrl[adapter].version) {
-                if (repoUrl[adapter].version == ioInstalled.common.version ||
-                    (!forceDowngrade && upToDate(repoUrl[adapter].version, ioInstalled.common.version))) {
-                    console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
-                    if (callback) callback();
-                } else {
-                    // Get the adapter from web site
-                    downloadPacket(sources, adapter, function(name, ioPack) {
-                        finishUpgrade(name, ioPack, callback);
-                    });
-                }
-            } else if (repoUrl[adapter].meta) {
-                // Read repository from url or file
-                getJson(repoUrl[adapter].meta, function(iopack) {
-                    if (!iopack) {
-                        console.log('Cannot parse file' + repoUrl[adapter].meta);
-                        if (callback) callback();
-                        return;
-                    }
-                    if (iopack.common.version == ioInstalled.common.version ||
-                        (!forceDowngrade && upToDate(iopack.common.version, ioInstalled.common.version))) {
-                        console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
-                        if (callback) callback();
-                    } else {
-                        // Get the adapter from web site
-                        downloadPacket(sources, adapter, function(name, ioPack) {
-                            finishUpgrade(name, ioPack, callback);
-                        });
-                    }
-                });
-            } else {
-                if (forceDowngrade) {
-                    console.log('Unable to get version for "' + adapter + '". Update anyway.');
-                    // Get the adapter from web site
-                    downloadPacket(sources, adapter, function(name, ioPack) {
-                        finishUpgrade(name, ioPack, callback);
-                    });
-                } else {
-                    console.log('Unable to get version for "' + adapter + '".');
-                }
-            }
-        }
-    });*/
 }
 
 function upgradeController(repoUrl, forceDowngrade, callback) {
@@ -616,7 +521,7 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
             });
         }
     } else {
-        getJson(repoUrl[installed.common.name].meta, function (ioPack) {
+        tools.getJson(repoUrl[installed.common.name].meta, function (ioPack) {
             if (ioPack.common.version == installed.common.version ||
                 (!forceDowngrade && upToDate(ioPack.common.version, installed.common.version))) {
                 console.log('Host    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is up to date.');
@@ -758,7 +663,7 @@ function downloadPacket(repoUrl, packetName, callback) {
     var name;
 
     if (!repoUrl || typeof repoUrl != 'object') {
-        getRepositoryFile(repoUrl, function (sources) {
+        tools.getRepositoryFile(repoUrl, function (sources) {
             downloadPacket(sources, packetName, callback);
         });
         return;
@@ -784,14 +689,13 @@ function downloadPacket(repoUrl, packetName, callback) {
         name = Math.floor(Math.random() * 0xFFFFFFE);
     }
 
-    if (!request) request = require('request');
     var AdmZip =  require('adm-zip');
     var ncp =     require('ncp').ncp;
     ncp.limit =   16;
 
     console.log('download ' + url);
 
-    getFile(url, name + '.zip', function (tmpFile) {
+    tools.getFile(url, name + '.zip', function (tmpFile) {
         console.log('unzip ' + tmpFile);
 
         // Extract files into tmp/
@@ -1143,170 +1047,6 @@ function createInstance(adapter, enabled, host, callback) {
     });
 }
 
-function findPath(path, url) {
-    if (url.substring(0, 'http://'.length) == 'http://' ||
-        url.substring(0, 'https://'.length) == 'https://') {
-        return url;
-    } else {
-        if (path.substring(0, 'http://'.length) == 'http://' ||
-            path.substring(0, 'https://'.length) == 'https://') {
-            return path + url;
-        } else {
-            return __dirname + '/' + path + url;
-        }
-    }
-}
-
-function getRepositoryFile(urlOrPath, callback) {
-    var sources = {};
-    var path = "";
-
-    if (urlOrPath) {
-        var parts = urlOrPath.split('/');
-        path  = parts.splice(0, parts.length - 1).join('/') + '/';
-    }
-
-
-    // If object was read
-    if (urlOrPath && typeof urlOrPath == 'object') {
-        if (callback) callback(urlOrPath);
-    } else
-    if (!urlOrPath) {
-        try {
-            sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
-        } catch (e) {
-            console.log('/conf/sources.json does not exits - ignore');
-            sources = {};
-        }
-        try {
-            var sourcesDist = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
-            sources = extend(sourcesDist, sources, true);
-        } catch (e) {
-
-        }
-
-        for (var name in sources) {
-            if (sources[name].url)  sources[name].url  = findPath(path, sources[name].url);
-            if (sources[name].meta) sources[name].meta = findPath(path, sources[name].meta);
-            if (sources[name].icon) sources[name].icon = findPath(path, sources[name].icon);
-        }
-
-        if (callback) callback(sources);
-    } else {
-        getJson(urlOrPath, function (sources) {
-            for (var name in sources) {
-                if (sources[name].url)  sources[name].url  = findPath(path, sources[name].url);
-                if (sources[name].meta) sources[name].meta = findPath(path, sources[name].meta);
-                if (sources[name].icon) sources[name].icon = findPath(path, sources[name].icon);
-            }
-            if (callback) callback(sources);
-        });
-    }
-}
-
-// Download file to tmp or return file name directly
-function getFile(urlOrPath, fileName, callback) {
-    // If object was read
-    if (urlOrPath.substring(0, 'http://'.length) == 'http://' ||
-        urlOrPath.substring(0, 'https://'.length) == 'https://') {
-        var tmpFile = __dirname + '/tmp/' + (fileName || Math.floor(Math.random() * 0xFFFFFFE) + '.zip');
-        request(urlOrPath).pipe(fs.createWriteStream(tmpFile)).on('close', function () {
-            console.log('downloaded ' + tmpFile);
-            if (callback) callback(tmpFile);
-        });
-    } else {
-        if (fs.existsSync(urlOrPath)) {
-            if (callback) callback(urlOrPath);
-        } else
-        if (fs.existsSync(__dirname + '/' + urlOrPath)) {
-            if (callback) callback(__dirname + '/' + urlOrPath);
-        } else if (fs.existsSync(__dirname + '/tmp/' + urlOrPath)) {
-            if (callback) callback(__dirname + '/tmp/' + urlOrPath);
-        } else if (fs.existsSync(__dirname + '/adapter/' + urlOrPath)) {
-            if (callback) callback(__dirname + '/adapter/' + urlOrPath);
-        } else {
-            console.log('File not found: ' + urlOrPath);
-            process.exit(1);
-        }
-    }
-}
-
-// Return content of the json file. Download it or read directly
-function getJson(urlOrPath, callback) {
-    var sources = {};
-    // If object was read
-    if (urlOrPath && typeof urlOrPath == 'object') {
-        if (callback) callback(urlOrPath);
-    } else
-    if (!urlOrPath) {
-        console.log('Empty url!');
-        if (callback) callback(null);
-   } else {
-        if (urlOrPath.substring(0, 'http://'.length) == 'http://' ||
-            urlOrPath.substring(0, 'https://'.length) == 'https://') {
-            request(urlOrPath, function (error, response, body) {
-                if (error || !body || response.statusCode != 200) {
-                    console.log('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
-                    if (callback) callback(null);
-                    return;
-                }
-                try {
-                    sources = JSON.parse(body);
-                } catch(e) {
-                    console.log('Json file is invalid on ' + urlOrPath);
-                    if (callback) callback(null);
-                    return;
-                }
-
-                if (callback) callback(sources);
-            });
-        } else {
-            if (fs.existsSync(urlOrPath)) {
-                try {
-                    sources = JSON.parse(fs.readFileSync(urlOrPath));
-                } catch (e) {
-                    console.log('Cannot parse json file from ' + urlOrPath + '. Error: ' + e);
-                    if (callback) callback(null);
-                    return;
-                }
-                if (callback) callback(sources);
-            } else
-            if (fs.existsSync(__dirname + '/' + urlOrPath)) {
-                try {
-                    sources = JSON.parse(fs.readFileSync(__dirname + '/' + urlOrPath));
-                }catch(e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/' + urlOrPath + '. Error: ' + e);
-                    if (callback) callback(null);
-                    return;
-                }
-                if (callback) callback(sources);
-            } else if (fs.existsSync(__dirname + '/tmp/' + urlOrPath)) {
-                try {
-                    sources = JSON.parse(fs.readFileSync(__dirname + '/tmp/' + urlOrPath));
-                } catch (e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/tmp/' + urlOrPath + '. Error: ' + e);
-                    if (callback) callback(null);
-                    return;
-                }
-                if (callback) callback(sources);
-            } else if (fs.existsSync(__dirname + '/adapter/' + urlOrPath)) {
-                try {
-                    sources = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + urlOrPath));
-                }catch(e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/adapter/' + urlOrPath + '. Error: ' + e);
-                    if (callback) callback(null);
-                    return;
-                }
-                if (callback) callback(sources);
-            } else {
-                console.log('Json file not found: ' + urlOrPath);
-                if (callback) callback(null);
-                return;
-            }
-        }
-    }
-}
-
 // Helper methods
 function upToDate(a, b) {
     var a = a.split('.');
@@ -1338,7 +1078,7 @@ function updateRepo(repoUrl, callback) {
     var result = {};
 
     if (!repoUrl || typeof repoUrl != 'object') {
-        getRepositoryFile(repoUrl, function(sources) {
+        tools.getRepositoryFile(repoUrl, function(sources) {
             updateRepo(sources, callback);
         });
         return;
@@ -1356,9 +1096,9 @@ function updateRepo(repoUrl, callback) {
             if (sources[name].version) {
                 result[name] = sources[name];
             } else if (sources[name].meta) {
-                getJson(sources[name].meta, function (ioPack){
+                tools.getJson(sources[name].meta, function (ioPack){
                     if (ioPack && ioPack.common) {
-                        result[name] = extend(sources[name], ioPack.common, true);
+                        result[name] = extend(true, sources[name], ioPack.common);
                     }
                     setTimeout(download, 0);
                 });
@@ -1370,24 +1110,7 @@ function updateRepo(repoUrl, callback) {
                 console.log('Cannot get any information of "' + name + '". Ignored.');
             }
             setTimeout(download, 0);
-            /*if (elem.url.substring(0, 'https://'.length) == 'https://' ||
-             elem.url.substring(0, 'http://'.length)  == 'http://') {
-             console.log('http GET ' + elem.url);
-             request(elem.url, function (error, response, body) {
-             processFile(elem, error, response, body);
-             });
-             } else {
-             try {
-             fs.readFile(__dirname + '/adapter/' + elem.url, function (error, body) {
-             processFile(elem, error, null, body);
-             });
-             } catch (e) {
-             console.log('Cannot read file "' + __dirname + '/adapter/' + elem.url + '"');
-             setTimeout(download, 0);
-             }
-             }*/
         }
-
     }
 
     // Read repository file, local or by url
@@ -1396,114 +1119,11 @@ function updateRepo(repoUrl, callback) {
     }
 
     download(sources);
-
-    /*console.log('loading system.adapter.*');
-    objects.getObjectView('system', 'adapter', {}, function (err, res) {
-        var downloads = [];
-
-        for (var i = 0; i < res.total_rows; i++) {
-            result[res.rows[i].key] = res.rows[i].value;
-        }
-
-        console.log('loading conf/sources.json');
-
-        function processFile(elem, error, response, body) {
-            if (!error && (!response || response.statusCode == 200)) {
-                if (!response) {
-                    console.log('Read ' + __dirname + '/adapter/' + elem.url);
-                } else {
-                    console.log('http 200 ' + elem.url);
-                }
-                var _body = {};
-                try {
-                    _body = JSON.parse(body);
-                } catch (e) {
-                    console.log('error: json parse failed for ' + elem.url);
-                    setTimeout(download, 0);
-                    return;
-                }
-                if (elem.controller) {
-                    objects.getObjectView("system", "host", {}, function (err, doc) {
-                        if (doc.rows.length) {
-                            for (var i = 0; i < doc.rows.length; i++) {
-                                if (doc.rows[i].value.type == elem.name) {
-                                    var host = doc.rows[i].value;
-                                    objects.extendObject(host._id, {common: {version: _body.common.version}});
-                                }
-                            }
-                        }
-                    });
-                }
-                else if (!result[elem.name]) {
-                    _body.type = 'adapter';
-                    // Add external link to icon
-                    if (elem.icon) {
-                        _body.common = _body.common || {};
-                        _body.common.extIcon = elem.icon;
-                    }
-                    delete _body.objects;
-                    objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
-                        if (err || !res) {
-                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                console.log('object ' + res.id + ' created');
-                                result[elem.name] = _body;
-                                setTimeout(download, 25);
-                            });
-                        } else {
-                            objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                console.log('object ' + res.id + ' extended');
-                                result[elem.name] = _body;
-                                setTimeout(download, 25);
-                            });
-                        }
-                    });
-
-
-                } else {
-                    if (elem.icon) {
-                        _body.common = _body.common || {};
-                        _body.common.extIcon = elem.icon;
-                    }
-                    delete _body.objects;
-                    delete result[elem.name]._rev;
-                    delete result[elem.name]._id;
-                    delete result[elem.name].type;
-                    delete result[elem.name].children;
-                    if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
-                    if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
-                    if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
-                        result[elem.name] = extend(true, result[elem.name], _body);
-                        objects.extendObject('system.adapter.' + _body.common.name, _body);
-                    }
-                    setTimeout(download, 0);
-                }
-
-            } else {
-                console.log('http ' + (response ? response.statusCode : 'no answer for ') + ' ' + elem.url + ': ' + error);
-                setTimeout(download, 0);
-            }
-        }
-
-    });*/
-}
-
-function getInstalledInfo() {
-    var result = {};
-    var ioPackage = require(__dirname + '/io-package.json');
-    result[ioPackage.common.name] = {controller: true, version: ioPackage.common.version};
-    var dirs = fs.readdirSync(__dirname + '/adapter');
-    for (var i = 0; i < dirs.length; i++) {
-        if (fs.existsSync(__dirname + '/adapter/' + dirs[i] + '/io-package.json')) {
-            ioPackage = require(__dirname + '/adapter/' + dirs[i] + '/io-package.json');
-            result[ioPackage.common.name] = {controller: false, version: ioPackage.common.version};
-        }
-    }
-    return result;
 }
 
 function showRepo(repoUrl) {
     updateRepo(repoUrl, function(sources) {
-        var installed = getInstalledInfo();
+        var installed = tools.getInstalledInfo();
 
         for (var name in sources) {
             var text = (sources[name].controller ? 'Controller ' : 'Adapter    ');
