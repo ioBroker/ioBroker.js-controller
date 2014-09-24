@@ -17,13 +17,13 @@ var cp =           require('child_process');
 var ObjectsCouch = require(__dirname + '/lib/couch.js');
 var StatesRedis =  require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
+var tools =        require(__dirname + '/lib/tools.js');
 
 process.title = ioPackage.common.name;
 
 var logger;
 var isDaemon;
 var hostname = os.hostname();
-
 
 if (process.argv.indexOf('start') !== -1) {
     isDaemon = true;
@@ -263,45 +263,77 @@ function setMeta() {
 function initMessageQueue() {
     states.subscribeMessage('system.host.' + hostname + '.messagebox');
 }
-
 // Send message to other adapter instance
-function sendTo(adapter, command, message) {
+var callbacks;
+function sendTo(adapter, command, message, callback) {
     if (typeof message == 'undefined') {
         message = command;
         command = 'send';
     }
     var obj = {command: command, message: message, from: 'system.host.' + hostname};
     if (adapter.substring(0, 'system.adapter.'.length) != 'system.adapter.') adapter = 'system.adapter.' + adapter;
+
+    if (callback) {
+        if (typeof callback == "function") {
+            obj.callback = {
+                message: message,
+                id:      Math.floor(Math.random() * 0xFFFFFFE) + 1,
+                ack:     false
+            };
+            if (!callbacks) callbacks = {};
+            callbacks['_' + obj.callback.id] = {cb: callback};
+        } else {
+            obj.callback     = callback;
+            obj.callback.ack = true;
+        }
+    }
+
     states.pushMessage(adapter + '.messagebox', obj);
 };
 
 // Process message to controller, like execute some script
 function processMessage(msg) {
-    if (msg.command == "cmdExec") {
-        var spawn = require('child_process').spawn;
-        var args = [__dirname + '/iobroker.js'];
-        var cmd = msg.message.data.split(' ');
-        for (var i = 0; i < cmd.length; i++) {
-            args.push(cmd[i]);
-        }
-        logger.info('iobroker ' + args.slice(1).join(' '));
+    switch (msg.command) {
+        case 'cmdExec':
+            var spawn = require('child_process').spawn;
+            var args = [__dirname + '/iobroker.js'];
+            var cmd = msg.message.data.split(' ');
+            for (var i = 0; i < cmd.length; i++) {
+                args.push(cmd[i]);
+            }
+            logger.info('iobroker ' + args.slice(1).join(' '));
 
-        var child = spawn('node', args);
-        child.stdout.on('data', function (data) {
-            data = data.toString().replace('\n', '');
-            logger.info('iobroker ' + data);
-            sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
-        });
-        child.stderr.on('data', function (data) {
-            data = data.toString().replace('\n', '');
-            logger.error('iobroker ' + data);
-            sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
-        });
-        child.on('exit', function (exitCode) {
-            logger.info('iobroker exit ' + exitCode);
-            sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
-        });
+            var child = spawn('node', args);
+            child.stdout.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.info('iobroker ' + data);
+                sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+            });
+            child.stderr.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.error('iobroker ' + data);
+                sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+            });
+            child.on('exit', function (exitCode) {
+                logger.info('iobroker exit ' + exitCode);
+                sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+            });
+            break;
+
+        case 'getRepository':
+            tools.getRepositoryFile(msg.message, function (sources) {
+                if (msg.callback) sendTo(msg.from, msg.command, sources, msg.callback);
+            });
+            break;
+
+        case 'getInstalled':
+            tools.getInstalledInfo(msg.message, function (sources) {
+                if (msg.callback) sendTo(msg.from, msg.command, sources, msg.callback);
+            });
+            break;
+
     }
+
 }
 
 function getInstances() {
