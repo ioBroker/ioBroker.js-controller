@@ -23,6 +23,8 @@ process.title = ioPackage.common.name;
 
 var logger;
 var isDaemon;
+var callbackId = 0;
+var callbacks = {};
 var hostname = os.hostname();
 
 if (process.argv.indexOf('start') !== -1) {
@@ -56,7 +58,6 @@ logger.info('controller ip addresses: ' + ipArr.join(' '));
 
 var procs     = {};
 var subscribe = {};
-//var callbacks = {};
 
 var states = new StatesRedis({
 
@@ -73,7 +74,7 @@ var states = new StatesRedis({
             states.getMessage('system.host.' + hostname + '.messagebox', function (err, obj) {
                 if (obj) {
                     // If callback stored for this request
-                    /*if (obj.callback &&
+                    if (obj.callback &&
                         obj.callback.ack &&
                         obj.callback.id &&
                         callbacks &&
@@ -83,7 +84,13 @@ var states = new StatesRedis({
                             callbacks['_' + obj.callback.id].cb(obj.message);
                             delete callbacks['_' + obj.callback.id];
                         }
-                    } else */{
+
+                        // delete too old callbacks IDs
+                        var now = (new Date()).getTime();
+                        for (var id in callbacks) {
+                            if (now - callbacks[id].time > 3600000) delete callbacks[id];
+                        }
+                    } else {
                         processMessage(obj);
                     }
                 }
@@ -264,7 +271,6 @@ function initMessageQueue() {
     states.subscribeMessage('system.host.' + hostname + '.messagebox');
 }
 // Send message to other adapter instance
-var callbacks;
 function sendTo(adapter, command, message, callback) {
     if (typeof message == 'undefined') {
         message = command;
@@ -277,9 +283,11 @@ function sendTo(adapter, command, message, callback) {
         if (typeof callback == "function") {
             obj.callback = {
                 message: message,
-                id:      Math.floor(Math.random() * 0xFFFFFFE) + 1,
-                ack:     false
+                id:      callbackId++,
+                ack:     false,
+                time:    (new Date()).getTime()
             };
+            if (callbackId > 0xFFFFFFFF) callbackId = 0;
             if (!callbacks) callbacks = {};
             callbacks['_' + obj.callback.id] = {cb: callback};
         } else {
@@ -327,9 +335,7 @@ function processMessage(msg) {
             break;
 
         case 'getInstalled':
-            tools.getInstalledInfo(msg.message, function (sources) {
-                if (msg.callback) sendTo(msg.from, msg.command, sources, msg.callback);
-            });
+            if (msg.callback) sendTo(msg.from, msg.command, tools.getInstalledInfo(), msg.callback);
             break;
 
     }
