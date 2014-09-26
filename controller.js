@@ -23,7 +23,7 @@ process.title = ioPackage.common.name;
 
 var logger;
 var isDaemon;
-var callbackId = 0;
+var callbackId = 1;
 var callbacks = {};
 var hostname = os.hostname();
 
@@ -287,7 +287,7 @@ function sendTo(adapter, command, message, callback) {
                 ack:     false,
                 time:    (new Date()).getTime()
             };
-            if (callbackId > 0xFFFFFFFF) callbackId = 0;
+            if (callbackId > 0xFFFFFFFF) callbackId = 1;
             if (!callbacks) callbacks = {};
             callbacks['_' + obj.callback.id] = {cb: callback};
         } else {

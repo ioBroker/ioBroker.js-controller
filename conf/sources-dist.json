@@ -66,12 +66,12 @@
     "hue": {
         "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.png"
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
     },
     "javascript": {
         "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/javascript.png"
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
     },
     "knx": {
         "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
