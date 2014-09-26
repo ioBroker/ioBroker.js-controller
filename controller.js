@@ -270,14 +270,16 @@ function setMeta() {
 function initMessageQueue() {
     states.subscribeMessage('system.host.' + hostname + '.messagebox');
 }
+
 // Send message to other adapter instance
-function sendTo(adapter, command, message, callback) {
+function sendTo(objName, command, message, callback) {
     if (typeof message == 'undefined') {
         message = command;
         command = 'send';
     }
     var obj = {command: command, message: message, from: 'system.host.' + hostname};
-    if (adapter.substring(0, 'system.adapter.'.length) != 'system.adapter.') adapter = 'system.adapter.' + adapter;
+    if (objName.substring(0, 'system.adapter.'.length) != 'system.adapter.' &&
+        objName.substring(0, 'system.host.'.length)    != 'system.host.') objName = 'system.adapter.' + objName;
 
     if (callback) {
         if (typeof callback == "function") {
@@ -296,7 +298,7 @@ function sendTo(adapter, command, message, callback) {
         }
     }
 
-    states.pushMessage(adapter + '.messagebox', obj);
+    states.pushMessage(objName + '.messagebox', obj);
 };
 
 // Process message to controller, like execute some script
@@ -335,9 +337,46 @@ function processMessage(msg) {
             break;
 
         case 'getInstalled':
-            if (msg.callback) sendTo(msg.from, msg.command, tools.getInstalledInfo(), msg.callback);
+            if (msg.callback) {
+                // Get list of all hosts
+                objects.getObjectView('system', 'host', {}, function (err, doc) {
+                    var result = tools.getInstalledInfo();
+                    result.hosts = {};
+                    var infoCount = 0;
+                    if (doc && doc.rows.length) {
+                        // Read installed versions of all hosts
+                        for (var i = 0; i < doc.rows.length; i++) {
+                            infoCount++;
+                            sendTo(doc.rows[i].id, 'getVersion', null, function (ioPack) {
+                                infoCount--;
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                }
+                                if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                            });
+                        }
+                    }
+                    if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                });
+            }
             break;
 
+        case 'getVersion':
+            if (msg.callback) {
+                var ioPack = null;
+                try {
+                    ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                } catch (e) {
+                    logger.error('iobroker cannot read and parse "' + __dirname + '/io-package.json"');
+                }
+                if (ioPack) {
+                    ioPack.common.host = hostname;
+                    sendTo(msg.from, msg.command, ioPack.common, msg.callback);
+                } else {
+                    sendTo(msg.from, msg.command, null, msg.callback);
+                }
+            }
+            break;
     }
 
 }

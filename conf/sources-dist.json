@@ -35,9 +35,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
     },
     "geofency": {
-        "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/admin/geofency.png"
+        "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip"
     },
     "graphite": {
         "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip",
@@ -88,8 +86,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png"
     },
     "socketio": {
-        "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
+        "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip"
     },
     "telnet": {
         "url": "https://github.com/ioBroker/ioBroker.telnet/archive/master.zip",
@@ -117,8 +114,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
     },
     "virtual": {
-        "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.virtual/master/io-package.json"
+        "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip"
     },
     "web": {
         "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",
