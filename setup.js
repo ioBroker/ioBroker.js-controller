@@ -496,6 +496,14 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
 }
 
 function upgradeController(repoUrl, forceDowngrade, callback) {
+    if (!repoUrl || typeof repoUrl != 'object') {
+        tools.getRepositoryFile(repoUrl, function (sources) {
+            upgradeController(sources, forceDowngrade, callback);
+        });
+        return;
+    }
+
+
     var hostname = require("os").hostname();
     var installed = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
     if (!installed.common.version) {
