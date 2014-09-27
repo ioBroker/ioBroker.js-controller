@@ -3,9 +3,17 @@
  *  ioBroker.nodejs Controller start/stop and install script
  *
  *  7'2014 hobbyquaker <hq@ccu.io>
+ *         bluefox <bluefox@ccu.io>
  *
  *
  */
+
+// TODO:
+// - update only lists the versions of adapters and controllers
+// - collect versions of all adapters and controllers for specific host
+// - select hots on controller page and manage adapters for this host
+// - install adapter automatically if adapter must be started on some host
+// - list of repositories and active repository in CouchDB (belong to controller)
 
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
@@ -19,9 +27,10 @@ var yargs = require('yargs')
         '$0 add <adapter> [--enabled] [--host <host>]\n' +
         '$0 del <adapter>\n' +
         '$0 del <adapter>.<instance>\n' +
-        '$0 update\n' +
-        '$0 upgrade\n' +
-        '$0 upgrade <adapter>\n' +
+        '$0 update <repository url>\n' +
+        '$0 upgrade <repository url>\n' +
+        '$0 upgrade self <repository url>\n' +
+        '$0 upgrade <adapter> <repository url>\n' +
         '$0 object get <id>\n' +
         '$0 state get <id>\n' +
         '$0 state getplain <id>\n' +
@@ -56,16 +65,18 @@ switch (yargs.argv._[0]) {
         });
         daemon[yargs.argv._[0]]();
         break;
+
     case "update":
         fs =            require('fs');
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        request =       require('request');
         extend =        require('node.extend');
+        var repoUrl =   yargs.argv._[1];
         dbConnect(function () {
-            updateRepo();
+            showRepo(repoUrl);
         });
         break;
+
     case "setup":
         fs =            require('fs');
         password =      require(__dirname + '/lib/password.js');
@@ -73,9 +84,8 @@ switch (yargs.argv._[0]) {
 
         var config;
         if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
-            config = fs.readFileSync(__dirname + '/conf/iobroker-dist.json');
+            config = require(__dirname + '/conf/iobroker-dist.json');
             console.log('creating conf/iobroker.json');
-            config = JSON.parse(config);
             config.couch.host = yargs.argv.couch || '127.0.0.1';
             config.redis.host = yargs.argv.redis || '127.0.0.1';
             fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(config));
@@ -89,7 +99,6 @@ switch (yargs.argv._[0]) {
         });
 
         break;
-
 
     case "add":
     case "install":
@@ -106,10 +115,11 @@ switch (yargs.argv._[0]) {
         ncp.limit =     16;
 
         var name =      yargs.argv._[1];
+        var repoUrl =   yargs.argv._[2];
         var hostname =  os.hostname();
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
-            downloadAdapter(name, function () {
+            downloadPacket(repoUrl, name, function () {
                 dbConnect(function () {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
@@ -122,11 +132,11 @@ switch (yargs.argv._[0]) {
         break;
 
     case "upload":
-        fs =            require('fs');
-        mime =          require('mime');
-        tools =         require(__dirname + '/lib/tools.js');
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        var name =      yargs.argv._[1];
+        fs =           require('fs');
+        mime =         require('mime');
+        tools =        require(__dirname + '/lib/tools.js');
+        ObjectsCouch = require(__dirname + '/lib/couch.js');
+        var name =     yargs.argv._[1];
         if (name) {
             dbConnect(function () {
                 uploadAdapter(name, true, function () {
@@ -153,12 +163,11 @@ switch (yargs.argv._[0]) {
 
         if (adpr && adpr.indexOf('.') != -1) {
             var parts = adpr.split('.');
-            adpr = parts[0];
-            instance = parts[1];
+            adpr      = parts[0];
+            instance  = parts[1];
         }
-        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-        config = JSON.parse(config);
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        var config =      require(__dirname + '/conf/iobroker.json');
+        ObjectsCouch =    require(__dirname + '/lib/couch.js');
         var StatesRedis = require(__dirname + '/lib/redis.js');
         states = new StatesRedis({
             redis: {
@@ -179,13 +188,13 @@ switch (yargs.argv._[0]) {
             });
         }
         break;
+
     case "object":
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
         if (id) {
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+            var config   = require(__dirname + '/conf/iobroker.json');
+            ObjectsCouch = require(__dirname + '/lib/couch.js');
 
             if (cmd == "get") {
                 dbConnect(function () {
@@ -207,9 +216,7 @@ switch (yargs.argv._[0]) {
         var cmd = yargs.argv._[1];
         var id  = yargs.argv._[2];
         if (id) {
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-
+            var config =      require(__dirname + '/conf/iobroker.json');
             var StatesRedis = require(__dirname + '/lib/redis.js');
             states = new StatesRedis({
                 redis: {
@@ -290,9 +297,8 @@ switch (yargs.argv._[0]) {
                 instances.push('system.adapter.' + adapter);
             }
 
-            var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-            config = JSON.parse(config);
-            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+            var config =   require(__dirname + '/conf/iobroker.json');
+            ObjectsCouch = require(__dirname + '/lib/couch.js');
 
             dbConnect(function () {
                 objects.getObject('system.adapter.' + adapter, function (err, res) {
@@ -308,9 +314,7 @@ switch (yargs.argv._[0]) {
                             process.exit(1);
                         }
 
-                        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-                        config = JSON.parse(config);
-
+                        var config =      require(__dirname + '/conf/iobroker.json');
                         var StatesRedis = require(__dirname + '/lib/redis.js');
                         states = new StatesRedis({
                             redis: {
@@ -346,39 +350,40 @@ switch (yargs.argv._[0]) {
         break;
 
     case "upgrade":
-        fs = require('fs');
-        tools =         require(__dirname + '/lib/tools.js');
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
-        request =       require('request');
-        extend =        require('node.extend');
-        mime =          require('mime');
+        fs =           require('fs');
+        tools =        require(__dirname + '/lib/tools.js');
+        ObjectsCouch = require(__dirname + '/lib/couch.js');
+        extend =       require('node.extend');
+        mime =         require('mime');
 
         var adapter = yargs.argv._[1];
-        var config = require('fs').readFileSync(__dirname + '/conf/iobroker.json');
-        config = JSON.parse(config);
+        var repoUrl = yargs.argv._[2];
+        var config  = require(__dirname + '/conf/iobroker.json');
+
+        if (adapter && !repoUrl && adapter.indexOf('/') != -1) {
+            repoUrl = adapter;
+            adapter = null;
+        }
 
         dbConnect(function () {
             if (adapter) {
-                upgradeAdapter(adapter);
+                if (adapter == 'self'){
+                    upgradeController(repoUrl, true);
+                } else {
+                    upgradeAdapter(repoUrl, adapter, true);
+                }
             } else {
-                console.log('loading system.adapter.*');
-                objects.getObjectView('system', 'adapter', {}, function (err, res) {
+                tools.getRepositoryFile(repoUrl, function (links) {
                     var result = [];
-                    for (var i = 0; i < res.total_rows; i++) {
-                        result.push(res.rows[i].key);
+                    for (var name in links) {
+                        result.push(name);
                     }
-                    var i = -1;
-                    if (result.length) {
-                        upgradeAdapterHelper(result, 0, function () {
-                           console.log('All adapters are processed!');
-                        });
-                    } else {
-                        console.log('No one installed adapter found!');
-                    }
+                    upgradeAdapterHelper(links, result, 0, false, function () {
+                        upgradeController(links, false);
+                    });
                 });
             }
         });
-
 
         break;
 
@@ -387,55 +392,159 @@ switch (yargs.argv._[0]) {
 
 }
 
-function upgradeAdapterHelper(list, i, callback) {
-    upgradeAdapter(list[i], function () {
+function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
+    upgradeAdapter(repoUrl, list[i], forceDowngrade, function () {
         i++;
+        while (repoUrl[list[i]] && repoUrl[list[i]].controller) i++;
+
         if (list[i]) {
-            upgradeAdapterHelper(list, i, callback);
+            upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback);
         } else if (callback) {
             callback();
         }
     });
 }
-function upgradeAdapter(adapter, callback) {
-    // Read actual adapter version
-    objects.getObject('system.adapter.' + adapter, function (err, obj) {
-        if (err || !obj) {
-            console.log('Cannot find adapter "' + adapter + '" or it is not installed');
+
+function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
+    if (!repoUrl || typeof repoUrl != 'object') {
+        tools.getRepositoryFile(repoUrl, function(sources) {
+            upgradeAdapter(sources, adapter, forceDowngrade, callback);
+        });
+        return;
+    }
+
+    function finishUpgrade(name, iopack, callback) {
+        var count = 0;
+        // Upload www and admin files of adapter into CouchDB
+        uploadAdapter(name, false, function () {
+            objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
+                count++;
+                if (count == 2) {
+                    console.log('Adapter "' + name + '" updated');
+                    if (callback) callback(name);
+                }
+            });
+        });
+        uploadAdapter(name, true, function () {
+            count++;
+            if (count == 2) {
+                console.log('Adapter "' + name + '" updated');
+                if (callback) callback(name);
+            }
+        });
+    }
+
+    var sources = repoUrl;
+
+    // Read actual description of installed adapter with version
+    if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
+        console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is not installed.');
+        if (callback) callback();
+        return;
+    }
+    // Get the url of io-package.json or direct the version
+    if (!repoUrl[adapter]) {
+        console.log('Adpater "' + adapter + '" is not in the repository and cannot be updated.');
+        if (callback) callback();
+        return;
+    }
+
+    var ioInstalled = require(__dirname + '/adapter/' + adapter + '/io-package.json');
+
+    // If version is included in repository
+    if (repoUrl[adapter].version) {
+        if (repoUrl[adapter].version == ioInstalled.common.version ||
+            (!forceDowngrade && upToDate(repoUrl[adapter].version, ioInstalled.common.version))) {
+            console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
             if (callback) callback();
         } else {
-            if (!obj.common.installedVersion) {
-                console.log('Adpater "' + adapter + '" is not installed.');
+            // Get the adapter from web site
+            downloadPacket(sources, adapter, function(name, ioPack) {
+                finishUpgrade(name, ioPack, callback);
+            });
+        }
+    } else if (repoUrl[adapter].meta) {
+        // Read repository from url or file
+        tools.getJson(repoUrl[adapter].meta, function(iopack) {
+            if (!iopack) {
+                console.log('Cannot parse file' + repoUrl[adapter].meta);
                 if (callback) callback();
-            } else
-            if (obj.common.version == obj.common.installedVersion) {
-                console.log('Adpater "' + adapter + '" is up to date.');
+                return;
+            }
+            if (iopack.common.version == ioInstalled.common.version ||
+                (!forceDowngrade && upToDate(iopack.common.version, ioInstalled.common.version))) {
+                console.log('Adpater "' + adapter + '"' + ((adapter.length < 15) ? new Array(15 - adapter.length).join(' '): '') + ' is up to date.');
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadAdapter(adapter, function (name) {
-                    var count = 0;
-                    // Upload www and admin files of adapter into CouchDB
-                    uploadAdapter(adapter, false, function () {
-                        objects.extendObject('system.adapter.' + adapter, {common: {installedVersion: obj.common.version}}, function () {
-                            count++;
-                            if (count == 2) {
-                                console.log('Adapter "' + adapter + '" updated');
-                                if (callback) callback(adapter);
-                            }
-                        });
-                    });
-                    uploadAdapter(adapter, true, function () {
-                        count++;
-                        if (count == 2) {
-                            console.log('Adapter "' + adapter + '" updated');
-                            if (callback) callback(adapter);
-                        }
-                    });
+                downloadPacket(sources, adapter, function(name, ioPack) {
+                    finishUpgrade(name, ioPack, callback);
                 });
             }
+        });
+    } else {
+        if (forceDowngrade) {
+            console.log('Unable to get version for "' + adapter + '". Update anyway.');
+            // Get the adapter from web site
+            downloadPacket(sources, adapter, function(name, ioPack) {
+                finishUpgrade(name, ioPack, callback);
+            });
+        } else {
+            console.log('Unable to get version for "' + adapter + '".');
         }
-    });
+    }
+}
+
+function upgradeController(repoUrl, forceDowngrade, callback) {
+    if (!repoUrl || typeof repoUrl != 'object') {
+        tools.getRepositoryFile(repoUrl, function (sources) {
+            upgradeController(sources, forceDowngrade, callback);
+        });
+        return;
+    }
+
+
+    var hostname = require("os").hostname();
+    var installed = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+    if (!installed.common.version) {
+        console.log('Hots    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is not installed.');
+        if (callback) callback();
+        return;
+    }
+    if (!repoUrl[installed.common.name]) {
+        // no info for controller
+        if (callback) callback();
+        return;
+    }
+    if (repoUrl[installed.common.name].version) {
+        if (repoUrl[installed.common.name].version == installed.common.version ||
+            (!forceDowngrade && upToDate(repoUrl[installed.common.name].version, installed.common.version))) {
+            console.log('Host    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is up to date.');
+            if (callback) callback();
+        } else {
+            // Get the adapter from web site
+            downloadPacket(repoUrl, installed.common.name, function (name) {
+                console.log('Host "' + hostname + '" updated');
+                if (callback) callback();
+            });
+        }
+    } else {
+        tools.getJson(repoUrl[installed.common.name].meta, function (ioPack) {
+            if (ioPack.common.version == installed.common.version ||
+                (!forceDowngrade && upToDate(ioPack.common.version, installed.common.version))) {
+                console.log('Host    "' + hostname + '"' + ((hostname.length < 15) ? new Array(15 - hostname.length).join(' '): '') + ' is up to date.');
+                if (callback) callback();
+            } else {
+                // Get the adapter from web site
+                downloadPacket(repoUrl, ioPack.common.name, function (name) {
+                    console.log('Host "' + hostname + '" updated');
+                    if (callback) callback();
+                });
+            }
+
+        });
+    }
+
 }
 
 function dbConnect(callback) {
@@ -555,81 +664,97 @@ function uploadAdapter(adapter, isAdmin, callback) {
             })();
         });
     }
-
 }
 
-function downloadAdapter(adapter, callback) {
-    var name;
+function downloadPacket(repoUrl, packetName, callback) {
     var url;
-    var sources;
+    var name;
 
-    if (!fs.existsSync(__dirname + '/conf/sources.json')) {
-        sources = fs.readFileSync(__dirname + '/conf/sources-dist.json');
-        console.log('creating conf/sources.json');
-        fs.writeFileSync(__dirname + '/conf/sources.json', sources);
-        sources = JSON.parse(sources);
-    } else {
-        sources = extend(true, JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json')), JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json')));
+    if (!repoUrl || typeof repoUrl != 'object') {
+        tools.getRepositoryFile(repoUrl, function (sources) {
+            downloadPacket(sources, packetName, callback);
+        });
+        return;
     }
+    var sources = repoUrl;
 
-    if (sources[adapter]) {
-        name = adapter;
-        url = sources[adapter].url;
+    if (sources[packetName]) {
+        url = sources[packetName].url;
 
         // Adapter
         if(!url) {
-            console.log('Adapter "' + adapter + '" can be updated only together with ioBroker.nodejs');
-            if (typeof callback === 'function') callback(name);
+            console.log('Adapter "' + packetName + '" can be updated only together with ioBroker.nodejs');
+            if (typeof callback === 'function') callback(packetName);
             return;
         }
+        name = packetName.replace(/[\/ $&*\\]/g, '_');
     } else {
-        url = adapter;
+        url = packetName;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
-            console.log("Unknown adapter " + adapter);
+            console.log("Unknown packetName " + packetName);
             process.exit(1);
         }
-
-        // Todo set name if cmd called with adapter-url
+        name = Math.floor(Math.random() * 0xFFFFFFE);
     }
 
-    var urlParts = url.split('/');
-    var repoName = urlParts[4];
-
-    var request =   require('request');
-    var AdmZip =    require('adm-zip');
-    var ncp =       require('ncp').ncp;
-    ncp.limit = 16;
+    var AdmZip =  require('adm-zip');
+    var ncp =     require('ncp').ncp;
+    ncp.limit =   16;
 
     console.log('download ' + url);
 
-    var tmpFile = __dirname + '/tmp/' + name + '.zip';
-    request(url).pipe(fs.createWriteStream(tmpFile)).on('close', function () {
+    tools.getFile(url, name + '.zip', function (tmpFile) {
         console.log('unzip ' + tmpFile);
 
+        // Extract files into tmp/
         var zip = new AdmZip(tmpFile);
-        zip.extractAllTo(__dirname + '/tmp', true);
+        zip.extractAllTo(__dirname + '/tmp/' + name, true);
+        // Find out the first directory
+        var dirs = fs.readdirSync(__dirname + '/tmp/' + name);
+        if (dirs.length) {
+            var source = __dirname + '/tmp/' + name + ((dirs.length == 1) ? '/' + dirs[0] : '');
+            // Copy files into adapter or controller
+            if (fs.existsSync(source + '/io-package.json')) {
+                var packetIo;
+                try {
+                    packetIo = JSON.parse(fs.readFileSync(source + '/io-package.json'));
+                } catch (e) {
+                    console.log('io-package.json has invalid format! Installation terminated.');
+                    if (typeof callback === 'function') callback(name, 'Invalid io-package.json!');
+                    process.exit(1);
+                }
 
-        var source =        __dirname + '/tmp/' + repoName + '-master';
-        var destination =   __dirname + '/adapter/' + name;
+                var destination = __dirname;
+                if (!packetIo.common.controller) destination += '/adapter/' + packetIo.common.name;
 
-        console.log('copying ' + source + ' to ' + destination);
+                console.log('copying ' + source + ' to ' + destination + '(Version: ' + packetIo.common.version + ')');
 
-        ncp(source, destination, function (err) {
-            if (err) {
-                console.log('ncp error: ' + err);
-                return;
+                ncp(source, destination, function (err) {
+                    if (err) {
+                        console.log('ncp error: ' + err);
+                        process.exit(1);
+                    }
+                    if (tmpFile.substring(__dirname + '/tmp/') == __dirname + '/tmp/') {
+                        console.log('delete ' + tmpFile);
+                        fs.unlinkSync(tmpFile);
+                    }
+                    console.log('delete ' + __dirname + '/tmp/' + name);
+                    tools.rmdirRecursiveSync(__dirname + '/tmp/' + name);
+
+                    if (typeof callback === 'function') callback(name, packetIo);
+
+                });
+            } else {
+                console.log('io-package.json not found in ' + source + '/io-package.json. Invalid packet! Installation terminated.');
+                if (typeof callback === 'function') callback(name, 'Invalid packet!');
+                process.exit(1);
             }
-
-            console.log('delete ' + tmpFile);
-            fs.unlinkSync(tmpFile);
-            console.log('delete ' + __dirname + '/tmp/' + repoName + '-master');
-            tools.rmdirRecursiveSync(__dirname + '/tmp/' + repoName + '-master');
-
-            if (typeof callback === 'function') callback(name);
-
-        });
+        } else {
+            console.log('Packet is empty! Installation terminated.');
+            if (typeof callback === 'function') callback(name, 'Packet is empty');
+            process.exit(1);
+        }
     });
-
 }
 
 function installAdapter(adapter, callback) {
@@ -642,7 +767,7 @@ function installAdapter(adapter, callback) {
     }
 
     try {
-        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
+        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json'));
     } catch (e) {
         console.log('error: reading io-package.json ' + e);
         process.exit(1);
@@ -930,136 +1055,106 @@ function createInstance(adapter, enabled, host, callback) {
     });
 }
 
-function updateRepo() {
+// Helper methods
+function upToDate(a, b) {
+    var a = a.split('.');
+    var b = b.split('.');
+    a[0] = parseInt(a[0], 10);
+    b[0] = parseInt(b[0], 10);
+    if (a[0] > b[0]) {
+        return false;
+    } else if (a[0] === b[0]) {
+        a[1] = parseInt(a[1], 10);
+        b[1] = parseInt(b[1], 10);
+        if (a[1] > b[1]) {
+            return false;
+        } else if (a[1] === b[1]) {
+            a[2] = parseInt(a[2], 10);
+            b[2] = parseInt(b[2], 10);
+            if (a[2] > b[2]) {
+                return false;
+            } else  {
+                return true;
+            }
+        }
+    } else {
+        return true;
+    }
+}
 
+function updateRepo(repoUrl, callback) {
     var result = {};
 
-    console.log('loading system.adapter.*');
-    objects.getObjectView('system', 'adapter', {}, function (err, res) {
-        for (var i = 0; i < res.total_rows; i++) {
-            result[res.rows[i].key] = res.rows[i].value;
-        }
+    if (!repoUrl || typeof repoUrl != 'object') {
+        tools.getRepositoryFile(repoUrl, function(sources) {
+            updateRepo(sources, callback);
+        });
+        return;
+    }
+    var sources = repoUrl;
+    var downloads = [];
 
-        console.log('loading conf/sources.json');
-        var sources = {};
-        try {
-            sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources.json'));
-        } catch (e) {
-            console.log('/conf/sources.json does not exits - ignore');
-            sources = {};
-        }
-        try {
-            console.log('loading conf/sources-dist.json');
-            var sourcesDist = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
-            sources = extend(sourcesDist, sources, true);
-        } catch (e) {
+    function download() {
+        if (downloads.length < 1) {
+            console.log('update done');
+            if (callback) callback(result);
+        } else {
+            var name = downloads.pop();
 
+            if (sources[name].version) {
+                result[name] = sources[name];
+            } else if (sources[name].meta) {
+                tools.getJson(sources[name].meta, function (ioPack){
+                    if (ioPack && ioPack.common) {
+                        result[name] = extend(true, sources[name], ioPack.common);
+                    }
+                    setTimeout(download, 0);
+                });
+                return;
+            } else if (sources[name].url) {
+                console.log('Cannot get version of "' + name + '".');
+                result[name] = sources[name];
+            } else {
+                console.log('Cannot get any information of "' + name + '". Ignored.');
+            }
+            setTimeout(download, 0);
         }
+    }
 
-        var downloads = [];
+    // Read repository file, local or by url
+    for (var name in sources) {
+        downloads.push(name);
+    }
+
+    download(sources);
+}
+
+function showRepo(repoUrl) {
+    updateRepo(repoUrl, function(sources) {
+        var installed = tools.getInstalledInfo();
 
         for (var name in sources) {
-            downloads.push({name: name, url: sources[name].meta, icon: sources[name].icon});
-        }
+            var text = (sources[name].controller ? 'Controller ' : 'Adapter    ');
+            text += '"' + name + '"' + ((name.length < 15) ? new Array(15 - name.length).join(' '): '');
+            text += ': ' + sources[name].version + ((sources[name].version.length < 10) ? new Array(10 - sources[name].version.length).join(' '): '');
 
-        function processFile(elem, error, response, body) {
-            if (!error && (!response || response.statusCode == 200)) {
-                if (!response) {
-                    console.log('Read ' + __dirname + '/adapter/' + elem.url);
-                } else {
-                    console.log('http 200 ' + elem.url);
-                }
-                var _body = {};
-                try {
-                    _body = JSON.parse(body);
-                } catch (e) {
-                    console.log('error: json parse failed for ' + elem.url);
-                    setTimeout(download, 0);
-                    return;
-                }
-                if (!result[elem.name]) {
-                    _body.type = 'adapter';
-                    // Add external link to icon
-                    if (elem.icon) {
-                        _body.common = _body.common || {};
-                        _body.common.extIcon = elem.icon;
-                    }
-                    delete _body.objects;
-                    objects.getObject('system.adapter.' + _body.common.name, function (err, res) {
-                        if (err || !res) {
-                            objects.setObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                console.log('object ' + res.id + ' created');
-                                result[elem.name] = _body;
-                                setTimeout(download, 25);
-                            });
-                        } else {
-                            objects.extendObject('system.adapter.' + _body.common.name, _body, function (err, res) {
-                                console.log('object ' + res.id + ' extended');
-                                result[elem.name] = _body;
-                                setTimeout(download, 25);
-                            });
-                        }
-                    });
-
-
-                } else {
-                    if (elem.icon) {
-                        _body.common = _body.common || {};
-                        _body.common.extIcon = elem.icon;
-                    }
-                    delete _body.objects;
-                    delete result[elem.name]._rev;
-                    delete result[elem.name]._id;
-                    delete result[elem.name].type;
-                    delete result[elem.name].children;
-                    if (result[elem.name].common && result[elem.name].common.installedVersion) delete result[elem.name].common.installedVersion;
-                    if (result[elem.name]._deleted_conflicts) delete result[elem.name]._deleted_conflicts;
-                    if (JSON.stringify(result[elem.name]) != JSON.stringify(_body)) {
-                        result[elem.name] = extend(true, result[elem.name], _body);
-                        objects.extendObject('system.adapter.' + _body.common.name, _body);
-                    }
-                    setTimeout(download, 0);
+            if (installed[name]) {
+                text += ', installed ' + installed[name].version;
+                if (sources[name].version != installed[name].version &&
+                    !upToDate(sources[name].version, installed[name].version)) {
+                    text += ' [Updateable]';
                 }
 
-            } else {
-                console.log('http ' + response.statusCode + ' ' + elem.url);
-                setTimeout(download, 0);
-            }
-        }
-
-        function download() {
-            if (downloads.length < 1) {
-                console.log('update done');
-            } else {
-                var elem = downloads.pop();
-                if (elem.url.substring(0, 'https://'.length) == 'https://' ||
-                    elem.url.substring(0, 'http://'.length)  == 'http://') {
-                    console.log('http GET ' + elem.url);
-                    request(elem.url, function (error, response, body) {
-                        processFile(elem, error, response, body);
-                    });
-                } else {
-                    try {
-                        fs.readFile(__dirname + '/adapter/' + elem.url, function (error, body) {
-                            processFile(elem, error, null, body);
-                        });
-                    } catch (e) {
-                        console.log('Cannot read file "' + __dirname + '/adapter/' + elem.url + '"');
-                        setTimeout(download, 0);
-                    }
-                }
             }
 
+            console.log(text);
         }
-
-        download();
-
     });
 }
 
 function deleteAdapter(adapter, callback) {
     // Delete instances
-    objects.getObjectView("system", "instance", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1077,7 +1172,7 @@ function deleteAdapter(adapter, callback) {
         }
     });
     // Delete adapter objects
-    objects.getObjectView("system", "adapter", {startkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "adapter", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1090,8 +1185,6 @@ function deleteAdapter(adapter, callback) {
 
                 for (var i = 0; i < doc.rows.length; i++) {
                     var adapterConf = doc.rows[i].value;
-                    objects.delObject(adapterConf._id);
-                    count++;
 
                     // Delete files from web adapters
                     if (fs.existsSync(__dirname + '/adapter/' + adapter + "/web/") && adapterConf.common.webservers) {
@@ -1104,6 +1197,20 @@ function deleteAdapter(adapter, callback) {
                             }
                         }
                     }
+
+
+                    if (adapterConf.common.nondelitable) {
+                        console.log('Adapter ' + adapter + ' cannot be deleted completely, because non-deletable.');
+                        objects.extendObject(adapterConf._id, {
+                            children: [],
+                            common: {installedVersion: ''}
+                        });
+
+                        continue;
+                    }
+
+                    objects.delObject(adapterConf._id);
+                    count++;
 
                     // Delete adapter folder
                     if (!adapterConf.common.noRepository) {
@@ -1197,7 +1304,7 @@ function deleteAdapter(adapter, callback) {
             console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
         }
     });
-    states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
+    states.getKeys('system.adapter.' + adapter + '.*', function (err, obj) {
         if (obj) {
             for (var i = 0; i < obj.length; i++) {
                 states.delState(obj[i]);
@@ -1224,7 +1331,7 @@ function correctChildren(err, obj) {
 
 function deleteInstance(adapter, instance, callback) {
     // Delete instance
-    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {

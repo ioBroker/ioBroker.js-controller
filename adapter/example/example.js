@@ -14,7 +14,7 @@
  *              "name <mail@example.com>"
  *          ]
  *          "desc":         "Example adapter",          // Adapter description shown in User Interfaces. Can be a language object {de:"...",ru:"..."} or a string
- *          "platform":     "javascript/Node.js",       // possible values "javascript", "javascript/Node.js" - more coming
+ *          "platform":     "Javascript/Node.js",       // possible values "javascript", "javascript/Node.js" - more coming
  *          "mode":         "daemon",                   // possible values "daemon", "schedule", "subscribe"
  *          "schedule":     "0 0 * * *"                 // cron-style schedule. Only needed if mode=schedule
  *          "loglevel":     "info"                      // Adapters Log Level
