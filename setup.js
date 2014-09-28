@@ -417,8 +417,11 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         var count = 0;
         // Upload www and admin files of adapter into CouchDB
         uploadAdapter(name, false, function () {
+            // set installed version
             objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
                 count++;
+                // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
+                // todo call npm again (install new or update available node modules)
                 if (count == 2) {
                     console.log('Adapter "' + name + '" updated');
                     if (callback) callback(name);
