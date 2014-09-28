@@ -420,6 +420,7 @@ function upgradeAdapter(adapter, callback) {
                         // set installed version
                         objects.extendObject('system.adapter.' + adapter, {common: {installedVersion: obj.common.version}}, function () {
                             // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
+                            // todo call npm again (install new or update available node modules)
                             count++;
                             if (count == 2) {
                                 console.log('Adapter "' + adapter + '" updated');
