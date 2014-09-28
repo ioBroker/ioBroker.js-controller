@@ -373,7 +373,7 @@ switch (yargs.argv._[0]) {
                            console.log('All adapters are processed!');
                         });
                     } else {
-                        console.log('No one installed adapter found!');
+                        console.log('No adapters installed!');
                     }
                 });
             }
@@ -417,7 +417,9 @@ function upgradeAdapter(adapter, callback) {
                     var count = 0;
                     // Upload www and admin files of adapter into CouchDB
                     uploadAdapter(adapter, false, function () {
+                        // set installed version
                         objects.extendObject('system.adapter.' + adapter, {common: {installedVersion: obj.common.version}}, function () {
+                            // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
                             count++;
                             if (count == 2) {
                                 console.log('Adapter "' + adapter + '" updated');
