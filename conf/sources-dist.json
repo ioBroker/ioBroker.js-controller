@@ -31,13 +31,11 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
     },
     "example": {
-        "meta": "example/io-package.json",
+        "meta": "adapter/example/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
     },
     "geofency": {
-        "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/admin/geofency.png"
+        "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip"
     },
     "graphite": {
         "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip",
@@ -66,12 +64,12 @@
     "hue": {
         "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.png"
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
     },
     "javascript": {
         "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
-        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/javascript.png"
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
     },
     "knx": {
         "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
@@ -88,8 +86,7 @@
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png"
     },
     "socketio": {
-        "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json"
+        "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip"
     },
     "telnet": {
         "url": "https://github.com/ioBroker/ioBroker.telnet/archive/master.zip",
@@ -106,14 +103,18 @@
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
     },
+    "jsController": {
+        "controller": true,
+        "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
+    },
     "sonos": {
         "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
     },
     "virtual": {
-        "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.virtual/master/io-package.json"
+        "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip"
     },
     "web": {
         "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",

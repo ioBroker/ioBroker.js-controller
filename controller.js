@@ -8,27 +8,30 @@
 
 // Change version in io-package.json and start grunt task to modify the version
 var version = '0.0.16';
-var title = 'io.controller';
-process.title = title;
 
 
-var schedule =      require('node-schedule');
-var os =            require('os');
-var fs =            require('fs');
-var cp =            require('child_process');
-var ObjectsCouch =  require(__dirname + '/lib/couch.js');
-var StatesRedis =   require(__dirname + '/lib/redis.js');
+var schedule =     require('node-schedule');
+var os =           require('os');
+var fs =           require('fs');
+var cp =           require('child_process');
+var ObjectsCouch = require(__dirname + '/lib/couch.js');
+var StatesRedis =  require(__dirname + '/lib/redis.js');
+var ioPackage =    require(__dirname + '/io-package.json');
+var tools =        require(__dirname + '/lib/tools.js');
+
+process.title = ioPackage.common.name;
 
 var logger;
 var isDaemon;
-var hostname =      os.hostname();
-
+var callbackId = 1;
+var callbacks = {};
+var hostname = os.hostname();
 
 if (process.argv.indexOf('start') !== -1) {
-    isDaemon =      true;
-    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+    isDaemon = true;
+    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
 } else {
-    logger =        require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
 }
 
 var config;
@@ -48,7 +51,7 @@ for (var dev in ifaces) {
     });
 }
 
-logger.info('ioBroker.nodejs version ' + version + ' ' + title + ' starting');
+logger.info('ioBroker.nodejs version ' + version + ' ' + ioPackage.common.name + ' starting');
 logger.info('Copyright (c) 2014 hobbyquaker, bluefox');
 logger.info('controller hostname: ' + hostname);
 logger.info('controller ip addresses: ' + ipArr.join(' '));
@@ -65,6 +68,34 @@ var states = new StatesRedis({
     },
     logger: logger,
     change: function (id, state) {
+        // If this is messagebox
+        if (id == 'system.host.' + hostname + '.messagebox') {
+            // Read it from fifo list
+            states.getMessage('system.host.' + hostname + '.messagebox', function (err, obj) {
+                if (obj) {
+                    // If callback stored for this request
+                    if (obj.callback &&
+                        obj.callback.ack &&
+                        obj.callback.id &&
+                        callbacks &&
+                        callbacks['_' + obj.callback.id]) {
+                        // Call callback function
+                        if (callbacks['_' + obj.callback.id].cb) {
+                            callbacks['_' + obj.callback.id].cb(obj.message);
+                            delete callbacks['_' + obj.callback.id];
+                        }
+
+                        // delete too old callbacks IDs
+                        var now = (new Date()).getTime();
+                        for (var id in callbacks) {
+                            if (now - callbacks[id].time > 3600000) delete callbacks[id];
+                        }
+                    } else {
+                        processMessage(obj);
+                    }
+                }
+            });
+        } else
         if (subscribe[id]) {
             for (var i = 0; i < subscribe[id].length; i++) {
                 // wake up adapter
@@ -91,6 +122,7 @@ var objects = new ObjectsCouch({
         setMeta();
         getInstances();
         startAliveInterval();
+        initMessageQueue();
     },
     change: function (id, obj) {
         if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
@@ -111,7 +143,7 @@ var objects = new ObjectsCouch({
                     }
                 });
             } else {
-                if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
+                if (obj && (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname)) {
                     if (obj.common.enabled) startInstance(id);
                 } else {
                     delete procs[id];
@@ -143,27 +175,29 @@ function reportStatus() {
     states.setState(id + '.alive', {val: true, ack: true, expire: 30});
     states.setState(id + '.load', {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true});
     states.setState(id + '.mem', {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true});
-
 }
 
 function setMeta() {
     var id = 'system.host.' + hostname;
+
     var obj = {
         _id: id,
         type: 'host',
         common: {
-            name:       id,
-            process:    title,
-            version:    version,
-            platform:   'javascript/Node.js',
-            cmd:        process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
-            hostname:   hostname,
-            address:    ipArr,
-            children: [
+            name:             id,
+//            process:          process.title, // actually not required, because there is type now
+            title:            ioPackage.common.title,
+            installedVersion: version,
+            platform:         ioPackage.common.platform,
+            cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+            hostname:         hostname,
+            address:          ipArr,
+            children:         [
                 id + '.alive',
                 id + '.load',
                 id + '.mem'
-            ]
+            ],
+            type:             ioPackage.common.name
         },
         native: {
             process: {
@@ -230,6 +264,121 @@ function setMeta() {
         native: {}
     };
     objects.extendObject(idAlive, obj);
+}
+
+// Subscribe on message queue
+function initMessageQueue() {
+    states.subscribeMessage('system.host.' + hostname + '.messagebox');
+}
+
+// Send message to other adapter instance
+function sendTo(objName, command, message, callback) {
+    if (typeof message == 'undefined') {
+        message = command;
+        command = 'send';
+    }
+    var obj = {command: command, message: message, from: 'system.host.' + hostname};
+    if (objName.substring(0, 'system.adapter.'.length) != 'system.adapter.' &&
+        objName.substring(0, 'system.host.'.length)    != 'system.host.') objName = 'system.adapter.' + objName;
+
+    if (callback) {
+        if (typeof callback == "function") {
+            obj.callback = {
+                message: message,
+                id:      callbackId++,
+                ack:     false,
+                time:    (new Date()).getTime()
+            };
+            if (callbackId > 0xFFFFFFFF) callbackId = 1;
+            if (!callbacks) callbacks = {};
+            callbacks['_' + obj.callback.id] = {cb: callback};
+        } else {
+            obj.callback     = callback;
+            obj.callback.ack = true;
+        }
+    }
+
+    states.pushMessage(objName + '.messagebox', obj);
+};
+
+// Process message to controller, like execute some script
+function processMessage(msg) {
+    switch (msg.command) {
+        case 'cmdExec':
+            var spawn = require('child_process').spawn;
+            var args = [__dirname + '/iobroker.js'];
+            var cmd = msg.message.data.split(' ');
+            for (var i = 0; i < cmd.length; i++) {
+                args.push(cmd[i]);
+            }
+            logger.info('iobroker ' + args.slice(1).join(' '));
+
+            var child = spawn('node', args);
+            child.stdout.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.info('iobroker ' + data);
+                sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+            });
+            child.stderr.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.error('iobroker ' + data);
+                sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+            });
+            child.on('exit', function (exitCode) {
+                logger.info('iobroker exit ' + exitCode);
+                sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+            });
+            break;
+
+        case 'getRepository':
+            tools.getRepositoryFile(msg.message, function (sources) {
+                if (msg.callback) sendTo(msg.from, msg.command, sources, msg.callback);
+            });
+            break;
+
+        case 'getInstalled':
+            if (msg.callback) {
+                // Get list of all hosts
+                objects.getObjectView('system', 'host', {}, function (err, doc) {
+                    var result = tools.getInstalledInfo();
+                    result.hosts = {};
+                    var infoCount = 0;
+                    if (doc && doc.rows.length) {
+                        // Read installed versions of all hosts
+                        for (var i = 0; i < doc.rows.length; i++) {
+                            infoCount++;
+                            sendTo(doc.rows[i].id, 'getVersion', null, function (ioPack) {
+                                infoCount--;
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                }
+                                if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                            });
+                        }
+                    }
+                    if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                });
+            }
+            break;
+
+        case 'getVersion':
+            if (msg.callback) {
+                var ioPack = null;
+                try {
+                    ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                } catch (e) {
+                    logger.error('iobroker cannot read and parse "' + __dirname + '/io-package.json"');
+                }
+                if (ioPack) {
+                    ioPack.common.host = hostname;
+                    sendTo(msg.from, msg.command, ioPack.common, msg.callback);
+                } else {
+                    sendTo(msg.from, msg.command, null, msg.callback);
+                }
+            }
+            break;
+    }
+
 }
 
 function getInstances() {

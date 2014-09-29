@@ -1,13 +1,23 @@
 {
-	"name":      "controller",
-    "version":   "0.0.17",
-	"platform":  "Javascript/Node.js",
-	"title":     "ioBroker.nodejs: controller and base adapters",
-    "description": {
-		"en": "Javascript/Node.js implementation of ioBroker controller and base adapters",
-		"de": "Javascript/Node.js Implementierung des ioBroker-Controllers und der Basis-Adapter",
-		"ru": "Основное ядро ioBroker"
-	},
+    "common": {
+        "name":       "jsController",
+        "version":    "0.0.18",
+        "platform":   "Javascript/Node.js",
+        "controller": true,
+        "title":      "ioBroker.nodejs: controller",
+        "desc": {
+            "en": "Javascript/Node.js implementation of ioBroker controller",
+            "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
+            "ru": "Основное ядро ioBroker на Javascript/Node.js"
+        },
+        "messagebox": true,
+        "readme":     "https://github.com/ioBroker/ioBroker.nodejs/blob/master/README.md",
+        "authors": [
+            "hobbyquaker <hq@ccu.io>",
+            "bluefox <bluefox@ccu.io>"
+        ],
+        "license":    "MIT"
+    },
     "objects": [
         {
             "_id": "_design/system",

@@ -8,10 +8,9 @@
 * (bluefox) adapter package
 * io-package.json - pre/post install hooks
 * (bluefox) adapter dependencies check
-* (bluefox) Update controller: message queue for controller
-* (bluefox) Update controller: manage installedVersion and version in host.common
-* (bluefox) Update controller: update controller on host over message queue
-* (bluefox) Update: switch all cmdExe on message queue, inclusive outputs
+* (bluefox) restart required and why.
+* (bluefox) manage repositories
+* (bluefox) install adapter automatically if it is enabled on this host
 
 
 # 0.2.0

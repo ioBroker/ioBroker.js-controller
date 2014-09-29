@@ -1,3 +1,6 @@
+# 0.0.18 (2014-09-27)
+* (bluefox) new concept of updates and repositories
+
 # 0.0.17 (2014-09-04)
 * (hobbyquaker) trimFifo calls callback with trimmed data
 * (hobbyquaker) fix instance restart
