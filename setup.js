@@ -1514,43 +1514,6 @@ function dbSetup() {
             });
 
             tasks++;
-            objects.setObject('system.config', {
-                type: 'config',
-                common: {
-                    language:         '',           // Default language for adapters. Adapters can use different values.
-                    tempUnit:         '°C',         // Default temperature units.
-                    currency:         '€',          // Default currency sign.
-                    dateFormat:       'DD.MM.YYYY', // Default date format.
-                    isFloatComma:     true,         // Default float divider ('.' - false, ',' - true)
-                    licenseConfirmed: false         // If license agreement confirmed
-                }
-            }, function () {
-                console.log('object system.config created');
-                if (!(--tasks)) setupReady();
-            });
-
-            // enum "rooms" if not exist
-            tasks++;
-            objects.getObject('enum.rooms', function (err, res) {
-             if (!err && res) {
-                 if (!(--tasks))setupReady();
-             } else {
-                 objects.setObject('enum.rooms', {
-                     type: 'enum',
-                     children:[],
-                     common: {
-                         name: 'Rooms'
-                         // members: [] // enum.rooms has no members only children
-                     },
-                     native: {}
-                 }, function () {
-                     console.log('object enum.rooms created');
-                     if (!(--tasks)) setupReady();
-                 });
-             }
-            });*/
-
-            tasks++;
             objects.getObject('system.meta.uuid', function (err, res) {
                 if (!err && res && res.native && res.native.uuid) {
                     if (!(--tasks)) setupReady();
