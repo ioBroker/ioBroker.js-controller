@@ -571,6 +571,7 @@ function dbConnect(callback) {
 
 // Upload www folder of adapter into couchDB
 function uploadAdapter(adapter, isAdmin, callback) {
+    // Todo check for common.wwwDontUpload (needed for legacy adapter)
     var rev;
     var id = adapter + (isAdmin ? '.admin' : '');
     var dir = __dirname + '/adapter/' + adapter + (isAdmin ? '/admin' : '/www');

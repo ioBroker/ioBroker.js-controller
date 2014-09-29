@@ -7,8 +7,9 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.16';
-
+var version = '0.0.18';
+var title = 'io.js-controller';
+process.title = title;
 
 var schedule =     require('node-schedule');
 var os =           require('os');
@@ -19,7 +20,7 @@ var StatesRedis =  require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools.js');
 
-process.title = ioPackage.common.name;
+
 
 var logger;
 var isDaemon;
