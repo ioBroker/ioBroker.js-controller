@@ -406,6 +406,10 @@ function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
 }
 
 function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
+	
+	// todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
+    // todo call npm again (install new or update available node modules)
+                            
     if (!repoUrl || typeof repoUrl != 'object') {
         tools.getRepositoryFile(repoUrl, function(sources) {
             upgradeAdapter(sources, adapter, forceDowngrade, callback);
@@ -567,6 +571,7 @@ function dbConnect(callback) {
 
 // Upload www folder of adapter into couchDB
 function uploadAdapter(adapter, isAdmin, callback) {
+    // Todo check for common.wwwDontUpload (needed for legacy adapter)
     var rev;
     var id = adapter + (isAdmin ? '.admin' : '');
     var dir = __dirname + '/adapter/' + adapter + (isAdmin ? '/admin' : '/www');

@@ -93,6 +93,11 @@
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/admin/telnet.png"
     },
+    "onkyo": {
+        "url": "https://github.com/ioBroker/ioBroker.onkyo/archive/master.zip",
+        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
+        "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
+    },
     "pushover": {
         "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
@@ -102,11 +107,6 @@
         "url": "https://github.com/ioBroker/ioBroker.rickshaw/archive/master.zip",
         "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
         "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
-    },
-    "jsController": {
-        "controller": true,
-        "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
     },
     "sonos": {
         "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",

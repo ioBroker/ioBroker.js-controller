@@ -1,6 +1,6 @@
 {
     "common": {
-        "name":       "jsController",
+        "name":       "js-controller",
         "version":    "0.0.18",
         "platform":   "Javascript/Node.js",
         "controller": true,
