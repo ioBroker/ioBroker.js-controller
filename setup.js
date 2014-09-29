@@ -1524,8 +1524,7 @@ function dbSetup() {
                 if (!(--tasks)) setupReady();
             });
 
-            // TODO create enum "rooms" if not exist
-            /*
+            // enum "rooms" if not exist
             tasks++;
             objects.getObject('enum.rooms', function (err, res) {
              if (!err && res) {
@@ -1533,13 +1532,12 @@ function dbSetup() {
              } else {
                  objects.setObject('enum.rooms', {
                      type: 'enum',
+                     children:[],
                      common: {
-                         name: 'uuid',
-                         type: 'uuid'
+                         name: 'Rooms'
+                         // members: [] // enum.rooms has no members only children
                      },
-                     native: {
-                         uuid: uuid()
-                     }
+                     native: {}
                  }, function () {
                      console.log('object enum.rooms created');
                      if (!(--tasks)) setupReady();
