@@ -118,7 +118,8 @@
 
                 "activeRepo":       "default",
                 "listRepo": {
-                    "default": "conf/sources-dist.json"
+                    "default": "conf/sources-dist.json",
+                    "online": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/conf/sources-dist.json"
                 }
             }
         }
