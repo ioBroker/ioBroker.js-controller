@@ -90,6 +90,37 @@
                 "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
                 "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
             }
+        },
+        {
+            "_id": "enum.rooms",
+            "children": [],
+            "common": {
+                "name": "Rooms",
+                "desc": {
+                    "en": "List of the rooms",
+                    "de": "Die Liste von Räumen",
+                    "ru": "Список комнат"
+                },
+                "members": []
+            },
+            "type": "enum"
+        },
+        {
+            "_id": "system.config",
+            "type": "config",
+            "common": {
+                "language":         "",
+                "tempUnit":         "°C",
+                "currency":         "€",
+                "dateFormat":       "DD.MM.YYYY",
+                "isFloatComma":     true,
+                "licenseConfirmed": false,
+
+                "activeRepo":       "default",
+                "listRepo": {
+                    "default": "conf/sources-dist.json"
+                }
+            }
         }
     ]
 }

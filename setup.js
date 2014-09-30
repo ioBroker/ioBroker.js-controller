@@ -421,8 +421,11 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         var count = 0;
         // Upload www and admin files of adapter into CouchDB
         uploadAdapter(name, false, function () {
+            // set installed version
             objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
                 count++;
+                // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
+                // todo call npm again (install new or update available node modules)
                 if (count == 2) {
                     console.log('Adapter "' + name + '" updated');
                     if (callback) callback(name);
@@ -1509,45 +1512,6 @@ function dbSetup() {
                 console.log('object system.user.admin created');
                 if (!(--tasks)) setupReady();
             });
-
-            tasks++;
-            objects.setObject('system.config', {
-                type: 'config',
-                common: {
-                    language:         '',           // Default language for adapters. Adapters can use different values.
-                    tempUnit:         '°C',         // Default temperature units.
-                    currency:         '€',          // Default currency sign.
-                    dateFormat:       'DD.MM.YYYY', // Default date format.
-                    isFloatComma:     true,         // Default float divider ('.' - false, ',' - true)
-                    licenseConfirmed: false         // If license agreement confirmed
-                }
-            }, function () {
-                console.log('object system.config created');
-                if (!(--tasks)) setupReady();
-            });
-
-            // TODO create enum "rooms" if not exist
-            /*
-            tasks++;
-            objects.getObject('enum.rooms', function (err, res) {
-             if (!err && res) {
-                 if (!(--tasks))setupReady();
-             } else {
-                 objects.setObject('enum.rooms', {
-                     type: 'enum',
-                     common: {
-                         name: 'uuid',
-                         type: 'uuid'
-                     },
-                     native: {
-                         uuid: uuid()
-                     }
-                 }, function () {
-                     console.log('object enum.rooms created');
-                     if (!(--tasks)) setupReady();
-                 });
-             }
-            });*/
 
             tasks++;
             objects.getObject('system.meta.uuid', function (err, res) {
