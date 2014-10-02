@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.18';
+var version = '0.0.19';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -101,7 +101,7 @@ var states = new StatesRedis({
             for (var i = 0; i < subscribe[id].length; i++) {
                 // wake up adapter
                 if (procs[subscribe[id][i]]) {
-                    console.log("Wake up " + id +' ' + JSON.stringify(state));
+                    console.log("Wake up " + id + ' ' + JSON.stringify(state));
                     startInstance(subscribe[id][i], true);
                 } else {
                     logger.warn("Adapter subscribed on " + id + " does not exist!");
@@ -300,7 +300,7 @@ function sendTo(objName, command, message, callback) {
     }
 
     states.pushMessage(objName + '.messagebox', obj);
-};
+}
 
 // Process message to controller, like execute some script
 function processMessage(msg) {

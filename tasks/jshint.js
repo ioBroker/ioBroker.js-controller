@@ -10,6 +10,7 @@ module.exports = {
         srcDir + "adapter/**/*.js",
         '!' + srcDir + 'node_modules/**/*.js',
         '!' + srcDir + 'adapter/admin/www/lib/**/*.js',
-        '!' + srcDir + 'adapter/*/node_modules/**/*.js'
+        '!' + srcDir + 'adapter/*/node_modules/**/*.js',
+        '!' + srcDir + 'adapter/legacy/www/*/**/*.js'
     ]
 };

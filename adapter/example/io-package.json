@@ -8,7 +8,8 @@
         "mode":                     "daemon",
         "icon":                     "example.png",
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png",
-        "loglevel":                 "info"
+        "loglevel":                 "info",
+        "noDelete":                 true
     },
     "native": {
         "test1": true,

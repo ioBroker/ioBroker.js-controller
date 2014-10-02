@@ -1,3 +1,8 @@
+# 0.0.19 (2014-10-02)
+* (bluefox) fix add/delete adapter
+* (bluefox) fill source-dist.json with grunt
+* (bluefox) call "npm install" after adapter updated
+
 # 0.0.18 (2014-09-27)
 * (bluefox) new concept of updates and repositories
 
