@@ -8,9 +8,8 @@
 * (bluefox) adapter package
 * io-package.json - pre/post install hooks
 * (bluefox) adapter dependencies check
-* (bluefox) restart required and why.
-* (bluefox) install adapter automatically if it is enabled on this host
-
+* (bluefox) restart required and why
+* (bluefox) edit children of enums
 
 # 0.2.0
 

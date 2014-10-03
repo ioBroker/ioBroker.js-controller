@@ -107,6 +107,18 @@ var states = new StatesRedis({
                     logger.warn("Adapter subscribed on " + id + " does not exist!");
                 }
             }
+        } else
+        // Monitor activity of the adapter and restart it if stopped
+        if (!isStopping && id.substring(id.length - '.alive'.length) == '.alive') {
+            var adapter = id.substring(0, id.length - '.alive'.length);
+            if (procs[adapter] &&
+                !procs[adapter].stopping &&
+                !procs[i].process &&
+                procs[adapter].config &&
+                procs[adapter].config.common.enabled &&
+                procs[adapter].config.common.mode == 'daemon' ) {
+                startInstance(adapter, false);
+            }
         }
     }
 });
@@ -173,60 +185,69 @@ function startAliveInterval() {
 
 function reportStatus() {
     var id = 'system.host.' + hostname;
-    states.setState(id + '.alive', {val: true, ack: true, expire: 30});
-    states.setState(id + '.load', {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true});
-    states.setState(id + '.mem', {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true});
+    states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
+    states.setState(id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
+    states.setState(id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
 }
 
 function setMeta() {
     var id = 'system.host.' + hostname;
 
-    var obj = {
-        _id: id,
-        type: 'host',
-        common: {
-            name:             id,
+    objects.getObject(id, function (err, oldObj) {
+        var newObj = {
+            _id: id,
+            type: 'host',
+            common: {
+                name:             id,
 //            process:          process.title, // actually not required, because there is type now
-            title:            ioPackage.common.title,
-            installedVersion: version,
-            platform:         ioPackage.common.platform,
-            cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
-            hostname:         hostname,
-            address:          ipArr,
-            children:         [
-                id + '.alive',
-                id + '.load',
-                id + '.mem'
-            ],
-            type:             ioPackage.common.name
-        },
-        native: {
-            process: {
-                title:      process.title,
-                pid:        process.pid,
-                versions:   process.versions,
-                env:        process.env
+                title:            ioPackage.common.title,
+                installedVersion: version,
+                platform:         ioPackage.common.platform,
+                cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+                hostname:         hostname,
+                address:          ipArr,
+                children:         [
+                        id + '.alive',
+                        id + '.load',
+                        id + '.mem'
+                ],
+                type:             ioPackage.common.name
             },
-            os: {
-                hostname:   hostname,
-                type:       os.type(),
-                platform:   os.platform(),
-                arch:       os.arch(),
-                release:    os.release(),
-                uptime:     os.uptime(),
-                endianness: os.endianness(),
-                tmpdir:     os.tmpdir()
-            },
-            hardware: {
-                cpus:       os.cpus(),
-                totalmem:   os.totalmem(),
-                networkInterfaces: os.networkInterfaces()
+            native: {
+                process: {
+                    title:      process.title,
+                    pid:        process.pid,
+                    versions:   process.versions,
+                    env:        process.env
+                },
+                os: {
+                    hostname:   hostname,
+                    type:       os.type(),
+                    platform:   os.platform(),
+                    arch:       os.arch(),
+                    release:    os.release(),
+                    uptime:     os.uptime(),
+                    endianness: os.endianness(),
+                    tmpdir:     os.tmpdir()
+                },
+                hardware: {
+                    cpus:       os.cpus(),
+                    totalmem:   os.totalmem(),
+                    networkInterfaces: os.networkInterfaces()
+                }
             }
+        };
+        if (oldObj) {
+            if (oldObj.common && oldObj.common.children) oldObj.common.children = [];
+            if (oldObj.native && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) oldObj.native.hardware.networkInterfaces = [];
+            newObj = require('node.extend')(true, oldObj, newObj);
         }
-    };
-    objects.extendObject(id, obj);
+
+        objects.setObject(id, newObj);
+    });
+
     var idMem = id + ".mem";
-    obj = {
+    var obj = {
         _id: idMem,
         type: 'state',
         parent: id,
@@ -318,16 +339,16 @@ function processMessage(msg) {
             child.stdout.on('data', function (data) {
                 data = data.toString().replace('\n', '');
                 logger.info('iobroker ' + data);
-                sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+                if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
             });
             child.stderr.on('data', function (data) {
                 data = data.toString().replace('\n', '');
                 logger.error('iobroker ' + data);
-                sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+                if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
             });
             child.on('exit', function (exitCode) {
                 logger.info('iobroker exit ' + exitCode);
-                sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+                if (msg.from) sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
             });
             break;
 
@@ -453,10 +474,33 @@ function startInstance(id, wakeUp) {
     if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
         fileName = name + '.js';
         if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
-            logger.error('controller startInstance cannot find start file for adapter "' + name + '"');
+            procs[id].downloadRetry = procs[id].downloadRetry || 0;
+            if (procs[id].downloadRetry < 3) {
+                procs[id].downloadRetry++;
+                logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+                logger.info('iobroker install ' + name);
+
+                var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
+                child.stdout.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.info('iobroker ' + data);
+                });
+                child.stderr.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.error('iobroker ' + data);
+                });
+                child.on('exit', function (exitCode) {
+                    logger.info('iobroker exit ' + exitCode);
+                    startInstance(id, wakeUp);
+                });
+            } else {
+                logger.error('Cannot download adapter "' + + '". To restart it disable/enable it or restart host.');
+            }
+
             return;
         }
     }
+    procs[id].downloadRetry = 0;
 
     switch (mode) {
         case 'daemon':
@@ -627,7 +671,6 @@ function stopInstance(id, callback) {
         default:
     }
 }
-
 
 var isStopping = false;
 var allInstancesStopped = true;

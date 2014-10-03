@@ -112,14 +112,20 @@ switch (yargs.argv._[0]) {
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadPacket(repoUrl, name, function () {
+                if (yargs.argv._[0] != 'install') {
+                    dbConnect(function () {
+                        createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
+                    });
+                }
+            });
+        } else {
+            if (yargs.argv._[0] != 'install') {
                 dbConnect(function () {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
-            });
-        } else {
-            dbConnect(function () {
-                createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
-            });
+            } else {
+                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.')
+            }
         }
         break;
 
@@ -418,7 +424,6 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
                 objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
                     count++;
                     // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
-                    // todo call npm again (install new or update available node modules)
                     if (count == 2) {
                         console.log('Adapter "' + name + '" updated');
                         if (callback) callback(name);
@@ -1057,14 +1062,23 @@ function createInstance(adapter, enabled, host, callback) {
                         // Update system.adapter.name children
                         doc.children = doc.children || [];
                         if (doc.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) doc.children.push('system.adapter.' + adapter + '.' + instance);
-                        objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
-                            if (err) {
-                                console.log(err);
+
+                        objects.getObject('system.adapter.' + adapter, function (err, oldObj) {
+                            if (oldObj) {
+                                if (oldObj.children) oldObj.children = [];
+                                oldObj = extend(true, oldObj, {children: doc.children});
                             } else {
-                                console.log('object system.adapter.' + adapter + ' extended');
+                                oldObj = {children: doc.children};
                             }
-                            // done
-                            process.exit(0);
+                            objects.setObject('system.adapter.' + adapter, oldObj, function (err, res) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('object system.adapter.' + adapter + ' extended');
+                                }
+                                // done
+                                process.exit(0);
+                            });
                         });
                     });
                 }
@@ -1193,16 +1207,16 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-    // TODO: Delete adapter objects (no more used
-    objects.getObjectView("system", "adapter", {startkey: adapter, endkey: adapter}, function (err, doc) {
+
+    objects.getObjectView("system", "adapter", {startkey: 'system.adapter.' + adapter, endkey: 'system.adapter.' + adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
             if (doc.rows.length === 0) {
                 console.log('no adapter ' + adapter + ' found');
             } else {
-                var tools = require(__dirname + '/lib/tools.js');
-                var fs    = require('fs');
+                tools = tools || require(__dirname + '/lib/tools.js');
+                fs    = fs    || require('fs');
                 var count = 0;
 
                 for (var i = 0; i < doc.rows.length; i++) {
@@ -1223,9 +1237,14 @@ function deleteAdapter(adapter, callback) {
 
                     if (adapterConf.common.nondelitable) {
                         console.log('Adapter ' + adapter + ' cannot be deleted completely, because non-deletable.');
-                        objects.extendObject(adapterConf._id, {
-                            children: [],
-                            common: {installedVersion: ''}
+                        objects.getObject(adapterConf._id, function (err, oldObj) {
+                            if (oldObj) {
+                                if (oldObj.children) oldObj.children = [];
+                                oldObj = extend(true, oldObj, {installedVersion: ''});
+                            } else {
+                                oldObj = {children: [], installedVersion: ''};
+                            }
+                            objects.setObject(adapterConf._id, oldObj);
                         });
 
                         continue;
@@ -1340,23 +1359,32 @@ function deleteAdapter(adapter, callback) {
         }, 2000);
     });
 
+    fs = fs || require('fs');
+
     // Delete physically adapter from disk
-    var pack = require(__dirname + '/adapter/' + adapter + '/io-package.json');
-    if (!pack.common || !pack.common.nondelitable) {
-        console.log('delete ' + __dirname + '/adapter/' + adapter);
-        tools = tools || require(__dirname + '/lib/tools.js');
-        tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
+    if (fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
+        var pack = require(__dirname + '/adapter/' + adapter + '/io-package.json');
+        if (!pack.common || !pack.common.nondelitable) {
+            console.log('delete ' + __dirname + '/adapter/' + adapter);
+            tools = tools || require(__dirname + '/lib/tools.js');
+            tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
+        }
     }
 }
 
-function correctChildren(err, obj) {
-    if (!err && obj && obj.children) {
-        var pos = obj.children.indexOf(name);
-        if (pos != -1) {
-            obj.children.splice(pos, 1);
-            objects.extendObject(obj._id, {children: obj.children});
+function correctChildren(adapter, instance) {
+    objects.getObject("system.adapter." + adapter, function (err, obj) {
+        if (!err && obj && obj.children) {
+            var pos = obj.children.indexOf('system.adapter.' + adapter + '.' + instance);
+            if (pos != -1) {
+                obj.children.splice(pos, 1);
+                objects.setObject(obj._id, obj);
+            }
         }
-    }
+        else {
+            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
+        }
+    });
 }
 
 function deleteInstance(adapter, instance, callback) {
@@ -1375,7 +1403,7 @@ function deleteInstance(adapter, instance, callback) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
                         // Remove id from the adapter children
-                        objects.getObject("system.adapter." + adapter, correctChildren);
+                        correctChildren(adapter, instance);
                     }
                 }
                 console.log('deleted ' + count + ' instances of ' + adapter + '.' + instance);
@@ -1469,23 +1497,7 @@ function deleteInstance(adapter, instance, callback) {
     });
 
     // Update children of system.adapter.adaptername
-    objects.getObject('system.adapter.' + adapter, function (err, doc) {
-        if (!doc.children) return;
-        var pos = doc.children.indexOf('system.adapter.' + adapter + '.' + instance);
-        if (pos != -1) {
-            doc.children.splice(pos, 1);
-            objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('object system.adapter.' + adapter + ' extended');
-                }
-            });
-
-        } else {
-            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
-        }
-    });
+    correctChildren(adapter, instance);
 
     states.getKeys(adapter + '.' + instance + '*', function (err, obj) {
         for (var i = 0; i < obj.length; i++) {
