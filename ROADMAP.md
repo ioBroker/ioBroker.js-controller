@@ -9,7 +9,6 @@
 * io-package.json - pre/post install hooks
 * (bluefox) adapter dependencies check
 * (bluefox) restart required and why.
-* (bluefox) manage repositories
 * (bluefox) install adapter automatically if it is enabled on this host
 
 

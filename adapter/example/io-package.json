@@ -9,7 +9,7 @@
         "icon":                     "example.png",
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png",
         "loglevel":                 "info",
-        "noDelete":                 true
+        "nondelitable":             true
     },
     "native": {
         "test1": true,

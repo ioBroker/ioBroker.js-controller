@@ -8,13 +8,6 @@
  *
  */
 
-// TODO:
-// - update only lists the versions of adapters and controllers
-// - collect versions of all adapters and controllers for specific host
-// - select hots on controller page and manage adapters for this host
-// - install adapter automatically if adapter must be started on some host
-// - list of repositories and active repository in CouchDB (belong to controller)
-
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
@@ -392,7 +385,9 @@ switch (yargs.argv._[0]) {
 function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
     upgradeAdapter(repoUrl, list[i], forceDowngrade, function () {
         i++;
-        while (repoUrl[list[i]] && repoUrl[list[i]].controller) { i++; }
+        while (repoUrl[list[i]] && repoUrl[list[i]].controller) {
+            i++;
+        }
 
         if (list[i]) {
             upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback);
@@ -1198,7 +1193,7 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-    // Delete adapter objects
+    // TODO: Delete adapter objects (no more used
     objects.getObjectView("system", "adapter", {startkey: adapter, endkey: adapter}, function (err, doc) {
         if (err) {
             console.log(err);
@@ -1347,9 +1342,10 @@ function deleteAdapter(adapter, callback) {
 
     // Delete physically adapter from disk
     var pack = require(__dirname + '/adapter/' + adapter + '/io-package.json');
-    if (!pack.common || !pack.common.noDelete) {
+    if (!pack.common || !pack.common.nondelitable) {
+        console.log('delete ' + __dirname + '/adapter/' + adapter);
         tools = tools || require(__dirname + '/lib/tools.js');
-        tools.rmdirRecursiveSync('adapter/' + adapter);
+        tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
     }
 }
 
@@ -1567,7 +1563,7 @@ function dbSetup() {
 function uuid(a, b) {
     b = a = '';
     while (a++ < 36) {
-        b += a * 51 & 52 ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
+        b += ((a * 51) & 52) ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
     }
     return b;
 }
