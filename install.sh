@@ -1,6 +1,5 @@
 npm install --production
 node iobroker.js setup
-node iobroker.js update
 node iobroker.js object get system.adapter.admin > /dev/null
 RETVAL=$?
 if [ $RETVAL -ne 0 ]

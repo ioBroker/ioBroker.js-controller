@@ -8,13 +8,6 @@
  *
  */
 
-// TODO:
-// - update only lists the versions of adapters and controllers
-// - collect versions of all adapters and controllers for specific host
-// - select hots on controller page and manage adapters for this host
-// - install adapter automatically if adapter must be started on some host
-// - list of repositories and active repository in CouchDB (belong to controller)
-
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
@@ -47,7 +40,6 @@ var fs;
 var ncp;
 var password;
 var tools;
-var request;
 var extend;
 var mime;
 var os;
@@ -120,14 +112,20 @@ switch (yargs.argv._[0]) {
 
         if (!fs.existsSync(__dirname + '/adapter/' + name)) {
             downloadPacket(repoUrl, name, function () {
+                if (yargs.argv._[0] != 'install') {
+                    dbConnect(function () {
+                        createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
+                    });
+                }
+            });
+        } else {
+            if (yargs.argv._[0] != 'install') {
                 dbConnect(function () {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
-            });
-        } else {
-            dbConnect(function () {
-                createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
-            });
+            } else {
+                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.')
+            }
         }
         break;
 
@@ -334,10 +332,8 @@ switch (yargs.argv._[0]) {
                             yargs.showHelp();
                             process.exit();
                         } else {
-                            for(var i = 0; i < instances.length; i++) {
-                                states.pushMessage(instances[i] + '.messagebox', {command: cmd, message: msg, from: 'setup'}, function () {
-                                    process.exit();
-                                });
+                            for (var i = 0; i < instances.length; i++) {
+                                states.pushMessage(instances[i] + '.messagebox', {command: cmd, message: msg, from: 'setup'}, process.exit);
                             }
                         }
                     }
@@ -367,7 +363,7 @@ switch (yargs.argv._[0]) {
 
         dbConnect(function () {
             if (adapter) {
-                if (adapter == 'self'){
+                if (adapter == 'self') {
                     upgradeController(repoUrl, true);
                 } else {
                     upgradeAdapter(repoUrl, adapter, true);
@@ -395,7 +391,9 @@ switch (yargs.argv._[0]) {
 function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
     upgradeAdapter(repoUrl, list[i], forceDowngrade, function () {
         i++;
-        while (repoUrl[list[i]] && repoUrl[list[i]].controller) i++;
+        while (repoUrl[list[i]] && repoUrl[list[i]].controller) {
+            i++;
+        }
 
         if (list[i]) {
             upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback);
@@ -411,7 +409,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
     // todo call npm again (install new or update available node modules)
                             
     if (!repoUrl || typeof repoUrl != 'object') {
-        tools.getRepositoryFile(repoUrl, function(sources) {
+        tools.getRepositoryFile(repoUrl, function (sources) {
             upgradeAdapter(sources, adapter, forceDowngrade, callback);
         });
         return;
@@ -419,25 +417,26 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
 
     function finishUpgrade(name, iopack, callback) {
         var count = 0;
-        // Upload www and admin files of adapter into CouchDB
-        uploadAdapter(name, false, function () {
-            // set installed version
-            objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
+        installNpm(name, function (_name) {
+            // Upload www and admin files of adapter into CouchDB
+            uploadAdapter(name, false, function () {
+                // set installed version
+                objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
+                    count++;
+                    // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
+                    if (count == 2) {
+                        console.log('Adapter "' + name + '" updated');
+                        if (callback) callback(name);
+                    }
+                });
+            });
+            uploadAdapter(name, true, function () {
                 count++;
-                // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
-                // todo call npm again (install new or update available node modules)
                 if (count == 2) {
                     console.log('Adapter "' + name + '" updated');
                     if (callback) callback(name);
                 }
             });
-        });
-        uploadAdapter(name, true, function () {
-            count++;
-            if (count == 2) {
-                console.log('Adapter "' + name + '" updated');
-                if (callback) callback(name);
-            }
         });
     }
 
@@ -466,13 +465,13 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
             if (callback) callback();
         } else {
             // Get the adapter from web site
-            downloadPacket(sources, adapter, function(name, ioPack) {
+            downloadPacket(sources, adapter, function (name, ioPack) {
                 finishUpgrade(name, ioPack, callback);
             });
         }
     } else if (repoUrl[adapter].meta) {
         // Read repository from url or file
-        tools.getJson(repoUrl[adapter].meta, function(iopack) {
+        tools.getJson(repoUrl[adapter].meta, function (iopack) {
             if (!iopack) {
                 console.log('Cannot parse file' + repoUrl[adapter].meta);
                 if (callback) callback();
@@ -484,7 +483,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
                 if (callback) callback();
             } else {
                 // Get the adapter from web site
-                downloadPacket(sources, adapter, function(name, ioPack) {
+                downloadPacket(sources, adapter, function (name, ioPack) {
                     finishUpgrade(name, ioPack, callback);
                 });
             }
@@ -493,7 +492,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         if (forceDowngrade) {
             console.log('Unable to get version for "' + adapter + '". Update anyway.');
             // Get the adapter from web site
-            downloadPacket(sources, adapter, function(name, ioPack) {
+            downloadPacket(sources, adapter, function (name, ioPack) {
                 finishUpgrade(name, ioPack, callback);
             });
         } else {
@@ -531,8 +530,10 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
         } else {
             // Get the adapter from web site
             downloadPacket(repoUrl, installed.common.name, function (name) {
-                console.log('Host "' + hostname + '" updated');
-                if (callback) callback();
+                installNpm('', function (_name) {
+                    console.log('Host "' + hostname + '" updated');
+                    if (callback) callback();
+                });
             });
         }
     } else {
@@ -544,8 +545,10 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
             } else {
                 // Get the adapter from web site
                 downloadPacket(repoUrl, ioPack.common.name, function (name) {
-                    console.log('Host "' + hostname + '" updated');
-                    if (callback) callback();
+                    installNpm('', function (_name) {
+                        console.log('Host "' + hostname + '" updated');
+                        if (callback) callback();
+                    });
                 });
             }
 
@@ -690,7 +693,7 @@ function downloadPacket(repoUrl, packetName, callback) {
         url = sources[packetName].url;
 
         // Adapter
-        if(!url) {
+        if (!url) {
             console.log('Adapter "' + packetName + '" can be updated only together with ioBroker.nodejs');
             if (typeof callback === 'function') callback(packetName);
             return;
@@ -749,6 +752,9 @@ function downloadPacket(repoUrl, packetName, callback) {
                     console.log('delete ' + __dirname + '/tmp/' + name);
                     tools.rmdirRecursiveSync(__dirname + '/tmp/' + name);
 
+                    // Call npm install
+
+
                     if (typeof callback === 'function') callback(name, packetIo);
 
                 });
@@ -763,6 +769,26 @@ function downloadPacket(repoUrl, packetName, callback) {
             process.exit(1);
         }
     });
+}
+
+function installNpm(adapter, callback) {
+    var path = __dirname;
+    if (adapter) path += '/adapter/' + adapter;
+
+    if (fs.existsSync(path + '/package.json')) {
+        // Install node modules
+        var exec = require('child_process').exec;
+        var cmd = 'npm install "' + path + '" --production --prefix "' + path + '"';
+        console.log(cmd);
+        var child = exec(cmd);
+        child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
+        // liner.js from http://strongloop.com/strongblog/practical-examples-of-the-new-node-js-streams-api/ could solve this
+        child.on('exit', function () {
+            if (callback) callback(adapter);
+        });
+    } else {
+        if (callback) callback(adapter);
+    }
 }
 
 function installAdapter(adapter, callback) {
@@ -854,26 +880,19 @@ function installAdapter(adapter, callback) {
                 }
             }
         }*/
-
     }
 
-    if (fs.existsSync(__dirname + '/adapter/' + adapter + '/package.json') && !fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
+    if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
         // Install node modules
-        var exec = require('child_process').exec;
-        var cmd = 'npm install "' + __dirname + '/adapter/' + adapter + '" --production --prefix "' + __dirname + '/adapter/' + adapter + '"';
-        console.log(cmd);
-        var child = exec(cmd);
-        child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
-        // liner.js from http://strongloop.com/strongblog/practical-examples-of-the-new-node-js-streams-api/ could solve this
-        child.on('exit', function () {
-            uploadAdapter(name, true, function () {
-                uploadAdapter(name, false, function () {
+        installNpm(adapter, function (_adapter) {
+            uploadAdapter(_adapter, true, function () {
+                uploadAdapter(_adapter, false, function () {
                     install();
                 });
             });
         });
     } else {
-        console.log('no node modules to install')
+        console.log('no node modules to install');
         uploadAdapter(name, true, function () {
             uploadAdapter(name, false, function () {
                 install();
@@ -1043,14 +1062,23 @@ function createInstance(adapter, enabled, host, callback) {
                         // Update system.adapter.name children
                         doc.children = doc.children || [];
                         if (doc.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) doc.children.push('system.adapter.' + adapter + '.' + instance);
-                        objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
-                            if (err) {
-                                console.log(err);
+
+                        objects.getObject('system.adapter.' + adapter, function (err, oldObj) {
+                            if (oldObj) {
+                                if (oldObj.children) oldObj.children = [];
+                                oldObj = extend(true, oldObj, {children: doc.children});
                             } else {
-                                console.log('object system.adapter.' + adapter + ' extended');
+                                oldObj = {children: doc.children};
                             }
-                            // done
-                            process.exit(0);
+                            objects.setObject('system.adapter.' + adapter, oldObj, function (err, res) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('object system.adapter.' + adapter + ' extended');
+                                }
+                                // done
+                                process.exit(0);
+                            });
                         });
                     });
                 }
@@ -1065,8 +1093,8 @@ function createInstance(adapter, enabled, host, callback) {
 
 // Helper methods
 function upToDate(a, b) {
-    var a = a.split('.');
-    var b = b.split('.');
+    a = a.split('.');
+    b = b.split('.');
     a[0] = parseInt(a[0], 10);
     b[0] = parseInt(b[0], 10);
     if (a[0] > b[0]) {
@@ -1081,7 +1109,7 @@ function upToDate(a, b) {
             b[2] = parseInt(b[2], 10);
             if (a[2] > b[2]) {
                 return false;
-            } else  {
+            } else {
                 return true;
             }
         }
@@ -1094,7 +1122,7 @@ function updateRepo(repoUrl, callback) {
     var result = {};
 
     if (!repoUrl || typeof repoUrl != 'object') {
-        tools.getRepositoryFile(repoUrl, function(sources) {
+        tools.getRepositoryFile(repoUrl, function (sources) {
             updateRepo(sources, callback);
         });
         return;
@@ -1112,7 +1140,7 @@ function updateRepo(repoUrl, callback) {
             if (sources[name].version) {
                 result[name] = sources[name];
             } else if (sources[name].meta) {
-                tools.getJson(sources[name].meta, function (ioPack){
+                tools.getJson(sources[name].meta, function (ioPack) {
                     if (ioPack && ioPack.common) {
                         result[name] = extend(true, sources[name], ioPack.common);
                     }
@@ -1138,7 +1166,7 @@ function updateRepo(repoUrl, callback) {
 }
 
 function showRepo(repoUrl) {
-    updateRepo(repoUrl, function(sources) {
+    updateRepo(repoUrl, function (sources) {
         var installed = tools.getInstalledInfo();
 
         for (var name in sources) {
@@ -1162,7 +1190,7 @@ function showRepo(repoUrl) {
 
 function deleteAdapter(adapter, callback) {
     // Delete instances
-    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter, endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1179,16 +1207,16 @@ function deleteAdapter(adapter, callback) {
             }
         }
     });
-    // Delete adapter objects
-    objects.getObjectView("system", "adapter", {startkey: adapter, endkey: adapter}, function (err, doc) {
+
+    objects.getObjectView("system", "adapter", {startkey: 'system.adapter.' + adapter, endkey: 'system.adapter.' + adapter}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
             if (doc.rows.length === 0) {
                 console.log('no adapter ' + adapter + ' found');
             } else {
-                var tools = require(__dirname + '/lib/tools.js');
-                var fs    = require('fs');
+                tools = tools || require(__dirname + '/lib/tools.js');
+                fs    = fs    || require('fs');
                 var count = 0;
 
                 for (var i = 0; i < doc.rows.length; i++) {
@@ -1209,9 +1237,14 @@ function deleteAdapter(adapter, callback) {
 
                     if (adapterConf.common.nondelitable) {
                         console.log('Adapter ' + adapter + ' cannot be deleted completely, because non-deletable.');
-                        objects.extendObject(adapterConf._id, {
-                            children: [],
-                            common: {installedVersion: ''}
+                        objects.getObject(adapterConf._id, function (err, oldObj) {
+                            if (oldObj) {
+                                if (oldObj.children) oldObj.children = [];
+                                oldObj = extend(true, oldObj, {installedVersion: ''});
+                            } else {
+                                oldObj = {children: [], installedVersion: ''};
+                            }
+                            objects.setObject(adapterConf._id, oldObj);
                         });
 
                         continue;
@@ -1325,21 +1358,38 @@ function deleteAdapter(adapter, callback) {
             process.exit();
         }, 2000);
     });
-}
 
-function correctChildren(err, obj) {
-    if (!err && obj && obj.children) {
-        var pos = obj.children.indexOf(name);
-        if (pos != -1) {
-            obj.children.splice(pos, 1);
-            objects.extendObject(obj._id, {children: obj.children});
+    fs = fs || require('fs');
+
+    // Delete physically adapter from disk
+    if (fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
+        var pack = require(__dirname + '/adapter/' + adapter + '/io-package.json');
+        if (!pack.common || !pack.common.nondelitable) {
+            console.log('delete ' + __dirname + '/adapter/' + adapter);
+            tools = tools || require(__dirname + '/lib/tools.js');
+            tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
         }
     }
 }
 
+function correctChildren(adapter, instance) {
+    objects.getObject("system.adapter." + adapter, function (err, obj) {
+        if (!err && obj && obj.children) {
+            var pos = obj.children.indexOf('system.adapter.' + adapter + '.' + instance);
+            if (pos != -1) {
+                obj.children.splice(pos, 1);
+                objects.setObject(obj._id, obj);
+            }
+        }
+        else {
+            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
+        }
+    });
+}
+
 function deleteInstance(adapter, instance, callback) {
     // Delete instance
-    objects.getObjectView("system", "instance", {startkey: adapter, endkey: adapter}, function (err, doc) {
+    objects.getObjectView("system", "instance", {startkey: 'system.adapter.' + adapter + '.' + instance, endkey: 'system.adapter.' + adapter + '.' + instance}, function (err, doc) {
         if (err) {
             console.log(err);
         } else {
@@ -1353,7 +1403,7 @@ function deleteInstance(adapter, instance, callback) {
                         objects.delObject(doc.rows[i].value._id);
                         count++;
                         // Remove id from the adapter children
-                        objects.getObject("system.adapter." + adapter, correctChildren);
+                        correctChildren(adapter, instance);
                     }
                 }
                 console.log('deleted ' + count + ' instances of ' + adapter + '.' + instance);
@@ -1447,23 +1497,7 @@ function deleteInstance(adapter, instance, callback) {
     });
 
     // Update children of system.adapter.adaptername
-    objects.getObject('system.adapter.' + adapter, function (err, doc) {
-        if (!doc.children) return;
-        var pos = doc.children.indexOf('system.adapter.' + adapter + '.' + instance);
-        if (pos != -1) {
-            doc.children.splice(pos, 1);
-            objects.extendObject('system.adapter.' + adapter, {children: doc.children}, function (err, res) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('object system.adapter.' + adapter + ' extended');
-                }
-            });
-
-        } else {
-            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
-        }
-    });
+    correctChildren(adapter, instance);
 
     states.getKeys(adapter + '.' + instance + '*', function (err, obj) {
         for (var i = 0; i < obj.length; i++) {
@@ -1541,7 +1575,7 @@ function dbSetup() {
 function uuid(a, b) {
     b = a = '';
     while (a++ < 36) {
-        b += a * 51 & 52 ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
+        b += ((a * 51) & 52) ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
     }
     return b;
 }
