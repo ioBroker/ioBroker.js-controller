@@ -113,7 +113,7 @@ var states = new StatesRedis({
             var adapter = id.substring(0, id.length - '.alive'.length);
             if (procs[adapter] &&
                 !procs[adapter].stopping &&
-                !procs[i].process &&
+                !procs[adapter].process &&
                 procs[adapter].config &&
                 procs[adapter].config.common.enabled &&
                 procs[adapter].config.common.mode == 'daemon' ) {
@@ -494,7 +494,7 @@ function startInstance(id, wakeUp) {
                     startInstance(id, wakeUp);
                 });
             } else {
-                logger.error('Cannot download adapter "' + + '". To restart it disable/enable it or restart host.');
+                logger.error('Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
             }
 
             return;

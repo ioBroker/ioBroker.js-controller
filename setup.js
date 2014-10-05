@@ -124,7 +124,7 @@ switch (yargs.argv._[0]) {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
             } else {
-                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.')
+                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.');
             }
         }
         break;
