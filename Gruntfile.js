@@ -61,6 +61,11 @@ module.exports = function (grunt) {
                 },
                 dest: 'tmp/<%= grunt.task.current.args[1] %>.json'
             }
+        },
+        exec: {
+            npm: {
+                cmd: 'npm install'
+                }
         }
     });
 
@@ -125,8 +130,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-http');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('default', [
+        'exec',
         'clean',
         'replace',
         'updateReadme',

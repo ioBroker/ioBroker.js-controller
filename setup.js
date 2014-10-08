@@ -1382,8 +1382,7 @@ function correctChildren(adapter, instance) {
                 obj.children.splice(pos, 1);
                 objects.setObject(obj._id, obj);
             }
-        }
-        else {
+        } else {
             console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
         }
     });

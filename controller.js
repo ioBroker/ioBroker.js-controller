@@ -116,7 +116,7 @@ var states = new StatesRedis({
                 !procs[adapter].process &&
                 procs[adapter].config &&
                 procs[adapter].config.common.enabled &&
-                procs[adapter].config.common.mode == 'daemon' ) {
+                procs[adapter].config.common.mode == 'daemon') {
                 startInstance(adapter, false);
             }
         }
