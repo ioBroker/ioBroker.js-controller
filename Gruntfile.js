@@ -78,16 +78,16 @@ module.exports = function (grunt) {
                 ("0" + (timestamp.getDate()).toString(10)).slice(-2);
 
             var news = "";
-            if (iopackage.whatsNew) {
-                for (var i = 0; i < iopackage.whatsNew.length; i++) {
-                    if (typeof iopackage.whatsNew[i] == 'string') {
-                        news += '* ' + iopackage.whatsNew[i] + '\r\n';
+            if (iopackage.common.whatsNew) {
+                for (var i = 0; i < iopackage.common.whatsNew.length; i++) {
+                    if (typeof iopackage.common.whatsNew[i] == 'string') {
+                        news += '* ' + iopackage.common.whatsNew[i] + '\r\n';
                     } else {
-                        news += '* ' + iopackage.whatsNew[i].en + '\r\n';
+                        news += '* ' + iopackage.common.whatsNew[i].en + '\r\n';
                     }
                 }
             }
-            grunt.file.write('CHANGELOG.md', '# ' + iopackage.version + ' (' + date + ')\r\n' + news + '\r\n' + readme);
+            grunt.file.write('CHANGELOG.md', '# ' + iopackage.common.version + ' (' + date + ')\r\n' + news + '\r\n' + readme);
         }
     });
 

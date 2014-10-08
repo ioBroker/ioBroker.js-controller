@@ -930,6 +930,8 @@ function createInstance(adapter, enabled, host, callback) {
                 return;
             }
 
+            // TODO: singletonHost one on host
+
             var instanceObj = doc;
             doc = JSON.parse(JSON.stringify(doc));
 
