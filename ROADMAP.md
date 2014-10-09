@@ -3,13 +3,11 @@
 * (hobbyquaker) adapter history: target couchdb and file
 * (hobbyquaker) admin-ui: states: show history data
 * (hobbyquaker) admin-ui: objects: add, edit, delete
-* (hobbyquaker) admin-ui: enums: add, edit, delete, move, assign and remove members
+* (hobbyquaker) admin-ui: enums: add, edit, delete, move, assign and remove members (Finished?)
 * (hobbyquaker) adapter legacy
 * (bluefox) adapter package
 * io-package.json - pre/post install hooks
 * (bluefox) adapter dependencies check
-* (bluefox) restart required and why
-* (bluefox) edit children of enums
 
 # 0.2.0
 

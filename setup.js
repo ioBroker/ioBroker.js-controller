@@ -124,7 +124,7 @@ switch (yargs.argv._[0]) {
                     createInstance(name, yargs.argv.enabled, yargs.argv.host || hostname);
                 });
             } else {
-                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.')
+                console.log('adapter "' + name + '" yet installed. Use "upgrade" to install newer version.');
             }
         }
         break;
@@ -930,6 +930,8 @@ function createInstance(adapter, enabled, host, callback) {
                 return;
             }
 
+            // TODO: singletonHost one on host
+
             var instanceObj = doc;
             doc = JSON.parse(JSON.stringify(doc));
 
@@ -1172,9 +1174,11 @@ function showRepo(repoUrl) {
         for (var name in sources) {
             var text = (sources[name].controller ? 'Controller ' : 'Adapter    ');
             text += '"' + name + '"' + ((name.length < 15) ? new Array(15 - name.length).join(' '): '');
-            text += ': ' + sources[name].version + ((sources[name].version.length < 10) ? new Array(10 - sources[name].version.length).join(' '): '');
+            if (sources[name].version) {
+                text += ': ' + sources[name].version + ((sources[name].version.length < 10) ? new Array(10 - sources[name].version.length).join(' '): '');
+            }
 
-            if (installed[name]) {
+            if (installed[name] && installed[name].version) {
                 text += ', installed ' + installed[name].version;
                 if (sources[name].version != installed[name].version &&
                     !upToDate(sources[name].version, installed[name].version)) {
@@ -1235,7 +1239,7 @@ function deleteAdapter(adapter, callback) {
                     }
 
 
-                    if (adapterConf.common.nondelitable) {
+                    if (adapterConf.common.nondeletable) {
                         console.log('Adapter ' + adapter + ' cannot be deleted completely, because non-deletable.');
                         objects.getObject(adapterConf._id, function (err, oldObj) {
                             if (oldObj) {
@@ -1345,7 +1349,7 @@ function deleteAdapter(adapter, callback) {
             console.log ('Deleted ' + obj.length + ' states (' + adapter + '.*) from redis');
         }
     });
-    states.getKeys('system.adapter.' + adapter + '.*', function (err, obj) {
+    states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
         if (obj) {
             for (var i = 0; i < obj.length; i++) {
                 states.delState(obj[i]);
@@ -1364,7 +1368,7 @@ function deleteAdapter(adapter, callback) {
     // Delete physically adapter from disk
     if (fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
         var pack = require(__dirname + '/adapter/' + adapter + '/io-package.json');
-        if (!pack.common || !pack.common.nondelitable) {
+        if (!pack.common || !pack.common.nondeletable) {
             console.log('delete ' + __dirname + '/adapter/' + adapter);
             tools = tools || require(__dirname + '/lib/tools.js');
             tools.rmdirRecursiveSync(__dirname + '/adapter/' + adapter);
@@ -1380,8 +1384,7 @@ function correctChildren(adapter, instance) {
                 obj.children.splice(pos, 1);
                 objects.setObject(obj._id, obj);
             }
-        }
-        else {
+        } else {
             console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
         }
     });
@@ -1499,19 +1502,24 @@ function deleteInstance(adapter, instance, callback) {
     // Update children of system.adapter.adaptername
     correctChildren(adapter, instance);
 
+    states.getKeys('system.adapter.' + adapter + '.' + instance + '*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            states.delState(obj[i]);
+        }
+        console.log ('Deleted ' + obj.length + ' states "system.adapter.' + adapter + '.' + instance + '*" from redis');
+    });
+
     states.getKeys(adapter + '.' + instance + '*', function (err, obj) {
         for (var i = 0; i < obj.length; i++) {
             states.delState(obj[i]);
         }
-        console.log ('Deleted ' + obj.length + ' states from redis');
+        console.log ('Deleted ' + obj.length + ' states "' + adapter + '.' + instance + '*" from redis');
 
         // Force setup to terminate
         setTimeout(function () {
             process.exit();
         }, 2000);
     });
-
-
 }
 
 function setupReady() {

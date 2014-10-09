@@ -113,10 +113,10 @@ var states = new StatesRedis({
             var adapter = id.substring(0, id.length - '.alive'.length);
             if (procs[adapter] &&
                 !procs[adapter].stopping &&
-                !procs[i].process &&
+                !procs[adapter].process &&
                 procs[adapter].config &&
                 procs[adapter].config.common.enabled &&
-                procs[adapter].config.common.mode == 'daemon' ) {
+                procs[adapter].config.common.mode == 'daemon') {
                 startInstance(adapter, false);
             }
         }
@@ -494,7 +494,7 @@ function startInstance(id, wakeUp) {
                     startInstance(id, wakeUp);
                 });
             } else {
-                logger.error('Cannot download adapter "' + + '". To restart it disable/enable it or restart host.');
+                logger.error('Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
             }
 
             return;
@@ -510,8 +510,8 @@ function startInstance(id, wakeUp) {
                 logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
                 procs[id].process.on('exit', function (code, signal) {
-                    states.setState(id + '.alive',     {val: false, ack: true});
-                    states.setState(id + '.connected', {val: false, ack: true});
+                    states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
+                    states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
                         logger.warn('controller instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
@@ -562,7 +562,7 @@ function startInstance(id, wakeUp) {
                 logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
-                    states.setState(id + '.alive', {val: false, ack: true});
+                    states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
                         logger.warn('controller instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
@@ -678,7 +678,7 @@ var allInstancesStopped = true;
 function stop() {
     logger.debug('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
-        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminating');
             process.exit(1);
             return;
@@ -698,7 +698,7 @@ function stop() {
         if (!allInstancesStopped) {
             setTimeout(waitForInstances, 100);
         } else {
-            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                 logger.info('controller terminated');
                 process.exit(0);
             });
@@ -710,7 +710,7 @@ function stop() {
 
     // force after 10s
     setTimeout(function () {
-        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true}, function () {
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
             process.exit(1);
         });

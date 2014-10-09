@@ -101,7 +101,8 @@
                     "de": "Die Liste von Räumen",
                     "ru": "Список комнат"
                 },
-                "members": []
+                "members": [],
+                "nondeletable": true
             },
             "type": "enum"
         },
