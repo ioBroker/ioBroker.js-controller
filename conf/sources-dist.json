@@ -150,7 +150,7 @@
   },
   "email": {
     "name": "email",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "title": "Email Adapter",
     "desc": "This adapter allows to send emails from ioBroker",
     "authors": [
@@ -158,7 +158,11 @@
     ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
-    "mode": "subscribe",
+    "mode": "daemon",
+    "availableModes": [
+      "daemon",
+      "subscribe"
+    ],
     "loglevel": "info",
     "messagebox": true,
     "subscribe": "system.adapter.email.<INSTANCE>.messagebox",
@@ -462,6 +466,25 @@
     "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip"
   },
   "socketio": {
+    "name": "socketio",
+    "version": "0.0.1",
+    "title": "socket.io Adapter",
+    "desc": "This adapter allows to communicate different web applications with ioBroker",
+    "authors": [
+      "bluefox <bluefox@ccu.io>"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "loglevel": "info",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png",
+    "keywords": [
+      "web",
+      "socket.io",
+      "communication"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png",
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip"
   },
   "telnet": {
