@@ -465,6 +465,12 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip"
   },
+  "mqtt": {
+      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
+      "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
+  },
+
   "socketio": {
     "name": "socketio",
     "version": "0.0.1",
