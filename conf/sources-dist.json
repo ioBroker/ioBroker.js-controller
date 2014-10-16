@@ -1,7 +1,7 @@
 {
   "admin": {
     "name": "admin",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "title": "ioBroker Admin",
     "desc": {
       "en": "opens a webserver for the ioBroker admin UI",
@@ -13,6 +13,7 @@
     "loglevel": "info",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
     "messagebox": true,
+    "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
     "keywords": [
       "setup",
@@ -466,11 +467,27 @@
     "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip"
   },
   "mqtt": {
-      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
-      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
-      "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
+    "name": "mqtt",
+    "version": "0.0.1",
+    "title": "mqtt Adapter",
+    "desc": "This adapter allows to send and receive mqtt messages from ioBroker",
+    "authors": [
+      "bluefox <bluefox@ccu.io>"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "loglevel": "info",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
+    "keywords": [
+      "notification",
+      "mqtt",
+      "message"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
   },
-
   "socketio": {
     "name": "socketio",
     "version": "0.0.1",
