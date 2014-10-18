@@ -235,7 +235,7 @@
     "name": "history",
     "title": "History",
     "desc": "Log state history in a two-stages process (first to Redis, then to CouchDB)",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "mode": "daemon",
     "platform": "Javascript/Node.js",
     "loglevel": "info",
@@ -249,6 +249,7 @@
       "archive"
     ],
     "main": "history.js",
+    "enabled": true,
     "authors": [
       "hobbyquaker <hq@ccu.io>"
     ],
