@@ -1,3 +1,8 @@
+# 0.0.20 (2014-10-19)
+* (bluefox) change example adapter for emitEvent
+* (bluefox) support of certificates
+* (bluefox) fix names for states
+
 # 0.0.19 (2014-10-02)
 * (bluefox) fix add/delete adapter
 * (bluefox) fill source-dist.json with grunt

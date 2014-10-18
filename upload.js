@@ -49,10 +49,11 @@ var db = new ObjectsCouch({
         db.getObject(yargs.argv.object, function (err, res) {
             if (err || !res) {
                 db.setObject(yargs.argv.object, {
-                    type: 'fs',
-                    name: yargs.argv.object.split('.').pop(),
+                    type:   'fs',
                     parent: 'fs',
-                    common: {},
+                    common: {
+                        name: yargs.argv.object.split('.').pop(),
+                    },
                     native: {}
                 }, function (err, res) {
                     rev = res.rev;

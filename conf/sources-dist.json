@@ -468,7 +468,7 @@
   },
   "mqtt": {
     "name": "mqtt",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "title": "mqtt Adapter",
     "desc": "This adapter allows to send and receive mqtt messages from ioBroker",
     "authors": [
@@ -477,6 +477,7 @@
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
+    "messagebox": true,
     "loglevel": "info",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
     "keywords": [

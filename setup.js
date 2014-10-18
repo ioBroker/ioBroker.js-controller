@@ -605,9 +605,9 @@ function uploadAdapter(adapter, isAdmin, callback) {
         if (err || !res) {
             objects.setObject(id, {
                 type: 'meta',
-                name: id.split('.').pop(),
                 parent: 'system.adapter.' + adapter,
                 common: {
+                    name: id.split('.').pop(),
                     type: isAdmin ? 'admin' : 'www'
                 },
                 native: {}
@@ -948,22 +948,22 @@ function createInstance(adapter, enabled, host, callback) {
 
             var objs = [
                 {
-                    _id: 'system.adapter.' + adapter + '.' + instance + '.alive',
-                    type: 'state',
-                    name: adapter + '.' + instance + '.alive',
+                    _id:    'system.adapter.' + adapter + '.' + instance + '.alive',
+                    type:   'state',
                     parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
+                        name: adapter + '.' + instance + '.alive',
                         type: 'bool',
                         role: 'indicator.state'
                     },
                     native: {}
                 },
                 {
-                    _id: 'system.adapter.' + adapter + '.' + instance + '.connected',
-                    type: 'state',
-                    name: adapter + '.' + instance + '.connected',
+                    _id:    'system.adapter.' + adapter + '.' + instance + '.connected',
+                    type:   'state',
                     parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
+                        name: adapter + '.' + instance + '.connected',
                         type: 'bool',
                         role: 'indicator.state'
                     },
@@ -973,11 +973,11 @@ function createInstance(adapter, enabled, host, callback) {
 
             if (instanceObj.common.messagebox) {
                objs.push({
-                    _id: 'system.adapter.' + adapter + '.' + instance + '.messagebox',
-                    type: 'state',
-                    name: adapter + '.' + instance + '.messagebox',
+                    _id:    'system.adapter.' + adapter + '.' + instance + '.messagebox',
+                    type:   'state',
                     parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
+                        name: adapter + '.' + instance + '.messagebox',
                         type: 'bool',
                         role: 'adapter.messagebox'
                     },
@@ -986,11 +986,11 @@ function createInstance(adapter, enabled, host, callback) {
             }
             if (instanceObj.common.wakeup) {
                 objs.push({
-                    _id: 'system.adapter.' + adapter + '.' + instance + '.wakeup',
-                    type: 'state',
-                    name: adapter + '.' + instance + '.wakeup',
+                    _id:    'system.adapter.' + adapter + '.' + instance + '.wakeup',
+                    type:   'state',
                     parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
+                        name: adapter + '.' + instance + '.wakeup',
                         type: 'bool',
                         role: 'adapter.wakeup'
                     },
@@ -999,11 +999,11 @@ function createInstance(adapter, enabled, host, callback) {
             }
             if (instanceObj.common.run) {
                 objs.push({
-                    _id: 'system.adapter.' + adapter + '.' + instance + '.run',
-                    type: 'state',
-                    name: adapter + '.' + instance + '.run',
+                    _id:    'system.adapter.' + adapter + '.' + instance + '.run',
+                    type:   'state',
                     parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
+                        name: adapter + '.' + instance + '.run',
                         type: 'bool',
                         role: 'adapter.run'
                     },
@@ -1026,7 +1026,7 @@ function createInstance(adapter, enabled, host, callback) {
             // Create only for this instance the predefined in io-package.json objects
             // It is not necessary to write "system.adapter.name.N." in the object '_id'
             for (var i = 0; i < adapterConf.instanceObjects.length; i++) {
-                adapterConf.instanceObjects[i]._id = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id;
+                adapterConf.instanceObjects[i]._id    = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id;
                 adapterConf.instanceObjects[i].parent = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i].parent;
                 objs.push(adapterConf.instanceObjects[i]);
             }
@@ -1489,7 +1489,8 @@ function deleteInstance(adapter, instance, callback) {
                 for (var i = 0; i < doc.rows.length; i++) {
                     if (doc.rows[i] &&
                         doc.rows[i].id !== undefined &&
-                        doc.rows[i].id.substring(0, name.length) == name) {
+                        (doc.rows[i].id.substring(0, name.length) == name ||
+                            doc.rows[i].id == 'system.adapter.' + name)) {
                         objects.delObject(doc.rows[i].id);
                         count++;
                     }
