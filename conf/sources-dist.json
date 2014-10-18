@@ -381,7 +381,7 @@
   },
   "js-controller": {
     "name": "js-controller",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "platform": "Javascript/Node.js",
     "controller": true,
     "title": "ioBroker.nodejs: controller",

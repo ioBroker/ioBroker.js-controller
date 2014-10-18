@@ -611,7 +611,46 @@ function startInstance(id, wakeUp) {
 
 function stopInstance(id, callback) {
     logger.info('stopInstance ' + id);
+    if (!procs[id]) {
+        logger.warn('unknown instance ' + id);
+        if (typeof callback === 'function') callback();
+        return;
+    }
+
     var instance = procs[id].config;
+    if (!instance || !instance.common || !instance.common.mode) {
+        if (procs[id].process) {
+            procs[id].stopping = true;
+            procs[id].process.kill();
+            delete(procs[id].process);
+        }
+        if (procs[id].schedule) {
+            procs[id].schedule.cancel();
+            delete(procs[id].schedule);
+        }
+        if (procs[id].subscribe) {
+            // Remove this id from subsribed on this message
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
+                subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
+
+                // If no one subscribed
+                if (!subscribe[procs[id].subscribe].length) {
+                    // Delete item
+                    delete subscribe[procs[id].subscribe];
+
+                    // Unsubscribe
+                    if (procs[id].subscribe == instance._id + ".messagebox") {
+                        states.unsubscribeMessage(procs[id].subscribe);
+                    } else {
+                        states.unsubscribe(procs[id].subscribe);
+                    }
+                }
+            }
+        }
+        if (typeof callback === 'function') callback();
+        return;
+    }
+
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
@@ -655,7 +694,6 @@ function stopInstance(id, callback) {
                     }
                 }
             }
-
 
             if (!procs[id].process) {
                 if (typeof callback === 'function') callback();
