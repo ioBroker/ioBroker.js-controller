@@ -1,7 +1,7 @@
 {
   "admin": {
     "name": "admin",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "title": "ioBroker Admin",
     "desc": {
       "en": "opens a webserver for the ioBroker admin UI",
@@ -13,6 +13,7 @@
     "loglevel": "info",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
     "messagebox": true,
+    "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
     "keywords": [
       "setup",
@@ -234,7 +235,7 @@
     "name": "history",
     "title": "History",
     "desc": "Log state history in a two-stages process (first to Redis, then to CouchDB)",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "mode": "daemon",
     "platform": "Javascript/Node.js",
     "loglevel": "info",
@@ -248,6 +249,7 @@
       "archive"
     ],
     "main": "history.js",
+    "enabled": true,
     "authors": [
       "hobbyquaker <hq@ccu.io>"
     ],
@@ -466,11 +468,28 @@
     "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip"
   },
   "mqtt": {
-      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
-      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
-      "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
+    "name": "mqtt",
+    "version": "0.0.2",
+    "title": "mqtt Adapter",
+    "desc": "This adapter allows to send and receive mqtt messages from ioBroker",
+    "authors": [
+      "bluefox <bluefox@ccu.io>"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "messagebox": true,
+    "loglevel": "info",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
+    "keywords": [
+      "notification",
+      "mqtt",
+      "message"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
   },
-
   "socketio": {
     "name": "socketio",
     "version": "0.0.1",

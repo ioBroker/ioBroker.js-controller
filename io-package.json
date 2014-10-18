@@ -1,7 +1,7 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.0.19",
+        "version":    "0.0.20",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.nodejs: controller",
@@ -110,13 +110,14 @@
             "_id": "system.config",
             "type": "config",
             "common": {
+                "name":             "System configuration",
                 "language":         "",
                 "tempUnit":         "°C",
                 "currency":         "€",
                 "dateFormat":       "DD.MM.YYYY",
                 "isFloatComma":     true,
                 "licenseConfirmed": false,
-
+                "certificates":     [],
                 "activeRepo":       "default",
                 "listRepo": {
                     "default": "conf/sources-dist.json",
