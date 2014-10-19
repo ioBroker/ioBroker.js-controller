@@ -20,8 +20,6 @@ var StatesRedis =  require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools.js');
 
-
-
 var logger;
 var isDaemon;
 var callbackId = 1;
@@ -142,11 +140,19 @@ var objects = new ObjectsCouch({
         logger.info('controller object change ' + id);
         if (procs[id]) {
             // known adapter
-            procs[id].config = obj;
+            if (!obj) {
+                procs[id].config.common.enabled = false;
+                procs[id].config.common.host    = null;
+                procs[id].config.deleted = true;
+                logger.info('controller object deleted ' + id);
+
+            } else {
+                procs[id].config = obj;
+            }
             if (procs[id].process) {
                 stopInstance(id, function () {
-                    if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
-                        if (obj.common.enabled) {
+                    if (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
+                        if (procs[id].config.common.enabled) {
                             setTimeout(function (_id) {
                                 startInstance(_id);
                             }, 2500, id);
@@ -156,18 +162,18 @@ var objects = new ObjectsCouch({
                     }
                 });
             } else {
-                if (obj && (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname)) {
-                    if (obj.common.enabled) startInstance(id);
+                if (procs[id].config && (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                    if (procs[id].config.common.enabled) startInstance(id);
                 } else {
                     delete procs[id];
                 }
             }
 
-        } else {
-            // unknown adapter
+        } else if (obj && obj.common) {
+            // new adapter
             if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                 procs[id] = {config: obj};
-                if (obj.common.enabled) startInstance(id);
+                if (procs[id].config.common.enabled) startInstance(id);
             }
         }
     }
@@ -346,6 +352,7 @@ function processMessage(msg) {
                 logger.error('iobroker ' + data);
                 if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
             });
+
             child.on('exit', function (exitCode) {
                 logger.info('iobroker exit ' + exitCode);
                 if (msg.from) sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
@@ -353,8 +360,42 @@ function processMessage(msg) {
             break;
 
         case 'getRepository':
-            tools.getRepositoryFile(msg.message, function (sources) {
-                if (msg.callback) sendTo(msg.from, msg.command, sources, msg.callback);
+            if (!msg.callback) {
+                logger.error('call getRepository without callback');
+                return;
+            }
+            objects.getObject('system.config', function (err, systemConfig) {
+                // Check if repositories exists
+                if (!err && systemConfig && systemConfig.common && systemConfig.common.repositories) {
+                    var active = msg.message || systemConfig.common.activeRepo;
+
+                    if (systemConfig.common.repositories[active]) {
+
+                        if (typeof systemConfig.common.repositories[active] == 'string') {
+                            systemConfig.common.repositories[active] = {
+                                link: systemConfig.common.repositories[active],
+                                json: null
+                            }
+                        }
+
+                        // If repo is not yet loaded
+                        if (!systemConfig.common.repositories[active].json) {
+                            // Load it
+                            tools.getRepositoryFile(systemConfig.common.repositories[active].link, function (sources) {
+                                systemConfig.common.repositories[active].json = sources;
+                                sendTo(msg.from, msg.command, systemConfig.common.repositories[active].json, msg.callback);
+                                // Store uploaded repo
+                                objects.setObject('system.config', systemConfig);
+                            });
+                        } else {
+                            // We have already repo, give it back
+                            sendTo(msg.from, msg.command, systemConfig.common.repositories[active].json, msg.callback);
+                        }
+                    } else {
+                        logger.warn('Requested repository "' + active + '" does not exit in config.');
+                        sendTo(msg.from, msg.command, null, msg.callback);
+                    }
+                }
             });
             break;
 
@@ -520,7 +561,7 @@ function startInstance(id, wakeUp) {
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('controller instance ' + id + ' terminated with code ' + code);
                             delete procs[id].stopping;
-                            delete procs[id].process;
+                            if (procs[id].process) delete procs[id].process;
                             if (isStopping) {
                                 for (var i in procs) {
                                     if (procs[i].process) {
@@ -534,16 +575,16 @@ function startInstance(id, wakeUp) {
                             logger.error('controller instance ' + id + ' terminated with code ' + code);
                         }
                     }
-                    delete procs[id].process;
-                    if (!wakeUp) {
+                    if (procs[id] && procs[id].process) delete procs[id].process;
+                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, 30000, id);
                     }
                 });
-                if (!wakeUp) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id]) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
-                if (!wakeUp) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id]) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
         case 'schedule':

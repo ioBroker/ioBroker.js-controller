@@ -1,7 +1,7 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.0.20",
+        "version":    "0.0.21",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.nodejs: controller",
@@ -119,7 +119,7 @@
                 "licenseConfirmed": false,
                 "certificates":     [],
                 "activeRepo":       "default",
-                "listRepo": {
+                "repositories": {
                     "default": "conf/sources-dist.json",
                     "online": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/conf/sources-dist.json"
                 }

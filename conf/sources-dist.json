@@ -1,183 +1,33 @@
 {
   "admin": {
-    "name": "admin",
-    "version": "0.0.16",
-    "title": "ioBroker Admin",
-    "desc": {
-      "en": "opens a webserver for the ioBroker admin UI",
-      "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
-      "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
-    },
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
-    "messagebox": true,
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
-    "keywords": [
-      "setup",
-      "config",
-      "update",
-      "upgrade",
-      "system",
-      "konfiguration",
-      "administration",
-      "einrichtung",
-      "wartung"
-    ],
-    "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>",
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.admin/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.admin/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png"
   },
   "artnet": {
-    "name": "artnet",
-    "version": "0.0.3",
-    "title": "Art-Net Adapter",
-    "desc": "Control DMX512 Devices via an Art-Net node",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "keywords": [
-      "Art-Net",
-      "artnet",
-      "DMX512",
-      "Stage Lighting",
-      "LED",
-      "RGB"
-    ],
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.jpeg",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.jpeg",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.jpeg"
   },
   "b-control-em": {
-    "name": "b-control-em",
-    "version": "0.0.3",
-    "title": "B-control Energy Manager",
-    "desc": "Polls data from B-control Energy Manager",
-    "platform": "javascript/Node.js",
-    "mode": "daemon",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png",
-    "loglevel": "info",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.b-control-em/blob/master/README.md",
-    "keywords": [
-      "B-control",
-      "bcontrol",
-      "energy",
-      "manager",
-      "Energy Manager",
-      "Busch-Jäger",
-      "EM",
-      "metering",
-      "power",
-      "consumption",
-      "smartmeter"
-    ],
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png"
   },
   "cul": {
-    "name": "cul",
-    "version": "0.0.2",
-    "title": "CUL/culfw",
-    "desc": "Javascript/Node.js based Busware CUL USB / culfw adapter",
-    "platform": "javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "license": "GPLv2",
-    "icon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg",
-    "extIcon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg",
-    "keywords": [
-      "cul",
-      "coc",
-      "cuno",
-      "FS20",
-      "MAX!",
-      "HMS",
-      "FHT",
-      "EM",
-      "ELV",
-      "868",
-      "busware"
-    ],
     "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json",
-    "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip"
+    "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg"
   },
   "dwd": {
-    "name": "dwd",
-    "title": "DWD",
-    "desc": "Wetterwarnungen des deutschen Wetterdienstes",
-    "version": "0.0.2",
-    "mode": "schedule",
-    "schedule": "0 * * * *",
-    "platform": "javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "weather",
-      "Wetter",
-      "warning",
-      "Warnung",
-      "forecast",
-      "Vorhersage",
-      "rain",
-      "Regen",
-      "wind"
-    ],
-    "main": "dwd.js",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.dwd/blob/master/README.md",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png"
   },
   "email": {
-    "name": "email",
-    "version": "0.0.3",
-    "title": "Email Adapter",
-    "desc": "This adapter allows to send emails from ioBroker",
-    "authors": [
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "availableModes": [
-      "daemon",
-      "subscribe"
-    ],
-    "loglevel": "info",
-    "messagebox": true,
-    "subscribe": "system.adapter.email.<INSTANCE>.messagebox",
-    "wakeup": true,
-    "enabled": true,
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png",
-    "keywords": [
-      "notification",
-      "email",
-      "message"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.email/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.email/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
   },
   "example": {
     "meta": "/adapter/example/io-package.json",
@@ -187,522 +37,105 @@
     "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip"
   },
   "graphite": {
-    "name": "graphite",
-    "title": "Graphite",
-    "desc": {
-      "de": "Langzeitarchiv und Charts mit Graphite",
-      "en": "Manage huge amounts of log data and draw charts with Graphite",
-      "ru": "Manage huge amounts of log data and draw charts with Graphite"
-    },
-    "version": "0.1.0",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "graphite",
-      "logging",
-      "charts",
-      "history",
-      "langzeitarchiv",
-      "graphen",
-      "graphs"
-    ],
-    "main": "graphite.js",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.graphite/blob/master/README.md",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.graphite/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.graphite/archive/master.zip"
   },
   "highcharts": {
-    "name": "highcharts",
-    "version": "0.0.0",
-    "title": "Highcharts",
-    "desc": "draw charts with Highcharts/Highstock",
-    "mode": "web",
-    "loglevel": "info",
-    "dependencies": "websocket",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "CC BY-NC-SA 4.0",
     "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.highcharts/master/io-package.json",
     "url": "https://github.com/hobbyquaker/ioBroker.highcharts/archive/master.zip"
   },
   "history": {
-    "name": "history",
-    "title": "History",
-    "desc": "Log state history in a two-stages process (first to Redis, then to CouchDB)",
-    "version": "0.0.6",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "charts",
-      "history",
-      "logging",
-      "graphs",
-      "Graphen",
-      "data",
-      "archive"
-    ],
-    "main": "history.js",
-    "enabled": true,
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.history/blob/master/README.md",
-    "singleton": true,
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png"
   },
   "hm-rega": {
-    "name": "hm-rega",
-    "version": "0.1.7",
-    "title": "HomeMatic ReGaHSS",
-    "desc": {
-      "en": "Connects HomeMatic CCU \"Logic Layer\" (\"ReGaHSS\") to ioBroker",
-      "de": "Verbindet die Logikschicht einer HomeMatic CCU (\"ReGaHSS\") mit ioBroker"
-    },
-    "dependencies": [
-      "hm-rpc"
-    ],
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "readme": "https://github.com/ioBroker/ioBroker.hm-rega/blob/master/README.md",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png",
-    "keywords": [
-      "homematic",
-      "eq3",
-      "regahss",
-      "ccu1",
-      "ccu2"
-    ],
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png"
   },
   "hm-rpc": {
-    "name": "hm-rpc",
-    "title": "HomeMatic RPC",
-    "desc": "Connects HomeMatic Interface-Processes (BidCos-Services, Homegear and CUxD) via XML-RPC or BIN-RPC to ioBroker",
-    "version": "0.2.1",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "readme": "https://github.com/ioBroker/ioBroker.hm-rpc/blob/master/README.md",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/admin/homematic.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/admin/homematic.png",
-    "keywords": [
-      "homematic",
-      "bidcos",
-      "eq3",
-      "ELV",
-      "CCU",
-      "CCU1",
-      "CCU2",
-      "rpc",
-      "xmlrpc",
-      "homegear",
-      "binrpc",
-      "CUxD",
-      "FS20",
-      "FHT",
-      "HMS",
-      "EnOcean"
-    ],
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hm-rpc/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.hm-rpc/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/admin/homematic.png"
   },
   "hue": {
-    "name": "hue",
-    "version": "0.1.3",
-    "title": "Philips Hue Bridge Adapter",
-    "desc": "Connects Philips Hue LED Bulbs, Friends of Hue LED Lamps and Stripes and other SmartLink capable Devices (LivingWhites, some LivingColors) via Philips Hue Bridges",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "keywords": [
-      "philips",
-      "hue",
-      "led",
-      "rgb",
-      "smartlink",
-      "zigbee"
-    ],
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
   "javascript": {
-    "name": "javascript",
-    "version": "0.1.1",
-    "title": "Javascript/Coffescript Script Engine",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "desc": "Javascript/Coffeescript Script Engine",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg",
-    "keywords": [
-      "js",
-      "javascript",
-      "coffeescript",
-      "rules",
-      "automate",
-      "scriptengine"
-    ],
-    "readme": "https://github.com/iobroker/ioBroker.javascript/blob/master/README.md",
-    "license": "MIT",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
   },
   "js-controller": {
-    "name": "js-controller",
-    "version": "0.0.20",
-    "platform": "Javascript/Node.js",
-    "controller": true,
-    "title": "ioBroker.nodejs: controller",
-    "desc": {
-      "en": "Javascript/Node.js implementation of ioBroker controller",
-      "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
-      "ru": "Основное ядро ioBroker на Javascript/Node.js"
-    },
-    "messagebox": true,
-    "readme": "https://github.com/ioBroker/ioBroker.nodejs/blob/master/README.md",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>",
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip"
   },
   "knx": {
-    "name": "knx",
-    "title": "KNX",
-    "desc": "Connect KNX via eibd",
-    "version": "0.0.1",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "knx",
-      "eibd"
-    ],
-    "main": "knx.js",
-    "authors": [
-      "Oliver Wagner <owagner@tellerulam.com>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.knx/blob/master/README.md",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
   },
   "legacy": {
-    "name": "legacy",
-    "version": "0.0.2",
-    "title": "Legacy Web Adapter",
-    "desc": "CCU.IO-compatible webserver, ships with DashUI, yahui and SlimUI, provides SimpleAPI",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "wwwDontUpload": true,
-    "license": "CC NC-BY-SA 3.0",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip"
   },
   "mobile": {
-    "name": "mobile",
-    "version": "0.0.2",
-    "title": "Mobile UI",
-    "desc": "jQuery Mobile based ioBroker user interface",
-    "platform": "javascript/Node.js",
-    "mode": "web",
-    "loglevel": "info",
-    "dependencies": [
-      "websocket"
-    ],
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png",
-    "keywords": [
-      "user",
-      "interface",
-      "webapp",
-      "jquerymobile",
-      "ui"
-    ],
-    "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/jquery-mobile.png"
   },
   "mqtt": {
-    "name": "mqtt",
-    "version": "0.0.2",
-    "title": "mqtt Adapter",
-    "desc": "This adapter allows to send and receive mqtt messages from ioBroker",
-    "authors": [
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "messagebox": true,
-    "loglevel": "info",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
-    "keywords": [
-      "notification",
-      "mqtt",
-      "message"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
   "socketio": {
-    "name": "socketio",
-    "version": "0.0.1",
-    "title": "socket.io Adapter",
-    "desc": "This adapter allows to communicate different web applications with ioBroker",
-    "authors": [
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png",
-    "keywords": [
-      "web",
-      "socket.io",
-      "communication"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png"
   },
   "telnet": {
-    "name": "telnet",
-    "title": "Telnet",
-    "desc": "Connect to telnet servers and send/receive data",
-    "version": "0.0.0",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "telnet",
-      "tcp",
-      "text",
-      "network",
-      "socket",
-      "connect"
-    ],
-    "main": "telnet.js",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/admin/telnet.png",
-    "readme": "https://github.com/ioBroker/ioBroker.telnet/blob/master/README.md",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.telnet/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.telnet/master/admin/telnet.png"
   },
   "onkyo": {
-    "name": "onkyo",
-    "title": "Onkyo EISCP",
-    "desc": "Control Onkyo AVRs with EISCP protocol",
-    "version": "0.0.4",
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "onkyo",
-      "avr",
-      "eiscp"
-    ],
-    "main": "onkyo.js",
-    "authors": [
-      "Oliver Wagner <owagner@tellerulam.com>"
-    ],
-    "license": "MIT",
-    "readme": "https://github.com/ioBroker/ioBroker.onkyo/blob/master/README.md",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.onkyo/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.onkyo/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
   },
   "pushover": {
-    "name": "pushover",
-    "version": "0.0.3",
-    "title": "Pushover Adapter",
-    "desc": "This adapter allows to send pushover notifications from ioBroker",
-    "authors": [
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "availableModes": [
-      "daemon",
-      "subscribe"
-    ],
-    "loglevel": "info",
-    "messagebox": true,
-    "subscribe": "system.adapter.pushover.<INSTANCE>.messagebox",
-    "wakeup": true,
-    "enabled": true,
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png",
-    "keywords": [
-      "notification",
-      "pushover",
-      "message"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
   "rickshaw": {
-    "name": "rickshaw",
-    "version": "0.0.0",
-    "title": "Rickshaw Charts",
-    "desc": "draw charts with rickshaw",
-    "platform": "javascript/Node.js",
-    "mode": "none",
-    "loglevel": "info",
-    "dependencies": "websocket",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.rickshaw/archive/master.zip"
   },
   "sonos": {
-    "name": "sonos",
-    "version": "0.0.1",
-    "title": "SONOS Adapter",
-    "desc": "This adapter allows to monitor and control SONOS players from ioBroker",
-    "authors": [
-      "bluefox <bluefox@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "loglevel": "info",
-    "messagebox": true,
-    "enabled": true,
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png",
-    "keywords": [
-      "sonos",
-      "player",
-      "music"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
   },
   "virtual": {
     "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip"
   },
   "web": {
-    "name": "web",
-    "version": "0.0.1",
-    "title": "ioBroker simple web Adapter",
-    "desc": {
-      "en": "opens a webserver for the ioBroker",
-      "de": "Stellt webserver für 'ioBroker Adapter' zur Verfügung",
-      "ru": "Запускает веб сервер для 'ioBroker драйверов'"
-    },
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png",
-    "enabled": true,
-    "keywords": [
-      "web",
-      "server",
-      "www",
-      "express"
-    ],
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
   },
   "websocket": {
-    "name": "websocket",
-    "version": "0.0.1",
-    "title": "ioBroker webserver with socket.io",
-    "desc": {
-      "en": "express based webserver with socket.io"
-    },
-    "mode": "daemon",
-    "platform": "Javascript/Node.js",
-    "loglevel": "info",
-    "keywords": [
-      "webserver",
-      "web",
-      "www",
-      "websocket",
-      "socket.io"
-    ],
-    "readme": "https://github.com/ioBroker/ioBroker.websocket/blob/master/README.md",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.websocket/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.websocket/archive/master.zip"
   },
   "yr": {
-    "name": "yr",
-    "version": "0.0.4",
-    "title": "yr.no",
-    "desc": "fetches 48h weather forecast from yr.no",
-    "authors": [
-      "hobbyquaker <hq@ccu.io>"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "mode": "schedule",
-    "schedule": "0 * * * *",
-    "loglevel": "info",
-    "keywords": [
-      "weather",
-      "forecast",
-      "temperature",
-      "rain",
-      "yr",
-      "meteorology"
-    ],
-    "main": "yr.js",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png",
-    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png",
-    "readme": "https://github.com/hobbyquaker/ioBroker.yr/blob/master/README.md",
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png"
   }
 }
