@@ -1,3 +1,6 @@
+# 0.0.21 (2014-10-19)
+* (bluefox) store repository in the DB
+
 # 0.0.20 (2014-10-19)
 * (bluefox) change example adapter for emitEvent
 * (bluefox) support of certificates
