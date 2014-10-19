@@ -834,15 +834,24 @@ function installNpm(adapter, callback) {
     }
 }
 
+var installCount = 0;
 function installAdapter(adapter, callback) {
 
     console.log('install adapter ' + adapter);
 
     if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
-        console.log('error: adapter ' + adapter + ' not found');
-        process.exit(1);
-    }
+        if (installCount == 2) {
+            console.log('Cannot install ' + adapter);
+            process.exit(1);
+            return;
+        }
 
+        downloadPacket(null, adapter, function () {
+            installAdapter(adapter, callback);
+        });
+        return;
+    }
+    installCount = 0;
     try {
         var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json'));
     } catch (e) {
@@ -850,9 +859,13 @@ function installAdapter(adapter, callback) {
         process.exit(1);
     }
 
-    function checkDependencies(deps, _enabled, _host) {
-        if (!deps || !deps.length) return;
+    function checkDependencies(deps, _enabled, _host, callback) {
+        if (!deps || !deps.length) {
+            if (callback) callback();
+            return;
+        }
 
+        var cnt = 0;
         // Get all installed adapters
         objects.getObjectView("system", "instance", {}, function (err, objs) {
             if (objs.rows.length) {
@@ -865,10 +878,15 @@ function installAdapter(adapter, callback) {
                         }
                     }
                     if (!isFound) {
-                        createInstance(deps[i], _enabled, _host);
+                        cnt++;
+                        createInstance(deps[i], _enabled, _host, function () {
+                            cnt--;
+                            if (!cnt && callback) callback();
+                        });
                     }
                 }
             }
+            if (!cnt && callback) callback();
         });
     }
 
@@ -876,53 +894,38 @@ function installAdapter(adapter, callback) {
         var objs = [];
         if (adapterConf.objects && adapterConf.objects.length > 0) objs = adapterConf.objects;
 
-        if (adapterConf.common.dependencies) {
-            checkDependencies(adapterConf.common.dependencies);
-        }
+        checkDependencies(adapterConf.common.dependencies, yargs.argv.enabled, yargs.argv.host || hostname, function () {
+            adapterConf.common.installedVersion = adapterConf.common.version;
 
-        adapterConf.common.installedVersion = adapterConf.common.version;
+            objs.push({
+                _id:      'system.adapter.' + adapterConf.common.name,
+                type:     'adapter',
+                common:   adapterConf.common,
+                native:   adapterConf.native,
+                children: []
+            });
 
-        objs.push({
-            _id:      'system.adapter.' + adapterConf.common.name,
-            type:     'adapter',
-            common:   adapterConf.common,
-            native:   adapterConf.native,
-            children: []
-        });
-
-        function setObject(callback) {
-            if (objs.length === 0) {
-                callback();
-            } else {
-                var obj = objs.pop();
-                objects.extendObject(obj._id, obj, function (err, res) {
-                    if (err) {
-                        console.log('error setObject ' + obj._id + ' ' + err);
-                        process.exit(1);
-                    } else {
-                        console.log('object ' + obj._id + ' created');
-                        setTimeout(function (_cb) {
-                            setObject(_cb);
-                        }, 50, callback);
-                    }
-                });
-            }
-        }
-
-        setObject(callback);
-
-        // Copy files to web adapters
-        /* TODO @Bluefox - please go another way: the web adapter has to serve the files from couch or directly from the adapter/.../www/ dir
-
-        if (fs.existsSync(__dirname + '/adapter/' + adapter + '/web/') && adapterConf.common.webservers) {
-            if (typeof adapterConf.common.webservers == "string") adapterConf.common.webservers = [adapterConf.common.webservers];
-            for (var i = 0; i < adapterConf.common.webservers.length; i++) {
-                if (fs.existsSync(__dirname + '/adapter/' + adapterConf.common.webservers[i] + '/')) {
-                    // Copy files from adapter/<name>/web to adapter/<webName>/
-                    copyFiles(__dirname + '/adapter/' + adapter + '/web/', __dirname + '/adapter/' + adapterConf.common.webservers[i] + '/' + adapter + '/');
+            function setObject(_callback) {
+                if (objs.length === 0) {
+                    _callback();
+                } else {
+                    var obj = objs.pop();
+                    objects.extendObject(obj._id, obj, function (err, res) {
+                        if (err) {
+                            console.log('error setObject ' + obj._id + ' ' + err);
+                            process.exit(1);
+                        } else {
+                            console.log('object ' + obj._id + ' created');
+                            setTimeout(function (_cb) {
+                                setObject(_cb);
+                            }, 50, _callback);
+                        }
+                    });
                 }
             }
-        }*/
+
+            setObject(callback);
+        });
     }
 
     if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
@@ -1122,7 +1125,11 @@ function createInstance(adapter, enabled, host, callback) {
                                     console.log('object system.adapter.' + adapter + ' extended');
                                 }
                                 // done
-                                process.exit(0);
+                                if (callback) {
+                                    callback();
+                                } else {
+                                    process.exit(0);
+                                }
                             });
                         });
                     });
@@ -1287,6 +1294,19 @@ function deleteAdapter(adapter, callback) {
                 }
                 console.log('deleted ' + count + ' instances of ' + adapter);
             }
+        }
+    });
+    objects.getObjectView("system", "meta", {startkey: adapter + '.meta', endkey: adapter + '.meta\u9999'}, function (err, doc) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (doc.rows.length === 0) {
+                console.log('no adapter ' + adapter + ' found');
+            } else {
+                for (var i = 0; i < doc.rows.length; i++) {
+                    objects.delObject(doc.rows[i].value._id);
+                }
+                console.log('deleted ' + doc.rows.length + ' meta of ' + adapter);            }
         }
     });
 
