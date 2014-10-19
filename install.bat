@@ -27,6 +27,7 @@ if '%errorlevel%' NEQ '0' (
 
 call npm install --production
 node iobroker.js setup
+node iobroker.js update
 node iobroker.js object get system.adapter.admin > nul
 IF NOT ERRORLEVEL 1 GOTO admin_exist
 echo install admin adapter

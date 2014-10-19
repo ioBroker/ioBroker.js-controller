@@ -63,7 +63,7 @@ switch (yargs.argv._[0]) {
         tools =         require(__dirname + '/lib/tools.js');
         ObjectsCouch =  require(__dirname + '/lib/couch.js');
         extend =        require('node.extend');
-        var repoUrl =   yargs.argv._[1];
+        var repoUrl =   yargs.argv._[1]; // Repo url or name
         dbConnect(function () {
             showRepo(repoUrl);
         });
@@ -405,9 +405,6 @@ function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
 
 function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
 	
-	// todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
-    // todo call npm again (install new or update available node modules)
-                            
     if (!repoUrl || typeof repoUrl != 'object') {
         tools.getRepositoryFile(repoUrl, function (sources) {
             upgradeAdapter(sources, adapter, forceDowngrade, callback);
@@ -415,24 +412,70 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         return;
     }
 
+    function upgradeAdapterObjects(name, iopack, callback) {
+        if (!iopack) {
+            callback(name);
+        } else {
+            objects.getObject('system.adapter.' + name, function (err, obj) {
+                if (err || !obj) {
+                    logger.error('system.adapter.' + name + ' does not exist');
+                    callback(name);
+                } else {
+                    obj.common = extend(true, obj.common, iopack.common);
+                    obj.native = extend(true, iopack.native, obj.native);
+                    obj.common.installedVersion = iopack.common.version;
+                    obj.common.version = iopack.common.version;
+
+                    objects.setObject('system.adapter.' + name, obj, function () {
+                        // Update all children
+                        if (obj.children) {
+                            var cntr = 0;
+                            for (var i = 0; i < obj.children.length; i++) {
+                                cntr++;
+                                objects.getObject(obj.children[i], function (err, _obj) {
+                                    _obj.common = extend(true, _obj.common, iopack.common);
+                                    _obj.native = extend(true, iopack.native, _obj.native);
+                                    _obj.common.installedVersion = iopack.common.version;
+                                    _obj.common.version = iopack.common.version;
+
+                                    objects.setObject(_obj._id, _obj, function () {
+                                        cntr--;
+                                        if (!cntr) {
+                                            callback(name);
+                                        }
+                                    });
+                                });
+                            }
+                        } else {
+                            callback(name);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
     function finishUpgrade(name, iopack, callback) {
         var count = 0;
         installNpm(name, function (_name) {
             // Upload www and admin files of adapter into CouchDB
+            count++;
             uploadAdapter(name, false, function () {
-                // set installed version
-                objects.extendObject('system.adapter.' + name, {common: {installedVersion: iopack.common.version}}, function () {
-                    count++;
-                    // todo extend all adapter instance default configs with current config (introduce potentially new attributes while keeping current settings)
-                    if (count == 2) {
+                // extend all adapter instance default configs with current config
+                // (introduce potentially new attributes while keeping current settings)
+                upgradeAdapterObjects(name, iopack, function () {
+                    count--;
+                    if (count) {
                         console.log('Adapter "' + name + '" updated');
                         if (callback) callback(name);
                     }
                 });
             });
+            count++;
             uploadAdapter(name, true, function () {
-                count++;
-                if (count == 2) {
+                count--;
+                if (!count) {
                     console.log('Adapter "' + name + '" updated');
                     if (callback) callback(name);
                 }
@@ -1168,7 +1211,7 @@ function updateRepo(repoUrl, callback) {
 }
 
 function showRepo(repoUrl) {
-    updateRepo(repoUrl, function (sources) {
+    function showRepoResult(_name, sources) {
         var installed = tools.getInstalledInfo();
 
         for (var name in sources) {
@@ -1188,6 +1231,41 @@ function showRepo(repoUrl) {
             }
 
             console.log(text);
+        }
+    }
+
+    // Get the repositories
+    objects.getObject('system.config', function (err, obj) {
+        if (err || !obj) {
+            console.log('Error: Object "system.config" not found');
+        } else {
+            if (!obj.common || !obj.common.repositories) {
+                console.log('Error: no repositories found in the "system.config');
+            } else {
+                repoUrl = repoUrl || obj.common.activeRepo;
+
+                // If known repository
+                if (obj.common.repositories[repoUrl]) {
+
+                    if (typeof obj.common.repositories[repoUrl] == 'string') {
+                        obj.common.repositories[repoUrl] = {
+                            link: obj.common.repositories[repoUrl],
+                            json: null
+                        };
+                    }
+
+                    updateRepo(obj.common.repositories[repoUrl].link, function (sources) {
+                        obj.common.repositories[repoUrl].json = sources;
+                        objects.setObject(obj._id, obj, function () {
+                            showRepoResult(repoUrl, sources);
+                        });
+                    });
+                } else {
+                    updateRepo(repoUrl, function (sources) {
+                        showRepoResult(null, sources);
+                    });
+                }
+            }
         }
     });
 }

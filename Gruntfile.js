@@ -125,6 +125,21 @@ module.exports = function (grunt) {
         grunt.file.write(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
     });
 
+    grunt.registerTask('cleanRepo', function () {
+        var fs = require('fs');
+        var sources = grunt.file.readJSON(__dirname + '/conf/sources-dist.json');
+        for (var adapter in sources) {
+            var meta = sources[adapter].meta;
+            var url  = sources[adapter].url;
+            var icon = sources[adapter].icon;
+
+            sources[adapter] = {};
+            if (meta) sources[adapter].meta = meta;
+            if (url)  sources[adapter].url  = url;
+            if (icon) sources[adapter].icon = icon;
+        }
+        grunt.file.write(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
+    });
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
@@ -139,8 +154,8 @@ module.exports = function (grunt) {
         'updateReadme',
         'jshint',
         'jscs',
-        'updateRepo1',
-        'updateRepo2',
+//        'updateRepo1',
+//        'updateRepo2',
         'clean'
     ]);
 };
