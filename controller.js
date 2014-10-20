@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.20';
+var version = '0.0.22';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -375,7 +375,7 @@ function processMessage(msg) {
                             systemConfig.common.repositories[active] = {
                                 link: systemConfig.common.repositories[active],
                                 json: null
-                            }
+                            };
                         }
 
                         // If repo is not yet loaded
