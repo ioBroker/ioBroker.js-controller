@@ -80,7 +80,8 @@
   },
   "legacy": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/admin/legacy.png"
   },
   "mobile": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
