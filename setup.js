@@ -418,7 +418,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         } else {
             objects.getObject('system.adapter.' + name, function (err, obj) {
                 if (err || !obj) {
-                    logger.error('system.adapter.' + name + ' does not exist');
+                    console.log('system.adapter.' + name + ' does not exist');
                     callback(name);
                 } else {
                     obj.common = extend(true, obj.common, iopack.common);
@@ -1306,7 +1306,8 @@ function deleteAdapter(adapter, callback) {
                 for (var i = 0; i < doc.rows.length; i++) {
                     objects.delObject(doc.rows[i].value._id);
                 }
-                console.log('deleted ' + doc.rows.length + ' meta of ' + adapter);            }
+                console.log('deleted ' + doc.rows.length + ' meta of ' + adapter);
+            }
         }
     });
 
