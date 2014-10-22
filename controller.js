@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.22';
+var version = '0.0.24';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -367,6 +367,12 @@ function processMessage(msg) {
             objects.getObject('system.config', function (err, systemConfig) {
                 // Check if repositories exists
                 if (!err && systemConfig && systemConfig.common && systemConfig.common.repositories) {
+                    var updateRepo = false;
+                    if (typeof msg.message == 'object') {
+                        updateRepo = msg.message.update;
+                        msg.message = msg.message.repo;
+                    }
+
                     var active = msg.message || systemConfig.common.activeRepo;
 
                     if (systemConfig.common.repositories[active]) {
@@ -379,7 +385,8 @@ function processMessage(msg) {
                         }
 
                         // If repo is not yet loaded
-                        if (!systemConfig.common.repositories[active].json) {
+                        if (!systemConfig.common.repositories[active].json || updateRepo) {
+                            logger.info('Update repository "' + active + '" under "' + systemConfig.common.repositories[active].link + '"');
                             // Load it
                             tools.getRepositoryFile(systemConfig.common.repositories[active].link, function (sources) {
                                 systemConfig.common.repositories[active].json = sources;
