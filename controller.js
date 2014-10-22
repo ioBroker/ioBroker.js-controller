@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.22';
+var version = '0.0.24';
 var title = 'io.js-controller';
 process.title = title;
 

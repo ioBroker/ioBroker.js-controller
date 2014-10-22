@@ -1,3 +1,6 @@
+# 0.0.24 (2014-10-22)
+* (bluefox) fix dependencies of packets
+
 # 0.0.22 (2014-10-20)
 * (bluefox) fix error in adapter.js
 
