@@ -4,14 +4,14 @@
         "version":    "0.0.25",
         "platform":   "Javascript/Node.js",
         "controller": true,
-        "title":      "ioBroker.nodejs: controller",
+        "title":      "ioBroker.js-controller",
         "desc": {
             "en": "Javascript/Node.js implementation of ioBroker controller",
             "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
             "ru": "Основное ядро ioBroker на Javascript/Node.js"
         },
         "messagebox": true,
-        "readme":     "https://github.com/ioBroker/ioBroker.nodejs/blob/master/README.md",
+        "readme":     "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
         "authors": [
             "hobbyquaker <hq@ccu.io>",
             "bluefox <bluefox@ccu.io>"
@@ -87,8 +87,8 @@
                 },
                 "members": [],
                 "dontDelete": true,
-                "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip",
-                "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json"
+                "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
+                "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json"
             }
         },
         {
@@ -121,7 +121,7 @@
                 "activeRepo":       "default",
                 "repositories": {
                     "default": "conf/sources-dist.json",
-                    "online": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/conf/sources-dist.json"
+                    "online": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json"
                 }
             }
         }

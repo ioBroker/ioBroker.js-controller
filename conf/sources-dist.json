@@ -31,7 +31,7 @@
   },
   "example": {
     "meta": "/adapter/example/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/adapter/example/admin/example.png"
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/adapter/example/admin/example.png"
   },
   "geofency": {
     "url": "https://github.com/ioBroker/ioBroker.geofency/archive/master.zip"
@@ -70,8 +70,8 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
   },
   "js-controller": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.nodejs/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.nodejs/archive/master.zip"
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip"
   },
   "knx": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",

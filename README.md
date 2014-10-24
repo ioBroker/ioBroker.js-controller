@@ -1,10 +1,10 @@
-# ioBroker.nodejs
+# ioBroker.js-controller
 
 This is a Javascript/Node.js implementation of an ioBroker controller.
 
 **see ioBroker Readme: https://github.com/iobroker/iobroker**
 
-## Manual installation of ioBroker.nodejs on Debian based Linux (Raspbian, Ubuntu, ...)
+## Manual installation of ioBroker.js-controller on Debian based Linux (Raspbian, Ubuntu, ...)
 
 
 ### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
@@ -38,7 +38,7 @@ rm nodejs_0.10.22-1_armhf.deb```
     ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
 * Clone the repository
 
-    ```git clone https://github.com/ioBroker/ioBroker.nodejs /opt/iobroker/```
+    ```git clone https://github.com/ioBroker/ioBroker.js-controller /opt/iobroker/```
 * Install Node dependencies
 
     ```npm install --production```

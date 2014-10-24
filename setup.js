@@ -1,6 +1,6 @@
 /**
  *
- *  ioBroker.nodejs Controller start/stop and install script
+ *  ioBroker.js-controller Controller start/stop and install script
  *
  *  7'2014 hobbyquaker <hq@ccu.io>
  *         bluefox <bluefox@ccu.io>
@@ -737,7 +737,7 @@ function downloadPacket(repoUrl, packetName, callback) {
 
         // Adapter
         if (!url) {
-            console.log('Adapter "' + packetName + '" can be updated only together with ioBroker.nodejs');
+            console.log('Adapter "' + packetName + '" can be updated only together with ioBroker.js-controller');
             if (typeof callback === 'function') callback(packetName);
             return;
         }

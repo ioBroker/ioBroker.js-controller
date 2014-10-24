@@ -1,5 +1,5 @@
 {
-  "name": "iobroker.nodejs",
+  "name": "iobroker.js-controller",
   "private": true,
   "engines": {
     "node": ">=0.8"
@@ -52,16 +52,16 @@
     "AV Receiver"
   ],
   "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.nodejs/issues"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/ioBroker/ioBroker.nodejs/blob/master/LICENSE"
+      "url": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/LICENSE"
     }
   ],
-  "author": "hobbyquaker <hq@ccu.io>",
+  "author": ["hobbyquaker <hq@ccu.io>", "bluefox <bluefox@ccu.io>"],
   "contributors": [
-    "bluefox <bluefox@ccu.io>"
+
   ]
 }
