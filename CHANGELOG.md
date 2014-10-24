@@ -1,3 +1,6 @@
+# 0.0.25 (2014-10-24)
+* (bluefox) show version in log
+
 # 0.0.24 (2014-10-22)
 * (bluefox) fix dependencies of packets
 
