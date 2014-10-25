@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.25';
+var version = '0.0.26';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -192,8 +192,8 @@ function startAliveInterval() {
 function reportStatus() {
     var id = 'system.host.' + hostname;
     states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
-    states.setState(id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState(id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
+    states.setState('io.' + id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
+    states.setState('io.' + id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
 }
 
 function setMeta() {
@@ -201,11 +201,11 @@ function setMeta() {
 
     objects.getObject(id, function (err, oldObj) {
         var newObj = {
-            _id: id,
+            _id:  id,
             type: 'host',
             common: {
                 name:             id,
-//            process:          process.title, // actually not required, because there is type now
+//              process:          process.title, // actually not required, because there is type now
                 title:            ioPackage.common.title,
                 installedVersion: version,
                 platform:         ioPackage.common.platform,
@@ -214,8 +214,8 @@ function setMeta() {
                 address:          ipArr,
                 children:         [
                         id + '.alive',
-                        id + '.load',
-                        id + '.mem'
+                        'io.' + id + '.load',
+                        'io.' + id + '.mem'
                 ],
                 type:             ioPackage.common.name
             },
@@ -252,7 +252,7 @@ function setMeta() {
         objects.setObject(id, newObj);
     });
 
-    var idMem = id + ".mem";
+    var idMem = 'io.' + id + ".mem";
     var obj = {
         _id: idMem,
         type: 'state',
@@ -267,7 +267,7 @@ function setMeta() {
         native: {}
     };
     objects.extendObject(idMem, obj);
-    var idLoad = id + ".load";
+    var idLoad = 'io.' + id + '.load';
     obj = {
         _id: idLoad,
         type: 'state',

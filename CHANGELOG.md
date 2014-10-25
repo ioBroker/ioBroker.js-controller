@@ -1,3 +1,6 @@
+# 0.0.26 (2014-10-25)
+* (bluefox) change state names to 'io.*'
+
 # 0.0.25 (2014-10-24)
 * (bluefox) show version in log
 

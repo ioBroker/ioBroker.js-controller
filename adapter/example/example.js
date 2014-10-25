@@ -112,7 +112,7 @@ function main() {
      *
      */
 
-    adapter.setObject('testVariable', {
+    adapter.setObject('io.testVariable', {
         type: 'state',
         common: {
             type: 'boolean'
@@ -130,15 +130,15 @@ function main() {
      *
      */
 
-    // the variable testVariable is set to true
-    adapter.setState('testVariable', true);
+    // the variable io.testVariable is set to true
+    adapter.setState('io.testVariable', true);
 
     // same thing, but the value is flagged "ack"
     // ack should be always set to true if the value is received from or acknowledged from the target system
-    adapter.setState('testVariable', {val: true, ack: true});
+    adapter.setState('io.testVariable', {val: true, ack: true});
 
     // same thing, but the state is deleted after 30s (getState will return null afterwards)
-    adapter.setState('testVariable', {val: true, ack: true, expire: 30});
+    adapter.setState('io.testVariable', {val: true, ack: true, expire: 30});
 
 
 
