@@ -604,7 +604,10 @@ function startInstance(id, wakeUp) {
                 logger.info('controller instance canceled schedule ' + instance._id);
             }
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
-
+                if (!procs[id]) {
+                    logger.error('scheduleJob: Task deleted (' + id + ')');
+                    return;
+                }
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
                 logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
