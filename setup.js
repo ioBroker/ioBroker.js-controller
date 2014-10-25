@@ -673,7 +673,6 @@ function dbConnect(callback) {
 
 // Upload www folder of adapter into couchDB
 function uploadAdapter(adapter, isAdmin, callback) {
-    // Todo check for common.wwwDontUpload (needed for legacy adapter)
     var rev;
     var id = adapter + (isAdmin ? '.admin' : '');
     var dir = __dirname + '/adapter/' + adapter + (isAdmin ? '/admin' : '/www');
@@ -683,6 +682,14 @@ function uploadAdapter(adapter, isAdmin, callback) {
     if (adapter === 'admin' && !isAdmin) {
         if (typeof callback === 'function') callback();
         return;
+    }
+    if (!isAdmin) {
+        // check for common.wwwDontUpload (needed for legacy adapter)
+        var cfg = require(__dirname + '/adapter/' + adapter + '/io-package.json');
+        if (cfg && cfg.common && cfg.common.wwwDontUpload) {
+            if (typeof callback === 'function') callback();
+            return;
+        }
     }
 
     function done(err, res) {
@@ -696,27 +703,6 @@ function uploadAdapter(adapter, isAdmin, callback) {
             }, 25, adapter, isAdmin, callback);
         }
     }
-
-    objects.getObject(id, function (err, res) {
-        if (err || !res) {
-            objects.setObject(id, {
-                type: 'meta',
-                parent: 'system.adapter.' + adapter,
-                common: {
-                    name: id.split('.').pop(),
-                    type: isAdmin ? 'admin' : 'www'
-                },
-                native: {}
-            }, function (err, res) {
-                rev = res.rev;
-                walk(dir, done);
-
-            });
-        } else {
-            rev = res._rev;
-            walk(dir, done);
-        }
-    });
 
     function upload(adapter) {
         var file;
@@ -771,6 +757,28 @@ function uploadAdapter(adapter, isAdmin, callback) {
             })();
         });
     }
+
+
+    objects.getObject(id, function (err, res) {
+        if (err || !res) {
+            objects.setObject(id, {
+                type: 'meta',
+                parent: 'system.adapter.' + adapter,
+                common: {
+                    name: id.split('.').pop(),
+                    type: isAdmin ? 'admin' : 'www'
+                },
+                native: {}
+            }, function (err, res) {
+                rev = res.rev;
+                walk(dir, done);
+
+            });
+        } else {
+            rev = res._rev;
+            walk(dir, done);
+        }
+    });
 }
 
 function downloadPacket(repoUrl, packetName, callback) {

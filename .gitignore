@@ -4,3 +4,4 @@ node_modules
 /log/iobroker.log
 /adapter/email
 /adapter/sonos
+/adapter/admin
