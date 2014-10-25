@@ -365,44 +365,47 @@ function processMessage(msg) {
                 return;
             }
             objects.getObject('system.config', function (err, systemConfig) {
-                // Check if repositories exists
-                if (!err && systemConfig && systemConfig.common && systemConfig.common.repositories) {
-                    var updateRepo = false;
-                    if (typeof msg.message == 'object') {
-                        updateRepo = msg.message.update;
-                        msg.message = msg.message.repo;
-                    }
 
-                    var active = msg.message || systemConfig.common.activeRepo;
-
-                    if (systemConfig.common.repositories[active]) {
-
-                        if (typeof systemConfig.common.repositories[active] == 'string') {
-                            systemConfig.common.repositories[active] = {
-                                link: systemConfig.common.repositories[active],
-                                json: null
-                            };
+                objects.getObject('system.repositories', function (err, repos) {
+                    // Check if repositories exists
+                    if (!err && repos && repos.repositories) {
+                        var updateRepo = false;
+                        if (typeof msg.message == 'object') {
+                            updateRepo = msg.message.update;
+                            msg.message = msg.message.repo;
                         }
 
-                        // If repo is not yet loaded
-                        if (!systemConfig.common.repositories[active].json || updateRepo) {
-                            logger.info('Update repository "' + active + '" under "' + systemConfig.common.repositories[active].link + '"');
-                            // Load it
-                            tools.getRepositoryFile(systemConfig.common.repositories[active].link, function (sources) {
-                                systemConfig.common.repositories[active].json = sources;
-                                sendTo(msg.from, msg.command, systemConfig.common.repositories[active].json, msg.callback);
-                                // Store uploaded repo
-                                objects.setObject('system.config', systemConfig);
-                            });
+                        var active = msg.message || systemConfig.common.activeRepo;
+
+                        if (repos.repositories[active]) {
+
+                            if (typeof repos.repositories[active] == 'string') {
+                                repos.repositories[active] = {
+                                    link: repos.repositories[active],
+                                    json: null
+                                };
+                            }
+
+                            // If repo is not yet loaded
+                            if (!repos.repositories[active].json || updateRepo) {
+                                logger.info('Update repository "' + active + '" under "' + repos.repositories[active].link + '"');
+                                // Load it
+                                tools.getRepositoryFile(repos.repositories[active].link, function (sources) {
+                                    repos.repositories[active].json = sources;
+                                    sendTo(msg.from, msg.command, repos.repositories[active].json, msg.callback);
+                                    // Store uploaded repo
+                                    objects.setObject('system.repositories', repos);
+                                });
+                            } else {
+                                // We have already repo, give it back
+                                sendTo(msg.from, msg.command, repos.repositories[active].json, msg.callback);
+                            }
                         } else {
-                            // We have already repo, give it back
-                            sendTo(msg.from, msg.command, systemConfig.common.repositories[active].json, msg.callback);
+                            logger.warn('Requested repository "' + active + '" does not exit in config.');
+                            sendTo(msg.from, msg.command, null, msg.callback);
                         }
-                    } else {
-                        logger.warn('Requested repository "' + active + '" does not exit in config.');
-                        sendTo(msg.from, msg.command, null, msg.callback);
                     }
-                }
+                });
             });
             break;
 

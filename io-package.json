@@ -59,8 +59,10 @@
                 },
                 "user": {
                     "map": "function(doc) { if (doc.type=='user') emit(doc.common.name, doc) }"
+                },
+                "config": {
+                    "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
                 }
-
             }
         },
         {
@@ -117,13 +119,33 @@
                 "dateFormat":       "DD.MM.YYYY",
                 "isFloatComma":     true,
                 "licenseConfirmed": false,
-                "certificates":     [],
-                "activeRepo":       "default",
-                "repositories": {
-                    "default": "conf/sources-dist.json",
-                    "online": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json"
+                "activeRepo":       "default"
+            }
+        },
+        {
+            "_id": "system.repositories",
+            "type": "config",
+            "common": {
+                "name": "System repositories"
+            },
+            "repositories": {
+                "default": {
+                    "link": "conf/sources-dist.json",
+                    "json": null
+                },
+                "online": {
+                    "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
+                    "json": null
                 }
             }
+        },
+        {
+            "_id": "system.certificates",
+            "type": "config",
+            "common": {
+                "name": "System certificates"
+            },
+            "certificates": {}
         }
     ]
 }

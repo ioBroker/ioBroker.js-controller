@@ -28,7 +28,8 @@ var yargs = require('yargs')
         '$0 state get <id>\n' +
         '$0 state getplain <id>\n' +
         '$0 state set <id> <value>\n' +
-        '$0 state setplain <id> <value>')
+        '$0 state setplain <id> <value>\n' +
+        '$0 clean')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -385,6 +386,54 @@ switch (yargs.argv._[0]) {
             }
         });
 
+        break;
+
+    case 'clean':
+        var yes = yargs.argv._[1];
+        if (yes != 'yes') {
+            console.log('Command "clean" clears all CouchDB and redis. To execute it write "iobroker clean yes"');
+        } else {
+            ObjectsCouch =  require(__dirname + '/lib/couch.js');
+            var StatesRedis = require(__dirname + '/lib/redis.js');
+            states = new StatesRedis({
+                redis: {
+                    host:    '127.0.0.1',
+                    port:    6379,
+                    options: {
+                        "auth_pass": null,
+                        "retry_max_delay": 15000
+                    }
+                }
+            });
+
+            dbConnect(function () {
+                objects.destroy(function () {
+
+                    // Clean up redis
+                    states.getKeys('*', function (err, obj) {
+                        var delState = [];
+
+                        if (obj) {
+                            for (var i = 0; i < obj.length; i++) {
+                                delState.push(obj[i]);
+                            }
+                        }
+                        var taskCnt = 0;
+                        for(var i = 0; i < obj.length; i++) {
+                            taskCnt++;
+                            states.delState(delState[i], function () {
+                                taskCnt--;
+                                if (!taskCnt) {
+                                    console.log('Deleted ' + obj.length + ' states');
+                                    process.exit();
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+        }
         break;
 
     default:
@@ -1081,8 +1130,7 @@ function createInstance(adapter, enabled, host, callback) {
                 } else {
                     adapterConf.instanceObjects[i]._id = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id;
                 }
-
-                adapterConf.instanceObjects[i].parent = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i].parent;
+                if (adapterConf.instanceObjects[i].parent) adapterConf.instanceObjects[i].parent = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i].parent;
                 objs.push(adapterConf.instanceObjects[i]);
             }
 
@@ -1251,38 +1299,40 @@ function showRepo(repoUrl) {
     }
 
     // Get the repositories
-    objects.getObject('system.config', function (err, obj) {
-        if (err || !obj) {
-            console.log('Error: Object "system.config" not found');
-        } else {
-            if (!obj.common || !obj.common.repositories) {
-                console.log('Error: no repositories found in the "system.config');
+    objects.getObject('system.config', function (err, sysConfig) {
+        objects.getObject('system.repositories', function (err, obj) {
+            if (err || !obj) {
+                console.log('Error: Object "system.config" not found');
             } else {
-                repoUrl = repoUrl || obj.common.activeRepo;
-
-                // If known repository
-                if (obj.common.repositories[repoUrl]) {
-
-                    if (typeof obj.common.repositories[repoUrl] == 'string') {
-                        obj.common.repositories[repoUrl] = {
-                            link: obj.common.repositories[repoUrl],
-                            json: null
-                        };
-                    }
-
-                    updateRepo(obj.common.repositories[repoUrl].link, function (sources) {
-                        obj.common.repositories[repoUrl].json = sources;
-                        objects.setObject(obj._id, obj, function () {
-                            showRepoResult(repoUrl, sources);
-                        });
-                    });
+                if (!obj.common || !obj.repositories) {
+                    console.log('Error: no repositories found in the "system.config');
                 } else {
-                    updateRepo(repoUrl, function (sources) {
-                        showRepoResult(null, sources);
-                    });
+                    repoUrl = repoUrl || sysConfig.common.activeRepo;
+
+                    // If known repository
+                    if (obj.repositories[repoUrl]) {
+
+                        if (typeof obj.repositories[repoUrl] == 'string') {
+                            obj.repositories[repoUrl] = {
+                                link: obj.repositories[repoUrl],
+                                json: null
+                            };
+                        }
+
+                        updateRepo(obj.repositories[repoUrl].link, function (sources) {
+                            obj.repositories[repoUrl].json = sources;
+                            objects.setObject(obj._id, obj, function () {
+                                showRepoResult(repoUrl, sources);
+                            });
+                        });
+                    } else {
+                        updateRepo(repoUrl, function (sources) {
+                            showRepoResult(null, sources);
+                        });
+                    }
                 }
             }
-        }
+        });
     });
 }
 
@@ -1782,7 +1832,7 @@ function deleteInstance(adapter, instance, callback) {
         for (var i = 0; i < obj.length; i++) {
             if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
         }
-        if (obj.length) console.log ('Deleted ' + obj.length + ' states "system.adapter.' + adapter + '.' + instance + '*" from redis');
+        if (obj.length) console.log ('Counted ' + obj.length + ' states "system.adapter.' + adapter + '.' + instance + '*" from redis');
         taskCnt--;
         if (!taskCnt) delStatesAndObjects();
     });
