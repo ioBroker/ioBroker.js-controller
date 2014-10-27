@@ -419,15 +419,15 @@ function processMessage(msg) {
                             tools.sendDiagInfo(obj);
                         });
                     } else if (systemConfig.common.diag == 'extended') {
-                        collectDiagInfo(function (obj) {
-                            tools.collectDiagInfoExtended(obj);
+                        collectDiagInfoExtended(function (obj) {
+                            tools.sendDiagInfo(obj);
                         });
                     }
                 }
 
                 objects.getObject('system.repositories', function (err, repos) {
                     // Check if repositories exists
-                    if (!err && repos && repos.native &&  repos.native.repositories) {
+                    if (!err && repos && repos.native && repos.native.repositories) {
                         var updateRepo = false;
                         if (typeof msg.message == 'object') {
                             updateRepo = msg.message.update;

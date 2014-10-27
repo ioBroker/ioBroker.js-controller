@@ -138,8 +138,8 @@ switch (yargs.argv._[0]) {
         var name =     yargs.argv._[1];
         if (name) {
             dbConnect(function () {
-                uploadAdapter(name, true, function () {
-                    uploadAdapter(name, false, function () {
+                uploadAdapter(name, true, true, function () {
+                    uploadAdapter(name, false, true, function () {
 
                     });
                 });
@@ -514,7 +514,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
         installNpm(name, function (_name) {
             // Upload www and admin files of adapter into CouchDB
             count++;
-            uploadAdapter(name, false, function () {
+            uploadAdapter(name, false, true, function () {
                 // extend all adapter instance default configs with current config
                 // (introduce potentially new attributes while keeping current settings)
                 upgradeAdapterObjects(name, iopack, function () {
@@ -526,7 +526,7 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
                 });
             });
             count++;
-            uploadAdapter(name, true, function () {
+            uploadAdapter(name, true, true, function () {
                 count--;
                 if (!count) {
                     console.log('Adapter "' + name + '" updated');
@@ -672,7 +672,7 @@ function dbConnect(callback) {
 }
 
 // Upload www folder of adapter into couchDB
-function uploadAdapter(adapter, isAdmin, callback) {
+function uploadAdapter(adapter, isAdmin, forceUpload, callback) {
     var rev;
     var id = adapter + (isAdmin ? '.admin' : '');
     var dir = __dirname + '/adapter/' + adapter + (isAdmin ? '/admin' : '/www');
@@ -680,14 +680,14 @@ function uploadAdapter(adapter, isAdmin, callback) {
 
     // do not upload www dir of admin adapter
     if (adapter === 'admin' && !isAdmin) {
-        if (typeof callback === 'function') callback();
+        if (typeof callback === 'function') callback(adapter);
         return;
     }
     if (!isAdmin) {
         // check for common.wwwDontUpload (needed for legacy adapter)
         var cfg = require(__dirname + '/adapter/' + adapter + '/io-package.json');
         if (cfg && cfg.common && cfg.common.wwwDontUpload) {
-            if (typeof callback === 'function') callback();
+            if (typeof callback === 'function') callback(adapter);
             return;
         }
     }
@@ -707,7 +707,7 @@ function uploadAdapter(adapter, isAdmin, callback) {
     function upload(adapter) {
         var file;
         if (!files.length) {
-            if (typeof callback === 'function') callback();
+            if (typeof callback === 'function') callback(adapter);
         } else {
             file = files.pop();
             var mimeType = mime.lookup(file);
@@ -722,7 +722,7 @@ function uploadAdapter(adapter, isAdmin, callback) {
                 }, function (err, res) {
                     if (err) {
                         console.log(err);
-                        if (typeof callback === 'function') callback();
+                        if (typeof callback === 'function') callback(adapter);
                     }
                     rev = res.rev;
                     setTimeout(function () {
@@ -775,8 +775,12 @@ function uploadAdapter(adapter, isAdmin, callback) {
 
             });
         } else {
-            rev = res._rev;
-            walk(dir, done);
+            if (!forceUpload) {
+                if (typeof callback === 'function') callback(adapter);
+            } else {
+                rev = res._rev;
+                walk(dir, done);
+            }
         }
     });
 }
@@ -922,7 +926,7 @@ function installAdapter(adapter, callback) {
 
     function checkDependencies(deps, _enabled, _host, callback) {
         if (!deps || !deps.length) {
-            if (callback) callback();
+            if (callback) callback(adapter);
             return;
         }
 
@@ -940,14 +944,18 @@ function installAdapter(adapter, callback) {
                     }
                     if (!isFound) {
                         cnt++;
-                        createInstance(deps[i], _enabled, _host, function () {
-                            cnt--;
-                            if (!cnt && callback) callback();
+                        createInstance(deps[i], _enabled, _host, function (name) {
+                            uploadAdapter(name, true, false, function () {
+                                uploadAdapter(name, false, false, function () {
+                                    cnt--;
+                                    if (!cnt && callback) callback(adapter);
+                                });
+                            });
                         });
                     }
                 }
             }
-            if (!cnt && callback) callback();
+            if (!cnt && callback) callback(adapter);
         });
     }
 
@@ -968,7 +976,7 @@ function installAdapter(adapter, callback) {
 
             function setObject(_callback) {
                 if (objs.length === 0) {
-                    _callback();
+                    _callback(adapter);
                 } else {
                     var obj = objs.pop();
                     objects.extendObject(obj._id, obj, function (err, res) {
@@ -992,16 +1000,16 @@ function installAdapter(adapter, callback) {
     if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/node_modules')) {
         // Install node modules
         installNpm(adapter, function (_adapter) {
-            uploadAdapter(_adapter, true, function () {
-                uploadAdapter(_adapter, false, function () {
+            uploadAdapter(_adapter, true, true, function () {
+                uploadAdapter(_adapter, false, true, function () {
                     install();
                 });
             });
         });
     } else {
         console.log('no node modules to install');
-        uploadAdapter(name, true, function () {
-            uploadAdapter(name, false, function () {
+        uploadAdapter(name, true, true, function () {
+            uploadAdapter(name, false, true, function () {
                 install();
             });
         });
@@ -1191,7 +1199,7 @@ function createInstance(adapter, enabled, host, callback) {
                                 }
                                 // done
                                 if (callback) {
-                                    callback();
+                                    callback(adapter);
                                 } else {
                                     process.exit(0);
                                 }
