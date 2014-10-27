@@ -413,6 +413,7 @@ function processMessage(msg) {
                 return;
             }
             objects.getObject('system.config', function (err, systemConfig) {
+                // Collect statistics
                 if (systemConfig && systemConfig.common && systemConfig.common.diag) {
                     if (systemConfig.common.diag == 'normal') {
                         collectDiagInfo(function (obj) {
@@ -447,6 +448,8 @@ function processMessage(msg) {
 
                             // If repo is not yet loaded
                             if (!repos.native.repositories[active].json || updateRepo) {
+
+
                                 logger.info('Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                 // Load it
                                 tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
@@ -504,6 +507,22 @@ function processMessage(msg) {
                 if (ioPack) {
                     ioPack.common.host = hostname;
                     sendTo(msg.from, msg.command, ioPack.common, msg.callback);
+                } else {
+                    sendTo(msg.from, msg.command, null, msg.callback);
+                }
+            }
+            break;
+
+        case 'getDiagData':
+            if (msg.callback) {
+                if (msg.message == 'normal') {
+                    collectDiagInfo(function (obj) {
+                        sendTo(msg.from, msg.command, obj, msg.callback);
+                    });
+                } else if (msg.message == 'extended') {
+                    collectDiagInfoExtended(function (obj) {
+                        sendTo(msg.from, msg.command, obj, msg.callback);
+                    });
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
