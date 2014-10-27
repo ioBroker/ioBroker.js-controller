@@ -1312,23 +1312,23 @@ function showRepo(repoUrl) {
             if (err || !obj) {
                 console.log('Error: Object "system.config" not found');
             } else {
-                if (!obj.common || !obj.repositories) {
+                if (!obj.native || !obj.native.repositories) {
                     console.log('Error: no repositories found in the "system.config');
                 } else {
                     repoUrl = repoUrl || sysConfig.common.activeRepo;
 
                     // If known repository
-                    if (obj.repositories[repoUrl]) {
+                    if (obj.native.repositories[repoUrl]) {
 
-                        if (typeof obj.repositories[repoUrl] == 'string') {
-                            obj.repositories[repoUrl] = {
-                                link: obj.repositories[repoUrl],
+                        if (typeof obj.native.repositories[repoUrl] == 'string') {
+                            obj.native.repositories[repoUrl] = {
+                                link: obj.native.repositories[repoUrl],
                                 json: null
                             };
                         }
 
-                        updateRepo(obj.repositories[repoUrl].link, function (sources) {
-                            obj.repositories[repoUrl].json = sources;
+                        updateRepo(obj.native.repositories[repoUrl].link, function (sources) {
+                            obj.native.repositories[repoUrl].json = sources;
                             objects.setObject(obj._id, obj, function () {
                                 showRepoResult(repoUrl, sources);
                             });

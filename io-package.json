@@ -119,7 +119,8 @@
                 "dateFormat":       "DD.MM.YYYY",
                 "isFloatComma":     true,
                 "licenseConfirmed": false,
-                "activeRepo":       "default"
+                "activeRepo":       "default",
+                "diag":             "extended"
             }
         },
         {
@@ -128,14 +129,16 @@
             "common": {
                 "name": "System repositories"
             },
-            "repositories": {
-                "default": {
-                    "link": "conf/sources-dist.json",
-                    "json": null
-                },
-                "online": {
-                    "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
-                    "json": null
+            "native": {
+                "repositories": {
+                    "default": {
+                        "link": "conf/sources-dist.json",
+                        "json": null
+                    },
+                    "online": {
+                        "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
+                        "json": null
+                    }
                 }
             }
         },
@@ -145,7 +148,9 @@
             "common": {
                 "name": "System certificates"
             },
-            "certificates": {}
+            "native": {
+                "certificates": {}
+            }
         }
     ]
 }

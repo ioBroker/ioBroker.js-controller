@@ -196,6 +196,54 @@ function reportStatus() {
     states.setState('io.' + id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
 }
 
+// collect extended diag information
+function collectDiagInfoExtended(callback) {
+    return collectDiagInfo(callback);
+}
+
+// collect short diag information
+function collectDiagInfo(callback) {
+    objects.getObject('system.meta.uuid' , function (err, obj) {
+        // create uuid
+        if (err || !obj) {
+            obj = {native: {uuid: 'not found'}};
+        }
+        objects.getObjectView('system', 'host', {}, function (_err, doc) {
+            var diag = {
+                uuid: obj.native.uuid,
+                hosts:[],
+                adapters: {}
+            };
+            if (!_err && doc) {
+                if (doc && doc.rows.length) {
+                    // Read installed versions of all hosts
+                    for (var i = 0; i < doc.rows.length; i++) {
+                        diag.hosts.push({
+                            version:  doc.rows[i].value.common.version,
+                            platform: doc.rows[i].value.common.platform,
+                            type:     doc.rows[i].value.native.os.platform
+                        });
+                    }
+                }
+            }
+            objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                if (!_err && doc) {
+                    if (doc && doc.rows.length) {
+                        // Read installed versions of all hosts
+                        for (var i = 0; i < doc.rows.length; i++) {
+                            diag.adapters[doc.rows[i].value.common.name] = {
+                                version:  doc.rows[i].value.common.version,
+                                platform: doc.rows[i].value.common.platform
+                            };
+                        }
+                    }
+                }
+                if (callback) callback(diag);
+            });
+        });
+    });
+}
+
 function setMeta() {
     var id = 'system.host.' + hostname;
 
@@ -365,10 +413,21 @@ function processMessage(msg) {
                 return;
             }
             objects.getObject('system.config', function (err, systemConfig) {
+                if (systemConfig && systemConfig.common && systemConfig.common.diag) {
+                    if (systemConfig.common.diag == 'normal') {
+                        collectDiagInfo(function (obj) {
+                            tools.sendDiagInfo(obj);
+                        });
+                    } else if (systemConfig.common.diag == 'extended') {
+                        collectDiagInfo(function (obj) {
+                            tools.collectDiagInfoExtended(obj);
+                        });
+                    }
+                }
 
                 objects.getObject('system.repositories', function (err, repos) {
                     // Check if repositories exists
-                    if (!err && repos && repos.repositories) {
+                    if (!err && repos && repos.native &&  repos.native.repositories) {
                         var updateRepo = false;
                         if (typeof msg.message == 'object') {
                             updateRepo = msg.message.update;
@@ -377,28 +436,28 @@ function processMessage(msg) {
 
                         var active = msg.message || systemConfig.common.activeRepo;
 
-                        if (repos.repositories[active]) {
+                        if (repos.native.repositories[active]) {
 
-                            if (typeof repos.repositories[active] == 'string') {
-                                repos.repositories[active] = {
-                                    link: repos.repositories[active],
+                            if (typeof repos.native.repositories[active] == 'string') {
+                                repos.native.repositories[active] = {
+                                    link: repos.native.repositories[active],
                                     json: null
                                 };
                             }
 
                             // If repo is not yet loaded
-                            if (!repos.repositories[active].json || updateRepo) {
-                                logger.info('Update repository "' + active + '" under "' + repos.repositories[active].link + '"');
+                            if (!repos.native.repositories[active].json || updateRepo) {
+                                logger.info('Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                 // Load it
-                                tools.getRepositoryFile(repos.repositories[active].link, function (sources) {
-                                    repos.repositories[active].json = sources;
-                                    sendTo(msg.from, msg.command, repos.repositories[active].json, msg.callback);
+                                tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
+                                    repos.native.repositories[active].json = sources;
+                                    sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                     // Store uploaded repo
                                     objects.setObject('system.repositories', repos);
                                 });
                             } else {
                                 // We have already repo, give it back
-                                sendTo(msg.from, msg.command, repos.repositories[active].json, msg.callback);
+                                sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                             }
                         } else {
                             logger.warn('Requested repository "' + active + '" does not exit in config.');
