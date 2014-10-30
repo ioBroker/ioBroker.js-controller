@@ -412,14 +412,14 @@ switch (yargs.argv._[0]) {
                     // Clean up redis
                     states.getKeys('*', function (err, obj) {
                         var delState = [];
-
+                        var i;
                         if (obj) {
-                            for (var i = 0; i < obj.length; i++) {
+                            for (i = 0; i < obj.length; i++) {
                                 delState.push(obj[i]);
                             }
                         }
                         var taskCnt = 0;
-                        for(var i = 0; i < obj.length; i++) {
+                        for (i = 0; i < obj.length; i++) {
                             taskCnt++;
                             states.delState(delState[i], function () {
                                 taskCnt--;
@@ -899,6 +899,32 @@ function installNpm(adapter, callback) {
     }
 }
 
+function callInstallOfAdapter(adapter, config, callback) {
+    var path = __dirname + '/adapter/' + adapter;
+
+    if (config.common.install && fs.existsSync(path + '/io-package.json')) {
+        // Install node modules
+        var exec = require('child_process').exec;
+        var cmd = 'node ';
+
+        var fileName = config.common.main || "main.js";
+        if (!fs.existsSync(path + '/' + fileName)) {
+            fileName = adapter + '.js';
+        }
+
+        cmd += '"adapter/' + adapter + '/' + fileName + '" --install';
+        console.log(cmd);
+        var child = exec(cmd);
+        child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
+        // liner.js from http://strongloop.com/strongblog/practical-examples-of-the-new-node-js-streams-api/ could solve this
+        child.on('exit', function () {
+            if (callback) callback(adapter);
+        });
+    } else {
+        if (callback) callback(adapter);
+    }
+}
+
 var installCount = 0;
 function installAdapter(adapter, callback) {
 
@@ -917,11 +943,25 @@ function installAdapter(adapter, callback) {
         return;
     }
     installCount = 0;
+    var adapterConf;
     try {
-        var adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json'));
+        adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json'));
     } catch (e) {
         console.log('error: reading io-package.json ' + e);
         process.exit(1);
+    }
+
+    // Check if the operation system is ok
+    if (adapterConf.common && adapterConf.common.os) {
+        if (typeof adapterConf.common.os == 'string' && adapterConf.common.os != require('os').platform()) {
+            console.log('Adapter does not support current os. Required ' + adapterConf.common.os + '. Actual platform: ' + require('os').platform());
+            process.exit(1);
+        } else {
+            if (adapterConf.common.os.indexOf(require('os').platform()) == -1) {
+                console.log('Adapter does not support current os. Required one of ' + adapterConf.common.os.join(', ') + '. Actual platform: ' + require('os').platform());
+                process.exit(1);
+            }
+        }
     }
 
     function checkDependencies(deps, _enabled, _host, callback) {
@@ -1002,7 +1042,9 @@ function installAdapter(adapter, callback) {
         installNpm(adapter, function (_adapter) {
             uploadAdapter(_adapter, true, true, function () {
                 uploadAdapter(_adapter, false, true, function () {
-                    install();
+                    callInstallOfAdapter(_adapter, adapterConf, function () {
+                        install();
+                    });
                 });
             });
         });
@@ -1010,7 +1052,9 @@ function installAdapter(adapter, callback) {
         console.log('no node modules to install');
         uploadAdapter(name, true, true, function () {
             uploadAdapter(name, false, true, function () {
-                install();
+                callInstallOfAdapter(name, adapterConf, function () {
+                    install();
+                });
             });
         });
     }

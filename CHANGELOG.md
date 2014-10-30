@@ -1,3 +1,7 @@
+# 0.0.27 (2014-10-30)
+* (bluefox) check common.os (e.g. to install adapter only on linux)
+* (bluefox) support of common.install adapter settings.
+
 # 0.0.26 (2014-10-25)
 * (bluefox) change state names to 'io.*'
 

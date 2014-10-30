@@ -7,7 +7,7 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.26';
+var version = '0.0.27';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -379,6 +379,7 @@ function sendTo(objName, command, message, callback) {
 
 // Process message to controller, like execute some script
 function processMessage(msg) {
+    var ioPack;
     switch (msg.command) {
         case 'cmdExec':
             var spawn = require('child_process').spawn;
@@ -408,71 +409,71 @@ function processMessage(msg) {
             break;
 
         case 'getRepository':
-            if (!msg.callback) {
-                logger.error('call getRepository without callback');
-                return;
-            }
-            objects.getObject('system.config', function (err, systemConfig) {
-                // Collect statistics
-                if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                    if (systemConfig.common.diag == 'normal') {
-                        collectDiagInfo(function (obj) {
-                            tools.sendDiagInfo(obj);
-                        });
-                    } else if (systemConfig.common.diag == 'extended') {
-                        collectDiagInfoExtended(function (obj) {
-                            tools.sendDiagInfo(obj);
-                        });
-                    }
-                }
-
-                objects.getObject('system.repositories', function (err, repos) {
-                    // Check if repositories exists
-                    if (!err && repos && repos.native && repos.native.repositories) {
-                        var updateRepo = false;
-                        if (typeof msg.message == 'object') {
-                            updateRepo = msg.message.update;
-                            msg.message = msg.message.repo;
+            if (msg.callback && msg.from) {
+                objects.getObject('system.config', function (err, systemConfig) {
+                    // Collect statistics
+                    if (systemConfig && systemConfig.common && systemConfig.common.diag) {
+                        if (systemConfig.common.diag == 'normal') {
+                            collectDiagInfo(function (obj) {
+                                tools.sendDiagInfo(obj);
+                            });
+                        } else if (systemConfig.common.diag == 'extended') {
+                            collectDiagInfoExtended(function (obj) {
+                                tools.sendDiagInfo(obj);
+                            });
                         }
+                    }
 
-                        var active = msg.message || systemConfig.common.activeRepo;
-
-                        if (repos.native.repositories[active]) {
-
-                            if (typeof repos.native.repositories[active] == 'string') {
-                                repos.native.repositories[active] = {
-                                    link: repos.native.repositories[active],
-                                    json: null
-                                };
+                    objects.getObject('system.repositories', function (err, repos) {
+                        // Check if repositories exists
+                        if (!err && repos && repos.native && repos.native.repositories) {
+                            var updateRepo = false;
+                            if (typeof msg.message == 'object') {
+                                updateRepo = msg.message.update;
+                                msg.message = msg.message.repo;
                             }
 
-                            // If repo is not yet loaded
-                            if (!repos.native.repositories[active].json || updateRepo) {
+                            var active = msg.message || systemConfig.common.activeRepo;
+
+                            if (repos.native.repositories[active]) {
+
+                                if (typeof repos.native.repositories[active] == 'string') {
+                                    repos.native.repositories[active] = {
+                                        link: repos.native.repositories[active],
+                                        json: null
+                                    };
+                                }
+
+                                // If repo is not yet loaded
+                                if (!repos.native.repositories[active].json || updateRepo) {
 
 
-                                logger.info('Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
-                                // Load it
-                                tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
-                                    repos.native.repositories[active].json = sources;
+                                    logger.info('Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
+                                    // Load it
+                                    tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
+                                        repos.native.repositories[active].json = sources;
+                                        sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                        // Store uploaded repo
+                                        objects.setObject('system.repositories', repos);
+                                    });
+                                } else {
+                                    // We have already repo, give it back
                                     sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                    // Store uploaded repo
-                                    objects.setObject('system.repositories', repos);
-                                });
+                                }
                             } else {
-                                // We have already repo, give it back
-                                sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                logger.warn('Requested repository "' + active + '" does not exit in config.');
+                                sendTo(msg.from, msg.command, null, msg.callback);
                             }
-                        } else {
-                            logger.warn('Requested repository "' + active + '" does not exit in config.');
-                            sendTo(msg.from, msg.command, null, msg.callback);
                         }
-                    }
+                    });
                 });
-            });
+            } else {
+                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
             break;
 
         case 'getInstalled':
-            if (msg.callback) {
+            if (msg.callback && msg.from) {
                 // Get list of all hosts
                 objects.getObjectView('system', 'host', {}, function (err, doc) {
                     var result = tools.getInstalledInfo();
@@ -493,12 +494,14 @@ function processMessage(msg) {
                     }
                     if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
                 });
+            } else {
+                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
         case 'getVersion':
-            if (msg.callback) {
-                var ioPack = null;
+            if (msg.callback && msg.from) {
+                ioPack = null;
                 try {
                     ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
                 } catch (e) {
@@ -510,11 +513,13 @@ function processMessage(msg) {
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
+            } else {
+                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
         case 'getDiagData':
-            if (msg.callback) {
+            if (msg.callback && msg.from) {
                 if (msg.message == 'normal') {
                     collectDiagInfo(function (obj) {
                         sendTo(msg.from, msg.command, obj, msg.callback);
@@ -526,6 +531,43 @@ function processMessage(msg) {
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
+            } else {
+                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
+        case 'getDevList':
+            if (msg.callback && msg.from) {
+                ioPack = null;
+
+                if (require('os').platform() == 'linux') {
+                    var _spawn = require('child_process').spawn;
+                    var _args = ['/dev'];
+                    logger.info('ls /dev');
+                    var _child = _spawn('ls', _args);
+                    var result = '';
+                    _child.stdout.on('data', function (data) {
+                        result += data.toString();
+                    });
+                    _child.stderr.on('data', function (data) {
+                        logger.error('ls ' + data);
+                    });
+
+                    _child.on('exit', function (exitCode) {
+                        var resList = result.split('\n');
+                        for (var t = 0; t < resList.length; t++) {
+                            resList[t] = resList[t].replace('\r', '');
+                        }
+
+                        sendTo(msg.from, msg.command, resList, msg.callback);
+                    });
+                    break;
+
+                } else {
+                    sendTo(msg.from, msg.command, null, msg.callback);
+                }
+            } else {
+                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
     }
