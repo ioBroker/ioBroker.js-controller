@@ -1,3 +1,6 @@
+# 0.0.28 (2014-10-30)
+* (bluefox) support of listDevices for configuration
+
 # 0.0.27 (2014-10-30)
 * (bluefox) check common.os (e.g. to install adapter only on linux)
 * (bluefox) support of common.install adapter settings.

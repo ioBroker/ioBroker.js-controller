@@ -554,9 +554,15 @@ function processMessage(msg) {
                     });
 
                     _child.on('exit', function (exitCode) {
-                        var resList = result.split('\n');
+                        result = result.replace('\r', '').replace('\n', '');
+                        var parts = result.split(' ');
+                        var resList = [];
+
                         for (var t = 0; t < resList.length; t++) {
-                            resList[t] = resList[t].replace('\r', '');
+                            parts[t] = parts[t].trim();
+                            if (parts[t]) {
+                                resList[t] = parts[t];
+                            }
                         }
 
                         sendTo(msg.from, msg.command, resList, msg.callback);
