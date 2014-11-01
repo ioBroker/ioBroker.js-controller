@@ -1,5 +1,8 @@
-# 0.0.29 (2014-10-30)
+# 0.0.30 (2014-11-01)
 * (bluefox) fix error in "support of listDevices for configuration"
+
+# 0.0.29 (2014-10-30)
+* (bluefox) (bluefox) fix creatChannel for adapter
 
 # 0.0.28 (2014-10-30)
 * (bluefox) support of listDevices for configuration
