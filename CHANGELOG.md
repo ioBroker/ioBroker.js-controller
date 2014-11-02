@@ -1,3 +1,6 @@
+# 0.0.31 (2014-11-02)
+* (bluefox) fix error with binary states
+
 # 0.0.30 (2014-11-01)
 * (bluefox) fix error in "support of listDevices for configuration"
 

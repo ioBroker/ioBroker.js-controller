@@ -404,7 +404,13 @@ function processMessage(msg) {
 
             child.on('exit', function (exitCode) {
                 logger.info('iobroker exit ' + exitCode);
-                if (msg.from) sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+                if (msg.from) {
+                    sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+                    // Sometimes finished command is lost, recent it
+                    setTimeout(function () {
+                        sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+                    }, 1000);
+                }
             });
             break;
 
