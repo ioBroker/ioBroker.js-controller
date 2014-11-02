@@ -93,6 +93,11 @@
     "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
+  "ping": {
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
+      "url": "https://github.com/ioBroker/ioBroker.ping/archive/master.zip",
+      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
+  },
   "socketio": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
