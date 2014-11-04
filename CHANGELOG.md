@@ -1,3 +1,6 @@
+# 0.0.32 (2014-11-04)
+* (bluefox) support of node-red as adapter
+
 # 0.0.31 (2014-11-02)
 * (bluefox) fix error with binary states
 
