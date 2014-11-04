@@ -93,6 +93,11 @@
     "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
+  "node-red": {
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/io-package.json",
+      "url": "https://github.com/ioBroker/ioBroker.node-red/archive/master.zip",
+      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/admin/node-red.png"
+  },
   "ping": {
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
       "url": "https://github.com/ioBroker/ioBroker.ping/archive/master.zip",
