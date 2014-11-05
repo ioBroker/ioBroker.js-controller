@@ -1,3 +1,6 @@
+# 0.0.33 (2014-11-04)
+* (bluefox) support of node-red as adapter and defined exit codes for errors
+
 # 0.0.32 (2014-11-04)
 * (bluefox) support of node-red as adapter
 
