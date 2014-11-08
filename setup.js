@@ -29,7 +29,9 @@ var yargs = require('yargs')
         '$0 state getplain <id>\n' +
         '$0 state set <id> <value>\n' +
         '$0 state setplain <id> <value>\n' +
-        '$0 clean')
+        '$0 clean\n' +
+        '$0 backup\n' +
+        '$0 restore <backup name or path>')
     .default('couch',   '127.0.0.1')
     .default('redis',   '127.0.0.1')
     .default('lang',    'en')
@@ -72,25 +74,9 @@ switch (yargs.argv._[0]) {
 
     case "setup":
         fs =            require('fs');
-        password =      require(__dirname + '/lib/password.js');
-        ObjectsCouch =  require(__dirname + '/lib/couch.js');
-
-        var config;
-        if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
-            config = require(__dirname + '/conf/iobroker-dist.json');
-            console.log('creating conf/iobroker.json');
-            config.couch.host = yargs.argv.couch || '127.0.0.1';
-            config.redis.host = yargs.argv.redis || '127.0.0.1';
-            fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(config));
-        }
-
-        var iopkg = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
-
-        dbConnect(function () {
-            dbSetup();
-
+        setup(function() {
+            process.exit();
         });
-
         break;
 
     case "add":
@@ -157,7 +143,7 @@ switch (yargs.argv._[0]) {
         var instance = yargs.argv._[2];
         if (!adpr) {
             yargs.showHelp();
-            process.exit(1);
+            process.exit(2);
         }
 
         if (adpr && adpr.indexOf('.') != -1) {
@@ -204,7 +190,7 @@ switch (yargs.argv._[0]) {
                     objects.getObject(id, function (err, res) {
                         if (err) {
                             console.log("not found");
-                            process.exit(1);
+                            process.exit(3);
                         } else {
                             console.log(JSON.stringify(res));
                             process.exit();
@@ -307,14 +293,14 @@ switch (yargs.argv._[0]) {
                 objects.getObject('system.adapter.' + adapter, function (err, res) {
                     if (err || !res) {
                         console.log("Adapter not found");
-                        process.exit(1);
+                        process.exit(4);
                     } else {
                         if (instances.length === 0) {
                             instances = res.children;
                         }
                         if (!instances.length) {
                             console.log("Error: no one instance installed!");
-                            process.exit(1);
+                            process.exit(5);
                         }
 
                         var config =      require(__dirname + '/conf/iobroker.json');
@@ -393,52 +379,388 @@ switch (yargs.argv._[0]) {
         if (yes != 'yes') {
             console.log('Command "clean" clears all CouchDB and redis. To execute it write "iobroker clean yes"');
         } else {
-            ObjectsCouch =  require(__dirname + '/lib/couch.js');
-            var StatesRedis = require(__dirname + '/lib/redis.js');
-            states = new StatesRedis({
-                redis: {
-                    host:    '127.0.0.1',
-                    port:    6379,
-                    options: {
-                        "auth_pass": null,
-                        "retry_max_delay": 15000
-                    }
-                }
+            cleanDatabase(true, function (count) {
+                console.log('Deleted ' + count + ' states');
+                restartController(function () {
+                    console.log('Restarting ioBroker...');
+                    process.exit();
+                })
             });
-
-            dbConnect(function () {
-                objects.destroy(function () {
-
-                    // Clean up redis
-                    states.getKeys('*', function (err, obj) {
-                        var delState = [];
-                        var i;
-                        if (obj) {
-                            for (i = 0; i < obj.length; i++) {
-                                delState.push(obj[i]);
-                            }
-                        }
-                        var taskCnt = 0;
-                        for (i = 0; i < obj.length; i++) {
-                            taskCnt++;
-                            states.delState(delState[i], function () {
-                                taskCnt--;
-                                if (!taskCnt) {
-                                    console.log('Deleted ' + obj.length + ' states');
-                                    process.exit();
-                                }
-                            });
-                        }
-                    });
-                });
-            });
-
         }
+        break;
+
+    case "restore":
+        if (!yargs.argv._[1]) {
+            console.log('Please specify the file name to restore.');
+            process.exit(11);
+        } else {
+            restoreBackup(yargs.argv._[1], function () {
+                console.log("System successfully restored!");
+                process.exit(0);
+            });
+        }
+        break;
+
+    case "backup":
+        ObjectsCouch =  require(__dirname + '/lib/couch.js');
+        var StatesRedis = require(__dirname + '/lib/redis.js');
+        states = new StatesRedis({
+            redis: {
+                host:    '127.0.0.1',
+                port:    6379,
+                options: {
+                    "auth_pass": null,
+                    "retry_max_delay": 15000
+                }
+            }
+        });
+        var name = yargs.argv._[1];
+
+        dbConnect(function () {
+            createBackup(name, function (filePath) {
+                console.log('Backup created: ' + filePath);
+                process.exit(0);
+            });
+        });
         break;
 
     default:
         yargs.showHelp();
 
+}
+
+function cleanDatabase(isDeleteDb, callback) {
+    ObjectsCouch    = require(__dirname + '/lib/couch.js');
+    var StatesRedis = require(__dirname + '/lib/redis.js');
+    states = new StatesRedis({
+        redis: {
+            host:    '127.0.0.1',
+            port:    6379,
+            options: {
+                "auth_pass": null,
+                "retry_max_delay": 15000
+            }
+        }
+    });
+
+    dbConnect(function () {
+
+        if (isDeleteDb) {
+            objects.destroy(function () {
+
+                // Clean up redis
+                states.getKeys('*', function (err, obj) {
+                    var delState = [];
+                    var i;
+                    if (obj) {
+                        for (i = 0; i < obj.length; i++) {
+                            delState.push(obj[i]);
+                        }
+                    }
+                    var taskCnt = 0;
+                    for (i = 0; i < obj.length; i++) {
+                        taskCnt++;
+                        states.delState(delState[i], function () {
+                            taskCnt--;
+                            if (!taskCnt) {
+                                if (callback) callback(obj.length);
+                            }
+                        });
+                    }
+                });
+            });
+        } else {
+            // Clean only objects, not the views
+            objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, function (err, res) {
+                if (!err && res.rows.length) {
+                    for (var i = 0; i < res.rows.length; i++) {
+                        //console.log('Delete ' + res.rows[i].id);
+                        objects.delObject(res.rows[i].id);
+                    }
+                }
+
+                // Clean up redis
+                states.getKeys('*', function (err, obj) {
+                    var delState = [];
+                    var i;
+                    if (obj) {
+                        for (i = 0; i < obj.length; i++) {
+                            delState.push(obj[i]);
+                        }
+                    }
+                    var taskCnt = 0;
+                    for (i = 0; i < obj.length; i++) {
+                        taskCnt++;
+                        states.delState(delState[i], function () {
+                            taskCnt--;
+                            if (!taskCnt) {
+                                if (callback) callback(obj.length);
+                            }
+                        });
+                    }
+                });
+
+            });
+        }
+    });
+
+}
+
+function restartController(callback) {
+    var fs = require('fs');
+    var spawn = require('child_process').spawn;
+    var fs = require('fs');
+    if (fs.existsSync(__dirname + '/log/restart.log')) fs.unlinkSync(__dirname + '/log/restart.log');
+    var out = fs.openSync(__dirname + '/log/restart.log', 'a');
+    var err = fs.openSync(__dirname + '/log/restart.log', 'a');
+
+    console.log('Starting node ./lib/restart.js');
+    var child = spawn('node', ['./lib/restart.js'], {
+        detached: true,
+        stdio: [ 'ignore', out, err ]
+    });
+
+    child.unref();
+
+    if (callback) {
+        callback();
+    } else {
+        process.exit();
+    }
+}
+
+function createBackup(name, callback) {
+    fs = require('fs');
+    if (!name) {
+        var d = new Date();
+        name = d.getFullYear() + '_' +
+            ('0' + d.getMonth()).slice(-2) + '_' +
+            ('0' + d.getDate()).slice(-2) + '-' +
+            ('0' + d.getHours()).slice(-2) + '_' +
+            ('0' + d.getMinutes()).slice(-2) + '_' +
+            ('0' + d.getSeconds()).slice(-2) + '_backupIoBroker';
+    }
+    objects.getObjectList({include_docs: true}, function (err, res) {
+        var result = {objects: null, states: {}, config: null};
+        if (err) {
+            console.log('Cannot get objects: ' + err);
+        } else {
+            result.objects = res.rows;
+        }
+        if (fs.existsSync(__dirname + '/conf/iobroker.json')) result.config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
+        states.getKeys('*', function (err, keys) {
+            for (var i = keys.length - 1; i >= 0; i--) {
+                if (keys[i].match(/\.messagebox$/)) {
+                    keys.splice(i, 1);
+                }
+            }
+
+            states.getStates(keys, function (err, obj) {
+                for (var i = 0; i < keys.length; i++) {
+                    result.states[keys[i]] = obj[i];
+                }
+                if (!fs.existsSync(__dirname + '/backups')) fs.mkdirSync(__dirname + '/backups');
+                if (!fs.existsSync(__dirname + '/tmp')) fs.mkdirSync(__dirname + '/tmp');
+                if (!fs.existsSync(__dirname + '/tmp/backup')) fs.mkdirSync(__dirname + '/tmp/backup');
+                fs.writeFileSync(__dirname + '/tmp/backup/backup.json', JSON.stringify(result, null, 2));
+                var targz = require('tar.gz');
+
+                new targz().compress(__dirname + '/tmp/backup', __dirname + '/backups/' + name + '.tar.gz', function (err) {
+                    if (err) {
+                        console.log('Cannot pack file /tmp/' + name + '.json: ' + err);
+                        process.exit(9);
+                    }
+
+                    fs.unlinkSync(__dirname + '/tmp/backup/backup.json');
+                    if (callback) callback('backups/' + name + '.tar.gz');
+                });
+            });
+        });
+
+    });
+}
+
+function setup(callback) {
+    password = require(__dirname + '/lib/password.js');
+    ObjectsCouch = require(__dirname + '/lib/couch.js');
+
+    var config;
+    if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
+        config = require(__dirname + '/conf/iobroker-dist.json');
+        console.log('creating conf/iobroker.json');
+        config.couch.host = yargs.argv.couch || '127.0.0.1';
+        config.redis.host = yargs.argv.redis || '127.0.0.1';
+        fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(config));
+    }
+
+    var iopkg = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+
+    dbConnect(function () {
+        dbSetup(iopkg, callback);
+    });
+}
+
+function _setStateHelper(_index, statesList, stateObjects, callback) {
+    states.setRawState(statesList[_index], stateObjects[statesList[_index]], function () {
+        if ((_index % 200) == 0) console.log('Processed ' + _index + '/' + statesList.length + ' states');
+        _index++;
+        if (_index < statesList.length) {
+            setTimeout(_setStateHelper, 0, _index, statesList, stateObjects, callback);
+        } else {
+            if (callback) callback();
+        }
+    });
+}
+
+function _setObjHelper(_index, _objects, callback) {
+    // Disable all adapters.
+    if (_objects[_index].id.match(/^system\.adapter\./) && !_objects[_index].id.match(/^system\.adapter\.admin/)) {
+        if (_objects[_index].doc.common && _objects[_index].doc.common.enabled) {
+            _objects[_index].doc.common.enabled = false;
+        }
+    }
+    if (_objects[_index].doc._rev) delete _objects[_index].doc._rev;
+
+    objects.setObject(_objects[_index].id, _objects[_index].doc, function (err, obj) {
+        if (err) {
+            console.log('Cannot restore ' + _objects[_index].id + ': ' + err);
+        }
+
+        if ((_index % 200) == 0) console.log('Processed ' + _index + '/' + _objects.length + ' objects');
+        _index++;
+        if (_index < _objects.length) {
+            setTimeout(_setObjHelper, 0, _index, _objects, callback);
+        } else {
+            if (callback) callback();
+        }
+    });
+}
+
+function reloadAdapterObject(index, objectList, callback) {
+    if (objectList && index < objectList.length) {
+        objects.getObject(objectList[index]._id, function (err, obj) {
+            if (err || !obj) {
+                objects.setObject(objectList[index]._id, objectList[index], function () {
+                    console.log('object ' + objectList[index]._id + ' created');
+                    index++;
+                    setTimeout(reloadAdapterObject, 0, index, objectList, callback);
+                });
+            } else{
+                index++;
+                setTimeout(reloadAdapterObject, 0, index, objectList, callback);
+            }
+        })
+    } else {
+        if (callback) callback();
+    }
+}
+
+function reloadAdaptersObjects(callback, dirs, index) {
+    if (!dirs) {
+        dirs = fs.readdirSync(__dirname + '/adapter');
+        if (dirs.length) {
+            reloadAdaptersObjects(callback, dirs, 0);
+        } else {
+            if (callback) callback();
+        }
+    } else {
+        if (index < dirs.length) {
+            uploadAdapter(dirs[index], false, true, function () {
+                uploadAdapter(dirs[index], true, true, function () {
+                    if (fs.existsSync(__dirname + '/adapter/' + dirs[index] + '/io-package.json')) {
+                        var pkg = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + dirs[index] + '/io-package.json'));
+                        if (pkg.objects) {
+                            console.log('Setup "' + dirs[index] + '" adapter');
+                            reloadAdapterObject(0, pkg.objects, function () {
+                                index++;
+                                setTimeout(reloadAdaptersObjects, 0, callback, dirs, index);
+                            });
+                        } else {
+                            index++;
+                            reloadAdaptersObjects(callback, dirs, index);
+                        }
+                    }
+                });
+            });
+        } else {
+            if (callback) callback();
+        }
+    }
+}
+
+function restoreBackup(name, callback) {
+    fs = require('fs');
+    if (!name) {
+        console.log('Invalid backup name: empty!');
+        process.exit(10);
+    }
+    name = name.replace(/\\/g, '/');
+    if (name.indexOf('/') == -1) {
+        name = __dirname + '/backups/' + name;
+        if (!name.match(/\_backupIoBroker/i)) name += '_backupIoBroker';
+        if (!name.match(/\.tar\.gz$/i)) name += '.tar.gz';
+    }
+    if (!fs.existsSync(name)) {
+        console.log('Cannot find ' + name);
+        process.exit(11);
+    }
+    var targz = require('tar.gz');
+    if (fs.existsSync(__dirname + '/tmp/backup/backup.json')) fs.unlinkSync(__dirname + '/tmp/backup/backup.json');
+
+    new targz().extract(name, __dirname + '/tmp', function(err) {
+        if (err) {
+            console.log('Cannot extract from file "' + name + '"');
+            process.exit(9);
+        }
+        if (!fs.existsSync(__dirname + '/tmp/backup/backup.json')) {
+            console.log('Cannot find extracted file from file /tmp/backup/backup.json"');
+            process.exit(9);
+        }
+        // Open file
+        var restore = JSON.parse(fs.readFileSync(__dirname + '/tmp/backup/backup.json'));
+
+        // stop all adapters
+        cleanDatabase(false, function () {
+            dbConnect(function () {
+                // upload all data into DB
+                var StatesRedis = require(__dirname + '/lib/redis.js');
+                states = new StatesRedis({
+                    redis: {
+                        host:    '127.0.0.1',
+                        port:    6379,
+                        options: {
+                            "auth_pass": null,
+                            "retry_max_delay": 15000
+                        }
+                    }
+                });
+                // restore ioBorker.json
+                if (restore.config) fs.writeFileSync(__dirname + '/conf/iobroker.json', JSON.stringify(restore.config, null, 2));
+
+                var sList = [];
+                for (var state in restore.states) {
+                    sList.push(state);
+                }
+
+                _setStateHelper(0, sList, restore.states, function () {
+                    console.log(sList.length + ' states restored.');
+                    _setObjHelper(0, restore.objects, function () {
+                        console.log(restore.objects.length + ' objects restored.');
+                        // Required for upload adapter
+                        mime = require('mime');
+                        //  reload objects of adapters
+                        reloadAdaptersObjects(function () {
+                            // Reload host objects
+                            var pckgio = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                            reloadAdapterObject(0, pckgio ? pckgio.objects : null, function () {
+                                restartController(callback);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 }
 
 function upgradeAdapterHelper(repoUrl, list, i, forceDowngrade, callback) {
@@ -643,7 +965,7 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
                 downloadPacket(repoUrl, ioPack.common.name, function (name) {
                     installNpm('', function (_name) {
                         console.log('Host "' + hostname + '" updated');
-                        if (callback) callback();
+                        restartController(callback);
                     });
                 });
             }
@@ -667,6 +989,7 @@ function dbConnect(callback) {
         },
         connected: function () {
             if (typeof callback === 'function') callback();
+            // restore all objects
         }
     });
 }
@@ -811,7 +1134,7 @@ function downloadPacket(repoUrl, packetName, callback) {
         url = packetName;
         if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1) {
             console.log("Unknown packetName " + packetName);
-            process.exit(1);
+            process.exit(5);
         }
         name = Math.floor(Math.random() * 0xFFFFFFE);
     }
@@ -840,7 +1163,7 @@ function downloadPacket(repoUrl, packetName, callback) {
                 } catch (e) {
                     console.log('io-package.json has invalid format! Installation terminated.');
                     if (typeof callback === 'function') callback(name, 'Invalid io-package.json!');
-                    process.exit(1);
+                    process.exit(6);
                 }
 
                 var destination = __dirname;
@@ -851,7 +1174,7 @@ function downloadPacket(repoUrl, packetName, callback) {
                 ncp(source, destination, function (err) {
                     if (err) {
                         console.log('ncp error: ' + err);
-                        process.exit(1);
+                        process.exit(7);
                     }
                     if (tmpFile.substring(__dirname + '/tmp/') == __dirname + '/tmp/') {
                         console.log('delete ' + tmpFile);
@@ -869,12 +1192,12 @@ function downloadPacket(repoUrl, packetName, callback) {
             } else {
                 console.log('io-package.json not found in ' + source + '/io-package.json. Invalid packet! Installation terminated.');
                 if (typeof callback === 'function') callback(name, 'Invalid packet!');
-                process.exit(1);
+                process.exit(8);
             }
         } else {
             console.log('Packet is empty! Installation terminated.');
             if (typeof callback === 'function') callback(name, 'Packet is empty');
-            process.exit(1);
+            process.exit(12);
         }
     });
 }
@@ -933,7 +1256,7 @@ function installAdapter(adapter, callback) {
     if (!fs.existsSync(__dirname + '/adapter/' + adapter + '/io-package.json')) {
         if (installCount == 2) {
             console.log('Cannot install ' + adapter);
-            process.exit(1);
+            process.exit(13);
             return;
         }
 
@@ -948,18 +1271,18 @@ function installAdapter(adapter, callback) {
         adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json'));
     } catch (e) {
         console.log('error: reading io-package.json ' + e);
-        process.exit(1);
+        process.exit(14);
     }
 
     // Check if the operation system is ok
     if (adapterConf.common && adapterConf.common.os) {
         if (typeof adapterConf.common.os == 'string' && adapterConf.common.os != require('os').platform()) {
             console.log('Adapter does not support current os. Required ' + adapterConf.common.os + '. Actual platform: ' + require('os').platform());
-            process.exit(1);
+            process.exit(15);
         } else {
             if (adapterConf.common.os.indexOf(require('os').platform()) == -1) {
                 console.log('Adapter does not support current os. Required one of ' + adapterConf.common.os.join(', ') + '. Actual platform: ' + require('os').platform());
-                process.exit(1);
+                process.exit(16);
             }
         }
     }
@@ -1022,7 +1345,7 @@ function installAdapter(adapter, callback) {
                     objects.extendObject(obj._id, obj, function (err, res) {
                         if (err) {
                             console.log('error setObject ' + obj._id + ' ' + err);
-                            process.exit(1);
+                            process.exit(17);
                         } else {
                             console.log('object ' + obj._id + ' created');
                             setTimeout(function (_cb) {
@@ -1075,7 +1398,7 @@ function createInstance(adapter, enabled, host, callback) {
         objects.getObjectView('system', 'instanceStats', {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, res) {
             if (err || !res) {
                 console.log('error: view instanceStats ' + err);
-                process.exit(1);
+                process.exit(18);
                 return;
             }
             if (enabled === "true")  enabled = true;
@@ -1083,13 +1406,19 @@ function createInstance(adapter, enabled, host, callback) {
             var adapterConf;
             var instance = (res.rows && res.rows[0] && res.rows[0].value ? res.rows[0].value.max + 1 : 0);
 
+            // Todo count started instances
             if (doc.common.singleton && instance > 0) {
                 console.log('error: this adapter does not allow multiple instances');
-                process.exit(1);
+                process.exit(19);
                 return;
             }
 
             // TODO: singletonHost one on host
+            if (doc.common.singletonHost && instance > 0) {
+                console.log('error: this adapter does not allow multiple instances on one host');
+                process.exit(21);
+                return;
+            }
 
             var instanceObj = doc;
             doc = JSON.parse(JSON.stringify(doc));
@@ -1175,7 +1504,7 @@ function createInstance(adapter, enabled, host, callback) {
                     adapterConf = JSON.parse(fs.readFileSync(__dirname + '/adapter/' + adapter + '/io-package.json').toString());
                 } catch (e) {
                     console.log('error: reading io-package.json ' + e);
-                    process.exit(1);
+                    process.exit(20);
                 }
             }
 
@@ -1188,9 +1517,13 @@ function createInstance(adapter, enabled, host, callback) {
                 if (adapterConf.instanceObjects[i].type == 'state' && adapterConf.instanceObjects[i]._id.substring(0, 3) == 'io.') {
                     adapterConf.instanceObjects[i]._id = 'io.' + adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id.substring(3);
                 } else {
-                    adapterConf.instanceObjects[i]._id = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id;
+                    adapterConf.instanceObjects[i]._id = adapter + '.' + instance + (adapterConf.instanceObjects[i]._id ? ('.' + adapterConf.instanceObjects[i]._id) : '');
                 }
                 if (adapterConf.instanceObjects[i].parent) adapterConf.instanceObjects[i].parent = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i].parent;
+
+                if (adapterConf.instanceObjects[i].common && adapterConf.instanceObjects[i].common.name) {
+                    adapterConf.instanceObjects[i].common.name = adapterConf.instanceObjects[i].common.name.replace('%INSTANCE%', instance);
+                }
                 objs.push(adapterConf.instanceObjects[i]);
             }
 
@@ -1919,17 +2252,21 @@ function deleteInstance(adapter, instance, callback) {
     });
 }
 
-function setupReady() {
-    console.log('database setup done. you can add adapters and start iobroker now');
-    process.exit(0);
+function setupReady(callback) {
+    if (!callback) {
+        console.log('database setup done. you can add adapters and start iobroker now');
+        process.exit(0);
+    } else {
+        callback();
+    }
 }
 
-function dbSetup() {
+function dbSetup(iopkg, callback) {
     if (iopkg.objects && iopkg.objects.length > 0) {
         var obj = iopkg.objects.pop();
         objects.setObject(obj._id, obj, function () {
             console.log('object ' + obj._id + ' created');
-            setTimeout(dbSetup, 25);
+            setTimeout(dbSetup, 25, iopkg, callback);
         });
     } else {
         // Default Password for user 'admin' is 'iobroker'
@@ -1949,13 +2286,13 @@ function dbSetup() {
                 native: {}
             }, function () {
                 console.log('object system.user.admin created');
-                if (!(--tasks)) setupReady();
+                if (!(--tasks)) setupReady(callback);
             });
 
             tasks++;
             objects.getObject('system.meta.uuid', function (err, res) {
                 if (!err && res && res.native && res.native.uuid) {
-                    if (!(--tasks)) setupReady();
+                    if (!(--tasks)) setupReady(callback);
                 } else {
                     objects.setObject('system.meta.uuid', {
                         type: 'meta',
@@ -1968,7 +2305,7 @@ function dbSetup() {
                         }
                     }, function () {
                         console.log('object system.meta.uuid created');
-                        if (!(--tasks)) setupReady();
+                        if (!(--tasks)) setupReady(callback);
                     });
                 }
             });

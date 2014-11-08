@@ -1,3 +1,6 @@
+# 0.0.34 (2014-11-08)
+* (bluefox) create restore/backup (from console)
+
 # 0.0.33 (2014-11-04)
 * (bluefox) support of node-red as adapter and defined exit codes for errors
 

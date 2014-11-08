@@ -19,7 +19,8 @@
     "request": "~2.38.0",
     "winston": "~0.7.3",
     "yargs": "~1.2.6",
-    "mime": "~1.2.11"
+    "mime": "~1.2.11",
+    "tar.gz": "~0.1.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
