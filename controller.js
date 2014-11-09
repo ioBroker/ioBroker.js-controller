@@ -22,9 +22,10 @@ var version =      ioPackage.common.version;
 
 var logger;
 var isDaemon;
-var callbackId = 1;
-var callbacks = {};
-var hostname = os.hostname();
+var callbackId =   1;
+var callbacks =    {};
+var hostname =     os.hostname();
+var logList =      [];
 
 if (process.argv.indexOf('start') !== -1) {
     isDaemon = true;
@@ -50,6 +51,25 @@ for (var dev in ifaces) {
     });
 }
 
+// If some message from logger
+logger.on('logging', function (transport, level, msg, meta) {
+    // Send to all adapter, that required logs
+    for (var i = 0; i < logList.length; i++) {
+        states.pushMessage(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
+    }
+});
+
+// subscribe or unsubscribe loggers
+function logRedirect(isActive, id) {
+    if (isActive) {
+        if (logList.indexOf(id) == -1) logList.push(id);
+    } else {
+        var pos = logList.indexOf(id);
+        if (pos != -1) logList.splice(pos, 1);
+    }
+};
+
+
 logger.info('ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
 logger.info('Copyright (c) 2014 hobbyquaker, bluefox');
 logger.info('controller hostname: ' + hostname);
@@ -67,6 +87,10 @@ var states = new StatesRedis({
     },
     logger: logger,
     change: function (id, state) {
+        // If some log transporter activated or deactivated
+        if (id.match(/.logging$/)) {
+            logRedirect(state.val, id.substring(0, id.length - 'logging'.length) + 'log');
+        } else
         // If this is messagebox
         if (id == 'system.host.' + hostname + '.messagebox') {
             // Read it from fifo list
@@ -120,7 +144,24 @@ var states = new StatesRedis({
         }
     }
 });
-//states.subscribe('*');
+
+states.subscribe('*.logging');
+
+// Read current state of all log subscriber
+states.getKeys('*.logging', function (err, keys) {
+    if (keys) {
+        states.getStates(keys, function (err, obj) {
+            if (obj) {
+                for (var i = 0; i < keys.length; i++) {
+                    // We can JSON.parse, but index is 16x faster
+                    if (obj[i] && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
+                        logRedirect(true, keys[i].substring(0, keys[i].length - 'logging'.length) + 'log');
+                    }
+                }
+            }
+        });
+    }
+});
 
 var objects = new ObjectsCouch({
     host: config.couch.host,
