@@ -1,4 +1,5 @@
 # 0.0.35 (2014-11-09)
+* (bluefox) add logging to controller
 
 # 0.0.34 (2014-11-08)
 * (bluefox) create restore/backup (from console)
