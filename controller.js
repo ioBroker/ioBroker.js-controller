@@ -7,7 +7,6 @@
  */
 
 // Change version in io-package.json and start grunt task to modify the version
-var version = '0.0.34';
 var title = 'io.js-controller';
 process.title = title;
 
@@ -19,6 +18,7 @@ var ObjectsCouch = require(__dirname + '/lib/couch.js');
 var StatesRedis =  require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools.js');
+var version =      ioPackage.common.version;
 
 var logger;
 var isDaemon;

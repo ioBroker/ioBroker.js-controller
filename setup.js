@@ -74,7 +74,7 @@ switch (yargs.argv._[0]) {
 
     case "setup":
         fs =            require('fs');
-        setup(function() {
+        setup(function () {
             process.exit();
         });
         break;
@@ -384,7 +384,7 @@ switch (yargs.argv._[0]) {
                 restartController(function () {
                     console.log('Restarting ioBroker...');
                     process.exit();
-                })
+                });
             });
         }
         break;
@@ -507,9 +507,8 @@ function cleanDatabase(isDeleteDb, callback) {
 }
 
 function restartController(callback) {
-    var fs = require('fs');
+    var fs =    require('fs');
     var spawn = require('child_process').spawn;
-    var fs = require('fs');
     if (fs.existsSync(__dirname + '/log/restart.log')) fs.unlinkSync(__dirname + '/log/restart.log');
     var out = fs.openSync(__dirname + '/log/restart.log', 'a');
     var err = fs.openSync(__dirname + '/log/restart.log', 'a');
@@ -517,7 +516,7 @@ function restartController(callback) {
     console.log('Starting node ./lib/restart.js');
     var child = spawn('node', ['./lib/restart.js'], {
         detached: true,
-        stdio: [ 'ignore', out, err ]
+        stdio: ['ignore', out, err]
     });
 
     child.unref();
@@ -563,9 +562,9 @@ function createBackup(name, callback) {
                 if (!fs.existsSync(__dirname + '/tmp')) fs.mkdirSync(__dirname + '/tmp');
                 if (!fs.existsSync(__dirname + '/tmp/backup')) fs.mkdirSync(__dirname + '/tmp/backup');
                 fs.writeFileSync(__dirname + '/tmp/backup/backup.json', JSON.stringify(result, null, 2));
-                var targz = require('tar.gz');
+                var TARgz = require('tar.gz');
 
-                new targz().compress(__dirname + '/tmp/backup', __dirname + '/backups/' + name + '.tar.gz', function (err) {
+                new TARgz().compress(__dirname + '/tmp/backup', __dirname + '/backups/' + name + '.tar.gz', function (err) {
                     if (err) {
                         console.log('Cannot pack file /tmp/' + name + '.json: ' + err);
                         process.exit(9);
@@ -602,7 +601,7 @@ function setup(callback) {
 
 function _setStateHelper(_index, statesList, stateObjects, callback) {
     states.setRawState(statesList[_index], stateObjects[statesList[_index]], function () {
-        if ((_index % 200) == 0) console.log('Processed ' + _index + '/' + statesList.length + ' states');
+        if ((_index % 200) === 0) console.log('Processed ' + _index + '/' + statesList.length + ' states');
         _index++;
         if (_index < statesList.length) {
             setTimeout(_setStateHelper, 0, _index, statesList, stateObjects, callback);
@@ -626,7 +625,7 @@ function _setObjHelper(_index, _objects, callback) {
             console.log('Cannot restore ' + _objects[_index].id + ': ' + err);
         }
 
-        if ((_index % 200) == 0) console.log('Processed ' + _index + '/' + _objects.length + ' objects');
+        if ((_index % 200) === 0) console.log('Processed ' + _index + '/' + _objects.length + ' objects');
         _index++;
         if (_index < _objects.length) {
             setTimeout(_setObjHelper, 0, _index, _objects, callback);
@@ -645,11 +644,11 @@ function reloadAdapterObject(index, objectList, callback) {
                     index++;
                     setTimeout(reloadAdapterObject, 0, index, objectList, callback);
                 });
-            } else{
+            } else {
                 index++;
                 setTimeout(reloadAdapterObject, 0, index, objectList, callback);
             }
-        })
+        });
     } else {
         if (callback) callback();
     }
@@ -704,10 +703,10 @@ function restoreBackup(name, callback) {
         console.log('Cannot find ' + name);
         process.exit(11);
     }
-    var targz = require('tar.gz');
+    var TARgz = require('tar.gz');
     if (fs.existsSync(__dirname + '/tmp/backup/backup.json')) fs.unlinkSync(__dirname + '/tmp/backup/backup.json');
 
-    new targz().extract(name, __dirname + '/tmp', function(err) {
+    new TARgz().extract(name, __dirname + '/tmp', function (err) {
         if (err) {
             console.log('Cannot extract from file "' + name + '"');
             process.exit(9);
