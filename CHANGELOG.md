@@ -1,3 +1,6 @@
+# 0.0.36 (2014-11-15)
+* (bluefox) fix adapter.js
+
 # 0.0.35 (2014-11-09)
 * (bluefox) add logging to controller
 

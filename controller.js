@@ -67,7 +67,7 @@ function logRedirect(isActive, id) {
         var pos = logList.indexOf(id);
         if (pos != -1) logList.splice(pos, 1);
     }
-};
+}
 
 
 logger.info('ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
@@ -186,8 +186,9 @@ var objects = new ObjectsCouch({
                 procs[id].config.common.host    = null;
                 procs[id].config.deleted = true;
                 logger.info('controller object deleted ' + id);
-
             } else {
+                if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('controller "' + id + '" disabled');
+                if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('controller "' + id + '" enabled');
                 procs[id].config = obj;
             }
             if (procs[id].process) {
@@ -759,12 +760,15 @@ function startInstance(id, wakeUp) {
                     }
                     if (procs[id] && procs[id].process) delete procs[id].process;
                     if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                        logger.info('Restart adapter ' + id + ' because enabled');
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, 30000, id);
+                    } else {
+                        logger.info('Do not restart adapter ' + id + ' because disabled or deleted');
                     }
                 });
-                if (!wakeUp && procs[id]) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
                 if (!wakeUp && procs[id]) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
