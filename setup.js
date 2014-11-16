@@ -926,7 +926,6 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
         return;
     }
 
-
     var hostname = require("os").hostname();
     var installed = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
     if (!installed.common.version) {
@@ -964,7 +963,22 @@ function upgradeController(repoUrl, forceDowngrade, callback) {
                 downloadPacket(repoUrl, ioPack.common.name, function (name) {
                     installNpm('', function (_name) {
                         console.log('Host "' + hostname + '" updated');
-                        restartController(callback);
+                        // Call command chmod +x __dirname if under linux or darwin
+                        var platform = require('os').platform();
+                        if (platform == 'linux' || platform == 'darwin') {
+
+                            var exec = require('child_process').exec;
+                            var cmd = 'chmod +x ' + __dirname;
+                            console.log('Execute: ' + cmd);
+                            var child = exec(cmd);
+                            child.stderr.pipe(process.stdout); // TODO this produces unwanted newlines :-(
+                            child.on('exit', function () {
+                                restartController(callback);
+                            });
+
+                        } else {
+                            restartController(callback);
+                        }
                     });
                 });
             }

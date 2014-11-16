@@ -734,7 +734,8 @@ function startInstance(id, wakeUp) {
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
-                    if (procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
+
+                    if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
 
                     if (signal) {
                         logger.warn('controller instance ' + id + ' terminated due to ' + signal);

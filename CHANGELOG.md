@@ -1,3 +1,7 @@
+# 0.0.37 (2014-11-16)
+* (bluefox) fix adapter.js
+* (bluefox) call "chmod +x iobroker" after updgrade of controller
+
 # 0.0.36 (2014-11-15)
 * (bluefox) fix adapter.js
 
