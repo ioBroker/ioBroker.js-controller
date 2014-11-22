@@ -55,7 +55,7 @@ for (var dev in ifaces) {
 logger.on('logging', function (transport, level, msg, meta) {
     // Send to all adapter, that required logs
     for (var i = 0; i < logList.length; i++) {
-        states.pushMessage(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
+        states.pushLog(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
     }
 });
 
@@ -89,12 +89,12 @@ var states = new StatesRedis({
     change: function (id, state) {
         // If some log transporter activated or deactivated
         if (id.match(/.logging$/)) {
-            logRedirect(state.val, id.substring(0, id.length - 'logging'.length) + 'log');
+            logRedirect(state.val, id.substring(0, id.length - 'logging'.length));
         } else
         // If this is messagebox
-        if (id == 'system.host.' + hostname + '.messagebox') {
+        if (id == 'messagebox.system.host.' + hostname) {
             // Read it from fifo list
-            states.getMessage('system.host.' + hostname + '.messagebox', function (err, obj) {
+            states.getMessage('system.host.' + hostname, function (err, obj) {
                 if (obj) {
                     // If callback stored for this request
                     if (obj.callback &&
@@ -234,8 +234,8 @@ function startAliveInterval() {
 function reportStatus() {
     var id = 'system.host.' + hostname;
     states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
-    states.setState('io.' + id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState('io.' + id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
+    states.setState(id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
+    states.setState(id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
 }
 
 // collect extended diag information
@@ -304,8 +304,8 @@ function setMeta() {
                 address:          ipArr,
                 children:         [
                         id + '.alive',
-                        'io.' + id + '.load',
-                        'io.' + id + '.mem'
+                        id + '.load',
+                        id + '.mem'
                 ],
                 type:             ioPackage.common.name
             },
@@ -342,7 +342,7 @@ function setMeta() {
         objects.setObject(id, newObj);
     });
 
-    var idMem = 'io.' + id + ".mem";
+    var idMem = id + ".mem";
     var obj = {
         _id: idMem,
         type: 'state',
@@ -357,7 +357,7 @@ function setMeta() {
         native: {}
     };
     objects.extendObject(idMem, obj);
-    var idLoad = 'io.' + id + '.load';
+    var idLoad = id + '.load';
     obj = {
         _id: idLoad,
         type: 'state',
@@ -386,7 +386,7 @@ function setMeta() {
 
 // Subscribe on message queue
 function initMessageQueue() {
-    states.subscribeMessage('system.host.' + hostname + '.messagebox');
+    states.subscribeMessage('system.host.' + hostname);
 }
 
 // Send message to other adapter instance
@@ -416,7 +416,7 @@ function sendTo(objName, command, message, callback) {
         }
     }
 
-    states.pushMessage(objName + '.messagebox', obj);
+    states.pushMessage(objName, obj);
 }
 
 // Process message to controller, like execute some script
@@ -813,6 +813,7 @@ function startInstance(id, wakeUp) {
             logger.info('controller instance scheduled ' + instance._id + ' ' + instance.common.schedule);
 
             break;
+
         case 'subscribe':
             procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
             var parts = instance._id.split('.');
@@ -826,8 +827,8 @@ function startInstance(id, wakeUp) {
             }
 
             // Subscribe on changes
-            if (procs[id].subscribe == instance._id + ".messagebox") {
-                states.subscribeMessage(procs[id].subscribe);
+            if (procs[id].subscribe.match(/$messagebox/)) {
+                states.subscribeMessage(procs[id].subscribe.substring('messagebox'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
             }
@@ -870,8 +871,8 @@ function stopInstance(id, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe == instance._id + ".messagebox") {
-                        states.unsubscribeMessage(procs[id].subscribe);
+                    if (procs[id].subscribe.match(/$messagebox/)) {
+                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
                     }
@@ -918,8 +919,8 @@ function stopInstance(id, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe == instance._id + ".messagebox") {
-                        states.unsubscribeMessage(procs[id].subscribe);
+                    if (procs[id].subscribe.match(/$messagebox/)) {
+                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
                     }

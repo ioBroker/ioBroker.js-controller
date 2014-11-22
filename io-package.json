@@ -1,7 +1,7 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.0.37",
+        "version":    "0.1.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",

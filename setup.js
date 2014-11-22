@@ -290,19 +290,13 @@ switch (yargs.argv._[0]) {
             ObjectsCouch = require(__dirname + '/lib/couch.js');
 
             dbConnect(function () {
-                objects.getObject('system.adapter.' + adapter, function (err, res) {
-                    if (err || !res) {
-                        console.log("Adapter not found");
-                        process.exit(4);
-                    } else {
+                objects.getObjectView('system', 'instance', {startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, function (err, res) {
+                    if (res && res.rows.length) {
                         if (instances.length === 0) {
-                            instances = res.children;
+                            for (var t = 0; t < res.rows.length; t++) {
+                                instances.push(res.rows[i].id);
+                            }
                         }
-                        if (!instances.length) {
-                            console.log("Error: no one instance installed!");
-                            process.exit(5);
-                        }
-
                         var config =      require(__dirname + '/conf/iobroker.json');
                         var StatesRedis = require(__dirname + '/lib/redis.js');
                         states = new StatesRedis({
@@ -324,9 +318,12 @@ switch (yargs.argv._[0]) {
                             process.exit();
                         } else {
                             for (var i = 0; i < instances.length; i++) {
-                                states.pushMessage(instances[i] + '.messagebox', {command: cmd, message: msg, from: 'setup'}, process.exit);
+                                states.pushMessage(instances[i], {command: cmd, message: msg, from: 'setup'}, process.exit);
                             }
                         }
+                    } else {
+                        console.log('No one instance of adapter "' + adapter + '" found');
+                        process.exit(4);
                     }
                 });
             });
@@ -547,12 +544,12 @@ function createBackup(name, callback) {
             result.objects = res.rows;
         }
         if (fs.existsSync(__dirname + '/conf/iobroker.json')) result.config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
-        states.getKeys('*', function (err, keys) {
-            for (var i = keys.length - 1; i >= 0; i--) {
-                if (keys[i].match(/\.messagebox$/)) {
+        states.getKeys('io.*', function (err, keys) {
+            /*for (var i = keys.length - 1; i >= 0; i--) {
+                if (keys[i].match(/^messagebox\./) || keys[i].match(/^log\./)) {
                     keys.splice(i, 1);
                 }
-            }
+            }*/
 
             states.getStates(keys, function (err, obj) {
                 for (var i = 0; i < keys.length; i++) {
@@ -799,30 +796,32 @@ function upgradeAdapter(repoUrl, adapter, forceDowngrade, callback) {
                     obj.native = extend(true, iopack.native, obj.native);
                     obj.common.installedVersion = iopack.common.version;
                     obj.common.version = iopack.common.version;
+                    var hostname =  require('os').hostname();
 
                     objects.setObject('system.adapter.' + name, obj, function () {
-                        // Update all children
-                        if (obj.children) {
+                        // Update all instances of this host
+                        objects.getObjectView('system', 'instance', {startkey: 'system.adapter.' + name + '.', endkey: 'system.adapter.' + name + '.\u9999'}, function (err, res) {
                             var cntr = 0;
-                            for (var i = 0; i < obj.children.length; i++) {
-                                cntr++;
-                                objects.getObject(obj.children[i], function (err, _obj) {
-                                    _obj.common = extend(true, _obj.common, iopack.common);
-                                    _obj.native = extend(true, iopack.native, _obj.native);
-                                    _obj.common.installedVersion = iopack.common.version;
-                                    _obj.common.version = iopack.common.version;
+                            if (res) {
+                                for (var i = 0; i < res.rows.length; i++) {
+                                    if (res.rows[i].value.common.host == hostname) {
+                                        cntr++;
+                                        objects.getObject(res.rows[i].id, function (err, _obj) {
+                                            _obj.common = extend(true, _obj.common, iopack.common);
+                                            _obj.native = extend(true, iopack.native, _obj.native);
+                                            _obj.common.installedVersion = iopack.common.version;
+                                            _obj.common.version = iopack.common.version;
 
-                                    objects.setObject(_obj._id, _obj, function () {
-                                        cntr--;
-                                        if (!cntr) {
-                                            callback(name);
-                                        }
-                                    });
-                                });
+                                            objects.setObject(_obj._id, _obj, function () {
+                                                cntr--;
+                                                if (!cntr && callback) callback(name);
+                                            });
+                                        });
+                                    }
+                                }
                             }
-                        } else {
-                            callback(name);
-                        }
+                            if (!cntr && callback) callback(name);
+                        });
                     });
                 }
             });
@@ -1099,7 +1098,6 @@ function uploadAdapter(adapter, isAdmin, forceUpload, callback) {
         if (err || !res) {
             objects.setObject(id, {
                 type: 'meta',
-                parent: 'system.adapter.' + adapter,
                 common: {
                     name: id.split('.').pop(),
                     type: isAdmin ? 'admin' : 'www'
@@ -1347,7 +1345,6 @@ function installAdapter(adapter, callback) {
                 type:     'adapter',
                 common:   adapterConf.common,
                 native:   adapterConf.native,
-                children: []
             });
 
             function setObject(_callback) {
@@ -1438,8 +1435,6 @@ function createInstance(adapter, enabled, host, callback) {
 
             instanceObj._id    = 'system.adapter.' + adapter + '.' + instance;
             instanceObj.type   = 'instance';
-            instanceObj.parent = 'system.adapter.' + adapter;
-            instanceObj.children = [];
             delete instanceObj._rev;
             instanceObj.common.enabled = (enabled === true || enabled === false) ? enabled :
                 ((instanceObj.common.enabled === true || instanceObj.common.enabled === false) ? instanceObj.common.enabled : false);
@@ -1451,7 +1446,6 @@ function createInstance(adapter, enabled, host, callback) {
                 {
                     _id:    'system.adapter.' + adapter + '.' + instance + '.alive',
                     type:   'state',
-                    parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
                         name: adapter + '.' + instance + '.alive',
                         type: 'bool',
@@ -1462,7 +1456,6 @@ function createInstance(adapter, enabled, host, callback) {
                 {
                     _id:    'system.adapter.' + adapter + '.' + instance + '.connected',
                     type:   'state',
-                    parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
                         name: adapter + '.' + instance + '.connected',
                         type: 'bool',
@@ -1472,24 +1465,10 @@ function createInstance(adapter, enabled, host, callback) {
                 }
             ];
 
-            if (instanceObj.common.messagebox) {
-               objs.push({
-                    _id:    'system.adapter.' + adapter + '.' + instance + '.messagebox',
-                    type:   'state',
-                    parent: 'system.adapter.' + adapter + '.' + instance,
-                    common: {
-                        name: adapter + '.' + instance + '.messagebox',
-                        type: 'bool',
-                        role: 'adapter.messagebox'
-                    },
-                    native: {}
-                });
-            }
             if (instanceObj.common.wakeup) {
                 objs.push({
                     _id:    'system.adapter.' + adapter + '.' + instance + '.wakeup',
                     type:   'state',
-                    parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
                         name: adapter + '.' + instance + '.wakeup',
                         type: 'bool',
@@ -1502,7 +1481,6 @@ function createInstance(adapter, enabled, host, callback) {
                 objs.push({
                     _id:    'system.adapter.' + adapter + '.' + instance + '.run',
                     type:   'state',
-                    parent: 'system.adapter.' + adapter + '.' + instance,
                     common: {
                         name: adapter + '.' + instance + '.run',
                         type: 'bool',
@@ -1527,12 +1505,7 @@ function createInstance(adapter, enabled, host, callback) {
             // Create only for this instance the predefined in io-package.json objects
             // It is not necessary to write "system.adapter.name.N." in the object '_id'
             for (var i = 0; i < adapterConf.instanceObjects.length; i++) {
-                if (adapterConf.instanceObjects[i].type == 'state' && adapterConf.instanceObjects[i]._id.substring(0, 3) == 'io.') {
-                    adapterConf.instanceObjects[i]._id = 'io.' + adapter + '.' + instance + '.' + adapterConf.instanceObjects[i]._id.substring(3);
-                } else {
-                    adapterConf.instanceObjects[i]._id = adapter + '.' + instance + (adapterConf.instanceObjects[i]._id ? ('.' + adapterConf.instanceObjects[i]._id) : '');
-                }
-                if (adapterConf.instanceObjects[i].parent) adapterConf.instanceObjects[i].parent = adapter + '.' + instance + '.' + adapterConf.instanceObjects[i].parent;
+                adapterConf.instanceObjects[i]._id = adapter + '.' + instance + (adapterConf.instanceObjects[i]._id ? ('.' + adapterConf.instanceObjects[i]._id) : '');
 
                 if (adapterConf.instanceObjects[i].common && adapterConf.instanceObjects[i].common.name) {
                     adapterConf.instanceObjects[i].common.name = adapterConf.instanceObjects[i].common.name.replace('%INSTANCE%', instance);
@@ -1553,7 +1526,6 @@ function createInstance(adapter, enabled, host, callback) {
             function setObjs() {
                 if (objs.length > 0) {
                     var obj = objs.pop();
-                    if (obj.parent === instanceObj._id) instanceObj.children.push(obj._id);
                     objects.setObject(obj._id, obj, function (err, res) {
                         if (err) {
                             console.log(err);
@@ -1570,31 +1542,11 @@ function createInstance(adapter, enabled, host, callback) {
                             console.log('object ' + instanceObj._id + ' created');
                         }
 
-                        // Update system.adapter.name children
-                        doc.children = doc.children || [];
-                        if (doc.children.indexOf('system.adapter.' + adapter + '.' + instance) == -1) doc.children.push('system.adapter.' + adapter + '.' + instance);
-
-                        objects.getObject('system.adapter.' + adapter, function (err, oldObj) {
-                            if (oldObj) {
-                                if (oldObj.children) oldObj.children = [];
-                                oldObj = extend(true, oldObj, {children: doc.children});
-                            } else {
-                                oldObj = {children: doc.children};
-                            }
-                            objects.setObject('system.adapter.' + adapter, oldObj, function (err, res) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log('object system.adapter.' + adapter + ' extended');
-                                }
-                                // done
-                                if (callback) {
-                                    callback(adapter);
-                                } else {
-                                    process.exit(0);
-                                }
-                            });
-                        });
+                        if (callback) {
+                            callback(adapter);
+                        } else {
+                            process.exit(0);
+                        }
                     });
                 }
             }
@@ -1748,6 +1700,9 @@ function deleteAdapter(adapter, callback) {
     var taskCnt =  0;
 
     function delStates() {
+        if (delState.length && !(delState.length % 200)) {
+            console.log('Only ' + delState.length + ' states left to be deleted.');
+        }
         if (!delState.length) {
             if (callback) callback(adapter, instance);
         } else {
@@ -1766,6 +1721,9 @@ function deleteAdapter(adapter, callback) {
     }
 
     function delObjects() {
+        if (delObj.length && !(delObj.length % 200)) {
+            console.log('Only ' + delObj.length + ' objects left to be deleted.');
+        }
         if (!delObj.length) {
             setTimeout(startDeleteStates, 50);
         } else {
@@ -1857,10 +1815,9 @@ function deleteAdapter(adapter, callback) {
                         taskCnt++;
                         objects.getObject(adapterConf._id, function (err, oldObj) {
                             if (oldObj) {
-                                if (oldObj.children) oldObj.children = [];
                                 oldObj = extend(true, oldObj, {installedVersion: ''});
                             } else {
-                                oldObj = {children: [], installedVersion: ''};
+                                oldObj = {installedVersion: ''};
                             }
                             objects.setObject(adapterConf._id, oldObj, function () {
                                 taskCnt--;
@@ -1943,10 +1900,6 @@ function deleteAdapter(adapter, callback) {
                     if (doc.rows[i].value._id.substring(0, adapter.length) == adapter) {
                         if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
                         count++;
-                    } else
-                    if (doc.rows[i].value._id.substring(0, 3 + adapter.length) == 'io.' + adapter) {
-                        if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
-                        count++;
                     }
                 }
                 if (count) console.log('Counted ' + count + ' states of ' + adapter);
@@ -1980,18 +1933,6 @@ function deleteAdapter(adapter, callback) {
     });
 
     taskCnt++;
-    states.getKeys(adapter + '.*', function (err, obj) {
-        if (obj) {
-            for (var i = 0; i < obj.length; i++) {
-                if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
-            }
-            if (obj.length) console.log ('Counted ' + obj.length + ' states (' + adapter + '.*) from redis');
-        }
-        taskCnt--;
-        if (!taskCnt) delStatesAndObjects();
-    });
-
-    taskCnt++;
     states.getKeys('io.' + adapter + '.*', function (err, obj) {
         if (obj) {
             for (var i = 0; i < obj.length; i++) {
@@ -2004,7 +1945,55 @@ function deleteAdapter(adapter, callback) {
     });
 
     taskCnt++;
-    states.getKeys('system.adapter.' + adapter + '*', function (err, obj) {
+    states.getKeys('history.' + adapter + '.*', function (err, obj) {
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+            }
+            if (obj.length) console.log ('Counted ' + obj.length + ' states (' + adapter + '.*) from redis');
+        }
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys('messagebox.' + adapter + '.*', function (err, obj) {
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+            }
+            if (obj.length) console.log ('Counted ' + obj.length + ' states (' + adapter + '.*) from redis');
+        }
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys('log.' + adapter + '.*', function (err, obj) {
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+            }
+            if (obj.length) console.log ('Counted ' + obj.length + ' states (' + adapter + '.*) from redis');
+        }
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys(adapter + '.*', function (err, obj) {
+        if (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+            }
+            if (obj.length) console.log ('Counted ' + obj.length + ' states (' + adapter + '.*) from redis');
+        }
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys('system.adapter.' + adapter + '.*', function (err, obj) {
         if (obj) {
             for (var i = 0; i < obj.length; i++) {
                 if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
@@ -2029,29 +2018,15 @@ function deleteAdapter(adapter, callback) {
     }
 }
 
-function correctChildren(adapter, instance, callback) {
-    objects.getObject("system.adapter." + adapter, function (err, obj) {
-        if (!err && obj && obj.children) {
-            var pos = obj.children.indexOf('system.adapter.' + adapter + '.' + instance);
-            if (pos != -1) {
-                obj.children.splice(pos, 1);
-                objects.setObject(obj._id, obj, callback);
-            } else {
-                if (callback) callback();
-            }
-        } else {
-            console.log('Warning: adapter instance not found in the children of system.adapter.' + adapter);
-            if (callback) callback();
-        }
-    });
-}
-
 function deleteInstance(adapter, instance, callback) {
     var delObj =   [];
     var delState = [];
     var taskCnt =  0;
 
     function delStates() {
+        if (delState.length && !(delState.length % 200)) {
+            console.log('Only ' + delState.length + ' states left to be deleted.');
+        }
         if (!delState.length) {
             if (callback) callback(adapter, instance);
         } else {
@@ -2070,6 +2045,9 @@ function deleteInstance(adapter, instance, callback) {
     }
 
     function delObjects() {
+        if (delObj.length && !(delObj.length % 200)) {
+            console.log('Only ' + delObj.length + ' objects left to be deleted.');
+        }
         if (!delObj.length) {
             setTimeout(startDeleteStates, 50);
         } else {
@@ -2097,21 +2075,10 @@ function deleteInstance(adapter, instance, callback) {
             if (doc.rows.length === 0) {
                 console.log('no instances of adapter ' + adapter + '.' + instance + ' found');
             } else {
-                var count = 0;
-                var name = "system.adapter." + adapter + '.' + instance;
                 for (var i = 0; i < doc.rows.length; i++) {
-                    if (name == doc.rows[i].value._id.substring(0, doc.rows[i].value._id.length)) {
-                        if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
-                        count++;
-                        taskCnt++;
-                        // Remove id from the adapter children
-                        correctChildren(adapter, instance, function () {
-                            taskCnt--;
-                            if (!taskCnt) delStatesAndObjects();
-                        });
-                    }
+                    if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
                 }
-                console.log('Counted ' + count + ' instances of ' + adapter + '.' + instance);
+                console.log('Counted ' + doc.rows.length + ' instances of ' + adapter + '.' + instance);
             }
         }
         taskCnt--;
@@ -2132,7 +2099,7 @@ function deleteInstance(adapter, instance, callback) {
                     if (doc.rows[i] && doc.rows[i].value && doc.rows[i].value._id !== undefined &&
                         (doc.rows[i].value._id.substring(0, name.length) == name ||
                             doc.rows[i].value._id.substring(0, ('system.adapter.' + name).length) == 'system.adapter.' + name ||
-                            doc.rows[i].value._id.substring(0, 3 + name.length) == 'io.' + name)) {
+                            doc.rows[i].value._id.substring(0, name.length) == name)) {
                         if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
                         count++;
                     }
@@ -2217,10 +2184,6 @@ function deleteInstance(adapter, instance, callback) {
                     if (doc.rows[i].value._id.substring(0, name.length) == name) {
                         if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
                         count++;
-                    }else
-                    if (doc.rows[i].value._id.substring(0, 3 + name.length) == ('io.' + name)) {
-                        if (delObj.indexOf(doc.rows[i].value._id) == -1) delObj.push(doc.rows[i].value._id);
-                        count++;
                     }
                 }
                 if (count) console.log('Counted ' + count + ' objects of states of ' + adapter + '.' + instance);
@@ -2229,9 +2192,6 @@ function deleteInstance(adapter, instance, callback) {
         taskCnt--;
         if (!taskCnt) delStatesAndObjects();
     });
-
-    // Update children of system.adapter.adaptername
-    correctChildren(adapter, instance);
 
     taskCnt++;
     states.getKeys('system.adapter.' + adapter + '.' + instance + '*', function (err, obj) {
@@ -2249,6 +2209,26 @@ function deleteInstance(adapter, instance, callback) {
             if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
         }
         if (obj.length) console.log ('Counted ' + obj.length + ' states "io.' + adapter + '.' + instance + '*" from redis');
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys('log.' + adapter + '.' + instance + '*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+        }
+        if (obj.length) console.log ('Counted ' + obj.length + ' states "log.' + adapter + '.' + instance + '*" from redis');
+        taskCnt--;
+        if (!taskCnt) delStatesAndObjects();
+    });
+
+    taskCnt++;
+    states.getKeys('messagebox.' + adapter + '.' + instance + '*', function (err, obj) {
+        for (var i = 0; i < obj.length; i++) {
+            if (delState.indexOf(obj[i]) == -1) delState.push(obj[i]);
+        }
+        if (obj.length) console.log ('Counted ' + obj.length + ' states "messagebox.' + adapter + '.' + instance + '*" from redis');
         taskCnt--;
         if (!taskCnt) delStatesAndObjects();
     });

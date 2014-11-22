@@ -1,3 +1,6 @@
+# 0.1.0 (2014-11-22)
+* (bluefox) new naming concept. No children and parents set extra.
+
 # 0.0.37 (2014-11-16)
 * (bluefox) fix adapter.js
 * (bluefox) call "chmod +x iobroker" after updgrade of controller
