@@ -1,9 +1,11 @@
+# 0.1.2 (2014-11-24)
+* (bluefox) fix messageboxes
+
 # 0.1.1 (2014-11-23)
 * (bluefox) fix log output in admin.
 
 # 0.1.0 (2014-11-22)
 * (bluefox) new naming concept. No children and parents set extra.
-
 
 # 0.0.37 (2014-11-16)
 * (bluefox) fix adapter.js
