@@ -1,4 +1,7 @@
 # 0.1.2 (2014-11-24)
+* (bluefox) fix some errors and add restart.js
+
+# 0.1.2 (2014-11-24)
 * (bluefox) fix messageboxes
 
 # 0.1.1 (2014-11-23)

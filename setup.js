@@ -12,6 +12,10 @@
 /*jslint node: true */
 "use strict";
 
+
+// TODO need info about progress of stopping
+// Make command restart
+
 var yargs = require('yargs')
     .usage('Commands:\n' +
         '$0 setup [--couch <host>] [--redis <host>]\n' +
