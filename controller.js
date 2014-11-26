@@ -89,7 +89,7 @@ var states = new StatesRedis({
     change: function (id, state) {
         // If some log transporter activated or deactivated
         if (id.match(/.logging$/)) {
-            logRedirect(state.val, id.substring(0, id.length - 'logging'.length));
+            logRedirect(state.val, id.substring(0, id.length - '.logging'.length));
         } else
         // If this is messagebox
         if (id == 'messagebox.system.host.' + hostname) {
@@ -155,7 +155,7 @@ states.getKeys('*.logging', function (err, keys) {
                 for (var i = 0; i < keys.length; i++) {
                     // We can JSON.parse, but index is 16x faster
                     if (obj[i] && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
-                        logRedirect(true, keys[i].substring(0, keys[i].length - 'logging'.length) + 'log');
+                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length));
                     }
                 }
             }

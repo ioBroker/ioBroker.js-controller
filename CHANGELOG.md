@@ -1,3 +1,6 @@
+# 0.1.4 (2014-11-26)
+* (bluefox) fix log in controller.js
+
 # 0.1.3 (2014-11-24)
 * (bluefox) fix some errors and add restart.js
 
