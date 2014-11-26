@@ -1,3 +1,6 @@
+# 0.1.5 (2014-11-26)
+* (bluefox) fix log in controller.js one more time
+
 # 0.1.4 (2014-11-26)
 * (bluefox) fix log in controller.js
 

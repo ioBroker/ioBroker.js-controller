@@ -155,7 +155,7 @@ states.getKeys('*.logging', function (err, keys) {
                 for (var i = 0; i < keys.length; i++) {
                     // We can JSON.parse, but index is 16x faster
                     if (obj[i] && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
-                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length));
+                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
                     }
                 }
             }
