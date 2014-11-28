@@ -149,7 +149,7 @@ states.subscribe('*.logging');
 
 // Read current state of all log subscriber
 states.getKeys('*.logging', function (err, keys) {
-    if (keys) {
+    if (keys && keys.length) {
         states.getStates(keys, function (err, obj) {
             if (obj) {
                 for (var i = 0; i < keys.length; i++) {
@@ -693,33 +693,43 @@ function startInstance(id, wakeUp) {
     }
 
     var fileName = instance.common.main || "main.js";
-    if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
+    var fileNameFull = __dirname + '/node_modules/iobroker.' + name + '/' + fileName;
+    if (!fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
-        if (!fs.existsSync(__dirname + '/adapter/' + name + '/' + fileName)) {
-            procs[id].downloadRetry = procs[id].downloadRetry || 0;
-            if (procs[id].downloadRetry < 3) {
-                procs[id].downloadRetry++;
-                logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
-                logger.info('iobroker install ' + name);
+        fileNameFull = __dirname + '/node_modules/iobroker.' + name + '/' + fileName;
+        if (!fs.existsSync(fileNameFull)) {
+            fileName = instance.common.main || "main.js";
+            fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
+            if (!fs.existsSync(fileNameFull)) {
+                fileName = name + '.js';
+                fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
+                if (!fs.existsSync(fileNameFull)) {
+                    procs[id].downloadRetry = procs[id].downloadRetry || 0;
+                    if (procs[id].downloadRetry < 3) {
+                        procs[id].downloadRetry++;
+                        logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+                        logger.info('iobroker install ' + name);
 
-                var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
-                child.stdout.on('data', function (data) {
-                    data = data.toString().replace('\n', '');
-                    logger.info('iobroker ' + data);
-                });
-                child.stderr.on('data', function (data) {
-                    data = data.toString().replace('\n', '');
-                    logger.error('iobroker ' + data);
-                });
-                child.on('exit', function (exitCode) {
-                    logger.info('iobroker exit ' + exitCode);
-                    startInstance(id, wakeUp);
-                });
-            } else {
-                logger.error('Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+                        var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
+                        child.stdout.on('data', function (data) {
+                            data = data.toString().replace('\n', '');
+                            logger.info('iobroker ' + data);
+                        });
+                        child.stderr.on('data', function (data) {
+                            data = data.toString().replace('\n', '');
+                            logger.error('iobroker ' + data);
+                        });
+                        child.on('exit', function (exitCode) {
+                            logger.info('iobroker exit ' + exitCode);
+                            startInstance(id, wakeUp);
+                        });
+                    } else {
+                        logger.error('Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+                    }
+
+                    return;
+                }
             }
-
-            return;
         }
     }
     procs[id].downloadRetry = 0;
@@ -730,7 +740,7 @@ function startInstance(id, wakeUp) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
-                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
+                procs[id].process = cp.fork(fileNameFull, args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
@@ -789,7 +799,7 @@ function startInstance(id, wakeUp) {
                     return;
                 }
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                procs[id].process = cp.fork(__dirname + '/adapter/' + name + '/' + fileName, args);
+                procs[id].process = cp.fork(fileNameFull, args);
                 logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {

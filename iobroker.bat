@@ -1,1 +1,1 @@
-node setup.js %1 %2 %3 %4 %5
+node iobroker.js %1 %2 %3 %4 %5
