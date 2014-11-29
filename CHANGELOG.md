@@ -1,3 +1,6 @@
+# 0.1.6 (2014-11-29)
+* (bluefox) use npm to install some adapters.
+
 # 0.1.5 (2014-11-26)
 * (bluefox) fix log in controller.js one more time
 
