@@ -14,7 +14,7 @@ var schedule =     require('node-schedule');
 var os =           require('os');
 var fs =           require('fs');
 var cp =           require('child_process');
-var ObjectsCouch = require(__dirname + '/lib/couch.js');
+var Objects =      require(__dirname + '/lib/objects.js');
 var StatesRedis =  require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools.js');
@@ -163,7 +163,7 @@ states.getKeys('*.logging', function (err, keys) {
     }
 });
 
-var objects = new ObjectsCouch({
+var objects = new Objects({
     host: config.couch.host,
     port: config.couch.port,
     user: config.couch.user,
