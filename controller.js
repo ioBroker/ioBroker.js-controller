@@ -233,9 +233,14 @@ function startAliveInterval() {
 
 function reportStatus() {
     var id = 'system.host.' + hostname;
-    states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
-    states.setState(id + '.load',  {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState(id + '.mem',   {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
+    states.setState(id + '.alive',   {val: true, ack: true, expire: 30, from: id});
+    states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
+    states.setState(id + '.mem',     {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
+    var mem = process.memoryUsage();
+    states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.uptime', {val: process.uptime(), ack: true, from: id});
 }
 
 // collect extended diag information
@@ -302,11 +307,6 @@ function setMeta() {
                 cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
                 hostname:         hostname,
                 address:          ipArr,
-                children:         [
-                        id + '.alive',
-                        id + '.load',
-                        id + '.mem'
-                ],
                 type:             ioPackage.common.name
             },
             native: {
@@ -334,7 +334,6 @@ function setMeta() {
             }
         };
         if (oldObj) {
-            if (oldObj.common && oldObj.common.children) oldObj.common.children = [];
             if (oldObj.native && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) oldObj.native.hardware.networkInterfaces = [];
             newObj = require('node.extend')(true, oldObj, newObj);
         }
@@ -342,26 +341,78 @@ function setMeta() {
         objects.setObject(id, newObj);
     });
 
-    var idMem = id + ".mem";
+    var _id = id + ".mem";
     var obj = {
-        _id: idMem,
+        _id: _id,
         type: 'state',
-        parent: id,
         common: {
             type: 'number',
             name: 'Memory usage',
             unit: '%',
-            min: 0,
-            max: 100
+            min:  0,
+            max:  100
         },
         native: {}
     };
-    objects.extendObject(idMem, obj);
-    var idLoad = id + '.load';
+    objects.extendObject(_id, obj);
+
+    _id = id + ".memHeapUsed";
     obj = {
-        _id: idLoad,
+        _id: _id,
         type: 'state',
-        parent: id,
+        common: {
+            type: 'number',
+            name: 'Memory from heap used in MB',
+            unit: 'MB'
+        },
+        native: {}
+    };
+    objects.extendObject(_id, obj);
+
+    _id = id + ".memHeapTotal";
+    obj = {
+        _id: _id,
+        type: 'state',
+        common: {
+            type: 'number',
+            name: 'Memory heap reserved in MB',
+            unit: 'MB'
+        },
+        native: {}
+    };
+    objects.extendObject(_id, obj);
+
+    _id = id + ".memRss";
+    obj = {
+        _id: _id,
+        type: 'state',
+        common: {
+            type: 'number',
+            name: 'Resident set size in MB',
+            desc: 'RSS is the resident set size, the portion of the process\'s memory held in RAM',
+            unit: 'MB'
+        },
+        native: {}
+    };
+    objects.extendObject(_id, obj);
+
+    _id = id + ".uptime";
+    obj = {
+        _id: _id,
+        type: 'state',
+        common: {
+            type: 'number',
+            name: 'Uptime in seconds',
+            unit: 'seconds'
+        },
+        native: {}
+    };
+    objects.extendObject(_id, obj);
+
+    _id = id + '.load';
+    obj = {
+        _id: _id,
+        type: 'state',
         common: {
             unit: '',
             type: 'number',
@@ -369,19 +420,19 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(idLoad, obj);
-    var idAlive = id + ".alive";
+    objects.extendObject(_id, obj);
+
+    _id = id + ".alive";
     obj = {
-        _id: idAlive,
+        _id: _id,
         type: 'state',
-        parent: id,
         common: {
             name: 'Host alive',
             type: 'boolean'
         },
         native: {}
     };
-    objects.extendObject(idAlive, obj);
+    objects.extendObject(_id, obj);
 }
 
 // Subscribe on message queue
@@ -678,6 +729,20 @@ function initInstances() {
 function startInstance(id, wakeUp) {
     if (isStopping) return;
 
+    var errorCodes = [
+        "OK", // 0
+        "", // 1
+        "Adapter has invalid config or no config found", // 2
+        "Adapter disabled or invalid config", // 3
+        "invalid config: no _id found", // 4
+        "invalid config", // 5
+        "uncaught exception", // 6
+        "Adapter already running", // 7
+        "node.js: Cannot find module" // 8
+    ];
+
+
+
     var instance = procs[id].config;
     var name = id.split('.')[2];
     var mode = instance.common.mode;
@@ -753,7 +818,7 @@ function startInstance(id, wakeUp) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                            logger.info('controller instance ' + id + ' terminated with code ' + code);
+                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                             delete procs[id].stopping;
                             if (procs[id].process) delete procs[id].process;
                             if (isStopping) {
@@ -766,7 +831,7 @@ function startInstance(id, wakeUp) {
                             }
                             return;
                         } else {
-                            logger.error('controller instance ' + id + ' terminated with code ' + code);
+                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
                     }
                     if (procs[id] && procs[id].process) delete procs[id].process;
@@ -810,10 +875,10 @@ function startInstance(id, wakeUp) {
                         logger.error('controller instance ' + id + ' terminated abnormally');
                     } else {
                         if (code === 0 || code === '0') {
-                            logger.info('controller instance ' + id + ' terminated with code ' + code);
+                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                             return;
                         } else {
-                            logger.error('controller instance ' + id + ' terminated with code ' + code);
+                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
                     }
                     delete procs[id].process;
