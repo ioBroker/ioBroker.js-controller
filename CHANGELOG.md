@@ -1,3 +1,6 @@
+# 0.2.0 (2014-12-04)
+* (bluefox) remove couchDB and store everything in redis.
+
 # 0.1.6 (2014-11-29)
 * (bluefox) use npm to install some adapters.
 
