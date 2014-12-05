@@ -240,7 +240,7 @@ function reportStatus() {
     states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
-    states.setState(id + '.uptime', {val: process.uptime(), ack: true, from: id});
+    states.setState(id + '.uptime', {val: process.uptime().toFixed(0), ack: true, from: id});
 }
 
 // collect extended diag information
