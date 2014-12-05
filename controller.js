@@ -70,8 +70,8 @@ function logRedirect(isActive, id) {
 }
 
 
-logger.info('ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('Copyright (c) 2014 hobbyquaker, bluefox');
+logger.info('controller ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
+logger.info('controller Copyright (c) 2014 hobbyquaker, bluefox');
 logger.info('controller hostname: ' + hostname);
 logger.info('controller ip addresses: ' + ipArr.join(' '));
 
@@ -126,7 +126,7 @@ var states = new StatesRedis({
                     console.log("Wake up " + id + ' ' + JSON.stringify(state));
                     startInstance(subscribe[id][i], true);
                 } else {
-                    logger.warn("Adapter subscribed on " + id + " does not exist!");
+                    logger.warn("controller Adapter subscribed on " + id + " does not exist!");
                 }
             }
         } else
@@ -547,7 +547,7 @@ function processMessage(msg) {
                                 if (!repos.native.repositories[active].json || updateRepo) {
 
 
-                                    logger.info('Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
+                                    logger.info('controller Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
                                         repos.native.repositories[active].json = sources;
@@ -560,14 +560,14 @@ function processMessage(msg) {
                                     sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                 }
                             } else {
-                                logger.warn('Requested repository "' + active + '" does not exit in config.');
+                                logger.warn('controller Requested repository "' + active + '" does not exit in config.');
                                 sendTo(msg.from, msg.command, null, msg.callback);
                             }
                         }
                     });
                 });
             } else {
-                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -594,7 +594,7 @@ function processMessage(msg) {
                     if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
-                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -604,7 +604,7 @@ function processMessage(msg) {
                 try {
                     ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
                 } catch (e) {
-                    logger.error('iobroker cannot read and parse "' + __dirname + '/io-package.json"');
+                    logger.error('controller cannot read and parse "' + __dirname + '/io-package.json"');
                 }
                 if (ioPack) {
                     ioPack.common.host = hostname;
@@ -613,7 +613,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -631,7 +631,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -642,14 +642,14 @@ function processMessage(msg) {
                 if (require('os').platform() == 'linux') {
                     var _spawn = require('child_process').spawn;
                     var _args = ['/dev'];
-                    logger.info('ls /dev');
+                    logger.info('controller ls /dev');
                     var _child = _spawn('ls', _args);
                     var result = '';
                     _child.stdout.on('data', function (data) {
                         result += data.toString();
                     });
                     _child.stderr.on('data', function (data) {
-                        logger.error('ls ' + data);
+                        logger.error('controller ls ' + data);
                     });
 
                     _child.on('exit', function (exitCode) {
@@ -669,7 +669,38 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
+        case 'getLogs':
+            if (msg.callback && msg.from) {
+                ioPack = null;
+
+                var lines = msg.message || 200;
+                var text = '';
+
+                if (fs.existsSync(__dirname + '/log/iobroker.log')) {
+                    var stats = fs.statSync(__dirname + '/log/iobroker.log');
+
+                    fs.createReadStream(__dirname + '/log/iobroker.log', {
+                        start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
+                        end: stats.size
+                    }).on('data', function (chunk) {
+                        text += chunk.toString();
+                    })
+                    .on('end', function () {  // done
+                        var lines = text.split('\n');
+                        lines.shift();
+                        sendTo(msg.from, msg.command, lines, msg.callback);
+                    }).on('error', function () {  // done
+                        sendTo(msg.from, msg.command, [], msg.callback);
+                    });
+                } else {
+                    sendTo(msg.from, msg.command, [], msg.callback);
+                }
+            } else {
+                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
     }
@@ -768,28 +799,35 @@ function startInstance(id, wakeUp) {
             if (!fs.existsSync(fileNameFull)) {
                 fileName = name + '.js';
                 fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
-                if (!fs.existsSync(fileNameFull)) {
-                    procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                    if (procs[id].downloadRetry < 3) {
-                        procs[id].downloadRetry++;
-                        logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
-                        logger.info('iobroker install ' + name);
 
-                        var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
-                        child.stdout.on('data', function (data) {
-                            data = data.toString().replace('\n', '');
-                            logger.info('iobroker ' + data);
-                        });
-                        child.stderr.on('data', function (data) {
-                            data = data.toString().replace('\n', '');
-                            logger.error('iobroker ' + data);
-                        });
-                        child.on('exit', function (exitCode) {
-                            logger.info('iobroker exit ' + exitCode);
-                            startInstance(id, wakeUp);
-                        });
+                if (!fs.existsSync(fileNameFull)) {
+                    // If not just www files
+                    if (!fs.existsSync( __dirname + '/node_modules/iobroker.' + name + '/www') &&
+                        !fs.existsSync( __dirname + '/adapter/' + name + '/www')){
+                        procs[id].downloadRetry = procs[id].downloadRetry || 0;
+                        if (procs[id].downloadRetry < 3) {
+                            procs[id].downloadRetry++;
+                            logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+                            logger.info('iobroker install ' + name);
+
+                            var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
+                            child.stdout.on('data', function (data) {
+                                data = data.toString().replace('\n', '');
+                                logger.info('iobroker ' + data);
+                            });
+                            child.stderr.on('data', function (data) {
+                                data = data.toString().replace('\n', '');
+                                logger.error('iobroker ' + data);
+                            });
+                            child.on('exit', function (exitCode) {
+                                logger.info('iobroker exit ' + exitCode);
+                                startInstance(id, wakeUp);
+                            });
+                        } else {
+                            logger.error('controller Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+                        }
                     } else {
-                        logger.error('Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+                        logger.debug('controller startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
                     }
 
                     return;
@@ -836,12 +874,12 @@ function startInstance(id, wakeUp) {
                     }
                     if (procs[id] && procs[id].process) delete procs[id].process;
                     if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
-                        logger.info('Restart adapter ' + id + ' because enabled');
+                        logger.info('controller Restart adapter ' + id + ' because enabled');
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, 30000, id);
                     } else {
-                        logger.info('Do not restart adapter ' + id + ' because disabled or deleted');
+                        logger.info('controller Do not restart adapter ' + id + ' because disabled or deleted');
                     }
                 });
                 if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
@@ -860,7 +898,7 @@ function startInstance(id, wakeUp) {
             }
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
                 if (!procs[id]) {
-                    logger.error('scheduleJob: Task deleted (' + id + ')');
+                    logger.error('controller scheduleJob: Task deleted (' + id + ')');
                     return;
                 }
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
@@ -917,9 +955,9 @@ function startInstance(id, wakeUp) {
 }
 
 function stopInstance(id, callback) {
-    logger.info('stopInstance ' + id);
+    logger.info('controller stopInstance ' + id);
     if (!procs[id]) {
-        logger.warn('unknown instance ' + id);
+        logger.warn('controller unknown instance ' + id);
         if (typeof callback === 'function') callback();
         return;
     }
@@ -1021,7 +1059,7 @@ var isStopping = false;
 var allInstancesStopped = true;
 
 function stop() {
-    logger.debug('stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+    logger.debug('controller stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminating');
