@@ -1,3 +1,6 @@
+# 0.2.1 (2014-12-06)
+* (bluefox) fix error in redis.
+
 # 0.2.0 (2014-12-04)
 * (bluefox) remove couchDB and store everything in redis.
 

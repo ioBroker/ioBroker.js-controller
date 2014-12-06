@@ -802,8 +802,8 @@ function startInstance(id, wakeUp) {
 
                 if (!fs.existsSync(fileNameFull)) {
                     // If not just www files
-                    if (!fs.existsSync( __dirname + '/node_modules/iobroker.' + name + '/www') &&
-                        !fs.existsSync( __dirname + '/adapter/' + name + '/www')){
+                    if (!fs.existsSync(__dirname + '/node_modules/iobroker.' + name + '/www') &&
+                        !fs.existsSync(__dirname + '/adapter/' + name + '/www')) {
                         procs[id].downloadRetry = procs[id].downloadRetry || 0;
                         if (procs[id].downloadRetry < 3) {
                             procs[id].downloadRetry++;
