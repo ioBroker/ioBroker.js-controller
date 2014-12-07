@@ -27,20 +27,28 @@ var callbacks =    {};
 var hostname =     os.hostname();
 var logList =      [];
 
-if (process.argv.indexOf('start') !== -1) {
-    isDaemon = true;
-    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
-} else {
-    logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
-}
-
 var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
+    if (process.argv.indexOf('start') !== -1) {
+        isDaemon = true;
+        logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+    } else {
+        logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+    }
     logger.error('controller conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
 } else {
     config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
 }
+
+if (process.argv.indexOf('start') !== -1) {
+    isDaemon = true;
+    logger = require(__dirname + '/lib/logger.js')(config.log.level || 'info', ['iobroker.log'], true);
+} else {
+    logger = require(__dirname + '/lib/logger.js')(config.log.level || 'info', ['iobroker.log']);
+}
+
+logger.info(config.log.level);
 
 var ifaces = os.networkInterfaces();
 var ipArr = [];
@@ -772,8 +780,6 @@ function startInstance(id, wakeUp) {
         "node.js: Cannot find module" // 8
     ];
 
-
-
     var instance = procs[id].config;
     var name = id.split('.')[2];
     var mode = instance.common.mode;
@@ -1059,6 +1065,7 @@ var isStopping = false;
 var allInstancesStopped = true;
 
 function stop() {
+    try {
     logger.debug('controller stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
     if (isStopping) {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
@@ -1071,15 +1078,16 @@ function stop() {
     }
 
     if (isDaemon) {
-        // send instances SIGTERM, only needed if running in backround (isDaemon)
+        // send instances SIGTERM, only needed if running in background (isDaemon)
         for (var id in procs) {
             stopInstance(id);
         }
     }
 
     function waitForInstances() {
+        logger.warn('waitForInstances ' + allInstancesStopped);
         if (!allInstancesStopped) {
-            setTimeout(waitForInstances, 100);
+            setTimeout(waitForInstances, 200);
         } else {
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                 logger.info('controller terminated');
@@ -1090,14 +1098,17 @@ function stop() {
     }
 
     waitForInstances();
+    }catch(e) {
+        logger.error(e.message);
+    }
 
     // force after 10s
     setTimeout(function () {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
-            process.exit(1);
+            setTimeout(function () {process.exit(1);}, 1000);
         });
-    }, 10000);
+    }, 2000);
 }
 
 process.on('SIGINT', function () {

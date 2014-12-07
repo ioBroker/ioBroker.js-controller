@@ -1,3 +1,6 @@
+# 0.2.3 (2014-12-08)
+* (bluefox) optimize start/stop/restart.
+
 # 0.2.2 (2014-12-06)
 * (bluefox) fix error in redis.
 
