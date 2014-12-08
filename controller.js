@@ -1066,38 +1066,37 @@ var allInstancesStopped = true;
 
 function stop() {
     try {
-    logger.debug('controller stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
-    if (isStopping) {
-        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-            logger.info('controller force terminating');
-            process.exit(1);
-            return;
-        });
-    } else {
-        isStopping = true;
-    }
-
-    if (isDaemon) {
-        // send instances SIGTERM, only needed if running in background (isDaemon)
-        for (var id in procs) {
-            stopInstance(id);
-        }
-    }
-
-    function waitForInstances() {
-        logger.warn('waitForInstances ' + allInstancesStopped);
-        if (!allInstancesStopped) {
-            setTimeout(waitForInstances, 200);
-        } else {
+        logger.debug('controller stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+        if (isStopping) {
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-                logger.info('controller terminated');
-                process.exit(0);
+                logger.info('controller force terminating');
+                process.exit(1);
+                return;
             });
-
+        } else {
+            isStopping = true;
         }
-    }
 
-    waitForInstances();
+        if (isDaemon) {
+            // send instances SIGTERM, only needed if running in background (isDaemon)
+            for (var id in procs) {
+                stopInstance(id);
+            }
+        }
+
+        function waitForInstances() {
+            if (!allInstancesStopped) {
+                setTimeout(waitForInstances, 200);
+            } else {
+                states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
+                    logger.info('controller terminated');
+                    process.exit(0);
+                });
+
+            }
+        }
+
+        waitForInstances();
     }catch(e) {
         logger.error(e.message);
     }
