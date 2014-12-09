@@ -583,7 +583,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 // Get list of all hosts
                 objects.getObjectView('system', 'host', {}, function (err, doc) {
-                    var result = tools.getInstalledInfo();
+                    var result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     var infoCount = 0;
                     if (doc && doc.rows.length) {
@@ -616,6 +616,7 @@ function processMessage(msg) {
                 }
                 if (ioPack) {
                     ioPack.common.host = hostname;
+                    ioPack.common.runningVersion = version;
                     sendTo(msg.from, msg.command, ioPack.common, msg.callback);
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
