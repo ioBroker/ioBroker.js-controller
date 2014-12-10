@@ -1,6 +1,7 @@
 {
   "admin": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.admin/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png"
   },
   "artnet": {
@@ -89,6 +90,7 @@
   },
   "mqtt": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
   "node-red": {
