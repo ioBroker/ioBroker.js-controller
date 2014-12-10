@@ -701,15 +701,25 @@ function processMessage(msg) {
                     .on('end', function () {  // done
                         var lines = text.split('\n');
                         lines.shift();
+                        lines.push(stats.size);
                         sendTo(msg.from, msg.command, lines, msg.callback);
                     }).on('error', function () {  // done
-                        sendTo(msg.from, msg.command, [], msg.callback);
+                        sendTo(msg.from, msg.command, [stats.size], msg.callback);
                     });
                 } else {
-                    sendTo(msg.from, msg.command, [], msg.callback);
+                    sendTo(msg.from, msg.command, [0], msg.callback);
                 }
             } else {
                 logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
+        case 'delLogs':
+            if (fs.existsSync(__dirname + '/log/iobroker.log')) {
+                fs.writeFile(__dirname + '/log/iobroker.log', '');
+            }
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, 'ok', msg.callback);
             }
             break;
     }
