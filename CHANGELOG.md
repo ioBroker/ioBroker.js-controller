@@ -1,3 +1,7 @@
+# 0.2.4 (2014-12-10)
+* (bluefox) fix delObject function
+* (bluefox) remove unused log message
+
 # 0.2.3 (2014-12-08)
 * (bluefox) optimize start/stop/restart.
 
