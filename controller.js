@@ -1019,11 +1019,37 @@ function stopInstance(id, callback) {
                 logger.warn('controller stopInstance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
-                logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
-                procs[id].stopping = true;
-                procs[id].process.kill();
-                delete(procs[id].process);
-                if (typeof callback === 'function') callback();
+                if (instance.common.messagebox) {
+                    var timeout;
+                    // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
+                    sendTo(instance._id, 'stopInstance', null, function () {
+                        if (timeout) {
+                            clearTimeout(timeout);
+                            timeout = null;
+                        }
+                        logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                        procs[id].stopping = true;
+                        procs[id].process.kill();
+                        delete(procs[id].process);
+                        if (typeof callback === 'function') callback();
+                    });
+                    // If no response from adapter, kill it in 1 second
+                    timeout = setTimeout(function () {
+                        if (procs[id].process) {
+                            logger.info('controller stopInstance ' + instance._id + ' killing pid  ' + procs[id].process.pid);
+                            procs[id].stopping = true;
+                            procs[id].process.kill();
+                            delete(procs[id].process);
+                            if (typeof callback === 'function') callback();
+                        }
+                    }, 1000);
+                } else {
+                    logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                    procs[id].stopping = true;
+                    procs[id].process.kill();
+                    delete(procs[id].process);
+                    if (typeof callback === 'function') callback();
+                }
             }
             break;
 
@@ -1039,7 +1065,7 @@ function stopInstance(id, callback) {
             break;
 
         case 'subscribe':
-            // Remove this id from subsribed on this message
+            // Remove this id from subscribed on this message
             if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
 
