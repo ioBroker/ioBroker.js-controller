@@ -791,6 +791,11 @@ function startInstance(id, wakeUp) {
         "node.js: Cannot find module" // 8
     ];
 
+    if (!procs[id]) {
+        logger.error('controller startInstance ' + name + '.' + args[0] + ' object not found');
+        return;
+    }
+
     var instance = procs[id].config;
     var name = id.split('.')[2];
     var mode = instance.common.mode;
@@ -844,6 +849,7 @@ function startInstance(id, wakeUp) {
                             logger.error('controller Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
                         }
                     } else {
+                        var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                         logger.debug('controller startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
                     }
 

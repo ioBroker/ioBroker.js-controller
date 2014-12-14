@@ -1,3 +1,6 @@
+# 0.2.5 (2014-12-14)
+* (bluefox) enable start of "no-daemon" adapters like "rickshaw" or "vis".
+
 # 0.2.4 (2014-12-10)
 * (bluefox) fix delObject function
 * (bluefox) remove unused log message
