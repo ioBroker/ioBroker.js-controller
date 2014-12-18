@@ -95,7 +95,6 @@
         },
         {
             "_id": "enum.rooms",
-            "children": [],
             "common": {
                 "name": "Rooms",
                 "desc": {
@@ -104,7 +103,7 @@
                     "ru": "Список комнат"
                 },
                 "members": [],
-                "nondeletable": true
+                "object-non-deletable": true
             },
             "type": "enum"
         },
