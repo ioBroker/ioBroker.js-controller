@@ -861,6 +861,7 @@ function startInstance(id, wakeUp) {
     procs[id].downloadRetry = 0;
 
     switch (mode) {
+        case 'once':
         case 'daemon':
             if (!procs[id].process) {
                 allInstancesStopped = false;
@@ -873,43 +874,51 @@ function startInstance(id, wakeUp) {
 
                     if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
 
-                    if (signal) {
-                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
-                    } else if (code === null) {
-                        logger.error('controller instance ' + id + ' terminated abnormally');
-                    } else {
-                        if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            delete procs[id].stopping;
-                            if (procs[id].process) delete procs[id].process;
-                            if (isStopping) {
-                                for (var i in procs) {
-                                    if (procs[i].process) {
-                                        return;
-                                    }
-                                }
-                                allInstancesStopped = true;
-                            }
-                            return;
+                    if (mode != 'once') {
+                        if (signal) {
+                            logger.warn('controller instance ' + id + ' terminated due to ' + signal);
+                        } else if (code === null) {
+                            logger.error('controller instance ' + id + ' terminated abnormally');
                         } else {
-                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
+                                logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                delete procs[id].stopping;
+                                if (procs[id].process) delete procs[id].process;
+                                if (isStopping) {
+                                    for (var i in procs) {
+                                        if (procs[i].process) {
+                                            return;
+                                        }
+                                    }
+                                    allInstancesStopped = true;
+                                }
+                                return;
+                            } else {
+                                logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            }
                         }
                     }
+
                     if (procs[id] && procs[id].process) delete procs[id].process;
-                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') {
                         logger.info('controller Restart adapter ' + id + ' because enabled');
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, 30000, id);
                     } else {
-                        logger.info('controller Do not restart adapter ' + id + ' because disabled or deleted');
+                        if (mode != 'once') {
+                            logger.info('controller Do not restart adapter ' + id + ' because disabled or deleted');
+                        } else {
+                            logger.warn('controller instance ' + id + ' terminated while should be started once');
+                        }
                     }
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled) logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
                 if (!wakeUp && procs[id]) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
+
         case 'schedule':
             if (!instance.common.schedule) {
                 logger.error(instance._id + ' schedule attribute missing');

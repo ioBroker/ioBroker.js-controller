@@ -1,3 +1,7 @@
+# 0.2.6 (2014-12-19)
+* (bluefox) implement getConfigKeys in redis.
+* (bluefox) new running mode: "once"
+
 # 0.2.5 (2014-12-14)
 * (bluefox) enable start of "no-daemon" adapters like "rickshaw" or "vis".
 
