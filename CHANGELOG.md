@@ -1,3 +1,6 @@
+# 0.2.7 (2014-12-19)
+* (bluefox) fix problem with upload adapter
+
 # 0.2.6 (2014-12-19)
 * (bluefox) implement getConfigKeys in redis.
 * (bluefox) new running mode: "once"
