@@ -42,7 +42,7 @@ rm nodejs_0.10.22-1_armhf.deb```
 
     ```./iobroker setup```
 
-    (if your CouchDB and/or Redis is not running on localhost you can supply optional arguments --couch &lt;host&gt; --redis &lt;host&gt;)
+    (if your Redis is not running on localhost you can supply optional arguments --redis &lt;host&gt;)
 
 ### Update adapter repository
 
