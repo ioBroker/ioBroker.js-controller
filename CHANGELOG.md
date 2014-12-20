@@ -1,3 +1,6 @@
+# 0.2.8 (2014-12-20)
+* (bluefox) fix problem with upgrade adapter
+
 # 0.2.7 (2014-12-19)
 * (bluefox) fix problem with upload adapter
 
