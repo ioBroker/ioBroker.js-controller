@@ -1,3 +1,7 @@
+# 0.2.9 (2014-12-20)
+* (bluefox) fix problem with restart controller
+* (bluefox) check flag supportStopInstance before send signal to adapter
+
 # 0.2.8 (2014-12-20)
 * (bluefox) fix problem with upgrade adapter
 

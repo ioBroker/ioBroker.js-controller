@@ -1034,7 +1034,7 @@ function stopInstance(id, callback) {
                 logger.warn('controller stopInstance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
-                if (instance.common.messagebox) {
+                if (instance.common.messagebox && instance.common.supportStopInstance) {
                     var timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
                     sendTo(instance._id, 'stopInstance', null, function () {
@@ -1113,20 +1113,23 @@ function stopInstance(id, callback) {
     }
 }
 
-var isStopping = false;
+var isStopping = null;
 var allInstancesStopped = true;
+var stopTimeout = 4000;
 
 function stop() {
     try {
-        logger.debug('controller stop isStopping=' + isStopping + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
-        if (isStopping) {
+        var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
+        logger.debug('controller stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+        if (elapsed >= stopTimeout) {
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                 logger.info('controller force terminating');
                 process.exit(1);
                 return;
             });
         } else {
-            isStopping = true;
+            // Sometimes process receives SIGTERM twice
+            isStopping = new Date();
         }
 
         if (isDaemon) {
@@ -1153,13 +1156,13 @@ function stop() {
         logger.error(e.message);
     }
 
-    // force after 10s
+    // force after 4s
     setTimeout(function () {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
             setTimeout(function () {process.exit(1);}, 1000);
         });
-    }, 2000);
+    }, stopTimeout);
 }
 
 process.on('SIGINT', function () {
