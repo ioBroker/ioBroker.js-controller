@@ -1115,7 +1115,7 @@ function stopInstance(id, callback) {
 
 var isStopping = null;
 var allInstancesStopped = true;
-var stopTimeout = 4000;
+var stopTimeout = 10000;
 
 function stop() {
     try {
@@ -1160,7 +1160,9 @@ function stop() {
     setTimeout(function () {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
-            setTimeout(function () {process.exit(1);}, 1000);
+            setTimeout(function () {
+                process.exit(1);
+            }, 1000);
         });
     }, stopTimeout);
 }
