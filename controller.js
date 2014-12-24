@@ -14,10 +14,11 @@ var schedule =     require('node-schedule');
 var os =           require('os');
 var fs =           require('fs');
 var cp =           require('child_process');
-var Objects =      require(__dirname + '/lib/objects.js');
-var StatesRedis =  require(__dirname + '/lib/redis.js');
+var Objects =      require(__dirname + '/lib/objectsInMemServer');
+var States =       require(__dirname + '/lib/statesInMemServer');
+//var States =       require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
-var tools =        require(__dirname + '/lib/tools.js');
+var tools =        require(__dirname + '/lib/tools');
 var version =      ioPackage.common.version;
 
 var logger;
@@ -31,9 +32,9 @@ var config;
 if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
-        logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log'], true);
+        logger = require(__dirname + '/lib/logger')('info', ['iobroker.log'], true);
     } else {
-        logger = require(__dirname + '/lib/logger.js')('info', ['iobroker.log']);
+        logger = require(__dirname + '/lib/logger')('info', ['iobroker.log']);
     }
     logger.error('controller conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
@@ -79,14 +80,14 @@ function logRedirect(isActive, id) {
 
 
 logger.info('controller ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('controller Copyright (c) 2014 hobbyquaker, bluefox');
+logger.info('controller Copyright (c) 2014 bluefox, hobbyquaker');
 logger.info('controller hostname: ' + hostname);
 logger.info('controller ip addresses: ' + ipArr.join(' '));
 
 var procs     = {};
 var subscribe = {};
 
-var states = new StatesRedis({
+var states = new States({
 
     redis: {
         host:    config.redis.host,
@@ -102,30 +103,30 @@ var states = new StatesRedis({
         // If this is messagebox
         if (id == 'messagebox.system.host.' + hostname) {
             // Read it from fifo list
-            states.getMessage('system.host.' + hostname, function (err, obj) {
-                if (obj) {
-                    // If callback stored for this request
-                    if (obj.callback &&
-                        obj.callback.ack &&
-                        obj.callback.id &&
-                        callbacks &&
-                        callbacks['_' + obj.callback.id]) {
-                        // Call callback function
-                        if (callbacks['_' + obj.callback.id].cb) {
-                            callbacks['_' + obj.callback.id].cb(obj.message);
-                            delete callbacks['_' + obj.callback.id];
-                        }
-
-                        // delete too old callbacks IDs
-                        var now = (new Date()).getTime();
-                        for (var id in callbacks) {
-                            if (now - callbacks[id].time > 3600000) delete callbacks[id];
-                        }
-                    } else {
-                        processMessage(obj);
+            states.delMessage('system.host.' + hostname, state._id);
+            var obj = state;
+            if (obj) {
+                // If callback stored for this request
+                if (obj.callback &&
+                    obj.callback.ack &&
+                    obj.callback.id &&
+                    callbacks &&
+                    callbacks['_' + obj.callback.id]) {
+                    // Call callback function
+                    if (callbacks['_' + obj.callback.id].cb) {
+                        callbacks['_' + obj.callback.id].cb(obj.message);
+                        delete callbacks['_' + obj.callback.id];
                     }
+
+                    // delete too old callbacks IDs
+                    var now = (new Date()).getTime();
+                    for (var id in callbacks) {
+                        if (now - callbacks[id].time > 3600000) delete callbacks[id];
+                    }
+                } else {
+                    processMessage(obj);
                 }
-            });
+            };
         } else
         if (subscribe[id]) {
             for (var i = 0; i < subscribe[id].length; i++) {
@@ -162,8 +163,12 @@ states.getKeys('*.logging', function (err, keys) {
             if (obj) {
                 for (var i = 0; i < keys.length; i++) {
                     // We can JSON.parse, but index is 16x faster
-                    if (obj[i] && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
-                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                    if (obj[i]) {
+                        if(typeof obj[i] == 'string' && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
+                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                        } else if (typeof obj[i] == 'object' && (obj[i].val === true || obj[i].val === "true")) {
+                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                        }
                     }
                 }
             }
@@ -192,7 +197,7 @@ var objects = new Objects({
             if (!obj) {
                 procs[id].config.common.enabled = false;
                 procs[id].config.common.host    = null;
-                procs[id].config.deleted = true;
+                procs[id].config.deleted        = true;
                 logger.info('controller object deleted ' + id);
             } else {
                 if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('controller "' + id + '" disabled');
@@ -727,11 +732,12 @@ function processMessage(msg) {
 }
 
 function getInstances() {
-
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
             logger.error('controller _design/system missing - call node iobroker.js setup');
-            process.exit(1);
+            //if(objects.destroy) objects.destroy();
+            //if(states  && states.destroy)  states.destroy();
+            //process.exit(1);
             return;
         } else if (doc.rows.length === 0) {
             logger.info('controller no instances found');
@@ -1122,14 +1128,20 @@ function stop() {
         var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
         logger.debug('controller stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
+
+            if(objects && objects.destroy) objects.destroy();
+
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                 logger.info('controller force terminating');
-                process.exit(1);
+                if(states  && states.destroy)  states.destroy();
+                setTimeout(function () {
+                    process.exit(1);
+                }, 1000);
                 return;
             });
         } else {
             // Sometimes process receives SIGTERM twice
-            isStopping = new Date();
+            isStopping = isStopping || new Date();
         }
 
         if (isDaemon) {
@@ -1143,9 +1155,13 @@ function stop() {
             if (!allInstancesStopped) {
                 setTimeout(waitForInstances, 200);
             } else {
+                if(objects && objects.destroy) objects.destroy();
                 states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
+                    if(states  && states.destroy)  states.destroy();
                     logger.info('controller terminated');
-                    process.exit(0);
+                    setTimeout(function () {
+                        process.exit(0);
+                    }, 1000);
                 });
 
             }
@@ -1156,10 +1172,12 @@ function stop() {
         logger.error(e.message);
     }
 
-    // force after 4s
+    // force after Xs
     setTimeout(function () {
+        if(objects && objects.destroy) objects.destroy();
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
+            if(states && states.destroy) states.destroy();
             setTimeout(function () {
                 process.exit(1);
             }, 1000);
@@ -1173,5 +1191,10 @@ process.on('SIGINT', function () {
 });
 process.on('SIGTERM', function () {
     logger.info('controller received SIGTERM');
+    stop();
+});
+process.on('uncaughtException', function (err) {
+    logger.error('uncaught exception: ' + err.message);
+    logger.error(err.stack);
     stop();
 });
