@@ -916,7 +916,7 @@ function startInstance(id, wakeUp) {
                         if (mode != 'once') {
                             logger.info('controller Do not restart adapter ' + id + ' because disabled or deleted');
                         } else {
-                            logger.warn('controller instance ' + id + ' terminated while should be started once');
+                            logger.info('controller instance ' + id + ' terminated while should be started once');
                         }
                     }
                 });
