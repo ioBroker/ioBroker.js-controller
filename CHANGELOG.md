@@ -1,3 +1,6 @@
+# 0.3.0 (2014-12-28)
+* (bluefox) no redis any more
+
 # 0.2.9 (2014-12-20)
 * (bluefox) fix problem with restart controller
 * (bluefox) check flag supportStopInstance before send signal to adapter
