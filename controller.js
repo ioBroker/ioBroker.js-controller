@@ -959,7 +959,6 @@ function startInstance(id, wakeUp) {
                     } else {
                         if (code === 0 || code === '0') {
                             logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            return;
                         } else {
                             logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
@@ -984,7 +983,6 @@ function startInstance(id, wakeUp) {
                     } else {
                         if (code === 0 || code === '0') {
                             logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            return;
                         } else {
                             logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
@@ -1207,7 +1205,16 @@ function stop() {
         if(objects && objects.destroy) objects.destroy();
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('controller force terminated after 10s');
+            for (var i in procs) {
+                if (procs[i].process) {
+                    if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
+                        logger.info('Adapter ' + procs[i].config.common.name + ' still running');
+                    }
+                }
+            }
+
             if(states && states.destroy) states.destroy();
+
             setTimeout(function () {
                 process.exit(1);
             }, 1000);
