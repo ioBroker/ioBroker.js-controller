@@ -43,7 +43,6 @@
   },
   "history": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.history/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png"
   },
   "hm-rega": {
@@ -91,7 +90,6 @@
   },
   "node-red": {
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/io-package.json",
-      "url": "https://github.com/ioBroker/ioBroker.node-red/archive/master.zip",
       "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/admin/node-red.png"
   },
   "ping": {
@@ -101,7 +99,6 @@
   },
   "socketio": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.socketio/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png"
   },
   "telnet": {
@@ -121,11 +118,10 @@
   },
   "rickshaw": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.rickshaw/archive/master.zip"
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
   },
   "sonos": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.sonos/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
   },
   "virtual": {
@@ -133,7 +129,6 @@
   },
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.web/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
   },
   "websocket": {

@@ -30,10 +30,14 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
-// you have to require the adapter module and pass a options object
+
+// you have to require the utils module and call adapter function
+var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
+
+// you have to call the adapter function and pass a options object
 // name has to be set and has to be equal to adapters folder name and main file name excluding extension
 // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.example.0
-var adapter = require(__dirname + '/../../lib/adapter.js')('example');
+var adapter = utils.adapter('example');
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
