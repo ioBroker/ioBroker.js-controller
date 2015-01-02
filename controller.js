@@ -1231,12 +1231,16 @@ process.on('SIGTERM', function () {
     stop();
 });
 process.on('uncaughtException', function (err) {
-    if (err.errno == 'EADDRINUSE') {
-        logger.error('Another instance is running or some application uses port!');
-        logger.error('uncaught exception: ' + err.message);
+    if (typeof err == 'object') {
+        if (err.errno == 'EADDRINUSE') {
+            logger.error('Another instance is running or some application uses port!');
+            logger.error('uncaught exception: ' + err.message);
+        } else {
+            logger.error('uncaught exception: ' + err.message);
+            logger.error(err.stack);
+        }
     } else {
-        logger.error('uncaught exception: ' + err.message);
-        logger.error(err.stack);
+        logger.error('uncaught exception: ' + err);
     }
     stop();
 });

@@ -138,7 +138,7 @@
   },
   "websocket": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.websocket/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.websocket/archive/master.zip"
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.websocket/master/admin/websocket.png"
   },
   "yr": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
