@@ -1,3 +1,6 @@
+# 0.3.1 (2015-01-02)
+* (bluefox) enable npm install
+
 # 0.3.0 (2014-12-28)
 * (bluefox) no redis any more
 

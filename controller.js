@@ -20,6 +20,7 @@ var States =       require(__dirname + '/lib/statesInMemServer');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools');
 var version =      ioPackage.common.version;
+var adapterDir =   __dirname.replace(/\\/g, '/');
 
 var logger;
 var isDaemon;
@@ -50,6 +51,14 @@ if (process.argv.indexOf('start') !== -1) {
 }
 
 logger.info(config.log.level);
+
+// If installed as npm module
+adapterDir = adapterDir.split('/');
+if (adapterDir.pop() == 'node_modules') {
+    adapterDir = adapterDir.join('/');
+} else {
+    adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
+}
 
 var ifaces = os.networkInterfaces();
 var ipArr = [];
@@ -182,8 +191,8 @@ var objects = new Objects({
     user: config.couch.user,
     pass: config.couch.pass,
     logger: logger,
-    connected: function () {
-        logger.info('controller couchdb connected');
+    connected: function (type) {
+        logger.info('controller ' + type + ' connected');
         setMeta();
         getInstances();
         startAliveInterval();
@@ -818,10 +827,10 @@ function startInstance(id, wakeUp) {
     }
 
     var fileName = instance.common.main || "main.js";
-    var fileNameFull = __dirname + '/node_modules/iobroker.' + name + '/' + fileName;
+    var fileNameFull = adapterDir + '/iobroker.' + name + '/' + fileName;
     if (!fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
-        fileNameFull = __dirname + '/node_modules/iobroker.' + name + '/' + fileName;
+        fileNameFull = adapterDir + '/iobroker.' + name + '/' + fileName;
         if (!fs.existsSync(fileNameFull)) {
             fileName = instance.common.main || "main.js";
             fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
@@ -831,7 +840,7 @@ function startInstance(id, wakeUp) {
 
                 if (!fs.existsSync(fileNameFull)) {
                     // If not just www files
-                    if (!fs.existsSync(__dirname + '/node_modules/iobroker.' + name + '/www') &&
+                    if (!fs.existsSync(adapterDir + '/iobroker.' + name + '/www') &&
                         !fs.existsSync(__dirname + '/adapter/' + name + '/www')) {
                         procs[id].downloadRetry = procs[id].downloadRetry || 0;
                         if (procs[id].downloadRetry < 3) {

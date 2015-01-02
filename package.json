@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "node": ">=0.8"
   },
@@ -61,9 +61,10 @@
       "url": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/LICENSE"
     }
   ],
-  "author": ["bluefox <bluefox@ccu.io>", "hobbyquaker <hq@ccu.io>"],
+  "author": "bluefox <bluefox@ccu.io>",
   "contributors": [
-
+      "bluefox <bluefox@ccu.io>",
+      "hobbyquaker <hq@ccu.io>"
   ],
   "repository" : {
       "type" : "git",
