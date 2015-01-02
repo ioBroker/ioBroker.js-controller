@@ -69,5 +69,6 @@
   "repository" : {
       "type" : "git",
       "url" : "https://github.com/ioBroker/ioBroker.js-controller"
-  }
+  },
+  "install": "node lib/setup.js first"
 }

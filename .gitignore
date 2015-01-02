@@ -5,3 +5,7 @@ node_modules
 /adapter/email
 /adapter/sonos
 /adapter/admin
+/data
+/npm-debug.log
+/tmp/*.zip
+/log/*.log

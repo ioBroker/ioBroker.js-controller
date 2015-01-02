@@ -796,15 +796,17 @@ function startInstance(id, wakeUp) {
     if (isStopping) return;
 
     var errorCodes = [
-        "OK", // 0
-        "", // 1
-        "Adapter has invalid config or no config found", // 2
-        "Adapter disabled or invalid config", // 3
-        "invalid config: no _id found", // 4
-        "invalid config", // 5
-        "uncaught exception", // 6
-        "Adapter already running", // 7
-        "node.js: Cannot find module" // 8
+        'OK', // 0
+        '', // 1
+        'Adapter has invalid config or no config found', // 2
+        'Adapter disabled or invalid config', // 3
+        'invalid config: no _id found', // 4
+        'invalid config', // 5
+        'uncaught exception', // 6
+        'Adapter already running', // 7
+        'node.js: Cannot find module', // 8
+        '', // 9
+        'Cannot find start file of adapter' // 10
     ];
 
     if (!procs[id]) {
@@ -827,51 +829,46 @@ function startInstance(id, wakeUp) {
     }
 
     var fileName = instance.common.main || "main.js";
-    var fileNameFull = adapterDir + '/iobroker.' + name + '/' + fileName;
+    var adapterDir = tools.getAdapterDir(name);
+    if (!fs.existsSync(adapterDir)) {
+        procs[id].downloadRetry = procs[id].downloadRetry || 0;
+        if (procs[id].downloadRetry < 3) {
+            procs[id].downloadRetry++;
+            logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+            logger.info('iobroker install ' + name);
+
+            var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
+            child.stdout.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.info('iobroker ' + data);
+            });
+            child.stderr.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.error('iobroker ' + data);
+            });
+            child.on('exit', function (exitCode) {
+                logger.info('iobroker exit ' + exitCode);
+                startInstance(id, wakeUp);
+            });
+        } else {
+            logger.error('controller Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+        }
+        return;
+    }
+
+    var fileNameFull = adapterDir + '/' + fileName;
     if (!fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
-        fileNameFull = adapterDir + '/iobroker.' + name + '/' + fileName;
+        fileNameFull = adapterDir + '/' + fileName;
         if (!fs.existsSync(fileNameFull)) {
-            fileName = instance.common.main || "main.js";
-            fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
-            if (!fs.existsSync(fileNameFull)) {
-                fileName = name + '.js';
-                fileNameFull = __dirname + '/adapter/' + name + '/' + fileName;
-
-                if (!fs.existsSync(fileNameFull)) {
-                    // If not just www files
-                    if (!fs.existsSync(adapterDir + '/iobroker.' + name + '/www') &&
-                        !fs.existsSync(__dirname + '/adapter/' + name + '/www')) {
-                        procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                        if (procs[id].downloadRetry < 3) {
-                            procs[id].downloadRetry++;
-                            logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
-                            logger.info('iobroker install ' + name);
-
-                            var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
-                            child.stdout.on('data', function (data) {
-                                data = data.toString().replace('\n', '');
-                                logger.info('iobroker ' + data);
-                            });
-                            child.stderr.on('data', function (data) {
-                                data = data.toString().replace('\n', '');
-                                logger.error('iobroker ' + data);
-                            });
-                            child.on('exit', function (exitCode) {
-                                logger.info('iobroker exit ' + exitCode);
-                                startInstance(id, wakeUp);
-                            });
-                        } else {
-                            logger.error('controller Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
-                        }
-                    } else {
-                        var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                        logger.debug('controller startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
-                    }
-
-                    return;
-                }
+            // If not just www files
+            if (fs.existsSync(adapterDir + '/www')) {
+                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                logger.debug('controller startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
+            } else {
+                logger.error('controller startInstance ' + name + '.' + args[0] + ': cannot find start file!');
             }
+            return;
         }
     }
     procs[id].downloadRetry = 0;
@@ -972,6 +969,29 @@ function startInstance(id, wakeUp) {
 
             });
             logger.info('controller instance scheduled ' + instance._id + ' ' + instance.common.schedule);
+            // Start one time adapter by start or if configuration changed
+            if (instance.common.allowInit) {
+                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                procs[id].process = cp.fork(fileNameFull, args);
+                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+
+                procs[id].process.on('exit', function (code, signal) {
+                    states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
+                    if (signal) {
+                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
+                    } else if (code === null) {
+                        logger.error('controller instance ' + id + ' terminated abnormally');
+                    } else {
+                        if (code === 0 || code === '0') {
+                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            return;
+                        } else {
+                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                        }
+                    }
+                    delete procs[id].process;
+                });
+            }
 
             break;
 

@@ -10,7 +10,6 @@
   },
   "b-control-em": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.b-control-em/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png"
   },
   "cul": {
@@ -20,7 +19,6 @@
   },
   "dwd": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.dwd/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.dwd/master/admin/dwd.png"
   },
   "email": {
@@ -89,7 +87,6 @@
   },
   "mqtt": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.mqtt/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
   "node-red": {
