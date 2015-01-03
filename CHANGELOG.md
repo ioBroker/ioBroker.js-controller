@@ -1,3 +1,9 @@
+# 0.3.8 (2015-01-04)
+* (bluefox) fix error with subscribes
+* (bluefox) fix error with extendObject
+* (bluefox) fix error with delete adapter
+* (bluefox) fix error in deleteChannelFromEnum
+
 # 0.3.7 (2015-01-03)
 * (bluefox) fix upload problem
 
