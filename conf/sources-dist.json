@@ -120,6 +120,10 @@
   "virtual": {
     "url": "https://github.com/ioBroker/ioBroker.virtual/archive/master.zip"
   },
+  "vis": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png"
+  },
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
