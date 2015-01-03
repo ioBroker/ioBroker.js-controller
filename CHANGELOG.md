@@ -1,3 +1,6 @@
+# 0.3.6 (2015-01-03)
+* (bluefox) fix package.json
+
 # 0.3.1 (2015-01-02)
 * (bluefox) enable npm install
 

@@ -1,11 +1,12 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.3.1",
+  "version": "0.3.6",
   "engines": {
     "node": ">=0.8"
   },
   "optionalDependencies": {
-    "node-windows": "~0.1.5"
+    "node-windows": "~0.1.5",
+	"iobroker.admin": "*"
   },
   "dependencies": {
     "adm-zip": "~0.4.4",
@@ -72,7 +73,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-    "install": "node lib/setup.js first"
+    "install": "node lib/setup.js setup first"
   },
   "main": "controller.js",
   "license": "MIT"

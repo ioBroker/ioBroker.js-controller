@@ -1,5 +1,6 @@
 @echo off
 
+if "%1"=="noadmin" goto noadmin
 :: BatchGotAdmin
 :-------------------------------------
 REM  --> Check for permissions
@@ -24,8 +25,8 @@ if '%errorlevel%' NEQ '0' (
     pushd "%CD%"
     CD /D "%~dp0"
 :--------------------------------------
-
 call npm install --production
+:noadmin
 node iobroker.js setup
 node iobroker.js update
 node iobroker.js object get system.adapter.admin > nul
