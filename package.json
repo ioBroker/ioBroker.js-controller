@@ -5,7 +5,7 @@
     "node": ">=0.8"
   },
   "optionalDependencies": {
-      "node-windows": "~0.1.5"
+    "node-windows": "~0.1.5"
   },
   "dependencies": {
     "adm-zip": "~0.4.4",
@@ -19,7 +19,8 @@
     "mime": "~1.2.11",
     "tar.gz": "~0.1.1",
     "socket.io": "~1.2.1",
-    "socket.io-client": "~1.2.1"
+    "socket.io-client": "~1.2.1",
+    "node-windows": "~0.1.5"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -63,14 +64,16 @@
   ],
   "author": "bluefox <bluefox@ccu.io>",
   "contributors": [
-      "bluefox <bluefox@ccu.io>",
-      "hobbyquaker <hq@ccu.io>"
+    "bluefox <bluefox@ccu.io>",
+    "hobbyquaker <hq@ccu.io>"
   ],
-  "repository" : {
-      "type" : "git",
-      "url" : "https://github.com/ioBroker/ioBroker.js-controller"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-      "install": "node lib/setup.js first"
-  }
+    "install": "node lib/setup.js first"
+  },
+  "main": "controller.js",
+  "license": "MIT"
 }
