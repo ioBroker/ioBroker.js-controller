@@ -23,7 +23,6 @@
   },
   "email": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.email/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
   },
   "example": {
@@ -47,12 +46,10 @@
   },
   "hm-rega": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hm-rega/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png"
   },
   "hm-rpc": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hm-rpc/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rpc/master/admin/homematic.png"
   },
   "hue": {
@@ -62,7 +59,6 @@
   },
   "javascript": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.javascript/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
   },
   "js-controller": {
@@ -76,7 +72,6 @@
   },
   "legacy": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.legacy/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/admin/legacy.png"
   },
   "mobile": {
@@ -94,7 +89,6 @@
   },
   "ping": {
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
-      "url": "https://github.com/ioBroker/ioBroker.ping/archive/master.zip",
       "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
   },
   "socketio": {
@@ -113,7 +107,6 @@
   },
   "pushover": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.pushover/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
   "rickshaw": {
@@ -142,7 +135,6 @@
   },
   "zwave": {
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/io-package.json",
-      "url": "https://github.com/ioBroker/ioBroker.zwave/archive/master.zip",
       "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/admin/zwave.png"
   }
 }
