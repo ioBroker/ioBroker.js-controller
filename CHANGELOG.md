@@ -1,3 +1,6 @@
+# 0.3.7 (2015-01-03)
+* (bluefox) fix upload problem
+
 # 0.3.6 (2015-01-03)
 * (bluefox) fix package.json
 
