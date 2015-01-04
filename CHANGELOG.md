@@ -1,3 +1,6 @@
+# 0.3.9 (2015-01-04)
+* (bluefox) try to fix update of controller
+
 # 0.3.8 (2015-01-04)
 * (bluefox) fix error with subscribes
 * (bluefox) fix error with extendObject

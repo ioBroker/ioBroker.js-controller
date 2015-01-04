@@ -1243,4 +1243,6 @@ process.on('uncaughtException', function (err) {
         logger.error('uncaught exception: ' + err);
     }
     stop();
+    // Restart itself
+    processMessage({command: 'cmdExec', message: {data: '_restart'}});
 });
