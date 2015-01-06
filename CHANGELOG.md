@@ -1,3 +1,7 @@
+# 0.3.11 (2015-01-06)
+* (bluefox) fix error if state is null or undefined
+* (bluefox) store fifos from states in file
+
 # 0.3.10 (2015-01-06)
 * (bluefox) support of file manager in vis
 
