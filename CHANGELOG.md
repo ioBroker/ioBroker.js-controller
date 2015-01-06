@@ -1,3 +1,6 @@
+# 0.3.10 (2015-01-06)
+* (bluefox) support of file manager in vis
+
 # 0.3.9 (2015-01-04)
 * (bluefox) try to fix update of controller
 
