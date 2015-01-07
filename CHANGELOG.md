@@ -1,3 +1,6 @@
+# 0.3.12 (2015-01-07)
+* (bluefox) support of "onlyWWW" flag
+
 # 0.3.11 (2015-01-06)
 * (bluefox) fix error if state is null or undefined
 * (bluefox) store fifos from states in file

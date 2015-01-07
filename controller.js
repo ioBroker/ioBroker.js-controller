@@ -810,7 +810,7 @@ function startInstance(id, wakeUp) {
     ];
 
     if (!procs[id]) {
-        logger.error('controller startInstance ' + name + '.' + args[0] + ' object not found');
+        logger.error('controller startInstance ' + id + ': object not found!');
         return;
     }
 
@@ -857,10 +857,10 @@ function startInstance(id, wakeUp) {
     }
 
     var fileNameFull = adapterDir + '/' + fileName;
-    if (!fs.existsSync(fileNameFull)) {
+    if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
         fileNameFull = adapterDir + '/' + fileName;
-        if (!fs.existsSync(fileNameFull)) {
+        if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
             if (fs.existsSync(adapterDir + '/www')) {
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
