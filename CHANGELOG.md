@@ -1,3 +1,6 @@
+# 0.3.13 (2015-01-08)
+* (bluefox) fix error with publish/subscribe
+
 # 0.3.12 (2015-01-07)
 * (bluefox) support of "onlyWWW" flag
 
