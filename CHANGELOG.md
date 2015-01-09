@@ -1,3 +1,6 @@
+# 0.3.14 (2015-01-09)
+* (bluefox) fix error update of js-controller under linux/osx
+
 # 0.3.13 (2015-01-08)
 * (bluefox) fix error with publish/subscribe
 
