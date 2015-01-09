@@ -1,3 +1,6 @@
+# 0.3.15 (2015-01-09)
+* (bluefox) "chmod 777 * -R /opt/iobroker" => "chmod 777 -R /opt/iobroker"
+
 # 0.3.14 (2015-01-09)
 * (bluefox) fix error update of js-controller under linux/osx
 
