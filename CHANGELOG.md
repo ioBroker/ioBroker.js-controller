@@ -1,3 +1,6 @@
+# 0.3.16 (2015-01-09)
+* (bluefox) support of multiple hosts
+
 # 0.3.15 (2015-01-09)
 * (bluefox) "chmod 777 * -R /opt/iobroker" => "chmod 777 -R /opt/iobroker"
 
