@@ -14,13 +14,13 @@ var schedule =     require('node-schedule');
 var os =           require('os');
 var fs =           require('fs');
 var cp =           require('child_process');
-var Objects =      require(__dirname + '/lib/objectsInMemServer');
-var States =       require(__dirname + '/lib/statesInMemServer');
-//var States =       require(__dirname + '/lib/redis.js');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools');
 var version =      ioPackage.common.version;
 var adapterDir =   __dirname.replace(/\\/g, '/');
+
+var Objects;
+var States;
 
 var logger;
 var isDaemon;
@@ -37,10 +37,21 @@ if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     } else {
         logger = require(__dirname + '/lib/logger')('info', ['iobroker.log']);
     }
-    logger.error('controller conf/iobroker.json missing - call node iobroker.js setup');
+    logger.error('host.' + hostname + ' conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
 } else {
     config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
+    if (!config.states)  config.states  = {type: 'file'};
+    if (!config.objects) config.objects = {type: 'file'};
+}
+
+// If "file" and on the local machine
+if (config.objects.type == 'file' && (!config.objects.host || config.objects.host == 'localhost' || config.objects.host == '127.0.0.1')) {
+    Objects = require(__dirname + '/lib/objectsInMemServer');
+    States  = require(__dirname + '/lib/statesInMemServer');
+} else {
+    Objects = require(__dirname + '/lib/objects');
+    States  = require(__dirname + '/lib/states');
 }
 
 if (process.argv.indexOf('start') !== -1) {
@@ -88,21 +99,16 @@ function logRedirect(isActive, id) {
 }
 
 
-logger.info('controller ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('controller Copyright (c) 2014 bluefox, hobbyquaker');
-logger.info('controller hostname: ' + hostname);
-logger.info('controller ip addresses: ' + ipArr.join(' '));
+logger.info('host.' + hostname + ' ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
+logger.info('host.' + hostname + ' Copyright (c) 2014 bluefox, hobbyquaker');
+logger.info('host.' + hostname + ' hostname: ' + hostname);
+logger.info('host.' + hostname + ' ip addresses: ' + ipArr.join(' '));
 
 var procs     = {};
 var subscribe = {};
 
 var states = new States({
-
-    redis: {
-        host:    config.redis.host,
-        port:    config.redis.port,
-        options: config.redis.options
-    },
+    connection: config.states,
     logger: logger,
     change: function (id, state) {
         // If some log transporter activated or deactivated
@@ -186,13 +192,10 @@ states.getKeys('*.logging', function (err, keys) {
 });
 
 var objects = new Objects({
-    host: config.couch.host,
-    port: config.couch.port,
-    user: config.couch.user,
-    pass: config.couch.pass,
+    connection: config.objects,
     logger: logger,
     connected: function (type) {
-        logger.info('controller ' + type + ' connected');
+        logger.info('host.' + hostname + ' ' + type + ' connected');
         setMeta();
         getInstances();
         startAliveInterval();
@@ -200,17 +203,17 @@ var objects = new Objects({
     },
     change: function (id, obj) {
         if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-        logger.info('controller object change ' + id);
+        logger.info('host.' + hostname + ' object change ' + id);
         if (procs[id]) {
             // known adapter
             if (!obj) {
                 procs[id].config.common.enabled = false;
                 procs[id].config.common.host    = null;
                 procs[id].config.deleted        = true;
-                logger.info('controller object deleted ' + id);
+                logger.info('host.' + hostname + ' object deleted ' + id);
             } else {
-                if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('controller "' + id + '" disabled');
-                if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('controller "' + id + '" enabled');
+                if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
+                if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
                 procs[id].config = obj;
             }
             if (procs[id].process) {
@@ -278,7 +281,7 @@ function collectDiagInfo(callback) {
         if (err || !obj) {
             obj = {native: {uuid: 'not found'}};
         }
-        objects.getObjectView('system', 'host', {}, function (_err, doc) {
+        objects.getObjectView('system', 'host.', {}, function (_err, doc) {
             var diag = {
                 uuid: obj.native.uuid,
                 hosts:[],
@@ -320,7 +323,7 @@ function setMeta() {
     objects.getObject(id, function (err, oldObj) {
         var newObj = {
             _id:  id,
-            type: 'host',
+            type: 'host.',
             common: {
                 name:             id,
 //              process:          process.title, // actually not required, because there is type now
@@ -570,7 +573,7 @@ function processMessage(msg) {
                                 if (!repos.native.repositories[active].json || updateRepo) {
 
 
-                                    logger.info('controller Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
+                                    logger.info('host.' + hostname + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
                                         repos.native.repositories[active].json = sources;
@@ -583,21 +586,21 @@ function processMessage(msg) {
                                     sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                 }
                             } else {
-                                logger.warn('controller Requested repository "' + active + '" does not exit in config.');
+                                logger.warn('host.' + hostname + ' Requested repository "' + active + '" does not exit in config.');
                                 sendTo(msg.from, msg.command, null, msg.callback);
                             }
                         }
                     });
                 });
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host', {}, function (err, doc) {
+                objects.getObjectView('system', 'host.', {}, function (err, doc) {
                     var result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     var infoCount = 0;
@@ -617,7 +620,7 @@ function processMessage(msg) {
                     if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -627,7 +630,7 @@ function processMessage(msg) {
                 try {
                     ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
                 } catch (e) {
-                    logger.error('controller cannot read and parse "' + __dirname + '/io-package.json"');
+                    logger.error('host.' + hostname + ' cannot read and parse "' + __dirname + '/io-package.json"');
                 }
                 if (ioPack) {
                     ioPack.common.host = hostname;
@@ -637,7 +640,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -655,7 +658,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -666,14 +669,14 @@ function processMessage(msg) {
                 if (require('os').platform() == 'linux') {
                     var _spawn = require('child_process').spawn;
                     var _args = ['/dev'];
-                    logger.info('controller ls /dev');
+                    logger.info('host.' + hostname + ' ls /dev');
                     var _child = _spawn('ls', _args);
                     var result = '';
                     _child.stdout.on('data', function (data) {
                         result += data.toString();
                     });
                     _child.stderr.on('data', function (data) {
-                        logger.error('controller ls ' + data);
+                        logger.error('host.' + hostname + ' ls ' + data);
                     });
 
                     _child.on('exit', function (exitCode) {
@@ -693,7 +696,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -725,7 +728,7 @@ function processMessage(msg) {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
             } else {
-                logger.error('controller Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -744,22 +747,22 @@ function processMessage(msg) {
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
-            logger.error('controller _design/system missing - call node iobroker.js setup');
+            logger.error('host.' + hostname + ' _design/system missing - call node iobroker.js setup');
             //if(objects.destroy) objects.destroy();
             //if(states  && states.destroy)  states.destroy();
             //process.exit(1);
             return;
         } else if (doc.rows.length === 0) {
-            logger.info('controller no instances found');
+            logger.info('host.' + hostname + ' no instances found');
         } else {
-            logger.info('controller ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
+            logger.info('host.' + hostname + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             var count = 0;
             for (var i = 0; i < doc.rows.length; i++) {
                 var instance = doc.rows[i].value;
 
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
 
-                logger.debug('controller check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
+                logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = {config: instance};
@@ -767,9 +770,9 @@ function getInstances() {
                 }
             }
             if (count > 0) {
-                logger.info('controller starting ' + count + ' instance' + (count > 1 ? 's' : ''));
+                logger.info('host.' + hostname + ' starting ' + count + ' instance' + (count > 1 ? 's' : ''));
             } else {
-                logger.warn('controller does not start any instances on this host');
+                logger.warn('host.' + hostname + ' does not start any instances on this host');
             }
 
         }
@@ -810,7 +813,7 @@ function startInstance(id, wakeUp) {
     ];
 
     if (!procs[id]) {
-        logger.error('controller startInstance ' + id + ': object not found!');
+        logger.error('host.' + hostname + ' startInstance ' + id + ': object not found!');
         return;
     }
 
@@ -834,7 +837,7 @@ function startInstance(id, wakeUp) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         if (procs[id].downloadRetry < 3) {
             procs[id].downloadRetry++;
-            logger.warn('controller startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+            logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
             logger.info('iobroker install ' + name);
 
             var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
@@ -851,7 +854,7 @@ function startInstance(id, wakeUp) {
                 startInstance(id, wakeUp);
             });
         } else {
-            logger.error('controller Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+            logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
         }
         return;
     }
@@ -864,9 +867,9 @@ function startInstance(id, wakeUp) {
             // If not just www files
             if (fs.existsSync(adapterDir + '/www')) {
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                logger.debug('controller startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
+                logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
             } else {
-                logger.error('controller startInstance ' + name + '.' + args[0] + ': cannot find start file!');
+                logger.error('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ': cannot find start file!');
             }
             return;
         }
@@ -879,7 +882,7 @@ function startInstance(id, wakeUp) {
             if (!procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                logger.debug('controller startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
+                logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(fileNameFull, args);
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
@@ -889,12 +892,12 @@ function startInstance(id, wakeUp) {
 
                     if (mode != 'once') {
                         if (signal) {
-                            logger.warn('controller instance ' + id + ' terminated due to ' + signal);
+                            logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
                         } else if (code === null) {
-                            logger.error('controller instance ' + id + ' terminated abnormally');
+                            logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                         } else {
                             if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                                logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                                 delete procs[id].stopping;
                                 if (procs[id].process) delete procs[id].process;
                                 if (isStopping) {
@@ -907,28 +910,28 @@ function startInstance(id, wakeUp) {
                                 }
                                 return;
                             } else {
-                                logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                             }
                         }
                     }
 
                     if (procs[id] && procs[id].process) delete procs[id].process;
                     if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') {
-                        logger.info('controller Restart adapter ' + id + ' because enabled');
+                        logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, 30000, id);
                     } else {
                         if (mode != 'once') {
-                            logger.info('controller Do not restart adapter ' + id + ' because disabled or deleted');
+                            logger.info('host.' + hostname + ' Do not restart adapter ' + id + ' because disabled or deleted');
                         } else {
-                            logger.info('controller instance ' + id + ' terminated while should be started once');
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated while should be started once');
                         }
                     }
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') logger.info('controller instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
-                if (!wakeUp && procs[id]) logger.warn('controller instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
 
@@ -939,52 +942,52 @@ function startInstance(id, wakeUp) {
             }
             if (procs[id].schedule) {
                 procs[id].schedule.cancel();
-                logger.info('controller instance canceled schedule ' + instance._id);
+                logger.info('host.' + hostname + ' instance canceled schedule ' + instance._id);
             }
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
                 if (!procs[id]) {
-                    logger.error('controller scheduleJob: Task deleted (' + id + ')');
+                    logger.error('host.' + hostname + ' scheduleJob: Task deleted (' + id + ')');
                     return;
                 }
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(fileNameFull, args);
-                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+                logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
-                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
+                        logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
-                        logger.error('controller instance ' + id + ' terminated abnormally');
+                        logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                     } else {
                         if (code === 0 || code === '0') {
-                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         } else {
-                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
                     }
                     delete procs[id].process;
                 });
 
             });
-            logger.info('controller instance scheduled ' + instance._id + ' ' + instance.common.schedule);
+            logger.info('host.' + hostname + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(fileNameFull, args);
-                logger.info('controller instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+                logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
-                        logger.warn('controller instance ' + id + ' terminated due to ' + signal);
+                        logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
                     } else if (code === null) {
-                        logger.error('controller instance ' + id + ' terminated abnormally');
+                        logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                     } else {
                         if (code === 0 || code === '0') {
-                            logger.info('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         } else {
-                            logger.error('controller instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         }
                     }
                     delete procs[id].process;
@@ -1021,9 +1024,9 @@ function startInstance(id, wakeUp) {
 }
 
 function stopInstance(id, callback) {
-    logger.info('controller stopInstance ' + id);
+    logger.info('host.' + hostname + ' stopInstance ' + id);
     if (!procs[id]) {
-        logger.warn('controller unknown instance ' + id);
+        logger.warn('host.' + hostname + ' unknown instance ' + id);
         if (typeof callback === 'function') callback();
         return;
     }
@@ -1065,7 +1068,7 @@ function stopInstance(id, callback) {
     switch (instance.common.mode) {
         case 'daemon':
             if (!procs[id].process) {
-                logger.warn('controller stopInstance ' + instance._id + ' not running');
+                logger.warn('host.' + hostname + ' stopInstance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
@@ -1076,7 +1079,7 @@ function stopInstance(id, callback) {
                             clearTimeout(timeout);
                             timeout = null;
                         }
-                        logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                        logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                         procs[id].stopping = true;
                         procs[id].process.kill();
                         delete(procs[id].process);
@@ -1085,7 +1088,7 @@ function stopInstance(id, callback) {
                     // If no response from adapter, kill it in 1 second
                     timeout = setTimeout(function () {
                         if (procs[id].process) {
-                            logger.info('controller stopInstance ' + instance._id + ' killing pid  ' + procs[id].process.pid);
+                            logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
                             procs[id].process.kill();
                             delete(procs[id].process);
@@ -1093,7 +1096,7 @@ function stopInstance(id, callback) {
                         }
                     }, 1000);
                 } else {
-                    logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                    logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
                     procs[id].process.kill();
                     delete(procs[id].process);
@@ -1104,11 +1107,11 @@ function stopInstance(id, callback) {
 
         case 'schedule':
             if (!procs[id].schedule) {
-                logger.warn('controller stopInstance ' + instance._id + ' not scheduled');
+                logger.warn('host.' + hostname + ' stopInstance ' + instance._id + ' not scheduled');
             } else {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
-                logger.info('controller stopInstance canceled schedule ' + instance._id);
+                logger.info('host.' + hostname + ' stopInstance canceled schedule ' + instance._id);
             }
             if (typeof callback === 'function') callback();
             break;
@@ -1135,7 +1138,7 @@ function stopInstance(id, callback) {
             if (!procs[id].process) {
                 if (typeof callback === 'function') callback();
             } else {
-                logger.info('controller stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
                 procs[id].process.kill();
                 delete(procs[id].process);
@@ -1154,13 +1157,13 @@ var stopTimeout = 10000;
 function stop() {
     try {
         var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
-        logger.debug('controller stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
+        logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
 
             if(objects && objects.destroy) objects.destroy();
 
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-                logger.info('controller force terminating');
+                logger.info('host.' + hostname + ' force terminating');
                 if(states  && states.destroy)  states.destroy();
                 setTimeout(function () {
                     process.exit(1);
@@ -1186,7 +1189,7 @@ function stop() {
                 if(objects && objects.destroy) objects.destroy();
                 states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                     if(states  && states.destroy)  states.destroy();
-                    logger.info('controller terminated');
+                    logger.info('host.' + hostname + ' terminated');
                     setTimeout(function () {
                         process.exit(0);
                     }, 1000);
@@ -1204,7 +1207,7 @@ function stop() {
     setTimeout(function () {
         if(objects && objects.destroy) objects.destroy();
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-            logger.info('controller force terminated after 10s');
+            logger.info('host.' + hostname + ' force terminated after 10s');
             for (var i in procs) {
                 if (procs[i].process) {
                     if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
@@ -1223,11 +1226,11 @@ function stop() {
 }
 
 process.on('SIGINT', function () {
-    logger.info('controller received SIGINT');
+    logger.info('host.' + hostname + ' received SIGINT');
     stop();
 });
 process.on('SIGTERM', function () {
-    logger.info('controller received SIGTERM');
+    logger.info('host.' + hostname + ' received SIGTERM');
     stop();
 });
 process.on('uncaughtException', function (err) {
