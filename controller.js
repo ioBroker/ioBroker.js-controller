@@ -1251,7 +1251,17 @@ process.on('SIGTERM', function () {
     logger.info('host.' + hostname + ' received SIGTERM');
     stop();
 });
+
+var uncaughtExceptionCount = 0;
 process.on('uncaughtException', function (err) {
+    // If by terminating one more exception => stop immediately to break the circle
+    if (uncaughtExceptionCount) {
+        console.log(err.message || err);
+        if (err.stack) console.log(err.stack);
+        process.exit(2);
+        return;
+    }
+    uncaughtExceptionCount++;
     if (typeof err == 'object') {
         if (err.errno == 'EADDRINUSE') {
             logger.error('Another instance is running or some application uses port!');
