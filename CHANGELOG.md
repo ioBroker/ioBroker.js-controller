@@ -1,3 +1,6 @@
+# 0.4.1 (2015-01-10)
+* (bluefox) fix first setup
+
 # 0.4.0 (2015-01-10)
 * (bluefox) support of multiple hosts
 
