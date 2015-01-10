@@ -604,6 +604,8 @@ function processMessage(msg) {
                     var result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     var infoCount = 0;
+                    var timeout = null;
+
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (var i = 0; i < doc.rows.length; i++) {
@@ -613,11 +615,27 @@ function processMessage(msg) {
                                 if (ioPack) {
                                     result.hosts[ioPack.host] = ioPack;
                                 }
-                                if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                                if (!infoCount) {
+                                    if (timeout) {
+                                        clearTimeout(timeout);
+                                        sendTo(msg.from, msg.command, result, msg.callback);
+                                    } else {
+                                        logger.warn('host.' + hostname + ' too delayed answer for ' + ioPack.host);
+                                    }
+                                }
                             });
                         }
                     }
-                    if (!infoCount) sendTo(msg.from, msg.command, result, msg.callback);
+                    if (!infoCount) {
+                        sendTo(msg.from, msg.command, result, msg.callback);
+                    } else {
+                        // Start timeout and send answer in 5 seconds if some hosts is offline
+                        timeout = setTimeout(function () {
+                            logger.warn('host.' + hostname + ' some hosts are offline');
+                            timeout = null;
+                            sendTo(msg.from, msg.command, result, msg.callback);
+                        }, 5000);
+                    }
                 });
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
