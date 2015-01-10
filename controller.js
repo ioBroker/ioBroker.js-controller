@@ -281,7 +281,7 @@ function collectDiagInfo(callback) {
         if (err || !obj) {
             obj = {native: {uuid: 'not found'}};
         }
-        objects.getObjectView('system', 'host.', {}, function (_err, doc) {
+        objects.getObjectView('system', 'host', {}, function (_err, doc) {
             var diag = {
                 uuid: obj.native.uuid,
                 hosts:[],
@@ -323,7 +323,7 @@ function setMeta() {
     objects.getObject(id, function (err, oldObj) {
         var newObj = {
             _id:  id,
-            type: 'host.',
+            type: 'host',
             common: {
                 name:             id,
 //              process:          process.title, // actually not required, because there is type now
@@ -600,7 +600,7 @@ function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host.', {}, function (err, doc) {
+                objects.getObjectView('system', 'host', {}, function (err, doc) {
                     var result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     var infoCount = 0;

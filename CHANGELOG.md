@@ -1,3 +1,6 @@
+# 0.3.17 (2015-01-10)
+* (bluefox) fix problem with "hosts are not shown in admin"
+
 # 0.3.16 (2015-01-09)
 * (bluefox) support of multiple hosts
 
