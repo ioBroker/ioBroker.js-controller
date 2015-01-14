@@ -1,3 +1,6 @@
+# 0.4.2 (2015-01-14)
+* (bluefox) fix error in objectsInMemClient and objectsInMemServer
+
 # 0.4.1 (2015-01-10)
 * (bluefox) fix first setup
 
