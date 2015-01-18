@@ -1,3 +1,6 @@
+# 0.4.3 (2015-01-18)
+* (bluefox) restart objects socket if some exception occurs
+
 # 0.4.2 (2015-01-14)
 * (bluefox) fix error in objectsInMemClient and objectsInMemServer
 

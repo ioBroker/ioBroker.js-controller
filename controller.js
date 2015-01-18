@@ -191,61 +191,66 @@ states.getKeys('*.logging', function (err, keys) {
     }
 });
 
-var objects = new Objects({
-    connection: config.objects,
-    logger: logger,
-    connected: function (type) {
-        logger.info('host.' + hostname + ' ' + type + ' connected');
-        setMeta();
-        getInstances();
-        startAliveInterval();
-        initMessageQueue();
-    },
-    change: function (id, obj) {
-        if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-        logger.info('host.' + hostname + ' object change ' + id);
-        if (procs[id]) {
-            // known adapter
-            if (!obj) {
-                procs[id].config.common.enabled = false;
-                procs[id].config.common.host    = null;
-                procs[id].config.deleted        = true;
-                logger.info('host.' + hostname + ' object deleted ' + id);
-            } else {
-                if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
-                if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
-                procs[id].config = obj;
-            }
-            if (procs[id].process) {
-                stopInstance(id, function () {
-                    if (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
-                        if (procs[id].config.common.enabled) {
-                            setTimeout(function (_id) {
-                                startInstance(_id);
-                            }, 2500, id);
+var objects = null;
+function createObjects () {
+    return new Objects({
+        connection: config.objects,
+        logger: logger,
+        connected: function (type) {
+            logger.info('host.' + hostname + ' ' + type + ' connected');
+            setMeta();
+            getInstances();
+            startAliveInterval();
+            initMessageQueue();
+        },
+        change: function (id, obj) {
+            if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
+            logger.info('host.' + hostname + ' object change ' + id);
+            if (procs[id]) {
+                // known adapter
+                if (!obj) {
+                    procs[id].config.common.enabled = false;
+                    procs[id].config.common.host    = null;
+                    procs[id].config.deleted        = true;
+                    logger.info('host.' + hostname + ' object deleted ' + id);
+                } else {
+                    if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
+                    if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
+                    procs[id].config = obj;
+                }
+                if (procs[id].process) {
+                    stopInstance(id, function () {
+                        if (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
+                            if (procs[id].config.common.enabled) {
+                                setTimeout(function (_id) {
+                                    startInstance(_id);
+                                }, 2500, id);
+                            }
+                        } else {
+                            delete procs[id];
                         }
+                    });
+                } else {
+                    if (procs[id].config && (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                        if (procs[id].config.common.enabled) startInstance(id);
                     } else {
                         delete procs[id];
                     }
-                });
-            } else {
-                if (procs[id].config && (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                }
+
+            } else if (obj && obj.common) {
+                // new adapter
+                if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
+                    procs[id] = {config: obj};
                     if (procs[id].config.common.enabled) startInstance(id);
-                } else {
-                    delete procs[id];
                 }
             }
-
-        } else if (obj && obj.common) {
-            // new adapter
-            if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
-                procs[id] = {config: obj};
-                if (procs[id].config.common.enabled) startInstance(id);
-            }
         }
-    }
 
-});
+    });
+}
+
+objects = createObjects ();
 
 objects.subscribe('system.adapter.*');
 
@@ -1254,6 +1259,19 @@ process.on('SIGTERM', function () {
 
 var uncaughtExceptionCount = 0;
 process.on('uncaughtException', function (err) {
+    if (err.arguments && err.arguments[0] == "fragmentedOperation") {
+        logger.error('fragmentedOperation: restart objects');
+        // restart objects
+        objects.destroy();
+        delete objects;
+        // Give time to close the objects
+        setTimeout(function () {
+            objects = createObjects();
+        }, 3000);
+        return;
+    }
+
+
     // If by terminating one more exception => stop immediately to break the circle
     if (uncaughtExceptionCount) {
         console.log(err.message || err);
