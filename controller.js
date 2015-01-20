@@ -30,7 +30,7 @@ var hostname =     os.hostname();
 var logList =      [];
 
 var config;
-if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
+if (!fs.existsSync(tools.getConfigFileName())) {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
         logger = require(__dirname + '/lib/logger')('info', ['iobroker.log'], true);
@@ -40,7 +40,7 @@ if (!fs.existsSync(__dirname + '/conf/iobroker.json')) {
     logger.error('host.' + hostname + ' conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
 } else {
-    config = JSON.parse(fs.readFileSync(__dirname + '/conf/iobroker.json'));
+    config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
     if (!config.states)  config.states  = {type: 'file'};
     if (!config.objects) config.objects = {type: 'file'};
 }

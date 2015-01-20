@@ -1,3 +1,6 @@
+# 0.4.4 (2015-01-20)
+* (bluefox) move "data" directory by "npm install" to "../../iobroker-data"
+
 # 0.4.3 (2015-01-18)
 * (bluefox) restart objects socket if some exception occurs
 
