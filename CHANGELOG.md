@@ -1,3 +1,6 @@
+# 0.4.5 (2015-01-20)
+* (bluefox) fix problem with no objects after "setup" started
+
 # 0.4.4 (2015-01-20)
 * (bluefox) move "data" directory by "npm install" to "../../iobroker-data"
 

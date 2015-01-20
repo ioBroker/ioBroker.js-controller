@@ -111,9 +111,13 @@ var states = new States({
     connection: config.states,
     logger: logger,
     change: function (id, state) {
+        if (!id) {
+            logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
+            return;
+        }
         // If some log transporter activated or deactivated
         if (id.match(/.logging$/)) {
-            logRedirect(state.val, id.substring(0, id.length - '.logging'.length));
+            logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length));
         } else
         // If this is messagebox
         if (id == 'messagebox.system.host.' + hostname) {
