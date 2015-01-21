@@ -1,3 +1,8 @@
+# 0.4.6 (2015-01-21)
+* (bluefox) add developing flag "noFileCache" to do not cache web files.
+* (bluefox) improve "adapter.getPort" on windows.
+* (bluefox) create iobroker.sh with 0777 by install
+
 # 0.4.5 (2015-01-20)
 * (bluefox) fix problem with no objects after "setup" started
 
