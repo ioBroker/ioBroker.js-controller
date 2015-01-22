@@ -42,5 +42,6 @@
                "maxFiles": null
             }
         }
-    }
+    },
+    "dataDirComment": "Always relative to iobroker.js-controller/"
 }

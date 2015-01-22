@@ -1,6 +1,5 @@
 @echo off
 
-if "%1"=="noadmin" goto noadmin
 :: BatchGotAdmin
 :-------------------------------------
 REM  --> Check for permissions
@@ -15,7 +14,7 @@ if '%errorlevel%' NEQ '0' (
 :UACPrompt
     echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
     set params = %*:"=""
-    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params% %1", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
     "%temp%\getadmin.vbs"
     del "%temp%\getadmin.vbs"
@@ -25,12 +24,14 @@ if '%errorlevel%' NEQ '0' (
     pushd "%CD%"
     CD /D "%~dp0"
 :--------------------------------------
-call npm install --production
-:noadmin
-node iobroker.js setup
-node iobroker.js update
-node iobroker.js object get system.adapter.admin > nul
-IF NOT ERRORLEVEL 1 GOTO admin_exist
-echo install admin adapter
-node iobroker.js add admin --enabled
-:admin_exist
+echo "%1"
+if '%1' == 'start' %WINDIR%\system32\net.exe start ioBroker
+if '%1' == 'stop' %WINDIR%\system32\net.exe stop ioBroker
+if '%1' == '' (
+	%WINDIR%\system32\net.exe stop ioBroker
+	%WINDIR%\system32\net.exe start ioBroker
+)
+if '%1' == 'restart' (
+	%WINDIR%\system32\net.exe stop ioBroker
+	%WINDIR%\system32\net.exe start ioBroker
+)
