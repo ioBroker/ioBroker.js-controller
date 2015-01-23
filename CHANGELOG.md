@@ -1,3 +1,6 @@
+# 0.5.0 (2015-01-23)
+* (bluefox) make it possible to install ioBroker with "npm install iobroker"
+
 # 0.4.6 (2015-01-21)
 * (bluefox) add developing flag "noFileCache" to do not cache web files.
 * (bluefox) improve "adapter.getPort" on windows.
