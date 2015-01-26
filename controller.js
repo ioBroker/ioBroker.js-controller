@@ -733,11 +733,13 @@ function processMessage(msg) {
 
                 var lines = msg.message || 200;
                 var text = '';
+                var logFile = __dirname + '/log/iobroker.log';
+                if (!fs.existsSync(__dirname + '/log/iobroker.log')) logFile = __dirname + '/../../log/iobroker.log';
 
-                if (fs.existsSync(__dirname + '/log/iobroker.log')) {
-                    var stats = fs.statSync(__dirname + '/log/iobroker.log');
+                if (fs.existsSync(logFile)) {
+                    var stats = fs.statSync(logFile);
 
-                    fs.createReadStream(__dirname + '/log/iobroker.log', {
+                    fs.createReadStream(logFile, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
                         end: stats.size
                     }).on('data', function (chunk) {

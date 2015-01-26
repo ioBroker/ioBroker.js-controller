@@ -1,3 +1,8 @@
+# 0.5.1 (2015-01-26)
+* (bluefox) fix log
+* (bluefox) show npm version and not git version
+* (bluefox) use npm packet to install and not the exec npm
+
 # 0.5.0 (2015-01-23)
 * (bluefox) make it possible to install ioBroker with "npm install iobroker"
 
