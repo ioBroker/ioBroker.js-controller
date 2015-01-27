@@ -1,3 +1,6 @@
+# 0.5.3 (2015-01-27)
+* (bluefox) fix log for restart
+
 # 0.5.2 (2015-01-27)
 * (bluefox) remove node-windows from dependencies
 
