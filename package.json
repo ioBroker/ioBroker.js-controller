@@ -23,7 +23,6 @@
     "tar.gz": "~0.1.1",
     "socket.io": "~1.2.1",
     "socket.io-client": "~1.2.1",
-    "node-windows": "~0.1.5",
     "npm": "~2.3.0"
   },
   "devDependencies": {
