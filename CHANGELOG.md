@@ -1,3 +1,6 @@
+# 0.5.2 (2015-01-27)
+* (bluefox) remove node-windows from dependencies
+
 # 0.5.1 (2015-01-26)
 * (bluefox) fix log
 * (bluefox) show npm version and not git version
