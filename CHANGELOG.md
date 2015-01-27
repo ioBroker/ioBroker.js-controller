@@ -1,3 +1,6 @@
+# 0.5.4 (2015-01-27)
+* (bluefox) fix restart under windows
+
 # 0.5.3 (2015-01-27)
 * (bluefox) fix log for restart
 
