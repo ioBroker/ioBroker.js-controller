@@ -1,6 +1,10 @@
 # 0.5.4 (2015-01-27)
 * (bluefox) fix restart under windows
 
+# 0.5.5 (2015-01-30)
+* (bluefox) add yr as npm
+* (bluefox) extend adapter.js with formatDate
+
 # 0.5.3 (2015-01-27)
 * (bluefox) fix log for restart
 
