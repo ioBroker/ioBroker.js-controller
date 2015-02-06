@@ -5,6 +5,9 @@
 * (bluefox) add yr as npm
 * (bluefox) extend adapter.js with formatDate
 
+# 0.5.6 (2015-02-06)
+* (bluefox) add simple-api
+
 # 0.5.3 (2015-01-27)
 * (bluefox) fix log for restart
 
