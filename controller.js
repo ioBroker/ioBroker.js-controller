@@ -762,12 +762,10 @@ function processMessage(msg) {
             break;
 
         case 'delLogs':
-            if (fs.existsSync(__dirname + '/log/iobroker.log')) {
-                fs.writeFile(__dirname + '/log/iobroker.log', '');
-            }
-            if (msg.callback && msg.from) {
-                sendTo(msg.from, msg.command, 'ok', msg.callback);
-            }
+            if (fs.existsSync(__dirname +       '/log/iobroker.log')) fs.writeFile(__dirname +       '/log/iobroker.log', '');
+            if (fs.existsSync(__dirname + '/../../log/iobroker.log')) fs.writeFile(__dirname + '/../../log/iobroker.log', '');
+
+            if (msg.callback && msg.from) sendTo(msg.from, msg.command, 'ok', msg.callback);
             break;
     }
 

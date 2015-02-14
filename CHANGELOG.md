@@ -1,3 +1,7 @@
+# 0.5.7 (2015-01-14)
+* (bluefox) add sayit adapter
+* (bluefox) fix clear of log file
+
 # 0.5.4 (2015-01-27)
 * (bluefox) fix restart under windows
 

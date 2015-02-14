@@ -91,6 +91,10 @@
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
       "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
   },
+  "sayit": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
+  },
   "simple-api": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/admin/simple-api.png"
