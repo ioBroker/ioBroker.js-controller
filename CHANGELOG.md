@@ -1,3 +1,7 @@
+# 0.5.8 (2015-01-18)
+* (bluefox) add start/stop/restart adapter from console.
+* (bluefox) better wakeup of adapters.
+
 # 0.5.7 (2015-01-14)
 * (bluefox) add sayit adapter
 * (bluefox) fix clear of log file
