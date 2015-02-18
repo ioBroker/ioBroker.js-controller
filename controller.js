@@ -765,8 +765,7 @@ function processMessage(msg) {
             if (fs.existsSync(__dirname +       '/log/iobroker.log')) fs.writeFile(__dirname +       '/log/iobroker.log', '');
             if (fs.existsSync(__dirname + '/../../log/iobroker.log')) fs.writeFile(__dirname + '/../../log/iobroker.log', '');
 
-            if (msg.callback && msg.from) sendTo(msg.from, msg.command, 'ok', msg.callback);
-            break;
+            if (msg.callback && msg.from) sendTo(msg.from, msg.command, 'ok', msg.callback);            break;
     }
 
 }
@@ -903,6 +902,29 @@ function startInstance(id, wakeUp) {
     }
     procs[id].downloadRetry = 0;
 
+
+    if (instance.common.subscribe || instance.common.wakeup) {
+        procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
+        var parts = instance._id.split('.');
+        var instanceId = parts[parts.length - 1];
+        procs[id].subscribe = procs[id].subscribe.replace("<INSTANCE>", instanceId);
+
+        if (subscribe[procs[id].subscribe]) {
+            if (subscribe[procs[id].subscribe].indexOf(id) == -1) {
+                subscribe[procs[id].subscribe].push(id);
+            }
+        } else {
+            subscribe[procs[id].subscribe] = [id];
+
+            // Subscribe on changes
+            if (procs[id].subscribe.match(/$messagebox/)) {
+                states.subscribeMessage(procs[id].subscribe.substring('messagebox'.length));
+            } else {
+                states.subscribe(procs[id].subscribe);
+            }
+        }
+    }
+
     switch (mode) {
         case 'once':
         case 'daemon':
@@ -971,6 +993,7 @@ function startInstance(id, wakeUp) {
                 procs[id].schedule.cancel();
                 logger.info('host.' + hostname + ' instance canceled schedule ' + instance._id);
             }
+
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
                 if (!procs[id]) {
                     logger.error('host.' + hostname + ' scheduleJob: Task deleted (' + id + ')');
@@ -1024,24 +1047,6 @@ function startInstance(id, wakeUp) {
             break;
 
         case 'subscribe':
-            procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
-            var parts = instance._id.split('.');
-            var instanceId = parts[parts.length - 1];
-            procs[id].subscribe = procs[id].subscribe.replace("<INSTANCE>", instanceId);
-
-            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) == -1) {
-                subscribe[procs[id].subscribe].push(procs[id].subscribe);
-            } else {
-                subscribe[procs[id].subscribe] = [id];
-            }
-
-            // Subscribe on changes
-            if (procs[id].subscribe.match(/$messagebox/)) {
-                states.subscribeMessage(procs[id].subscribe.substring('messagebox'.length));
-            } else {
-                states.subscribe(procs[id].subscribe);
-            }
-
             break;
 
         default:
