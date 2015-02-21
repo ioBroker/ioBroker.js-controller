@@ -1,4 +1,8 @@
-# 0.5.8 (2015-01-18)
+# 0.5.9 (2015-02-21)
+* (bluefox) fix error with trimFifo (used for history adapter)
+* (bluefox) use system "npm" by updating of js-controller
+
+# 0.5.8 (2015-02-18)
 * (bluefox) add start/stop/restart adapter from console.
 * (bluefox) better wakeup of adapters.
 
