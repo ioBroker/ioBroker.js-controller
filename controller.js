@@ -618,21 +618,37 @@ function processMessage(msg) {
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (var i = 0; i < doc.rows.length; i++) {
-                            infoCount++;
-                            sendTo(doc.rows[i].id, 'getVersion', null, function (ioPack) {
-                                infoCount--;
-                                if (ioPack) {
-                                    result.hosts[ioPack.host] = ioPack;
+                            // If desired local version, do not ask it, just answer
+                            if (doc.rows[i].id == 'system.host.' + hostname) {
+                                try {
+                                    var _ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                                } catch (e) {
+                                    logger.error('host.' + hostname + ' cannot read and parse "' + __dirname + '/io-package.json"');
                                 }
-                                if (!infoCount) {
-                                    if (timeout) {
-                                        clearTimeout(timeout);
-                                        sendTo(msg.from, msg.command, result, msg.callback);
-                                    } else {
-                                        logger.warn('host.' + hostname + ' too delayed answer for ' + ioPack.host);
+                                if (_ioPack) {
+                                    _ioPack.common.host = hostname;
+                                    _ioPack.common.runningVersion = version;
+                                    result.hosts[hostname] = _ioPack.common;
+                                } else {
+                                    result.hosts[hostname] = {};
+                                }
+                            } else {
+                                infoCount++;
+                                sendTo(doc.rows[i].id, 'getVersion', null, function (ioPack) {
+                                    infoCount--;
+                                    if (ioPack) {
+                                        result.hosts[ioPack.host] = ioPack;
                                     }
-                                }
-                            });
+                                    if (!infoCount) {
+                                        if (timeout) {
+                                            clearTimeout(timeout);
+                                            sendTo(msg.from, msg.command, result, msg.callback);
+                                        } else {
+                                            logger.warn('host.' + hostname + ' too delayed answer for ' + ioPack.host);
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }
                     if (!infoCount) {
