@@ -944,7 +944,7 @@ function startInstance(id, wakeUp) {
     switch (mode) {
         case 'once':
         case 'daemon':
-            if (!procs[id].process) {
+            if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
@@ -1015,26 +1015,36 @@ function startInstance(id, wakeUp) {
                     logger.error('host.' + hostname + ' scheduleJob: Task deleted (' + id + ')');
                     return;
                 }
-                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                procs[id].process = cp.fork(fileNameFull, args);
-                logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+                // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
+                if (procs[id].lastStart && (new Date()).getTime() - procs[id].lastStart < 2000){
+                    logger.warn('host.' + hostname + ' instance ' + instance._id + ' does not started, because just executed');
+                    return;
+                }
+                // Remember the last run
+                procs[id].lastStart = (new Date()).getTime();
+                if (!procs[id].process) {
+                    var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                    procs[id].process = cp.fork(fileNameFull, args);
+                    logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
-                procs[id].process.on('exit', function (code, signal) {
-                    states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
-                    if (signal) {
-                        logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
-                    } else if (code === null) {
-                        logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
-                    } else {
-                        if (code === 0 || code === '0') {
-                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                    procs[id].process.on('exit', function (code, signal) {
+                        states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
+                        if (signal) {
+                            logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
+                        } else if (code === null) {
+                            logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                         } else {
-                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            if (code === 0 || code === '0') {
+                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            } else {
+                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            }
                         }
-                    }
-                    delete procs[id].process;
-                });
-
+                        if (procs[id] && procs[id].process) delete procs[id].process;
+                    });
+                } else {
+                    if (!wakeUp) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                }
             });
             logger.info('host.' + hostname + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
             // Start one time adapter by start or if configuration changed
@@ -1090,6 +1100,7 @@ function stopInstance(id, callback) {
             procs[id].schedule.cancel();
             delete(procs[id].schedule);
         }
+
         if (procs[id].subscribe) {
             // Remove this id from subsribed on this message
             if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
