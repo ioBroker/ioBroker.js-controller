@@ -1,12 +1,14 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.4.1",
+  "version": "0.5.9",
   "engines": {
     "node": ">=0.8"
   },
   "optionalDependencies": {
-    "node-windows": "~0.1.5",
 	"iobroker.admin": "*"
+  },
+  "bin" : {
+    "iobroker" : "./iobroker.js"
   },
   "dependencies": {
     "adm-zip": "~0.4.4",
@@ -21,7 +23,7 @@
     "tar.gz": "~0.1.1",
     "socket.io": "~1.2.1",
     "socket.io-client": "~1.2.1",
-    "node-windows": "~0.1.5"
+    "npm": "~2.3.0"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

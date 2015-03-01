@@ -18,58 +18,52 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 sudo dpkg -i nodejs_0.10.22-1_armhf.deb
 rm nodejs_0.10.22-1_armhf.deb```
 
-
-
-### Install [Redis](http://redis.io/)
-
-* ```sudo apt-get install redis-server```
-
-### Download and Install
+### Install js-controller on linux
 
 * Create and change to the directory under which you want to install ioBroker.
 
     ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
-* Clone the repository
+* install npm packet
 
-    ```git clone https://github.com/ioBroker/ioBroker.js-controller /opt/iobroker/```
-* Install Node dependencies
-
-    ```npm install --production```
+    ```npm install iobroker.js-controller```
 * Grant execute rights
 
     ```chmod +x iobroker```
-* Do initial database setup
 
-    ```./iobroker setup```
+### Start ioBroker controller on linux
 
-    (if your Redis is not running on localhost you can supply optional arguments --redis &lt;host&gt;)
-
-### Update adapter repository
-
-* Refresh available adapter information
-
-    ```./iobroker update```
-
-### Install admin adapter
-
-This adapter is needed to do basic system administration
-
-*   ```./iobroker add admin --enabled```
-
-### Start ioBroker controller
-
-* run ```./iobroker start``` to start the ioBroker controller in the background
+* run ```./iobroker start``` in the ioBroker directory to start the ioBroker controller in the background
 * watch the logfile ```tail -f log/iobroker.log```
 
 or
 
-* run ```node controller.js``` to start the ioBroker controller in foreground and watch the log on console
+* run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
 
+### Install js-controller on windows
+
+* Create and change to the directory under which you want to install ioBroker.
+
+    ```mkdir C:/iobroker```
+    ```cd C:/iobroker```
+* install npm packet from created directory
+
+    ```npm install iobroker.js-controller```
+
+### Start ioBroker controller on windows
+
+* run ```iobroker start``` in the ioBroker directory to start the ioBroker controller in the background console
+* check the logfile ```node_modules/iobroker.js-controller/log/iobroker.log```
+
+or
+
+* run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
 
 ### Admin UI
 
-The admin adapter starts a webserver that hosts the Admin UI. Default port is 8081, so just open http://&lt;iobroker&gt;:8081/
+The admin adapter starts a web-server that hosts the Admin UI. Default port is 8081, so just open http://&lt;iobroker&gt;:8081/
+If port 8081 is occupied, you can install second Admin UI on alternate port and change port for first admin UI:
 
+* run ```./iobroker add admin --enabled --port 8090``` and go to the http://&lt;iobroker&gt;:8090/. Of course you can change port 8090 to other one.
 
 ### Install more adapters
 
@@ -79,7 +73,8 @@ The admin adapter starts a webserver that hosts the Admin UI. Default port is 80
 After Installation of an Adapter you should edit it's configuration. Go to the tab "instances" in the Admin UI.
 By clicking a adapter instance you can directly enable it by checking the enabled checkbox. Press enter to save or escape
 to cancel.
-To edit the adapters configuration mark the adapter row and click the pencil icon (lower left).
+To edit the adapters configuration mark the adapter row and click the note icon.
+To enable or disable the adapter click on the pencil icon in the according row.
 
 
 

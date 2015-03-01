@@ -1,3 +1,56 @@
+# 0.5.9 (2015-02-21)
+* (bluefox) fix error with trimFifo (used for history adapter)
+* (bluefox) use system "npm" by updating of js-controller
+
+# 0.5.8 (2015-02-18)
+* (bluefox) add start/stop/restart adapter from console.
+* (bluefox) better wakeup of adapters.
+
+# 0.5.7 (2015-01-14)
+* (bluefox) add sayit adapter
+* (bluefox) fix clear of log file
+
+# 0.5.4 (2015-01-27)
+* (bluefox) fix restart under windows
+
+# 0.5.5 (2015-01-30)
+* (bluefox) add yr as npm
+* (bluefox) extend adapter.js with formatDate
+
+# 0.5.6 (2015-02-06)
+* (bluefox) add simple-api
+
+# 0.5.3 (2015-01-27)
+* (bluefox) fix log for restart
+
+# 0.5.2 (2015-01-27)
+* (bluefox) remove node-windows from dependencies
+
+# 0.5.1 (2015-01-26)
+* (bluefox) fix log
+* (bluefox) show npm version and not git version
+* (bluefox) use npm packet to install and not the exec npm
+
+# 0.5.0 (2015-01-23)
+* (bluefox) make it possible to install ioBroker with "npm install iobroker"
+
+# 0.4.6 (2015-01-21)
+* (bluefox) add developing flag "noFileCache" to do not cache web files.
+* (bluefox) improve "adapter.getPort" on windows.
+* (bluefox) create iobroker.sh with 0777 by install
+
+# 0.4.5 (2015-01-20)
+* (bluefox) fix problem with no objects after "setup" started
+
+# 0.4.4 (2015-01-20)
+* (bluefox) move "data" directory by "npm install" to "../../iobroker-data"
+
+# 0.4.3 (2015-01-18)
+* (bluefox) restart objects socket if some exception occurs
+
+# 0.4.2 (2015-01-14)
+* (bluefox) fix error in objectsInMemClient and objectsInMemServer
+
 # 0.4.1 (2015-01-10)
 * (bluefox) fix first setup
 

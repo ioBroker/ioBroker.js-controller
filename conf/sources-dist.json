@@ -57,6 +57,10 @@
     "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
+  "ical": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/admin/ical.png"
+  },
   "javascript": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
@@ -90,6 +94,14 @@
   "ping": {
       "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
       "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
+  },
+  "sayit": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
+  },
+  "simple-api": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/admin/simple-api.png"
   },
   "socketio": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
@@ -128,13 +140,8 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
   },
-  "websocket": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.websocket/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.websocket/master/admin/websocket.png"
-  },
   "yr": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.yr/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png"
   },
   "zwave": {

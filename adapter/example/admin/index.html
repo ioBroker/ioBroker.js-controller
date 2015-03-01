@@ -27,7 +27,7 @@
 <!-- you have to define 2 functions in the global scope: -->
 <script type="text/javascript">
 
-    // Dictionary
+    // Dictionary (systemDictionary is global variable from adapter-settings.js)
     systemDictionary = {
         "example adapter settings": {"de": "Beispiel", "ru": "Пример"},
         "test1":                    {"en": "Test 1", "de": "Test 1", "ru": "Тест 1"},
@@ -39,11 +39,18 @@
     };
 
     // the function loadSettings has to exist ...
-    function load(settings) {
+    function load(settings, onChange) {
+        // example: select elements with id=key and class=value and insert value
         for (var key in settings) {
             // example: select elements with id=key and class=value and insert value
-            $('#' + key + '.value').val(settings[key]);
+            if ($('#' + key + '.value').attr('type') == 'checkbox') {
+                $('#' + key + '.value').prop('checked', settings[key]).change(onChange);
+            } else {
+                $('#' + key + '.value').val(settings[key]).change(onChange).keyup(onChange);
+            }
         }
+        // Signal to admin, that no changes yet
+        onChange(false);
     }
 
     // ... and the function save has to exist.
