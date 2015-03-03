@@ -1,3 +1,9 @@
+# 0.5.11 (2015-02-26)
+* (bluefox) fix function deleteDevice in adapter.js
+
+# 0.5.10 (2015-02-26)
+* (bluefox) do not start more times the scheduled task after a long sleep
+
 # 0.5.9 (2015-02-21)
 * (bluefox) fix error with trimFifo (used for history adapter)
 * (bluefox) use system "npm" by updating of js-controller
