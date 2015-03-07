@@ -56,12 +56,11 @@ if (config.objects.type == 'file' && (!config.objects.host || config.objects.hos
 
 if (process.argv.indexOf('start') !== -1) {
     isDaemon = true;
-    logger = require(__dirname + '/lib/logger.js')(config.log.level || 'info', ['iobroker.log'], true);
+    config.log.noStdout = true;
+    logger = require(__dirname + '/lib/logger.js')(config.log);
 } else {
-    logger = require(__dirname + '/lib/logger.js')(config.log.level || 'info', ['iobroker.log']);
+    logger = require(__dirname + '/lib/logger.js')(config.log);
 }
-
-logger.info(config.log.level);
 
 // If installed as npm module
 adapterDir = adapterDir.split('/');

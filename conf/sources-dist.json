@@ -14,7 +14,6 @@
   },
   "cul": {
     "meta": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/io-package.json",
-    "url": "https://github.com/hobbyquaker/ioBroker.cul/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg"
   },
   "dwd": {
@@ -54,7 +53,6 @@
   },
   "hue": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.hue/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
   "ical": {
@@ -88,12 +86,12 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
   },
   "node-red": {
-      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/io-package.json",
-      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/admin/node-red.png"
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.node-red/master/admin/node-red.png"
   },
   "ping": {
-      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
-      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
   },
   "sayit": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",

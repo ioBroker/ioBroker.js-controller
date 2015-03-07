@@ -26,19 +26,11 @@
     "log": {
         "level": "info",
         "transport": {
-            "syslog1": {
-               "type": "syslog",
-               "enabled": false,
-               "host": "127.0.0.1",
-               "port": "514",
-               "protocol": "udp4",
-               "facility": "local0"
-            },
             "file1": {
                "type": "file",
                "enabled": true,
                "filename": "log/iobroker.log",
-               "maxsize": null,
+               "maxsize":  null,
                "maxFiles": null
             }
         }
