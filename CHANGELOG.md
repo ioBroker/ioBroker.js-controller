@@ -1,3 +1,7 @@
+# 0.5.14 (2015-03-08)
+* (bluefox) update utils.js (silent mode)
+* (bluefox) fix error by setup.js
+
 # 0.5.12 (2015-03-07)
 * (bluefox) fix error with sendTo('email')
 * (bluefox) increase timeout for npm to 5000 ms
