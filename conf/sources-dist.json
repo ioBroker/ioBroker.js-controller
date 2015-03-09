@@ -55,6 +55,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
+  "hmm": {
+    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/admin/hmm.png"
+  },
   "ical": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/admin/ical.png"
