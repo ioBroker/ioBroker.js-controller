@@ -25,10 +25,7 @@ rm nodejs_0.10.22-1_armhf.deb```
     ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
 * install npm packet
 
-    ```npm install iobroker.js-controller```
-* Grant execute rights
-
-    ```chmod +x iobroker```
+    ```npm install iobroker```
 
 ### Start ioBroker controller on linux
 
