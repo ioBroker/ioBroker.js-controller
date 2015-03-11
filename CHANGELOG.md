@@ -1,3 +1,6 @@
+# 0.5.14 (2015-03-11)
+* (bluefox) enable silent mode
+
 # 0.5.14 (2015-03-08)
 * (bluefox) update utils.js (silent mode)
 * (bluefox) fix error by setup.js
