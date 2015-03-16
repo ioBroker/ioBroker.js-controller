@@ -838,7 +838,7 @@ function initInstances() {
         }
     }
 
-    for (var id in procs) {
+    for (id in procs) {
         if (procs[id].config.common.enabled) {
             if (id.indexOf('system.adapter.admin') == -1) {
                 setTimeout(function (_id) {
