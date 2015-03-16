@@ -824,14 +824,29 @@ function getInstances() {
 
 function initInstances() {
     var c = 0;
+
+    // Start first admin
     for (var id in procs) {
         if (procs[id].config.common.enabled) {
+            if (id.indexOf('system.adapter.admin') != -1) {
+                setTimeout(function (_id) {
+                    startInstance(_id);
+                }, 2000 * c++, id);
 
-            setTimeout(function (_id) {
-                startInstance(_id);
-            }, 2000 * c++, id);
+                c += 1;
+            }
+        }
+    }
 
-            c += 1;
+    for (var id in procs) {
+        if (procs[id].config.common.enabled) {
+            if (id.indexOf('system.adapter.admin') == -1) {
+                setTimeout(function (_id) {
+                    startInstance(_id);
+                }, 2000 * c++, id);
+
+                c += 1;
+            }
         }
     }
 }
