@@ -80,6 +80,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/admin/legacy.png"
   },
+  "megad": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
+  },
   "mobile": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.mobile/archive/master.zip",
@@ -116,8 +120,11 @@
   },
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.onkyo/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
+  },
+  "owfs": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.owfs/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.owfs/master/admin/owfs.png"
   },
   "pushover": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",

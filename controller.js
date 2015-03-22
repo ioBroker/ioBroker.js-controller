@@ -284,42 +284,66 @@ function collectDiagInfoExtended(callback) {
 
 // collect short diag information
 function collectDiagInfo(callback) {
-    objects.getObject('system.meta.uuid' , function (err, obj) {
-        // create uuid
-        if (err || !obj) {
-            obj = {native: {uuid: 'not found'}};
-        }
-        objects.getObjectView('system', 'host', {}, function (_err, doc) {
-            var diag = {
-                uuid: obj.native.uuid,
-                hosts:[],
-                adapters: {}
-            };
-            if (!_err && doc) {
-                if (doc && doc.rows.length) {
-                    // Read installed versions of all hosts
-                    for (var i = 0; i < doc.rows.length; i++) {
-                        diag.hosts.push({
-                            version:  doc.rows[i].value.common.version,
-                            platform: doc.rows[i].value.common.platform,
-                            type:     doc.rows[i].value.native.os.platform
-                        });
-                    }
-                }
+    objects.getObject('system.config', function (err, systemConfig) {
+        objects.getObject('system.meta.uuid', function (err, obj) {
+            // create uuid
+            if (err || !obj) {
+                obj = {native: {uuid: 'not found'}};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
-            objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+            objects.getObjectView('system', 'host', {}, function (_err, doc) {
+                var diag = {
+                    uuid: obj.native.uuid,
+                    language: systemConfig.common.language,
+                    hosts: [],
+                    adapters: {}
+                };
+
                 if (!_err && doc) {
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (var i = 0; i < doc.rows.length; i++) {
-                            diag.adapters[doc.rows[i].value.common.name] = {
-                                version:  doc.rows[i].value.common.version,
-                                platform: doc.rows[i].value.common.platform
-                            };
+
+                            diag.hosts.push({
+                                version:  doc.rows[i].value.common.installedVersion,
+                                platform: doc.rows[i].value.common.platform,
+                                type:     doc.rows[i].value.native.os.platform
+
+                            });
                         }
                     }
                 }
-                if (callback) callback(diag);
+                objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                    if (!_err && doc) {
+                        if (doc && doc.rows.length) {
+                            // Read installed versions of all hosts
+                            for (var i = 0; i < doc.rows.length; i++) {
+                                diag.adapters[doc.rows[i].value.common.name] = {
+                                    version: doc.rows[i].value.common.version,
+                                    platform: doc.rows[i].value.common.platform
+                                };
+                            }
+                        }
+                    }
+                    if (callback) callback(diag);
+                });
             });
         });
     });
@@ -921,8 +945,8 @@ function startInstance(id, wakeUp) {
         fileNameFull = adapterDir + '/' + fileName;
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
+            var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
             if (fs.existsSync(adapterDir + '/www')) {
-                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
             } else {
                 logger.error('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ': cannot find start file!');
