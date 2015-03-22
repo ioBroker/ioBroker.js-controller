@@ -1,3 +1,10 @@
+# 0.6.0 (2015-03-22)
+* (bluefox) try to implement backup/restore
+* (bluefox) support of "--install" flag for sayIt
+* (bluefox) add megad to repository
+* (bluefox) enable subscribeStates() same as subscribeStates('*')
+* (bluefox) replace "slient" mode with "install" mode
+
 # 0.5.14 (2015-03-11)
 * (bluefox) enable silent mode
 
