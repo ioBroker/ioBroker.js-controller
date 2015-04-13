@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "engines": {
     "node": ">=0.8"
   },
@@ -17,7 +17,7 @@
     "node-schedule": "https://github.com/hobbyquaker/node-schedule/tarball/master",
     "node.extend": "~1.0.10",
     "request": "~2.38.0",
-    "winston": "~0.7.3",
+    "winston": "~1.0.0",
     "yargs": "~1.2.6",
     "mime": "~1.2.11",
     "tar.gz": "~0.1.1",
@@ -32,7 +32,7 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.4.0",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-commands": "~0.1.6",
+    "grunt-commands": "~0.1.7",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-jscs": "~0.6.1",
     "grunt-exec": "~0.4.5",

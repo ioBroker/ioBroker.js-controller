@@ -138,13 +138,13 @@ var states = new States({
 
                     // delete too old callbacks IDs
                     var now = (new Date()).getTime();
-                    for (var id in callbacks) {
-                        if (now - callbacks[id].time > 3600000) delete callbacks[id];
+                    for (var _id in callbacks) {
+                        if (now - callbacks[id].time > 3600000) delete callbacks[_id];
                     }
                 } else {
                     processMessage(obj);
                 }
-            };
+            }
         } else
         if (subscribe[id]) {
             for (var i = 0; i < subscribe[id].length; i++) {
@@ -182,7 +182,7 @@ states.getKeys('*.logging', function (err, keys) {
                 for (var i = 0; i < keys.length; i++) {
                     // We can JSON.parse, but index is 16x faster
                     if (obj[i]) {
-                        if(typeof obj[i] == 'string' && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
+                        if (typeof obj[i] == 'string' && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
                             logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
                         } else if (typeof obj[i] == 'object' && (obj[i].val === true || obj[i].val === "true")) {
                             logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
@@ -195,7 +195,7 @@ states.getKeys('*.logging', function (err, keys) {
 });
 
 var objects = null;
-function createObjects () {
+function createObjects() {
     return new Objects({
         connection: config.objects,
         logger: logger,
@@ -643,8 +643,9 @@ function processMessage(msg) {
                         for (var i = 0; i < doc.rows.length; i++) {
                             // If desired local version, do not ask it, just answer
                             if (doc.rows[i].id == 'system.host.' + hostname) {
+                                var _ioPack;
                                 try {
-                                    var _ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                                    _ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
                                 } catch (e) {
                                     logger.error('host.' + hostname + ' cannot read and parse "' + __dirname + '/io-package.json"');
                                 }
@@ -813,8 +814,8 @@ function getInstances() {
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
             logger.error('host.' + hostname + ' _design/system missing - call node iobroker.js setup');
-            //if(objects.destroy) objects.destroy();
-            //if(states  && states.destroy)  states.destroy();
+            //if (objects.destroy) objects.destroy();
+            //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
             return;
         } else if (doc.rows.length === 0) {
@@ -939,13 +940,14 @@ function startInstance(id, wakeUp) {
         return;
     }
 
+    var args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
+
     var fileNameFull = adapterDir + '/' + fileName;
     if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
         fileNameFull = adapterDir + '/' + fileName;
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
-            var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
             if (fs.existsSync(adapterDir + '/www')) {
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
             } else {
@@ -984,7 +986,6 @@ function startInstance(id, wakeUp) {
         case 'daemon':
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
-                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(fileNameFull, args);
                 procs[id].process.on('exit', function (code, signal) {
@@ -1054,7 +1055,7 @@ function startInstance(id, wakeUp) {
                     return;
                 }
                 // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-                if (procs[id].lastStart && (new Date()).getTime() - procs[id].lastStart < 2000){
+                if (procs[id].lastStart && (new Date()).getTime() - procs[id].lastStart < 2000) {
                     logger.warn('host.' + hostname + ' instance ' + instance._id + ' does not started, because just executed');
                     return;
                 }
@@ -1087,7 +1088,6 @@ function startInstance(id, wakeUp) {
             logger.info('host.' + hostname + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
-                var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(fileNameFull, args);
                 logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
@@ -1252,16 +1252,32 @@ var allInstancesStopped = true;
 var stopTimeout = 10000;
 
 function stop() {
+    function waitForInstances() {
+        if (!allInstancesStopped) {
+            setTimeout(waitForInstances, 200);
+        } else {
+            if (objects && objects.destroy) objects.destroy();
+            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
+                if (states  && states.destroy)  states.destroy();
+                logger.info('host.' + hostname + ' terminated');
+                setTimeout(function () {
+                    process.exit(0);
+                }, 1000);
+            });
+
+        }
+    }
+
     try {
         var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
 
-            if(objects && objects.destroy) objects.destroy();
+            if (objects && objects.destroy) objects.destroy();
 
             states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
                 logger.info('host.' + hostname + ' force terminating');
-                if(states  && states.destroy)  states.destroy();
+                if (states  && states.destroy)  states.destroy();
                 setTimeout(function () {
                     process.exit(1);
                 }, 1000);
@@ -1279,30 +1295,14 @@ function stop() {
             }
         }
 
-        function waitForInstances() {
-            if (!allInstancesStopped) {
-                setTimeout(waitForInstances, 200);
-            } else {
-                if(objects && objects.destroy) objects.destroy();
-                states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-                    if(states  && states.destroy)  states.destroy();
-                    logger.info('host.' + hostname + ' terminated');
-                    setTimeout(function () {
-                        process.exit(0);
-                    }, 1000);
-                });
-
-            }
-        }
-
         waitForInstances();
-    }catch(e) {
+    } catch (e) {
         logger.error(e.message);
     }
 
     // force after Xs
     setTimeout(function () {
-        if(objects && objects.destroy) objects.destroy();
+        if (objects && objects.destroy) objects.destroy();
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('host.' + hostname + ' force terminated after 10s');
             for (var i in procs) {
@@ -1313,7 +1313,7 @@ function stop() {
                 }
             }
 
-            if(states && states.destroy) states.destroy();
+            if (states && states.destroy) states.destroy();
 
             setTimeout(function () {
                 process.exit(1);
@@ -1337,7 +1337,7 @@ process.on('uncaughtException', function (err) {
         logger.error('fragmentedOperation: restart objects');
         // restart objects
         objects.destroy();
-        delete objects;
+        objects = null;
         // Give time to close the objects
         setTimeout(function () {
             objects = createObjects();
