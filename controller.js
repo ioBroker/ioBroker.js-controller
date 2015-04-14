@@ -99,7 +99,7 @@ function logRedirect(isActive, id) {
 
 
 logger.info('host.' + hostname + ' ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('host.' + hostname + ' Copyright (c) 2014 bluefox, hobbyquaker');
+logger.info('host.' + hostname + ' Copyright (c) 2014-2015 bluefox, hobbyquaker');
 logger.info('host.' + hostname + ' hostname: ' + hostname);
 logger.info('host.' + hostname + ' ip addresses: ' + ipArr.join(' '));
 
