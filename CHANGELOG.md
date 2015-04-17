@@ -1,3 +1,12 @@
+# 0.6.4 (2015-04-17)
+* (bluefox) optimize install call
+* (bluefox) backup/restore
+
+# 0.6.3 (2015-04-16)
+* (bluefox) use system npm for update and install
+* (bluefox) generate uuid as hash of MAC
+* (bluefox) delete empty adaptors from repository
+
 # 0.6.0 (2015-03-22)
 * (bluefox) try to implement backup/restore
 * (bluefox) support of "--install" flag for sayIt

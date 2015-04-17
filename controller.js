@@ -918,7 +918,7 @@ function startInstance(id, wakeUp) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         if (procs[id].downloadRetry < 3) {
             procs[id].downloadRetry++;
-            logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it...' + procs[id].downloadRetry + ' attempt');
+            logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it... ' + procs[id].downloadRetry + ' attempt');
             logger.info('iobroker install ' + name);
 
             var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
