@@ -85,6 +85,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
   },
+  "s7": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/admin/S7.png"
+  },
   "sayit": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
