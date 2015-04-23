@@ -1,3 +1,6 @@
+# 0.6.5 (2015-04-27)
+* (bluefox) add default certificates
+
 # 0.6.4 (2015-04-17)
 * (bluefox) optimize install call
 * (bluefox) backup/restore
