@@ -26,6 +26,7 @@
     },
     "log": {
         "level": "info",
+        "maxDays": 7,
         "transport": {
             "file1": {
                "type": "file",

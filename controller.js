@@ -24,10 +24,10 @@ var States;
 
 var logger;
 var isDaemon;
-var callbackId =   1;
-var callbacks =    {};
-var hostname =     os.hostname();
-var logList =      [];
+var callbackId = 1;
+var callbacks =  {};
+var hostname =   os.hostname();
+var logList =    [];
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -61,6 +61,9 @@ if (process.argv.indexOf('start') !== -1) {
 } else {
     logger = require(__dirname + '/lib/logger.js')(config.log);
 }
+
+// Delete all log files older than x das
+logger.activateDateChecker(true, config.log.maxDays);
 
 // If installed as npm module
 adapterDir = adapterDir.split('/');
@@ -773,8 +776,8 @@ function processMessage(msg) {
 
                 var lines = msg.message || 200;
                 var text = '';
-                var logFile = __dirname + '/log/iobroker.log';
-                if (!fs.existsSync(__dirname + '/log/iobroker.log')) logFile = __dirname + '/../../log/iobroker.log';
+                var logFile = logger.getFileName(); //__dirname + '/log/iobroker.log';
+                if (!fs.existsSync(logFile)) logFile = __dirname + '/../../log/iobroker.log';
 
                 if (fs.existsSync(logFile)) {
                     var stats = fs.statSync(logFile);
@@ -802,8 +805,10 @@ function processMessage(msg) {
             break;
 
         case 'delLogs':
+            var logFile = logger.getFileName(); //__dirname + '/log/iobroker.log';
             if (fs.existsSync(__dirname +       '/log/iobroker.log')) fs.writeFile(__dirname +       '/log/iobroker.log', '');
             if (fs.existsSync(__dirname + '/../../log/iobroker.log')) fs.writeFile(__dirname + '/../../log/iobroker.log', '');
+            if (fs.existsSync(logFile)) fs.writeFile(logFile);
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, 'ok', msg.callback);            break;
     }

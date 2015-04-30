@@ -9,7 +9,8 @@
         "icon":                     "example.png",
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/adapter/example/admin/example.png",
         "loglevel":                 "info",
-        "nondeletable":             true
+        "nondeletable":             true,
+        "type":                     "common adapters"
     },
     "native": {
         "test1": true,
