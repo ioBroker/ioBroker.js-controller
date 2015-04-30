@@ -1,8 +1,10 @@
-# 0.6.5 (2015-05-xx)
+# 0.6.6 (2015-05-xx)
 * (bluefox) implement daily rolling files.
 * (bluefox) fix addChannelToEnum, deleteChannelFromEnum, deleteChannel if no device name
 * (bluefox) fix "state set", "message" console commands
 
+# 0.6.5 (2015-04-27)
+* (bluefox) add default certificates
 # 0.6.4 (2015-04-17)
 * (bluefox) optimize install call
 * (bluefox) backup/restore
