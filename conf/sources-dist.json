@@ -52,6 +52,30 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/admin/ical.png"
   },
+  "icons-addictive-flavour-png": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/admin/icons-addictive-flavour-png.png"
+  },
+  "icons-material-png": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-material-png/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-material-png/master/admin/icons-material-png.png"
+  },
+  "icons-material-svg": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-material-svg/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-material-svg/master/admin/icons-material-svg.svg"
+  },
+  "icons-mfd-png": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-mfd-png/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-mfd-png/master/admin/icons-mfd-png.png"
+  },
+  "icons-mfd-svg": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-mfd-svg/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-mfd-svg/master/admin/icons-mfd-svg.svg"
+  },
+  "icons-ultimate-png": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-ultimate-png/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-ultimate-png/master/admin/icons-ultimate-png.png"
+  },
   "javascript": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.javascript/master/admin/js.jpeg"
