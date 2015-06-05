@@ -292,24 +292,6 @@ function collectDiagInfo(callback) {
             // create uuid
             if (err || !obj) {
                 obj = {native: {uuid: 'not found'}};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
             objects.getObjectView('system', 'host', {}, function (_err, doc) {
                 var diag = {
@@ -606,11 +588,10 @@ function processMessage(msg) {
 
                                 // If repo is not yet loaded
                                 if (!repos.native.repositories[active].json || updateRepo) {
-
-
                                     logger.info('host.' + hostname + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
-                                    tools.getRepositoryFile(repos.native.repositories[active].link, function (sources) {
+                                    tools.getRepositoryFile(repos.native.repositories[active].link, function (err, sources) {
+                                        if (err) logger.warn('host.' + hostname + ' warning: ' + err);
                                         repos.native.repositories[active].json = sources;
                                         sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                         // Store uploaded repo
