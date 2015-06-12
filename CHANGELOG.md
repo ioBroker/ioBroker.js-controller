@@ -1,3 +1,6 @@
+# 0.7.0 (2015-05-07)
+* (bluefox) support of permissions
+
 # 0.6.6 (2015-05-07)
 * (bluefox) implement daily rolling files.
 * (bluefox) fix addChannelToEnum, deleteChannelFromEnum, deleteChannel if no device name
