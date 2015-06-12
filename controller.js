@@ -22,6 +22,7 @@ var adapterDir =   __dirname.replace(/\\/g, '/');
 var Objects;
 var States;
 
+var semver;
 var logger;
 var isDaemon;
 var callbackId = 1;
@@ -862,6 +863,41 @@ function initInstances() {
     }
 }
 
+function checkVersions(deps) {
+    for (var d = 0; d < deps.length; deps++) {
+        var name = null;
+        var version = null;
+        var isFound = false;
+
+        if (typeof deps[d] == 'object') {
+            if (!semver) semver = require('semver');
+
+            for (var n in deps[d]) {
+                name = n;
+                version = deps[d][n];
+                break;
+            }
+        } else {
+            name = deps[d];
+        }
+
+        for (var p in procs) {
+            if (procs[p].common.name == name) {
+                if (version && !semver.satisfies(procs[p].common.version, version)) {
+                    logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
+                    return false;
+                }
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" not found!');
+            return false;
+        }
+    }
+    return true;
+}
+
 function startInstance(id, wakeUp) {
     if (isStopping) return;
 
@@ -896,6 +932,15 @@ function startInstance(id, wakeUp) {
 
     if (instance.common.run) {
         // TODO
+    }
+
+    // Check if all required adapters installed and have valid version
+    if (instance.common.dependencies) {
+        if (checkVersions(instance.common.dependencies)) {
+            delete instance.common.dependencies;
+        } else {
+            return;
+        }
     }
 
     var fileName = instance.common.main || "main.js";

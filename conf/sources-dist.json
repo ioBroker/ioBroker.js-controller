@@ -74,6 +74,7 @@
   },
   "icons-open-icon-library-png": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-open-icon-library-png/master/io-package.json",
+    "url": "https://github.com/ioBroker/ioBroker.icons-open-icon-library-png/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-open-icon-library-png/master/admin/icons-open-icon-library-png.png"
   },
   "icons-ultimate-png": {
