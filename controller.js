@@ -864,36 +864,41 @@ function initInstances() {
 }
 
 function checkVersions(deps) {
-    for (var d = 0; d < deps.length; deps++) {
-        var name = null;
-        var version = null;
-        var isFound = false;
+    try {
+        for (var d = 0; d < deps.length; deps++) {
+            var name = null;
+            var version = null;
+            var isFound = false;
 
-        if (typeof deps[d] == 'object') {
-            if (!semver) semver = require('semver');
+            if (typeof deps[d] == 'object') {
+                if (!semver) semver = require('semver');
 
-            for (var n in deps[d]) {
-                name = n;
-                version = deps[d][n];
-                break;
-            }
-        } else {
-            name = deps[d];
-        }
-
-        for (var p in procs) {
-            if (procs[p].common.name == name) {
-                if (version && !semver.satisfies(procs[p].common.version, version)) {
-                    logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
-                    return false;
+                for (var n in deps[d]) {
+                    name = n;
+                    version = deps[d][n];
+                    break;
                 }
-                isFound = true;
+            } else {
+                name = deps[d];
+            }
+
+            for (var p in procs) {
+                if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name == name) {
+                    if (version && !semver.satisfies(procs[p].config.common.version, version)) {
+                        logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
+                        return false;
+                    }
+                    isFound = true;
+                }
+            }
+            if (!isFound) {
+                logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" not found!');
+                return false;
             }
         }
-        if (!isFound) {
-            logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + d + '" not found!');
-            return false;
-        }
+    }
+    catch (e) {
+        logger.error('host.' + hostname + ' startInstance ' + id + ': ' + e);
     }
     return true;
 }
