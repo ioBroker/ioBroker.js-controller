@@ -792,7 +792,8 @@ function processMessage(msg) {
             if (fs.existsSync(__dirname + '/../../log/iobroker.log')) fs.writeFile(__dirname + '/../../log/iobroker.log', '');
             if (fs.existsSync(logFile)) fs.writeFile(logFile);
 
-            if (msg.callback && msg.from) sendTo(msg.from, msg.command, 'ok', msg.callback);            break;
+            if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
+            break;
     }
 
 }
