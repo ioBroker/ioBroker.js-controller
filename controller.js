@@ -922,6 +922,24 @@ function checkVersions(id, deps) {
     return true;
 }
 
+// Store process IDS to make possible kill them all by restart
+var storeTimer = null;
+function storePids() {
+    if (!storeTimer) {
+        storeTimer = setTimeout(function () {
+            storeTimer = null;
+            var pids = [];
+            for (var id in procs) {
+                if (procs[id].process) {
+                    pids.push(procs[id].process.pid);
+                }
+                pids.push(process.pid);
+            }
+            fs.writeFileSync(__dirname + '/pids.txt', JSON.stringify(pids));
+        }, 500);
+    }
+}
+
 function startInstance(id, wakeUp) {
     if (isStopping) return;
 
@@ -1043,6 +1061,7 @@ function startInstance(id, wakeUp) {
                 allInstancesStopped = false;
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(fileNameFull, args);
+                storePids(); // Store all pids to make possible kill them all
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
@@ -1067,6 +1086,7 @@ function startInstance(id, wakeUp) {
                                     }
                                     allInstancesStopped = true;
                                 }
+                                storePids(); // Store all pids to make possible kill them all
                                 return;
                             } else {
                                 logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
@@ -1087,6 +1107,7 @@ function startInstance(id, wakeUp) {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated while should be started once');
                         }
                     }
+                    storePids(); // Store all pids to make possible kill them all
                 });
                 if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
@@ -1119,6 +1140,7 @@ function startInstance(id, wakeUp) {
                 if (!procs[id].process) {
                     var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     procs[id].process = cp.fork(fileNameFull, args);
+                    storePids(); // Store all pids to make possible kill them all
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                     procs[id].process.on('exit', function (code, signal) {
@@ -1135,6 +1157,7 @@ function startInstance(id, wakeUp) {
                             }
                         }
                         if (procs[id] && procs[id].process) delete procs[id].process;
+                        storePids(); // Store all pids to make possible kill them all
                     });
                 } else {
                     if (!wakeUp) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
@@ -1144,6 +1167,7 @@ function startInstance(id, wakeUp) {
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
                 procs[id].process = cp.fork(fileNameFull, args);
+                storePids(); // Store all pids to make possible kill them all
                 logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
@@ -1160,6 +1184,7 @@ function startInstance(id, wakeUp) {
                         }
                     }
                     delete procs[id].process;
+                    storePids(); // Store all pids to make possible kill them all
                 });
             }
 
