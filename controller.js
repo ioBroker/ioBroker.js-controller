@@ -1021,7 +1021,7 @@ function startInstance(id, wakeUp) {
         fileNameFull = adapterDir + '/' + fileName;
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
-            if (fs.existsSync(adapterDir + '/www')) {
+            if (instance.common.onlyWWW || fs.existsSync(adapterDir + '/www')) {
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
             } else {
                 logger.error('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ': cannot find start file!');

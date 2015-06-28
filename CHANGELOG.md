@@ -1,3 +1,17 @@
+# 0.7.1 (2015-06-28)
+* (bluefox) support of permissions
+* (bluefox) fix backup
+* (bluefox) fix error with noFileCache
+* (bluefox) add unsubscribeForeignObjects to adapters
+* (bluefox) add icon sets to repository
+* (bluefox) implement list: objets, states, instances, adapters
+* (bluefox) support of "list hosts"
+* (bluefox) verify version by install and start
+* (bluefox) fix error with dependencies
+* (bluefox) fix delete of logs
+* (bluefox) fix getPort function in adapter.
+
+
 # 0.7.0 (2015-05-07)
 * (bluefox) support of permissions
 
