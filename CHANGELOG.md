@@ -1,3 +1,7 @@
+# 0.7.2 (2015-06-29)
+* (bluefox) remove _failCounter from adapter list
+* (bluefox) update license
+
 # 0.7.1 (2015-06-28)
 * (bluefox) support of permissions
 * (bluefox) fix backup
