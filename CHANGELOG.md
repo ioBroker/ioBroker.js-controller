@@ -1,3 +1,13 @@
+# 0.7.3 (2015-07-12) 
+* (bluefox) add flot to repository
+* (bluefox) add chmodFile for adapter
+* (bluefox) implement rm
+* (bluefox) fix permissions problem
+* (bluefox) set permission by creation of file
+* (bluefox) make possible upload of subtree
+* (bluefox) fix user name
+* (bluefox) fix update function
+
 # 0.7.2 (2015-06-29)
 * (bluefox) remove _failCounter from adapter list
 * (bluefox) update license
