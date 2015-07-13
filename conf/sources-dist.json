@@ -25,8 +25,8 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
   },
   "flot": {
-    "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.flot/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ruhr70/ioBroker.flot/master/admin/flot.png"
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png"
   },
   "fritzbox": {
     "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/io-package.json",
@@ -161,6 +161,10 @@
   "vis": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png"
+  },
+  "vis-hqWidgets": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqWidgets/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqWidgets/master/admin/hqWidgets.png"
   },
   "vis-lcars": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-lcars/master/io-package.json",
