@@ -162,9 +162,13 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png"
   },
-  "vis-hqWidgets": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqWidgets/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqWidgets/master/admin/hqWidgets.png"
+  "vis-colorpicker": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/admin/colorpicker.png"
+  },
+  "vis-hqwidgets": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqwidgets/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqwidgets/master/admin/hqwidgets.png"
   },
   "vis-lcars": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-lcars/master/io-package.json",
