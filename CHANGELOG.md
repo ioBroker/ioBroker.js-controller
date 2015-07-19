@@ -1,3 +1,11 @@
+# 0.7.4 (2015-07-19)
+* (bluefox) fix restartAdapters flag.(for vis-metro and co)
+* (bluefox) add vis-hqWidgets
+* (bluefox) add vis-colorpicker
+* (bluefox) normalize paths in backup
+* (bluefox) add better backup
+
+
 # 0.7.3 (2015-07-12) 
 * (bluefox) add flot to repository
 * (bluefox) add chmodFile for adapter
