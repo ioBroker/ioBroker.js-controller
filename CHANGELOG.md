@@ -1,3 +1,10 @@
+# 0.7.5 (2015-07-27)
+* (bluefox) add "iobroker upload all" and "iobroker start all" commands
+* (bluefox) fix "iobroker package"
+* (bluefox) make it possible to allow OBJECTS and STATES only on localhost
+* (bluefox) add new adapter pushbullet
+* (bluefox) fix restart by installing.
+
 # 0.7.4 (2015-07-19)
 * (bluefox) fix restartAdapters flag.(for vis-metro and co)
 * (bluefox) add vis-hqWidgets
