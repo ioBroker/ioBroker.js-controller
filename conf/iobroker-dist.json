@@ -31,7 +31,8 @@
             "file1": {
                "type": "file",
                "enabled": true,
-               "filename": "log/iobroker.log",
+               "filename": "log/iobroker",
+               "fileext": ".log",
                "maxsize":  null,
                "maxFiles": null
             }
