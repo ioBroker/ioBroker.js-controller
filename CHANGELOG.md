@@ -1,3 +1,7 @@
+# 0.7.6 (2015-08-xx)
+* (bluefox) change log file extension to .log
+* (bluefox) enable destroyDB, but check before if ioBroker is running
+
 # 0.7.5 (2015-07-27)
 * (bluefox) add "iobroker upload all" and "iobroker start all" commands
 * (bluefox) fix "iobroker package"
