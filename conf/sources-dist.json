@@ -130,6 +130,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
   },
+  "scenes": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/admin/scenes.png"
+  },
   "simple-api": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/admin/simple-api.png"
@@ -166,6 +170,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png"
   },
+  "vis-bars": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-bars/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-bars/master/admin/bars.png"
+  },
   "vis-colorpicker": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/admin/colorpicker.png"
@@ -181,6 +189,10 @@
   "vis-metro": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/admin/metro.png"
+  },
+  "vis-plumb": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/admin/plumb.png"
   },
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
