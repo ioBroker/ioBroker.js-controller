@@ -14,7 +14,7 @@
     "adm-zip": "^0.4.7",
     "daemonize2": "^0.4.2",
     "ncp": "^2.0.0",
-    "node-schedule": "https://github.com/hobbyquaker/node-schedule/tarball/master",
+    "node-schedule": "^0.2.9",
     "node.extend": "^1.1.5",
     "request": "^2.55.0",
     "winston": "^1.0.1",
