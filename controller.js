@@ -34,9 +34,9 @@ var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
-        logger = require(__dirname + '/lib/logger')('info', ['iobroker.log'], true);
+        logger = require(__dirname + '/lib/logger')('info', ['iobroker'], true);
     } else {
-        logger = require(__dirname + '/lib/logger')('info', ['iobroker.log']);
+        logger = require(__dirname + '/lib/logger')('info', ['iobroker']);
     }
     logger.error('host.' + hostname + ' conf/iobroker.json missing - call node iobroker.js setup');
     process.exit(1);
