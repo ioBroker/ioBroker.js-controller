@@ -102,10 +102,6 @@
     "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
   },
-  "legacy": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.legacy/master/admin/legacy.png"
-  },
   "megad": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
