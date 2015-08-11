@@ -1,3 +1,6 @@
+# 0.7.7 (2015-08-11)
+* (bluefox) add harmony to repository
+
 # 0.7.6 (2015-08-06)
 * (bluefox) change log file extension to .log
 * (bluefox) enable destroyDB, but check before if ioBroker is running
