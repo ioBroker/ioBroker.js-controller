@@ -36,6 +36,10 @@
     "meta": "/adapter/example/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/adapter/example/admin/example.png"
   },
+  "harmony": {
+    "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.harmony/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pmant/ioBroker.harmony/master/admin/harmony.png"
+  },
   "history": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/admin/history.png"
