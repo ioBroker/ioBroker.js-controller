@@ -1,3 +1,7 @@
+# 0.7.8 (2015-08-12)
+* (bluefox) fix error with node-red
+* (bluefox) move setup files into directories
+
 # 0.7.7 (2015-08-11)
 * (bluefox) add harmony to repository
 

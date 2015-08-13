@@ -48,8 +48,8 @@ if (!fs.existsSync(tools.getConfigFileName())) {
 
 // If "file" and on the local machine
 if (config.objects.type == 'file' && (!config.objects.host || config.objects.host == 'localhost' || config.objects.host == '127.0.0.1')) {
-    Objects = require(__dirname + '/lib/objectsInMemServer');
-    States  = require(__dirname + '/lib/statesInMemServer');
+    Objects = require(__dirname + '/lib/objects/objectsInMemServer');
+    States  = require(__dirname + '/lib/states/statesInMemServer');
 } else {
     Objects = require(__dirname + '/lib/objects');
     States  = require(__dirname + '/lib/states');
