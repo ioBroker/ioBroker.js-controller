@@ -1016,6 +1016,10 @@ function startInstance(id, wakeUp) {
     var args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
 
     var fileNameFull = adapterDir + '/' + fileName;
+
+    // workaround for old vis.
+    if (instance.common.onlyWWW && name == 'vis') instance.common.onlyWWW = false;
+
     if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
         fileNameFull = adapterDir + '/' + fileName;
