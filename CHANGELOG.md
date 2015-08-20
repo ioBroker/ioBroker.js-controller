@@ -1,3 +1,11 @@
+# 0.7.9 (2015-08-20)
+* (bluefox) fix broker upgrade
+* (bluefox) improve vis upload
+* (bluefox) fix adapter.deleteChannel
+* (bluefox) use regex by deleting of channel or instance
+* (bluefox) fix delete instance errors
+* (bluefox) add new console commands: set, host. To set settings of instance from console and change host name.
+
 # 0.7.8 (2015-08-12)
 * (bluefox) fix error with node-red
 * (bluefox) move setup files into directories
