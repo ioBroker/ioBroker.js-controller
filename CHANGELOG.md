@@ -1,3 +1,6 @@
+# 0.7.10 (2015-08-22)
+* (bluefox) fix first installation
+
 # 0.7.9 (2015-08-20)
 * (bluefox) fix broker upgrade
 * (bluefox) improve vis upload
