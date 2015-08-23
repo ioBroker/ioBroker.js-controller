@@ -1,3 +1,6 @@
+# 0.7.11 (2015-08-23)
+* (bluefox) fix installation of adapter
+
 # 0.7.10 (2015-08-22)
 * (bluefox) fix first installation
 
