@@ -166,6 +166,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
   },
+  "terminal": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.terminal/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.terminal/master/admin/terminal.png"
+  },
   "vis": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png"
