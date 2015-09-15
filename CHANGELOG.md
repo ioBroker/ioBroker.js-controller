@@ -1,3 +1,10 @@
+# 0.7.12 (2015-09-15)
+* (bluefox) add terminal adapter
+* (bluefox) inplement "iobroker url xxx"
+* (bluefox) fix restore
+* (bluefox) fix _failCounter entry in Adapters
+* (bluefox) fix log outputs
+
 # 0.7.11 (2015-08-23)
 * (bluefox) fix installation of adapter
 
