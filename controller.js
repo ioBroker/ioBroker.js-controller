@@ -143,7 +143,7 @@ var states = new States({
                     // delete too old callbacks IDs
                     var now = (new Date()).getTime();
                     for (var _id in callbacks) {
-                        if (now - callbacks[id].time > 3600000) delete callbacks[_id];
+                        if (now - callbacks[_id].time > 3600000) delete callbacks[_id];
                     }
                 } else {
                     processMessage(obj);
