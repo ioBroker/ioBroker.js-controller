@@ -103,7 +103,6 @@
   },
   "knx": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.knx/archive/master.zip",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
   },
   "megad": {
@@ -182,6 +181,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/admin/colorpicker.png"
   },
+  "vis-fancyswitch": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-fancyswitch/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-fancyswitch/master/admin/fancyswitch.png"
+  },
   "vis-hqwidgets": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqwidgets/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqwidgets/master/admin/hqwidgets.png"
@@ -201,6 +204,14 @@
   "vis-plumb": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/admin/plumb.png"
+  },
+  "vis-rgraph": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-rgraph/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-rgraph/master/admin/rgraph.png"
+  },
+  "vis-timeandweather": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-timeandweather/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-timeandweather/master/admin/timeandweather.png"
   },
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
