@@ -1,3 +1,10 @@
+# 0.7.13 (2015-09-30)
+* (bluefox) add vis-jqui-mfd
+* (bluefox) allow install direct from github in admin
+* (bluefox) add vis-fancyswitch, vis-rgraph
+* (bluefox) fill state by createState even if no default value set
+* (bluefox) add modbus
+
 # 0.7.12 (2015-09-15)
 * (bluefox) add terminal adapter
 * (bluefox) inplement "iobroker url xxx"

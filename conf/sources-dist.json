@@ -109,6 +109,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
   },
+  "modbus": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.modbus/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.modbus/master/admin/modbus.png"
+  },
   "mqtt": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mqtt/master/admin/mqtt.png"
