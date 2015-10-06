@@ -1,24 +1,2 @@
-killall -9 io.js-controller
-killall -9 io.admin.0
-killall -9 io.hm-rpc.0
-killall -9 io.hm-rpc.1
-killall -9 io.hm-rega.0
-killall -9 io.fritzbox.0
-killall -9 io.javascript.0
-killall -9 io.node-red.0
-killall -9 node-red
-killall -9 io.ping.0
-killall -9 io.history.0
-killall -9 io.web.0
-killall -9 io.terminal.0
-killall -9 io.sonos.0
-killall -9 io.email.0
-killall -9 io.web.0
-killall -9 io.pushover.0
-killall -9 io.pushbullet.0
-killall -9 io.occ.0
-killall -9 io.hmm.0
-killall -9 io.s7.0
-killall -9 io.modbus.0
-killall -9 io.sayit.0
-killall -9 io.sayit.1
+pgrep -f '^io.*' |xargs kill -9
+pgrep -f '^node-red*' |xargs kill -9
