@@ -12,7 +12,8 @@
         "port" : 9001,
         "user" : "",
         "pass" : "",
-        "noFileCache": false
+        "noFileCache": false,
+        "connectTimeout": 2000
     },
     "states" : {
         "type" : "file",
