@@ -1,3 +1,10 @@
+# 0.7.14 (2015-10-13)
+* (bluefox) fix restart under linux
+* (bluefox) add wolf adapter to repository
+* (smilingJack) increase timeout by update of repository
+* (bluefox) fix set --ssl
+* (bluefox) add "connectTimeout" parameter to iobroker.json. Try to fix EADDRINUSE error under raspi.
+
 # 0.7.13 (2015-09-30)
 * (bluefox) add vis-jqui-mfd
 * (bluefox) allow install direct from github in admin
