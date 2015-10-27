@@ -814,6 +814,11 @@ function getInstances() {
             for (var i = 0; i < doc.rows.length; i++) {
                 var instance = doc.rows[i].value;
 
+                // register all common fields, that may not be deleted, like "mobile" or "history"
+                if (objects.addPreserveSettings && instance.common.preserveSettings) {
+                    objects.addPreserveSettings(instance.common.preserveSettings);
+                }
+
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
 
                 logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
