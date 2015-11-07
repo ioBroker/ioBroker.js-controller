@@ -109,6 +109,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
   },
+  "mobile": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/admin/mobile.png"
+  },
   "modbus": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.modbus/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.modbus/master/admin/modbus.png"
