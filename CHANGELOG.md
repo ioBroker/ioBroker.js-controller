@@ -1,3 +1,14 @@
+# 0.7.15 (2015-11-10)
+* (bluefox) add command visdebug
+* (bluefox) add flag preserveSettings
+* (bluefox) add vis-keyboard
+* (bluefox) fix error with host rename
+* (bluefox) fix sendTo and sendToHost with callback.
+* (bluefox) update objects by upload of adapter (important for community adapters)
+* (bluefox) add vis-google-fonts
+* (bluefox) support of quality in setState
+* (bluefox) add adapter mobile
+
 # 0.7.14 (2015-10-13)
 * (bluefox) fix restart under linux
 * (bluefox) add wolf adapter to repository
