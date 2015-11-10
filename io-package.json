@@ -96,7 +96,9 @@
                         "create": true,
                         "delete": true
                     },
-                    "user": {
+                    "users": {
+                        "list": true,
+                        "read": true,
                         "write": true,
                         "create": true,
                         "delete": true
@@ -147,7 +149,9 @@
                         "create": true,
                         "delete": false
                     },
-                    "user": {
+                    "users": {
+                        "list": true,
+                        "read": true,
                         "write": false,
                         "create": false,
                         "delete": false
