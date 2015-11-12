@@ -207,7 +207,8 @@
                 "isFloatComma":     true,
                 "licenseConfirmed": false,
                 "activeRepo":       "default",
-                "diag":             "extended"
+                "diag":             "extended",
+                "defaultHistory":   ""
             },
             "acl": {
                 "owner": "system.user.admin",
