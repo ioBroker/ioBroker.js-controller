@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.7.15",
+  "version": "0.8.0",
   "engines": {
     "node": ">=0.8"
   },
@@ -28,18 +28,15 @@
     "prompt": "^0.2.14"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-replace": "~0.8.0",
-    "grunt-contrib-compress": "~0.13.0",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-concat": "~0.5.1",
-    "grunt-contrib-copy": "~0.8.0",
-    "grunt-commands": "~0.1.7",
-    "grunt-contrib-jshint": "~0.11.1",
-    "grunt-jscs": "~1.6.0",
-    "grunt-exec": "~0.4.5",
-    "grunt-zip": "~0.16.2",
-    "grunt-http": "~1.6.0"
+    "grunt": "^0.4.5",
+    "grunt-replace": "^0.9.3",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-jscs": "^2.3.0",
+    "grunt-http": "^1.6.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-exec": "^0.4.6"
   },
   "homepage": "http://www.iobroker.com",
   "description": "...domesticate the Internet of Things",
