@@ -149,6 +149,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png"
   },
+  "sql": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png"
+  },
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
