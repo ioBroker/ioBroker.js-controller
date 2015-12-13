@@ -1,14 +1,11 @@
 /**
- *      ioBroker.ctrl (ioBroker Controller)
+ *      application.controller
  *
  *      Controls Adapter-Processes
  *
  *
  */
 
-// Change version in io-package.json and start grunt task to modify the version
-var title = 'io.js-controller';
-process.title = title;
 
 var schedule =     require('node-schedule');
 var os =           require('os');
@@ -18,6 +15,10 @@ var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools');
 var version =      ioPackage.common.version;
 var adapterDir =   __dirname.replace(/\\/g, '/');
+
+// Change version in io-package.json and start grunt task to modify the version
+var title = tools.appName + '.js-controller';
+process.title = title;
 
 var Objects;
 var States;
@@ -34,11 +35,11 @@ var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
-        logger = require(__dirname + '/lib/logger')('info', ['iobroker'], true);
+        logger = require(__dirname + '/lib/logger')('info', [tools.appName], true);
     } else {
-        logger = require(__dirname + '/lib/logger')('info', ['iobroker']);
+        logger = require(__dirname + '/lib/logger')('info', [tools.appName]);
     }
-    logger.error('host.' + hostname + ' conf/iobroker.json missing - call node iobroker.js setup');
+    logger.error('host.' + hostname + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
     process.exit(1);
 } else {
     config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
@@ -102,7 +103,7 @@ function logRedirect(isActive, id) {
 }
 
 
-logger.info('host.' + hostname + ' ioBroker.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
+logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
 logger.info('host.' + hostname + ' Copyright (c) 2014-2015 bluefox, hobbyquaker');
 logger.info('host.' + hostname + ' hostname: ' + hostname);
 logger.info('host.' + hostname + ' ip addresses: ' + ipArr.join(' '));
@@ -520,27 +521,27 @@ function processMessage(msg) {
     switch (msg.command) {
         case 'cmdExec':
             var spawn = require('child_process').spawn;
-            var args = [__dirname + '/iobroker.js'];
+            var args = [__dirname + '/' + tools.appName + '.js'];
             var cmd = msg.message.data.split(' ');
             for (var i = 0; i < cmd.length; i++) {
                 args.push(cmd[i]);
             }
-            logger.info('iobroker ' + args.slice(1).join(' '));
+            logger.info(tools.appName + ' ' + args.slice(1).join(' '));
 
             var child = spawn('node', args);
             child.stdout.on('data', function (data) {
                 data = data.toString().replace('\n', '');
-                logger.info('iobroker ' + data);
+                logger.info(tools.appName + ' ' + data);
                 if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
             });
             child.stderr.on('data', function (data) {
                 data = data.toString().replace('\n', '');
-                logger.error('iobroker ' + data);
+                logger.error(tools.appName + ' ' + data);
                 if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
             });
 
             child.on('exit', function (exitCode) {
-                logger.info('iobroker exit ' + exitCode);
+                logger.info(tools.appName + ' exit ' + exitCode);
                 if (msg.from) {
                     sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
                     // Sometimes finished command is lost, recent it
@@ -758,8 +759,8 @@ function processMessage(msg) {
 
                 var lines = msg.message || 200;
                 var text = '';
-                var logFile = logger.getFileName(); //__dirname + '/log/iobroker.log';
-                if (!fs.existsSync(logFile)) logFile = __dirname + '/../../log/iobroker.log';
+                var logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+                if (!fs.existsSync(logFile)) logFile = __dirname + '/../../log/' + tools.appName + '.log';
 
                 if (fs.existsSync(logFile)) {
                     var stats = fs.statSync(logFile);
@@ -787,9 +788,9 @@ function processMessage(msg) {
             break;
 
         case 'delLogs':
-            var logFile = logger.getFileName(); //__dirname + '/log/iobroker.log';
-            if (fs.existsSync(__dirname +       '/log/iobroker.log')) fs.writeFile(__dirname +       '/log/iobroker.log', '');
-            if (fs.existsSync(__dirname + '/../../log/iobroker.log')) fs.writeFile(__dirname + '/../../log/iobroker.log', '');
+            var logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFile(__dirname +       '/log/' + tools.appName + '.log', '');
+            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFile(__dirname + '/../../log/' + tools.appName + '.log', '');
             if (fs.existsSync(logFile)) fs.writeFile(logFile);
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
@@ -801,7 +802,7 @@ function processMessage(msg) {
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, function (err, doc) {
         if (err && err.status_code === 404) {
-            logger.error('host.' + hostname + ' _design/system missing - call node iobroker.js setup');
+            logger.error('host.' + hostname + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
             //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
@@ -1012,19 +1013,19 @@ function startInstance(id, wakeUp) {
         if (procs[id].downloadRetry < 3) {
             procs[id].downloadRetry++;
             logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it... ' + procs[id].downloadRetry + ' attempt');
-            logger.info('iobroker install ' + name);
+            logger.info(tools.appName + ' install ' + name);
 
-            var child = require('child_process').spawn('node', [__dirname + '/iobroker.js', 'install', name]);
+            var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
             child.stdout.on('data', function (data) {
                 data = data.toString().replace('\n', '');
-                logger.info('iobroker ' + data);
+                logger.info(tools.appName + ' ' + data);
             });
             child.stderr.on('data', function (data) {
                 data = data.toString().replace('\n', '');
-                logger.error('iobroker ' + data);
+                logger.error(tools.appName + ' ' + data);
             });
             child.on('exit', function (exitCode) {
-                logger.info('iobroker exit ' + exitCode);
+                logger.info(tools.appName + ' exit ' + exitCode);
                 startInstance(id, wakeUp);
             });
         } else {
