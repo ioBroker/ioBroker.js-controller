@@ -1,3 +1,6 @@
+# 0.8.2 (2015-12-14)
+* (bluefox) fix upgrade.
+
 # 0.8.1 (2015-12-14)
 * (bluefox) fix permissions for administrator group, but not admin user.
 * (bluefox) support of getHistory command and defaultHistory
