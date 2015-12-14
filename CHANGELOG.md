@@ -1,3 +1,15 @@
+# 0.8.1 (2015-12-14)
+* (bluefox) fix permissions for administrator group, but not admin user.
+* (bluefox) support of getHistory command and defaultHistory
+* (bluefox) implement "iobroker restart adapter"
+* (bluefox) enable write dependencies as an object
+* (bluefox) remove directory adapter and move example to iobroker.template
+* (bluefox) prepare support of syslog
+* (bluefox) add ioBroker.sql
+* (bluefox) add ioBroker.influxdb
+* (bluefox) remove example adapter (it is replaced with iobroker.template)
+* (bluefox) start of renaming of js-controller to enable branding
+
 # 0.7.15 (2015-11-10)
 * (bluefox) add command visdebug
 * (bluefox) add flag preserveSettings
