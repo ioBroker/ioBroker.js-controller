@@ -1,4 +1,7 @@
 {
+    "system": {
+        "memoryLimitMB": 0
+    },
     "network": {
         "IPv4": true,
         "IPv6": true,

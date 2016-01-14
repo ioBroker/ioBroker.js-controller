@@ -74,7 +74,10 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-    "install": "node lib/setup.js setup first"
+    "install": "node lib/setup.js setup first",
+    "start": "node lib/setup.js start",
+    "stop": "node lib/setup.js stop",
+    "restart": "node lib/setup.js restart"
   },
   "main": "controller.js",
   "license": "MIT"

@@ -1036,6 +1036,11 @@ function startInstance(id, wakeUp) {
 
     var args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
 
+    // define memory limit for adapter
+    if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
+        args.push('--max-old-space-size=' + parseInt(instance.common.memoryLimitMB, 10));
+    }
+
     var fileNameFull = adapterDir + '/' + fileName;
 
     // workaround for old vis.
