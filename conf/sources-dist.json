@@ -173,6 +173,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
   },
+  "rpi": {
+    "meta": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/admin/rpi-monitor.png"
+  },
   "sonos": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
@@ -232,6 +236,10 @@
   "vis-timeandweather": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-timeandweather/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-timeandweather/master/admin/timeandweather.png"
+  },
+  "weatherunderground": {
+    "meta": "https://raw.githubusercontent.com/dschaedl/ioBroker.weatherunderground/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/dschaedl/ioBroker.weatherunderground/master/admin/wu.png"
   },
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
