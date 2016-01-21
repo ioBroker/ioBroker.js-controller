@@ -153,6 +153,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png"
   },
+  "occ": {
+    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/admin/logo.svg"
+  }
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
@@ -169,6 +173,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
+  "rpi": {
+    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.rpi/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.rpi/master/admin/rpi-monitor.png"
+  }
   "rickshaw": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
