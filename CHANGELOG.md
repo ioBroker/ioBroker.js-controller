@@ -1,3 +1,14 @@
+# 0.8.3 (2016-01-21)
+* (bluefox) add commands like "npm start"
+* (bluefox) check singletonHost one on host
+* (bluefox) add memoryLimitMB for controller and adapters
+* (bluefox) make install from NON-git sources possible again.
+* (bluefox) add rpi, weatherunderground, chromecast, geofency, samsung, squeezebox, vcard, yamaha
+* (husky-koglhof) occ und rpi Adapter
+* (angelnu) visdebug - check for different adapter directories
+* (bluefox) enable install of icons-open-icon-library-png
+
+
 # 0.8.2 (2015-12-14)
 * (bluefox) fix upgrade.
 

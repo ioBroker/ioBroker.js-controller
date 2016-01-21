@@ -12,6 +12,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png"
   },
+  "chromecast": {
+    "meta": "https://raw.githubusercontent.com/angelnu/ioBroker.chromecast/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/angelnu/ioBroker.chromecast/master/admin/chromecast.jpg"
+  },
   "cul": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg"
@@ -31,6 +35,10 @@
   "fritzbox": {
     "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/admin/fritzbox.png"
+  },
+  "geofency": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/admin/geofency.png"
   },
   "harmony": {
     "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.harmony/master/io-package.json",
@@ -156,7 +164,7 @@
   "occ": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/admin/logo.svg"
-  }
+  },
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
@@ -173,10 +181,6 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
-  "rpi": {
-    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.rpi/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.rpi/master/admin/rpi-monitor.png"
-  }
   "rickshaw": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
@@ -185,6 +189,14 @@
     "meta": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/admin/rpi-monitor.png"
   },
+  "samsung": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/admin/samsung.png"
+  },
+  "squeezebox": {
+    "meta": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.squeezebox/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.squeezebox/master/admin/squeezebox.png"
+  },
   "sonos": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png"
@@ -192,6 +204,10 @@
   "terminal": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.terminal/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.terminal/master/admin/terminal.png"
+  },
+  "vcard": {
+    "meta": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/admin/vcard.png"
   },
   "vis": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
@@ -256,6 +272,10 @@
   "wolf": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.wolf/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.wolf/master/admin/wolf_logo.png"
+  },
+  "yamaha": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.yamaha/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.yamaha/master/admin/yamaha.png"
   },
   "yr": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
