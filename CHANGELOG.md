@@ -1,3 +1,7 @@
+# 0.8.4 (2016-01-22)
+* (bluefox) fix version
+* (bluefox) fix log outputs
+
 # 0.8.3 (2016-01-21)
 * (bluefox) add commands like "npm start"
 * (bluefox) check singletonHost one on host
