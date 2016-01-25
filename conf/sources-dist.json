@@ -60,6 +60,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
+  "homekit": {
+    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/admin/homekit.png"
+  },
   "hmm": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/admin/hmm.png"
@@ -116,6 +120,10 @@
   "megad": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
+  },
+  "miele": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.miele/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.miele/master/admin/xmiele.png"
   },
   "mobile": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mobile/master/io-package.json",
