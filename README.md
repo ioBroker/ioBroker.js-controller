@@ -1,4 +1,4 @@
-!(Logo)[lib/img/iobroker.png]
+![Logo](lib/img/iobroker.png)
 # ioBroker.js-controller
 ==================
 
