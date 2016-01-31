@@ -1,6 +1,26 @@
+!(Logo)[lib/img/iobroker.png]
 # ioBroker.js-controller
+==================
 
-For more information please visit [ioBroker wiki](https://github.com/ioBroker/ioBroker/wiki/Home-(English))
+[![NPM version](http://img.shields.io/npm/v/iobroker.javascript.svg)](https://www.npmjs.com/package/iobroker.javascript)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.javascript.svg)](https://www.npmjs.com/package/iobroker.javascript)
+
+[![NPM](https://nodei.co/npm/iobroker.javascript.png?downloads=true)](https://nodei.co/npm/iobroker.javascript/)
+
+
+This is a main controller, that starts all other ioBroker adapters.
+
+Official Web-Site: http://iobroker.net
+
+Forum: http://forum.iobroker.net
+
+Issue Traker: http://iobroker.net:8000 (please leave your issues there and not on github)
+
+ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
+
+Explanation of the concept: https://github.com/iobroker/iobroker
+
+----------------------------------------------------------------------
 
 This is a Javascript/Node.js implementation of an ioBroker controller.
 
