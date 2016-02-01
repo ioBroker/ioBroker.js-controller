@@ -1,3 +1,16 @@
+# 0.8.5 (2016-02-01)
+* (bluefox) update version of node-schedule to fix problem with Februar.2016
+* (bluefox) update socket.io version
+* (bluefox) add logo image
+* (bluefox) add buildRepository.js
+* (bluefox) If desired, that adapter must be terminated
+* (bluefox) use isFloatComma in formatValue
+* (soef)    formatDate extended and formatValue added
+* (soef)    formatDate extended to use seconds as duratiorn
+* (soef)    formatValue added to convert a value to a string with thousand separator....
+* (bluefox) add homekit and miele
+* (bluefox) fix upload of files
+
 # 0.8.4 (2016-01-22)
 * (bluefox) fix version
 * (bluefox) fix log outputs

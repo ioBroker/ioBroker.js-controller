@@ -61,17 +61,12 @@ module.exports = function (grunt) {
                 },
                 dest: 'tmp/<%= grunt.task.current.args[1] %>.json'
             }
-        },
-        exec: {
-            npm: {
-                cmd: 'npm install'
-                }
         }
     });
 
     grunt.registerTask('updateReadme', function () {
         var readme = grunt.file.read('CHANGELOG.md');
-        if (iopackage.common && readme.indexOf(iopackage.common.version) == -1) {
+        if (readme.indexOf(version) == -1) {
             var timestamp = new Date();
             var date = timestamp.getFullYear() + '-' +
                 ("0" + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
@@ -81,13 +76,13 @@ module.exports = function (grunt) {
             if (iopackage.common.whatsNew) {
                 for (var i = 0; i < iopackage.common.whatsNew.length; i++) {
                     if (typeof iopackage.common.whatsNew[i] == 'string') {
-                        news += '* ' + iopackage.common.whatsNew[i] + '\r\n';
+                        news += '* ' + iopackage.common.whatsNew[i] + '\n';
                     } else {
-                        news += '* ' + iopackage.common.whatsNew[i].en + '\r\n';
+                        news += '* ' + iopackage.common.whatsNew[i].en + '\n';
                     }
                 }
             }
-            grunt.file.write('CHANGELOG.md', '# ' + iopackage.common.version + ' (' + date + ')\r\n' + news + '\r\n' + readme);
+            grunt.file.write('CHANGELOG.md', '# ' + version + ' (' + date + ')\n' + news + '\n' + readme);
         }
     });
 
@@ -144,18 +139,17 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-http');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('default', [
-        'exec',
-        'clean',
         'replace',
         'updateReadme',
         'jshint',
-        'jscs',
+        'jscs'
 //        'updateRepo1',
 //        'updateRepo2',
-        'clean'
+    ]);
+	grunt.registerTask('p', [
+        'replace',
+        'updateReadme'
     ]);
 };

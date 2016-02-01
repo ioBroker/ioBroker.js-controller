@@ -2,10 +2,10 @@
 # ioBroker.js-controller
 ==================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.javascript.svg)](https://www.npmjs.com/package/iobroker.javascript)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.javascript.svg)](https://www.npmjs.com/package/iobroker.javascript)
+[![NPM version](http://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
 
-[![NPM](https://nodei.co/npm/iobroker.javascript.png?downloads=true)](https://nodei.co/npm/iobroker.javascript/)
+[![NPM](https://nodei.co/npm/iobroker.js-controller.png?downloads=true)](https://nodei.co/npm/iobroker.js-controller/)
 
 
 This is a main controller, that starts all other ioBroker adapters.
@@ -23,8 +23,6 @@ Explanation of the concept: https://github.com/iobroker/iobroker
 ----------------------------------------------------------------------
 
 This is a Javascript/Node.js implementation of an ioBroker controller.
-
-**see ioBroker Readme: https://github.com/iobroker/iobroker**
 
 ## Manual installation of ioBroker.js-controller on Debian based Linux (Raspbian, Ubuntu, ...)
 
