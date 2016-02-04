@@ -1,3 +1,9 @@
+# 0.8.6 (2016-02-04)
+* (bluefox) add text2command adapter
+* (bluefox) fix upload problem
+* (bluefox) use node-schedule 1.0.0
+* (bluefox) extend node node_modules/iobroker.js-controller/lib/buildRepository.js command
+
 # 0.8.5 (2016-02-01)
 * (bluefox) update version of node-schedule to fix problem with Februar.2016
 * (bluefox) update socket.io version

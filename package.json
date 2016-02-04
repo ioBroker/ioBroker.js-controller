@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "engines": {
     "node": ">=0.8"
   },
@@ -14,7 +14,7 @@
     "adm-zip": "^0.4.7",
     "daemonize2": "^0.4.2",
     "ncp": "^2.0.0",
-    "node-schedule": "https://github.com/node-schedule/node-schedule/tarball/v1.0-pre",
+    "node-schedule": "1.0.0",
     "node.extend": "^1.1.5",
     "request": "^2.69.0",
     "winston": "^1.0.1",
