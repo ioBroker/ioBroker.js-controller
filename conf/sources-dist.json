@@ -253,6 +253,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-jqui-mfd/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-jqui-mfd/master/admin/jqui-mfd.png"
   },
+  "vis-justgage": {
+    "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.vis-justgage/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pmant/ioBroker.vis-justgage/master/admin/justgage.png"
+  },
   "vis-keyboard": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-keyboard/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-keyboard/master/admin/keyboard.png"

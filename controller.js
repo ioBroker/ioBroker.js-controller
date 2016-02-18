@@ -515,6 +515,19 @@ function sendTo(objName, command, message, callback) {
     states.pushMessage(objName, obj);
 }
 
+function getVersionFromHost(hostId, callback) {
+    states.getState(hostId, function (err, state) {
+        if (state && state.val)  {
+            sendTo(hostId, 'getVersion', null, function (ioPack) {
+                if (callback) callback(ioPack);
+            });
+        } else {
+            logger.warn('host.' + hostname + ': "' + hostId + '" is offline');
+            if (callback) callback();
+        }
+    });
+}
+
 // Process message to controller, like execute some script
 function processMessage(msg) {
     var ioPack;
@@ -644,17 +657,15 @@ function processMessage(msg) {
                                 }
                             } else {
                                 infoCount++;
-                                sendTo(doc.rows[i].id, 'getVersion', null, function (ioPack) {
-                                    infoCount--;
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                    }
-                                    if (!infoCount) {
+                                getVersionFromHost(doc.rows[i].id , function (ioPack) {
+                                    if (ioPack) result.hosts[ioPack.host] = ioPack;
+
+                                    if (!--infoCount) {
                                         if (timeout) {
                                             clearTimeout(timeout);
                                             sendTo(msg.from, msg.command, result, msg.callback);
                                         } else {
-                                            logger.warn('host.' + hostname + ' too delayed answer for ' + ioPack.host);
+                                            logger.warn('host.' + hostname + ' too delayed answer' + (ioPack ? (' for ' + ioPack.host) : ''));
                                         }
                                     }
                                 });
