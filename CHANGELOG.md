@@ -1,3 +1,12 @@
+# 0.8.7 (2016-02-24)
+* (bluefox) fix getForeignObjects
+* (bluefox) add telegram
+* (bluefox) enable OEM naming
+* (bluefox) fix small error if multihost not available
+* (bluefox) add reinstall script
+* (bluefox) add vis-justgage adapter
+* (bluefox) add mysensors
+
 # 0.8.6 (2016-02-04)
 * (bluefox) add text2command adapter
 * (bluefox) fix upload problem
