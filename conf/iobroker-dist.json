@@ -39,6 +39,26 @@
                "fileext": ".log",
                "maxsize":  null,
                "maxFiles": null
+            },
+            "syslog1": {
+                "type":                 "syslog",
+                "enabled":              false,
+
+                "host":                 "localhost",
+                "host_comment":         "The host running syslogd, defaults to localhost.",
+
+                "port_comment":         "The port on the host that syslog is running on, defaults to syslogd's default port(514/UDP).",
+
+                "protocol":             "udp4",
+                "protocol_comment":     "The network protocol to log over (e.g. tcp4, udp4, unix, unix-connect, etc).",
+
+                "path_comment":         "The path to the syslog dgram socket (i.e. /dev/log or /var/run/syslog for OS X).",
+                "facility_comment":     "Syslog facility to use (Default: local0).",
+                "localhost":            "iobroker",
+                "localhost_comment":    "Host to indicate that log messages are coming from (Default: localhost).",
+                "sysLogType_comment":   "The type of the syslog protocol to use (Default: BSD).",
+                "app_name_comment":     "The name of the application (Default: process.title).",
+                "eol_comment":          "The end of line character to be added to the end of the message (Default: Message without modifications)."
             }
         }
     },

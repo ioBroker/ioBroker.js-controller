@@ -1,3 +1,8 @@
+# 0.8.8 (2016-02-29)
+* (bluefox) replace winston with latest module
+* (bluefox) add syslog support
+* (bluefox) fix some LINT warnings
+
 # 0.8.7 (2016-02-24)
 * (bluefox) fix getForeignObjects
 * (bluefox) add telegram

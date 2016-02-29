@@ -2,10 +2,14 @@
 node_modules
 /conf/iobroker.json
 /log/iobroker.log
+/lib/ioBroker.pid
 /adapter/email
 /adapter/sonos
 /adapter/admin
 /data
 /npm-debug.log
-/tmp/*.zip
-/log/*.log
+/tmp
+/log
+pids.txt
+backups
+cache
