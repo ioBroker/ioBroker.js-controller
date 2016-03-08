@@ -31,6 +31,7 @@
     "log": {
         "level": "info",
         "maxDays": 7,
+        "noStdout": true,
         "transport": {
             "file1": {
                "type": "file",
