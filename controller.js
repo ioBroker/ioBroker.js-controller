@@ -522,7 +522,7 @@ function getVersionFromHost(hostId, callback) {
                 if (callback) callback(ioPack);
             });
         } else {
-            logger.warn('host.' + hostname + ': "' + hostId + '" is offline');
+            logger.warn('host.' + hostname + ' "' + hostId + '" is offline');
             if (callback) callback();
         }
     });
@@ -547,6 +547,7 @@ function processMessage(msg) {
                 logger.info(tools.appName + ' ' + data);
                 if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
             });
+
             child.stderr.on('data', function (data) {
                 data = data.toString().replace('\n', '');
                 logger.error(tools.appName + ' ' + data);
@@ -675,7 +676,7 @@ function processMessage(msg) {
                     if (!infoCount) {
                         sendTo(msg.from, msg.command, result, msg.callback);
                     } else {
-                        // Start timeout and send answer in 5 seconds if some hosts is offline
+                        // Start timeout and send answer in 5 seconds if some hosts are offline
                         timeout = setTimeout(function () {
                             logger.warn('host.' + hostname + ' some hosts are offline');
                             timeout = null;
