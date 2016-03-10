@@ -2,6 +2,9 @@
 * (bluefox) replace winston with latest module
 * (bluefox) add syslog support
 * (bluefox) fix some LINT warnings
+* (bluefox) add "host self" command (identical to "host this")
+* (bluefox) fix error with npm 3 if no node_modules directory found
+
 
 # 0.8.7 (2016-02-24)
 * (bluefox) fix getForeignObjects
