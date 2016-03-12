@@ -56,6 +56,10 @@ if (config.objects.type == 'file' && (!config.objects.host || config.objects.hos
     States  = require(__dirname + '/lib/states');
 }
 
+if (config.log.noStdout && process.argv && process.argv.indexOf('--console') !== -1) {
+    config.log.noStdout = false;
+}
+
 if (process.argv.indexOf('start') !== -1) {
     isDaemon = true;
     config.log.noStdout = true;

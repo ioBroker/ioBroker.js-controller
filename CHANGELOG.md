@@ -4,7 +4,9 @@
 * (bluefox) fix some LINT warnings
 * (bluefox) add "host self" command (identical to "host this")
 * (bluefox) fix error with npm 3 if no node_modules directory found
-
+* (bluefox) support of noCache flag
+* (bluefox) fix error if _data.json file broken
+* (bluefox) support of file uploading: iobroker fileName /adapter/fileName
 
 # 0.8.7 (2016-02-24)
 * (bluefox) fix getForeignObjects
