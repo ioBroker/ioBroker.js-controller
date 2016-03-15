@@ -13,3 +13,4 @@ node_modules
 pids.txt
 backups
 cache
+/img
