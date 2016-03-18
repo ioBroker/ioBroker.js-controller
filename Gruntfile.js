@@ -5,11 +5,18 @@
 /*jslint node: true */
 "use strict";
 
+function getAppName() {
+    var parts = __dirname.replace(/\\/g, '/').split('/');
+    return parts[parts.length - 1].split('.')[0].toLowerCase();
+}
+
 module.exports = function (grunt) {
 
-    var srcDir    = __dirname + "/";
+    var srcDir    = __dirname + '/';
     var pkg       = grunt.file.readJSON('package.json');
     var iopackage = grunt.file.readJSON('io-package.json');
+    var appName   = getAppName();
+
 
     // Project configuration.
     grunt.initConfig({
@@ -40,6 +47,70 @@ module.exports = function (grunt) {
                                 srcDir + 'package.json'
                         ],
                         dest:    srcDir
+                    }
+                ]
+            },
+			            name: {
+                options: {
+                    patterns: [
+                        {
+                            match:       /iobroker/gi,
+                            replacement: appName
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + '*.*',
+                            srcDir + '.travis.yml',
+                            srcDir + '.npmignore',
+                            srcDir + '.gitignore'
+                        ],
+                        dest:    srcDir
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'admin/*.*',
+                            '!' + srcDir + 'admin/*.png'
+                        ],
+                        dest:    srcDir + 'admin'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'lib/*.*'
+                        ],
+                        dest:    srcDir + 'lib'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'example/*.*'
+                        ],
+                        dest:    srcDir + 'example'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'www/*.*'
+                        ],
+                        dest:    srcDir + 'www'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'conf/*.*'
+                        ],
+                        dest:    srcDir + 'conf'
                     }
                 ]
             }
@@ -135,13 +206,24 @@ module.exports = function (grunt) {
         }
         grunt.file.write(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
     });
-    grunt.loadNpmTasks('grunt-replace');
+    
+	grunt.registerTask('renameFiles', function () {
+		var fs = require('fs');
+		fs.unlink(__dirname + '/lib/img/iobroker.png');
+		if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',              __dirname + '/' + appName);
+        if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat', __dirname + '/_service_' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',          __dirname + '/' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.js'))              fs.renameSync(__dirname + '/iobroker.js',           __dirname + '/' + appName + '.js');
+        if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  fs.renameSync(__dirname + '/conf/iobroker-dist.json',  __dirname + '/conf/' + appName + '-dist.json');
+    });
+	
+	grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-http');
 
     grunt.registerTask('default', [
-        'replace',
+        'replace:core',
         'updateReadme',
         'jshint',
         'jscs'
@@ -149,7 +231,11 @@ module.exports = function (grunt) {
 //        'updateRepo2',
     ]);
 	grunt.registerTask('p', [
-        'replace',
+        'replace:core',
         'updateReadme'
+    ]);
+	grunt.registerTask('rename', [
+        'replace:name',
+        'renameFiles'
     ]);
 };
