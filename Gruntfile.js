@@ -50,12 +50,20 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-			            name: {
+			name: {
                 options: {
                     patterns: [
                         {
                             match:       /iobroker/gi,
                             replacement: appName
+                        },
+                        {
+                            match:       /"iobroker\.admin": "\*"/i,
+                            replacement: ''
+                        },
+                        {
+                            match:       new RegExp('"iobroker\\.admin": "\\*"'),
+                            replacement: ''
                         }
                     ]
                 },
