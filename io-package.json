@@ -225,15 +225,15 @@
             "native": {
                 "repositories": {
                     "default": {
+                        "link": "http://download.iobroker.net/sources-dist.json",
+                        "json": null
+                    },
+                    "sources": {
                         "link": "conf/sources-dist.json",
                         "json": null
                     },
                     "online": {
                         "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
-                        "json": null
-                    },
-                    "fast-online": {
-                        "link": "http://download.iobroker.net/sources-dist.json",
                         "json": null
                     }
                 }
