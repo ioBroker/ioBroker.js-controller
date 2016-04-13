@@ -26,10 +26,11 @@ var States;
 var semver;
 var logger;
 var isDaemon;
-var callbackId = 1;
-var callbacks =  {};
-var hostname =   os.hostname();
-var logList =    [];
+var callbackId      = 1;
+var callbacks       = {};
+var hostname        = os.hostname();
+var logList         = [];
+var detectIpsCount  = 0;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -79,13 +80,23 @@ if (adapterDir.pop() == 'node_modules') {
     adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
 }
 
-var ifaces = os.networkInterfaces();
 var ipArr = [];
-for (var dev in ifaces) {
-    /*jshint loopfunc:true */
-    ifaces[dev].forEach(function (details) {
-        if (!details.internal) ipArr.push(details.address);
-    });
+var lastCalculationOfIps = null;
+
+function getIPs() {
+    if (!lastCalculationOfIps || new Date().getTime() - lastCalculationOfIps > 10000) {
+        var ifaces = os.networkInterfaces();
+        lastCalculationOfIps = new Date().getTime();
+        ipArr = [];
+        for (var dev in ifaces) {
+            /*jshint loopfunc:true */
+            ifaces[dev].forEach(function (details) {
+                if (!details.internal) ipArr.push(details.address);
+            });
+        }
+    }
+
+    return ipArr;
 }
 
 // If some message from logger
@@ -106,11 +117,10 @@ function logRedirect(isActive, id) {
     }
 }
 
-
 logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('host.' + hostname + ' Copyright (c) 2014-2015 bluefox, hobbyquaker');
+logger.info('host.' + hostname + ' Copyright (c) 2014-2016 bluefox, hobbyquaker');
 logger.info('host.' + hostname + ' hostname: ' + hostname);
-logger.info('host.' + hostname + ' ip addresses: ' + ipArr.join(' '));
+logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
 var procs     = {};
 var subscribe = {};
@@ -232,7 +242,9 @@ function createObjects() {
                 }
                 if (procs[id].process) {
                     stopInstance(id, function () {
-                        if (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
+                        var _ipArr = getIPs();
+
+                        if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
                             if (procs[id].config.common.enabled) {
                                 setTimeout(function (_id) {
                                     startInstance(_id);
@@ -243,7 +255,8 @@ function createObjects() {
                         }
                     });
                 } else {
-                    if (procs[id].config && (ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                    var _ipArr = getIPs();
+                    if (procs[id].config && (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
                         if (procs[id].config.common.enabled) startInstance(id);
                     } else {
                         delete procs[id];
@@ -251,8 +264,9 @@ function createObjects() {
                 }
 
             } else if (obj && obj.common) {
+                var _ipArr = getIPs();
                 // new adapter
-                if (ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
+                if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                     procs[id] = {config: obj};
                     if (procs[id].config.common.enabled) startInstance(id);
                 }
@@ -355,7 +369,7 @@ function setMeta() {
                 platform:         ioPackage.common.platform,
                 cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
                 hostname:         hostname,
-                address:          ipArr,
+                address:          getIPs(),
                 type:             ioPackage.common.name
             },
             native: {
@@ -388,9 +402,22 @@ function setMeta() {
         }
 
         objects.setObject(id, newObj);
+
+        // check if IPs detected
+        var found = false;
+        for (var a = 0; a < newObj.common.address.length; a++) {
+            if (newObj.common.address[a] === '127.0.0.1' || newObj.common.address[a] === '::1/128') continue;
+            found = true;
+            break;
+        }
+
+        if (!found && detectIpsCount < 10) {
+            detectIpsCount++;
+            setTimeout(setMeta, 30000);
+        }
     });
 
-    var _id = id + ".mem";
+    var _id = id + '.mem';
     var obj = {
         _id: _id,
         type: 'state',
@@ -418,7 +445,7 @@ function setMeta() {
     };
     objects.extendObject(_id, obj);
 
-    _id = id + ".memHeapTotal";
+    _id = id + '.memHeapTotal';
     obj = {
         _id: _id,
         type: 'state',
@@ -431,7 +458,7 @@ function setMeta() {
     };
     objects.extendObject(_id, obj);
 
-    _id = id + ".memRss";
+    _id = id + '.memRss';
     obj = {
         _id: _id,
         type: 'state',
@@ -445,7 +472,7 @@ function setMeta() {
     };
     objects.extendObject(_id, obj);
 
-    _id = id + ".uptime";
+    _id = id + '.uptime';
     obj = {
         _id: _id,
         type: 'state',
@@ -471,7 +498,7 @@ function setMeta() {
     };
     objects.extendObject(_id, obj);
 
-    _id = id + ".alive";
+    _id = id + '.alive';
     obj = {
         _id: _id,
         type: 'state',
@@ -826,6 +853,7 @@ function getInstances() {
         } else if (doc.rows.length === 0) {
             logger.info('host.' + hostname + ' no instances found');
         } else {
+            var _ipArr = getIPs();
             logger.info('host.' + hostname + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             var count = 0;
             for (var i = 0; i < doc.rows.length; i++) {
@@ -840,7 +868,7 @@ function getInstances() {
 
                 logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
-                if (ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
+                if (_ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = {config: instance};
                     if (instance.common.enabled) count++;
                 }
