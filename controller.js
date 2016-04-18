@@ -169,10 +169,10 @@ var states = new States({
             for (var i = 0; i < subscribe[id].length; i++) {
                 // wake up adapter
                 if (procs[subscribe[id][i]]) {
-                    console.log("Wake up " + id + ' ' + JSON.stringify(state));
+                    console.log('Wake up ' + id + ' ' + JSON.stringify(state));
                     startInstance(subscribe[id][i], true);
                 } else {
-                    logger.warn("controller Adapter subscribed on " + id + " does not exist!");
+                    logger.warn('controller Adapter subscribed on ' + id + ' does not exist!');
                 }
             }
         } else
@@ -353,6 +353,40 @@ function collectDiagInfo(callback) {
         });
     });
 }
+// check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
+function setIPs(ipList) {
+    var id = 'system.host.' + hostname;
+    var _ipList = ipList || getIPs();
+
+    // check if IPs detected (because of DHCP delay)
+    var found = false;
+    for (var a = 0; a < _ipList.length; a++) {
+        if (_ipList[a] === '127.0.0.1' || _ipList[a] === '::1/128' || !_ipList[a].match(/^\d+\.\d+\.\d+\.\d+$/)) continue;
+        found = true;
+        break;
+    }
+    // IPv4 address still not found, try again in 30 seconds
+    if (!found && detectIpsCount < 10) {
+        detectIpsCount++;
+        setTimeout(function () {
+            setIPs();
+        }, 30000);
+    } else if (found) {
+        if (!ipList) {
+            // IPv4 found => write to object
+            objects.getObject(id, function (err, oldObj) {
+                oldObj.common.address           = ipList;
+                oldObj.native.networkInterfaces = os.networkInterfaces();
+
+                objects.setObject(id, oldObj, function (err) {
+                    if (err) logger.error('Cannot write host object:' + err);
+                });
+            });
+        }
+    } else {
+        logger.info('No IPv4 address found after 5 minutes.');
+    }
+}
 
 function setMeta() {
     var id = 'system.host.' + hostname;
@@ -375,7 +409,7 @@ function setMeta() {
             native: {
                 process: {
                     title:      process.title,
-                    pid:        process.pid,
+//                    pid:        process.pid,
                     versions:   process.versions,
                     env:        process.env
                 },
@@ -385,7 +419,7 @@ function setMeta() {
                     platform:   os.platform(),
                     arch:       os.arch(),
                     release:    os.release(),
-                    uptime:     os.uptime(),
+//                    uptime:     os.uptime(),
                     endianness: os.endianness(),
                     tmpdir:     os.tmpdir()
                 },
@@ -401,20 +435,12 @@ function setMeta() {
             newObj = require('node.extend')(true, oldObj, newObj);
         }
 
-        objects.setObject(id, newObj);
-
-        // check if IPs detected
-        var found = false;
-        for (var a = 0; a < newObj.common.address.length; a++) {
-            if (newObj.common.address[a] === '127.0.0.1' || newObj.common.address[a] === '::1/128') continue;
-            found = true;
-            break;
+        if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
+            objects.setObject(id, newObj, function (err) {
+                if (err) logger.error('Cannot write host object:' + err);
+            });
         }
-
-        if (!found && detectIpsCount < 10) {
-            detectIpsCount++;
-            setTimeout(setMeta, 30000);
-        }
+        setIPs(newObj.common.address);
     });
 
     var _id = id + '.mem';
@@ -1502,8 +1528,8 @@ process.on('uncaughtException', function (err) {
 
     // If by terminating one more exception => stop immediately to break the circle
     if (uncaughtExceptionCount) {
-        console.log(err.message || err);
-        if (err.stack) console.log(err.stack);
+        console.error(err.message || err);
+        if (err.stack) console.error(err.stack);
         process.exit(2);
         return;
     }
