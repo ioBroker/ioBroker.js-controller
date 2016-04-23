@@ -1,3 +1,18 @@
+# 0.8.9 (2016-04-23)
+* (bluefox) do not handle exceptions in logger
+* (bluefox) change logger
+* (bluefox) set valid mimeType for *.manifest
+* (bluefox) add noolite adapter
+* (bluefox) change download script
+* (bluefox) change rename script
+* (bluefox) add starline
+* (bluefox) change repository building
+* (bluefox) add 'delete' objects
+* (bluefox) change behavior by exceptions
+* (bluefox) workaround for DHCP delay
+* (bluefox) fix passwd command
+* (bluefox) do not write error under windows: "cannot delete log file"
+
 # 0.8.8 (2016-02-29)
 * (bluefox) replace winston with latest module
 * (bluefox) add syslog support
