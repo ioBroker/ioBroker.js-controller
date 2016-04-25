@@ -1,5 +1,6 @@
 # 0.8.10 (2016-04-25)
 * (bluefox) fix restart script
+* (bluefox) update default certificates
 
 # 0.8.9 (2016-04-23)
 * (bluefox) do not handle exceptions in logger
