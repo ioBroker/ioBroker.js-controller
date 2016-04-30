@@ -32,6 +32,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png"
   },
+  "feiertage": {
+    "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.feiertage/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.feiertage/master/admin/feiertage.png"
+  },
   "fritzbox": {
     "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/admin/fritzbox.png"
@@ -75,6 +79,10 @@
   "icons-addictive-flavour-png": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/admin/icons-addictive-flavour-png.png"
+  },
+  "icons-icons8": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-icons8/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-icons8/master/admin/icons8.png"
   },
   "icons-material-png": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-material-png/master/io-package.json",
