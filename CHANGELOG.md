@@ -1,3 +1,7 @@
+# 0.9.0 (2016-05-xx)
+* (bluefox) make from seconds the ms
+* (bluefox) add console command "isrun"
+
 # 0.8.10 (2016-04-25)
 * (bluefox) fix restart script
 * (bluefox) update default certificates
