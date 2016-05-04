@@ -240,7 +240,7 @@ function createObjects() {
                     if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
                     procs[id].config = obj;
                 }
-                if (procs[id].process) {
+                if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
                     stopInstance(id, function () {
                         var _ipArr = getIPs();
 
