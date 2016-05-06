@@ -228,51 +228,54 @@ function createObjects() {
         change: function (id, obj) {
             if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             logger.info('host.' + hostname + ' object change ' + id);
-            if (procs[id]) {
-                // known adapter
-                if (!obj) {
-                    procs[id].config.common.enabled = false;
-                    procs[id].config.common.host    = null;
-                    procs[id].config.deleted        = true;
-                    logger.info('host.' + hostname + ' object deleted ' + id);
-                } else {
-                    if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
-                    if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
-                    procs[id].config = obj;
-                }
-                if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
-                    stopInstance(id, function () {
-                        var _ipArr = getIPs();
+            try{
+                if (procs[id]) {
+                    // known adapter
+                    if (!obj) {
+                        procs[id].config.common.enabled = false;
+                        procs[id].config.common.host    = null;
+                        procs[id].config.deleted        = true;
+                        logger.info('host.' + hostname + ' object deleted ' + id);
+                    } else {
+                        if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
+                        if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
+                        procs[id].config = obj;
+                    }
+                    if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
+                        stopInstance(id, function () {
+                            var _ipArr = getIPs();
 
-                        if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
-                            if (procs[id].config.common.enabled) {
-                                setTimeout(function (_id) {
-                                    startInstance(_id);
-                                }, 2500, id);
+                            if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
+                                if (procs[id].config.common.enabled) {
+                                    setTimeout(function (_id) {
+                                        startInstance(_id);
+                                    }, 2500, id);
+                                }
+                            } else {
+                                delete procs[id];
                             }
+                        });
+                    } else {
+                        var _ipArr = getIPs();
+                        if (procs[id].config && (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                            if (procs[id].config.common.enabled) startInstance(id);
                         } else {
                             delete procs[id];
                         }
-                    });
-                } else {
+                    }
+
+                } else if (obj && obj.common) {
                     var _ipArr = getIPs();
-                    if (procs[id].config && (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                    // new adapter
+                    if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
+                        procs[id] = {config: obj};
                         if (procs[id].config.common.enabled) startInstance(id);
-                    } else {
-                        delete procs[id];
                     }
                 }
-
-            } else if (obj && obj.common) {
-                var _ipArr = getIPs();
-                // new adapter
-                if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
-                    procs[id] = {config: obj};
-                    if (procs[id].config.common.enabled) startInstance(id);
-                }
+            } catch (err) {
+                logger.error('cannot process: ' + id);
             }
         }
-
     });
 }
 
