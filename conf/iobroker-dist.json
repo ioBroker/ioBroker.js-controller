@@ -1,6 +1,7 @@
 {
     "system": {
-        "memoryLimitMB": 0
+        "memoryLimitMB": 0,
+        "hostname": ""
     },
     "network": {
         "IPv4": true,
