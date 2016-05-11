@@ -28,7 +28,7 @@ var logger;
 var isDaemon;
 var callbackId      = 1;
 var callbacks       = {};
-var hostname        = os.hostname();
+var hostname        = tools.getHostName();
 var logList         = [];
 var detectIpsCount  = 0;
 
@@ -1002,9 +1002,18 @@ function checkVersions(id, deps) {
                 }
             }
         } else if (typeof deps === 'object') {
-            for (var _name in deps) {
-                if (!checkVersion(id, _name, deps[_name])) {
-                    return false;
+            if (deps.length !== undefined || deps[0]) {
+                for (var i in deps) {
+                    for (var _name in deps[i]) {
+                        if (!checkVersion(id, _name, deps[_name][i])) {
+                            return false;
+                        }
+                    }                }
+            } else {
+                for (var _name in deps) {
+                    if (!checkVersion(id, _name, deps[_name])) {
+                        return false;
+                    }
                 }
             }
         }

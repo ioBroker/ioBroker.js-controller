@@ -1,6 +1,14 @@
 # 0.9.0 (2016-05-xx)
 * (bluefox) make from seconds the ms
 * (bluefox) add console command "isrun"
+* (bluefox) add "--timeout 5000"
+* (bluefox) fix small errors
+* (bluefox) change function formatValue
+* (bluefox) fix stop of scheduled adapters
+* (bluefox) add "--logs" flag for adapter start (required by adapter debugging)
+* (bluefox) make hostname configurable
+* (bluefox) fix update of adapters and settings
+
 
 # 0.8.10 (2016-04-25)
 * (bluefox) fix restart script
