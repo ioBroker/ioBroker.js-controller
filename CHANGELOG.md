@@ -1,4 +1,4 @@
-# 0.9.0 (2016-05-xx)
+# 0.9.0 (2016-05-23)
 * (bluefox) make from seconds the ms
 * (bluefox) add console command "isrun"
 * (bluefox) add "--timeout 5000"

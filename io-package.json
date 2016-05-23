@@ -1,10 +1,15 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.8.10",
+        "version":    "0.9.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
+        "news": {
+            "en": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
+            "de": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
+            "ru": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings"
+        },
         "desc": {
             "en": "Javascript/Node.js implementation of ioBroker controller",
             "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
