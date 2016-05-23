@@ -125,6 +125,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
   },
+  "kodi": {
+    "meta": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png"
+  },
   "megad": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
@@ -224,6 +228,10 @@
   "rpi": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/admin/rpi-monitor.png"
+  },
+  "rwe-smarthome": {
+    "meta": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/admin/rwe-smarthome.png"
   },
   "samsung": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/io-package.json",
