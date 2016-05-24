@@ -1,14 +1,21 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.9.0",
+        "version":    "0.9.1",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-            "en": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
-            "de": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
-            "ru": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings"
+            "0.9.1": {
+				"en": "update wrong SSL certificates",
+				"de": "update wrong SSL certificates",
+				"ru": "update wrong SSL certificates"
+			},
+            "0.9.0": {
+				"en": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
+				"de": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
+				"ru": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings"
+			}
         },
         "desc": {
             "en": "Javascript/Node.js implementation of ioBroker controller",
@@ -18,8 +25,8 @@
         "messagebox": true,
         "readme":     "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
         "authors": [
-            "hobbyquaker <hq@ccu.io>",
-            "bluefox <bluefox@ccu.io>"
+            "bluefox <bluefox@gmail.com>",
+            "hobbyquaker <hq@ccu.io>"
         ],
         "license":    "MIT"
     },
@@ -257,8 +264,8 @@
             },
             "native": {
                 "certificates": {
-                    "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----MIICXQIBAAKBgQDFNHQmcPu5y9ngID3YUCr2NUY/eBceEKdFcEwgZBjp1DM52d/9JYFSrQGHQMvLopG5uiQXVip0mR95rZxaF0mo5wdTAhM1pcxThGeCghZVm9PoLbrakvl9+gSHoYbNVxfv9fi0cPYc7CbeiluhWWS0hm1VpWPM8PX6rkdz5r9OIwIDAQABAoGBAJVSWoChHHpa+ObUgv+/9Efpnv+AF0EUqxPRLFN6d8LWgtNTPl+YfovzpCydy7KtrlpLr/hbrloLd+HSq4ksCQEfJ7Le/4fjc2lt3Ib/K9qSr3bnmIWAK00VU+fFmN1NTFJTV0O2+ctCOY9ZRwue5ehTp9eqPjsGwdeldii1WbSBAkEA6Z0YjMg+04z1M8FEUWSdPf6AHWB45hDJ+qPuIDNZxvVOcEsTyRsfkb1PKZm2NDx6mBN16po13VkaQPy35ApoOwJBANgaMdbig76A1tvyhtklJPTU0g0N7CzXy+PNu8B3YghY8dYF/gSvcBr0d8xGaZEczGQ35C0Tb9gTadHL64kxuzkCQHYaQYsKwRhaLqxXjJ5Ja2UoAMTZPMWyvynDLmOBEmYPJfSHQB1vZOpc9mRlnUOTP7caP4a3J3wby7YHDUBwMnkCQHGx1mbn5chkoKY3gxrboAXvslOL76XoIy1HIHCyXrFlmlav8GUmqCSGWkDvCrt+G0re3P2aLE3SaOooD1OvBoECQQDXMxPNYVGIErO7hxp9T9BXKcbnQV/mNhJYdl9VUoVBgcVGatR1dBZX31Yt+HY4/ym9YdQ8MGCg2Kfmm0haLakP-----END RSA PRIVATE KEY-----",
-                    "defaultPublic": "-----BEGIN CERTIFICATE-----MIICSTCCAbICCQDwWQ5sMoq7ETANBgkqhkiG9w0BAQUFADBpMQswCQYDVQQGEwJERTETMBEGA1UECAwKU29tZS1TdGF0ZTERMA8GA1UECgwIaW9Ccm9rZXIxEDAOBgNVBAMMB0JsdWVmb3gxIDAeBgkqhkiG9w0BCQEWEWRvZ2Fmb3hAZ21haWwuY29tMB4XDTE2MDQyNTIxMjQwMVoXDTE3MDQyNTIxMjQwMVowaTELMAkGA1UEBhMCREUxEzARBgNVBAgMClNvbWUtU3RhdGUxETAPBgNVBAoMCGlvQnJva2VyMRAwDgYDVQQDDAdCbHVlZm94MSAwHgYJKoZIhvcNAQkBFhFkb2dhZm94QGdtYWlsLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAxTR0JnD7ucvZ4CA92FAq9jVGP3gXHhCnRXBMIGQY6dQzOdnf/SWBUq0Bh0DLy6KRubokF1YqdJkfea2cWhdJqOcHUwITNaXMU4RngoIWVZvT6C262pL5ffoEh6GGzVcX7/X4tHD2HOwm3opboVlktIZtVaVjzPD1+q5Hc+a/TiMCAwEAATANBgkqhkiG9w0BAQUFAAOBgQBVhdIg59lHKtdpv5O0icvqD4f0tbqMvhWJ/7fhzr1fdjb5OK74g2G90KMhYnzOk0aZu4pgEoXHugpBLb+ndxJnG41pIYe2qg4tp6AjR/uFswdrBLRUhW63yls3FiTEJjKCrGNEdjZoqsTEfwhXab3EoT7tWu+st1V0yiHlsvRGTg==-----END CERTIFICATE-----"
+                    "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIICXQIBAAKBgQDFNHQmcPu5y9ngID3YUCr2NUY/eBceEKdFcEwgZBjp1DM52d/9JYFSrQGHQMvLopG5uiQXVip0mR95rZxaF0mo5wdTAhM1pcxThGeCghZVm9PoLbrakvl9+gSHoYbNVxfv9fi0cPYc7CbeiluhWWS0hm1VpWPM8PX6rkdz5r9OIwIDAQABAoGBAJVSWoChHHpa+ObUgv+/9Efpnv+AF0EUqxPRLFN6d8LWgtNTPl+YfovzpCydy7KtrlpLr/hbrloLd+HSq4ksCQEfJ7Le/4fjc2lt3Ib/K9qSr3bnmIWAK00VU+fFmN1NTFJTV0O2+ctCOY9ZRwue5ehTp9eqPjsGwdeldii1WbSBAkEA6Z0YjMg+04z1M8FEUWSdPf6AHWB45hDJ+qPuIDNZxvVOcEsTyRsfkb1PKZm2NDx6mBN16po13VkaQPy35ApoOwJBANgaMdbig76A1tvyhtklJPTU0g0N7CzXy+PNu8B3YghY8dYF/gSvcBr0d8xGaZEczGQ35C0Tb9gTadHL64kxuzkCQHYaQYsKwRhaLqxXjJ5Ja2UoAMTZPMWyvynDLmOBEmYPJfSHQB1vZOpc9mRlnUOTP7caP4a3J3wby7YHDUBwMnkCQHGx1mbn5chkoKY3gxrboAXvslOL76XoIy1HIHCyXrFlmlav8GUmqCSGWkDvCrt+G0re3P2aLE3SaOooD1OvBoECQQDXMxPNYVGIErO7hxp9T9BXKcbnQV/mNhJYdl9VUoVBgcVGatR1dBZX31Yt+HY4/ym9YdQ8MGCg2Kfmm0haLakP\r\n-----END RSA PRIVATE KEY-----\r\n",
+                    "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIICSTCCAbICCQDwWQ5sMoq7ETANBgkqhkiG9w0BAQUFADBpMQswCQYDVQQGEwJERTETMBEGA1UECAwKU29tZS1TdGF0ZTERMA8GA1UECgwIaW9Ccm9rZXIxEDAOBgNVBAMMB0JsdWVmb3gxIDAeBgkqhkiG9w0BCQEWEWRvZ2Fmb3hAZ21haWwuY29tMB4XDTE2MDQyNTIxMjQwMVoXDTE3MDQyNTIxMjQwMVowaTELMAkGA1UEBhMCREUxEzARBgNVBAgMClNvbWUtU3RhdGUxETAPBgNVBAoMCGlvQnJva2VyMRAwDgYDVQQDDAdCbHVlZm94MSAwHgYJKoZIhvcNAQkBFhFkb2dhZm94QGdtYWlsLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAxTR0JnD7ucvZ4CA92FAq9jVGP3gXHhCnRXBMIGQY6dQzOdnf/SWBUq0Bh0DLy6KRubokF1YqdJkfea2cWhdJqOcHUwITNaXMU4RngoIWVZvT6C262pL5ffoEh6GGzVcX7/X4tHD2HOwm3opboVlktIZtVaVjzPD1+q5Hc+a/TiMCAwEAATANBgkqhkiG9w0BAQUFAAOBgQBVhdIg59lHKtdpv5O0icvqD4f0tbqMvhWJ/7fhzr1fdjb5OK74g2G90KMhYnzOk0aZu4pgEoXHugpBLb+ndxJnG41pIYe2qg4tp6AjR/uFswdrBLRUhW63yls3FiTEJjKCrGNEdjZoqsTEfwhXab3EoT7tWu+st1V0yiHlsvRGTg==\r\n-----END CERTIFICATE-----\r\n"
                 }
             },
             "acl": {

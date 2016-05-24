@@ -294,13 +294,14 @@ function reportStatus() {
     var id = 'system.host.' + hostname;
     states.setState(id + '.alive',   {val: true, ack: true, expire: 30, from: id});
     states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState(id + '.mem',     {val: parseFloat((100 * os.freemem() / os.totalmem()).toFixed(0)), ack: true, from: id});
+    states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
     var mem = process.memoryUsage();
     states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     // Under windows toFixed returns string ?
     states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
+    states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
 }
 
 // collect extended diag information
@@ -358,7 +359,6 @@ function collectDiagInfo(callback) {
 }
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
 function setIPs(ipList) {
-    var id = 'system.host.' + hostname;
     var _ipList = ipList || getIPs();
 
     // check if IPs detected (because of DHCP delay)
@@ -375,17 +375,19 @@ function setIPs(ipList) {
             setIPs();
         }, 30000);
     } else if (found) {
-        if (!ipList) {
-            // IPv4 found => write to object
-            objects.getObject(id, function (err, oldObj) {
-                oldObj.common.address           = ipList;
-                oldObj.native.networkInterfaces = os.networkInterfaces();
+        // IPv4 found => write to object
+        objects.getObject('system.host.' + hostname, function (err, oldObj) {
+            var networkInterfaces = os.networkInterfaces();
+            if (JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
+                JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
+                oldObj.common.address = ipList;
+                oldObj.native.hardware.networkInterfaces = networkInterfaces;
 
-                objects.setObject(id, oldObj, function (err) {
+                objects.setObject(oldObj._id, oldObj, function (err) {
                     if (err) logger.error('Cannot write host object:' + err);
                 });
-            });
-        }
+            }
+        });
     } else {
         logger.info('No IPv4 address found after 5 minutes.');
     }
@@ -400,7 +402,6 @@ function setMeta() {
             type: 'host',
             common: {
                 name:             id,
-//              process:          process.title, // actually not required, because there is type now
                 title:            ioPackage.common.title,
                 installedVersion: version,
                 platform:         ioPackage.common.platform,
@@ -412,7 +413,6 @@ function setMeta() {
             native: {
                 process: {
                     title:      process.title,
-//                    pid:        process.pid,
                     versions:   process.versions,
                     env:        process.env
                 },
@@ -422,20 +422,24 @@ function setMeta() {
                     platform:   os.platform(),
                     arch:       os.arch(),
                     release:    os.release(),
-//                    uptime:     os.uptime(),
                     endianness: os.endianness(),
                     tmpdir:     os.tmpdir()
                 },
                 hardware: {
                     cpus:       os.cpus(),
-                    totalmem:   os.totalmem(),
-                    networkInterfaces: os.networkInterfaces()
+                    totalmem:   os.totalmem()
                 }
             }
         };
-        if (oldObj) {
-            if (oldObj.native && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) oldObj.native.hardware.networkInterfaces = [];
-            newObj = require('node.extend')(true, oldObj, newObj);
+
+        // remove dynamic information
+        if (newObj.native && newObj.native.hardware && newObj.native.hardware.cpus) {
+            for (var c = 0; c < newObj.native.hardware.cpus.length; c++) {
+                if (newObj.native.hardware.cpus[c].times) delete newObj.native.hardware.cpus[c].times;
+            }
+        }
+        if (oldObj && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) {
+            newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
         }
 
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
@@ -534,6 +538,17 @@ function setMeta() {
         common: {
             name: 'Host alive',
             type: 'boolean'
+        },
+        native: {}
+    };
+    _id = id + '.freemem';
+    obj = {
+        _id: _id,
+        type: 'state',
+        common: {
+            name: 'Available RAM in MB',
+            unit: 'MB',
+            type: 'number'
         },
         native: {}
     };
