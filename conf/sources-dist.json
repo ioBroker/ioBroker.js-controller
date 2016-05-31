@@ -28,6 +28,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png"
   },
+  "fhem": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.fhem/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.fhem/master/admin/fhem.png"
+  },
   "flot": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png"
