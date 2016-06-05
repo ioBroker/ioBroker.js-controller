@@ -1263,7 +1263,7 @@ function startInstance(id, wakeUp) {
                     return;
                 }
                 // Remember the last run
-                procs[id].lastStart = (new Date()).getTime();
+                procs[id].lastStart = new Date().getTime();
                 if (!procs[id].process) {
                     var args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     procs[id].process = cp.fork(fileNameFull, args);
