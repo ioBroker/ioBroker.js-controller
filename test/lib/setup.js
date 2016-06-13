@@ -33,11 +33,11 @@ function startController(options, callback) {
     console.log('startController...');
     var settingsObjects = {
         connection: {
-            type:               options.objects.type || "file",
-            host:               options.objects.host || "127.0.0.1",
+            type:               options.objects.type || 'file',
+            host:               options.objects.host || '127.0.0.1',
             port:               options.objects.port || 19001,
-            user:               options.objects.user || "",
-            pass:               options.objects.pass || "",
+            user:               options.objects.user || '',
+            pass:               options.objects.pass || '',
             noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
             connectTimeout:     options.objects.connectTimeout || 2000,
             dataDir:            options.objects.dataDir || ''
@@ -74,16 +74,16 @@ function startController(options, callback) {
 
     var settingsStates = {
         connection: {
-            "options" : {
-                "auth_pass" : null,
-                "retry_max_delay" : 15000
+            options : {
+                auth_pass : null,
+                retry_max_delay : 15000
             },
-            type :          options.states.type || "file",
-            host :          options.states.host || "127.0.0.1",
-            port :          options.states.port || 19000,
-            user :          options.states.user || "",
-            pass :          options.states.pass || "",
-            dataDir:        options.states.dataDir || '',
+            type:           options.states.type     || 'file',
+            host:           options.states.host     || '127.0.0.1',
+            port:           options.states.port     || 19000,
+            user:           options.states.user     || '',
+            pass:           options.states.pass     || '',
+            dataDir:        options.states.dataDir  || ''
         },
         logger:         options.states.logger || options.logger || {
             debug: function (msg) {

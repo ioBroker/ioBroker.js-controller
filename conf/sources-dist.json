@@ -169,38 +169,6 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.noolite/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.noolite/master/admin/noolite.png"
   },
-  "ping": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
-  },
-  "s7": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/admin/S7.png"
-  },
-  "sayit": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
-  },
-  "scenes": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/admin/scenes.png"
-  },
-  "simple-api": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/admin/simple-api.png"
-  },
-  "socketio": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png"
-  },
-  "sql": {
-    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png"
-  },
-  "tvspielfilm": {
-    "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/admin/tvspielfilm.png"
-  },
   "occ": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/admin/logo.svg"
@@ -220,6 +188,10 @@
   "piface": {
     "meta": "https://raw.githubusercontent.com/eisbaeeer/ioBroker.piface/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/eisbaeeer/ioBroker.piface/master/admin/piface.png"
+  },
+  "ping": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ping/master/admin/ping.png"
   },
   "pushbullet": {
     "meta": "https://raw.githubusercontent.com/Jens1809/ioBroker.pushbullet/master/io-package.json",
@@ -241,13 +213,37 @@
     "meta": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/admin/rwe-smarthome.png"
   },
+  "s7": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.s7/master/admin/S7.png"
+  },
   "samsung": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/admin/samsung.png"
   },
+  "sayit": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sayit/master/admin/sayit.png"
+  },
+  "scenes": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.scenes/master/admin/scenes.png"
+  },
+  "simple-api": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.simple-api/master/admin/simple-api.png"
+  },
+  "sql": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png"
+  },
   "squeezebox": {
     "meta": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.squeezebox/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.squeezebox/master/admin/squeezebox.png"
+  },
+  "socketio": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/admin/socketio.png"
   },
   "solarwetter": {
     "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.solarwetter/master/io-package.json",
@@ -261,6 +257,10 @@
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.starline/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.starline/master/admin/starline.png"
   },
+  "tankerkoenig": {
+    "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.tankerkoenig/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tankerkoenig/master/admin/tankerkoenig.png"
+  },
   "telegram": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.telegram/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.telegram/master/admin/telegram.png"
@@ -272,6 +272,10 @@
   "text2command": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.text2command/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.text2command/master/admin/text2command.png"
+  },
+  "tvspielfilm": {
+    "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/admin/tvspielfilm.png"
   },
   "vcard": {
     "meta": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/io-package.json",
@@ -296,6 +300,10 @@
   "vis-google-fonts": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-google-fonts/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-google-fonts/master/admin/vis-google-fonts.png"
+  },
+  "vis-history": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-history/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-history/master/admin/vis-history.png"
   },
   "vis-hqwidgets": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-hqwidgets/master/io-package.json",
