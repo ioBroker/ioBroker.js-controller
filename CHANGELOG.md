@@ -1,3 +1,18 @@
+# 0.10.0 (2016-06-16)
+* (bluefox) activate redis for states
+* (bluefox) do not store repository if with errors
+* (bluefox) fix checkPassword and setPassword
+* (bluefox) update wrong SSL certificates
+* (bluefox) add freemem state to host
+* (bluefox) add milliseconds to formatDate
+* (bluefox) update tar.gz
+
+* (bluefox) add fhem
+* (bluefox) add netatmo
+* (bluefox) add tankerkoenig
+* (bluefox) add vis-history
+* (bluefox) add homepilot
+
 # 0.9.0 (2016-05-23)
 * (bluefox) make from seconds the ms
 * (bluefox) add console command "isrun"
@@ -8,7 +23,6 @@
 * (bluefox) add "--logs" flag for adapter start (required by adapter debugging)
 * (bluefox) make hostname configurable
 * (bluefox) fix update of adapters and settings
-
 
 # 0.8.10 (2016-04-25)
 * (bluefox) fix restart script

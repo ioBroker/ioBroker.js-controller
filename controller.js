@@ -49,11 +49,15 @@ if (!fs.existsSync(tools.getConfigFileName())) {
 }
 
 // If "file" and on the local machine
-if (config.objects.type == 'file' && (!config.objects.host || config.objects.host == 'localhost' || config.objects.host == '127.0.0.1')) {
+if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1')) {
     Objects = require(__dirname + '/lib/objects/objectsInMemServer');
-    States  = require(__dirname + '/lib/states/statesInMemServer');
 } else {
     Objects = require(__dirname + '/lib/objects');
+}
+
+if (config.states.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1')) {
+    States  = require(__dirname + '/lib/states/statesInMemServer');
+} else {
     States  = require(__dirname + '/lib/states');
 }
 
@@ -188,6 +192,10 @@ var states = new States({
                 startInstance(adapter, false);
             }
         }
+    },
+    connected: function () {
+        if (states.clearAllLogs)     states.clearAllLogs();
+        if (states.clearAllMessages) states.clearAllMessages();
     }
 });
 
