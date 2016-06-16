@@ -6,9 +6,6 @@ var rootDir       = path.normalize(__dirname + '/../../');
 var pkg           = require(rootDir + 'package.json');
 var debug         = typeof v8debug === 'object';
 
-var adapterName = path.normalize(rootDir).replace(/\\/g, '/').split('/');
-adapterName = adapterName[adapterName.length - 2];
-
 function getAppName() {
     var parts = __dirname.replace(/\\/g, '/').split('/');
     return parts[parts.length - 3].split('.')[0];

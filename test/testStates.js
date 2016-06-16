@@ -4,20 +4,38 @@ var fs     = require('fs');
 var objects     = null;
 var states      = null;
 var onStatesChanged = null;
+var dataDir = __dirname + '/../tmp/data';
+
+function cleanDbs() {
+    if (fs.existsSync(dataDir + '/objects.json')) {
+        fs.unlinkSync(dataDir + '/objects.json');
+    }
+    if (fs.existsSync(dataDir + '/objects.json.bak')) {
+        fs.unlinkSync(dataDir + '/objects.json.bak');
+    }
+    if (fs.existsSync(dataDir + '/states.json')) {
+        fs.unlinkSync(dataDir + '/states.json');
+    }
+    if (fs.existsSync(dataDir + '/states.json.bak')) {
+        fs.unlinkSync(dataDir + '/states.json.bak');
+    }
+}
+
 
 describe('States: Test states', function() {
     before('States: Start js-controller', function (_done) {
         this.timeout(2000);
+        cleanDbs();
 
         setup.startController({
                 objects: {
-                    dataDir: __dirname + '/../tmp/data',
+                    dataDir: dataDir,
                     onChange:function (id, obj) {
                         console.log('object changed. ' + id);
                     }
                 },
                 states: {
-                    dataDir: __dirname + '/../tmp/data',
+                    dataDir: dataDir,
                     onChange: function (id, state) {
                         console.log('state changed. ' + id);
                         if (onStatesChanged) onStatesChanged(id, state);

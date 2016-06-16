@@ -72,6 +72,10 @@
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/admin/homekit.png"
   },
+  "homepilot": {
+    "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.homepilot/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.homepilot/master/admin/homepilot.png"
+  },
   "hmm": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.hmm/master/admin/hmm.png"
