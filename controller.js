@@ -794,11 +794,11 @@ function processMessage(msg) {
 
         case 'getDiagData':
             if (msg.callback && msg.from) {
-                if (msg.message == 'normal') {
+                if (msg.message === 'normal') {
                     collectDiagInfo(function (obj) {
                         sendTo(msg.from, msg.command, obj, msg.callback);
                     });
-                } else if (msg.message == 'extended') {
+                } else if (msg.message === 'extended') {
                     collectDiagInfoExtended(function (obj) {
                         sendTo(msg.from, msg.command, obj, msg.callback);
                     });
@@ -890,8 +890,30 @@ function processMessage(msg) {
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
             break;
-    }
+        
+        case 'readDirAsZip':
+            if (msg.callback && msg.from) {
+                zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, function (err, data) {
+                    fs.writeFileSync(__dirname + '/tmp/file.zip');
+                    if (data) {
+                        objects.writeFile(msg.message.id, 'file.zip', data, function (err) {
+                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                        });
+                    } else {
+                        sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                    }
+                });
+            }
+            break;
 
+        case 'writeDirAsZip':
+            zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, msg.message.data, function (err) {
+                if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
+            });
+            break;
+    }
 }
 
 function getInstances() {
