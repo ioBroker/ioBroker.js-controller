@@ -13,6 +13,7 @@ var fs =           require('fs');
 var cp =           require('child_process');
 var ioPackage =    require(__dirname + '/io-package.json');
 var tools =        require(__dirname + '/lib/tools');
+var zipFiles;
 var version =      ioPackage.common.version;
 var adapterDir =   __dirname.replace(/\\/g, '/');
 
@@ -894,12 +895,9 @@ function processMessage(msg) {
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, function (err, data) {
-                    fs.writeFileSync(__dirname + '/tmp/file.zip');
-                    if (data) {
-                        objects.writeFile(msg.message.id, 'file.zip', data, function (err) {
-                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
-                        });
+                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, function (err, base64) {
+                    if (base64) {
+                        sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
                     } else {
                         sendTo(msg.from, msg.command, {error: err}, msg.callback);
                     }
@@ -909,7 +907,27 @@ function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, msg.message.data, function (err) {
+            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
+                if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
+            });
+            break;
+
+        case 'readObjectsAsZip':
+            if (msg.callback && msg.from) {
+                zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.options, function (err, base64) {
+                    if (base64) {
+                        sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
+                    } else {
+                        sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                    }
+                });
+            }
+            break;
+
+        case 'writeObjectsAsZip':
+            zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+            zipFiles.writeObjectsAsZip(objects, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
                 if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
             });
             break;
