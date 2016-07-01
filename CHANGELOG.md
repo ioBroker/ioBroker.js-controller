@@ -1,5 +1,9 @@
-# 0.10.0 (2016-06-16)
+# 0.10.0 (2016-07-01)
+* (bluefox) suport of exportand import
 * (bluefox) activate redis for states
+* (bluefox) fix install of adapter with singletonHost
+* (bluefox) issue event if state deleted (redis)
+* (bluefox) fix error with administrator users
 * (bluefox) do not store repository if with errors
 * (bluefox) fix checkPassword and setPassword
 * (bluefox) update wrong SSL certificates
@@ -12,6 +16,8 @@
 * (bluefox) add tankerkoenig
 * (bluefox) add vis-history
 * (bluefox) add homepilot
+* (bluefox) add cloud
+
 
 # 0.9.0 (2016-05-23)
 * (bluefox) make from seconds the ms

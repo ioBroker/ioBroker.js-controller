@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.9.1",
+        "version":    "0.10.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+			"0.10.0": {
+				"en": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud",
+				"de": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud",
+				"ru": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud"
+			},
             "0.9.1": {
 				"en": "update wrong SSL certificates",
 				"de": "update wrong SSL certificates",
