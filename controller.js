@@ -915,7 +915,7 @@ function processMessage(msg) {
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.options, function (err, base64) {
+                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, function (err, base64) {
                     if (base64) {
                         sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
                     } else {
@@ -927,7 +927,7 @@ function processMessage(msg) {
 
         case 'writeObjectsAsZip':
             zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-            zipFiles.writeObjectsAsZip(objects, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
+            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
                 if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
             });
             break;
