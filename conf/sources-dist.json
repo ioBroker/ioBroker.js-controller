@@ -181,6 +181,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.noolite/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.noolite/master/admin/noolite.png"
   },
+  "nut": {
+    "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/admin/nut.png"
+  },
   "occ": {
     "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/admin/logo.svg"
