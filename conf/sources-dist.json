@@ -341,6 +341,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-lcars/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-lcars/master/admin/lcars.png"
   },
+  "vis-map": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-map/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-map/master/admin/vis-map.png"
+  },
   "vis-metro": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/admin/metro.png"
