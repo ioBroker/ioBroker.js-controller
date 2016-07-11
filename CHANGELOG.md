@@ -1,6 +1,7 @@
 # 0.10.1 (2016-07-06)
 * (bluefox) support of chained certificates
 * (bluefox) add nut
+* (bluefox) add vis-map
 
 # 0.10.0 (2016-07-01)
 * (bluefox) suport of exportand import
