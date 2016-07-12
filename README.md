@@ -93,5 +93,40 @@ to cancel.
 To edit the adapters configuration mark the adapter row and click the note icon.
 To enable or disable the adapter click on the pencil icon in the according row.
 
+## Using REDIS as States-DB
+There is a possibility to use REDIS as states database. It is reasonable to do that for big installations or for systems with performance problems.
+It is possible to switch anytime between REDIS and In-Memory Javascript DB. The only problem, that all states must be updated by adapters again (values will be lost).
+Objects and configuration are not affected.
 
+To install REDIS on linux/debuan just write: ```apt-get install redis-server``` .
+
+To install on windows download latest release here [https://github.com/MSOpenTech/redis/releases](https://github.com/MSOpenTech/redis/releases).
+
+To switch to REDIS write in the console following:
+
+```
+>iobroker stop
+>iobroker setup custom
+```
+
+And then:
+
+```
+Type of objects DB [file, couch, redis], default [file]:
+Host of objects DB(file), default[127.0.0.1]:
+Port of objects DB(file), default[9001]:
+Type of states DB [file, redis], default [file]: redis
+Host of states DB (redis), default[127.0.0.1]:
+Port of states DB (redis), default[6379]:
+Data directory (file), default[../../../iobroker-data/]:
+Host name of this machine [FastPC]:
+creating conf/iobroker.json
+```
+
+Note that in fourth line it was entered **redis**.
+
+Now ioBroker can be started.
+Of course redis must be first installed and firewall rules must be checked.
+
+To switch back to JS States write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
 
