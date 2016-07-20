@@ -1257,7 +1257,7 @@ function startInstance(id, wakeUp) {
 
                     if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
 
-                    if (mode != 'once') {
+                    if (mode !== 'once') {
                         if (signal) {
                             logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
                         } else if (code === null) {
@@ -1278,19 +1278,25 @@ function startInstance(id, wakeUp) {
                                 storePids(); // Store all pids to make possible kill them all
                                 return;
                             } else {
-                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
+                                    logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
+                                } else {
+                                    logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                }
                             }
                         }
                     }
 
                     if (procs[id] && procs[id].process) delete procs[id].process;
-                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') {
+                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
+                        
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
+                        
                         setTimeout(function (_id) {
                             startInstance(_id);
-                        }, 30000, id);
+                        }, procs[id].config.common.restartSchedule ? 1000 : 30000, id);
                     } else {
-                        if (mode != 'once') {
+                        if (mode !== 'once') {
                             logger.info('host.' + hostname + ' Do not restart adapter ' + id + ' because disabled or deleted');
                         } else {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated while should be started once');
