@@ -1,3 +1,11 @@
+# 0.11.0 (2016-07-27)
+* (bluefox) implement auto-restart of adapters (expert mode)
+* (bluefox) add rights check for getBinaryState/setBinaryState
+* (bluefox) support of default ttl for sessions
+* (bluefox) fix custom setup
+* (bluefox) fix upload binary files
+* (bluefox) fix list of files in subdirectories
+
 # 0.10.1 (2016-07-06)
 * (bluefox) support of chained certificates
 * (bluefox) add nut
