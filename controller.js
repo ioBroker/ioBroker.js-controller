@@ -147,6 +147,7 @@ var subscribe = {};
 var states = new States({
     connection: config.states,
     logger: logger,
+    hostname: hostname,
     change: function (id, state) {
         if (!id) {
             logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
@@ -241,6 +242,7 @@ function createObjects() {
     return new Objects({
         connection: config.objects,
         logger: logger,
+        hostname: hostname,
         connected: function (type) {
             logger.info('host.' + hostname + ' ' + type + ' connected');
             setMeta();

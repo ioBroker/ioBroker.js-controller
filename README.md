@@ -100,6 +100,10 @@ Objects and configuration are not affected.
 
 To install REDIS on linux/debuan just write: ```apt-get install redis-server``` .
 
+If you plan to use mulithost installation you must allow connections to redis from any address (default only 127.0.0.1).
+To do that edit file */etc/redis/redis.conf* (```sudo nano /etc/redis/redis.conf```) and replace ```bind 127.0.0.1``` with ```bind 0.0.0.0``` .
+Don't forget to restart redis after that. (```sudo /etc/init.d/redis-server restart```)
+
 To install on windows download latest release here [https://github.com/MSOpenTech/redis/releases](https://github.com/MSOpenTech/redis/releases).
 
 To switch to REDIS write in the console following:
