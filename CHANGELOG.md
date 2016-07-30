@@ -1,3 +1,6 @@
+# 0.11.1 (2016-07-30)
+* (bluefox) fix dependency if depend on js-controller
+
 # 0.11.0 (2016-07-27)
 * (bluefox) implement auto-restart of adapters (expert mode)
 * (bluefox) add rights check for getBinaryState/setBinaryState

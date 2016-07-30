@@ -1,16 +1,21 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.11.0",
+        "version":    "0.11.1",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-			"0.11.0": {
-				"en": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
-				"de": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
-				"ru": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map"
+			"0.11.1": {
+				"en": "fix dependency if depend on js-controller",
+				"de": "fix dependency if depend on js-controller",
+				"ru": "fix dependency if depend on js-controller"
 			},
+            "0.11.0": {
+                "en": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
+                "de": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
+                "ru": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map"
+            },
 			"0.10.1": {
 				"en": "support of chained certificates",
 				"de": "support of chained certificates",
