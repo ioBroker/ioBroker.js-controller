@@ -1,3 +1,6 @@
+# 0.11.2 (2016-08-13)
+* (bluefox) fix upgrade of adapters
+
 # 0.11.1 (2016-07-30)
 * (bluefox) fix dependency if depend on js-controller
 

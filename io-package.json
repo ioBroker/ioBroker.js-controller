@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.11.1",
+        "version":    "0.11.2",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.11.2": {
+                "en": "fix upgrade of adapters",
+                "de": "fix upgrade of adapters",
+                "ru": "fix upgrade of adapters"
+            },
 			"0.11.1": {
 				"en": "fix dependency if depend on js-controller",
 				"de": "fix dependency if depend on js-controller",
