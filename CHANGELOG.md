@@ -1,3 +1,6 @@
+# 0.11.3 (2016-08-23)
+* (PArns) fix upgrade of adapters
+
 # 0.11.2 (2016-08-13)
 * (bluefox) fix upgrade of adapters
 
