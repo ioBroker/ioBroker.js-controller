@@ -3,9 +3,9 @@
  *
  *      Controls Adapter-Processes
  *
+ *      Copyright 2013-2016 bluefox <dogafox@gmail.com>, hobbyquaker <hq@ccu.io>
  *
  */
-
 
 var schedule =     require('node-schedule');
 var os =           require('os');
