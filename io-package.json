@@ -6,6 +6,11 @@
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.11.3": {
+                "en": "fix upgrade of adapters\nupdate _design/xyz by upgrade",
+                "de": "Fixe upgrade von Adaptern\nUpdate die Objekte _design/xyz bei Upgrade",
+                "ru": "Исправлено обновление драйверов\n_design/xyz объекты обновляются при upgrade"
+            },
             "0.11.2": {
                 "en": "fix upgrade of adapters",
                 "de": "fix upgrade of adapters",
