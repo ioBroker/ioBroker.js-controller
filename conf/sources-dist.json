@@ -12,6 +12,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/admin/bcontrol.png"
   },
+  "botvac": {
+    "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.botvac/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Pmant/ioBroker.botvac/master/admin/botvac.png"
+  },
   "chromecast": {
     "meta": "https://raw.githubusercontent.com/angelnu/ioBroker.chromecast/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/angelnu/ioBroker.chromecast/master/admin/chromecast.jpg"
