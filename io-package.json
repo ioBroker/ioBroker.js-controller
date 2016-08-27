@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.11.3",
+        "version":    "0.12.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+			"0.12.0": {
+                "en": "working on objects in redis",
+                "de": "working on objects in redis",
+                "ru": "working on objects in redis"
+            },
             "0.11.3": {
                 "en": "fix upgrade of adapters\nupdate _design/xyz by upgrade",
                 "de": "Fixe upgrade von Adaptern\nUpdate die Objekte _design/xyz bei Upgrade",

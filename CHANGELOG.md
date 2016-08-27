@@ -1,3 +1,6 @@
+# 0.12.0 (2016-08-27)
+* (bluefox) working on objects in redis
+
 # 0.11.3 (2016-08-24)
 * (PArns) fix upgrade of adapters
 * (bluefox) update "_design/xyz" by upgrade
