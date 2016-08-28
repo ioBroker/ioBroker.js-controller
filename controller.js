@@ -27,7 +27,7 @@ var States;
 
 var semver;
 var logger;
-var isDaemon;
+var isDaemon          = false;
 var callbackId        = 1;
 var callbacks         = {};
 var hostname          = tools.getHostName();
@@ -1553,7 +1553,10 @@ function stopInstance(id, callback) {
     }
 }
 
+/*
+//test
 setTimeout(function () {
+
     if (disconnectTimeout) clearTimeout(disconnectTimeout);
     disconnectTimeout = setTimeout(function () {
         disconnectTimeout = null;
@@ -1580,18 +1583,21 @@ setTimeout(function () {
         initMessageQueue();
     }
 }, 20000);
-
+*/
 var isStopping = null;
 var allInstancesStopped = true;
 var stopTimeout = 10000;
 
 function stopInstances(forceStop, callback) {
+    var timeout;
     function waitForInstances() {
         if (!allInstancesStopped) {
             setTimeout(waitForInstances, 200);
         } else {
+            if (timeout) clearTimeout(timeout);
             isStopping = null;
             if (typeof callback === 'function') callback();
+            callback = null;
         }
     }
 
@@ -1600,7 +1606,9 @@ function stopInstances(forceStop, callback) {
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
             isStopping = null;
+            if (timeout) clearTimeout(timeout);
             if (typeof callback === 'function') callback(true);
+            callback = null;
         } else {
             // Sometimes process receives SIGTERM twice
             isStopping = isStopping || new Date();
@@ -1608,6 +1616,7 @@ function stopInstances(forceStop, callback) {
 
         if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
+            // or slave lost connection to master
             for (var id in procs) {
                 stopInstance(id);
             }
@@ -1617,8 +1626,18 @@ function stopInstances(forceStop, callback) {
     } catch (e) {
         logger.error(e.message);
         isStopping = null;
+        if (timeout) clearTimeout(timeout);
         if (typeof callback === 'function') callback();
+        callback   = null;
     }
+
+    // force after Xs
+    timeout = setTimeout(function () {
+        timeout    = null;
+        isStopping = null;
+        if (typeof callback === 'function') callback(true);
+        callback   = null;
+    }, stopTimeout);
 }
 
 function stop() {
@@ -1627,33 +1646,21 @@ function stop() {
 
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('host.' + hostname + ' ' + wasForced ? 'force terminating' : 'terminated');
+            if (wasForced) {
+                for (var i in procs) {
+                    if (procs[i].process) {
+                        if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
+                            logger.info('Adapter ' + procs[i].config.common.name + ' still running');
+                        }
+                    }
+                }
+            }
             if (states  && states.destroy)  states.destroy();
             setTimeout(function () {
                 process.exit(1);
             }, 1000);
         });
     });
-
-    // force after Xs
-    setTimeout(function () {
-        if (objects && objects.destroy) objects.destroy();
-        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-            logger.info('host.' + hostname + ' force terminated after 10s');
-            for (var i in procs) {
-                if (procs[i].process) {
-                    if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
-                        logger.info('Adapter ' + procs[i].config.common.name + ' still running');
-                    }
-                }
-            }
-
-            if (states && states.destroy) states.destroy();
-
-            setTimeout(function () {
-                process.exit(1);
-            }, 1000);
-        });
-    }, stopTimeout);
 }
 
 process.on('SIGINT', function () {
