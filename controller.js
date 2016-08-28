@@ -6,6 +6,7 @@
  *      Copyright 2013-2016 bluefox <dogafox@gmail.com>, hobbyquaker <hq@ccu.io>
  *
  */
+'use strict';
 
 var schedule =     require('node-schedule');
 var os =           require('os');
@@ -27,11 +28,13 @@ var States;
 var semver;
 var logger;
 var isDaemon;
-var callbackId      = 1;
-var callbacks       = {};
-var hostname        = tools.getHostName();
-var logList         = [];
-var detectIpsCount  = 0;
+var callbackId        = 1;
+var callbacks         = {};
+var hostname          = tools.getHostName();
+var logList           = [];
+var detectIpsCount    = 0;
+var disconnectTimeout = null;
+var connected         = false;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -244,11 +247,33 @@ function createObjects() {
         logger: logger,
         hostname: hostname,
         connected: function (type) {
+            // stop disconnect timeout
+            if (disconnectTimeout) {
+                clearTimeout(disconnectTimeout);
+                disconnectTimeout = null;
+            }
+            connected = true;
             logger.info('host.' + hostname + ' ' + type + ' connected');
             setMeta();
-            getInstances();
-            startAliveInterval();
-            initMessageQueue();
+            if (!isStopping) {
+                getInstances();
+                startAliveInterval();
+                initMessageQueue();
+            }
+        },
+        disconnected: function (error) {
+            if (disconnectTimeout) clearTimeout(disconnectTimeout);
+            disconnectTimeout = setTimeout(function () {
+                connected = false;
+                disconnectTimeout = null;
+                logger.warn('Slave controller detected disconnection. Stop all instances.');
+                stopInstances(true, function () {
+                    getInstances();
+                    startAliveInterval();
+                    initMessageQueue();
+                });
+            }, config.objects.connectTimeout || 2000);
+
         },
         change: function (id, obj) {
             if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
@@ -1123,7 +1148,7 @@ function storePids() {
 }
 
 function startInstance(id, wakeUp) {
-    if (isStopping) return;
+    if (isStopping || !connected) return;
 
     var errorCodes = [
         'OK', // 0
@@ -1264,33 +1289,37 @@ function startInstance(id, wakeUp) {
                             logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
                         } else if (code === null) {
                             logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
-                        } else {
-                            if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                                delete procs[id].stopping;
-                                if (procs[id].process) delete procs[id].process;
-                                if (isStopping) {
-                                    for (var i in procs) {
-                                        if (procs[i].process) {
-                                            return;
-                                        }
+                        }
+
+                        if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            delete procs[id].stopping;
+
+                            if (procs[id].process) delete procs[id].process;
+
+                            if (isStopping) {
+                                for (var i in procs) {
+                                    if (procs[i].process) {
+                                        //console.log(procs[i].config.common.name + ' still running');
+                                        return;
                                     }
-                                    allInstancesStopped = true;
                                 }
-                                storePids(); // Store all pids to make possible kill them all
-                                return;
+                                //console.log('All stopped');
+                                allInstancesStopped = true;
+                            }
+                            storePids(); // Store all pids to make possible kill them all
+                            return;
+                        } else {
+                            if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
+                                logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
-                                if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
-                                    logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
-                                } else {
-                                    logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                                }
+                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                             }
                         }
                     }
 
                     if (procs[id] && procs[id].process) delete procs[id].process;
-                    if (!wakeUp && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
+                    if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
                         
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
                         
@@ -1306,7 +1335,7 @@ function startInstance(id, wakeUp) {
                     }
                     storePids(); // Store all pids to make possible kill them all
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode != 'once') logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
             } else {
                 if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
@@ -1524,24 +1553,45 @@ function stopInstance(id, callback) {
     }
 }
 
+setTimeout(function () {
+    if (disconnectTimeout) clearTimeout(disconnectTimeout);
+    disconnectTimeout = setTimeout(function () {
+        disconnectTimeout = null;
+        logger.warn('Slave controller detected disconnection. Stop all instances.');
+        stopInstances(true, function () {
+            getInstances();
+            startAliveInterval();
+            initMessageQueue();
+        });
+    }, config.objects.connectTimeout || 2000);
+}, 10000);
+
+setTimeout(function () {
+    // stop disconnect timeout
+    if (disconnectTimeout) {
+        clearTimeout(disconnectTimeout);
+        disconnectTimeout = null;
+    }
+    logger.info('host.' + hostname + '  connected ' + isStopping);
+    setMeta();
+    if (!isStopping) {
+        getInstances();
+        startAliveInterval();
+        initMessageQueue();
+    }
+}, 20000);
+
 var isStopping = null;
 var allInstancesStopped = true;
 var stopTimeout = 10000;
 
-function stop() {
+function stopInstances(forceStop, callback) {
     function waitForInstances() {
         if (!allInstancesStopped) {
             setTimeout(waitForInstances, 200);
         } else {
-            if (objects && objects.destroy) objects.destroy();
-            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-                if (states  && states.destroy)  states.destroy();
-                logger.info('host.' + hostname + ' terminated');
-                setTimeout(function () {
-                    process.exit(0);
-                }, 1000);
-            });
-
+            isStopping = null;
+            if (typeof callback === 'function') callback();
         }
     }
 
@@ -1549,23 +1599,14 @@ function stop() {
         var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
-
-            if (objects && objects.destroy) objects.destroy();
-
-            states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-                logger.info('host.' + hostname + ' force terminating');
-                if (states  && states.destroy)  states.destroy();
-                setTimeout(function () {
-                    process.exit(1);
-                }, 1000);
-                return;
-            });
+            isStopping = null;
+            if (typeof callback === 'function') callback(true);
         } else {
             // Sometimes process receives SIGTERM twice
             isStopping = isStopping || new Date();
         }
 
-        if (isDaemon) {
+        if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             for (var id in procs) {
                 stopInstance(id);
@@ -1575,7 +1616,23 @@ function stop() {
         waitForInstances();
     } catch (e) {
         logger.error(e.message);
+        isStopping = null;
+        if (typeof callback === 'function') callback();
     }
+}
+
+function stop() {
+    stopInstances(false, function (wasForced) {
+        if (objects && objects.destroy) objects.destroy();
+
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
+            logger.info('host.' + hostname + ' ' + wasForced ? 'force terminating' : 'terminated');
+            if (states  && states.destroy)  states.destroy();
+            setTimeout(function () {
+                process.exit(1);
+            }, 1000);
+        });
+    });
 
     // force after Xs
     setTimeout(function () {
