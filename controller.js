@@ -6,7 +6,6 @@
  *      Copyright 2013-2016 bluefox <dogafox@gmail.com>, hobbyquaker <hq@ccu.io>
  *
  */
-'use strict';
 
 var schedule =     require('node-schedule');
 var os =           require('os');
@@ -27,14 +26,38 @@ var States;
 
 var semver;
 var logger;
-var isDaemon          = false;
-var callbackId        = 1;
-var callbacks         = {};
-var hostname          = tools.getHostName();
-var logList           = [];
-var detectIpsCount    = 0;
-var disconnectTimeout = null;
-var connected         = false;
+var isDaemon                = false;
+var callbackId              = 1;
+var callbacks               = {};
+var hostname                = tools.getHostName();
+var logList                 = [];
+var detectIpsCount          = 0;
+var disconnectTimeout       = null;
+var connected               = null; // not false, because want to detect first connection
+var ipArr                   = [];
+var lastCalculationOfIps    = null;
+var errorCodes              = [
+    'OK', // 0
+    '', // 1
+    'Adapter has invalid config or no config found', // 2
+    'Adapter disabled or invalid config', // 3
+    'invalid config: no _id found', // 4
+    'invalid config', // 5
+    'uncaught exception', // 6
+    'Adapter already running', // 7
+    'node.js: Cannot find module', // 8
+    '', // 9
+    'Cannot find start file of adapter' // 10
+];
+var procs       = {};
+var subscribe   = {};
+var states      = null;
+var objects     = null;
+var storeTimer  = null;
+var isStopping  = null;
+var allInstancesStopped = true;
+var stopTimeout = 10000;
+var uncaughtExceptionCount = 0;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -52,6 +75,7 @@ if (!fs.existsSync(tools.getConfigFileName())) {
     if (!config.objects) config.objects = {type: 'file'};
 }
 
+// Get "objects" object
 // If "file" and on the local machine
 if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1')) {
     Objects = require(__dirname + '/lib/objects/objectsInMemServer');
@@ -59,16 +83,19 @@ if (config.objects.type === 'file' && (!config.objects.host || config.objects.ho
     Objects = require(__dirname + '/lib/objects');
 }
 
+// Get "states" object
 if (config.states.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1')) {
     States  = require(__dirname + '/lib/states/statesInMemServer');
 } else {
     States  = require(__dirname + '/lib/states');
 }
 
-if (config.log.noStdout && process.argv && process.argv.indexOf('--console') !== -1) {
+// Detect if outputs to console are forced. By default they are disabled and redirected to log file
+if (config.log.noStdout && process.argv && (process.argv.indexOf('--console') !== -1 || process.argv.indexOf('--logs') !== -1)) {
     config.log.noStdout = false;
 }
 
+// Detect if controller runs as a linux-daemon
 if (process.argv.indexOf('start') !== -1) {
     isDaemon = true;
     config.log.noStdout = true;
@@ -82,23 +109,24 @@ logger.activateDateChecker(true, config.log.maxDays);
 
 // If installed as npm module
 adapterDir = adapterDir.split('/');
-if (adapterDir.pop() == 'node_modules') {
+if (adapterDir.pop() === 'node_modules') {
     adapterDir = adapterDir.join('/');
 } else {
     adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
 }
 
-var ipArr = [];
-var lastCalculationOfIps = null;
-
+// get the list of IP addresses of this host
 function getIPs() {
     if (!lastCalculationOfIps || new Date().getTime() - lastCalculationOfIps > 10000) {
         var ifaces = os.networkInterfaces();
         lastCalculationOfIps = new Date().getTime();
         ipArr = [];
         for (var dev in ifaces) {
+            if (!ifaces.hasOwnProperty(dev)) continue;
+
             /*jshint loopfunc:true */
             ifaces[dev].forEach(function (details) {
+                //noinspection JSUnresolvedVariable
                 if (!details.internal) ipArr.push(details.address);
             });
         }
@@ -108,7 +136,7 @@ function getIPs() {
 }
 
 // If some message from logger
-logger.on('logging', function (transport, level, msg, meta) {
+logger.on('logging', function (transport, level, msg/*, meta*/) {
     // Send to all adapter, that required logs
     for (var i = 0; i < logList.length; i++) {
         states.pushLog(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
@@ -118,10 +146,10 @@ logger.on('logging', function (transport, level, msg, meta) {
 // subscribe or unsubscribe loggers
 function logRedirect(isActive, id) {
     if (isActive) {
-        if (logList.indexOf(id) == -1) logList.push(id);
+        if (logList.indexOf(id) === -1) logList.push(id);
     } else {
         var pos = logList.indexOf(id);
-        if (pos != -1) logList.splice(pos, 1);
+        if (pos !== -1) logList.splice(pos, 1);
     }
 }
 
@@ -144,80 +172,84 @@ if (__dirname.replace(/\\/g, '/').indexOf('/node_modules/' + title + '/') !== -1
     }
 }
 
-var procs     = {};
-var subscribe = {};
+function createStates() {
+    return new States({
+        connection: config.states,
+        logger: logger,
+        hostname: hostname,
+        change: function (id, state) {
+            if (!id) {
+                logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
+                return;
+            }
+            // If some log transporter activated or deactivated
+            if (id.match(/.logging$/)) {
+                logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length));
+            } else
+            // If this is messagebox
+            if (id === 'messagebox.system.host.' + hostname) {
+                // Read it from fifo list
+                states.delMessage('system.host.' + hostname, state._id);
+                var obj = state;
+                if (obj) {
+                    // If callback stored for this request
+                    if (obj.callback &&
+                        obj.callback.ack &&
+                        obj.callback.id &&
+                        callbacks &&
+                        callbacks['_' + obj.callback.id]) {
+                        // Call callback function
+                        if (callbacks['_' + obj.callback.id].cb) {
+                            callbacks['_' + obj.callback.id].cb(obj.message);
+                            delete callbacks['_' + obj.callback.id];
+                        }
 
-var states = new States({
-    connection: config.states,
-    logger: logger,
-    hostname: hostname,
-    change: function (id, state) {
-        if (!id) {
-            logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
-            return;
-        }
-        // If some log transporter activated or deactivated
-        if (id.match(/.logging$/)) {
-            logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length));
-        } else
-        // If this is messagebox
-        if (id == 'messagebox.system.host.' + hostname) {
-            // Read it from fifo list
-            states.delMessage('system.host.' + hostname, state._id);
-            var obj = state;
-            if (obj) {
-                // If callback stored for this request
-                if (obj.callback &&
-                    obj.callback.ack &&
-                    obj.callback.id &&
-                    callbacks &&
-                    callbacks['_' + obj.callback.id]) {
-                    // Call callback function
-                    if (callbacks['_' + obj.callback.id].cb) {
-                        callbacks['_' + obj.callback.id].cb(obj.message);
-                        delete callbacks['_' + obj.callback.id];
+                        // delete too old callbacks IDs
+                        var now = (new Date()).getTime();
+                        for (var _id in callbacks) {
+                            if (!callbacks.hasOwnProperty(_id)) continue;
+                            if (now - callbacks[_id].time > 3600000) delete callbacks[_id];
+                        }
+                    } else {
+                        processMessage(obj);
                     }
-
-                    // delete too old callbacks IDs
-                    var now = (new Date()).getTime();
-                    for (var _id in callbacks) {
-                        if (now - callbacks[_id].time > 3600000) delete callbacks[_id];
+                }
+            } else
+            if (subscribe[id]) {
+                for (var i = 0; i < subscribe[id].length; i++) {
+                    // wake up adapter
+                    if (procs[subscribe[id][i]]) {
+                        console.log('Wake up ' + id + ' ' + JSON.stringify(state));
+                        startInstance(subscribe[id][i], true);
+                    } else {
+                        logger.warn('controller Adapter subscribed on ' + id + ' does not exist!');
                     }
-                } else {
-                    processMessage(obj);
+                }
+            } else
+            // Monitor activity of the adapter and restart it if stopped
+            if (!isStopping && id.substring(id.length - '.alive'.length) === '.alive') {
+                var adapter = id.substring(0, id.length - '.alive'.length);
+                if (procs[adapter] &&
+                    !procs[adapter].stopping &&
+                    !procs[adapter].process &&
+                    procs[adapter].config &&
+                    procs[adapter].config.common.enabled &&
+                    procs[adapter].config.common.mode === 'daemon') {
+                    startInstance(adapter, false);
                 }
             }
-        } else
-        if (subscribe[id]) {
-            for (var i = 0; i < subscribe[id].length; i++) {
-                // wake up adapter
-                if (procs[subscribe[id][i]]) {
-                    console.log('Wake up ' + id + ' ' + JSON.stringify(state));
-                    startInstance(subscribe[id][i], true);
-                } else {
-                    logger.warn('controller Adapter subscribed on ' + id + ' does not exist!');
-                }
-            }
-        } else
-        // Monitor activity of the adapter and restart it if stopped
-        if (!isStopping && id.substring(id.length - '.alive'.length) == '.alive') {
-            var adapter = id.substring(0, id.length - '.alive'.length);
-            if (procs[adapter] &&
-                !procs[adapter].stopping &&
-                !procs[adapter].process &&
-                procs[adapter].config &&
-                procs[adapter].config.common.enabled &&
-                procs[adapter].config.common.mode == 'daemon') {
-                startInstance(adapter, false);
-            }
+        },
+        connected: function () {
+            if (states.clearAllLogs)     states.clearAllLogs();
+            if (states.clearAllMessages) states.clearAllMessages();
         }
-    },
-    connected: function () {
-        if (states.clearAllLogs)     states.clearAllLogs();
-        if (states.clearAllMessages) states.clearAllMessages();
-    }
-});
+    });
+}
 
+// create states object
+states = createStates();
+
+// Subscribe for all logging objects
 states.subscribe('*.logging');
 
 // Read current state of all log subscriber
@@ -228,9 +260,9 @@ states.getKeys('*.logging', function (err, keys) {
                 for (var i = 0; i < keys.length; i++) {
                     // We can JSON.parse, but index is 16x faster
                     if (obj[i]) {
-                        if (typeof obj[i] == 'string' && (obj[i].indexOf('"val":true') != -1 || obj[i].indexOf('"val":"true"') != -1)) {
+                        if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
                             logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
-                        } else if (typeof obj[i] == 'object' && (obj[i].val === true || obj[i].val === "true")) {
+                        } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
                             logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
                         }
                     }
@@ -240,7 +272,7 @@ states.getKeys('*.logging', function (err, keys) {
     }
 });
 
-var objects = null;
+// create "objects" object
 function createObjects() {
     return new Objects({
         connection: config.objects,
@@ -252,25 +284,34 @@ function createObjects() {
                 clearTimeout(disconnectTimeout);
                 disconnectTimeout = null;
             }
-            connected = true;
-            logger.info('host.' + hostname + ' ' + type + ' connected');
-            setMeta();
-            if (!isStopping) {
-                getInstances();
-                startAliveInterval();
-                initMessageQueue();
+
+            if (!connected) {
+                if (connected === null) setMeta();
+
+                connected = true;
+                logger.info('host.' + hostname + ' ' + type + ' connected');
+
+                // Do not start if we still stopping the instances
+                if (!isStopping) {
+                    getInstances();
+                    startAliveInterval();
+                    initMessageQueue();
+                }
             }
         },
-        disconnected: function (error) {
+        disconnected: function (/*error*/) {
             if (disconnectTimeout) clearTimeout(disconnectTimeout);
             disconnectTimeout = setTimeout(function () {
                 connected = false;
                 disconnectTimeout = null;
                 logger.warn('Slave controller detected disconnection. Stop all instances.');
                 stopInstances(true, function () {
-                    getInstances();
-                    startAliveInterval();
-                    initMessageQueue();
+                    // if during stopping the DB has connection again
+                    if (connected && !isStopping) {
+                        getInstances();
+                        startAliveInterval();
+                        initMessageQueue();
+                    }
                 });
             }, config.objects.connectTimeout || 2000);
 
@@ -306,8 +347,8 @@ function createObjects() {
                             }
                         });
                     } else {
-                        var _ipArr = getIPs();
-                        if (procs[id].config && (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
+                        var __ipArr = getIPs();
+                        if (procs[id].config && (__ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
                             if (procs[id].config.common.enabled) startInstance(id);
                         } else {
                             delete procs[id];
@@ -328,7 +369,6 @@ function createObjects() {
         }
     });
 }
-
 objects = createObjects ();
 
 objects.subscribe('system.adapter.*');
@@ -346,8 +386,11 @@ function reportStatus() {
     states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
     states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
     var mem = process.memoryUsage();
+    //noinspection JSUnresolvedVariable
     states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    //noinspection JSUnresolvedVariable
     states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    //noinspection JSUnresolvedVariable
     states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
     // Under windows toFixed returns string ?
     states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
@@ -407,6 +450,7 @@ function collectDiagInfo(callback) {
         });
     });
 }
+
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
 function setIPs(ipList) {
     var _ipList = ipList || getIPs();
@@ -515,7 +559,7 @@ function setMeta() {
     };
     objects.extendObject(_id, obj);
 
-    _id = id + ".memHeapUsed";
+    _id = id + '.memHeapUsed';
     obj = {
         _id: _id,
         type: 'state',
@@ -591,6 +635,8 @@ function setMeta() {
         },
         native: {}
     };
+    objects.extendObject(_id, obj);
+
     _id = id + '.freemem';
     obj = {
         _id: _id,
@@ -612,7 +658,7 @@ function initMessageQueue() {
 
 // Send message to other adapter instance
 function sendTo(objName, command, message, callback) {
-    if (typeof message == 'undefined') {
+    if (typeof message === 'undefined') {
         message = command;
         command = 'send';
     }
@@ -621,7 +667,7 @@ function sendTo(objName, command, message, callback) {
         objName.substring(0, 'system.host.'.length)    != 'system.host.') objName = 'system.adapter.' + objName;
 
     if (callback) {
-        if (typeof callback == "function") {
+        if (typeof callback === 'function') {
             obj.callback = {
                 message: message,
                 id:      callbackId++,
@@ -696,11 +742,11 @@ function processMessage(msg) {
                 objects.getObject('system.config', function (err, systemConfig) {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                        if (systemConfig.common.diag == 'normal') {
+                        if (systemConfig.common.diag === 'normal') {
                             collectDiagInfo(function (obj) {
                                 tools.sendDiagInfo(obj);
                             });
-                        } else if (systemConfig.common.diag == 'extended') {
+                        } else if (systemConfig.common.diag === 'extended') {
                             collectDiagInfoExtended(function (obj) {
                                 tools.sendDiagInfo(obj);
                             });
@@ -711,7 +757,7 @@ function processMessage(msg) {
                         // Check if repositories exists
                         if (!err && repos && repos.native && repos.native.repositories) {
                             var updateRepo = false;
-                            if (typeof msg.message == 'object') {
+                            if (typeof msg.message === 'object') {
                                 updateRepo = msg.message.update;
                                 msg.message = msg.message.repo;
                             }
@@ -720,7 +766,7 @@ function processMessage(msg) {
 
                             if (repos.native.repositories[active]) {
 
-                                if (typeof repos.native.repositories[active] == 'string') {
+                                if (typeof repos.native.repositories[active] === 'string') {
                                     repos.native.repositories[active] = {
                                         link: repos.native.repositories[active],
                                         json: null
@@ -767,7 +813,7 @@ function processMessage(msg) {
                         // Read installed versions of all hosts
                         for (var i = 0; i < doc.rows.length; i++) {
                             // If desired local version, do not ask it, just answer
-                            if (doc.rows[i].id == 'system.host.' + hostname) {
+                            if (doc.rows[i].id === 'system.host.' + hostname) {
                                 var _ioPack;
                                 try {
                                     _ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
@@ -856,7 +902,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
 
-                if (require('os').platform() == 'linux') {
+                if (require('os').platform() === 'linux') {
                     var _spawn = require('child_process').spawn;
                     var _args = ['/dev'];
                     logger.info('host.' + hostname + ' ls /dev');
@@ -869,7 +915,7 @@ function processMessage(msg) {
                         logger.error('host.' + hostname + ' ls ' + data);
                     });
 
-                    _child.on('exit', function (exitCode) {
+                    _child.on('exit', function (/*exitCode*/) {
                         result = result.replace(/(\r\n|\n|\r|\t)/gm, ' ');
                         var parts = result.split(' ');
                         var resList = [];
@@ -896,13 +942,13 @@ function processMessage(msg) {
 
                 var lines = msg.message || 200;
                 var text = '';
-                var logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-                if (!fs.existsSync(logFile)) logFile = __dirname + '/../../log/' + tools.appName + '.log';
+                var logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+                if (!fs.existsSync(logFile_)) logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
 
-                if (fs.existsSync(logFile)) {
-                    var stats = fs.statSync(logFile);
+                if (fs.existsSync(logFile_)) {
+                    var stats = fs.statSync(logFile_);
 
-                    fs.createReadStream(logFile, {
+                    fs.createReadStream(logFile_, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
                         end: stats.size
                     }).on('data', function (chunk) {
@@ -989,29 +1035,43 @@ function getInstances() {
             var _ipArr = getIPs();
             logger.info('host.' + hostname + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             var count = 0;
+            
+            // first mark all instances as disabled to detect disabled once
+            for (var id in procs) {
+                if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                    procs[id].config.common.enabled = false;
+                }
+            }
+            
+            
             for (var i = 0; i < doc.rows.length; i++) {
                 var instance = doc.rows[i].value;
 
                 // register all common fields, that may not be deleted, like "mobile" or "history"
+                //noinspection JSUnresolvedVariable
                 if (objects.addPreserveSettings && instance.common.preserveSettings) {
+                    //noinspection JSUnresolvedVariable
                     objects.addPreserveSettings(instance.common.preserveSettings);
                 }
 
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
 
                 logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
+                console.log('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
                 if (_ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
-                    procs[instance._id] = {config: instance};
+                    procs[instance._id] = procs[instance._id] || {};
+                    procs[instance._id].config = JSON.parse(JSON.stringify(instance));
+                    console.log('Enabled : ' + instance.common.enabled);
                     if (instance.common.enabled) count++;
                 }
             }
+            
             if (count > 0) {
                 logger.info('host.' + hostname + ' starting ' + count + ' instance' + (count > 1 ? 's' : ''));
             } else {
                 logger.warn('host.' + hostname + ' does not start any instances on this host');
             }
-
         }
 
         initInstances();
@@ -1019,30 +1079,48 @@ function getInstances() {
 }
 
 function initInstances() {
-    var c = 0;
+    var seconds = 0;
+    var interval = 2000;
+    var id;
 
     // Start first admin
-    for (var id in procs) {
+    for (id in procs) {
+        if (!procs.hasOwnProperty(id)) continue;
+
         if (procs[id].config.common.enabled) {
-            if (id.indexOf('system.adapter.admin') != -1) {
+            if (id.indexOf('system.adapter.admin') !== -1) {
+                // do not process if still running. It will be started when old one will be finished
+                if (procs[id].process) {
+                    logger.info('host.' + hostname + ' instance "' + id + '" was not started, becasue running.');
+                    continue;
+                }
                 setTimeout(function (_id) {
                     startInstance(_id);
-                }, 2000 * c++, id);
+                }, interval * seconds, id);
 
-                c += 1;
+                seconds += 2; // 4 seconds pause between starts
             }
+        } else if (procs[id].process) {
+            // stop instance if disabled
+            stopInstance(id);
         }
     }
 
     for (id in procs) {
-        if (procs[id].config.common.enabled) {
-            if (id.indexOf('system.adapter.admin') == -1) {
-                setTimeout(function (_id) {
-                    startInstance(_id);
-                }, 2000 * c++, id);
-
-                c += 1;
+        if (!procs.hasOwnProperty(id)) continue;
+        
+        if (procs[id].config.common.enabled && id.indexOf('system.adapter.admin') === -1) {
+            // do not process if still running. It will be started when old one will be finished
+            if (procs[id].process) {
+                logger.info('host.' + hostname + ' instance "' + id + '" was not started, becasue running.');
+                continue;
             }
+
+            setTimeout(function (_id) {
+                startInstance(_id);
+            }, interval * seconds, id);
+
+            seconds += 2; // 4 seconds pause between starts
         }
     }
 }
@@ -1066,6 +1144,7 @@ function checkVersion(id, name, version) {
     }
     if (!isFound) {
         for (var p in procs) {
+            if (!procs.hasOwnProperty(p)) continue;
             if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name == name) {
                 if (version && !semver.satisfies(procs[p].config.common.version, version)) {
                     logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
@@ -1094,6 +1173,7 @@ function checkVersions(id, deps) {
                     if (!semver) semver = require('semver');
 
                     for (var n in deps[d]) {
+                        if (!deps[d].hasOwnProperty(n)) continue;
                         name    = n;
                         version = deps[d][n];
                         break;
@@ -1101,20 +1181,21 @@ function checkVersions(id, deps) {
                 } else {
                     name = deps[d];
                 }
-                if (!checkVersion(id, name, version)) {
-                    return false;
-                }
+                if (!checkVersion(id, name, version)) return false;
             }
         } else if (typeof deps === 'object') {
             if (deps.length !== undefined || deps[0]) {
                 for (var i in deps) {
-                    for (var _name in deps[i]) {
-                        if (!checkVersion(id, _name, deps[_name][i])) {
+                    if (!deps.hasOwnProperty(i)) continue;
+                    for (var __name in deps[i]) {
+                        if (!deps[i].hasOwnProperty(__name)) continue;
+                        if (!checkVersion(id, __name, deps[__name][i])) {
                             return false;
                         }
                     }                }
             } else {
                 for (var _name in deps) {
+                    if (!deps.hasOwnProperty(_name)) continue;
                     if (!checkVersion(id, _name, deps[_name])) {
                         return false;
                     }
@@ -1130,13 +1211,14 @@ function checkVersions(id, deps) {
 }
 
 // Store process IDS to make possible kill them all by restart
-var storeTimer = null;
 function storePids() {
     if (!storeTimer) {
         storeTimer = setTimeout(function () {
             storeTimer = null;
             var pids = [];
             for (var id in procs) {
+                if (!procs.hasOwnProperty(id)) continue;
+
                 if (procs[id].process) {
                     pids.push(procs[id].process.pid);
                 }
@@ -1150,20 +1232,6 @@ function storePids() {
 function startInstance(id, wakeUp) {
     if (isStopping || !connected) return;
 
-    var errorCodes = [
-        'OK', // 0
-        '', // 1
-        'Adapter has invalid config or no config found', // 2
-        'Adapter disabled or invalid config', // 3
-        'invalid config: no _id found', // 4
-        'invalid config', // 5
-        'uncaught exception', // 6
-        'Adapter already running', // 7
-        'node.js: Cannot find module', // 8
-        '', // 9
-        'Cannot find start file of adapter' // 10
-    ];
-
     if (!procs[id]) {
         logger.error('host.' + hostname + ' startInstance ' + id + ': object not found!');
         return;
@@ -1175,6 +1243,7 @@ function startInstance(id, wakeUp) {
 
     if (wakeUp) mode = 'daemon';
 
+    //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
         // TODO
     }
@@ -1192,7 +1261,7 @@ function startInstance(id, wakeUp) {
         }
     }
 
-    var fileName = instance.common.main || "main.js";
+    var fileName = instance.common.main || 'main.js';
     var adapterDir = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
@@ -1223,14 +1292,16 @@ function startInstance(id, wakeUp) {
     var args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
 
     // define memory limit for adapter
+    //noinspection JSUnresolvedVariable
     if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
+        //noinspection JSUnresolvedVariable
         args.push('--max-old-space-size=' + parseInt(instance.common.memoryLimitMB, 10));
     }
 
     var fileNameFull = adapterDir + '/' + fileName;
 
     // workaround for old vis.
-    if (instance.common.onlyWWW && name == 'vis') instance.common.onlyWWW = false;
+    if (instance.common.onlyWWW && name === 'vis') instance.common.onlyWWW = false;
 
     if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
         fileName = name + '.js';
@@ -1248,14 +1319,15 @@ function startInstance(id, wakeUp) {
     procs[id].downloadRetry = 0;
 
 
+    //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
-        procs[id].subscribe = instance.common.subscribe || instance._id + ".wakeup";
+        procs[id].subscribe = instance.common.subscribe || instance._id + '.wakeup';
         var parts = instance._id.split('.');
         var instanceId = parts[parts.length - 1];
-        procs[id].subscribe = procs[id].subscribe.replace("<INSTANCE>", instanceId);
+        procs[id].subscribe = procs[id].subscribe.replace('<INSTANCE>', instanceId);
 
         if (subscribe[procs[id].subscribe]) {
-            if (subscribe[procs[id].subscribe].indexOf(id) == -1) {
+            if (subscribe[procs[id].subscribe].indexOf(id) === -1) {
                 subscribe[procs[id].subscribe].push(id);
             }
         } else {
@@ -1299,17 +1371,19 @@ function startInstance(id, wakeUp) {
 
                             if (isStopping) {
                                 for (var i in procs) {
+                                    if (!procs.hasOwnProperty(i)) continue;
                                     if (procs[i].process) {
                                         //console.log(procs[i].config.common.name + ' still running');
                                         return;
                                     }
                                 }
-                                //console.log('All stopped');
+                                logger.info('host.' + hostname + ' All instances are stopped.');
                                 allInstancesStopped = true;
                             }
                             storePids(); // Store all pids to make possible kill them all
                             return;
                         } else {
+                            //noinspection JSUnresolvedVariable
                             if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
@@ -1323,6 +1397,7 @@ function startInstance(id, wakeUp) {
                         
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
                         
+                        //noinspection JSUnresolvedVariable
                         setTimeout(function (_id) {
                             startInstance(_id);
                         }, procs[id].config.common.restartSchedule ? 1000 : 30000, id);
@@ -1391,6 +1466,7 @@ function startInstance(id, wakeUp) {
             });
             logger.info('host.' + hostname + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
             // Start one time adapter by start or if configuration changed
+            //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 procs[id].process = cp.fork(fileNameFull, args);
                 storePids(); // Store all pids to make possible kill them all
@@ -1447,7 +1523,7 @@ function stopInstance(id, callback) {
 
         if (procs[id].subscribe) {
             // Remove this id from subsribed on this message
-            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
 
                 // If no one subscribed
@@ -1474,6 +1550,7 @@ function stopInstance(id, callback) {
                 logger.warn('host.' + hostname + ' stopInstance ' + instance._id + ' not running');
                 if (typeof callback === 'function') callback();
             } else {
+                //noinspection JSUnresolvedVariable
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
                     var timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
@@ -1521,7 +1598,7 @@ function stopInstance(id, callback) {
 
         case 'subscribe':
             // Remove this id from subscribed on this message
-            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) != -1) {
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
 
                 // If no one subscribed
@@ -1552,41 +1629,50 @@ function stopInstance(id, callback) {
         default:
     }
 }
-
 /*
-//test
+//test disconnect
 setTimeout(function () {
-
     if (disconnectTimeout) clearTimeout(disconnectTimeout);
     disconnectTimeout = setTimeout(function () {
+        console.log('TEST !!!!! STOP!!!! ===============================================');
+        connected = false;
         disconnectTimeout = null;
         logger.warn('Slave controller detected disconnection. Stop all instances.');
         stopInstances(true, function () {
-            getInstances();
-            startAliveInterval();
-            initMessageQueue();
+            // if during stopping the DB has connection again
+            if (connected && !isStopping) {
+                getInstances();
+                startAliveInterval();
+                initMessageQueue();
+            }
         });
     }, config.objects.connectTimeout || 2000);
-}, 10000);
+
+}, 60000);
 
 setTimeout(function () {
+    console.log('TEST !!!!! START AGAIN!!!! ===============================================');
     // stop disconnect timeout
     if (disconnectTimeout) {
         clearTimeout(disconnectTimeout);
         disconnectTimeout = null;
     }
-    logger.info('host.' + hostname + '  connected ' + isStopping);
-    setMeta();
-    if (!isStopping) {
-        getInstances();
-        startAliveInterval();
-        initMessageQueue();
+
+    if (!connected) {
+        if (connected === null) setMeta();
+
+        connected = true;
+        logger.info('host.' + hostname + ' ' + ' connected');
+
+        // Do not start if we still stopping the instances
+        if (!isStopping) {
+            getInstances();
+            startAliveInterval();
+            initMessageQueue();
+        }
     }
-}, 20000);
+}, 63000);
 */
-var isStopping = null;
-var allInstancesStopped = true;
-var stopTimeout = 10000;
 
 function stopInstances(forceStop, callback) {
     var timeout;
@@ -1618,6 +1704,7 @@ function stopInstances(forceStop, callback) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
             for (var id in procs) {
+                if (!procs.hasOwnProperty(id)) continue;
                 stopInstance(id);
             }
         }
@@ -1648,6 +1735,7 @@ function stop() {
             logger.info('host.' + hostname + ' ' + wasForced ? 'force terminating' : 'terminated');
             if (wasForced) {
                 for (var i in procs) {
+                    if (!procs.hasOwnProperty(i)) continue;
                     if (procs[i].process) {
                         if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
                             logger.info('Adapter ' + procs[i].config.common.name + ' still running');
@@ -1672,9 +1760,8 @@ process.on('SIGTERM', function () {
     stop();
 });
 
-var uncaughtExceptionCount = 0;
 process.on('uncaughtException', function (err) {
-    if (err.arguments && err.arguments[0] == "fragmentedOperation") {
+    if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
         logger.error('fragmentedOperation: restart objects');
         // restart objects
         objects.destroy();
@@ -1695,8 +1782,8 @@ process.on('uncaughtException', function (err) {
         return;
     }
     uncaughtExceptionCount++;
-    if (typeof err == 'object') {
-        if (err.errno == 'EADDRINUSE') {
+    if (typeof err === 'object') {
+        if (err.errno === 'EADDRINUSE') {
             logger.error('Another instance is running or some application uses port!');
             logger.error('uncaught exception: ' + err.message);
         } else {
