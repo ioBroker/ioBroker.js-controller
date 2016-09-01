@@ -1,5 +1,11 @@
+# 0.12.1 (2016-09-02)
+* (bluefox) fixed letsencrypt file
+
 # 0.12.0 (2016-08-27)
 * (bluefox) working on objects in redis
+* (bluefox) add botvac adapter
+* (bluefox) better multihost
+* (bluefox) fix formatDate
 
 # 0.11.3 (2016-08-24)
 * (PArns) fix upgrade of adapters

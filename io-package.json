@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.12.0",
+        "version":    "0.12.1",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.12.1": {
+                "en": "fix letsencrypt file",
+                "de": "Repariere letsencrypt Datei",
+                "ru": "Исправлен файл letsencrypt"
+            },
 			"0.12.0": {
                 "en": "working on objects in redis",
                 "de": "working on objects in redis",
