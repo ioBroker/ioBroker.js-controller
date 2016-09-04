@@ -3,6 +3,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png"
   },
+  "amazon-dash": {
+    "meta": "https://raw.githubusercontent.com/PArns/ioBroker.amazon-dash/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/PArns/ioBroker.amazon-dash/master/admin/amazon-dash.png"
+  },
   "artnet": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
@@ -200,6 +204,10 @@
   "owfs": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.owfs/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.owfs/master/admin/owfs.png"
+  },
+  "owntracks": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.owntracks/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.owntracks/master/admin/owntracks.png"
   },
   "phantomjs": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.phantomjs/master/io-package.json",
