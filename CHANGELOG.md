@@ -1,3 +1,6 @@
+# 0.12.2 (2016-09-04)
+* (bluefox) fix read versions by multihost
+
 # 0.12.1 (2016-09-02)
 * (bluefox) fixed letsencrypt file
 

@@ -222,7 +222,7 @@ function createStates() {
                         console.log('Wake up ' + id + ' ' + JSON.stringify(state));
                         startInstance(subscribe[id][i], true);
                     } else {
-                        logger.warn('controller Adapter subscribed on ' + id + ' does not exist!');
+                        logger.warn('host.' + hostname + ' controller Adapter subscribed on ' + id + ' does not exist!');
                     }
                 }
             } else
@@ -304,7 +304,7 @@ function createObjects() {
             disconnectTimeout = setTimeout(function () {
                 connected = false;
                 disconnectTimeout = null;
-                logger.warn('Slave controller detected disconnection. Stop all instances.');
+                logger.warn('host.' + hostname + ' Slave controller detected disconnection. Stop all instances.');
                 stopInstances(true, function () {
                     // if during stopping the DB has connection again
                     if (connected && !isStopping) {
@@ -420,6 +420,11 @@ function collectDiagInfo(callback) {
 
                 if (!_err && doc) {
                     if (doc && doc.rows.length) {
+                        if (!semver) semver = require('semver');
+
+                        doc.rows.sort(function (a, b) {
+                            return semver.lt(a.value.common.installedVersion, b.value.common.installedVersion);
+                        });
                         // Read installed versions of all hosts
                         for (var i = 0; i < doc.rows.length; i++) {
 
@@ -495,7 +500,7 @@ function setMeta() {
             _id:  id,
             type: 'host',
             common: {
-                name:             id,
+                name:             hostname,
                 title:            ioPackage.common.title,
                 installedVersion: version,
                 platform:         ioPackage.common.platform,
@@ -687,14 +692,14 @@ function sendTo(objName, command, message, callback) {
 }
 
 function getVersionFromHost(hostId, callback) {
-    states.getState(hostId, function (err, state) {
+    states.getState(hostId + '.alive', function (err, state) {
         if (state && state.val)  {
             sendTo(hostId, 'getVersion', null, function (ioPack) {
-                if (callback) callback(ioPack);
+                if (callback) setTimeout(callback, 0, ioPack);
             });
         } else {
             logger.warn('host.' + hostname + ' "' + hostId + '" is offline');
-            if (callback) callback();
+            if (callback) setTimeout(callback, 0, null, hostId);
         }
     });
 }
@@ -758,7 +763,7 @@ function processMessage(msg) {
                         if (!err && repos && repos.native && repos.native.repositories) {
                             var updateRepo = false;
                             if (typeof msg.message === 'object') {
-                                updateRepo = msg.message.update;
+                                updateRepo  = msg.message.update;
                                 msg.message = msg.message.repo;
                             }
 
@@ -789,7 +794,7 @@ function processMessage(msg) {
                                     sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                 }
                             } else {
-                                logger.warn('host.' + hostname + ' Requested repository "' + active + '" does not exit in config.');
+                                logger.warn('host.' + hostname + ' Requested repository "' + active + '" does not exist in config.');
                                 sendTo(msg.from, msg.command, null, msg.callback);
                             }
                         }
@@ -829,15 +834,16 @@ function processMessage(msg) {
                                 }
                             } else {
                                 infoCount++;
-                                getVersionFromHost(doc.rows[i].id , function (ioPack) {
+                                getVersionFromHost(doc.rows[i].id, function (ioPack, id) {
                                     if (ioPack) result.hosts[ioPack.host] = ioPack;
 
                                     if (!--infoCount) {
                                         if (timeout) {
                                             clearTimeout(timeout);
+                                            timeout = null;
                                             sendTo(msg.from, msg.command, result, msg.callback);
                                         } else {
-                                            logger.warn('host.' + hostname + ' too delayed answer' + (ioPack ? (' for ' + ioPack.host) : ''));
+                                            logger.warn('host.' + hostname + ' too delayed answer for ' + (ioPack ? ioPack.host : id));
                                         }
                                     }
                                 });
@@ -1062,7 +1068,6 @@ function getInstances() {
                 if (_ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = procs[instance._id] || {};
                     procs[instance._id].config = JSON.parse(JSON.stringify(instance));
-                    console.log('Enabled : ' + instance.common.enabled);
                     if (instance.common.enabled) count++;
                 }
             }
@@ -1637,7 +1642,7 @@ setTimeout(function () {
         console.log('TEST !!!!! STOP!!!! ===============================================');
         connected = false;
         disconnectTimeout = null;
-        logger.warn('Slave controller detected disconnection. Stop all instances.');
+        logger.warn('host.' + hostname + ' Slave controller detected disconnection. Stop all instances.');
         stopInstances(true, function () {
             // if during stopping the DB has connection again
             if (connected && !isStopping) {
@@ -1688,7 +1693,7 @@ function stopInstances(forceStop, callback) {
     }
 
     try {
-        var elapsed = (isStopping ? ((new Date()).getTime() - isStopping.getTime()) : 0);
+        var elapsed = (isStopping ? ((new Date()).getTime() - isStopping) : 0);
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
             isStopping = null;
@@ -1697,7 +1702,7 @@ function stopInstances(forceStop, callback) {
             callback = null;
         } else {
             // Sometimes process receives SIGTERM twice
-            isStopping = isStopping || new Date();
+            isStopping = isStopping || new Date().getTime();
         }
 
         if (forceStop || isDaemon) {
@@ -1732,7 +1737,7 @@ function stop() {
         if (objects && objects.destroy) objects.destroy();
 
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
-            logger.info('host.' + hostname + ' ' + wasForced ? 'force terminating' : 'terminated');
+            logger.info('host.' + hostname + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
                 for (var i in procs) {
                     if (!procs.hasOwnProperty(i)) continue;
@@ -1755,6 +1760,7 @@ process.on('SIGINT', function () {
     logger.info('host.' + hostname + ' received SIGINT');
     stop();
 });
+
 process.on('SIGTERM', function () {
     logger.info('host.' + hostname + ' received SIGTERM');
     stop();
@@ -1772,7 +1778,6 @@ process.on('uncaughtException', function (err) {
         }, 3000);
         return;
     }
-
 
     // If by terminating one more exception => stop immediately to break the circle
     if (uncaughtExceptionCount) {

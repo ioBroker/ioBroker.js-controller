@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.12.1",
+        "version":    "0.12.2",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.12.2": {
+                "en": "fix read versions by multihost",
+                "de": "Repariere Versionslesen bei Multihost",
+                "ru": "Исправлено чтение версии хоста при мультихосте"
+            },
             "0.12.1": {
                 "en": "fix letsencrypt file",
                 "de": "Repariere letsencrypt Datei",
