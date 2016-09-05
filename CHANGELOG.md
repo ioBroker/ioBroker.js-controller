@@ -2,6 +2,7 @@
 * (bluefox) fix read versions by multihost
 * (bluefox) add owntracks
 * (bluefox) add amazon-dash
+* (bluefox) control enabled for instance over system.adapter.NAME.INSTANCE.alive variable
 
 # 0.12.1 (2016-09-02)
 * (bluefox) fixed letsencrypt file

@@ -7,15 +7,15 @@
  *
  */
 
-var schedule =     require('node-schedule');
-var os =           require('os');
-var fs =           require('fs');
-var cp =           require('child_process');
-var ioPackage =    require(__dirname + '/io-package.json');
-var tools =        require(__dirname + '/lib/tools');
+var schedule    = require('node-schedule');
+var os          = require('os');
+var fs          = require('fs');
+var cp          = require('child_process');
+var ioPackage   = require(__dirname + '/io-package.json');
+var tools       = require(__dirname + '/lib/tools');
+var version     = ioPackage.common.version;
+var adapterDir  = __dirname.replace(/\\/g, '/');
 var zipFiles;
-var version =      ioPackage.common.version;
-var adapterDir =   __dirname.replace(/\\/g, '/');
 
 // Change version in io-package.json and start grunt task to modify the version
 var title = tools.appName + '.js-controller';
@@ -49,15 +49,15 @@ var errorCodes              = [
     '', // 9
     'Cannot find start file of adapter' // 10
 ];
-var procs       = {};
-var subscribe   = {};
-var states      = null;
-var objects     = null;
-var storeTimer  = null;
-var isStopping  = null;
-var allInstancesStopped = true;
-var stopTimeout = 10000;
-var uncaughtExceptionCount = 0;
+var procs                   = {};
+var subscribe               = {};
+var states                  = null;
+var objects                 = null;
+var storeTimer              = null;
+var isStopping              = null;
+var allInstancesStopped     = true;
+var stopTimeout             = 10000;
+var uncaughtExceptionCount  = 0;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -215,6 +215,27 @@ function createStates() {
                     }
                 }
             } else
+            // If this system.adapter.NAME.0.alive
+            if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
+                if (state && !state.ack) {
+                    var enabled = state.val;
+                    setTimeout(function () {
+                        objects.getObject(id.substring(0, id.length - '.alive'.length), function (err, obj) {
+                            if (err) logger.error('Cannot read object: '  + err);
+                            if (obj && obj.common) {
+                                // IF adapter enabled => disable it
+                                if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
+                                    obj.common.enabled = !!enabled;
+
+                                    setTimeout(function () {
+                                        objects.setObject(obj._id, obj);
+                                    }, 0);
+                                }
+                            }
+                        });
+                    }, 0);
+                }
+            } else
             if (subscribe[id]) {
                 for (var i = 0; i < subscribe[id].length; i++) {
                     // wake up adapter
@@ -251,6 +272,9 @@ states = createStates();
 
 // Subscribe for all logging objects
 states.subscribe('*.logging');
+
+// Subscribe for all logging objects
+states.subscribe('system.adapter.*.alive');
 
 // Read current state of all log subscriber
 states.getKeys('*.logging', function (err, keys) {
@@ -1250,10 +1274,6 @@ function startInstance(id, wakeUp) {
 
     //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
-        // TODO
-    }
-
-    if (instance.common.run) {
         // TODO
     }
 
