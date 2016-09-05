@@ -581,6 +581,8 @@ function setMeta() {
             type: 'number',
             name: 'Memory usage',
             unit: '%',
+            read: true,
+            write: false,
             min:  0,
             max:  100
         },
@@ -595,6 +597,9 @@ function setMeta() {
         common: {
             type: 'number',
             name: 'Memory from heap used in MB',
+            read: true,
+            write: false,
+            min: 0,
             unit: 'MB'
         },
         native: {}
@@ -608,6 +613,9 @@ function setMeta() {
         common: {
             type: 'number',
             name: 'Memory heap reserved in MB',
+            read: true,
+            write: false,
+            min: 0,
             unit: 'MB'
         },
         native: {}
@@ -622,6 +630,9 @@ function setMeta() {
             type: 'number',
             name: 'Resident set size in MB',
             desc: 'RSS is the resident set size, the portion of the process\'s memory held in RAM',
+            read: true,
+            write: false,
+            min:  0,
             unit: 'MB'
         },
         native: {}
@@ -635,6 +646,9 @@ function setMeta() {
         common: {
             type: 'number',
             name: 'Uptime in seconds',
+            read: true,
+            write: false,
+            min: 0,
             unit: 'seconds'
         },
         native: {}
@@ -648,6 +662,8 @@ function setMeta() {
         common: {
             unit: '',
             type: 'number',
+            read: true,
+            write: false,
             name: 'Load Average 1min'
         },
         native: {}
@@ -660,6 +676,8 @@ function setMeta() {
         type: 'state',
         common: {
             name: 'Host alive',
+            read: true,
+            write: false,
             type: 'boolean'
         },
         native: {}
@@ -673,6 +691,8 @@ function setMeta() {
         common: {
             name: 'Available RAM in MB',
             unit: 'MB',
+            read: true,
+            write: false,
             type: 'number'
         },
         native: {}
