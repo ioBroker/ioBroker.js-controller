@@ -159,13 +159,13 @@ logger.info('host.' + hostname + ' hostname: ' + hostname);
 logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
 // create package.json for npm >= 3.x if not exists
-if (__dirname.replace(/\\/g, '/').indexOf('/node_modules/' + title + '/') !== -1) {
+if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title.toLowerCase()) !== -1) {
     try {
         if (!fs.existsSync(__dirname + '/../../package.json')) {
             fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                 name: 'iobroker.core',
                 private: true
-            }));
+            }, null, 2));
         }
     } catch (e) {
         console.error('Cannot create "' + __dirname + '/../../package.json": ' + e);
