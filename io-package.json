@@ -1,12 +1,12 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.12.2",
+        "version":    "0.12.3",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-            "0.12.2": {
+            "0.12.3": {
                 "en": "fix read versions by multihost",
                 "de": "Repariere Versionslesen bei Multihost",
                 "ru": "Исправлено чтение версии хоста при мультихосте"
