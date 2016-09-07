@@ -7,6 +7,11 @@
         "title":      "ioBroker.js-controller",
         "news": {
             "0.12.3": {
+                "en": "add owntracks\nadd amazon-dash\ncontrol enabled for instance over system.adapter.NAME.INSTANCE.alive variable\nlet remove UUID to preapre images with ioBroker\nFixed error with emitter",
+                "de": "owntracks hinzugefügt\namazon-dash hinzugefügt\nMan kann UUID löschen um ein Image vorzubereiten\nFehler mit emitter behoben",
+                "ru": "Добавлен owntracks\nДобавлен amazon-dash\nМожно удалять UUID, что бы подготовить образ\nИсправлена ошибка с emitter"
+            },
+            "0.12.2": {
                 "en": "fix read versions by multihost",
                 "de": "Repariere Versionslesen bei Multihost",
                 "ru": "Исправлено чтение версии хоста при мультихосте"

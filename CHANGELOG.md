@@ -1,3 +1,7 @@
+# 0.12.3 (2016-09-07)
+* (bluefox) let remove UUID to preapre images with ioBroker
+* (bluefox) fix error with emitter
+
 # 0.12.2 (2016-09-04)
 * (bluefox) fix read versions by multihost
 * (bluefox) add owntracks

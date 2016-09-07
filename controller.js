@@ -698,6 +698,11 @@ function setMeta() {
         native: {}
     };
     objects.extendObject(_id, obj);
+
+    // create UUID if not exist
+    tools.createUuid(objects, function (uuid) {
+        if (uuid && logger) logger.info('Created UUID: ' + uuid);
+    })
 }
 
 // Subscribe on message queue
