@@ -7,4 +7,4 @@ cd ..
 while read in; do npm install $in --production; cd node_modules/$in/; npm install --production; cd ../..; done < list.txt
 chmod 777 * -R
 rm list.txt
-iobroker upload all
+iobroker upload all 
