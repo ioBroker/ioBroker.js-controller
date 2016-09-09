@@ -153,6 +153,10 @@
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png"
   },
+  "lgtv": {
+    "meta": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png"
+  },
   "megad": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/admin/megad.png"
