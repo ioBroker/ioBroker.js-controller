@@ -717,8 +717,8 @@ function sendTo(objName, command, message, callback) {
         command = 'send';
     }
     var obj = {command: command, message: message, from: 'system.host.' + hostname};
-    if (objName.substring(0, 'system.adapter.'.length) != 'system.adapter.' &&
-        objName.substring(0, 'system.host.'.length)    != 'system.host.') objName = 'system.adapter.' + objName;
+    if (objName.substring(0, 'system.adapter.'.length) !== 'system.adapter.' &&
+        objName.substring(0, 'system.host.'.length)    !== 'system.host.') objName = 'system.adapter.' + objName;
 
     if (callback) {
         if (typeof callback === 'function') {
@@ -1199,7 +1199,7 @@ function checkVersion(id, name, version) {
     if (!isFound) {
         for (var p in procs) {
             if (!procs.hasOwnProperty(p)) continue;
-            if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name == name) {
+            if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name === name) {
                 if (version && !semver.satisfies(procs[p].config.common.version, version)) {
                     logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
                     return false;
