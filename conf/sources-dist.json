@@ -329,6 +329,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-bars/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-bars/master/admin/bars.png"
   },
+  "vis-canvas-gauges": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-canvas-gauges/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-canvas-gauges/master/admin/vis-canvas-gauges.png"
+  },
   "vis-colorpicker": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-colorpicker/master/admin/colorpicker.png"
