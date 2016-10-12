@@ -155,7 +155,7 @@ function logRedirect(isActive, id) {
 
 logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
 logger.info('host.' + hostname + ' Copyright (c) 2014-2016 bluefox, hobbyquaker');
-logger.info('host.' + hostname + ' hostname: ' + hostname);
+logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
 logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
 // create package.json for npm >= 3.x if not exists
