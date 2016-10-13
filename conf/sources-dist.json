@@ -9,8 +9,7 @@
   },
   "artnet": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.artnet/archive/master.zip",
-    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.jpeg"
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.artnet/master/admin/artnet.png"
   },
   "b-control-em": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.b-control-em/master/io-package.json",
