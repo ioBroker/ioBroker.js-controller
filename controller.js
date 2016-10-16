@@ -58,6 +58,7 @@ var isStopping              = null;
 var allInstancesStopped     = true;
 var stopTimeout             = 10000;
 var uncaughtExceptionCount  = 0;
+var installQueue            = [];
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -1283,6 +1284,44 @@ function storePids() {
     }
 }
 
+function installAdapters() {
+    if (!installQueue.length) return;
+
+    var task = installQueue[0];
+    var name = task.id.split('.')[2];
+
+    if (procs[task.id].downloadRetry < 3) {
+        procs[task.id].downloadRetry++;
+        logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
+        logger.info(tools.appName + ' install ' + name);
+
+        var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
+        child.stdout.on('data', function (data) {
+            data = data.toString().replace('\n', '');
+            logger.info(tools.appName + ' ' + data);
+        });
+        child.stderr.on('data', function (data) {
+            data = data.toString().replace('\n', '');
+            logger.error(tools.appName + ' ' + data);
+        });
+        child.on('exit', function (exitCode) {
+            logger.info(tools.appName + ' exit ' + exitCode);
+            startInstance(task.id, task.wakeUp);
+
+            setTimeout(function () {
+                installQueue.shift();
+                installAdapters();
+            });
+        });
+    } else {
+        logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+        setTimeout(function () {
+            installQueue.shift();
+            installAdapters();
+        }, 500);
+    }
+}
+
 function startInstance(id, wakeUp) {
     if (isStopping || !connected) return;
 
@@ -1315,7 +1354,9 @@ function startInstance(id, wakeUp) {
     var adapterDir = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
-        if (procs[id].downloadRetry < 3) {
+        installQueue.push({id: id, wakeUp: wakeUp});
+        if (installQueue.length) installAdapters();
+        /*if (procs[id].downloadRetry < 3) {
             procs[id].downloadRetry++;
             logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it... ' + procs[id].downloadRetry + ' attempt');
             logger.info(tools.appName + ' install ' + name);
@@ -1335,7 +1376,7 @@ function startInstance(id, wakeUp) {
             });
         } else {
             logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
-        }
+        }*/
         return;
     }
 
