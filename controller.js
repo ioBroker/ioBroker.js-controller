@@ -1010,12 +1010,12 @@ function processMessage(msg) {
                     }).on('data', function (chunk) {
                         text += chunk.toString();
                     })
-                    .on('end', function () {  // done
-                        var lines = text.split('\n');
-                        lines.shift();
-                        lines.push(stats.size);
-                        sendTo(msg.from, msg.command, lines, msg.callback);
-                    }).on('error', function () {  // done
+                        .on('end', function () {  // done
+                            var lines = text.split('\n');
+                            lines.shift();
+                            lines.push(stats.size);
+                            sendTo(msg.from, msg.command, lines, msg.callback);
+                        }).on('error', function () {  // done
                         sendTo(msg.from, msg.command, [stats.size], msg.callback);
                     });
                 } else {
@@ -1034,7 +1034,7 @@ function processMessage(msg) {
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
             break;
-        
+
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
@@ -1091,15 +1091,15 @@ function getInstances() {
             var _ipArr = getIPs();
             logger.info('host.' + hostname + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             var count = 0;
-            
+
             // first mark all instances as disabled to detect disabled once
             for (var id in procs) {
                 if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
-            
-            
+
+
             for (var i = 0; i < doc.rows.length; i++) {
                 var instance = doc.rows[i].value;
 
@@ -1121,7 +1121,7 @@ function getInstances() {
                     if (instance.common.enabled) count++;
                 }
             }
-            
+
             if (count > 0) {
                 logger.info('host.' + hostname + ' starting ' + count + ' instance' + (count > 1 ? 's' : ''));
             } else {
@@ -1149,11 +1149,13 @@ function initInstances() {
                     logger.info('host.' + hostname + ' instance "' + id + '" was not started, becasue running.');
                     continue;
                 }
-                setTimeout(function (_id) {
-                    startInstance(_id);
-                }, interval * seconds, id);
+                if (installQueue.indexOf(id) === -1) {
+                    setTimeout(function (_id) {
+                        startInstance(_id);
+                    }, interval * seconds, id);
 
-                seconds += 2; // 4 seconds pause between starts
+                    seconds += 2; // 4 seconds pause between starts
+                }
             }
         } else if (procs[id].process) {
             // stop instance if disabled
@@ -1163,7 +1165,7 @@ function initInstances() {
 
     for (id in procs) {
         if (!procs.hasOwnProperty(id)) continue;
-        
+
         if (procs[id].config.common.enabled && id.indexOf('system.adapter.admin') === -1) {
             // do not process if still running. It will be started when old one will be finished
             if (procs[id].process) {
@@ -1171,11 +1173,13 @@ function initInstances() {
                 continue;
             }
 
-            setTimeout(function (_id) {
-                startInstance(_id);
-            }, interval * seconds, id);
+            if (installQueue.indexOf(id) === -1) {
+                setTimeout(function (_id) {
+                    startInstance(_id);
+                }, interval * seconds, id);
 
-            seconds += 2; // 4 seconds pause between starts
+                seconds += 2; // 4 seconds pause between starts
+            }
         }
     }
 }
@@ -1355,28 +1359,8 @@ function startInstance(id, wakeUp) {
     if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         installQueue.push({id: id, wakeUp: wakeUp});
-        if (installQueue.length) installAdapters();
-        /*if (procs[id].downloadRetry < 3) {
-            procs[id].downloadRetry++;
-            logger.warn('host.' + hostname + ' startInstance cannot find start file for adapter "' + name + '". Try to install it... ' + procs[id].downloadRetry + ' attempt');
-            logger.info(tools.appName + ' install ' + name);
-
-            var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
-            child.stdout.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.info(tools.appName + ' ' + data);
-            });
-            child.stderr.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.error(tools.appName + ' ' + data);
-            });
-            child.on('exit', function (exitCode) {
-                logger.info(tools.appName + ' exit ' + exitCode);
-                startInstance(id, wakeUp);
-            });
-        } else {
-            logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
-        }*/
+        // start install queue if not started
+        if (installQueue.length === 1) installAdapters();
         return;
     }
 
@@ -1485,9 +1469,9 @@ function startInstance(id, wakeUp) {
 
                     if (procs[id] && procs[id].process) delete procs[id].process;
                     if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
-                        
+
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
-                        
+
                         //noinspection JSUnresolvedVariable
                         setTimeout(function (_id) {
                             startInstance(_id);
@@ -1721,49 +1705,49 @@ function stopInstance(id, callback) {
     }
 }
 /*
-//test disconnect
-setTimeout(function () {
-    if (disconnectTimeout) clearTimeout(disconnectTimeout);
-    disconnectTimeout = setTimeout(function () {
-        console.log('TEST !!!!! STOP!!!! ===============================================');
-        connected = false;
-        disconnectTimeout = null;
-        logger.warn('host.' + hostname + ' Slave controller detected disconnection. Stop all instances.');
-        stopInstances(true, function () {
-            // if during stopping the DB has connection again
-            if (connected && !isStopping) {
-                getInstances();
-                startAliveInterval();
-                initMessageQueue();
-            }
-        });
-    }, config.objects.connectTimeout || 2000);
+ //test disconnect
+ setTimeout(function () {
+ if (disconnectTimeout) clearTimeout(disconnectTimeout);
+ disconnectTimeout = setTimeout(function () {
+ console.log('TEST !!!!! STOP!!!! ===============================================');
+ connected = false;
+ disconnectTimeout = null;
+ logger.warn('host.' + hostname + ' Slave controller detected disconnection. Stop all instances.');
+ stopInstances(true, function () {
+ // if during stopping the DB has connection again
+ if (connected && !isStopping) {
+ getInstances();
+ startAliveInterval();
+ initMessageQueue();
+ }
+ });
+ }, config.objects.connectTimeout || 2000);
 
-}, 60000);
+ }, 60000);
 
-setTimeout(function () {
-    console.log('TEST !!!!! START AGAIN!!!! ===============================================');
-    // stop disconnect timeout
-    if (disconnectTimeout) {
-        clearTimeout(disconnectTimeout);
-        disconnectTimeout = null;
-    }
+ setTimeout(function () {
+ console.log('TEST !!!!! START AGAIN!!!! ===============================================');
+ // stop disconnect timeout
+ if (disconnectTimeout) {
+ clearTimeout(disconnectTimeout);
+ disconnectTimeout = null;
+ }
 
-    if (!connected) {
-        if (connected === null) setMeta();
+ if (!connected) {
+ if (connected === null) setMeta();
 
-        connected = true;
-        logger.info('host.' + hostname + ' ' + ' connected');
+ connected = true;
+ logger.info('host.' + hostname + ' ' + ' connected');
 
-        // Do not start if we still stopping the instances
-        if (!isStopping) {
-            getInstances();
-            startAliveInterval();
-            initMessageQueue();
-        }
-    }
-}, 63000);
-*/
+ // Do not start if we still stopping the instances
+ if (!isStopping) {
+ getInstances();
+ startAliveInterval();
+ initMessageQueue();
+ }
+ }
+ }, 63000);
+ */
 
 function stopInstances(forceStop, callback) {
     var timeout;
