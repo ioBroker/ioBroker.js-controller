@@ -240,6 +240,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
+  "rflink": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rflink/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rflink/master/admin/rflink.png"
+  },
   "rickshaw": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
