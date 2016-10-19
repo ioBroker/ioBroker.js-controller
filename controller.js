@@ -483,7 +483,7 @@ function delObjects(objs, callback) {
  * <p>
  * This function tries to find all hosts in the objects and if
  * only one host found and it is not actual host, change the
- * host name to found one.
+ * host name to new one.
  * <p>
  *
  * @return none
