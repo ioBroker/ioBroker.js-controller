@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.12.3",
+        "version":    "0.13.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.13.0": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "Смотри CHANGELOG.md"
+            },
             "0.12.3": {
                 "en": "add owntracks\nadd amazon-dash\ncontrol enabled for instance over system.adapter.NAME.INSTANCE.alive variable\nlet remove UUID to preapre images with ioBroker\nFixed error with emitter",
                 "de": "owntracks hinzugefügt\namazon-dash hinzugefügt\nMan kann UUID löschen um ein Image vorzubereiten\nFehler mit emitter behoben",

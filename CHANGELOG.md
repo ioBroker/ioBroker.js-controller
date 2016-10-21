@@ -1,6 +1,29 @@
-# 0.12.3 (2016-09-07)
-* (bluefox) let remove UUID to preapre images with ioBroker
+# 0.13.0 (2016-10-21)
+* (bluefox) fix letsencrypt to use fullchain.pem
 * (bluefox) fix error with emitter
+* (bluefox) fix formatDate for russian month
+* (bluefox) backup letsencrypt files too
+* (bluefox) install missing adapters one after other and not parallel.
+* (bluefox) let remove UUID to prepare images with ioBroker
+* (bluefox) using peerDependencies
+* (bluefox) rename host automatically if singlehost
+* (bluefox) add write/read properties to alive variable
+* (bluefox) fix creation of package.json for npm 3
+* (bluefox) try catch for parse of states
+* (appolon77) add possibility to send messages with json
+* (bluefox) updates some packages
+* (bluefox) print node.js version at start
+* (bluefox) force logger to use local time
+* (appolon77) fix multi instance messaging
+* (bluefox) using peerDependencies
+* (bluefox) rename host automatically if singlehost
+* (bluefox) update artnet
+* (bluefox) add vis-canvas-gauges
+* (bluefox) add rflink
+* (bluefox) add foobar2000
+* (bluefox) add mqtt client
+* (bluefox) add lgtv
+* (bluefox) add pushsafer
 
 # 0.12.2 (2016-09-04)
 * (bluefox) fix read versions by multihost
