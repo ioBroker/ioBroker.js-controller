@@ -252,9 +252,9 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
   },
-  "rpi": {
-    "meta": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/admin/rpi-monitor.png"
+  "rpi2": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/iobroker.rpi2/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/iobroker.rpi2/master/admin/rpi.png"
   },
   "rwe-smarthome": {
     "meta": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/io-package.json",
