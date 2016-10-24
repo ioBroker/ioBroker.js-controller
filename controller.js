@@ -59,6 +59,7 @@ var allInstancesStopped     = true;
 var stopTimeout             = 10000;
 var uncaughtExceptionCount  = 0;
 var installQueue            = [];
+var started                 = false;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -311,16 +312,30 @@ function createObjects() {
             }
 
             if (!connected) {
-                if (connected === null) setMeta();
-
-                connected = true;
                 logger.info('host.' + hostname + ' ' + type + ' connected');
 
-                // Do not start if we still stopping the instances
-                if (!isStopping) {
-                    getInstances();
-                    startAliveInterval();
-                    initMessageQueue();
+                if (connected === null) {
+                    connected = true;
+                    if (!isStopping) {
+                        // Do not start if we still stopping the instances
+                        checkHost(type, function () {
+                            setMeta();
+                            started = true;
+                            getInstances();
+                            startAliveInterval();
+                            initMessageQueue();
+                        });
+                    }
+                } else {
+                    connected = true;
+                    started   = true;
+
+                    // Do not start if we still stopping the instances
+                    if (!isStopping) {
+                        getInstances();
+                        startAliveInterval();
+                        initMessageQueue();
+                    }
                 }
             }
         },
@@ -342,7 +357,7 @@ function createObjects() {
 
         },
         change: function (id, obj) {
-            if (!id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
+            if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             logger.info('host.' + hostname + ' object change ' + id);
             try{
                 if (procs[id]) {
@@ -422,6 +437,101 @@ function reportStatus() {
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
 }
 
+function changeHost(objs, oldHostname, newHostname, callback) {
+    if (!objs || !objs.length) {
+        if (callback) callback();
+    } else {
+        var row = objs.shift();
+        if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
+            obj = row.value;
+            obj.common.host = newHostname;
+            logger.info('Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
+            objects.setObject(obj._id, obj, function (err) {
+                setTimeout(function () {
+                    changeHost(objs, oldHostname, newHostname, callback);
+                }, 0)
+            });
+        } else {
+            setTimeout(function () {
+                changeHost(objs, oldHostname, newHostname, callback);
+            }, 0)
+        }
+    }
+}
+
+function delObjects(objs, callback) {
+    if (!objs || !objs.length) {
+        if (callback) callback();
+    } else {
+        var row = objs.shift();
+        if (row && row.id) {
+            logger.delete('Delete state "' + row.id + '"');
+            objects.delObject(row.id, function (err) {
+                setTimeout(function () {
+                    delObjects(objs, callback);
+                }, 0);
+            });
+        } else {
+            setTimeout(function () {
+                delObjects(objs, callback);
+            }, 0);
+        }
+    }
+}
+/**
+ * try to check host in objects
+ * <p>
+ * This function tries to find all hosts in the objects and if
+ * only one host found and it is not actual host, change the
+ * host name to new one.
+ * <p>
+ *
+ * @return none
+ */
+function checkHost(type, callback) {
+    if (type === 'InMemoryDB') {
+        objects.getObjectView('system', 'host', {}, function (_err, doc) {
+            if (!_err && doc && doc.rows &&
+                doc.rows.length === 1 &&
+                doc.rows[0].value.common.name !== hostname)
+            {
+                var oldHostname = doc.rows[0].value.common.name;
+                var oldId  = doc.rows[0].value._id;
+
+                // find out all instances and rewrite it to actual hostname
+                objects.getObjectView('system', 'instance', {}, function (err, doc) {
+                    if (err && err.status_code === 404) {
+                        if (callback) callback();
+                    } else if (doc.rows.length === 0) {
+                        logger.info('host.' + hostname + ' no instances found');
+                        // no instances found
+                        if (callback) callback();
+                    } else {
+                        // reassign all instances
+                        changeHost(doc.rows, oldHostname, hostname, function () {
+                            logger.info('Delete host ' + oldId);
+
+                            // delete host object
+                            objects.delObject(oldId, function () {
+
+                                // delete all hosts states
+                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, function (_err, doc) {
+                                    delObjects(doc.rows, function () {
+                                        if (callback) callback();
+                                    });
+                                });
+                            });
+                        });
+                    }
+                });
+            } else if (callback) {
+                callback();
+            }
+        });
+    } else {
+        if (callback) callback();
+    }
+}
 // collect extended diag information
 function collectDiagInfoExtended(callback) {
     return collectDiagInfo(callback);
@@ -703,7 +813,7 @@ function setMeta() {
     // create UUID if not exist
     tools.createUuid(objects, function (uuid) {
         if (uuid && logger) logger.info('Created UUID: ' + uuid);
-    })
+    });
 }
 
 // Subscribe on message queue
@@ -1098,7 +1208,6 @@ function getInstances() {
                     procs[id].config.common.enabled = false;
                 }
             }
-
 
             for (var i = 0; i < doc.rows.length; i++) {
                 var instance = doc.rows[i].value;

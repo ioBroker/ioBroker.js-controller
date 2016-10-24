@@ -55,6 +55,10 @@
     "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.feiertage/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.feiertage/master/admin/feiertage.png"
   },
+  "foobar2000": {
+    "meta": "https://raw.githubusercontent.com/instalator/ioBroker.foobar2000/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/instalator/ioBroker.foobar2000/master/admin/foobar2000.png"
+  },
   "fritzbox": {
     "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/admin/fritzbox.png"
@@ -248,9 +252,9 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rickshaw/master/admin/rickshaw.png"
   },
-  "rpi": {
-    "meta": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/husky-koglhof/iobroker.rpi/master/admin/rpi-monitor.png"
+  "rpi2": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/iobroker.rpi2/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/iobroker.rpi2/master/admin/rpi.png"
   },
   "rwe-smarthome": {
     "meta": "https://raw.githubusercontent.com/PArns/ioBroker.rwe-smarthome/master/io-package.json",
