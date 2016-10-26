@@ -1107,7 +1107,7 @@ function processMessage(msg) {
                 ioPack = null;
 
                 var lines = msg.message || 200;
-                var text = '';
+                var text  = '';
                 var logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
                 if (!fs.existsSync(logFile_)) logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
 
@@ -1116,7 +1116,7 @@ function processMessage(msg) {
 
                     fs.createReadStream(logFile_, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
-                        end: stats.size
+                        end:   stats.size
                     }).on('data', function (chunk) {
                         text += chunk.toString();
                     })

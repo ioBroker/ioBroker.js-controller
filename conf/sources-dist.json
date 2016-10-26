@@ -324,6 +324,10 @@
     "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/admin/tvspielfilm.png"
   },
+  "upnp": {
+    "meta": "https://raw.githubusercontent.com/Jey-Cee/iobroker.upnp-discovery.png/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/admin/upnp-discovery.png"
+  },
   "vcard": {
     "meta": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/admin/vcard.png"
