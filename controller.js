@@ -465,12 +465,22 @@ function delObjects(objs, callback) {
     } else {
         var row = objs.shift();
         if (row && row.id) {
-            logger.delete('Delete state "' + row.id + '"');
-            objects.delObject(row.id, function (err) {
-                setTimeout(function () {
-                    delObjects(objs, callback);
-                }, 0);
-            });
+            logger.info('Delete state "' + row.id + '"');
+            if (row.value.type === 'state') {
+                states.delState(row.id, function (err) {
+                    objects.delObject(row.id, function (err) {
+                        setTimeout(function () {
+                            delObjects(objs, callback);
+                        }, 0);
+                    });
+                });
+            } else {
+                objects.delObject(row.id, function (err) {
+                    setTimeout(function () {
+                        delObjects(objs, callback);
+                    }, 0);
+                });
+            }
         } else {
             setTimeout(function () {
                 delObjects(objs, callback);

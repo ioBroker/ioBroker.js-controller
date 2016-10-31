@@ -1,3 +1,13 @@
+# 0.13.1 (2016-10-31)
+* (bluefox) fix renaming of host by start
+* (bluefox) implement auto-objects and auto-states for adapter
+* (bluefox) recursive deletion of folders with objects.unlink
+* (bluefox) support of tarballs as install path
+* (bluefox) rename rpi to rpi2, homekit to homekit2
+* (bluefox) add upnp
+* (bluefox) fix fileName of log file
+* (bluefox) remove peerDependencies
+
 # 0.13.0 (2016-10-21)
 * (bluefox) fix letsencrypt to use fullchain.pem
 * (bluefox) fix error with emitter
