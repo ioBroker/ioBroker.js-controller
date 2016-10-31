@@ -87,9 +87,9 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hue/master/admin/hue.jpeg"
   },
-  "homekit": {
-    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.homekit/master/admin/homekit.png"
+  "homekit2": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.homekit2/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.homekit2/master/admin/homekit.png"
   },
   "homepilot": {
     "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.homepilot/master/io-package.json",
@@ -129,7 +129,7 @@
   },
   "icons-open-icon-library-png": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-open-icon-library-png/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.icons-open-icon-library-png/archive/master.zip",
+    "url": "https://github.com/ioBroker/ioBroker.icons-open-icon-library-png/tarball/master",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-open-icon-library-png/master/admin/icons-open-icon-library-png.png"
   },
   "icons-ultimate-png": {
@@ -146,7 +146,7 @@
   },
   "js-controller": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tarball/master"
   },
   "knx": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
@@ -325,7 +325,7 @@
     "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/admin/tvspielfilm.png"
   },
   "upnp": {
-    "meta": "https://raw.githubusercontent.com/Jey-Cee/iobroker.upnp-discovery.png/master/io-package.json",
+    "meta": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/admin/upnp-discovery.png"
   },
   "vcard": {
@@ -421,7 +421,7 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png"
   },
   "zwave": {
-      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/io-package.json",
-      "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/admin/zwave.png"
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/admin/zwave.png"
   }
 }
