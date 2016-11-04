@@ -1,3 +1,6 @@
+# 0.13.2 (2016-11-04)
+* (bluefox) fix new installation
+
 # 0.13.1 (2016-10-31)
 * (bluefox) fix renaming of host by start
 * (bluefox) implement auto-objects and auto-states for adapter
