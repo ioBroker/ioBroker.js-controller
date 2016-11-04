@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.13.1",
+        "version":    "0.13.2",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.13.2": {
+                "en": "fix new installation",
+                "de": "Korrigiere neue Installation",
+                "ru": "Исправлена новая установка"
+            },
             "0.13.1": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
