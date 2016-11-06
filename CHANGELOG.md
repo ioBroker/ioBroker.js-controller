@@ -1,3 +1,6 @@
+# 0.13.3 (2016-11-чч)
+* (bluefox) support of getLocationOnDisk message for admin
+
 # 0.13.2 (2016-11-04)
 * (bluefox) fix new installation
 
