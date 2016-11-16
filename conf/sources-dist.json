@@ -47,6 +47,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.fhem/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.fhem/master/admin/fhem.png"
   },
+  "find-my-iphone": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.find-my-iphone/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.find-my-iphone/master/admin/find-my-iphone.png"
+  },
   "flot": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png"
@@ -70,6 +74,10 @@
   "harmony": {
     "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.harmony/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Pmant/ioBroker.harmony/master/admin/harmony.png"
+  },
+  "hid": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.hid/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.hid/master/admin/hid.png"
   },
   "history": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.history/master/io-package.json",
@@ -159,6 +167,10 @@
   "lgtv": {
     "meta": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png"
+  },
+  "lightify": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.lightify/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.lightify/master/admin/lightify.png"
   },
   "megad": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.megad/master/io-package.json",
@@ -320,6 +332,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.text2command/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.text2command/master/admin/text2command.png"
   },
+  "tr-064": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.tr-064/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.tr-064/master/admin/tr-064.png"
+  },
   "tvspielfilm": {
     "meta": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.tvspielfilm/master/admin/tvspielfilm.png"
@@ -407,6 +423,14 @@
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png"
+  },
+  "wm-bus": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.wm-bus/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.wm-bus/master/admin/wm-bus.png"
+  },
+  "wifilight": {
+    "meta": "https://raw.githubusercontent.com/soef/ioBroker.wifilight/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/soef/ioBroker.wifilight/master/admin/wifilight.png"
   },
   "wolf": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.wolf/master/io-package.json",
