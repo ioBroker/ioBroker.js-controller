@@ -1,7 +1,10 @@
 # 0.13.3 (2016-11-чч)
 * (bluefox) support of getLocationOnDisk message for admin
 * (bluefox) allow upgrade to specific version, like adapter@0.1.0
-* (bluefox) you can change any native parameter with set
+* (bluefox) you can change any native parameter of instance with set
+* (bluefox) add support of syslog (see iobroker.json to enable)
+* (bluefox) add radar
+* (bluefox) do not change title of instance by upload and update
 
 # 0.13.2 (2016-11-04)
 * (bluefox) fix new installation
