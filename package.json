@@ -8,7 +8,8 @@
     "redis": "^2.6.2",
     "letsencrypt": "^2.1.8",
     "le-challenge-fs": "^2.0.4",
-    "le-sni-auto": "^2.1.0"
+    "le-sni-auto": "^2.1.0",
+    "winston-syslog": "^1.2.4"
   },
   "bin": {
     "iobroker": "./iobroker.js"

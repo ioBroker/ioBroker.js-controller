@@ -256,6 +256,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.pushover/master/admin/pushover.png"
   },
+  "radar": {
+    "meta": "https://raw.githubusercontent.com/frankjoke/iobroker.radar/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/frankjoke/ioBroker.radar/master/admin/radar.png"
+  },
   "rflink": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.rflink/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rflink/master/admin/rflink.png"
