@@ -156,6 +156,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/tarball/master"
   },
+  "km200": {
+    "meta": "https://raw.githubusercontent.com/frankjoke/ioBroker.km200/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/frankjoke/ioBroker.km200/master/admin/km200.png"
+  },
   "knx": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.knx/master/admin/eib_knx.png"
@@ -439,6 +443,10 @@
   "wolf": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.wolf/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.wolf/master/admin/wolf_logo.png"
+  },
+  "xs1": {
+    "meta": "https://raw.githubusercontent.com/frankjoke/ioBroker.xs1/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/frankjoke/ioBroker.xs1/master/admin/xs1.png"
   },
   "yamaha": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.yamaha/master/io-package.json",
