@@ -1,4 +1,7 @@
-# 0.13.3 (2016-11-чч)
+# 0.13.4 (2016-11-чч)
+* (bluefox) add debug information for logging
+
+# 0.13.3 (2016-11-26)
 * (bluefox) support of getLocationOnDisk message for admin
 * (bluefox) allow upgrade to specific version, like adapter@0.1.0
 * (bluefox) you can change any native parameter of instance with set
