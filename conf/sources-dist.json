@@ -220,10 +220,6 @@
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/admin/nut.png"
   },
-  "occ": {
-    "meta": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/husky-koglhof/ioBroker.occ/master/admin/logo.svg"
-  },
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/admin/onkyo.png"
