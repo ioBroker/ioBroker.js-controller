@@ -139,6 +139,7 @@ function getIPs() {
 
 // If some message from logger
 logger.on('logging', function (transport, level, msg/*, meta*/) {
+    if (transport.name !== tools.appName) return;
     // Send to all adapter, that required logs
     for (var i = 0; i < logList.length; i++) {
         states.pushLog(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
@@ -278,7 +279,7 @@ states.subscribe('*.logging');
 // Subscribe for all logging objects
 states.subscribe('system.adapter.*.alive');
 
-// Read current state of all log subscriber
+// Read current state of all log subscribers
 states.getKeys('*.logging', function (err, keys) {
     if (keys && keys.length) {
         states.getStates(keys, function (err, obj) {
@@ -1080,6 +1081,8 @@ function processMessage(msg) {
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
+            break;
+
         case 'getDevList':
             if (msg.callback && msg.from) {
                 ioPack = null;
@@ -1199,6 +1202,77 @@ function processMessage(msg) {
             zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
                 if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
             });
+            break;
+
+        case 'checkLogging':
+            (function () {
+                // this is temporary function to check the logging functionality
+                // Print all information into log
+                var logs  = [];
+                var count = 0;
+                function printLog(id, callback) {
+                    states.lenLog(id, function (err, len) {
+                        logs.push('Subscriber - ' + id + ' (queued ' + len + ') ' + (err || ''));
+                        if (len) {
+                            states.getLog(id, function (err, obj) {
+                                if (obj) {
+                                    logs.push(id + ' (' + JSON.stringify(obj) + ')');
+                                }
+
+                                printLog(id, callback);
+                            });
+                        } else {
+                            if (callback) callback();
+                        }
+                    });
+                }
+                // LogList
+                logs.push('Actual Loglist - ' + JSON.stringify(logList));
+
+                // Read current state of all log subscribers
+                states.getKeys('*.logging', function (err, keys) {
+                    if (keys && keys.length) {
+                        states.getStates(keys, function (err, obj) {
+                            if (obj) {
+                                for (var i = 0; i < keys.length; i++) {
+                                    // We can JSON.parse, but index is 16x faster
+                                    if (obj[i]) {
+                                        var id = keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, '');
+
+                                        if ((typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
+                                            (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
+                                            count++;
+                                            printLog(id, function () {
+                                                if (!--count) {
+                                                    for (var m = 0; m < logs.length; m++) {
+                                                        logger.error('host.' + hostname + ' LOGINFO: ' + logs[m]);
+                                                    }
+                                                    logs = [];
+                                                }
+                                            });
+                                        } else {
+                                            if (logs) logs.push('Subscriber - ' + id + ' (disabled)');
+                                        }
+                                    }
+                                }
+                            }
+                            setTimeout(function () {
+                                for (var m = 0; m < logs.length; m++) {
+                                    logger.error('host.' + hostname + ' LOGINFO: ' + logs[m]);
+                                }
+                                logs = [];
+                            }, 3000);
+                        });
+                    }
+                });
+
+                // Get list of all active adapters and send them message with command checkLogging
+                for (var _id in procs) {
+                    if (procs.hasOwnProperty(_id) && procs[_id].process) {
+                        states.setState(_id + '.checkLogging', {val: true, ack: false, from: 'system.host.' + hostname});
+                    }
+                }
+            })();
             break;
     }
 }
@@ -1610,13 +1684,15 @@ function startInstance(id, wakeUp) {
                     }
                     storePids(); // Store all pids to make possible kill them all
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
+                    logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                }
             } else {
                 if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
 
-        case 'schedule':
+       case 'schedule':
             if (!instance.common.schedule) {
                 logger.error(instance._id + ' schedule attribute missing');
                 break;
