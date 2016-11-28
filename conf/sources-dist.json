@@ -115,6 +115,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-addictive-flavour-png/master/admin/icons-addictive-flavour-png.png"
   },
+  "icons-fatcow-hosting": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-fatcow-hosting/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-fatcow-hosting/master/admin/icons-fatcow-hosting.png"
+  },
   "icons-icons8": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-icons8/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.icons-icons8/master/admin/icons8.png"
