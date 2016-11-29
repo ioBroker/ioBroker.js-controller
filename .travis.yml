@@ -1,6 +1,8 @@
 os:
   - linux
   - osx
+services:
+  - redis-server
 language: node_js
 node_js:
   - "0.10"
@@ -8,6 +10,10 @@ node_js:
   - "0.12"
   - "4"
   - "6"
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then redis-server &; fi
 before_script:
 env:
   - CXX=g++-4.8
