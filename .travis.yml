@@ -13,7 +13,8 @@ node_js:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then redis-server &; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; fi
 before_script:
 env:
   - CXX=g++-4.8
