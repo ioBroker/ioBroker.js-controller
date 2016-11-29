@@ -1,10 +1,13 @@
+os:
+  - linux
+  - osx
 language: node_js
 node_js:
-  - "6"
-  - "4"
-  - "0.12"
-  - "0.11"
   - "0.10"
+  - "0.11"
+  - "0.12"
+  - "4"
+  - "6"
 before_script:
 env:
   - CXX=g++-4.8
