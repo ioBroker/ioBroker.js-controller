@@ -66,8 +66,14 @@ function startController(options, callback) {
     var Objects = require(rootDir + 'lib/objects/objectsInMemServer');
     objects = new Objects(settingsObjects);
 
+    var States;
     // Just open in memory DB itself
-    var States = require(rootDir + 'lib/states/statesInMemServer');
+    if (options.states && options.states.type && options.states.type === 'redis') {
+        States = require(rootDir + 'lib/states/statesInRedis');
+    }
+    else {
+        States = require(rootDir + 'lib/states/statesInMemServer');
+    }
 
     var settingsStates = {
         connection: {
