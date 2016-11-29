@@ -22,8 +22,8 @@ function cleanDbs() {
 }
 
 
-describe('States: Test states', function() {
-    before('States: Start js-controller', function (_done) {
+describe('States-Redis: Test states', function() {
+    before('States-Redis: Start js-controller', function (_done) {
         this.timeout(2000);
         cleanDbs();
 
@@ -36,9 +36,10 @@ describe('States: Test states', function() {
                 },
                 states: {
                     type: 'redis',
+                    host: '127.0.0.1',
                     port: 6379,
                     onChange: function (id, state) {
-                        console.log('state changed. ' + id);
+                        console.log('Redis-state changed. ' + id);
                         if (onStatesChanged) onStatesChanged(id, state);
                     }
                 }
@@ -54,7 +55,7 @@ describe('States: Test states', function() {
         );
     });
 
-    it('States: should setState', function (done) {
+    it('States-Redis: should setState', function (done) {
         var testID = 'testObject.0.test1';
         onStatesChanged = function (id, state) {
             if (id === testID) {
@@ -81,7 +82,7 @@ describe('States: Test states', function() {
         });
     });
 
-    after('States: Stop js-controller', function (done) {
+    after('States-Redis: Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(function () {
             done();
