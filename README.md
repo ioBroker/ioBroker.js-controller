@@ -4,9 +4,9 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
+[![Tests](http://img.shields.io/travis/ioBroker/ioBroker.js-controller/master.svg)](https://travis-ci.org/ioBroker/ioBroker.js-controller)
 
 [![NPM](https://nodei.co/npm/iobroker.js-controller.png?downloads=true)](https://nodei.co/npm/iobroker.js-controller/)
-
 
 This is a main controller, that starts all other ioBroker adapters.
 
@@ -133,4 +133,3 @@ Now ioBroker can be started.
 Of course redis must be first installed and firewall rules must be checked.
 
 To switch back to JS States write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
-
