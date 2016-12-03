@@ -167,8 +167,19 @@ if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title
         if (!fs.existsSync(__dirname + '/../../package.json')) {
             fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                 name: 'iobroker.core',
+                version: '0.1.0',
                 private: true
             }, null, 2));
+        } else {
+            // npm3 requires version attribute
+            var p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
+            if (!p.version) {
+                fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
+                    name: 'iobroker.core',
+                    version: '1.0.0',
+                    private: true
+                }, null, 2));
+            }
         }
     } catch (e) {
         console.error('Cannot create "' + __dirname + '/../../package.json": ' + e);
