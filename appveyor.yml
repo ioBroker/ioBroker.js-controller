@@ -31,7 +31,7 @@ test_script:
   - npm test
 
 # Don't actually build.
-#build: off
+build: off
 
 before_build:
 - ps: >-
@@ -65,8 +65,3 @@ before_build:
     .\redis-server.exe --service-start
 
     cd ..
-- nuget restore Hangfire.Redis.StackExchange.sln
-build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  verbosity: minimal
