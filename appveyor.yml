@@ -1,4 +1,4 @@
-version: 'current'
+version: 'current{build}'
 
 # Test against this version of Node.js
 environment:
