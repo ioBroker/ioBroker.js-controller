@@ -24,7 +24,7 @@ function cleanDbs() {
 
 describe('States-Redis: Test states', function() {
     before('States-Redis: Start js-controller', function (_done) {
-        this.timeout(2000);
+        this.timeout(5000);
         cleanDbs();
 
         setup.startController({
@@ -56,6 +56,8 @@ describe('States-Redis: Test states', function() {
     });
 
     it('States-Redis: should setState', function (done) {
+        this.timeout(10000);
+
         var testID = 'testObject.0.test1';
         onStatesChanged = function (id, state) {
             if (id === testID) {
