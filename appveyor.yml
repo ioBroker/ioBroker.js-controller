@@ -20,6 +20,7 @@ install:
   - ps: Install-Product node $env:nodejs_version $env:platform
   # install modules
   - npm install
+  # install redis server
   - ps: >-
         Invoke-WebRequest "https://github.com/MSOpenTech/redis/releases/download/win-2.8.17.4/redis-2.8.17.zip" -OutFile .\redis-2.8.17.zip;
 
