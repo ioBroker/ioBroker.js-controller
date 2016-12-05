@@ -56,7 +56,7 @@ describe('States-Redis: Test states', function() {
     });
 
     it('States-Redis: should setState', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
 
         var testID = 'testObject.0.test1';
         onStatesChanged = function (id, state) {
