@@ -58,6 +58,8 @@ test_script:
   - echo %cd%
   - node --version
   - npm --version
+  # give the DBs a chance to boot correctly
+  - ps: Start-Sleep -s 10
   # run tests
   - npm test
 
