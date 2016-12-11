@@ -59,7 +59,7 @@ test_script:
   - node --version
   - npm --version
   # give the DBs a chance to boot correctly
-  - ps: Start-Sleep -s 10
+  - ps: Start-Sleep -s 15
   # run tests
   - npm test
 
