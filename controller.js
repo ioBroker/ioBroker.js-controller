@@ -1320,7 +1320,19 @@ function getInstances() {
                     objects.addPreserveSettings(instance.common.preserveSettings);
                 }
 
-                if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
+                if (instance.common.mode === 'web' || instance.common.mode === 'none') {
+                    if (instance.common.host === hostname) {
+                        var name = instance._id.split('.')[2];
+                        var adapterDir = tools.getAdapterDir(name);
+                        if (!fs.existsSync(adapterDir)) {
+                            procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
+                            installQueue.push({id: instance._id, disabled: true});
+                            // start install queue if not started
+                            if (installQueue.length === 1) installAdapters();
+                        }
+                    }
+                    continue;
+                }
 
                 logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
                 console.log('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
