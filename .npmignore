@@ -15,3 +15,4 @@ cache
 test
 pids.txt
 doc
+appveyor.yml
