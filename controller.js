@@ -1320,7 +1320,19 @@ function getInstances() {
                     objects.addPreserveSettings(instance.common.preserveSettings);
                 }
 
-                if (instance.common.mode === 'web' || instance.common.mode === 'none') continue;
+                if (instance.common.mode === 'web' || instance.common.mode === 'none') {
+                    if (instance.common.host === hostname) {
+                        var name = instance._id.split('.')[2];
+                        var adapterDir = tools.getAdapterDir(name);
+                        if (!fs.existsSync(adapterDir)) {
+                            procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
+                            installQueue.push({id: instance._id, disabled: true});
+                            // start install queue if not started
+                            if (installQueue.length === 1) installAdapters();
+                        }
+                    }
+                    continue;
+                }
 
                 logger.debug('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
                 console.log('host.' + hostname + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
@@ -1520,26 +1532,41 @@ function installAdapters() {
         logger.warn('host.' + hostname + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
         logger.info(tools.appName + ' install ' + name);
 
-        var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
-        child.stdout.on('data', function (data) {
-            data = data.toString().replace('\n', '');
-            logger.info(tools.appName + ' ' + data);
-        });
-        child.stderr.on('data', function (data) {
-            data = data.toString().replace('\n', '');
-            logger.error(tools.appName + ' ' + data);
-        });
-        child.on('exit', function (exitCode) {
-            logger.info(tools.appName + ' exit ' + exitCode);
-            if (!task.disabled) {
-                startInstance(task.id, task.wakeUp);
-            }
+        try {
+            var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
+            child.stdout.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.info(tools.appName + ' ' + data);
+            });
+            child.stderr.on('data', function (data) {
+                data = data.toString().replace('\n', '');
+                logger.error(tools.appName + ' ' + data);
+            });
+            child.on('exit', function (exitCode) {
+                logger.info(tools.appName + ' exit ' + exitCode);
+                if (!task.disabled) {
+                    startInstance(task.id, task.wakeUp);
+                }
 
+                setTimeout(function () {
+                    installQueue.shift();
+                    installAdapters();
+                }, 1000);
+            });
+            child.on('error', function (err) {
+                logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
+                setTimeout(function () {
+                    installQueue.shift();
+                    installAdapters();
+                }, 1000);
+            })
+        } catch (err) {
+            logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
             setTimeout(function () {
                 installQueue.shift();
                 installAdapters();
             }, 1000);
-        });
+        }
     } else {
         logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
         setTimeout(function () {
