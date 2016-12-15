@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var setup  = require(__dirname + '/lib/setup');
+var setup  = require(__dirname + '/lib/setup4controller');
 var fs     = require('fs');
 var objects     = null;
 var states      = null;
@@ -52,7 +52,7 @@ describe('Objects: Test UDP server', function() {
             });
         });
     });
-    
+
     after('Objects: Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(function () {
