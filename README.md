@@ -8,6 +8,8 @@
 
 [![NPM](https://nodei.co/npm/iobroker.js-controller.png?downloads=true)](https://nodei.co/npm/iobroker.js-controller/)
 
+Here you can find change [log](CHANGELOG.md).
+
 This is a main controller, that starts all other ioBroker adapters.
 
 Official Web-Site: http://iobroker.net
