@@ -24,7 +24,7 @@ function cleanDbs() {
 
 describe('States-Redis: Test states', function() {
     before('States-Redis: Start js-controller', function (_done) {
-        this.timeout(5000);
+        this.timeout(10000);
         cleanDbs();
 
         setup.startController({
@@ -50,7 +50,7 @@ describe('States-Redis: Test states', function() {
                 states.subscribe('*');
                 expect(objects).to.be.ok;
                 expect(states).to.be.ok;
-                _done();
+                setTimeout(_done, 5000);
             }
         );
     });
