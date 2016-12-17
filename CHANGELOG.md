@@ -1,5 +1,16 @@
-# 0.13.4 (2016-11-чч)
+# 0.14.0 (2016-12-17)
 * (bluefox) add debug information for logging
+* (bluefox) remove occ
+* (bluefox) add mpd, icons-fatcow-hosting
+* (bluefox) update node-schedule
+* (bluefox) add cli command "show uuid"
+* (bluefox) try to fix issue with npm3
+* (bluefox) add console command "repo [name]"
+* (bluefox) try to extract the information from local sources-dist.json it online not reachable
+* (bluefox) add host remove
+* (bluefox) install non enabled adapters
+* (bluefox) install icons on backup too
+* (bluefox) fix some sporadic errors
 
 # 0.13.3 (2016-11-26)
 * (bluefox) support of getLocationOnDisk message for admin

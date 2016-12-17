@@ -204,6 +204,10 @@
     "meta": "https://raw.githubusercontent.com/Pmant/ioBroker.mqtt-client/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Pmant/ioBroker.mqtt-client/master/admin/mqtt-client.png"
   },
+  "mpd": {
+    "meta": "https://raw.githubusercontent.com/instalator/ioBroker.mpd/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/instalator/ioBroker.mpd/master/admin/mpd.png"
+  },
   "mysensors": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mysensors/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mysensors/master/admin/mysensors.png"
