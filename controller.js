@@ -471,6 +471,87 @@ function changeHost(objs, oldHostname, newHostname, callback) {
     }
 }
 
+function cleanAutoSubscribe(instance, autoInstance, callback) {
+    states.getState(autoInstance + '.subscribes', function (err, state) {
+        if (!state || !state.val) {
+            if (typeof callback === 'function') {
+                setTimeout(function () {
+                    callback();
+                }, 0);
+            }
+            return;
+        }
+        var subs;
+        try {
+            subs = JSON.parse(state.val)
+        } catch (e) {
+            logger.error('Cannot parse subscribes: ' + state.val);
+            if (typeof callback === 'function') {
+                setTimeout(function () {
+                    callback();
+                }, 0);
+            }
+            return;
+        }
+        var modified = false;
+        // look for all subscribes from this instance 
+        for (var pattern in subs) {
+            if (!subs.hasOwnProperty(pattern)) continue;
+            for (var id in subs[pattern]) {
+                if (id === instance) {
+                    modified = true;
+                    delete subs[pattern][id];
+                }
+            }
+            var found = false;
+            for (var f in subs[pattern]) {
+                if (subs[pattern].hasOwnPropert(f)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                modified = true;
+                delete subs[pattern];
+            }
+        }
+        
+        if (modified) {
+            states.setState(autoInstance + '.subscribes', subs, function () {
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            });
+        } else if (typeof callback === 'function') {
+            setTimeout(function () {
+                callback();
+            }, 0);
+        }
+    });
+}
+
+function cleanAutoSubscribes(instance, callback) {
+    // instance = 'system.adapter.name.0'
+    instance = instance.substring(15); // get name.0
+    
+    // read all instances
+    objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, res) {
+        var count = 0;
+        if (res && res.rows) {
+            for (var c = res.rows.length - 1; c >= 0; c--) {
+                // remove this instance from autoSubscribe
+                if (res.rows[c].value.common.subscribable) {
+                    count++;
+                    cleanAutoSubscribe(instance, res.rows[c].id, function () {
+                        if (!--count && callback) callback();     
+                    });
+                }
+            }
+        }
+        if (!count && callback) callback();
+    });
+}
+
 function delObjects(objs, callback) {
     if (!objs || !objs.length) {
         if (callback) callback();
@@ -1678,6 +1759,8 @@ function startInstance(id, wakeUp) {
                 procs[id].process.on('exit', function (code, signal) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
+                    
+                    cleanAutoSubscribes(id);
 
                     if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
 
@@ -1763,6 +1846,7 @@ function startInstance(id, wakeUp) {
                     logger.warn('host.' + hostname + ' instance ' + instance._id + ' does not started, because just executed');
                     return;
                 }
+                
                 // Remember the last run
                 procs[id].lastStart = new Date().getTime();
                 if (!procs[id].process) {
@@ -1800,6 +1884,8 @@ function startInstance(id, wakeUp) {
                 logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                 procs[id].process.on('exit', function (code, signal) {
+                    cleanAutoSubscribes(id);
+                    
                     states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
                         logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);

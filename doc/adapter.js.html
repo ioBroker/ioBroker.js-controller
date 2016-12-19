@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: adapter.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: adapter.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 
@@ -49,9 +77,9 @@ if (fs.existsSync(getConfigFileName())) {
 function Adapter(options) {
     if (!(this instanceof Adapter)) return new Adapter(options);
 
-    if (!options || (!config && !options.config)) throw 'Configuration not set!';
+    if (!options || (!config &amp;&amp; !options.config)) throw 'Configuration not set!';
 
-    if (options.config && !options.config.log) options.config.log = config.log;
+    if (options.config &amp;&amp; !options.config.log) options.config.log = config.log;
 
     config = options.config || config;
     var regUser = /^system\.user\./;
@@ -66,7 +94,7 @@ function Adapter(options) {
     // --silent
     // --install
     if (process.argv) {
-        for (var a = 1; a < process.argv.length; a++) {
+        for (var a = 1; a &lt; process.argv.length; a++) {
             if (process.argv[a] === 'info' || process.argv[a] === 'debug' || process.argv[a] === 'error' || process.argv[a] === 'warn') {
                 config.log.level = process.argv[a];
             } else if (process.argv[a] === '--silent') {
@@ -85,7 +113,7 @@ function Adapter(options) {
     }
 
     config.log.level = config.log.level || 'info';
-    if (config.log.noStdout && process.argv && process.argv.indexOf('--console') !== -1) {
+    if (config.log.noStdout &amp;&amp; process.argv &amp;&amp; process.argv.indexOf('--console') !== -1) {
         config.log.noStdout = false;
     }
 
@@ -108,7 +136,7 @@ function Adapter(options) {
         // remove "lib"
         this.adapterDir.pop();
         var jsc = this.adapterDir.pop();
-        if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') && this.adapterDir.pop() === 'node_modules') {
+        if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') &amp;&amp; this.adapterDir.pop() === 'node_modules') {
             // js-controller is installed as npm
             var appName = tools.appName.toLowerCase();
             this.adapterDir = this.adapterDir.join('/');
@@ -188,17 +216,17 @@ function Adapter(options) {
      * Helper function to find next free port
      *
      * Looks for first free TCP port starting with given one:
-     * <pre><code>
+     * &lt;pre>&lt;code>
      *     adapter.getPort(8081, function (port) {
      *         adapter.log.debug('Followinf port is free: ' + port);
      *     });
-     * </code></pre>
+     * &lt;/code>&lt;/pre>
      *
      * @alias getPort
      * @memberof Adapter
      * @param {number} port port number to start the search for free port
      * @param {function} callback return result
-     *        <pre><code>function (port) {}</code></pre>
+     *        &lt;pre>&lt;code>function (port) {}&lt;/code>&lt;/pre>
      */
     that.getPort = function adapterGetPort(port, callback) {
         port = parseInt(port);
@@ -231,11 +259,11 @@ function Adapter(options) {
      * validates user and password
      *
      * Looks for first free TCP port starting with given one:
-     * <pre><code>
+     * &lt;pre>&lt;code>
      *     adapter.getPort(8081, function (port) {
      *         adapter.log.debug('Followinf port is free: ' + port);
      *     });
-     * </code></pre>
+     * &lt;/code>&lt;/pre>
      *
      * @alias checkPassword
      * @memberof Adapter
@@ -243,11 +271,11 @@ function Adapter(options) {
      * @param {string} pw password as text
      * @param {object} options optional user context
      * @param {function} callback return result
-     *        <pre><code>
+     *        &lt;pre>&lt;code>
      *            function (result) {
      *              adapter.log.debug('User is valid');
      *            }
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      */
     that.checkPassword = function checkPassword(user, pw, options, callback) {
         if (typeof options === 'function') {
@@ -278,11 +306,11 @@ function Adapter(options) {
      * @param {string} pw password as text
      * @param {object} options optional user context
      * @param {function} callback return result
-     *        <pre><code>
+     *        &lt;pre>&lt;code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot set password: ' + err);
      *            }
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      */
     that.setPassword = function setPassword(user, pw, options, callback) {
         if (typeof options === 'function') {
@@ -323,11 +351,11 @@ function Adapter(options) {
      * @param {string} group group name
      * @param {object} options optional user context
      * @param {function} callback return result
-     *        <pre><code>
+     *        &lt;pre>&lt;code>
      *            function (result) {
      *              if (result) adapter.log.debug('User exists and in the group');
      *            }
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      */
     that.checkGroup = function checkGroup(user, group, options, callback) {
         if (typeof options === 'function') {
@@ -364,7 +392,7 @@ function Adapter(options) {
      * @memberof Adapter
      * @param {string} user user name as text
      * @param {string} commandsPermissions object that describes the access rights like
-     *     <pre><code>
+     *     &lt;pre>&lt;code>
      *         // static information
      *         var commandsPermissions = {
      *            getObject:          {type: 'object',    operation: 'read'},
@@ -401,10 +429,10 @@ function Adapter(options) {
      *            listPermissions:    {type: '',          operation: ''},
      *            getUserPermissions: {type: 'object',    operation: 'read'}
      *         };
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      * @param {object} options optional user context
      * @param {function} callback return result
-     *        <pre><code>
+     *        &lt;pre>&lt;code>
      *            function (acl) {
      *              // Access control object for admin looks like:
      *              // {
@@ -444,7 +472,7 @@ function Adapter(options) {
      *              //     groups: ['administrator'] // can be more than one
      *              // }
      *            }
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      */
     that.calculatePermissions = function (user, commandsPermissions, options, callback) {
         if (typeof options === 'function') {
@@ -471,9 +499,9 @@ function Adapter(options) {
             // aggregate all groups permissions, where this user is
             if (groups) {
                 for (var g in groups) {
-                    if (groups[g] &&
-                        groups[g].common &&
-                        groups[g].common.members &&
+                    if (groups[g] &amp;&amp;
+                        groups[g].common &amp;&amp;
+                        groups[g].common.members &amp;&amp;
                         groups[g].common.members.indexOf(user) !== -1) {
                         acl.groups.push(groups[g]._id);
                         if (groups[g]._id === 'system.group.administrator') {
@@ -545,13 +573,13 @@ function Adapter(options) {
      * @param {string} privateName private certificate name
      * @param {string} chainedName optional chained certificate name
      * @param {function} callback return result
-     *        <pre><code>
+     *        &lt;pre>&lt;code>
      *            function (err, certs) {
      *              adapter.log.debug('private key: ' + certs.key);
      *              adapter.log.debug('public cert: ' + certs.cert);
      *              adapter.log.debug('chained cert: ' + certs.ca);
      *            }
-     *        </code></pre>
+     *        &lt;/code>&lt;/pre>
      */
     that.getCertificates = function (publicName, privateName, chainedName, callback) {
         if (typeof publicName === 'function') {
@@ -578,7 +606,7 @@ function Adapter(options) {
                 !privateName ||
                 !obj.native.certificates[publicName] ||
                 !obj.native.certificates[privateName] ||
-                (chainedName && !obj.native.certificates[chainedName])
+                (chainedName &amp;&amp; !obj.native.certificates[chainedName])
             ) {
                 that.log.error('Cannot enable secure web server, because no certificates found: ' + publicName + ', ' + privateName + ', ' + chainedName);
                 if (callback) callback('Not found');
@@ -587,7 +615,7 @@ function Adapter(options) {
                 if (chainedName) {
                     var chained = obj.native.certificates[chainedName].split('-----END CERTIFICATE-----\r\n');
                     ca = [];
-                    for (var c = 0; c < chained.length; c++) {
+                    for (var c = 0; c &lt; chained.length; c++) {
                         if (chained[c].replace(/[\r\n|\r|\n]+/, '').trim()) {
                             ca.push(chained[c] + '-----END CERTIFICATE-----\r\n');
                         }
@@ -632,12 +660,12 @@ function Adapter(options) {
             if (options.instance !== undefined) {
                 initAdapter(options);
             } else
-            if (!config.isInstall && res && res.val === true) {
+            if (!config.isInstall &amp;&amp; res &amp;&amp; res.val === true) {
                 logger.error(options.name + '.' + instance + ' already running');
                 process.exit(7);
             } else {
                 that.getForeignObject('system.adapter.' + that.namespace, function (err, res) {
-                    if ((err || !res) && !config.isInstall) {
+                    if ((err || !res) &amp;&amp; !config.isInstall) {
                         logger.error(options.name + '.' + instance + ' invalid config');
                         process.exit(2);
                     } else {
@@ -652,7 +680,7 @@ function Adapter(options) {
         if (!that.autoSubscribe) {
             // collect all 
             that.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, options, function (err, res) {
-                if (res && res.rows) {
+                if (res &amp;&amp; res.rows) {
                     that.autoSubscribe = [];
                     for (var c = res.rows.length - 1; c >= 0; c--) {
 
@@ -681,7 +709,7 @@ function Adapter(options) {
                 // Read dateformat if using of formatDate is announced
                 if (options.useFormatDate) {
                     that.getForeignObject('system.config', function (err, data) {
-                        if (data && data.common) {
+                        if (data &amp;&amp; data.common) {
                         	that.dateFormat   = data.common.dateFormat;
                         	that.isFloatComma = data.common.isFloatComma;
                         }
@@ -702,7 +730,7 @@ function Adapter(options) {
                 }
 
                 // If desired, that adapter must be terminated
-                if (id === 'system.adapter.' + that.namespace && obj && obj.common && obj.common.enabled === false) {
+                if (id === 'system.adapter.' + that.namespace &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.enabled === false) {
                     that.log.info('Adapter is disabled => stop');
                     if (!obj.common.enabled) {
                         process.exit();
@@ -733,7 +761,7 @@ function Adapter(options) {
                 }
 
                 // It was an error in the calculation
-                if ((options.noNamespace || config.noNamespace) && that._namespaceRegExp.test(id)) {
+                if ((options.noNamespace || config.noNamespace) &amp;&amp; that._namespaceRegExp.test(id)) {
                     // emit 'objectChange' event instantly
                     setTimeout(function () {
                         if (typeof options.objectChange === 'function') options.objectChange(id.substring(that.namespace.length + 1), obj);
@@ -777,9 +805,9 @@ function Adapter(options) {
          *
          * This function can create or overwrite objects in objectDB for this adapter.
          * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
-         * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
-         * Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-         * <pre><code>{
+         * &lt;b>common&lt;/b>, &lt;b>native&lt;/b> and &lt;b>type&lt;/b> attributes are mandatory and it will be checked.
+         * Additionally type "state" requires &lt;b>role&lt;/b>, &lt;b>type&lt;/b> and &lt;b>name&lt;/b>, e.g.:
+         * &lt;pre>&lt;code>{
          *     common: {
          *          name: 'object name',
          *          type: 'number', // string, boolean, object, mixed, array
@@ -787,7 +815,7 @@ function Adapter(options) {
          *     },
          *     native: {},
          *     type: 'state' // channel, device
-         * }</code></pre>
+         * }&lt;/code>&lt;/pre>
          *
          * @alias setObject
          * @memberof Adapter
@@ -795,12 +823,12 @@ function Adapter(options) {
          * @param {object} obj new object
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *              // obj is {id: id}
          *              if (err) adapter.log.error('Cannot write object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.setObject = function setObject(id, obj, options, callback) {
             if (typeof options === 'function') {
@@ -833,7 +861,7 @@ function Adapter(options) {
                 } else if (obj.type === 'state') {
                     // Try to extend the model for type='state'
                     // Check property 'role' by 'state'
-                    if (obj.common.hasOwnProperty('role') && defaultObjs[obj.common.role]) {
+                    if (obj.common.hasOwnProperty('role') &amp;&amp; defaultObjs[obj.common.role]) {
                         obj.common = extend(true, defaultObjs[obj.common.role], obj.common);
                     } else if (!obj.common.hasOwnProperty('role')) {
                         logger.warn(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.role missing!');
@@ -866,13 +894,13 @@ function Adapter(options) {
          * @alias getAdapterObjects
          * @memberof Adapter
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (objects) {
          *                for (var id in objects) {
          *                    adapter.log.debug(id);
          *                }
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getAdapterObjects = function (callback) {
             var objects = {};
@@ -907,7 +935,7 @@ function Adapter(options) {
          * Extend some object and create it if it does not exist
          *
          * You can change or extend some object. E.g existing object is:
-         * <pre><code>
+         * &lt;pre>&lt;code>
          *     {
          *          common: {
          *              name: 'Adapter name',
@@ -918,11 +946,11 @@ function Adapter(options) {
          *              unused: 'text'
          *          }
          *     }
-         * </code></pre>
+         * &lt;/code>&lt;/pre>
          *
          * If following object will be passed as argument
          *
-         * <pre><code>
+         * &lt;pre>&lt;code>
          *     {
          *          common: {
          *              desc: 'New description',
@@ -933,10 +961,10 @@ function Adapter(options) {
          *              unused: null
          *          }
          *     }
-         * </code></pre>
+         * &lt;/code>&lt;/pre>
          *
          * We will get as output:
-         * <pre><code>
+         * &lt;pre>&lt;code>
          *     {
          *          common: {
          *              desc: 'New description',
@@ -947,7 +975,7 @@ function Adapter(options) {
          *          native: {
          *          }
          *     }
-         * </code></pre>
+         * &lt;/code>&lt;/pre>
          *
          *
          * @alias extendObject
@@ -956,12 +984,12 @@ function Adapter(options) {
          * @param {object} obj part that must be extended
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *                if (err) adapter.log.error(err);
          *                // obj is {"id": id}
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.extendObject = function extendObject(id, obj, options, callback) {
             if (typeof options === 'function') {
@@ -974,11 +1002,11 @@ function Adapter(options) {
                 logger.warn(that.namespace + ' Do not use parent or children for ' + id);
             }
             // delete arrays if they should be changed
-            if (obj && (
-                (obj.common && obj.common.members) ||
-                (obj.native && obj.native.repositories) ||
-                (obj.native && obj.native.certificates) ||
-                (obj.native && obj.native.devices))
+            if (obj &amp;&amp; (
+                (obj.common &amp;&amp; obj.common.members) ||
+                (obj.native &amp;&amp; obj.native.repositories) ||
+                (obj.native &amp;&amp; obj.native.certificates) ||
+                (obj.native &amp;&amp; obj.native.devices))
                 ) {
                 // Read whole object
                 that.objects.getObject(id, options, function (err, oldObj) {
@@ -990,16 +1018,16 @@ function Adapter(options) {
                         logger.error(that.namespace + ' Object ' + id + ' not exist!');
                         oldObj = {};
                     }
-                    if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
+                    if (obj.native &amp;&amp; obj.native.repositories &amp;&amp; oldObj.native &amp;&amp; oldObj.native.repositories) {
                         oldObj.native.repositories = [];
                     }
-                    if (obj.common && obj.common.members && oldObj.common && oldObj.common.members) {
+                    if (obj.common &amp;&amp; obj.common.members &amp;&amp; oldObj.common &amp;&amp; oldObj.common.members) {
                         oldObj.common.members = [];
                     }
-                    if (obj.native && obj.native.certificates && oldObj.native && oldObj.native.certificates) {
+                    if (obj.native &amp;&amp; obj.native.certificates &amp;&amp; oldObj.native &amp;&amp; oldObj.native.certificates) {
                         oldObj.native.certificates = [];
                     }
-                    if (obj.native && obj.native.devices && oldObj.native && oldObj.native.devices) {
+                    if (obj.native &amp;&amp; obj.native.devices &amp;&amp; oldObj.native &amp;&amp; oldObj.native.devices) {
                         oldObj.native.devices = [];
                     }
                     obj = extend(true, oldObj, obj);
@@ -1022,12 +1050,12 @@ function Adapter(options) {
          * @param {object} obj new object
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *              // obj is {id: id}
          *              if (err) adapter.log.error('Cannot write object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.setForeignObject = function setForeignObject(id, obj, options, callback) {
             if (typeof options === 'function') {
@@ -1048,12 +1076,12 @@ function Adapter(options) {
          * @param {object} obj part that must be extended
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *                // obj is {"id": id}
          *                if (err) adapter.log.error(err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.extendForeignObject = function extendForeignObject(id, obj, options, callback) {
             if (typeof options === 'function') {
@@ -1061,8 +1089,8 @@ function Adapter(options) {
                 options = null;
             }
             // delete arrays if they should be changed
-            if (obj && ((obj.native && (obj.native.repositories || obj.native.certificates || obj.native.devices)) ||
-                (obj.common && obj.common.members))) {
+            if (obj &amp;&amp; ((obj.native &amp;&amp; (obj.native.repositories || obj.native.certificates || obj.native.devices)) ||
+                (obj.common &amp;&amp; obj.common.members))) {
                 // Read whole object
                 that.objects.getObject(id, options, function (err, oldObj) {
                     if (err) {
@@ -1073,16 +1101,16 @@ function Adapter(options) {
                         logger.error(that.namespace + ' Object ' + id + ' not exist!');
                         oldObj = {};
                     }
-                    if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
+                    if (obj.native &amp;&amp; obj.native.repositories &amp;&amp; oldObj.native &amp;&amp; oldObj.native.repositories) {
                         oldObj.native.repositories = [];
                     }
-                    if (obj.common && obj.common.members && oldObj.common && oldObj.common.members) {
+                    if (obj.common &amp;&amp; obj.common.members &amp;&amp; oldObj.common &amp;&amp; oldObj.common.members) {
                         oldObj.common.members = [];
                     }
-                    if (obj.native && obj.native.certificates && oldObj.native && oldObj.native.certificates) {
+                    if (obj.native &amp;&amp; obj.native.certificates &amp;&amp; oldObj.native &amp;&amp; oldObj.native.certificates) {
                         oldObj.native.certificates = [];
                     }
-                    if (obj.native && obj.native.devices && oldObj.native && oldObj.native.devices) {
+                    if (obj.native &amp;&amp; obj.native.devices &amp;&amp; oldObj.native &amp;&amp; oldObj.native.devices) {
                         oldObj.native.devices = [];
                     }
                     obj = extend(true, oldObj, obj);
@@ -1104,11 +1132,11 @@ function Adapter(options) {
          * @param {string} id exactly object ID (without namespace)
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *              if (err) adapter.log.error('Cannot get object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getObject = function getObject(id, options, callback) {
             if (typeof options === 'function') {
@@ -1123,7 +1151,7 @@ function Adapter(options) {
          *
          * Get enums of specified tree or all enums if nothing specified as object with values.
          * If getEnum called with no enum specified, all enums will be returned:
-         * <pre><code>
+         * &lt;pre>&lt;code>
          *      adapter.getEnums(function (err, enums, requestEnum) {
          *        // All enums
          *        if (err) adapter.log.error('Cannot get object: ' + err);
@@ -1131,14 +1159,14 @@ function Adapter(options) {
          *           adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
          *        }
          *      });
-         * </code></pre>
+         * &lt;/code>&lt;/pre>
          *
          * @alias getEnum
          * @memberof Adapter
          * @param {string} _enum enum name, e.g. 'rooms', 'function' or '' (all enums)
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, enums, requestEnum) {
          *              // requestEnum is _enum
          *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -1146,7 +1174,7 @@ function Adapter(options) {
          *                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
          *              }
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getEnum = function getEnum(_enum, options, callback) {
             if (typeof _enum === 'function') {
@@ -1166,7 +1194,7 @@ function Adapter(options) {
                     if (typeof callback === 'function') callback(err);
                     return;
                 }
-                for (var t = 0; t < res.rows.length; t++) {
+                for (var t = 0; t &lt; res.rows.length; t++) {
                     result[res.rows[t].id] = res.rows[t].value;
                 }
                 if (typeof callback === 'function') callback(err, result, _enum);
@@ -1183,7 +1211,7 @@ function Adapter(options) {
          * @param {string|array} _enumList enum name or names, e.g. ['rooms', 'function']
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, enums) {
          *              // requestEnum is _enum
          *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -1215,7 +1243,7 @@ function Adapter(options) {
          *              //    }
          *              // }
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getEnums = function getEnums(_enumList, options, callback) {
             if (typeof options === 'function') {
@@ -1226,11 +1254,11 @@ function Adapter(options) {
             if (_enumList) {
                 if (typeof _enumList === 'string') _enumList = [_enumList];
                 var count = 0;
-                for (var t = 0; t < _enumList.length; t++) {
+                for (var t = 0; t &lt; _enumList.length; t++) {
                     count++;
                     that.getEnum(_enumList[t], options, function (err, list, _enum) {
                         if (list) _enums[_enum] = list;
-                        if (!--count && callback) callback(err, _enums);
+                        if (!--count &amp;&amp; callback) callback(err, _enums);
                     });
                 }
             } else {
@@ -1241,8 +1269,8 @@ function Adapter(options) {
                         return;
                     }
                     var result = {};
-                    if (res && res.rows) {
-                        for (var i = 0; i < res.rows.length; i++) {
+                    if (res &amp;&amp; res.rows) {
+                        for (var i = 0; i &lt; res.rows.length; i++) {
                             var parts = res.rows[i].id.split('.', 3);
                             if (!parts[2]) continue;
                             if (!result[parts[0] + '.' + parts[1]]) result[parts[0] + '.' + parts[1]] = {};
@@ -1260,7 +1288,7 @@ function Adapter(options) {
          *
          * Get all objects in the system of specified type. E.g.:
          *
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
          *              if (err) adapter.log.error('Cannot get object: ' + err);
          *              // objs look like:
@@ -1284,7 +1312,7 @@ function Adapter(options) {
          *              //       }
          *              //    }
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          *
          * @alias getForeignObjects
          * @memberof Adapter
@@ -1293,11 +1321,11 @@ function Adapter(options) {
          * @param {string} enums object ID, that must be overwritten or created.
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *              if (err) adapter.log.error('Cannot get object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getForeignObjects = function getForeignObjects(pattern, type, enums, options, callback) {
             if (typeof options === 'function') {
@@ -1305,7 +1333,7 @@ function Adapter(options) {
                 options = null;
             }
             var params = {};
-            if (pattern && pattern !== '*') {
+            if (pattern &amp;&amp; pattern !== '*') {
                 params = {
                     startkey: pattern.replace('*', ''),
                     endkey:   pattern.replace('*', '\u9999')
@@ -1323,7 +1351,7 @@ function Adapter(options) {
                 options = type;
                 type = null;
             }
-            if (typeof enums === 'object' && !(enums instanceof Array)) {
+            if (typeof enums === 'object' &amp;&amp; !(enums instanceof Array)) {
                 options = enums;
                 enums = null;
             }
@@ -1335,10 +1363,10 @@ function Adapter(options) {
 
                 that.getEnums(enums, function (_enums) {
                     var list = {};
-                    for (var i = 0; i < res.rows.length; i++) {
+                    for (var i = 0; i &lt; res.rows.length; i++) {
                         list[res.rows[i].id] = res.rows[i].value;
 
-                        if (_enums && res.rows[i].id) {
+                        if (_enums &amp;&amp; res.rows[i].id) {
                             // get device or channel of this state and check it too
                             var parts = res.rows[i].id.split('.');
                             parts.splice(parts.length - 1, 1);
@@ -1378,12 +1406,12 @@ function Adapter(options) {
          * @param {string} type optional type of state: 'number', 'string', 'boolean', 'file', ...
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            adapter.findForeignObject('Some name', function (err, id, name) {
          *              if (err) adapter.log.error('Cannot get object: ' + err);
          *              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.findForeignObject = function findForeignObject(id, type, options, callback) {
             if (typeof options === 'function') {
@@ -1403,11 +1431,11 @@ function Adapter(options) {
          * @param {string} id exactly object ID (with namespace)
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err, obj) {
          *              if (err) adapter.log.error('Cannot get object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.getForeignObject = function getForeignObject(id, options, callback) {
             if (typeof options === 'function') {
@@ -1427,11 +1455,11 @@ function Adapter(options) {
          * @param {string} id exactly object ID (without namespace)
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err) {
          *              if (err) adapter.log.error('Cannot delete object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.delObject = function delObject(id, options, callback) {
             if (typeof options === 'function') {
@@ -1452,11 +1480,11 @@ function Adapter(options) {
          * @param {string} id exactly object ID (with namespace)
          * @param {object} options optional user context
          * @param {function} callback return result
-         *        <pre><code>
+         *        &lt;pre>&lt;code>
          *            function (err) {
          *              if (err) adapter.log.error('Cannot delete object: ' + err);
          *            }
-         *        </code></pre>
+         *        &lt;/code>&lt;/pre>
          */
         that.delForeignObject = function delForeignObject(id, options, callback) {
             if (typeof options === 'function') {
@@ -1528,7 +1556,7 @@ function Adapter(options) {
             if (device)  id += device;
             if (channel) id += ((id) ? '.' : '') + channel;
 
-            if (stateOrPoint !== true && stateOrPoint !== false) {
+            if (stateOrPoint !== true &amp;&amp; stateOrPoint !== false) {
                 if (stateOrPoint)   id += ((id) ? '.' : '') + stateOrPoint;
             } else if (stateOrPoint === true) {
                 if (id) id += '.';
@@ -1652,7 +1680,7 @@ function Adapter(options) {
             var id = that._fixId({device: parentDevice, channel: parentChannel, state: stateName});
 
             // Check min, max and def values for number
-            if (common.type !== undefined && common.type === 'number') {
+            if (common.type !== undefined &amp;&amp; common.type === 'number') {
                 var min = 0;
                 var max = 0;
                 var def = 0;
@@ -1699,12 +1727,12 @@ function Adapter(options) {
                         }
                     }
                 }
-                if (common.min !== undefined && common.max !== undefined && min > max) {
+                if (common.min !== undefined &amp;&amp; common.max !== undefined &amp;&amp; min > max) {
                     common.max = min;
                     common.min = max;
                 }
-                if (common.def !== undefined && common.min !== undefined && def < min) common.def = min;
-                if (common.def !== undefined && common.max !== undefined && def > max) common.def = max;
+                if (common.def !== undefined &amp;&amp; common.min !== undefined &amp;&amp; def &lt; min) common.def = min;
+                if (common.def !== undefined &amp;&amp; common.max !== undefined &amp;&amp; def > max) common.def = max;
             }
 
             that.setObjectNotExists(id, {
@@ -1737,7 +1765,7 @@ function Adapter(options) {
                 var cnt = 0;
                 if (res.rows.length > 1) that.log.warn('Found more than one device ' + deviceName);
 
-                for (var t = 0; t < res.rows.length; t++) {
+                for (var t = 0; t &lt; res.rows.length; t++) {
                     cnt++;
                     that.delObject(res.rows[t].id, options, function (err) {
                         if (err) {
@@ -1753,10 +1781,10 @@ function Adapter(options) {
                                     return;
                                 }
                                 var _cnt = 0;
-                                for (var k = 0; k < res.rows.length; k++) {
+                                for (var k = 0; k &lt; res.rows.length; k++) {
                                     _cnt++;
                                     that.deleteChannel(deviceName, res.rows[k].id, options, function (err) {
-                                        if (!(--_cnt) && callback) {
+                                        if (!(--_cnt) &amp;&amp; callback) {
                                             callback(err);
                                         } else {
                                             if (err) {
@@ -1766,12 +1794,12 @@ function Adapter(options) {
                                         }
                                     });
                                 }
-                                if (!_cnt && callback) callback();
+                                if (!_cnt &amp;&amp; callback) callback();
                             });
                         }
                     });
                 }
-                if (!cnt && callback) callback();
+                if (!cnt &amp;&amp; callback) callback();
             });
         };
 
@@ -1790,7 +1818,7 @@ function Adapter(options) {
             if (that._namespaceRegExp.test(channelName)) {
                 channelName = channelName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && channelName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
                 channelName = channelName.substring(parentDevice.length + 1);
             }
             channelName = channelName.replace(/[.\s]+/g, '_');
@@ -1803,7 +1831,7 @@ function Adapter(options) {
                         if (typeof callback === 'function') callback(err);
                         return;
                     }
-                    if (!err && obj) {
+                    if (!err &amp;&amp; obj) {
                         var pos = obj.common.members.indexOf(objId);
                         if (pos === -1) {
                             obj.common.members.push(objId);
@@ -1856,10 +1884,10 @@ function Adapter(options) {
                 parentDevice = parentDevice.replace(/[.\s]+/g, '_');
             }
 
-            if (channelName && channelName.substring(0, that.namespace.length) === that.namespace) {
+            if (channelName &amp;&amp; channelName.substring(0, that.namespace.length) === that.namespace) {
                 channelName = channelName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && channelName && channelName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; channelName &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
                 channelName = channelName.substring(parentDevice.length + 1);
             }
             channelName = channelName || '';
@@ -1880,7 +1908,7 @@ function Adapter(options) {
                 }
                 if (res) {
                     var count = 0;
-                    for (var i = 0; i < res.rows.length; i++) {
+                    for (var i = 0; i &lt; res.rows.length; i++) {
                         count++;
                         that.objects.getObject(res.rows[i].id, options, function (err, obj) {
                             if (err) {
@@ -1888,13 +1916,13 @@ function Adapter(options) {
                                 callback = null;
                                 return;
                             }
-                            if (!err && obj && obj.common && obj.common.members) {
+                            if (!err &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.members) {
                                 var pos = obj.common.members.indexOf(objId);
                                 if (pos !== -1) {
                                     obj.common.members.splice(pos, 1);
                                     count++;
                                     that.objects.setObject(obj._id, obj, options, function (err) {
-                                        if (!--count && callback) {
+                                        if (!--count &amp;&amp; callback) {
                                             callback(err);
                                         } else {
                                             if (err) {
@@ -1905,7 +1933,7 @@ function Adapter(options) {
                                     });
                                 }
                             }
-                            if (!--count && callback) callback(err);
+                            if (!--count &amp;&amp; callback) callback(err);
                         });
                     }
                 } else if (callback) {
@@ -1924,10 +1952,10 @@ function Adapter(options) {
                 channelName = parentDevice;
                 parentDevice = '';
             }
-            if (parentDevice && !channelName) {
+            if (parentDevice &amp;&amp; !channelName) {
                 channelName = parentDevice;
                 parentDevice = '';
-            } else if (parentDevice && typeof channelName === 'function') {
+            } else if (parentDevice &amp;&amp; typeof channelName === 'function') {
                 callback     = channelName;
                 channelName  = parentDevice;
                 parentDevice = '';
@@ -1944,10 +1972,10 @@ function Adapter(options) {
                 parentDevice = parentDevice.replace(/[.\s]+/g, '_');
             }
 
-            if (channelName && that._namespaceRegExp.test(channelName)) {
+            if (channelName &amp;&amp; that._namespaceRegExp.test(channelName)) {
                 channelName = channelName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && channelName && channelName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; channelName &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
                 channelName = channelName.substring(parentDevice.length + 1);
             }
             channelName = channelName || '';
@@ -1966,7 +1994,7 @@ function Adapter(options) {
                 var cnt = 0;
                 if (res.rows.length > 1) that.log.warn('Found more than one channel ' + channelName);
 
-                for (var t = 0; t < res.rows.length; t++) {
+                for (var t = 0; t &lt; res.rows.length; t++) {
                     cnt++;
                     that.delObject(res.rows[t].id, options, function (err) {
                         if (err) {
@@ -1982,10 +2010,10 @@ function Adapter(options) {
                                     return;
                                 }
                                 var _cnt = 0;
-                                for (var k = 0; k < res.rows.length; k++) {
+                                for (var k = 0; k &lt; res.rows.length; k++) {
                                     _cnt++;
                                     that.deleteState(_parentDevice, _channelName, res.rows[k].id, options, function (err) {
-                                        if (!--_cnt && callback) {
+                                        if (!--_cnt &amp;&amp; callback) {
                                             callback(err);
                                         } else {
                                             if (err) {
@@ -1995,23 +2023,23 @@ function Adapter(options) {
                                         }
                                     });
                                 }
-                                if (!_cnt && callback) callback();
+                                if (!_cnt &amp;&amp; callback) callback();
                             });
                         }
                     });
                 }
-                if (!cnt && callback) callback();
+                if (!cnt &amp;&amp; callback) callback();
             });
         };
 
         that.deleteState = function deleteState(parentDevice, parentChannel, stateName, options, callback) {
-            if (typeof parentChannel === 'function' && stateName === undefined) {
+            if (typeof parentChannel === 'function' &amp;&amp; stateName === undefined) {
                 stateName     = parentDevice;
                 callback      = parentChannel;
                 parentChannel = '';
                 parentDevice  = '';
             } else
-            if (parentChannel === undefined && stateName === undefined) {
+            if (parentChannel === undefined &amp;&amp; stateName === undefined) {
                 stateName     = parentDevice;
                 parentDevice  = '';
                 parentChannel = '';
@@ -2054,7 +2082,7 @@ function Adapter(options) {
                 if (that._namespaceRegExp.test(parentChannel)) {
                     parentChannel = parentChannel.substring(that.namespace.length + 1);
                 }
-                if (parentDevice && parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
                     parentChannel = parentChannel.substring(parentDevice.length + 1);
                 }
 
@@ -2064,10 +2092,10 @@ function Adapter(options) {
             if (that._namespaceRegExp.test(stateName)) {
                 stateName = stateName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && stateName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
                 stateName = stateName.substring(parentDevice.length + 1);
             }
-            if (parentChannel && stateName.substring(0, parentChannel.length) === parentChannel) {
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
                 stateName = stateName.substring(parentChannel.length + 1);
             }
             stateName = stateName || '';
@@ -2088,7 +2116,7 @@ function Adapter(options) {
                 if (callback) {
                     if (obj.rows.length) {
                         var res = [];
-                        for (var i = 0; i < obj.rows.length; i++) {
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
                             res.push(obj.rows[i].value);
                         }
                         callback(null, res);
@@ -2110,7 +2138,7 @@ function Adapter(options) {
             }
             if (!parentDevice) parentDevice = '';
 
-            if (parentDevice && that._namespaceRegExp.test(parentDevice)) {
+            if (parentDevice &amp;&amp; that._namespaceRegExp.test(parentDevice)) {
                 parentDevice = parentDevice.substring(that.namespace.length + 1);
             }
 
@@ -2120,7 +2148,7 @@ function Adapter(options) {
                 if (callback) {
                     if (obj.rows.length) {
                         var res = [];
-                        for (var i = 0; i < obj.rows.length; i++) {
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
                             res.push(obj.rows[i].value);
                         }
                         callback(null, res);
@@ -2164,7 +2192,7 @@ function Adapter(options) {
                 parentChannel = parentChannel.substring(that.namespace.length + 1);
             }
 
-            if (parentDevice && parentChannel && parentChannel.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; parentChannel &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
                 parentChannel = parentChannel.substring(parentDevice.length + 1);
             }
 
@@ -2177,7 +2205,7 @@ function Adapter(options) {
                     var res = [];
                     if (obj.rows.length) {
                         var read = 0;
-                        for (var i = 0; i < obj.rows.length; i++) {
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
                             read++;
                             that.objects.getObject(obj.rows[i].id, function (err, subObj) {
                                 if (subObj) res.push(subObj);
@@ -2209,7 +2237,7 @@ function Adapter(options) {
                 if (that._namespaceRegExp.test(parentChannel)) {
                     parentChannel = parentChannel.substring(that.namespace.length + 1);
                 }
-                if (parentDevice && parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
                     parentChannel = parentChannel.substring(parentDevice.length + 1);
                 }
 
@@ -2219,10 +2247,10 @@ function Adapter(options) {
             if (that._namespaceRegExp.test(stateName)) {
                 stateName = stateName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && stateName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
                 stateName = stateName.substring(parentDevice.length + 1);
             }
-            if (parentChannel && stateName.substring(0, parentChannel.length) === parentChannel) {
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
                 stateName = stateName.substring(parentChannel.length + 1);
             }
             stateName = stateName.replace(/[.\s]+/g, '_');
@@ -2231,7 +2259,7 @@ function Adapter(options) {
 
             if (addTo.match(/^enum\./)) {
                 that.objects.getObject(addTo, options, function (err, obj) {
-                    if (!err && obj) {
+                    if (!err &amp;&amp; obj) {
                         var pos = obj.common.members.indexOf(objId);
                         if (pos === -1) {
                             obj.common.members.push(objId);
@@ -2245,7 +2273,7 @@ function Adapter(options) {
                 if (enumName.match(/^enum\./)) enumName = enumName.substring(5);
 
                 that.objects.getObject('enum.' + enumName + '.' + addTo, options, function (err, obj) {
-                    if (!err && obj) {
+                    if (!err &amp;&amp; obj) {
                         var pos = obj.common.members.indexOf(objId);
                         if (pos === -1) {
                             obj.common.members.push(objId);
@@ -2289,7 +2317,7 @@ function Adapter(options) {
                 if (that._namespaceRegExp.test(parentChannel)) {
                     parentChannel = parentChannel.substring(that.namespace.length + 1);
                 }
-                if (parentDevice && parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
                     parentChannel = parentChannel.substring(parentDevice.length + 1);
                 }
 
@@ -2299,10 +2327,10 @@ function Adapter(options) {
             if (that._namespaceRegExp.test(stateName)) {
                 stateName = stateName.substring(that.namespace.length + 1);
             }
-            if (parentDevice && stateName.substring(0, parentDevice.length) === parentDevice) {
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
                 stateName = stateName.substring(parentDevice.length + 1);
             }
-            if (parentChannel && stateName.substring(0, parentChannel.length) === parentChannel) {
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
                 stateName = stateName.substring(parentChannel.length + 1);
             }
             stateName = stateName.replace(/[.\s]+/g, '_');
@@ -2316,9 +2344,9 @@ function Adapter(options) {
             }
 
             that.objects.getObjectView('system', 'enum', {startkey: enumName, endkey: enumName + '\u9999'}, options,  function (err, res) {
-                if (!err && res) {
+                if (!err &amp;&amp; res) {
                     var count = 0;
-                    for (var i = 0; i < res.rows.length; i++) {
+                    for (var i = 0; i &lt; res.rows.length; i++) {
                         count++;
                         that.objects.getObject(res.rows[i].id, options, function (err, obj) {
                             if (err) {
@@ -2327,17 +2355,17 @@ function Adapter(options) {
                                 return;
                             }
 
-                            if (!err && obj && obj.common && obj.common.members) {
+                            if (!err &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.members) {
                                 var pos = obj.common.members.indexOf(objId);
                                 if (pos !== -1) {
                                     obj.common.members.splice(pos, 1);
                                     count++;
                                     that.objects.setObject(obj._id, obj, function (err) {
-                                        if (!--count && callback) callback(err);
+                                        if (!--count &amp;&amp; callback) callback(err);
                                     });
                                 }
                             }
-                            if (!--count && callback) callback(err);
+                            if (!--count &amp;&amp; callback) callback(err);
                         });
                     }
                 } else if (callback) {
@@ -2436,7 +2464,7 @@ function Adapter(options) {
 
         that.formatDate = function formatDate(dateObj, isDuration, _format) {
 
-            if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
+            if ((typeof isDuration === 'string' &amp;&amp; isDuration.toLowerCase() === 'duration') || isDuration === true) {
                 isDuration  = true;
             }
             if (typeof isDuration !== 'boolean') {
@@ -2452,12 +2480,12 @@ function Adapter(options) {
                 var j = parseInt(dateObj, 10);
                 if (j == dateObj) {
                     // may this is interval
-                    if (j < 946681200) {
+                    if (j &lt; 946681200) {
                         isDuration = true;
                         dateObj = new Date(dateObj);
                     } else {
                         // if less 2000.01.01 00:00:00
-                        dateObj = (j < 946681200000) ? new Date(j * 1000) : new Date(j);
+                        dateObj = (j &lt; 946681200000) ? new Date(j * 1000) : new Date(j);
                     }
                 } else {
                     dateObj = new Date(dateObj);
@@ -2488,7 +2516,7 @@ function Adapter(options) {
                     case 'ММ':
                     case 'М':
                         v = dateObj.getMonth() + 1;
-                        if ((v < 10) && (s.length === 2)) v = '0' + v;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
                         break;
                     case 'DD':
                     case 'TT':
@@ -2497,7 +2525,7 @@ function Adapter(options) {
                     case 'ДД':
                     case 'Д':
                         v = dateObj.getDate();
-                        if ((v < 10) && (s.length === 2)) v = '0' + v;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
                         break;
                     case 'hh':
                     case 'SS':
@@ -2506,29 +2534,29 @@ function Adapter(options) {
                     case 'чч':
                     case 'ч':
                         v = dateObj.getHours();
-                        if ((v < 10) && (s.length === 2)) v = '0' + v;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
                         break;
                     case 'mm':
                     case 'm':
                     case 'мм':
                     case 'м':
                         v = dateObj.getMinutes();
-                        if ((v < 10) && (s.length === 2)) v = '0' + v;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
                         break;
                     case 'ss':
                     case 's':
                     case 'cc':
                     case 'c':
                         v = dateObj.getSeconds();
-                        if ((v < 10) && (s.length === 2)) v = '0' + v;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
                         v = v.toString();
                         break;
                     case 'sss':
                     case 'ссс':
                         v = dateObj.getMilliseconds();
-                        if (v < 10) {
+                        if (v &lt; 10) {
                             v = '00' + v;
-                        } else if (v < 100) {
+                        } else if (v &lt; 100) {
                             v = '0' + v;
                         }
                         v = v.toString();
@@ -2536,7 +2564,7 @@ function Adapter(options) {
                 return result += v;
             }
 
-            for (var i = 0; i < format.length; i++) {
+            for (var i = 0; i &lt; format.length; i++) {
                 if (validFormatChars.indexOf(format[i]) >= 0)
                     s += format[i];
                 else {
@@ -2561,9 +2589,9 @@ function Adapter(options) {
             // aggregate all groups permissions, where this user is
             if (groups) {
                 for (var g in groups) {
-                    if (groups[g] &&
-                        groups[g].common &&
-                        groups[g].common.members &&
+                    if (groups[g] &amp;&amp;
+                        groups[g].common &amp;&amp;
+                        groups[g].common.members &amp;&amp;
                         groups[g].common.members.indexOf(options.user) !== -1) {
                         options.groups.push(groups[g]._id);
                     }
@@ -2586,9 +2614,9 @@ function Adapter(options) {
         if (ids instanceof Array) {
             var errors = [];
             var count = ids.length;
-            for (var i = 0; i < ids.length; i++) {
+            for (var i = 0; i &lt; ids.length; i++) {
                 checkStates(ids[i], options, command, function (err, obj) {
-                    if (err && obj) {
+                    if (err &amp;&amp; obj) {
                         errors.push(obj._id);
                     }
 
@@ -2611,19 +2639,19 @@ function Adapter(options) {
                     callback(err, {_id: ids});
                     return;
                 } else {
-                    if (obj && obj.acl) {
+                    if (obj &amp;&amp; obj.acl) {
                         if (obj.acl.state === undefined) obj.acl.state = obj.acl.object;
                         if (obj.acl.state !== undefined) {
                             // If user is owner
                             if (options.user === obj.acl.owner) {
                                 if (command === 'setState' || command === 'delState') {
-                                    if (!(obj.acl.state & (2 << 8))/*write*/) {
+                                    if (!(obj.acl.state &amp; (2 &lt;&lt; 8))/*write*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
                                     }
                                 } else if (command === 'getState') {
-                                    if (!(obj.acl.state & (4 << 8))/*read*/) {
+                                    if (!(obj.acl.state &amp; (4 &lt;&lt; 8))/*read*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
@@ -2633,13 +2661,13 @@ function Adapter(options) {
                                 }
                             } else if (options.groups.indexOf(obj.acl.ownerGroup) !== -1) {
                                 if (command === 'setState' || command === 'delState') {
-                                    if (!(obj.acl.state & (2 << 4))/*write*/) {
+                                    if (!(obj.acl.state &amp; (2 &lt;&lt; 4))/*write*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
                                     }
                                 } else if (command === 'getState') {
-                                    if (!(obj.acl.state & (4 << 4))/*read*/) {
+                                    if (!(obj.acl.state &amp; (4 &lt;&lt; 4))/*read*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
@@ -2649,13 +2677,13 @@ function Adapter(options) {
                                 }
                             } else{
                                 if (command === 'setState' || command === 'delState') {
-                                    if (!(obj.acl.state & 2)/*write*/) {
+                                    if (!(obj.acl.state &amp; 2)/*write*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
                                     }
                                 } else if (command === 'getState') {
-                                    if (!(obj.acl.state & 4)/*read*/) {
+                                    if (!(obj.acl.state &amp; 4)/*read*/) {
                                         that.log.warn('Permission error for user "' + options.user + '": ' + command);
                                         callback('permissionError', {_id: ids});
                                         return;
@@ -2679,15 +2707,15 @@ function Adapter(options) {
         if (!that.defaultHistory) {
             // read default history instance from system.config
             return that.getForeignObject('system.config', function (err, data) {
-                if (data && data.common) that.defaultHistory = data.common.defaultHistory;
+                if (data &amp;&amp; data.common) that.defaultHistory = data.common.defaultHistory;
 
                 // if no default history set
                 if (!that.defaultHistory) {
                     // read all adapters
                     that.objects.getObjectView('system', 'instance', {startkey: '', endkey: '\u9999'}, function (err, _obj) {
                         if (_obj) {
-                            for (var i = 0; i < _obj.rows.length; i++) {
-                                if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
+                            for (var i = 0; i &lt; _obj.rows.length; i++) {
+                                if (_obj.rows[i].value.common &amp;&amp; _obj.rows[i].value.common.type === 'storage') {
                                     that.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
                                     break;
                                 }
@@ -2708,8 +2736,8 @@ function Adapter(options) {
 
     function pattern2RegEx (pattern) {
         if (pattern !== '*') {
-            if (pattern[0] === '*' && pattern[pattern.length - 1] !== '*') pattern += '$';
-            if (pattern[0] !== '*' && pattern[pattern.length - 1] === '*') pattern = '^' + pattern;
+            if (pattern[0] === '*' &amp;&amp; pattern[pattern.length - 1] !== '*') pattern += '$';
+            if (pattern[0] !== '*' &amp;&amp; pattern[pattern.length - 1] === '*') pattern = '^' + pattern;
         }
         pattern = pattern.replace(/\./g, '\\.');
         pattern = pattern.replace(/\*/g, '.*');
@@ -2765,7 +2793,7 @@ function Adapter(options) {
                 }
 
                 // someone subscribes or unsubscribes from adapter
-                if (options.subscribable && id === 'system.adapter.' + that.namespace + '.subscribes') {
+                if (options.subscribable &amp;&amp; id === 'system.adapter.' + that.namespace + '.subscribes') {
                     var subs;
                     try {
                         subs = JSON.parse(state.val || '{}');
@@ -2791,7 +2819,7 @@ function Adapter(options) {
                 }
 
                 // If someone want to have log messages
-                if (that.logList && id.match(/\.logging$/)) {
+                if (that.logList &amp;&amp; id.match(/\.logging$/)) {
                     var instance = id.substring(0, id.length - '.logging'.length);
                     if (logger) logger.info(that.namespace + ' ' + instance + ': logging ' + (state ? state.val : false));
                     that.logRedirect(state ? state.val : false, instance);
@@ -2800,16 +2828,16 @@ function Adapter(options) {
                     that.processLog(state);
                 } else
                 // If this is messagebox
-                if (id === 'messagebox.system.adapter.' + that.namespace && state) {
+                if (id === 'messagebox.system.adapter.' + that.namespace &amp;&amp; state) {
                     // Read it from fifo list
                     that.states.delMessage('system.adapter.' + that.namespace, state._id);
                     var obj = state;
                     if (obj) {
                         // If callback stored for this request
-                        if (obj.callback     &&
-                            obj.callback.ack &&
-                            obj.callback.id  &&
-                            that.callbacks   &&
+                        if (obj.callback     &amp;&amp;
+                            obj.callback.ack &amp;&amp;
+                            obj.callback.id  &amp;&amp;
+                            that.callbacks   &amp;&amp;
                             that.callbacks['_' + obj.callback.id]) {
                             // Call callback function
                             if (that.callbacks['_' + obj.callback.id].cb) {
@@ -2840,7 +2868,7 @@ function Adapter(options) {
                     }
 
                     // It was an error in the calculation
-                    if ((options.noNamespace || config.noNamespace) && that._namespaceRegExp.test(id)) {
+                    if ((options.noNamespace || config.noNamespace) &amp;&amp; that._namespaceRegExp.test(id)) {
                         if (typeof options.stateChange === 'function') {
                             options.stateChange(id.substring(that.namespace.length + 1), state);
                         } else {
@@ -2874,7 +2902,7 @@ function Adapter(options) {
 
         // Send message to other adapter instance or all instances of adapter
         that.sendTo = function sendTo(objName, command, message, callback) {
-            if ((typeof message === 'function') && (typeof callback === 'undefined')) {
+            if ((typeof message === 'function') &amp;&amp; (typeof callback === 'undefined')) {
                 callback = message;
                 message = {};
             }
@@ -2897,7 +2925,7 @@ function Adapter(options) {
                 // Send to all instances of adapter
                 that.objects.getObjectView('system', 'instance', {startkey: objName + '.', endkey: objName + '.\u9999'}, function (err, _obj) {
                     if (_obj) {
-                        for (var i = 0; i < _obj.rows.length; i++) {
+                        for (var i = 0; i &lt; _obj.rows.length; i++) {
                             that.states.pushMessage(_obj.rows[i].id, obj);
                         }
                     }
@@ -2906,7 +2934,7 @@ function Adapter(options) {
                 if (callback) {
                     if (typeof callback === 'function') {
                         // force subscribe even no messagebox enabled
-                        if (!that.common.messagebox && !that.mboxSubscribed) {
+                        if (!that.common.messagebox &amp;&amp; !that.mboxSubscribed) {
                             that.mboxSubscribed = true;
                             that.states.subscribeMessage('system.adapter.' + that.namespace);
                         }
@@ -2944,13 +2972,13 @@ function Adapter(options) {
             }
             var obj = {command: command, message: message, from: 'system.adapter.' + that.namespace};
 
-            if (objName && !objName.match(/^system\.host\./)) objName = 'system.host.' + objName;
+            if (objName &amp;&amp; !objName.match(/^system\.host\./)) objName = 'system.host.' + objName;
 
             if (!objName) {
                 // Send to all hosts
                 that.objects.getObjectList({startkey: 'system.host.', endkey: 'system.host.' + '\u9999'}, null, function (err, res) {
-                    if (!err && res.rows.length) {
-                        for (var i = 0; i < res.rows.length; i++) {
+                    if (!err &amp;&amp; res.rows.length) {
+                        for (var i = 0; i &lt; res.rows.length; i++) {
                             var parts = res.rows[i].id.split('.');
                             // ignore system.host.name.alive and so on
                             if (parts.length === 3) {
@@ -2963,7 +2991,7 @@ function Adapter(options) {
                 if (callback) {
                     if (typeof callback === 'function') {
                         // force subscribe even no messagebox enabled
-                        if (!that.common.messagebox && !that.mboxSubscribed) {
+                        if (!that.common.messagebox &amp;&amp; !that.mboxSubscribed) {
                             that.mboxSubscribed = true;
                             that.states.subscribeMessage('system.adapter.' + that.namespace);
                         }
@@ -2988,7 +3016,7 @@ function Adapter(options) {
         };
 
         that.setState = function setState(id, state, ack, options, callback) {
-            if (typeof state === 'object' && typeof ack !== 'boolean') {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
                 callback = options;
                 options  = ack;
                 ack      = undefined;
@@ -3011,7 +3039,7 @@ function Adapter(options) {
             }
 
             state.from = 'system.adapter.' + that.namespace;
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'setState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3025,7 +3053,7 @@ function Adapter(options) {
         };
 
         that.setForeignState = function setForeignState(id, state, ack, options, callback) {
-            if (typeof state === 'object' && typeof ack !== 'boolean') {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
                 callback = options;
                 options  = ack;
                 ack = undefined;
@@ -3049,7 +3077,7 @@ function Adapter(options) {
 
             state.from = 'system.adapter.' + that.namespace;
 
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'setState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3068,7 +3096,7 @@ function Adapter(options) {
                 options = {};
             }
             id = that._fixId(id, 'state');
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3085,7 +3113,7 @@ function Adapter(options) {
         that.getHistory = function getHistory(id, options, callback) {
             options = options || {};
             options.end = options.end || (new Date()).getTime() + 5000000;
-            if (!options.count && !options.start) {
+            if (!options.count &amp;&amp; !options.start) {
                 options.start = options.start || (new Date()).getTime() - 604800000; // - 1 week
             }
 
@@ -3124,7 +3152,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3143,7 +3171,7 @@ function Adapter(options) {
                 options = {};
             }
 
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'delState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3163,7 +3191,7 @@ function Adapter(options) {
                 options = {};
             }
             id = that._fixId(id);
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'delState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3180,13 +3208,13 @@ function Adapter(options) {
          * Read all states of this adapter, that pass the pattern
          *
          * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-         * <pre><code>
+         * &lt;pre>&lt;code>
          *     adapter.getStates('*', function (err, states) {
          *         for (var id in states) {
          *              adapter.log.debug('"' + id + '" = "' + states[id].val);
          *         }
          *     });
-         * </code></pre>
+         * &lt;/code>&lt;/pre>
          *
          * @param {string} pattern string in form 'adapter.0.*' or like this
          * @param {object} options optional argument to describe the user context
@@ -3218,7 +3246,7 @@ function Adapter(options) {
             }
 
             if (typeof pattern === 'object') {
-                if (options && options.user && options.user !== 'system.user.admin') {
+                if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                     checkStates(pattern, options, 'getState', function (err, keys) {
                         if (err) {
                             if (typeof callback === 'function') callback(err);
@@ -3229,7 +3257,7 @@ function Adapter(options) {
                                 callback(err);
                                 return;
                             }
-                            for (var i = 0; i < keys.length; i++) {
+                            for (var i = 0; i &lt; keys.length; i++) {
                                 if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
                                 list[keys[i]] = arr[i] || {};
                             }
@@ -3242,7 +3270,7 @@ function Adapter(options) {
                             callback(err);
                             return;
                         }
-                        for (var i = 0; i < pattern.length; i++) {
+                        for (var i = 0; i &lt; pattern.length; i++) {
                             if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
                             list[pattern[i]] = arr[i] || {};
                         }
@@ -3253,7 +3281,7 @@ function Adapter(options) {
             }
             var keys = [];
             var params = {};
-            if (pattern && pattern !== '*') {
+            if (pattern &amp;&amp; pattern !== '*') {
                 params = {
                     startkey: pattern.replace('*', ''),
                     endkey:   pattern.replace('*', '\u9999')
@@ -3265,11 +3293,11 @@ function Adapter(options) {
                     return;
                 }
 
-                for (var i = 0; i < res.rows.length; i++) {
+                for (var i = 0; i &lt; res.rows.length; i++) {
                     keys.push(res.rows[i].id);
                 }
 
-                if (options && options.user && options.user !== 'system.user.admin') {
+                if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                     checkStates(keys, options, 'getState', function (err, keys) {
                         if (err) {
                             if (typeof callback === 'function') callback(err);
@@ -3280,7 +3308,7 @@ function Adapter(options) {
                                 callback(err);
                                 return;
                             }
-                            for (var i = 0; i < res.rows.length; i++) {
+                            for (var i = 0; i &lt; res.rows.length; i++) {
                                 if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
                                 list[keys[i]] = arr[i] || null;
                             }
@@ -3293,7 +3321,7 @@ function Adapter(options) {
                             callback(err);
                             return;
                         }
-                        for (var i = 0; i < res.rows.length; i++) {
+                        for (var i = 0; i &lt; res.rows.length; i++) {
                             if (typeof arr[i] === 'string') {
                                 try {
                                     arr[i] = JSON.parse(arr[i]);
@@ -3313,7 +3341,7 @@ function Adapter(options) {
             if (!pattern) pattern = '*';
             autoSubscribeOn(function () {
                 // compare if this pattern for one of autosubscribe adapters
-                for (var s = 0; s < that.autoSubscribe.length; s++) {
+                for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
                         // put this pattern into adapter list
                         that.states.getForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
@@ -3340,7 +3368,7 @@ function Adapter(options) {
             if (!pattern) pattern = '*';
             
             if (that.autoSubscribe) {
-                for (var s = 0; s < that.autoSubscribe.length; s++) {
+                for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
                         // remove this pattern from adapter list
                         that.states.getForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
@@ -3355,7 +3383,7 @@ function Adapter(options) {
                             if (!subs[pattern]) return;
                             if (subs[pattern][that.namespace] === undefined) return;
                             subs[pattern][that.namespace]--;
-                            if (subs[pattern][that.namespace] <= 0) delete subs[pattern][that.namespace];
+                            if (subs[pattern][that.namespace] &lt;= 0) delete subs[pattern][that.namespace];
                             var found = false;
                             // if any other subs are there
                             for (var id in subs[pattern]) {
@@ -3443,7 +3471,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'setState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3462,7 +3490,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            if (options && options.user && options.user !== 'system.user.admin') {
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
@@ -3507,19 +3535,19 @@ function Adapter(options) {
 
         // Read current state of all log subscribers
         that.states.getKeys('*.logging', function (err, keys) {
-            if (keys && keys.length) {
+            if (keys &amp;&amp; keys.length) {
                 that.states.getStates(keys, function (err, obj) {
                     if (obj) {
-                        for (var i = 0; i < keys.length; i++) {
+                        for (var i = 0; i &lt; keys.length; i++) {
                             // We can JSON.parse, but index is 16x faster
                             if (obj[i]) {
                                 var id = keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, '');
-                                if ((typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
-                                    (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
+                                if ((typeof obj[i] === 'string' &amp;&amp; (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
+                                    (typeof obj[i] === 'object' &amp;&amp; (obj[i].val === true || obj[i].val === 'true'))) {
                                     count++;
                                     printLog(logs, id, function () {
                                         if (!--count) {
-                                            for (var m = 0; m < logs.length; m++) {
+                                            for (var m = 0; m &lt; logs.length; m++) {
                                                 that.log.error('LOGINFO: ' + logs[m]);
                                             }
                                             logs = null;
@@ -3535,8 +3563,8 @@ function Adapter(options) {
                             }
                         }
                     }
-                    if (!count && logs) {
-                        for (var m = 0; m < logs.length; m++) {
+                    if (!count &amp;&amp; logs) {
+                        for (var m = 0; m &lt; logs.length; m++) {
                             that.log.error('LOGINFO: ' + logs[m]);
                         }
                         logs = null;
@@ -3551,22 +3579,22 @@ function Adapter(options) {
         var messages = [];
         // Read current state of all log subscriber
         that.states.getKeys('*.logging', function (err, keys) {
-            if (keys && keys.length) {
+            if (keys &amp;&amp; keys.length) {
                 that.states.getStates(keys, function (err, obj) {
                     if (obj) {
-                        for (var i = 0; i < keys.length; i++) {
+                        for (var i = 0; i &lt; keys.length; i++) {
                             // We can JSON.parse, but index is 16x faster
                             if (!obj[i]) continue;
                             var id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                            if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                            if (typeof obj[i] === 'string' &amp;&amp; (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
                                 that.logRedirect(true, id);
-                            } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                            } else if (typeof obj[i] === 'object' &amp;&amp; (obj[i].val === true || obj[i].val === 'true')) {
                                 that.logRedirect(true, id);
                             }
                         }
-                        if (that.logList.length && messages && messages.length) {
-                            for (var m = 0; m < messages.length; m++) {
-                                for (var k = 0; k < that.logList.length; k++) {
+                        if (that.logList.length &amp;&amp; messages &amp;&amp; messages.length) {
+                            for (var m = 0; m &lt; messages.length; m++) {
+                                for (var k = 0; k &lt; that.logList.length; k++) {
                                     that.states.pushLog(that.logList[k], messages[m]);
                                 }
                             }
@@ -3605,7 +3633,7 @@ function Adapter(options) {
 
             if (!that.logList.length) {
                 // if log buffer still active
-                if (messages && !options.logTransporter) {
+                if (messages &amp;&amp; !options.logTransporter) {
                     messages.push(message);
 
                     // do not let messages to grow without limit
@@ -3615,7 +3643,7 @@ function Adapter(options) {
                 }
             } else {
                 // Send to all adapter, that required logs
-                for (var i = 0; i < that.logList.length; i++) {
+                for (var i = 0; i &lt; that.logList.length; i++) {
                     that.states.pushLog(that.logList[i], message);
                 }
             }
@@ -3626,7 +3654,7 @@ function Adapter(options) {
         if (options.logTransporter) {
             that.requireLog = function (isActive) {
                 if (that.states) {
-                    if (that.logRequired === undefined && that.logRequired !== isActive) {
+                    if (that.logRequired === undefined &amp;&amp; that.logRequired !== isActive) {
                         that.logRequired = isActive; // remember state
                         if (!isActive) {
                             // disable log receiving after 10 seconds
@@ -3662,13 +3690,13 @@ function Adapter(options) {
 
         if (options.instance === undefined) {
             if (!adapterConfig || !adapterConfig.common || !adapterConfig.common.enabled) {
-                if (adapterConfig && adapterConfig.common && adapterConfig.common.enabled !== undefined) {
+                if (adapterConfig &amp;&amp; adapterConfig.common &amp;&amp; adapterConfig.common.enabled !== undefined) {
                     if (!config.isInstall) logger.error(that.namespace + ' adapter disabled');
                 } else {
                     if (!config.isInstall) logger.error(that.namespace + ' no config found for adapter');
                 }
 
-                if (!config.isInstall && (!process.argv || !config.forceIfDisabled)) {
+                if (!config.isInstall &amp;&amp; (!process.argv || !config.forceIfDisabled)) {
                     var id = 'system.adapter.' + that.namespace;
                     that.states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
                     that.states.setState(id + '.connected', {val: true, ack: true, expire: 30, from: id}, function () {
@@ -3681,7 +3709,7 @@ function Adapter(options) {
                 }
             }
 
-            if (!config.isInstall && !adapterConfig._id) {
+            if (!config.isInstall &amp;&amp; !adapterConfig._id) {
                 logger.error(that.namespace + ' invalid config: no _id found');
                 process.exit(4);
                 return;
@@ -3729,9 +3757,9 @@ function Adapter(options) {
             // Monitor logging state
             that.states.subscribe('*.logging');
 
-            if (typeof options.message === 'function' && !adapterConfig.common.messagebox) {
+            if (typeof options.message === 'function' &amp;&amp; !adapterConfig.common.messagebox) {
                 logger.error(that.namespace + ' : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.');
-            } else if (/*typeof options.message === 'function' && */adapterConfig.common.messagebox) {
+            } else if (/*typeof options.message === 'function' &amp;&amp; */adapterConfig.common.messagebox) {
                 that.mboxSubscribed = true;
                 that.states.subscribeMessage('system.adapter.' + that.namespace);
             }
@@ -3790,14 +3818,14 @@ function Adapter(options) {
         that.log.level = config.log.level;
 
         if (options.instance === undefined) {
-            that.version = (that.pack && that.pack.version) ? that.pack.version : ((that.ioPack && that.ioPack.common) ? that.ioPack.common.version : 'unknown');
+            that.version = (that.pack &amp;&amp; that.pack.version) ? that.pack.version : ((that.ioPack &amp;&amp; that.ioPack.common) ? that.ioPack.common.version : 'unknown');
 
             that.log.info('starting. Version ' + that.version + ' in ' + that.adapterDir + ', node: ' + process.version);
             reportInterval = setInterval(reportStatus, 15000);
             reportStatus();
         }
 
-        if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
+        if (adapterConfig &amp;&amp; adapterConfig.common &amp;&amp; adapterConfig.common.restartSchedule) {
             try {
                 schedule = require('node-schedule');
             } catch (e) {
@@ -3850,7 +3878,7 @@ function Adapter(options) {
             options.unload(function () {
                 if (that.states) {
                     that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
-                        if (!isPause && that.log) that.log.info('terminating');
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
                         process.exit(isScheduled ? -100: 0);
                     });
                 }
@@ -3859,7 +3887,7 @@ function Adapter(options) {
             that.emit('unload', function () {
                 if (that.states) {
                     that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
-                        if (!isPause && that.log) that.log.info('terminating');
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
                         process.exit(isScheduled ? -100: 0);
                     });
                 }
@@ -3869,17 +3897,17 @@ function Adapter(options) {
             setTimeout(function () {
                 if (that.states) {
                     that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
-                        if (!isPause && that.log) that.log.info('terminating');
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
                         process.exit(isScheduled ? -100: 0);
                     });
 
                     // Give 2 seconds to write the value
                     setTimeout(function () {
-                        if (!isPause && that.log) that.log.info('terminating with timeout');
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating with timeout');
                         process.exit(isScheduled ? -100: 0);
                     }, 1000);
                 } else {
-                    if (!isPause && that.log) that.log.info('terminating');
+                    if (!isPause &amp;&amp; that.log) that.log.info('terminating');
                     process.exit(isScheduled ? -100: 0);
                 }
             }, that.common ? that.common.stopTimeout || 500 : 500);
@@ -3895,7 +3923,7 @@ function Adapter(options) {
         console.error(err);
 
         // catch it on windows
-        if (that.getPortRunning && err.message === 'listen EADDRINUSE') {
+        if (that.getPortRunning &amp;&amp; err.message === 'listen EADDRINUSE') {
             logger.warn(that.namespace + ' Port ' + that.getPortRunning.port + ' is in use. Get next');
 
             setTimeout(function () {
@@ -3924,3 +3952,26 @@ function Adapter(options) {
 util.inherits(Adapter, EventEmitter);
 
 module.exports = Adapter;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Adapter.html">Adapter</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 23:29:43 GMT+0100 (Западная Европа (зима))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

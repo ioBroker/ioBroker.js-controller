@@ -1,3 +1,7 @@
+# 0.15.0 (2016-12-19)
+* (bluefox) documentation of adapter
+* (bluefox) support of autoSubscribe
+
 # 0.14.0 (2016-12-17)
 * (bluefox) add debug information for logging
 * (bluefox) remove occ

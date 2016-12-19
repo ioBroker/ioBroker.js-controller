@@ -140,6 +140,14 @@ module.exports = function (grunt) {
                 },
                 dest: 'tmp/<%= grunt.task.current.args[1] %>.json'
             }
+        },
+        jsdoc : {
+            dist : {
+                src: ['lib/adapter.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
         }
     });
 
@@ -170,6 +178,7 @@ module.exports = function (grunt) {
 
         var count = 0;
         for (var adapter in sources) {
+            if (!sources.hasOwnProperty(adapter)) continue;
             if (sources[adapter].meta) {
                 if (sources[adapter].meta.substring(0, 'http://'.length) == 'http://') {
                     grunt.task.run(['http:get_http:' + sources[adapter].meta.substring('http://'.length) + ':' + adapter]);
@@ -229,6 +238,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-http');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('default', [
         'replace:core',
@@ -245,5 +255,8 @@ module.exports = function (grunt) {
 	grunt.registerTask('rename', [
         'replace:name',
         'renameFiles'
+    ]);
+    grunt.registerTask('doc', [
+        'jsdoc'
     ]);
 };
