@@ -416,6 +416,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-metro/master/admin/metro.png"
   },
+  "vis-players": {
+    "meta": "https://raw.githubusercontent.com/instalator/ioBroker.vis-players/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/instalator/ioBroker.vis-players/master/admin/players.png"
+  },
   "vis-plumb": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis-plumb/master/admin/plumb.png"
