@@ -389,7 +389,7 @@ function createObjects() {
                             var _ipArr = getIPs();
 
                             if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
-                                if (procs[id].config.common.enabled) {
+                                if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
                                     setTimeout(function (_id) {
                                         startInstance(_id);
                                     }, 2500, id);
@@ -401,7 +401,7 @@ function createObjects() {
                     } else {
                         var __ipArr = getIPs();
                         if (procs[id].config && (__ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
-                            if (procs[id].config.common.enabled) startInstance(id);
+                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
                         } else {
                             delete procs[id];
                         }
@@ -412,7 +412,7 @@ function createObjects() {
                     // new adapter
                     if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                         procs[id] = {config: obj};
-                        if (procs[id].config.common.enabled) startInstance(id);
+                        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
                     }
                 }
             } catch (err) {
@@ -1421,7 +1421,7 @@ function getInstances() {
                 if (_ipArr.indexOf(instance.common.host) !== -1 || instance.common.host === hostname) {
                     procs[instance._id] = procs[instance._id] || {};
                     procs[instance._id].config = JSON.parse(JSON.stringify(instance));
-                    if (instance.common.enabled) count++;
+                    if (instance.common.enabled && (!instance.common.webExtension || !instance.native.webInstance)) count++;
                 }
             }
 
@@ -1445,7 +1445,7 @@ function initInstances() {
     for (id in procs) {
         if (!procs.hasOwnProperty(id)) continue;
 
-        if (procs[id].config.common.enabled) {
+        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
             if (id.indexOf('system.adapter.admin') !== -1) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
@@ -1469,11 +1469,11 @@ function initInstances() {
     for (id in procs) {
         if (!procs.hasOwnProperty(id)) continue;
 
-        if (procs[id].config.common.enabled) {
+        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
             if (id.indexOf('system.adapter.admin') === -1) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info('host.' + hostname + ' instance "' + id + '" was not started, becasue running.');
+                    logger.info('host.' + hostname + ' instance "' + id + '" was not started, because running.');
                     continue;
                 }
 
@@ -1801,7 +1801,7 @@ function startInstance(id, wakeUp) {
                     }
 
                     if (procs[id] && procs[id].process) delete procs[id].process;
-                    if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
+                    if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
 
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
@@ -1818,7 +1818,7 @@ function startInstance(id, wakeUp) {
                     }
                     storePids(); // Store all pids to make possible kill them all
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && mode !== 'once') {
+                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
                 }
             } else {
