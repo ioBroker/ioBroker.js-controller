@@ -1773,7 +1773,7 @@ function startInstance(id, wakeUp) {
 
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            delete procs[id].stopping;
+                            if (procs[id].stopping !== undefined) delete procs[id].stopping;
 
                             if (procs[id].process) delete procs[id].process;
 
@@ -1808,7 +1808,8 @@ function startInstance(id, wakeUp) {
                         //noinspection JSUnresolvedVariable
                         setTimeout(function (_id) {
                             startInstance(_id);
-                        }, procs[id].config.common.restartSchedule ? 1000 : 30000, id);
+                        }, code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
+                        // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                     } else {
                         if (mode !== 'once') {
                             logger.info('host.' + hostname + ' Do not restart adapter ' + id + ' because disabled or deleted');
