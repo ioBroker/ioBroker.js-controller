@@ -1,6 +1,10 @@
-# 0.15.0 (2016-12-19)
+# 0.15.1 (2017-01-14)
 * (bluefox) documentation of adapter
 * (bluefox) support of autoSubscribe
+* (bluefox) add innogy-smarthome, vis-players
+* (bluefox) fix error with "preserve" settings
+* (bluefox) restart adapter immediately if desired
+* (bluefox) support of web extensions
 
 # 0.14.0 (2016-12-17)
 * (bluefox) add debug information for logging
