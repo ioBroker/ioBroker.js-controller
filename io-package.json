@@ -6,6 +6,11 @@
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.15.2": {
+                "en": "fix of autoSubscribe",
+                "de": "Korrigiere autoSubscribe",
+                "ru": "Исправлео авто подписывание"
+            },
             "0.15.1": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
