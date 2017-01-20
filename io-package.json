@@ -1,12 +1,12 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.15.1",
+        "version":    "0.15.3",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-            "0.15.2": {
+            "0.15.3": {
                 "en": "fix of autoSubscribe",
                 "de": "Korrigiere autoSubscribe",
                 "ru": "Исправлео авто подписывание"

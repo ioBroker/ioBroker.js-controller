@@ -1,8 +1,6 @@
-# 0.16.0 (2017-01-xx)
-* (bluefox) no extra uplaod if install of adapters from github
-
-# 0.15.2 (2017-01-20)
+# 0.15.3 (2017-01-20)
 * (bluefox) fix of autoSubscribe
+* (bluefox) no extra uplaod if install of adapters from github
 
 # 0.15.1 (2017-01-14)
 * (bluefox) documentation of adapter
