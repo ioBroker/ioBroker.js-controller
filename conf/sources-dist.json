@@ -244,6 +244,10 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.owntracks/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.owntracks/master/admin/owntracks.png"
   },
+  "parser": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.parser/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.parser/master/admin/parser.png"
+  },
   "phantomjs": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.phantomjs/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.phantomjs/master/admin/phantomjs.png"
