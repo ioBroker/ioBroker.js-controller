@@ -1,3 +1,7 @@
+# 0.15.3 (2017-01-20)
+* (bluefox) fix of autoSubscribe
+* (bluefox) no extra uplaod if install of adapters from github
+
 # 0.15.1 (2017-01-14)
 * (bluefox) documentation of adapter
 * (bluefox) support of autoSubscribe
