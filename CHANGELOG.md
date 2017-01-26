@@ -1,3 +1,7 @@
+# 0.16.x (2017-01-25)
+* (bluefox) use SHA256 instead of SHA1 (All passwords must be reset via "iobroker passwd username")
+* (bluefox) change cli commands for user: user add, user del, user set, user enable...
+
 # 0.15.3 (2017-01-20)
 * (bluefox) fix of autoSubscribe
 * (bluefox) no extra uplaod if install of adapters from github

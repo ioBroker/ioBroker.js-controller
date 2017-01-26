@@ -60,6 +60,8 @@ var stopTimeout             = 10000;
 var uncaughtExceptionCount  = 0;
 var installQueue            = [];
 var started                 = false;
+var inputCount              = 0;
+var outputCount             = 0;
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -192,6 +194,7 @@ function createStates() {
         logger: logger,
         hostname: hostname,
         change: function (id, state) {
+            inputCount++;
             if (!id) {
                 logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
                 return;
@@ -427,13 +430,12 @@ objects.subscribe('system.adapter.*');
 
 function startAliveInterval() {
     reportStatus();
-    setInterval(function () {
-        reportStatus();
-    }, 15000);
+    setInterval(reportStatus, 15000);
 }
 
 function reportStatus() {
     var id = 'system.host.' + hostname;
+    outputCount += 10;
     states.setState(id + '.alive',   {val: true, ack: true, expire: 30, from: id});
     states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
     states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
@@ -447,6 +449,10 @@ function reportStatus() {
     // Under windows toFixed returns string ?
     states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
+    states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
+    states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
+    inputCount = 0;
+    outputCount = 0;
 }
 
 function changeHost(objs, oldHostname, newHostname, callback) {
@@ -517,6 +523,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         }
         
         if (modified) {
+            outputCount++;
             states.setState(autoInstance + '.subscribes', subs, function () {
                 if (typeof callback === 'function') {
                     callback();
@@ -730,6 +737,18 @@ function setIPs(ipList) {
     }
 }
 
+// write 10 objects each after other
+function extendObjects(tasks, callback) {
+    if (!tasks || !tasks.length) {
+        if (typeof callback === 'function') callback();
+        return;
+    }
+    var task = tasks.shift();
+    objects.extendObject(task._id, task, function () {
+        setTimeout(extendObjects, 0, tasks, callback);
+    });
+}
+
 function setMeta() {
     var id = 'system.host.' + hostname;
 
@@ -787,9 +806,10 @@ function setMeta() {
         setIPs(newObj.common.address);
     });
 
-    var _id = id + '.mem';
+    var tasks = [];
+
     var obj = {
-        _id: _id,
+        _id: id + '.mem',
         type: 'state',
         common: {
             type: 'number',
@@ -802,11 +822,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.memHeapUsed';
     obj = {
-        _id: _id,
+        _id: id + '.memHeapUsed',
         type: 'state',
         common: {
             type: 'number',
@@ -818,11 +837,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.memHeapTotal';
     obj = {
-        _id: _id,
+        _id: id + '.memHeapTotal',
         type: 'state',
         common: {
             type: 'number',
@@ -834,11 +852,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.memRss';
     obj = {
-        _id: _id,
+        _id: id + '.memRss',
         type: 'state',
         common: {
             type: 'number',
@@ -851,11 +868,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.uptime';
     obj = {
-        _id: _id,
+        _id: id + '.uptime',
         type: 'state',
         common: {
             type: 'number',
@@ -867,11 +883,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.load';
     obj = {
-        _id: _id,
+        _id: id + '.load',
         type: 'state',
         common: {
             unit: '',
@@ -882,11 +897,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.alive';
     obj = {
-        _id: _id,
+        _id: id + '.alive',
         type: 'state',
         common: {
             name: 'Host alive',
@@ -896,11 +910,10 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    _id = id + '.freemem';
     obj = {
-        _id: _id,
+        _id: id + '.freemem',
         type: 'state',
         common: {
             name: 'Available RAM in MB',
@@ -911,11 +924,45 @@ function setMeta() {
         },
         native: {}
     };
-    objects.extendObject(_id, obj);
+    tasks.push(obj);
 
-    // create UUID if not exist
-    tools.createUuid(objects, function (uuid) {
-        if (uuid && logger) logger.info('Created UUID: ' + uuid);
+    obj = {
+        _id:    id + '.inputCount',
+        type:   'state',
+        common: {
+            name: hostname + ' - inputs level',
+            desc: 'State\'s inputs in 15 seconds',
+            type: 'number',
+            read:   true,
+            write:  false,
+            role: 'state',
+            unit: 'events/15 seconds'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    obj = {
+        _id:    id + '.outputCount',
+        type:   'state',
+        common: {
+            name: hostname + ' outputs level',
+            desc: 'State\'s outputs in 15 seconds',
+            type: 'number',
+            read:   true,
+            write:  false,
+            role: 'state',
+            unit: 'events/15 seconds'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    extendObjects(tasks, function () {
+        // create UUID if not exist
+        tools.createUuid(objects, function (uuid) {
+            if (uuid && logger) logger.info('Created UUID: ' + uuid);
+        });
     });
 }
 
@@ -1361,6 +1408,7 @@ function processMessage(msg) {
                 // Get list of all active adapters and send them message with command checkLogging
                 for (var _id in procs) {
                     if (procs.hasOwnProperty(_id) && procs[_id].process) {
+                        outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: 'system.host.' + hostname});
                     }
                 }
@@ -1757,12 +1805,16 @@ function startInstance(id, wakeUp) {
                 procs[id].process = cp.fork(fileNameFull, args);
                 storePids(); // Store all pids to make possible kill them all
                 procs[id].process.on('exit', function (code, signal) {
+                    outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
                     
                     cleanAutoSubscribes(id);
 
-                    if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
+                    if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
+                        outputCount++;
+                        states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
+                    }
 
                     if (mode !== 'once') {
                         if (signal) {
@@ -1857,6 +1909,7 @@ function startInstance(id, wakeUp) {
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
                     procs[id].process.on('exit', function (code, signal) {
+                        outputCount++;
                         states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                         if (signal) {
                             logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
@@ -1886,7 +1939,8 @@ function startInstance(id, wakeUp) {
 
                 procs[id].process.on('exit', function (code, signal) {
                     cleanAutoSubscribes(id);
-                    
+
+                    outputCount++;
                     states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                     if (signal) {
                         logger.warn('host.' + hostname + ' instance ' + id + ' terminated due to ' + signal);
@@ -1906,6 +1960,7 @@ function startInstance(id, wakeUp) {
 
             break;
 
+        case 'extension':
         case 'subscribe':
             break;
 
@@ -2145,6 +2200,7 @@ function stop() {
     stopInstances(false, function (wasForced) {
         if (objects && objects.destroy) objects.destroy();
 
+        outputCount++;
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('host.' + hostname + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
