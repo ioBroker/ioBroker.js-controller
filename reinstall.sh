@@ -15,14 +15,7 @@ then
         npm install $IN --production
         if [ $? -eq 0 ]
         then
-            if [ -d ./node_modules/$IN ]
-            then
-                cd node_modules/$IN/
-                npm install --production
-                cd "$PWD"
-            fi
             echo "DONE $IN"
-
         else
             echo "FAIL $IN"
         fi
