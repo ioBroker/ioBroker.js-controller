@@ -98,7 +98,7 @@ function Adapter(options) {
             if (process.argv[a] === 'info' || process.argv[a] === 'debug' || process.argv[a] === 'error' || process.argv[a] === 'warn') {
                 config.log.level = process.argv[a];
             } else if (process.argv[a] === '--silent') {
-                config.install = true;
+                config.isInstall = true;
                 process.argv[a] = '--install';
             } else if (process.argv[a] === '--install') {
                 config.isInstall = true;
@@ -286,7 +286,7 @@ function Adapter(options) {
         if (!callback) throw 'checkPassword: no callback';
 
         that.getForeignObject('system.user.' + user, options, function (err, obj) {
-            if (err || !obj || !obj.common || !obj.common.enabled) {
+            if (err || !obj || !obj.common || (!obj.common.enabled &amp;&amp; user !== 'admin')) {
                 callback(false);
                 return;
             }
@@ -294,7 +294,6 @@ function Adapter(options) {
                 callback(res);
             });
         });
-
     };
 
     /**
@@ -749,7 +748,7 @@ function Adapter(options) {
 
                 // process autosubscribe adapters
                 if (id.match(/^system\.adapter\./)) {
-                    if (obj.common.subscribable) {
+                    if (obj &amp;&amp; obj.common.subscribable) {
                         var _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
                             if (that.autoSubscribe.indexOf(_id) === -1) that.autoSubscribe.push(_id);
@@ -2622,6 +2621,10 @@ function Adapter(options) {
         if (ids instanceof Array) {
             var errors = [];
             var count = ids.length;
+            if (count === 0) {
+	        callback(null, ids);
+                return;
+            }
             for (var i = 0; i &lt; ids.length; i++) {
                 checkStates(ids[i], options, command, function (err, obj) {
                     if (err &amp;&amp; obj) {
@@ -2752,12 +2755,52 @@ function Adapter(options) {
         return pattern;
     }
 
+    function _setStateChangedHelper (id, state, callback) {
+        that.states.getState(id, function (err, oldState) {
+            if (err) {
+                if (typeof callback === 'function') callback(err);
+            } else {
+                var differ = false;
+                if (!oldState) {
+                    differ = true;
+                } else
+                if (state.val !== oldState.val) {
+                    differ = true
+                } else
+                if (state.ack !== undefined &amp;&amp; state.ack !== oldState.ack) {
+                    differ = true
+                } else
+                if (state.q !== undefined &amp;&amp; state.q !== oldState.q) {
+                    differ = true
+                } else
+                if (state.ts !== undefined &amp;&amp; state.ts !== oldState.ts) {
+                    differ = true
+                } else
+                if (state.c !== undefined &amp;&amp; state.c !== oldState.c) {
+                    differ = true
+                } else
+                if (state.expire !== undefined &amp;&amp; state.expire !== oldState.expire) {
+                    differ = true
+                } else
+                if (state.from !== undefined &amp;&amp; state.from !== oldState.from) {
+                    differ = true
+                }
+                if (differ) {
+                    that.states.setState(id, state, callback);
+                } else {
+                    if (typeof callback === 'function') callback(null, id, true);
+                }
+            }
+        });
+    };
+
     // initStates is called from initAdapter
     function initStates(cb) {
         logger.debug(that.namespace + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
+        // Internal object, but some special adapters want to access it anyway.
         that.states = new States({
             connection: config.states,
             connected: function () {
@@ -2907,8 +2950,26 @@ function Adapter(options) {
             }
         });
 
-        // Send message to other adapter instance or all instances of adapter
-        that.sendTo = function sendTo(objName, command, message, callback) {
+        /**
+         * Send message to other adapter instance or all instances of adapter.
+         *
+         * This function sends a message to specific instance or all instances of some specific adapter.
+         * If no instance given (e.g. "pushover"), the callback argument will be ignored. Because normally many responses will come.
+         *
+         * @alias sendTo
+         * @memberof Adapter
+         * @param {string} instanceName name of the instance where the message must be send to. E.g. "pushover.0" or "system.adapter.pushover.0".
+         * @param {string} command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+         * @param {object} message object that will be given as argument for request
+         * @param {function} callback optional return result
+         *        &lt;pre>&lt;code>
+         *            function (result) {
+         *              // result is target adapter specific and can vary from adapter to adapter
+         *              if (!result) adapter.log.error('No response received');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.sendTo = function sendTo(instanceName, command, message, callback) {
             if ((typeof message === 'function') &amp;&amp; (typeof callback === 'undefined')) {
                 callback = message;
                 message = {};
@@ -2919,18 +2980,18 @@ function Adapter(options) {
             }
             var obj = {command: command, message: message, from: 'system.adapter.' + that.namespace};
 
-            if (!objName.match(/^system\.adapter\./)) objName = 'system.adapter.' + objName;
+            if (!instanceName.match(/^system\.adapter\./)) instanceName = 'system.adapter.' + instanceName;
 
             if (typeof message !== 'object') {
-                that.log.debug('sendTo "' + command + '" to ' + objName + ' from system.adapter.' + that.namespace + ': ' + message);
+                that.log.debug('sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + that.namespace + ': ' + message);
             } else {
-                that.log.debug('sendTo "' + command + '" to ' + objName + ' from system.adapter.' + that.namespace);
+                that.log.debug('sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + that.namespace);
             }
 
             // If not specific instance
-            if (!objName.match(/\.[0-9]+$/)) {
+            if (!instanceName.match(/\.[0-9]+$/)) {
                 // Send to all instances of adapter
-                that.objects.getObjectView('system', 'instance', {startkey: objName + '.', endkey: objName + '.\u9999'}, function (err, _obj) {
+                that.objects.getObjectView('system', 'instance', {startkey: instanceName + '.', endkey: instanceName + '.\u9999'}, function (err, _obj) {
                     if (_obj) {
                         for (var i = 0; i &lt; _obj.rows.length; i++) {
                             that.states.pushMessage(_obj.rows[i].id, obj);
@@ -2967,21 +3028,39 @@ function Adapter(options) {
                     }
                 }
 
-                that.states.pushMessage(objName, obj);
+                that.states.pushMessage(instanceName, obj);
             }
         };
 
-        // Send message to specific host or to all hosts
-        that.sendToHost = function sendToHost(objName, command, message, callback) {
+        /**
+         * Send message to specific host or to all hosts.
+         *
+         * This function sends a message to specific host or all hosts.
+         * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
+         *
+         * @alias sendToHost
+         * @memberof Adapter
+         * @param {string} hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+         * @param {string} command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+         * @param {object} message object that will be given as argument for request
+         * @param {function} callback optional return result
+         *        &lt;pre>&lt;code>
+         *            function (result) {
+         *              // result is target adapter specific and can vary from command to command
+         *              if (!result) adapter.log.error('No response received');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.sendToHost = function sendToHost(hostName, command, message, callback) {
             if (typeof message === 'undefined') {
                 message = command;
                 command = 'send';
             }
             var obj = {command: command, message: message, from: 'system.adapter.' + that.namespace};
 
-            if (objName &amp;&amp; !objName.match(/^system\.host\./)) objName = 'system.host.' + objName;
+            if (hostName &amp;&amp; !hostName.match(/^system\.host\./)) hostName = 'system.host.' + hostName;
 
-            if (!objName) {
+            if (!hostName) {
                 // Send to all hosts
                 that.objects.getObjectList({startkey: 'system.host.', endkey: 'system.host.' + '\u9999'}, null, function (err, res) {
                     if (!err &amp;&amp; res.rows.length) {
@@ -3018,10 +3097,42 @@ function Adapter(options) {
                     }
                 }
 
-                that.states.pushMessage(objName, obj);
+                that.states.pushMessage(hostName, obj);
             }
         };
 
+        /**
+         * Writes value into states DB.
+         *
+         * This function can write values into states DB for this adapter.
+         * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+         * ack, options and callback are optional
+         *
+         * @alias setState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object and ack exists too as function argument, function argument has priority.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
         that.setState = function setState(id, state, ack, options, callback) {
             if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
                 callback = options;
@@ -3059,6 +3170,95 @@ function Adapter(options) {
             }
         };
 
+        /**
+         * Writes value into states DB only if the value really changed.
+         *
+         * This function can write values into states DB for this adapter.
+         * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+         * ack, options and callback are optional
+         *
+         * @alias setStateChanged
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id, notChanged) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *              if (!notChanged) adapter.log.debug('Value was chnaged');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setStateChanged = function setStateChanged(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack      = undefined;
+            }
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            id = that._fixId(id, 'state');
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that._setStateChangedHelper(id, state, callback);
+                    }
+                });
+            } else {
+                that._setStateChangedHelper(id, state, callback);
+            }
+        };
+
+        /**
+         * Writes value into states DB for any instance.
+         *
+         * This function can write values into states DB for all instances and system states too.
+         * ack, options and callback are optional
+         *
+         * @alias setForeignState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object, so the ack will be ignored and must be included into object.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
         that.setForeignState = function setForeignState(id, state, ack, options, callback) {
             if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
                 callback = options;
@@ -3097,12 +3297,136 @@ function Adapter(options) {
             }
         };
 
+        /**
+         * Writes value into states DB for any instance, but only if state changed.
+         *
+         * This function can write values into states DB for all instances and system states too.
+         * ack, options and callback are optional
+         *
+         * @alias setForeignStateChanged
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object and ack exists too as function argument, function argument has priority.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setForeignStateChanged = function setForeignStateChanged(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack = undefined;
+            }
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that._setStateChangedHelper(id, state, callback);
+                    }
+                });
+            } else {
+                that._setStateChangedHelper(id, state, callback);
+            }
+        };
+
+        /**
+         * Read value from states DB.
+         *
+         * This function can read values from states DB for this adapter.
+         * Only Ids that belong to this adapter can be read. So the function automatically adds "adapter.X." to ID.
+         *
+         * @alias getState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, state) {
+         *              if (err) adapter.log.error('Cannot read value: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         *
+         *        See possible attributes of the state in @setState explanation
+         */
         that.getState = function getState(id, options, callback) {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
             }
             id = that._fixId(id, 'state');
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'getState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.getState(id, callback);
+                    }
+                });
+            } else {
+                that.states.getState(id, callback);
+            }
+        };
+
+        /**
+         * Read value from states DB for any instance and system state.
+         *
+         * This function can read values from states DB for all instances and adapters. It expects the full path of object ID.
+         *
+         * @alias getForeignState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, state) {
+         *              if (err) adapter.log.error('Cannot read value: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         *
+         *        See possible attributes of the state in @setState explanation
+         */
+        that.getForeignState = function getForeignState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
             if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', function (err) {
                     if (err) {
@@ -3154,21 +3478,22 @@ function Adapter(options) {
             return {device: parts[2], channel: parts[3], state: parts[4]};
         };
 
-        that.getForeignState = function getForeignState(id, options, callback) {
+        that.delState = function delState(id, options, callback) {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
             }
+            id = that._fixId(id);
             if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
-                checkStates(id, options, 'getState', function (err) {
+                checkStates(id, options, 'delState', function (err) {
                     if (err) {
                         if (typeof callback === 'function') callback(err);
                     } else {
-                        that.states.getState(id, callback);
+                        that.states.delState(id, callback);
                     }
                 });
             } else {
-                that.states.getState(id, callback);
+                that.states.delState(id, callback);
             }
         };
 
@@ -3192,25 +3517,6 @@ function Adapter(options) {
 
         };
 
-        that.delState = function delState(id, options, callback) {
-            if (typeof options === 'function') {
-                callback = options;
-                options = {};
-            }
-            id = that._fixId(id);
-            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
-                checkStates(id, options, 'delState', function (err) {
-                    if (err) {
-                        if (typeof callback === 'function') callback(err);
-                    } else {
-                        that.states.delState(id, callback);
-                    }
-                });
-            } else {
-                that.states.delState(id, callback);
-            }
-        };
-
         /**
          * Read all states of this adapter, that pass the pattern
          *
@@ -3223,9 +3529,9 @@ function Adapter(options) {
          *     });
          * &lt;/code>&lt;/pre>
          *
-         * @alias getForeignStates
+         * @alias getStates
          * @memberof Adapter
-         * @param {string} pattern string in form 'adapter.0.*' or like this
+         * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
          * @param {object} options optional argument to describe the user context
          * @param {function} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
          */
@@ -3238,6 +3544,24 @@ function Adapter(options) {
             that.getForeignStates(pattern, options, callback);
         };
 
+        /**
+         * Read all states of all adapters (and system states), that pass the pattern
+         *
+         * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
+         * &lt;pre>&lt;code>
+         *     adapter.getStates('*', function (err, states) {
+         *         for (var id in states) {
+         *              adapter.log.debug('"' + id + '" = "' + states[id].val);
+         *         }
+         *     });
+         * &lt;/code>&lt;/pre>
+         *
+         * @alias getForeignStates
+         * @memberof Adapter
+         * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+         * @param {object} options optional argument to describe the user context
+         * @param {function} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+         */
         that.getForeignStates = function getForeignStates(pattern, options, callback) {
             if (typeof options === 'function') {
                 callback = options;
@@ -3353,7 +3677,8 @@ function Adapter(options) {
                 for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
                         // put this pattern into adapter list
-                        that.states.getForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
+                        that.states.getState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
+                            state = {};
                             state.val = state.val || '{}';
                             var subs;
                             try {
@@ -3364,7 +3689,7 @@ function Adapter(options) {
                             subs[pattern] = subs[pattern] || {};
                             subs[pattern][that.namespace] = subs[pattern][that.namespace] || 0;
                             subs[pattern][that.namespace]++;
-                            that.states.setForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
+                            that.states.setState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
                         });
                     }
                 }
@@ -3380,7 +3705,7 @@ function Adapter(options) {
                 for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
                         // remove this pattern from adapter list
-                        that.states.getForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
+                        that.states.getState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
                             if (!state || !state.val) return;
                             var subs;
                             try {
@@ -3402,7 +3727,7 @@ function Adapter(options) {
                                 }
                             }
                             if (!found) delete subs[pattern];
-                            that.states.setForeignState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
+                            that.states.setState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
                         });
                     }
                 }
@@ -3977,7 +4302,7 @@ module.exports = Adapter;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 23:42:50 GMT+0100 (Западная Европа (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 30 2017 15:59:32 GMT+0100 (W. Europe Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

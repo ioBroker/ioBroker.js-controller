@@ -3,7 +3,7 @@
 /** @namespace __dirname */
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-"use strict";
+'use strict';
 
 function getAppName() {
     var parts = __dirname.replace(/\\/g, '/').split('/');
@@ -156,10 +156,10 @@ module.exports = function (grunt) {
         if (readme.indexOf(version) == -1) {
             var timestamp = new Date();
             var date = timestamp.getFullYear() + '-' +
-                ("0" + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
-                ("0" + (timestamp.getDate()).toString(10)).slice(-2);
+                ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
+                ('0' + (timestamp.getDate()).toString(10)).slice(-2);
 
-            var news = "";
+            var news = '';
             if (iopackage.common.whatsNew) {
                 for (var i = 0; i < iopackage.common.whatsNew.length; i++) {
                     if (typeof iopackage.common.whatsNew[i] == 'string') {
@@ -227,11 +227,11 @@ module.exports = function (grunt) {
 	grunt.registerTask('renameFiles', function () {
 		var fs = require('fs');
 		fs.unlink(__dirname + '/lib/img/iobroker.png');
-		if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',              __dirname + '/' + appName);
-        if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat', __dirname + '/_service_' + appName + '.bat');
-        if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',          __dirname + '/' + appName + '.bat');
-        if (fs.existsSync(__dirname + '/iobroker.js'))              fs.renameSync(__dirname + '/iobroker.js',           __dirname + '/' + appName + '.js');
-        if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  fs.renameSync(__dirname + '/conf/iobroker-dist.json',  __dirname + '/conf/' + appName + '-dist.json');
+		if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
+        if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.js'))              fs.renameSync(__dirname + '/iobroker.js',             __dirname + '/' + appName + '.js');
+        if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  fs.renameSync(__dirname + '/conf/iobroker-dist.json', __dirname + '/conf/' + appName + '-dist.json');
     });
 	
 	grunt.loadNpmTasks('grunt-replace');

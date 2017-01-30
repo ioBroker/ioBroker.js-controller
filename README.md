@@ -16,7 +16,7 @@ Official Web-Site: http://iobroker.net
 
 Forum: http://forum.iobroker.net
 
-Issue Traker: http://iobroker.net:8000 (please leave your issues there and not on github)
+Issue Tracker: http://iobroker.net:8000 (please leave your issues there and not on github)
 
 ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
 
