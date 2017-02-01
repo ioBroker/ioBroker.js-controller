@@ -5,22 +5,23 @@ services:
   - redis-server
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4"
-  - "6"
+  - '0.10'
+  - '0.12'
+  - '4'
+  - '6'
+  - '7'
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; sleep 10; fi
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; sleep 10; fi'
   - sleep 15
-before_script:
+before_script: null
 env:
   - CXX=g++-4.8
 addons:
-    apt:
-      sources:
-          - ubuntu-toolchain-r-test
-      packages:
-          - g++-4.8
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
