@@ -6,7 +6,7 @@
 * (Apollon77) change reinstall.sh script
 * (bluefox) add setStateChanged
 * (bluefox) implement event counters
-(bluefox) read values from cache if possible in adapter
+* (bluefox) read values from cache if possible in adapter
 
 # 0.15.3 (2017-01-20)
 * (bluefox) fix of autoSubscribe
