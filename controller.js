@@ -144,7 +144,7 @@ logger.on('logging', function (transport, level, msg/*, meta*/) {
     if (transport.name !== tools.appName) return;
     // Send to all adapter, that required logs
     for (var i = 0; i < logList.length; i++) {
-        states.pushLog(logList[i], {message: msg, severity: level, from: hostname, ts: (new Date()).getTime()});
+        states.pushLog(logList[i], {message: msg, severity: level, from: 'host.' + hostname, ts: (new Date()).getTime()});
     }
 });
 
@@ -190,6 +190,7 @@ if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title
 
 function createStates() {
     return new States({
+        namespace: 'host.' + hostname,
         connection: config.states,
         logger: logger,
         hostname: hostname,
@@ -316,6 +317,7 @@ states.getKeys('*.logging', function (err, keys) {
 // create "objects" object
 function createObjects() {
     return new Objects({
+        namespace: 'host.' + hostname,
         connection: config.objects,
         logger: logger,
         hostname: hostname,

@@ -1,6 +1,12 @@
 # 0.16.x (2017-01-25)
 * (bluefox) use SHA256 instead of SHA1 (All passwords must be reset via "iobroker passwd username")
 * (bluefox) change cli commands for user: user add, user del, user set, user enable...
+* (bluefox) replace letsencrypt module
+* (bluefox) add uniti
+* (Apollon77) change reinstall.sh script
+* (bluefox) add setStateChanged
+* (bluefox) implement event counters
+* (bluefox) read values from cache if possible in adapter
 
 # 0.15.3 (2017-01-20)
 * (bluefox) fix of autoSubscribe
