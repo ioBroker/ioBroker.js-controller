@@ -2,6 +2,12 @@
 iobroker stop
 BASE=$(pwd)
 
+if [ ! -f "$BASE/iobroker" ]
+then
+    echo "Script needs to be started in the iobroker base directory (normally /opt/iobroker on linux)"
+    exit
+fi
+
 if [ -d ./node_modules ]
 then
     ls -1 ./node_modules | grep iobroker. > reinstall.list.txt
@@ -12,7 +18,7 @@ then
 
     while read IN
     do
-        npm install $IN --production
+        npm install $IN --production --prefix $BASE
         if [ $? -eq 0 ]
         then
             echo "DONE $IN"
