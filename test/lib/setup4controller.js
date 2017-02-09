@@ -25,9 +25,9 @@ function startController(options, callback) {
 
     var isObjectConnected;
     var isStatesConnected;
-
-
+    
     console.log('startController...');
+    
     var settingsObjects = {
         connection: {
             type:               options.objects.type || 'file',
@@ -39,20 +39,20 @@ function startController(options, callback) {
             connectTimeout:     options.objects.connectTimeout || 2000,
             dataDir:            options.objects.dataDir || ''
         },
-        logger:         options.objects.logger || options.logger || {
-                        debug: function (msg) {
-                            console.log(msg);
-                        },
-                        info: function (msg) {
-                            console.log(msg);
-                        },
-                        warn: function (msg) {
-                            console.warn(msg);
-                        },
-                        error: function (msg) {
-                            console.error(msg);
-                        }
-                },
+        logger: options.objects.logger || options.logger || {
+            debug: function (msg) {
+                console.log(msg);
+            },
+            info: function (msg) {
+                console.log(msg);
+            },
+            warn: function (msg) {
+                console.warn(msg);
+            },
+            error: function (msg) {
+                console.error(msg);
+            }
+        },
         connected: function () {
             isObjectConnected = true;
             if (isStatesConnected) {

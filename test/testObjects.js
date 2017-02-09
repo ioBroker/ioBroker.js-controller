@@ -1,10 +1,10 @@
-var expect = require('chai').expect;
-var setup  = require(__dirname + '/lib/setup4controller');
-var fs     = require('fs');
-var objects     = null;
-var states      = null;
+var expect  = require('chai').expect;
+var setup   = require(__dirname + '/lib/setup4controller');
+var fs      = require('fs');
+var objects = null;
+var states  = null;
 
-describe('Objects: Test UDP server', function() {
+describe('Objects: Test Objects', function() {
     before('Objects: Start js-controller', function (_done) {
         this.timeout(2000);
 
