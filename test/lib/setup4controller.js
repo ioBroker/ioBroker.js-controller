@@ -116,8 +116,6 @@ function startController(options, callback) {
 }
 
 function stopController(cb) {
-    var timeout;
-
     if (objects) {
         objects.destroy();
         objects = null;
@@ -137,4 +135,5 @@ if (typeof module !== 'undefined' && module.parent) {
     module.exports.startController  = startController;
     module.exports.stopController   = stopController;
     module.exports.appName          = appName;
+    module.exports.rootDir          = rootDir;
 }

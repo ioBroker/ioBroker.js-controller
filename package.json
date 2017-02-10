@@ -46,7 +46,9 @@
     "grunt-http": "^2.0.1",
     "grunt-jsdoc": "^2.1.0",
     "mocha": "^2.3.4",
-    "chai": "^3.4.1"
+    "chai": "^3.4.1",
+    "mochawesome": "^2.0.3",
+    "istanbul": "^0.4.5"
   },
   "homepage": "http://www.iobroker.com",
   "description": "...domesticate the Internet of Things",
@@ -88,7 +90,8 @@
     "start": "node lib/setup.js start",
     "stop": "node lib/setup.js stop",
     "restart": "node lib/setup.js restart",
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha test --reporter mochawesome --reporter-options reportDir=test/report,reportName=report",
+    "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
   "main": "controller.js",
   "license": "MIT"

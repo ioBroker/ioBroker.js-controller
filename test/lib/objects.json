@@ -637,7 +637,7 @@
       "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
       "type": "communication",
       "preserveSettings": "smartName",
-      "enabled": false,
+      "enabled": true,
       "messagebox": true,
       "stopBeforeUpdate": true,
       "news": {
@@ -671,10 +671,11 @@
       }
     },
     "native": {
-      "paramA": "value1",
-      "paramB": "value2"
+      "paramString": "value1",
+      "paramNumber": 42,
+      "paramBoolean": false
     },
-    "_id": "system.adapter.test",
+    "_id": "system.adapter.test.0",
     "type": "adapter"
   }
 }
