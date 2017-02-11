@@ -333,6 +333,29 @@ describe('Test ' + adapterShortName + ' adapter', function() {
     // writeFile
     // formatValue
     // formatDate
+    it('Test ' + adapterShortName + ' adapter: Check formatDate', function (done) {
+        this.timeout(1000);
+        var testDate = new Date(0);
+        var testStringDate, testStringDate2;
+
+        expect(adapter.formatDate(new Date())).to.be.a('string');
+
+        testStringDate = adapter.formatDate(testDate, "YYYY-MM-DD");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.equal('1970-01-01');
+
+        testStringDate = adapter.formatDate(testDate, "duration", "YYYY.MM.DD.hh.mm.ss.sss");
+        testStringDate2 = adapter.formatDate(new Date(0).setMilliseconds(testDate.getMilliseconds() + testDate.getTimezoneOffset() * 60 * 1000), "YYYY.MM.DD.hh.mm.ss.sss");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.equal(testStringDate2);
+
+        testStringDate = adapter.formatDate("23 Februar 2014", "YYYY.MM.DD");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.equal('NaN');
+
+        testStringDate = adapter.formatDate(undefined, "YYYY.MM.DD");
+        expect(testStringDate).to.be.empty;
+    });
 
 
     // sendTo => controller => adapter
