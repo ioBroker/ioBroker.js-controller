@@ -332,6 +332,31 @@ describe('Test ' + adapterShortName + ' adapter', function() {
     // readFile
     // writeFile
     // formatValue
+    it('Test ' + adapterShortName + ' adapter: Check formatValue', function (done) {
+        this.timeout(1000);
+        var testValue, testValue2;
+
+        testValue = adapter.formatValue(1000,'.,');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1.000,00');
+
+        testValue = adapter.formatValue(1000.1994,3,'.,');
+        expect(testValue).to.equal('1.000,199');
+        testValue = adapter.formatValue(1000.1996,3,'.,');
+        expect(testValue).to.equal('1.000,200');
+
+        testValue = adapter.formatValue("1000",'.,');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1.000,00');
+
+        testValue = adapter.formatValue("1000",'');
+        testValue2 = adapter.formatValue("1000", (adapter.isFloatComma === undefined) ? '.,' : ((adapter.isFloatComma) ? '.,' : ',.'));
+        expect(testValue).to.equal(testValue2);
+
+        testValue = adapter.formatValue(undefined,'.,');
+        expect(testValue).to.be.empty;
+    });
+
     // formatDate
     it('Test ' + adapterShortName + ' adapter: Check formatDate', function (done) {
         this.timeout(1000);
