@@ -332,6 +332,36 @@ describe('Test ' + adapterShortName + ' adapter', function() {
     // readFile
     // writeFile
     // formatValue
+    it('Test ' + adapterShortName + ' adapter: Check formatValue', function (done) {
+        this.timeout(1000);
+        var testValue, testValue2;
+
+        // Test with number
+        testValue = adapter.formatValue(1000,'.,');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1.000,00');
+
+        // Test against rounding errors
+        testValue = adapter.formatValue(1000.1994,3,'.,');
+        expect(testValue).to.equal('1.000,199');
+        testValue = adapter.formatValue(1000.1996,3,'.,');
+        expect(testValue).to.equal('1.000,200');
+
+        // Test with string
+        testValue = adapter.formatValue("1000",'.,');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1.000,00');
+
+        // Test with an empty format pattern
+        testValue = adapter.formatValue("1000",''); //1.000,00
+        testValue2 = adapter.formatValue("1000", (adapter.isFloatComma === undefined) ? '.,' : ((adapter.isFloatComma) ? '.,' : ',.')); //1.000,00
+        expect(testValue).to.equal(testValue2);
+
+        testValue = adapter.formatValue(undefined,'.,');
+        expect(testValue).to.be.empty;
+        done();
+    });
+
     // formatDate
     it('Test ' + adapterShortName + ' adapter: Check formatDate', function (done) {
         this.timeout(1000);
@@ -348,6 +378,11 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         testStringDate = adapter.formatDate(1 * 3600000 + 1 * 60000 + 42000 + 1, 'duration', 'hh.mm.ss.sss');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.equal('01.01.42.001'); // 1 hour, 1 minute, 42 seconds, 1 milliseconds
+
+        // positive test with "Februar"
+        testStringDate = adapter.formatDate('23 Februar 2014', 'YYYY.MM.DD');
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.contain('2014.02.23');
 
         // negative test, give the wrong date "Fabruar"
         testStringDate = adapter.formatDate('23 Fabruar 2014', 'YYYY.MM.DD');
