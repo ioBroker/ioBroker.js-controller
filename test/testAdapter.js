@@ -340,21 +340,23 @@ describe('Test ' + adapterShortName + ' adapter', function() {
 
         expect(adapter.formatDate(new Date())).to.be.a('string');
 
-        testStringDate = adapter.formatDate(testDate, "YYYY-MM-DD");
+        testStringDate = adapter.formatDate(testDate, 'YYYY-MM-DD');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.equal('1970-01-01');
 
-        testStringDate = adapter.formatDate(testDate, "duration", "YYYY.MM.DD.hh.mm.ss.sss");
-        testStringDate2 = adapter.formatDate(new Date(0).setMilliseconds(testDate.getMilliseconds() + testDate.getTimezoneOffset() * 60 * 1000), "YYYY.MM.DD.hh.mm.ss.sss");
+        // expect 1 hour as output
+        testStringDate = adapter.formatDate(1 * 3600000 + 1 * 60000 + 42000 + 1, 'duration', 'hh.mm.ss.sss');
         expect(testStringDate).to.be.a('string');
-        expect(testStringDate).to.equal(testStringDate2);
+        expect(testStringDate).to.equal('01.01.42.001'); // 1 hour, 1 minute, 42 seconds, 1 milliseconds
 
-        testStringDate = adapter.formatDate("23 Februar 2014", "YYYY.MM.DD");
+        // negative test, give the wrong date "Fabruar"
+        testStringDate = adapter.formatDate('23 Fabruar 2014', 'YYYY.MM.DD');
         expect(testStringDate).to.be.a('string');
-        expect(testStringDate).to.equal('NaN');
+        expect(testStringDate).to.contain('NaN'); // NaN.NaN.NaN
 
-        testStringDate = adapter.formatDate(undefined, "YYYY.MM.DD");
+        testStringDate = adapter.formatDate(undefined, 'YYYY.MM.DD');
         expect(testStringDate).to.be.empty;
+        done();
     });
 
 
