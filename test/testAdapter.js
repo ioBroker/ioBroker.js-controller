@@ -261,11 +261,8 @@ describe('Test ' + context.adapterShortName + ' adapter', function() {
         tests[t].register(it, expect, context);
     }
 
-
-    
     // sendTo => controller => adapter
     // sendToHost - cannot be tested
-
 
     // this test is 15 seconds long. Enable it only if ready to push
     /*it('Test ' + context.adapterShortName + ' adapter: Check if uptime changes', function (done) {
