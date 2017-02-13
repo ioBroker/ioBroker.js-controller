@@ -5,17 +5,30 @@
 var expect = require('chai').expect;
 var setup  = require(__dirname + '/lib/setup4controller');
 
-var objects = null;
-var states  = null;
-var adapter = null;
+var tests = [
+    require(__dirname + '/lib/testAdapterHelpers'),
+    require(__dirname + '/lib/testEnums'),
+    require(__dirname + '/lib/testFiles'),
+    require(__dirname + '/lib/testHelperStates'),
+    require(__dirname + '/lib/testMessages'),
+    require(__dirname + '/lib/testObjectsFunctions'),
+    require(__dirname + '/lib/testStates')
+];
 
-var onControllerStateChanged  = null;
-var onControllerObjectChanged = null;
-var onAdapterStateChanged     = null;
-var onAdapterObjectChanged    = null;
-var onAdapterUnload           = null;
-var onAdapterMessage          = null;
-var sendToID = 1;
+var context = {
+    objects: null,
+    states: null,
+    adapter: null,
+    onControllerStateChanged: null,
+    onControllerObjectChanged: null,
+    onAdapterStateChanged: null,
+    onAdapterObjectChanged: null,
+    onAdapterUnload: null,
+    onAdapterMessage: null,
+    sendToID: 1,
+    adapterShortName: 'test'
+};
+
 var dataDir = __dirname + '/../tmp/data';
 
 var statesConfig = {
@@ -42,29 +55,27 @@ var objectsConfig = {
     connectTimeout: 2000
 };
 
-var adapterShortName = 'test';
-
 function startAdapter(callback) {
     var Adapter = require(__dirname + '/../lib/adapter.js');
 
-    adapter = new Adapter({
+    context.adapter = new Adapter({
         config: {
             states: statesConfig,
             objects: objectsConfig
         },
         dirname: __dirname + '/lib',
-        name: adapterShortName,
+        name: context.adapterShortName,
         objectChange: function (id, obj) {
-            if (onAdapterObjectChanged) onAdapterObjectChanged(id, obj);
+            if (context.onAdapterObjectChanged) context.onAdapterObjectChanged(id, obj);
         },
         stateChange: function (id, state) {
-            if (onAdapterStateChanged) onAdapterStateChanged(id, state);
+            if (context.onAdapterStateChanged) context.onAdapterStateChanged(id, state);
         },
         unload: function (callback) {
-            if (onAdapterUnload) onAdapterUnload(callback);
+            if (context.onAdapterUnload) context.onAdapterUnload(callback);
         },
         message: function (obj) {
-            if (onAdapterMessage) onAdapterMessage(obj);
+            if (context.onAdapterMessage) context.onAdapterMessage(obj);
 
         },
         ready: function () {
@@ -81,7 +92,7 @@ function checkConnectionOfAdapter(isConnected, cb, counter) {
         return;
     }
 
-    states.getState('system.adapter.' + adapterShortName + '.0.alive', function (err, state) {
+    context.states.getState('system.adapter.' + context.adapterShortName + '.0.alive', function (err, state) {
         if (err) console.error(err);
         if (state && (state.val === isConnected)) {
             if (cb) cb();
@@ -100,7 +111,7 @@ function checkValueOfState(id, value, cb, counter) {
         return;
     }
 
-    states.getState(id, function (err, state) {
+    context.states.getState(id, function (err, state) {
         if (err) console.error(err);
         if (value === null && !state) {
             if (cb) cb();
@@ -122,7 +133,7 @@ function sendTo(target, command, message, callback) {
         }
     };
 
-    states.pushMessage('system.adapter.' + target, {
+    context.states.pushMessage('system.adapter.' + target, {
         command:    command,
         message:    message,
         from:       'system.adapter.test.0',
@@ -147,8 +158,8 @@ function addInstance() {
     fs.writeFileSync(setup.rootDir + 'tmp/data/states.json', fs.readFileSync(__dirname + '/lib/states.json'));
 }
 
-describe('Test ' + adapterShortName + ' adapter', function() {
-    before('Test ' + adapterShortName + ' adapter: Start js-controller and adapter', function (_done) {
+describe('Test ' + context.adapterShortName + ' adapter', function() {
+    before('Test ' + context.adapterShortName + ' adapter: Start js-controller and adapter', function (_done) {
         this.timeout(6000); // no installation
 
         addInstance();
@@ -169,10 +180,10 @@ describe('Test ' + adapterShortName + ' adapter', function() {
                 states: _statesConfig
             },
             function (_objects, _states) {
-                objects = _objects;
-                states  = _states;
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
+                context.objects = _objects;
+                context.states  = _states;
+                expect(context.objects).to.be.ok;
+                expect(context.states).to.be.ok;
                 startAdapter(function () {
                     _done();
                 });
@@ -180,7 +191,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         );
     });
     
-    it('Test ' + adapterShortName + ' adapter: Check if adapter started', function (done) {
+    it('Test ' + context.adapterShortName + ' adapter: Check if adapter started', function (done) {
         this.timeout(60000);
         checkConnectionOfAdapter(true, function (err) {
             if (err) console.log(err);
@@ -189,24 +200,24 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
     });
 
-    it('Test ' + adapterShortName + ' adapter: check all important adapter attributes', function (done) {
+    it('Test ' + context.adapterShortName + ' adapter: check all important adapter attributes', function (done) {
         this.timeout(1000);
-        expect(adapter.namespace).to.be.equal(adapterShortName + '.0');
-        expect(adapter.name).to.be.equal(adapterShortName);
-        expect(adapter.instance).to.be.equal('0');
-        expect(adapter.states).to.be.ok;
-        expect(adapter.objects).to.be.ok;
-        expect(adapter.log).to.be.ok;
-        expect(adapter.log.info).to.be.a('function');
-        expect(adapter.log.debug).to.be.a('function');
-        expect(adapter.log.warn).to.be.a('function');
-        expect(adapter.log.error).to.be.a('function');
-        expect(adapter.config.paramString).to.be.equal('value1');
-        expect(adapter.config.paramNumber).to.be.equal(42);
-        expect(adapter.config.paramBoolean).to.be.equal(false);
+        expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
+        expect(context.adapter.name).to.be.equal(context.adapterShortName);
+        expect(context.adapter.instance).to.be.equal('0');
+        expect(context.adapter.states).to.be.ok;
+        expect(context.adapter.objects).to.be.ok;
+        expect(context.adapter.log).to.be.ok;
+        expect(context.adapter.log.info).to.be.a('function');
+        expect(context.adapter.log.debug).to.be.a('function');
+        expect(context.adapter.log.warn).to.be.a('function');
+        expect(context.adapter.log.error).to.be.a('function');
+        expect(context.adapter.config.paramString).to.be.equal('value1');
+        expect(context.adapter.config.paramNumber).to.be.equal(42);
+        expect(context.adapter.config.paramBoolean).to.be.equal(false);
         var count = 0;
 
-        states.getState('system.adapter.' + adapterShortName + '.0.connected', function (err, state) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.connected', function (err, state) {
             expect(state.val).to.be.equal(true);
             setTimeout(function () {
                 if (!--count) done();
@@ -214,7 +225,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
 
         count++;
-        states.getState('system.adapter.' + adapterShortName + '.0.memRss', function (err, state) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.memRss', function (err, state) {
             expect(state.val).to.be.above(0);
             setTimeout(function () {
                 if (!--count) done();
@@ -222,7 +233,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
 
         count++;
-        states.getState('system.adapter.' + adapterShortName + '.0.memHeapTotal', function (err, state) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapTotal', function (err, state) {
             expect(state.val).to.be.above(0);
             setTimeout(function () {
                 if (!--count) done();
@@ -230,7 +241,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
 
         count++;
-        states.getState('system.adapter.' + adapterShortName + '.0.memHeapUsed', function (err, state) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapUsed', function (err, state) {
             expect(state.val).to.be.above(0);
             setTimeout(function () {
                 if (!--count) done();
@@ -238,7 +249,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
 
         count++;
-        states.getState('system.adapter.' + adapterShortName + '.0.uptime', function (err, state) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state) {
             expect(state.val).to.be.at.least(0);
             setTimeout(function () {
                 if (!--count) done();
@@ -246,163 +257,27 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
     });
 
-    // setObject positive
-    it('Test ' + adapterShortName + ' adapter: Check if objects will be created', function (done) {
-        this.timeout(1000);
-        var id = 'myTestObject';
-        adapter.setObject(id, {
-            common: {
-                name: 'test1',
-                type: 'number',
-                role: 'level'
-            },
-            native: {},
-            type: 'state'
-        }, function () {
-            objects.getObject(adapterShortName + '.0.' + id, function (err, obj) {
-                expect(err).to.be.not.ok;
-                expect(obj).to.be.ok;
-                expect(obj.native).to.be.ok;
-                expect(obj._id).equal(adapterShortName + '.0.' + id);
-                expect(obj.common.name).equal('test1');
-                expect(obj.type).equal('state');
-                //expect(obj.acl).to.be.ok;
-                done();
-            });
-        });
-    });
-
-    // setObject negative
-    it('Test ' + adapterShortName + ' adapter: Check if objects will not be created without mandatory attribute type', function (done) {
-        this.timeout(1000);
-        var id = 'myTestObjectNoType';
-        adapter.setObject(id, {
-            common: {
-                name: 'test1',
-                type: 'number'
-            },
-            native: {},
-            type_: 'state' // extra no type
-        }, function () {
-            objects.getObject(adapterShortName + '.0.' + id, function (err, obj) {
-                expect(err).to.be.not.ok; // there is no message, that object does not exist. Errors will be given back only if no access rights
-                expect(obj).to.be.not.ok;
-                done();
-            });
-        });
-    });
-
-    // getAdapterObjects
-    // extendObject
-    // setForeignObject
-    // extendForeignObject
-    // getObject
-    // getEnum
-    // getEnums
-    // getForeignObjects
-    // findForeignObject
-    // getForeignObject
-    // delObject
-    // delForeignObject
-    // subscribeObjects
-    // subscribeForeignObjects
-    // unsubscribeForeignObjects
-    // unsubscribeObjects
-    // setObjectNotExists
-    // setForeignObjectNotExists
-    // _DCS2ID
-    // createDevice
-    // createChannel
-    // createState
-    // deleteDevice
-    // addChannelToEnum
-    // deleteChannelFromEnum
-    // deleteChannel
-    // deleteState
-    // getDevices
-    // getChannelsOf
-    // getStatesOf
-    // addStateToEnum
-    // deleteStateFromEnum
-    // chmodFile
-    // readDir
-    // unlink
-    // rename
-    // mkdir
-    // readFile
-    // writeFile
-    // formatValue
-    // formatDate
-    it('Test ' + adapterShortName + ' adapter: Check formatDate', function (done) {
-        this.timeout(1000);
-        var testDate = new Date(0);
-        var testStringDate, testStringDate2;
-
-        expect(adapter.formatDate(new Date())).to.be.a('string');
-
-        testStringDate = adapter.formatDate(testDate, 'YYYY-MM-DD');
-        expect(testStringDate).to.be.a('string');
-        expect(testStringDate).to.equal('1970-01-01');
-
-        // expect 1 hour as output
-        testStringDate = adapter.formatDate(1 * 3600000 + 1 * 60000 + 42000 + 1, 'duration', 'hh.mm.ss.sss');
-        expect(testStringDate).to.be.a('string');
-        expect(testStringDate).to.equal('01.01.42.001'); // 1 hour, 1 minute, 42 seconds, 1 milliseconds
-
-        // negative test, give the wrong date "Fabruar"
-        testStringDate = adapter.formatDate('23 Fabruar 2014', 'YYYY.MM.DD');
-        expect(testStringDate).to.be.a('string');
-        expect(testStringDate).to.contain('NaN'); // NaN.NaN.NaN
-
-        testStringDate = adapter.formatDate(undefined, 'YYYY.MM.DD');
-        expect(testStringDate).to.be.empty;
-        done();
-    });
+    for (var t = 0; t < tests.length; t++) {
+        tests[t].register(it, expect, context);
+    }
 
 
+    
     // sendTo => controller => adapter
     // sendToHost - cannot be tested
-    // setState
-    // setStateChanged
-    // setForeignState
-    // setForeignStateChanged
-    // getState
-    // getForeignState
-    // getHistory - cannot be tested
-    // idToDCS
-    // delState
-    // delForeignState
-    // getStates
-    // getForeignStates
-    // subscribeForeignStates
-    // unsubscribeForeignStates
-    // subscribeStates
-    // unsubscribeStates
-    // pushFifo
-    // trimFifo
-    // getFifoRange
-    // getFifo
-    // lenFifo
-    // subscribeFifo
-    // getSession
-    // setSession
-    // destroySession
-    // getMessage
-    // lenMessage
-    // setBinaryState
-    // getBinaryState
+
 
     // this test is 15 seconds long. Enable it only if ready to push
-    /*it('Test ' + adapterShortName + ' adapter: Check if uptime changes', function (done) {
+    /*it('Test ' + context.adapterShortName + ' adapter: Check if uptime changes', function (done) {
         this.timeout(20000);
 
-        states.getState('system.adapter.' + adapterShortName + '.0.uptime', function (err, state1) {
+        context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state1) {
             expect(err).to.be.not.ok;
             expect(state1).to.be.ok;
             expect(state1.val).to.be.ok;
 
             setTimeout(function () {
-                states.getState('system.adapter.' + adapterShortName + '.0.uptime', function (err, state2) {
+                context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
                     expect(err).to.be.not.ok;
                     expect(state2).to.be.ok;
                     expect(state2.val).to.be.ok;
@@ -411,7 +286,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
                         done();
                     } else {
                         setTimeout(function () {
-                            states.getState('system.adapter.' + adapterShortName + '.0.uptime', function (err, state2) {
+                            context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
                                 expect(err).to.be.not.ok;
                                 expect(state2).to.be.ok;
                                 expect(state2.val).to.be.ok;
@@ -420,7 +295,7 @@ describe('Test ' + adapterShortName + ' adapter', function() {
                                     done();
                                 } else {
                                     setTimeout(function () {
-                                        states.getState('system.adapter.' + adapterShortName + '.0.uptime', function (err, state2) {
+                                        context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
                                             expect(err).to.be.not.ok;
                                             expect(state2).to.be.ok;
                                             expect(state2.val).to.be.ok;
@@ -437,14 +312,14 @@ describe('Test ' + adapterShortName + ' adapter', function() {
         });
     });*/
 
-    after('Test ' + adapterShortName + ' adapter: Stop js-controller', function (done) {
+    after('Test ' + context.adapterShortName + ' adapter: Stop js-controller', function (done) {
         this.timeout(10000);
 
-        expect(adapter.connected).to.be.true;
+        expect(context.adapter.connected).to.be.true;
         setup.stopController(function (normalTerminated) {
             console.log('Adapter normal terminated: ' + normalTerminated);
             setTimeout(function () {
-                expect(adapter.connected).to.be.false;
+                expect(context.adapter.connected).to.be.false;
                 done();
             }, 500);
         });
