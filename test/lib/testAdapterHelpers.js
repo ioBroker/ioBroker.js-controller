@@ -1,6 +1,6 @@
 function register(it, expect, context) {
     // formatValue
-    it('Test ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
+    it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);
         var testValue, testValue2;
 
@@ -31,7 +31,7 @@ function register(it, expect, context) {
     });
 
     // formatDate
-    it('Test ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
+    it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
         this.timeout(1000);
         var testDate = new Date(0);
         var testStringDate, testStringDate2;

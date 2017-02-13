@@ -1,5 +1,5 @@
 function register(it, expect, context) {
-    var testName = 'Test ' + context.adapterShortName + ' adapter: ';
+    var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
     var gid = 'myTestObject';
 
     // setObject positive
