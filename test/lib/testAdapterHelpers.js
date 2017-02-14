@@ -62,6 +62,79 @@ function register(it, expect, context) {
         done();
     });
 
+
+    //_fixId
+    it(context.name + ' ' + context.adapterShortName + ' adapter: Check _fixId', function (done) {
+        var adapterName = context.adapter.name;
+        expect(adapterName).to.equal('test');
+        var adapterInstance = context.adapter.instance;
+        expect(adapterInstance).to.equal(0);
+        var adapterNamespace = context.adapter.namespace;
+        expect(adapterNamespace).to.equal(adapterName + '.' + adapterInstance);
+
+        var testString;
+        //test with Object empty
+        testString = context.adapter._fixId({});
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.');
+
+        //test with Object state
+        testString = context.adapter._fixId({
+            state: 'baz'
+        });
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.baz');
+
+        //test with Object state + channel
+        testString = context.adapter._fixId({
+            state: 'baz',
+            channel: 'bar'
+        });
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.bar.baz');
+
+        //test with Object state + channel + device
+        testString = context.adapter._fixId({
+            state: 'baz',
+            channel: 'bar',
+            device: 'foo'
+        });
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+
+        //test with string empty
+        testString = context.adapter._fixId('');
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.');
+
+        //test with string state
+        testString = context.adapter._fixId('baz');
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.baz');
+
+        //test with string state + channel
+        testString = context.adapter._fixId('bar.baz');
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.bar.baz');
+
+        //test with string state + channel + device
+        testString = context.adapter._fixId('foo.bar.baz');
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+
+        //test with already fixed ID
+        testString = context.adapter._fixId(adapterNamespace + '.foo.bar.baz');
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+
+        //test composition
+        testString = context.adapter._fixId(context.adapter._fixId('foo.bar.baz'));
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+
+        done();
+    });
+
     // idToDCS
     // _DCS2ID
 
