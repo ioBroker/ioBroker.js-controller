@@ -21,7 +21,6 @@ function cleanDbs() {
     }
 }
 
-
 describe('States-Redis: Test states', function() {
     before('States-Redis: Start js-controller', function (_done) {
         this.timeout(10000);
