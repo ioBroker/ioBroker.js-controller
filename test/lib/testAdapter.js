@@ -38,6 +38,9 @@ function testAdapter(options) {
     function startAdapter(callback) {
         var Adapter = require(__dirname + '/../../lib/adapter.js');
 
+        process.env.STATES_TYPE  = statesConfig.type;
+        process.env.OBJECTS_TYPE = objectsConfig.type;
+
         context.adapter = new Adapter({
             config: {
                 states: statesConfig,
