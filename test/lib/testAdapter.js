@@ -38,6 +38,9 @@ function testAdapter(options) {
     function startAdapter(callback) {
         var Adapter = require(__dirname + '/../../lib/adapter.js');
 
+        process.env.STATES_TYPE  = statesConfig.type;
+        process.env.OBJECTS_TYPE = objectsConfig.type;
+
         context.adapter = new Adapter({
             config: {
                 states: statesConfig,
@@ -187,7 +190,7 @@ function testAdapter(options) {
             this.timeout(1000);
             expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
             expect(context.adapter.name).to.be.equal(context.adapterShortName);
-            expect(context.adapter.instance).to.be.equal('0');
+            expect(context.adapter.instance).to.be.equal(0);
             expect(context.adapter.states).to.be.ok;
             expect(context.adapter.objects).to.be.ok;
             expect(context.adapter.log).to.be.ok;

@@ -24,11 +24,8 @@ var objectsConfig = {
     connectTimeout: 2000
 };
 
-/*
-process.env.STATES_TYPE = 'redis';
-
 // states in REDIS, objects in files
-testAdapter({
+/*testAdapter({
     statesConfig:  statesConfig,
     objectsConfig: objectsConfig,
     name: 'Tests REDIS'

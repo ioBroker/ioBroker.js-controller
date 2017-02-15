@@ -230,8 +230,95 @@ function register(it, expect, context) {
             });
         });
     });
+
     // setObjectNotExists
+    it(testName + 'Try to set existing object', function (done) {
+        context.adapter.setObjectNotExists(gid, {
+            common: {
+                name: 'not must be set'
+            },
+            native: {
+                pparam: 10
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getObject(gid, function (err, obj1) {
+                expect(err).to.be.null;
+
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.pparam).to.be.not.ok;
+
+                context.adapter.setObjectNotExists(gid + 'A', {
+                        common: {
+                            name: 'must be set'
+                        },
+                        native: {
+                            ppparam: 10
+                        },
+                        type: 'state'
+                    },
+                    function (err) {
+                        expect(err).to.be.null;
+
+                        context.adapter.getObject(gid + 'A', function (err, obj1) {
+                            expect(err).to.be.null;
+
+                            expect(obj1.native).to.be.ok;
+                            expect(obj1.native.ppparam).to.be.equal(10);
+                            done();
+                        });
+                    });
+            });
+        });
+    });
+
     // setForeignObjectNotExists
+    it(testName + 'Try to set existing foreign object', function (done) {
+        context.adapter.setForeignObjectNotExists(context.adapterShortName + '.0.' + gid, {
+                common: {
+                    name: 'not must be set'
+                },
+                native: {
+                    ppparam: 11
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+
+                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                    expect(err).to.be.null;
+
+                    expect(obj1.native).to.be.ok;
+                    expect(obj1.native.ppparam).to.be.not.ok;
+
+
+                    context.adapter.setObjectNotExists(context.adapterShortName + 'f.0.' + gid, {
+                            common: {
+                                name: 'must be set'
+                            },
+                            native: {
+                                ppparam: 9
+                            },
+                            type: 'state'
+                        },
+                        function (err) {
+                            expect(err).to.be.null;
+
+                            context.adapter.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj1) {
+                                expect(err).to.be.null;
+
+                                expect(obj1.native).to.be.ok;
+                                expect(obj1.native.ppparam).to.be.equal(9);
+                                done();
+                            });
+                        });
+                });
+            });
+    });
 
     // delObject
     // delForeignObject
@@ -240,8 +327,6 @@ function register(it, expect, context) {
     // subscribeForeignObjects
     // unsubscribeForeignObjects
     // unsubscribeObjects
-
-
 }
 
 
