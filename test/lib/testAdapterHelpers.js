@@ -27,6 +27,19 @@ function register(it, expect, context) {
 
         testValue = context.adapter.formatValue(undefined, '.,');
         expect(testValue).to.be.empty;
+
+        // Test with no format and floatcomma true
+        context.adapter.isFloatComma = true;
+        testValue = context.adapter.formatValue('1000');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1.000,00');
+
+        // Test with no format and floatcomma false
+        context.adapter.isFloatComma = false;
+        testValue = context.adapter.formatValue('1000');
+        expect(testValue).to.be.a('string');
+        expect(testValue).to.equal('1,000.00');
+
         done();
     });
 
@@ -57,8 +70,28 @@ function register(it, expect, context) {
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.contain('NaN'); // NaN.NaN.NaN
 
+        // expect 03.03.2003 as output (time in second)
+        testStringDate = context.adapter.formatDate(1046681200, false, "DD.MM.YYYY");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.contain('03.03.2003');
+
+        // expect 03.03.03 as output (time in milisecond) . year length 2
+        testStringDate = context.adapter.formatDate(1046681200000, false, "DD.MM.YY");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.contain('03.03.03');
+
+        // expect 03.09.12 as output (time in milisecond) . year length 2
+        testStringDate = context.adapter.formatDate(1346681200000, false, "DD.MM.YY");
+        expect(testStringDate).to.be.a('string');
+        expect(testStringDate).to.contain('03.09.12');
+
+        // test with min sec milli
+        testStringDate = context.adapter.formatDate(68033, true, "m.ss,sss");
+        expect(testStringDate).to.contain('1.08,033');
+
         testStringDate = context.adapter.formatDate(undefined, 'YYYY.MM.DD');
         expect(testStringDate).to.be.empty;
+
         done();
     });
 
