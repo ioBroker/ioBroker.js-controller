@@ -1,5 +1,6 @@
+/*jshint expr: true*/
 function register(it, expect, context) {
-    
+
     // setState
     // setStateChanged
     // setForeignState

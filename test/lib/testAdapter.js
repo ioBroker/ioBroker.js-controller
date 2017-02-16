@@ -1,6 +1,7 @@
 /* jshint -W097 */
 /* jshint strict:false */
 /* jslint node: true */
+/*jshint expr: true*/
 
 var expect = require('chai').expect;
 var setup  = require(__dirname + '/setup4controller');

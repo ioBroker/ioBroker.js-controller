@@ -1,5 +1,6 @@
+/*jshint expr: true*/
 function register(it, expect, context) {
-    
+
     // pushFifo
     // trimFifo
     // getFifoRange
@@ -11,7 +12,7 @@ function register(it, expect, context) {
     // destroySession
     // getMessage
     // lenMessage
-    
+
 }
 
 

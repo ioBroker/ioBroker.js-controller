@@ -1,3 +1,4 @@
+/*jshint expr: true*/
 function register(it, expect, context) {
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
