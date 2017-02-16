@@ -9,6 +9,7 @@ node_modules
 tmp
 log/*
 .travis.yml
+istanbul.yml
 lib/*.pid
 backups
 cache

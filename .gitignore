@@ -14,3 +14,4 @@ pids.txt
 backups
 cache
 /img
+/test/coverage
