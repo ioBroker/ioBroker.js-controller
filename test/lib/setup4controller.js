@@ -1,3 +1,4 @@
+/*jshint expr: true*/
 // check if tmp directory exists
 var fs            = require('fs');
 var path          = require('path');
@@ -25,9 +26,9 @@ function startController(options, callback) {
 
     var isObjectConnected;
     var isStatesConnected;
-    
+
     console.log('startController...');
-    
+
     var settingsObjects = {
         connection: {
             type:               options.objects.type || 'file',

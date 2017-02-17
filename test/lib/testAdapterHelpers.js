@@ -1,3 +1,4 @@
+/*jshint expr: true*/
 function register(it, expect, context) {
 
     //adapterGetPort

@@ -1,3 +1,6 @@
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+/*jshint expr: true*/
 'use strict';
 
 var testAdapter = require(__dirname + '/lib/testAdapter');
