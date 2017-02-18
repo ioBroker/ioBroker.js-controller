@@ -1,5 +1,73 @@
 /*jshint expr: true*/
 function register(it, expect, context) {
+
+    //adapterGetPort
+    it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port', function (done) {
+        this.timeout(1000);
+
+        //Throw Error
+        expect(context.adapter.getPort.bind('')).to.throw('adapterGetPort: no port');
+
+        expect(context.adapter.getPortRunning).to.not.exist;
+
+        //Works like it should be
+        context.adapter.getPort(8080, function (port) {
+            expect(port).to.be.at.least(8080);
+            expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
+            expect(context.adapter.getPortRunning).to.have.property('port', port);
+        });
+
+        done();
+    });
+
+    //checkPassword
+    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
+        this.timeout(1000);
+
+        //Expecting a callback
+        expect(context.adapter.checkPassword.bind('claus', '1234')).to.throw('checkPassword: no callback');
+
+        //User doesnt exists
+        context.adapter.checkPassword('claus', '1234', function(res){
+            expect(res).to.be.false;
+        });
+
+        //Wrong password
+        context.adapter.checkPassword('admin', '1234', function(res){
+            expect(res).to.be.false;
+        });
+
+        done();
+    });
+
+    //setPassword
+    it(context.name + ' ' + context.adapterShortName + ' adapter: sets the users password', function (done) {
+        this.timeout(1000);
+
+        done();
+    });
+
+    //checkGroup
+    it(context.name + ' ' + context.adapterShortName + ' adapter: user exists and is in the group', function (done) {
+        this.timeout(1000);
+
+        done();
+    });
+
+    //calculatePermissions
+    it(context.name + ' ' + context.adapterShortName + ' adapter: get the user permissions', function (done) {
+        this.timeout(1000);
+
+        done();
+    });
+
+    //getCertificates
+    it(context.name + ' ' + context.adapterShortName + ' adapter: eturns SSL certificates by name', function (done) {
+        this.timeout(1000);
+
+        done();
+    });
+
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);
