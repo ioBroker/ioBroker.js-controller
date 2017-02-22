@@ -1178,6 +1178,24 @@ function processMessage(msg) {
             }
             break;
 
+        case 'getInstalledAdapter':
+            if (msg.callback && msg.from && msg.message) {
+                // read adapter file
+                var dir = tools.getAdapterDir(msg.message, true);
+                var _result = null;
+                if (fs.existsSync(dir + '/io-package.json')) {
+                    try {
+                        _result = JSON.parse(fs.readFileSync(dir + '/io-package.json'));
+                    } catch (e) {
+                        logger.error('host.' + hostname + ' cannot read and parse "' + dir + '/io-package.json"');
+                    }
+                }
+                sendTo(msg.from, msg.command, _result, msg.callback);
+            } else {
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
         case 'getVersion':
             if (msg.callback && msg.from) {
                 ioPack = null;
