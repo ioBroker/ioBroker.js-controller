@@ -1,6 +1,7 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
-/*jshint expr: true*/
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node:true */
+/* jshint expr:true */
 'use strict';
 
 var testAdapter = require(__dirname + '/lib/testAdapter');
@@ -28,8 +29,8 @@ var objectsConfig = {
 };
 
 // states in REDIS, objects in files
-/*testAdapter({
+testAdapter({
     statesConfig:  statesConfig,
     objectsConfig: objectsConfig,
     name: 'Tests REDIS'
-});*/
+});

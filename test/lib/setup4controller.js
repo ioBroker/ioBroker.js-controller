@@ -1,11 +1,16 @@
-/*jshint expr: true*/
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node:true */
+/* jshint expr:true */
+'use strict';
+
 // check if tmp directory exists
 var fs            = require('fs');
 var path          = require('path');
 var child_process = require('child_process');
 var rootDir       = path.normalize(__dirname + '/../../');
-var pkg           = require(rootDir + 'package.json');
-var debug         = typeof v8debug === 'object';
+//var pkg           = require(rootDir + 'package.json');
+//var debug         = typeof v8debug === 'object';
 
 function getAppName() {
     var parts = __dirname.replace(/\\/g, '/').split('/');
@@ -64,15 +69,32 @@ function startController(options, callback) {
         change: options.objects.onChange || null
     };
 
-    var Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+    var Objects;
+
+    if (options.objects && options.objects.type) {
+        if (options.objects.type === 'file') {
+            Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+        } else if (options.objects.type === 'redis') {
+            Objects = require(rootDir + 'lib/objects/objectsInRedis');
+        } else if (options.objects.type === 'couch') {
+            Objects = require(rootDir + 'lib/objects/objectsInCouch');
+        }
+    } else {
+        Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+    }
+
+
     objects = new Objects(settingsObjects);
 
     var States;
     // Just open in memory DB itself
-    if (options.states && options.states.type && options.states.type === 'redis') {
-        States = require(rootDir + 'lib/states/statesInRedis');
-    }
-    else {
+    if (options.states && options.states.type) {
+        if (options.states.type === 'redis') {
+            States = require(rootDir + 'lib/states/statesInRedis');
+        } else {
+            States = require(rootDir + 'lib/states/statesInMemServer');
+        }
+    } else {
         States = require(rootDir + 'lib/states/statesInMemServer');
     }
 

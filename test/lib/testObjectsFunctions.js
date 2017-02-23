@@ -1,4 +1,9 @@
-/*jshint expr: true*/
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node:true */
+/* jshint expr:true */
+'use strict';
+
 function register(it, expect, context) {
     var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
     var gid = 'myTestObject';
@@ -183,7 +188,7 @@ function register(it, expect, context) {
     });
 
     // getForeignObjects
-    it(testName + 'Check get foreign objecst', function (done) {
+    it(testName + 'Check get foreign objects', function (done) {
         context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', function (err, objs) {
             expect(err).to.be.null;
 
@@ -296,8 +301,7 @@ function register(it, expect, context) {
                     expect(obj1.native).to.be.ok;
                     expect(obj1.native.ppparam).to.be.not.ok;
 
-
-                    context.adapter.setObjectNotExists(context.adapterShortName + 'f.0.' + gid, {
+                    context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
                             common: {
                                 name: 'must be set'
                             },
@@ -309,7 +313,7 @@ function register(it, expect, context) {
                         function (err) {
                             expect(err).to.be.null;
 
-                            context.adapter.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj1) {
+                            context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
                                 expect(err).to.be.null;
 
                                 expect(obj1.native).to.be.ok;
@@ -322,12 +326,146 @@ function register(it, expect, context) {
     });
 
     // delObject
+    it(testName + 'Try to delete existing object', function (done) {
+        context.adapter.delObject(gid, function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getObject(gid, function (err, obj) {
+                expect(err).to.be.null;
+
+                expect(obj).to.be.null;
+
+                context.adapter.delObject(gid, function (err) {
+                    expect(err).to.equal('Not exists');
+
+                    done();
+                });
+            });
+        });
+    });
+
     // delForeignObject
+    it(testName + 'Try to delete foreign existing object', function (done) {
+        context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+                expect(err).to.be.null;
+
+                expect(obj).to.be.null;
+
+                context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+                    expect(err).to.equal('Not exists');
+
+                    done();
+                });
+            });
+        });
+    });
 
     // subscribeObjects
-    // subscribeForeignObjects
-    // unsubscribeForeignObjects
+    it(testName + 'Try to subscribe on objects changes', function (done) {
+        context.adapter.subscribeObjects('*');
+        context.onAdapterObjectChanged = function (id, obj) {
+            if (id === context.adapterShortName + '.0.' + gid) {
+                expect(obj).to.be.ok;
+                expect(obj.common.name).to.equal('must be set');
+                context.onAdapterObjectChanged = null;
+                done();
+            }
+        };
+        context.adapter.setObjectNotExists(gid, {
+            common: {
+                name: 'must be set'
+            },
+            native: {
+                pparam: 10
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+        });
+    });
+
     // unsubscribeObjects
+    it(testName + 'Try to unsubscribe on objects changes', function (done) {
+        this.timeout(3000);
+        context.adapter.unsubscribeObjects('*');
+        context.onAdapterObjectChanged = function (id, obj) {
+            if (id === context.adapterShortName + '.0.' + gid) {
+                expect(obj).to.be.ok;
+                expect(obj).to.be.not.ok;
+            }
+        };
+        context.adapter.setObject(gid, {
+            common: {
+                name: 'must be set'
+            },
+            native: {
+                pparam: 10
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+            setTimeout(function () {
+                done();
+            }, 2000)
+        });
+    });
+
+    // subscribeForeignObjects
+    it(testName + 'Try to subscribe on foreign objects changes', function (done) {
+        context.adapter.subscribeForeignObjects(context.adapterShortName + 'f.*');
+        context.onAdapterObjectChanged = function (id, obj) {
+            if (id === context.adapterShortName + 'f.0.' + gid) {
+                expect(obj).to.be.ok;
+                expect(obj.common.name).to.equal('must be set');
+                context.onAdapterObjectChanged = null;
+                done();
+            }
+        };
+        context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+                common: {
+                    name: 'must be set'
+                },
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
+    });
+
+    // unsubscribeForeignObjects
+    it(testName + 'Try to unsubscribe on foreign objects changes', function (done) {
+        this.timeout(3000);
+        context.adapter.unsubscribeForeignObjects(context.adapterShortName + 'f.*');
+        context.onAdapterObjectChanged = function (id, obj) {
+            if (id === context.adapterShortName + 'f.0.' + gid) {
+                expect(obj).to.be.ok;
+                expect(obj).to.be.not.ok;
+            }
+        };
+        context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+                common: {
+                    name: 'must be set'
+                },
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000)
+            });
+    });
 }
 
 
