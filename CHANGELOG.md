@@ -1,12 +1,22 @@
-# 0.16.x (2017-01-25)
+# 0.16.1 (2017-02-27)
 * (bluefox) use SHA256 instead of SHA1 (All passwords must be reset via "iobroker passwd username")
 * (bluefox) change cli commands for user: user add, user del, user set, user enable...
-* (bluefox) replace letsencrypt module
+* (bluefox) replace letsencrypt with greenlock
+* (bluefox) try to fix sha256 issue with node.js 0.10.x
 * (bluefox) add uniti
 * (Apollon77) change reinstall.sh script
 * (bluefox) add setStateChanged
 * (bluefox) implement event counters
 * (bluefox) read values from cache if possible in adapter
+* (bluefox) add parser adapter, smartmeter, fakeroku, wetty, fronius, Worx Landroid Rasenmäher
+* (bluefox) fix log sources
+* (bluefox) fix callbacks calls by setObjectNotExists
+* (bluefox) fix getForeignObjects
+* (bluefox) write tests
+* (Patrick) adapter.namespace now always int (was int or string mixed)
+* (Patrick) _fixId better results for empty obj and string (return namespace + '.')
+* (bluefox) small fixes for multihost
+* (bluefox) add getInstalledAdapter for autodiscovery
 
 # 0.15.3 (2017-01-20)
 * (bluefox) fix of autoSubscribe
