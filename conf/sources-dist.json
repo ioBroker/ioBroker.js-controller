@@ -189,7 +189,7 @@
     "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png"
   },
   "landroid": {
-    "meta": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroidy/master/io-package.json",
+    "meta": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/admin/landroid.png"
   },
   "lightify": {
