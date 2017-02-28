@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2016 bluefox <dogafox@gmail.com>, hobbyquaker <hq@ccu.io>
+ *      Copyright 2013-2017 bluefox <dogafox@gmail.com>, hobbyquaker <hq@ccu.io>
  *
  */
 
@@ -159,7 +159,7 @@ function logRedirect(isActive, id) {
 }
 
 logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('host.' + hostname + ' Copyright (c) 2014-2016 bluefox, hobbyquaker');
+logger.info('host.' + hostname + ' Copyright (c) 2014-2017 bluefox, hobbyquaker');
 logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
 logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
@@ -502,7 +502,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
             return;
         }
         var modified = false;
-        // look for all subscribes from this instance 
+        // look for all subscribes from this instance
         for (var pattern in subs) {
             if (!subs.hasOwnProperty(pattern)) continue;
             for (var id in subs[pattern]) {
@@ -523,7 +523,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
                 delete subs[pattern];
             }
         }
-        
+
         if (modified) {
             outputCount++;
             states.setState(autoInstance + '.subscribes', subs, function () {
@@ -542,7 +542,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
 function cleanAutoSubscribes(instance, callback) {
     // instance = 'system.adapter.name.0'
     instance = instance.substring(15); // get name.0
-    
+
     // read all instances
     objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, res) {
         var count = 0;
@@ -552,7 +552,7 @@ function cleanAutoSubscribes(instance, callback) {
                 if (res.rows[c].value.common.subscribable) {
                     count++;
                     cleanAutoSubscribe(instance, res.rows[c].id, function () {
-                        if (!--count && callback) callback();     
+                        if (!--count && callback) callback();
                     });
                 }
             }
@@ -1828,7 +1828,7 @@ function startInstance(id, wakeUp) {
                     outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
-                    
+
                     cleanAutoSubscribes(id);
 
                     if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
@@ -1919,7 +1919,7 @@ function startInstance(id, wakeUp) {
                     logger.warn('host.' + hostname + ' instance ' + instance._id + ' does not started, because just executed');
                     return;
                 }
-                
+
                 // Remember the last run
                 procs[id].lastStart = new Date().getTime();
                 if (!procs[id].process) {
