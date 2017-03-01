@@ -48,6 +48,7 @@ a[href="../100_footer/"] {
 .own-class-logo {
 	display: inline-block;
 	float: right;
+	padding-top: 3px;
 }
 .book.with-summary .own-class-logo {
 	margin-right: 310px;
