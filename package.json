@@ -1,0 +1,31 @@
+{
+  "name": "docs",
+  "version": "0.1.0",
+  "description": "This is a documentation for project",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com"
+  },
+  "keywords": [
+    "documentation",
+    "english",
+    "deutsch",
+    "russian"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "del": "^2.2.2",
+    "gitbook": "^3.2.2",
+    "gitbook-plugin-page-toc": "^1.0.2",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-debug": "^3.1.0",
+    "gulp-gitbook": "0.0.1",
+    "gulp-serve": "^1.4.0"
+  }
+}

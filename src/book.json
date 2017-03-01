@@ -1,0 +1,36 @@
+{
+    "styles": {
+        "website": "styles/website.css"
+    },
+	"plugins": [
+        "language-picker",
+		"expandable-chapters"
+    ],
+	"pluginsConfig": {
+		"favicon": "img/favicon.ico",
+        "sharing": {
+            "google": false,
+            "facebook": false,
+            "twitter": false,
+			"all": []
+        },
+		"language-picker": {
+            "grid-columns": 3
+        },
+		"layout": {
+			"footerPath" : "layouts/footer.html"
+		}
+	},
+	"variables": {
+		"tIMPRESSUM": {
+			"en": "About us",
+			"de": "Impessum",
+			"ru": "О нас"
+		},
+		"tCONTACT": {
+			"en": "Contact",
+			"de": "Kontakt",
+			"ru": "Связаться с нами"
+		}
+	}
+}

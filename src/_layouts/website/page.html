@@ -1,0 +1,12 @@
+{% extends template.self %}
+
+{% block book_inner %}
+    {{ super() }}
+	<div class="own-class-footer">
+		<table class="own-class-legal"><tr>
+			<td><a href="{{ ("/" + book.language + "/100_footer/10_imprint.md")|contentURL }}">{{ book.tIMPRESSUM[book.language] }}</a></td>
+			<td><a href="{{ ("/" + book.language + "/100_footer/10_contact.md")|contentURL }}">{{ book.tCONTACT[book.language] }}</a></td>
+			<td>Copyright 2017</td>
+		</tr></table>
+	</div>
+{% endblock %}

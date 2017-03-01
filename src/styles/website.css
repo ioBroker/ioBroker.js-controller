@@ -1,0 +1,105 @@
+/* DO NOT CHANGE THIS FILE IF IT IS en/de/ru. because it will be overwritten every time.
+   Edit styles/website.css
+*/
+
+.gitbook-link,
+.font-settings,
+.summary>li:nth-last-child(2),
+.summary>li:nth-last-child(3),
+a[href="../100_footer/"] {
+    display: none !important;
+}
+.book-header{
+	width: 100%;
+    background: white;
+    position: fixed;
+}
+.page-inner {
+	max-width: 1024px;
+}
+
+.page-wrapper {
+	margin-top: 50px;
+	height: calc(100% - 80px);
+	overflow: auto;
+}
+
+.own-class-legal td:not(:last-child)::after {
+	content: " | ";
+}
+.own-class-menu {
+	display: inline-block;
+	padding-left: 15px;
+	position: relative;
+}
+.own-class-menu-list {
+	display: inline-block;
+	font-size: 1.5em;
+	position: absolute;
+	padding-top: 14px;
+	top: 0;
+	left: 90px;
+}
+.own-class-menu a {
+	color: inherit;
+	text-decoration: none;
+	position: relative;
+}
+.own-class-logo {
+	display: inline-block;
+	float: right;
+}
+.book.with-summary .own-class-logo {
+	margin-right: 310px;
+}
+
+.navigation-prev {
+	bottom: 30px;
+}
+.navigation-next {
+	bottom: 30px;
+}
+.book-header h1 {
+	padding-left: 400px;
+	padding-right: 50px;
+	display: inline-block;
+}
+.own-class-footer {
+	height: 30px;
+	width: 100%;
+	background: white;
+}
+.own-class-legal {
+	margin-top: 5px;
+	margin-right: 10px;
+}
+@media (max-width: 1024px) {
+	.book-header h1 {
+		display: none;
+	}
+}
+@media (max-width: 400px) {
+	.page-toc {
+		display: none;
+	}
+	.book-header .pull-right {
+		display: none;
+	}
+	.own-class-footer {
+	}
+	.own-class-legal {
+		float: right;
+	}
+}
+@media (min-width: 401px) {
+	.own-class-footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+	}
+	.own-class-legal {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+}

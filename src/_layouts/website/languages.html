@@ -1,0 +1,15 @@
+{% extends template.self %}
+
+{% block body %}
+    {{ super() }}
+    <script>
+        var lang = window.navigator.userLanguage || window.navigator.language;
+        if (lang.indexOf('de') !== -1) {
+            document.location = document.location + 'de/';
+        } else if (lang.indexOf('ru') !== -1) {
+            document.location = document.location + 'ru/';
+        } else {
+            document.location = document.location + 'en/';
+        }
+    </script>
+{% endblock %}
