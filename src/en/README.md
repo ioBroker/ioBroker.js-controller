@@ -26,3 +26,6 @@ Systems are attached to ioBroker via so called adapters, technically processes a
 anywhere in the network and connecting all kinds of systems to ioBroker.
 
 A library module for fast and comfortable adapter development exists for Javascript/Node.js until now.
+
+<a class="goButton" href="http://ioBroker.net:8081/" title="Try demo online!"><i class="fa fa-desktop"></i> Try demo online!</a>
+<p></p>
