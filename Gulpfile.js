@@ -1,14 +1,14 @@
 // Include gulp
 const fs = require('fs');
 const path = require('path');
-
+const request = require('request');
 
 // Include Our Plugins
 const gulp = require('gulp');
 const gulpDebug = require('gulp-debug');
 const gulpGitbook = require('gulp-gitbook');
 const gulpServe   = require('gulp-serve');
-var del = require('del');
+const del = require('del');
 
 const languages = ['en', 'de', 'ru'];
 const dest = '_dist/';
@@ -167,6 +167,72 @@ gulp.task('summary', ['prepare-dist'], function () {
     });	
 });
 
+var types = {
+	'common adapters': {
+		en: '10_common_adapters',
+        de: '10_Allgemein',
+        ru: '10_Общие'
+    }
+};
+var noReadme = {
+	en: 'No text here.',
+    de: 'Keine Beschriebung, aber es gibt <a href="%s">englishe Beschreibung</a>.',
+    ru: 'Описание доступно только на <a href="%s">английском</a>.'
+};
+function getReadme(url, fileName, lang, callback) {
+	// https://github.com/ioBroker/ioBroker.admin/blob/master/README.md
+	//https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/README.md
+	url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+	console.log('Request ' + url);
+    request(url, function (err, res, body) {
+        if (!body || res.statusCode !== 200) {
+            fs.writeFileSync(fileName, noReadme[lang].replace('%s', '#'));
+        } else {
+            fs.writeFileSync(fileName, readme2md(body));
+        }
+        callback();
+    });
+}
+function readme2md(text) {
+	return text;
+}
+
+gulp.task('adapters', ['prepare-dist'], function () {
+    request('http://download.iobroker.net/sources-dist.json', function (err, res, body) {
+    	var list = JSON.parse(body);
+    	for (var a in list) {
+    		if (!list.hasOwnProperty(a)) continue;
+    		var type = list[a].type;
+
+            languages.forEach(function (lang) {
+                var name = type;
+            	if (types[name] && types[name][lang]) {
+                    name = types[name][lang];
+                }
+                var path = dest + lang + '/40_adapters/' + name;
+                if (!fs.existsSync(path)) {
+            		fs.mkdirSync(path);
+				}
+				if (fs.existsSync(path + '/' + a + '.md')) return;
+
+                var readme = list[a].readme;
+                if (!readme) {
+                	readme = list[a].meta.replace('io-package.json', 'README.md');
+                }
+
+            	if (readme && readme.match(/README\.md$/) && lang !== 'en') {
+                    readme = readme.replace('README.md', 'README_' + lang + '.md');
+				}
+
+
+				getReadme(readme, path + '/' + a + '.md', lang, function () {
+
+				});
+			});
+		}
+	})
+});
+
 // Start web server
 gulp.task('serve', ['build'], gulpServe('_dist/_book'));
 
@@ -174,6 +240,6 @@ gulp.task('watch', function () {
     return gulp.watch([src + '*/*.*', src + '*.*'], ['build']);
 });
 
-gulp.task('build', ['clean', 'prepare-dist', 'summary', 'build-doc', 'post-build']);
+gulp.task('build', ['clean', 'prepare-dist', 'adapters', 'summary', 'build-doc', 'post-build']);
 
 gulp.task('default', ['build']);

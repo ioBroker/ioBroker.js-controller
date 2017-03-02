@@ -26,6 +26,7 @@
     "gulp-clean": "^0.3.2",
     "gulp-debug": "^3.1.0",
     "gulp-gitbook": "0.0.1",
-    "gulp-serve": "^1.4.0"
+    "gulp-serve": "^1.4.0",
+    "request": "^2.79.0"
   }
 }
