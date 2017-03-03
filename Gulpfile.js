@@ -158,7 +158,7 @@ function buildTree(tree, level) {
 	return text;
 }
 
-gulp.task('summary', ['prepare-dist'], function () {
+gulp.task('summary', ['adapters'], function () {
 	languages.forEach(function (lang) {
 		var tree = collectStructure(dest + lang + '/');
 		//console.log(JSON.stringify(tree, null, 2));
@@ -179,7 +179,7 @@ var noReadme = {
     de: 'Keine Beschriebung, aber es gibt <a href="%s">englishe Beschreibung</a>.',
     ru: 'Описание доступно только на <a href="%s">английском</a>.'
 };
-function getReadme(url, fileName, lang, callback) {
+function getReadme(url, fileName, adapter, lang, callback) {
 	// https://github.com/ioBroker/ioBroker.admin/blob/master/README.md
 	//https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/README.md
 	url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
@@ -188,20 +188,92 @@ function getReadme(url, fileName, lang, callback) {
         if (!body || res.statusCode !== 200) {
             fs.writeFileSync(fileName, noReadme[lang].replace('%s', '#'));
         } else {
-            fs.writeFileSync(fileName, readme2md(body));
+            fs.writeFileSync(fileName, readme2md(body, adapter, lang));
         }
         callback();
     });
 }
-function readme2md(text) {
-	return text;
+
+function readme2md(text, name, lang) {
+	// escape all {{ and }}
+	text = text.replace(/\{\{/g, '{% raw %}{{').replace(/\}\}/g, '}}{% endraw %}');
+
+	// cut ## Changelog
+
+	var pos = text.indexOf('### Changelog');
+    if (pos !== -1) {
+        text = text.substring(0, pos);
+    } else {
+        pos = text.indexOf('## Changelog');
+        if (pos !== -1) {
+            text = text.substring(0, pos);
+        } else {
+            pos = text.indexOf('# Changelog');
+            if (pos !== -1) {
+                text = text.substring(0, pos);
+            }
+		}
+	}
+
+	// cut additional information
+    //![Logo](admin/vis.png)
+    //iobroker.vis
+    //============
+	//
+    //[![NPM version](http://img.shields.io/npm/v/iobroker.vis.svg)](https://www.npmjs.com/package/iobroker.vis)
+    //[![Downloads](https://img.shields.io/npm/dm/iobroker.vis.svg)](https://www.npmjs.com/package/iobroker.vis)
+	//
+    //[![NPM](https://nodei.co/npm/iobroker.vis.png?downloads=true)](https://nodei.co/npm/iobroker.vis/)
+    text = text.replace(/\r\n/g, '\n');
+	var lines = text.split('\n');
+    name = name.replace(/-beta$/, '');
+	for (var i = 0, len = lines.length; i < 50 && i < len; i++) {
+        if (lines[i].trim() === 'iobroker.' + name) {
+            lines.splice(i--, 1);
+            len--;
+            continue;
+        }
+        if (lines[i].trim() === 'ioBroker.' + name) {
+            lines.splice(i--, 1);
+            len--;
+            continue;
+        }
+        if (lines[i].match(/^\!\[Logo\]/)) {
+        	lines.splice(i--, 1);
+        	len--;
+        	continue;
+		}
+		if (lines[i].match(/^===/)) {
+            lines.splice(i--, 1);
+            len--;
+            continue;
+        }
+        if (lines[i].match(/^\[!\[NPM/)) {
+            lines.splice(i--, 1);
+            len--;
+            continue;
+        }
+        if (lines[i].match(/^\[\!\[Down/)) {
+            lines.splice(i--, 1);
+            len--;
+            continue;
+        }
+        // extract images
+        // ![Demo interface](https://github.com/GermanBluefox/DashUI/raw/master/images/user0.png)
+		// ==>
+		// ![Demo interface](/en/img/vis/images/user0.png)
+	}
+
+	return lines.join('\n');
 }
+var debugAdapter = 'vis-beta';
 
 gulp.task('adapters', ['prepare-dist'], function () {
     request('http://download.iobroker.net/sources-dist.json', function (err, res, body) {
     	var list = JSON.parse(body);
     	for (var a in list) {
     		if (!list.hasOwnProperty(a)) continue;
+    		if (debugAdapter && a !== debugAdapter) continue;
     		var type = list[a].type;
 
             languages.forEach(function (lang) {
@@ -213,7 +285,7 @@ gulp.task('adapters', ['prepare-dist'], function () {
                 if (!fs.existsSync(path)) {
             		fs.mkdirSync(path);
 				}
-				if (fs.existsSync(path + '/' + a + '.md')) return;
+				if (fs.existsSync(src + lang + '/40_adapters/' + name + '/' + a + '.md')) return;
 
                 var readme = list[a].readme;
                 if (!readme) {
@@ -225,7 +297,7 @@ gulp.task('adapters', ['prepare-dist'], function () {
 				}
 
 
-				getReadme(readme, path + '/' + a + '.md', lang, function () {
+				getReadme(readme, path + '/' + a + '.md', a, lang, function () {
 
 				});
 			});
