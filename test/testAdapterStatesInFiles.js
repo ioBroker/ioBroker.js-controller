@@ -1,6 +1,7 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
-/*jshint expr: true*/
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node:true */
+/* jshint expr:true */
 'use strict';
 
 var testAdapter = require(__dirname + '/lib/testAdapter');
@@ -29,8 +30,6 @@ var objectsConfig = {
     noFileCache:    true,
     connectTimeout: 2000
 };
-
-process.env.STATES_TYPE = 'file';
 
 // states in files, objects in files
 testAdapter({

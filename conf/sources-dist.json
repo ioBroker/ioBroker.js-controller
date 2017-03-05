@@ -71,6 +71,10 @@
     "meta": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ruhr70/ioBroker.fritzbox/master/admin/fritzbox.png"
   },
+  "fronius": {
+    "meta": "https://raw.githubusercontent.com/ldittmar81/ioBroker.fronius/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ldittmar81/ioBroker.fronius/master/admin/fronius.png"
+  },
   "geofency": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.geofency/master/admin/geofency.png"
@@ -183,6 +187,10 @@
   "lgtv": {
     "meta": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png"
+  },
+  "landroid": {
+    "meta": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/admin/landroid.png"
   },
   "lightify": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.lightify/master/io-package.json",

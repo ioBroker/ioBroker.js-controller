@@ -1,15 +1,16 @@
 /* jshint -W097 */
 /* jshint strict:false */
-/* jslint node: true */
-/*jshint expr: true*/
+/* jslint node:true */
+/* jshint expr:true */
+'use strict';
 
 var expect = require('chai').expect;
 var setup  = require(__dirname + '/setup4controller');
 
 function testAdapter(options) {
-    statesConfig  = options.statesConfig;
-    objectsConfig = options.objectsConfig;
-    options.name = options.name || 'Test';
+    var statesConfig  = options.statesConfig;
+    var objectsConfig = options.objectsConfig;
+    options.name  = options.name || 'Test';
 
     var tests = [
         require(__dirname + '/testAdapterHelpers'),
@@ -38,9 +39,6 @@ function testAdapter(options) {
 
     function startAdapter(callback) {
         var Adapter = require(__dirname + '/../../lib/adapter.js');
-
-        process.env.STATES_TYPE  = statesConfig.type;
-        process.env.OBJECTS_TYPE = objectsConfig.type;
 
         context.adapter = new Adapter({
             config: {
@@ -111,7 +109,7 @@ function testAdapter(options) {
     }
 
     function sendTo(target, command, message, callback) {
-        onControllerStateChanged = function (id, state) {
+        context.onControllerStateChanged = function (id, state) {
             if (id === 'messagebox.system.adapter.test.0') {
                 callback(state.message);
             }

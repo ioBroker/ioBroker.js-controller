@@ -1,6 +1,9 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
-/*jshint expr: true*/
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node:true */
+/* jshint expr:true */
+'use strict';
+
 var expect  = require('chai').expect;
 var setup   = require(__dirname + '/lib/setup4controller');
 var fs      = require('fs');
@@ -14,7 +17,7 @@ describe('Objects: Test Objects', function() {
         setup.startController({
                 objects: {
                     dataDir: __dirname + '/../tmp/data',
-                    onChange:function (id, obj) {
+                    onChange: function (id, obj) {
                         console.log('object changed. ' + id);
                     }
                 },
