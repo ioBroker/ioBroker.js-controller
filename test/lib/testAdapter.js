@@ -48,10 +48,14 @@ function testAdapter(options) {
             dirname: __dirname + '/',
             name: context.adapterShortName,
             objectChange: function (id, obj) {
-                if (context.onAdapterObjectChanged) context.onAdapterObjectChanged(id, obj);
+                if (context.onAdapterObjectChanged) {
+                    context.onAdapterObjectChanged(id, obj);
+                }
             },
             stateChange: function (id, state) {
-                if (context.onAdapterStateChanged) context.onAdapterStateChanged(id, state);
+                if (context.onAdapterStateChanged) {
+                    context.onAdapterStateChanged(id, state);
+                }
             },
             unload: function (callback) {
                 if (context.onAdapterUnload) context.onAdapterUnload(callback);
