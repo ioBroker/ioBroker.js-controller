@@ -325,6 +325,10 @@
                         "link": "http://download.iobroker.net/sources-dist.json",
                         "json": null
                     },
+                    "latest": {
+                        "link": "http://download.iobroker.net/sources-dist-latest.json",
+                        "json": null
+                    },
                     "sources": {
                         "link": "conf/sources-dist.json",
                         "json": null
