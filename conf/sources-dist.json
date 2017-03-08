@@ -496,6 +496,10 @@
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.yamaha/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/soef/ioBroker.yamaha/master/admin/yamaha.png"
   },
+  "yahka": {
+    "meta": "https://raw.githubusercontent.com/jensweigele/ioBroker.yahka/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/jensweigele/ioBroker.yahka/master/admin/yahka.png"
+  },
   "yr": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.yr/master/admin/yr.png"
