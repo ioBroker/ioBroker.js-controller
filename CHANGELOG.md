@@ -1,3 +1,6 @@
+# 0.16.2 (2017-03-08)
+* (bluefox) fix "iobroker passwd username"
+
 # 0.16.1 (2017-02-27)
 * (bluefox) use SHA256 instead of SHA1 (All passwords must be reset via "iobroker passwd username")
 * (bluefox) change cli commands for user: user add, user del, user set, user enable...
