@@ -1236,7 +1236,7 @@ function processMessage(msg) {
 
         case 'getLocationOnDisk':
             if (msg.callback && msg.from) {
-                sendTo(msg.from, msg.command, {path: __dirname, plattform: require('os').platform()}, msg.callback);
+                sendTo(msg.from, msg.command, {path: __dirname, platform: require('os').platform()}, msg.callback);
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
