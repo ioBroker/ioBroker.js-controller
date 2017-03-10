@@ -19,7 +19,8 @@ function testAdapter(options) {
         require(__dirname + '/testHelperStates'),
         require(__dirname + '/testMessages'),
         require(__dirname + '/testObjectsFunctions'),
-        require(__dirname + '/testStates')
+        require(__dirname + '/testStates'),
+        require(__dirname + '/testConsole')
     ];
 
     var context = {
@@ -34,7 +35,8 @@ function testAdapter(options) {
         onAdapterMessage: null,
         sendToID: 1,
         adapterShortName: 'test',
-        name: options.name
+        name: options.name,
+        appName: setup.appName
     };
 
     function startAdapter(callback) {

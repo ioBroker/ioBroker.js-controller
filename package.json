@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "engines": {
     "node": ">=0.8"
   },
@@ -90,6 +90,7 @@
     "start": "node lib/setup.js start",
     "stop": "node lib/setup.js stop",
     "restart": "node lib/setup.js restart",
+    "prepublish": "node /lib/scripts/scripts.js --prepublish",
     "test": "node node_modules/mocha/bin/mocha test --reporter mochawesome --reporter-options reportDir=test/report,reportName=report",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
