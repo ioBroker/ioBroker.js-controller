@@ -369,6 +369,18 @@ function register(it, expect, context) {
     
     // update
     // setup
+    it(testName + 'setup', function (done) {
+        // delete non existing user
+        setup.processCommand(context.objects, context.states, 'setup', [], {}, function (err) {
+            expect(err).to.be.not.ok;
+            // remove normal user from normal group
+            setup.processCommand(context.objects, context.states, 'setup', ['first'], {}, function (err) {
+                expect(err).to.be.not.ok;
+                done();
+            });
+        });
+    });
+
     // setup custom
     // url
     
