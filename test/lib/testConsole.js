@@ -433,13 +433,13 @@ function register(it, expect, context) {
                 offset = '-' + offset + ':00';
             }
 
-            for (var f = files.length - 1; f >0 ; f--) {
+            for (var f = files.length - 1; f > 0; f--) {
                 if (files[f].match(/_backupioBroker.tar.gz$/)) {
                     var t = files[f].substring(0, '2017_03_09-13_48_33'.length);
                     t = t.substring(0, 4) + '-' + t.substring(5, 7) + '-' + t.substring(8, 10) + 'T' + t.substring(11, 13) + ':' + t.substring(14, 16) + ':' + t.substring(17);
 
                     var tt = new Date(Date.parse(t + offset));
-                    if (tt.getTime() >= time.getTime() - 1000) {
+                    if (tt.getTime() >= time.getTime() - 2000) {
                         found = true;
                         break;
                     }
