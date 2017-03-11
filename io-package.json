@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.16.2",
+        "version":    "0.17.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "0.17.0": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "Смотри CHANGELOG.md"
+            },
             "0.16.2": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
@@ -334,7 +339,7 @@
                         "json": null
                     },
                     "online": {
-                        "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
+                        "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
                         "json": null
                     }
                 }

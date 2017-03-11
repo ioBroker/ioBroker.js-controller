@@ -1,3 +1,6 @@
+# 0.17.0 (2017-03-11)
+* (bluefox) add stable repository
+
 # 0.16.2 (2017-03-08)
 * (bluefox) fix "iobroker passwd username"
 
