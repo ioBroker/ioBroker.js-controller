@@ -26,15 +26,19 @@
     "native": {
       "repositories": {
         "default": {
+          "link": "http://download.iobroker.net/sources-dist.json",
+          "json": null
+        },
+        "latest": {
+          "link": "http://download.iobroker.net/sources-dist-latest.json",
+          "json": null
+        },
+        "sources": {
           "link": "conf/sources-dist.json",
           "json": null
         },
         "online": {
-          "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json",
-          "json": null
-        },
-        "fast-online": {
-          "link": "http://download.iobroker.net/sources-dist.json",
+          "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
           "json": null
         }
       }

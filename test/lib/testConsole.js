@@ -31,7 +31,7 @@ function register(it, expect, context) {
     var setup    = require(__dirname + '/../../lib/setup.js');
     // passwd, user passwd, user check
     it(testName + 'user passwd', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         // set initial password
         setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, function (err) {
             expect(err).to.be.not.ok;
@@ -417,32 +417,26 @@ function register(it, expect, context) {
         this.timeout(20000);
         // create backup
         var time = new Date();
+        var dir = getBackupDir();
+        var fs = require('fs');
+        if (fs.existsSync(dir)) {
+            var files = fs.readdirSync(dir);
+            for (var f = 0; f < files.length; f++) {
+                if (files[f].match(/\.tar\.gz$/)) {
+                    fs.unlinkSync(dir + files[f]);
+                }
+            }
+        }
 
         setup.processCommand(context.objects, context.states, 'backup', [], {}, function (err) {
             expect(err).to.be.not.ok;
-            var dir = getBackupDir();
-            var files = require('fs').readdirSync(dir);
+            var files = fs.readdirSync(dir);
             // check 2017_03_09-13_48_33_backupioBroker.tar.gz
             var found = false;
-            var offset = -(new Date().getTimezoneOffset() / 60);
-            if (offset >= 0) {
-                if (offset < 10) offset = '0' + offset;
-                offset = '+' + offset + ':00';
-            } else {
-                if (offset > -10) offset = '0' + Math.abs(offset);
-                offset = '-' + offset + ':00';
-            }
-
-            for (var f = files.length - 1; f >0 ; f--) {
-                if (files[f].match(/_backupioBroker.tar.gz$/)) {
-                    var t = files[f].substring(0, '2017_03_09-13_48_33'.length);
-                    t = t.substring(0, 4) + '-' + t.substring(5, 7) + '-' + t.substring(8, 10) + 'T' + t.substring(11, 13) + ':' + t.substring(14, 16) + ':' + t.substring(17);
-
-                    var tt = new Date(Date.parse(t + offset));
-                    if (tt.getTime() >= time.getTime() - 1000) {
-                        found = true;
-                        break;
-                    }
+            for (var f = files.length - 1; f > 0; f--) {
+                if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
+                    found = true;
+                    break;
                 }
             }
             expect(found).to.be.true;

@@ -16,3 +16,4 @@ cache
 /img
 /test/coverage
 /test/report
+/conf/sources-dist.json
