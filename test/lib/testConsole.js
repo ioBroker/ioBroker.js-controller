@@ -416,7 +416,6 @@ function register(it, expect, context) {
     it(testName + 'backup', function (done) {
         this.timeout(20000);
         // create backup
-        var time = new Date();
         var dir = getBackupDir();
         var fs = require('fs');
         if (fs.existsSync(dir)) {
@@ -433,7 +432,9 @@ function register(it, expect, context) {
             var files = fs.readdirSync(dir);
             // check 2017_03_09-13_48_33_backupioBroker.tar.gz
             var found = false;
+            console.log('Check ' + dir);
             for (var f = files.length - 1; f > 0; f--) {
+                console.log('Detect ' + dir + files[f]);
                 if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
                     found = true;
                     break;
