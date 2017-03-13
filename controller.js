@@ -1777,7 +1777,7 @@ function startInstance(id, wakeUp) {
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') instance.common.onlyWWW = false;
 
-    if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
+    if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
         fileNameFull = adapterDir + '/' + fileName;
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
