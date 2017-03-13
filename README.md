@@ -36,9 +36,11 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 [http://nodejs.org/download/](http://nodejs.org/download/)
 
 #### Debian package for ARM (Raspbian, Cubian, ...)
-```wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb
+```
+wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb
 sudo dpkg -i nodejs_0.10.22-1_armhf.deb
-rm nodejs_0.10.22-1_armhf.deb```
+rm nodejs_0.10.22-1_armhf.deb
+```
 
 ### Install js-controller on linux
 
@@ -135,3 +137,11 @@ Now ioBroker can be started.
 Of course redis must be first installed and firewall rules must be checked.
 
 To switch back to JS States write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
+
+## License 
+
+The MIT License (MIT)
+
+Copyright (c) 2014-2017 bluefox<dogafox@gmail.com>,
+
+Copyright (c) 2014      hobbyquaker
