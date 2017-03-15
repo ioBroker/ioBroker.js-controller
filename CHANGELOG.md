@@ -1,5 +1,9 @@
-# 0.17.0 (2017-03-11)
+# 0.17.1 (2017-03-15)
 * (bluefox) add stable repository
+* (bluefox) fix bug with user=>users (required for user rights)
+* (bluefox) install discovery adapter too if exists at first start
+* (bluefox) extend configuration with city, country and GPS coordinates
+* (bluefox) send city and country in statistics and allow to disable it
 
 # 0.16.2 (2017-03-08)
 * (bluefox) fix "iobroker passwd username"
