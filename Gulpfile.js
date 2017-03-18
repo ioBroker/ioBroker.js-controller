@@ -308,8 +308,8 @@ gulp.task('adapters', ['prepare-dist'], function () {
 // Start web server
 gulp.task('serve', ['build'], gulpServe('_dist/_book'));
 
-gulp.task('watch', function () {
-    return gulp.watch([src + '*/*.*', src + '*.*'], ['build']);
+gulp.task('watch', ['build'], function () {
+    return gulp.watch([src + '*/*.*', src + '*.*']);
 });
 
 gulp.task('build', ['clean', 'prepare-dist', 'adapters', 'summary', 'build-doc', 'post-build']);
