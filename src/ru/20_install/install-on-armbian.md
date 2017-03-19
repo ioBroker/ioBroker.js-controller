@@ -51,13 +51,12 @@
 
 В Linux/Mac можно воспользоваться командой `dd`: 
 
-`# Linux example: /dev/sdx is your sd card device`
-
-`dd bs=1M if=filename.raw of=/dev/sdx`
-
-`# OS X example: /dev/[r]diskx is your sd card device:`
-
-`diskutil unmountDisk diskx && dd bs=1m if=filename.raw of=/dev/rdiskx && diskutil eject diskx`
+<pre>
+# Linux example: /dev/sdx is your sd card device
+dd bs=1M if=filename.raw of=/dev/sdx
+# OS X example: /dev/[r]diskx is your sd card device:
+diskutil unmountDisk diskx && dd bs=1m if=filename.raw of=/dev/rdiskx && diskutil eject diskx
+</pre>
 
 
 *   Для первоначальной настройки есть два варианта: локальная (надо подключить к плате проводом HDMI телевизор/монитор, подключить клавиатуру и, при необходимости, мышь) и по сети (достаточно подключить патч-кордом в локальную сеть с DHCP-сервером).
@@ -70,13 +69,14 @@
 
 Для удобной работы желательно установить несколько программ, для этого сначала обновим список пакетов и обновим установленные: 
 
-`root@bananapipro:~# apt-get update`
-
-`root@bananapipro:~# apt-get upgrade` 
+<pre>
+root@bananapipro:~# apt-get update
+root@bananapipro:~# apt-get upgrade
+</pre>
 
 Установим файловый менеджер mc (пакеты htop, build-essential, curl и wget уже установлены в системе): 
 
-`root@bananapipro:~# apt-get install mc` 
+<pre>root@bananapipro:~# apt-get install mc</pre> 
 
 Для начала работы с системой, установки node.js и ioBroker этих настроек достаточно, можно продолжить.
 
@@ -88,16 +88,18 @@
 
 Добавим в систему репозиторий node.js (версия 4): 
 
-`root@bananapipro:~# curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -` 
+<pre>root@bananapipro:~# curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -</pre> 
 
 Теперь можно установить node.js: 
 
-`root@bananapipro:~# apt-get install -y nodejs` 
+<pre>root@bananapipro:~# apt-get install -y nodejs</pre> 
 
 Проверим версии: 
 
-`root@bananapipro:~# nodejs -v` 
-`root@bananapipro:~# npm -v` 
+<pre>
+root@bananapipro:~# nodejs -v
+root@bananapipro:~# npm -v
+</pre>
 
 ![](img/install-on-armbian_install-armbian-nodejs2.jpg)
 
@@ -106,17 +108,19 @@
 ioBroker устанавливается с помощью менеджера npm. Сначала создадим директорию для установки и 
 назначим права записи/чтения для всех пользователей: 
 
-`root@bananapipro:~# mkdir /opt/iobroker` 
-
-`root@bananapipro:~# chmod 777 /opt/iobroker` 
+<pre>
+root@bananapipro:~# mkdir /opt/iobroker
+root@bananapipro:~# chmod 777 /opt/iobroker
+</pre>
 
 Зайдем во вновь созданную директорию и выполним команду установки: 
 
-`root@bananapipro:~# cd /opt/iobroker` 
+<pre>
+root@bananapipro:~# cd /opt/iobroker
+root@bananapipro:/opt/iobroker# npm install iobroker
+</pre> 
 
-`root@bananapipro:/opt/iobroker# npm install iobroker` 
-
-Если при установке появляются ошибки, можно попробовать запустить её с опцией `--unsafe-perm` : 
+Если при установке появляются ошибки, можно попробовать запустить её с опцией `--unsafe-perm`: 
 
 `root@bananapipro:/opt/iobroker# npm install iobroker --unsafe-perm` 
 
@@ -125,7 +129,7 @@ ioBroker устанавливается с помощью менеджера npm
 Если установка прошла удачно и ошибок не было, можно запустить диспетчер процессов Linux - **htop** и 
 проверить, запустился ли ioBroker: 
 
-`root@bananapipro:~# htop` 
+<pre>root@bananapipro:~# htop</pre> 
 
 ![](img/install-on-armbian_install-armbian-iobroker2.jpg) 
 
@@ -179,13 +183,12 @@ ioBroker устанавливается с помощью менеджера npm
 
 Итак, сначала необходимо доустановить в систему необходимые пакеты: 
 
-`root@bananapipro:~# apt-get update`
-
-`root@bananapipro:~# apt-get install davfs2` 
+<pre>root@bananapipro:~# apt-get update
+root@bananapipro:~# apt-get install davfs2</pre> 
 
 Создадим папку, куда будет монтироваться Яндекс.Диск: 
 
-`root@bananapipro:~# mkdir /mnt/yandex.disk` 
+<pre>root@bananapipro:~# mkdir /mnt/yandex.disk</pre> 
 
 Чтобы не писать пароль пользователя Яндекс в файле `/etc/fstab`, воспользуемся функционалом **davfs2** и добавим строчку логин/пароль 
 в файл **secrets**: `root@bananapipro:~# nano /etc/davfs2/secrets` В самый конец файла допишем строку: 
@@ -194,49 +197,40 @@ ioBroker устанавливается с помощью менеджера npm
 
 Теперь добавим информацию в файл `/etc/fstab` для монтирования: 
 
-`https://webdav.yandex.ru /mnt/yandex.disk davfs rw,noexec,auto,users,_netdev,uid=root,gid=root 0 0` 
+<pre>https://webdav.yandex.ru /mnt/yandex.disk davfs rw,noexec,auto,users,_netdev,uid=root,gid=root 0 0</pre> 
 
 Можно попробовать монтировать облако в папку `/mnt/yandex.disk`: 
 
-`root@bananapipro:~# mount /mnt/yandex.disk` 
+<pre>root@bananapipro:~# mount /mnt/yandex.disk</pre> 
 
 И создадим там папку для хранения архивов резервных копий: 
 
-`root@bananapipro:~# mkdir /mnt/yandex.disk/backup_iobroker` 
+<pre>root@bananapipro:~# mkdir /mnt/yandex.disk/backup_iobroker</pre> 
 
 Проверим содержимое: 
 
-`root@bananapipro:~# ls -l /mnt/yandex.disk`
-
-`total 0`
-
-`drwxr-xr-x 2 root root 0 Sep 18 2015 backup_iobroker`
-
-`drwx------ 2 root root 0 May 24 20:45 lost+found` 
+<pre>
+root@bananapipro:~# ls -l /mnt/yandex.disk
+total 0
+drwxr-xr-x 2 root root 0 Sep 18 2015 backup_iobroker
+drwx------ 2 root root 0 May 24 20:45 lost+found
+</pre> 
 
 Можно посмотреть какой объем доступен (при регистрации Яндекс выделяет 10Гб пространства): 
 
-`root@bananapipro:~# df -h`
-
-`Filesystem Size Used Avail Use% Mounted on`
-
-`/dev/mmcblk0p1 7.5G 1.3G 6.1G 18% /`
-
-`udev 10M 0 10M 0% /dev`
-
-`tmpfs 197M 4.5M 193M 3% /run`
-
-`tmpfs 493M 0 493M 0% /dev/shm`
-
-`tmpfs 5.0M 4.0K 5.0M 1% /run/lock`
-
-`tmpfs 493M 0 493M 0% /sys/fs/cgroup`
-
-`tmpfs 493M 4.0K 493M 1% /tmp`
-
-`tmpfs 99M 0 99M 0% /run/user/0`
-
-`https://webdav.yandex.ru 10G 4.9G 5.2G 49% /mnt/yandex.disk` 
+<pre>
+root@bananapipro:~# df -h
+Filesystem Size Used Avail Use% Mounted on
+/dev/mmcblk0p1 7.5G 1.3G 6.1G 18% /
+udev 10M 0 10M 0% /dev
+tmpfs 197M 4.5M 193M 3% /run
+tmpfs 493M 0 493M 0% /dev/shm
+tmpfs 5.0M 4.0K 5.0M 1% /run/lock
+tmpfs 493M 0 493M 0% /sys/fs/cgroup
+tmpfs 493M 4.0K 493M 1% /tmp
+tmpfs 99M 0 99M 0% /run/user/0
+https://webdav.yandex.ru 10G 4.9G 5.2G 49% /mnt/yandex.disk
+</pre> 
 
 Теперь зайдем через WEB-интерфейс и проверим, создалась ли папка в облаке: 
 
@@ -250,51 +244,41 @@ ioBroker устанавливается с помощью менеджера npm
 
 Сам скрипт будет располагаться в папке текущего пользователя root: 
 
-`root@bananapipro:~# nano /root/backup_iobroker.sh` 
+`root@bananapipro:~# nano /root/backup_iobroker.sh</pre> 
 
 Содержание получается следующее: 
 
-`#!/bin/sh`
-
-`SRCDIR="/opt/iobroker"`
-
-`DESTDIR="/mnt/yandex.disk/backup_iobroker"`
-
-`YEAR=`date "+%Y"``
-
-`MONTH=`date "+%m"``
-
-`DAY=`date "+%d"``
-
-`TIME=`date +"%H.%M"``
-
-`echo "${YEAR}-${MONTH}-${DAY} ${TIME} Backup iobroker dir to Yandex.disk" >> /var/log/backup_iobroker.log`
-
-`mount /mnt/yandex.disk >> /var/log/backup_iobroker.log 2>&1`
-
-`cd ${DESTDIR}`
-
-`tar -zcpf ${DESTDIR}/${YEAR}${MONTH}${DAY}_backup-${TIME}.tgz ${SRCDIR} >> /var/log/backup_iobroker.log 2>&1`
-
-`echo "--------------" >> /var/log/backup_iobroker.log` 
+<pre>
+#!/bin/sh
+SRCDIR="/opt/iobroker"
+DESTDIR="/mnt/yandex.disk/backup_iobroker"
+YEAR=`date "+%Y"
+MONTH=`date "+%m"
+DAY=`date "+%d"
+TIME=`date +"%H.%M"
+echo "${YEAR}-${MONTH}-${DAY} ${TIME} Backup iobroker dir to Yandex.disk" >> /var/log/backup_iobroker.log
+mount /mnt/yandex.disk >> /var/log/backup_iobroker.log 2>&1
+cd ${DESTDIR}
+tar -zcpf ${DESTDIR}/${YEAR}${MONTH}${DAY}_backup-${TIME}.tgz ${SRCDIR} >> /var/log/backup_iobroker.log 2>&1
+echo "--------------" >> /var/log/backup_iobroker.log
+</pre> 
 
 Даем права на исполнение: 
 
-`root@bananapipro:~# chmod +x /root/backup_iobroker.sh` 
+<pre>root@bananapipro:~# chmod +x /root/backup_iobroker.sh</pre> 
 
 Можно запустить скрипт вручную и проверить его работу: 
 
-`root@bananapipro:~# /root/backup_iobroker.sh`
-
-`root@bananapipro:~# cat /var/log/backup_iobroker.log`
-
-`2016-05-24 22.10 Backup iobroker dir to Yandex.disk`
-
-`--------------` 
+<pre>
+root@bananapipro:~# /root/backup_iobroker.sh
+root@bananapipro:~# cat /var/log/backup_iobroker.log
+2016-05-24 22.10 Backup iobroker dir to Yandex.disk
+--------------
+</pre> 
 
 Все отлично, скрипт выполняется. Осталось сделать запись в /etc/crontab: 
 
-`0  10,20   * * *   root    /root/backup_iobroker.sh` 
+<pre>0  10,20   * * *   root    /root/backup_iobroker.sh</pre> 
 
 Она означает: каждый день в 10.00 и 20.00 запускать скрипт `/root/backup_iobroker.sh` от имени пользователя **root**. 
 Все, теперь каждый день будет срабатывать два раза в сутки скрипт, который будет сбрасывать 
@@ -311,214 +295,138 @@ DHCP-сервера (к примеру, сама плата может явля�
 открыть на редактирование файл `/etc/network/interfaces` редактором **nano** или через файловый 
 менеджер **mc** командой правки (кнопка **F4**): 
 
-`root@bananapipro:~# nano /etc/network/interfaces` 
+<pre>root@bananapipro:~# nano /etc/network/interfaces</pre> 
 
 В окне увидим примерно следующее содержание: 
 
-`# Wired adapter #1`
-
-`allow-hotplug eth0`
-
-`iface eth0 inet dhcp`
-
-`# hwaddress ether # if you want to set MAC manually`
-
-`# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838`
-
-`#`
-
-`# Wired adapter #2`
-
-`#auto eth1`
-
-`# iface eth1 inet dhcp`
-
-`# hwaddress ether # if you want to set MAC manually`
-
-`# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838`
-
-`#`
-
-`# Wireless adapter #1`
-
-`#auto wlan0`
-
-`#iface wlan0 inet dhcp`
-
-`# wpa-ssid SSID`
-
-`# wpa-psk xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-
-`# to generate proper encrypted key: wpa_passphrase yourSSID yourpassword`
-
-`#`
-
-`# Local loopback`
-
-`auto lo`
-
-`iface lo inet loopback` 
+<pre>
+# Wired adapter #1
+allow-hotplug eth0
+iface eth0 inet dhcp
+# hwaddress ether # if you want to set MAC manually
+# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838
+#
+# Wired adapter #2
+#auto eth1
+# iface eth1 inet dhcp
+# hwaddress ether # if you want to set MAC manually
+# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838
+#
+# Wireless adapter #1
+#auto wlan0
+#iface wlan0 inet dhcp
+# wpa-ssid SSID
+# wpa-psk xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# to generate proper encrypted key: wpa_passphrase yourSSID yourpassword
+#
+# Local loopback
+auto lo
+iface lo inet loopback
+</pre> 
 
 В этом файле по-умолчанию описаны два интерфейса: железный LAN (**eth0**) и виртуальный **loopback**. 
 Для ручной настройки, необходимо строчку `iface eth0 inet dhcp` заменить на `iface eth0 inet static` и ниже 
 дописать еще несколько, в итоге получится следующее содержание: 
 
-`# Wired adapter #1`
-
-`allow-hotplug eth0`
-
-`iface eth0 inet static`
-
-`address 192.168.1.111`
-
-`netmask 255.255.255.0`
-
-`gateway 192.168.1.1`
-
-`# hwaddress ether # if you want to set MAC manually`
-
-`# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838`
-
-`#`
-
-`# Wired adapter #2`
-
-`#auto eth1`
-
-`# iface eth1 inet dhcp`
-
-`# hwaddress ether # if you want to set MAC manually`
-
-`# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838`
-
-`#`
-
-`# Wireless adapter #1`
-
-`#auto wlan0`
-
-`# iface wlan0 inet dhcp`
-
-`# wpa-ssid SSID`
-
-`# wpa-psk xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-
-`# to generate proper encrypted key: wpa_passphrase yourSSID yourpassword`
-
-`#`
-
-`# Local loopback`
-
-`auto lo`
-
-`iface lo inet loopback` 
+<pre>
+# Wired adapter #1
+allow-hotplug eth0
+iface eth0 inet static
+address 192.168.1.111
+netmask 255.255.255.0
+gateway 192.168.1.1
+# hwaddress ether # if you want to set MAC manually
+# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838
+#
+# Wired adapter #2
+#auto eth1
+# iface eth1 inet dhcp
+# hwaddress ether # if you want to set MAC manually
+# pre-up /sbin/ifconfig eth0 mtu 3838 # setting MTU for DHCP, static just: mtu 3838
+#
+# Wireless adapter #1
+#auto wlan0
+# iface wlan0 inet dhcp
+# wpa-ssid SSID
+# wpa-psk xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# to generate proper encrypted key: wpa_passphrase yourSSID yourpassword
+#
+# Local loopback
+auto lo
+iface lo inet loopback
+</pre> 
 
 Далее (если файл редактируется в nano) нажать комбинацию клавиш **Ctrl+O** (сохранить изменения) и **Ctrl+X** 
 (выйти из редактора). Возможно, дополнительно придется подредактировать DNS-сервер, 
 для этого открываем на редактирование файл `/etc/resolv.conf`
 
-`root@bananapipro:~# nano /etc/resolv.conf` 
+<pre>root@bananapipro:~# nano /etc/resolv.conf</pre> 
 
 Здесь необходимо прописать IP DNS-серверов. Можно использовать локальный, можно прописать 
 DNS-сервер google `8.8.8.8`, можно вписать оба: 
 
-`nameserver 192.168.1.10`
-
-`nameserver 8.8.8.8` 
+<pre>
+nameserver 192.168.1.10
+nameserver 8.8.8.8
+</pre> 
 
 После всех настроек, можно перезагрузиться или перезапустить сеть командой: 
 
-`root@bananapipro:~# /etc/init.d/networking restart` 
+<pre>root@bananapipro:~# /etc/init.d/networking restart</pre> 
 
 Если для работы с платой использовался протокол **ssh**, то соединение разорвется, 
 нужно подключиться заново. Теперь можно посмотреть настройки сети, 
 для этого воспользуемся командой `ifconfig`, которая выведет на экран все доступные интерфейсы: 
 
-`root@bananapipro:~# ifconfig`
-
-`eth0 Link encap:Ethernet HWaddr 02:c2:06:80:9b:27`
-
-`inet addr:192.168.1.111 Bcast:192.168.1.255 Mask:255.255.255.0`
-
-`inet6 addr: fe80::c2:6ff:fe80:9b27/64 Scope:Link`
-
-`UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1`
-
-`RX packets:136 errors:0 dropped:0 overruns:0 frame:0`
-
-`TX packets:111 errors:0 dropped:0 overruns:0 carrier:0`
-
-`collisions:0 txqueuelen:1000`
-
-`RX bytes:13531 (13.2 KiB) TX bytes:13701 (13.3 KiB)`
-
-`Interrupt:117`
-
-`lo Link encap:Local Loopback`
-
-`inet addr:127.0.0.1 Mask:255.0.0.0`
-
-`inet6 addr: ::1/128 Scope:Host`
-
-`UP LOOPBACK RUNNING MTU:16436 Metric:1`
-
-`RX packets:286 errors:0 dropped:0 overruns:0 frame:0`
-
-`TX packets:286 errors:0 dropped:0 overruns:0 carrier:0`
-
-`collisions:0 txqueuelen:0`
-
-`RX bytes:126927 (123.9 KiB) TX bytes:126927 (123.9 KiB)` 
+<pre>
+root@bananapipro:~# ifconfig
+eth0 Link encap:Ethernet HWaddr 02:c2:06:80:9b:27
+inet addr:192.168.1.111 Bcast:192.168.1.255 Mask:255.255.255.0
+inet6 addr: fe80::c2:6ff:fe80:9b27/64 Scope:Link
+UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
+RX packets:136 errors:0 dropped:0 overruns:0 frame:0
+TX packets:111 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:1000
+RX bytes:13531 (13.2 KiB) TX bytes:13701 (13.3 KiB)
+Interrupt:117
+lo Link encap:Local Loopback
+inet addr:127.0.0.1 Mask:255.0.0.0
+inet6 addr: ::1/128 Scope:Host
+UP LOOPBACK RUNNING MTU:16436 Metric:1
+RX packets:286 errors:0 dropped:0 overruns:0 frame:0
+TX packets:286 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:0
+RX bytes:126927 (123.9 KiB) TX bytes:126927 (123.9 KiB)
+</pre> 
 
 Для проверки соединения с internet, можно попробовать пропинговать сервер Яндекс: 
 
-`root@bananapipro:~# ping www.ya.ru`
-
-`PING ya.ru (213.180.204.3) 56(84) bytes of data.`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=1 ttl=56 time=5.11 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=2 ttl=56 time=5.19 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=3 ttl=56 time=5.14 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=4 ttl=56 time=5.12 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=5 ttl=56 time=5.08 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=6 ttl=56 time=5.10 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=7 ttl=56 time=5.13 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=8 ttl=56 time=5.10 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=9 ttl=56 time=5.15 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=10 ttl=56 time=5.16 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=11 ttl=56 time=5.15 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=12 ttl=56 time=5.11 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=13 ttl=56 time=5.16 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=14 ttl=56 time=5.18 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=15 ttl=56 time=5.16 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=16 ttl=56 time=7.58 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=17 ttl=56 time=5.09 ms`
-
-`64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=18 ttl=56 time=5.16 ms`
-
-`^C`
-
-`--- ya.ru ping statistics ---`
-
-`18 packets transmitted, 18 received, 0% packet loss, time 19055ms`
-
-`rtt min/avg/max/mdev = 5.085/5.274/7.585/0.568 ms`
+<pre>
+root@bananapipro:~# ping www.ya.ru
+PING ya.ru (213.180.204.3) 56(84) bytes of data.
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=1 ttl=56 time=5.11 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=2 ttl=56 time=5.19 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=3 ttl=56 time=5.14 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=4 ttl=56 time=5.12 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=5 ttl=56 time=5.08 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=6 ttl=56 time=5.10 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=7 ttl=56 time=5.13 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=8 ttl=56 time=5.10 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=9 ttl=56 time=5.15 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=10 ttl=56 time=5.16 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=11 ttl=56 time=5.15 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=12 ttl=56 time=5.11 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=13 ttl=56 time=5.16 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=14 ttl=56 time=5.18 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=15 ttl=56 time=5.16 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=16 ttl=56 time=7.58 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=17 ttl=56 time=5.09 ms
+64 bytes from www.yandex.ru (213.180.204.3): icmp_seq=18 ttl=56 time=5.16 ms
+^C
+--- ya.ru ping statistics ---
+18 packets transmitted, 18 received, 0% packet loss, time 19055ms
+rtt min/avg/max/mdev = 5.085/5.274/7.585/0.568 ms
+</pre>
 
 ### Настройка звука
 
@@ -528,7 +436,7 @@ DNS-сервер google `8.8.8.8`, можно вписать оба:
 Как написано в [документации](http://www.iobroker.net/?page_id=4262&lang=ru) 
 к этому драйверу, в системе Linux используется программа mpg321, поэтому сначала установим её: 
 
-`root@bananapipro:~# apt-get install -y mpg321` 
+<pre>root@bananapipro:~# apt-get install -y mpg321</pre> 
 
 Теперь установим драйвер и настроим его следующим образом: 
 
@@ -537,7 +445,7 @@ DNS-сервер google `8.8.8.8`, можно вписать оба:
 Для проверки можно через консоль попробовать проиграть файл, к примеру 
 `/opt/iobroker/iobroker-data/files/sayit.0/tts.userfiles/gong.mp3`, для этого набираем команду: 
 
-`root@bananapipro:~# mpg321 /opt/iobroker/iobroker-data/files/sayit.0/tts.userfiles/gong.mp3` 
+<pre>root@bananapipro:~# mpg321 /opt/iobroker/iobroker-data/files/sayit.0/tts.userfiles/gong.mp3</pre> 
 
 В колонках или наушниках, подключенных в разъем 3,5 jack на плате, должен появиться звук. 
 
@@ -556,45 +464,28 @@ DNS-сервер google `8.8.8.8`, можно вписать оба:
 звуковой карты. Чтобы исключить такие моменты, можно вручную настроить микширование. 
 Для этого создадим файл `/etc/asound.conf` со следующим содержимым: 
 
-`pcm.!default {`
-
-`  type plug`
-
-`  slave.pcm "dmixer"`
-
-`}`
-
-`pcm.dmixer {`
-
-`  type dmix`
-
-`  ipc_key 1024`
-
-`  ipc_perm 0666`
-
-`  slave {`
-
-`    pcm "hw:0,0"`
-
-`    period_time 0`
-
-`    period_size 1024`
-
-`    buffer_size 4096`
-
-`    rate 44100`
-
-`  }`
-
-`}`
-
-`ctl.dmixer {`
-
-`  type hw`
-
-`  card 0`
-
-`}` 
+<pre>
+pcm.!default {
+  type plug
+  slave.pcm "dmixer"
+}
+pcm.dmixer {
+  type dmix
+  ipc_key 1024
+  ipc_perm 0666
+  slave {
+    pcm "hw:0,0"
+    period_time 0
+    period_size 1024
+    buffer_size 4096
+    rate 44100
+  }
+}
+ctl.dmixer {
+  type hw
+  card 0
+}
+</pre> 
 
 В этом файле мы создаем виртуальный интерфейс **dmixer** и к нему слейвом подключаем реальную звуковую карту. В настройках **slave** указывается:
 
@@ -610,7 +501,7 @@ DNS-сервер google `8.8.8.8`, можно вписать оба:
 её помощью можно настроить уровни записи воспроизведения, выбрать устройство вывода звука по-умолчанию, 
 получить информацию по всем устройствам и много чего еще. Запускается она просто, в консоли набрать команду: 
 
-`root@bananapipro:~# alsamixer` 
+<pre>root@bananapipro:~# alsamixer</pre> 
 
 Экран консольный, управление стрелочками вверх/вниз, вправо/влево, на экране указаны функциональные клавиши. 
 
@@ -624,42 +515,30 @@ DNS-сервер google `8.8.8.8`, можно вписать оба:
 swap, логические диски и пр. Рассмотрим второй вариант. Итак, подключаем жесткий диск 
 (плата должна быть отключена от питания), загружаемся и проверяем,  как он определился: 
 
-`root@bananapipro:/# fdisk -l`
-
-`Disk /dev/sda: 59.6 GiB, 64023257088 bytes, 125045424 sectors`
-
-`Units: sectors of 1 * 512 = 512 bytes`
-
-`Sector size (logical/physical): 512 bytes / 512 bytes`
-
-`I/O size (minimum/optimal): 512 bytes / 512 bytes`
-
-`Disklabel type: dos`
-
-`Disk identifier: 0xdce5d50d`
-
-`Disk /dev/mmcblk0: 7.5 GiB, 8077180928 bytes, 15775744 sectors`
-
-`Units: sectors of 1 * 512 = 512 bytes`
-
-`Sector size (logical/physical): 512 bytes / 512 bytes`
-
-`I/O size (minimum/optimal): 512 bytes / 512 bytes`
-
-`Disklabel type: dos`
-
-`Disk identifier: 0x000b2ef5`
-
-`Device Boot Start End Sectors Size Id Type`
-
-`/dev/mmcblk0p1 4096 15775743 15771648 7.5G 83 Linux` 
+<pre>
+root@bananapipro:/# fdisk -l
+Disk /dev/sda: 59.6 GiB, 64023257088 bytes, 125045424 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xdce5d50d
+Disk /dev/mmcblk0: 7.5 GiB, 8077180928 bytes, 15775744 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x000b2ef5
+Device Boot Start End Sectors Size Id Type
+/dev/mmcblk0p1 4096 15775743 15771648 7.5G 83 Linux
+</pre> 
 
 Видно, что в системе подключена SD-карта - **/dev/mmcblk0p1** и искомый HDD - **/dev/sda**. 
 В [документации](http://www.armbian.com/documentation/) на сайте armbian указано, 
 что для переноса системы на устройство SATA (USB) необходимо сначала разбить жесткий диск - "pre-partitioned SATA or USB storage". 
 Воспользуемся командой fdisk: 
 
-`root@bananapipro:/# fdisk /dev/sda` 
+<pre>root@bananapipro:/# fdisk /dev/sda</pre> 
 
 Директива **m** - это help. 
 Директива **d** удалит существующие разделы (используем **d** пока не появится сообщение что разделов больше нет). 
@@ -667,38 +546,40 @@ swap, логические диски и пр. Рассмотрим второй
 сектор по умолчанию оставляем - **last sector** пишем **+1024M**. 
 Нажимаем **p** - посмотрим что получилось (в примере используется SSD 64Гб): 
 
-`Device Boot Start End Sectors Size Id Type`
-
-`/dev/sda1 2048 2099199 2097152 1G 83 Linux` 
+<pre>
+Device Boot Start End Sectors Size Id Type
+/dev/sda1 2048 2099199 2097152 1G 83 Linux
+</pre> 
 
 Для swap надо Id поменять на 82, нажимаем **t** (у нас одна партиция пока, система не 
 предлагает выбрать, ставит по умолчанию "Selected partition 1") - пишем **82**. 
 Нажимаем **p** - посмотрим что получилось. 
 
-`Device Boot Start End Sectors Size Id Type`
-
-`/dev/sda1 2048 2099199 2097152 1G 82 Linux swap / Solaris` 
+<pre>
+Device Boot Start End Sectors Size Id Type
+/dev/sda1 2048 2099199 2097152 1G 82 Linux swap / Solaris
+</pre> 
 
 Теперь делаем раздел для rootfs. Директива **n** - затем **p** - 
 номер партиции **2** - первый сектор по умолчанию оставляем - last sector так же по-умолчанию 
 (все оставшееся место) - создали /dev/sda2. Нажимаем **p** - посмотрим что получилось. 
 
-`Device Boot Start End Sectors Size Id Type`
-
-`/dev/sda1 2048 2099199 2097152 1G 82 Linux swap / Solaris`
-
-`/dev/sda2 2099200 125045423 122946224 58.6G 83 Linux` 
+<pre>
+Device Boot Start End Sectors Size Id Type
+/dev/sda1 2048 2099199 2097152 1G 82 Linux swap / Solaris
+/dev/sda2 2099200 125045423 122946224 58.6G 83 Linux
+</pre> 
 
 Обязательно надо записать данные в файловую таблицу - выбираем директиву **w** - 
 происходит запись на диск и программа fdisk завершает свою работу. 
 
 Отформатируем раздел /dev/sda2: 
 
-`root@bananapipro:/# mkfs.ext4 /dev/sda2` 
+<pre>root@bananapipro:/# mkfs.ext4 /dev/sda2</pre> 
 
 Теперь можно запустить скрипт установки системы на SATA: 
 
-`root@bananapipro:/# nand-sata-install` 
+<pre>root@bananapipro:/# nand-sata-install</pre> 
 
 Откроется диалоговое окно консольного вида, где будет предложено куда устанавливать (в примере используется плата BananaPi, на ней нет NAND, 
 поэтому доступен только один вариант SATA/USB): 
@@ -725,71 +606,56 @@ swap, логические диски и пр. Рассмотрим второй
 
 После загрузки системы можно посмотреть сколько места в корне (rootfs) и где теперь SD-карта: 
 
-`root@bananapipro:~# df -h`
-
-`Filesystem Size Used Avail Use% Mounted on`
-
-`/dev/sda2 58G 1.5G 54G 3% /`
-
-`udev 10M 0 10M 0% /dev`
-
-`tmpfs 197M 4.5M 193M 3% /run`
-
-`tmpfs 493M 0 493M 0% /dev/shm`
-
-`tmpfs 5.0M 4.0K 5.0M 1% /run/lock`
-
-`tmpfs 493M 0 493M 0% /sys/fs/cgroup`
-
-`tmpfs 493M 4.0K 493M 1% /tmp`
-
-`/dev/mmcblk0p1 7.5G 1.3G 6.1G 18% /boot`
-
-`tmpfs 99M 0 99M 0% /run/user/0` 
+<pre>
+root@bananapipro:~# df -h
+Filesystem Size Used Avail Use% Mounted on
+/dev/sda2 58G 1.5G 54G 3% /
+udev 10M 0 10M 0% /dev
+tmpfs 197M 4.5M 193M 3% /run
+tmpfs 493M 0 493M 0% /dev/shm
+tmpfs 5.0M 4.0K 5.0M 1% /run/lock
+tmpfs 493M 0 493M 0% /sys/fs/cgroup
+tmpfs 493M 4.0K 493M 1% /tmp
+/dev/mmcblk0p1 7.5G 1.3G 6.1G 18% /boot
+tmpfs 99M 0 99M 0% /run/user/0
+</pre> 
 
 Корень файловой системы на **/dev/sda2** и объем около 58Гб - отлично! 
 Карта памяти теперь смонтирована в **/media/mmc**, загрузка из **/boot** в **/dev/mmcblk0p1**. 
 Теперь перенесем swap на жесткий диск. По-умолчанию он в виде файла-образа и
 находится в папке `/var/swap` 127Мб. Сначала отключим текущий: 
-`root@bananapipro:~# swapoff --all` 
+<pre>root@bananapipro:~# swapoff --all</pre> 
 
-Из файла /etc/fstab удалим (точнее временно закомментируем символом "#" строчку) `/var/swap none swap sw 0 0` 
+Из файла /etc/fstab удалим (точнее временно закомментируем символом "#" строчку) `/var/swap none swap sw 0 0</pre> 
 
 Перезагружаемся, проверяем: 
-`root@bananapipro:~# free -m`
+<pre>
+root@bananapipro:~# free -m
+           total    used    free    shared    buffers    cached
+Mem:       984      173     810     4         13         51
+-/+ buffers/cache:  109     875
+Swap:      0        0       0
+</pre> 
 
-`           total    used    free    shared    buffers    cached`
-
-`Mem:       984      173     810     4         13         51`
-
-`-/+ buffers/cache:  109     875`
-
-`Swap:      0        0       0` 
-
-Отлично, swap отсутствует, можно смело удалить файл `/var/swap.` 
+Отлично, swap отсутствует, можно смело удалить файл `/var/swap.</pre> 
 Как писалось выше, был создан раздел **/dev/sda1** он как раз для swap-файла. 
 Редактируем файл **/dev/fstab** - строку `/var/swap none swap sw 0 0` (ранее под комментарием теперь убираем символ "#") 
 меняем на `<span class="syntaxdefault">dev</span><span class="syntaxkeyword">/</span><span class="syntaxdefault">sda1 swap swap defaults 0 0</span>`<span class="syntaxdefault">.</span> 
 
 Забиваем **/dev/sda1** нулями (не обязательно): 
-`root@bananapipro:~# dd if=/dev/zero of=/dev/sda1 bs=1024 count=2048K` 
+<pre>root@bananapipro:~# dd if=/dev/zero of=/dev/sda1 bs=1024 count=2048K</pre> 
 
 Теперь создаем swap: 
-`root@bananapipro:~# mkswap /dev/sda1`
-
-`root@bananapipro:~# swapon /dev/sda1` 
+<pre>root@bananapipro:~# mkswap /dev/sda1
+root@bananapipro:~# swapon /dev/sda1</pre> 
 
 Можно перезагрузиться и проверить swap: 
 
-`root@bananapipro:~# free -m`
-
-`          total     used    free    shared    buffers    cached`
-
-`Mem:      984       173     810     4         13         51`
-
-`-/+ buffers/cache:  109     875`
-
-`Swap:     1000      0       1000` 
+<pre>root@bananapipro:~# free -m
+          total     used    free    shared    buffers    cached
+Mem:      984       173     810     4         13         51
+-/+ buffers/cache:  109     875
+Swap:     1000      0       1000</pre> 
 
 Отлично, с настройкой жесткого диска и переносом системы закончили.
 
@@ -814,35 +680,21 @@ swap, логические диски и пр. Рассмотрим второй
 Подключение необходимо производить на полностью обесточенной плате. После запуска 
 системы, можно посмотреть параметры АКБ, делается это командой **cat** (к примеру): 
 
-`root@cubietruck:~# cat /sys/class/power_supply/battery/uevent`
-
-`POWER_SUPPLY_NAME=battery`
-
-`POWER_SUPPLY_MODEL_NAME=battery`
-
-`POWER_SUPPLY_STATUS=Charging`
-
-`POWER_SUPPLY_PRESENT=1`
-
-`POWER_SUPPLY_ONLINE=0`
-
-`POWER_SUPPLY_HEALTH=Good`
-
-`POWER_SUPPLY_TECHNOLOGY=Li-ion`
-
-`POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4200000`
-
-`POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3300`
-
-`POWER_SUPPLY_VOLTAGE_NOW=4138000`
-
-`POWER_SUPPLY_CURRENT_NOW=412000`
-
-`POWER_SUPPLY_ENERGY_FULL_DESIGN=2100`
-
-`POWER_SUPPLY_CAPACITY=99`
-
-`POWER_SUPPLY_TEMP=300` 
+<pre>root@cubietruck:~# cat /sys/class/power_supply/battery/uevent
+POWER_SUPPLY_NAME=battery
+POWER_SUPPLY_MODEL_NAME=battery
+POWER_SUPPLY_STATUS=Charging
+POWER_SUPPLY_PRESENT=1
+POWER_SUPPLY_ONLINE=0
+POWER_SUPPLY_HEALTH=Good
+POWER_SUPPLY_TECHNOLOGY=Li-ion
+POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4200000
+POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3300
+POWER_SUPPLY_VOLTAGE_NOW=4138000
+POWER_SUPPLY_CURRENT_NOW=412000
+POWER_SUPPLY_ENERGY_FULL_DESIGN=2100
+POWER_SUPPLY_CAPACITY=99
+POWER_SUPPLY_TEMP=300</pre> 
 
 Здесь полезная информация:
 
@@ -852,72 +704,55 @@ swap, логические диски и пр. Рассмотрим второй
 *   `POWER_SUPPLY_CURRENT_NOW=412000` - текущий ток (в мкА),
 *   `POWER_SUPPLY_CAPACITY=99` - текущая емкость (в %).
 
-Можно использовать эту информацию для написания собственных скриптов или драйвера, но с параметром `POWER_SUPPLY_CAPACITY` 
+Можно использовать эту информацию для написания собственных скриптов или драйвера, но с параметром `POWER_SUPPLY_CAPACITY</pre> 
 надо быть аккуратнее, так как в системе прописана АКБ по-умолчанию емкостью 2100мАч, 
 а в примере используется 5000мАч. Эту настройку можно подкорректировать. Текущая версия 
 сборки armbian v5.10 / 1.5.2016 (в более поздних формат файлов и их расположение может поменяться), 
 необходимо сверить с информацией на [сайте](http://www.armbian.com/) проекта. **Внимание!!!** 
 
 Редактировать файл `/boot/script.bin` нужно очень аккуратно!!! Если не знаете на 100% за что отвечает тот или иной параметр, 
-плата может не загрузиться, а в худшем варианте, сломаться!!! Основные настройки платы находятся в файле `/boot/script.bin` 
+плата может не загрузиться, а в худшем варианте, сломаться!!! Основные настройки платы находятся в файле `/boot/script.bin</pre> 
 на SD-карте (даже если система установлена на HDD). Однако, начиная с версии armbian 4.5, это ссылка на 
 файл конкретной платы в папке `/boot/bin`, в случае с cubietruck это - `/boot/bin/cubietruck.bin`.
-Чтобы при последующем обновлении системы настройки не потерялись, скопируем файл `/boot/bin/cubietruck.bin` в `/boot/script.bin` 
+Чтобы при последующем обновлении системы настройки не потерялись, скопируем файл `/boot/bin/cubietruck.bin` в `/boot/script.bin</pre> 
 и, на всякий случай, в директорию пользователя, к примеру `/root` (резервная копия). 
 
-`root@cubietruck:~# cp /boot/bin/cubietruck.bin /boot/script.bin`
-
-`root@cubietruck:~# cp /boot/script.bin /root/script.bin.backup` 
+<pre>root@cubietruck:~# cp /boot/bin/cubietruck.bin /boot/script.bin
+root@cubietruck:~# cp /boot/script.bin /root/script.bin.backup</pre> 
 
 Теперь распакуем файл `/boot/script.bin` с помощью утилиты **bin2fex** в ту же директорию. 
 
-`root@cubietruck:~# bin2fex /boot/script.bin /boot/script.fex`
-
-`fexc-bin: /boot/script.bin: version: 0.1.2`
-
-`fexc-bin: /boot/script.bin: size: 46404 (83 sections)` 
+<pre>root@cubietruck:~# bin2fex /boot/script.bin /boot/script.fex
+fexc-bin: /boot/script.bin: version: 0.1.2
+fexc-bin: /boot/script.bin: size: 46404 (83 sections)</pre> 
 
 Файл `/boot/script.fex` уже в редактируемом формате, его можно открыть в любом текстовом 
 редакторе. В этом файле интересует настройка **pmu_battery_cap** в секции **[pmu_para]**. 
 Её значение по-умолчанию 2100, меняем на 5000 (емкость АКБ в даном примере), 
 сохраняем, и конвертируем файл обратно в `/boot/script.bin` утилитой **fex2bin**:
 
-`root@cubietruck:~# fex2bin /boot/script.fex /boot/script.bin` 
+<pre>root@cubietruck:~# fex2bin /boot/script.fex /boot/script.bin</pre> 
 
 Для примерения настроек, необходимо перезагрузиться. Можно проверить состояние АКБ: 
 
-`root@cubietruck:~# cat /sys/class/power_supply/battery/uevent`
-
-`POWER_SUPPLY_NAME=battery`
-
-`POWER_SUPPLY_MODEL_NAME=battery`
-
-`POWER_SUPPLY_STATUS=Charging`
-
-`POWER_SUPPLY_PRESENT=1`
-
-`POWER_SUPPLY_ONLINE=0`
-
-`POWER_SUPPLY_HEALTH=Good`
-
-`POWER_SUPPLY_TECHNOLOGY=Li-ion`
-
-`POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4200000`
-
-`POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3300`
-
-`POWER_SUPPLY_VOLTAGE_NOW=4090000`
-
-`POWER_SUPPLY_CURRENT_NOW=414000`
-
-`POWER_SUPPLY_ENERGY_FULL_DESIGN=5000`
-
-`POWER_SUPPLY_CAPACITY=89`
-
-`POWER_SUPPLY_TEMP=300` 
+<pre>root@cubietruck:~# cat /sys/class/power_supply/battery/uevent
+POWER_SUPPLY_NAME=battery
+POWER_SUPPLY_MODEL_NAME=battery
+POWER_SUPPLY_STATUS=Charging
+POWER_SUPPLY_PRESENT=1
+POWER_SUPPLY_ONLINE=0
+POWER_SUPPLY_HEALTH=Good
+POWER_SUPPLY_TECHNOLOGY=Li-ion
+POWER_SUPPLY_VOLTAGE_MAX_DESIGN=4200000
+POWER_SUPPLY_VOLTAGE_MIN_DESIGN=3300
+POWER_SUPPLY_VOLTAGE_NOW=4090000
+POWER_SUPPLY_CURRENT_NOW=414000
+POWER_SUPPLY_ENERGY_FULL_DESIGN=5000
+POWER_SUPPLY_CAPACITY=89
+POWER_SUPPLY_TEMP=300</pre> 
 
 Видно, что емкость АКБ теперь не 2100, а 5000 - параметр 
-`POWER_SUPPLY_ENERGY_FULL_DESIGN` 
+`POWER_SUPPLY_ENERGY_FULL_DESIGN</pre> 
 **Внимание!!!** Редактировать файл `/boot/script.bin` нужно очень аккуратно!!! 
 Если не знаете на 100% за что отвечает тот или иной параметр, плата может не загрузиться, а в худшем варианте, сломаться!!!
 С помощью скрипта можно собирать данные о плате, в частности состояние системы питания. 
@@ -945,7 +780,7 @@ swap, логические диски и пр. Рассмотрим второй
 изучить документацию на чип, к которому подключаетесь и схему платы, некоторые платы работают 
 с уровнем логики 3,3В, некоторые 5В - это надо учитывать! Чтобы понять, какие порты можно
 использовать в системе как ввод-вывод, а какие нельзя (не сконфигурированы, заняты под другие нужды - I2C, UART, SPI и пр.), 
-необходимо проанализировать файл script.bin в директории `/boot`. **Внимание!!!** Редактировать файл `/boot/script.bin` 
+необходимо проанализировать файл script.bin в директории `/boot`. **Внимание!!!** Редактировать файл `/boot/script.bin</pre> 
 нужно очень аккуратно!!! Если не знаете на 100% за что отвечает тот или иной параметр, плата может не загрузиться, 
 а в худшем случае, сломаться!!! Текущая версия сборки armbian v5.10 / 1.5.2016 (в более поздних формат файлов и их 
 расположение может поменяться), необходимо сверить с информацией на [сайте](http://www.armbian.com/) проекта. 
@@ -955,17 +790,14 @@ swap, логические диски и пр. Рассмотрим второй
 скопируем файл `/boot/bin/bananapi.bin` в `/boot/script.bin` и, на всякий случай, в директорию пользователя, 
 к примеру `/root` (резервная копия). 
  
-`root@bananapi:~# cp /boot/bin/bananapi.bin /boot/script.bin`
-
-`root@bananapi:~# cp /boot/script.bin /root/script.bin.backup` 
+<pre>root@bananapi:~# cp /boot/bin/bananapi.bin /boot/script.bin
+root@bananapi:~# cp /boot/script.bin /root/script.bin.backup</pre> 
 
 Теперь распакуем файл `/boot/script.bin` с помощью утилиты **bin2fex** в ту же директорию. 
 
-`root@bananapi:~# bin2fex /boot/script.bin /boot/script.fex`
-
-`fexc-bin: /boot/script.bin: version: 0.1.2`
-
-`fexc-bin: /boot/script.bin: size: 46404 (83 sections)` 
+<pre>root@bananapi:~# bin2fex /boot/script.bin /boot/script.fex
+fexc-bin: /boot/script.bin: version: 0.1.2
+fexc-bin: /boot/script.bin: size: 46404 (83 sections)</pre> 
 
 Файл `/boot/script.fex` уже в редактируемом формате, его можно открыть в любом текстовом редакторе. 
 В этом файле интересует настройки в секции **[gpio_para]**. 
@@ -987,119 +819,69 @@ swap, логические диски и пр. Рассмотрим второй
 состояние портов GPIO в системе специальной программой, к примеру [WiringBP](https://github.com/LeMaker/WiringBP) (для платы BananPi). 
 Установка описана на сайте [github](https://github.com/LeMaker/WiringBP) и на страничке [WiKi](http://wiki.lemaker.org/BananaPro/Pi:GPIO_library#WiringPi): 
 
-`root@bananapi:~# git clone https://github.com/LeMaker/WiringBP.git -b bananapi`
-
-`Cloning into 'WiringBP'...`
-
-`remote: Counting objects: 238, done.`
-
-`remote: Total 238 (delta 0), reused 0 (delta 0), pack-reused 237`
-
-`Receiving objects: 100% (238/238), 213.98 KiB | 133.00 KiB/s, done.`
-
-`Resolving deltas: 100% (122/122), done.`
-
-`Checking connectivity... done.` 
+<pre>root@bananapi:~# git clone https://github.com/LeMaker/WiringBP.git -b bananapi
+Cloning into 'WiringBP'...
+remote: Counting objects: 238, done.
+remote: Total 238 (delta 0), reused 0 (delta 0), pack-reused 237
+Receiving objects: 100% (238/238), 213.98 KiB | 133.00 KiB/s, done.
+Resolving deltas: 100% (122/122), done.
+Checking connectivity... done.</pre> 
 
 Выполняем установку: 
 
-`root@bananapi:~# cd WiringBP/`
-
-`root@bananapi:~/WiringBP# ls -l`
-
-`total 44`
-
-`-rw-r--r-- 1 root root 1943 Jun  7 17:08 build`
-
-`-rw-r--r-- 1 root root 7651 Jun  7 17:08 COPYING.LESSER`
-
-`drwxr-xr-x 2 root root 4096 Jun  7 17:08 devLib`
-
-`drwxr-xr-x 6 root root 4096 Jun  7 17:08 examples`
-
-`drwxr-xr-x 2 root root 4096 Jun  7 17:08 gpio`
-
-`-rw-r--r-- 1 root root  686 Jun  7 17:08 INSTALL`
-
-`-rw-r--r-- 1 root root 1005 Jun  7 17:08 People`
-
-`drwxr-xr-x 2 root root 4096 Jun  7 17:08 pins`
-
-`-rw-r--r-- 1 root root  912 Jun  7 17:08 README.md`
-
-`drwxr-xr-x 2 root root 4096 Jun  7 17:08 wiringPi`
-
-`root@bananapi:~/WiringBP# chmod +x ./build`
-
-`root@bananapi:~/WiringBP# ./build` 
+<pre>root@bananapi:~# cd WiringBP/
+root@bananapi:~/WiringBP# ls -l
+total 44
+-rw-r--r-- 1 root root 1943 Jun  7 17:08 build
+-rw-r--r-- 1 root root 7651 Jun  7 17:08 COPYING.LESSER
+drwxr-xr-x 2 root root 4096 Jun  7 17:08 devLib
+drwxr-xr-x 6 root root 4096 Jun  7 17:08 examples
+drwxr-xr-x 2 root root 4096 Jun  7 17:08 gpio
+-rw-r--r-- 1 root root  686 Jun  7 17:08 INSTALL
+-rw-r--r-- 1 root root 1005 Jun  7 17:08 People
+drwxr-xr-x 2 root root 4096 Jun  7 17:08 pins
+-rw-r--r-- 1 root root  912 Jun  7 17:08 README.md
+drwxr-xr-x 2 root root 4096 Jun  7 17:08 wiringPi
+root@bananapi:~/WiringBP# chmod +x ./build
+root@bananapi:~/WiringBP# ./build</pre> 
 
 Проверяем работу: 
 
-`root@bananapi:~/WiringBP# gpio -v`
-
-`gpio version: 2.14`
-
-`Copyright (c) 2012-2014 Gordon Henderson`
-
-`This is free software with ABSOLUTELY NO WARRANTY.`
-
-`For details type: gpio -warranty`
-
-`This Raspberry Pi is a revision 3 board.` 
+<pre>root@bananapi:~/WiringBP# gpio -v
+gpio version: 2.14
+Copyright (c) 2012-2014 Gordon Henderson
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type: gpio -warranty
+This Raspberry Pi is a revision 3 board.</pre> 
 
 Считаем параметры всех gpio: 
 
-`root@bananapi:~/WiringBP# gpio readall`
-
-`+----------+-Rev3-+------+--------+------+-------+`
-
-`| wiringPi | GPIO | Phys | Name   | Mode | Value |`
-
-`+----------+------+------+--------+------+-------+`
-
-`|      0   |  17  |  11  | GPIO 0 | IN   | Low   |`
-
-`|      1   |  18  |  12  | GPIO 1 | IN   | Low   |`
-
-`|      2   |  27  |  13  | GPIO 2 | IN   | Low   |`
-
-`|      3   |  22  |  15  | GPIO 3 | IN   | Low   |`
-
-`|      4   |  23  |  16  | GPIO 4 | IN   | Low   |`
-
-`|      5   |  24  |  18  | GPIO 5 | IN   | High  |`
-
-`|      6   |  25  |  22  | GPIO 6 | IN   | Low   |`
-
-`|      7   |   4  |   7  | GPIO 7 | IN   | Low   |`
-
-`|      8   |   2  |   3  | SDA    | ALT5 | High  |`
-
-`|      9   |   3  |   5  | SCL    | ALT5 | High  |`
-
-`|     10   |   8  |  24  | CE0    | ALT5 | Low   |`
-
-`|     11   |   7  |  26  | CE1    | ALT5 | Low   |`
-
-`|     12   |  10  |  19  | MOSI   | ALT5 | Low   |`
-
-`|     13   |   9  |  21  | MISO   | ALT5 | Low   |`
-
-`|     14   |  11  |  23  | SCLK   | ALT5 | Low   |`
-
-`|     15   |  14  |   8  | TxD    | OUT  | High  |`
-
-`|     16   |  15  |  10  | RxD    | OUT  | High  |`
-
-`|     17   |  28  |   3  | GPIO 8 | IN   | Low   |`
-
-`|     18   |  29  |   4  | GPIO 9 | ALT4 | Low   |`
-
-`|     19   |  30  |   5  | GPIO10 | OUT  | High  |`
-
-`|     20   |  31  |   6  | GPIO11 | ALT4 | Low   |`
-
-`+----------+------+------+--------+------+-------+` 
+<pre>root@bananapi:~/WiringBP# gpio readall
++----------+-Rev3-+------+--------+------+-------+
+| wiringPi | GPIO | Phys | Name   | Mode | Value |
++----------+------+------+--------+------+-------+
+|      0   |  17  |  11  | GPIO 0 | IN   | Low   |
+|      1   |  18  |  12  | GPIO 1 | IN   | Low   |
+|      2   |  27  |  13  | GPIO 2 | IN   | Low   |
+|      3   |  22  |  15  | GPIO 3 | IN   | Low   |
+|      4   |  23  |  16  | GPIO 4 | IN   | Low   |
+|      5   |  24  |  18  | GPIO 5 | IN   | High  |
+|      6   |  25  |  22  | GPIO 6 | IN   | Low   |
+|      7   |   4  |   7  | GPIO 7 | IN   | Low   |
+|      8   |   2  |   3  | SDA    | ALT5 | High  |
+|      9   |   3  |   5  | SCL    | ALT5 | High  |
+|     10   |   8  |  24  | CE0    | ALT5 | Low   |
+|     11   |   7  |  26  | CE1    | ALT5 | Low   |
+|     12   |  10  |  19  | MOSI   | ALT5 | Low   |
+|     13   |   9  |  21  | MISO   | ALT5 | Low   |
+|     14   |  11  |  23  | SCLK   | ALT5 | Low   |
+|     15   |  14  |   8  | TxD    | OUT  | High  |
+|     16   |  15  |  10  | RxD    | OUT  | High  |
+|     17   |  28  |   3  | GPIO 8 | IN   | Low   |
+|     18   |  29  |   4  | GPIO 9 | ALT4 | Low   |
+|     19   |  30  |   5  | GPIO10 | OUT  | High  |
+|     20   |  31  |   6  | GPIO11 | ALT4 | Low   |
++----------+------+------+--------+------+-------+</pre> 
 
 В этой таблице описаны порты GPIO только на контактах колодки **[CON3](http://wiki.lemaker.org/File:PIN_CONNECTOR.jpg)** 
 платы BananaPi и только те, которыми теоретически можно управлять (то есть исключены железные +5В, +3В, GND). 
@@ -1116,17 +898,12 @@ swap, логические диски и пр. Рассмотрим второй
 
 Результат установки (успех или ошибки) в лог-файле `/opt/iobroker/log`: 
 
-`javascript.0 npm install gpio --production --prefix "/opt/iobroker/node_modules/iobroker.javascript"`
-
-`javascript.0 gpio@0.2.7 opt/iobroker/node_modules/iobroker.javascript/node_modules/gpio`
-
-`javascript.0 requesting all states`
-
-`javascript.0 requesting all objects`
-
-`javascript.0 received all states`
-
-`javascript.0 received all objects` 
+<pre>javascript.0 npm install gpio --production --prefix "/opt/iobroker/node_modules/iobroker.javascript"
+javascript.0 gpio@0.2.7 opt/iobroker/node_modules/iobroker.javascript/node_modules/gpio
+javascript.0 requesting all states
+javascript.0 requesting all objects
+javascript.0 received all states
+javascript.0 received all objects</pre> 
 
 Эта библиотека хороша тем, что можно ["подписываться"](img/GpiO#eventemitter) на изменение состояния портов gpio, 
 помеченных как in (вход) вместо того, что постоянно опрашивать с определенным интервалом. 
@@ -1137,30 +914,26 @@ swap, логические диски и пр. Рассмотрим второй
 
 Текст скрипта: 
 
-`var gpio = require("gpio"); //подключаем библиотеку` 
-`//pin18 gpio24 подключен светодиод, направление out (выход)` 
-`var gpio24 = gpio.export(24, {direction: "out"});` 
-`//pin22 gpio25 подключена кнопка, направление in (вход)` 
-`var gpio25 = gpio.export(25, {direction: "in"});` 
-`//Подписываемся на срабатывание gpio 25 (нажали/отпустили) и инвертируем состояние gpio24 только при нажатой кнопке` 
-`gpio25.on("change", function(val) {` 
-`  //Инвертируем только при нажатой кнопке` 
-`  if (val) {` 
-`    gpio24.set(gpio24.value - 1);` 
-`  }` 
-`});` 
-`//Завершается работа скрипта, отписываемся от gpio25 и удаляем настройки всех gpio` 
-`onStop(function () {`
-
-`  gpio25.removeAllListeners("change");`
-
-`  gpio24.unexport();`
-
-`  gpio25.unexport();`
-
-`  log("Stop script. All unexport done!");`
-
-`}, 1000 /*ms*/);`
+<pre>var gpio = require("gpio"); //подключаем библиотеку 
+//pin18 gpio24 подключен светодиод, направление out (выход) 
+var gpio24 = gpio.export(24, {direction: "out"}); 
+//pin22 gpio25 подключена кнопка, направление in (вход) 
+var gpio25 = gpio.export(25, {direction: "in"}); 
+//Подписываемся на срабатывание gpio 25 (нажали/отпустили) и инвертируем состояние gpio24 только при нажатой кнопке 
+gpio25.on("change", function(val) { 
+  //Инвертируем только при нажатой кнопке 
+  if (val) { 
+    gpio24.set(gpio24.value - 1); 
+  } 
+}); 
+//Завершается работа скрипта, отписываемся от gpio25 и удаляем настройки всех gpio 
+onStop(function () {
+  gpio25.removeAllListeners("change");
+  gpio24.unexport();
+  gpio25.unexport();
+  log("Stop script. All unexport done!");
+}, 1000 /*ms*/);
+</pre>
 
 ### Настройка отключения системы shutdown кнопкой GPIO
 
@@ -1176,46 +949,35 @@ swap, логические диски и пр. Рассмотрим второй
 подключаем к **pin_22** (GPIO25) и **pin_02** (+5В). При замыкании на **GPIO25** появится логическая "1", если отпустить кнопку, 
 будет логический "0". Скрипт запускается от имени пользователя root: 
 
-`root@bananapipro:~# nano /root/gpio_shutdown.sh` 
+<pre>root@bananapipro:~# nano /root/gpio_shutdown.sh</pre> 
 
 Содержание будет приблизительно следующее: 
 
-`#! /bin/bash`
-
-`# Set up GPIO25 and set to input`
-
-`echo "25" > /sys/class/gpio/export`
-
-`echo "in" > /sys/class/gpio/gpio25/direction`
-
-`while ( true ) `
-
-`do`
-
-`    # check if the pin is connected to +5V and, if so, halt the system`
-
-`    if [ $(</sys/class/gpio/gpio25/value) == 1 ]`
-
-`    then`
-
-`        echo "25" > /sys/class/gpio/unexport`
-
-`        shutdown -h now "System halted by a GPIO action"`
-
-`    fi `
-
-`    sleep 1`
-
-`done` 
+<pre>
+#! /bin/bash
+# Set up GPIO25 and set to input
+echo "25" > /sys/class/gpio/export
+echo "in" > /sys/class/gpio/gpio25/direction
+while ( true ) 
+do
+    # check if the pin is connected to +5V and, if so, halt the system
+    if [ $(</sys/class/gpio/gpio25/value) == 1 ]
+    then
+        echo "25" > /sys/class/gpio/unexport
+        shutdown -h now "System halted by a GPIO action"
+    fi 
+    sleep 1
+done
+</pre> 
 
 Даем права на исполнение: 
 
-`root@bananapipro:~# chmod +x /root/gpio_shutdown.sh` 
+<pre>root@bananapipro:~# chmod +x /root/gpio_shutdown.sh</pre> 
 
 Проверить работу можно запустив скрипт и нажав на кнопку, в консоли должно появиться сообщение `"System halted by a GPIO action"` и система выключится. 
 Добавляем в конец файла /etc/crontab строчку: 
 
-`@reboot root /root/gpio_shutdown.sh` 
+<pre>@reboot root /root/gpio_shutdown.sh</pre> 
 
 Она обозначает: запуск скрипта 
 от имени пользователя root при запуске системы (опция **@reboot**). Теперь после перезагрузки можно убедиться, 
@@ -1227,26 +989,24 @@ swap, логические диски и пр. Рассмотрим второй
 
 Чтобы выбрать временную зону, нужно набрать следующую команду: 
 
-`root@bananapipro:~# dpkg-reconfigure tzdata` 
+<pre>root@bananapipro:~# dpkg-reconfigure tzdata</pre> 
 
 На экране отобразится консольное окно для выбора временной зоны. Если необходимо задать время МСК (+3), то выбираем **Europe**, 
 затем листаем вверх/вниз и ищем **Moscow**, подтверждаем выбор клавишей enter. 
 
-`Current default time zone: 'Europe/Moscow'`
-
-`Local time is now: Wed May 25 15:36:10 MSK 2016.`
-
-`Universal Time is now: Wed May 25 12:36:10 UTC 2016.` 
+<pre>Current default time zone: 'Europe/Moscow'
+Local time is now: Wed May 25 15:36:10 MSK 2016.
+Universal Time is now: Wed May 25 12:36:10 UTC 2016.</pre> 
 
 Для настройки клавиатуры, необходимо выполнить следующую команду: 
 
-`root@bananapipro:~# dpkg-reconfigure keyboard-configuration` 
+<pre>root@bananapipro:~# dpkg-reconfigure keyboard-configuration</pre> 
 
 И далее на экране в консольном окне выбрать искомую модель клавиатуры, выбрать раскладку, 
 способ переключения между языками и ответить на некоторые другие вопросы. Чтобы настроить 
 текстовый вывод в консоль, нужно выполнить команду: 
 
-`root@bananapipro:~# dpkg-reconfigure console-setup` 
+<pre>root@bananapipro:~# dpkg-reconfigure console-setup</pre> 
 
 В открывшемся диалоге нужно выбрать кодировку (**UTF-8**), поддерживаемый набор символов (**Guess optimal character set**), 
 шрифт (можно выбрать **Terminus**) и размер шрифта (**8х16**). Чтобы изменения вступили в силу, нужно заново войти в систему.
