@@ -1,0 +1,1 @@
+Please use [JIRA](http://iobroker.net:8000) to report the bugs. Use [forum](http://forum.iobroker.net) to ask some question and this form use only if something wrong with this web site (e.g. information is wrong) or you want to invest. [contact-form-7 id="2780" title="Kontaktformular EN"]

@@ -1,0 +1,1 @@
+Bitte die Links zu den Infoseiten in der rechten Spalte beachten! <span style="color: #000000;">Das weitere Vorgehen nach dem Download von Images wird [hier](http://www.iobroker.net/?page_id=5219&lang=de) beschrieben.</span> [table id=23 /]

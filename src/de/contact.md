@@ -1,0 +1,1 @@
+Um ein Bug zu melden benutzen Sie bitte [JIRA](http://iobroker.net:8000). Um eine Frage zu stellen benutzen Sie bitte [Forum](http://forum.iobroker.net). Nehmen Sie den Kontakt über diesen Seiet nur auf, wenn irgendwas mit dem Inhalt nicht in Ordnung ist oder Sie wollen investieren. [contact-form-7 id="2778" title="Kontaktformular 1"]

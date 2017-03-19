@@ -1,0 +1,7 @@
+
+
+
+
+## Konfiguration
+
+Die Oberfläche: [![ioBrokerAdapterSONOS_Einstellungen_01](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_01.png)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_01.png) Nach dem Klick auf: [![ioBrokerAdapterSONOS_Einstellungen_02](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_02.png)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_02.png) werden die vorhandenen Geräte mit der IP-Adresse eingetragen. [![ioBrokerAdapterSONOS_Einstellungen_03](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_03.png)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_03.png)   Danach können die Namen für die Geräte eingetragen werden. [![ioBrokerAdapterSONOS_Einstellungen_04](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_04.png)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_04.png)   Speichern und Schließen   Danach stehen in ioBroker folgende Datenpunkte je Gerät zur Verfügung [![ioBrokerAdapterSONOS_Einstellungen_05](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_05.png)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBrokerAdapterSONOS_Einstellungen_05.png)
