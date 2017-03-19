@@ -28,23 +28,29 @@
 
 1.  Обновить ядро: `sudo apt-get update && sudo apt-get upgrade`
 2.  Установить Node.js
-1.  `sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove && sudo apt-get autoclean`
-2.  `sudo apt-get remove libpcap0.8 -y`
-3.  `sudo apt-get install -y build-essential libpcap-dev git -y`
-4.  `cd /tmp`
-5.  `wget https://nodejs.org/dist/v4.6.1/node-v4.6.1-linux-arm64.tar.xz`
-6.  `cd /usr/local`
-7.  `sudo tar --strip-components=1 -xvf /tmp/node-v4.6.1-linux-arm64.tar.xz`
-8.  `sudo npm install node-gyp -g`
+
+<pre>
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove && sudo apt-get autoclean
+sudo apt-get remove libpcap0.8 -y
+sudo apt-get install -y build-essential libpcap-dev git -y
+cd /tmp
+wget https://nodejs.org/dist/v4.6.1/node-v4.6.1-linux-arm64.tar.xz
+cd /usr/local
+sudo tar --strip-components=1 -xvf /tmp/node-v4.6.1-linux-arm64.tar.xz
+sudo npm install node-gyp -g
+</pre>
+
 3.  После установки запрос "`node -v"` должен показывать версию node.js. Если это не так, то нужно создать ссылку командой: `sudo ln -s /usr/local/bin/nodejs /usr/bin/node`
 
 ### Установка ioBroker
 
 1.  установаить ioBroker
-1.  `sudo mkdir /opt/iobroker`
-2.  `sudo chmod 777 /opt/iobroker`
-3.  `cd /opt/iobroker`
-4.  `sudo npm install iobroker --unsafe-perm`
+<pre>
+sudo mkdir /opt/iobroker
+sudo chmod 777 /opt/iobroker
+cd /opt/iobroker
+sudo npm install iobroker --unsafe-perm
+</pre>
 2.  Вызвать ioBroker по IP в броузере: `http://pineIP:8081`
 
 ## Удалить графическую среду(опционально)
@@ -53,4 +59,10 @@
 
 ## Задать постоянный IP адрес (опционально)
 
-`sudo nano /etc/dhcpcd.conf` Для каждого сетевого интерфейса (Пример): _interface eth0_ _static ip_address=192.168.0.10/24_ _static routers=192.168.0.1_ _static domain_name_servers=192.168.0.1_
+`sudo nano /etc/dhcpcd.conf` Для каждого сетевого интерфейса (Пример): 
+
+<pre>
+interface eth0_ 
+static ip_address=192.168.0.10/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1</pre>

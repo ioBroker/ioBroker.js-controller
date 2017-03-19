@@ -24,10 +24,10 @@
 3.  Запустить Rasberry PI
 4.  Зайти на Rapberry через putty и залогинится
 5.  с помощью`sudo raspi-config` выполнить необходимую настройку Rapberry
-6.  Включить root доступ
-1.  `sudo nano /etc/ssh/sshd_config`
-2.  Заменить: `PermitRootLogin without-password` на `PermitRootLogin yes` и сохранить
-3.  Перезапустить SSH: `sudo /etc/init.d/ssh restart`
+6.  Включить root доступ 
+	1. `sudo nano /etc/ssh/sshd_config`
+	2.  Заменить: `PermitRootLogin without-password` на `PermitRootLogin yes` и сохранить
+	3.  Перезапустить SSH: `sudo /etc/init.d/ssh restart`
 4.  `sudo su` (теперь root режим активен)
 5.  `ввести passwd` и поменять пароль на свой
 7.  Выйти из putty и залогинится под пользователем root
@@ -36,32 +36,47 @@
 
 1.  Обновить ядро: `sudo apt-get update && sudo apt-get upgrade`
 2.  Удалить старые версии node.js (не нужно, если образ Jessie Light)
-1.  `apt-get --purge remove node`
-2.  `apt-get --purge remove nodejs`
-3.  `apt-get autoremove`
-4.  `reboot`
+	<pre>
+	apt-get --purge remove node
+	apt-get --purge remove nodejs
+	apt-get autoremove
+	reboot
+	</pre>
 3.  Зайти под root
 4.  Установить Node.js заново для Raspbery 2/3
-1.  `curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -`
-2.  `sudo apt-get install -y build-essential python-rpi.gpio python nodejs`
-3.  `reboot`
+	<pre>
+	curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+	sudo apt-get install -y build-essential python-rpi.gpio python nodejs
+	reboot
+	</pre>
 5.  Установить Node.js заново для Raspbery 1
-1.  `wget http://node-arm.herokuapp.com/node_archive_armhf.deb`
-2.  `sudo dpkg -i node_archive_armhf.deb`
-3.  `sudo apt-get install build-essential python-rpi.gpio python`
-4.  `reboot`
+	<pre>
+	wget http://node-arm.herokuapp.com/node_archive_armhf.deb
+	sudo dpkg -i node_archive_armhf.deb
+	sudo apt-get install build-essential python-rpi.gpio python
+	reboot
+	</pre>
 6.  Зайти снова как root
 7.  После установки запрос "`node -v"` должен показывать версию node.js. Если это не так, то нужно создать ссылку командой: `sudo ln -s /usr/local/bin/nodejs /usr/bin/node`
 
 ### Установка ioBroker
 
 1.  установаить ioBroker
-1.  `sudo mkdir /opt/iobroker`
-2.  `sudo chmod 777 /opt/iobroker`
-3.  `cd /opt/iobroker`
-4.  `sudo npm install iobroker --unsafe-perm`
+	<pre>
+	sudo mkdir /opt/iobroker
+	sudo chmod 777 /opt/iobroker
+	cd /opt/iobroker
+	sudo npm install iobroker --unsafe-perm
+	</pre>
 2.  Вызвать ioBroker по IP в броузере: `http://raspiPI:8081`
 
 ## Задать постоянный IP адрес (опционально)
 
-`sudo nano /etc/dhcpcd.conf` Для каждого сетевого интерфейса (Пример): _interface eth0_ _static ip_address=192.168.0.10/24_ _static routers=192.168.0.1_ _static domain_name_servers=192.168.0.1_
+`sudo nano /etc/dhcpcd.conf` Для каждого сетевого интерфейса (Пример):
+
+<pre>
+interface eth0
+static ip_address=192.168.0.10/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+</pre>
