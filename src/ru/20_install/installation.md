@@ -155,6 +155,7 @@ ctl.!default {
 ### Репозитории Debian
 
 Чтобы можно было работать с другими репозиториями нужно установить пакеты: 
+
 `$ sudo apt-get install python-software-properties -y && sudo dpkg-reconfigure python-software-properties`
 
 ### Установка node.js
