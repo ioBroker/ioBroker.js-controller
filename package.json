@@ -47,7 +47,6 @@
     "grunt-jsdoc": "^2.1.0",
     "mocha": "^2.3.4",
     "chai": "^3.4.1",
-    "mochawesome": "^2.0.3",
     "istanbul": "^0.4.5"
   },
   "homepage": "http://www.iobroker.com",
@@ -91,7 +90,7 @@
     "stop": "node iobroker.js stop",
     "restart": "node iobroker.js restart",
     "prepublish": "node lib/scripts/scripts.js --prepublish",
-    "test": "node node_modules/mocha/bin/mocha test --reporter mochawesome --reporter-options reportDir=test/report,reportName=report",
+    "test": "node node_modules/mocha/bin/mocha test",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
   "main": "controller.js",
