@@ -2,6 +2,7 @@
    Edit styles/website.css
 */
 
+/* hide footer */
 .gitbook-link,
 .font-settings,
 .summary>li:nth-last-child(2),
@@ -9,11 +10,34 @@
 a[href="../100_footer/"] {
     display: none !important;
 }
+.navigation-next,
+.navigation-prev {
+	display: none;
+}
 .book-header{
 	width: 100%;
-    background: white;
+    background: #f1f1f1;
     position: fixed;
+	color: #6d6d6d;
 }
+
+.book-header .btn {
+	color: #6d6d6d;
+}
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-track {
+	background-color: #eaeaea;
+	border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #ccc;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: #aaa;
+}
+
 .page-inner {
 	max-width: 1024px;
 }
@@ -38,7 +62,7 @@ a[href="../100_footer/"] {
 	position: absolute;
 	padding-top: 14px;
 	top: 0;
-	left: 90px;
+	right: 90px;
 }
 .own-class-menu a {
 	color: inherit;
@@ -47,10 +71,10 @@ a[href="../100_footer/"] {
 }
 .own-class-logo {
 	display: inline-block;
-	float: right;
-	padding-top: 3px;
+	/*float: left;*/
+	padding-top: 5px;
 }
-.book.with-summary .own-class-logo {
+.book.with-summary .own-class-menu-list {
 	margin-right: 310px;
 }
 
@@ -68,7 +92,15 @@ a[href="../100_footer/"] {
 .own-class-footer {
 	height: 30px;
 	width: 100%;
-	background: white;
+	background: #6d6d6d;
+	color: #f2f2f2;
+}
+.own-class-footer a,
+.own-class-footer a:active,
+.own-class-footer a:hover,
+.own-class-footer a:visited{
+	text-decoration: none;
+	color: #f2f2f2;
 }
 .own-class-legal {
 	margin-top: 5px;
@@ -101,12 +133,12 @@ a[href="../100_footer/"] {
 	background-image: linear-gradient(to bottom, #3cb0fd, #3498db) !important;
 	text-decoration: none !important;
 }
-
 @media (max-width: 1024px) {
 	.book-header h1 {
 		display: none;
 	}
 }
+/* phones */
 @media (max-width: 400px) {
 	.page-toc {
 		display: none;
@@ -119,7 +151,11 @@ a[href="../100_footer/"] {
 	.own-class-legal {
 		float: right;
 	}
+	.own-class-menu-list {
+		display: none;
+	}
 }
+/* tablets, desktops */
 @media (min-width: 401px) {
 	.own-class-footer {
 		position: absolute;
@@ -131,4 +167,5 @@ a[href="../100_footer/"] {
 		right: 0;
 		top: 0;
 	}
+
 }

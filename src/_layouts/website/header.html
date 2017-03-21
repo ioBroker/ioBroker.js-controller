@@ -1,7 +1,8 @@
 {% block book_header %}
 <div class="book-header" role="navigation">
+    <div class="own-class-logo"><a href="{{ "/"|resolveFile }}"><img src="{{ "/"|resolveFile }}/img/ioBroker_logo_long.png" height="40px"/></a></div>
     {% if glossary.path %}
-    <a href="{{ ('/' + glossary.path)|resolveFile }}" class="btn pull-left" aria-label="{{ "GLOSSARY_OPEN"|t }}"><i class="fa fa-sort-alpha-asc"></i></a>
+    <!--a href="{{ ('/' + glossary.path)|resolveFile }}" class="btn pull-left" aria-label="{{ "GLOSSARY_OPEN"|t }}"><i class="fa fa-sort-alpha-asc"></i></a-->
     {% endif %}
 
     <!-- Title -->
@@ -10,10 +11,9 @@
         <div class="own-class-menu"><i class="fa fa-github"></i> <a href="https://github.com/ioBroker" target="_github">github</a></div>
         <div class="own-class-menu"><i class="fa fa-cloud"></i> <a href="https://iobroker.net/" target="_cloud">cloud</a></div>
     </div>
-    <h1>
+    <!--h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="{{ "/"|resolveFile }}" >{{ page.title }}</a>
-    </h1>
-    <div class="own-class-logo"><a href="{{ "/"|resolveFile }}"><img src="img/ioBroker_logo_long.png" height="40px"/></a></div>
+        <a href="{{ "/"|resolveFile }}">{{ page.title }}</a>
+    </h1-->
 </div>
 {% endblock %}

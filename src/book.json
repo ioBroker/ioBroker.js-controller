@@ -6,9 +6,6 @@
         "language-picker",
 		"expandable-chapters"
     ],
-	"lunr": {
-		"maxIndexSize": 1000000000
-	},
 	"pluginsConfig": {
 		"favicon": "img/favicon.ico",
         "sharing": {
@@ -17,6 +14,9 @@
             "twitter": false,
 			"all": []
         },
+		"lunr": {
+			"maxIndexSize": 10000000000
+		},
 		"language-picker": {
             "grid-columns": 3
         },
@@ -34,6 +34,16 @@
 			"en": "Contact",
 			"de": "Kontakt",
 			"ru": "Связаться с нами"
+		},
+		"tFOLLOW_TWITTER": {
+			"en": "Follow @ioBroker on Twitter",
+			"de": "Folge @ioBroker auf Twitter",
+			"ru": "Следи за @ioBroker на Twitter"
+		},
+		"tGET_GITHUB": {
+			"en": "Get the ioBroker code on GitHub",
+			"de": "Schaue ioBroker Kode auf GitHub",
+			"ru": "Посмотри код ioBroker на GitHub"
 		}
 	}
 }
