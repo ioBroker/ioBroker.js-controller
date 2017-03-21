@@ -6,6 +6,9 @@
         "language-picker",
 		"expandable-chapters"
     ],
+	"lunr": {
+		"maxIndexSize": 1000000000
+	},
 	"pluginsConfig": {
 		"favicon": "img/favicon.ico",
         "sharing": {

@@ -173,26 +173,24 @@ function replaceImg(text, adapter) {
     }
     for (var i = 0; i < text.length; i++) {
         //[![flot_konfig](http://www.iobroker.net/aaa.jpg)](http://www.iobroker.net/aaa.jpg)
-        if (text[i].indexOf('jpg') !== -1) {
-            var m = text[i].match(/\[\!\[.*\]\(([^\s]+)\)/);
+        var m = text[i].match(/\[\!\[.*\]\(([^\s]+)\)/);
 
-            if (m && m[1]) {
-                if (m[1].indexOf('iobroker.net')) {
-                    var name = m[1].split('/').pop();
-                    name = name.replace(/\?/, '_').replace(/=/, '_').replace(/&/, '_');
-                    text[i] = text[i].replace(m[1], 'img/' + name).replace(m[1], 'img/' + name);
-                    var link = m[1];
-                    if (m[1].indexOf('http://') === -1) link = 'http://iobroker.net' + link;
+        if (m && m[1]) {
+            if (m[1].indexOf('iobroker.net')) {
+                var name = m[1].split('/').pop();
+                name = name.replace(/\?/, '_').replace(/=/, '_').replace(/&/, '_');
+                text[i] = text[i].replace(m[1], 'img/' + name).replace(m[1], 'img/' + name);
+                var link = m[1];
+                if (m[1].indexOf('http://') === -1) link = 'http://iobroker.net' + link;
 
-                    images.push({
-                        link: link,
-                        path: adapter,
-                        name: name
-                    });
-                    //console.log('Found image: ' + name);
-                } else {
-                    console.log('Foreign image: ' + m[1]);
-                }
+                images.push({
+                    link: link,
+                    path: adapter,
+                    name: name
+                });
+                //console.log('Found image: ' + name);
+            } else {
+                console.log('Foreign image: ' + m[1]);
             }
         }
     }

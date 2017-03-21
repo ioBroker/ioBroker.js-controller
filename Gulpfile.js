@@ -14,60 +14,69 @@ const languages = ['en', 'de', 'ru'];
 const dest = '_dist/';
 const src = './src/';
 const book = require(__dirname + '/' + src + '/book.json');
+const adaptersName = '30_adapters';
 
-gulp.task('clean', function () {
-    //return del([
-   //     dest + '**/*'
-    //]);
+gulp.task('clean', function (done) {
+    del([
+        dest + '**/*.*',
+        dest + '**/.*',
+        dest + '**/*'
+    ]).then(function () {
+        done();
+    });
 });
 // copy from src to dist
-gulp.task('prepare-dist', ['clean'], function () {
-	gulp.src([src + '*.*', src + '.*'])
-		.pipe(gulp.dest(dest));
-			
-	languages.forEach(function (lang) {
-		gulp.src(src + lang + '/*/*.*')
-			.pipe(gulp.dest(dest + lang + '/'));
-		gulp.src(src + lang + '/*.*')
-			.pipe(gulp.dest(dest + lang + '/'));
-	});
+gulp.task('prepare-dist', ['clean'], function (done) {
+    var count = 0;
+    function localDone() {
+        if (!--count) done();
+    }
+    count++;
+    gulp.src([src + '*.*', src + '.*']).pipe(gulp.dest(dest)).on('end', localDone);
 
-    var sPipe = gulp.src(src + 'styles/*.*');
     languages.forEach(function (lang) {
-        sPipe = sPipe.pipe(gulp.dest(dest + lang + '/styles/'));
-    });
-    gulp.src(src + 'styles/*.*').pipe(gulp.dest(dest + 'styles/'));
+        count++;
+        gulp.src([
+            src + lang + '/*/*.*',
+            src + lang + '/*.*'
+        ]).pipe(gulp.dest(dest + lang + '/')).on('end', localDone);
 
-    var imPipe = gulp.src([src + 'img/*.*', src + 'img/*/*.*']);
-    languages.forEach(function (lang) {
-        imPipe = imPipe.pipe(gulp.dest(dest + lang + '/img/'));
-    });
-    gulp.src(src + 'styles/*.*').pipe(gulp.dest(dest + 'styles/'));
+        count++;
+        gulp.src([
+            src + 'styles/*/*.*',
+            src + 'styles/*.*']).pipe(gulp.dest(dest + lang + '/styles/')).on('end', localDone);
 
-    var lPipe = gulp.src(src + '_layouts/*/*.*');
-    languages.forEach(function (lang) {
-        lPipe = lPipe.pipe(gulp.dest(dest + lang + '/_layouts/'));
-    });
-    gulp.src(src + '_layouts/*/*.*').pipe(gulp.dest(dest + '_layouts/'));
+        count++;
+        gulp.src([
+            src + 'img/*/*.*',
+            src + 'img/*.*']).pipe(gulp.dest(dest + lang + '/img/')).on('end', localDone);
 
-	var iPipe = gulp.src(src + '_i18n/*/*.*');
-    languages.forEach(function (lang) {
-        iPipe = iPipe.pipe(gulp.dest(dest + lang + '/_i18n/'));
+        count++;
+        gulp.src([
+            src + '_layouts/*/*.*',
+            src + '_layouts/*.*']).pipe(gulp.dest(dest + lang + '/_layouts/')).on('end', localDone);
+
+        count++;
+        gulp.src([
+            src + '_i18n/*/*.*',
+            src + '_i18n/*.*']).pipe(gulp.dest(dest + lang + '/_i18n/')).on('end', localDone);
     });
-    gulp.src(src + '_i18n/*/*.*').pipe(gulp.dest(dest + '_i18n/'));
 });
 
-gulp.task('post-build', ['build-doc'], function () {
+gulp.task('post-build', ['build-doc'], function (done) {
 	if (book.pluginsConfig && book.pluginsConfig.favicon && fs.existsSync(__dirname + '/' + src + book.pluginsConfig.favicon)) {
         var gitbookFaviconPath = path.join(dest, '_book', 'gitbook', 'images', 'favicon.ico');
         fs.unlinkSync(gitbookFaviconPath);
         fs.createReadStream(__dirname + '/' + src + book.pluginsConfig.favicon).pipe(fs.createWriteStream(gitbookFaviconPath));
 	}
+    done();
 });
 
 // generate GitBook
-gulp.task('build-doc', ['summary'], function (cb) {
-  gulpGitbook('./_dist/', cb);
+gulp.task('build-doc', ['summary'], function (done) {
+    gulpGitbook('./_dist/', function () {
+        done();
+    });
 });
 
 function getFileTitle(file) {
@@ -158,43 +167,91 @@ function buildTree(tree, level) {
 	return text;
 }
 
-gulp.task('summary', ['adapters'], function () {
+gulp.task('summary', ['adapters'], function (done) {
 	languages.forEach(function (lang) {
 		var tree = collectStructure(dest + lang + '/');
 		//console.log(JSON.stringify(tree, null, 2));
 		var summary = buildTree(tree);
 		fs.writeFileSync(dest + lang + '/SUMMARY.md', summary);
-    });	
+    });
+	done();
 });
 
 var types = {
-	'common adapters': {
-		en: '10_common_adapters',
-        de: '10_Allgemein',
-        ru: '10_Общие'
-    }
+	'common adapters': '10_common_adapters'
 };
+
 var noReadme = {
 	en: 'No text here.',
     de: 'Keine Beschriebung, aber es gibt <a href="%s">englishe Beschreibung</a>.',
     ru: 'Описание доступно только на <a href="%s">английском</a>.'
 };
+
+function mkpathSync(rootpath, dirpath) {
+    // Remove filename
+    dirpath = dirpath.split('/');
+    dirpath.pop();
+    if (!dirpath.length) return;
+
+    for (var i = 0; i < dirpath.length; i++) {
+        rootpath += dirpath[i] + '/';
+        if (!fs.existsSync(rootpath)) {
+            fs.mkdirSync(rootpath);
+        }
+    }
+}
+
 function getReadme(url, fileName, adapter, lang, callback) {
 	// https://github.com/ioBroker/ioBroker.admin/blob/master/README.md
 	//https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/README.md
 	url = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
 	console.log('Request ' + url);
     request(url, function (err, res, body) {
+        mkpathSync(dest, fileName);
         if (!body || res.statusCode !== 200) {
-            fs.writeFileSync(fileName, noReadme[lang].replace('%s', '#'));
+            fs.writeFileSync(dest + fileName, new Array(fileName.split('/').length).join('../') + noReadme[lang].replace('%s', fileName.replace(/^ru/, 'en').replace(/^de/, 'en')));
+            callback();
         } else {
-            fs.writeFileSync(fileName, readme2md(body, adapter, lang));
+            readme2md(body, adapter, lang, url, fileName, function (err, text) {
+                if (text) fs.writeFileSync(dest + fileName, text);
+                if (err) console.error(err);
+                callback && callback(err);
+            });
         }
-        callback();
     });
 }
 
-function readme2md(text, name, lang) {
+var download = function(uri, filename, callback){
+    request.head(uri, function(err, res, body){
+        if (res) {
+            console.log('content-type:', res.headers['content-type']);
+            console.log('content-length:', res.headers['content-length']);
+
+            request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+        } else {
+            console.error(err);
+            callback(err);
+        }
+    });
+};
+
+function getImages(images, callback) {
+    if (!images || !images.length) {
+        callback && callback();
+    } else {
+        var img = images.shift();
+        if (fs.existsSync(dest + img.name)) {
+            setTimeout(getImages, 0, images, callback);
+        } else {
+            mkpathSync(dest + '/', img.name);
+            download(img.link, dest + img.name, function () {
+                setTimeout(getImages, 0, images, callback);
+            });
+        }
+    }
+}
+
+function readme2md(text, name, lang, link, fileName, callback) {
 	// escape all {{ and }}
 	text = text.replace(/\{\{/g, '{% raw %}{{').replace(/\}\}/g, '}}{% endraw %}');
 
@@ -227,6 +284,7 @@ function readme2md(text, name, lang) {
     text = text.replace(/\r\n/g, '\n');
 	var lines = text.split('\n');
     name = name.replace(/-beta$/, '');
+    var images = [];
 	for (var i = 0, len = lines.length; i < 50 && i < len; i++) {
         if (lines[i].trim() === 'iobroker.' + name) {
             lines.splice(i--, 1);
@@ -258,51 +316,125 @@ function readme2md(text, name, lang) {
             len--;
             continue;
         }
+        var m = lines[i].match(/!\[[^\]]*\]\(([^\)]+)\)/);
+        if (lines[i].indexOf('.jpg') !== -1 || lines[i].indexOf('.png') !== -1) {
+            if (m && m[1] && m[1].substring(0, 4) !== 'http') {
+                var parts = fileName.split('/');
+                parts.pop();
+                fileName = parts.join('/') + '/' + m[1];
+                var pparts = link.split('/');
+                pparts.pop();
+
+                images.push({
+                    link: pparts.join('/') + '/' + m[1],
+                    name: fileName
+                });
+            }
+        }
+
         // extract images
         // ![Demo interface](https://github.com/GermanBluefox/DashUI/raw/master/images/user0.png)
 		// ==>
 		// ![Demo interface](/en/img/vis/images/user0.png)
 	}
-
-	return lines.join('\n');
+	if (callback) {
+        getImages(images, function () {
+            callback && callback(null, lines.join('\n'));
+        });
+	} else {
+        return lines.join('\n');
+	}
 }
-var debugAdapter = 'vis-beta';
+var debugAdapter = 'admin';
 
-gulp.task('adapters', ['prepare-dist'], function () {
-    request('http://download.iobroker.net/sources-dist.json', function (err, res, body) {
+function processTasks(tasks, sources, callback) {
+	if (!tasks || !tasks.length) {
+		callback && callback();
+	} else {
+		var task = tasks.shift();
+		var name = task.name;
+        var link = task.link;
+        var readme;
+        var type = sources[name].type;
+        type = types[type] || type || types['common adapters'];
+        request(link, function (err, res, body) {
+        	if (body) {
+        		var pack = JSON.parse(body);
+                var count = 0;
+                if (pack.common.docs) {
+                    var langs = pack.common.docs;
+                    if (!langs.de) langs.de = '';
+                    if (!langs.ru) langs.ru = '';
+                    if (!langs.en) langs.en = '';
+                    //if (!langs.pt) langs.pt = '';
+                    for (var lang in langs) {
+                    	var files = langs[lang];
+                        if (typeof files !== 'object') files = [files];
+                        count += files.length;
+                        for (var f = 0; f < files.length; f++) {
+                            getReadme(link.replace('io-package.json', files[f]),
+								files[f].replace('docs/en/', 'en/' + adaptersName + '/' + type + '/')
+									.replace('docs/de/', 'de/' + adaptersName + '/' + type + '/')
+									.replace('docs/ru/', 'ru/' + adaptersName + '/' + type + '/'),
+								name, lang, function () {
+                                if (!--count) setTimeout(processTasks, 0, tasks, sources, callback);
+                            });
+                        }
+					}
+                } else {
+                    count = languages.length;
+                    languages.forEach(function (lang) {
+                        readme = link.replace('io-package.json', 'README.md');
+                        if (readme && readme.match(/README\.md$/) && lang !== 'en') {
+                            readme = readme.replace('README.md', 'README_' + lang + '.md');
+                        }
+                        getReadme(readme, lang + '/' + adaptersName + '/' + type + '/' + name + '.md', name, lang, function () {
+                            if (!--count) setTimeout(processTasks, 0, tasks, sources, callback);
+                        });
+                    });
+                }
+			} else {
+        		console.error('cannot read "' + link + '": ' + err);
+                callback && callback();
+			}
+		});
+	}
+}
+
+gulp.task('adapters', ['prepare-dist'], function (done) {
+	var tasks = [];
+    request('http://download.iobroker.net/sources-dist-latest.json', function (err, res, body) {
     	var list = JSON.parse(body);
     	for (var a in list) {
     		if (!list.hasOwnProperty(a)) continue;
     		if (debugAdapter && a !== debugAdapter) continue;
-    		var type = list[a].type;
 
-            languages.forEach(function (lang) {
-                var name = type;
-            	if (types[name] && types[name][lang]) {
-                    name = types[name][lang];
-                }
-                var path = dest + lang + '/40_adapters/' + name;
-                if (!fs.existsSync(path)) {
-            		fs.mkdirSync(path);
-				}
-				if (fs.existsSync(src + lang + '/40_adapters/' + name + '/' + a + '.md')) return;
+			//var path = dest + lang + '/30_adapters/' + name;
+			//if (!fs.existsSync(path)) fs.mkdirSync(path);
 
-                var readme = list[a].readme;
-                if (!readme) {
-                	readme = list[a].meta.replace('io-package.json', 'README.md');
-                }
+			//if (fs.existsSync(src + lang + '/30_adapters/' + name + '/' + a + '.md')) return;
 
-            	if (readme && readme.match(/README\.md$/) && lang !== 'en') {
-                    readme = readme.replace('README.md', 'README_' + lang + '.md');
-				}
+			/*var readme = list[a].readme;
+			if (!readme) {
+				readme = list[a].meta.replace('io-package.json', 'README.md');
+			}
 
-
-				getReadme(readme, path + '/' + a + '.md', a, lang, function () {
-
-				});
+			if (readme && readme.match(/README\.md$/) && lang !== 'en') {
+				readme = readme.replace('README.md', 'README_' + lang + '.md');
+			}*/
+			tasks.push({
+				link: list[a].meta,
+				name: a
 			});
+			/*getReadme(readme, path + '/' + a + '.md', a, lang, function () {
+
+			});*/
 		}
-	})
+
+		processTasks(tasks, list, function () {
+            done();
+		});
+	});
 });
 
 // Start web server
