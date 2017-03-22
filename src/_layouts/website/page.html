@@ -1,362 +1,62 @@
 {% extends template.self %}
 
-{% block book_inner %}
-    {{ super() }}
-	<div class="own-class-footer" style="display: none;>
-		<table class="own-class-legal"><tr>
-			<td><a href="{{ ("/" + book.language + "/100_footer/10_imprint.md")|contentURL }}">{{ book.tIMPRESSUM[book.language] }}</a></td>
-			<td><a href="{{ ("/" + book.language + "/100_footer/10_contact.md")|contentURL }}">{{ book.tCONTACT[book.language] }}</a></td>
-			<td>Copyright 2017</td>
-		</tr></table>
+{% block body %}
+<div class="book">
+	{% include "website/header.html" %}
+
+	<div class="book-summary">
+		{% block book_sidebar %}
+		{% block search_input %}{% endblock %}
+		{% block book_summary %}
+		<nav role="navigation">
+			{% include "website/summary.html" %}
+		</nav>
+		{% endblock %}
+		{% endblock %}
 	</div>
-	<pw-footer>
-		<style scope="pw-footer">
-			.layout.horizontal, .layout.vertical {
-				display: -ms-flexbox;
-				display: -webkit-flex;
-				display: flex;
-			}
 
-			.layout.inline {
-				display: -ms-inline-flexbox;
-				display: -webkit-inline-flex;
-				display: inline-flex;
-			}
+	<div class="book-body">
+		{% block book_body %}
+		<div class="body-inner">
+			{% block book_inner %}
 
-			.layout.horizontal {
-				-ms-flex-direction: row;
-				-webkit-flex-direction: row;
-				flex-direction: row;
-			}
-
-			.layout.vertical {
-				-ms-flex-direction: column;
-				-webkit-flex-direction: column;
-				flex-direction: column;
-			}
-
-			.layout.wrap {
-				-ms-flex-wrap: wrap;
-				-webkit-flex-wrap: wrap;
-				flex-wrap: wrap;
-			}
-
-			.layout.no-wrap {
-				-ms-flex-wrap: nowrap;
-				-webkit-flex-wrap: nowrap;
-				flex-wrap: nowrap;
-			}
-
-			.layout.center, .layout.center-center {
-				-ms-flex-align: center;
-				-webkit-align-items: center;
-				align-items: center;
-			}
-
-			.layout.center-justified, .layout.center-center {
-				-ms-flex-pack: center;
-				-webkit-justify-content: center;
-				justify-content: center;
-			}
-
-			.flex {
-				-ms-flex: 1 1 0.000000001px;
-				-webkit-flex: 1;
-				flex: 1;
-				-webkit-flex-basis: 0.000000001px;
-				flex-basis: 0.000000001px;
-			}
-
-			.flex-auto {
-				-ms-flex: 1 1 auto;
-				-webkit-flex: 1 1 auto;
-				flex: 1 1 auto;
-			}
-
-			.flex-none {
-				-ms-flex: none;
-				-webkit-flex: none;
-				flex: none;
-			}
-
-			.layout.start {
-				-ms-flex-align: start;
-				-webkit-align-items: flex-start;
-				align-items: flex-start;
-			}
-
-			.layout.center, .layout.center-center {
-				-ms-flex-align: center;
-				-webkit-align-items: center;
-				align-items: center;
-			}
-
-			.layout.end {
-				-ms-flex-align: end;
-				-webkit-align-items: flex-end;
-				align-items: flex-end;
-			}
-
-			.layout.baseline {
-				-ms-flex-align: baseline;
-				-webkit-align-items: baseline;
-				align-items: baseline;
-			}
-
-			.layout.start-justified {
-				-ms-flex-pack: start;
-				-webkit-justify-content: flex-start;
-				justify-content: flex-start;
-			}
-
-			.layout.center-justified, .layout.center-center {
-				-ms-flex-pack: center;
-				-webkit-justify-content: center;
-				justify-content: center;
-			}
-
-			.layout.end-justified {
-				-ms-flex-pack: end;
-				-webkit-justify-content: flex-end;
-				justify-content: flex-end;
-			}
-
-			.layout.around-justified {
-				-ms-flex-pack: distribute;
-				-webkit-justify-content: space-around;
-				justify-content: space-around;
-			}
-
-			.layout.justified {
-				-ms-flex-pack: justify;
-				-webkit-justify-content: space-between;
-				justify-content: space-between;
-			}
-
-			.self-start {
-				-ms-align-self: flex-start;
-				-webkit-align-self: flex-start;
-				align-self: flex-start;
-			}
-
-			.self-center {
-				-ms-align-self: center;
-				-webkit-align-self: center;
-				align-self: center;
-			}
-
-			.self-end {
-				-ms-align-self: flex-end;
-				-webkit-align-self: flex-end;
-				align-self: flex-end;
-			}
-
-			.self-stretch {
-				-ms-align-self: stretch;
-				-webkit-align-self: stretch;
-				align-self: stretch;
-			}
-
-			.self-baseline {
-				-ms-align-self: baseline;
-				-webkit-align-self: baseline;
-				align-self: baseline;
-			}
-
-			.layout.start-aligned {
-				-ms-flex-line-pack: start;
-				-ms-align-content: flex-start;
-				-webkit-align-content: flex-start;
-				align-content: flex-start;
-			}
-
-			.layout.end-aligned {
-				-ms-flex-line-pack: end;
-				-ms-align-content: flex-end;
-				-webkit-align-content: flex-end;
-				align-content: flex-end;
-			}
-
-			.layout.center-aligned {
-				-ms-flex-line-pack: center;
-				-ms-align-content: center;
-				-webkit-align-content: center;
-				align-content: center;
-			}
-
-			.layout.between-aligned {
-				-ms-flex-line-pack: justify;
-				-ms-align-content: space-between;
-				-webkit-align-content: space-between;
-				align-content: space-between;
-			}
-
-			.layout.around-aligned {
-				-ms-flex-line-pack: distribute;
-				-ms-align-content: space-around;
-				-webkit-align-content: space-around;
-				align-content: space-around;
-			}
-
-			:host {
-				display: block;
-			}
-
-			a {
-				color: #999;
-				text-decoration: none;
-			}
-
-			.footer-media-links {
-				background: #3295c7;
-				/*padding: 20px;*/
-			}
-
-			.footer-media-links a {
-				color: black;
-				display: inline-block;
-				padding: 3px 20px;
-				font-size: 13px;
-				font-weight: 500;
-				text-shadow: none;
-				text-decoration: none;
-				text-align: center;
-				min-width: 100px;
-				white-space: nowrap;
-			}
-
-			.footer-media-links a span {
-				line-height: 24px;
-				margin-left: 5px;
-			}
-
-			.footer-links {
-				background: #263238;
-				padding: 30px 10px;
-			}
-
-			.footer-links > * {
-				margin: 10px;
-			}
-
-			.footer-links .title {
-				font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;
-				color: white;
-				border-top: 1px solid #707375;
-				padding-top: 10px;
-				font-size: 13px;
-			}
-
-			.footer-links a {
-				text-decoration: none;
-				color: #979797;
-				display: block;
-				font-size: 11px;
-				line-height: 20px;
-			}
-
-			.copyright {
-				background: black;
-				color: white;
-				padding: 10px;
-			}
-
-			.copyright div {
-				font-size: 11px;
-			}
-
-			.copyright img {
-				padding-left: 10px;
-				height: 20px;
-			}
-
-			.copyright * {
-				vertical-align: middle;
-			}
-
-			.footer-icon {
-				display:-ms-inline-flexbox;display:-webkit-inline-flex;display:inline-flex;-ms-flex-align:center;-webkit-align-items:center;align-items:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;position:relative;vertical-align:middle;fill:currentcolor;stroke:none;width:24px;height:24px;
-			}
-
-			@media (max-width: 767px) {
-				.footer-media-links a {
-					min-width: 24px;
-					padding-left: 15px;
-					padding-right: 15px;
-				}
-
-				.footer-media-links a span {
-					display: none;
-				}
-
-			}
-
-			@media (max-width: 479px) {
-				.footer-links.layout.horizontal {
-					flex-direction: column;
-					padding: 20px 10px;
-				}
-
-				.footer-links > * {
-					flex: 0 0 auto;
-				}
-
-				.copyright .additional-text {
-					display: none;
-				}
-
-			}</style>
-		<footer>
-		<section class="footer-media-links">
-			<div class="layout horizontal center center-justified">
-				<a href="https://twitter.com/intent/follow?screen_name=ioBroker"
-				   target="_blank"
-				   title="{{ book.tFOLLOW_TWITTER[book.language] }}"
-				   aria-label="{{ book.tFOLLOW_TWITTER[book.language]|replace('@','') }}">
-					<iron-icon icon="social-icons:twitter" class="footer-icon">
-						<svg viewBox="0 0 18 18" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 18px; height: 18px;"><g><path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.375-1.337.648-2.085.795-.598-.638-1.45-1.036-2.396-1.036-1.812 0-3.282 1.468-3.282 3.28 0 .258.03.51.085.75C5.152 5.39 2.733 4.084 1.114 2.1.83 2.583.67 3.147.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.416-.02-.617-.058.418 1.304 1.63 2.253 3.067 2.28-1.124.88-2.54 1.404-4.077 1.404-.265 0-.526-.015-.783-.045 1.453.93 3.178 1.474 5.032 1.474 6.038 0 9.34-5 9.34-9.338 0-.143-.004-.284-.01-.425.64-.463 1.198-1.04 1.638-1.7z" fill-rule="nonzero"></path></g></svg>
-					</iron-icon>
-					<span>@ioBroker</span>
-				</a>
-				<a href="https://github.com/ioBroker" target="_blank"
-				   title="{{ book.tGET_GITHUB[book.language] }}"
-				   aria-label="{{ book.tGET_GITHUB[book.language] }}">
-					<iron-icon icon="social-icons:github"  class="footer-icon">
-						<svg viewBox="0 0 18 18" preserveAspectRatio="xMidYMid meet" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g><path d="M8 0C3.58 0 0 3.582 0 8c0 3.535 2.292 6.533 5.47 7.59.4.075.547-.172.547-.385 0-.19-.007-.693-.01-1.36-2.226.483-2.695-1.073-2.695-1.073-.364-.924-.89-1.17-.89-1.17-.725-.496.056-.486.056-.486.803.056 1.225.824 1.225.824.714 1.223 1.873.87 2.33.665.072-.517.278-.87.507-1.07-1.777-.2-3.644-.888-3.644-3.953 0-.873.31-1.587.823-2.147-.083-.202-.358-1.015.077-2.117 0 0 .672-.215 2.2.82.638-.178 1.323-.266 2.003-.27.68.004 1.364.092 2.003.27 1.527-1.035 2.198-.82 2.198-.82.437 1.102.163 1.915.08 2.117.513.56.823 1.274.823 2.147 0 3.073-1.87 3.75-3.653 3.947.287.246.543.735.543 1.48 0 1.07-.01 1.933-.01 2.195 0 .215.144.463.55.385C13.71 14.53 16 11.534 16 8c0-4.418-3.582-8-8-8"></path></g></svg>
-					</iron-icon>
-					<span>/ioBroker</span>
-				</a>
+			<div class="page-wrapper" tabindex="-1" role="main">
+				<div class="page-inner">
+					{% block search_results %}
+					<section class="normal markdown-section">
+						{% block page %}
+						{{ page.content|safe }}
+						{% endblock %}
+					</section>
+					{% endblock %}
+				</div>
 			</div>
-		</section>
-		<!--section class="footer-links layout horizontal justified">
-            <div class="flex">
-                <div class="title">Getting Started</div>
-                <a href="/2.0/start/first-element/intro">Your first element</a> <a
-                    href="/2.0/start/psk/set-up">Your first app</a> <a href="/2.0/docs/tools/overview">Using
-                the tools</a></div>
-            <div class="flex">
-                <div class="title">Polymer Docs</div>
-                <a href="/2.0/docs/api/Polymer.Base">Polymer 2.0 API Reference</a> <a
-                    href="/2.0/docs/about_20">Polymer 2.x Guides</a> <a
-                    href="/1.0/docs/devguide/feature-overview">Polymer 1.x Guides</a></div>
-            <div class="flex">
-                <div class="title">App Toolbox</div>
-                <a href="/2.0/toolbox/index">Overview</a> <a href="/2.0/toolbox/case-study">App Case
-                Study</a></div>
-            <div class="flex">
-                <div class="title">Blog</div>
-                <a href="/blog/">Articles</a> <a
-                    href="https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN">Polycasts</a>
-            </div>
-            <div class="flex">
-                <div class="title">Community</div>
-                <a href="/community/">Resources</a> <a href="https://www.webcomponents.org/">Element
-                Catalog</a></div>
-        </section-->
-		<div class="copyright layout horizontal">
-			<div class="flex" style="padding-top: 6px">© 2017 ioBroker Authors.
-			</div>
-			<a href="#"><img src="img/logo-32.png" alt="ioBroker Logo"></a></div>
-	</footer>
-	</pw-footer>
+			{% include "website/footer.html" %}
+			{% endblock %}
+		</div>
+
+
+
+		{% block book_navigation %}
+		{% if page.previous and page.previous.path %}
+		<a href="{{ page.previous.path|resolveFile }}{{ page.previous.anchor }}" class="navigation navigation-prev {% if not (page.next and page.next.path) %}navigation-unique{% endif %}" aria-label="Previous page: {{ page.previous.title }}">
+			<i class="fa fa-angle-left"></i>
+		</a>
+		{% endif %}
+		{% if page.next and page.next.path %}
+		<a href="{{ page.next.path|resolveFile }}{{ page.next.anchor }}" class="navigation navigation-next {% if not (page.previous and page.previous.path) %}navigation-unique{% endif %}" aria-label="Next page: {{ page.next.title }}">
+			<i class="fa fa-angle-right"></i>
+		</a>
+		{% endif %}
+		{% endblock %}
+		{% endblock %}
+	</div>
+
+	<script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({{ template.getJSContext()|dump|safe }});
+        });
+	</script>
+</div>
 {% endblock %}

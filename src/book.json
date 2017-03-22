@@ -1,25 +1,26 @@
 {
-    "styles": {
-        "website": "styles/website.css"
-    },
+	"styles": {
+		"website": "styles/website.css",
+		"fonts": "styles/fonts.css"
+	},
 	"plugins": [
-        "language-picker",
+		"language-picker",
 		"expandable-chapters"
-    ],
+	],
 	"pluginsConfig": {
 		"favicon": "img/favicon.ico",
-        "sharing": {
-            "google": false,
-            "facebook": false,
-            "twitter": false,
+		"sharing": {
+			"google": false,
+			"facebook": false,
+			"twitter": false,
 			"all": []
-        },
+		},
 		"lunr": {
 			"maxIndexSize": 10000000000
 		},
 		"language-picker": {
-            "grid-columns": 3
-        },
+			"grid-columns": 3
+		},
 		"layout": {
 			"footerPath" : "layouts/footer.html"
 		}

@@ -1,6 +1,16 @@
 {% block book_header %}
 <div class="book-header" role="navigation">
-    <div class="own-class-logo"><a href="{{ "/"|resolveFile }}"><img src="{{ "/"|resolveFile }}/img/ioBroker_logo_long.png" height="40px"/></a></div>
+    <div class="own-class-logo">
+        <a href="{{ "/"|resolveFile }}">
+        <img src="{{ "/"|resolveFile }}/img/ioBroker_logo_long.png" height="40px"/>
+        </a>
+        <div class="own-class-lang-bar">
+            <a class="own-class-lang {% if book.language == "en" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../en/{{ file.path|contentURL }}">en</a>
+            <a class="own-class-lang {% if book.language == "de" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../de/{{ file.path|contentURL }}">de</a>
+            <a class="own-class-lang {% if book.language == "ru" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../ru/{{ file.path|contentURL }}">ru</a>
+        </div>
+    </div>
+
     {% if glossary.path %}
     <!--a href="{{ ('/' + glossary.path)|resolveFile }}" class="btn pull-left" aria-label="{{ "GLOSSARY_OPEN"|t }}"><i class="fa fa-sort-alpha-asc"></i></a-->
     {% endif %}
