@@ -1,3 +1,7 @@
+# 0.17.2 (2017-03-25)
+* (bluefox) do not store logs and messages and just publish it
+* (bluefox) remove mochawsome
+ 
 # 0.17.1 (2017-03-15)
 * (bluefox) add stable repository
 * (bluefox) fix bug with user=>users (required for user rights)
