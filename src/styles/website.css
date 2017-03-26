@@ -254,7 +254,12 @@ a[href="../100_footer/"] {
 .page-inner {
 	padding: 0;
 }
-
+.page-inner p {
+	text-align: justify;
+}
+.page-inner p img{
+	padding-left: 30%;
+}
 
 /* cyrillic-ext */
 @font-face {
