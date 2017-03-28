@@ -1,20 +1,26 @@
 ![](Stable repository)
 
-Mit der Version js-controller 0.17.2 ist auch die Möglichkeit gekommen zwei Repositories zu haben:
-- latest: mit den Adapter Versionen von npm
-- stable: mit geprüften Adapter Versionen.
+## Available Repositories
+
+Mit der Version 0.17.2 des js-controller wurden zwei Repositories eingeführt:
+- **latest**: mit den aktuellsten Adapter Versionen von npm
+- **stable**: mit geprüften und stabilen Adapter Versionen
 
 Mit Admin 1.7.3 werden die Repositories auch automatisch bei allen Systemen hinzugefügt und **stable** als default gesetzt.
 
-Die fortgeschrittene Anwender können latest Repository verwenden, weil da sind immer noch lauffähige Versionen sind, nur nicht so gut ausgetestet. Das müssen nur die Anwender machen, die wissen, wie man mit npm eine beliebige Adapter version installieren kann.
+Eine Adapter-Version wird nach Tests und Feedback mehrerer Nutzer durch den Adapter-Entwickler im  **stable** Repository aktualisiert. Daher sind dort gegebenenfalls ältere, aber getestete Adapterversionen enthalten.
 
-**Stable** Repository wird seltener als **latest** sich updaten und dass müssen die Adapter-Entwickler antriggern.
-Die Idee dabei ist, dass die Entwickler erst eine Version einfach auch npm puschen. Die Version wird früher ein mal am Tag ins latest übernommen. 
+Fortgeschrittene Anwender können das **latest** Repository verwenden, da die Versionen dort ebenso lauffähig sind, nur nicht so gut ausgetestet. Über den Admin oder Kommandozeile kann jederzeit eine frühere Adapter-Version installiert werden, falls die aktuellste doch Probleme bringt. Diese Probleme bitte unbedingt an den Adapter-Entwickler im GitHub oder im Forum melden!
+??Das müssen nur die Anwender machen, die wissen, wie man mit npm eine beliebige Adapter version installieren kann.
 
-Danach wenn die Entwickler von mehreren Anwender ein positiven Feedback haben, dann sollten die ein Pull Request gegen stable repository machen: [https://github.com/ioBroker/ioBroker.repositories/blob/master/sources-dist-stable.json](https://github.com/ioBroker/ioBroker.repositories/blob/master/sources-dist-stable.json)
+## Für Entwickler ...
 
-Ich werde dann das einpflegen.
+Entwickler veröffentlichen Ihre neuen Adapter-Versionen weiterhin auf npm und diese werden einmal täglich ins **latest** Repository übernommen.
 
-Wenn man ioBroker.repository auscheckt, dann kann man auch mit 
+Wenn die Entwickler danach von mehreren Anwendern ein positiven Feedback haben, kann die Neue Version mittels einem Pull Request gegen das **stable** repository ([https://github.com/ioBroker/ioBroker.repositories/blob/master/sources-dist-stable.json](https://github.com/ioBroker/ioBroker.repositories/blob/master/sources-dist-stable.json)) aktualisiert werden.
+
+Wenn man das GitHub-Projekt ioBroker.repository forkt und lokal auscheckt, dann kann man auch mit
+
 [code]npm run update AdapterName[/code]
-die npm Version automatisch in stable eintragen.
+
+die Version ohne dem manuellem editieren einer Textdatei komfortabel aktualisieren. Danach Pull-Request einreichen, dann wird die neue Version übernommen.
