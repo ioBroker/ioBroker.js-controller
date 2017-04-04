@@ -644,63 +644,75 @@ function checkHost(type, callback) {
         if (callback) callback();
     }
 }
-// collect extended diag information
-function collectDiagInfoExtended(callback) {
-    return collectDiagInfo(callback);
-}
 
 // collect short diag information
-function collectDiagInfo(callback) {
-    objects.getObject('system.config', function (err, systemConfig) {
-        objects.getObject('system.meta.uuid', function (err, obj) {
-            // create uuid
-            if (err || !obj) {
-                obj = {native: {uuid: 'not found'}};
-            }
-            objects.getObjectView('system', 'host', {}, function (_err, doc) {
-                var diag = {
-                    uuid: obj.native.uuid,
-                    language: systemConfig.common.language,
-                    hosts: [],
-                    adapters: {}
-                };
-
-                if (!_err && doc) {
-                    if (doc && doc.rows.length) {
-                        if (!semver) semver = require('semver');
-
-                        doc.rows.sort(function (a, b) {
-                            return semver.lt(a.value.common.installedVersion, b.value.common.installedVersion);
-                        });
-                        // Read installed versions of all hosts
-                        for (var i = 0; i < doc.rows.length; i++) {
-
-                            diag.hosts.push({
-                                version:  doc.rows[i].value.common.installedVersion,
-                                platform: doc.rows[i].value.common.platform,
-                                type:     doc.rows[i].value.native.os.platform
-
-                            });
-                        }
-                    }
+function collectDiagInfo(type, callback) {
+    if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
+        callback && callback(null);
+    } else {
+        objects.getObject('system.config', function (err, systemConfig) {
+            objects.getObject('system.meta.uuid', function (err, obj) {
+                // create uuid
+                if (err || !obj) {
+                    obj = {native: {uuid: 'not found'}};
                 }
-                objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                objects.getObjectView('system', 'host', {}, function (_err, doc) {
+                    // we need to show city and country at the begining, so include it now and delete it later if not allowed.
+                    var diag = {
+                        uuid: obj.native.uuid,
+                        language: systemConfig.common.language,
+                        country: '',
+                        city: '',
+                        hosts: [],
+                        adapters: {}
+                    };
+                    if (type === 'extended' || type === 'no-city') {
+                        diag.country = systemConfig.common.country;
+                        delete diag.city;
+                    }
+                    if (type === 'extended') {
+                        diag.city = systemConfig.common.city;
+                    } else if (type === 'normal') {
+                        delete diag.city;
+                        delete diag.country;
+                    }
                     if (!_err && doc) {
                         if (doc && doc.rows.length) {
+                            if (!semver) semver = require('semver');
+
+                            doc.rows.sort(function (a, b) {
+                                return semver.lt(a.value.common.installedVersion, b.value.common.installedVersion);
+                            });
+
                             // Read installed versions of all hosts
                             for (var i = 0; i < doc.rows.length; i++) {
-                                diag.adapters[doc.rows[i].value.common.name] = {
-                                    version: doc.rows[i].value.common.version,
-                                    platform: doc.rows[i].value.common.platform
-                                };
+                                diag.hosts.push({
+                                    version:  doc.rows[i].value.common.installedVersion,
+                                    platform: doc.rows[i].value.common.platform,
+                                    type:     doc.rows[i].value.native.os.platform
+
+                                });
                             }
                         }
                     }
-                    if (callback) callback(diag);
+                    objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                        if (!_err && doc) {
+                            if (doc && doc.rows.length) {
+                                // Read installed versions of all hosts
+                                for (var i = 0; i < doc.rows.length; i++) {
+                                    diag.adapters[doc.rows[i].value.common.name] = {
+                                        version:  doc.rows[i].value.common.version,
+                                        platform: doc.rows[i].value.common.platform
+                                    };
+                                }
+                            }
+                        }
+                        if (callback) callback(diag);
+                    });
                 });
             });
         });
-    });
+    }
 }
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
@@ -1059,15 +1071,9 @@ function processMessage(msg) {
                 objects.getObject('system.config', function (err, systemConfig) {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                        if (systemConfig.common.diag === 'normal') {
-                            collectDiagInfo(function (obj) {
-                                tools.sendDiagInfo(obj);
-                            });
-                        } else if (systemConfig.common.diag === 'extended') {
-                            collectDiagInfoExtended(function (obj) {
-                                tools.sendDiagInfo(obj);
-                            });
-                        }
+                        collectDiagInfo(systemConfig.common.diag, function (obj) {
+                            if (obj) tools.sendDiagInfo(obj);
+                        });
                     }
 
                     objects.getObject('system.repositories', function (err, repos) {
@@ -1218,12 +1224,8 @@ function processMessage(msg) {
 
         case 'getDiagData':
             if (msg.callback && msg.from) {
-                if (msg.message === 'normal') {
-                    collectDiagInfo(function (obj) {
-                        sendTo(msg.from, msg.command, obj, msg.callback);
-                    });
-                } else if (msg.message === 'extended') {
-                    collectDiagInfoExtended(function (obj) {
+                if (msg.message) {
+                    collectDiagInfo(msg.message, function (obj) {
                         sendTo(msg.from, msg.command, obj, msg.callback);
                     });
                 } else {
@@ -1777,7 +1779,7 @@ function startInstance(id, wakeUp) {
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') instance.common.onlyWWW = false;
 
-    if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
+    if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
         fileNameFull = adapterDir + '/' + fileName;
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {

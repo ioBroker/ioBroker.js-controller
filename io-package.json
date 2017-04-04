@@ -1,12 +1,17 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.17.0",
+        "version":    "0.17.2",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-            "0.17.0": {
+			"0.17.2": {
+                "en": "do not store logs and messages and just publish it\nremove mochawsome",
+                "de": "Meldungen werden nicht mehr speichern, nur published\nmochawsome rasugenommen",
+                "ru": "Сообщения не сохраняются, а просто публикуются\nубран пакет mochawsome"
+            },
+            "0.17.1": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
                 "ru": "Смотри CHANGELOG.md"
@@ -302,15 +307,29 @@
             "type": "config",
             "common": {
                 "name":             "System configuration",
+                "city":             "",
+                "country":          "",
+                "longitude":        "",
+                "latitude":         "",
                 "language":         "",
                 "tempUnit":         "°C",
-                "currency":         "€",
+                "currency":         "",
                 "dateFormat":       "DD.MM.YYYY",
                 "isFloatComma":     true,
                 "licenseConfirmed": false,
+                "defaultHistory":   "",
                 "activeRepo":       "default",
                 "diag":             "extended",
-                "defaultHistory":   ""
+                "tabs": [
+                    "tab-adapters",
+                    "tab-instances",
+                    "tab-objects",
+                    "tab-log",
+                    "tab-scenes",
+                    "tab-javascript",
+                    "tab-text2command-0",
+                    "tab-node-red-0"
+                ]
             },
             "acl": {
                 "owner": "system.user.admin",
