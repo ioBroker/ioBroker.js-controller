@@ -1,0 +1,3 @@
+# Alle wichtigen Infos zum Thema Entwicklung
+
+Du möchtest bei der Weiterentwicklung von ioBroker unterstützen? Dann schaue bei [github](https://github.com/ioBroker) vorbei. Du möchtest deinen eigenen Adapter enwicklen ? Hier haben wir ein paar Infos zusammengetragen. [Adapter Entwicklung - Englisch ](https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation) Du kannst auch ein Adapter-Template benutzen: [ioBroker.template](https://github.com/ioBroker/ioBroker.template) Oder ein Template für vis widgets: [ioBroker.vis-template](https://github.com/ioBroker/ioBroker.vis-template)
