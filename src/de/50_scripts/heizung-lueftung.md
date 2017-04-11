@@ -1,1 +1,0 @@
-# Scripte Kategorie Heizung und Lüftung

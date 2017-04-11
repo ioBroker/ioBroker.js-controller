@@ -1,1 +1,0 @@
-On this page you can download SD-Images for linux, Windows installer or other helpful files.
