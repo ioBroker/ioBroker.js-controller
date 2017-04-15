@@ -1797,7 +1797,7 @@ function startInstance(id, wakeUp) {
 
     //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
-        procs[id].subscribe = instance.common.subscribe || instance._id + '.wakeup';
+        procs[id].subscribe = instance.common.subscribe || (instance._id + '.wakeup');
         var parts = instance._id.split('.');
         var instanceId = parts[parts.length - 1];
         procs[id].subscribe = procs[id].subscribe.replace('<INSTANCE>', instanceId);
@@ -1901,7 +1901,7 @@ function startInstance(id, wakeUp) {
             }
             break;
 
-       case 'schedule':
+        case 'schedule':
             if (!instance.common.schedule) {
                 logger.error(instance._id + ' schedule attribute missing');
                 break;
