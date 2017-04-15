@@ -61,25 +61,25 @@ function register(it, expect, context) {
     });
     it(testName + 'check lenLog', function (done) {
         context.states.lenLog(gid, function (err) {
-            expect(err).to.be.not.ok;
+            expect(err).to.be.equal('Not exists');
             done();
         });
     });
     it(testName + 'check getLog', function (done) {
         context.states.getLog(gid, function (err) {
-            expect(err).to.be.not.ok;
+            expect(err).to.be.ok;
             done();
         });
     });
-    it(testName + 'check getLog', function (done) {
+    it(testName + 'check delLog', function (done) {
         context.states.delLog(gid, 0, function (err) {
-            expect(err).to.be.not.ok;
+            expect(err).to.be.ok; // 'Not exists'
             done();
         });
     });
 
     it(testName + 'check clearAllLogs', function (done) {
-        context.states.clearAllLogs(gid, function (err) {
+        context.states.clearAllLogs(function (err) {
             expect(err).to.be.not.ok;
             done();
         });
