@@ -1,4 +1,4 @@
-<span style="font-size: 24pt;">**Willkommen zu ioBroker!**</span>
+# Willkommen zu ioBroker!
 
 IoBroker ist ein mächtiges Werkzeug um verschiedene Elemente der Hausautomation miteinander zu verbinden und deren Status und Bedienung zu visualisieren.
 

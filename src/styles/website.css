@@ -14,28 +14,39 @@ a[href="../100_footer/"] {
 .navigation-prev {
 	display: none;
 }
-.book-header{
+.book-header {
 	width: 100%;
-	background: #f1f1f1;
+	height: 65px;
+	background: #b3b3b3;
 	position: fixed;
-	color: #6d6d6d;
+	border-bottom: 3px solid #336799;
+	font-family: 'Audiowide', cursive, Arial;
+	text-transform: uppercase;
+	color: #336799;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	font-size: 20px;
 }
-.book-header::after {
+.book-header .own-class-menu a:after:hover {
 	content: "";
-	position: absolute;
-	left: 0px;
-	right: 0px;
-	bottom: -5px;
-	width: 100%;
-	height: 5px;
-	pointer-events: none;
-	opacity: 1;
-	box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
-	/*will-change: opacity;
-	transition: opacity 0.4s;*/
+	position: relative;
+	height: 4px;
+	width: 32px;
+	display: block;
+	text-align: left;
+	margin-left: 20px;
+	-webkit-border-radius: 5em;
+	-moz-border-radius: 5em;
+	-ms-border-radius: 5em;
+	-o-border-radius: 5em;
+	border-radius: 5em;
+	background: #336799;
 }
+
 .book-header .btn {
 	color: #6d6d6d;
+	padding-top: 8px;
 }
 ::-webkit-scrollbar {
 	width: 8px;
@@ -66,14 +77,14 @@ a[href="../100_footer/"] {
 }
 .own-class-menu {
 	display: inline-block;
-	padding-left: 15px;
+	/*padding-left: 15px;*/
 	position: relative;
 }
 .own-class-menu-list {
 	display: inline-block;
-	font-size: 1.5em;
+	/*font-size: 1.5em;*/
 	position: absolute;
-	padding-top: 14px;
+	padding-top: 20px;
 	top: 0;
 	right: 90px;
 }
@@ -81,11 +92,22 @@ a[href="../100_footer/"] {
 	color: inherit;
 	text-decoration: none;
 	position: relative;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 .own-class-logo {
 	display: inline-block;
 	/*float: left;*/
 	padding-top: 5px;
+	background: #336799;
+	height: 63px;
+	margin-left: 122px;
+}
+.own-class-logo img {
+	margin-top: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+	height: 33px;
 }
 .book.with-summary .own-class-menu-list {
 	margin-right: 310px;
@@ -102,6 +124,7 @@ a[href="../100_footer/"] {
 	padding-right: 50px;
 	display: inline-block;
 }
+
 .own-class-footer {
 	height: 30px;
 	width: 100%;
@@ -201,10 +224,41 @@ a[href="../100_footer/"] {
 }
 
 .book-summary {
-	top: 48px;
+	top: 65px;
 	box-shadow: 1px 0 6px -2px rgba(0, 0, 0, 0.4);
 }
 
+.book .book-summary ul.summary li a, .book .book-summary ul.summary li span {
+	padding-left: 15px;
+}
+.book-summary .summary {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: rgb(51, 51, 51);
+}
+.book-summary .summary .chapter a,
+.book-summary .summary .chapter span{
+	color: rgb(51, 51, 51);
+	font-size: 18px;
+}
+.book-summary .summary .chapter a{
+	font-weight: bold;
+}
+.book-summary .summary .chapter .articles a {
+	color: rgb(51, 51, 51);
+	font-weight: normal;
+	font-size: 16px;
+}
+
+.book .book-summary .exc-trigger {
+	right: 12px;
+	font-size: 12px;
+	left: inherit;
+}
+
+/* hide scrollbar */
+.body-inner::-webkit-scrollbar {
+	width: 0;
+}
 .markdown-section>:first-child {
 	margin-top: 48px !important;
 }
@@ -219,21 +273,79 @@ a[href="../100_footer/"] {
 	padding-bottom: 16px;
 }
 .own-class-lang-active {
-	color: #0087cc;
+	color: #336799;
+}
+
+.normal.markdown-section h1 {
+	font-family: 'Audiowide', cursive, Arial;
+	margin-top: 0 !important;
+	padding-left: 20px;
+	padding-top: 20px;
+	font-size: 32px;
+	font-weight: 300;
+	margin-bottom: 0;
+	color: #666666;
+}
+.normal.markdown-section h1:after {
+	content: "";
+	position: relative;
+	height: 4px;
+	width: 60px;
+	display: block;
+	text-align: left;
+	margin: 0;
+	-webkit-border-radius: 5em;
+	-moz-border-radius: 5em;
+	-ms-border-radius: 5em;
+	-o-border-radius: 5em;
+	border-radius: 5em;
+	background: #336799;
 }
 
 .normal.markdown-section h2 {
-	font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;
-	border-bottom: 1px solid #f50057;
+	padding-left: 30px;
+	font-family: 'Audiowide', cursive, Arial;
+	/*font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;
+	border-bottom: 1px solid #f50057;*/
 	margin: 20px 0;
+	color: #666666;
 }
+.normal.markdown-section h2:after{
+	content: "";
+	position: relative;
+	height: 3px;
+	width: 40px;
+	display: block;
+	text-align: left;
+	margin: 0;
+	-webkit-border-radius: 5em;
+	-moz-border-radius: 5em;
+	-ms-border-radius: 5em;
+	-o-border-radius: 5em;
+	border-radius: 5em;
+	background: #336799;
+}
+
 .normal.markdown-section h2,
 .normal.markdown-section h3,
 .normal.markdown-section h4 ,
 .normal.markdown-section h5 {
-	font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;
+	/*font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;*/
+	font-family: 'Audiowide', cursive, Arial;
+	color: #666666;
 }
 
+.normal.markdown-section h3 {
+	padding-left: 40px;
+}
+.normal.markdown-section h4 {
+	padding-left: 50px;
+
+}
+.normal.markdown-section h5 {
+	padding-left: 60px;
+
+}
 .normal.markdown-section p,
 .normal.markdown-section h2,
 .normal.markdown-section h3,
@@ -242,14 +354,17 @@ a[href="../100_footer/"] {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-.normal.markdown-section h1 {
-	font-size: 32px;
-	font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;
-	background: #ff7500;
-	color: white;
-	margin-top: 0 !important;
-	padding-left: 20px;
-	padding-top: 20px;
+
+.normal.markdown-section a {
+	color: #336799;
+}
+.normal.markdown-section a:hover {
+	text-decoration: none;
+}
+.normal.markdown-section h1 a:after {
+	font-size: 24px;
+	content: '↗';
+	display: inline-block;
 }
 .page-inner {
 	padding: 0;
@@ -403,5 +518,20 @@ a[href="../100_footer/"] {
 	font-style: normal;
 	font-weight: 700;
 	src: local('Source Code Pro Bold'), local('SourceCodePro-Bold'), url(http://fonts.gstatic.com/s/sourcecodepro/v6/leqv3v-yTsJNC7nFznSMqUo0As1BFRXtCDhS66znb_k.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+@font-face {
+	font-family: 'Audiowide';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Audiowide'), local('Audiowide-Regular'), url(https://fonts.gstatic.com/s/audiowide/v4/7pSgz2MbVvTCvvm7vukSH4X0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+	unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+	font-family: 'Audiowide';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Audiowide'), local('Audiowide-Regular'), url(https://fonts.gstatic.com/s/audiowide/v4/8XtYtNKEyyZh481XVWfVOpBw1xU1rKptJj_0jans920.woff2) format('woff2');
 	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
