@@ -2,13 +2,13 @@
 <div class="book-header" role="navigation">
     <div class="own-class-logo">
         <a href="{{ "/"|resolveFile }}">
-        <img src="{{ "/"|resolveFile }}/img/ioBroker_logo_long.png" height="40px"/>
+        <img src="{{ "/"|resolveFile }}/img/logo.png" height="40px"/>
         </a>
-        <div class="own-class-lang-bar">
-            <a class="own-class-lang {% if book.language == "en" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../en/{{ file.path|contentURL }}">en</a>
-            <a class="own-class-lang {% if book.language == "de" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../de/{{ file.path|contentURL }}">de</a>
-            <a class="own-class-lang {% if book.language == "ru" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../ru/{{ file.path|contentURL }}">ru</a>
-        </div>
+    </div>
+    <div class="own-class-lang-bar">
+        <a class="own-class-lang {% if book.language == "en" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../en/{{ file.path|contentURL }}">en</a>
+        <a class="own-class-lang {% if book.language == "de" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../de/{{ file.path|contentURL }}">de</a>
+        <a class="own-class-lang {% if book.language == "ru" %} own-class-lang-active {% endif %}" href="{{ "/"|resolveFile }}/../ru/{{ file.path|contentURL }}">ru</a>
     </div>
 
     {% if glossary.path %}
@@ -17,9 +17,10 @@
 
     <!-- Title -->
     <div class="own-class-menu-list">
-        <div class="own-class-menu"><i class="fa fa-comment"></i> <a href="//forum.iobroker.net/" target="_forum">community</a></div>
-        <div class="own-class-menu"><i class="fa fa-github"></i> <a href="https://github.com/ioBroker" target="_github">github</a></div>
-        <div class="own-class-menu"><i class="fa fa-cloud"></i> <a href="https://iobroker.net/" target="_cloud">cloud</a></div>
+        <div class="own-class-menu"><!--i class="fa fa-comment"></i--> <a href="{{ "/"|resolveFile }}/">Docu</a></div>
+        <div class="own-class-menu"><!--i class="fa fa-comment"></i--> <a href="//forum.iobroker.net/" target="_forum">Community</a></div>
+        <div class="own-class-menu"><!--i class="fa fa-github"></i--> <a href="https://github.com/ioBroker" target="_github">Github</a></div>
+        <div class="own-class-menu"><!--i class="fa fa-cloud"></i--> <a href="https://iobroker.net/" target="_cloud">Sign In</a></div>
     </div>
     <!--h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>

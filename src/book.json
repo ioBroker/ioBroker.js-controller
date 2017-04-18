@@ -22,7 +22,8 @@
 			"grid-columns": 3
 		},
 		"layout": {
-			"footerPath" : "layouts/footer.html"
+			"footerPath" : "layouts/footer.html",
+			"pagePath" : "layouts/page.html"
 		}
 	},
 	"variables": {

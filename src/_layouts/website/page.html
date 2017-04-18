@@ -7,6 +7,9 @@
 	<div class="book-summary">
 		{% block book_sidebar %}
 		{% block search_input %}{% endblock %}
+		<div id="book-search-input" role="search">
+			<input type="text" placeholder="{{ 'SEARCH_PLACEHOLDER'|t }}" />
+		</div>
 		{% block book_summary %}
 		<nav role="navigation">
 			{% include "website/summary.html" %}
@@ -23,11 +26,30 @@
 			<div class="page-wrapper" tabindex="-1" role="main">
 				<div class="page-inner">
 					{% block search_results %}
-					<section class="normal markdown-section">
-						{% block page %}
-						{{ page.content|safe }}
-						{% endblock %}
-					</section>
+					<div id="book-search-results">
+						<div class="search-noresults">
+							<section class="normal markdown-section">
+								{% block page %}
+								{{ page.content|safe }}
+								{% endblock %}
+							</section>
+						</div>
+						<div class="search-results">
+							<div class="has-results">
+								{% block search_has_results %}
+								<h1 class="search-results-title">{{ 'SEARCH_RESULTS_TITLE'|t|safe }}</h1>
+								<ul class="search-results-list"></ul>
+								{% endblock %}
+							</div>
+							<div class="no-results">
+								{% block search_no_results %}
+								<h1 class="search-results-title">{{ 'SEARCH_NO_RESULTS_TITLE'|t|safe }}</h1>
+								{% endblock %}
+							</div>
+						</div>
+					</div>
+
+
 					{% endblock %}
 				</div>
 			</div>
