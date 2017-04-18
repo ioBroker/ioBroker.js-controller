@@ -1,0 +1,1 @@
+Die Kategorie Kamera enhält Adapter zur Einbindung verschiedener Kamerasysteme in ioBroker.

@@ -1,0 +1,1 @@
+Die Kategorie Alarm enhält Adapter für die Einbindung verschiedner Alarmsysteme in ioBroker.
