@@ -300,6 +300,7 @@ a[href="../100_footer/"] {
 	-o-border-radius: 5em;
 	border-radius: 5em;
 	background: #336799;
+	font-weight: normal;
 }
 
 .normal.markdown-section h2 {
@@ -333,6 +334,7 @@ a[href="../100_footer/"] {
 	/*font-family: 'Roboto Slab', 'Roboto', 'Noto', sans-serif;*/
 	font-family: 'Audiowide', cursive, Arial;
 	color: #666666;
+	font-weight: normal;
 }
 
 .normal.markdown-section h3 {
