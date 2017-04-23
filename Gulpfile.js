@@ -25,6 +25,90 @@ gulp.task('clean', function (done) {
         done();
     });
 });
+function downloadFiles(files, callback) {
+    if (!files || !files.length) {
+
+    } else {
+        var task = files.shift();
+        request(task.url, function (err, resp, body) {
+            if (body) {
+                if (!fs.existsSync(path.dirname(task.name))) {
+                    fs.mkdirSync(path.dirname(task.name));
+                }
+                fs.writeFileSync(task.name, body);
+            } else {
+                console.error('Cannot load "' + task.url + '": ' + err);
+            }
+            process.nextTick(downloadFiles, files, callback);
+        });
+    }
+}
+
+function makeChange() {
+    // you're going to receive Vinyl files as chunks
+    function transform(file, cb) {
+        // read and modify file contents
+        console.log(file.history[0]);
+        var lines = String(file.contents).replace(/\r\n/g, '\n').split('\n');
+        var files = [];
+        var found = false;
+        if (file.history[0].match(/email\.md$/)) {
+            console.log('A');
+        }
+        for (var i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replace(/http:\/\/www\.iobroker\.net\/wp-content\/uploads\/\//g, 'http://iobroker.net/wp-content/uploads/');
+            lines[i] = lines[i].replace(/http:\/\/www\.iobroker\.net\/wp-content\/uploads\//g, 'http://iobroker.net/wp-content/uploads/');
+            lines[i] = lines[i].replace(/http:\/\/iobroker\.net\/wp-content\/uploads\/\//g, 'http://iobroker.net/wp-content/uploads/');
+            // [![](http://www.iobroker.net/wp-content/uploads//email_set.png)](http://www.iobroker.net/wp-content/uploads//email_set.png)]
+            var m = lines[i].match(/(\[caption[^\]]*\])?\!\[[^\]]*\]\(http:\/\/iobroker\.net\/[^\)]+\)(\]\([^\)]*\))?\]?(.*\[\/caption\])?/g);
+            if (m) {
+                for (var j = 0; j < m.length; j++) {
+                    found = true;
+                    // try to extract caption
+                    var caption = m[j].match(/\)\]?(.+)\[\/caption\]/);
+                    if (caption) {
+                        caption = caption[1].trim();
+                    }
+
+                    // change it to \n![](img/filename_oldf_filename)\n
+                    var mm = m[j].split('](')[1];
+                    mm = mm.replace(/\).*$/, '');
+                    // noe we have "http://www.iobroker.net/wp-content/uploads/email_set.png"
+                    var fileName = mm.split('/').pop();
+                    var mdPath = file.history[0].replace(/\\/g, '/');
+                    var parts = mdPath.split('/');
+                    var mdFileName = parts.pop().replace(/\.md$/, '');
+                    mdPath = parts.join('/');
+
+                    var task = {url: mm, name: mdPath + '/img/' + mdFileName + '_' + fileName, relative: 'img/' + mdFileName + '_' + fileName};
+                    files.push(task);
+                    lines[i] = lines[i].replace(m[j], '\n![' + (caption || '') + '](' + task.relative + ')\n');
+                }
+            }
+        }
+        downloadFiles(files, function () {
+            if (found) {
+                file.contents_ = new Buffer(lines.join('\n'));
+            }
+
+            // if there was some error, just pass as the first parameter here
+            cb(null, file);
+        });
+    }
+
+    // returning the map will cause your transform function to be called
+    // for each one of the chunks (files) you receive. And when this stream
+    // receives a 'end' signal, it will end as well.
+    //
+    // Additionally, you want to require the `event-stream` somewhere else.
+    return require('event-stream').map(transform);
+}
+
+gulp.task('format', function (done) {
+    return gulp.src([src + '**/*.md'])
+        .pipe(makeChange())
+        .pipe(gulp.dest(src));
+});
 
 // copy from src to dist
 gulp.task('prepare-dist', ['clean'], function (done) {
