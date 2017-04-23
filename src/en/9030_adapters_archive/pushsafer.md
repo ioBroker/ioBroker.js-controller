@@ -55,7 +55,9 @@ Pushsafer make it easy and safe to get push-notifications in real time on your A
 
 <td style="width: 50%;">**Github**</td>
 
-<td style="width: 50%;">![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Link](https://github.com/ioBroker/ioBroker.pushsafer)</td>
+<td style="width: 50%;">
+![](img/pushsafer_icon_link.png)
+ [Link](https://github.com/ioBroker/ioBroker.pushsafer)</td>
 
 </tr>
 

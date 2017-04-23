@@ -2,11 +2,17 @@
 
 Dies ist ein SD-Karten Image für den pine64\. Es ist für 8 GB Karten und größer passend. Da es jetzt schon nur gerade auf eine 8 GB-Karte passt ist eine 16 GB die empfohlene Mindestgröße.
 
-Die Micro-SD Karte wird am besten mit dem ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
+Die Micro-SD Karte wird am besten mit dem 
+![](img/sd-image-fuer-raspberry-pi2-minimal-4_icon_link.png)
+ [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
 
-Das Image wird entpackt und anschließend mit Hilfe des Programms ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
+Das Image wird entpackt und anschließend mit Hilfe des Programms 
+![](img/sd-image-fuer-raspberry-pi2-minimal-4_icon_link.png)
+ [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
 
-Das Image enthält das <span id="Debian_Linux_Jessie_with_Mate_GUI_Image_.5B20160508.5D_by_lenny.raposo_with_Longsleep_kernel" class="mw-headline">Debian Linux Jessie with Mate GUI Image </span>nach download von ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Pine64.org](http://wiki.pine64.org/index.php/Pine_A64_Software_Release#Debian_Linux_Jessie_with_Mate_GUI_Image_.5B20160701.5D_by_lenny.raposo_with_Longsleep_kernel) mit Longsleep Kernel.
+Das Image enthält das <span id="Debian_Linux_Jessie_with_Mate_GUI_Image_.5B20160508.5D_by_lenny.raposo_with_Longsleep_kernel" class="mw-headline">Debian Linux Jessie with Mate GUI Image </span>nach download von 
+![](img/sd-image-fuer-raspberry-pi2-minimal-4_icon_link.png)
+ [Pine64.org](http://wiki.pine64.org/index.php/Pine_A64_Software_Release#Debian_Linux_Jessie_with_Mate_GUI_Image_.5B20160701.5D_by_lenny.raposo_with_Longsleep_kernel) mit Longsleep Kernel.
 
 Folgende User sind angelegt:
 

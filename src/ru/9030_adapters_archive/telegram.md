@@ -8,32 +8,58 @@
 
 ## <span id="i-3">Установка</span>
 
-Установка осуществляется на вкладке **Драйвера** странички [администрирования](http://www.iobroker.net/?page_id=3800&lang=ru) системы. В группе драйверов **Сетевые** находим строчку с названием **Telegram Adapter** и нажимаем кнопку со значком плюса в этой строке справа. [![](http://www.iobroker.net/wp-content/uploads//telegram-install1.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-install1.jpg) На экране появится всплывающее окно установки драйвера, в конце установки оно автоматически закроется. [![](http://www.iobroker.net/wp-content/uploads//telegram-install2.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-install2.jpg) Если все прошло удачно, на вкладке **Настройка драйверов** появится строка **telegram.0 **с установленным экземпляром драйвера. [![](img/telegram-install3.jpg)](img/telegram-install3.jpg)
+Установка осуществляется на вкладке **Драйвера** странички [администрирования](http://www.iobroker.net/?page_id=3800&lang=ru) системы. В группе драйверов **Сетевые** находим строчку с названием **Telegram Adapter** и нажимаем кнопку со значком плюса в этой строке справа. [
+![](img/telegram_telegram-install1.jpg)
+ На экране появится всплывающее окно установки драйвера, в конце установки оно автоматически закроется. [
+![](img/telegram_telegram-install2.jpg)
+ Если все прошло удачно, на вкладке **Настройка драйверов** появится строка **telegram.0 **с установленным экземпляром драйвера. [![](img/telegram-install3.jpg)](img/telegram-install3.jpg)
 
 ## <span id="i-3">Настройка</span>
 
 ### Регистрация и создание бота
 
-Чтобы настроить драйвер, нужно сначала создать своего бота для управления ioBroker. Если у вас еще нет аккаунта в сервисе telegram, самое время его создать, для этого переходим по [ссылке](https://web.telegram.org/#/login) (web-client, можно и через установленное приложение) и регистрируемся. Затем создаем бота, для этого переходим по [ссылке](https://telegram.me/botfather), если вы пользуетесь web-client либо в строке поиска контактов ищем пользователя с именем **@BotFather** и начинаем с ним диалог. [![](http://www.iobroker.net/wp-content/uploads//telegram-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-setting1.jpg) Итак, создаем нового бота, даем команду `/newbot`. Далее в диалоге вас попросят написать имя вашего бота - придумываем, вводим и нажимаем enter. Затем нужно придумать и указать имя пользователя, оно должно заканчиваться словом `bot`.  Имя пользователя должно быть уникальным, поэтому, если введенное имя уже занято, вас об этом предупредят и попросят придумать другое. Конечной целью диалога будет ключ доступа для использования API HTTP (token access HTTP API). [![](http://www.iobroker.net/wp-content/uploads//telegram-setting2.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-setting2.jpg) Теперь, для безопасности, нужно установить пароль для общения с ботом. Для этого открываем диалог с только что созданным собеседником и набираем команду `/password security`, где слово **security** - это пароль (придумайте свой). [![](img/telegram-setting3.jpg)](img/telegram-setting3.jpg)
+Чтобы настроить драйвер, нужно сначала создать своего бота для управления ioBroker. Если у вас еще нет аккаунта в сервисе telegram, самое время его создать, для этого переходим по [ссылке](https://web.telegram.org/#/login) (web-client, можно и через установленное приложение) и регистрируемся. Затем создаем бота, для этого переходим по [ссылке](https://telegram.me/botfather), если вы пользуетесь web-client либо в строке поиска контактов ищем пользователя с именем **@BotFather** и начинаем с ним диалог. [
+![](img/telegram_telegram-setting1.jpg)
+ Итак, создаем нового бота, даем команду `/newbot`. Далее в диалоге вас попросят написать имя вашего бота - придумываем, вводим и нажимаем enter. Затем нужно придумать и указать имя пользователя, оно должно заканчиваться словом `bot`.  Имя пользователя должно быть уникальным, поэтому, если введенное имя уже занято, вас об этом предупредят и попросят придумать другое. Конечной целью диалога будет ключ доступа для использования API HTTP (token access HTTP API). [
+![](img/telegram_telegram-setting2.jpg)
+ Теперь, для безопасности, нужно установить пароль для общения с ботом. Для этого открываем диалог с только что созданным собеседником и набираем команду `/password security`, где слово **security** - это пароль (придумайте свой). [![](img/telegram-setting3.jpg)](img/telegram-setting3.jpg)
 
 ### Настройка драйвера telegram
 
-Теперь можно открыть настройки драйвера telegram в системе ioBroker (вкладка **Настройки драйверов**) и вписать туда ключ, пароль и, если планируется использовать **text2command**, выбрать из списка экземпляр этого драйвера. [![](http://www.iobroker.net/wp-content/uploads//telegram-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-setting4.jpg) Запускаем настроенный экземпляр драйвера telegram на вкладке **Настройка драйверов** кнопкой **Неактивно. Нажать для старта** (красная кнопка со значком play). [![](http://www.iobroker.net/wp-content/uploads//telegram-setting5.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-setting5.jpg) Переходим на вкладку **Лог** и убеждаемся что драйвер подключился к сервису telegram и что ошибки отсутствуют. [![](img/telegram-setting6.jpg)](img/telegram-setting6.jpg) Отлично, драйвер настроен.
+Теперь можно открыть настройки драйвера telegram в системе ioBroker (вкладка **Настройки драйверов**) и вписать туда ключ, пароль и, если планируется использовать **text2command**, выбрать из списка экземпляр этого драйвера. [
+![](img/telegram_telegram-setting4.jpg)
+ Запускаем настроенный экземпляр драйвера telegram на вкладке **Настройка драйверов** кнопкой **Неактивно. Нажать для старта** (красная кнопка со значком play). [
+![](img/telegram_telegram-setting5.jpg)
+ Переходим на вкладку **Лог** и убеждаемся что драйвер подключился к сервису telegram и что ошибки отсутствуют. [![](img/telegram-setting6.jpg)](img/telegram-setting6.jpg) Отлично, драйвер настроен.
 
 ## Примеры использования
 
 ### Работа совместно с драйвером text2command
 
-Для работы в связке с драйвером text2command, необходимо в настройках адаптера telegram выбрать установленный экземпляр драйвера text2command, как описано [выше](http://www.iobroker.net/?page_id=4492&lang=ru#_telegram). [![](http://www.iobroker.net/wp-content/uploads//telegram-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-setting4.jpg) Добавим несколько простых правил для примера - правило **Сколько время**, **Как твоё имя** и **Температура на улице**. [![](http://www.iobroker.net/wp-content/uploads//telegram-use1.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use1.jpg) Всё! Теперь можно открыть диалог с ботом, авторизоваться и задавать вопросы: [![](http://www.iobroker.net/wp-content/uploads//telegram-use2.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use2.jpg) Однако стоит отметить, что полностью набирать команды и вопросы боту не очень удобно, особенно на мобильных устройствах. Боту можно задать список быстрых команд для более быстрого ввода - достаточно написать символ "/" и появится список заранее заданных команд - остается только выбрать нужную. Для этого опять обратимся к пользователю **@BotFather**. Введем команду `/setcommands`, затем впишем имя созданного бота начиная с символа "@". [![](img/telegram-use3.jpg)](img/telegram-use3.jpg) Вводим команды в формате: `команда - описание`
+Для работы в связке с драйвером text2command, необходимо в настройках адаптера telegram выбрать установленный экземпляр драйвера text2command, как описано [выше](http://www.iobroker.net/?page_id=4492&lang=ru#_telegram). [
+![](img/telegram_telegram-setting4.jpg)
+ Добавим несколько простых правил для примера - правило **Сколько время**, **Как твоё имя** и **Температура на улице**. [
+![](img/telegram_telegram-use1.jpg)
+ Всё! Теперь можно открыть диалог с ботом, авторизоваться и задавать вопросы: [
+![](img/telegram_telegram-use2.jpg)
+ Однако стоит отметить, что полностью набирать команды и вопросы боту не очень удобно, особенно на мобильных устройствах. Боту можно задать список быстрых команд для более быстрого ввода - достаточно написать символ "/" и появится список заранее заданных команд - остается только выбрать нужную. Для этого опять обратимся к пользователю **@BotFather**. Введем команду `/setcommands`, затем впишем имя созданного бота начиная с символа "@". [![](img/telegram-use3.jpg)](img/telegram-use3.jpg) Вводим команды в формате: `команда - описание`
 
 *   команда - короткое имя команды, пишется в одно слово без пробелов (можно через знак нижнего подчеркивания)
 *   описание - кратное описание команды
 
-Каждая команда с новой строки, в приложении используем сочетание клавиш Ctrl+Enter. [![](http://www.iobroker.net/wp-content/uploads//telegram-use4.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use4.jpg) Теперь надо немного подредактировать правила, чтобы ключевые слова команд подходили: [![](http://www.iobroker.net/wp-content/uploads//telegram-use5.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use5.jpg) Теперь можно в чате с ботом набрать символ выбора команды "/" и на экране отобразиться список. [![](img/telegram-use6.jpg)](img/telegram-use6.jpg)
+Каждая команда с новой строки, в приложении используем сочетание клавиш Ctrl+Enter. [
+![](img/telegram_telegram-use4.jpg)
+ Теперь надо немного подредактировать правила, чтобы ключевые слова команд подходили: [
+![](img/telegram_telegram-use5.jpg)
+ Теперь можно в чате с ботом набрать символ выбора команды "/" и на экране отобразиться список. [![](img/telegram-use6.jpg)](img/telegram-use6.jpg)
 
 ### Удаленная перезагрузка сервера
 
-Рассмотрим пример посложнее. Предположим, что необходимо создать команду, которая воспринималась бы ботом и перезагружала сервер. Для этого понадобиться установленные и настроенные драйвера telegram, text2command и javascript. В экземпляре драйвера javascript.0 создадим скрипт с названием **t2c_restartSystem** и следующим содержимым: `createState('t2c_restartSystem.restart_command', '');` `on({id: 'javascript.0.t2c_restartSystem.restart_command', change: 'any'}, function (obj) {` `  if (obj.newState.val === true || obj.newState.val === 'true'){` `      log('Command reboot');` `      setState('javascript.0.t2c_restartSystem.restart_command', 'false');` `      exec ('reboot');` `  }` `});` В скрипте создаем переменную `javascript.0.t2c_restartSystem.restart_command` и подписываемся на нее. По условию нового значения `true`, выдаем в лог сообщение, сбрасываем значение переменной в `false` и выполняем команду перезагрузки. Добавим новое правило в драйвер text2command: [![](http://www.iobroker.net/wp-content/uploads//telegram-use7.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use7.jpg) Теперь в telegram диалоге с пользователем **@BotFather** добавим команду /restart_iobroker (на самом деле нужно не добавлять команду, а прописывать все возможные, то есть вновь вписать ранее созданные). [![](http://www.iobroker.net/wp-content/uploads//telegram-use8.jpg)](http://www.iobroker.net/wp-content/uploads//telegram-use8.jpg) Все, можно проверить как работает только что созданная команда: [![](img/telegram-use9.jpg)](img/telegram-use9.jpg)
+Рассмотрим пример посложнее. Предположим, что необходимо создать команду, которая воспринималась бы ботом и перезагружала сервер. Для этого понадобиться установленные и настроенные драйвера telegram, text2command и javascript. В экземпляре драйвера javascript.0 создадим скрипт с названием **t2c_restartSystem** и следующим содержимым: `createState('t2c_restartSystem.restart_command', '');` `on({id: 'javascript.0.t2c_restartSystem.restart_command', change: 'any'}, function (obj) {` `  if (obj.newState.val === true || obj.newState.val === 'true'){` `      log('Command reboot');` `      setState('javascript.0.t2c_restartSystem.restart_command', 'false');` `      exec ('reboot');` `  }` `});` В скрипте создаем переменную `javascript.0.t2c_restartSystem.restart_command` и подписываемся на нее. По условию нового значения `true`, выдаем в лог сообщение, сбрасываем значение переменной в `false` и выполняем команду перезагрузки. Добавим новое правило в драйвер text2command: [
+![](img/telegram_telegram-use7.jpg)
+ Теперь в telegram диалоге с пользователем **@BotFather** добавим команду /restart_iobroker (на самом деле нужно не добавлять команду, а прописывать все возможные, то есть вновь вписать ранее созданные). [
+![](img/telegram_telegram-use8.jpg)
+ Все, можно проверить как работает только что созданная команда: [![](img/telegram-use9.jpg)](img/telegram-use9.jpg)
 
 ### Публикация стоп-кадров IP-камеры по датчику движения
 

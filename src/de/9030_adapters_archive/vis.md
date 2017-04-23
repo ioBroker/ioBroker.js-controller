@@ -8,7 +8,9 @@ Eine Konfiguration des Adapters ist nicht nötig. Es kann nur eine VIS Instanz g
 
 ## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)Bedienung
 
-Der Adapter wird über `<IPdesServers>:8082/vis/index.html` aufgerufen und damit die Visualisierung angezeigt. In einem Projekt befinden sich mehrere Ansichten (Views). Auf jeder View sind wieder mehrere Widgets frei platzierbar, die zur Anzeige oder Bedienung dienen. Zur Erstellung und Konfiguration einer Visualisierung muss man den **Editor** laden. Der Editor wird über `<IPdesServers>:8082/vis/edit.html` oder über den Hyperlink im Reiter Instanzen des admin-Adapter aufgerufen. Nach Schließen des Editors über das Close-Window Icon ( (x) rechts oben) wird die zuletzt bearbeitete View in der Funktionsansicht dargestellt. Dieser kann jederzeit aufgerufen werden mit `<IPdesServers>:8082/vis/index.html#ViewName` Der Editor teilt sich in verschiedene Bereiche auf. [![ioBroker_vis_Editor_002](http://www.iobroker.net/wp-content/uploads/2015/04/ioBroker_vis_Editor_002-300x165.jpg)](http://www.iobroker.net/wp-content/uploads/2015/04/ioBroker_vis_Editor_002.jpg)[![zoom61_black](img/zoom61_black.png)](img/zoom61_black.png)
+Der Adapter wird über `<IPdesServers>:8082/vis/index.html` aufgerufen und damit die Visualisierung angezeigt. In einem Projekt befinden sich mehrere Ansichten (Views). Auf jeder View sind wieder mehrere Widgets frei platzierbar, die zur Anzeige oder Bedienung dienen. Zur Erstellung und Konfiguration einer Visualisierung muss man den **Editor** laden. Der Editor wird über `<IPdesServers>:8082/vis/edit.html` oder über den Hyperlink im Reiter Instanzen des admin-Adapter aufgerufen. Nach Schließen des Editors über das Close-Window Icon ( (x) rechts oben) wird die zuletzt bearbeitete View in der Funktionsansicht dargestellt. Dieser kann jederzeit aufgerufen werden mit `<IPdesServers>:8082/vis/index.html#ViewName` Der Editor teilt sich in verschiedene Bereiche auf. [
+![](img/vis_ioBroker_vis_Editor_002-300x165.jpg)
+[![zoom61_black](img/zoom61_black.png)](img/zoom61_black.png)
 
 * * *
 
@@ -48,7 +50,9 @@ Umgekehrt, kann man hier z.B. nicht im Umfang von vis enthaltene Widgets importi
 
 ### Tools
 
-Wird der Reiter Tools aktiviert ändert sich die darunterliegende Werkzeugleiste ![iobroker_vis_Editor_Tools_Header](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_vis_Editor_Tools_Header.jpg) Die Werkzeuge für die Erleichterung der Bearbeitung von [Views](http://www.iobroker.net/?page_id=1193&lang=de) werden angezeigt
+Wird der Reiter Tools aktiviert ändert sich die darunterliegende Werkzeugleiste 
+![](img/vis_iobroker_vis_Editor_Tools_Header.jpg)
+ Die Werkzeuge für die Erleichterung der Bearbeitung von [Views](http://www.iobroker.net/?page_id=1193&lang=de) werden angezeigt
 
 #### Auflösung
 

@@ -8,7 +8,9 @@ Um Datenpunkte anzeigen oder Aktionen durchführen zu können, muss der zu steue
 
 Unter dem Reiter Widget können die Eigenschaften eines Widgets sehr umfangreich eingestellt werden. (Ein Beispiel zu dem Umfang kann man nach Anklicken der Abbildung unten bekommen)
 
-[![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_groups_Items.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_kpl.jpg)
+[
+![](img/Vis_Einstellungen_Sidebar (Widgets)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_groups_Items.jpg)
+
 
 Sobald ein Widget ausgewählt wurde ändert sich die Beschriftung des Reiters in die Kennung des ausgewählten Widgets.
 
@@ -70,7 +72,7 @@ Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu ei
 
 Der Abschnitt Allgemein ist für jedes Widget spezifisch und wird bei den einzelnen Widgets näher beschrieben. In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet. (Bitte nicht mit dem Feld Object-ID in dem Block _Sichtbarkeit_ verwechseln!) **Die CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten und können den eigenen Wünschen angepasst werden:
 
-#### CSS allgemein (4) [](http://www.iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg) [](http://www.iobroker.net/wp-content/uploads/2015/05/005_CSS_Font_Text.jpg)[![](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)
+#### CSS allgemein (4) [](http://iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg) [](http://iobroker.net/wp-content/uploads/2015/05/005_CSS_Font_Text.jpg)[![](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)
 
 ##### position
 
@@ -179,7 +181,9 @@ Hier kann ein eigener Ausdruck eingegeben werden, um den gewünschten Hintergrun
 
 ##### -color
 
-hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. 
+![](img/Vis_Einstellungen_Sidebar (Widgets)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+
 
 ##### -image
 
@@ -285,7 +289,9 @@ Andere Geste können ähnlich konfiguriert werden. Diese sind: Zoom mit zwei Fin
 
 #### Signalbilder (10)
 
-Mit Hilfe des Abschnittes "Signalbilder" kann man z.B. bei batteriebetriebenen Sensoren oder Aktoren ein kleines, frei wählbares Piktogramm anzeigen lassen, wenn die Batterie zu Neige geht (und im Homematic-Umfeld auf der CCU eine entsprechende Servicemeldung kommen würde). Pro Element sind bis zu drei Signalbilder möglich. So könnte man den Batteriestatus, den Sabotagekontakt und den UNREACH-Datenpunkt (= nicht erreichbar) eines Sensors oder Aktors abfragen. ![](http://www.iobroker.net/wp-content/uploads//signalbilder_eric.png)
+Mit Hilfe des Abschnittes "Signalbilder" kann man z.B. bei batteriebetriebenen Sensoren oder Aktoren ein kleines, frei wählbares Piktogramm anzeigen lassen, wenn die Batterie zu Neige geht (und im Homematic-Umfeld auf der CCU eine entsprechende Servicemeldung kommen würde). Pro Element sind bis zu drei Signalbilder möglich. So könnte man den Batteriestatus, den Sabotagekontakt und den UNREACH-Datenpunkt (= nicht erreichbar) eines Sensors oder Aktors abfragen. 
+![](img/Vis_Einstellungen_Sidebar (Widgets)_signalbilder_eric.png)
+
 
 ##### Objekt ID
 
@@ -333,4 +339,6 @@ Mit dieser Checkbox wird festgelegt, ob das Symbol blinkend angezeigt werden so
 
 ##### Nicht zeigen bei Editieren
 
-Ist diese Checkbox aktiv wird das Signalbild im Editor nicht angezeigt. Als Beispiel hier die Heizungssteuerung eines Badezimmers.![](http://www.iobroker.net/wp-content/uploads//signalbilder_demo_eric.png) Das obere Batterie-Symbol gehört zum (Homematic) Raum-Thermostat und das untere zum (Homematic) Heizkörperventil. Sobald bei einem der beiden Geräte eine LOWBAT-Meldung kommt, wird an der jeweiligen Position das Batterie-Symbol angezeigt.
+Ist diese Checkbox aktiv wird das Signalbild im Editor nicht angezeigt. Als Beispiel hier die Heizungssteuerung eines Badezimmers.
+![](img/Vis_Einstellungen_Sidebar (Widgets)_signalbilder_demo_eric.png)
+ Das obere Batterie-Symbol gehört zum (Homematic) Raum-Thermostat und das untere zum (Homematic) Heizkörperventil. Sobald bei einem der beiden Geräte eine LOWBAT-Meldung kommt, wird an der jeweiligen Position das Batterie-Symbol angezeigt.

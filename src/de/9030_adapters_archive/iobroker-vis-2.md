@@ -50,7 +50,9 @@ Umgekehrt, kann man hier z.B. nicht im Umfang von vis enthaltene Widgets importi
 
 #### Tools
 
-Wird der Reiter Tools aktiviert ändert sich die darunterliegende Werkzeugleiste ![iobroker_vis_Editor_Tools_Header](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_vis_Editor_Tools_Header.jpg) Die Werkzeuge für die Erleichterung der Bearbeitung von [Views](http://www.iobroker.net/?page_id=1193&lang=de) werden angezeigt
+Wird der Reiter Tools aktiviert ändert sich die darunterliegende Werkzeugleiste 
+![](img/iobroker-vis-2_iobroker_vis_Editor_Tools_Header.jpg)
+ Die Werkzeuge für die Erleichterung der Bearbeitung von [Views](http://www.iobroker.net/?page_id=1193&lang=de) werden angezeigt
 
 ##### Auflösung
 

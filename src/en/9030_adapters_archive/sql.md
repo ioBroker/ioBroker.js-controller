@@ -19,7 +19,11 @@ As an example we use DB MS SQL Express 2014, from the [Microsoft](https://www.mi
 *   Go to **SQL Server Configuration Manager** then Protocols for SQLExpress and enable TCP/IP, input the port number 1443 to all TCP Port fields. Restart the server to activate the new settings.
 *   Set the Windows Browser for incoming connections TCP port 1443:
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup12.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup12.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup13.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup13.jpg) [![](img/SQL-MSSQL-setup15.jpg)](img/SQL-MSSQL-setup15.jpg) Now let us install the adapter SQL into ioBroker system by pressing the plus button in the line of adapter **SQL History** (storage group) in the folder **Adapters** with Web-interface. Now we move to the Property **Adapter Configuration**, then run the instance of sql.0 adapter (if there are different instances, they will have different names) and apply the **Settings. **Then:
+[
+![](img/sql_SQL-MSSQL-setup12.jpg)
+ [
+![](img/sql_SQL-MSSQL-setup13.jpg)
+ [![](img/SQL-MSSQL-setup15.jpg)](img/SQL-MSSQL-setup15.jpg) Now let us install the adapter SQL into ioBroker system by pressing the plus button in the line of adapter **SQL History** (storage group) in the folder **Adapters** with Web-interface. Now we move to the Property **Adapter Configuration**, then run the instance of sql.0 adapter (if there are different instances, they will have different names) and apply the **Settings. **Then:
 
 *   choosing the type of DB- **MS-SQL**
 *   input the name or IP-host address from the installed DB
@@ -35,7 +39,15 @@ As an example we use DB MS SQL Express 2014, from the [Microsoft](https://www.mi
 *   the rest of settings can be left by default
 *   then we press **Save and close **button
 
-  [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting4.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting3.jpg) Then sometime later, we can open the same variable settings (for example, **system.adapter.admin.0.memRss**) and go to the **table** tab. There you can see the archived elements in the DB. [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting6.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting6.jpg) It is possible to install **MS SQL Management Studio** and check the archived data on it. [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting5.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting5.jpg) One should also mention the [limitations](img/cc645993%28v_sql.120%29.aspx) of free version of **MS SQL Express 2014** (and consider it when one projects system ioBroker): Maximum computation power, used with 1 installation: no more than 1 CPU and 4 cores. Maximum memory size in use: up to 1 Gb Maximum size of relational database: 10 Gb
+  [
+![](img/sql_SQL-MSSQL-setting4.jpg)
+ [
+![](img/sql_SQL-MSSQL-setting3.jpg)
+ Then sometime later, we can open the same variable settings (for example, **system.adapter.admin.0.memRss**) and go to the **table** tab. There you can see the archived elements in the DB. [
+![](img/sql_SQL-MSSQL-setting6.jpg)
+ It is possible to install **MS SQL Management Studio** and check the archived data on it. [
+![](img/sql_SQL-MSSQL-setting5.jpg)
+ One should also mention the [limitations](img/cc645993%28v_sql.120%29.aspx) of free version of **MS SQL Express 2014** (and consider it when one projects system ioBroker): Maximum computation power, used with 1 installation: no more than 1 CPU and 4 cores. Maximum memory size in use: up to 1 Gb Maximum size of relational database: 10 Gb
 
 ### SQlite database
 
@@ -47,7 +59,11 @@ As it has been mentioned before, SQLite is rather quick and easy DB. Let us con
 *   If necessary, we change the parameter **Time of storage in the table** (time of storage of data in the table, old data will be erased)
 *   Press **Save and close**, adapter restarts
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting4.jpg) In order to check if the new values are truly added to Db,  one can set up the archiving of a variable or a group of variables(look at the example above **MS SQL Express**); To check the values being kept in the DB, one should open the tab **Table** in the tab history settings or open db file with a special program, for example **SQLite Expert Personal**. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg) [![](img/SQL-SQLite-setting5.jpg)](img/SQL-SQLite-setting5.jpg)
+[
+![](img/sql_SQL-SQLite-setting4.jpg)
+ In order to check if the new values are truly added to Db,  one can set up the archiving of a variable or a group of variables(look at the example above **MS SQL Express**); To check the values being kept in the DB, one should open the tab **Table** in the tab history settings or open db file with a special program, for example **SQLite Expert Personal**. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+ [![](img/SQL-SQLite-setting5.jpg)](img/SQL-SQLite-setting5.jpg)
 
 ### MySQL database
 
@@ -65,7 +81,19 @@ Now install SQL adapter , if it is not installed, and optimize it:
 *   if it is needed we change the parameter **Time of database storage** (period of storage, the old data is erased)
 *   press the button **Save and close**, then the adapter restarts. Now we can check the linking to DB
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting1.jpg) We can check the content of db in a tab **Table** in another tab history settings of a variable or link to db with a special app, for example, **HeidiSQL**. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg) **The Windows OS installation** is not very hard. We install MySQL server on the Windows machine, to do that, the user should download the installation package from [mysql.com](http://dev.mysql.com/downloads/) It is **MySQL** server and if desired, administration program (Download **MySQL Workbench**) First, **MySQL** server should be installed manually, choosing its components (the server and its tools) [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting6.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting6.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting7.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting7.jpg) Add the user **iobroker** given the option to connect from any host **All Hosts (%)**, role of **DB Admin** with a password, for example, **iobrokermysql**. Also, it is important to install the password for the super user **root**. [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting9.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting9.jpg) [![](img/SQL-MySQL-setting11.jpg)](img/SQL-MySQL-setting11.jpg) Let us install SQL-adapter , if it hasn’t been installed, and optimize it.
+[
+![](img/sql_SQL-MySQL-setting1.jpg)
+ We can check the content of db in a tab **Table** in another tab history settings of a variable or link to db with a special app, for example, **HeidiSQL**. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [
+![](img/sql_SQL-MySQL-setting3.jpg)
+ **The Windows OS installation** is not very hard. We install MySQL server on the Windows machine, to do that, the user should download the installation package from [mysql.com](http://dev.mysql.com/downloads/) It is **MySQL** server and if desired, administration program (Download **MySQL Workbench**) First, **MySQL** server should be installed manually, choosing its components (the server and its tools) [
+![](img/sql_SQL-MySQL-setting6.jpg)
+ [
+![](img/sql_SQL-MySQL-setting7.jpg)
+ Add the user **iobroker** given the option to connect from any host **All Hosts (%)**, role of **DB Admin** with a password, for example, **iobrokermysql**. Also, it is important to install the password for the super user **root**. [
+![](img/sql_SQL-MySQL-setting9.jpg)
+ [![](img/SQL-MySQL-setting11.jpg)](img/SQL-MySQL-setting11.jpg) Let us install SQL-adapter , if it hasn’t been installed, and optimize it.
 
 *   Choosing the DB type: **MySQL**
 *   Server MySQL is installed on another PC with Windows OS, that is why in a host setting we indicate the **IP-address** of this PC
@@ -75,7 +103,13 @@ Now install SQL adapter , if it is not installed, and optimize it:
 *   If it is necessary we change the **Time of storage in DB **(period of data storage, old data is removed)
 *   Press the button **Save and close**, the adapter restarts itself. Now we can check the connection to DB.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting2.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting2.jpg) In order to check if there are new entries into a database, we can set to archiving of some variable or a group of variables. (look at the above example **MS SQL Express**). To check the entry in the database we can go to a **Table** tab in the history settings for a variable or link to db with a special program, **HeidiSQL** for example or install it in addition to MySQL package MySQL Workbench, it has GUI as its component. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg) [![](img/SQL-MySQL-setting18.jpg)](img/SQL-MySQL-setting18.jpg)
+[
+![](img/sql_SQL-MySQL-setting2.jpg)
+ In order to check if there are new entries into a database, we can set to archiving of some variable or a group of variables. (look at the above example **MS SQL Express**). To check the entry in the database we can go to a **Table** tab in the history settings for a variable or link to db with a special program, **HeidiSQL** for example or install it in addition to MySQL package MySQL Workbench, it has GUI as its component. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [
+![](img/sql_SQL-MySQL-setting3.jpg)
+ [![](img/SQL-MySQL-setting18.jpg)](img/SQL-MySQL-setting18.jpg)
 
 ### PostgreSQL database
 
@@ -98,7 +132,11 @@ file **/etc/postgresql/9.1/main/pg_hba.conf**
 *   If it is necessary we change the **Time of storage in DB **(period of data storage, old data is removed)
 *   Press the button **Save and close**, the adapter restarts itself. Now we can check the connection to DB.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-PostgreSQL-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-PostgreSQL-setting1.jpg) In order to check if there are new entries into a database, we can set to archiving of some variable or a group of variables. (look at the above example **MS SQL Express**). To check the entry in the database we can go to a **Table** tab in the history settings for a variable or link to db with a special program, for example pgAdmin III (for Windows) [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](img/SQL-PostgreSQL-setting2.jpg)](img/SQL-PostgreSQL-setting2.jpg)
+[
+![](img/sql_SQL-PostgreSQL-setting1.jpg)
+ In order to check if there are new entries into a database, we can set to archiving of some variable or a group of variables. (look at the above example **MS SQL Express**). To check the entry in the database we can go to a **Table** tab in the history settings for a variable or link to db with a special program, for example pgAdmin III (for Windows) [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [![](img/SQL-PostgreSQL-setting2.jpg)](img/SQL-PostgreSQL-setting2.jpg)
 
 ## The structure of DB Tables
 

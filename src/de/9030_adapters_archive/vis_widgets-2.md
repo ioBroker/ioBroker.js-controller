@@ -14,7 +14,9 @@ Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig
 
 Der Abschnitt Allgemein ist für jedes Widget spezifisch und wird bei den einzelnen Widgets näher beschrieben. In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.   **Die CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten und können den eigenen Wünschen angepasst werden:
 
-## **CSS allgemein**[![004_CSS_allgemein](http://www.iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg)](http://www.iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg)[](img/005_CSS_Font_Text.jpg)
+## **CSS allgemein**[
+![](img/vis_widgets-2_004_CSS_allgemein.jpg)
+[](img/005_CSS_Font_Text.jpg)
 
 **left:** Abstand vom linken Rand des Views **top:** Abstand vom oberen Rand des Views **width: **Breite des Widgets **height:** Höhe des Widgets **z-index: **Angebe der Ebene, in der das Widget liegt (0= auf dem Hintergrund, positive Werte= weiter vorne, je höher der Wert) **overflow-x:** **overflow-y:** **opacity:**
 

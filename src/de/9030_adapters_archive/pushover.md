@@ -12,7 +12,9 @@ Schließlich muss man noch ein Empfangsgerät registrieren, auf dem die Nachrich
 
 ## **Konfiguration:**
 
-[![pushover konfig](http://www.iobroker.net/wp-content/uploads/2015/04/pushover-konfig.png)](http://www.iobroker.net/wp-content/uploads/2015/04/pushover-konfig.png)
+[
+![](img/pushover_pushover-konfig.png)
+
 
 **Group Key:** Hier wird der User-Key (30 Zeichen) eingetragen. Er legt fest, an wen die Nachricht verschickt wird.
 
@@ -59,4 +61,5 @@ on({
     }
 });</pre>
 
-  [caption id="attachment_3189" align="aligncenter" width="400"]![Pushover App](http://www.iobroker.net/wp-content/uploads/screenshot-Pushover-577x1024.png) Pushover App unter iOS 9[/caption]
+  
+![Pushover App unter iOS 9](img/pushover_screenshot-Pushover-577x1024.png)

@@ -1,4 +1,4 @@
-# **Einstieg in ioBroker mit homematic**
+# Einstieg in ioBroker mit homematic
 
 ## Übersicht
 
@@ -6,7 +6,7 @@ Nachdem die grundsätzliche [Installation](http://www.iobroker.net/?page_id=44) 
 
 Je nachdem, was mit diesen Daten geschehen soll (Visualisierung/Bedienung; Programme auslösen, Historie der Datenpunkte) benötigt man außerdem je eine Instanz von den entsprechenden Adapter.
 
-### **Visualisierung und Bedienung**
+### Visualisierung und Bedienung
 
 [![Poolsteuerung_View_komplett](img/Poolsteuerung_View_komplett.jpg)](img/Poolsteuerung_View_komplett.jpg)
 
@@ -16,23 +16,23 @@ Auf einer frei wählbaren Fläche, deren Größe an das gewünschte Ausgabegerä
 
 Jedes Widget hat eine Vielzahl von Einstellungsmöglichkeiten, die man jedoch nicht bereits zu Anfang verwenden muss. Lediglich der zu verknüpfende Datenpunkt muss über ein einfach zu bedienendes Explorermenü ausgewählt werden.
 
-### **Programmierung**
+### Programmierung
 
 Die Programmierung von z.B. ereignisbasierten Aktionen erfolgt über [JavaScript](http://www.iobroker.net/?page_id=156). Für Anwender, die JavaScript nicht mächtig sind ist ein einfacher grafischer Editor [geplant](http://www.scriptgui.info), für den keinerlei JavaScript-Kenntnisse erforderlich sind.
 
 Außerdem steht mit dem [node-red Adapter](http://www.iobroker.net/?page_id=166) eine ebenfalls grafische Bedienoberfläche zur Verfügung mit immensen Fähigkeiten auch Daten aus nahezu beliebigen externen Quellen auszuwerten oder in externe Ziele zu schreiben.
 
-### **Historische Daten**
+### Historische Daten
 
 Mit dem [History-Adapter](http://www.iobroker.net/?page_id=144) können selektiv einzelne Datenpunkte geloggt werden -auf Wunsch auch nur bei Änderung- und mit [rickshaw](http://www.iobroker.net/?page_id=176) oder [flot](http://www.iobroker.net/?page_id=198) grafisch dargestellt werden.
 
 [![ioBroker Adapter Rickshaw 03](img/ioBroker_Adapter_rickshaw03.jpg)](img/ioBroker_Adapter_rickshaw03.jpg)
 
-## **Tutorial**
+## Tutorial
 
 In diesem Tutorial soll die Einbindung von Homematic in ioBroker und der Aufbau des oben gezeigten Views zur Visualisierung und Bedienung einer einfachen Poolsteuerung erklärt werden.
 
-#### <span style="color: #999999;">**Vorgeschichte**</span>
+#### Vorgeschichte
 
 <span style="color: #999999;">Die Grundlage der Steuerung ergibt sich u.a. aus der baulichen Lage</span>
 
@@ -51,7 +51,7 @@ In diesem Tutorial soll die Einbindung von Homematic in ioBroker und der Aufbau
 *   <span style="color: #999999;">Aktor zum Schalten der Poolpumpe</span>
 *   <span style="color: #999999;">Systemvariable "Poolpumpe_an", die um 4 Minuten verzögert angeschaltet wird um dafür zu sorgen, dass die Pumpe nicht sofort wieder ausschaltet, bevor der Temperaturdifferenzsensor einen aktuellen Wert der Vorlauf- und Rücklauftemperatur gesendet hat. Sollte die Temperaturdifferenz auf 0,2 °C fallen schaltet die Pumpe sofort und die Variable verzögert um 10 Minuten aus, um dem Sonnenkollektor Zeit zu geben sich wieder aufzuheizen, bevor die Pumpe wieder anschaltet.</span>
 
-#### **Aufsetzen des Systems**
+#### Aufsetzen des Systems
 
 Als erstes muss ioBroker [nach dieser Anleitung](http://www.iobroker.net/?page_id=44) installiert werden. Hier wird davon ausgegangen, dass dies auf einem ARM-Einplatinencomputer geschieht.
 
@@ -75,7 +75,14 @@ Um diese [Instanzen zu erzeugen](http://www.iobroker.net/?page_id=14) klicken wi
 
 Die Instanz des ReGa-Adapters und gleichzeitig eine Instanz des hm-rpc-Adapters werden jetzt erzeugt. Die sich öffnenden Fortschrittsfenster schließen automatisch und anschließend erscheinen bei diesen Adaptern ebenfalls zusätzliche Informationen in der Spalte _Installiert_.
 
-Außerdem erscheinen die Instanzen jetzt unter dem Reiter _Instanzen (altes Bild)_. [![ioBroker Instance Admin Instances 03](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_instance_admin_instances03.jpg)](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_instance_admin_instances03.jpg) Hier müssen die Instanzen von 1.) [hm-rpc](http://www.iobroker.net/?page_id=148) und 2.) [hm-rega](img/_page_id_146) noch konfiguriert und aktiviert werden.
+Außerdem erscheinen die Instanzen jetzt unter dem Reiter _Instanzen (altes Bild)_. 
+
+![](img/iobroker_fuer_homematic_iobroker_instance_admin_instances03.jpg)
+
+Hier müssen die Instanzen von 
+
+1.) [hm-rpc](http://www.iobroker.net/?page_id=148) und 
+2.) [hm-rega](img/_page_id_146) noch konfiguriert und aktiviert werden.
 
 Unter dem Reiter _Objekte_ befinden sich jetzt die aus der CCU ausgelesenen Daten. Datenpunkte befinden sich im Ordner hm-rpc.0, Systemvariable im Ordner hm-rega.0.
 
@@ -92,7 +99,7 @@ Ebenso werden jetzt die notwendigen Instanzen der folgenden Adapter installiert:
 *   History
 *   flot
 
-#### **Konfiguration der Adapter**
+#### Konfiguration der Adapter
 
 Die Adapter vis, die dazugehörenden Widgets, flot und history selbst müssen nicht konfiguriert werden. Um den Verlauf von Datenpunkten später grafisch darstellen zu können müssen die gewünschten Datenpunkte jedoch vorher mit dem History-Adapter geloggt werden. Dazu müssen die Datenpunkte, die geloggt werden sollen, im Reiter Objekte des admin-Adapters aktiviert werden:
 
@@ -108,7 +115,7 @@ Das History-Icon färbt sich bei aktiven Datenpunkten grün.
 
 Sollte man es geschafft haben die Filterbedingungen so auszuwählen, dass man nur noch Datenpunkte in der Tabelle hat, die geloggt werden sollen, kann man mit dem History-Icon ganz rechts oben alle Datenpunkte auf einmal einstellen.
 
-#### **Aufbau des views**
+#### Aufbau des views
 
 Jetzt wird der Editor von vis aufgerufen. Dies geschieht entweder über den Link in der Zeile vis im Reiter Instanzen, oder indem `<IPdesRasPi>:8082/vis/edit.html` in die Adressleiste des Browsers eingegeben wird.
 
@@ -126,9 +133,12 @@ zur Anzeige der Temperaturen verwenden wir das Widget _basic - number_. Dazu wec
 
 [![widget_filter](img/widget_filter-e1442854223698.jpg)](img/widget_filter-e1442854223698.jpg) Das Widget ziehen wir auf die Arbeitsfläche
 
-[![widget_drag](http://www.iobroker.net/wp-content/uploads/2015/08/widget_drag.jpg)](http://www.iobroker.net/wp-content/uploads/2015/08/widget_drag.jpg)Dadurch dass das widget markiert ist passt sich auf der rechten Seite des Editors die CSS-Sidebar entsprechend an. Dort können die [Eigenschaften des Widgets](img/_page_id_1048_lang=de#Grundeinstellungen) eingestellt werden. Die Einstellungen für die Eigenschaften sind in vielen Bereichen für alle Widgets gleich aufgebaut, lediglich der 3\. Block _Allgemein_ ist widgetspezifisch.
 
-[![Widget_CSS_001](http://www.iobroker.net/wp-content/uploads/2015/08/Widget_CSS_001-e1441632114207.jpg)](img/Widget_CSS_001.jpg)
+![](img/iobroker_fuer_homematic_widget_drag.jpg)
+Dadurch dass das widget markiert ist passt sich auf der rechten Seite des Editors die CSS-Sidebar entsprechend an. Dort können die [Eigenschaften des Widgets](img/_page_id_1048_lang=de#Grundeinstellungen) eingestellt werden. Die Einstellungen für die Eigenschaften sind in vielen Bereichen für alle Widgets gleich aufgebaut, lediglich der 3\. Block _Allgemein_ ist widgetspezifisch.
+
+
+![](img/iobroker_fuer_homematic_Widget_CSS_001-e1441632114207.jpg)
 
 In dem obersten Block _Generell_ werden Informationen zu dem Widget eingegeben, in dem 2\. Block _Sichtbarkeit_ können Bedingungen eingegeben werden, wann das widget auf dem View zu sehen sein soll. Hier geben wir erst einmal nichts ein. Im Block _Allgemein_ befindet sich mit _Object ID_ der wichtigste Punkt zur Einstellung. Hier wird der Datenpunkt eingetragen, der durch das Widget angezeigt oder gesteuert werden soll. Dazu klickt man auf den select Button und ein Datenpunkt-Explorer öffnet sich:
 
@@ -162,7 +172,8 @@ In dem Block _Schatten und Abstand_, wird noch der Abstand der Schrift zum Rand 
 
 Da für den View 6 Temperaturanzeigen gebraucht werden, wird das Widget angeklickt und mit Strg-C kopiert  - am oberen Bildrand erscheint die Meldung, dass das Widget in die Zwischenablage kopiert wurde. Anschließend werden mit 5x Strg-V 5 Kopien erzeugt.
 
-[![Widgetcopy](http://www.iobroker.net/wp-content/uploads/2015/08/Widgetcopy.gif)](http://www.iobroker.net/wp-content/uploads/2015/08/Widgetcopy.gif)
+![](img/iobroker_fuer_homematic_Widgetcopy.gif)
+
 
 Diese Widgets werden jetzt an die gewünschten Positionen verschoben und die entsprechende Beschreibung sowie die Objekt-ID des gewünschten Datenpunktes angepasst.
 

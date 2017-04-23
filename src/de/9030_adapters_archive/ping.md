@@ -14,7 +14,9 @@ Die Installation erfolgt über die Admin Oberfläche.
 
 ## Konfiguration
 
-![Ping Adapter Einstellungen](http://www.iobroker.net/wp-content/uploads/Ping-Adapter-Einstellungen.png)
+
+![](img/ping_Ping-Adapter-Einstellungen.png)
+
 
 ### Ping Intervall
 

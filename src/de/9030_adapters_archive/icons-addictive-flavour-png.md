@@ -12,4 +12,5 @@ Nach der Installation der Icons als zusätzliche Instanz stehen die Icons in VIS
 
 ## Übersicht Icons
 
-[caption id="attachment_3469" align="alignnone" width="300"][![icons-addictive-flavour-png](http://www.iobroker.net/wp-content/uploads/icons-addictive-flavour-png-300x252.jpg)](img/icons-addictive-flavour-png.jpg) Iconübersicht[/caption]
+[caption id="attachment_3469" align="alignnone" width="300"][
+![(img/icons-addictive-flavour-png.jpg) Iconübersicht](img/icons-addictive-flavour-png_icons-addictive-flavour-png-300x252.jpg)

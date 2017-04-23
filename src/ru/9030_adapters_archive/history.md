@@ -18,7 +18,15 @@
 *   остальные настройки можно оставить по-умолчанию,
 *   нажимаем кнопку **Сохранить**.
 
-[![](http://www.iobroker.net/wp-content/uploads//History-use1.jpg)](http://www.iobroker.net/wp-content/uploads//History-use1.jpg) [![](http://www.iobroker.net/wp-content/uploads//History-use2.jpg)](http://www.iobroker.net/wp-content/uploads//History-use2.jpg) Через некоторое время можно открыть эту же настройку переменной (к примеру, **system.host.vm32test.load**) и перейти на вкладку **Таблица** – там отобразятся архивные значения из файлов JSON. Возможно, надо подождать подольше, так как информация в файлы пишется из буфера в ОЗУ по заполнению (как описано выше). [![](http://www.iobroker.net/wp-content/uploads//History-use3.jpg)](http://www.iobroker.net/wp-content/uploads//History-use3.jpg) Можно зайти в директорию хранения файлов драйвера History и просмотреть содержимое файлов JSON. [![](http://www.iobroker.net/wp-content/uploads//History-use4.jpg)](http://www.iobroker.net/wp-content/uploads//History-use4.jpg) [![](img/History-use5.jpg)](img/History-use5.jpg)
+[
+![](img/history_History-use1.jpg)
+ [
+![](img/history_History-use2.jpg)
+ Через некоторое время можно открыть эту же настройку переменной (к примеру, **system.host.vm32test.load**) и перейти на вкладку **Таблица** – там отобразятся архивные значения из файлов JSON. Возможно, надо подождать подольше, так как информация в файлы пишется из буфера в ОЗУ по заполнению (как описано выше). [
+![](img/history_History-use3.jpg)
+ Можно зайти в директорию хранения файлов драйвера History и просмотреть содержимое файлов JSON. [
+![](img/history_History-use4.jpg)
+ [![](img/History-use5.jpg)](img/History-use5.jpg)
 
 ## Использование
 

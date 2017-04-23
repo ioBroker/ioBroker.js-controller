@@ -6,13 +6,17 @@
 
 ## Erzeugen von Instanzen
 
-Um die Adapter nutzen zu können, muss eine Instanz installiert und konfiguriert werden. Dazu klickt man in der WebUI des Administrators in dem Reiter _Adapter_ in der Zeile des gewünschten Adapters auf das (+) ganz rechts. [caption id="attachment_3232" align="alignnone" width="750"]![Adapter Übersicht](http://www.iobroker.net/wp-content/uploads/Admin-Übersicht-1-1024x467.jpg) Adapter Übersicht[/caption]     Anschließend wird eine Instanz des Adapters erzeugt und in der Spalte _installiert_ erscheint in eckigen Klammern die Anzahl der erzeugten und der aktivierten Instanzen (z.B. [2/1]) Zusätzlich wird bei der Zahl der aktivierten Instanzen auch noch durch die Farbe grün signalisiert, dass alles in Ordnung läuft. Weiterhin erscheint die installierte Instanz jetzt in dem Reiter _Instanzen_. Von den meisten Adaptern können beliebig viele Instanzen erzeugt werden. Sollte dies bei einem Adapter nicht möglich sein, kommt beim Versuch eine weitere Instanz anzulegen eine entsprechende Fehlermeldung.
+Um die Adapter nutzen zu können, muss eine Instanz installiert und konfiguriert werden. Dazu klickt man in der WebUI des Administrators in dem Reiter _Adapter_ in der Zeile des gewünschten Adapters auf das (+) ganz rechts. 
+![Adapter Übersicht](img/test_Admin-Übersicht-1-1024x467.jpg)
+     Anschließend wird eine Instanz des Adapters erzeugt und in der Spalte _installiert_ erscheint in eckigen Klammern die Anzahl der erzeugten und der aktivierten Instanzen (z.B. [2/1]) Zusätzlich wird bei der Zahl der aktivierten Instanzen auch noch durch die Farbe grün signalisiert, dass alles in Ordnung läuft. Weiterhin erscheint die installierte Instanz jetzt in dem Reiter _Instanzen_. Von den meisten Adaptern können beliebig viele Instanzen erzeugt werden. Sollte dies bei einem Adapter nicht möglich sein, kommt beim Versuch eine weitere Instanz anzulegen eine entsprechende Fehlermeldung.
 
 * * *
 
 ## Konfiguration der erzeugten Instanz
 
-Um die soeben erzeugte Instanz zu konfigurieren muss auf den Reiter Instanzen gewechselt werden. Dort klickt man auf das Konfigurations-Icon oder den Namen der Instanz.   [caption id="attachment_3233" align="alignnone" width="750"]![Instanzen Übersicht](http://www.iobroker.net/wp-content/uploads/Instanzen-Übersicht-1024x503.jpg) Instanzen Übersicht[/caption] Ein adapterspezifisches Konfigurationsmenü öffnet sich. Die dort notwendigen Konfirurationen werden auf der Seite des entsprechenden Adapters beschrieben. Diese ist über das Menü auf der linken Seite erreichbar.
+Um die soeben erzeugte Instanz zu konfigurieren muss auf den Reiter Instanzen gewechselt werden. Dort klickt man auf das Konfigurations-Icon oder den Namen der Instanz.   
+![Instanzen Übersicht](img/test_Instanzen-Übersicht-1024x503.jpg)
+ Ein adapterspezifisches Konfigurationsmenü öffnet sich. Die dort notwendigen Konfirurationen werden auf der Seite des entsprechenden Adapters beschrieben. Diese ist über das Menü auf der linken Seite erreichbar.
 
 * * *
 
@@ -40,7 +44,9 @@ Einige Adapter werden über eine Zeitplanung aktiviert. Sie führen eine Funktio
 
 ## Adapter- / Instanzwebseite öffnen
 
-Einige Adapter (allen voran VIS) lassen sich über eine eigene Webseite bedienen. Diese lässt sich seit [admin 1.0.1](http://www.iobroker.net/?page_id=2240&lang=de) auch mit dem Klick auf den fünften Button öffnen. [caption id="attachment_3385" align="alignnone" width="750"]![Admin Adapter Webseite](http://www.iobroker.net/wp-content/uploads/Admin-Adapter-Webseite-1024x367.jpg) Zum Öffnen der Adapter-Webseite den fünften Button (hier in blau) klicken[/caption]
+Einige Adapter (allen voran VIS) lassen sich über eine eigene Webseite bedienen. Diese lässt sich seit [admin 1.0.1](http://www.iobroker.net/?page_id=2240&lang=de) auch mit dem Klick auf den fünften Button öffnen. 
+![Zum Öffnen der Adapter-Webseite den fünften Button (hier in blau) klicken](img/test_Admin-Adapter-Webseite-1024x367.jpg)
+
 
 * * *
 

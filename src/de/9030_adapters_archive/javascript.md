@@ -4,13 +4,17 @@ Der javascript-Adapter dient dazu komfortabel Skripte zu erstellen, editieren un
 
 ## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-javascript#konfiguration)Konfiguration
 
-[caption id="attachment_3389" align="alignnone" width="842"]![Einstellungen Javascript Adapter](http://www.iobroker.net/wp-content/uploads/Einstellungen-Javascript.png) Einstellungsmenü Javascript Adapter[/caption]   Die eigentliche Konfiguration besteht aus der Eingabe von zusätzlichen zu ladenden npm-Module (durch Komma getrennt), sowie der Geo-Koordinaten, die für diverse Berechnungen benutzt werden sollen. Um die Koordinaten zu erhalten, kann man z.B. _google maps_ ziemlich weit aufzoomen und an der gewünschten Stelle anklicken. Die Koordinaten werden dann angezeigt. Nach dem Speichern muss der Adapter noch über die rote Play-Taste aktiviert werden aktiviert werden.
+
+![Einstellungsmenü Javascript Adapter](img/javascript_Einstellungen-Javascript.png)
+   Die eigentliche Konfiguration besteht aus der Eingabe von zusätzlichen zu ladenden npm-Module (durch Komma getrennt), sowie der Geo-Koordinaten, die für diverse Berechnungen benutzt werden sollen. Um die Koordinaten zu erhalten, kann man z.B. _google maps_ ziemlich weit aufzoomen und an der gewünschten Stelle anklicken. Die Koordinaten werden dann angezeigt. Nach dem Speichern muss der Adapter noch über die rote Play-Taste aktiviert werden aktiviert werden.
 
 * * *
 
 ## Bedienung
 
-Bei der Installation wird ein weiterer Reiter _Scripte_ in der _Admin_-Oberfläche gezeigt. Hier wird ein neuer Ordner angelegt indem auf das (+) in der Symbolleiste (roter Kreis) geklickt wird.  Ein neues Skript wird über das "leere Blatt"-Icon links davon angelegt. Ein Fenster öffnet sich und fragt den Namen und Speicherort in der Ordnerstruktur ab. [caption id="attachment_3407" align="alignnone" width="1364"]![](http://www.iobroker.net/wp-content/uploads/Javascript-Adapter.png) Javascript Adapter[/caption]
+Bei der Installation wird ein weiterer Reiter _Scripte_ in der _Admin_-Oberfläche gezeigt. Hier wird ein neuer Ordner angelegt indem auf das (+) in der Symbolleiste (roter Kreis) geklickt wird.  Ein neues Skript wird über das "leere Blatt"-Icon links davon angelegt. Ein Fenster öffnet sich und fragt den Namen und Speicherort in der Ordnerstruktur ab. 
+![Javascript Adapter](img/javascript_Javascript-Adapter.png)
+
 
 ### Ordner- und Dateiliste
 

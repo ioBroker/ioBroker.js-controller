@@ -6,7 +6,11 @@ Die Hardware kann man entwider selbst bauen aus Mega2560 + RF Transmitter + RF R
 
 ## Einstellungen
 
-![rflinksettingsde](http://www.iobroker.net/wp-content/uploads//RfLinkSettingsDe-600x394.png) Die Port-Auswahl geht nur bei laufendem Adapter. Deswegen erst den Adapter starten und dann konfigurieren. (Bei der Installation wird der Adapter automatisch gestartet). Da der Adapter den seriellen port nutzt, muss ioBroker unter root Account laufen, sonst ist es nicht möglich auf seriellen Port zugreifen. Beim ersten Start sollte man "Anlernen-Modus" starten. Der Adapter wird 5 Minuten zuhören und alle Geräte die was gesendet haben in der Liste aufnehmen. ![2016-10-17-09_27_08-iobroker-admin](http://www.iobroker.net/wp-content/uploads//2016-10-17-09_27_08-ioBroker.admin_.png) Danach wird sich "Anlernen-Modus" nach eingestellte Zeit ausschalten. Um manuell "Anlernen-Modus" steuern zu können muss der "Anlernen-Timeout" auf 0 gesetzt werden.  
+
+![](img/rflink_RfLinkSettingsDe-600x394.png)
+ Die Port-Auswahl geht nur bei laufendem Adapter. Deswegen erst den Adapter starten und dann konfigurieren. (Bei der Installation wird der Adapter automatisch gestartet). Da der Adapter den seriellen port nutzt, muss ioBroker unter root Account laufen, sonst ist es nicht möglich auf seriellen Port zugreifen. Beim ersten Start sollte man "Anlernen-Modus" starten. Der Adapter wird 5 Minuten zuhören und alle Geräte die was gesendet haben in der Liste aufnehmen. 
+![](img/rflink_2016-10-17-09_27_08-ioBroker.admin_.png)
+ Danach wird sich "Anlernen-Modus" nach eingestellte Zeit ausschalten. Um manuell "Anlernen-Modus" steuern zu können muss der "Anlernen-Timeout" auf 0 gesetzt werden.  
 
 ## Wiederanlernen
 

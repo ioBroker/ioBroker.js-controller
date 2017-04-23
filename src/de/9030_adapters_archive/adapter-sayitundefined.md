@@ -4,7 +4,9 @@ Der SayIt Adapter kann Text in Sprache konvertieren und auf einigen Geräten und
 
 ## Konfiguration
 
-  ![Sayit - Einstellungen](http://www.iobroker.net/wp-content/uploads/Sayit-Einstellungen.png)  
+  
+![](img/adapter-sayitundefined_Sayit-Einstellungen.png)
+  
 
 ### <a id="Sprache"></a>Sprache
 
@@ -24,13 +26,17 @@ Der Text wird von dem Browser abgespielt, auf dem .vis geöffnet ist. Dies geht 
 
 * * *
 
-#### Home24- MediaPlayer [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.home-24.net/index.php?app=media)
+#### Home24- MediaPlayer [
+![](img/adapter-sayitundefined_icon_link.png)
+
 
 Der Text wird an ein Android-Gerät geschickt, auf dem der Home24 Mediaplayer installiert ist und dort abgespielt. Dabei wird die Android TTS Engine benutzt. Der Port kann nicht geändert werden und ist fest auf 50000 eingestellt.
 
 * * *
 
-#### Home24 - MediaPlayer and FTP Server [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.home-24.net/index.php?app=media)
+#### Home24 - MediaPlayer and FTP Server [
+![](img/adapter-sayitundefined_icon_link.png)
+
 
 Der Text wird - fertig als MP3-Datei konvertiert -  an ein Android-Gerät geschickt, auf dem der Home24 Mediaplayer installiert ist und dort abgespielt. Dafür wird die _Google text to speech engine_ benutzt. Die erzeugte MP3 Datei wird mittels FTP auf das Android-Gerät kopiert und mit dem Home24 – MediaPlayer abgespielt. Beide Apps müssen dasselbe Hauptverzeichnis (z.B. das root directory der "sd card") haben.
 
@@ -52,7 +58,9 @@ Der Text wird von windows, auf dem der Sayit-Adapter läuft abgespielt. Dafür w
 
 #### <a id="Sonos"></a>Sonos
 
-spielt den Text auf einem Sonos-Gerät ab, sofern der _Sonos-Adapter_ ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) installiert wurde.  
+spielt den Text auf einem Sonos-Gerät ab, sofern der _Sonos-Adapter_ 
+![](img/adapter-sayitundefined_icon_link.png)
+ installiert wurde.  
 
 ##### Gerät (nur bei Sonos)
 
@@ -60,7 +68,9 @@ Auswahl des Gerätes, das im _Sonos-Adapter_ installiert wurde  
 
 ##### Web instance (nur bei Sonos)
 
-Auswahl der Instanz des _Web-Adapters_ ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)
+Auswahl der Instanz des _Web-Adapters_ 
+![](img/adapter-sayitundefined_icon_link.png)
+
 
 * * *
 
@@ -110,7 +120,9 @@ Hier werden die [Ivona Benutzerdaten](#Sprache) eingegeben.
 
 ### Datenpunkte
 
-Der Sayit-Adapter bietet verschiedene Datenpunkte für die Kommunikation an.  Diese lassen sich im Admin-Reiter _Objekte_ unter _sayit_ einsehen. Zum Beschreiben und auslesen der Datenpunkte eignet sich u.a. der Javascript-Adapter. ![Sayit Objekte - Screenshot](http://www.iobroker.net/wp-content/uploads/Sayit-Objekte.jpg)  
+Der Sayit-Adapter bietet verschiedene Datenpunkte für die Kommunikation an.  Diese lassen sich im Admin-Reiter _Objekte_ unter _sayit_ einsehen. Zum Beschreiben und auslesen der Datenpunkte eignet sich u.a. der Javascript-Adapter. 
+![](img/adapter-sayitundefined_Sayit-Objekte.jpg)
+  
 
 #### mp3
 

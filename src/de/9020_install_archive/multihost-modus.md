@@ -39,4 +39,5 @@ Es gibt zwei Möglichkeiten, die Aufgaben auf die Hosts zu verteilen.
 
 ## Host löschen
 
-Zum Löschen eines Hosts im _Admin_-Reiter Objekte den Experten-Modus aktivieren und in der Spalte _Typ_ die Auswahl _host_ aktivieren. Dann den gewünschten Host löschen. [caption id="attachment_3404" align="alignnone" width="750"]![Host löschen](http://www.iobroker.net/wp-content/uploads/Bildschirmfoto-2016-03-25-um-21.17.08-1024x122.png) Host entfernen[/caption]
+Zum Löschen eines Hosts im _Admin_-Reiter Objekte den Experten-Modus aktivieren und in der Spalte _Typ_ die Auswahl _host_ aktivieren. Dann den gewünschten Host löschen. 
+![Host entfernen](img/multihost-modus_Bildschirmfoto-2016-03-25-um-21.17.08-1024x122.png)

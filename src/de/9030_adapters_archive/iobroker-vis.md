@@ -26,49 +26,69 @@ Ist dieser Reiter angewählt, kann man in dem darunterliegenden Pulldown-Menü d
 
 Hier kann man einen View zur Bearbeitung auswählen, bzw. der ausgewählte View wird hier angezeigt wenn man ihn über die Reiter über der Arbeitsfläche ausgewählt hat.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_list.png)
+
+![](img/iobroker-vis_vis_view_list.png)
+
 
 #### View hinzufügen (8)
 
 Mit diesem Button kann ein neuer View hinzugefügt werden.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_new.png)
+
+![](img/iobroker-vis_vis_view_new.png)
+
 
 Im dem Fenster des ehemaligen Pulldownmenüs wird man aufgefordert einen neuen Namen einzugeben und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_new_name.png)
+
+![](img/iobroker-vis_vis_view_new_name.png)
+
 
 #### View löschen (9)
 
 Über diesen Button kann man nach vorheriger Sicherheitsabfrage den ausgewählten View löschen.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_delete.png)
+
+![](img/iobroker-vis_vis_view_delete.png)
+
 
 #### View umbenennen (10)
 
 Durch Anklicken dieses Icons wird der bestehenden View umbenannt.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_rename.png)
+
+![](img/iobroker-vis_vis_view_rename.png)
+
 
 Das Namensfeld wechselt in den Editiermodus und man wird aufgefordert einen neuen Namen einzugeben und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
 
-#### ![](http://www.iobroker.net/wp-content/uploads//vis_view_rename_name.png)
+#### 
+![](img/iobroker-vis_vis_view_rename_name.png)
+
 
 #### View kopieren (11)
 
 Durch Anklicken dieses Icons wird eine Kopie des bestehenden Views angelegt.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_copy.png) Das Namensfeld wechselt in den Editiermodus, zeigt den ursprünglichen View-Namen mit dem Zusatz "_new" an und man wird aufgefordert einen neuen Namen einzugeben und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
 
-![](http://www.iobroker.net/wp-content/uploads//vis_view_copy_name.png)
+![](img/iobroker-vis_vis_view_copy.png)
+ Das Namensfeld wechselt in den Editiermodus, zeigt den ursprünglichen View-Namen mit dem Zusatz "_new" an und man wird aufgefordert einen neuen Namen einzugeben und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
+
+
+![](img/iobroker-vis_vis_view_copy_name.png)
+
 
 #### View exportieren (12)
 
-Nach Anklicken dieses Buttons öffnet sich ein Fenster mit der Seitenbeschreibung des Views. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Views_export.jpg) Diese Seitenbeschreibung kann als Textfile zur Sicherung benutzt werden (bitte keinen Windows-Editor benutzen, sondern z.B. Notepad++ im UNIX Modus) oder zum Import in andere Installationen.
+Nach Anklicken dieses Buttons öffnet sich ein Fenster mit der Seitenbeschreibung des Views. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Views_export.jpg)
+ Diese Seitenbeschreibung kann als Textfile zur Sicherung benutzt werden (bitte keinen Windows-Editor benutzen, sondern z.B. Notepad++ im UNIX Modus) oder zum Import in andere Installationen.
 
 #### View importieren (13)
 
-Hier kann man einen View aus einer anderen Installation oder eine Sicherung im Textformat wieder einspielen. Es öffnet sich ein Fenster mit einem leeren Editorbereich. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Views_import.jpg) In dieses Fenster wird der Inhalt des Exports kopiert, unten links im Feld _**Viewname**_ wird ein eindeutiger Name eingegeben und anschließend der dann aktive Button _**View importieren**_ geklickt. Nach kurzer Zeit ist der neue View in der Installation vorhanden.
+Hier kann man einen View aus einer anderen Installation oder eine Sicherung im Textformat wieder einspielen. Es öffnet sich ein Fenster mit einem leeren Editorbereich. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Views_import.jpg)
+ In dieses Fenster wird der Inhalt des Exports kopiert, unten links im Feld _**Viewname**_ wird ein eindeutiger Name eingegeben und anschließend der dann aktive Button _**View importieren**_ geklickt. Nach kurzer Zeit ist der neue View in der Installation vorhanden.
 
 ### <a id="widgets"></a>Widgets (2)
 
@@ -86,11 +106,15 @@ Mit Klick auf dieses Icon wird das ausgewählte (Bei Mehrfachauswahl alle ausge
 
 #### Widget kopieren (3)
 
-Nach dem Klick auf dieses icon ändert sich die Anzeige: ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Widgets_copy.jpg) Im dem Fenster des ehemaligen Pulldownmenüs wird man aufgefordert den View einzugeben in den die Kopie des Widgets platziert werden soll und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
+Nach dem Klick auf dieses icon ändert sich die Anzeige: 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Widgets_copy.jpg)
+ Im dem Fenster des ehemaligen Pulldownmenüs wird man aufgefordert den View einzugeben in den die Kopie des Widgets platziert werden soll und anschließend den Vorgang über den Haken-Button abzuschließen oder mit dem ¢-Button abzubrechen.
 
 #### Widget-Informationen (4)
 
-Wenn man auf diesen Button klickt, öffnet sich ein Fenster mit Informationen zu den Widgets. Wenn vorhanden ist der Eintrag zu dem ausgewählten Widget an oberster Stelle. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Widgets_info.jpg)
+Wenn man auf diesen Button klickt, öffnet sich ein Fenster mit Informationen zu den Widgets. Wenn vorhanden ist der Eintrag zu dem ausgewählten Widget an oberster Stelle. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Widgets_info.jpg)
+
 
 #### Widgets ausrichten (5 - 14)
 
@@ -142,11 +166,15 @@ Die beiden Widgets dienen der einfacheren Bearbeitung von Views. Das erste (15) 
 
 #### Widget exportieren (17)
 
-Ist ein Widget aktiviert, kann man mit diesem Button das Widget exportieren. Nach Anklicken dieses Buttons öffnet sich ein Fenster mit der Seitenbeschreibung des Widgets. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Widgets_export.jpg) Diese Seitenbeschreibung kann als Textfile zur Sicherung benutzt werden (bitte keinen Windows-Editor benutzen, sondern z.B. Notepad++ im UNIX Modus) oder zum Import in andere Installationen.
+Ist ein Widget aktiviert, kann man mit diesem Button das Widget exportieren. Nach Anklicken dieses Buttons öffnet sich ein Fenster mit der Seitenbeschreibung des Widgets. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Widgets_export.jpg)
+ Diese Seitenbeschreibung kann als Textfile zur Sicherung benutzt werden (bitte keinen Windows-Editor benutzen, sondern z.B. Notepad++ im UNIX Modus) oder zum Import in andere Installationen.
 
 #### Widget importieren (18)
 
-Umgekehrt kann man hier z.B. nicht im Umfang von vis enthaltene Widgets, aus einer anderen Installation oder eine Sicherung im Textformat wieder einspielen. Es öffnet sich ein Fenster mit einem leeren Editorbereich. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Widgets_import.jpg) In dieses Fenster wird der Inhalt des Exports kopiert und anschließend der Button _**Widgets**** importieren**_ geklickt.
+Umgekehrt kann man hier z.B. nicht im Umfang von vis enthaltene Widgets, aus einer anderen Installation oder eine Sicherung im Textformat wieder einspielen. Es öffnet sich ein Fenster mit einem leeren Editorbereich. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Widgets_import.jpg)
+ In dieses Fenster wird der Inhalt des Exports kopiert und anschließend der Button _**Widgets**** importieren**_ geklickt.
 
 ### Tools (3)
 
@@ -276,7 +304,9 @@ Außerdem bieten die Reiter _**CSS**_ und _**Skripte**_ fortgeschrittenen Anwen
 
 ### View
 
-Unter diesem Reiter können die Eigenschaften für den ausgewählten View eingestellt werden. Wenn die Arbeitsfläche des Views angeklickt wird, wird dieser Reiter automatisch aktiviert. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_kpl.jpg)
+Unter diesem Reiter können die Eigenschaften für den ausgewählten View eingestellt werden. Wenn die Arbeitsfläche des Views angeklickt wird, wird dieser Reiter automatisch aktiviert. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_kpl.jpg)
+
 
 #### CSS Allgemein
 
@@ -300,11 +330,15 @@ In diesem Pulldownmenü kann ein Thema ausgewählt werden, in dem der ausgewähl
 
 ##### Nur für Gruppen
 
-Soll dieser View nicht für alle Anwender zu sehen sein, kann die Sichtbarkeit auf einzelne Gruppen, die in der Benutzersteuerung angelegt wurden beschränkt werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_usergroups.jpg) Die entsprechenden Gruppen, die diesen View sehen sollen können über die entsprechende Checkboxen ausgewählt werden.
+Soll dieser View nicht für alle Anwender zu sehen sein, kann die Sichtbarkeit auf einzelne Gruppen, die in der Benutzersteuerung angelegt wurden beschränkt werden. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_usergroups.jpg)
+ Die entsprechenden Gruppen, die diesen View sehen sollen können über die entsprechende Checkboxen ausgewählt werden.
 
 ##### Falls Anwender nicht in der Gruppe
 
-Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu einer der aktivierten Gruppen gehört. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_no_user.jpg) Dann kann der View entweder vollständig verborgen werden, oder in der Auswahl zwar sichtbar, aber nicht anwählbar sein.
+Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu einer der aktivierten Gruppen gehört. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_no_user.jpg)
+ Dann kann der View entweder vollständig verborgen werden, oder in der Auswahl zwar sichtbar, aber nicht anwählbar sein.
 
 #### CSS Hintergrund
 
@@ -316,7 +350,9 @@ Hier kann ein eigener Ausdruck eingegeben werden, um den gewünschten Hintergrun
 
 ##### -color
 
-hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+
 
 ##### -image
 
@@ -394,7 +430,9 @@ Um Datenpunkte anzeigen oder Aktionen durchführen zu können, muss der zu steue
 
 Unter dem Reiter Widget können die Eigenschaften eines Widgets sehr umfangreich eingestellt werden. (Ein Beispiel zu dem Umfang kann man nach Anklicken der Abbildung unten bekommen)
 
-[![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_groups_Items.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_kpl.jpg)
+[
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_groups_Items.jpg)
+
 
 Sobald ein Widget ausgewählt wurde ändert sich die Beschriftung des Reiters in die Kennung des ausgewählten Widgets.
 
@@ -456,7 +494,7 @@ Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu ei
 
 Der Abschnitt Allgemein ist für jedes Widget spezifisch und wird bei den einzelnen Widgets näher beschrieben. In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet. (Bitte nicht mit dem Feld Object-ID in dem Block _Sichtbarkeit_ verwechseln!) **Die CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten und können den eigenen Wünschen angepasst werden:
 
-#### CSS allgemein (4) [](http://www.iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg) [](http://www.iobroker.net/wp-content/uploads/2015/05/005_CSS_Font_Text.jpg)[![](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)
+#### CSS allgemein (4) [](http://iobroker.net/wp-content/uploads/2015/05/004_CSS_allgemein.jpg) [](http://iobroker.net/wp-content/uploads/2015/05/005_CSS_Font_Text.jpg)[![](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)](img/ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Widgets_CSS_allgemein.jpg)
 
 ##### position
 
@@ -565,7 +603,9 @@ Hier kann ein eigener Ausdruck eingegeben werden, um den gewünschten Hintergrun
 
 ##### -color
 
-hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. 
+![](img/iobroker-vis_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+
 
 ##### -image
 
@@ -671,7 +711,9 @@ Andere Geste können ähnlich konfiguriert werden. Diese sind: Zoom mit zwei Fin
 
 #### Signalbilder (10)
 
-Mit Hilfe des Abschnittes "Signalbilder" kann man z.B. bei batteriebetriebenen Sensoren oder Aktoren ein kleines, frei wählbares Piktogramm anzeigen lassen, wenn die Batterie zu Neige geht (und im Homematic-Umfeld auf der CCU eine entsprechende Servicemeldung kommen würde). Pro Element sind bis zu drei Signalbilder möglich. So könnte man den Batteriestatus, den Sabotagekontakt und den UNREACH-Datenpunkt (= nicht erreichbar) eines Sensors oder Aktors abfragen. ![](http://www.iobroker.net/wp-content/uploads//signalbilder_eric.png)
+Mit Hilfe des Abschnittes "Signalbilder" kann man z.B. bei batteriebetriebenen Sensoren oder Aktoren ein kleines, frei wählbares Piktogramm anzeigen lassen, wenn die Batterie zu Neige geht (und im Homematic-Umfeld auf der CCU eine entsprechende Servicemeldung kommen würde). Pro Element sind bis zu drei Signalbilder möglich. So könnte man den Batteriestatus, den Sabotagekontakt und den UNREACH-Datenpunkt (= nicht erreichbar) eines Sensors oder Aktors abfragen. 
+![](img/iobroker-vis_signalbilder_eric.png)
+
 
 ##### Objekt ID
 
@@ -719,7 +761,9 @@ Mit dieser Checkbox wird festgelegt, ob das Symbol blinkend angezeigt werden so
 
 ##### Nicht zeigen bei Editieren
 
-Ist diese Checkbox aktiv wird das Signalbild im Editor nicht angezeigt. Als Beispiel hier die Heizungssteuerung eines Badezimmers.![](http://www.iobroker.net/wp-content/uploads//signalbilder_demo_eric.png) Das obere Batterie-Symbol gehört zum (Homematic) Raum-Thermostat und das untere zum (Homematic) Heizkörperventil. Sobald bei einem der beiden Geräte eine LOWBAT-Meldung kommt, wird an der jeweiligen Position das Batterie-Symbol angezeigt.
+Ist diese Checkbox aktiv wird das Signalbild im Editor nicht angezeigt. Als Beispiel hier die Heizungssteuerung eines Badezimmers.
+![](img/iobroker-vis_signalbilder_demo_eric.png)
+ Das obere Batterie-Symbol gehört zum (Homematic) Raum-Thermostat und das untere zum (Homematic) Heizkörperventil. Sobald bei einem der beiden Geräte eine LOWBAT-Meldung kommt, wird an der jeweiligen Position das Batterie-Symbol angezeigt.
 
 ### CSS
 
@@ -746,7 +790,9 @@ Z.B. wenn man im Feldd CSS/Projekt folgendes schreibt:
 
 Wird ein roter Schatten um jedes Widget gemalt, wenn in dem Feld CSS Klasse "myRedBox" eingetragen wird.
 
-![](http://www.iobroker.net/wp-content/uploads//2017-01-18-22_45_54-Edit-vis.png)
+
+![](img/iobroker-vis_2017-01-18-22_45_54-Edit-vis.png)
+
 
 ### Skripte
 

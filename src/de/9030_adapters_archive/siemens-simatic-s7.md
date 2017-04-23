@@ -10,6 +10,8 @@ Der Siemens S7 Adapter basiert auf Snap7, wobei Snap7 bei der Erstinstallation d
 
 ## Installation & Konfiguration
 
-Eine ausführliche Beschreibung zu Installation und Konfiguration gibt es auf der englischen Seite. [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Installation & Konfiguration (Englisch)](http://www.iobroker.net/?page_id=2575&lang=en)
+Eine ausführliche Beschreibung zu Installation und Konfiguration gibt es auf der englischen Seite. [
+![](img/siemens-simatic-s7_icon_link.png)
+ [Installation & Konfiguration (Englisch)](http://www.iobroker.net/?page_id=2575&lang=en)
 
 * * *

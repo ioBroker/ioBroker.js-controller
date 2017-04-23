@@ -2,11 +2,17 @@
 
 Dies ist ein SD-Karten Image für das Cubieboard 3\. Es ist für 2 GB Karten und größer passend. Da es jetzt schon nur gerade auf eine 2 GB-Karte passt ist eine 4 GB die empfohlene Mindestgröße.
 
-Die Micro-SD Karte wird am besten mit dem ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
+Die Micro-SD Karte wird am besten mit dem 
+![](img/sd-image-fuer-raspberry-pi2-minimal-3-2_icon_link.png)
+ [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
 
-Das Image wird entpackt und anschließend mit Hilfe des Programms ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
+Das Image wird entpackt und anschließend mit Hilfe des Programms 
+![](img/sd-image-fuer-raspberry-pi2-minimal-3-2_icon_link.png)
+ [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
 
-Das Image enthält das Armbian_5.14_Cubietruck_Debian_jessie_4.6.2 nach download von ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Armbian.com](http://www.armbian.com/cubietruck/) mit Vanilla Kernel.
+Das Image enthält das Armbian_5.14_Cubietruck_Debian_jessie_4.6.2 nach download von 
+![](img/sd-image-fuer-raspberry-pi2-minimal-3-2_icon_link.png)
+ [Armbian.com](http://www.armbian.com/cubietruck/) mit Vanilla Kernel.
 
 Folgende User sind angelegt:
 

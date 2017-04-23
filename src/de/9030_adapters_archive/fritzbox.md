@@ -10,7 +10,9 @@ Die Installation erfolgt über die Admin Oberfläche.
 
 ## Konfiguration
 
-Um die Daten aus der Fritzbox zu lesen, muss deren Port 1012 freigeschaltet werden. Dazu an einem angeschlossenen Telefon einmalig `#96*5*` wählen. Um den Port wieder zu schließen, nutzt man die Folge `#96*4*` ![Fritzbox Adapter Einstellungen](http://www.iobroker.net/wp-content/uploads/Fritzbox-Adapter-Einstellungen.png)
+Um die Daten aus der Fritzbox zu lesen, muss deren Port 1012 freigeschaltet werden. Dazu an einem angeschlossenen Telefon einmalig `#96*5*` wählen. Um den Port wieder zu schließen, nutzt man die Folge `#96*4*` 
+![](img/fritzbox_Fritzbox-Adapter-Einstellungen.png)
+
 
 * * *
 
@@ -78,4 +80,7 @@ Unter **fritzbox.x.** legt der Adapter folgende Channel und Datenpunkte an:
 *   Zähler für: aktuell anstehende Anrufe, aktuelle Rufaufbauten für gehende Gespräche, verbundene Gespräche, Gesamtanzahl von Gesprächen/Gesprächsversuchen
 *   ein Infofeld, welches gelb eingeblendet wird, wenn die Fritzboxzeit von der ioBroker-Systemzeit zu stark abweicht
 
-[![iobroker_fritzbox_widget_gross](http://www.iobroker.net/wp-content/uploads/iobroker_fritzbox_widget_gross-258x300.png)](http://www.iobroker.net/wp-content/uploads/iobroker_fritzbox_widget_gross.png)[![zoom61_black](http://www.iobroker.net/wp-content/uploads/zoom61_black.png)](http://www.iobroker.net/wp-content/uploads/zoom61_black.png)
+[
+![](img/fritzbox_iobroker_fritzbox_widget_gross-258x300.png)
+[
+![](img/fritzbox_zoom61_black.png)

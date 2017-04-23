@@ -10,7 +10,9 @@ ioBroker wird unter Windows als Windows-Dienst ausgeführt. Damit ist sichergest
 
 ## Automatische Installation
 
-Am einfachsten kann ioBroker über die Installationsroutine von Bluefox installiert werden. ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)[Downloadseite](http://www.iobroker.net/?page_id=2283&lang=de) Die Installationsroutine benötigt eine aktive Internetverbindung. Sie installiert zuerst _node.js_, anschliessend wird ioBroker installiert, als Dienst eingerichtet und gestartet. Nach der Installation steht die ioBroker-Administrationsseite unter `http://localhost:8081 `zur Verfügung. Manche Adapter brauchen für die Installation Kompilierung-Umgebung. Das konnte mit dem Kommando: `c:\>cd iobroker c:\>npm install --global --production windows-build-tools ` installiert werden. Das Paket kann nur aus Konsole als Administrator installiert werden.
+Am einfachsten kann ioBroker über die Installationsroutine von Bluefox installiert werden. 
+![](img/windows_icon_link.png)
+[Downloadseite](http://www.iobroker.net/?page_id=2283&lang=de) Die Installationsroutine benötigt eine aktive Internetverbindung. Sie installiert zuerst _node.js_, anschliessend wird ioBroker installiert, als Dienst eingerichtet und gestartet. Nach der Installation steht die ioBroker-Administrationsseite unter `http://localhost:8081 `zur Verfügung. Manche Adapter brauchen für die Installation Kompilierung-Umgebung. Das konnte mit dem Kommando: `c:\>cd iobroker c:\>npm install --global --production windows-build-tools ` installiert werden. Das Paket kann nur aus Konsole als Administrator installiert werden.
 
 * * *
 

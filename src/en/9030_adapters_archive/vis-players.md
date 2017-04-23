@@ -8,13 +8,17 @@
 
 After installing the widget on the page of editing vis project will appear a group of players widgets.
 
-## [![](http://www.iobroker.net/wp-content/uploads//1-1.png)](http://www.iobroker.net/wp-content/uploads//1-1.png)
+## [
+![](img/vis-players_1-1.png)
+
 
 ## Setting
 
 ### Winamp player widget
 
-Let's consider setting by the example of MPD player. After installing the widget on the project page, widget settings are as follows: [![](http://www.iobroker.net/wp-content/uploads//2-1-156x300.png)](http://www.iobroker.net/wp-content/uploads//2-1.png) If you plan to use the widget for control of the non-standard player, which doesn't meet the specification admitted to IoBroker for media players, then all values of lines need to be filled separately. If the driver meets the specification that enough to choose one first value, and all the others to substitute automatically, provided that the player driver supports them.
+Let's consider setting by the example of MPD player. After installing the widget on the project page, widget settings are as follows: [
+![](img/vis-players_2-1-156x300.png)
+ If you plan to use the widget for control of the non-standard player, which doesn't meet the specification admitted to IoBroker for media players, then all values of lines need to be filled separately. If the driver meets the specification that enough to choose one first value, and all the others to substitute automatically, provided that the player driver supports them.
 
 <table style="height: 309px; width: 585px;">
 
@@ -36,11 +40,17 @@ Let's consider setting by the example of MPD player. After installing the widget
 
 <tr>
 
-<td style="width: 187px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_kodi.png)</td>
+<td style="width: 187px;">[
+![](img/vis-players_vis_player_winpl_kodi.png)
+</td>
 
-<td style="width: 188px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_foo.png)</td>
+<td style="width: 188px;">[
+![](img/vis-players_vis_player_winpl_foo.png)
+</td>
 
-<td style="width: 192px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_mpd.png)</td>
+<td style="width: 192px;">[
+![](img/vis-players_vis_player_winpl_mpd.png)
+</td>
 
 </tr>
 
@@ -52,7 +62,11 @@ Let's consider setting by the example of MPD player. After installing the widget
 
 ### Winamp playlist widget
 
-To configure all like the previous case - select the first object, the other is automatically substituted. [![](http://www.iobroker.net/wp-content/uploads//players_4-248x300.png)](http://www.iobroker.net/wp-content/uploads//players_4.png)[![](http://www.iobroker.net/wp-content/uploads//players_5-218x300.png)](http://www.iobroker.net/wp-content/uploads//players_5.png)  
+To configure all like the previous case - select the first object, the other is automatically substituted. [
+![](img/vis-players_players_4-248x300.png)
+[
+![](img/vis-players_players_5-218x300.png)
+  
 
 <table style="height: 156px;" width="593">
 
@@ -74,11 +88,17 @@ To configure all like the previous case - select the first object, the other is 
 
 <tr>
 
-<td style="width: 189px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_kodi.png)</td>
+<td style="width: 189px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_kodi.png)
+</td>
 
-<td style="width: 190px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_foo.png)</td>
+<td style="width: 190px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_foo.png)
+</td>
 
-<td style="width: 192px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_mpd.png)</td>
+<td style="width: 192px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_mpd.png)
+</td>
 
 </tr>
 
@@ -88,7 +108,9 @@ To configure all like the previous case - select the first object, the other is 
 
 ### Winamp browser widget
 
-Select the first object, the other is automatically substituted. [![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw.gif)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw.gif)
+Select the first object, the other is automatically substituted. [
+![](img/vis-players_vis_player_winbrw.gif)
+
 
 <table style="height: 156px;" width="593">
 
@@ -110,11 +132,17 @@ Select the first object, the other is automatically substituted. [![](http://www
 
 <tr style="height: 69px;">
 
-<td style="width: 189px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_kodi.png)</td>
+<td style="width: 189px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_kodi.png)
+</td>
 
-<td style="width: 190px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_foo.png)</td>
+<td style="width: 190px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_foo.png)
+</td>
 
-<td style="width: 192px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_mpd.png)</td>
+<td style="width: 192px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_mpd.png)
+</td>
 
 </tr>
 
@@ -124,11 +152,15 @@ Select the first object, the other is automatically substituted. [![](http://www
 
 ### Sonos widget
 
-In this widget everything is similar, select the first object, the other is automatically substituted. [![](http://www.iobroker.net/wp-content/uploads//players_6-1.png)](http://www.iobroker.net/wp-content/uploads//players_6-1.png)   On the added values it is possible to see that URL of a cover Following – isn't supported in the MPD driver (at the time of writing article, perhaps support in the future will appear).
+In this widget everything is similar, select the first object, the other is automatically substituted. [
+![](img/vis-players_players_6-1.png)
+   On the added values it is possible to see that URL of a cover Following – isn't supported in the MPD driver (at the time of writing article, perhaps support in the future will appear).
 
 ## Using
 
-[![](http://www.iobroker.net/wp-content/uploads//1234.gif)](http://www.iobroker.net/wp-content/uploads//1234.gif)
+[
+![](img/vis-players_1234.gif)
+
 
 ## Table of roles complianc**e**
 

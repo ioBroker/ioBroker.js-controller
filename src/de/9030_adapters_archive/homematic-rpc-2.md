@@ -22,7 +22,9 @@ Hier wird die IP-Adresse des Servers, auf dem ioBroker läuft eingegeben. Es ste
 
 ### Daemon
 
-Der zu überwachende Daemon (derzeit _rfd_, _hs485d_, _cuxd, Homematic IP_ oder _homegear_) ![](http://www.iobroker.net/wp-content/uploads//ioBroker_HM-rpc_Konfig_daemons.jpg)
+Der zu überwachende Daemon (derzeit _rfd_, _hs485d_, _cuxd, Homematic IP_ oder _homegear_) 
+![](img/homematic-rpc-2_ioBroker_HM-rpc_Konfig_daemons.jpg)
+
 
 * * *
 

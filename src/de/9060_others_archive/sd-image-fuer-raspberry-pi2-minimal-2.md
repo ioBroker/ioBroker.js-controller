@@ -2,11 +2,17 @@
 
 Dies ist ein SD-Karten Image für den Raspberry Pi2 oder 3\. Es ist auf einer 8GB Karte erstellt worden. Abhängig von der tatsächlichen Kapazität der Karte ist es evtl. auf einer 8GB Karte, auf jeden Fall auf einer größeren passend. 16GB Karten sind sowieso empfohlen.
 
-Die Micro-SD Karte wird am besten mit dem ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
+Die Micro-SD Karte wird am besten mit dem 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2_icon_link.png)
+ [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
 
-Das Image wird entpackt und anschließend mit Hilfe des Programms ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
+Das Image wird entpackt und anschließend mit Hilfe des Programms 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2_icon_link.png)
+ [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
 
-Das Image enthält das RaspBian full mit Pixel vom 02.03.2017 nach download von ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [http://www.raspberrypi.org/downloads](http://www.raspberrypi.org/downloads).
+Das Image enthält das RaspBian full mit Pixel vom 02.03.2017 nach download von 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2_icon_link.png)
+ [http://www.raspberrypi.org/downloads](http://www.raspberrypi.org/downloads).
 
 Folgende User sind angelegt:
 

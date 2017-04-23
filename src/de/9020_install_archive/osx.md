@@ -4,7 +4,9 @@
 
 ## Installation
 
-**Voraussetzung**: [node](http://nodejs.org)[![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://nodejs.org) ist bereits bei installiert
+**Voraussetzung**: [node](http://nodejs.org)[
+![](img/osx_icon_link.png)
+ ist bereits bei installiert
 
 1.  Download ioBroker.js-controller-master.zip (rechts auf den Button Download zip klicken)
 2.  einen Ordner "iobroker" an einem beliebigen Ort erstellen (z.B. unter _/User/Dokumente_)
@@ -24,7 +26,9 @@
 
 ### Aktivitätsanzeige
 
-Alle iobroker Prozesse und ihren Ressourcenverbrauch kann man leicht mit der _Aktivitätsanzeige_ prüfen. Dazu die Aktivitätsanzeige starten (/Programme/Dienstprogramme/) und _io._ im Suchfeld/Filterfeld eintippen. ![OS_X_load](http://www.iobroker.net/wp-content/uploads/2015/03/OS_X_load-300x174.jpg)
+Alle iobroker Prozesse und ihren Ressourcenverbrauch kann man leicht mit der _Aktivitätsanzeige_ prüfen. Dazu die Aktivitätsanzeige starten (/Programme/Dienstprogramme/) und _io._ im Suchfeld/Filterfeld eintippen. 
+![](img/osx_OS_X_load-300x174.jpg)
+
 
 ### Timemachine - Backup
 

@@ -92,7 +92,9 @@ Mit dem Reiter Whitelist erreicht man eine Tabelle, in der weitere Berechtigunge
 
 Weitere Regeln können über das (+) links oben hinzugefügt werden:
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Web_Konfig_WhiteList_New.jpg)
+
+![](img/homematic-rpc_ioBroker_Adapter_Web_Konfig_WhiteList_New.jpg)
+
 
 Hier wird jetzt die IP für die ankommende Anfrage und der Benutzer unter dem der Zugang erfolgen soll eingetragen.
 

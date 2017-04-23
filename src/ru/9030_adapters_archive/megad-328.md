@@ -1,6 +1,8 @@
 
 
-![megad-328-kit](http://www.iobroker.net/wp-content/uploads//megad-328-kit.jpg)
+
+![](img/megad-328_megad-328-kit.jpg)
+
 
 ## [](https://github.com/ioBroker/ioBroker.megad#Настройки)Настройки
 

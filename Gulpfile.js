@@ -25,22 +25,27 @@ gulp.task('clean', function (done) {
         done();
     });
 });
-function downloadFiles(files, callback) {
+function downloadFiles(files, errors, callback) {
     if (!files || !files.length) {
-
+        callback && callback(errors);
     } else {
         var task = files.shift();
-        request(task.url, function (err, resp, body) {
-            if (body) {
-                if (!fs.existsSync(path.dirname(task.name))) {
-                    fs.mkdirSync(path.dirname(task.name));
+        if (!fs.existsSync(task.name)) {
+            request(task.url, function (err, resp, body) {
+                if (body) {
+                    if (!fs.existsSync(path.dirname(task.name))) {
+                        fs.mkdirSync(path.dirname(task.name));
+                    }
+                    fs.writeFileSync(task.name, body);
+                } else {
+                    errors.push(err);
+                    console.error('Cannot load "' + task.url + '": ' + err);
                 }
-                fs.writeFileSync(task.name, body);
-            } else {
-                console.error('Cannot load "' + task.url + '": ' + err);
-            }
-            process.nextTick(downloadFiles, files, callback);
-        });
+                process.nextTick(downloadFiles, files, errors, callback);
+            });
+        } else {
+            process.nextTick(downloadFiles, files, errors, callback);
+        }
     }
 }
 
@@ -52,9 +57,7 @@ function makeChange() {
         var lines = String(file.contents).replace(/\r\n/g, '\n').split('\n');
         var files = [];
         var found = false;
-        if (file.history[0].match(/email\.md$/)) {
-            console.log('A');
-        }
+
         for (var i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace(/http:\/\/www\.iobroker\.net\/wp-content\/uploads\/\//g, 'http://iobroker.net/wp-content/uploads/');
             lines[i] = lines[i].replace(/http:\/\/www\.iobroker\.net\/wp-content\/uploads\//g, 'http://iobroker.net/wp-content/uploads/');
@@ -86,9 +89,10 @@ function makeChange() {
                 }
             }
         }
-        downloadFiles(files, function () {
-            if (found) {
-                file.contents_ = new Buffer(lines.join('\n'));
+        downloadFiles(files, [], function (err) {
+            if (found && (!err || !err.length)) {
+                console.log('Write modified ' + file.history[0]);
+                file.contents = new Buffer(lines.join('\n'));
             }
 
             // if there was some error, just pass as the first parameter here

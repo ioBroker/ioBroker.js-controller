@@ -2,11 +2,17 @@
 
 Dies ist ein SD-Karten Image für den Raspberry Pi2 oder 3\. Es ist für 2 GB Karten und größer passend. Da es jetzt schon nur gerade auf eine 2 GB-Karte passt ist eine 4 GB die empfohlene Mindestgröße. 16GB Karten sind sowieso emfohlen.
 
-Die Micro-SD Karte wird am besten mit dem ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
+Die Micro-SD Karte wird am besten mit dem 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2-4_icon_link.png)
+ [SD Formatter](https://www.sdcard.org/downloads/formatter_4/) mit der Option Size Adjustment „ON“ formatiert.
 
-Das Image wird entpackt und anschließend mit Hilfe des Programms ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
+Das Image wird entpackt und anschließend mit Hilfe des Programms 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2-4_icon_link.png)
+ [Win32 DiskImager](http://www.heise.de/download/win32-disk-imager-1192033.html) auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button _Write._
 
-Das Image enthält das RaspBian lite jessie vom 11.01.2017 nach download von ![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png) [http://www.raspberrypi.org/downloads](http://www.raspberrypi.org/downloads). Zusätzlich wurde noch python und build-essential installiert.
+Das Image enthält das RaspBian lite jessie vom 11.01.2017 nach download von 
+![](img/sd-image-fuer-raspberry-pi2-minimal-2-4_icon_link.png)
+ [http://www.raspberrypi.org/downloads](http://www.raspberrypi.org/downloads). Zusätzlich wurde noch python und build-essential installiert.
 
 Folgende User sind angelegt:
 

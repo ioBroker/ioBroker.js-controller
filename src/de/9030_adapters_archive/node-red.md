@@ -16,7 +16,9 @@ Für den node-red Adapter kann der port für den Webserver eingestellt werden. [
 
 ## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-admin#bedienung)**Bedienung:**
 
-Die Bedienoberfläche des node-red Adapters setzt sich aus folgenden Teilen zusammen: [![iobroker_adapter_nodered006](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_adapter_nodered006.jpg)](http://www.iobroker.net/wp-content/uploads/2015/04/iobroker_adapter_nodered006.jpg) **1 - Die Arbeitsfläche** Hier werden die nodes platziert und mit Verbindern zu Flows zusammengefasst.   **2  - Die [nodes](img/_page_id_1010_lang=de)** Von hier können die nodes per Drag & Drop auf die Arbeitsfläche gezogen werden. Es gibt nodes für Input von Informationen, nodes zur Bearbeitung dieser Informationen und nodes für den Output Mit einem Doppelklick auf einen node wird dessen Konfigurationsmenü geöffnet.   **3 - Die Info- / debug-Fläche** Bei aktivem Reiter "Info" werden hier die Informationen zu dem gerade aktivierten node angezeigt. Ist der Reiter "debug" aktiviert wird hier die Ausgabe des debug-nodes, der an jeder beliebigen Stelle eines Flows hinzugefügt werden kann, ausgegeben.
+Die Bedienoberfläche des node-red Adapters setzt sich aus folgenden Teilen zusammen: [
+![](img/node-red_iobroker_adapter_nodered006.jpg)
+ **1 - Die Arbeitsfläche** Hier werden die nodes platziert und mit Verbindern zu Flows zusammengefasst.   **2  - Die [nodes](img/_page_id_1010_lang=de)** Von hier können die nodes per Drag & Drop auf die Arbeitsfläche gezogen werden. Es gibt nodes für Input von Informationen, nodes zur Bearbeitung dieser Informationen und nodes für den Output Mit einem Doppelklick auf einen node wird dessen Konfigurationsmenü geöffnet.   **3 - Die Info- / debug-Fläche** Bei aktivem Reiter "Info" werden hier die Informationen zu dem gerade aktivierten node angezeigt. Ist der Reiter "debug" aktiviert wird hier die Ausgabe des debug-nodes, der an jeder beliebigen Stelle eines Flows hinzugefügt werden kann, ausgegeben.
 
 ## Einbinden von node-red in ioBroker
 

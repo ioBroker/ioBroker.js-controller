@@ -132,7 +132,9 @@ _**192.168.178.123:8081**_
 
 Zu Beginn öffnet sich ein Fenster mit der Lizenzvereinbarung. Dieses natürlich mit _ok_ quittieren. Jetzt öffnet sich das Webinterface des admin-Adapters. Hier werden alle verfügbaren [Adapter](http://www.iobroker.net/?page_id=14&lang=de) mit den aktuellen (und ggf. bereits installierten) Versionen angezeigt. Zur Übersicht ist der Entwicklungsstand farblich gekennzeichnet.
 
-![iobroker_image_bpi_20160910](http://www.iobroker.net/wp-content/uploads//ioBroker_Image_BPi_20160910.jpg)
+
+![](img/sd-image-fuer-raspberry-pi2-minimal-3-3_ioBroker_Image_BPi_20160910.jpg)
+
 
 ### Update
 
@@ -174,7 +176,7 @@ Unter _**Homematic CCU-Adresse**_ wird bereits die in einem hm-rpc Adapter festg
 
 Im Gegensatz zu dem hm-rpc-Adapter werden die Datenpunkte des hm-rega Adapters aktiv von der CCU abgerufen. Um die CCU nicht zu überlasten ist das Abfrageintervall per default auf 30 Sekunden konfiguriert, kann aber unter _**Polling**_ entweder komplett deaktiviert oder die Zeit geändert werden. Alternativ kann bei einer Aktion auf der CCU bei der z.B. ein Wert einer Systemvariablen geändert wird, als weiterer Befehl eine virtuelle Tste gedrückt werden. Diese führt dann eine Aktualisierung der Rega-Werte durch. Standardmäßig ist dies die BidCos-RF:50.PRESS_SHORT.
 
-Die beiden Adapter müssen jetzt noch aktiviert werden. Dazu werden sie unter dem [Reiter Instanzen](http://www.iobroker.net/wp-content/uploads//Instanzen-Übersicht.jpg) über den play-Button gestartet. Dieser schaltet nach einiger Zeit von rot auf grün, und die Ampel ganz links wechselt ebenfalls auf grün.
+Die beiden Adapter müssen jetzt noch aktiviert werden. Dazu werden sie unter dem [Reiter Instanzen](http://iobroker.net/wp-content/uploads/Instanzen-Übersicht.jpg) über den play-Button gestartet. Dieser schaltet nach einiger Zeit von rot auf grün, und die Ampel ganz links wechselt ebenfalls auf grün.
 
 Im Reiter _**LOG**_ sieht man jetzt, dass die Datenpunkte angelegt und eingelesen werden. Diese Datenpunkte kann man jetzt auch unter dem Reiter _**Objekte**_ finden
 

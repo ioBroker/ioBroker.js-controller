@@ -14,7 +14,9 @@
 
 ## Создание скриптов
 
-Переходим на вкладку **Скрипты:** ![Изображение](http://forum.iobroker.net/download/file.php?mode=view&id=7027&sid=97469b4e6e04d7bc5209850123b55ddc) Нажимаем на значок добавления нового скрипта: ![Изображение](http://forum.iobroker.net/download/file.php?mode=view&id=7028&sid=97469b4e6e04d7bc5209850123b55ddc) Даём название скрипту и пишем код скрипта нажимаем "Сохранить" и запустить. ![javascript5](http://www.iobroker.net/wp-content/uploads//javascript5.png)
+Переходим на вкладку **Скрипты:** ![Изображение](http://forum.iobroker.net/download/file.php?mode=view&id=7027&sid=97469b4e6e04d7bc5209850123b55ddc) Нажимаем на значок добавления нового скрипта: ![Изображение](http://forum.iobroker.net/download/file.php?mode=view&id=7028&sid=97469b4e6e04d7bc5209850123b55ddc) Даём название скрипту и пишем код скрипта нажимаем "Сохранить" и запустить. 
+![](img/javascript_javascript5.png)
+
 
 ## [](https://github.com/ioBroker/ioBroker.javascript#global-functions)Глобальные функции
 

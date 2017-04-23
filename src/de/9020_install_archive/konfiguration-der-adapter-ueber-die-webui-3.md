@@ -1,4 +1,4 @@
-**<span style="font-size: 24pt;">Ein erster Chart</span>**
+# Ein erster Chart
 
 Um mit ioBroker einen Chart zu erstellen müssen noch wenige Schritte vorbereitet werden
 
@@ -7,33 +7,32 @@ Dazu müssen je eine Instanz von folgenden Adapter installiert werden
 *   _**History, influxDB oder SQL**_ zum Loggen der Datenpunkte die im Chart dargestellt werden sollen
 *   _**flot**_ zur Erzeugung und Darstellung der Charts
 
-
-
-# Installation von flot
+## Installation von flot
 
 Über das [Web-Frontend des Administrators](http://www.iobroker.net/?page_id=2240&lang=de) wird Eine Instanz des zu installierende Adapter flot ausgewählt, indem man ganz rechts in der Spalte _**Installieren**_ auf das (+) klickt.
 
 [![](img/ioBroker_Admin_Adapter_Inhalt01.jpg)](img/ioBroker_Admin_Adapter_Inhalt01.jpg)
 
-* * *
 
-# Aufrufen des Editors
+## Aufrufen des Editors
 
 Der Aufruf des flot-Editors erfolgt mit`<IP_des_ioBroker_Servers>:8082/flot/edit.html`
 
-Sollte bereits vorher ein Chart bearbeitet worden sein, wird immer der zuletzt aufgerufene Chart geöffnet. Ansonsten gibt es ein leeres Template.[](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_first_call-e1485088663244.jpg)
+Sollte bereits vorher ein Chart bearbeitet worden sein, wird immer der zuletzt aufgerufene Chart geöffnet. Ansonsten gibt es ein leeres Template.
+
+![](konfiguration-der-adapter-ueber-die-webui-3_ioBroker_Einsteiger_vis_first_call-e1485088663244.jpg)
 
 [![](img/ioBroker_Adapter_Flot_002.jpg)](img/ioBroker_Adapter_Flot_002.jpg)
 
-# Anlegen eines neuen Charts
+## Anlegen eines neuen Charts
 
 Sollte bereits ein Entwurf geöffnet werden kann dieser durch das Anklicken des Mülleimer-Icons ganz links oben geleert werden.
 
 Wir werden in diesem Tutorial einen einfachen Chart aus zwei Linien und zwei Markierungen erstellen. Außerdem werden wir dabei die wichtigsten Designelemente verwenden.
 
-## Input Data
+### Input Data
 
-### Linie hinzufügen
+#### Linie hinzufügen
 
 Standardmäßig ist bereits eine Linie vorgegeben, also werden wir eine zweite durch Anklicken des Buttons _**Linie hinzufügen**_ in den Entwurf aufnehmen.
 
@@ -49,7 +48,7 @@ In diesem Beispiel nehmen wir eine Außentemperatur und eine Innentemperatur.
 
 [![](img/ioBroker_Einsteiger_flot_lines.jpg)](img/ioBroker_Einsteiger_flot_lines.jpg)
 
-#### Linienparameter
+##### Linienparameter
 
 Hier sind jetzt folgende Parameter ausgewählt ([weiterführende Infos](http://www.iobroker.net/?page_id=198&lang=de#Datenpunktparameter)):
 
@@ -79,9 +78,8 @@ für uns sind im Moment wichtig
 
 **Nach Komma:** Anzahl der Nachkommastellen.
 
-* * *
 
-## Markierungen
+### Markierungen
 
 Nachdem die Parameter für die Datenpunkte abgeschlossen sind, geht es mit der Dekoration des Charts weiter. Markierungen bieten die Möglichkeit horizontale Bereiche oder Linien hinzuzufügen, um bestimmte Eigenschaften hervorzuheben.
 
@@ -99,15 +97,17 @@ In diesem Chart wollen wir zum einen den Wohlfühlbereich der Raumtemperatur und
 
 **Text:** die Beschreibung der Markierung mit den weiteren Werten für Position, Größe und Farbe
 
-## Zeit
+### Zeit
 
 In diesem Block kann der zeitliche Bereich der dargestellten Daten festgelegt werden. Dies kann entweder absolut mit Angebe von Datum und Zeit oder relativ zu einem bestimmten Zeitpunkt mit einer bestimmten Zeitspanne sein.
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_flot_Zeit.jpg)
+
+![](img/konfiguration-der-adapter-ueber-die-webui-3_ioBroker_Einsteiger_flot_Zeit.jpg)
+
 
 Unter Aggregation kann man zwischen Zeit und Anzahl wählen. Diese Parameter geben an, wie viele Datenpunkte je Linie auf dem Chart dargestellt werden sollen, bzw. wie groß ein zusammengefasster Zeitbereich sein soll.
 
-## Options
+### Options
 
 Dieses ist ebenfalls ein sehr umfangreicher Block. Die Komplettbeschreibung gibt es [hier](http://www.iobroker.net/?page_id=198&lang=de#Options_4). In diesem Tutorial werden wir nur auf die wichtigsten Punkte eingehen.
 
@@ -119,20 +119,18 @@ Zuerst wählen wir einen fertigen Hintergrund, dann geben wir einen Titel ein un
 
 Ebenso verfahren wir mit der Legende. Wenn die Checkbox _**Hover Details**_ aktiviert ist, werden beim Überfahren der Kurve mit der Maus, die Messwerte angezeigt.
 
-## Änderungen speichern
+### Änderungen speichern
 
 Änderungen an einem Chart werden nie automatisch gespeichert! Dies wird am besten durch bookmarken der Seite erledigt nachdem wir auf den Button _**Zeige im Fenster**_ geklickt haben.
 
 Diese lange Adresse kann in .vis in einem iFrame-Widget als Quelle angegeben und so in einen View eingebunden werden. Soll dieser View auch mit der Adroid-App aufgerufen werden muss diese Adresse relativ sein, d.h. die IP 192.168... muss gelöscht werden, so dass die Adresse mit /flot/index.html..... beginnt.
 
-* * *
 
-# Editor schließen
+## Editor schließen
 
 Um sich den Erfolg ansehen zu können schließen wir den Editor über das Kreuz rechts oben oder das daneben liegende pulldownmenü (rot). Nach einem kurzen Hinweis, wie man den Editor wieder aufruft befindet man sich im Anzeigemodus von .vis
 
-* * *
 
-# Weiterführende Dokumentation von flot
+## Weiterführende Dokumentation von flot
 
 Eine sehr ausführliche Dokumentation aller Funktionen von ioBroker.flot befindet sich [hier](http://www.iobroker.net/?page_id=2754&lang=de).

@@ -54,7 +54,9 @@ Zu (fast) jedem Image gibt es weitere Informationen, die über das Lupen(+)-Icon
 
 *   Unter Windows wird mit dem [Win32Diskimager](https://www.heise.de/download/product/win32-disk-imager-92033) das aus dem zip-Archiv entpackte Image auf eine µSD-Karte geschrieben. Empfohlen wird eine Größe von 16GB.
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_Images_Win32_Items.jpg)
+
+![](img/EinsteigerseitenWillkommen1_ioBroker_Einsteiger_Images_Win32_Items.jpg)
+
 
 *   Dazu wird der Pfad zu der *.img Datei im Feld (1) eingetragen. Über den File-Explorer (2) kann man nach der Datei suchen.
 *   im Pulldownmenü _**Device**_ wird der Kartenleser mit der µSD-Karte ausgewählt.

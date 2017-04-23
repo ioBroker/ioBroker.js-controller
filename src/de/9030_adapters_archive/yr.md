@@ -4,7 +4,9 @@ der yr-Adapter lädt Wettervorhersagen vom Server des norwegischen Anbieters _yr
 
 ## Konfiguration
 
-![yr - Einstellungen](http://www.iobroker.net/wp-content/uploads/yr-Einstellungen.jpg)
+
+![](img/yr_yr-Einstellungen.jpg)
+
 
 ### Ort
 
@@ -18,4 +20,6 @@ Hier die Sprache eingeben, in der das _VIS-widget_ erscheinen soll. Mit Speiche
 
 ## Bedienung
 
-eine manuelle Bedienung des Adapters findet nicht statt. Anhand des Zeitschemas werden die Daten vom yr-Server heruntergeladen und in die Datenpunkte geschrieben. Eine Darstellung in [_ioBroker.vis_](http://www.iobroker.net/?page_id=2754&lang=de) erfolgt mit Widget - yr.no Weather. Das Widget stellt den Inhalt des Datenpunktes `yr.0.forecast.html` dar. [caption id="attachment_3344" align="alignnone" width="329"]![yr - Widget](http://www.iobroker.net/wp-content/uploads/yr-Widget.jpg) VIS Widget yr.no[/caption] **Tipp:** In der Kategorie _Support/Videos_ gibt es ein [Video](http://www.iobroker.net/?page_id=2387&lang=de) zu diesem Adapter.
+eine manuelle Bedienung des Adapters findet nicht statt. Anhand des Zeitschemas werden die Daten vom yr-Server heruntergeladen und in die Datenpunkte geschrieben. Eine Darstellung in [_ioBroker.vis_](http://www.iobroker.net/?page_id=2754&lang=de) erfolgt mit Widget - yr.no Weather. Das Widget stellt den Inhalt des Datenpunktes `yr.0.forecast.html` dar. 
+![VIS Widget yr.no](img/yr_yr-Widget.jpg)
+ **Tipp:** In der Kategorie _Support/Videos_ gibt es ein [Video](http://www.iobroker.net/?page_id=2387&lang=de) zu diesem Adapter.

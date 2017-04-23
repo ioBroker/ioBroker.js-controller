@@ -12,11 +12,21 @@ To connect ioBroker to Alexa (Amazon Echo or Echo Dot), the following prerequisi
 
 ## IoBroker Cloud account and APP ID
 
-On the website https://iobroker.net (Nicht http://www.iobroker.net !!!) create an account: Or, if an account already exists, log on using the "Login" button. Attention: It has been shown that the e-mail address can not contain uppercase letters, since it is not accepted otherwise (example "ioBroker@domain.de" does not go, but "iobroker@domain.de"). ![](http://www.iobroker.net/wp-content/uploads//alexa_001_cloud_account.jpg) Clicking the "Create APP ID" button creates a unique APP ID. The API key (in this case "testuser_doku_165 ...") is needed later in the cloud adapter - so better record / copy !!! ![](http://www.iobroker.net/wp-content/uploads//alexa_003_cloud_account.jpg) You can check the function by clicking the "Go to your applications" button ![](http://www.iobroker.net/wp-content/uploads//alexa_004_cloud_account_connect.jpg) Should not a listing of the views come and instead the following message ![](http://www.iobroker.net/wp-content/uploads//alexa_005_cloud_account_connect_fail.jpg) This indicates that A) The ioBroker cloud adapter is not (yet) installed, configured, or started B) a firewall, or similar. The connection is blocked
+On the website https://iobroker.net (Nicht http://www.iobroker.net !!!) create an account: Or, if an account already exists, log on using the "Login" button. Attention: It has been shown that the e-mail address can not contain uppercase letters, since it is not accepted otherwise (example "ioBroker@domain.de" does not go, but "iobroker@domain.de"). 
+![](img/alexa-and-iobroker-fast-start_alexa_001_cloud_account.jpg)
+ Clicking the "Create APP ID" button creates a unique APP ID. The API key (in this case "testuser_doku_165 ...") is needed later in the cloud adapter - so better record / copy !!! 
+![](img/alexa-and-iobroker-fast-start_alexa_003_cloud_account.jpg)
+ You can check the function by clicking the "Go to your applications" button 
+![](img/alexa-and-iobroker-fast-start_alexa_004_cloud_account_connect.jpg)
+ Should not a listing of the views come and instead the following message 
+![](img/alexa-and-iobroker-fast-start_alexa_005_cloud_account_connect_fail.jpg)
+ This indicates that A) The ioBroker cloud adapter is not (yet) installed, configured, or started B) a firewall, or similar. The connection is blocked
 
 ## Configure / configure Alexa
 
-Go to the Alexa website (http://alexa.amazon.de) and add the iobroker skill.   When the "Activate" button is clicked, a window opens in which the logon data for the ioBroker Cloud are queried. ![](http://www.iobroker.net/wp-content/uploads//alexa_010b_alexa_skill_login.png) After successfully connecting the iobroker skill to the ioBroker cloud, the following success message appears Now in Alexa in the "Smart Home" area can be searched for devices.
+Go to the Alexa website (http://alexa.amazon.de) and add the iobroker skill.   When the "Activate" button is clicked, a window opens in which the logon data for the ioBroker Cloud are queried. 
+![](img/alexa-and-iobroker-fast-start_alexa_010b_alexa_skill_login.png)
+ After successfully connecting the iobroker skill to the ioBroker cloud, the following success message appears Now in Alexa in the "Smart Home" area can be searched for devices.
 
 ## Install and configure the Cloud Adapter in ioBroker
 

@@ -1,6 +1,12 @@
 # Adapter - B-Control Energy Manager
 
-Der Adapter dient dazu, die Geräte der Fa. [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.iobroker.net/wp-content/uploads/icon_link.png) <span style="color: #0563c1;"><u>[TQ-Systems](http://www.tq-group.com/produkte/produktdetail/prod/energy-manager/extb/Main/)</u></span> anstelle der vorhandenen Weboberfläche die das Gerät bietet, auch über eine JSON Schnittstelle auszulesen. Der Vorteil liegt darin, dass man die Ausleseintervalle alle Messpunkte, also sowohl der internen Sensoren als auch bis zu 8 St. Extern anschließbare Sensoren automatisiert und zyklisch auslesen kann. Baugleiche Geräte und über diesen Adapter ansprechbare Geräte sind unter anderen Markennamen von [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.iobroker.net/wp-content/uploads/icon_link.png) <span style="color: #0563c1;"><u>[Busch-Jaeger](https://www.busch-jaeger.de/produkte/produktloesungen/busch-smartenergy/busch-energymonitor/)</u></span> und [![icon_link](http://www.iobroker.net/wp-content/uploads/icon_link.png)](http://www.iobroker.net/wp-content/uploads/icon_link.png) <span style="color: #0563c1;"><u>[Posid](http://www.trattmann-energyexperts.de/energy-shop/?tx_trattmannshop_shop%5Bcategory%5D=5&tx_trattmannshop_shop%5Baction%5D=list&tx_trattmannshop_shop%5Bcontroller%5D=Article&cHash=095630d91afa7daafa1e7e1174562838#shop-articles)</u></span> am Markt erhältlich.
+Der Adapter dient dazu, die Geräte der Fa. [
+![](img/b-control-em_icon_link.png)
+ <span style="color: #0563c1;"><u>[TQ-Systems](http://www.tq-group.com/produkte/produktdetail/prod/energy-manager/extb/Main/)</u></span> anstelle der vorhandenen Weboberfläche die das Gerät bietet, auch über eine JSON Schnittstelle auszulesen. Der Vorteil liegt darin, dass man die Ausleseintervalle alle Messpunkte, also sowohl der internen Sensoren als auch bis zu 8 St. Extern anschließbare Sensoren automatisiert und zyklisch auslesen kann. Baugleiche Geräte und über diesen Adapter ansprechbare Geräte sind unter anderen Markennamen von [
+![](img/b-control-em_icon_link.png)
+ <span style="color: #0563c1;"><u>[Busch-Jaeger](https://www.busch-jaeger.de/produkte/produktloesungen/busch-smartenergy/busch-energymonitor/)</u></span> und [
+![](img/b-control-em_icon_link.png)
+ <span style="color: #0563c1;"><u>[Posid](http://www.trattmann-energyexperts.de/energy-shop/?tx_trattmannshop_shop%5Bcategory%5D=5&tx_trattmannshop_shop%5Baction%5D=list&tx_trattmannshop_shop%5Bcontroller%5D=Article&cHash=095630d91afa7daafa1e7e1174562838#shop-articles)</u></span> am Markt erhältlich.
 
 
 
@@ -12,7 +18,11 @@ Die Installation erfolgt über die Admin Oberfläche.
 
 ##  Konfiguration
 
-[![ioBroker_Adapter_bcontrol_Konfig001](http://www.iobroker.net/wp-content/uploads/2015/06/ioBroker_Adapter_bcontrol_Konfig001-300x168.jpg)](img/ioBroker_Adapter_bcontrol_Konfig001.jpg)[![zoom61_black](http://www.iobroker.net/wp-content/uploads/zoom61_black.png)](http://www.iobroker.net/wp-content/uploads/zoom61_black.png) [](img/ioBroker_Adapter_bcontrol_Konfig001.jpg) 
+[
+![](img/b-control-em_ioBroker_Adapter_bcontrol_Konfig001-300x168.jpg)
+[
+![](img/b-control-em_zoom61_black.png)
+ [](img/ioBroker_Adapter_bcontrol_Konfig001.jpg) 
 
 **Host:** Die IP-Adresse des Gerätes. Diese bekommt er im Normalfall via DHCP. Da das Gerät in der Windows Netzwerkübersicht nicht sichtbar ist, muss man diese beispielsweise in der Geräteliste der angemeldeten Netzwerkgeräte im DHCP Server oder mittels eines Netzwerkscanners suchen.
 

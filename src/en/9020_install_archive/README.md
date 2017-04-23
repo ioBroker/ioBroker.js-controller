@@ -1,4 +1,4 @@
-﻿# Installation manuals
+# Installation manuals
 
 Here you can find the instruction manuals for different systems like windows, linux or OSX.
 

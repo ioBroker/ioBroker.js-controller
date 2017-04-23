@@ -8,13 +8,19 @@
 
 После установки виджета на странице редактирования проекта vis появится группа виджетов players.
 
-## [![](http://www.iobroker.net/wp-content/uploads//vis_players_adm.png)](http://www.iobroker.net/wp-content/uploads//vis_players_adm.png)
+## [
+![](img/vis-players_vis_players_adm.png)
+
 
 ## Настройка
 
 ### Виджет Winamp player
 
-Рассмотрим настройку на примере проигрывателя MPD. После установки виджета на страницу проекта, настройки виджета выглядят так: [![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl.png) Если планируется использовать виджет для управления не стандартным проигрывателем, который не соответствует принятой в IoBroker спецификации для медиапроигрывателей, то все значения строк необходимо заполнять по отдельности. Если же драйвер соответствует спецификации то достаточно выбрать одно первое значение, а все остальные подставятся автоматически при условии что драйвер проигрывателя их поддерживает. [![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl2.gif)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl2.gif)
+Рассмотрим настройку на примере проигрывателя MPD. После установки виджета на страницу проекта, настройки виджета выглядят так: [
+![](img/vis-players_vis_player_winpl.png)
+ Если планируется использовать виджет для управления не стандартным проигрывателем, который не соответствует принятой в IoBroker спецификации для медиапроигрывателей, то все значения строк необходимо заполнять по отдельности. Если же драйвер соответствует спецификации то достаточно выбрать одно первое значение, а все остальные подставятся автоматически при условии что драйвер проигрывателя их поддерживает. [
+![](img/vis-players_vis_player_winpl2.gif)
+
 
 <table style="height: 309px; width: 585px;">
 
@@ -36,11 +42,17 @@
 
 <tr>
 
-<td style="width: 187px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_kodi.png)</td>
+<td style="width: 187px;">[
+![](img/vis-players_vis_player_winpl_kodi.png)
+</td>
 
-<td style="width: 188px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_foo.png)</td>
+<td style="width: 188px;">[
+![](img/vis-players_vis_player_winpl_foo.png)
+</td>
 
-<td style="width: 192px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpl_mpd.png)</td>
+<td style="width: 192px;">[
+![](img/vis-players_vis_player_winpl_mpd.png)
+</td>
 
 </tr>
 
@@ -52,7 +64,9 @@
 
 ### Виджет Winamp playlist
 
-Для настройки все как и предыдущем случае - выбираем первый объект, остальные подставляются автоматически. [![](http://www.iobroker.net/wp-content/uploads//vis_player_winplst.gif)](http://www.iobroker.net/wp-content/uploads//vis_player_winplst.gif)
+Для настройки все как и предыдущем случае - выбираем первый объект, остальные подставляются автоматически. [
+![](img/vis-players_vis_player_winplst.gif)
+
 
 <table style="height: 156px;" width="593">
 
@@ -74,11 +88,17 @@
 
 <tr>
 
-<td style="width: 189px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_kodi.png)</td>
+<td style="width: 189px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_kodi.png)
+</td>
 
-<td style="width: 190px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_foo.png)</td>
+<td style="width: 190px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_foo.png)
+</td>
 
-<td style="width: 192px; text-align: center;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winpls_mpd.png)</td>
+<td style="width: 192px; text-align: center;">[
+![](img/vis-players_vis_player_winpls_mpd.png)
+</td>
 
 </tr>
 
@@ -88,7 +108,9 @@
 
 ### Виджет Winamp browser
 
-Выбираем первый объект, остальные подставляются автоматически. [![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw.gif)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw.gif)
+Выбираем первый объект, остальные подставляются автоматически. [
+![](img/vis-players_vis_player_winbrw.gif)
+
 
 <table style="height: 156px;" width="593">
 
@@ -110,11 +132,17 @@
 
 <tr style="height: 69px;">
 
-<td style="width: 189px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_kodi.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_kodi.png)</td>
+<td style="width: 189px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_kodi.png)
+</td>
 
-<td style="width: 190px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_foo.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_foo.png)</td>
+<td style="width: 190px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_foo.png)
+</td>
 
-<td style="width: 192px; text-align: center; height: 69px;">[![](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_mpd.png)](http://www.iobroker.net/wp-content/uploads//vis_player_winbrw_mpd.png)</td>
+<td style="width: 192px; text-align: center; height: 69px;">[
+![](img/vis-players_vis_player_winbrw_mpd.png)
+</td>
 
 </tr>
 
@@ -124,11 +152,15 @@
 
 ### Виджет Sonos
 
-В этом виджете все аналогично, выбираем первый объект, остальные подставятся автоматически. [![](http://www.iobroker.net/wp-content/uploads//vis_player_sonos.png)](http://www.iobroker.net/wp-content/uploads//vis_player_sonos.png) По подставленным значениям можно видеть что URL обложки, Следующий - не поддерживаются в драйвере MPD (на момент написания статьи, в будущем возможно поддержка уже будет).
+В этом виджете все аналогично, выбираем первый объект, остальные подставятся автоматически. [
+![](img/vis-players_vis_player_sonos.png)
+ По подставленным значениям можно видеть что URL обложки, Следующий - не поддерживаются в драйвере MPD (на момент написания статьи, в будущем возможно поддержка уже будет).
 
 ## Использование
 
-[![](http://www.iobroker.net/wp-content/uploads//1234.gif)](http://www.iobroker.net/wp-content/uploads//1234.gif)
+[
+![](img/vis-players_1234.gif)
+
 
 ## <span id="i-2">Таблица соответствия ролей</span>
 

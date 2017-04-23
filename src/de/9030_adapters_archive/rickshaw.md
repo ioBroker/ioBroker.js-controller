@@ -52,7 +52,9 @@ In der folgenden Tabelle werden die Parameter festgelegt mit der die jeweiligen 
 
 Hier wird festgelegt aus welcher History-Instanz die geloggten Daten für den Graph entnommen werden sollen.
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Flot_Input_Data_Instanz.jpg)
+
+![](img/rickshaw_ioBroker_Adapter_Flot_Input_Data_Instanz.jpg)
+
 
 default bezieht sich auf die in den Systemeinstellungen festgelegte Default-Instanz zur Datensammlung. Die weiteren Punkte entsprechen den installierten Instanzen.
 
@@ -192,7 +194,9 @@ Mit einem Klick auf dieses Icon wird die gesamte Zeile der Tabelle mit allen Ein
 
 ## Markierungen (2)
 
-Mit dieser Option können horizontale Linien in einen Chart eingetragen werden um Schwellwerte darzustellen. Die Markierungen können auch Bereiche (z.B. Wohlfühlbereich bei Temperatur oder Luftfeuchte) anzeigen. Dann muss ein obererer und unterer Trigger angegeben werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Flot_Markierungen.jpg)
+Mit dieser Option können horizontale Linien in einen Chart eingetragen werden um Schwellwerte darzustellen. Die Markierungen können auch Bereiche (z.B. Wohlfühlbereich bei Temperatur oder Luftfeuchte) anzeigen. Dann muss ein obererer und unterer Trigger angegeben werden. 
+![](img/rickshaw_ioBroker_Adapter_Flot_Markierungen.jpg)
+
 
 ### Neue Markierung hinzufügen
 
@@ -252,7 +256,9 @@ Die Farbe mit der die Information zu dieser Markierung angezeigt werden soll k
 
 ## Zeit (3)
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Flot_Zeit-e1484938214253.jpg)
+
+![](img/rickshaw_ioBroker_Adapter_Flot_Zeit-e1484938214253.jpg)
+
 
 ### Zeitspanne
 
@@ -268,7 +274,9 @@ Bei statisch werden fixe Zeitpunkte definiert, bei relativ die Zeitbereiche zu e
 
 Dieser Punkt kann je nach Einstellung in dem darüber liegenden Punkt _**Art**_ ein fester Zeitpunkt oder im Falle dass relativ ausgewählt wurde ein variabler wiederholender Zeitpunkt sein.
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Flot_Zeit_relativ_Ende.jpg)
+
+![](img/rickshaw_ioBroker_Adapter_Flot_Zeit_relativ_Ende.jpg)
+
 
 #### Range
 

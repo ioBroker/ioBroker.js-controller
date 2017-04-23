@@ -4,7 +4,9 @@ Der javascript-Adapter dient dazu komfortabel Skripte zu erstellen, editieren un
 
 ## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-javascript#konfiguration)Konfiguration
 
-[caption id="attachment_3389" align="alignnone" width="842"]![Einstellungen Javascript Adapter](http://www.iobroker.net/wp-content/uploads/Einstellungen-Javascript.png) Einstellungsmenü Javascript Adapter[/caption]   Die eigentliche Konfiguration besteht aus der Eingabe von zusätzlichen zu ladenden npm-Module (durch Komma getrennt), sowie der Geo-Koordinaten, die für diverse Berechnungen benutzt werden sollen. Um die Koordinaten zu erhalten, kann man z.B. _google maps_ ziemlich weit aufzoomen und an der gewünschten Stelle anklicken. Die Koordinaten werden dann angezeigt. Nach dem Speichern muss der Adapter noch über die rote Play-Taste aktiviert werden aktiviert werden.
+
+![Einstellungsmenü Javascript Adapter](img/javascript-3_Einstellungen-Javascript.png)
+   Die eigentliche Konfiguration besteht aus der Eingabe von zusätzlichen zu ladenden npm-Module (durch Komma getrennt), sowie der Geo-Koordinaten, die für diverse Berechnungen benutzt werden sollen. Um die Koordinaten zu erhalten, kann man z.B. _google maps_ ziemlich weit aufzoomen und an der gewünschten Stelle anklicken. Die Koordinaten werden dann angezeigt. Nach dem Speichern muss der Adapter noch über die rote Play-Taste aktiviert werden aktiviert werden.
 
 * * *
 
@@ -46,63 +48,93 @@ Hier befinden sich die Blöcke mit denen die Scripts erstellt werden, sie werden
 
 ##### System
 
-![iobroker_blockly_blocks_system](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_System.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_System.jpg)
+  
 
 ##### Aktionen
 
-![iobroker_blockly_blocks_aktionen](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Aktionen.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Aktionen.jpg)
+  
 
 ##### SendTo
 
-![iobroker_blockly_blocks_sendto](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_SendTo.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_SendTo.jpg)
+  
 
 ##### Datum und Zeit
 
-![iobroker_blockly_blocks_datum_zeit](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Datum_Zeit.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Datum_Zeit.jpg)
+  
 
 ##### Konvertierung
 
-![iobroker_blockly_blocks_konvertierung](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Konvertierung.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Konvertierung.jpg)
+  
 
 ##### Trigger
 
-![iobroker_blockly_blocks_trigger](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Trigger.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Trigger.jpg)
+  
 
 ##### Timeouts
 
-![iobroker_blockly_blocks_timeouts](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Timeouts.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Timeouts.jpg)
+  
 
 ##### Logik
 
-![iobroker_blockly_blocks_logik](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Logik.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Logik.jpg)
+  
 
 ##### Schleifen
 
-![iobroker_blockly_blocks_schleifen](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Schleifen.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Schleifen.jpg)
+  
 
 ##### Mathematik
 
-![iobroker_blockly_blocks_mathematik](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Mathematik.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Mathematik.jpg)
+  
 
 ##### Text
 
-![iobroker_blockly_blocks_text](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Text.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Text.jpg)
+  
 
 ##### Listen
 
-![iobroker_blockly_blocks_listen](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Listen.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Listen.jpg)
+  
 
 ##### Farbe
 
-![iobroker_blockly_blocks_farben](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Farben.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Farben.jpg)
+  
 
 ##### Variablen
 
-![iobroker_blockly_blocks_variablen](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Variablen.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Variablen.jpg)
+  
 
 ##### Funktionen
 
-![iobroker_blockly_blocks_funktionen](http://www.iobroker.net/wp-content/uploads//ioBroker_Blockly_Blocks_Funktionen.jpg)  
+
+![](img/javascript-3_ioBroker_Blockly_Blocks_Funktionen.jpg)
+  
 
 #### Anwenden der Blöcke
 

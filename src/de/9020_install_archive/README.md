@@ -1,4 +1,4 @@
-﻿# Installation
+# Installation
 
 Man kann hier die Installationseinleitung für verschiedene Systeme finden.
 

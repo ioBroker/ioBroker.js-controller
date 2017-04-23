@@ -2,7 +2,9 @@
 
 
 
-Unter diesem Reiter können die Eigenschaften für den ausgewählten View eingestellt werden. Wenn die Arbeitsfläche des Views angeklickt wird, wird dieser Reiter automatisch aktiviert. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_kpl.jpg)
+Unter diesem Reiter können die Eigenschaften für den ausgewählten View eingestellt werden. Wenn die Arbeitsfläche des Views angeklickt wird, wird dieser Reiter automatisch aktiviert. 
+![](img/Vis_Einstellungen_Sidebar (Views)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_kpl.jpg)
+
 
 ## CSS Allgemein
 
@@ -24,11 +26,15 @@ In diesem Pulldownmenü kann ein Thema ausgewählt werden, in dem der ausgewähl
 
 ### Nur für Gruppen
 
-Soll dieser View nicht für alle Anwender zu sehen sein, kann die Sichtbarkeit auf einzelne Gruppen, die in der Benutzersteuerung angelegt wurden beschränkt werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_usergroups.jpg) Die entsprechenden Gruppen, die diesen View sehen sollen können über die entsprechende Checkboxen ausgewählt werden.
+Soll dieser View nicht für alle Anwender zu sehen sein, kann die Sichtbarkeit auf einzelne Gruppen, die in der Benutzersteuerung angelegt wurden beschränkt werden. 
+![](img/Vis_Einstellungen_Sidebar (Views)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_usergroups.jpg)
+ Die entsprechenden Gruppen, die diesen View sehen sollen können über die entsprechende Checkboxen ausgewählt werden.
 
 ### Falls Anwender nicht in der Gruppe
 
-Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu einer der aktivierten Gruppen gehört. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_no_user.jpg) Dann kann der View entweder vollständig verborgen werden, oder in der Auswahl zwar sichtbar, aber nicht anwählbar sein.
+Hier wird das Verhalten für den View festgelegt, falls ein Anwender nicht zu einer der aktivierten Gruppen gehört. 
+![](img/Vis_Einstellungen_Sidebar (Views)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_no_user.jpg)
+ Dann kann der View entweder vollständig verborgen werden, oder in der Auswahl zwar sichtbar, aber nicht anwählbar sein.
 
 ## CSS Hintergrund
 
@@ -40,7 +46,9 @@ Hier kann ein eigener Ausdruck eingegeben werden, um den gewünschten Hintergrun
 
 ### -color
 
-hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+hier kann eine Farbe für den Hintergrund  über den colorpicker oder über eine Angabe als RGB(a) eingegeben werden. 
+![](img/Vis_Einstellungen_Sidebar (Views)_ioBroker_Adapter_Vis_Editor_Eigenschaften_Sidebar_Views_background-color-e1484594801931.jpg)
+
 
 ### -image
 

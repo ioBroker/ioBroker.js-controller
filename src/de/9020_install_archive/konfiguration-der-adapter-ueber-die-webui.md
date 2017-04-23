@@ -19,7 +19,9 @@ Nach der Installation von ioBroker auf einer der [möglichen Plattformen](http:/
 
 Es erscheint das [Web-Frontend des Administrators](http://www.iobroker.net/?page_id=2240&lang=de).  Hier werden die zu installierenden Module (Adapter) ausgewählt, indem man ganz rechts in der Spalte _**Installieren**_ auf das (+) klickt.
 
-![](http://www.iobroker.net/wp-content/uploads//Admin-Übersicht-1.jpg)
+
+![](img/konfiguration-der-adapter-ueber-die-webui_Admin-Übersicht-1.jpg)
+
 
 Man beginnt mit den Adaptern [HM-RPC](http://www.iobroker.net/?page_id=2829&lang=de) und  [HM-REGA](http://www.iobroker.net/?page_id=2825&lang=de).
 
@@ -39,7 +41,7 @@ Unter _**Homematic CCU-Adresse**_ wird bereits die in einem hm-rpc Adapter festg
 
 Im Gegensatz zu dem hm-rpc-Adapter werden die Datenpunkte des hm-rega Adapters aktiv von der CCU abgerufen. Um die CCU nicht zu überlasten ist das Abfrageintervall per default auf 30 Sekunden konfiguriert, kann aber unter _**Polling**_ entweder komplett deaktiviert oder die Zeit geändert werden. Alternativ kann bei einer Aktion auf der CCU bei der z.B. ein Wert einer Systemvariablen geändert wird, als weiterer Befehl eine virtuelle Tste gedrückt werden. Diese führt dann eine Aktualisierung der Rega-Werte durch. Standardmäßig ist dies die BidCos-RF:50.PRESS_SHORT.
 
-Die beiden Adapter müssen jetzt noch aktiviert werden. Dazu werden sie unter dem [Reiter Instanzen](http://www.iobroker.net/wp-content/uploads//Instanzen-Übersicht.jpg) über den play-Button gestartet. Dieser schaltet nach einiger Zeit von rot auf grün, und die Ampel ganz links wechselt ebenfalls auf grün.
+Die beiden Adapter müssen jetzt noch aktiviert werden. Dazu werden sie unter dem [Reiter Instanzen](http://iobroker.net/wp-content/uploads/Instanzen-Übersicht.jpg) über den play-Button gestartet. Dieser schaltet nach einiger Zeit von rot auf grün, und die Ampel ganz links wechselt ebenfalls auf grün.
 
 Im Reiter _**LOG**_ sieht man jetzt, dass die Datenpunkte angelegt und eingelesen werden. Diese Datenpunkte kann man jetzt auch unter dem Reiter _**Objekte**_ finden
 

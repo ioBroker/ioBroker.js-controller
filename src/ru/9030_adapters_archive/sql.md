@@ -12,12 +12,18 @@
 
 ### База данных MS-SQL
 
-Для примера используем БД MS SQL Express 2014, для этого необходимо скачать с сайта [microsoft](https://www.microsoft.com/ru-ru/download/details.aspx?id=42299) необходимые файлы установки самой БД (выбрать версию х32-х64) и, при необходимости, программы **MS SQL Management Studio**. [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup1.jpg) При установке необходимо указать именованный экземпляр БД (оставим по-умолчанию), тип запуска **Обозреватель SQL Server** изменить на **Авто **и указать **смешанный режим** проверки подлинности (указав пароль для пользователя **sa**). [![](img/SQL-MSSQL-setup9.jpg)](img/SQL-MSSQL-setup9.jpg) Чтобы разрешить входящие подключения по порту 1443, необходимо:
+Для примера используем БД MS SQL Express 2014, для этого необходимо скачать с сайта [microsoft](https://www.microsoft.com/ru-ru/download/details.aspx?id=42299) необходимые файлы установки самой БД (выбрать версию х32-х64) и, при необходимости, программы **MS SQL Management Studio**. [
+![](img/sql_SQL-MSSQL-setup1.jpg)
+ При установке необходимо указать именованный экземпляр БД (оставим по-умолчанию), тип запуска **Обозреватель SQL Server** изменить на **Авто **и указать **смешанный режим** проверки подлинности (указав пароль для пользователя **sa**). [![](img/SQL-MSSQL-setup9.jpg)](img/SQL-MSSQL-setup9.jpg) Чтобы разрешить входящие подключения по порту 1443, необходимо:
 
 *   в **Диспетчере конфигурации SQL Server 2014** включить TCP/IP протокол для экземпляра сервера и прописать порт 1443 для всех IP (после этого обязательно перезапустить сервер для применения новых настроек),
 *   настроить брандмауэр Windows для входящих подключений TCP порт 1443.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup12.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup12.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup13.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setup13.jpg) [![](img/SQL-MSSQL-setup15.jpg)](img/SQL-MSSQL-setup15.jpg) Теперь устанавливаем драйвер SQL в систему ioBroker, щелкнув кнопку с плюсом в строчке адаптера **SQL History** (группа хранилище) на вкладке **Драйвера** WEB-интерфейса. Перемещаемся на вкладку **Настройки драйверов**, запускаем только что установленный экземпляр драйвера **sql.0** (если имеются другие экземпляры, то имя может отличаться) и нажимаем кнопку **Настроить**, далее:
+[
+![](img/sql_SQL-MSSQL-setup12.jpg)
+ [
+![](img/sql_SQL-MSSQL-setup13.jpg)
+ [![](img/SQL-MSSQL-setup15.jpg)](img/SQL-MSSQL-setup15.jpg) Теперь устанавливаем драйвер SQL в систему ioBroker, щелкнув кнопку с плюсом в строчке адаптера **SQL History** (группа хранилище) на вкладке **Драйвера** WEB-интерфейса. Перемещаемся на вкладку **Настройки драйверов**, запускаем только что установленный экземпляр драйвера **sql.0** (если имеются другие экземпляры, то имя может отличаться) и нажимаем кнопку **Настроить**, далее:
 
 *   выбираем тип БД - **MS - SQL**,
 *   вводим имя или IP-адрес хоста с установленной БД,
@@ -27,13 +33,23 @@
 *   при необходимости изменяем параметр **Время хранения в базе** (время хранения данных, старые данные удаляются),
 *   нажимаем кнопку Сохранить и выйти, драйвер перезапускается. Теперь можно проверить подключение к БД.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting1.jpg) [![](img/SQL-MSSQL-setting2.jpg)](img/SQL-MSSQL-setting2.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной, к примеру рассмотрим переменные работы хоста ioBroker (нагрузку ЦП, память и пр.). Для этого на вкладке **Объекты** в верхнем левом углу нажимаем кнопку **Показать системные объекты**, в таблице ищем группу **system.host.имя_хоста**, раскрываем список и настаиваем хранение истории для выбранных переменных (кнопка в строке крайняя справа):
+[
+![](img/sql_SQL-MSSQL-setting1.jpg)
+ [![](img/SQL-MSSQL-setting2.jpg)](img/SQL-MSSQL-setting2.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной, к примеру рассмотрим переменные работы хоста ioBroker (нагрузку ЦП, память и пр.). Для этого на вкладке **Объекты** в верхнем левом углу нажимаем кнопку **Показать системные объекты**, в таблице ищем группу **system.host.имя_хоста**, раскрываем список и настаиваем хранение истории для выбранных переменных (кнопка в строке крайняя справа):
 
 *   ставим галочку **активно** в группе **sql.o**,
 *   остальные настройки можно оставить по-умолчанию,
 *   нажимаем кнопку **Сохранить**.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting4.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting3.jpg) Через некоторое время можно открыть эту же настройку переменной (к примеру, **system.host.vm32test.load**) и перейти на вкладку **Таблица** - там отобразятся архивные значения из БД. [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting6.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting6.jpg) Можно установить программу MS SQL Management Studio и проверить наличие архивных данных в ней. [![](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting5.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MSSQL-setting5.jpg) Еще необходимо упомянуть об [ограничениях](img/cc645993%28v_sql.120%29.aspx) бесплатной версии MS SQL Express 2014 (и учитывать их при проектировании системы ioBroker):
+[
+![](img/sql_SQL-MSSQL-setting4.jpg)
+ [
+![](img/sql_SQL-MSSQL-setting3.jpg)
+ Через некоторое время можно открыть эту же настройку переменной (к примеру, **system.host.vm32test.load**) и перейти на вкладку **Таблица** - там отобразятся архивные значения из БД. [
+![](img/sql_SQL-MSSQL-setting6.jpg)
+ Можно установить программу MS SQL Management Studio и проверить наличие архивных данных в ней. [
+![](img/sql_SQL-MSSQL-setting5.jpg)
+ Еще необходимо упомянуть об [ограничениях](img/cc645993%28v_sql.120%29.aspx) бесплатной версии MS SQL Express 2014 (и учитывать их при проектировании системы ioBroker):
 
 *   Максимальная вычислительная мощность, используемая одним экземпляром - не более одного CPU и 4-х ядер,
 *   Максимальный объем используемой памяти (ОЗУ) - ограничение 1Гб,
@@ -49,7 +65,11 @@
 *   при необходимости изменяем параметр **Время хранения в базе** (время хранения данных, старые данные удаляются),
 *   нажимаем кнопку Сохранить и выйти, драйвер перезапускается.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting4.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting4.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или открыть файл БД специальной программой, к примеру SQLite Expert Personal. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg) [![](img/SQL-SQLite-setting5.jpg)](img/SQL-SQLite-setting5.jpg)
+[
+![](img/sql_SQL-SQLite-setting4.jpg)
+ Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или открыть файл БД специальной программой, к примеру SQLite Expert Personal. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+ [![](img/SQL-SQLite-setting5.jpg)](img/SQL-SQLite-setting5.jpg)
 
 ### База данных MySQL
 
@@ -63,7 +83,19 @@
 *   при необходимости изменяем параметр **Время хранения в базе** (время хранения данных, старые данные удаляются),
 *   нажимаем кнопку Сохранить и выйти, драйвер перезапускается. Теперь можно проверить подключение к БД.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting1.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру HeidiSQL. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg) **Установка под Windows **так же совсем не сложная. Сервер MySQL устанавливаем на отдельной машине (под Windows), для этого скачиваем установочные файлы с сайта [mysql.com](http://dev.mysql.com/downloads/) сам MySQL сервер и, при желании, программу администрирования (Download MySQL Workbench). Сначала устанавливаем MySQL-сервер в ручную выбрав компоненты (сам сервер и набор утилит). [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting6.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting6.jpg) [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting7.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting7.jpg) Добавим пользователя **iobroker** с возможностью подключаться с любого хоста **All Hosts (%)**, роль **DB Admin** и паролем, к примеру, iobrokermysql. Так же необходимо установить пароль для супер-пользователя **root**. [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting9.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting9.jpg) [![](img/SQL-MySQL-setting11.jpg)](img/SQL-MySQL-setting11.jpg) Теперь устанавливаем драйвер SQL, если он еще не установлен и настраиваем:
+[
+![](img/sql_SQL-MySQL-setting1.jpg)
+ Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру HeidiSQL. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [
+![](img/sql_SQL-MySQL-setting3.jpg)
+ **Установка под Windows **так же совсем не сложная. Сервер MySQL устанавливаем на отдельной машине (под Windows), для этого скачиваем установочные файлы с сайта [mysql.com](http://dev.mysql.com/downloads/) сам MySQL сервер и, при желании, программу администрирования (Download MySQL Workbench). Сначала устанавливаем MySQL-сервер в ручную выбрав компоненты (сам сервер и набор утилит). [
+![](img/sql_SQL-MySQL-setting6.jpg)
+ [
+![](img/sql_SQL-MySQL-setting7.jpg)
+ Добавим пользователя **iobroker** с возможностью подключаться с любого хоста **All Hosts (%)**, роль **DB Admin** и паролем, к примеру, iobrokermysql. Так же необходимо установить пароль для супер-пользователя **root**. [
+![](img/sql_SQL-MySQL-setting9.jpg)
+ [![](img/SQL-MySQL-setting11.jpg)](img/SQL-MySQL-setting11.jpg) Теперь устанавливаем драйвер SQL, если он еще не установлен и настраиваем:
 
 *   выбираем тип БД - **MySQL**,
 *   сервер MySQL установлен на другой машине с ОС Windows, поэтому X**ост** настройка будет **IP-адрес **этого ПК,
@@ -73,7 +105,13 @@
 *   при необходимости изменяем параметр **Время хранения в базе** (время хранения данных, старые данные удаляются),
 *   нажимаем кнопку Сохранить и выйти, драйвер перезапускается. Теперь можно проверить подключение к БД.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting2.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting2.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру HeidiSQL или установить как дополнение вместе с MySQL пакет MySQL Workbench, в его составе есть GUI. [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-MySQL-setting3.jpg) [![](img/SQL-MySQL-setting18.jpg)](img/SQL-MySQL-setting18.jpg)
+[
+![](img/sql_SQL-MySQL-setting2.jpg)
+ Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру HeidiSQL или установить как дополнение вместе с MySQL пакет MySQL Workbench, в его составе есть GUI. [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [
+![](img/sql_SQL-MySQL-setting3.jpg)
+ [![](img/SQL-MySQL-setting18.jpg)](img/SQL-MySQL-setting18.jpg)
 
 ### База данных PostgreSQL
 
@@ -96,7 +134,11 @@
 *   при необходимости изменяем параметр **Время хранения в базе** (время хранения данных, старые данные удаляются),
 *   нажимаем кнопку Сохранить и выйти, драйвер перезапускается. Теперь можно проверить подключение к БД.
 
-[![](http://www.iobroker.net/wp-content/uploads//SQL-PostgreSQL-setting1.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-PostgreSQL-setting1.jpg) Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру pgAdmin III (для Windows). [![](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)](http://www.iobroker.net/wp-content/uploads//SQL-SQLite-setting3.jpg)  [![](img/SQL-PostgreSQL-setting2.jpg)](img/SQL-PostgreSQL-setting2.jpg)
+[
+![](img/sql_SQL-PostgreSQL-setting1.jpg)
+ Чтобы проверить, добавляются ли записи в БД, можно настроить архивирование какой нибудь переменной или группы переменных (см. пример выше [MS SQL Express](http://www.iobroker.net/?page_id=3903&lang=ru#_MS-SQL)). Проверить запись в БД можно на вкладке **Таблица** настроек истории для переменной или подключиться к БД специальной программой, к примеру pgAdmin III (для Windows). [
+![](img/sql_SQL-SQLite-setting3.jpg)
+  [![](img/SQL-PostgreSQL-setting2.jpg)](img/SQL-PostgreSQL-setting2.jpg)
 
 ## Структура БД ioBroker
 

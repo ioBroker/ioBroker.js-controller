@@ -52,11 +52,15 @@ Legt fest, wie lange die Werte gespeichert werden sollen (unendlich, 2 Jahre, 1 
 
 ## <span id="Einstellungen_fuer_Datenpunkte">Einstellungen für Datenpunkte</span>
 
-Die Einstellungen für die zu loggenden Datenpunkte werden in dem Reiter „Objekte“ bei dem entsprechenden Datenpunkt durchgeführt. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_filter.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_filter.jpg) Dazu wählt man ganz rechts in der Spalte das Zahnradsymbol zu dem gewünschten Datenpunkt aus. Das Konfigurationsmenü öffnet sich: [![](img/ioBroker_Adapter_SQL_objects.jpg)](img/ioBroker_Adapter_SQL_objects.jpg)
+Die Einstellungen für die zu loggenden Datenpunkte werden in dem Reiter „Objekte“ bei dem entsprechenden Datenpunkt durchgeführt. [
+![](img/adapter-historyundefined_ioBroker_Adapter_SQL_objects_filter.jpg)
+ Dazu wählt man ganz rechts in der Spalte das Zahnradsymbol zu dem gewünschten Datenpunkt aus. Das Konfigurationsmenü öffnet sich: [![](img/ioBroker_Adapter_SQL_objects.jpg)](img/ioBroker_Adapter_SQL_objects.jpg)
 
 ### <span id="Aktiviert">Aktiviert</span>
 
-Logging des Datenpunktes aktivieren Nur Änderungen aufzeichnen: Es werden nur Werte gespeichert, wenn sich der Wert des Datenpunktes ändert. Das spart Speicherplatz.Eine sinnvolle Nutzung ergibt sich, wenn man vorher über die Filterfelder in dem Tabellenheader die Datenpunkte so filtert, dass man z.B. nur die „State“ Datenpunkte herausfiltert, um sie dann zu loggen [![Filtern_loggen](http://www.iobroker.net/wp-content/uploads//2015/04/Filtern_loggen-300x121.jpg)](img/Filtern_loggen.jpg)
+Logging des Datenpunktes aktivieren Nur Änderungen aufzeichnen: Es werden nur Werte gespeichert, wenn sich der Wert des Datenpunktes ändert. Das spart Speicherplatz.Eine sinnvolle Nutzung ergibt sich, wenn man vorher über die Filterfelder in dem Tabellenheader die Datenpunkte so filtert, dass man z.B. nur die „State“ Datenpunkte herausfiltert, um sie dann zu loggen [
+![](img/adapter-historyundefined_Filtern_loggen-300x121.jpg)
+
 
 1.  die Ansicht als Liste ohne Gruppierung anzeigen lassen
 2.  den oder die Filterbegriffe eingeben
@@ -70,4 +74,10 @@ Logging des Datenpunktes aktivieren Nur Änderungen aufzeichnen: Es werden nur W
 
 ## <span id="Bedienung">**Bedienung**</span>
 
-Wählt man in der Titelzeile unter Historie "mit" oder "history.0" aus, werden nur noch Datenpunkte mit Logging angezeigt. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_filter.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_filter.jpg) Ein Klick auf das Zahnradsymbol öffnet die geloggten Daten: [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_Data.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Adapter_SQL_objects_Data.jpg) Im Reiter Table werden die Daten tabellarisch angezeigt. [![ioBroker_Adapter_rickshaw03](http://www.iobroker.net/wp-content/uploads//2015/04/ioBroker_Adapter_rickshaw03-300x182.jpg)](img/ioBroker_Adapter_rickshaw03.jpg) Im Reiter Chart kann bei installiertem Rickshaw-Adapter eine Verlaufsgrafik angezeigt werden.
+Wählt man in der Titelzeile unter Historie "mit" oder "history.0" aus, werden nur noch Datenpunkte mit Logging angezeigt. [
+![](img/adapter-historyundefined_ioBroker_Adapter_SQL_objects_filter.jpg)
+ Ein Klick auf das Zahnradsymbol öffnet die geloggten Daten: [
+![](img/adapter-historyundefined_ioBroker_Adapter_SQL_objects_Data.jpg)
+ Im Reiter Table werden die Daten tabellarisch angezeigt. [
+![](img/adapter-historyundefined_ioBroker_Adapter_rickshaw03-300x182.jpg)
+ Im Reiter Chart kann bei installiertem Rickshaw-Adapter eine Verlaufsgrafik angezeigt werden.

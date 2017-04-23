@@ -56,7 +56,9 @@ Ist die Checkbox _Setzen bei false _angehakt erscheint der obige Block nochmals
 
 ### **Schritt 3 - Hinzufügen der Datenpunkte einer Szene**
 
-Anschließend werden die Datenpunkte hinzugefügt, die in dieser Szene beteiligt sein sollen Nach Anklicken des (+) ganz rechts in der Zeile der Szene erscheint eine ID Auswahlbox: [![ioBroker_adapter_scenes_id_select](http://www.iobroker.net/wp-content/uploads/2015/09/ioBroker_adapter_scenes_id_select.jpg)](http://www.iobroker.net/wp-content/uploads/2015/09/ioBroker_adapter_scenes_id_select.jpg)   hier können mehrere Datenpunkte auf einmal markiert werden. Zur vereinfachten Suche kann man die Datenpunkte filtern. Anschließend kann man diese Datenpunkte noch konfigurieren (Level, On/Off) und für dynamische Szenen eine Verzögerung einbauen. Dazu klickt man auf das Konfigurations-Icon des Datenpunktes und ein Konfigurationsfenster erscheint: [![ioBroker_adapter_scenes_config_DP](img/ioBroker_adapter_scenes_config_DP.jpg)](img/ioBroker_adapter_scenes_config_DP.jpg)
+Anschließend werden die Datenpunkte hinzugefügt, die in dieser Szene beteiligt sein sollen Nach Anklicken des (+) ganz rechts in der Zeile der Szene erscheint eine ID Auswahlbox: [
+![](img/iobroker_scenes_ioBroker_adapter_scenes_id_select.jpg)
+   hier können mehrere Datenpunkte auf einmal markiert werden. Zur vereinfachten Suche kann man die Datenpunkte filtern. Anschließend kann man diese Datenpunkte noch konfigurieren (Level, On/Off) und für dynamische Szenen eine Verzögerung einbauen. Dazu klickt man auf das Konfigurations-Icon des Datenpunktes und ein Konfigurationsfenster erscheint: [![ioBroker_adapter_scenes_config_DP](img/ioBroker_adapter_scenes_config_DP.jpg)](img/ioBroker_adapter_scenes_config_DP.jpg)
 
 **Aktiviert:** Ist die Checkbox angehakt wird dieser Datenpunkt in der Szene verwendet
 

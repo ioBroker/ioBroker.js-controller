@@ -1,4 +1,4 @@
-**<span style="font-size: 24pt;">Eine erste Visualisierung</span>**
+# Eine erste Visualisierung
 
 Um mit ioBroker eine Visualisierung zu erstellen müssen noch wenige Schritte vorbereitet werden
 
@@ -8,16 +8,14 @@ Dazu müssen je eine Instanz von folgenden Adapter installiert werden
 *   _**web**_ zur Erzeugung eines Webinterfaces über das auf die Views zugegriffen werden kann
 
 
-
-# Installation von vis
+## Installation von vis
 
 Über das [Web-Frontend des Administrators](http://www.iobroker.net/?page_id=2240&lang=de) wird Eine Instanz des zu installierende Adapter vis ausgewählt, indem man ganz rechts in der Spalte _**Installieren**_ auf das (+) klickt.
 
 [![](img/ioBroker_Admin_Adapter_Inhalt01.jpg)](img/ioBroker_Admin_Adapter_Inhalt01.jpg)
 
-* * *
 
-# Aufrufen des Editors
+## Aufrufen des Editors
 
 Der vollständige Aufruf des .vis-Editors erfolgt mit`<IP_des_ioBroker_Servers>:8082/vis/edit.html?_ProjektName_#_ViewName._`
 
@@ -31,7 +29,7 @@ Dann öffnet sich endlich der Editor:
 
 [![](img/ioBroker_Einsteiger_vis_Demo_View.jpg)](img/ioBroker_Einsteiger_vis_Demo_View.jpg)
 
-## Anlegen eines neuen Views
+### Anlegen eines neuen Views
 
 Mit diesem Demo-View kann man gut die Funktionen von vis durch try and error kennenlernen. Daher löschen wir ihn nicht, sondern erstellen für dieses Tutorial einen weiteren View.
 
@@ -39,7 +37,7 @@ Dazu wechseln wir oben auf den Reiter Views und legen einen neuen View durch Ank
 
 [![](img/ioBroker_Einsteiger_vis_New_View.jpg)](img/ioBroker_Einsteiger_vis_New_View.jpg)
 
-### Änderungen speichern
+#### Änderungen speichern
 
 Änderungen an einem View werden immer sofort automatisch gespeichert. Dies wird durch ein Disketten-Icon, das bei Speichervorgängen erscheint, angezeigt:
 
@@ -47,17 +45,19 @@ Dazu wechseln wir oben auf den Reiter Views und legen einen neuen View durch Ank
 
 Unerwünschte Änderungen kann man mit dem Redo-Button (rechts neben den Reitern in der Titelzeile, oder mit STRG-Z wieder rückgängig machen. Will man den Editor verlassen, bevor die automatische Speicherung beendet ist, wird durch eine Warnmeldung darauf hingewiesen.
 
-### Vergeben eines Namens
+#### Vergeben eines Namens
 
 Die Ansicht ändert sich und es wird aufgefordert einen neuen Namen einzugeben.
 
-![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_New_Name.jpg)
+
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_New_Name.jpg)
+
 
 Hier wird jetzt ein eindeutiger und möglichst kurzer Name eingegeben und anschließend mit dem Haken-Icon bestätigt. Soll die Aktion abgebrochen werden muss das Abbruch Icon (Ø) angeklickt werden.
 
 Es erscheint über der Arbeitsfläche ein weiterer Reiter mit dem Namen des Views. Die Arbeitsfläche ist leer.
 
-### Festlegen der Größe
+#### Festlegen der Größe
 
 Um die Größe des neuen Views festzulegen wechseln wir in der Titelzeile auf den Reiter Tools und öffnen das Pulldownmenü bei _**Auflösung**_.
 
@@ -71,7 +71,7 @@ Nachdem dort für die Breite 1280 und für die Höhe 800 eingegeben wurde (Was b
 
 [![](img/ioBroker_Einsteiger_vis_Tools_Resolution_Frame.jpg)](img/ioBroker_Einsteiger_vis_Tools_Resolution_Frame.jpg)
 
-## Arbeiten mit Widgets
+### Arbeiten mit Widgets
 
 Alle installierten Widgets befinden sich in der Widget-Sidebar links von der Arbeitsfläche. Zur Zeit sind nur die Widgets der Grundinstallation verfügbar. Weitere Widgetsätze können nachinstalliert werden. Dazu später.
 
@@ -91,7 +91,7 @@ Ist außerdem der Reiter Widgets in der Titelzeile des Editors ausgewählt wird 
 
 Dieses Widget soll jetzt dazu dienen eine Lampe zu schalten und den Zustand darzustellen. Dafür müssen wir das Widget mit einem (Licht-) Schaltaktor verknüpfen.
 
-### Datenpunktzuordnung
+#### Datenpunktzuordnung
 
 In der Eigenschaften-Sidebar befindet sich unter dem Reiter Widget der Block Allgemein des gerade selektierten Widgets. Der erste Punkt darin ist die Object-ID (OID) die dem Widget zugeordnet werden soll. Über den Button  rechts neben dem Feld (rot) gelangt man in den Objekt-Explorer.
 
@@ -115,23 +115,27 @@ Die weiteren Einstellungen, die für die Funktion des Widgets notwendig sind, si
 
 Damit hätten wir unser erstes Widget erfolgreich angelegt.
 
-### Widgeteigenschaften
+#### Widgeteigenschaften
 
-Als nächstes wollen wir diesem doch farblosen Widget einen Hintergrund verpassen. Dazu nehmen wir das Widget basic Border und ziehen es genau über die Glühbirne. wenn es nicht exakt passt, kann man es auch mit den Pfeiltasten bewegen. Zu den Ausrichtungswerkzeugen, die das Ganze noch vereinfachen kommen wir nachher. Wenn das bewegte Widget eine bestimmte Ausrichtung zu einem bestehenden Widget hat wird kurz eine rote Hilfslinie sichtbar. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_center.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_center.jpg) Wir füllen jetzt das optionale Feld _**Titel**_ aus, indem wir dort eine kurze aussagekräftige Bezeichnung für die Lampe eintragen. In  diesem Fall "Bad". Über den Colorpicker wählen wir dann eine geeignete Farbe für diesen Titel aus: [![](img/ioBroker_Einsteiger_vis_Widgets_Border_Title.jpg)](img/ioBroker_Einsteiger_vis_Widgets_Border_Title.jpg) anschließend verschieben wir die Beschriftung noch mit den beiden Slidern an die gewünschte Stelle
+Als nächstes wollen wir diesem doch farblosen Widget einen Hintergrund verpassen. Dazu nehmen wir das Widget basic Border und ziehen es genau über die Glühbirne. wenn es nicht exakt passt, kann man es auch mit den Pfeiltasten bewegen. Zu den Ausrichtungswerkzeugen, die das Ganze noch vereinfachen kommen wir nachher. Wenn das bewegte Widget eine bestimmte Ausrichtung zu einem bestehenden Widget hat wird kurz eine rote Hilfslinie sichtbar. [
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgets_center.jpg)
+ Wir füllen jetzt das optionale Feld _**Titel**_ aus, indem wir dort eine kurze aussagekräftige Bezeichnung für die Lampe eintragen. In  diesem Fall "Bad". Über den Colorpicker wählen wir dann eine geeignete Farbe für diesen Titel aus: [![](img/ioBroker_Einsteiger_vis_Widgets_Border_Title.jpg)](img/ioBroker_Einsteiger_vis_Widgets_Border_Title.jpg) anschließend verschieben wir die Beschriftung noch mit den beiden Slidern an die gewünschte Stelle
 
-#### Anpassen der Schrift
+##### Anpassen der Schrift
 
 Wir aktivieren nun die Checkbox CSS Font & Text um Anpassungen an der Schrift durchzuführen. Dadurch klappt der entsprechende Block auf. Hier werden die dem Widget zugeordneten Schriften unseren Wünschen angepasst. Dieser Block wird standardmäßig dafür benutzt. In unserem speziellen Fall gibt es bereits gleiche Parameter unter allgemein, die jetzt hier nicht noch einmal ausgefüllt werden müssen. [![](img/ioBroker_Einsteiger_vis_Widgets_Border_Font.jpg)](img/ioBroker_Einsteiger_vis_Widgets_Border_Font.jpg) Wir wählen in dem Dropdown-Menü eine Schriftfamilie aus (wenn weitere Schriftsätze per Adapter installiert sind, werden sie ebenfalls hier aufgeführt). Weiterhin den font-weight und die Font Größe. Letztere kann relativ (large, larger...) oder absolut in px oder pt angegeben werden.
 
-#### Hintergrund
+##### Hintergrund
 
 Als nächstes wollen wir die Fläche des Widgets in der selben Farbe wie die Beschriftung füllen. Dazu aktivieren wir den Block _**CSS Hintergrund (background-...)**_ und kopieren den Code für die Farbe aus dem Feld _**Titelfarbe**_ dort hinein. [![](img/ioBroker_Einsteiger_vis_Widgets_Border_background.jpg)](img/ioBroker_Einsteiger_vis_Widgets_Border_background.jpg) Mit Schrecken stellen wir fest, dass die Glühbirne jetzt verschwunden ist. Um diese wiederherzustellen müssen wir an der Anordnung der Widgets arbeiten. Dazu gibt es den Block
 
-#### CSS allgemein
+##### CSS allgemein
 
-Um das Glühbirnen-Widget wieder hervorholen zu können müssen wir das Widget _**basic  bulb on/off**_ über das Widgetauswahlmenü oben links aktivieren. ![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_select.jpg)   Jetzt wird in dem aufgeklappten Block _**css allgemein**_ der Wert für den z-Index erhöht. Dieser Wert gibt an in welcher Ebene über der Arbeitsfläche dieses Widget liegen soll. (0=Arbeitsfläche; hoher Wert ganz weit oben) [![](img/ioBroker_Einsteiger_vis_Widgets_css_allgemein02.jpg)](img/ioBroker_Einsteiger_vis_Widgets_css_allgemein02.jpg) Jetzt ist das Widget wieder sichtbar!   Es empfiehlt sich bei vielen und großen Widgets die Werte für den z-Index in großzügigen Stufen zu bemessen, damit man ggf. noch Zwischenebenen einbauen kann.
+Um das Glühbirnen-Widget wieder hervorholen zu können müssen wir das Widget _**basic  bulb on/off**_ über das Widgetauswahlmenü oben links aktivieren. 
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgets_select.jpg)
+   Jetzt wird in dem aufgeklappten Block _**css allgemein**_ der Wert für den z-Index erhöht. Dieser Wert gibt an in welcher Ebene über der Arbeitsfläche dieses Widget liegen soll. (0=Arbeitsfläche; hoher Wert ganz weit oben) [![](img/ioBroker_Einsteiger_vis_Widgets_css_allgemein02.jpg)](img/ioBroker_Einsteiger_vis_Widgets_css_allgemein02.jpg) Jetzt ist das Widget wieder sichtbar!   Es empfiehlt sich bei vielen und großen Widgets die Werte für den z-Index in großzügigen Stufen zu bemessen, damit man ggf. noch Zwischenebenen einbauen kann.
 
-#### CSS Border
+##### CSS Border
 
 In diesem Block kann jetzt der Rahmen konfiguriert werden. Dazu wählen wir wieder das Widget basic border aus und öffnen den Block CSS Ränder (border...) [![](img/ioBroker_Einsteiger_vis_Border.jpg)](img/ioBroker_Einsteiger_vis_Border.jpg) Hier geben wir die gewünschten Werte für die Umrandung der Hintergrundfläche ein.
 
@@ -140,11 +144,27 @@ In diesem Block kann jetzt der Rahmen konfiguriert werden. Dazu wählen wir wied
 *   **color** ist die Farbe der Umrandung
 *   **radius** gibt die Krümmung der Ecken an. Gibt man hier einen Wert ein, der größer oder gleich der Hälfte des größeren Wertes von _**width**_ bzw. _**height**_ in _css allgemein_ ist ergibt das eine runde Fläche.
 
-### Arbeiten mit mehreren Widgets
+#### Arbeiten mit mehreren Widgets
 
-Wir ziehen mit der Maus ein Gummiband um die beiden Widgets und kopieren sie mehrfach. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_copy.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_copy.jpg) Dies geschieht über das _**copy-widget Icon**_ oder bei einigen Browsern auch mit STRG-C und STRG-V. In einer späteren Version von .vis wird es die Möglichkeit geben mehrere Widgets dauerhaft zu einer Gruppe zu verbinden. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgetfactory.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgetfactory.jpg)   Das Ergebnis ist nicht optimal um damit weiterzuarbeiten, [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_copied.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_copied.jpg)   daher ziehen wir die Widgets jetzt erst einmal weiter auseinander. [![](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_separated.jpg)](http://www.iobroker.net/wp-content/uploads//ioBroker_Einsteiger_vis_Widgets_separated.jpg) Den Glühbirnen weisen wir jetzt verschiedene Schaltaktoren zu. Dann wird der Titel der Hintergrundwidgets entsprechend angepasst, und wer es bunt mag kann auch noch den Flächen und Titeln zu den Zimmern passende Farben vergeben. Bei mir sind es die Farben der Tapeten der Räume. [![](img/ioBroker_Einsteiger_vis_Widgets_colored.jpg)](img/ioBroker_Einsteiger_vis_Widgets_colored.jpg)
+Wir ziehen mit der Maus ein Gummiband um die beiden Widgets und kopieren sie mehrfach.
 
-#### Widgets anordnen
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgets_copy.jpg)
+
+Dies geschieht über das _**copy-widget Icon**_ oder bei einigen Browsern auch mit STRG-C und STRG-V. In einer späteren Version von .vis wird es die Möglichkeit geben mehrere Widgets dauerhaft zu einer Gruppe zu verbinden.
+
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgetfactory.jpg)
+
+Das Ergebnis ist nicht optimal um damit weiterzuarbeiten, 
+
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgets_copied.jpg)
+
+daher ziehen wir die Widgets jetzt erst einmal weiter auseinander. 
+
+![](img/konfiguration-der-adapter-ueber-die-webui-3-2_ioBroker_Einsteiger_vis_Widgets_separated.jpg)
+
+Den Glühbirnen weisen wir jetzt verschiedene Schaltaktoren zu. Dann wird der Titel der Hintergrundwidgets entsprechend angepasst, und wer es bunt mag kann auch noch den Flächen und Titeln zu den Zimmern passende Farben vergeben. Bei mir sind es die Farben der Tapeten der Räume. [![](img/ioBroker_Einsteiger_vis_Widgets_colored.jpg)](img/ioBroker_Einsteiger_vis_Widgets_colored.jpg)
+
+##### Widgets anordnen
 
 Jetzt wollen wir die Widgets vernünftig positionieren. Dazu gibt es im Prinzip zwei Möglichkeiten, die ich jetzt beide vorstellen werde:
 
@@ -172,10 +192,10 @@ Jetzt müssen nur noch die Glühbirnen in die Flächen gezogen werden. Dazu brau
 
 [![](img/ioBroker_Einsteiger_vis_Widgets_fertig_kpl.jpg)](img/ioBroker_Einsteiger_vis_Widgets_fertig_kpl.jpg)
 
-# Editor schließen
+## Editor schließen
 
 Um sich den Erfolg ansehen zu können schließen wir den Editor über das Kreuz rechts oben oder das daneben liegende pulldownmenü (rot). Nach einem kurzen Hinweis, wie man den Editor wieder aufruft befindet man sich im Anzeigemodus von .vis
 
-# Weiterführende Dokumentation von .vis
+## Weiterführende Dokumentation von .vis
 
 Eine sehr ausführliche Dokumentation aller Funktionen von ioBroker.vis befindet sich [hier](http://www.iobroker.net/?page_id=2754&lang=de).
