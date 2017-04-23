@@ -1,3 +1,10 @@
+# 1.0.0 (2017-04-23)
+* (bluefox) No big changes, just version
+* (bluefox) remove warning about iDs
+* (bluefox) fix tests
+* (bluefox) try to ignore npm error 1
+* (bluefox) fix possible error.
+ 
 # 0.17.2 (2017-03-25)
 * (bluefox) do not store logs and messages and just publish it
 * (bluefox) remove mochawsome

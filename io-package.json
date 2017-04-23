@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "0.17.3",
+        "version":    "1.0.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.0.0": {
+                "en": "No big changes, just version",
+                "de": "Keine große Änderungen, nur Versionsänderung",
+                "ru": "Никаких больших изменений. Только номер версии."
+            },
             "0.17.3": {
                 "en": "do not store logs and just publish it",
                 "de": "Logs werden nicht mehr speichern, nur published",
