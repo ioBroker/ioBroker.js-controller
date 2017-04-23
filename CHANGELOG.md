@@ -4,6 +4,7 @@
 * (bluefox) fix tests
 * (bluefox) try to ignore npm error 1
 * (bluefox) fix possible error.
+* (bluefox) create states with ack=true by default
  
 # 0.17.2 (2017-03-25)
 * (bluefox) do not store logs and messages and just publish it
