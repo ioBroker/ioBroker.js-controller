@@ -25,30 +25,61 @@ gulp.task('clean', function (done) {
         done();
     });
 });
+
+var download = function(uri, filename, callback){
+    request.head(uri, function(err, res, body){
+        if (res) {
+            console.log('content-type:', res.headers['content-type']);
+            console.log('content-length:', res.headers['content-length']);
+
+            request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+        } else {
+            console.error(err);
+            callback(err);
+        }
+    });
+};
+
 function downloadFiles(files, errors, callback) {
     if (!files || !files.length) {
         callback && callback(errors);
     } else {
         var task = files.shift();
         if (!fs.existsSync(task.name)) {
-            request(task.url, function (err, resp, body) {
-                if (body) {
-                    if (!fs.existsSync(path.dirname(task.name))) {
-                        fs.mkdirSync(path.dirname(task.name));
-                    }
-                    fs.writeFileSync(task.name, body);
-                } else {
+            if (!fs.existsSync(path.dirname(task.name))) {
+                fs.mkdirSync(path.dirname(task.name));
+            }
+            console.log('Download ' + files.length + ' ' + task.url + ' ' + task.name);
+            download(task.url, task.name, function (err) {
+                if (err) {
                     errors.push(err);
                     console.error('Cannot load "' + task.url + '": ' + err);
                 }
                 process.nextTick(downloadFiles, files, errors, callback);
             });
         } else {
-            process.nextTick(downloadFiles, files, errors, callback);
+            var stats = fs.statSync(task.name)
+            var fileSizeInBytes = stats.size;
+            if (!stats.size) {
+                if (!fs.existsSync(path.dirname(task.name))) {
+                    fs.mkdirSync(path.dirname(task.name));
+                }
+                console.log('Download ' + files.length + ' ' + task.url + ' ' + task.name);
+                download(task.url, task.name, function (err) {
+                    if (err) {
+                        errors.push(err);
+                        console.error('Cannot load "' + task.url + '": ' + err);
+                    }
+                    process.nextTick(downloadFiles, files, errors, callback);
+                });
+            } else {
+                process.nextTick(downloadFiles, files, errors, callback);
+            }
         }
     }
 }
 
+var bigTasks = [];
 function makeChange() {
     // you're going to receive Vinyl files as chunks
     function transform(file, cb) {
@@ -84,20 +115,21 @@ function makeChange() {
                     mdPath = parts.join('/');
 
                     var task = {url: mm, name: mdPath + '/img/' + mdFileName + '_' + fileName, relative: 'img/' + mdFileName + '_' + fileName};
-                    files.push(task);
+                    bigTasks.push(task);
                     lines[i] = lines[i].replace(m[j], '\n![' + (caption || '') + '](' + task.relative + ')\n');
                 }
             }
         }
-        downloadFiles(files, [], function (err) {
-            if (found && (!err || !err.length)) {
-                console.log('Write modified ' + file.history[0]);
-                file.contents = new Buffer(lines.join('\n'));
-            }
+        /*downloadFiles(files, [], function (err) {
+         if (found && (!err || !err.length)) {
+         console.log('Write modified ' + file.history[0]);
+         //file.contents = new Buffer(lines.join('\n'));
+         }
 
-            // if there was some error, just pass as the first parameter here
-            cb(null, file);
-        });
+         // if there was some error, just pass as the first parameter here
+         cb(null, file);
+         });*/
+        cb(null, file);
     }
 
     // returning the map will cause your transform function to be called
@@ -112,6 +144,9 @@ gulp.task('format', function (done) {
     return gulp.src([src + '**/*.md'])
         .pipe(makeChange())
         .pipe(gulp.dest(src));
+});
+gulp.task('download', ['format'], function (done) {
+    downloadFiles(bigTasks, done);
 });
 
 // copy from src to dist
@@ -522,13 +557,13 @@ gulp.task('summary', ['adapters'], function (done) {
         return text;
     }
 
-	languages.forEach(function (lang) {
-		var tree = collectStructure(dest + lang + '/');
-		//console.log(JSON.stringify(tree, null, 2));
-		var summary = buildTree(tree);
-		fs.writeFileSync(dest + lang + '/SUMMARY.md', summary);
+    languages.forEach(function (lang) {
+        var tree = collectStructure(dest + lang + '/');
+        //console.log(JSON.stringify(tree, null, 2));
+        var summary = buildTree(tree);
+        fs.writeFileSync(dest + lang + '/SUMMARY.md', summary);
     });
-	done();
+    done();
 });
 
 // generate GitBook
