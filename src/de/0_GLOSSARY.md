@@ -44,9 +44,15 @@ Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels 
 
 ### Widget
 
+Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu Steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
+
 ### HTML
 
+Hypertext Markup Language. Eine Seitenbeschreibungssprache (Grundlage des WWW), die dazu dient in Webbrowsern Inhalte (Text, Links, Grafiken, Videos usw.) darzustellen.
+
 ### CSS
+
+Cascading Style Sheets. Eine Programmiersprache um die Darstellung von Webseiten unhabhängig vom Inhalt zu beschreiben. Kann als Ergänzung zu HTML angesehen werden. 
 
 ### CCU
 
