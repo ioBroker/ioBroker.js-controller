@@ -1,7 +1,7 @@
 # Glossar
 
 ### js-controller
-Hauptprogramm, die erst ein Datenbank startet (falls erforderlich) und danach alle Adapter startet und beobachtet die, ob die noch leben.
+Hauptprogramm, das eine Sammlung von Funkionen für Adapter zur Verfügung stellt. Es startet erst eine Datenbank (falls erforderlich) und danach alle freigegebenen Adapter-Instanzen und überwacht diese, ob sie noch laufen.
 
 ### Adapter
 Ein Modul oder Treiber für ein Gerät oder Service. ioBroker is sehr modular aufgebaut 
@@ -13,12 +13,10 @@ und bei ioBroker ist alles ein Adapter: Admin-Oberfläche, Visualisierung, Scrip
 Eine No-SQL Datenbank. Wird optional benutzt um Performance zu gewinnen. Diese Option muss extra eingeschaltete werden.
 
 ### Objekt
-Ein Objekt im Datenbank. Es gibt verschiedene Objekte die 
-unterschiedliche Sachen beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
+Javascript-Objekte mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt ... Objekte werden in einer Datenbank oder in einer JSON-Datei gespeichert.
 
-Das ist so genannte Meta-Information. 
-
-### Zustand oder State
+### Datenpunkt oder State
+Ein Datenpunkt-Objekt besteht aus einem statischen Teil (.common, .native) und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
 
 ### Kanal
 
