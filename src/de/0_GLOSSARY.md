@@ -8,6 +8,7 @@ Ein Modul oder Treiber für ein Gerät oder Service. ioBroker ist sehr modular a
 Bei ioBroker ist alles ein Adapter: Admin-Oberfläche, Visualisierung, Scripting, ... einfach alles.
 
 ### Instanz
+Jeder Adapter hat mindestens eine Instanz, es können aber auch mehrere sein. Es gibt Unterschiedliche Gründe warum mehrere Instanzen verwendet werden. Zum Beispiel kann man mit einer zweiten Instanz vom JavaScript Adapter Testen ohne das Risiko einen Ausfall von Wichtigen Scripten zu haben. Da im Fehlerfall nur die Test Instanz abstürzt.
 
 Die meisten Adapter können mehrfach installiert werden, um die Möglichkeit zu haben, mehrere Geräte gleichen Typs, bzw. mit gleichem Protokoll, ansprechen zu können. Um die Prozesse klar zuordnen zu können, gibt es so genannte Instanzen.
 Beispiel: 2 Hue-Bridges sollen in ioBroker eingebunden werden. Da pro Adapter aber nur eine Bridge konfiguriert werden kann, wird einfach eine 1. und eine 2.Instanz des Hue-Adapters installiert und jede Bridge, in der entsprechenden Instanz des Adapters konfiguriert.
@@ -17,12 +18,15 @@ Durch die Instanzierung lassen sich die Datenpunkte auch einfach auseinanderhalt
 Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
 
 ### Objekt
-Ein Objekt in der Datenbank. Es gibt verschiedene Objekte die 
-unterschiedliche Dinge beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
+unterschiedliche Sachen beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
 
-Das ist so genannte Meta-Information. 
+Ein Objekt in der Datenbank. Es ist vergleichbar mit so gennanten Datenpunkten in anderen Umgebungen. 
+Es gibt verschiedene Objekte die unterschiedliche Sachen beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
+
+Das ist eine so genannte Meta-Information. 
 
 ### Zustand oder State
+Das ist der eigentliche Wert oder Zustand eines Objekts. Folgende Arten von Zuständen/States gibt es: boolean, string, number,field, object, mixed. 
 
 Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. Ist die Lampe eingeschaltet hat sie den State true. Statt true/false kann der State auch 1/0 oder on/off sein. Ein State kann aber auch Zahlen, Zeichen oder Zeichenketten (Strings) enthalten. 
 
@@ -31,6 +35,7 @@ Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes be
 ### Gerät
 
 ### Host
+Der Host ist der Computer/Server auf dem ioBroker ausgeführt wird.
 
 In dem Falle, der Rechner auf dem ioBroker läuft.
 
@@ -55,12 +60,14 @@ Hypertext Markup Language. Eine Seitenbeschreibungssprache (Grundlage des WWW), 
 Cascading Style Sheets. Eine Programmiersprache um die Darstellung von Webseiten unhabhängig vom Inhalt zu beschreiben. Kann als Ergänzung zu HTML angesehen werden. 
 
 ### CCU
+Die CCU ist die Zentrale des Homematic Systems.
 
 Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
 Mit der CCU2 können alle Homematic -und HomematicIP-Geräte gesteuert werden. Die CCU1 kann nur mit Homematic-Geräten umgehen.
 Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen (drahtgebundener Bus).
 
 ### Homematic
+Homematic ist ein von eQ3 hergestelltes und von elv vertriebenes Smart Home System.
 
 siehe CCU
 
