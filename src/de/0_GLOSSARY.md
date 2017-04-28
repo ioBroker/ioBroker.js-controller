@@ -20,7 +20,7 @@ Das ist so genannte Meta-Information.
 
 ### Zustand oder State
 
-Ist ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. Ist die Lampe eingeschaltet hat sie den State true. Statt true/false kann der State auch 1/0 oder on/off sein.  
+Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. Ist die Lampe eingeschaltet hat sie den State true. Statt true/false kann der State auch 1/0 oder on/off sein. Ein State kann aber auch Zahlen, Zeichen oder Zeichenketten (Strings) enthalten. 
 
 ### Kanal
 
