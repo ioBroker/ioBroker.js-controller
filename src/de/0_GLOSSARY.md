@@ -1,7 +1,9 @@
 # Glossar
 
 ### js-controller
-Hauptprogramm, das zuerst eine Datenbank startet (falls erforderlich) und danach alle Adapter startet und beobachtet , ob diese noch laufen.
+Hauptprogramm, das eine Sammlung von Funkionen für Adapter zur Verfügung stellt. 
+Es startet erst eine Datenbank (falls erforderlich) und danach alle freigegebenen Adapter-Instanzen 
+und überwacht diese, ob sie noch laufen.
 
 ### Adapter
 Ein Modul oder Treiber für ein Gerät oder Service. ioBroker ist sehr modular aufgebaut. 
@@ -17,18 +19,33 @@ Durch die Instanzierung lassen sich die Datenpunkte auch einfach auseinanderhalt
 ### Redis
 Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
 
-### Objekt
-unterschiedliche Sachen beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
+### Objekte und Zustände
+#### Objekte
+Javascript-Objekte in der Datenbank mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: 
+Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt... 
+Datenpunkte haben noch zusätzlich Zustand (sehe weiter).
 
-Ein Objekt in der Datenbank. Es ist vergleichbar mit so gennanten Datenpunkten in anderen Umgebungen. 
-Es gibt verschiedene Objekte die unterschiedliche Sachen beschreiben: Adapter, Host, Instanz, Aufzählung, Zustand(State), Kanal oder Gerät.
+Objekte werden in einer Datenbank oder in einer JSON-Datei gespeichert.
 
-Das ist eine so genannte Meta-Information. 
+Das ist eine so genannte Meta-Information, Konfiguration oder Beschreibung von dem Datenpunkten und Struktur. 
 
-### Zustand oder State
-Das ist der eigentliche Wert oder Zustand eines Objekts. Folgende Arten von Zuständen/States gibt es: boolean, string, number,field, object, mixed. 
+Ein Datenpunkt-Objekt (Typ: 'state') besteht aus einem statischen Teil (.common, .native) 
+und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. 
 
-Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. Ist die Lampe eingeschaltet hat sie den State true. Statt true/false kann der State auch 1/0 oder on/off sein. Ein State kann aber auch Zahlen, Zeichen oder Zeichenketten (Strings) enthalten. 
+Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
+
+#### Zustand oder State
+Das ist der eigentliche Wert oder Zustand eines Datenpunktes. 
+
+Folgende Arten von Zuständen/States gibt es: boolean, string, number, field, object, mixed. 
+
+Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. 
+
+Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. 
+Ist die Lampe eingeschaltet hat sie den State **true**. 
+
+Statt true/false kann der State auch 1/0 oder on/off sein. Ein State kann aber auch Zahlen, 
+Zeichen oder Zeichenketten (Strings) enthalten. 
 
 ### Kanal
 
