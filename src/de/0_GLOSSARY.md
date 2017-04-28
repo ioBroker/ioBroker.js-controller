@@ -35,17 +35,16 @@ und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand.
 Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
 
 #### Zustand oder State
-Das ist der eigentliche Wert oder Zustand eines Datenpunktes. 
+Das ist der eigentliche Zustand eines Datenpunktes. 
 
-Folgende Arten von Zuständen/States gibt es: boolean, string, number, field, object, mixed. 
+Folgende Typen von Zuständen/States gibt es: boolean, string, number, array, object, mixed. 
 
-Ist im einfachsten Falle ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. 
+Der Zustand bzw. Status eines Datenpunktes beschreibt den Wert, den Zeitstempel, den Zeitpunkt der letzten Änderung und die Bestätigung durch den Sender oder Empfänger. 
 
-Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. 
+Ein einfaches Beispiel für einen Wert: Eine Lampe ist aus, somit hat sie den State: false. 
 Ist die Lampe eingeschaltet hat sie den State **true**. 
 
-Statt true/false kann der State auch 1/0 oder on/off sein. Ein State kann aber auch Zahlen, 
-Zeichen oder Zeichenketten (Strings) enthalten. 
+Statt true/false (boolean) kann der State auch 1/0 (number) oder on/off (string) sein.
 
 ### Kanal
 
@@ -105,8 +104,3 @@ Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
 ### Node-Red
 
 ### Parser
-
-### ioBroker Cloud
-Das ist ein [Service](https://iobroker.net) von ioBroker Team um Zugrif aus dem Internet auf ioBroker Gerät zu ermöglichen.  
-
-Dabei braucht man keine Einstellungen am Ruter zu machen. Cloud wird auch für Alexa oder Google Home verwendet. 
