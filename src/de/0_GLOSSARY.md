@@ -36,6 +36,8 @@ In dem Falle, der Rechner auf dem ioBroker läuft.
 
 ### vis
 
+Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code).
+
 ### CCU
 
 Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
@@ -56,3 +58,14 @@ Einplatinencomputer ähnlich einem Raspberry PI. Es gibt mehrere Versionen mit u
 
 ### Cubietruck
 
+Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
+
+### Javascript
+
+
+### Node-Red
+
+
+
+
+### Parser
