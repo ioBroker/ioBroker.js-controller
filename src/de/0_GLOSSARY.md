@@ -40,7 +40,11 @@ Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen.
 
 ### Homematic
 
+siehe CCU
+
 ### Raspberry PI
+
+Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundation). Auf der Platine befinden sich alle Bauteile, die für den Betrieb eines Rechners erforderlich sind (CPU, GPU,RAM etc.). Vorteil gegenüber herkömmlichen Rechnern, ist die minimale Leistungsaufname und die Baugröße. Nachteil: CPU, RAM usw. können nicht getauscht oder aufgerüstet werden. 
 
 ### Odroid
 
