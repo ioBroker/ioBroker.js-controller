@@ -36,13 +36,19 @@ In dem Falle, der Rechner auf dem ioBroker läuft.
 
 ### vis
 
-Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code).
+Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code, CSS).
+
+### Widget
+
+### HTML
+
+### CSS
 
 ### CCU
 
 Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
 Mit der CCU2 können alle Homematic -und HomematicIP-Geräte gesteuert werden. Die CCU1 kann nur mit Homematic-Geräten umgehen.
-Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen.
+Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen (drahtgebundener Bus).
 
 ### Homematic
 
@@ -62,10 +68,6 @@ Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
 
 ### Javascript
 
-
 ### Node-Red
-
-
-
 
 ### Parser
