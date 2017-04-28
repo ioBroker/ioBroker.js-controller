@@ -9,6 +9,10 @@ Bei ioBroker ist alles ein Adapter: Admin-Oberfläche, Visualisierung, Scripting
 
 ### Instanz
 
+Die meisten Adapter können mehrfach installiert werden, um die Möglichkeit zu haben, mehrere Geräte gleichen Typs, bzw. mit gleichem Protokoll, ansprechen zu können. Um die Prozesse klar zuordnen zu können, gibt es so genannte Instanzen.
+Beispiel: 2 Hue-Bridges sollen in ioBroker eingebunden werden. Da pro Adapter aber nur eine Bridge konfiguriert werden kann, wird einfach eine 1. und eine 2.Instanz des Hue-Adapters installiert und jede Bridge, in der entsprechenden Instanz des Adapters konfiguriert.
+Durch die Instanzierung lassen sich die Datenpunkte auch einfach auseinanderhalten, da der Objektstruktur der Instanzname voransteht (z.B. hue.0 und hue.1).
+
 ### Redis
 Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
 
