@@ -105,3 +105,8 @@ Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
 ### Node-Red
 
 ### Parser
+
+### ioBroker Cloud
+Das ist ein [Service](https://iobroker.net) von ioBroker Team um Zugrif aus dem Internet auf ioBroker Gerät zu ermöglichen.  
+
+Dabei braucht man keine Einstellungen am Ruter zu machen. Cloud wird auch für Alexa oder Google Home verwendet. 
