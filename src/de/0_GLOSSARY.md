@@ -20,11 +20,15 @@ Das ist so genannte Meta-Information.
 
 ### Zustand oder State
 
+Ist ein Wert, der den Zustand bzw. Status eines Gerätes beschreibt. Ein einfaches Beispiel: Eine Lampe ist aus, somit hat sie den State: false. Ist die Lampe eingeschaltet hat sie den State true. Statt true/false kann der State auch 1/0 oder on/off sein.  
+
 ### Kanal
 
 ### Gerät
 
 ### Host
+
+In dem Falle, der Rechner auf dem ioBroker läuft.
 
 ### Aufzählung
 
