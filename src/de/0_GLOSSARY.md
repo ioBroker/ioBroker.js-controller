@@ -16,7 +16,7 @@ Eine No-SQL Datenbank. Wird optional benutzt um Performance zu gewinnen. Diese O
 Javascript-Objekte mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt ... Objekte werden in einer Datenbank oder in einer JSON-Datei gespeichert.
 
 ### Datenpunkt oder State
-Ein Datenpunkt-Objekt besteht aus einem statischen Teil (.common, .native) und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
+Ein Datenpunkt-Objekt (Typ: 'state') besteht aus einem statischen Teil (.common, .native) und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
 
 ### Kanal
 
