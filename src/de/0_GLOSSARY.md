@@ -104,10 +104,14 @@ Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundat
 ### Redis
 Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
 
+### State
+siehe Objekte
+
 ### vis
 Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code, CSS).
 
 ### Widget
 Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu Steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
 
-###Zustände siehe Objekte
+###Zustand
+siehe Objekte
