@@ -65,30 +65,26 @@ Grafische Programmieroberfläche bei der fertige Module (Nodes) durch einfache V
 
 ### Objekte und Zustände
 #### Objekte
-Javascript-Objekte in der Datenbank mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: 
+Javascript-Objekte mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: 
 Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt... 
-Datenpunkte haben noch zusätzlich Zustand (sehe weiter).
+Datenpunkte haben noch zusätzlich Zustand (siehe weiter unten).
 
 Objekte werden in einer Datenbank oder in einer JSON-Datei gespeichert.
 
 Das ist eine so genannte Meta-Information, Konfiguration oder Beschreibung von dem Datenpunkten und Struktur. 
 
 Ein Datenpunkt-Objekt (Typ: 'state') besteht aus einem statischen Teil (.common, .native) 
-und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. 
-
-Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
+und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
 
 #### Zustand oder State
-Das ist der eigentliche Zustand eines Datenpunktes. 
-
-Folgende Typen von Zuständen/States gibt es: boolean, string, number, array, object, mixed. 
+Das ist der dynamische Zustand eines Datenpunktes. 
 
 Der Zustand bzw. Status eines Datenpunktes beschreibt den Wert, den Zeitstempel, den Zeitpunkt der letzten Änderung und die Bestätigung durch den Sender oder Empfänger. 
 
-Ein einfaches Beispiel für einen Wert: Eine Lampe ist aus, somit hat sie den State: false. 
-Ist die Lampe eingeschaltet hat sie den State **true**. 
+Folgende Typen von Zuständen/States gibt es: boolean, string, number, array, object, mixed. 
 
-Statt true/false (boolean) kann der State auch 1/0 (number) oder on/off (string) sein.
+Ein einfaches Beispiel für einen Wert: Eine Lampe ist aus, somit hat sie den Wert false. 
+Ist die Lampe eingeschaltet hat sie den Wert **true**. Statt true/false (boolean) kann der Wert auch 1/0 (number) oder on/off (string) sein.
 
 ### Odroid
 Einplatinencomputer ähnlich einem Raspberry PI. Es gibt mehrere Versionen mit unterschiedlicher Hardwareausstattung.
