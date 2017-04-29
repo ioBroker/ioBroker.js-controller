@@ -29,7 +29,7 @@
 	"variables": {
 		"tIMPRESSUM": {
 			"en": "About us",
-			"de": "Impessum",
+			"de": "Impressum",
 			"ru": "О нас"
 		},
 		"tCONTACT": {
@@ -44,7 +44,7 @@
 		},
 		"tGET_GITHUB": {
 			"en": "Get the ioBroker code on GitHub",
-			"de": "Schaue ioBroker Kode auf GitHub",
+			"de": "Entdecke den ioBroker Code auf GitHub",
 			"ru": "Посмотри код ioBroker на GitHub"
 		}
 	}
