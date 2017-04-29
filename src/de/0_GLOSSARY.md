@@ -1,13 +1,43 @@
 # Glossar
 
-### js-controller
-Hauptprogramm, das eine Sammlung von Funkionen für Adapter zur Verfügung stellt. 
-Es startet erst eine Datenbank (falls erforderlich) und danach alle freigegebenen Adapter-Instanzen 
-und überwacht diese, ob sie noch laufen.
-
 ### Adapter
 Ein Modul oder Treiber für ein Gerät oder Service. ioBroker ist sehr modular aufgebaut. 
+
 Bei ioBroker ist alles ein Adapter: Admin-Oberfläche, Visualisierung, Scripting, ... einfach alles.
+
+### Admin
+ist das Webinterface von ioBroker mit der Möglichkeit dort alle Einstellungen für die Konfiguration der Installation vorzunehmen.
+
+### Aufzählung
+englischer Begriff: enum(eration)
+
+ist eine Liste bestimmter Objekte, die zu einer Gruppe zusammengefügt wurden.
+
+### CCU
+Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
+
+Mit der CCU2 können alle Homematic -und HomematicIP-Geräte gesteuert werden. Die CCU1 kann nur mit Homematic-Geräten umgehen.
+Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen (drahtgebundener Bus).
+
+### CSS
+Cascading Style Sheets. Eine Programmiersprache um die Darstellung von Webseiten unhabhängig vom Inhalt zu beschreiben. Kann als Ergänzung zu HTML angesehen werden. 
+
+### Cubietruck
+Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
+
+### Gerät
+
+### Homematic
+Homematic ist ein von eQ3 hergestelltes und von elv vertriebenes Smart Home System.
+
+### Host
+Der Host ist der Computer/Server auf dem ioBroker ausgeführt wird.
+
+Im Multihost-Modus gibt es mehrere Hosts, einer davon ist der Master, die anderen sind die Slaves
+
+### HTML
+Hypertext Markup Language. Eine Seitenbeschreibungssprache (Grundlage des WWW), die dazu dient in Webbrowsern Inhalte (Text, Links, Grafiken, Videos usw.) darzustellen.
+
 
 ### Instanz
 Jeder Adapter hat mindestens eine Instanz, es können aber auch mehrere sein. Es gibt Unterschiedliche Gründe warum mehrere Instanzen verwendet werden. Zum Beispiel kann man mit einer zweiten Instanz vom JavaScript Adapter Testen ohne das Risiko einen Ausfall von Wichtigen Scripten zu haben. Da im Fehlerfall nur die Test Instanz abstürzt.
@@ -16,8 +46,22 @@ Die meisten Adapter können mehrfach installiert werden, um die Möglichkeit zu 
 Beispiel: 2 Hue-Bridges sollen in ioBroker eingebunden werden. Da pro Adapter aber nur eine Bridge konfiguriert werden kann, wird einfach eine 1. und eine 2.Instanz des Hue-Adapters installiert und jede Bridge, in der entsprechenden Instanz des Adapters konfiguriert.
 Durch die Instanzierung lassen sich die Datenpunkte auch einfach auseinanderhalten, da der Objektstruktur der Instanzname voransteht (z.B. hue.0 und hue.1).
 
-### Redis
-Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
+### Javascript
+Programmiersprache mit der bei ioBroker so ziemlich alles programmiert ist und programmiert werden kann.
+
+### js-controller
+Hauptprogramm, das eine Sammlung von Funkionen für Adapter zur Verfügung stellt. 
+Es startet erst eine Datenbank (falls erforderlich) und danach alle freigegebenen Adapter-Instanzen 
+und überwacht diese, ob sie noch laufen.
+
+### Kanal
+
+### Master
+
+### Multihost-Modus
+
+### Node-Red
+Grafische Programmieroberfläche bei der fertige Module (Nodes) durch einfache Verkettung (Flow) zu komplexen Programmen verknüpft werden können.
 
 ### Objekte und Zustände
 #### Objekte
@@ -46,61 +90,24 @@ Ist die Lampe eingeschaltet hat sie den State **true**.
 
 Statt true/false (boolean) kann der State auch 1/0 (number) oder on/off (string) sein.
 
-### Kanal
+### Odroid
+Einplatinencomputer ähnlich einem Raspberry PI. Es gibt mehrere Versionen mit unterschiedlicher Hardwareausstattung.
 
-### Gerät
+### Parser
+Ein Programm, das aus Texten egeal welcher Herkunft durch Angabe von Parametern Teile ausschneidet, die dann in Programmen oder Objekten verarbeitet werden können.
 
-### Host
-Der Host ist der Computer/Server auf dem ioBroker ausgeführt wird.
+In ioBroker gibt es auch einen Parser-Adapter mit dem Daten relativ einfach aus Websiten ausgelesen werden können.
 
-In dem Falle, der Rechner auf dem ioBroker läuft.
+### Raspberry PI
+Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundation). Auf der Platine befinden sich alle Bauteile, die für den Betrieb eines Rechners erforderlich sind (CPU, GPU,RAM etc.). Vorteil gegenüber herkömmlichen Rechnern, ist die minimale Leistungsaufname und die Baugröße. Nachteil: CPU, RAM usw. können nicht getauscht oder aufgerüstet werden. 
 
-### Aufzählung
-
-### Admin
+### Redis
+Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
 
 ### vis
-
 Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code, CSS).
 
 ### Widget
-
 Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu Steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
 
-### HTML
-
-Hypertext Markup Language. Eine Seitenbeschreibungssprache (Grundlage des WWW), die dazu dient in Webbrowsern Inhalte (Text, Links, Grafiken, Videos usw.) darzustellen.
-
-### CSS
-
-Cascading Style Sheets. Eine Programmiersprache um die Darstellung von Webseiten unhabhängig vom Inhalt zu beschreiben. Kann als Ergänzung zu HTML angesehen werden. 
-
-### CCU
-Die CCU ist die Zentrale des Homematic Systems.
-
-Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
-Mit der CCU2 können alle Homematic -und HomematicIP-Geräte gesteuert werden. Die CCU1 kann nur mit Homematic-Geräten umgehen.
-Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen (drahtgebundener Bus).
-
-### Homematic
-Homematic ist ein von eQ3 hergestelltes und von elv vertriebenes Smart Home System.
-
-siehe CCU
-
-### Raspberry PI
-
-Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundation). Auf der Platine befinden sich alle Bauteile, die für den Betrieb eines Rechners erforderlich sind (CPU, GPU,RAM etc.). Vorteil gegenüber herkömmlichen Rechnern, ist die minimale Leistungsaufname und die Baugröße. Nachteil: CPU, RAM usw. können nicht getauscht oder aufgerüstet werden. 
-
-### Odroid
-
-Einplatinencomputer ähnlich einem Raspberry PI. Es gibt mehrere Versionen mit unterschiedlicher Hardwareausstattung.
-
-### Cubietruck
-
-Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
-
-### Javascript
-
-### Node-Red
-
-### Parser
+###Zustände siehe Objekte
