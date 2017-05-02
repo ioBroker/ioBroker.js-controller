@@ -84,7 +84,7 @@ Graphical programming interface in which finished modules (nodes) can be linked 
 ### Objects and states
 Basic definitions can be found at https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md
 
-#### State or State
+#### State
 A state contains the current value of a data point in ioBroker.
 In addition, it describes the time stamp, the time of the last change and the confirmation by the 
 sender or receiver.
@@ -117,7 +117,7 @@ access to a hard drive, SSD or SD card.
 To use a Redis DB with ioBroker, this must be specified in the js-controller basic configuration.
 
 ### State
-See state or objects
+See [state or objects](#objects-and-states)
 
 ### vis
 The VIS adapter allows you to create your own operating and visualization surfaces for ioBroker 
