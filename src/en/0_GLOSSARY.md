@@ -1,6 +1,6 @@
 # Glossary
 
-### adapter
+### Adapter
 A module or driver for a device, service, or data provision.
 The ioBroker ioBroker ioBroker has a very modular design: it is basically an adapter: admin interface, visualization, scripting, ...
 
@@ -91,7 +91,7 @@ sender or receiver.
 
 States can be stored in a JSON file or a Redis DB.
 
-#### objects
+#### Objects
 Objects describe a state in more detail and provide meta information, configuration, and description to it.
 An object has a type, e.g. Host, adapter, instance, enum, device, channel or datapoint ...
 
@@ -124,6 +124,6 @@ The VIS adapter allows you to create your own operating and visualization surfac
 and display them on different devices. The surfaces are composed of customizable widgets and 
 their own HTML-code and can be changed by CSS in the appearance.
 
-### widget
+### Widget
 A control in Vis. Widgets are used to display or control states; For example, a lamp can 
 be switched on and off via a button, which changes its appearance depending on the switching state.
