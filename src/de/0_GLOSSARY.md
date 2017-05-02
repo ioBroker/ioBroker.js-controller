@@ -112,7 +112,7 @@ Zur Nutzung einer Redis-DB mit ioBroker muss dies in der js-controller-Grundkonf
 siehe Zustand bzw. Objekte
 
 ### vis
-Der VIS-Adapter erlaubt es eigene bedienungs- und Visualisierungsoberflächen für ioBroker zu erstellen und auf verschiedenen Geräten darzustellen. DieOberflächen werden hierbei aus anpassbaren Widgets und eigenem HTML-Code zusammengestellt und können per CSS im Aussehen verändert werden.
+Der VIS-Adapter erlaubt es eigene Bedienungs- und Visualisierungsoberflächen für ioBroker zu erstellen und auf verschiedenen Geräten darzustellen. Die Oberflächen werden hierbei aus anpassbaren Widgets und eigenem HTML-Code zusammengestellt und können per CSS im Aussehen verändert werden.
 
 ### Widget
 Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
