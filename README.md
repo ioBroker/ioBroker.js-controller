@@ -142,6 +142,6 @@ To switch back to JS States write the same commands again, just instead of **red
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 bluefox<dogafox@gmail.com>,
+Copyright (c) 2014-2017 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker
