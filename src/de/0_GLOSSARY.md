@@ -13,6 +13,10 @@ englischer Begriff: enum(eration)
 
 ist eine Liste bestimmter Objekte, die zu einer Gruppe zusammengefügt wurden.
 
+### Blockly
+
+Grafische Programmiersprache (Javascript-basierend), die es ermöglicht, mit Hilfe von verknüpfbaren Funktionsblöcken, einfache Steuerungen zu realisieren.
+
 ### CCU
 Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
 
@@ -59,6 +63,8 @@ und überwacht diese, ob sie noch laufen.
 ### Master
 
 ### Multihost-Modus
+
+Verteilung der Steuerungsaufgaben auf mehere Rechner, um die Last gleichmäßig zu verteilen.
 
 ### Node-Red
 Grafische Programmieroberfläche bei der fertige Module (Nodes) durch einfache Verkettung (Flow) zu komplexen Programmen verknüpft werden können.
@@ -111,3 +117,4 @@ Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu Steu
 
 ###Zustand
 siehe Objekte
+
