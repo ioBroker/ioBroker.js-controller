@@ -1,38 +1,42 @@
 # Glossar
 
 ### Adapter
-Ein Modul oder Treiber für ein Gerät oder Service. ioBroker ist sehr modular aufgebaut. 
-
-Bei ioBroker ist alles ein Adapter: Admin-Oberfläche, Visualisierung, Scripting, ... einfach alles.
+Ein Modul oder Treiber für ein Gerät, Service oder zur Bereistellung von Daten.
+Durch den sehr modularen Aufbau von ioBroker ist quasi alles ein Adapter: Admin-Oberfläche, Visualisierung, Scripting, ...
 
 ### Admin
-ist das Webinterface von ioBroker mit der Möglichkeit dort alle Einstellungen für die Konfiguration der Installation vorzunehmen.
+Der Admin-Adapter stellt die Weboberfläche zur Konfiguration von ioBroker bereit Dies umfasst die Installation von Adaptern, erstellen von Instanzen, anlegen und prüfen von Objekten, Zuständen, editieren von Skripten und vielem mehr.
 
 ### Aufzählung
 englischer Begriff: enum(eration)
 
-ist eine Liste bestimmter Objekte, die zu einer Gruppe zusammengefügt wurden.
+Eine Aufzählung ost eine Liste bestimmter Objekte, die zu einer Gruppe zusammengefügt wurden.
 
 ### Blockly
 
-Grafische Programmiersprache (Javascript-basierend), die es ermöglicht, mit Hilfe von verknüpfbaren Funktionsblöcken, einfache Steuerungen zu realisieren.
+Mittels Blockly ist es möglich mit Hilfe von verknüpfbaren Funktionsblöcken einfache Steuerungen und Skripte grafisch zusammenzubauen. Programmierkenntnisse sind dabei nicht nötig.
+
+Wenn ein Blockly-Skript gespeichert wird, so wird JavaScript Code erzeugt, welcher dann ausgeführt wird.
 
 ### CCU
-Ist die Smarthome-Zentrale des Herstellers EQ-3. Es gibt 2 Versionen, die CCU1 und das aktuelle Modell CCU2.
+Ist die Homematic Smarthome-Zentrale des Herstellers eQ-3. Es gibt 2 Versionen, die ältere CCU1 und das aktuelle Modell CCU2.
 
 Mit der CCU2 können alle Homematic -und HomematicIP-Geräte gesteuert werden. Die CCU1 kann nur mit Homematic-Geräten umgehen.
 Homematic-Geräte gibts es in Funk(BidCos) -und auch in Wired-Ausführungen (drahtgebundener Bus).
 
 ### CSS
-Cascading Style Sheets. Eine Programmiersprache um die Darstellung von Webseiten unhabhängig vom Inhalt zu beschreiben. Kann als Ergänzung zu HTML angesehen werden. 
+Cascading Style Sheets. Mittels CSS kann die Darstellung von Webseiten unhabhängig vom Inhalt beschrieben werden. Als Ergänzung zur in HTML definierten Seitenstruktur definiert CSS wie die Seite dargestellt wird.
 
-### Cubietruck
-Einplatinencomputer ähnlich wie Raspberry PI/Odroid.
+### Cubietruck/Cubieboard 3
+Einplatinencomputer ähnlich wie Raspberry PI/Odroid, aber mit SATA-Interface und 2GB RAM
 
 ### Gerät
+englischer Begriff: Device
+
+In ioBroker ist ein Gerät die nächste Ebene unter einem Adapter und gruppiert alle Kanäle und Zustände des Gerätes.
 
 ### Homematic
-Homematic ist ein von eQ3 hergestelltes und von elv vertriebenes Smart Home System.
+Homematic ist ein von eQ-3 hergestelltes und von elv vertriebenes Smart Home System. Siehe auch CCU
 
 ### Host
 Der Host ist der Computer/Server auf dem ioBroker ausgeführt wird.
@@ -44,77 +48,74 @@ Hypertext Markup Language. Eine Seitenbeschreibungssprache (Grundlage des WWW), 
 
 
 ### Instanz
-Jeder Adapter hat mindestens eine Instanz, es können aber auch mehrere sein. Es gibt Unterschiedliche Gründe warum mehrere Instanzen verwendet werden. Zum Beispiel kann man mit einer zweiten Instanz vom JavaScript Adapter Testen ohne das Risiko einen Ausfall von Wichtigen Scripten zu haben. Da im Fehlerfall nur die Test Instanz abstürzt.
+Jeder Adapter hat mindestens eine Instanz, es können aber auch mehrere sein. Es gibt Unterschiedliche Gründe warum mehrere Instanzen verwendet werden. Zum Beispiel kann man mit einer zweiten Instanz vom JavaScript Adapter Testen ohne das Risiko einen Ausfall von Wichtigen Scripten zu haben. Da im Fehlerfall nur die Test Instanz betroffen ist.
 
-Die meisten Adapter können mehrfach installiert werden, um die Möglichkeit zu haben, mehrere Geräte gleichen Typs, bzw. mit gleichem Protokoll, ansprechen zu können. Um die Prozesse klar zuordnen zu können, gibt es so genannte Instanzen.
-Beispiel: 2 Hue-Bridges sollen in ioBroker eingebunden werden. Da pro Adapter aber nur eine Bridge konfiguriert werden kann, wird einfach eine 1. und eine 2.Instanz des Hue-Adapters installiert und jede Bridge, in der entsprechenden Instanz des Adapters konfiguriert.
+Von den meisten Adaptern können mehrere Instanzen gestartet werden, um die Möglichkeit zu haben, mehrere Geräte gleichen Typs, bzw. mit gleichem Protokoll, ansprechen zu können. EIne Instanz entspricht am Ende einem laufenden Prozess auf dem Host.
+Beispiel: 2 Hue-Bridges sollen in ioBroker eingebunden werden. Da pro Adapter aber nur eine Bridge konfiguriert werden kann, wird einfach eine 1. und eine 2. Instanz des Hue-Adapters erstellt und jede Bridge, in der entsprechenden Instanz des Adapters konfiguriert.
 Durch die Instanzierung lassen sich die Datenpunkte auch einfach auseinanderhalten, da der Objektstruktur der Instanzname voransteht (z.B. hue.0 und hue.1).
 
 ### Javascript
-Programmiersprache mit der bei ioBroker so ziemlich alles programmiert ist und programmiert werden kann.
+Programmiersprache mit der bei ioBroker alles programmiert ist und auch eigene Skripte programmiert werden.
 
 ### js-controller
-Hauptprogramm, das eine Sammlung von Funkionen für Adapter zur Verfügung stellt. 
-Es startet erst eine Datenbank (falls erforderlich) und danach alle freigegebenen Adapter-Instanzen 
-und überwacht diese, ob sie noch laufen.
+Der js-controller ist der Hauptprozess von ioBroker und stellt die nötige zentrale Basisfunktionalität für alle weiteren Module zur Verfügung. Weiterhin stellt er den Zugriff auf die zentralen Objekts- und Zustandsdatenbanken her, koordiniert er alle laufenden Adapter-Instanzen und -Prozesse und überwacht diese. Falls nötig werden Adaoter von js-controller neu gestartet.
 
 ### Kanal
+Ein Kanal gruppiert Thematisch zusammengehörige Zustände und ist normalerweise unter einem Gerät angesiedelt. Es kann pro Gerät mehrere Kanäle geben.
 
 ### Master
+Der Master ist der Host, welcher zentral für die Verwaltung aller Instanzen (auch der Instanzen der Slaves!) verwantwortlich ist.
+Wenn der Master beendet wird, werden auch die Slave-Instanzen beendet.
+Der Master stellt für alle Slaves die zentralen Objekt- und Zustandsdatenbanken zur Verfügung, zu denen sich alle Slaves verbinden.
+
+Weitere Informationen, siehe Multihost-Modus
 
 ### Multihost-Modus
 
-Verteilung der Steuerungsaufgaben auf mehere Rechner, um die Last gleichmäßig zu verteilen.
+Der Multihost-Modus von ioBroker kann zur Verteilung der Steuerungsaufgaben auf mehere Rechner genutzt werden, wenn diese spezielle Schnittstellen benötgen (z.B. Auslesen von Stromzählern im Keller). Weiterhin können mehrere Hosts genutzt werden um die Last ioder den Speicherverbrauch gleichmäßig zu verteilen.
+Im Multihost-Modus wird ein Host als Master definiert, alle anderen sind Slaves. Der Master steuer alle Slaves und auch die Verteilung der Instanzen auf die Slaves.
 
 ### Node-Red
 Grafische Programmieroberfläche bei der fertige Module (Nodes) durch einfache Verkettung (Flow) zu komplexen Programmen verknüpft werden können.
 
 ### Objekte und Zustände
-#### Objekte
-Javascript-Objekte mit definierten Eigenschaften, die unterschiedliche Dinge beschreiben: 
-Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt... 
-Datenpunkte haben noch zusätzlich Zustand (siehe weiter unten).
 
-Objekte werden in einer Datenbank oder in einer JSON-Datei gespeichert.
-
-Das ist eine so genannte Meta-Information, Konfiguration oder Beschreibung von dem Datenpunkten und Struktur. 
-
-Ein Datenpunkt-Objekt (Typ: 'state') besteht aus einem statischen Teil (.common, .native) 
-und einem dynamischen Teil (.state, .oldState), dem aktuellen Zustand. Beide Teile werden in getrennten Datenbanken bzw. JSON-Dateien gespeichert.
+Grundsätzliche Definitonen dazu sind unter https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md zu finden
 
 #### Zustand oder State
-Das ist der dynamische Zustand eines Datenpunktes. 
+Ein Zustand enthält den aktuellen Wert eines Datenpunktes in ioBroker.
+Zusätzlich beschreibt er den Zeitstempel, den Zeitpunkt der letzten Änderung und die Bestätigung durch den Sender oder Empfänger.
 
-Der Zustand bzw. Status eines Datenpunktes beschreibt den Wert, den Zeitstempel, den Zeitpunkt der letzten Änderung und die Bestätigung durch den Sender oder Empfänger. 
+Zustände können in einem JSON-File oder einer Redis-DB gespeichert werden.
 
-Folgende Typen von Zuständen/States gibt es: boolean, string, number, array, object, mixed. 
+#### Objekte
+Objekte beschreiben einen Zustand ausführlicher und geben Meta-Informationen, Konfiguration und Beschreibung zu diesem an.
+Ein Objekt hat einen Typ, z.B. Host, Adapter, Instanz, Aufzählung, Gerät, Kanal oder Datenpunkt...
 
-Ein einfaches Beispiel für einen Wert: Eine Lampe ist aus, somit hat sie den Wert false. 
-Ist die Lampe eingeschaltet hat sie den Wert **true**. Statt true/false (boolean) kann der Wert auch 1/0 (number) oder on/off (string) sein.
+Die Meta-Daten definieren auch den Datentyp des States, z.B. number, boolean, string und auch wie der Zustand in Visualisierungsoberflächen dargestellt werden soll.
+
 
 ### Odroid
 Einplatinencomputer ähnlich einem Raspberry PI. Es gibt mehrere Versionen mit unterschiedlicher Hardwareausstattung.
 
-### Parser
-Ein Programm, das aus Texten egeal welcher Herkunft durch Angabe von Parametern Teile ausschneidet, die dann in Programmen oder Objekten verarbeitet werden können.
-
-In ioBroker gibt es auch einen Parser-Adapter mit dem Daten relativ einfach aus Websiten ausgelesen werden können.
+### Parser-Adapter
+Ein Adapter, das aus Texten egal welcher Herkunft durch Angabe von sog. Regular-Expressions, Teile ausschneidet, die dann in Zustände geschrieben werden können. Diese Werte können dann in Skripten u.ä. weiterverarbeitet werden können.
 
 ### Raspberry PI
-Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundation). Auf der Platine befinden sich alle Bauteile, die für den Betrieb eines Rechners erforderlich sind (CPU, GPU,RAM etc.). Vorteil gegenüber herkömmlichen Rechnern, ist die minimale Leistungsaufname und die Baugröße. Nachteil: CPU, RAM usw. können nicht getauscht oder aufgerüstet werden. 
+Kreditkartengrosser Einplatinencomputer (entwickelt von der Raspberry PI Foundation). Auf der Platine befinden sich alle Bauteile, die für den Betrieb eines Rechners erforderlich sind (CPU, GPU,RAM etc.). Vorteil gegenüber herkömmlichen Rechnern, ist die minimale Leistungsaufname und die Baugröße. Nachteil: CPU, RAM usw. können nicht getauscht oder aufgerüstet werden.
 
 ### Redis
-Eine No-SQL Datenbank. Wird optional benutzt um die Performance zu steigern. Diese Option muss extra eingeschaltete werden.
+Eine No-SQL Datenbank, die Ihre Daten im Speicher hält und in ioBroker zur Speicherung von Zustandsdaten verwendet werden kann. Wird optional benutzt um die Performance zu steigern, da bei Schreib- und Leseaktionen kein Zugriff auf eine Festplatte, SSD oder SD-Karte nötig sind.
+Zur Nutzung einer Redis-DB mit ioBroker muss dies in der js-controller-Grundkonfiguration angegeben werden.
 
 ### State
-siehe Objekte
+siehe Zustand bzw. Objekte
 
 ### vis
-Weboberfläche mit der eigene Visualisierungen erstellt werden können (mittels anpassbarer Widgets, eigenem HTML-Code, CSS).
+Der VIS-Adapter erlaubt es eigene bedienungs- und Visualisierungsoberflächen für ioBroker zu erstellen und auf verschiedenen Geräten darzustellen. DieOberflächen werden hierbei aus anpassbaren Widgets und eigenem HTML-Code zusammengestellt und können per CSS im Aussehen verändert werden.
 
 ### Widget
-Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu Steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
+Ein Steuerelement in Vis. Widgets dienen dazu, Zustände anzuzeigen oder zu steuern. Zum Beispiel eine Lampe ein -und ausschalten über einen Button, der abhängig vom Schaltzustand sein Aussehen verändert.
 
-###Zustand
+### Zustand
 siehe Objekte
-
