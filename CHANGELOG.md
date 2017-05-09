@@ -1,3 +1,7 @@
+# 1.0.1 (2017-05-03)
+* (bluefox) Change repository generation (not relevant for users)
+* (bluefox) small change for install porcess (not relevant for users)
+
 # 1.0.0 (2017-04-23)
 * (bluefox) No big changes, just version
 * (bluefox) remove warning about iDs
