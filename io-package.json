@@ -341,6 +341,9 @@
                     "tab-node-red-0"
                 ]
             },
+            "native": {
+
+            },
             "acl": {
                 "owner": "system.user.admin",
                 "ownerGroup": "system.group.administrator",
