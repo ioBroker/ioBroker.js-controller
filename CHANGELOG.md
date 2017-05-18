@@ -1,3 +1,7 @@
+# 1.0.2 (2017-05-18)
+* (bluefox) getHostInfo for new admin
+* (bluefox) allow using of files for certificates
+
 # 1.0.1 (2017-05-03)
 * (bluefox) Change repository generation (not relevant for users)
 * (bluefox) small change for install porcess (not relevant for users)
