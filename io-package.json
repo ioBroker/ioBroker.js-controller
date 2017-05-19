@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.0.0",
+        "version":    "1.0.2",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.0.2": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "Смотри CHANGELOG.md"
+            },
             "1.0.0": {
                 "en": "No big changes, just version",
                 "de": "Keine große Änderungen, nur Versionsänderung",
@@ -340,6 +345,9 @@
                     "tab-text2command-0",
                     "tab-node-red-0"
                 ]
+            },
+            "native": {
+
             },
             "acl": {
                 "owner": "system.user.admin",

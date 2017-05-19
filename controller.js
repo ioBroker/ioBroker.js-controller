@@ -62,6 +62,7 @@ var installQueue            = [];
 var started                 = false;
 var inputCount              = 0;
 var outputCount             = 0;
+var uptimeStart             = new Date().getTime();
 
 var config;
 if (!fs.existsSync(tools.getConfigFileName())) {
@@ -1311,6 +1312,26 @@ function processMessage(msg) {
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
+            } else {
+                logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
+        case 'getHostInfo':
+            if (msg.callback && msg.from) {
+                // installed adapters
+                // available adapters
+                // node.js --version
+                // npm --version
+                // uptime
+                tools.getHostInfo(objects, function (err, data) {
+                    if (err) {
+                        logger.error('host.' + hostname + ' cannot get getHostInfo: ' + err);
+                    }
+                    data = data || {};
+                    data.Uptime = Math.round((new Date().getTime() - uptimeStart) / 1000);
+                    sendTo(msg.from, msg.command, data, msg.callback);
+                });
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
