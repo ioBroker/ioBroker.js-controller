@@ -1,6 +1,9 @@
-# 1.0.2 (2017-05-18)
+# 1.0.3 (2017-06-01)
 * (bluefox) getHostInfo for new admin
 * (bluefox) allow using of files for certificates
+* (bluefox) always install zwave with unsafe-perm option
+* (apollon77) add handling for undefined
+* (apollon77) uptime is a number only and no String/List/Array beside the fact that also with a number a "toString" should exist, or it's undefined because an old host is listed with no value ...
 
 # 1.0.1 (2017-05-03)
 * (bluefox) Change repository generation (not relevant for users)
