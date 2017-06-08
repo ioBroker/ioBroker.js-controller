@@ -1,3 +1,14 @@
+# 1.1.0 (2017-06-08)
+* (bluefox) BREAKING Changes: For multihost systems the user MUST explicit allow connections from other IPs in /opt/iobroker/iobroker-data/iobroker.json
+  
+```
+"host": "127.0.0.1",
+=>
+"host": "0.0.0.0",
+```
+
+for objects (line 11)  and for states (line 21).
+
 # 1.0.3 (2017-06-01)
 * (bluefox) getHostInfo for new admin
 * (bluefox) allow using of files for certificates

@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.0.3",
+        "version":    "1.1.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.1.0": {
+                "en": "Close sockets by defaul for external connects",
+                "de": "Erlaube die Verbindung auf Objeke/States-Sockets nicht",
+                "ru": "По умолчанию закрыто соединение с сокетами для внешних подключений"
+            },
             "1.0.3": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
