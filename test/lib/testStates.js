@@ -314,7 +314,7 @@ function register(it, expect, context) {
         });
     });
 
-    // setForeignState with acl
+    // setForeignState with acl all
     it(testName + 'Set foreign state with acl', function (done) {
         this.timeout(1000);
         var fGid = context.adapterShortName + '3.0.' + gid;
@@ -349,6 +349,49 @@ function register(it, expect, context) {
                         expect(state).to.be.ok;
                         expect(state.val).to.equal(1);
                         expect(state.ack).to.equal(false);
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
+    // setForeignState with acl write only
+    it(testName + 'Set foreign state with acl', function (done) {
+        this.timeout(1000);
+        var fGid = context.adapterShortName + '3.0.' + gid;
+        context.objects.setObject(fGid, {
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {
+            },
+            type: 'state',
+            acl: {
+                object: 1126,
+                owner: "system.user.write-only",
+                ownerGroup:"system.group.administrator",
+                state: 614
+            }
+        }, function (err) {
+            expect(err).to.be.null;
+
+            context.states.getState(fGid, function (err, state) {
+                expect(err).to.be.null;
+
+                context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only"}, function (err) {
+                    expect(err).to.be.not.ok;
+
+                    context.states.getState(fGid, function (err, state) {
+                        expect(err).to.be.null;
+                        expect(state).to.be.ok;
+                        expect(state.val).to.equal(1);
+                        expect(state.ack).to.equal(false);
+                        done();
                     });
                 });
             });
