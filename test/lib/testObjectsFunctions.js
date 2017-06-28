@@ -489,7 +489,7 @@ function register(it, expect, context) {
               "state": {
                 "list": false,
                 "read": false,
-                "write": true,
+                "write": false,
                 "create": false,
                 "delete": false
               },
