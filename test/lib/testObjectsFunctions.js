@@ -482,7 +482,7 @@ function register(it, expect, context) {
             "acl": {
               "object": {
                 "list": false,
-                "read": false,
+                "read": true,
                 "write": false,
                 "delete": false
               },
@@ -556,10 +556,10 @@ function register(it, expect, context) {
                     },
                     type: 'state',
                     acl: {
-                        object: 102,
+                        object: 1638,
                         owner: "system.user.write-only",
                         ownerGroup:"system.group.administrator",
-                        state: 614
+                        state: 1638
                     }
                 }, function (err) {
                     expect(err).to.be.null;
