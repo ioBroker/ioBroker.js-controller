@@ -523,7 +523,7 @@ function register(it, expect, context) {
         }, function (err) {
             expect(err).to.be.null;
 
-            context.adapter.setForeignObject('system.group.writer', {
+            context.adapter.setForeignObject('system.user.write-only', {
                 "type": "user",
                 "common": {
                     "name": "write-only",
