@@ -317,7 +317,7 @@ function register(it, expect, context) {
     // setForeignState with acl
     it(testName + 'Set foreign state with acl', function (done) {
         this.timeout(1000);
-        var fGid = context.adapterShortName + '1.0.' + gid;
+        var fGid = context.adapterShortName + '3.0.' + gid;
         context.objects.setObject(fGid, {
             common: {
                 name: 'test1',
