@@ -242,7 +242,7 @@ function register(it, expect, context) {
 
         context.states.setState(context.adapterShortName + '.0.' + sGid, 9, function (err) {
             expect(err).to.be.not.ok;
-            
+
             context.adapter.unsubscribeStates('*', function () {
                 context.states.setState(context.adapterShortName + '.0.' + sGid, 10, function (err) {
                     expect(err).to.be.not.ok;
@@ -254,7 +254,7 @@ function register(it, expect, context) {
             });
         });
     });
-    
+
     // -------------------------------------------------------------------------------------
     // setForeignState
     it(testName + 'Set foreign state', function (done) {
@@ -308,6 +308,47 @@ function register(it, expect, context) {
                                 });
                             });
                         });
+                    });
+                });
+            });
+        });
+    });
+
+    // setForeignState with acl
+    it(testName + 'Set foreign state with acl', function (done) {
+        this.timeout(1000);
+        var fGid = context.adapterShortName + '1.0.' + gid;
+        context.objects.setObject(fGid, {
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {
+            },
+            type: 'state',
+            acl: {
+                object: 1638,
+                owner: "system.user.write-only",
+                ownerGroup:"system.group.administrator",
+                state: 1638
+            }
+        }, function (err) {
+            expect(err).to.be.null;
+
+            context.states.getState(fGid, function (err, state) {
+                expect(err).to.be.null;
+
+                context.adapter.setForeignState(fGid, 1, {user: "system.user.write-only"}, function (err) {
+                    expect(err).to.be.not.ok;
+
+                    context.states.getState(fGid, function (err, state) {
+                        expect(err).to.be.null;
+                        expect(state).to.be.ok;
+                        expect(state.val).to.equal(1);
+                        expect(state.ack).to.equal(false);
                     });
                 });
             });
@@ -501,7 +542,7 @@ function register(it, expect, context) {
             });
         });
     });
-    
+
     // getHistory - cannot be tested
  }
 
