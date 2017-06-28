@@ -613,6 +613,7 @@ function register(it, expect, context) {
                     });
                 });
             });
+        });
     });
 
 }
