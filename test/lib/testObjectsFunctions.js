@@ -466,6 +466,87 @@ function register(it, expect, context) {
                 }, 2000)
             });
     });
+
+    // getObject with acls
+    it(testName + 'Check getObjects with ACLs', function (done) {
+        this.timeout(1000);
+        // create testf.0.myTestObject
+
+        context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                members: ['A']
+            },
+            native: {
+                attr1: '1',
+                attr2: '2',
+                attr3: '3',
+                repositories: ['R1'],
+                certificates: ['C1'],
+                devices: ['D1']
+            },
+            type: 'state',
+            acl: {
+                object: 102,
+                owner: "system.user.write-only",
+                ownerGroup:"system.group.administrator",
+                state: 614
+            }
+        }, function (err) {
+            expect(err).to.be.null;
+
+            var objectData = {
+                "user":"system.user.write-only",
+                "groups":[
+                    "system.group.writer"
+                ],
+                "object":{
+                    "list":false,
+                    "read":true,
+                    "write":false,
+                    "delete":false
+                },
+                "state":{
+                    "list":false,
+                    "read":true,
+                    "write":true,
+                    "create":false,
+                    "delete":false
+                },
+                "users":{
+                    "write":false,
+                    "create":false,
+                    "delete":false
+                },
+                "other":{
+                    "execute":false,
+                    "http":false,
+                    "sendto":false
+                },
+                "file":{
+                    "list":false,
+                    "read":false,
+                    "write":false,
+                    "create":false,
+                    "delete":false
+                }
+            };
+
+            context.objects.getObject(context.adapterShortName + 'f.0.' + gid, objectData, function (err, obj) {
+                expect(err).to.be.not.ok;
+                expect(obj).to.be.ok;
+                expect(obj.native).to.be.ok;
+                expect(obj._id).equal(context.adapterShortName + 'f.0.' + gid);
+                expect(obj.common.name).equal('test1');
+                expect(obj.type).equal('state');
+                //expect(obj.acl).to.be.ok;
+                done();
+            });
+        });
+    });
+
 }
 
 module.exports.register = register;
