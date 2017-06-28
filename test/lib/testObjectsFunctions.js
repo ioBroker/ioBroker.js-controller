@@ -601,7 +601,7 @@ function register(it, expect, context) {
                         }
                     };*/
 
-                    context.objects.getObject(context.adapterShortName + 'f.0.' + gid, objectData, function (err, obj) {
+                    context.objects.getObject(context.adapterShortName + 'f.0.' + gid, {user: "system.user.write-only"}, function (err, obj) {
                         expect(err).to.be.not.ok;
                         expect(obj).to.be.ok;
                         expect(obj.native).to.be.ok;
