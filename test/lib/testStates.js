@@ -341,7 +341,7 @@ function register(it, expect, context) {
             context.states.getState(fGid, function (err, state) {
                 expect(err).to.be.null;
 
-                context.adapter.setForeignState(fGid, 1, {user: "system.user.write-only"}, function (err) {
+                context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only"}, function (err) {
                     expect(err).to.be.not.ok;
 
                     context.states.getState(fGid, function (err, state) {
