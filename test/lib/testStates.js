@@ -328,7 +328,7 @@ function register(it, expect, context) {
             "acl": {
               "object": {
                 "list": false,
-                "read": true,
+                "read": false,
                 "write": false,
                 "delete": false
               },
@@ -407,7 +407,7 @@ function register(it, expect, context) {
                     context.states.getState(fGid, function (err, state) {
                         expect(err).to.be.null;
 
-                        context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only"}, function (err) {
+                        context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only2"}, function (err) {
                             expect(err).to.be.not.ok;
 
                             context.states.getState(fGid, function (err, state) {
@@ -419,6 +419,41 @@ function register(it, expect, context) {
                             });
                         });
                     });
+                });
+            });
+        });
+    });
+
+    // setForeignState with acl failure
+    it(testName + 'Set foreign state with acl failure', function (done) {
+        this.timeout(1000);
+        var fGid = context.adapterShortName + '3.1.' + gid;
+
+        context.objects.setObject(fGid, {
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {
+            },
+            type: 'state',
+            acl: {
+                object: 102,
+                owner: "system.user.write-only",
+                ownerGroup:"system.group.administrator",
+                state: 102
+            }
+        }, function (err) {
+            expect(err).to.be.null;
+
+            context.states.getState(fGid, function (err, state) {
+                expect(err).to.be.null;
+
+                context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only"}, function (err) {
+                    expect(err).to.be.equal("permissionError");
                 });
             });
         });
