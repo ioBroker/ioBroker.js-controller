@@ -328,7 +328,7 @@ function register(it, expect, context) {
             "acl": {
               "object": {
                 "list": false,
-                "read": false,
+                "read": true,
                 "write": false,
                 "delete": false
               },
