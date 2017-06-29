@@ -564,43 +564,6 @@ function register(it, expect, context) {
                 }, function (err) {
                     expect(err).to.be.null;
 
-        /*            var objectData = {
-                        "user":"system.user.write-only",
-                        "groups":[
-                            "system.group.writer"
-                        ],
-                        "object":{
-                            "list":false,
-                            "read":true,
-                            "write":false,
-                            "delete":false
-                        },
-                        "state":{
-                            "list":false,
-                            "read":true,
-                            "write":true,
-                            "create":false,
-                            "delete":false
-                        },
-                        "users":{
-                            "write":false,
-                            "create":false,
-                            "delete":false
-                        },
-                        "other":{
-                            "execute":false,
-                            "http":false,
-                            "sendto":false
-                        },
-                        "file":{
-                            "list":false,
-                            "read":false,
-                            "write":false,
-                            "create":false,
-                            "delete":false
-                        }
-                    };*/
-
                     context.objects.getObject(context.adapterShortName + 'f.0.' + gid, {user: "system.user.write-only"}, function (err, obj) {
                         expect(err).to.be.not.ok;
                         expect(obj).to.be.ok;
