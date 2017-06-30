@@ -106,7 +106,7 @@ function startController(options, callback) {
             },
             type:           options.states.type     || 'file',
             host:           options.states.host     || '127.0.0.1',
-            port:           options.states.port     || 19000,
+            port:           (options.states.port===undefined) ? 19000 : options.states.port,
             user:           options.states.user     || '',
             pass:           options.states.pass     || '',
             dataDir:        options.states.dataDir  || ''
