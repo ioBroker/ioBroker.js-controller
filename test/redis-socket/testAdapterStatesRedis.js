@@ -13,7 +13,7 @@ var statesConfig = {
         retry_max_delay: 15000
     },
     type:           'redis',
-    host:           '/tmp/redis.sock',
+    host:           '/var/run/redis.sock',
     port:           0
 };
 

@@ -41,7 +41,7 @@ describe('States-Redis-Socket: Test states', function() {
                 },
                 states: {
                     type: 'redis',
-                    host: '/tmp/redis.sock',
+                    host: '/var/run/redis.sock',
                     port: 0,
                     onChange: function (id, state) {
                         console.log('Redis-state-Socket changed. ' + id);
