@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.1.0",
+        "version":    "1.1.1",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.1.1": {
+                "en": "Allow redis connections via unix sockets",
+                "de": "Erlaube Redis verbindungen via Unix Sockets",
+                "en": "Allow redis unix socket connections"
+            },
             "1.1.0": {
                 "en": "Close sockets by defaul for external connects",
                 "de": "Erlaube die Verbindung auf Objeke/States-Sockets nicht",
