@@ -19,7 +19,7 @@ before_install:
 before_script:
   - sudo chmod ogu+x test/redis-socket/setup-socket.sh
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm test && test/redis-socket/setup-socket.sh && npm run test-redis-socket; fi
+  - npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi
 env:
   - CXX=g++-4.8
 addons:
