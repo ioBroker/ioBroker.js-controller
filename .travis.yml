@@ -17,9 +17,9 @@ before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; sleep 10; fi'
   - sleep 15
 before_script:
+  - sudo chmod ogu+x test/redis-socket/setup-socket.sh
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm test && test/redis-socket/setup-socket.sh && npm run test-redis-socket; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm test && test/redis-socket/setup-socket.sh && npm run test-redis-socket; fi
 env:
   - CXX=g++-4.8
 addons:
