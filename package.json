@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "node": ">=0.8"
   },
@@ -91,6 +91,7 @@
     "restart": "node iobroker.js restart",
     "prepublish": "node lib/scripts/scripts.js --prepublish",
     "test": "node node_modules/mocha/bin/mocha test",
+    "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
   "main": "controller.js",

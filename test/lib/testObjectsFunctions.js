@@ -466,6 +466,119 @@ function register(it, expect, context) {
                 }, 2000)
             });
     });
+
+    // getObject with acls
+    it(testName + 'Check getObjects with ACLs', function (done) {
+        this.timeout(1000);
+        // create testf.0.myTestObject
+
+        context.adapter.setForeignObject('system.group.writer', {
+          "common": {
+            "name": "Writer",
+            "desc": "",
+            "members": [
+              "system.user.write-only"
+            ],
+            "acl": {
+              "object": {
+                "list": false,
+                "read": true,
+                "write": false,
+                "delete": false
+              },
+              "state": {
+                "list": false,
+                "read": false,
+                "write": false,
+                "create": false,
+                "delete": false
+              },
+              "users": {
+                "write": false,
+                "create": false,
+                "delete": false
+              },
+              "other": {
+                "execute": false,
+                "http": false,
+                "sendto": false
+              },
+              "file": {
+                "list": false,
+                "read": false,
+                "write": false,
+                "create": false,
+                "delete": false
+              }
+            }
+          },
+          "native": {},
+          "acl": {
+            "object": 1638,
+            "owner": "system.user.admin",
+            "ownerGroup": "system.group.administrator"
+          },
+          "_id": "system.group.writer",
+          "type": "group"
+        }, function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.setForeignObject('system.user.write-only', {
+                "type": "user",
+                "common": {
+                    "name": "write-only",
+                    "enabled": true,
+                    "groups": [],
+                    "password": "pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585"
+                },
+                "_id": "system.user.write-only",
+                "native": {},
+                "acl": {
+                    "object": 1638
+                }
+            }, function (err) {
+                expect(err).to.be.null;
+
+                context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+                    common: {
+                        name: 'test1',
+                        type: 'number',
+                        role: 'level',
+                        members: ['A']
+                    },
+                    native: {
+                        attr1: '1',
+                        attr2: '2',
+                        attr3: '3',
+                        repositories: ['R1'],
+                        certificates: ['C1'],
+                        devices: ['D1']
+                    },
+                    type: 'state',
+                    acl: {
+                        object: 1638,
+                        owner: "system.user.write-only",
+                        ownerGroup:"system.group.administrator",
+                        state: 1638
+                    }
+                }, function (err) {
+                    expect(err).to.be.null;
+
+                    context.objects.getObject(context.adapterShortName + 'f.0.' + gid, {user: "system.user.write-only"}, function (err, obj) {
+                        expect(err).to.be.not.ok;
+                        expect(obj).to.be.ok;
+                        expect(obj.native).to.be.ok;
+                        expect(obj._id).equal(context.adapterShortName + 'f.0.' + gid);
+                        expect(obj.common.name).equal('test1');
+                        expect(obj.type).equal('state');
+                        //expect(obj.acl).to.be.ok;
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
 }
 
 module.exports.register = register;
