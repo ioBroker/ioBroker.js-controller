@@ -1,5 +1,6 @@
 # 1.1.1 (2017-06-29)
 * (jens-maus) allow redis connections via unix sockets by specifying host as e.g. '/var/run/redis/redis.sock' and setting port to 0. This should slightly improve performance on busy installations.
+* (Apollon77) optimizations for permission handling
 
 # 1.1.0 (2017-06-08)
 * (bluefox) BREAKING Changes: For multihost systems the user MUST explicit allow connections from other IPs in /opt/iobroker/iobroker-data/iobroker.json
