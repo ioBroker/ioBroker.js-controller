@@ -1,3 +1,6 @@
+# 1.1.2 (2017-07-13)
+* (bluefox) Close sockets by default for external connects
+
 # 1.1.1 (2017-06-29)
 * (jens-maus) allow redis connections via unix sockets by specifying host as e.g. '/var/run/redis/redis.sock' and setting port to 0. This should slightly improve performance on busy installations.
 
