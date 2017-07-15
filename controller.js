@@ -683,9 +683,9 @@ function collectDiagInfo(type, callback) {
 
                             doc.rows.sort(function (a, b) {
                                 try {
-                                    return semver.lt(a.value.common.installedVersion, b.value.common.installedVersion);
+                                    return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
                                 } catch (e) {
-                                    logger.error('host.' + hostname + ' Invalid versions: ' + a.value.common.installedVersion + '[' + a.value.common.name + '] or ' + b.value.common.installedVersion + '[' + b.value.common.name + ']');
+                                    logger.error('host.' + hostname + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
                                     return 0;
                                 }
                             });
