@@ -682,7 +682,12 @@ function collectDiagInfo(type, callback) {
                             if (!semver) semver = require('semver');
 
                             doc.rows.sort(function (a, b) {
-                                return semver.lt(a.value.common.installedVersion, b.value.common.installedVersion);
+                                try {
+                                    return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
+                                } catch (e) {
+                                    logger.error('host.' + hostname + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
+                                    return 0;
+                                }
                             });
 
                             // Read installed versions of all hosts
@@ -691,7 +696,6 @@ function collectDiagInfo(type, callback) {
                                     version:  doc.rows[i].value.common.installedVersion,
                                     platform: doc.rows[i].value.common.platform,
                                     type:     doc.rows[i].value.native.os.platform
-
                                 });
                             }
                         }
