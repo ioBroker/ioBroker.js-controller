@@ -3,6 +3,10 @@
         "memoryLimitMB": 0,
         "hostname": ""
     },
+    "multihostService": {
+        "enabled": false,
+        "secure": true
+    },
     "network": {
         "IPv4": true,
         "IPv6": true,

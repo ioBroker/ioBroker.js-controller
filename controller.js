@@ -62,6 +62,7 @@ var installQueue            = [];
 var started                 = false;
 var inputCount              = 0;
 var outputCount             = 0;
+var mhService               = null; // multihost service
 var uptimeStart             = new Date().getTime();
 
 var config;
@@ -118,6 +119,37 @@ if (adapterDir.pop() === 'node_modules') {
     adapterDir = adapterDir.join('/');
 } else {
     adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
+}
+
+if (config.multihostService && config.multihostService.enabled) {
+    var MHService = require(__dirname + '/lib/multihostServer.js');
+    if ((!config.objects.host || config.objects.host === '127.0.0.1' || config.objects.host === 'localhost') && config.objects.type === 'file') {
+        logger.warn('Host on this system is not possible, because IP address is for objects is ' + config.objects.host);
+    } else if ((config.states.host || config.states.host === '127.0.0.1' || config.states.host === 'localhost') && config.states.type === 'file') {
+        logger.warn('Host on this system is not possible, because IP address is for states is ' + config.states.host);
+    }
+
+    var cpus    = os.cpus();
+    mhService = new MHService(hostname, logger, config, {
+        node:   process.version,
+        arch:   os.arch(),
+        model:  cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown',
+        cpus:   cpus ? cpus.length : 1,
+        mem:    os.totalmem(),
+        ostype: os.type()
+    }, getIPs(), function (pass, callback) {
+        objects.getObject('system.user.admin', function (err, obj) {
+            if (err || !obj) {
+                if (typeof callback === 'function') callback('User does not exist');
+                return;
+            }
+            var password = require(__dirname + '/lib/password');
+
+            password(pass).check(obj.common.password, function (err, res) {
+                if (typeof callback === 'function') callback(err, res);
+            });
+        });
+    });
 }
 
 // get the list of IP addresses of this host
@@ -665,10 +697,17 @@ function collectDiagInfo(type, callback) {
                         country: '',
                         city: '',
                         hosts: [],
+                        node: process.version,
+                        arch: os.arch(),
                         adapters: {}
                     };
                     if (type === 'extended' || type === 'no-city') {
                         diag.country = systemConfig.common.country;
+                        var cpus    = os.cpus();
+                        diag.model  = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
+                        diag.cpus   = cpus ? cpus.length : 1;
+                        diag.mem    = os.totalmem();
+                        diag.ostype = os.type();
                         delete diag.city;
                     }
                     if (type === 'extended') {
@@ -2244,6 +2283,11 @@ function stopInstances(forceStop, callback) {
 }
 
 function stop() {
+    if (mhService) {
+        mhService.close();
+        mhService = null;
+    }
+
     stopInstances(false, function (wasForced) {
         if (objects && objects.destroy) objects.destroy();
 
