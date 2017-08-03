@@ -1,11 +1,16 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.1.2",
+        "version":    "1.1.3",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.1.3": {
+                "en": "Extend statistics\nUpdate npm packets",
+                "de": "Statistik erweitern\nnpm Pakete aktualisieren",
+                "ru": "Расширение статистики\nОбновление пакетов npm"
+            },
             "1.1.2": {
                 "en": "Close sockets by default for external connects",
                 "de": "Erlaube die Verbindung auf Objeke/States-Sockets nicht",
@@ -30,117 +35,7 @@
                 "en": "No big changes, just version",
                 "de": "Keine große Änderungen, nur Versionsänderung",
                 "ru": "Никаких больших изменений. Только номер версии."
-            },
-            "0.17.3": {
-                "en": "do not store logs and just publish it",
-                "de": "Logs werden nicht mehr speichern, nur published",
-                "ru": "Сообщения не сохраняются, а просто публикуются"
-            },
-			"0.17.2": {
-                "en": "do not store logs and messages and just publish it\nremove mochawsome",
-                "de": "Meldungen werden nicht mehr speichern, nur published\nmochawsome rasugenommen",
-                "ru": "Сообщения не сохраняются, а просто публикуются\nубран пакет mochawsome"
-            },
-            "0.17.1": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "0.16.2": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "0.15.3": {
-                "en": "fix of autoSubscribe",
-                "de": "Korrigiere autoSubscribe",
-                "ru": "Исправлео авто подписывание"
-            },
-            "0.15.1": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "0.14.0": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "0.13.4": {
-                "en": "add debug information for logging",
-                "de": "add debug information for logging",
-                "ru": "add debug information for logging"
-            },
-            "0.13.2": {
-                "en": "fix new installation",
-                "de": "Korrigiere neue Installation",
-                "ru": "Исправлена новая установка"
-            },
-            "0.13.1": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "0.12.3": {
-                "en": "add owntracks\nadd amazon-dash\ncontrol enabled for instance over system.adapter.NAME.INSTANCE.alive variable\nlet remove UUID to preapre images with ioBroker\nFixed error with emitter",
-                "de": "owntracks hinzugefügt\namazon-dash hinzugefügt\nMan kann UUID löschen um ein Image vorzubereiten\nFehler mit emitter behoben",
-                "ru": "Добавлен owntracks\nДобавлен amazon-dash\nМожно удалять UUID, что бы подготовить образ\nИсправлена ошибка с emitter"
-            },
-            "0.12.2": {
-                "en": "fix read versions by multihost",
-                "de": "Repariere Versionslesen bei Multihost",
-                "ru": "Исправлено чтение версии хоста при мультихосте"
-            },
-            "0.12.1": {
-                "en": "fix letsencrypt file",
-                "de": "Repariere letsencrypt Datei",
-                "ru": "Исправлен файл letsencrypt"
-            },
-			"0.12.0": {
-                "en": "working on objects in redis",
-                "de": "working on objects in redis",
-                "ru": "working on objects in redis"
-            },
-            "0.11.3": {
-                "en": "fix upgrade of adapters\nupdate _design/xyz by upgrade",
-                "de": "Fixe upgrade von Adaptern\nUpdate die Objekte _design/xyz bei Upgrade",
-                "ru": "Исправлено обновление драйверов\n_design/xyz объекты обновляются при upgrade"
-            },
-            "0.11.2": {
-                "en": "fix upgrade of adapters",
-                "de": "fix upgrade of adapters",
-                "ru": "fix upgrade of adapters"
-            },
-			"0.11.1": {
-				"en": "fix dependency if depend on js-controller",
-				"de": "fix dependency if depend on js-controller",
-				"ru": "fix dependency if depend on js-controller"
-			},
-            "0.11.0": {
-                "en": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
-                "de": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map",
-                "ru": "implement auto-restart of adapters (expert mode)\nadd rights check for getBinaryState/setBinaryState\nsupport of default ttl for sessions\nfix custom setup\nfix upload binary files\nfix list of files in subdirectories\nadd nut\nadd vis-map"
-            },
-			"0.10.1": {
-				"en": "support of chained certificates",
-				"de": "support of chained certificates",
-				"ru": "support of chained certificates"
-			},
-			"0.10.0": {
-				"en": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud",
-				"de": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud",
-				"ru": "suport of exportand import\nactivate redis for states\nfix install of adapter with singletonHost\nissue event if state deleted (redis)\nfix error with administrator users\ndo not store repository if with errors\nfix checkPassword and setPassword\nupdate wrong SSL certificates\nadd freemem state to host\nadd milliseconds to formatDate\nupdate tar.gz\nadd fhem, netatmo, tankerkoenig, vis-history, homepilot, cloud"
-			},
-            "0.9.1": {
-				"en": "update wrong SSL certificates",
-				"de": "update wrong SSL certificates",
-				"ru": "update wrong SSL certificates"
-			},
-            "0.9.0": {
-				"en": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
-				"de": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings",
-				"ru": "(bluefox) make from seconds the ms\n(bluefox) add console command \"isrun\"\n(bluefox) add \"--timeout 5000\"\n(bluefox) fix small errors\n(bluefox) change function formatValue\n(bluefox) fix stop of scheduled adapters\n(bluefox) add \"--logs\" flag for adapter start (required by adapter debugging)\n(bluefox) make hostname configurable\n(bluefox) fix update of adapters and settings"
-			}
+            }
         },
         "desc": {
             "en": "Javascript/Node.js implementation of ioBroker controller",

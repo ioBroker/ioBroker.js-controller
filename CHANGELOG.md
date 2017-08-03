@@ -1,3 +1,7 @@
+# 1.1.3 (2017-08-01)
+* (bluefox) Extend statistics
+* (bluefox) Update npm packets
+
 # 1.1.2 (2017-07-13)
 * (bluefox) Close sockets by default for external connects
 
