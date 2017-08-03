@@ -11,7 +11,7 @@ fi
 if [ -d ./node_modules ]
 then
     ls -1 ./node_modules | grep iobroker. > reinstall.list.txt
-    chmod 777 * -R
+    chmod -R 777 *
     cd node_modules
     rm -R *
     pwd
@@ -27,7 +27,7 @@ then
         fi
 
     done < "$BASE/reinstall.list.txt"
-    chmod 777 * -R
+    chmod -R 777 *
     rm "$BASE/reinstall.list.txt"
     iobroker upload all
 fi
