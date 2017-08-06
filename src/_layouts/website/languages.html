@@ -4,12 +4,13 @@
     {{ super() }}
     <script>
         var lang = window.navigator.userLanguage || window.navigator.language;
+        var href = document.location.href.replace('index.html', '');
         if (lang.indexOf('de') !== -1) {
-            document.location = document.location + 'de/';
+            document.location = href + 'de/';
         } else if (lang.indexOf('ru') !== -1) {
-            document.location = document.location + 'ru/';
+            document.location = href + 'ru/';
         } else {
-            document.location = document.location + 'en/';
+            document.location = href + 'en/';
         }
     </script>
 {% endblock %}
