@@ -5,11 +5,11 @@ services:
   - redis-server
 language: node_js
 node_js:
-  - '0.10'
   - '0.12'
   - '4'
   - '6'
   - '7'
+  - '8'
 before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
