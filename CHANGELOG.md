@@ -1,6 +1,14 @@
-# 1.1.3 (2017-08-01)
-* (bluefox) Extend statistics
+# 1.1.3 (2017-08-13)
+* (bluefox) Extend statistics (node.js versions and some HW parameters will be reported)
 * (bluefox) Update npm packets
+* (bluefox) catch semver error
+* (bluefox) change interface of getDevices functions
+* (bluefox) change interface of createChannel functions
+* (bluefox) working on multihost service
+* (bluefox) fix users cli
+* (bluefox) implement defaultNewAcl
+* (bluefox) remove 0.10 and add 8 by tests
+* (bluefox) fix restart of adapters
 
 # 1.1.2 (2017-07-13)
 * (bluefox) Close sockets by default for external connects
