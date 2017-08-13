@@ -418,8 +418,8 @@ function createObjects() {
                         procs[id].config.deleted        = true;
                         logger.info('host.' + hostname + ' object deleted ' + id);
                     } else {
-                        if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
-                        if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
+                        if (procs[id].config.common.enabled  && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
+                        if (!procs[id].config.common.enabled &&  obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
                         procs[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
@@ -428,7 +428,8 @@ function createObjects() {
 
                             if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
                                 if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
-                                    setTimeout(function (_id) {
+                                    if (procs[id].restartTimer) clearTimeout(procs[id].restartTimer);
+                                    procs[id].restartTimer = setTimeout(function (_id) {
                                         startInstance(_id);
                                     }, 2500, id);
                                 }
@@ -439,7 +440,9 @@ function createObjects() {
                     } else {
                         var __ipArr = getIPs();
                         if (procs[id].config && (__ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
-                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
+                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                                startInstance(id);
+                            }
                         } else {
                             delete procs[id];
                         }
@@ -450,7 +453,9 @@ function createObjects() {
                     // new adapter
                     if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                         procs[id] = {config: obj};
-                        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
+                        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                            startInstance(id);
+                        }
                     }
                 }
             } catch (err) {
@@ -1587,7 +1592,10 @@ function initInstances() {
                     continue;
                 }
                 if (installQueue.indexOf(id) === -1) {
-                    setTimeout(function (_id) {
+                    if (procs[id].restartTimer) {
+                        clearTimeout(procs[id].restartTimer);
+                    }
+                    procs[id].restartTimer = setTimeout(function (_id) {
                         startInstance(_id);
                     }, interval * seconds, id);
 
@@ -1612,7 +1620,10 @@ function initInstances() {
                 }
 
                 if (installQueue.indexOf(id) === -1) {
-                    setTimeout(function (_id) {
+                    if (procs[id].restartTimer) {
+                        clearTimeout(procs[id].restartTimer);
+                    }
+                    procs[id].restartTimer = setTimeout(function (_id) {
                         startInstance(_id);
                     }, interval * seconds, id);
 
@@ -1803,7 +1814,14 @@ function startInstance(id, wakeUp) {
     var name = id.split('.')[2];
     var mode = instance.common.mode;
 
-    if (wakeUp) mode = 'daemon';
+    if (procs[id].restartTimer) {
+        clearTimeout(procs[id].restartTimer);
+        delete procs[id].restartTimer;
+    }
+
+    if (wakeUp) {
+        mode = 'daemon';
+    }
 
     //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
@@ -1911,9 +1929,13 @@ function startInstance(id, wakeUp) {
 
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            if (procs[id].stopping !== undefined) delete procs[id].stopping;
+                            if (procs[id].stopping !== undefined) {
+                                delete procs[id].stopping;
+                            }
 
-                            if (procs[id].process) delete procs[id].process;
+                            if (procs[id].process) {
+                                delete procs[id].process;
+                            }
 
                             if (isStopping) {
                                 for (var i in procs) {
@@ -1938,13 +1960,18 @@ function startInstance(id, wakeUp) {
                         }
                     }
 
-                    if (procs[id] && procs[id].process) delete procs[id].process;
+                    if (procs[id] && procs[id].process) {
+                        delete procs[id].process;
+                    }
                     if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
 
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
                         //noinspection JSUnresolvedVariable
-                        setTimeout(function (_id) {
+                        if (procs[id].restartTimer) {
+                            clearTimeout(procs[id].restartTimer);
+                        }
+                        procs[id].restartTimer = setTimeout(function (_id) {
                             startInstance(_id);
                         }, code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
@@ -2069,11 +2096,11 @@ function stopInstance(id, callback) {
         if (procs[id].process) {
             procs[id].stopping = true;
             procs[id].process.kill();
-            delete(procs[id].process);
+            delete procs[id].process;
         }
         if (procs[id].schedule) {
             procs[id].schedule.cancel();
-            delete(procs[id].schedule);
+            delete procs[id].schedule;
         }
 
         if (procs[id].subscribe) {
@@ -2109,33 +2136,48 @@ function stopInstance(id, callback) {
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
                     var timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
-                    sendTo(instance._id, 'stopInstance', null, function () {
+                    sendTo(instance._id, 'stopInstance', null, function (result) {
                         if (timeout) {
                             clearTimeout(timeout);
                             timeout = null;
                         }
-                        logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
-                        procs[id].stopping = true;
-                        procs[id].process.kill();
-                        delete(procs[id].process);
-                        if (typeof callback === 'function') callback();
-                    });
-                    // If no response from adapter, kill it in 1 second
-                    timeout = setTimeout(function () {
+                        logger.info('host.' + hostname + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id].process) {
-                            logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
                             procs[id].process.kill();
-                            delete(procs[id].process);
-                            if (typeof callback === 'function') callback();
+                            delete procs[id].process;
                         }
-                    }, 1000);
+
+                        if (typeof callback === 'function') {
+                            callback();
+                            callback = null;
+                        }
+                    });
+
+                    var timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
+                    // If no response from adapter, kill it in 1 second
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                        if (procs[id].process) {
+                            logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
+                            procs[id].stopping = true;
+                            procs[id].process.kill();
+                            delete procs[id].process;
+                        }
+                        if (typeof callback === 'function') {
+                            callback();
+                            callback = null;
+                        }
+                    }, timeoutDuration);
                 } else {
                     logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
                     procs[id].process.kill();
-                    delete(procs[id].process);
-                    if (typeof callback === 'function') callback();
+                    delete procs[id].process;
+                    if (typeof callback === 'function') {
+                        callback();
+                        callback = null;
+                    }
                 }
             }
             break;
@@ -2148,7 +2190,10 @@ function stopInstance(id, callback) {
                 delete procs[id].schedule;
                 logger.info('host.' + hostname + ' stopInstance canceled schedule ' + instance._id);
             }
-            if (typeof callback === 'function') callback();
+            if (typeof callback === 'function') {
+                callback();
+                callback = null;
+            }
             break;
 
         case 'subscribe':
@@ -2176,8 +2221,11 @@ function stopInstance(id, callback) {
                 logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
                 procs[id].process.kill();
-                delete(procs[id].process);
-                if (typeof callback === 'function') callback();
+                delete procs[id].process;
+                if (typeof callback === 'function') {
+                    callback();
+                    callback = null;
+                }
             }
             break;
 
