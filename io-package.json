@@ -280,7 +280,9 @@
                     "latest": {
                         "link": "http://download.iobroker.net/sources-dist-latest.json",
                         "json": null
-                    },
+                    }
+                },
+                "oldRepositories": {
                     "sources": {
                         "link": "conf/sources-dist.json",
                         "json": null
