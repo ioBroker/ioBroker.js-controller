@@ -63,7 +63,7 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.jpg",
     "published": "2017-03-22T06:30:11.864Z",
-    "version": "0.2.3",
+    "version": "0.4.4",
     "type": "general"
   },
   "dwd": {
@@ -105,7 +105,7 @@
   "find-my-iphone": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.find-my-iphone/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/soef/ioBroker.find-my-iphone/master/admin/find-my-iphone.png",
-    "version": "0.1.3",
+    "version": "0.2.8",
     "type": "geoposition"
   },
   "firetv": {
@@ -172,7 +172,7 @@
   "hm-rega": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.hm-rega/master/admin/homematic.png",
-    "version": "1.4.8",
+    "version": "1.5.0",
     "type": "iot-systems"
   },
   "hm-rpc": {
@@ -269,7 +269,7 @@
   "influxdb": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.influxdb/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.influxdb/master/admin/influxdb.jpeg",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "type": "storage"
   },
   "innogy-smarthome": {
@@ -305,13 +305,19 @@
   "kodi": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
-    "version": "0.2.0",
+    "version": "0.2.3",
     "type": "multimedia"
   },
   "landroid": {
     "meta": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ldittmar81/ioBroker.landroid/master/admin/landroid.png",
     "version": "0.1.1",
+    "type": "garden"
+  },
+  "landroid-s": {
+    "meta": "https://raw.githubusercontent.com/MeisterTR/ioBroker.landroid-s/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/MeisterTR/iobroker.landroid-s/master/admin/landroid-s.png",
+    "version": "0.3.0",
     "type": "garden"
   },
   "lgtv": {
@@ -329,7 +335,7 @@
   "lightify": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.lightify/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/soef/ioBroker.lightify/master/admin/lightify.png",
-    "version": "0.0.28",
+    "version": "0.2.10",
     "type": "lighting"
   },
   "maxcul": {
@@ -365,11 +371,23 @@
     "version": "0.1.2",
     "type": "household"
   },
+  "mihome": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome/master/admin/mihome.png",
+    "type": "iot-systems",
+    "version": "0.2.2"
+  },
+  "mihome-plug": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-plug/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-plug/master/admin/mihome-plug.png",
+    "type": "hardware",
+    "version": "0.1.1"
+  },
   "mihome-vacuum": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-vacuum/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-vacuum/master/admin/mihome-vacuum.png",
     "published": "2017-04-10T17:10:21.690Z",
-    "version": "0.3.1",
+    "version": "0.5.6",
     "type": "household"
   },
   "milight": {
@@ -435,7 +453,7 @@
   "nut": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/admin/nut.png",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "type": "hardware"
   },
   "onkyo": {
@@ -449,7 +467,7 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.openhab/master/admin/openhab.png",
     "type": "iot-systems",
     "published": "2017-05-18T20:30:53.876Z",
-    "version": "0.1.0"
+    "version": "0.1.4"
   },
   "owfs": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.owfs/master/io-package.json",
@@ -563,7 +581,7 @@
   "samsung": {
     "meta": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/soef/ioBroker.samsung/master/admin/samsung.png",
-    "version": "0.1.1",
+    "version": "0.2.4",
     "type": "multimedia"
   },
   "sayit": {
@@ -605,13 +623,13 @@
   "sonos": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sonos/master/admin/sonos.png",
-    "version": "1.4.2",
+    "version": "1.6.0",
     "type": "multimedia"
   },
   "sql": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "type": "storage"
   },
   "squeezebox": {
@@ -683,7 +701,7 @@
   "vis": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.vis/master/admin/vis.png",
-    "version": "0.15.0",
+    "version": "0.15.5",
     "type": "visualization"
   },
   "vis-bars": {
@@ -797,7 +815,7 @@
   "web": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.web/master/admin/web.png",
-    "version": "2.0.2",
+    "version": "2.0.6",
     "type": "general"
   },
   "wetty": {
