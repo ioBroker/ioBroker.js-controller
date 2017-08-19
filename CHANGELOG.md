@@ -1,3 +1,9 @@
+# 1.1.4 (2017-09-xx)
+* (bluefox) fixed upgrade command
+* (bluefox) allow install from custom repositories
+* (bluefox) remove online and sources repositories
+* (bluefox) fix multihosts command
+
 # 1.1.3 (2017-08-13)
 * (bluefox) Extend statistics (node.js versions and some HW parameters will be reported)
 * (bluefox) Update npm packets
