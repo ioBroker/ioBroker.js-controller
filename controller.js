@@ -65,91 +65,87 @@ var outputCount             = 0;
 var mhService               = null; // multihost service
 var uptimeStart             = new Date().getTime();
 
-var config;
-if (!fs.existsSync(tools.getConfigFileName())) {
-    if (process.argv.indexOf('start') !== -1) {
-        isDaemon = true;
-        logger = require(__dirname + '/lib/logger')('info', [tools.appName], true);
+var config = getConfig();
+
+function getConfig() {
+    if (!fs.existsSync(tools.getConfigFileName())) {
+        if (process.argv.indexOf('start') !== -1) {
+            isDaemon = true;
+            logger = require(__dirname + '/lib/logger')('info', [tools.appName], true);
+        } else {
+            logger = require(__dirname + '/lib/logger')('info', [tools.appName]);
+        }
+        logger.error('host.' + hostname + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
+        process.exit(1);
+        return null;
     } else {
-        logger = require(__dirname + '/lib/logger')('info', [tools.appName]);
+        var _config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
+        if (!_config.states)  _config.states  = {type: 'file'};
+        if (!_config.objects) _config.objects = {type: 'file'};
+        return _config;
     }
-    logger.error('host.' + hostname + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
-    process.exit(1);
-} else {
-    config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
-    if (!config.states)  config.states  = {type: 'file'};
-    if (!config.objects) config.objects = {type: 'file'};
 }
 
-// Get "objects" object
-// If "file" and on the local machine
-if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
-    Objects = require(__dirname + '/lib/objects/objectsInMemServer');
-} else {
-    Objects = require(__dirname + '/lib/objects');
-}
-
-// Get "states" object
-if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0')) {
-    States  = require(__dirname + '/lib/states/statesInMemServer');
-} else {
-    States  = require(__dirname + '/lib/states');
-}
-
-// Detect if outputs to console are forced. By default they are disabled and redirected to log file
-if (config.log.noStdout && process.argv && (process.argv.indexOf('--console') !== -1 || process.argv.indexOf('--logs') !== -1)) {
-    config.log.noStdout = false;
-}
-
-// Detect if controller runs as a linux-daemon
-if (process.argv.indexOf('start') !== -1) {
-    isDaemon = true;
-    config.log.noStdout = true;
-    logger = require(__dirname + '/lib/logger.js')(config.log);
-} else {
-    logger = require(__dirname + '/lib/logger.js')(config.log);
-}
-
-// Delete all log files older than x das
-logger.activateDateChecker(true, config.log.maxDays);
-
-// If installed as npm module
-adapterDir = adapterDir.split('/');
-if (adapterDir.pop() === 'node_modules') {
-    adapterDir = adapterDir.join('/');
-} else {
-    adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
-}
-
-if (config.multihostService && config.multihostService.enabled) {
+function _startMultihost(_config, secret) {
     var MHService = require(__dirname + '/lib/multihostServer.js');
-    if ((!config.objects.host || config.objects.host === '127.0.0.1' || config.objects.host === 'localhost') && config.objects.type === 'file') {
-        logger.warn('Host on this system is not possible, because IP address is for objects is ' + config.objects.host);
-    } else if ((config.states.host || config.states.host === '127.0.0.1' || config.states.host === 'localhost') && config.states.type === 'file') {
-        logger.warn('Host on this system is not possible, because IP address is for states is ' + config.states.host);
-    }
-
     var cpus    = os.cpus();
-    mhService = new MHService(hostname, logger, config, {
+    mhService = new MHService(hostname, logger, _config, {
         node:   process.version,
         arch:   os.arch(),
         model:  cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown',
         cpus:   cpus ? cpus.length : 1,
         mem:    os.totalmem(),
         ostype: os.type()
-    }, getIPs(), function (pass, callback) {
-        objects.getObject('system.user.admin', function (err, obj) {
-            if (err || !obj) {
-                if (typeof callback === 'function') callback('User does not exist');
+    }, getIPs(), secret);
+}
+function startMultihost(__config) {
+    var _config = __config || getConfig();
+    if (_config.multihostService && _config.multihostService.enabled) {
+        if (mhService) {
+            try {
+                mhService.close(function () {
+                    mhService = null;
+                    setTimeout(function () {
+                        startMultihost(_config);
+                    }, 0);
+                });
                 return;
+            } catch (e) {
+                logger.warn('Cannot stop multihost: ' + e);
             }
-            var password = require(__dirname + '/lib/password');
+        }
 
-            password(pass).check(obj.common.password, function (err, res) {
-                if (typeof callback === 'function') callback(err, res);
+        if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
+            logger.warn('Host on this system is not possible, because IP address is for objects is ' + _config.objects.host);
+        } else
+        if ((_config.states.host   || _config.states.host  === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type  === 'file') {
+            logger.warn('Host on this system is not possible, because IP address is for states is ' + _config.states.host);
+        }
+
+        if (_config.multihostService.secure) {
+            objects.getObject('system.config', function (err, obj) {
+                if (obj && obj.native && obj.native.secret) {
+                    tools.decryptPhrase(obj.native.secret, _config.multihostService.password, function (secret) {
+                        _startMultihost(_config, secret);
+                    });
+                } else {
+                    logger.error('Cannot start multihost: no system.config found')
+                }
             });
-        });
-    });
+        } else {
+            _startMultihost(_config, false);
+        }
+
+        return true;
+    } else if (mhService) {
+        try {
+            mhService.close();
+            mhService = null;
+        } catch (e) {
+            logger.warn('Cannot stop multihost: ' + e);
+        }
+        return false;
+    }
 }
 
 // get the list of IP addresses of this host
@@ -172,15 +168,6 @@ function getIPs() {
     return ipArr;
 }
 
-// If some message from logger
-logger.on('logging', function (transport, level, msg/*, meta*/) {
-    if (transport.name !== tools.appName) return;
-    // Send to all adapter, that required logs
-    for (var i = 0; i < logList.length; i++) {
-        states.pushLog(logList[i], {message: msg, severity: level, from: 'host.' + hostname, ts: (new Date()).getTime()});
-    }
-});
-
 // subscribe or unsubscribe loggers
 function logRedirect(isActive, id) {
     if (isActive) {
@@ -188,36 +175,6 @@ function logRedirect(isActive, id) {
     } else {
         var pos = logList.indexOf(id);
         if (pos !== -1) logList.splice(pos, 1);
-    }
-}
-
-logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-logger.info('host.' + hostname + ' Copyright (c) 2014-2017 bluefox, hobbyquaker');
-logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
-logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
-
-// create package.json for npm >= 3.x if not exists
-if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title.toLowerCase()) !== -1) {
-    try {
-        if (!fs.existsSync(__dirname + '/../../package.json')) {
-            fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
-                name: 'iobroker.core',
-                version: '0.1.0',
-                private: true
-            }, null, 2));
-        } else {
-            // npm3 requires version attribute
-            var p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
-            if (!p.version) {
-                fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
-                    name: 'iobroker.core',
-                    version: '1.0.0',
-                    private: true
-                }, null, 2));
-            }
-        }
-    } catch (e) {
-        console.error('Cannot create "' + __dirname + '/../../package.json": ' + e);
     }
 }
 
@@ -318,43 +275,14 @@ function createStates() {
     });
 }
 
-// create states object
-states = createStates();
-
-// Subscribe for all logging objects
-states.subscribe('*.logging');
-
-// Subscribe for all logging objects
-states.subscribe('system.adapter.*.alive');
-
-// Read current state of all log subscribers
-states.getKeys('*.logging', function (err, keys) {
-    if (keys && keys.length) {
-        states.getStates(keys, function (err, obj) {
-            if (obj) {
-                for (var i = 0; i < keys.length; i++) {
-                    // We can JSON.parse, but index is 16x faster
-                    if (obj[i]) {
-                        if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
-                        } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
-                        }
-                    }
-                }
-            }
-        });
-    }
-});
-
 // create "objects" object
 function createObjects() {
     return new Objects({
-        namespace: 'host.' + hostname,
+        namespace:  'host.' + hostname,
         connection: config.objects,
-        logger: logger,
-        hostname: hostname,
-        connected: function (type) {
+        logger:     logger,
+        hostname:   hostname,
+        connected:  function (type) {
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -369,6 +297,7 @@ function createObjects() {
                     if (!isStopping) {
                         // Do not start if we still stopping the instances
                         checkHost(type, function () {
+                            startMultihost(config);
                             setMeta();
                             started = true;
                             getInstances();
@@ -418,8 +347,8 @@ function createObjects() {
                         procs[id].config.deleted        = true;
                         logger.info('host.' + hostname + ' object deleted ' + id);
                     } else {
-                        if (procs[id].config.common.enabled && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
-                        if (!procs[id].config.common.enabled && obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
+                        if (procs[id].config.common.enabled  && !obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" disabled');
+                        if (!procs[id].config.common.enabled &&  obj.common.enabled) logger.info('host.' + hostname + ' "' + id + '" enabled');
                         procs[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
@@ -428,7 +357,8 @@ function createObjects() {
 
                             if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
                                 if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
-                                    setTimeout(function (_id) {
+                                    if (procs[id].restartTimer) clearTimeout(procs[id].restartTimer);
+                                    procs[id].restartTimer = setTimeout(function (_id) {
                                         startInstance(_id);
                                     }, 2500, id);
                                 }
@@ -439,7 +369,9 @@ function createObjects() {
                     } else {
                         var __ipArr = getIPs();
                         if (procs[id].config && (__ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
-                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
+                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                                startInstance(id);
+                            }
                         } else {
                             delete procs[id];
                         }
@@ -450,7 +382,9 @@ function createObjects() {
                     // new adapter
                     if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                         procs[id] = {config: obj};
-                        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) startInstance(id);
+                        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                            startInstance(id);
+                        }
                     }
                 }
             } catch (err) {
@@ -459,9 +393,6 @@ function createObjects() {
         }
     });
 }
-objects = createObjects ();
-
-objects.subscribe('system.adapter.*');
 
 function startAliveInterval() {
     reportStatus();
@@ -1500,6 +1431,15 @@ function processMessage(msg) {
                 }
             })();
             break;
+
+        case 'updateMultihost':
+            (function () {
+                var result = startMultihost();
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, {result: result}, msg.callback);
+                }
+            })();
+            break;
     }
 }
 
@@ -1587,7 +1527,10 @@ function initInstances() {
                     continue;
                 }
                 if (installQueue.indexOf(id) === -1) {
-                    setTimeout(function (_id) {
+                    if (procs[id].restartTimer) {
+                        clearTimeout(procs[id].restartTimer);
+                    }
+                    procs[id].restartTimer = setTimeout(function (_id) {
                         startInstance(_id);
                     }, interval * seconds, id);
 
@@ -1612,7 +1555,10 @@ function initInstances() {
                 }
 
                 if (installQueue.indexOf(id) === -1) {
-                    setTimeout(function (_id) {
+                    if (procs[id].restartTimer) {
+                        clearTimeout(procs[id].restartTimer);
+                    }
+                    procs[id].restartTimer = setTimeout(function (_id) {
                         startInstance(_id);
                     }, interval * seconds, id);
 
@@ -1803,7 +1749,14 @@ function startInstance(id, wakeUp) {
     var name = id.split('.')[2];
     var mode = instance.common.mode;
 
-    if (wakeUp) mode = 'daemon';
+    if (procs[id].restartTimer) {
+        clearTimeout(procs[id].restartTimer);
+        delete procs[id].restartTimer;
+    }
+
+    if (wakeUp) {
+        mode = 'daemon';
+    }
 
     //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
@@ -1911,9 +1864,13 @@ function startInstance(id, wakeUp) {
 
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
-                            if (procs[id].stopping !== undefined) delete procs[id].stopping;
+                            if (procs[id].stopping !== undefined) {
+                                delete procs[id].stopping;
+                            }
 
-                            if (procs[id].process) delete procs[id].process;
+                            if (procs[id].process) {
+                                delete procs[id].process;
+                            }
 
                             if (isStopping) {
                                 for (var i in procs) {
@@ -1938,13 +1895,18 @@ function startInstance(id, wakeUp) {
                         }
                     }
 
-                    if (procs[id] && procs[id].process) delete procs[id].process;
+                    if (procs[id] && procs[id].process) {
+                        delete procs[id].process;
+                    }
                     if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
 
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
                         //noinspection JSUnresolvedVariable
-                        setTimeout(function (_id) {
+                        if (procs[id].restartTimer) {
+                            clearTimeout(procs[id].restartTimer);
+                        }
+                        procs[id].restartTimer = setTimeout(function (_id) {
                             startInstance(_id);
                         }, code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
@@ -2069,11 +2031,11 @@ function stopInstance(id, callback) {
         if (procs[id].process) {
             procs[id].stopping = true;
             procs[id].process.kill();
-            delete(procs[id].process);
+            delete procs[id].process;
         }
         if (procs[id].schedule) {
             procs[id].schedule.cancel();
-            delete(procs[id].schedule);
+            delete procs[id].schedule;
         }
 
         if (procs[id].subscribe) {
@@ -2109,33 +2071,48 @@ function stopInstance(id, callback) {
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
                     var timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
-                    sendTo(instance._id, 'stopInstance', null, function () {
+                    sendTo(instance._id, 'stopInstance', null, function (result) {
                         if (timeout) {
                             clearTimeout(timeout);
                             timeout = null;
                         }
-                        logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
-                        procs[id].stopping = true;
-                        procs[id].process.kill();
-                        delete(procs[id].process);
-                        if (typeof callback === 'function') callback();
-                    });
-                    // If no response from adapter, kill it in 1 second
-                    timeout = setTimeout(function () {
+                        logger.info('host.' + hostname + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id].process) {
-                            logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
                             procs[id].process.kill();
-                            delete(procs[id].process);
-                            if (typeof callback === 'function') callback();
+                            delete procs[id].process;
                         }
-                    }, 1000);
+
+                        if (typeof callback === 'function') {
+                            callback();
+                            callback = null;
+                        }
+                    });
+
+                    var timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
+                    // If no response from adapter, kill it in 1 second
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                        if (procs[id].process) {
+                            logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
+                            procs[id].stopping = true;
+                            procs[id].process.kill();
+                            delete procs[id].process;
+                        }
+                        if (typeof callback === 'function') {
+                            callback();
+                            callback = null;
+                        }
+                    }, timeoutDuration);
                 } else {
                     logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
                     procs[id].process.kill();
-                    delete(procs[id].process);
-                    if (typeof callback === 'function') callback();
+                    delete procs[id].process;
+                    if (typeof callback === 'function') {
+                        callback();
+                        callback = null;
+                    }
                 }
             }
             break;
@@ -2148,7 +2125,10 @@ function stopInstance(id, callback) {
                 delete procs[id].schedule;
                 logger.info('host.' + hostname + ' stopInstance canceled schedule ' + instance._id);
             }
-            if (typeof callback === 'function') callback();
+            if (typeof callback === 'function') {
+                callback();
+                callback = null;
+            }
             break;
 
         case 'subscribe':
@@ -2176,8 +2156,11 @@ function stopInstance(id, callback) {
                 logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
                 procs[id].process.kill();
-                delete(procs[id].process);
-                if (typeof callback === 'function') callback();
+                delete procs[id].process;
+                if (typeof callback === 'function') {
+                    callback();
+                    callback = null;
+                }
             }
             break;
 
@@ -2312,49 +2295,167 @@ function stop() {
     });
 }
 
-process.on('SIGINT', function () {
-    logger.info('host.' + hostname + ' received SIGINT');
-    stop();
-});
-
-process.on('SIGTERM', function () {
-    logger.info('host.' + hostname + ' received SIGTERM');
-    stop();
-});
-
-process.on('uncaughtException', function (err) {
-    if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
-        logger.error('fragmentedOperation: restart objects');
-        // restart objects
-        objects.destroy();
-        objects = null;
-        // Give time to close the objects
-        setTimeout(function () {
-            objects = createObjects();
-        }, 3000);
-        return;
-    }
-
-    // If by terminating one more exception => stop immediately to break the circle
-    if (uncaughtExceptionCount) {
-        console.error(err.message || err);
-        if (err.stack) console.error(err.stack);
-        process.exit(2);
-        return;
-    }
-    uncaughtExceptionCount++;
-    if (typeof err === 'object') {
-        if (err.errno === 'EADDRINUSE') {
-            logger.error('Another instance is running or some application uses port!');
-            logger.error('uncaught exception: ' + err.message);
-        } else {
-            logger.error('uncaught exception: ' + err.message);
-            logger.error(err.stack);
-        }
+// bootstrap
+function init() {
+    // Get "objects" object
+// If "file" and on the local machine
+    if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
+        Objects = require(__dirname + '/lib/objects/objectsInMemServer');
     } else {
-        logger.error('uncaught exception: ' + err);
+        Objects = require(__dirname + '/lib/objects');
     }
-    stop();
-    // Restart itself
-    processMessage({command: 'cmdExec', message: {data: '_restart'}});
-});
+
+    // Get "states" object
+    if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0')) {
+        States  = require(__dirname + '/lib/states/statesInMemServer');
+    } else {
+        States  = require(__dirname + '/lib/states');
+    }
+
+    // Detect if outputs to console are forced. By default they are disabled and redirected to log file
+    if (config.log.noStdout && process.argv && (process.argv.indexOf('--console') !== -1 || process.argv.indexOf('--logs') !== -1)) {
+        config.log.noStdout = false;
+    }
+
+    // Detect if controller runs as a linux-daemon
+    if (process.argv.indexOf('start') !== -1) {
+        isDaemon = true;
+        config.log.noStdout = true;
+        logger = require(__dirname + '/lib/logger.js')(config.log);
+    } else {
+        logger = require(__dirname + '/lib/logger.js')(config.log);
+    }
+
+    // Delete all log files older than x das
+    logger.activateDateChecker(true, config.log.maxDays);
+
+    // If installed as npm module
+    adapterDir = adapterDir.split('/');
+    if (adapterDir.pop() === 'node_modules') {
+        adapterDir = adapterDir.join('/');
+    } else {
+        adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
+    }
+
+    // If some message from logger
+    logger.on('logging', function (transport, level, msg/*, meta*/) {
+        if (transport.name !== tools.appName) return;
+        // Send to all adapter, that required logs
+        for (var i = 0; i < logList.length; i++) {
+            states.pushLog(logList[i], {message: msg, severity: level, from: 'host.' + hostname, ts: (new Date()).getTime()});
+        }
+    });
+
+    logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
+    logger.info('host.' + hostname + ' Copyright (c) 2014-2017 bluefox, hobbyquaker');
+    logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
+    logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
+
+    // create package.json for npm >= 3.x if not exists
+    if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title.toLowerCase()) !== -1) {
+        try {
+            if (!fs.existsSync(__dirname + '/../../package.json')) {
+                fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
+                    name: 'iobroker.core',
+                    version: '0.1.0',
+                    private: true
+                }, null, 2));
+            } else {
+                // npm3 requires version attribute
+                var p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
+                if (!p.version) {
+                    fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
+                        name: 'iobroker.core',
+                        version: '1.0.0',
+                        private: true
+                    }, null, 2));
+                }
+            }
+        } catch (e) {
+            console.error('Cannot create "' + __dirname + '/../../package.json": ' + e);
+        }
+    }
+
+    // create states object
+    states = createStates();
+
+    // Subscribe for all logging objects
+    states.subscribe('*.logging');
+
+    // Subscribe for all logging objects
+    states.subscribe('system.adapter.*.alive');
+
+    // Read current state of all log subscribers
+    states.getKeys('*.logging', function (err, keys) {
+        if (keys && keys.length) {
+            states.getStates(keys, function (err, obj) {
+                if (obj) {
+                    for (var i = 0; i < keys.length; i++) {
+                        // We can JSON.parse, but index is 16x faster
+                        if (obj[i]) {
+                            if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                            } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                                logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    objects = createObjects();
+
+    objects.subscribe('system.adapter.*');
+
+    process.on('SIGINT', function () {
+        logger.info('host.' + hostname + ' received SIGINT');
+        stop();
+    });
+
+    process.on('SIGTERM', function () {
+        logger.info('host.' + hostname + ' received SIGTERM');
+        stop();
+    });
+
+    process.on('uncaughtException', function (err) {
+        if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
+            logger.error('fragmentedOperation: restart objects');
+            // restart objects
+            objects.destroy();
+            objects = null;
+            // Give time to close the objects
+            setTimeout(function () {
+                objects = createObjects();
+            }, 3000);
+            return;
+        }
+
+        // If by terminating one more exception => stop immediately to break the circle
+        if (uncaughtExceptionCount) {
+            console.error(err.message || err);
+            if (err.stack) console.error(err.stack);
+            process.exit(2);
+            return;
+        }
+        uncaughtExceptionCount++;
+        if (typeof err === 'object') {
+            if (err.errno === 'EADDRINUSE') {
+                logger.error('Another instance is running or some application uses port!');
+                logger.error('uncaught exception: ' + err.message);
+            } else {
+                logger.error('uncaught exception: ' + err.message);
+                logger.error(err.stack);
+            }
+        } else {
+            logger.error('uncaught exception: ' + err);
+        }
+        stop();
+        // Restart itself
+        processMessage({command: 'cmdExec', message: {data: '_restart'}});
+    });
+
+}
+
+init();
