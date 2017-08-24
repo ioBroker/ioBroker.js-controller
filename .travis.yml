@@ -8,7 +8,6 @@ node_js:
   - '0.12'
   - '4'
   - '6'
-  - '7'
   - '8'
 before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi'
@@ -19,7 +18,7 @@ before_install:
 before_script:
   - sudo chmod ogu+x test/redis-socket/setup-socket.sh
 script:
-  - npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi
+  - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
 env:
   - CXX=g++-4.8
 addons:
