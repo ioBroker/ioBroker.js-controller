@@ -28,7 +28,7 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 
 ## Manual installation of ioBroker.js-controller on Debian based Linux (Raspbian, Ubuntu, ...)
 
-### [Node.js]
+### Install Node.js
 
 ```
 sudo apt-get update
@@ -46,6 +46,8 @@ sudo cd /opt/iobroker
 sudo chmod 777 /opt/iobroker
 sudo npm install iobroker --unsafe-perm
 ```
+
+After that the ioBroker should run and be available in browser under ```http://<ip>:8081/```
 
 ### Start ioBroker controller on linux
 
