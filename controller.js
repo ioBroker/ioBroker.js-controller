@@ -1006,6 +1006,9 @@ function getVersionFromHost(hostId, callback) {
 // Process message to controller, like execute some script
 function processMessage(msg) {
     var ioPack;
+    // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
+    // and iobroker.socketio/lib/socket.js
+
     switch (msg.command) {
         case 'cmdExec':
             var spawn = require('child_process').spawn;
