@@ -1,12 +1,12 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.1.4",
+        "version":    "1.2.0",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
-            "1.1.4": {
+            "1.2.0": {
                 "en": "XXX",
                 "de": "XXX",
                 "ru": "XXX"
