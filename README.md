@@ -16,7 +16,7 @@ Official Web-Site: http://iobroker.net
 
 Forum: http://forum.iobroker.net
 
-Issue Tracker: http://iobroker.net:8000 (please leave your issues there and not on github)
+Trello: https://trello.com/b/q0SZKdfW/iobroker-whiteboard
 
 ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
 
@@ -28,28 +28,26 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 
 ## Manual installation of ioBroker.js-controller on Debian based Linux (Raspbian, Ubuntu, ...)
 
+### Install Node.js
 
-### [Node.js](http://nodejs.org) (Node.js version >= 0.8, including npm)
-
-* ```wget http://download.iobroker.org/nodejs_0.10.22-1_armhf.deb ; sudo dpkg -i nodejs_0.10.22-1_armhf.deb ; rm nodejs_0.10.22-1_armhf.deb```
-#### x86/amd64 Linux, Windows, OSX
-[http://nodejs.org/download/](http://nodejs.org/download/)
-
-#### Debian package for ARM (Raspbian, Cubian, ...)
 ```
-wget http://ccu.io.mainskater.de/nodejs_0.10.22-1_armhf.deb
-sudo dpkg -i nodejs_0.10.22-1_armhf.deb
-rm nodejs_0.10.22-1_armhf.deb
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install curl build-essential
+sudo curl -sL https://deb.nodesource.com/setup_6.x | sudo bash -
+sudo apt-get install -y nodejs
 ```
 
-### Install js-controller on linux
+### Install ioBroker on linux
 
-* Create and change to the directory under which you want to install ioBroker.
+```
+sudo mkdir /opt/iobroker
+sudo cd /opt/iobroker
+sudo chmod 777 /opt/iobroker
+sudo npm install iobroker --unsafe-perm
+```
 
-    ```sudo mkdir /opt/iobroker ; sudo chown $USER.$USER /opt/iobroker ; cd /opt/iobroker```
-* install npm packet
-
-    ```npm install iobroker```
+After that the ioBroker should run and be available in browser under ```http://<ip>:8081/```
 
 ### Start ioBroker controller on linux
 
@@ -66,6 +64,7 @@ or
 
     ```mkdir C:/iobroker```
     ```cd C:/iobroker```
+
 * install npm packet from created directory
 
     ```npm install iobroker```
@@ -85,17 +84,6 @@ The admin adapter starts a web-server that hosts the Admin UI. Default port is 8
 If port 8081 is occupied, you can install second Admin UI on alternate port and change port for first admin UI:
 
 * run ```./iobroker add admin --enabled --port 8090``` and go to the http://&lt;iobroker&gt;:8090/. Of course you can change port 8090 to other one.
-
-### Install more adapters
-
-* ```./iobroker add <adapter-name>```
-* ```./iobroker add <adapter-url>``` (todo)
-
-After Installation of an Adapter you should edit it's configuration. Go to the tab "instances" in the Admin UI.
-By clicking a adapter instance you can directly enable it by checking the enabled checkbox. Press enter to save or escape
-to cancel.
-To edit the adapters configuration mark the adapter row and click the note icon.
-To enable or disable the adapter click on the pencil icon in the according row.
 
 ## Using REDIS as States-DB
 There is a possibility to use REDIS as states database. It is reasonable to do that for big installations or for systems with performance problems.

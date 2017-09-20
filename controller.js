@@ -1006,6 +1006,9 @@ function getVersionFromHost(hostId, callback) {
 // Process message to controller, like execute some script
 function processMessage(msg) {
     var ioPack;
+    // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
+    // and iobroker.socketio/lib/socket.js
+
     switch (msg.command) {
         case 'cmdExec':
             var spawn = require('child_process').spawn;
@@ -1678,7 +1681,7 @@ function storePids() {
                 pids.push(process.pid);
             }
             fs.writeFileSync(__dirname + '/pids.txt', JSON.stringify(pids));
-        }, 500);
+        }, 1000);
     }
 }
 
@@ -1734,6 +1737,39 @@ function installAdapters() {
             installQueue.shift();
             installAdapters();
         }, 500);
+    }
+}
+
+function cleanErrors(id, now, doOutput) {
+    if (!procs[id].errors || !procs[id].errors.length) return;
+
+    now = now || new Date().getTime();
+
+    if (!doOutput && procs[id].lastCleanErrors && now - procs[id].lastCleanErrors < 1000) return;
+
+    procs[id].lastCleanErrors = now;
+
+    // output of errors into log
+    if (doOutput) {
+        for (var i = 0; i < procs[id].errors.length; i++) {
+            if (now - procs[id].errors[i].ts < 30000) {
+                var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').split('\n');
+                for (var k = 0; k < lines.length; k++) {
+                    if (lines[k]) {
+                        logger.error('Caught by controller[' + i + ']: ' + lines[k]);
+                    }
+                }
+            }
+        }
+        procs[id].errors = [];
+    } else {
+        // delete to old errors
+        for (var e = procs[id].errors.length - 1; e >= 0; e--) {
+            if (now - procs[id].errors[e].ts > 30000) {
+                procs[id].errors.splice(0, e);
+                break;
+            }
+        }
     }
 }
 
@@ -1841,8 +1877,21 @@ function startInstance(id, wakeUp) {
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
-                procs[id].process = cp.fork(fileNameFull, args);
+                procs[id].process = cp.fork(fileNameFull, args, {stdio: 'pipe', silent: true});
+
+                // catch error output
+                procs[id].process.stderr.on('data', function (data) {
+                    var text = data.toString();
+                    // show for debug
+                    console.error(text);
+                    procs[id].errors = procs[id].errors || [];
+                    var now = new Date().getTime();
+                    procs[id].errors.push({ts: now, text: text});
+                    cleanErrors(id, now);
+                });
+
                 storePids(); // Store all pids to make possible kill them all
+
                 procs[id].process.on('exit', function (code, signal) {
                     outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
@@ -1854,6 +1903,9 @@ function startInstance(id, wakeUp) {
                         outputCount++;
                         states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
                     }
+
+                    // show stored errors
+                    cleanErrors(id, null, code !== 4294967196);
 
                     if (mode !== 'once') {
                         if (signal) {
