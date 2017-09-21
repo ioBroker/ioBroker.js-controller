@@ -1753,7 +1753,7 @@ function cleanErrors(id, now, doOutput) {
     if (doOutput) {
         for (var i = 0; i < procs[id].errors.length; i++) {
             if (now - procs[id].errors[i].ts < 30000) {
-                var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').split('\n');
+                var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', '').split('\n');
                 for (var k = 0; k < lines.length; k++) {
                     if (lines[k]) {
                         logger.error('Caught by controller[' + i + ']: ' + lines[k]);
