@@ -1,0 +1,4311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: adapter.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: adapter.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/* jshint -W097 */// jshint strict:false
+/*jslint node: true */
+
+// This is file, that makes all communication with controller. All options are optional except name.
+// following options are available:
+//   name:          name of the adapter. Must be exactly the same as directory name.
+//   dirname:       adapter directory name
+//   instance:      instance number of adapter
+//   objects:       true or false, if desired to have oObjects. This is a list with all states, channels and devices of this adapter and it will be updated automatically.
+//   states:        true or false, if desired to have oStates. This is a list with all states values and it will be updated automatically.
+//   systemConfig:  if required system configuration. Store it in systemConfig attribute
+//   objectChange:  callback function (id, obj) that will be called if object changed
+//   stateChange:   callback function (id, obj) that will be called if state changed
+//   message:       callback to inform about new message the adapter
+//   unload:        callback to stop the adapter
+//   config:        configuration of the connection to controller
+//   noNamespace:   return short names of objects and states in objectChange and in stateChange
+
+var net =               require('net');
+var fs =                require('fs');
+var extend =            require('node.extend');
+var util =              require('util');
+var EventEmitter =      require('events').EventEmitter;
+var tools =             require(__dirname + '/tools');
+var getConfigFileName = tools.getConfigFileName;
+var schedule;
+
+var password =          require(__dirname + '/password');
+var config =            null;
+var that;
+var defaultObjs;
+
+if (fs.existsSync(getConfigFileName())) {
+    config = JSON.parse(fs.readFileSync(getConfigFileName()));
+    if (!config.states)  config.states  = {type: 'file'};
+    if (!config.objects) config.objects = {type: 'file'};
+} else {
+    throw 'Cannot find ' + getConfigFileName();
+}
+
+/**
+ * Adapter class
+ *
+ * @class
+ * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
+ * @return {object} object instance
+ */
+function Adapter(options) {
+    if (!(this instanceof Adapter)) return new Adapter(options);
+
+    if (!options || (!config &amp;&amp; !options.config)) throw 'Configuration not set!';
+
+    if (options.config &amp;&amp; !options.config.log) options.config.log = config.log;
+
+    config = options.config || config;
+    var regUser = /^system\.user\./;
+
+    that = this;
+
+    // possible arguments
+    // 0,1,.. - instance
+    // info, debug, warn, error - log level
+    // --force
+    // --logs
+    // --silent
+    // --install
+    if (process.argv) {
+        for (var a = 1; a &lt; process.argv.length; a++) {
+            if (process.argv[a] === 'info' || process.argv[a] === 'debug' || process.argv[a] === 'error' || process.argv[a] === 'warn') {
+                config.log.level = process.argv[a];
+            } else if (process.argv[a] === '--silent') {
+                config.isInstall = true;
+                process.argv[a] = '--install';
+            } else if (process.argv[a] === '--install') {
+                config.isInstall = true;
+            } else if (process.argv[a] === '--logs') {
+                config.consoleOutput = true;
+            } else if (process.argv[a] === '--force') {
+                config.forceIfDisabled = true;
+            } else if (parseInt(process.argv[a], 10).toString() === process.argv[a]) {
+                config.instance = parseInt(process.argv[a], 10);
+            }
+        }
+    }
+
+    config.log.level = config.log.level || 'info';
+    if (config.log.noStdout &amp;&amp; process.argv &amp;&amp; process.argv.indexOf('--console') !== -1) {
+        config.log.noStdout = false;
+    }
+
+    var logger = require(__dirname + '/logger.js')(config.log);
+
+    // enable "var adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
+    if (typeof options === 'string') options = {name: options};
+
+    if (!options) throw 'Empty options!';
+    if (!options.name) throw 'No name of adapter!';
+
+    // If installed as npm module
+    if (options.dirname) {
+        this.adapterDir = options.dirname.replace(/\\/g, '/');
+    } else {
+        this.adapterDir = __dirname.replace(/\\/g, '/').split('/');
+        // it can be .../node_modules/appName.js-controller/node_modules/appName.adapter
+        //           .../appName.js-controller/node_modules/appName.adapter
+        //           .../appName.js-controller/adapter/adapter
+        // remove "lib"
+        this.adapterDir.pop();
+        var jsc = this.adapterDir.pop();
+        if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') &amp;&amp; this.adapterDir.pop() === 'node_modules') {
+            // js-controller is installed as npm
+            var appName = tools.appName.toLowerCase();
+            this.adapterDir = this.adapterDir.join('/');
+            if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.' + options.name)) {
+                this.adapterDir += '/node_modules/' + appName + '.' + options.name;
+            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
+                this.adapterDir += '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name;
+            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/adapter/' + options.name)) {
+                this.adapterDir += '/node_modules/' + appName + '.js-controller/adapter/' + options.name;
+            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
+                this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
+            } else {
+                logger.error('Cannot find directory of adapter ' + options.name);
+                process.exit(10);
+            }
+        } else {
+            this.adapterDir = __dirname.replace(/\\/g, '/');
+            // remove "/lib"
+            this.adapterDir = this.adapterDir.substring(0, this.adapterDir.length - 4);
+            if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.' + options.name)) {
+                this.adapterDir += '/node_modules/' + tools.appName + '.' + options.name;
+            } else {
+                logger.error('Cannot find directory of adapter ' + options.name);
+                process.exit(10);
+            }
+        }
+    }
+
+    if (fs.existsSync(this.adapterDir + '/package.json')) {
+        this.pack = JSON.parse(fs.readFileSync(this.adapterDir + '/package.json'));
+    } else {
+        logger.info('Non npm module. No package.json');
+    }
+
+    if (!this.pack || !this.pack.io) {
+        if (fs.existsSync(this.adapterDir + '/io-package.json')) {
+            this.ioPack = JSON.parse(fs.readFileSync(this.adapterDir + '/io-package.json'));
+        } else {
+            logger.error('Cannot find: ' + this.adapterDir + '/io-package.json');
+            process.exit(10);
+        }
+    } else {
+        this.ioPack = this.pack.io;
+    }
+
+    // If required system configuration. Store it in systemConfig attribute
+    if (options.systemConfig) that.systemConfig = config;
+
+    var States  = require(__dirname + '/states');
+    var Objects = require(__dirname + '/objects');
+
+    var os = require('os');
+    var ifaces = os.networkInterfaces();
+    var ipArr = [];
+    for (var dev in ifaces) {
+        if (!ifaces.hasOwnProperty(dev)) continue;
+        /*jshint loopfunc:true */
+        ifaces[dev].forEach(function (details) {
+            if (!details.internal) ipArr.push(details.address);
+        });
+    }
+
+    var instance = (options.instance !== undefined) ? options.instance : (config.instance || 0);
+
+    that.name           = options.name;
+    that.namespace      = options.name + '.' + instance;
+    that.users          = []; // cache of user groups
+    that.defaultHistory = null;
+    that.autoSubscribe  = null; // array of instances, that support auto subscribe
+
+    var reportInterval;
+
+    var callbackId = 1;
+    that.getPortRunning = null;
+
+    /**
+     * Helper function to find next free port
+     *
+     * Looks for first free TCP port starting with given one:
+     * &lt;pre>&lt;code>
+     *     adapter.getPort(8081, function (port) {
+     *         adapter.log.debug('Followinf port is free: ' + port);
+     *     });
+     * &lt;/code>&lt;/pre>
+     *
+     * @alias getPort
+     * @memberof Adapter
+     * @param {number} port port number to start the search for free port
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>function (port) {}&lt;/code>&lt;/pre>
+     */
+    that.getPort = function adapterGetPort(port, callback) {
+        port = parseInt(port);
+        that.getPortRunning = {port: port, callback: callback};
+        var server = net.createServer();
+        try {
+
+            server.listen(port, function (err) {
+                server.once('close', function () {
+                    if (typeof callback === 'function') {
+                        //that.getPortRunning = null;
+                        callback(port);
+                    }
+                });
+                server.close();
+            });
+            server.on('error', function (err) {
+                setTimeout(function () {
+                    that.getPort(port + 1, callback);
+                }, 100);
+            });
+        } catch (e) {
+            setTimeout(function () {
+                that.getPort(port + 1, callback);
+            }, 0);
+        }
+    };
+
+    /**
+     * validates user and password
+     *
+     * Looks for first free TCP port starting with given one:
+     * &lt;pre>&lt;code>
+     *     adapter.getPort(8081, function (port) {
+     *         adapter.log.debug('Followinf port is free: ' + port);
+     *     });
+     * &lt;/code>&lt;/pre>
+     *
+     * @alias checkPassword
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} pw password as text
+     * @param {object} options optional user context
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>
+     *            function (result) {
+     *              adapter.log.debug('User is valid');
+     *            }
+     *        &lt;/code>&lt;/pre>
+     */
+    that.checkPassword = function checkPassword(user, pw, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (!callback) throw 'checkPassword: no callback';
+
+        that.getForeignObject('system.user.' + user, options, function (err, obj) {
+            if (err || !obj || !obj.common || (!obj.common.enabled &amp;&amp; user !== 'admin')) {
+                callback(false);
+                return;
+            }
+            password(pw).check(obj.common.password, function (err, res) {
+                callback(res);
+            });
+        });
+    };
+
+    /**
+     * sets the user's password
+     *
+     * @alias setPassword
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} pw password as text
+     * @param {object} options optional user context
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>
+     *            function (err) {
+     *              if (err) adapter.log.error('Cannot set password: ' + err);
+     *            }
+     *        &lt;/code>&lt;/pre>
+     */
+    that.setPassword = function setPassword(user, pw, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options  = null;
+        }
+
+        that.getForeignObject('system.user.' + user, options, function (err, obj) {
+            if (err || !obj) {
+                if (typeof callback === 'function') callback('User does not exist');
+                return;
+            }
+            password(pw).hash(null, null, function (err, res) {
+                if (err) {
+                    if (typeof callback === 'function') callback(err);
+                    return;
+                }
+                that.extendForeignObject('system.user.' + user, {
+                    common: {
+                        password: res
+                    }
+                }, options, function () {
+                    if (typeof callback === 'function') callback(null);
+                });
+            });
+        });
+
+    };
+
+    /**
+     * returns if user exists and is in the group
+     *
+     * This function used mostly internally and the adapter developer do not require it.
+     *
+     * @alias checkGroup
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} group group name
+     * @param {object} options optional user context
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>
+     *            function (result) {
+     *              if (result) adapter.log.debug('User exists and in the group');
+     *            }
+     *        &lt;/code>&lt;/pre>
+     */
+    that.checkGroup = function checkGroup(user, group, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options  = null;
+        }
+
+        that.getForeignObject('system.user.' + user, options, function (err, obj) {
+            if (err || !obj) {
+                callback(false);
+                return;
+            }
+            that.getForeignObject('system.group.' + group, options, function (err, obj) {
+                if (err || !obj) {
+                    callback(false);
+                    return;
+                }
+                if (obj.common.members.indexOf('system.user.' + user) !== -1) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            });
+        });
+    };
+
+    /**
+     * get the user permissions
+     *
+     * This function used mostly internally and the adapter developer do not require it.
+     * The function reads permissions of user's groups (it can be more than one) and merge permissions together
+     *
+     * @alias calculatePermissions
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} commandsPermissions object that describes the access rights like
+     *     &lt;pre>&lt;code>
+     *         // static information
+     *         var commandsPermissions = {
+     *            getObject:          {type: 'object',    operation: 'read'},
+     *            getObjects:         {type: 'object',    operation: 'list'},
+     *            getObjectView:      {type: 'object',    operation: 'list'},
+     *            setObject:          {type: 'object',    operation: 'write'},
+     *            subscribeObjects:   {type: 'object',    operation: 'read'},
+     *            unsubscribeObjects: {type: 'object',    operation: 'read'},
+     *
+     *            getStates:          {type: 'state',     operation: 'list'},
+     *            getState:           {type: 'state',     operation: 'read'},
+     *            setState:           {type: 'state',     operation: 'write'},
+     *            getStateHistory:    {type: 'state',     operation: 'read'},
+     *            subscribe:          {type: 'state',     operation: 'read'},
+     *            unsubscribe:        {type: 'state',     operation: 'read'},
+     *            getVersion:         {type: '',          operation: ''},
+     *
+     *            httpGet:            {type: 'other',     operation: 'http'},
+     *            sendTo:             {type: 'other',     operation: 'sendto'},
+     *            sendToHost:         {type: 'other',     operation: 'sendto'},
+     *
+     *            readFile:           {type: 'file',      operation: 'read'},
+     *            readFile64:         {type: 'file',      operation: 'read'},
+     *            writeFile:          {type: 'file',      operation: 'write'},
+     *            writeFile64:        {type: 'file',      operation: 'write'},
+     *            unlink:             {type: 'file',      operation: 'delete'},
+     *            rename:             {type: 'file',      operation: 'write'},
+     *            mkdir:              {type: 'file',      operation: 'write'},
+     *            readDir:            {type: 'file',      operation: 'list'},
+     *            chmodFile:          {type: 'file',      operation: 'write'},
+     *
+     *            authEnabled:        {type: '',          operation: ''},
+     *            disconnect:         {type: '',          operation: ''},
+     *            listPermissions:    {type: '',          operation: ''},
+     *            getUserPermissions: {type: 'object',    operation: 'read'}
+     *         };
+     *        &lt;/code>&lt;/pre>
+     * @param {object} options optional user context
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>
+     *            function (acl) {
+     *              // Access control object for admin looks like:
+     *              // {
+     *              //    file: {
+     *              //         read:       true,
+     *              //         write:      true,
+     *              //         'delete':   true,
+     *              //         create:     true,
+     *              //         list:       true
+     *              //     },
+     *              //     object: {
+     *              //         read:       true,
+     *              //         write:      true,
+     *              //         'delete':   true,
+     *              //         list:       true
+     *              //     },
+     *              //     state: {
+     *              //         read:       true,
+     *              //         write:      true,
+     *              //         'delete':   true,
+     *              //         create:     true,
+     *              //         list:       true
+     *              //     },
+     *              //     user: 'admin',
+     *              //     users:  {
+     *              //         read:       true,
+     *              //         write:      true,
+     *              //         create:     true,
+     *              //         'delete':   true,
+     *              //         list:       true
+     *              //     },
+     *              //     other: {
+     *              //         execute:    true,
+     *              //         http:       true,
+     *              //         sendto:     true
+     *              //     },
+     *              //     groups: ['administrator'] // can be more than one
+     *              // }
+     *            }
+     *        &lt;/code>&lt;/pre>
+     */
+    that.calculatePermissions = function (user, commandsPermissions, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options  = null;
+        }
+
+        if (!regUser.test(user)) user = 'system.user.' + user;
+        // read all groups
+        var acl = {user: user};
+        if (user === 'system.user.admin') {
+            acl.groups = ['system.group.administrator'];
+            for (var c in commandsPermissions) {
+                if (!commandsPermissions[c].type) continue;
+                acl[commandsPermissions[c].type] = acl[commandsPermissions[c].type] || {};
+                acl[commandsPermissions[c].type][commandsPermissions[c].operation] = true;
+            }
+
+            if (callback) callback(acl);
+            return;
+        }
+        acl.groups = [];
+        that.getForeignObjects('*', 'group', options, function (err, groups) {
+            // aggregate all groups permissions, where this user is
+            if (groups) {
+                for (var g in groups) {
+                    if (groups[g] &amp;&amp;
+                        groups[g].common &amp;&amp;
+                        groups[g].common.members &amp;&amp;
+                        groups[g].common.members.indexOf(user) !== -1) {
+                        acl.groups.push(groups[g]._id);
+                        if (groups[g]._id === 'system.group.administrator') {
+                            acl = {
+                                file: {
+                                    read:       true,
+                                    write:      true,
+                                    'delete':   true,
+                                    create:     true,
+                                    list:       true
+                                },
+                                object: {
+                                    read:       true,
+                                    write:      true,
+                                    'delete':   true,
+                                    list:       true
+                                },
+                                state: {
+                                    read:       true,
+                                    write:      true,
+                                    'delete':   true,
+                                    create:     true,
+                                    list:       true
+                                },
+                                user: user,
+                                users:  {
+                                    read:       true,
+                                    write:      true,
+                                    create:     true,
+                                    'delete':   true,
+                                    list:       true
+                                },
+                                other: {
+                                    execute:    true,
+                                    http:       true,
+                                    sendto:     true
+                                },
+                                groups: acl.groups
+                            };
+                            break;
+                        }
+
+                        var gAcl = groups[g].common.acl;
+                        for (var type in gAcl) {
+                            if (!gAcl.hasOwnProperty(type)) continue;
+                            acl[type] = acl[type] || {};
+                            for (var op in gAcl[type]) {
+                                acl[type][op] = acl[type][op] || gAcl[type][op];
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (callback) callback(acl);
+        });
+    };
+
+    /**
+     * returns SSL certificates by name
+     *
+     * This function returns SSL certificates (private key, public cert and chained certificate).
+     * Names are defined in the system's configuration in admin, e.g. "defaultPrivate", "defaultPublic".
+     * The result can be directly used for creation of https server.
+     *
+     * @alias getCertificates
+     * @memberof Adapter
+     * @param {string} publicName public certificate name
+     * @param {string} privateName private certificate name
+     * @param {string} chainedName optional chained certificate name
+     * @param {function} callback return result
+     *        &lt;pre>&lt;code>
+     *            function (err, certs) {
+     *              adapter.log.debug('private key: ' + certs.key);
+     *              adapter.log.debug('public cert: ' + certs.cert);
+     *              adapter.log.debug('chained cert: ' + certs.ca);
+     *            }
+     *        &lt;/code>&lt;/pre>
+     */
+    that.getCertificates = function (publicName, privateName, chainedName, callback) {
+        if (typeof publicName === 'function') {
+            callback = publicName;
+            publicName = null;
+        }
+        if (typeof privateName === 'function') {
+            callback = privateName;
+            privateName = null;
+        }
+        if (typeof chainedName === 'function') {
+            callback = chainedName;
+            chainedName = null;
+        }
+        publicName   = publicName || that.config.certPublic;
+        privateName = privateName || that.config.certPrivate;
+        chainedName = chainedName || that.config.certChained;
+
+        // Load certificates
+        that.getForeignObject('system.certificates', function (err, obj) {
+            if (err || !obj ||
+                !obj.native.certificates ||
+                !publicName ||
+                !privateName ||
+                !obj.native.certificates[publicName] ||
+                !obj.native.certificates[privateName] ||
+                (chainedName &amp;&amp; !obj.native.certificates[chainedName])
+            ) {
+                that.log.error('Cannot enable secure web server, because no certificates found: ' + publicName + ', ' + privateName + ', ' + chainedName);
+                if (callback) callback('Not found');
+            } else {
+                var ca = undefined;
+                if (chainedName) {
+                    var chained = obj.native.certificates[chainedName].split('-----END CERTIFICATE-----\r\n');
+                    ca = [];
+                    for (var c = 0; c &lt; chained.length; c++) {
+                        if (chained[c].replace(/[\r\n|\r|\n]+/, '').trim()) {
+                            ca.push(chained[c] + '-----END CERTIFICATE-----\r\n');
+                        }
+                    }
+                }
+                if (callback) {
+                    callback(null, {
+                        key:  obj.native.certificates[privateName],
+                        cert: obj.native.certificates[publicName],
+                        ca:   ca
+                    }, obj.native.letsEncrypt);
+                }
+            }
+        });
+    };
+
+    // Can be later deleted if no more appears
+    that.inited = false;
+
+    initObjects(function () {
+        if (that.inited) {
+            if (that.log) that.log.warn('Reconnection to DB.');
+            return;
+        }
+        
+        that.inited = true;
+
+        // auto oObjects
+        if (options.objects) {
+            that.getAdapterObjects(function (objs) {
+                that.oObjects = objs;
+                that.subscribeObjects('*');
+                initStates(prepareInitAdapter);
+            });
+        } else {
+            initStates(prepareInitAdapter);
+        }
+    });
+
+    function prepareInitAdapter() {
+        that.getForeignState('system.adapter.' + that.namespace + '.alive', function (err, res) {
+            if (options.instance !== undefined) {
+                initAdapter(options);
+            } else
+            if (!config.isInstall &amp;&amp; res &amp;&amp; res.val === true) {
+                logger.error(options.name + '.' + instance + ' already running');
+                process.exit(7);
+            } else {
+                that.getForeignObject('system.adapter.' + that.namespace, function (err, res) {
+                    if ((err || !res) &amp;&amp; !config.isInstall) {
+                        logger.error(options.name + '.' + instance + ' invalid config');
+                        process.exit(2);
+                    } else {
+                        initAdapter(res);
+                    }
+                });
+            }
+        });
+    }
+
+    function autoSubscribeOn(cb) {
+        if (!that.autoSubscribe) {
+            // collect all 
+            that.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, options, function (err, res) {
+                if (res &amp;&amp; res.rows) {
+                    that.autoSubscribe = [];
+                    for (var c = res.rows.length - 1; c >= 0; c--) {
+
+                        if (res.rows[c].value.common.subscribable) {
+                            var _id = res.rows[c].id.substring(15);
+                            if (that.autoSubscribe.indexOf(_id) === -1) that.autoSubscribe.push(_id);
+                        }
+                    }
+                }
+
+                if (typeof cb === 'function') cb();
+            });
+            // because of autoSubscribe
+            that.objects.subscribe('system.adapter.*');
+        } else if (typeof cb === 'function') {
+            cb();
+        }
+    }
+    
+    function initObjects(cb) {
+        that.objects = new Objects({
+            connection: config.objects,
+            logger:     logger,
+            connected: function () {
+                that.connected = true;
+                // Read dateformat if using of formatDate is announced
+                if (options.useFormatDate) {
+                    that.getForeignObject('system.config', function (err, data) {
+                        if (data &amp;&amp; data.common) {
+                        	that.dateFormat   = data.common.dateFormat;
+                        	that.isFloatComma = data.common.isFloatComma;
+                        }
+                        if (typeof cb === 'function') cb();
+                    });
+                } else if (typeof cb === 'function') {
+                    cb();
+                }
+            },
+            disconnected: function () {
+                that.connected = false;
+            },
+            change: function (id, obj) {
+                if (obj === 'null') obj = null;
+                if (!id) {
+                    logger.error(that.namespace + ' change ID is empty:  ' + JSON.stringify(obj));
+                    return;
+                }
+
+                // If desired, that adapter must be terminated
+                if (id === 'system.adapter.' + that.namespace &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.enabled === false) {
+                    that.log.info('Adapter is disabled => stop');
+                    if (!obj.common.enabled) {
+                        process.exit();
+                        stop();
+                    }
+                }
+
+                // update oObjects structure if desired
+                if (that.oObjects) {
+                    if (obj) {
+                        that.oObjects[id] = obj;
+                    } else {
+                        delete that.oObjects[id];
+                    }
+                }
+
+                // process autosubscribe adapters
+                if (id.match(/^system\.adapter\./)) {
+                    if (obj &amp;&amp; obj.common.subscribable) {
+                        var _id = id.substring(15); // 'system.adapter.'.length
+                        if (obj.common.enabled) {
+                            if (that.autoSubscribe.indexOf(_id) === -1) that.autoSubscribe.push(_id);
+                        } else {
+                            var pos = that.autoSubscribe.indexOf(_id);
+                            if (pos !== -1) that.autoSubscribe.splice(pos, 1);
+                        }
+                    }
+                }
+
+                // It was an error in the calculation
+                if ((options.noNamespace || config.noNamespace) &amp;&amp; that._namespaceRegExp.test(id)) {
+                    // emit 'objectChange' event instantly
+                    setTimeout(function () {
+                        if (typeof options.objectChange === 'function') options.objectChange(id.substring(that.namespace.length + 1), obj);
+                        that.emit('objectChange', id.substring(that.namespace.length + 1), obj);
+                    }, 0);
+                } else {
+                    setTimeout(function () {
+                        if (typeof options.objectChange === 'function') options.objectChange(id, obj);
+                        // emit 'objectChange' event instantly
+                        that.emit('objectChange', id, obj);
+                    }, 0);
+                }
+            },
+            connectTimeout: function (error) {
+                if (config.isInstall) {
+                    if (logger) logger.warn(that.namespace + ' no connection to objects DB');
+                    process.exit(0);
+                } else {
+                    if (logger) logger.error(that.namespace + ' no connection to objects DB');
+                }
+            }
+        });
+
+        that._namespaceRegExp = new RegExp('^' + that.namespace);       // chache the regex object 'adapter.0'
+        
+        that._fixId = function _fixId(id) {
+            var result  = '';
+            // If id is an object
+            if (typeof id === 'object') {
+                // Add namespace + device + channel
+                result = that.namespace + '.' + (id.device ? id.device + '.' : '') + (id.channel ? id.channel + '.' : '') + id.state;
+            } else {
+                result = id;
+                if (!that._namespaceRegExp.test(id)) result = that.namespace + '.' + id;
+            }
+            return result;
+        };
+
+        /**
+         * Creates or overwrites object in objectDB.
+         *
+         * This function can create or overwrite objects in objectDB for this adapter.
+         * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+         * &lt;b>common&lt;/b>, &lt;b>native&lt;/b> and &lt;b>type&lt;/b> attributes are mandatory and it will be checked.
+         * Additionally type "state" requires &lt;b>role&lt;/b>, &lt;b>type&lt;/b> and &lt;b>name&lt;/b>, e.g.:
+         * &lt;pre>&lt;code>{
+         *     common: {
+         *          name: 'object name',
+         *          type: 'number', // string, boolean, object, mixed, array
+         *          role: 'value'   // see https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole
+         *     },
+         *     native: {},
+         *     type: 'state' // channel, device
+         * }&lt;/code>&lt;/pre>
+         *
+         * @alias setObject
+         * @memberof Adapter
+         * @param {string} id object ID, that must be overwritten or created.
+         * @param {object} obj new object
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *              // obj is {id: id}
+         *              if (err) adapter.log.error('Cannot write object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setObject = function setObject(id, obj, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (!defaultObjs) {
+                defaultObjs = require(__dirname + '/defaultObjs.js')('de', '°C', 'EUR');
+            }
+
+            if (!id) {
+                logger.error(that.namespace + ' setObject id missing!!');
+                return;
+            }
+
+            if (!obj) {
+                logger.error(that.namespace + ' setObject ' + id + ' object missing!');
+                return;
+            }
+
+            if (obj.hasOwnProperty('type')) {
+                if (!obj.hasOwnProperty('native')) {
+                    logger.warn(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property native missing!');
+                    obj.native = {};
+                }
+                // Check property 'common'
+                if (!obj.hasOwnProperty('common')) {
+                    logger.warn(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common missing!');
+                    obj.common = {};
+                } else if (obj.type === 'state') {
+                    // Try to extend the model for type='state'
+                    // Check property 'role' by 'state'
+                    if (obj.common.hasOwnProperty('role') &amp;&amp; defaultObjs[obj.common.role]) {
+                        obj.common = extend(true, defaultObjs[obj.common.role], obj.common);
+                    } else if (!obj.common.hasOwnProperty('role')) {
+                        logger.warn(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.role missing!');
+                    }
+                    if (!obj.common.hasOwnProperty('type')) {
+                        logger.warn(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.type missing!');
+                    }
+                }
+
+                if (!obj.common.hasOwnProperty('name')) {
+                    obj.common.name = id;
+                    logger.debug(that.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.name missing, using id as name');
+                }
+
+                id = that._fixId(id, obj.type);
+
+                if (obj.children || obj.parent) {
+                    logger.warn(that.namespace + ' Do not use parent or children for ' + id);
+                }
+                that.objects.setObject(id, obj, options, callback);
+
+            } else {
+                logger.error(that.namespace + ' setObject ' + id + ' mandatory property type missing!');
+            }
+        };
+
+        /**
+         * Get all states, channels and devices of this adapter.
+         *
+         * @alias getAdapterObjects
+         * @memberof Adapter
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (objects) {
+         *                for (var id in objects) {
+         *                    adapter.log.debug(id);
+         *                }
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getAdapterObjects = function (callback) {
+            var objects = {};
+
+            that.objects.getObjectView('system', 'state', {startkey: that.namespace + '.', endkey: that.namespace + '.\u9999', include_docs: true}, function (err, _states) {
+                that.objects.getObjectView('system', 'channel', {startkey: that.namespace + '.', endkey: that.namespace + '.\u9999', include_docs: true}, function (err, _channels) {
+                    that.objects.getObjectView('system', 'device', {startkey: that.namespace + '.', endkey: that.namespace + '.\u9999', include_docs: true}, function (err, _devices) {
+                        if (_channels) {
+                            for (var c = _channels.rows.length - 1; c >= 0; c--) {
+                                objects[_channels.rows[c].id] = _channels.rows[c].value;
+                            }
+                        }
+                        if (_devices) {
+                            for (var d = _devices.rows.length - 1; d >= 0; d--) {
+                                objects[_devices.rows[d].id] = _devices.rows[d].value;
+                            }
+                        }
+                        if (_states) {
+                            if (options.states) that.oStates = {};
+                            for (var s = _states.rows.length - 1; s >= 0; s--) {
+                                objects[_states.rows[s].id] = _states.rows[s].value;
+                                if (that.oStates) that.oStates[id] = null;
+                            }
+                        }
+                        if (typeof callback === 'function') callback(objects);
+                    });
+                });
+            });
+        };
+
+        /**
+         * Extend some object and create it if it does not exist
+         *
+         * You can change or extend some object. E.g existing object is:
+         * &lt;pre>&lt;code>
+         *     {
+         *          common: {
+         *              name: 'Adapter name',
+         *              desc: 'Description'
+         *          },
+         *          type: 'state',
+         *          native: {
+         *              unused: 'text'
+         *          }
+         *     }
+         * &lt;/code>&lt;/pre>
+         *
+         * If following object will be passed as argument
+         *
+         * &lt;pre>&lt;code>
+         *     {
+         *          common: {
+         *              desc: 'New description',
+         *              min: 0,
+         *              max: 100
+         *          },
+         *          native: {
+         *              unused: null
+         *          }
+         *     }
+         * &lt;/code>&lt;/pre>
+         *
+         * We will get as output:
+         * &lt;pre>&lt;code>
+         *     {
+         *          common: {
+         *              desc: 'New description',
+         *              min: 0,
+         *              max: 100
+         *          },
+         *          type: 'state',
+         *          native: {
+         *          }
+         *     }
+         * &lt;/code>&lt;/pre>
+         *
+         *
+         * @alias extendObject
+         * @memberof Adapter
+         * @param {string} id object ID, that must be extended
+         * @param {object} obj part that must be extended
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *                if (err) adapter.log.error(err);
+         *                // obj is {"id": id}
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.extendObject = function extendObject(id, obj, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            id = that._fixId(id, obj.type);
+
+            if (obj.children || obj.parent) {
+                logger.warn(that.namespace + ' Do not use parent or children for ' + id);
+            }
+            // delete arrays if they should be changed
+            if (obj &amp;&amp; (
+                (obj.common &amp;&amp; obj.common.members) ||
+                (obj.native &amp;&amp; obj.native.repositories) ||
+                (obj.native &amp;&amp; obj.native.certificates) ||
+                (obj.native &amp;&amp; obj.native.devices))
+                ) {
+                // Read whole object
+                that.objects.getObject(id, options, function (err, oldObj) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                        return;
+                    }
+                    if (!oldObj) {
+                        logger.error(that.namespace + ' Object ' + id + ' not exist!');
+                        oldObj = {};
+                    }
+                    if (obj.native &amp;&amp; obj.native.repositories &amp;&amp; oldObj.native &amp;&amp; oldObj.native.repositories) {
+                        oldObj.native.repositories = [];
+                    }
+                    if (obj.common &amp;&amp; obj.common.members &amp;&amp; oldObj.common &amp;&amp; oldObj.common.members) {
+                        oldObj.common.members = [];
+                    }
+                    if (obj.native &amp;&amp; obj.native.certificates &amp;&amp; oldObj.native &amp;&amp; oldObj.native.certificates) {
+                        oldObj.native.certificates = [];
+                    }
+                    if (obj.native &amp;&amp; obj.native.devices &amp;&amp; oldObj.native &amp;&amp; oldObj.native.devices) {
+                        oldObj.native.devices = [];
+                    }
+                    obj = extend(true, oldObj, obj);
+
+                    that.objects.setObject(id, obj, options, callback);
+                });
+            } else {
+                that.objects.extendObject(id, obj, options, callback);
+            }
+        };
+
+        /**
+         * Same as {@link Adapter.setObject}, but for any object.
+         *
+         * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
+         *
+         * @alias setForeignObject
+         * @memberof Adapter
+         * @param {string} id object ID, that must be overwritten or created.
+         * @param {object} obj new object
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *              // obj is {id: id}
+         *              if (err) adapter.log.error('Cannot write object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setForeignObject = function setForeignObject(id, obj, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.setObject(id, obj, options, callback);
+        };
+
+        /**
+         * Same as {@link Adapter.extendObject}, but for any object.
+         *
+         * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
+         *
+         * @alias extendForeignObject
+         * @memberof Adapter
+         * @param {string} id object ID, that must be extended
+         * @param {object} obj part that must be extended
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *                // obj is {"id": id}
+         *                if (err) adapter.log.error(err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.extendForeignObject = function extendForeignObject(id, obj, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            // delete arrays if they should be changed
+            if (obj &amp;&amp; ((obj.native &amp;&amp; (obj.native.repositories || obj.native.certificates || obj.native.devices)) ||
+                (obj.common &amp;&amp; obj.common.members))) {
+                // Read whole object
+                that.objects.getObject(id, options, function (err, oldObj) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                        return;
+                    }
+                    if (!oldObj) {
+                        logger.error(that.namespace + ' Object ' + id + ' not exist!');
+                        oldObj = {};
+                    }
+                    if (obj.native &amp;&amp; obj.native.repositories &amp;&amp; oldObj.native &amp;&amp; oldObj.native.repositories) {
+                        oldObj.native.repositories = [];
+                    }
+                    if (obj.common &amp;&amp; obj.common.members &amp;&amp; oldObj.common &amp;&amp; oldObj.common.members) {
+                        oldObj.common.members = [];
+                    }
+                    if (obj.native &amp;&amp; obj.native.certificates &amp;&amp; oldObj.native &amp;&amp; oldObj.native.certificates) {
+                        oldObj.native.certificates = [];
+                    }
+                    if (obj.native &amp;&amp; obj.native.devices &amp;&amp; oldObj.native &amp;&amp; oldObj.native.devices) {
+                        oldObj.native.devices = [];
+                    }
+                    obj = extend(true, oldObj, obj);
+
+                    that.objects.setObject(id, obj, callback);
+                });
+            } else {
+                that.objects.extendObject(id, obj, options, callback);
+            }
+        };
+
+        /**
+         * Get object of this instance.
+         *
+         * It is not required, that ID consists namespace. E.g. to get object of "adapterName.X.myObject", only "myObject" is required as ID.
+         *
+         * @alias getObject
+         * @memberof Adapter
+         * @param {string} id exactly object ID (without namespace)
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getObject = function getObject(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.getObject(that._fixId(id), options, callback);
+        };
+
+        /**
+         * Get the enum tree.
+         *
+         * Get enums of specified tree or all enums if nothing specified as object with values.
+         * If getEnum called with no enum specified, all enums will be returned:
+         * &lt;pre>&lt;code>
+         *      adapter.getEnums(function (err, enums, requestEnum) {
+         *        // All enums
+         *        if (err) adapter.log.error('Cannot get object: ' + err);
+         *        for (var e in enums) {
+         *           adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
+         *        }
+         *      });
+         * &lt;/code>&lt;/pre>
+         *
+         * @alias getEnum
+         * @memberof Adapter
+         * @param {string} _enum enum name, e.g. 'rooms', 'function' or '' (all enums)
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, enums, requestEnum) {
+         *              // requestEnum is _enum
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *              for (var e in enums) {
+         *                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
+         *              }
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getEnum = function getEnum(_enum, options, callback) {
+            if (typeof _enum === 'function') {
+                callback = _enum;
+                options = null;
+                _enum = '';
+            }
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (!_enum.match('^enum.')) _enum = 'enum.' + _enum;
+            var result = {};
+
+            that.objects.getObjectView('system', 'enum', {startkey: _enum + '.', endkey: _enum + '.\u9999'}, options, function (err, res) {
+                if (err) {
+                    if (typeof callback === 'function') callback(err);
+                    return;
+                }
+                for (var t = 0; t &lt; res.rows.length; t++) {
+                    result[res.rows[t].id] = res.rows[t].value;
+                }
+                if (typeof callback === 'function') callback(err, result, _enum);
+            });
+        };
+
+        /**
+         * Read the members of given enums.
+         *
+         * Get enums of specified tree or all enums if nothing specified as object with values.
+         *
+         * @alias getEnums
+         * @memberof Adapter
+         * @param {string|array} _enumList enum name or names, e.g. ['rooms', 'function']
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, enums) {
+         *              // requestEnum is _enum
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *              // Result is like
+         *              // {
+         *              //    "enum.rooms": {
+         *              //       "enum.rooms.livingroom": {
+         *              //           common: {
+         *              //              members: ['ID1', 'ID2']
+         *              //           }
+         *              //       },
+         *              //       "enum.rooms.sleepingroom": {
+         *              //           common: {
+         *              //              members: ['ID3', 'ID4']
+         *              //           }
+         *              //       }
+         *              //    },
+         *              //    "enum.functions": {
+         *              //       "enum.rooms.light": {
+         *              //           common: {
+         *              //              members: ['ID1', 'ID6']
+         *              //           }
+         *              //       },
+         *              //       "enum.rooms.weather": {
+         *              //           common: {
+         *              //              members: ['ID4', 'ID7']
+         *              //           }
+         *              //       }
+         *              //    }
+         *              // }
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getEnums = function getEnums(_enumList, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options  = null;
+            }
+            var _enums = {};
+            if (_enumList) {
+                if (typeof _enumList === 'string') _enumList = [_enumList];
+                var count = 0;
+                for (var t = 0; t &lt; _enumList.length; t++) {
+                    count++;
+                    that.getEnum(_enumList[t], options, function (err, list, _enum) {
+                        if (list) _enums[_enum] = list;
+                        if (!--count &amp;&amp; callback) callback(err, _enums);
+                    });
+                }
+            } else {
+                // Read all enums
+                that.objects.getObjectView('system', 'enum', {startkey: 'enum.', endkey: 'enum.\u9999'}, options, function (err, res) {
+                    if (err) {
+                        callback(err);
+                        return;
+                    }
+                    var result = {};
+                    if (res &amp;&amp; res.rows) {
+                        for (var i = 0; i &lt; res.rows.length; i++) {
+                            var parts = res.rows[i].id.split('.', 3);
+                            if (!parts[2]) continue;
+                            if (!result[parts[0] + '.' + parts[1]]) result[parts[0] + '.' + parts[1]] = {};
+                            result[parts[0] + '.' + parts[1]][res.rows[i].id] = res.rows[i].value;
+                        }
+                    }
+
+                    if (callback) callback(err, result);
+                });
+            }
+        };
+
+        /**
+         * Get objects by pattern, by specific type and resolve their enums.
+         *
+         * Get all objects in the system of specified type. E.g.:
+         *
+         *        &lt;pre>&lt;code>
+         *            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *              // objs look like:
+         *              // {
+         *              //    "hm-rega.0.ABC0000.1.STATE": {
+         *              //        common: {...},
+         *              //        native: {},
+         *              //        type: 'state',
+         *              //        enums: {
+         *              //           'enums.rooms.livingroom': 'Living room',
+         *              //           'enums.functions.light': 'Light'
+         *              //       }
+         *              //    },
+         *              //    "hm-rega.0.ABC0000.2.STATE": {
+         *              //        common: {...},
+         *              //        native: {},
+         *              //        type: 'state',
+         *              //        enums: {
+         *              //           'enums.rooms.sleepingroom': 'Sleeping room',
+         *              //           'enums.functions.window': 'Windows'
+         *              //       }
+         *              //    }
+         *            }
+         *        &lt;/code>&lt;/pre>
+         *
+         * @alias getForeignObjects
+         * @memberof Adapter
+         * @param {string} pattern object ID
+         * @param {string} type type of object: 'state', 'channel' or 'device'. Default - 'state'
+         * @param {string} enums object ID, that must be overwritten or created.
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getForeignObjects = function getForeignObjects(pattern, type, enums, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            var params = {};
+            if (pattern &amp;&amp; pattern !== '*') {
+                params = {
+                    startkey: pattern.replace('*', ''),
+                    endkey:   pattern.replace('*', '\u9999')
+                };
+            }
+            if (typeof enums === 'function') {
+                callback = enums;
+                enums = null;
+            }
+            if (typeof type  === 'function') {
+                callback = type;
+                type = null;
+            }
+            if (typeof type  === 'object') {
+                options = type;
+                type = null;
+            }
+            if (typeof enums === 'object' &amp;&amp; !(enums instanceof Array)) {
+                options = enums;
+                enums = null;
+            }
+            that.objects.getObjectView('system', type || 'state', params, options, function (err, res) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                that.getEnums(enums, function (_enums) {
+                    var list = {};
+                    for (var i = 0; i &lt; res.rows.length; i++) {
+                        list[res.rows[i].id] = res.rows[i].value;
+
+                        if (_enums &amp;&amp; res.rows[i].id) {
+                            // get device or channel of this state and check it too
+                            var parts = res.rows[i].id.split('.');
+                            parts.splice(parts.length - 1, 1);
+                            var channel = parts.join('.');
+                            parts.splice(parts.length - 1, 1);
+                            var device = parts.join('.');
+
+                            list[res.rows[i].id].enums = {};
+                            for (var es in _enums) {
+                                if (!_enums.hasOwnProperty(es)) continue;
+                                for (var e in _enums[es]) {
+                                    if (!_enums[es].hasOwnProperty(e)) continue;
+                                    if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members)
+                                        continue;
+                                    if (_enums[es][e].common.members.indexOf(res.rows[i].id) !== -1 ||
+                                        _enums[es][e].common.members.indexOf(channel)        !== -1 ||
+                                        _enums[es][e].common.members.indexOf(device)         !== -1) {
+                                            list[res.rows[i].id].enums[e] = _enums[es][e].common.name;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    callback(null, list);
+                });
+            });
+        };
+
+        /**
+         * Find any object by name od ID.
+         *
+         * Find object by the exact name or ID.
+         *
+         * @alias findForeignObject
+         * @memberof Adapter
+         * @param {string} id exactly object ID (without namespace)
+         * @param {string} type optional type of state: 'number', 'string', 'boolean', 'file', ...
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            adapter.findForeignObject('Some name', function (err, id, name) {
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.findForeignObject = function findForeignObject(id, type, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.findObject(id, type, options, callback);
+        };
+
+        /**
+         * Get any object.
+         *
+         * ID must be specified with namespace.
+         *
+         * @alias getForeignObject
+         * @memberof Adapter
+         * @param {string} id exactly object ID (with namespace)
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, obj) {
+         *              if (err) adapter.log.error('Cannot get object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.getForeignObject = function getForeignObject(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.getObject(id, options, callback);
+        };
+
+        /**
+         * Delete object of this instance.
+         *
+         * It is not required, that ID consists namespace. E.g. to get object of "adapterName.X.myObject", only "myObject" is required as ID.
+         *
+         * @alias delObject
+         * @memberof Adapter
+         * @param {string} id exactly object ID (without namespace)
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err) {
+         *              if (err) adapter.log.error('Cannot delete object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.delObject = function delObject(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            id = that._fixId(id);
+            that.objects.delObject(id, options, callback);
+        };
+
+        /**
+         * Delete any object.
+         *
+         * ID must be specified with namespace.
+         *
+         * @alias delForeignObject
+         * @memberof Adapter
+         * @param {string} id exactly object ID (with namespace)
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err) {
+         *              if (err) adapter.log.error('Cannot delete object: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.delForeignObject = function delForeignObject(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.delObject(id, options, callback);
+        };
+
+        /**
+         * Subscribe for the changes of objects in this instance.
+         **
+         * @alias subscribeObjects
+         * @memberof Adapter
+         * @param {string} pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
+         * @param {object} options optional user context
+         */
+        that.subscribeObjects = function subscribeObjects(pattern, options) {
+            if (pattern === '*') {
+                that.objects.subscribe(that.namespace + '.*');
+            } else {
+                pattern = that._fixId(pattern);
+                that.objects.subscribe(pattern, options);
+            }
+        };
+
+        that.subscribeForeignObjects = function subscribeObjects(pattern, options) {
+            that.objects.subscribe(pattern, options);
+        };
+
+        that.unsubscribeForeignObjects = function unsubscribeForeignObjects(pattern, options) {
+            if (!pattern) pattern = '*';
+            that.objects.unsubscribe(pattern, options);
+        };
+
+        that.unsubscribeObjects = function unsubscribeObjects(pattern, options) {
+            if (pattern === '*') {
+                that.objects.unsubscribe(that.namespace + '.*', options);
+            } else {
+                pattern = that._fixId(pattern);
+                that.objects.unsubscribe(pattern);
+            }
+        };
+
+        that.setObjectNotExists = function setObjectNotExists(id, object, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            id = that._fixId(id);
+
+            if (object.children || object.parent) {
+                logger.warn(that.namespace + ' Do not use parent or children for ' + id);
+            }
+
+            that.objects.getObject(id, options, function (err, obj) {
+                if (!obj) {
+                    that.objects.setObject(id, object, callback);
+                }
+            });
+        };
+
+        that.setForeignObjectNotExists = function setForeignObjectNotExists(id, obj, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.getObject(id, options, function (err, obj) {
+                if (!obj) {
+                    that.objects.setObject(id, obj, callback);
+                }
+            });
+        };
+
+        that._DCS2ID = function (device, channel, stateOrPoint) {
+            var id = '';
+            if (device)  id += device;
+            if (channel) id += ((id) ? '.' : '') + channel;
+
+            if (stateOrPoint !== true &amp;&amp; stateOrPoint !== false) {
+                if (stateOrPoint)   id += ((id) ? '.' : '') + stateOrPoint;
+            } else if (stateOrPoint === true) {
+                if (id) id += '.';
+            }
+            return id;
+        };
+
+        that.createDevice = function createDevice(deviceName, common, _native, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (!deviceName) {
+                that.log.error('Try to create device with empty name!');
+                return;
+            }
+            if (typeof _native === 'function') {
+                callback = _native;
+                _native = {};
+            }
+            if (typeof common === 'function') {
+                callback = common;
+                common = {};
+            }
+            common = common || {};
+            common.name = common.name || deviceName;
+
+            deviceName = deviceName.replace(/[.\s]+/g, '_');
+            _native = _native || {};
+
+            that.setObjectNotExists(deviceName, {
+                type:     'device',
+                common:   common,
+                native:   _native
+            }, options, callback);
+        };
+
+        // name of channel must be in format "channel"
+        that.createChannel = function createChannel(parentDevice, channelName, roleOrCommon, _native, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (!channelName) throw 'Try to create channel without name!';
+
+            if (typeof _native === 'function') {
+                callback = _native;
+                _native = {};
+            }
+
+            if (typeof roleOrCommon === 'function') {
+                callback = roleOrCommon;
+                roleOrCommon = undefined;
+            }
+
+            var common = {};
+            if (typeof roleOrCommon === 'string') {
+                common = {
+                    role: roleOrCommon
+                };
+            } else if (typeof roleOrCommon === 'object') {
+                common = roleOrCommon;
+            }
+            common.name = common.name || channelName;
+
+            if (parentDevice) parentDevice = parentDevice.replace(/[.\s]+/g, '_');
+            channelName  = channelName.replace(/[.\s]+/g, '_');
+            channelName  = that._DCS2ID(parentDevice, channelName);
+
+            _native = _native || {};
+
+            var obj = {
+                type:     'channel',
+                common:   common,
+                native:   _native
+            };
+
+            that.setObject(channelName, obj, options, callback);
+        };
+
+        that.createState = function createState(parentDevice, parentChannel, stateName, roleOrCommon, _native, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (!stateName) throw 'Empty name is not allowed!';
+
+            if (typeof _native === 'function') {
+                callback = _native;
+                _native = {};
+            }
+
+            if (typeof roleOrCommon === 'function') {
+                callback = roleOrCommon;
+                roleOrCommon = undefined;
+            }
+
+            var common = {};
+            if (typeof roleOrCommon === 'string') {
+                common = {
+                    role: roleOrCommon
+                };
+            } else if (typeof roleOrCommon === 'object') {
+                common = roleOrCommon;
+            }
+
+            common.name = common.name || stateName;
+            _native = _native || {};
+
+            common.read  = (common.read  === undefined) ? true  : common.read;
+            common.write = (common.write === undefined) ? false : common.write;
+
+            if (!common.role) {
+                logger.error(that.namespace + ' Try to create state ' + (parentDevice ? (parentDevice + '.') : '') + parentChannel + '.' + stateName + ' without role');
+                return;
+            }
+
+            if (parentDevice)  parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            if (parentChannel) parentChannel = parentChannel.replace(/[.\s]+/g, '_');
+            stateName = stateName.replace(/[.\s]+/g, '_');
+            var id = that._fixId({device: parentDevice, channel: parentChannel, state: stateName});
+
+            // Check min, max and def values for number
+            if (common.type !== undefined &amp;&amp; common.type === 'number') {
+                var min = 0;
+                var max = 0;
+                var def = 0;
+                var err;
+                if (common.min !== undefined) {
+                    min = common.min;
+                    if (typeof min !== 'number') {
+                        min = parseFloat(min);
+                        if (isNaN(min)) {
+                            err = 'Wrong type of ' + id + '.common.min';
+                            logger.error(that.namespace + ' ' + err);
+                            if (callback) callback(err);
+                            return;
+                        } else {
+                            common.min = min;
+                        }
+                    }
+                }
+                if (common.max !== undefined) {
+                    max = common.max;
+                    if (typeof max !== 'number') {
+                        max = parseFloat(max);
+                        if (isNaN(max)) {
+                            err = 'Wrong type of ' + id + '.common.max';
+                            logger.error(that.namespace + ' ' + err);
+                            if (callback) callback(err);
+                            return;
+                        } else {
+                            common.max = max;
+                        }
+                    }
+                }
+                if (common.def !== undefined) {
+                    def = common.def;
+                    if (typeof def !== 'number') {
+                        def = parseFloat(def);
+                        if (isNaN(def)) {
+                            err = 'Wrong type of ' + id + '.common.def';
+                            logger.error(that.namespace + ' ' + err);
+                            if (callback) callback(err);
+                            return;
+                        } else {
+                            common.def = def;
+                        }
+                    }
+                }
+                if (common.min !== undefined &amp;&amp; common.max !== undefined &amp;&amp; min > max) {
+                    common.max = min;
+                    common.min = max;
+                }
+                if (common.def !== undefined &amp;&amp; common.min !== undefined &amp;&amp; def &lt; min) common.def = min;
+                if (common.def !== undefined &amp;&amp; common.max !== undefined &amp;&amp; def > max) common.def = max;
+            }
+
+            that.setObjectNotExists(id, {
+                type:     'state',
+                common:   common,
+                native:   _native
+            }, options, callback);
+
+            if (common.def !== undefined) {
+                that.setState(id, common.def, options);
+            } else {
+                that.setState(id, null, false, options);
+            }
+        };
+
+        that.deleteDevice = function deleteDevice(deviceName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            deviceName = deviceName.replace(/[.\s]+/g, '_');
+            if (!that._namespaceRegExp.test(deviceName)) deviceName = that.namespace + '.' + deviceName;
+
+            that.objects.getObjectView('system', 'device', {startkey: deviceName, endkey: deviceName}, options, function (err, res) {
+                if (err || !res || !res.rows) {
+                    if (typeof callback === 'function') callback(err);
+                    callback = null;
+                    return;
+                }
+                var cnt = 0;
+                if (res.rows.length > 1) that.log.warn('Found more than one device ' + deviceName);
+
+                for (var t = 0; t &lt; res.rows.length; t++) {
+                    cnt++;
+                    that.delObject(res.rows[t].id, options, function (err) {
+                        if (err) {
+                            if (typeof callback === 'function') callback(err);
+                            callback = null;
+                            return;
+                        }
+
+                        if (!--cnt) {
+                            that.objects.getObjectView('system', 'channel', {startkey: deviceName + '.', endkey: deviceName + '.\u9999'}, options, function (err, res) {
+                                if (err) {
+                                    if (typeof callback === 'function') callback(err);
+                                    return;
+                                }
+                                var _cnt = 0;
+                                for (var k = 0; k &lt; res.rows.length; k++) {
+                                    _cnt++;
+                                    that.deleteChannel(deviceName, res.rows[k].id, options, function (err) {
+                                        if (!(--_cnt) &amp;&amp; callback) {
+                                            callback(err);
+                                        } else {
+                                            if (err) {
+                                                if (typeof callback === 'function') callback(err);
+                                                callback = null;
+                                            }
+                                        }
+                                    });
+                                }
+                                if (!_cnt &amp;&amp; callback) callback();
+                            });
+                        }
+                    });
+                }
+                if (!cnt &amp;&amp; callback) callback();
+            });
+        };
+
+        that.addChannelToEnum = function addChannelToEnum(enumName, addTo, parentDevice, channelName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (parentDevice) {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+                parentDevice = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (that._namespaceRegExp.test(channelName)) {
+                channelName = channelName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
+                channelName = channelName.substring(parentDevice.length + 1);
+            }
+            channelName = channelName.replace(/[.\s]+/g, '_');
+
+            var objId = that.namespace + '.' + that._DCS2ID(parentDevice, channelName);
+
+            if (addTo.match(/^enum\./)) {
+                that.objects.getObject(addTo, options, function (err, obj) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                        return;
+                    }
+                    if (!err &amp;&amp; obj) {
+                        var pos = obj.common.members.indexOf(objId);
+                        if (pos === -1) {
+                            obj.common.members.push(objId);
+                            that.objects.setObject(obj._id, obj, options, function (err) {
+                                if (callback) callback(err);
+                            });
+                        }
+                    }
+                });
+            } else {
+                if (enumName.match(/^enum\./)) enumName = enumName.substring(5);
+
+                that.objects.getObject('enum.' + enumName + '.' + addTo, options, function (err, obj) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                        return;
+                    }
+
+                    if (obj) {
+                        var pos = obj.common.members.indexOf(objId);
+                        if (pos === -1) {
+                            obj.common.members.push(objId);
+                            that.objects.setObject(obj._id, obj, options, callback);
+                        } else {
+                            if (callback) callback();
+                        }
+                    } else {
+                        // Create enum
+                        that.objects.setObject('enum.' + enumName + '.' + addTo, {
+                            common: {
+                                name: addTo,
+                                members: [objId]
+                            },
+                            type: 'enum'
+                        }, options, callback);
+                    }
+                });
+            }
+        };
+
+        that.deleteChannelFromEnum = function deleteChannelFromEnum(enumName, parentDevice, channelName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (parentDevice) {
+                if (parentDevice.substring(0, that.namespace.length) === that.namespace) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+                parentDevice = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (channelName &amp;&amp; channelName.substring(0, that.namespace.length) === that.namespace) {
+                channelName = channelName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; channelName &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
+                channelName = channelName.substring(parentDevice.length + 1);
+            }
+            channelName = channelName || '';
+            channelName = channelName.replace(/[.\s]+/g, '_');
+
+            var objId = that.namespace + '.' + that._DCS2ID(parentDevice, channelName);
+
+            if (enumName) {
+                enumName = 'enum.' + enumName + '.';
+            } else {
+                enumName = 'enum.';
+            }
+
+            that.objects.getObjectView('system', 'enum', {startkey: enumName, endkey: enumName + '\u9999'}, options, function (err, res) {
+                if (err) {
+                    if (typeof callback === 'function') callback(err);
+                    return;
+                }
+                if (res) {
+                    var count = 0;
+                    for (var i = 0; i &lt; res.rows.length; i++) {
+                        count++;
+                        that.objects.getObject(res.rows[i].id, options, function (err, obj) {
+                            if (err) {
+                                if (typeof callback === 'function') callback(err);
+                                callback = null;
+                                return;
+                            }
+                            if (!err &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.members) {
+                                var pos = obj.common.members.indexOf(objId);
+                                if (pos !== -1) {
+                                    obj.common.members.splice(pos, 1);
+                                    count++;
+                                    that.objects.setObject(obj._id, obj, options, function (err) {
+                                        if (!--count &amp;&amp; callback) {
+                                            callback(err);
+                                        } else {
+                                            if (err) {
+                                                if (typeof callback === 'function') callback(err);
+                                                callback = null;
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            if (!--count &amp;&amp; callback) callback(err);
+                        });
+                    }
+                } else if (callback) {
+                    callback (err);
+                }
+            });
+        };
+
+        that.deleteChannel = function deleteChannel(parentDevice, channelName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (typeof channelName === 'function') {
+                callback = channelName;
+                channelName = parentDevice;
+                parentDevice = '';
+            }
+            if (parentDevice &amp;&amp; !channelName) {
+                channelName = parentDevice;
+                parentDevice = '';
+            } else if (parentDevice &amp;&amp; typeof channelName === 'function') {
+                callback     = channelName;
+                channelName  = parentDevice;
+                parentDevice = '';
+            }
+            if (!parentDevice) parentDevice = '';
+            that.deleteChannelFromEnum('', parentDevice, channelName);
+            var _parentDevice = parentDevice;
+            var _channelName  = channelName;
+
+            if (parentDevice) {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+                parentDevice = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (channelName &amp;&amp; that._namespaceRegExp.test(channelName)) {
+                channelName = channelName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; channelName &amp;&amp; channelName.substring(0, parentDevice.length) === parentDevice) {
+                channelName = channelName.substring(parentDevice.length + 1);
+            }
+            channelName = channelName || '';
+            channelName = channelName.replace(/[.\s]+/g, '_');
+
+            channelName  = that.namespace + '.' + that._DCS2ID(parentDevice, channelName);
+
+            logger.info(that.namespace + ' Delete channel ' + channelName);
+
+            that.objects.getObjectView('system', 'channel', {startkey: channelName, endkey: channelName}, options, function (err, res) {
+                if (err || !res || !res.rows) {
+                    if (typeof callback === 'function') callback(err);
+                    callback = null;
+                    return;
+                }
+                var cnt = 0;
+                if (res.rows.length > 1) that.log.warn('Found more than one channel ' + channelName);
+
+                for (var t = 0; t &lt; res.rows.length; t++) {
+                    cnt++;
+                    that.delObject(res.rows[t].id, options, function (err) {
+                        if (err) {
+                            if (typeof callback === 'function') callback(err);
+                            callback = null;
+                            return;
+                        }
+                        if (!--cnt) {
+                            that.objects.getObjectView('system', 'state', {startkey: channelName + '.', endkey: channelName + '.\u9999'}, options, function (err, res) {
+                                if (err || !res || !res.rows) {
+                                    if (typeof callback === 'function') callback(err);
+                                    callback = null;
+                                    return;
+                                }
+                                var _cnt = 0;
+                                for (var k = 0; k &lt; res.rows.length; k++) {
+                                    _cnt++;
+                                    that.deleteState(_parentDevice, _channelName, res.rows[k].id, options, function (err) {
+                                        if (!--_cnt &amp;&amp; callback) {
+                                            callback(err);
+                                        } else {
+                                            if (err) {
+                                                if (typeof callback === 'function') callback(err);
+                                                callback = null;
+                                            }
+                                        }
+                                    });
+                                }
+                                if (!_cnt &amp;&amp; callback) callback();
+                            });
+                        }
+                    });
+                }
+                if (!cnt &amp;&amp; callback) callback();
+            });
+        };
+
+        that.deleteState = function deleteState(parentDevice, parentChannel, stateName, options, callback) {
+            if (typeof parentChannel === 'function' &amp;&amp; stateName === undefined) {
+                stateName     = parentDevice;
+                callback      = parentChannel;
+                parentChannel = '';
+                parentDevice  = '';
+            } else
+            if (parentChannel === undefined &amp;&amp; stateName === undefined) {
+                stateName     = parentDevice;
+                parentDevice  = '';
+                parentChannel = '';
+            } else {
+                if (typeof options === 'function') {
+                    callback = options;
+                    options  = null;
+                }
+                if (typeof stateName === 'function') {
+                    callback      = stateName;
+                    stateName     = parentChannel;
+                    parentChannel = parentDevice;
+                    parentDevice  = '';
+                }
+                if (typeof parentChannel === 'function') {
+                    callback      = parentChannel;
+                    stateName     = parentDevice;
+                    parentChannel = '';
+                    parentDevice  = '';
+                }
+                if (typeof parentChannel === 'function') {
+                    callback      = parentChannel;
+                    stateName     = parentDevice;
+                    parentChannel = '';
+                    parentDevice  = '';
+                }
+            }
+
+            that.deleteStateFromEnum('', parentDevice, parentChannel, stateName, options);
+
+            if (parentDevice) {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+
+                parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (parentChannel) {
+                if (that._namespaceRegExp.test(parentChannel)) {
+                    parentChannel = parentChannel.substring(that.namespace.length + 1);
+                }
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                    parentChannel = parentChannel.substring(parentDevice.length + 1);
+                }
+
+                parentChannel = parentChannel.replace(/[.\s]+/g, '_');
+            }
+
+            if (that._namespaceRegExp.test(stateName)) {
+                stateName = stateName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
+                stateName = stateName.substring(parentDevice.length + 1);
+            }
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
+                stateName = stateName.substring(parentChannel.length + 1);
+            }
+            stateName = stateName || '';
+            stateName = stateName.replace(/[.\s]+/g, '_');
+
+            var _name = that._DCS2ID(parentDevice, parentChannel, stateName);
+            that.delState(_name, options, function () {
+                that.delObject(_name, options, callback);
+            });
+        };
+
+        that.getDevices = function getDevices(callback, options) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.getObjectView('system', 'device', {startkey: that.namespace + '.', endkey: that.namespace + '.\u9999'}, options, function (err, obj) {
+                if (callback) {
+                    if (obj.rows.length) {
+                        var res = [];
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
+                            res.push(obj.rows[i].value);
+                        }
+                        callback(null, res);
+                    } else {
+                        callback(err, []);
+                    }
+                }
+            });
+        };
+
+        that.getChannelsOf = function getChannelsOf(parentDevice, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (typeof parentDevice === 'function') {
+                callback = parentDevice;
+                parentDevice = null;
+            }
+            if (!parentDevice) parentDevice = '';
+
+            if (parentDevice &amp;&amp; that._namespaceRegExp.test(parentDevice)) {
+                parentDevice = parentDevice.substring(that.namespace.length + 1);
+            }
+
+            parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            parentDevice = that.namespace + (parentDevice ? ('.' + parentDevice) : '');
+            that.objects.getObjectView('system', 'channel', {startkey: parentDevice + '.', endkey: parentDevice + '.\u9999'}, options, function (err, obj) {
+                if (callback) {
+                    if (obj.rows.length) {
+                        var res = [];
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
+                            res.push(obj.rows[i].value);
+                        }
+                        callback(null, res);
+                    } else {
+                        callback(err, []);
+                    }
+                }
+            });
+        };
+
+        that.getChannels = that.getChannelsOf;
+
+        that.getStatesOf = function getStatesOf(parentDevice, parentChannel, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (typeof parentDevice === 'function') {
+                callback = parentDevice;
+                parentDevice = null;
+                parentChannel = null;
+            }
+            if (typeof parentChannel === 'function') {
+                callback = parentChannel;
+                parentChannel = null;
+            }
+
+            if (!parentDevice) {
+                parentDevice = '';
+            } else {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+
+                parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (!parentChannel) {
+                parentChannel = '';
+            } else if (that._namespaceRegExp.test(parentChannel)) {
+                parentChannel = parentChannel.substring(that.namespace.length + 1);
+            }
+
+            if (parentDevice &amp;&amp; parentChannel &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                parentChannel = parentChannel.substring(parentDevice.length + 1);
+            }
+
+            parentChannel = parentChannel.replace(/[.\s]+/g, '_');
+
+            var id = that.namespace + '.' + that._DCS2ID(parentDevice, parentChannel, true);
+
+            that.objects.getObjectView('system', 'state', {startkey: id, endkey: id + '\u9999'}, options, function (err, obj) {
+                if (callback) {
+                    var res = [];
+                    if (obj.rows.length) {
+                        var read = 0;
+                        for (var i = 0; i &lt; obj.rows.length; i++) {
+                            read++;
+                            that.objects.getObject(obj.rows[i].id, function (err, subObj) {
+                                if (subObj) res.push(subObj);
+
+                                if (!--read) callback(null, res);
+                            });
+                        }
+                    } else {
+                        callback(null, res);
+                    }
+                }
+            });
+        };
+
+        that.addStateToEnum = function addStateToEnum(enumName, addTo, parentDevice, parentChannel, stateName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (parentDevice) {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+
+                parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (parentChannel) {
+                if (that._namespaceRegExp.test(parentChannel)) {
+                    parentChannel = parentChannel.substring(that.namespace.length + 1);
+                }
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                    parentChannel = parentChannel.substring(parentDevice.length + 1);
+                }
+
+                parentChannel = parentChannel.replace(/[.\s]+/g, '_');
+            }
+
+            if (that._namespaceRegExp.test(stateName)) {
+                stateName = stateName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
+                stateName = stateName.substring(parentDevice.length + 1);
+            }
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
+                stateName = stateName.substring(parentChannel.length + 1);
+            }
+            stateName = stateName.replace(/[.\s]+/g, '_');
+
+            var objId = that._fixId({device: parentDevice, channel: parentChannel, state: stateName});
+
+            if (addTo.match(/^enum\./)) {
+                that.objects.getObject(addTo, options, function (err, obj) {
+                    if (!err &amp;&amp; obj) {
+                        var pos = obj.common.members.indexOf(objId);
+                        if (pos === -1) {
+                            obj.common.members.push(objId);
+                            that.objects.setObject(obj._id, obj, options, function (err) {
+                                if (callback) callback(err);
+                            });
+                        }
+                    }
+                });
+            } else {
+                if (enumName.match(/^enum\./)) enumName = enumName.substring(5);
+
+                that.objects.getObject('enum.' + enumName + '.' + addTo, options, function (err, obj) {
+                    if (!err &amp;&amp; obj) {
+                        var pos = obj.common.members.indexOf(objId);
+                        if (pos === -1) {
+                            obj.common.members.push(objId);
+                            that.objects.setObject(obj._id, obj, callback);
+                        } else {
+                            if (callback) callback();
+                        }
+                    } else {
+                        if (err) {
+                            if (typeof callback === 'function') callback(err);
+                            return;
+                        }
+
+                        // Create enum
+                        that.objects.setObject('enum.' + enumName + '.' + addTo, {
+                            common: {
+                                name: addTo,
+                                members: [objId]
+                            },
+                            type: 'enum'
+                        }, options, callback);
+                    }
+                });
+            }
+        };
+
+        that.deleteStateFromEnum = function deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            if (parentDevice) {
+                if (that._namespaceRegExp.test(parentDevice)) {
+                    parentDevice = parentDevice.substring(that.namespace.length + 1);
+                }
+
+                parentDevice  = parentDevice.replace(/[.\s]+/g, '_');
+            }
+
+            if (parentChannel) {
+                if (that._namespaceRegExp.test(parentChannel)) {
+                    parentChannel = parentChannel.substring(that.namespace.length + 1);
+                }
+                if (parentDevice &amp;&amp; parentChannel.substring(0, parentDevice.length) === parentDevice) {
+                    parentChannel = parentChannel.substring(parentDevice.length + 1);
+                }
+
+                parentChannel = parentChannel.replace(/[.\s]+/g, '_');
+            }
+
+            if (that._namespaceRegExp.test(stateName)) {
+                stateName = stateName.substring(that.namespace.length + 1);
+            }
+            if (parentDevice &amp;&amp; stateName.substring(0, parentDevice.length) === parentDevice) {
+                stateName = stateName.substring(parentDevice.length + 1);
+            }
+            if (parentChannel &amp;&amp; stateName.substring(0, parentChannel.length) === parentChannel) {
+                stateName = stateName.substring(parentChannel.length + 1);
+            }
+            stateName = stateName.replace(/[.\s]+/g, '_');
+
+            var objId = that._fixId({device: parentDevice, channel: parentChannel, state: stateName}, 'state');
+
+            if (enumName) {
+                enumName = 'enum.' + enumName + '.';
+            } else {
+                enumName = 'enum.';
+            }
+
+            that.objects.getObjectView('system', 'enum', {startkey: enumName, endkey: enumName + '\u9999'}, options,  function (err, res) {
+                if (!err &amp;&amp; res) {
+                    var count = 0;
+                    for (var i = 0; i &lt; res.rows.length; i++) {
+                        count++;
+                        that.objects.getObject(res.rows[i].id, options, function (err, obj) {
+                            if (err) {
+                                if (callback) callback(err);
+                                callback = null;
+                                return;
+                            }
+
+                            if (!err &amp;&amp; obj &amp;&amp; obj.common &amp;&amp; obj.common.members) {
+                                var pos = obj.common.members.indexOf(objId);
+                                if (pos !== -1) {
+                                    obj.common.members.splice(pos, 1);
+                                    count++;
+                                    that.objects.setObject(obj._id, obj, function (err) {
+                                        if (!--count &amp;&amp; callback) callback(err);
+                                    });
+                                }
+                            }
+                            if (!--count &amp;&amp; callback) callback(err);
+                        });
+                    }
+                } else if (callback) {
+                    callback (err);
+                }
+            });
+        };
+
+        that.chmodFile = function chmodFile(_adapter, path, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.chmodFile(_adapter, path, options, callback);
+        };
+
+        that.readDir = function readDir(_adapter, path, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.readDir(_adapter, path, options, callback);
+        };
+
+        that.unlink = function unlink(_adapter, name, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.unlink(_adapter, name, options, callback);
+        };
+
+        that.delFile = that.unlink;
+
+        that.rename = function rename(_adapter, oldName, newName, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+            that.objects.rename(_adapter, oldName, newName, options, callback);
+        };
+
+        that.mkdir = function mkdir(_adapter, dirname, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.mkdir(_adapter, dirname, options, callback);
+        };
+
+        that.readFile = function readFile(_adapter, filename, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.readFile(_adapter, filename, options, callback);
+        };
+
+        that.writeFile = function writeFile(_adapter, filename, data, options, callback) {
+            if (_adapter === null) _adapter = that.name;
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
+            that.objects.writeFile(_adapter, filename, data, options, callback);
+        };
+
+        that.formatValue = function (value, decimals, _format) {
+            if (typeof decimals !== 'number') {
+                _format  = decimals;
+                decimals = 2;
+            }
+
+            var format = (_format === undefined) ? ((that.isFloatComma === undefined) ? '.,' : ((that.isFloatComma) ? '.,' : ',.')) : _format;
+
+            if (typeof value !== 'number') value = parseFloat(value);
+            return isNaN(value) ? '' : value.toFixed(decimals || 0).replace(format[0], format[1]).replace(/\B(?=(\d{3})+(?!\d))/g, format[0]);
+        };
+
+        that.formatDate = function formatDate(dateObj, isDuration, _format) {
+
+            if ((typeof isDuration === 'string' &amp;&amp; isDuration.toLowerCase() === 'duration') || isDuration === true) {
+                isDuration  = true;
+            }
+            if (typeof isDuration !== 'boolean') {
+                _format    = isDuration;
+                isDuration = false;
+            }
+
+            if (!dateObj) return '';
+            var type = typeof dateObj;
+            if (type === 'string') dateObj = new Date(dateObj);
+
+            if (type !== 'object') {
+                var j = parseInt(dateObj, 10);
+                if (j == dateObj) {
+                    // may this is interval
+                    if (j &lt; 946681200) {
+                        isDuration = true;
+                        dateObj = new Date(dateObj);
+                    } else {
+                        // if less 2000.01.01 00:00:00
+                        dateObj = (j &lt; 946681200000) ? new Date(j * 1000) : new Date(j);
+                    }
+                } else {
+                    dateObj = new Date(dateObj);
+                }
+            }
+            var format = _format || that.dateFormat || 'DD.MM.YYYY';
+
+            if (isDuration) dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1000);
+
+            var validFormatChars = 'YJГMМDTДhSчmмsс';
+            var s      = '';
+            var result = '';
+
+            function put(s) {
+                var v = '';
+                switch (s) {
+                    case 'YYYY':
+                    case 'JJJJ':
+                    case 'ГГГГ':
+                    case 'YY':
+                    case 'JJ':
+                    case 'ГГ':
+                        v = dateObj.getFullYear();
+                        if (s.length === 2) v %= 100;
+                        break;
+                    case 'MM':
+                    case 'M':
+                    case 'ММ':
+                    case 'М':
+                        v = dateObj.getMonth() + 1;
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
+                        break;
+                    case 'DD':
+                    case 'TT':
+                    case 'D':
+                    case 'T':
+                    case 'ДД':
+                    case 'Д':
+                        v = dateObj.getDate();
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
+                        break;
+                    case 'hh':
+                    case 'SS':
+                    case 'h':
+                    case 'S':
+                    case 'чч':
+                    case 'ч':
+                        v = dateObj.getHours();
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
+                        break;
+                    case 'mm':
+                    case 'm':
+                    case 'мм':
+                    case 'м':
+                        v = dateObj.getMinutes();
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
+                        break;
+                    case 'ss':
+                    case 's':
+                    case 'cc':
+                    case 'c':
+                        v = dateObj.getSeconds();
+                        if ((v &lt; 10) &amp;&amp; (s.length === 2)) v = '0' + v;
+                        v = v.toString();
+                        break;
+                    case 'sss':
+                    case 'ссс':
+                        v = dateObj.getMilliseconds();
+                        if (v &lt; 10) {
+                            v = '00' + v;
+                        } else if (v &lt; 100) {
+                            v = '0' + v;
+                        }
+                        v = v.toString();
+                }
+                return result += v;
+            }
+
+            for (var i = 0; i &lt; format.length; i++) {
+                if (validFormatChars.indexOf(format[i]) >= 0)
+                    s += format[i];
+                else {
+                    put(s);
+                    s = '';
+                    result += format[i];
+                }
+            }
+            put(s);
+            return result;
+        };
+    }
+
+    // TODO: clear somehow the cache by changing of user permissions
+    function getUserGroups(options, callback) {
+        if (that.users[options.user]) {
+            options.groups = that.users[options.user];
+            return callback(options);
+        }
+        options.groups = [];
+        that.getForeignObjects('*', 'group', function (err, groups) {
+            // aggregate all groups permissions, where this user is
+            if (groups) {
+                for (var g in groups) {
+                    if (groups[g] &amp;&amp;
+                        groups[g].common &amp;&amp;
+                        groups[g].common.members &amp;&amp;
+                        groups[g].common.members.indexOf(options.user) !== -1) {
+                        options.groups.push(groups[g]._id);
+                    }
+                }
+            }
+
+            that.users[options.user] = options.groups;
+            callback(options);
+        });
+
+    }
+
+    function checkStates(ids, options, command, callback) {
+        if (!options.groups) {
+            return getUserGroups(options, function () {
+                checkStates(ids, options, command, callback);
+            });
+        }
+
+        if (ids instanceof Array) {
+            var errors = [];
+            var count = ids.length;
+            if (count === 0) {
+	        callback(null, ids);
+                return;
+            }
+            for (var i = 0; i &lt; ids.length; i++) {
+                checkStates(ids[i], options, command, function (err, obj) {
+                    if (err &amp;&amp; obj) {
+                        errors.push(obj._id);
+                    }
+
+                    if (!--count) {
+                        if (errors.length) {
+                            for (var j = ids.length - 1; j >= 0; j--) {
+                                if (errors.indexOf(ids[j]) !== -1) {
+                                    ids.splice(j, 1);
+                                }
+                            }
+                        }
+
+                        callback(null, ids);
+                    }
+                });
+            }
+        } else {
+            that.objects.getObject(ids, options, function (err, obj) {
+                if (err) {
+                    callback(err, {_id: ids});
+                    return;
+                } else {
+                    if (obj &amp;&amp; obj.acl) {
+                        if (obj.acl.state === undefined) obj.acl.state = obj.acl.object;
+                        if (obj.acl.state !== undefined) {
+                            // If user is owner
+                            if (options.user === obj.acl.owner) {
+                                if (command === 'setState' || command === 'delState') {
+                                    if (!(obj.acl.state &amp; (2 &lt;&lt; 8))/*write*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else if (command === 'getState') {
+                                    if (!(obj.acl.state &amp; (4 &lt;&lt; 8))/*read*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else {
+                                    that.log.warn('Called unknown command:' + command);
+                                }
+                            } else if (options.groups.indexOf(obj.acl.ownerGroup) !== -1) {
+                                if (command === 'setState' || command === 'delState') {
+                                    if (!(obj.acl.state &amp; (2 &lt;&lt; 4))/*write*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else if (command === 'getState') {
+                                    if (!(obj.acl.state &amp; (4 &lt;&lt; 4))/*read*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else {
+                                    that.log.warn('Called unknown command:' + command);
+                                }
+                            } else{
+                                if (command === 'setState' || command === 'delState') {
+                                    if (!(obj.acl.state &amp; 2)/*write*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else if (command === 'getState') {
+                                    if (!(obj.acl.state &amp; 4)/*read*/) {
+                                        that.log.warn('Permission error for user "' + options.user + '": ' + command);
+                                        callback('permissionError', {_id: ids});
+                                        return;
+                                    }
+                                } else {
+                                    that.log.warn('Called unknown command:' + command);
+                                    callback('permissionError', {_id: ids});
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                callback();
+            });
+        }
+    }
+
+    // find out default history instance
+    function getDefaultHistory(callback) {
+        if (!that.defaultHistory) {
+            // read default history instance from system.config
+            return that.getForeignObject('system.config', function (err, data) {
+                if (data &amp;&amp; data.common) that.defaultHistory = data.common.defaultHistory;
+
+                // if no default history set
+                if (!that.defaultHistory) {
+                    // read all adapters
+                    that.objects.getObjectView('system', 'instance', {startkey: '', endkey: '\u9999'}, function (err, _obj) {
+                        if (_obj) {
+                            for (var i = 0; i &lt; _obj.rows.length; i++) {
+                                if (_obj.rows[i].value.common &amp;&amp; _obj.rows[i].value.common.type === 'storage') {
+                                    that.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                                    break;
+                                }
+                            }
+                        }
+                        if (!that.defaultHistory) that.defaultHistory = 'history.0';
+                        if (callback) callback();
+                    });
+                } else {
+                    if (callback) callback();
+                }
+            });
+        } else {
+            if (callback) callback();
+
+        }
+    }
+
+    function pattern2RegEx (pattern) {
+        if (pattern !== '*') {
+            if (pattern[0] === '*' &amp;&amp; pattern[pattern.length - 1] !== '*') pattern += '$';
+            if (pattern[0] !== '*' &amp;&amp; pattern[pattern.length - 1] === '*') pattern = '^' + pattern;
+        }
+        pattern = pattern.replace(/\./g, '\\.');
+        pattern = pattern.replace(/\*/g, '.*');
+        return pattern;
+    }
+
+    function _setStateChangedHelper (id, state, callback) {
+        that.states.getState(id, function (err, oldState) {
+            if (err) {
+                if (typeof callback === 'function') callback(err);
+            } else {
+                var differ = false;
+                if (!oldState) {
+                    differ = true;
+                } else
+                if (state.val !== oldState.val) {
+                    differ = true
+                } else
+                if (state.ack !== undefined &amp;&amp; state.ack !== oldState.ack) {
+                    differ = true
+                } else
+                if (state.q !== undefined &amp;&amp; state.q !== oldState.q) {
+                    differ = true
+                } else
+                if (state.ts !== undefined &amp;&amp; state.ts !== oldState.ts) {
+                    differ = true
+                } else
+                if (state.c !== undefined &amp;&amp; state.c !== oldState.c) {
+                    differ = true
+                } else
+                if (state.expire !== undefined &amp;&amp; state.expire !== oldState.expire) {
+                    differ = true
+                } else
+                if (state.from !== undefined &amp;&amp; state.from !== oldState.from) {
+                    differ = true
+                }
+                if (differ) {
+                    that.states.setState(id, state, callback);
+                } else {
+                    if (typeof callback === 'function') callback(null, id, true);
+                }
+            }
+        });
+    };
+
+    // initStates is called from initAdapter
+    function initStates(cb) {
+        logger.debug(that.namespace + ' objectDB connected');
+
+        config.states.maxQueue = config.states.maxQueue || 1000;
+
+        // Internal object, but some special adapters want to access it anyway.
+        that.states = new States({
+            connection: config.states,
+            connected: function () {
+                logger.debug(that.namespace + ' statesDB connected');
+                
+                if (options.subscribable) {
+                    that.states.subscribe('system.adapter.' + that.namespace + '.subscribes');
+                    that.states.getState('system.adapter.' + that.namespace + '.subscribes', function (err, state) {
+                        if (!state || !state.val) {
+                            that.patterns = {};
+                        } else {
+                            try {
+                                that.patterns = JSON.parse(state.val);
+                                for (var p in that.patterns) {
+                                    that.patterns[p].regex = pattern2RegEx(p);
+                                }
+                            } catch (e) {
+                                that.patterns = {};
+                            }
+                        }
+                        if (typeof cb === 'function') cb();
+                    })
+                } else if (typeof cb === 'function') {
+                    cb();
+                }
+            },
+            logger: logger,
+            change: function (id, state) {
+                if (state === 'null') state = null;
+
+                if (!id || typeof id !== 'string') {
+                    console.log('Something is wrong! ' + JSON.stringify(id));
+                    return;
+                }
+
+                // todo remove it as an error with log will be found
+                if (id === 'system.adapter.' + that.namespace + '.checkLogging') {
+                    checkLogging();
+                    return;
+                }
+
+                // someone subscribes or unsubscribes from adapter
+                if (options.subscribable &amp;&amp; id === 'system.adapter.' + that.namespace + '.subscribes') {
+                    var subs;
+                    try {
+                        subs = JSON.parse(state.val || '{}');
+                    } catch (e) {
+                        subs = {};
+                    }
+                    for (var p in subs) {
+                        subs[p].regex = pattern2RegEx(p); 
+                    }
+                    
+                    that.patterns = subs;
+                    if (typeof options.subscribesChange === 'function') {
+                        options.subscribesChange(state);
+                    } else {
+                        that.emit('subscribesChange', state);
+                    }
+                    return;
+                }
+                
+                // Clear cache if accidentally got the message about change (Will work for admin and javascript)
+                if (id.match(/^system\.user\./) || id.match(/^system\.group\./)) {
+                    that.users = [];
+                }
+
+                // If someone want to have log messages
+                if (that.logList &amp;&amp; id.match(/\.logging$/)) {
+                    var instance = id.substring(0, id.length - '.logging'.length);
+                    if (logger) logger.info(that.namespace + ' ' + instance + ': logging ' + (state ? state.val : false));
+                    that.logRedirect(state ? state.val : false, instance);
+                } else
+                if (id === 'log.system.adapter.' + that.namespace) {
+                    that.processLog(state);
+                } else
+                // If this is messagebox
+                if (id === 'messagebox.system.adapter.' + that.namespace &amp;&amp; state) {
+                    // Read it from fifo list
+                    that.states.delMessage('system.adapter.' + that.namespace, state._id);
+                    var obj = state;
+                    if (obj) {
+                        // If callback stored for this request
+                        if (obj.callback     &amp;&amp;
+                            obj.callback.ack &amp;&amp;
+                            obj.callback.id  &amp;&amp;
+                            that.callbacks   &amp;&amp;
+                            that.callbacks['_' + obj.callback.id]) {
+                            // Call callback function
+                            if (that.callbacks['_' + obj.callback.id].cb) {
+                                that.callbacks['_' + obj.callback.id].cb(obj.message);
+                                delete that.callbacks['_' + obj.callback.id];
+                            }
+                            // delete too old callbacks IDs, like garbage collector
+                            var now = (new Date()).getTime();
+                            for (var _id in that.callbacks) {
+                                if (now - that.callbacks[_id].time > 3600000) delete that.callbacks[_id];
+                            }
+
+                        } else {
+                            if (options.message) {
+                                // Else inform about new message the adapter
+                                options.message(obj);
+                            }
+                            that.emit('message', obj);
+                        }
+                    }
+                } else {
+                    if (that.oStates) {
+                        if (!state) {
+                            delete that.oStates[id];
+                        } else {
+                            that.oStates[id] = state;
+                        }
+                    }
+
+                    // It was an error in the calculation
+                    if ((options.noNamespace || config.noNamespace) &amp;&amp; that._namespaceRegExp.test(id)) {
+                        if (typeof options.stateChange === 'function') {
+                            options.stateChange(id.substring(that.namespace.length + 1), state);
+                        } else {
+                            // emit 'stateChange' event instantly
+                            setTimeout(function () {
+                                that.emit('stateChange', id.slice(that.namespace.length + 1), state);
+                            }, 0);
+                        }
+
+                    } else {
+                        if (typeof options.stateChange === 'function') {
+                            options.stateChange(id, state);
+                        } else {
+                            // emit 'stateChange' event instantly
+                            setTimeout(function () {
+                                that.emit('stateChange', id, state);
+                            }, 0);
+                        }
+                    }
+                }
+            },
+            connectTimeout: function (error) {
+                if (config.isInstall) {
+                    if (logger) logger.warn(that.namespace + ' no connection to states DB');
+                    process.exit(0);
+                } else {
+                    if (logger) logger.error(that.namespace + ' no connection to states DB: ' + (error || ''));
+                }
+            }
+        });
+
+        /**
+         * Send message to other adapter instance or all instances of adapter.
+         *
+         * This function sends a message to specific instance or all instances of some specific adapter.
+         * If no instance given (e.g. "pushover"), the callback argument will be ignored. Because normally many responses will come.
+         *
+         * @alias sendTo
+         * @memberof Adapter
+         * @param {string} instanceName name of the instance where the message must be send to. E.g. "pushover.0" or "system.adapter.pushover.0".
+         * @param {string} command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+         * @param {object} message object that will be given as argument for request
+         * @param {function} callback optional return result
+         *        &lt;pre>&lt;code>
+         *            function (result) {
+         *              // result is target adapter specific and can vary from adapter to adapter
+         *              if (!result) adapter.log.error('No response received');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.sendTo = function sendTo(instanceName, command, message, callback) {
+            if ((typeof message === 'function') &amp;&amp; (typeof callback === 'undefined')) {
+                callback = message;
+                message = {};
+            }
+            if (typeof message === 'undefined') {
+                message = command;
+                command = 'send';
+            }
+            var obj = {command: command, message: message, from: 'system.adapter.' + that.namespace};
+
+            if (!instanceName.match(/^system\.adapter\./)) instanceName = 'system.adapter.' + instanceName;
+
+            if (typeof message !== 'object') {
+                that.log.debug('sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + that.namespace + ': ' + message);
+            } else {
+                that.log.debug('sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + that.namespace);
+            }
+
+            // If not specific instance
+            if (!instanceName.match(/\.[0-9]+$/)) {
+                // Send to all instances of adapter
+                that.objects.getObjectView('system', 'instance', {startkey: instanceName + '.', endkey: instanceName + '.\u9999'}, function (err, _obj) {
+                    if (_obj) {
+                        for (var i = 0; i &lt; _obj.rows.length; i++) {
+                            that.states.pushMessage(_obj.rows[i].id, obj);
+                        }
+                    }
+                });
+            } else {
+                if (callback) {
+                    if (typeof callback === 'function') {
+                        // force subscribe even no messagebox enabled
+                        if (!that.common.messagebox &amp;&amp; !that.mboxSubscribed) {
+                            that.mboxSubscribed = true;
+                            that.states.subscribeMessage('system.adapter.' + that.namespace);
+                        }
+
+                        obj.callback = {
+                            message: message,
+                            id:      callbackId++,
+                            ack:     false,
+                            time:    (new Date()).getTime()
+                        };
+                        if (callbackId >= 0xFFFFFFFF) callbackId = 1;
+                        if (!that.callbacks) that.callbacks = {};
+                        that.callbacks['_' + obj.callback.id] = {cb: callback};
+
+                        // delete too old callbacks IDs
+                        var now = (new Date()).getTime();
+                        for (var _id in that.callbacks) {
+                            if (now - that.callbacks[_id].time > 3600000) delete that.callbacks[_id];
+                        }
+                    } else {
+                        obj.callback = callback;
+                        obj.callback.ack = true;
+                    }
+                }
+
+                that.states.pushMessage(instanceName, obj);
+            }
+        };
+
+        /**
+         * Send message to specific host or to all hosts.
+         *
+         * This function sends a message to specific host or all hosts.
+         * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
+         *
+         * @alias sendToHost
+         * @memberof Adapter
+         * @param {string} hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+         * @param {string} command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+         * @param {object} message object that will be given as argument for request
+         * @param {function} callback optional return result
+         *        &lt;pre>&lt;code>
+         *            function (result) {
+         *              // result is target adapter specific and can vary from command to command
+         *              if (!result) adapter.log.error('No response received');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.sendToHost = function sendToHost(hostName, command, message, callback) {
+            if (typeof message === 'undefined') {
+                message = command;
+                command = 'send';
+            }
+            var obj = {command: command, message: message, from: 'system.adapter.' + that.namespace};
+
+            if (hostName &amp;&amp; !hostName.match(/^system\.host\./)) hostName = 'system.host.' + hostName;
+
+            if (!hostName) {
+                // Send to all hosts
+                that.objects.getObjectList({startkey: 'system.host.', endkey: 'system.host.' + '\u9999'}, null, function (err, res) {
+                    if (!err &amp;&amp; res.rows.length) {
+                        for (var i = 0; i &lt; res.rows.length; i++) {
+                            var parts = res.rows[i].id.split('.');
+                            // ignore system.host.name.alive and so on
+                            if (parts.length === 3) {
+                                that.states.pushMessage(res.rows[i].id, obj);
+                            }
+                        }
+                    }
+                });
+            } else {
+                if (callback) {
+                    if (typeof callback === 'function') {
+                        // force subscribe even no messagebox enabled
+                        if (!that.common.messagebox &amp;&amp; !that.mboxSubscribed) {
+                            that.mboxSubscribed = true;
+                            that.states.subscribeMessage('system.adapter.' + that.namespace);
+                        }
+
+                        obj.callback = {
+                            message: message,
+                            id:      callbackId++,
+                            ack:     false,
+                            time:    (new Date()).getTime()
+                        };
+                        if (callbackId >= 0xFFFFFFFF) callbackId = 1;
+                        if (!that.callbacks) that.callbacks = {};
+                        that.callbacks['_' + obj.callback.id] = {cb: callback};
+                    } else {
+                        obj.callback     = callback;
+                        obj.callback.ack = true;
+                    }
+                }
+
+                that.states.pushMessage(hostName, obj);
+            }
+        };
+
+        /**
+         * Writes value into states DB.
+         *
+         * This function can write values into states DB for this adapter.
+         * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+         * ack, options and callback are optional
+         *
+         * @alias setState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object and ack exists too as function argument, function argument has priority.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setState = function setState(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack      = undefined;
+            }
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            id = that._fixId(id, 'state');
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.setState(id, state, callback);
+                    }
+                });
+            } else {
+                that.states.setState(id, state, callback);
+            }
+        };
+
+        /**
+         * Writes value into states DB only if the value really changed.
+         *
+         * This function can write values into states DB for this adapter.
+         * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+         * ack, options and callback are optional
+         *
+         * @alias setStateChanged
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id, notChanged) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *              if (!notChanged) adapter.log.debug('Value was chnaged');
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setStateChanged = function setStateChanged(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack      = undefined;
+            }
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            id = that._fixId(id, 'state');
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that._setStateChangedHelper(id, state, callback);
+                    }
+                });
+            } else {
+                that._setStateChangedHelper(id, state, callback);
+            }
+        };
+
+        /**
+         * Writes value into states DB for any instance.
+         *
+         * This function can write values into states DB for all instances and system states too.
+         * ack, options and callback are optional
+         *
+         * @alias setForeignState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object, so the ack will be ignored and must be included into object.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setForeignState = function setForeignState(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack = undefined;
+            }
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.setState(id, state, callback);
+                    }
+                });
+            } else {
+                that.states.setState(id, state, callback);
+            }
+        };
+
+        /**
+         * Writes value into states DB for any instance, but only if state changed.
+         *
+         * This function can write values into states DB for all instances and system states too.
+         * ack, options and callback are optional
+         *
+         * @alias setForeignStateChanged
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object|string|number|boolean} value simple value or object with attribues.
+         *  If state is object and ack exists too as function argument, function argument has priority.
+         *  &lt;pre>&lt;code>
+         *      {
+         *          val:    value,
+         *          ack:    true|false,       // default - false; is command(false) or status(true)
+         *          ts:     timestampMS,      // default - now
+         *          q:      qualityAsNumber,  // default - 0 (ok)
+         *          from:   origin,           // default - this adapter
+         *          c:      comment,          // default - empty
+         *          expire: expireInSeconds   // default - 0
+         *      }
+         *  &lt;/code>&lt;/pre>
+         * @param {boolean} ack optional is command(false) or status(true)
+         * @param {object} options optional user context
+         * @param {function} callback optional return error and id
+         *        &lt;pre>&lt;code>
+         *            function (err, id) {
+         *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         */
+        that.setForeignStateChanged = function setForeignStateChanged(id, state, ack, options, callback) {
+            if (typeof state === 'object' &amp;&amp; typeof ack !== 'boolean') {
+                callback = options;
+                options  = ack;
+                ack = undefined;
+            }
+
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+
+            if (typeof ack === 'function') {
+                callback = ack;
+                ack = undefined;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+
+            if (ack !== undefined) {
+                state.ack = ack;
+            }
+
+            state.from = 'system.adapter.' + that.namespace;
+
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that._setStateChangedHelper(id, state, callback);
+                    }
+                });
+            } else {
+                that._setStateChangedHelper(id, state, callback);
+            }
+        };
+
+        /**
+         * Read value from states DB.
+         *
+         * This function can read values from states DB for this adapter.
+         * Only Ids that belong to this adapter can be read. So the function automatically adds "adapter.X." to ID.
+         *
+         * @alias getState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, state) {
+         *              if (err) adapter.log.error('Cannot read value: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         *
+         *        See possible attributes of the state in @setState explanation
+         */
+        that.getState = function getState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            id = that._fixId(id, 'state');
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'getState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.getState(id, callback);
+                    }
+                });
+            } else {
+                that.states.getState(id, callback);
+            }
+        };
+
+        /**
+         * Read value from states DB for any instance and system state.
+         *
+         * This function can read values from states DB for all instances and adapters. It expects the full path of object ID.
+         *
+         * @alias getForeignState
+         * @memberof Adapter
+         * @param {string} id object ID of the state.
+         * @param {object} options optional user context
+         * @param {function} callback return result
+         *        &lt;pre>&lt;code>
+         *            function (err, state) {
+         *              if (err) adapter.log.error('Cannot read value: ' + err);
+         *            }
+         *        &lt;/code>&lt;/pre>
+         *
+         *        See possible attributes of the state in @setState explanation
+         */
+        that.getForeignState = function getForeignState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'getState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.getState(id, callback);
+                    }
+                });
+            } else {
+                that.states.getState(id, callback);
+            }
+        };
+
+        // normally only foreign history has interest, so there is no getHistory and getForeignHistory
+        that.getHistory = function getHistory(id, options, callback) {
+            options = options || {};
+            options.end = options.end || (new Date()).getTime() + 5000000;
+            if (!options.count &amp;&amp; !options.start) {
+                options.start = options.start || (new Date()).getTime() - 604800000; // - 1 week
+            }
+
+            if (!options.instance) {
+                if (!that.defaultHistory) {
+                    // read default history instance from system.config
+                    return getDefaultHistory(function () {
+                        that.getHistory(id, options, callback);
+                    });
+                } else {
+                    options.instance = that.defaultHistory;
+                }
+            }
+
+            that.sendTo(options.instance || 'history.0', 'getHistory', {id: id, options: options}, function (res) {
+                setTimeout(function () {
+                    callback(res.error, res.result, res.step, res.sessionId);
+                }, 0);
+            });
+        };
+
+        // Convert ID adapter.instance.device.channel.state
+        // Convert ID to {device: D, channel: C, state: S}
+        that.idToDCS = function idToDCS(id) {
+            if (!id) return null;
+            var parts = id.split('.');
+            if (parts[0] + '.' + parts[1] !== that.namespace) {
+                that.log.warn('Try to decode id not from this adapter');
+                return null;
+            }
+            return {device: parts[2], channel: parts[3], state: parts[4]};
+        };
+
+        that.delState = function delState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            id = that._fixId(id);
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'delState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.delState(id, callback);
+                    }
+                });
+            } else {
+                that.states.delState(id, callback);
+            }
+        };
+
+        that.delForeignState = function delForeignState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'delState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.delState(id, callback);
+                    }
+                });
+            } else {
+                that.states.delState(id, callback);
+            }
+
+        };
+
+        /**
+         * Read all states of this adapter, that pass the pattern
+         *
+         * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
+         * &lt;pre>&lt;code>
+         *     adapter.getStates('*', function (err, states) {
+         *         for (var id in states) {
+         *              adapter.log.debug('"' + id + '" = "' + states[id].val);
+         *         }
+         *     });
+         * &lt;/code>&lt;/pre>
+         *
+         * @alias getStates
+         * @memberof Adapter
+         * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+         * @param {object} options optional argument to describe the user context
+         * @param {function} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+         */
+        that.getStates = function getStates(pattern, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            pattern = that._fixId(pattern, 'state');
+            that.getForeignStates(pattern, options, callback);
+        };
+
+        /**
+         * Read all states of all adapters (and system states), that pass the pattern
+         *
+         * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
+         * &lt;pre>&lt;code>
+         *     adapter.getStates('*', function (err, states) {
+         *         for (var id in states) {
+         *              adapter.log.debug('"' + id + '" = "' + states[id].val);
+         *         }
+         *     });
+         * &lt;/code>&lt;/pre>
+         *
+         * @alias getForeignStates
+         * @memberof Adapter
+         * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+         * @param {object} options optional argument to describe the user context
+         * @param {function} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+         */
+        that.getForeignStates = function getForeignStates(pattern, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            var list = {};
+            if (typeof pattern === 'function') {
+                callback = pattern;
+                pattern = '*';
+            }
+
+            if (typeof callback !== 'function') {
+                logger.error(that.namespace + ' getForeignStates invalid callback for ' + pattern);
+                return;
+            }
+
+            if (typeof pattern === 'object') {
+                if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                    checkStates(pattern, options, 'getState', function (err, keys) {
+                        if (err) {
+                            if (typeof callback === 'function') callback(err);
+                            return;
+                        }
+                        that.states.getStates(keys, function (err, arr) {
+                            if (err) {
+                                callback(err);
+                                return;
+                            }
+                            for (var i = 0; i &lt; keys.length; i++) {
+                                if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
+                                list[keys[i]] = arr[i] || {};
+                            }
+                            callback(null, list);
+                        });
+                    });
+                } else {
+                    that.states.getStates(pattern, function (err, arr) {
+                        if (err) {
+                            callback(err);
+                            return;
+                        }
+                        for (var i = 0; i &lt; pattern.length; i++) {
+                            if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
+                            list[pattern[i]] = arr[i] || {};
+                        }
+                        callback(null, list);
+                    });
+                }
+                return;
+            }
+            var keys = [];
+            var params = {};
+            if (pattern &amp;&amp; pattern !== '*') {
+                params = {
+                    startkey: pattern.replace('*', ''),
+                    endkey:   pattern.replace('*', '\u9999')
+                };
+            }
+            that.objects.getObjectView('system', 'state', params, options, function (err, res) {
+                if (err) {
+                    if (typeof callback === 'function') callback(err);
+                    return;
+                }
+
+                for (var i = 0; i &lt; res.rows.length; i++) {
+                    keys.push(res.rows[i].id);
+                }
+
+                if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                    checkStates(keys, options, 'getState', function (err, keys) {
+                        if (err) {
+                            if (typeof callback === 'function') callback(err);
+                            return;
+                        }
+                        that.states.getStates(keys, function (err, arr) {
+                            if (err) {
+                                callback(err);
+                                return;
+                            }
+                            for (var i = 0; i &lt; res.rows.length; i++) {
+                                if (typeof arr[i] === 'string') arr[i] = JSON.parse(arr[i]);
+                                list[keys[i]] = arr[i] || null;
+                            }
+                            if (typeof callback === 'function') callback(null, list);
+                        });
+                    });
+                } else {
+                    that.states.getStates(keys, function (err, arr) {
+                        if (err) {
+                            callback(err);
+                            return;
+                        }
+                        for (var i = 0; i &lt; res.rows.length; i++) {
+                            if (typeof arr[i] === 'string') {
+                                try {
+                                    arr[i] = JSON.parse(arr[i]);
+                                } catch (e) {
+                                    logger.error(that.namespace + ' Cannot parse state"' + keys[i] + ': ' + arr[i]);
+                                }
+                            }
+                            list[keys[i]] = arr[i] || null;
+                        }
+                        if (typeof callback === 'function') callback(null, list);
+                    });
+                }
+            });
+        };
+
+        that.subscribeForeignStates = function subscribeForeignStates(pattern, options) {
+            if (!pattern) pattern = '*';
+            autoSubscribeOn(function () {
+                // compare if this pattern for one of autosubscribe adapters
+                for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
+                    if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
+                        // put this pattern into adapter list
+                        that.states.getState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
+                            state = {};
+                            state.val = state.val || '{}';
+                            var subs;
+                            try {
+                                subs = JSON.parse(state.val)
+                            } catch (e) {
+                                that.log.error('Cannot parse subscribes for "' + that.autoSubscribe[s] + '.subscribes"');
+                            }
+                            subs[pattern] = subs[pattern] || {};
+                            subs[pattern][that.namespace] = subs[pattern][that.namespace] || 0;
+                            subs[pattern][that.namespace]++;
+                            that.states.setState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
+                        });
+                    }
+                }
+                
+                that.states.subscribe(pattern, options);
+            })
+        };
+
+        that.unsubscribeForeignStates = function unsubscribeForeignStates(pattern, options) {
+            if (!pattern) pattern = '*';
+            
+            if (that.autoSubscribe) {
+                for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
+                    if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
+                        // remove this pattern from adapter list
+                        that.states.getState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', function (err, state) {
+                            if (!state || !state.val) return;
+                            var subs;
+                            try {
+                                subs = JSON.parse(state.val)
+                            } catch (e) {
+                                that.log.error('Cannot parse subscribes for "' + that.autoSubscribe[s] + '.subscribes"');
+                                return;
+                            }
+                            if (!subs[pattern]) return;
+                            if (subs[pattern][that.namespace] === undefined) return;
+                            subs[pattern][that.namespace]--;
+                            if (subs[pattern][that.namespace] &lt;= 0) delete subs[pattern][that.namespace];
+                            var found = false;
+                            // if any other subs are there
+                            for (var id in subs[pattern]) {
+                                if (subs[pattern].hasOwnProperty(id)) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) delete subs[pattern];
+                            that.states.setState('system.adapter.' + that.autoSubscribe[s] + '.subscribes', subs);
+                        });
+                    }
+                }
+            }
+            
+            that.states.unsubscribe(pattern, options);
+        };
+
+        that.subscribeStates = function subscribeStates(pattern, options) {
+            // Exception. Threat the '*' case automatically
+            if (!pattern || pattern === '*') {
+                that.states.subscribe(that.namespace + '.*', options);
+            } else {
+                pattern = that._fixId(pattern, 'state');
+                that.states.subscribe(pattern, options);
+            }
+        };
+
+        that.unsubscribeStates = function unsubscribeStates(pattern, options) {
+            if (!pattern || pattern === '*') {
+                that.states.unsubscribe(that.namespace + '.*', options);
+            } else {
+                pattern = that._fixId(pattern, 'state');
+                that.states.unsubscribe(pattern, options);
+            }
+        };
+
+        that.pushFifo = function pushFifo(id, state, callback) {
+            that.states.pushFifo(id, state, callback);
+        };
+
+        that.trimFifo = function trimFifo(id, start, end, callback) {
+            that.states.trimFifo(id, start, end, callback);
+        };
+
+        that.getFifoRange = function getFifoRange(id, start, end, callback) {
+            that.states.getFifoRange(id, start, end, callback);
+        };
+
+        that.getFifo = function getFifo(id, callback) {
+            that.states.getFifo(id, callback);
+        };
+
+        that.lenFifo = function lenFifo(id, callback) {
+            that.states.lenFifo(id, callback);
+        };
+
+        that.subscribeFifo = function subscribeFifo(pattern) {
+            that.states.subscribeFifo(pattern);
+        };
+
+        that.getSession = function getSession(id, callback) {
+            that.states.getSession(id, callback);
+        };
+
+        that.setSession = function setSession(id, ttl, data, callback) {
+            that.states.setSession(id, ttl, data, callback);
+        };
+
+        that.destroySession = function destroySession(id, callback) {
+            that.states.destroySession(id, callback);
+        };
+
+        that.getMessage = function getMessage(callback) {
+            that.states.getMessage('system.adapter.' + that.namespace, callback);
+        };
+
+        that.lenMessage = function lenMessage(callback) {
+            that.states.lenMessage('system.adapter.' + that.namespace, callback);
+        };
+
+        // Write binary block into redis, e.g image
+        that.setBinaryState = function setBinaryState(id, binary, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'setState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.setBinaryState(id, binary, callback);
+                    }
+                });
+            } else {
+                that.states.setBinaryState(id, binary, callback);
+            }
+        };
+
+        // Read binary block fromredis, e.g. image
+        that.getBinaryState = function getBinaryState(id, options, callback) {
+            if (typeof options === 'function') {
+                callback = options;
+                options = {};
+            }
+            if (options &amp;&amp; options.user &amp;&amp; options.user !== 'system.user.admin') {
+                checkStates(id, options, 'getState', function (err) {
+                    if (err) {
+                        if (typeof callback === 'function') callback(err);
+                    } else {
+                        that.states.getBinaryState(id, callback);
+                    }
+                });
+            } else {
+                that.states.getBinaryState(id, callback);
+            }
+        };
+    }
+
+    // read all logs prepared for this adapter at start
+    function readLogs(callback) {
+        // read all stored messages
+        that.states.getLog('system.adapter.' + that.namespace, function (err, msg) {
+            if (msg) {
+                if (msg) that.emit('log', msg);
+                setTimeout(function () {
+                    readLogs(callback);
+                }, 0);
+            } else if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function printLog(logs, id, callback) {
+        that.states.lenLog(id, function (err, len) {
+            logs.push('Subscriber - ' + id + ' (queued ' + len + ') ' + (err || ''));
+            if (callback) callback();
+        });
+    }
+
+    // debug function to find error with stop logging
+    function checkLogging() {
+        var logs  = [];
+        var count = 0;
+        // LogList
+        logs.push('Actual Loglist - ' + JSON.stringify(that.logList));
+
+        // Read current state of all log subscribers
+        that.states.getKeys('*.logging', function (err, keys) {
+            if (keys &amp;&amp; keys.length) {
+                that.states.getStates(keys, function (err, obj) {
+                    if (obj) {
+                        for (var i = 0; i &lt; keys.length; i++) {
+                            // We can JSON.parse, but index is 16x faster
+                            if (obj[i]) {
+                                var id = keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, '');
+                                if ((typeof obj[i] === 'string' &amp;&amp; (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
+                                    (typeof obj[i] === 'object' &amp;&amp; (obj[i].val === true || obj[i].val === 'true'))) {
+                                    count++;
+                                    printLog(logs, id, function () {
+                                        if (!--count) {
+                                            for (var m = 0; m &lt; logs.length; m++) {
+                                                that.log.error('LOGINFO: ' + logs[m]);
+                                            }
+                                            logs = null;
+                                        }
+                                    });
+                                } else {
+                                    if (logs) {
+                                        logs.push('Subscriber - ' + id + ' (disabled)');
+                                    } else {
+                                        that.log.error('LOGINFO: Subscriber - ' + id + ' (disabled)');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!count &amp;&amp; logs) {
+                        for (var m = 0; m &lt; logs.length; m++) {
+                            that.log.error('LOGINFO: ' + logs[m]);
+                        }
+                        logs = null;
+                    }
+                });
+            }
+        });
+    }
+
+    function initLogging() {
+        // temporary log buffer
+        var messages = [];
+        // Read current state of all log subscriber
+        that.states.getKeys('*.logging', function (err, keys) {
+            if (keys &amp;&amp; keys.length) {
+                that.states.getStates(keys, function (err, obj) {
+                    if (obj) {
+                        for (var i = 0; i &lt; keys.length; i++) {
+                            // We can JSON.parse, but index is 16x faster
+                            if (!obj[i]) continue;
+                            var id = keys[i].substring(0, keys[i].length - '.logging'.length);
+                            if (typeof obj[i] === 'string' &amp;&amp; (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                that.logRedirect(true, id);
+                            } else if (typeof obj[i] === 'object' &amp;&amp; (obj[i].val === true || obj[i].val === 'true')) {
+                                that.logRedirect(true, id);
+                            }
+                        }
+                        if (that.logList.length &amp;&amp; messages &amp;&amp; messages.length) {
+                            for (var m = 0; m &lt; messages.length; m++) {
+                                for (var k = 0; k &lt; that.logList.length; k++) {
+                                    that.states.pushLog(that.logList[k], messages[m]);
+                                }
+                            }
+                        }
+                    }
+                    // clear log buffer
+                    messages = null;
+                });
+            } else {
+                // disable log buffer
+                messages = null;
+            }
+        });
+
+        that.logList = [];
+        that.logRedirect = function (isActive, id) {
+            // ignore itself
+            if (id === 'system.adapter.' + that.namespace) return;
+
+            if (isActive) {
+                if (that.logList.indexOf(id) === -1) that.logList.push(id);
+            } else {
+                var pos = that.logList.indexOf(id);
+                if (pos !== -1) that.logList.splice(pos, 1);
+            }
+        };
+
+        // If some message from logger
+        logger.on('logging', function (transport, level, msg, meta) {
+            if (transport.name !== tools.appName) return;
+
+            var message = {message: msg, severity: level, from: that.namespace, ts: (new Date()).getTime()};
+            if (options.logTransporter) {
+                that.emit('log', message);
+            }
+
+            if (!that.logList.length) {
+                // if log buffer still active
+                if (messages &amp;&amp; !options.logTransporter) {
+                    messages.push(message);
+
+                    // do not let messages to grow without limit
+                    if (messages.length > config.states.maxQueue) {
+                        messages.splice(0, messages.length - config.states.maxQueue);
+                    }
+                }
+            } else {
+                // Send to all adapter, that required logs
+                for (var i = 0; i &lt; that.logList.length; i++) {
+                    that.states.pushLog(that.logList[i], message);
+                }
+            }
+        });
+
+        options.logTransporter = options.logTransporter || that.ioPack.common.logTransporter;
+
+        if (options.logTransporter) {
+            that.requireLog = function (isActive) {
+                if (that.states) {
+                    if (that.logRequired === undefined &amp;&amp; that.logRequired !== isActive) {
+                        that.logRequired = isActive; // remember state
+                        if (!isActive) {
+                            // disable log receiving after 10 seconds
+                            that.logOffTimer = setTimeout(function () {
+                                that.log.info('Change log subscriber state: FALSE');
+                                that.states.setState('system.adapter.' + that.namespace + '.logging', {val: false, ack: true, from: 'system.adapter.' + that.namespace});
+                            }, 10000);
+                        } else {
+                            if (that.logOffTimer) {
+                                clearTimeout(that.logOffTimer);
+                                that.logOffTimer = null;
+                            }
+                            that.log.info('Change log subscriber state: true');
+                            that.states.setState('system.adapter.' + that.namespace + '.logging', {val: true, ack: true, from: 'system.adapter.' + that.namespace});
+                        }
+                    }
+                }
+            };
+
+            that.processLog = function (msg) {
+                if (msg) that.emit('log', msg);
+                that.states.delLog('system.adapter.' + that.namespace, msg._id);
+            };
+
+            readLogs();
+
+            that.states.subscribeLog('system.adapter.' + that.namespace);
+        }
+    }
+
+    function initAdapter(adapterConfig) {
+        initLogging();
+
+        if (options.instance === undefined) {
+            if (!adapterConfig || !adapterConfig.common || !adapterConfig.common.enabled) {
+                if (adapterConfig &amp;&amp; adapterConfig.common &amp;&amp; adapterConfig.common.enabled !== undefined) {
+                    if (!config.isInstall) logger.error(that.namespace + ' adapter disabled');
+                } else {
+                    if (!config.isInstall) logger.error(that.namespace + ' no config found for adapter');
+                }
+
+                if (!config.isInstall &amp;&amp; (!process.argv || !config.forceIfDisabled)) {
+                    var id = 'system.adapter.' + that.namespace;
+                    that.states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
+                    that.states.setState(id + '.connected', {val: true, ack: true, expire: 30, from: id}, function () {
+                        process.exit(3);
+                    });
+                    setTimeout(function () {
+                        process.exit(3);
+                    }, 1000);
+                    return;
+                }
+            }
+
+            if (!config.isInstall &amp;&amp; !adapterConfig._id) {
+                logger.error(that.namespace + ' invalid config: no _id found');
+                process.exit(4);
+                return;
+            }
+
+            var name;
+            var instance;
+
+            if (!config.isInstall) {
+                var tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
+                if (!tmp) {
+                    logger.error(that.namespace + ' invalid config');
+                    process.exit(5);
+                    return;
+                }
+                name = tmp[1];
+                instance = tmp[2];
+            } else {
+                name = options.name;
+                instance = 0;
+                adapterConfig = adapterConfig || {common: {mode: 'once', name: name}, native: {}};
+            }
+
+            for (var tp in logger.transports) {
+                logger.transports[tp].level = adapterConfig.common.logLevel || 'info';
+            }
+
+            that.name = adapterConfig.common.name;
+            that.instance = instance;
+            that.namespace = name + '.' + instance;
+            process.title = 'io.' + that.namespace;
+
+            that.config = adapterConfig.native;
+            that.host = adapterConfig.common.host;
+            that.common = adapterConfig.common;
+
+            if (adapterConfig.common.mode === 'subscribe' ||
+                adapterConfig.common.mode === 'schedule' ||
+                adapterConfig.common.mode === 'once') {
+                that.stop = function () {
+                    stop(true);
+                };
+            }
+
+            // Monitor logging state
+            that.states.subscribe('*.logging');
+
+            if (typeof options.message === 'function' &amp;&amp; !adapterConfig.common.messagebox) {
+                logger.error(that.namespace + ' : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.');
+            } else if (/*typeof options.message === 'function' &amp;&amp; */adapterConfig.common.messagebox) {
+                that.mboxSubscribed = true;
+                that.states.subscribeMessage('system.adapter.' + that.namespace);
+            }
+
+            // set configured in DB log level
+            if (adapterConfig.common.loglevel) {
+                for (var trans in logger.transports) {
+                    logger.transports[trans].level = adapterConfig.common.loglevel;
+                }
+            }
+        } else {
+            that.name = adapterConfig.name || options.name;
+            that.instance = adapterConfig.instance || 0;
+            that.namespace = that.name + '.' + that.instance;
+
+            that.config = adapterConfig.native || {};
+            that.common = adapterConfig.common || {};
+            that.host = that.common.host || tools.getHostName() || require('os').hostname();
+        }
+
+        var Log = function () {};
+
+        if (config.consoleOutput) {
+            Log.prototype.info = function (msg) {
+                console.log(msg);
+                logger.info(that.namespace + ' ' + msg);
+            };
+            Log.prototype.debug = function (msg) {
+                console.log(msg);
+                logger.debug(that.namespace + ' ' + msg);
+            };
+            Log.prototype.error = function (msg) {
+                console.error(msg);
+                logger.error(that.namespace + ' ' + msg);
+            };
+            Log.prototype.warn = function (msg) {
+                console.warn(msg);
+                logger.warn(that.namespace + ' ' + msg);
+            };
+        } else {
+            Log.prototype.info = function (msg) {
+                logger.info(that.namespace + ' ' + msg);
+            };
+            Log.prototype.debug = function (msg) {
+                logger.debug(that.namespace + ' ' + msg);
+            };
+            Log.prototype.error = function (msg) {
+                logger.error(that.namespace + ' ' + msg);
+            };
+            Log.prototype.warn = function (msg) {
+                logger.warn(that.namespace + ' ' + msg);
+            };
+        }
+
+        that.log = new Log();
+        that.log.level = config.log.level;
+
+        if (options.instance === undefined) {
+            that.version = (that.pack &amp;&amp; that.pack.version) ? that.pack.version : ((that.ioPack &amp;&amp; that.ioPack.common) ? that.ioPack.common.version : 'unknown');
+
+            that.log.info('starting. Version ' + that.version + ' in ' + that.adapterDir + ', node: ' + process.version);
+            reportInterval = setInterval(reportStatus, 15000);
+            reportStatus();
+        }
+
+        if (adapterConfig &amp;&amp; adapterConfig.common &amp;&amp; adapterConfig.common.restartSchedule) {
+            try {
+                schedule = require('node-schedule');
+            } catch (e) {
+                that.log.error('Cannot load node-schedule. Scheduled restart is disabled');
+            }
+            if (schedule) {
+                that.log.debug('Schedule restart: ' + adapterConfig.common.restartSchedule);
+                schedule.scheduleJob(adapterConfig.common.restartSchedule, function () {
+                    that.log.info('Scheduled restart.');
+                    stop(false, true);
+                });
+            }
+        }
+
+        // auto oStates
+        if (options.states) {
+            that.getStates('*', function (err, _states) {
+                that.oStates = _states;
+                that.subscribeStates('*');
+                if (typeof options.ready === 'function') options.ready();
+                that.emit('ready');
+            });
+        } else {
+            if (typeof options.ready === 'function') options.ready();
+            that.emit('ready');
+
+            // todo remove it later, when the error is fixed
+            that.subscribeStates('checkLogging');
+        }
+    }
+
+    function reportStatus() {
+        var id = 'system.adapter.' + that.namespace;
+        that.states.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
+        if (that.connected) that.states.setState(id + '.connected', {val: true, ack: true, expire: 30, from: id});
+        //RSS is the resident set size, the portion of the process's memory held in RAM (as opposed to the swap space or the part held in the filesystem).
+        var mem = process.memoryUsage();
+        that.states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+        that.states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+        that.states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+        // Under windows toFixed returns string ?
+        that.states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
+    }
+
+    function stop(isPause, isScheduled) {
+        clearInterval(reportInterval);
+        var id = 'system.adapter.' + that.namespace;
+
+        if (typeof options.unload === 'function') {
+            options.unload(function () {
+                if (that.states) {
+                    that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
+                        process.exit(isScheduled ? -100: 0);
+                    });
+                }
+            });
+        } else {
+            that.emit('unload', function () {
+                if (that.states) {
+                    that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
+                        process.exit(isScheduled ? -100: 0);
+                    });
+                }
+            });
+
+            // Make delay to let event 'unload' to be processed
+            setTimeout(function () {
+                if (that.states) {
+                    that.states.setState(id + '.alive', {val: false, ack: true, from: id}, function () {
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating');
+                        process.exit(isScheduled ? -100: 0);
+                    });
+
+                    // Give 2 seconds to write the value
+                    setTimeout(function () {
+                        if (!isPause &amp;&amp; that.log) that.log.info('terminating with timeout');
+                        process.exit(isScheduled ? -100: 0);
+                    }, 1000);
+                } else {
+                    if (!isPause &amp;&amp; that.log) that.log.info('terminating');
+                    process.exit(isScheduled ? -100: 0);
+                }
+            }, that.common ? that.common.stopTimeout || 500 : 500);
+        }
+    }
+
+    process.once('SIGINT', stop);
+    process.once('SIGTERM', stop);
+    // And the exit event shuts down the child.
+    process.once('exit', stop);
+
+    process.on('uncaughtException', function (err) {
+        console.error(err);
+
+        // catch it on windows
+        if (that.getPortRunning &amp;&amp; err.message === 'listen EADDRINUSE') {
+            logger.warn(that.namespace + ' Port ' + that.getPortRunning.port + ' is in use. Get next');
+
+            setTimeout(function () {
+                that.getPort(that.getPortRunning.port + 1, that.getPortRunning.callback);
+            }, 0);
+            return;
+        }
+
+        logger.error(that.namespace + ' uncaught exception: ' + (err.message || err));
+        if (err.stack) logger.error(that.namespace + ' ' + err.stack);
+
+		try {
+			stop();
+			setTimeout(function () {
+				process.exit(6);
+			}, 1000);
+		} catch (err) {
+			logger.error(that.namespace + ' exception by stop: ' + (err.message || err));
+		}
+    });
+
+    return this;
+}
+
+// extend the EventEmitter class using our Radio class
+util.inherits(Adapter, EventEmitter);
+
+module.exports = Adapter;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Adapter.html">Adapter</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 30 2017 15:59:32 GMT+0100 (W. Europe Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

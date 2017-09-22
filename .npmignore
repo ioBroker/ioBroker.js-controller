@@ -6,3 +6,14 @@ node_modules
 .idea
 .git
 *.md
+tmp
+log/*
+.travis.yml
+istanbul.yml
+lib/*.pid
+backups
+cache
+test
+pids.txt
+doc
+appveyor.yml

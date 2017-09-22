@@ -1,0 +1,685 @@
+{
+  "system.certificates": {
+    "_id": "system.certificates",
+    "type": "config",
+    "common": {
+      "name": "System certificates"
+    },
+    "native": {
+      "certificates": {
+        "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIICXQIBAAKBgQDQ6dVCuqpl0hdECy35tQP7n/FKAK6Yz8z04F3g8NtkLrJ3IR1+\r\nNo0ijLE2Ka5ONZV2WlRzybWomAvOGnfbSH7NG/wkQ9saBb15bAU03RLeyFmDc5Rz\r\newgjoQzJwXNWIIbqdiUWUqhy3IOzfoRrNprpDm5mv2pwEUxOuF8mB62vgQIDAQAB\r\nAoGBAKmS5DQB6IY1fgURPgROVilMrkJvQ0luguLRq+IGH062SM5B5vqntO+yW7Wn\r\nJ4D8JZGnyJ0jwXxTzmFBQsCPm7vQ3VkH1ir4JhlIWJ11Z3p3XMNWNJ5mrDAyEupn\r\nShCFQxW9EDL7efVFztqgyiWw5/uxV4AJQyBgtsF4PijmgT8xAkEA+SlmVXcuzIPy\r\nZTfNXRCWHvzZM9EaRVQXNSYqMHXLRx412gw42ihk/+GIYaw7y5ObjlMosfzzCyot\r\naMMA/KT1TwJBANalpnrDE0BhYuv/ccnxJv/pZ6aJZ4P/gyRV02UUc0WTAGnxU4el\r\nJPtREWCyCjaVq26S7fh4DGotcDhDEkpzei8CQA5aGyHrJo/zPcAk0bh9nxgT2nMI\r\npWm+6UNPenimIFptXA6+S3wNfZvbot51bFBSpVAybBKsjldjS5BQQztKSTMCQQCe\r\nMhYBkjZlE6Fhh7GogOgaYj53GfvF6BISPIMBk1HlrBL5AdhrN4aLBtOE7ZLjaemg\r\nI//pSSj1NCnp/VzErFkXAkA/6q2Th8M4Z2LzL46GeRavLXFd1IQmFULWZAkx5afk\r\n8/anbz31nnA9CFu+oR/jTp7urYsIUQ3y6ksJwGGKHVlQ\r\n-----END RSA PRIVATE KEY-----\r\n",
+        "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIICfzCCAegCCQC1y0d8DNip4TANBgkqhkiG9w0BAQUFADCBgzELMAkGA1UEBhMC\r\nREUxGTAXBgNVBAgMEEJhZGVuV3VlcnRlbWJlcmcxEjAQBgNVBAcMCUthcmxzcnVo\r\nZTERMA8GA1UECgwIaW9Ccm9rZXIxEDAOBgNVBAMMB0JsdWVmb3gxIDAeBgkqhkiG\r\n9w0BCQEWEWRvZ2Fmb3hAZ21haWwuY29tMB4XDTE1MDQyMjIwMjgwM1oXDTE2MDQy\r\nMTIwMjgwM1owgYMxCzAJBgNVBAYTAkRFMRkwFwYDVQQIDBBCYWRlbld1ZXJ0ZW1i\r\nZXJnMRIwEAYDVQQHDAlLYXJsc3J1aGUxETAPBgNVBAoMCGlvQnJva2VyMRAwDgYD\r\nVQQDDAdCbHVlZm94MSAwHgYJKoZIhvcNAQkBFhFkb2dhZm94QGdtYWlsLmNvbTCB\r\nnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA0OnVQrqqZdIXRAst+bUD+5/xSgCu\r\nmM/M9OBd4PDbZC6ydyEdfjaNIoyxNimuTjWVdlpUc8m1qJgLzhp320h+zRv8JEPb\r\nGgW9eWwFNN0S3shZg3OUc3sII6EMycFzViCG6nYlFlKoctyDs36Eazaa6Q5uZr9q\r\ncBFMTrhfJgetr4ECAwEAATANBgkqhkiG9w0BAQUFAAOBgQBgp4dhA9HulN7/rh4H\r\n+e+hAYqjWvFpdNqwcWAyopBig9B9WL3OIkzpgTuBmH76JxzJCuZJkjO4HLGzQ3KF\r\nsFU0lvqqoz9osgYmXe1K0fBjIcm/RFazGTHVxv+UgVqQ3KldrlkvR3T2VIRlT5hI\r\n0Y1m6J3YZDMF7D6uc1jrsYHkMQ==\r\n-----END CERTIFICATE-----\r\n"
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "permissions": 1536
+    }
+  },
+  "system.repositories": {
+    "_id": "system.repositories",
+    "type": "config",
+    "common": {
+      "name": "System repositories"
+    },
+    "native": {
+      "repositories": {
+        "default": {
+          "link": "http://download.iobroker.net/sources-dist.json",
+          "json": null
+        },
+        "latest": {
+          "link": "http://download.iobroker.net/sources-dist-latest.json",
+          "json": null
+        },
+        "sources": {
+          "link": "conf/sources-dist.json",
+          "json": null
+        },
+        "online": {
+          "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
+          "json": null
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "permissions": 1604
+    }
+  },
+  "system.config": {
+    "_id": "system.config",
+    "type": "config",
+    "common": {
+      "name": "System configuration",
+      "language": "",
+      "tempUnit": "°C",
+      "currency": "€",
+      "dateFormat": "DD.MM.YYYY",
+      "isFloatComma": true,
+      "licenseConfirmed": false,
+      "activeRepo": "default",
+      "diag": "extended",
+      "defaultHistory": ""
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "permissions": 1604
+    }
+  },
+  "enum.rooms": {
+    "_id": "enum.rooms",
+    "common": {
+      "name": "Rooms",
+      "desc": {
+        "en": "List of the rooms",
+        "de": "Die Liste von Räumen",
+        "ru": "Список комнат"
+      },
+      "members": [],
+      "object-non-deletable": true
+    },
+    "type": "enum",
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "permissions": 1911
+    }
+  },
+  "system.group.user": {
+    "_id": "system.group.user",
+    "type": "group",
+    "common": {
+      "name": "User",
+      "description": {
+        "en": "Cannot modify anything"
+      },
+      "members": [],
+      "dontDelete": true,
+      "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
+      "acl": {
+        "object": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "delete": false
+        },
+        "state": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": false
+        },
+        "users": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        },
+        "other": {
+          "execute": false,
+          "http": true,
+          "sendto": false
+        },
+        "file": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "system.group.administrator": {
+    "_id": "system.group.administrator",
+    "type": "group",
+    "common": {
+      "name": "Administrator",
+      "description": {
+        "en": "Can do everything with ioBroker"
+      },
+      "members": [
+        "system.user.admin"
+      ],
+      "dontDelete": true,
+      "acl": {
+        "object": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "delete": true
+        },
+        "state": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        },
+        "users": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        },
+        "other": {
+          "execute": true,
+          "http": true,
+          "sendto": true
+        },
+        "file": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "_design/system": {
+    "_id": "_design/system",
+    "language": "javascript",
+    "views": {
+      "host": {
+        "map": "function(doc) { if (doc.type=='host') emit(doc._id, doc) }"
+      },
+      "adapter": {
+        "map": "function(doc) { if (doc.type=='adapter') emit(doc._id, doc) }"
+      },
+      "instance": {
+        "map": "function(doc) { if (doc.type=='instance') emit(doc._id, doc) }"
+      },
+      "instanceStats": {
+        "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
+        "reduce": "_stats"
+      },
+      "meta": {
+        "map": "function(doc) { if (doc.type=='meta') emit(doc._id, doc) }"
+      },
+      "device": {
+        "map": "function(doc) { if (doc.type=='device') emit(doc._id, doc) }"
+      },
+      "channel": {
+        "map": "function(doc) { if (doc.type=='channel') emit(doc._id, doc) }"
+      },
+      "state": {
+        "map": "function(doc) { if (doc.type=='state') emit(doc._id, doc) }"
+      },
+      "enum": {
+        "map": "function(doc) { if (doc.type=='enum') emit(doc._id, doc) }"
+      },
+      "script": {
+        "map": "function(doc) { if (doc.type=='script') emit(doc._id, doc) }"
+      },
+      "group": {
+        "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
+      },
+      "user": {
+        "map": "function(doc) { if (doc.type=='user') emit(doc.common.name, doc) }"
+      },
+      "config": {
+        "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1092
+    }
+  },
+  "system.user.admin": {
+    "type": "user",
+    "common": {
+      "name": "admin",
+      "password": "pbkdf2$10000$4d792929abf08d3b3db88b953b50cce3ad072508efac7557f143f753abad064b9ae302f4b4fb7bbbffed81988d16d5d0e16035eeb37baaf4469d4b5bfcf1f40f$5f20563568196add659adc14474732e1",
+      "dontDelete": true,
+      "enabled": true
+    },
+    "native": {},
+    "_id": "system.user.admin"
+  },
+  "system.meta.uuid": {
+    "type": "meta",
+    "common": {
+      "name": "uuid",
+      "type": "uuid"
+    },
+    "native": {
+      "uuid": "f29a09f1-d724-6bce-04a0-f65bf12ac300"
+    },
+    "_id": "system.meta.uuid"
+  },
+  "admin.admin": {
+    "type": "meta",
+    "common": {
+      "name": "admin",
+      "type": "admin"
+    },
+    "native": {},
+    "_id": "admin.admin"
+  },
+  "system.adapter.admin": {
+    "_id": "system.adapter.admin",
+    "type": "adapter",
+    "common": {
+      "name": "admin",
+      "version": "0.7.4",
+      "title": "ioBroker Admin",
+      "desc": {
+        "en": "Opens a webserver for the ioBroker admin UI",
+        "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
+        "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
+      },
+      "mode": "daemon",
+      "platform": "Javascript/Node.js",
+      "loglevel": "info",
+      "icon": "admin.png",
+      "messagebox": true,
+      "enabled": true,
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
+      "keywords": [
+        "setup",
+        "config",
+        "update",
+        "upgrade",
+        "system",
+        "konfiguration",
+        "administration",
+        "einrichtung",
+        "wartung"
+      ],
+      "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
+      "authors": [
+        "hobbyquaker <hq@ccu.io>",
+        "bluefox <bluefox@ccu.io>"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.8.0"
+        }
+      ],
+      "type": "common adapters",
+      "license": "MIT",
+      "logTransporter": true,
+      "stopBeforeUpdate": true,
+      "wwwDontUpload": true,
+      "localLink": "%protocol%://%ip%:%port%",
+      "installedVersion": "0.7.4"
+    },
+    "native": {
+      "port": 8081,
+      "auth": false,
+      "secure": false,
+      "bind": "0.0.0.0",
+      "cache": false,
+      "certPublic": "",
+      "certPrivate": "",
+      "ttl": 3600,
+      "defaultUser": "admin"
+    }
+  },
+  "system.adapter.admin.upload": {
+    "_id": "system.adapter.admin.upload",
+    "type": "state",
+    "common": {
+      "name": "admin.upload",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "%",
+      "def": 0,
+      "desc": "Upload process indicator"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.uptime": {
+    "_id": "system.adapter.admin.0.uptime",
+    "type": "state",
+    "common": {
+      "name": "admin.0.uptime",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "seconds"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memRss": {
+    "_id": "system.adapter.admin.0.memRss",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memRss",
+      "desc": "Resident set size",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memHeapTotal": {
+    "_id": "system.adapter.admin.0.memHeapTotal",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memHeapTotal",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memHeapUsed": {
+    "_id": "system.adapter.admin.0.memHeapUsed",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memHeapUsed",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.connected": {
+    "_id": "system.adapter.admin.0.connected",
+    "type": "state",
+    "common": {
+      "name": "admin.0.connected",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.alive": {
+    "_id": "system.adapter.admin.0.alive",
+    "type": "state",
+    "common": {
+      "name": "admin.0.alive",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0": {
+    "_id": "system.adapter.admin.0",
+    "type": "instance",
+    "common": {
+      "name": "admin",
+      "version": "0.7.4",
+      "title": "ioBroker Admin",
+      "desc": {
+        "en": "Opens a webserver for the ioBroker admin UI",
+        "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
+        "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
+      },
+      "mode": "daemon",
+      "platform": "Javascript/Node.js",
+      "loglevel": "info",
+      "icon": "admin.png",
+      "messagebox": true,
+      "enabled": false,
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
+      "keywords": [
+        "setup",
+        "config",
+        "update",
+        "upgrade",
+        "system",
+        "konfiguration",
+        "administration",
+        "einrichtung",
+        "wartung"
+      ],
+      "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
+      "authors": [
+        "hobbyquaker <hq@ccu.io>",
+        "bluefox <bluefox@ccu.io>"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.8.0"
+        }
+      ],
+      "type": "common adapters",
+      "license": "MIT",
+      "logTransporter": true,
+      "stopBeforeUpdate": true,
+      "wwwDontUpload": true,
+      "localLink": "%protocol%://%ip%:%port%",
+      "installedVersion": "0.7.4",
+      "host": "TR_TDW_DEV"
+    },
+    "native": {
+      "port": 8081,
+      "auth": false,
+      "secure": false,
+      "bind": "0.0.0.0",
+      "cache": false,
+      "certPublic": "",
+      "certPrivate": "",
+      "ttl": 3600,
+      "defaultUser": "admin"
+    }
+  },
+  "test.admin": {
+    "type": "meta",
+    "common": {
+      "name": "admin",
+      "type": "admin"
+    },
+    "native": {},
+    "_id": "test.admin"
+  },
+  "system.adapter.test.upload": {
+    "_id": "system.adapter.test.upload",
+    "type": "state",
+    "common": {
+      "name": "test.upload",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "%",
+      "def": 0,
+      "desc": "Upload process indicator"
+    },
+    "native": {}
+  },
+  "system.adapter.test": {
+    "common": {
+      "name": "test",
+      "version": "0.1.0",
+      "title": "test Adapter",
+      "desc": {
+        "en": "This adapter connect",
+        "de": "This adapter connect",
+        "ru": "This adapter connect"
+      },
+      "license": "MIT",
+      "platform": "Javascript/Node.js",
+      "mode": "daemon",
+      "loglevel": "info",
+      "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
+      "icon": "test.png",
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
+      "type": "communication",
+      "preserveSettings": "smartName",
+      "enabled": false,
+      "messagebox": true,
+      "stopBeforeUpdate": true,
+      "news": {
+        "0.6.2": {
+          "en": "add option Place function in names first",
+          "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
+          "ru": "Добавлена опция: Имена функций в начале"
+        },
+        "0.6.1": {
+          "en": "fix reconnect",
+          "de": "Korrigiere Wiederverbindung",
+          "ru": "Исправлено распознавание дисконнекта"
+        }
+      },
+      "authors": [
+        "bluefox <dogafox@gmail.com>"
+      ],
+      "keywords": [
+        "web",
+        "test",
+        "communication"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.9.0"
+        }
+      ],
+      "config": {
+        "width ": 1224,
+        "height": 520
+      }
+    },
+    "native": {
+      "paramA": "",
+      "paramB": ""
+    },
+    "_id": "system.adapter.test",
+    "type": "adapter"
+  },
+  "system.adapter.test.0.uptime": {
+    "_id": "system.adapter.test.0.uptime",
+    "type": "state",
+    "common": {
+      "name": "test.0.uptime",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "seconds"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.memRss": {
+    "_id": "system.adapter.test.0.memRss",
+    "type": "state",
+    "common": {
+      "name": "test.0.memRss",
+      "desc": "Resident set size",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.memHeapTotal": {
+    "_id": "system.adapter.test.0.memHeapTotal",
+    "type": "state",
+    "common": {
+      "name": "test.0.memHeapTotal",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.memHeapUsed": {
+    "_id": "system.adapter.test.0.memHeapUsed",
+    "type": "state",
+    "common": {
+      "name": "test.0.memHeapUsed",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.connected": {
+    "_id": "system.adapter.test.0.connected",
+    "type": "state",
+    "common": {
+      "name": "test.0.connected",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.alive": {
+    "_id": "system.adapter.test.0.alive",
+    "type": "state",
+    "common": {
+      "name": "test.0.alive",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0": {
+    "common": {
+      "name": "test",
+      "version": "0.1.0",
+      "title": "test Adapter",
+      "desc": {
+        "en": "This adapter connect",
+        "de": "This adapter connect",
+        "ru": "This adapter connect"
+      },
+      "license": "MIT",
+      "platform": "Javascript/Node.js",
+      "mode": "daemon",
+      "loglevel": "info",
+      "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
+      "icon": "test.png",
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
+      "type": "communication",
+      "preserveSettings": "smartName",
+      "enabled": true,
+      "messagebox": true,
+      "stopBeforeUpdate": true,
+      "news": {
+        "0.6.2": {
+          "en": "add option Place function in names first",
+          "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
+          "ru": "Добавлена опция: Имена функций в начале"
+        },
+        "0.6.1": {
+          "en": "fix reconnect",
+          "de": "Korrigiere Wiederverbindung",
+          "ru": "Исправлено распознавание дисконнекта"
+        }
+      },
+      "authors": [
+        "bluefox <dogafox@gmail.com>"
+      ],
+      "keywords": [
+        "web",
+        "test",
+        "communication"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.9.0"
+        }
+      ],
+      "config": {
+        "width ": 1224,
+        "height": 520
+      }
+    },
+    "native": {
+      "paramString": "value1",
+      "paramNumber": 42,
+      "paramBoolean": false
+    },
+    "_id": "system.adapter.test.0",
+    "type": "adapter"
+  }
+}

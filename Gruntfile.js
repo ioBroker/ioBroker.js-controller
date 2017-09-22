@@ -3,13 +3,20 @@
 /** @namespace __dirname */
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
-"use strict";
+'use strict';
+
+function getAppName() {
+    var parts = __dirname.replace(/\\/g, '/').split('/');
+    return parts[parts.length - 1].split('.')[0].toLowerCase();
+}
 
 module.exports = function (grunt) {
 
-    var srcDir    = __dirname + "/";
+    var srcDir    = __dirname + '/';
     var pkg       = grunt.file.readJSON('package.json');
     var iopackage = grunt.file.readJSON('io-package.json');
+    var appName   = getAppName();
+
 
     // Project configuration.
     grunt.initConfig({
@@ -42,6 +49,78 @@ module.exports = function (grunt) {
                         dest:    srcDir
                     }
                 ]
+            },
+			name: {
+                options: {
+                    patterns: [
+                        {
+                            match:       /iobroker/gi,
+                            replacement: appName
+                        },
+                        {
+                            match:       /"iobroker\.admin": "\*"/i,
+                            replacement: ''
+                        },
+                        {
+                            match:       new RegExp('"iobroker\\.admin": "\\*"'),
+                            replacement: ''
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + '*.*',
+                            srcDir + '.travis.yml',
+                            srcDir + '.npmignore',
+                            srcDir + '.gitignore'
+                        ],
+                        dest:    srcDir
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'admin/*.*',
+                            '!' + srcDir + 'admin/*.png'
+                        ],
+                        dest:    srcDir + 'admin'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'lib/*.*'
+                        ],
+                        dest:    srcDir + 'lib'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'example/*.*'
+                        ],
+                        dest:    srcDir + 'example'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'www/*.*'
+                        ],
+                        dest:    srcDir + 'www'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'conf/*.*'
+                        ],
+                        dest:    srcDir + 'conf'
+                    }
+                ]
             }
         },
         // Javascript code styler
@@ -62,32 +141,35 @@ module.exports = function (grunt) {
                 dest: 'tmp/<%= grunt.task.current.args[1] %>.json'
             }
         },
-        exec: {
-            npm: {
-                cmd: 'npm install'
+        jsdoc : {
+            dist : {
+                src: ['lib/adapter.js'],
+                options: {
+                    destination: 'doc'
                 }
+            }
         }
     });
 
     grunt.registerTask('updateReadme', function () {
         var readme = grunt.file.read('CHANGELOG.md');
-        if (iopackage.common && readme.indexOf(iopackage.common.version) == -1) {
+        if (readme.indexOf(version) == -1) {
             var timestamp = new Date();
             var date = timestamp.getFullYear() + '-' +
-                ("0" + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
-                ("0" + (timestamp.getDate()).toString(10)).slice(-2);
+                ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
+                ('0' + (timestamp.getDate()).toString(10)).slice(-2);
 
-            var news = "";
+            var news = '';
             if (iopackage.common.whatsNew) {
                 for (var i = 0; i < iopackage.common.whatsNew.length; i++) {
                     if (typeof iopackage.common.whatsNew[i] == 'string') {
-                        news += '* ' + iopackage.common.whatsNew[i] + '\r\n';
+                        news += '* ' + iopackage.common.whatsNew[i] + '\n';
                     } else {
-                        news += '* ' + iopackage.common.whatsNew[i].en + '\r\n';
+                        news += '* ' + iopackage.common.whatsNew[i].en + '\n';
                     }
                 }
             }
-            grunt.file.write('CHANGELOG.md', '# ' + iopackage.common.version + ' (' + date + ')\r\n' + news + '\r\n' + readme);
+            grunt.file.write('CHANGELOG.md', '# ' + version + ' (' + date + ')\n' + news + '\n' + readme);
         }
     });
 
@@ -96,6 +178,7 @@ module.exports = function (grunt) {
 
         var count = 0;
         for (var adapter in sources) {
+            if (!sources.hasOwnProperty(adapter)) continue;
             if (sources[adapter].meta) {
                 if (sources[adapter].meta.substring(0, 'http://'.length) == 'http://') {
                     grunt.task.run(['http:get_http:' + sources[adapter].meta.substring('http://'.length) + ':' + adapter]);
@@ -140,22 +223,40 @@ module.exports = function (grunt) {
         }
         grunt.file.write(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
     });
-    grunt.loadNpmTasks('grunt-replace');
+    
+	grunt.registerTask('renameFiles', function () {
+		var fs = require('fs');
+		fs.unlink(__dirname + '/lib/img/iobroker.png');
+		if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
+        if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
+        if (fs.existsSync(__dirname + '/iobroker.js'))              fs.renameSync(__dirname + '/iobroker.js',             __dirname + '/' + appName + '.js');
+        if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  fs.renameSync(__dirname + '/conf/iobroker-dist.json', __dirname + '/conf/' + appName + '-dist.json');
+    });
+	
+	grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-http');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('default', [
-        'exec',
-        'clean',
-        'replace',
+        'replace:core',
         'updateReadme',
         'jshint',
-        'jscs',
+        'jscs'
 //        'updateRepo1',
 //        'updateRepo2',
-        'clean'
+    ]);
+	grunt.registerTask('p', [
+        'replace:core',
+        'updateReadme'
+    ]);
+	grunt.registerTask('rename', [
+        'replace:name',
+        'renameFiles'
+    ]);
+    grunt.registerTask('doc', [
+        'jsdoc'
     ]);
 };
