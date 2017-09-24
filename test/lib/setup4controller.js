@@ -7,7 +7,6 @@
 // check if tmp directory exists
 var fs            = require('fs');
 var path          = require('path');
-var child_process = require('child_process');
 var rootDir       = path.normalize(__dirname + '/../../');
 //var pkg           = require(rootDir + 'package.json');
 //var debug         = typeof v8debug === 'object';
@@ -46,6 +45,9 @@ function startController(options, callback) {
             dataDir:            options.objects.dataDir || ''
         },
         logger: options.objects.logger || options.logger || {
+            silly: function (msg) {
+                console.log(msg);
+            },
             debug: function (msg) {
                 console.log(msg);
             },
@@ -112,6 +114,9 @@ function startController(options, callback) {
             dataDir:        options.states.dataDir  || ''
         },
         logger:         options.states.logger || options.logger || {
+            silly: function (msg) {
+                console.log(msg);
+            },
             debug: function (msg) {
                 console.log(msg);
             },
