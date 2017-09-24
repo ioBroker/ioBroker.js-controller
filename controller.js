@@ -1741,7 +1741,7 @@ function installAdapters() {
 }
 
 function cleanErrors(id, now, doOutput) {
-    if (!procs[id].errors || !procs[id].errors.length) return;
+    if (!procs[id] || !procs[id].errors || !procs[id].errors.length) return;
 
     now = now || new Date().getTime();
 
