@@ -1,9 +1,11 @@
-# 1.2.0 (2017-09-xx)
+# 1.2.0 (2017-09-24)
 * (bluefox) fixed upgrade command
 * (bluefox) allow install from custom repositories
 * (bluefox) remove online and sources repositories
 * (bluefox) fix multihosts command
 * (bluefox) catch the error outputs of instances if they die
+* (bluefox) no more support for node.js 0.10/0.12
+* (bluefox) add new logging level: silly
 
 # 1.1.3 (2017-08-13)
 * (bluefox) Extend statistics (node.js versions and some HW parameters will be reported)
