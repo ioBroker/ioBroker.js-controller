@@ -1603,7 +1603,7 @@ function checkVersion(id, name, version) {
             if (!procs.hasOwnProperty(p)) continue;
             if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name === name) {
                 if (version && !semver.satisfies(procs[p].config.common.version, version)) {
-                    logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + procs[p].common.version + '", required "' + version + '"!');
+                    logger.error('host.' + hostname + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + procs[p].config.common.version + '", required "' + version + '"!');
                     return false;
                 }
                 isFound = true;
@@ -1637,7 +1637,9 @@ function checkVersions(id, deps) {
                 } else {
                     name = deps[d];
                 }
-                if (!checkVersion(id, name, version)) return false;
+                if (!checkVersion(id, name, version)) {
+                    return false;
+                }
             }
         } else if (typeof deps === 'object') {
             if (deps.length !== undefined || deps[0]) {
@@ -1660,7 +1662,8 @@ function checkVersions(id, deps) {
         }
     }
     catch (e) {
-        logger.error('host.' + hostname + ' startInstance ' + id + ': ' + e);
+        logger.error('host.' + hostname + ' startInstance ' + id + ' [checkVersions]: ' + e);
+        logger.error('host.' + hostname + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
         return false;
     }
     return true;
@@ -1753,7 +1756,7 @@ function cleanErrors(id, now, doOutput) {
     if (doOutput) {
         for (var i = 0; i < procs[id].errors.length; i++) {
             if (now - procs[id].errors[i].ts < 30000) {
-                var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', '').split('\n');
+                var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', 'debug:').split('\n');
                 for (var k = 0; k < lines.length; k++) {
                     if (lines[k]) {
                         logger.error('Caught by controller[' + i + ']: ' + lines[k]);
