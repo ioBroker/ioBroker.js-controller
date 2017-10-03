@@ -1,3 +1,8 @@
+# 1.2.1 (2017-10-03)
+* (bluefox) fix logging level: silly
+* (bluefox) fix dependency check
+* (bluefox) fix small errors
+
 # 1.2.0 (2017-09-24)
 * (bluefox) fixed upgrade command
 * (bluefox) allow install from custom repositories
