@@ -1,15 +1,20 @@
 {
     "common": {
         "name":       "js-controller",
-        "version":    "1.2.0",
+        "version":    "1.2.1",
         "platform":   "Javascript/Node.js",
         "controller": true,
         "title":      "ioBroker.js-controller",
         "news": {
+            "1.2.1": {
+                "en": "fix logging level: silly\nfix dependency check\nfix small errors",
+                "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler",
+                "ru": "Поправлен лог silly\nИсправлена проверка зависимостей пакетов\nИсправлены маленькие ошибки"
+            },
             "1.2.0": {
-                "en": "XXX",
-                "de": "XXX",
-                "ru": "XXX"
+                "en": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly",
+                "de": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly",
+                "ru": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly"
             },
             "1.1.3": {
                 "en": "Extend statistics\nUpdate npm packets",
