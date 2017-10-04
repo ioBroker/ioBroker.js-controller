@@ -26,7 +26,7 @@
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
     "yargs": "^6.0.0",
-    "mime": "^2.0.3",
+    "mime": "^1.4.0",
     "tar.gz": "^1.0.5",
     "socket.io-client": "^1.5.0",
     "npm": "^2.7.6",
