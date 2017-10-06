@@ -234,7 +234,7 @@ function createStates() {
                                 // IF adapter enabled => disable it
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
                                     obj.common.enabled = !!enabled;
-
+                                    logger.warn('host.' + hostname + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled'));
                                     setTimeout(function () {
                                         objects.setObject(obj._id, obj);
                                     }, 0);
@@ -1526,7 +1526,7 @@ function initInstances() {
             if (id.indexOf('system.adapter.admin') !== -1) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info('host.' + hostname + ' instance "' + id + '" was not started, becasue running.');
+                    logger.info('host.' + hostname + ' instance "' + id + '" was not started, because running.');
                     continue;
                 }
                 if (installQueue.indexOf(id) === -1) {
