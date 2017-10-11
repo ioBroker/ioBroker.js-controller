@@ -7,14 +7,14 @@
  *
  */
 
-var schedule    = require('node-schedule');
-var os          = require('os');
-var fs          = require('fs');
-var cp          = require('child_process');
-var ioPackage   = require(__dirname + '/io-package.json');
-var tools       = require(__dirname + '/lib/tools');
-var version     = ioPackage.common.version;
-var adapterDir  = __dirname.replace(/\\/g, '/');
+var schedule   = require('node-schedule');
+var os         = require('os');
+var fs         = require('fs');
+var cp         = require('child_process');
+var ioPackage  = require(__dirname + '/io-package.json');
+var tools      = require(__dirname + '/lib/tools');
+var version    = ioPackage.common.version;
+var adapterDir = __dirname.replace(/\\/g, '/');
 var zipFiles;
 
 // Change version in io-package.json and start grunt task to modify the version
@@ -105,9 +105,9 @@ function startMultihost(__config) {
             try {
                 mhService.close(function () {
                     mhService = null;
-                    setTimeout(function () {
+                    setImmediate(function () {
                         startMultihost(_config);
-                    }, 0);
+                    });
                 });
                 return;
             } catch (e) {
@@ -227,7 +227,7 @@ function createStates() {
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     var enabled = state.val;
-                    setTimeout(function () {
+                    setImmediate(function () {
                         objects.getObject(id.substring(0, id.length - '.alive'.length), function (err, obj) {
                             if (err) logger.error('Cannot read object: '  + err);
                             if (obj && obj.common) {
@@ -235,13 +235,15 @@ function createStates() {
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
                                     obj.common.enabled = !!enabled;
                                     logger.warn('host.' + hostname + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled'));
-                                    setTimeout(function () {
+                                    setImmediate(function () {
+                                        obj.from = 'system.host.' + tools.getHostName();
+                                        obj.ts = new Date().getTime();
                                         objects.setObject(obj._id, obj);
-                                    }, 0);
+                                    });
                                 }
                             }
                         });
-                    }, 0);
+                    });
                 }
             } else
             if (subscribe[id]) {
@@ -430,15 +432,17 @@ function changeHost(objs, oldHostname, newHostname, callback) {
             obj = row.value;
             obj.common.host = newHostname;
             logger.info('Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
-            objects.setObject(obj._id, obj, function (err) {
-                setTimeout(function () {
+            obj.from = 'system.host.' + tools.getHostName();
+            obj.ts = new Date().getTime();
+            objects.setObject(obj._id, obj, function (/* err */) {
+                setImmediate(function () {
                     changeHost(objs, oldHostname, newHostname, callback);
-                }, 0)
+                });
             });
         } else {
-            setTimeout(function () {
+            setImmediate(function () {
                 changeHost(objs, oldHostname, newHostname, callback);
-            }, 0)
+            });
         }
     }
 }
@@ -447,9 +451,9 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
     states.getState(autoInstance + '.subscribes', function (err, state) {
         if (!state || !state.val) {
             if (typeof callback === 'function') {
-                setTimeout(function () {
+                setImmediate(function () {
                     callback();
-                }, 0);
+                });
             }
             return;
         }
@@ -459,9 +463,9 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         } catch (e) {
             logger.error('Cannot parse subscribes: ' + state.val);
             if (typeof callback === 'function') {
-                setTimeout(function () {
+                setImmediate(function () {
                     callback();
-                }, 0);
+                });
             }
             return;
         }
@@ -470,14 +474,14 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         for (var pattern in subs) {
             if (!subs.hasOwnProperty(pattern)) continue;
             for (var id in subs[pattern]) {
-                if (id === instance) {
+                if (subs[pattern].hasOwnProperty(id) && id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
             var found = false;
             for (var f in subs[pattern]) {
-                if (subs[pattern].hasOwnPropert(f)) {
+                if (subs[pattern].hasOwnProperty(f)) {
                     found = true;
                     break;
                 }
@@ -496,9 +500,9 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
                 }
             });
         } else if (typeof callback === 'function') {
-            setTimeout(function () {
+            setImmediate(function () {
                 callback();
-            }, 0);
+            });
         }
     });
 }
@@ -533,24 +537,24 @@ function delObjects(objs, callback) {
         if (row && row.id) {
             logger.info('Delete state "' + row.id + '"');
             if (row.value.type === 'state') {
-                states.delState(row.id, function (err) {
-                    objects.delObject(row.id, function (err) {
-                        setTimeout(function () {
+                states.delState(row.id, function (/* err */) {
+                    objects.delObject(row.id, function (/* err */) {
+                        setImmediate(function () {
                             delObjects(objs, callback);
-                        }, 0);
+                        });
                     });
                 });
             } else {
-                objects.delObject(row.id, function (err) {
-                    setTimeout(function () {
+                objects.delObject(row.id, function (/* err */) {
+                    setImmediate(function () {
                         delObjects(objs, callback);
-                    }, 0);
+                    });
                 });
             }
         } else {
-            setTimeout(function () {
+            setImmediate(function () {
                 delObjects(objs, callback);
-            }, 0);
+            });
         }
     }
 }
@@ -715,7 +719,8 @@ function setIPs(ipList) {
                 JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
                 oldObj.common.address = ipList;
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
-
+                oldObj.from = 'system.host.' + tools.getHostName();
+                oldObj.ts = new Date().getTime();
                 objects.setObject(oldObj._id, oldObj, function (err) {
                     if (err) logger.error('Cannot write host object:' + err);
                 });
@@ -734,7 +739,7 @@ function extendObjects(tasks, callback) {
     }
     var task = tasks.shift();
     objects.extendObject(task._id, task, function () {
-        setTimeout(extendObjects, 0, tasks, callback);
+        setImmediate(extendObjects, tasks, callback);
     });
 }
 
@@ -788,6 +793,8 @@ function setMeta() {
         }
 
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
+            newObj.from = 'system.host.' + tools.getHostName();
+            newObj.ts = new Date().getTime();
             objects.setObject(id, newObj, function (err) {
                 if (err) logger.error('Cannot write host object:' + err);
             });
@@ -994,11 +1001,11 @@ function getVersionFromHost(hostId, callback) {
     states.getState(hostId + '.alive', function (err, state) {
         if (state && state.val)  {
             sendTo(hostId, 'getVersion', null, function (ioPack) {
-                if (callback) setTimeout(callback, 0, ioPack);
+                if (callback) setImmediate(callback, ioPack);
             });
         } else {
             logger.warn('host.' + hostname + ' "' + hostId + '" is offline');
-            if (callback) setTimeout(callback, 0, null, hostId);
+            if (callback) setImmediate(callback, null, hostId);
         }
     });
 }
@@ -1082,6 +1089,8 @@ function processMessage(msg) {
                                         if (err) logger.warn('host.' + hostname + ' warning: ' + err);
                                         repos.native.repositories[active].json = sources;
                                         sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                        repos.from = 'system.host.' + tools.getHostName();
+                                        repos.ts = new Date().getTime();
                                         // Store uploaded repo
                                         objects.setObject('system.repositories', repos);
                                     });
@@ -2402,7 +2411,7 @@ function init() {
     });
 
     logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-    logger.info('host.' + hostname + ' Copyright (c) 2014-2017 bluefox, hobbyquaker');
+    logger.info('host.' + hostname + ' Copyright (c) 2014-2017 bluefox, 2014 hobbyquaker');
     logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
     logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
