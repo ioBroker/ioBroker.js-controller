@@ -1,10 +1,10 @@
 {
     "common": {
-        "name":       "js-controller",
-        "version":    "1.2.1",
-        "platform":   "Javascript/Node.js",
+        "name": "js-controller",
+        "version": "1.2.1",
+        "platform": "Javascript/Node.js",
         "controller": true,
-        "title":      "ioBroker.js-controller",
+        "title": "ioBroker.js-controller",
         "news": {
             "1.2.1": {
                 "en": "fix logging level: silly\nfix dependency check\nfix small errors",
@@ -53,12 +53,13 @@
             "ru": "Основное ядро ioBroker на Javascript/Node.js"
         },
         "messagebox": true,
-        "readme":     "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
+        "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
         "authors": [
             "bluefox <bluefox@gmail.com>",
             "hobbyquaker <hq@ccu.io>"
         ],
-        "license":    "MIT"
+        "license": "MIT",
+        "type": "general"
     },
     "objects": [
         {
@@ -241,20 +242,20 @@
             "_id": "system.config",
             "type": "config",
             "common": {
-                "name":             "System configuration",
-                "city":             "",
-                "country":          "",
-                "longitude":        "",
-                "latitude":         "",
-                "language":         "",
-                "tempUnit":         "°C",
-                "currency":         "",
-                "dateFormat":       "DD.MM.YYYY",
-                "isFloatComma":     true,
+                "name": "System configuration",
+                "city": "",
+                "country": "",
+                "longitude": "",
+                "latitude": "",
+                "language": "",
+                "tempUnit": "°C",
+                "currency": "",
+                "dateFormat": "DD.MM.YYYY",
+                "isFloatComma": true,
                 "licenseConfirmed": false,
-                "defaultHistory":   "",
-                "activeRepo":       "default",
-                "diag":             "extended",
+                "defaultHistory": "",
+                "activeRepo": "default",
+                "diag": "extended",
                 "tabs": [
                     "tab-adapters",
                     "tab-instances",
@@ -266,9 +267,7 @@
                     "tab-node-red-0"
                 ]
             },
-            "native": {
-
-            },
+            "native": {},
             "acl": {
                 "owner": "system.user.admin",
                 "ownerGroup": "system.group.administrator",
