@@ -2,6 +2,9 @@
 * (bluefox) fix logging level: silly
 * (bluefox) fix dependency check
 * (bluefox) fix small errors
+* (bluefox) add repo commands to cli
+* (bluefox) setTimeout(0) => setImmediate
+* (bluefox) add timestamp and "from" information object
 
 # 1.2.0 (2017-09-24)
 * (bluefox) fixed upgrade command

@@ -10,14 +10,14 @@ function getBackupDir() {
 
     // All pathes are returned always relative to /node_modules/appName.js-controller
     if (dataDir) {
-        if (dataDir[0] == '.' && dataDir[1] == '.') {
+        if (dataDir[0] === '.' && dataDir[1] === '.') {
             dataDir = __dirname + '/../../' + dataDir;
-        } else if (dataDir[0] == '.' && dataDir[1] == '/') {
+        } else if (dataDir[0] === '.' && dataDir[1] === '/') {
             dataDir = __dirname + '/../../' + dataDir.substring(2);
         }
     }
     dataDir = dataDir.replace(/\\/g, '/');
-    if (dataDir[dataDir.length - 1] != '/') dataDir += '/';
+    if (dataDir[dataDir.length - 1] !== '/') dataDir += '/';
 
     var parts = dataDir.split('/');
     parts.pop();// remove data or appName-data
@@ -491,7 +491,48 @@ function register(it, expect, context) {
     });
 
     // repo
-    
+    it(testName + 'repo', function (done) {
+        // add non existing repo
+        setup.processCommand(context.objects, context.states, 'repo', ['add', 'local', 'some/path'], {}, function (err) {
+            expect(err).to.be.not.ok;
+            // set new repo as active
+            setup.processCommand(context.objects, context.states, 'repo', ['set', 'local'], {}, function (err) {
+                expect(err).to.be.not.ok;
+                // try to delete active repo
+                setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, function (err) {
+                    expect(err).to.be.ok;
+                    // set active repo to default
+                    setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, function (err) {
+                        expect(err).to.be.not.ok;
+                        // delete non-active repo
+                        setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, function (err) {
+                            expect(err).to.be.not.ok;
+                            // add and set as active new repo, but with too less parameters
+                            setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1'], {}, function (err) {
+                                expect(err).to.be.ok;
+                                setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1', 'some/path'], {}, function (err) {
+                                    expect(err).to.be.not.ok;
+                                    // try to add new repo with existing name
+                                    setup.processCommand(context.objects, context.states, 'repo', ['add', 'local1', 'some/path1'], {}, function (err) {
+                                        expect(err).to.be.ok;
+                                        // set active repo to default
+                                        setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, function (err) {
+                                            expect(err).to.be.not.ok;
+                                            // try to delete non-active repo
+                                            setup.processCommand(context.objects, context.states, 'repo', ['del', 'local1'], {}, function (err) {
+                                                expect(err).to.be.not.ok;
+                                                done();
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 }
 
 
