@@ -1764,7 +1764,7 @@ function cleanErrors(id, now, doOutput) {
     // output of errors into log
     if (doOutput) {
         for (var i = 0; i < procs[id].errors.length; i++) {
-            if (now - procs[id].errors[i].ts < 30000) {
+            if (procs[id].errors[i] && now - procs[id].errors[i].ts < 30000 && procs[id].errors[i].text) {
                 var lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', 'debug:').split('\n');
                 for (var k = 0; k < lines.length; k++) {
                     if (lines[k]) {
@@ -1893,12 +1893,17 @@ function startInstance(id, wakeUp) {
 
                 // catch error output
                 procs[id].process.stderr.on('data', function (data) {
+                    if (!data || !procs[id] || typeof procs[id] !== 'object') return;
                     var text = data.toString();
                     // show for debug
                     console.error(text);
                     procs[id].errors = procs[id].errors || [];
                     var now = new Date().getTime();
                     procs[id].errors.push({ts: now, text: text});
+                    // limit output to 300 messages
+                    if (procs[id].errors > 300) {
+                        procs[id].errors.splice(procs[id].errors.length - 300);
+                    }
                     cleanErrors(id, now);
                 });
 
