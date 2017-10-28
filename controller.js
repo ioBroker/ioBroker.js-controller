@@ -1889,7 +1889,7 @@ function startInstance(id, wakeUp) {
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
-                procs[id].process = cp.fork(fileNameFull, args, {stdio: 'pipe', silent: true});
+                procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
 
                 // catch error output
                 procs[id].process.stderr.on('data', function (data) {
