@@ -625,7 +625,7 @@ function collectDiagInfo(type, callback) {
                     obj = {native: {uuid: 'not found'}};
                 }
                 objects.getObjectView('system', 'host', {}, function (_err, doc) {
-                    // we need to show city and country at the begining, so include it now and delete it later if not allowed.
+                    // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
                     var diag = {
                         uuid: obj.native.uuid,
                         language: systemConfig.common.language,
@@ -675,18 +675,65 @@ function collectDiagInfo(type, callback) {
                         }
                     }
                     objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                        var visFound = false;
                         if (!_err && doc) {
                             if (doc && doc.rows.length) {
-                                // Read installed versions of all hosts
+                                // Read installed versions of all adapters
                                 for (var i = 0; i < doc.rows.length; i++) {
                                     diag.adapters[doc.rows[i].value.common.name] = {
                                         version:  doc.rows[i].value.common.version,
                                         platform: doc.rows[i].value.common.platform
                                     };
+                                    if (doc.rows[i].value.common.name === 'vis') {
+                                        visFound = true;
+                                    }
                                 }
                             }
                         }
-                        if (callback) callback(diag);
+                        // read number of vis datapoints
+                        if (visFound) {
+                            var visUtils = require(__dirname + '/lib/vis/states');
+                            try {
+                                visUtils(objects, null, 0, null, function (err, points) {
+                                    var total = null;
+                                    if (points && points.length) {
+                                        var tasks = [];
+                                        for (var i = 0; i < points.length; i++) {
+                                            if (points[i].id === 'vis.0.datapoints.total') {
+                                                total = points[i].val;
+                                            }
+                                            tasks.push({
+                                                _id: points[i].id,
+                                                type: 'state',
+                                                native: {},
+                                                common: {
+                                                    name: 'Datapoints count',
+                                                    role: 'state',
+                                                    type: 'number',
+                                                    read: true,
+                                                    write: false
+                                                },
+                                                state: {
+                                                    val: points[i].val,
+                                                    ack: true
+                                                }
+                                            });
+                                        }
+                                    }
+                                    if (total !== null) {
+                                        diag.vis = total;
+                                    }
+                                    extendObjects(tasks, function () {
+                                        if (callback) callback(diag);
+                                    });
+                                });
+                            } catch (e) {
+                                logger.error('cannot call visUtils: ' + e);
+                                if (callback) callback(diag);
+                            }
+                        } else {
+                            if (callback) callback(diag);
+                        }
                     });
                 });
             });
@@ -738,8 +785,18 @@ function extendObjects(tasks, callback) {
         return;
     }
     var task = tasks.shift();
+    var state = task.state;
+    if (state !== undefined) {
+        delete task.state;
+    }
     objects.extendObject(task._id, task, function () {
-        setImmediate(extendObjects, tasks, callback);
+        if (state) {
+            states.setState(task._id, state, function () {
+                setImmediate(extendObjects, tasks, callback);
+            });
+        } else {
+            setImmediate(extendObjects, tasks, callback);
+        }
     });
 }
 
