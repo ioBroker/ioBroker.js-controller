@@ -7,9 +7,9 @@
         "title": "ioBroker.js-controller",
         "news": {
             "1.2.1": {
-                "en": "fix logging level: silly\nfix dependency check\nfix small errors",
-                "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler",
-                "ru": "Поправлен лог silly\nИсправлена проверка зависимостей пакетов\nИсправлены маленькие ошибки"
+                "en": "fix logging level: silly\nfix dependency check\nfix small errors\nsee changelog",
+                "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler\nSchaue Changelog",
+                "ru": "Поправлен лог silly\nИсправлена проверка зависимостей пакетов\nИсправлены маленькие ошибки\nСм. список изменений"
             },
             "1.2.0": {
                 "en": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly",

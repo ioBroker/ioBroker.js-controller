@@ -12,6 +12,7 @@
 * (bluefox) fix generate repository 
 * (bluefox) calculate number of datapoints in vis and deliver it in statistics
 * (bluefox) fix restoring of backup
+* (AlCalzone) fix install urls ending with ".git"
 
 # 1.2.0 (2017-09-24)
 * (bluefox) fixed upgrade command
