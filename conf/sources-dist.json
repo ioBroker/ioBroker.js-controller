@@ -26,7 +26,7 @@
   "benq": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.benq/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.benq/master/admin/benq.png",
-    "version": "0.0.6",
+    "version": "0.2.0",
     "type": "multimedia"
   },
   "ble": {
@@ -160,7 +160,7 @@
   "foobar2000": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.foobar2000/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.foobar2000/master/admin/foobar2000.png",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "type": "multimedia"
   },
   "fritzbox": {
@@ -202,7 +202,7 @@
   "haier": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.haier/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.haier/master/admin/haier.png",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "type": "climate-control"
   },
   "harmony": {
@@ -359,7 +359,7 @@
   "kodi": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
-    "version": "0.2.3",
+    "version": "1.0.0",
     "type": "multimedia"
   },
   "landroid": {
@@ -378,6 +378,12 @@
     "meta": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png",
     "version": "1.0.2",
+    "type": "multimedia"
+  },
+  "lgtv-rs": {
+    "meta": "https://raw.githubusercontent.com/instalator/ioBroker.lgtv-rs/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/instalator/ioBroker.lgtv-rs/master/admin/lg.png",
+    "version": "0.0.3",
     "type": "multimedia"
   },
   "lifx": {
@@ -453,7 +459,7 @@
   "mikrotik": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.mikrotik/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.mikrotik/master/admin/mikrotik.png",
-    "version": "0.0.20",
+    "version": "1.0.0",
     "type": "hardware"
   },
   "milight": {
@@ -483,7 +489,7 @@
   "mpd": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.mpd/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.mpd/master/admin/mpd.png",
-    "version": "0.2.4",
+    "version": "1.0.0",
     "type": "multimedia"
   },
   "mqtt": {
@@ -733,7 +739,7 @@
   "starline": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.starline/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.starline/master/admin/starline.png",
-    "version": "0.2.0",
+    "version": "1.0.0",
     "type": "alarm"
   },
   "tankerkoenig": {
@@ -769,7 +775,7 @@
   "tradfri": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/admin/tradfri.png",
-    "version": "0.5.5",
+    "version": "1.0.0",
     "type": "lighting"
   },
   "tvspielfilm": {
@@ -889,7 +895,7 @@
   "vis-players": {
     "meta": "https://raw.githubusercontent.com/instalator/ioBroker.vis-players/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/instalator/ioBroker.vis-players/master/admin/players.png",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "type": "visualization-widgets"
   },
   "vis-plumb": {
