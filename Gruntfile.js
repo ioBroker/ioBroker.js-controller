@@ -1,8 +1,9 @@
 // To use this file in WebStorm, right click on the file name in the Project Panel (normally left) and select "Open Grunt Console"
 
 /** @namespace __dirname */
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
+/* jshint -W097 */
+/* jshint strict:false */
+/* jslint node: true */
 'use strict';
 
 function getAppName() {
@@ -153,7 +154,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('updateReadme', function () {
         var readme = grunt.file.read('CHANGELOG.md');
-        if (readme.indexOf(version) == -1) {
+        if (readme.indexOf(version) === -1) {
             var timestamp = new Date();
             var date = timestamp.getFullYear() + '-' +
                 ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
@@ -162,7 +163,7 @@ module.exports = function (grunt) {
             var news = '';
             if (iopackage.common.whatsNew) {
                 for (var i = 0; i < iopackage.common.whatsNew.length; i++) {
-                    if (typeof iopackage.common.whatsNew[i] == 'string') {
+                    if (typeof iopackage.common.whatsNew[i] === 'string') {
                         news += '* ' + iopackage.common.whatsNew[i] + '\n';
                     } else {
                         news += '* ' + iopackage.common.whatsNew[i].en + '\n';
@@ -180,10 +181,10 @@ module.exports = function (grunt) {
         for (var adapter in sources) {
             if (!sources.hasOwnProperty(adapter)) continue;
             if (sources[adapter].meta) {
-                if (sources[adapter].meta.substring(0, 'http://'.length) == 'http://') {
+                if (sources[adapter].meta.substring(0, 'http://'.length) === 'http://') {
                     grunt.task.run(['http:get_http:' + sources[adapter].meta.substring('http://'.length) + ':' + adapter]);
                 } else
-                if (sources[adapter].meta.substring(0, 'https://'.length) == 'https://') {
+                if (sources[adapter].meta.substring(0, 'https://'.length) === 'https://') {
                     grunt.task.run(['http:get_https:' + sources[adapter].meta.substring('https://'.length) + ':' + adapter]);
                 }
             }
@@ -195,7 +196,7 @@ module.exports = function (grunt) {
         var dir = fs.readdirSync('tmp');
         var sources = grunt.file.readJSON(__dirname + '/conf/sources-dist.json');
         for (var i = 0; i < dir.length; i++) {
-            if (dir[i].indexOf('.json') != -1) {
+            if (dir[i].indexOf('.json') !== -1) {
                 var adapter = dir[i].substring(0, dir[i].length - '.json'.length);
                 var meta = sources[adapter].meta;
                 var url  = sources[adapter].url;
@@ -212,6 +213,7 @@ module.exports = function (grunt) {
         var fs = require('fs');
         var sources = grunt.file.readJSON(__dirname + '/conf/sources-dist.json');
         for (var adapter in sources) {
+            if (!sources.hasOwnProperty(adapter)) continue;
             var meta = sources[adapter].meta;
             var url  = sources[adapter].url;
             var icon = sources[adapter].icon;

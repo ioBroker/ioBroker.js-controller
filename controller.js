@@ -1084,17 +1084,21 @@ function processMessage(msg) {
             logger.info(tools.appName + ' ' + args.slice(1).join(' '));
 
             var child = spawn('node', args);
-            child.stdout.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.info(tools.appName + ' ' + data);
-                if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
-            });
+            if (child.stdout) {
+                child.stdout.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.info(tools.appName + ' ' + data);
+                    if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+                });
+            }
 
-            child.stderr.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.error(tools.appName + ' ' + data);
-                if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
-            });
+            if (child.stderr) {
+                child.stderr.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.error(tools.appName + ' ' + data);
+                    if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+                });
+            }
 
             child.on('exit', function (exitCode) {
                 logger.info(tools.appName + ' exit ' + exitCode);
@@ -1298,12 +1302,16 @@ function processMessage(msg) {
                     logger.info('host.' + hostname + ' ls /dev');
                     var _child = _spawn('ls', _args);
                     var result = '';
-                    _child.stdout.on('data', function (data) {
-                        result += data.toString();
-                    });
-                    _child.stderr.on('data', function (data) {
-                        logger.error('host.' + hostname + ' ls ' + data);
-                    });
+                    if (_child.stdout) {
+                        _child.stdout.on('data', function (data) {
+                            result += data.toString();
+                        });
+                    }
+                    if (_child.stderr) {
+                        _child.stderr.on('data', function (data) {
+                            logger.error('host.' + hostname + ' ls ' + data);
+                        });
+                    }
 
                     _child.on('exit', function (/*exitCode*/) {
                         result = result.replace(/(\r\n|\n|\r|\t)/gm, ' ');
@@ -1767,14 +1775,19 @@ function installAdapters() {
 
         try {
             var child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
-            child.stdout.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.info(tools.appName + ' ' + data);
-            });
-            child.stderr.on('data', function (data) {
-                data = data.toString().replace('\n', '');
-                logger.error(tools.appName + ' ' + data);
-            });
+            if (child.stdout) {
+                child.stdout.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.info(tools.appName + ' ' + data);
+                });
+            }
+            if (child.stderr) {
+                child.stderr.on('data', function (data) {
+                    data = data.toString().replace('\n', '');
+                    logger.error(tools.appName + ' ' + data);
+                });
+            }
+
             child.on('exit', function (exitCode) {
                 logger.info(tools.appName + ' exit ' + exitCode);
                 if (!task.disabled) {
@@ -1949,20 +1962,22 @@ function startInstance(id, wakeUp) {
                 procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
 
                 // catch error output
-                procs[id].process.stderr.on('data', function (data) {
-                    if (!data || !procs[id] || typeof procs[id] !== 'object') return;
-                    var text = data.toString();
-                    // show for debug
-                    console.error(text);
-                    procs[id].errors = procs[id].errors || [];
-                    var now = new Date().getTime();
-                    procs[id].errors.push({ts: now, text: text});
-                    // limit output to 300 messages
-                    if (procs[id].errors > 300) {
-                        procs[id].errors.splice(procs[id].errors.length - 300);
-                    }
-                    cleanErrors(id, now);
-                });
+                if (procs[id].process.stderr) {
+                    procs[id].process.stderr.on('data', function (data) {
+                        if (!data || !procs[id] || typeof procs[id] !== 'object') return;
+                        var text = data.toString();
+                        // show for debug
+                        console.error(text);
+                        procs[id].errors = procs[id].errors || [];
+                        var now = new Date().getTime();
+                        procs[id].errors.push({ts: now, text: text});
+                        // limit output to 300 messages
+                        if (procs[id].errors > 300) {
+                            procs[id].errors.splice(procs[id].errors.length - 300);
+                        }
+                        cleanErrors(id, now);
+                    });
+                }
 
                 storePids(); // Store all pids to make possible kill them all
 
