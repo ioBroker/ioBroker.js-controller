@@ -1,4 +1,4 @@
-# 1.2.1 (2017-11-19)
+# 1.2.3 (2017-11-24)
 * (bluefox) fix windows problem and storing of error messages
 * (bluefox) fix logging level: silly
 * (bluefox) fix dependency check

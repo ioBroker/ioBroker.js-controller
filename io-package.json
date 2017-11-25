@@ -1,12 +1,12 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.2.1",
+        "version": "1.2.3",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "ioBroker.js-controller",
         "news": {
-            "1.2.1": {
+            "1.2.3": {
                 "en": "fix logging level: silly\nfix dependency check\nfix small errors\nsee changelog",
                 "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler\nSchaue Changelog",
                 "ru": "Поправлен лог silly\nИсправлена проверка зависимостей пакетов\nИсправлены маленькие ошибки\nСм. список изменений"
