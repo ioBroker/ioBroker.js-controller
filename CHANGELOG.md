@@ -1,3 +1,6 @@
+# 1.2.4 (2017-12-xx)
+* (bluefox) The fix for npm5
+
 # 1.2.3 (2017-11-24)
 * (bluefox) fix windows problem and storing of error messages
 * (bluefox) fix logging level: silly

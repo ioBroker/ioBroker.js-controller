@@ -1,11 +1,19 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.2.3",
+        "version": "1.2.4",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "ioBroker.js-controller",
         "news": {
+            "1.2.4": {
+                "en": "The fix for npm5",
+                "de": "Der Fix für npm5",
+                "ru": "Исправление для npm5",
+                "pt": "A correção para npm5",
+                "fr": "Le correctif pour npm5",
+                "nl": "De oplossing voor npm5"
+            },
             "1.2.3": {
                 "en": "fix logging level: silly\nfix dependency check\nfix small errors\nsee changelog",
                 "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler\nSchaue Changelog",
