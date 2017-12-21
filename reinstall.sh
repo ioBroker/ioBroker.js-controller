@@ -18,7 +18,7 @@ then
 
     while read IN
     do
-        npm install $IN --production --prefix $BASE
+        npm install $IN --production --save --prefix $BASE
         if [ $? -eq 0 ]
         then
             echo "DONE $IN"
