@@ -10,8 +10,7 @@
     "network": {
         "IPv4": true,
         "IPv6": true,
-        "bindAddress": null,
-        "useSystemNpm": true
+        "bindAddress": null
     },
     "objects" : {
         "type": "file",
