@@ -89,8 +89,8 @@
     "stop": "node iobroker.js stop",
     "restart": "node iobroker.js restart",
     "prepublish": "node lib/scripts/scripts.js --prepublish",
-    "test": "node node_modules/mocha/bin/mocha test",
-    "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/",
+    "test": "node node_modules/mocha/bin/mocha test --exit",
+    "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/ --exit",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
   "main": "controller.js",
