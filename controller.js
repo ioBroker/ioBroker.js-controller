@@ -1235,7 +1235,7 @@ function processMessage(msg) {
         case 'getInstalledAdapter':
             if (msg.callback && msg.from && msg.message) {
                 // read adapter file
-                var dir = tools.getAdapterDir(msg.message, true);
+                var dir = tools.getAdapterDir(msg.message);
                 var _result = null;
                 if (fs.existsSync(dir + '/io-package.json')) {
                     try {
