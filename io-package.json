@@ -1,11 +1,33 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.2.4",
+        "version": "1.2.5",
         "platform": "Javascript/Node.js",
         "controller": true,
-        "title": "ioBroker.js-controller",
+        "title": "JS controller",
+        "titleLang": {
+            "en": "JS controller",
+            "de": "JS-Controller",
+            "ru": "Контроллер JS",
+            "pt": "Controlador JS",
+            "nl": "JS-controller",
+            "fr": "Contrôleur JS",
+            "it": "Controller JS",
+            "es": "Controlador JS",
+            "pl": "Kontroler JS"
+        },
         "news": {
+            "1.2.5": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md"
+            },
             "1.2.4": {
                 "en": "The fix for npm5",
                 "de": "Der Fix für npm5",
@@ -58,7 +80,13 @@
         "desc": {
             "en": "Javascript/Node.js implementation of ioBroker controller",
             "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
-            "ru": "Основное ядро ioBroker на Javascript/Node.js"
+            "ru": "Javascript/Node.js реализация контроллера ioBroker",
+            "pt": "Implementação do Javascript/Node.js do controlador ioBroker",
+            "nl": "Javascript/Node.js implementatie van ioBroker-controller",
+            "fr": "Implémentation Javascript/Node.js du contrôleur ioBroker",
+            "it": "Implementazione Javascript/Node.js del controller ioBroker",
+            "es": "Implementación de JavaScript/Node.js del controlador ioBroker",
+            "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker"
         },
         "messagebox": true,
         "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",

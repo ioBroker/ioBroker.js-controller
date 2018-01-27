@@ -1,3 +1,15 @@
+# 1.2.5 (2017-01-27)
+* (bluefox) move buildRepository.js to ioBroker.repositories
+* (bluefox) fix adapter download
+* (Apollon77) also include npm5 fix into reinstall.sh
+* (bluefox) add functions to standard enums
+* (bluefox) check if pattern is valid
+* (bluefox) catch error by deleting of adapter.
+* (bluefox) better adapter directory search
+* (Apollon77) another fix for reinstall.sh, add --unsafe-perm
+* (Apollon77) exit mocha tests explicitely when completed, needed pot. with most current version of mocha
+* (Apollon77) add npm5 check and "Block" to "iobroker install" commands
+
 # 1.2.4 (2017-12-xx)
 * (bluefox) The fix for npm5
 
