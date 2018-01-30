@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>ioBroker</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!--  <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet">-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/animate.css" rel="stylesheet" />
+  <link href="css/magnific-popup.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet">
+  <link href="color/default.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/justifiedGallery.min.css">
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+  <div id="preloader">
+    <div id="load"></div>
+  </div>
+  <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+        <a class="navbar-brand" href="index.html">
+          <img id="logoImg" src="img/logo_mini.png" alt="">
+        </a>
+      </div>
+      <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+        <ul class="nav navbar-nav ">
+          <li><a href="https://iobroker.shop/">Shop</a></li>
+          <!--li><a href="#">install</a></li-->
+          <li><a href="#support" target="_blank" data-i18n="[html]nav-partner">Partner</a></li>
+          <li><a href="http://iobroker.net/docu/">Docu</a></li>
+          <li><a href="http://forum.iobroker.net" target="_blank">Community</a></li>
+          <li><a href="https://github.com/ioBroker/" target="_blank">Github</a></li>
+          <li><a class="getApp1" href="https://iobroker.net/" target="_blank">Sign In</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section id="intro" class="intro">
+    <div class="slogan">
+      <h2 class="wow fadeInDown delay-06s">WELCOME TO <span class="text_color">ioBroker</span> </h2>
+      <h4 class="wow fadeInUp delay-06s">Smarthome automation with ioBroker</h4>
+    </div>
+    <div class="page-scroll">
+      <a href="http://www.iobroker.net/docu/?page_id=3334&amp;lang=de" class="btn round btn-default btn-lg">INSTALL</a>
+    </div>
+  </section>
+
+  <section class="news">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 whatNew news-div">
+          <h4 class="heading">What's new</h4>
+          <p>ioBroker – это платформа для Интернета Вещей и служит центральным сервером для умного дома, автоматизации зданий. При помощи, так называемых модульных “драйверов”, ioBroker может взаимодействовать с другими различными системами и устройствами.</p>
+        </div>
+        <div class="col-md-4 news-div">
+          <h4 class="heading">LATEST NEWS</h4>
+          <ul class="list-unstyled">
+            <li class="news-item">
+              <h5 class="title"><a href="#">Homematic имидж с ioBroker</a></h5>
+              <span>27. November 2017</span>
+            </li>
+            <li class="news-item">
+              <h5 class="title"><a href="#">Новый Windows установщик 0.8.0</a></h5>
+              <span>12. September 2016</span>
+            </li>
+            <li class="news-item">
+              <h5 class="title"><a href="#">Появилось отличное описание sayit</a></h5>
+              <span>30. May 2016</span>
+            </li>
+            <li class="news-item">
+              <h5 class="title"><a href="#">Написана статья про SQL Драйвер</a></h5>
+              <span>18. May 2016</span>
+            </li>
+          </ul>
+        </div>        
+        <div class="col-md-4 news-div connected">
+          <h4 class="heading">GET CONNECTED</h4>
+          <ul class="list-inline social-icons social-icons-small text-right">
+            <li><a target="_blank" href="https://twitter.com/ioBroker" class="twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a target="_blank" href="https://www.facebook.com/groups/440499112958264/" class="facebook"><i class="fa fa-facebook"></i></a></li>
+            <li><a target="_blank" href="https://www.instagram.com/smarthome_iobroker/" class="instagram"><i class="fa fa-instagram"></i></a></li>
+            <li><a target="_blank" href="https://www.linkedin.com/in/veronika-khaeva-b5956494/" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a target="_blank" href="https://www.youtube.com/channel/UCpZRrUCA-D4KDLgGM5GL4Iw" class="linkedin"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+            <li><a target="_blank" href="https://github.com/ioBroker/" class="linkedin"><i class="fa fa-github"></i></a></li>            
+          </ul>
+          <h4 class="text-right">NEWSLETTER</h4>
+          <p>Get the latest update from us by subscribing to our newsletter.</p>
+          <form class="newsletter-form" method="post">
+            <div class="input-group">
+              <input type="email" class="form-control" name="email" placeholder="youremail@domain.com">
+              <span class="input-group-btn"><button class="btn btn-primary" type="button"><span>SUBSCRIBE</span></button>
+              </span>
+            </div>
+            <div class="alert"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="home-section">
+    <div class="heading-about text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInLeft" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>About ioBroker</h2>
+                <h4>LEARN MORE</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row about-container">
+        <div class="col-lg-6 col-md-6 background no_pad wow fadeInLeft" style="visibility: visible; animation-name: fadeInRight;">
+          <img src="img/main/464030846.jpg" alt="">
+        </div>
+        <div class="col-lg-6 col-md-6 wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">
+          <h2 class="title"></h2>
+          <ul class="list">
+            <li>ioBroker is an IoT platform.</li>
+            <li>Full integration of your equipment with ioBroker.</li>
+            <li>The ability to manage your IoT system as one intelligent, robust projekt.</li>
+            <li>Unique graphics and beautiful interfaces for you.</li>
+            <li>Use one of the best software products for managing your automation system on premise.</li>
+            <li>ioBroker offers you Smart Home as a Service. (Coming soon)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row about-container">
+        <div class="col-lg-6 col-md-6 margintop-80 content ">
+          <div class="icon-box wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+            <div class="icon"><i class="fa fa-download fa-2x"></i></div>
+            <h4 class="title"><a href="">Easy setup</a></h4>
+            <p class="description">JavaScript node.js</p>
+          </div>
+          <div class="icon-box wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+            <div class="icon"><i class="fa fa-hdd-o fa-2x"></i></div>
+            <h4 class="title"><a href="">Runs on</a></h4>
+            <p class="description">Windows, Linux, OSX, Raspberry Pi, ARM or PC</p>
+          </div>
+          <div class="icon-box wow fadeInUp" data-wow-delay="0.4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
+            <div class="icon"><i class="fa fa-users fa-2x"></i></div>
+            <h4 class="title"><a href="">Social support</a></h4>
+            <p class="description">Dynamically growing community.</p>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 background no_pad order-lg-2 order-1 wow fadeInRight" style="visibility: visible; animation-name: fadeInRight;">
+          <img src="img/main/493271902.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="heading-about text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInLeft" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>Where to use</h2>
+                <h4>Learn more about Usecases</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row about-container">
+        <div class="col-lg-6 col-md-6 background no_pad wow fadeInLeft" style="visibility: visible; animation-name: fadeInRight;">
+          <img src="img/main/562719274.jpg" alt="">
+        </div>
+        <div class="col-lg-6 col-md-6 margintop wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">       
+          <h2 class="title text-center"><i class="fa fa-microchip fa-x3"></i> Devices</h2>
+          <div class="col-xs-6 list">
+            <div class="service-list">
+              <div class="service-list-col1 blue"><i class="fa-lightbulb-o"></i></div>
+              <div class="service-list-col2">
+                <p>Lights</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 orange"><i class="fa-bars"></i></div>
+              <div class="service-list-col2">
+                <p>Blinds</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 ping"><i class="fa-lock"></i></div>
+              <div class="service-list-col2">
+                <p>Locks</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 red"><i class="fa-car"></i></div>
+              <div class="service-list-col2">
+                <p>Garage</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 list">
+            <div class="service-list">
+              <div class="service-list-col1 mag"><i class="fa-commenting-o"></i></div>
+              <div class="service-list-col2">
+                <p>Voice</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 braun"><i class="fa-thermometer-half"></i></div>
+              <div class="service-list-col2">
+                <p>Climate</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 green"><i class="fa-video-camera"></i></div>
+              <div class="service-list-col2">
+                <p>Camera</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 yellow"><i class="fa-volume-up"></i></div>
+              <div class="service-list-col2">
+                <p>Media</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row about-container">
+        <div class="col-lg-6 col-md-6  margintop wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">
+          <h2 class="title text-center"><i class="fa fa-share-alt"></i> Projects</h2>
+          <div class="col-xs-6 list">
+            <div class="service-list">
+              <div class="service-list-col1 yellow_to"><i class="fa-home"></i></div>
+              <div class="service-list-col2">
+                <p>Smart home</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 green_to"><i class="fa-pencil-square-o"></i></div>
+              <div class="service-list-col2">
+                <p>Office</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 braun_to"><i class="fa-flask"></i></div>
+              <div class="service-list-col2">
+                <p>Laboratory</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 mag_to"><i class="fa-bed"></i></div>
+              <div class="service-list-col2">
+                <p>Hotel</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 list">
+            <div class="service-list">
+              <div class="service-list-col1 blue_to"><i class="fa-building-o"></i></div>
+              <div class="service-list-col2">
+                <p>Building</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 orange_to"><i class="fa-heartbeat"></i></div>
+              <div class="service-list-col2">
+                <p>Hospital</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 ping_to"><i class="fa-child"></i></div>
+              <div class="service-list-col2">
+                <p>Kindergarten</p>
+              </div>
+            </div>
+            <div class="service-list">
+              <div class="service-list-col1 red_to"><i class="fa-leaf"></i></div>
+              <div class="service-list-col2">
+                <p>Garden</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 background no_pad order-lg-2 order-1 wow fadeInRight" style="visibility: visible; animation-name: fadeInRight;">
+          <img src="img/main/765517651.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="home-section">
+    <div class="heading-contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="heading text-center wow bounceInLeft" data-wow-delay="0.4s">
+              <h2>List adaptrers</h2>
+              <h4>Learn more</h4>
+            </div>
+            <div class="filter-group wow bounceInRight" data-wow-delay="0.4s">
+              <a class="active" data-filter="*">All</a>
+              <a data-filter=".general">General</a>
+              <a data-filter=".hardware">Hardware</a>
+              <a data-filter=".lighting">Lighting</a>
+              <a data-filter=".energy">Energy</a>
+              <a data-filter=".multimedia">Multimedia</a>
+              <a data-filter=".household">Household</a>
+              <a data-filter=".iot-systems">Iot-systems</a>
+              <a data-filter=".communication">Communication</a>
+              <a data-filter=".climate-control">Climate</a>
+              <a data-filter=".weather">Weather</a>
+              <a data-filter=".geoposition">Geoposition</a>
+              <a data-filter=".messaging">Messaging</a>
+              <a data-filter=".infrastructure">Infrastructure</a>
+              <a data-filter=".date-and-time">Date</a>
+              <a data-filter=".visualization">Visualization</a>
+              <a data-filter=".utility">Utility</a>
+              <a data-filter=".storage">Storage</a>
+              <a data-filter=".visualization-icons">Icons</a>
+              <a data-filter=".misc-data">Misc-data</a>
+              <a data-filter=".logic">Logic</a>
+              <a data-filter=".garden">Garden</a>
+              <a data-filter=".protocols">Protocols</a>
+              <a data-filter=".network">Network</a>
+              <a data-filter=".alarm">Alarm</a>
+              <a data-filter=".visualization-widgets">Widgets</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 adapters grid">
+
+          <div class="general"> <a href="https://github.com/ioBroker/ioBroker.admin" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Opens a webserver for the ioBroker admin UI"><img src="img/adapters_icon/admin.png" alt=""></a></div>
+          <div class="general"> <a href="https://github.com/ioBroker/ioBroker.admin/3.0.1/io-package.json" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="The configuration of ioBroker via Web-Interface"><img src="img/adapters_icon/admin.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/PArns/ioBroker.amazon-dash" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter for Amazon Dash buttons"><img src="img/adapters_icon/amazon-dash.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/ioBroker/ioBroker.artnet" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control DMX512 Devices via an Art-Net node"><img src="img/adapters_icon/artnet.png" alt=""></a></div>
+          <div class="energy"> <a href="https://github.com/ioBroker/ioBroker.b-control-em" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title=""><img src="img/adapters_icon/bcontrol.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/instalator/ioBroker.benq" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker BenQ projector Adapter"><img src="img/adapters_icon/benq.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/AlCalzone/ioBroker.ble" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Monitor Bluetooth Low Energy (BLE) beacons"><img src="img/adapters_icon/ble.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/frankjoke/ioBroker.bmw" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Queries BMW ConnectedDrive data for registered cars in your BMW account"><img src="img/adapters_icon/bmw.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/ruhigundrelaxed/ioBroker.boblight" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Javascript/Node.js based boblight adapter"><img src="img/adapters_icon/boblight.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/SwedishChef1/ioBroker.bosesoundtouch" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Controls Bose SoundTouch speakers over a socket connection and monitors the information sent from the speaker."><img src="img/adapters_icon/bosesoundtouch.png" alt=""></a></div>
+          <div class="household"> <a href="https://github.com/Pmant/ioBroker.botvac" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker neato botvac Adapter"><img src="img/adapters_icon/botvac.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/hieblmedia/ioBroker.broadlink" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Broadlink Adapter for RM3 Mini/RM3 Pro to learn and send signals"><img src="img/adapters_icon/broadlink.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/frankjoke/ioBroker.broadlink2" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Broadlink2 Adapter for multiple BroadLink wireless devices (RM++, SP++, A1)"><img src="img/adapters_icon/broadlink.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/angelnu/ioBroker.chromecast" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Allows to monitor and play files to Google Home (Chromecast)"><img src="img/adapters_icon/chromecast.png" alt=""></a></div>
+          <div class="communication"> <a href="https://github.com/ioBroker/ioBroker.cloud" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects your ioBroker server to the ioBroker cloud"><img src="img/adapters_icon/cloud.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.cul" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Javascript/Node.js based Busware CUL USB / culfw adapter"><img src="img/adapters_icon/busware.jpg" alt=""></a></div>
+          <div class="climate-control"> <a href="https://github.com/Apollon77/ioBroker.daikin" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control Daikin Air Conditioner devices"><img src="img/adapters_icon/daikin.jpg" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/rg-engineering/ioBroker.daswetter" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter reads weather forecast data from DasWetter.com. Three different forecast models are available."><img src="img/adapters_icon/daswettercom.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/jey-cee/ioBroker.deconz" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects to the deConz Software that is an gateway solution for ZigBee. deConz works with ConBee USB stick and RaspBee modul for Raspberry Pi which is also from Dresden-Elektronik."><img src="img/adapters_icon/deconz.png" alt=""></a></div>
+          <div class="general"> <a href="https://github.com/ioBroker/ioBroker.discovery" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter tries to discover all known devices."><img src="img/adapters_icon/discovery.png" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/ioBroker/ioBroker.dwd" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Weather Warnings from German Weather Service (DWD)"><img src="img/adapters_icon/dwd.png" alt=""></a></div>
+          <div class="geoposition"> <a href="https://github.com/BasGo/ioBroker.egigeozone" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Server listening for EgiGeoZone HTTP requests."><img src="img/adapters_icon/egigeozone.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/rg-engineering/ioBroker.ebus" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ebus Adapter; reads data from ebusd or from Arduino ebus Interface"><img src="img/adapters_icon/myhomecontrol.png" alt=""></a></div>
+          <div class="messaging"> <a href="https://github.com/ioBroker/ioBroker.email" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to send emails from ioBroker"><img src="img/adapters_icon/email.png" alt=""></a></div>
+          <div class="infrastructure"> <a href="https://github.com/Pix---/ioBroker.epson_stylus_px830" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="EPSON Stylus PX830 Ink Status"><img src="img/adapters_icon/epson_stylus_px830.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/Pmant/ioBroker.fakeroku" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter emulates Roku-Devices to Harmony Hub"><img src="img/adapters_icon/fakeroku.png" alt=""></a></div>
+          <div class="date-and-time"> <a href="https://github.com/Pix---/ioBroker.feiertage" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="German Holidays calculates religous, political and calendarial Holidays"><img src="img/adapters_icon/feiertage.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.fhem" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="FHEM Adapter"><img src="img/adapters_icon/fhem.png" alt=""></a></div>
+          <div class="geoposition"> <a href="https://github.com/soef/ioBroker.find-my-iphone" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Find my Apple device (iPhone, iPad, iMac...)"><img src="img/adapters_icon/find-my-iphone.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/soef/ioBroker.firetv" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="control Amazon Fire TV"><img src="img/adapters_icon/firetv.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.flot" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter draws charts with Flot in ioBroker."><img src="img/adapters_icon/flot.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/instalator/ioBroker.foobar2000" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker foobar2000 Adapter"><img src="img/adapters_icon/foobar2000.png" alt=""></a></div>
+          <div class="infrastructure"> <a href="https://github.com/ruhr70/ioBroker.fritzbox" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter monitors the call information from Fritzbox via tcp, Port 1012 (Activate call monitor in the Fritzbox with #96*5*)"><img src="img/adapters_icon/fritzbox.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/foxthefox/ioBroker.fritzdect" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="connects DECT ULE devices (fritzdect) to ioBroker"><img src="img/adapters_icon/fritzdect_logo.png" alt=""></a></div>
+          <div class="energy"> <a href="https://github.com/ldittmar81/ioBroker.fronius" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Fronius inverters Adapter"><img src="img/adapters_icon/fronius.png" alt=""></a></div>
+          <div class="date-and-time"> <a href="https://github.com/ioBroker/ioBroker.fullcalendar" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows planing with calendar"><img src="img/adapters_icon/fullcalendar.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/AlCalzone/ioBroker.g-homa" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter to control G-Homa WiFi plugs"><img src="img/adapters_icon/g-homa.png" alt=""></a></div>
+          <div class="geoposition"> <a href="https://github.com/ioBroker/ioBroker.geofency" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="listening for geofency events. Based on the location based mobile App (Geofency)"><img src="img/adapters_icon/geofency.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.habpanel" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="HABpanel based ioBroker user interface"><img src="img/adapters_icon/habpanel.png" alt=""></a></div>
+          <div class="climate-control"> <a href="https://github.com/instalator/ioBroker.haier" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker haier Adapter"><img src="img/adapters_icon/haier.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/Pmant/ioBroker.harmony" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control your harmony activities from ioBroker."><img src="img/adapters_icon/harmony.png" alt=""></a></div>
+          <div class="utility"> <a href="https://github.com/soef/ioBroker.hid" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="HID Input Devices"><img src="img/adapters_icon/hid.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/bondrogeen/iobroker.hilink" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker hilink Adapter"><img src="img/adapters_icon/hilink.png" alt=""></a></div>
+          <div class="storage"> <a href="https://github.com/ioBroker/ioBroker.history" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Logging of the state history in files"><img src="img/adapters_icon/history.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.hm-rega" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects HomeMatic CCU " Logic Layer " ("ReGaHSS ") to ioBroker"><img src="img/adapters_icon/homematic.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.hm-rpc" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects HomeMatic Interface-Processes (BidCos-Services, Homegear and CUxD) via XML-RPC or BIN-RPC to ioBroker"><img src="img/adapters_icon/homematic.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/husky-koglhof/ioBroker.hmm" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Javascript/Node.js based Homematic Manager Adapter"><img src="img/adapters_icon/homematic.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/Pix---/ioBroker.homepilot" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="control Homepilot Duofern Devices with ioBroker"><img src="img/adapters_icon/homepilot.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/arteck/ioBroker.hs100" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects TP-Link Plugs and Bulbs with ioBroker"><img src="img/adapters_icon/hs100.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/ioBroker/ioBroker.hue" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Connects Philips Hue LED Bulbs, Friends of Hue LED Lamps and Stripes and other SmartLink capable Devices (LivingWhites, some LivingColors) via Philips Hue Bridges with ioBroker"><img src="img/adapters_icon/hue.jpeg" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/ruhigundrelaxed/ioBroker.hyperion" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter to control the hyperion daemon."><img src="img/adapters_icon/hyperion.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/UncleSamSwiss/ioBroker.i2c" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communicates with devices over I2C bus."><img src="img/adapters_icon/i2c.png" alt=""></a></div>
+          <div class="date-and-time"> <a href="https://github.com/ioBroker/ioBroker.ical" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to read .ics files from specific URL and parse it (Google Calendar or iCal)"><img src="img/adapters_icon/ical.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-addictive-flavour-png" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation as PNG"><img src="img/adapters_icon/icons-addictive-flavour-png.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-fatcow-hosting" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Open icon library set for visualisation from FatCow Hosting"><img src="img/adapters_icon/icons-fatcow-hosting.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-icons8" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation for home automation from Icons8.com."><img src="img/adapters_icon/icons8.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-material-png" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation as PNG from google."><img src="img/adapters_icon/icons-material-png.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-material-svg" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation as SVG from google."><img src="img/adapters_icon/icons-material-svg.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-mfd-png" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation for home automation as PNG."><img src="img/adapters_icon/icons-mfd-png.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-mfd-svg" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Icon set for visualisation for home automation as SVG."><img src="img/adapters_icon/icons-mfd-svg.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-open-icon-library-png" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Open icon library set for visualisation as PNG"><img src="img/adapters_icon/icons-open-icon-library-png.png" alt=""></a></div>
+          <div class="visualization-icons"> <a href="https://github.com/ioBroker/ioBroker.icons-ultimate-png" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Ultimate icon set for visualisation as PNG."><img src="img/adapters_icon/icons-ultimate-png.png" alt=""></a></div>
+          <div class="storage"> <a href="https://github.com/ioBroker/ioBroker.influxdb" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Logging of states into InfluxDB"><img src="img/adapters_icon/influxdb.png" alt=""></a></div>
+          <div class="misc-data"> <a href="https://github.com/ldittmar81/ioBroker.info" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker information tab"><img src="img/adapters_icon/info.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/PArns/ioBroker.innogy-smarthome" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker Innogy Smarthome Adapter"><img src="img/adapters_icon/innogy-smarthome.png" alt=""></a></div>
+          <div class="logic"> <a href="https://github.com/ioBroker/ioBroker.javascript" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Javascript/Blockly Script Engine for ioBroker"><img src="img/adapters_icon/js.jpeg" alt=""></a></div>
+          <div class="utility"> <a href="https://github.com/soef/ioBroker.js2fs" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Javascript to file"><img src="img/adapters_icon/js2fs.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/UncleSamSwiss/ioBroker.kecontact" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communicates with a KEBA KeContact wallbox."><img src="img/adapters_icon/charger.png" alt=""></a></div>
+          <div class="climate-control"> <a href="https://github.com/frankjoke/ioBroker.km200" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker Buderus KM200 Adapter"><img src="img/adapters_icon/km200.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.knx" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker knx Adapter"><img src="img/adapters_icon/knx.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/instalator/ioBroker.kodi" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="KODI Adapter"><img src="img/adapters_icon/kodi.png" alt=""></a></div>
+          <div class="garden"> <a href="https://github.com/ldittmar81/ioBroker.landroid" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Worx Landroid mower Adapter"><img src="img/adapters_icon/landroid.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/SMundt/ioBroker.lgtv" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Controls WebOS-based LG SmartTVs"><img src="img/adapters_icon/lgtv.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/instalator/ioBroker.lgtv-rs" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Controls LG TV over RS232 interface"><img src="img/adapters_icon/lg.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/foxthefox/ioBroker.lifx" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker lifx Adapter"><img src="img/adapters_icon/lifx_logo.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/soef/ioBroker.lightify" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="OSRAM Lightify Devices"><img src="img/adapters_icon/lightify.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/UncleSamSwiss/ioBroker.loxone" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communicates with a Loxone Miniserver."><img src="img/adapters_icon/loxone.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.material" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Material UI based ioBroker user interface"><img src="img/adapters_icon/material.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.maxcul" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control max! devices over CUL stick"><img src="img/adapters_icon/maxcul.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ioBroker/ioBroker.megad" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Lets control the MegaD-328 over ethernet/internet (http://www.ab-log.ru/smart-house/ethernet/megad-328)"><img src="img/adapters_icon/megad.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ausHaus/ioBroker.megadd" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Lets control the MegaD-2561 over ethernet/internet (http://www.ab-log.ru/smart-house/ethernet/megad-2561)"><img src="img/adapters_icon/megad.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ausHaus/ioBroker.megaesp" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Lets control the Mega-ESP over ethernet/internet (http://www.ab-log.ru/forum/viewtopic.php?f=1&t=1130)"><img src="img/adapters_icon/megad.png" alt=""></a></div>
+          <div class="household"> <a href="https://github.com/soef/ioBroker.miele" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Miele XGW 3000"><img src="img/adapters_icon/xmiele.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.mihome" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Xiaomi MiHome gateway support"><img src="img/adapters_icon/mihome.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/MeisterTR/ioBroker.mihome-lamp" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows control Xiaomi Lamp "><img src="img/adapters_icon/mihome-lamp.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ioBroker/ioBroker.mihome-plug" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows control Xiaomi Plug (wifi) "><img src="img/adapters_icon/mihome-plug.png" alt=""></a></div>
+          <div class="household"> <a href="https://github.com/ioBroker/ioBroker.mihome-vacuum" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows control Xiaomi vacuum cleaner"><img src="img/adapters_icon/mihome-vacuum.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/instalator/ioBroker.mikrotik" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker mikrotik Adapter"><img src="img/adapters_icon/mikrotik.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/foxthefox/ioBroker.milight" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker milight Adapter"><img src="img/adapters_icon/easybulb_logo.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/Steiger04/ioBroker.milight-smart-light" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter for Milight LED bulbs and LED strips"><img src="img/adapters_icon/milight-smart-light-md.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.mobile" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="jQuery Mobile based ioBroker user interface"><img src="img/adapters_icon/mobile.png" alt=""></a></div>
+          <div class="protocols"> <a href="https://github.com/ioBroker/ioBroker.modbus" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ModBus connection Slave or Master"><img src="img/adapters_icon/modbus.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/instalator/ioBroker.mpd" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker mpd Adapter"><img src="img/adapters_icon/mpd.png" alt=""></a></div>
+          <div class="protocols"> <a href="https://github.com/ioBroker/ioBroker.mqtt" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to send and receive MQTT messages from ioBroker and to be a broker"><img src="img/adapters_icon/mqtt.png" alt=""></a></div>
+          <div class="protocols"> <a href="https://github.com/Pmant/ioBroker.mqtt-client" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Syncing with MQTT Brokers"><img src="img/adapters_icon/mqtt-client.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.mysensors" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="mysensors Adapter"><img src="img/adapters_icon/mysensors.png" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/PArns/ioBroker.netatmo" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker netatmo Adapter"><img src="img/adapters_icon/netatmo.png" alt=""></a></div>
+          <div class="logic"> <a href="https://github.com/ioBroker/ioBroker.node-red" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter uses node-red as a service. No additional node-red instance required."><img src="img/adapters_icon/node-red.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.noolite" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Lets control the Noolite devices"><img src="img/adapters_icon/noolite.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/Apollon77/ioBroker.nut" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Read all data from your UPS/USV via nut protocol"><img src="img/adapters_icon/nut.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/ioBroker/ioBroker.onkyo" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control Onkyo AVRs with EISCP protocol"><img src="img/adapters_icon/onkyo.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.openhab" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker openhab Adapter"><img src="img/adapters_icon/openhab.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ioBroker/ioBroker.owfs" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="One wire file system adapter for ioBroker."><img src="img/adapters_icon/owfs.png" alt=""></a></div>
+          <div class="geoposition"> <a href="https://github.com/ioBroker/ioBroker.owntracks" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker OwnTracks Adapter"><img src="img/adapters_icon/owntracks.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/ldittmar81/ioBroker.panasonic-viera" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Panasonic Viera Smart-TV Adapter"><img src="img/adapters_icon/panasonic-viera.png" alt=""></a></div>
+          <div class="logic"> <a href="https://github.com/ioBroker/ioBroker.parser" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to extract values from HTTP URLs or from files"><img src="img/adapters_icon/parser.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/bondrogeen/ioBroker.paw" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Android Device Management"><img src="img/adapters_icon/paw.png" alt=""></a></div>
+          <div class="utility"> <a href="https://github.com/ioBroker/ioBroker.phantomjs" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Get web page screenshot (e.g. for flot)"><img src="img/adapters_icon/phantomjs.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/eisbaeeer/ioBroker.piface" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control PiFace Board"><img src="img/adapters_icon/piface.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.pimatic" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker pimatic Adapter"><img src="img/adapters_icon/pimatic.png" alt=""></a></div>
+          <div class="network"> <a href="https://github.com/ioBroker/ioBroker.ping" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter cyclic polls configured IPs."><img src="img/adapters_icon/ping.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/eisbaeeer/ioBroker.plexconnect" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Plex connector"><img src="img/adapters_icon/plex-logo.png" alt=""></a></div>
+          <div class="network"> <a href="https://github.com/ioBroker/ioBroker.proxy" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to reach other HTTP servers (like WEB CAM) in the same web server"><img src="img/adapters_icon/proxy.png" alt=""></a></div>
+          <div class="messaging"> <a href="https://github.com/Jens1809/ioBroker.pushbullet" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Pushbullet adapter"><img src="img/adapters_icon/pushbullet.png" alt=""></a></div>
+          <div class="messaging"> <a href="https://github.com/ioBroker/ioBroker.pushover" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to send pushover notifications from ioBroker"><img src="img/adapters_icon/pushover.png" alt=""></a></div>
+          <div class="messaging"> <a href="https://github.com/ioBroker/ioBroker.pushsafer" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to send pushsafer notifications from ioBroker"><img src="img/adapters_icon/pushsafer.png" alt=""></a></div>
+          <div class="network"> <a href="https://github.com/frankjoke/ioBroker.radar" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter can scan IP and bluetooth addresses foravailability and also get exchange rates from European Central Bank and get ing fill from HP printers"><img src="img/adapters_icon/radar.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.rflink" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker RFLink Adapter"><img src="img/adapters_icon/rflink.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.rickshaw" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter draws charts with Rickshaw in ioBroker."><img src="img/adapters_icon/rickshaw.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ioBroker/ioBroker.rpi2" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="RPI-Monitor for ioBroker Installations"><img src="img/adapters_icon/rpi.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/PArns/ioBroker.rwe-smarthome" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker RWE Smarthome Adapter"><img src="img/adapters_icon/rwe-smarthome.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/ioBroker/ioBroker.s7" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Siemens SIMATIC S7 connection via Snap7"><img src="img/adapters_icon/S7.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/soef/ioBroker.samsung" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Control Samsung TV devices"><img src="img/adapters_icon/samsung.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/ioBroker/ioBroker.sayit" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Text to speech in a cloud or local. Runs on windows, linux and OSX. It can play mp3/wav too."><img src="img/adapters_icon/sayit.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/rg-engineering/ioBroker.sbfspot" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="SMA inverter (sbfspot) Adapter with vis widget"><img src="img/adapters_icon/myhomecontrol.png" alt=""></a></div>
+          <div class="logic"> <a href="https://github.com/ioBroker/ioBroker.scenes" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to create scenes from several datapoints."><img src="img/adapters_icon/scenes.png" alt=""></a></div>
+          <div class="communication"> <a href="https://github.com/ioBroker/ioBroker.simple-api" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to read and write ioBroker objects and state with web RESTful API"><img src="img/adapters_icon/simple-api.png" alt=""></a></div>
+          <div class="energy"> <a href="https://github.com/ctjaeger/ioBroker.sma-em" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker sma-em Adapter"><img src="img/adapters_icon/sma-em.png" alt=""></a></div>
+          <div class="energy"> <a href="https://github.com/Apollon77/ioBroker.smartmeter" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Read data from Smartmeter Devices using various protocols like SML and D0"><img src="img/adapters_icon/smartmeter.png" alt=""></a></div>
+          <div class="infrastructure"> <a href="https://github.com/ctjaeger/ioBroker.snmp" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Allows to poll SNMP OIDs in ioBroker"><img src="img/adapters_icon/snmp.png" alt=""></a></div>
+          <div class="communication"> <a href="https://github.com/ioBroker/ioBroker.socketio" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to communicate different web applications with ioBroker"><img src="img/adapters_icon/socketio.png" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/Pix---/ioBroker.solarwetter" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="prognostizierter Solarstrom Tagesertrag solar-wetter.com"><img src="img/adapters_icon/solarwetter.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/ioBroker/ioBroker.sonoff" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to connect sonoff components via MQTT"><img src="img/adapters_icon/sonoff.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/ioBroker/ioBroker.sonos" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to monitor and control SONOS players from ioBroker"><img src="img/adapters_icon/sonos.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/ldittmar81/ioBroker.sony-bravia" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker Sony Bravia Smart-TV Adapter"><img src="img/adapters_icon/sony-bravia.png" alt=""></a></div>
+          <div class="storage"> <a href="https://github.com/ioBroker/ioBroker.sql" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Logging of states into SQL DB"><img src="img/adapters_icon/sql.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/UncleSamSwiss/ioBroker.squeezebox" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Controls a Squeezebox Server a.k.a. Logitech Media Server and its players."><img src="img/adapters_icon/squeezebox.png" alt=""></a></div>
+          <div class="alarm"> <a href="https://github.com/instalator/ioBroker.starline" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker adapter for autoalarm StarLine Telematica 2.0"><img src="img/adapters_icon/starline.png" alt=""></a></div>
+          <div class="infrastructure"> <a href="https://github.com/instalator/ioBroker.synology" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Get status and control your NAS Synology"><img src="img/adapters_icon/synology.png" alt=""></a></div>
+          <div class="misc-data"> <a href="https://github.com/frankjoke/ioBroker.systeminfo" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Adapter get (or set) data from systems or the web"><img src="img/adapters_icon/systeminfo.png" alt=""></a></div>
+          <div class="misc-data"> <a href="https://github.com/Pix---/ioBroker.tankerkoenig" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Tankerkoenig Spritpreise"><img src="img/adapters_icon/tankerkoenig.png" alt=""></a></div>
+          <div class="messaging"> <a href="https://github.com/ioBroker/ioBroker.telegram" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows to send and receive telegram messages from ioBroker and to be a bot"><img src="img/adapters_icon/telegram.png" alt=""></a></div>
+          <div class="utility"> <a href="https://github.com/ioBroker/ioBroker.terminal" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="opens a terminal server for the ioBroker"><img src="img/adapters_icon/terminal.png" alt=""></a></div>
+          <div class="logic"> <a href="https://github.com/ioBroker/ioBroker.text2command" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="This adapter allows convert texts to commands."><img src="img/adapters_icon/text2command.png" alt=""></a></div>
+          <div class="infrastructure"> <a href="https://github.com/soef/ioBroker.tr-064" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="TR 064"><img src="img/adapters_icon/tr-064.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/AlCalzone/ioBroker.tradfri" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communicates with IKEA Trådfri Gateway to control devices"><img src="img/adapters_icon/tradfri.png" alt=""></a></div>
+          <div class="misc-data"> <a href="https://github.com/Pix---/ioBroker.tvspielfilm" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="TV Spielfilm program guide from rss feed"><img src="img/adapters_icon/tvspielfilm.png" alt=""></a></div>
+          <div class="network"> <a href="https://github.com/jens-maus/ioBroker.unifi" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communicates with a UniFi-Controller"><img src="img/adapters_icon/unifi.png" alt=""></a></div>
+          <div class="network"> <a href="https://github.com/Jey-Cee/ioBroker.upnp" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker UPnP Adapter"><img src="img/adapters_icon/upnp-discovery.png" alt=""></a></div>
+          <div class="misc-data"> <a href="https://github.com/hometm/ioBroker.vcard" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="vcard Adapter"><img src="img/adapters_icon/vcard.png" alt=""></a></div>
+          <div class="climate-control"> <a href="https://github.com/misanorot/ioBroker.viessmann" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Communication with Viessmann controllers over Vcontrold"><img src="img/adapters_icon/viessmann.png" alt=""></a></div>
+          <div class="visualization"> <a href="https://github.com/ioBroker/ioBroker.vis" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Graphical user interface for iobroker"><img src="img/adapters_icon/vis.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-bars" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="bars Widgets for ioBroker.vis"><img src="img/adapters_icon/bars.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-canvas-gauges" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Canvas gauges for ioBroker.vis"><img src="img/adapters_icon/vis-canvas-gauges.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-colorpicker" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Color picker Widgets for ioBroker.vis"><img src="img/adapters_icon/colorpicker.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-fancyswitch" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Switch widgets for ioBroker.vis"><img src="img/adapters_icon/fancyswitch.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-google-fonts" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Nice google fonts for ioBroker.vis"><img src="img/adapters_icon/vis-google-fonts.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-history" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="history Widgets for ioBroker.vis"><img src="img/adapters_icon/vis-history.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-hqwidgets" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="High quality Widgets for ioBroker.vis"><img src="img/adapters_icon/hqwidgets.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-jqui-mfd" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="jQuery-UI Widgets for ioBroker.vis with OpenAutomationProject icons"><img src="img/adapters_icon/jqui-mfd.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/Pmant/ioBroker.vis-justgage" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="justGage Widgets for ioBroker.vis"><img src="img/adapters_icon/justgage.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-keyboard" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="iobroker.vis-keyboard Widgets for ioBroker.vis"><img src="img/adapters_icon/keyboard.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-lcars" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Star Trek Widgets for ioBroker.vis"><img src="img/adapters_icon/lcars.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-map" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Map Widgets for ioBroker.vis"><img src="img/adapters_icon/vis-map.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/nisiode/ioBroker.vis-material" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="material Widgets for ioBroker.vis"><img src="img/adapters_icon/admin.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-metro" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="metro Widgets for ioBroker.vis"><img src="img/adapters_icon/metro.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/instalator/ioBroker.vis-players" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Media Players Widgets for ioBroker.vis"><img src="img/adapters_icon/players.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-plumb" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="plumb Widgets for ioBroker.vis"><img src="img/adapters_icon/plumb.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-rgraph" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Gauge and charts widgets for ioBroker.vis"><img src="img/adapters_icon/rgraph.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/ioBroker/ioBroker.vis-timeandweather" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Time and weather widgets for ioBroker.vis"><img src="img/adapters_icon/timeandweather.png" alt=""></a></div>
+          <div class="visualization-widgets"> <a href="https://github.com/rg-engineering/ioBroker.vis-weather" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="general flot-based weather Widgets to be used with daswetter or weatherundergrund adapter"><img src="img/adapters_icon/vis-weather.png" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/dschaedl/ioBroker.weatherunderground" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="load weatherunderground weather forecast for your location"><img src="img/adapters_icon/wu.png" alt=""></a></div>
+          <div class="general"> <a href="https://github.com/ioBroker/ioBroker.web" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="opens a webserver for other adapters"><img src="img/adapters_icon/web.png" alt=""></a></div>
+          <div class="utility"> <a href="https://github.com/ioBroker/ioBroker.wetty" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="opens a wetty server for the ioBroker"><img src="img/adapters_icon/wetty.png" alt=""></a></div>
+          <div class="lighting"> <a href="https://github.com/soef/ioBroker.wifilight" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="WiFi Light Devices"><img src="img/adapters_icon/wifilight.png" alt=""></a></div>
+          <div class="protocols"> <a href="https://github.com/soef/ioBroker.wm-bus" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Wireless M-Bus"><img src="img/adapters_icon/wm-bus.png" alt=""></a></div>
+          <div class="climate-control"> <a href="https://github.com/ioBroker/ioBroker.wolf" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Wolf Heating over ISM8i"><img src="img/adapters_icon/wolf_logo.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/frankjoke/ioBroker.xs1" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker EZcontrol XS1 Adapter"><img src="img/adapters_icon/xs1.png" alt=""></a></div>
+          <div class="iot-systems"> <a href="https://github.com/jensweigele/ioBroker.yahka" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ioBroker yet another homekit adapter"><img src="img/adapters_icon/yahka.png" alt=""></a></div>
+          <div class="multimedia"> <a href="https://github.com/soef/ioBroker.yamaha" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Yamaha AVR Adapter"><img src="img/adapters_icon/yamaha.png" alt=""></a></div>
+          <div class="weather"> <a href="https://github.com/ioBroker/ioBroker.yr" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="Fetches 48h weather forecast from yr.no"><img src="img/adapters_icon/yr.png" alt=""></a></div>
+          <div class="hardware"> <a href="https://github.com/ioBroker/ioBroker.zwave" target="_blank" class="btn" data-toggle="tooltip" data-placement="top" title="ZWave support based on openzwave packet"><img src="img/adapters_icon/zwave.png" alt=""></a></div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="home-section">
+    <div class="heading-about text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInRight" data-wow-delay="0.2s">
+              <div class="heading">
+                <h2>Screens</h2>
+                <h4>See examples of visualisation</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <div id="gallery">
+            <a class="gallery-popup" href="img/screens/screen1.jpg"><img alt="" src="img/screens/screen1.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen2.jpg"><img alt="" src="img/screens/screen2.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen3.jpg"><img alt="" src="img/screens/screen3.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen4.jpg"><img alt="" src="img/screens/screen4.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen5.jpg"><img alt="" src="img/screens/screen5.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen6.jpg"><img alt="" src="img/screens/screen6.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen7.jpg"><img alt="" src="img/screens/screen7.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen8.jpg"><img alt="" src="img/screens/screen8.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen9.jpg"><img alt="" src="img/screens/screen9.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen10.jpg"><img alt="" src="img/screens/screen10.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen11.jpg"><img alt="" src="img/screens/screen11.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen12.jpg"><img alt="" src="img/screens/screen12.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen13.jpg"><img alt="" src="img/screens/screen13.jpg"/>
+      <div class="caption">1111</div></a>
+            <a class="gallery-popup" href="img/screens/screen14.jpg"><img alt="" src="img/screens/screen14.jpg"/>
+      <div class="caption">1111</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="home-section">
+    <div class="heading-contact text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInLeft" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>Reviews</h2>
+                <h4>LEARN MORE</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#quote-carousel" data-slide-to="0" class="active"></li>
+              <li data-target="#quote-carousel" data-slide-to="1"></li>
+              <li data-target="#quote-carousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="item">
+                <blockquote>
+                  <div class="row">
+                    <div class="col-sm-3 text-center">
+                      <img class="img-circle" src="img/reviews_icons/person-flat.png" style="width: 100px;height:100px;">
+                    </div>
+                    <div class="col-sm-8">
+                      <p>My system went top through the holiday season. I could see pictures at any time via Telegram (the adapter is simply coolest!) from my webcams and track when my buddy checked the mailbox and feed the fishes.
+                      </p>
+                      <p style="text-align: right">(translated from German)</p>
+                      <small>Thisoft</small>
+                    </div>
+                  </div>
+                </blockquote>
+              </div>
+              <div class="item active">
+                <blockquote>
+                  <div class="row">
+                    <div class="col-sm-3 text-center">
+                      <img class="img-circle" src="img/reviews_icons/person-flat1.png" style="width: 100px;height:100px;">
+                    </div>
+                    <div class="col-sm-8">
+                      <p>I have mainly the KNX components in the house, but also use MODBUS, 1 wire, etc. for many gadgets. So far, I used LOXONE as a server solution. I was looking for an alternative, found IOBROKER and have also been stuck there. It impressed me very much, what everything ioBroker can. And above all, how user-friendly it is! Nothing compares to ioBroker and there is still much potential.</p>
+                      <p style="text-align: right">(translated from German)</p>
+                      <small>KNXbroker</small>
+                    </div>
+                  </div>
+                </blockquote>
+              </div>
+              <div class="item">
+                <blockquote>
+                  <div class="row">
+                    <div class="col-sm-3 text-center">
+                      <img class="img-circle" src="img/reviews_icons/person-flat2.png" style="width: 100px;height:100px;">
+                    </div>
+                    <div class="col-sm-8">
+                      <p>The project is the best! If I had to describe it to someone who has no idea, it would be so: ioBroker is like celebration, holiday, birthday, easter, christmas and new year in one. If you can imagine this, you know what ioBroker is. </p>
+                      <p style="text-align: right">(translated from German)</p>
+                      <small>Martin</small>
+                    </div>
+                  </div>
+                </blockquote>
+              </div>
+            </div>
+            <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+            <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="heading-about text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInLeft" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>youtube</h2>
+                <h4>LEARN MORE</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-4">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/FBQN6GrXGsU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/P07wkDotbyA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/OmpFRHG755M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="clearfix">
+    <div class="heading-about text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInLeft" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>Map</h2>
+                <h4>LEARN MORE</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="google-map" data-latitude="40.713732" data-longitude="-74.0092704" style="position: relative; overflow: hidden;">
+      <iframe width="100%" height="400px" frameborder="0" style="border:0" src="http://download.iobroker.net/map.html"></iframe>
+    </div>
+  </section>
+
+
+  <section class="home-section">
+    <div class="heading-contact  text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInRight" data-wow-delay="0.4s">
+              <div class="heading">
+                <h2>Contact</h2>
+                <h4>For more info and support, contact us!</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-lg-offset-5">
+          <hr class="marginbot-50">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="boxed-grey">
+            <form id="contact-form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i>
+                    </span>
+                      <input type="text" class="form-control" id="name" placeholder="Enter name" required="required" /></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-group">
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
+                      </span>
+                      <input type="email" class="form-control" id="email" placeholder="Enter email" required="required" /></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" class="form-control" required="required">
+                    <option value="na" selected="">Choose One:</option>
+                    <option value="service">General Customer Service</option>
+                    <option value="suggestions">Suggestions</option>
+                    <option value="product">Product Support</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="name">Message</label>
+                    <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required" placeholder="Message"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-skin pull-right" id="btnContactUs">Send Message</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="widget-contact">
+            <h3>Main Office</h3>
+            <address><strong>Lorenzstr. 16,</strong><br>
+          76135 Karlsruhe,<br>
+          Germany<br>
+          <abbr title="Phone"></abbr> </address>
+            <address>
+          <strong>Email</strong><br>
+          <a href="mailto:#">info@iobroker.net</a>
+          </address>
+            <address>
+				  <strong>We're on social networks</strong><br>
+               
+         <div class="social-links  wow rollIn" style="visibility: visible; animation-delay: 0.5s; animation-name: rollIn;">
+                <a target="_blank" href="https://twitter.com/ioBroker" class="twitter"><i class="fa fa-twitter"></i></a>
+                <a target="_blank" href="https://www.facebook.com/groups/440499112958264/" class="facebook"><i class="fa fa-facebook"></i></a>
+                <a target="_blank" href="https://www.instagram.com/smarthome_iobroker/" class="instagram"><i class="fa fa-instagram"></i></a>
+                <a target="_blank" href="https://www.linkedin.com/in/veronika-khaeva-b5956494/" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                <a target="_blank" href="https://www.youtube.com/channel/UCpZRrUCA-D4KDLgGM5GL4Iw" class="linkedin"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                <a target="_blank" href="https://github.com/ioBroker/" class="linkedin"><i class="fa fa-github"></i></a>
+              </div>	
+				</address>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div><a href="#" id="up" class="toTop on"><i class="fa fa-chevron-up" aria-hidden="true"></i></a></div>
+   
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <a href="#" class="scrollpoint sp-effect3 active animated fadeInDown">
+            <img src="img/logo_invert_mini.png" alt="" class="logo" style="width: 200px"></a>
+            <div class="rights"><p>Copyright © 2014-2018 ioBroker</p></div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.scrollTo.js"></script>
+    <script src="js/jquery.isotope.js"></script>
+    <script src="js/magnific-popup.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/jquery.justifiedGallery.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
