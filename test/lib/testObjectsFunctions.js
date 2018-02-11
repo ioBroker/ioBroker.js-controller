@@ -4,6 +4,14 @@
 /* jshint expr:true */
 'use strict';
 
+const promiseSequence = require('../../lib/tools').promiseSequence;
+
+/**
+ * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
+ */
+/**
+ * @param {Context} context 
+ */
 function register(it, expect, context) {
     var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
     var gid = 'myTestObject';
@@ -38,6 +46,40 @@ function register(it, expect, context) {
         });
     });
 
+    // setObject positive (async)
+    it(testName + 'Check if objects will be created (ASYNC)', function () {
+        this.timeout(1000);
+
+        const tests = [
+            // Creating an object works
+            () => context.adapter.setObjectAsync(gid, {
+                common: {
+                    name: 'test2',
+                    type: 'number',
+                    role: 'level'
+                },
+                native: {
+                    attr1: '1',
+                    attr2: '2',
+                    attr3: '3'
+                },
+                type: 'state'
+            }).should.be.fulfilled,
+
+            // getting it returns the correct values
+            () => context.objects.getObjectAsync(context.adapterShortName + '.0.' + gid).should.be.fulfilled.then(obj => {
+                expect(obj).to.be.ok;
+                expect(obj.native).to.be.ok;
+                expect(obj._id).equal(context.adapterShortName + '.0.' + gid);
+                expect(obj.common.name).equal('test1');
+                expect(obj.type).equal('state');
+            })
+        ]; 
+
+        return promiseSequence(tests);
+        
+    });
+    
     // setObject negative
     it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
         this.timeout(1000);
