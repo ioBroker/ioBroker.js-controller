@@ -54,7 +54,7 @@ function register(it, expect, context) {
             // Creating an object works
             () => context.adapter.setObjectAsync(gid, {
                 common: {
-                    name: 'test2',
+                    name: 'test1',
                     type: 'number',
                     role: 'level'
                 },

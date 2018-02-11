@@ -43,9 +43,11 @@ function register(it, expect, context) {
             () => expect(context.adapter.getPortRunning).to.not.exist,
             
             //Works like it should be
-            () => context.adapter.getPortAsync(8080).should.eventually.be.at.least(8080),
-            () => expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']),
-            () => expect(context.adapter.getPortRunning).to.have.property('port', port),
+            () => context.adapter.getPortAsync(8080).to.be.fulfilled.then(port => {
+                expect(port).to.be.at.least(8080);
+                expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
+                expect(context.adapter.getPortRunning).to.have.property('port', port);
+            })
         ];
 
         return promiseSequence(tests);
