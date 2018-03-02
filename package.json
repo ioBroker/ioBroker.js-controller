@@ -6,16 +6,16 @@
   },
   "optionalDependencies": {
     "redis": "^2.8.0",
-    "greenlock": "^2.1.17",
+    "greenlock": "^2.1.18",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.1",
-    "winston-syslog": "^1.2.6"
+    "winston-syslog": "^2.0.0"
   },
   "bin": {
     "iobroker": "./iobroker.js"
   },
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.1",
     "daemonize2": "^0.4.2",
     "iobroker.admin": ">=2.0.9",
     "jszip": "^3.1.5",
@@ -29,13 +29,13 @@
     "pyconf": "^1.1.2",
     "request": "^2.83.0",
     "safe-replace": "^1.0.2",
-    "semver": "^5.4.1",
-    "socket.io": "^1.5.0",
-    "socket.io-client": "^1.5.0",
-    "tar": "^4.0.2",
+    "semver": "^5.5.0",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4",
+    "tar": "^4.4.0",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
-    "yargs": "^6.0.0"
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
@@ -44,7 +44,7 @@
     "grunt-jscs": "^3.0.1",
     "grunt-http": "^2.2.0",
     "grunt-jsdoc": "^2.1.0",
-    "mocha": "^4.1.0",
+    "mocha": "^5.0.1",
     "chai": "^4.1.2",
     "istanbul": "^0.4.5"
   },
