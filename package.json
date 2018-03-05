@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@types/node": "^4.2.23",
+    "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.1.0",
@@ -47,8 +48,7 @@
     "grunt-jsdoc": "^2.1.0",
     "grunt-replace": "^1.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^5.0.1",
-    "istanbul": "^0.4.5"
+    "mocha": "^5.0.1"
   },
   "homepage": "http://www.iobroker.com",
   "description": "...domesticate the Internet of Things",
