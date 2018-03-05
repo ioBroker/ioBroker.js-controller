@@ -4,6 +4,14 @@
 /* jshint expr:true */
 'use strict';
 
+const promiseSequence = require('../../lib/tools').promiseSequence;
+
+/**
+ * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
+ */
+/**
+ * @param {Context} context 
+ */
 function register(it, expect, context) {
 
     //adapterGetPort
@@ -20,11 +28,33 @@ function register(it, expect, context) {
             expect(port).to.be.at.least(8080);
             expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
             expect(context.adapter.getPortRunning).to.have.property('port', port);
-        });
 
-        done();
+            done();
+        });
     });
 
+    // NOT READY: Running this after the adapterGetPort (sync) test causes getPortRunning to already exist
+    
+    // //adapterGetPort (async)
+    // it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port (ASYNC)', function () {
+    //     this.timeout(1000);
+
+    //     const tests = [
+    //         //Throw Error            
+    //         () => context.adapter.getPortAsync('').should.be.rejectedWith('adapterGetPort: no port'),
+    //         () => expect(context.adapter.getPortRunning).to.not.exist,
+            
+    //         //Works like it should be
+    //         () => context.adapter.getPortAsync(8080).to.be.fulfilled.then(port => {
+    //             expect(port).to.be.at.least(8080);
+    //             expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
+    //             expect(context.adapter.getPortRunning).to.have.property('port', port);
+    //         })
+    //     ];
+
+    //     return promiseSequence(tests);
+    // });
+    
     //checkPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
         this.timeout(1000);
@@ -45,31 +75,52 @@ function register(it, expect, context) {
         done();
     });
 
+    //checkPassword (async)
+    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password (ASYNC)', function () {
+        this.timeout(1000);
+
+        const tests = [
+            // promisify always provides a callback, so that doesn't need to be tested
+
+            // User doesn't exist
+            () => context.adapter.checkPasswordAsync('claus', '1234').should.eventually.equal(false),
+            
+            // Wrong password
+            () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.equal(false),
+        ]; 
+
+        return promiseSequence(tests);
+    });
+
     //setPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: sets the users password', function (done) {
         this.timeout(1000);
-
+        // TODO: sync
+        // TODO: async
         done();
     });
 
     //checkGroup
     it(context.name + ' ' + context.adapterShortName + ' adapter: user exists and is in the group', function (done) {
         this.timeout(1000);
-
+        // TODO: sync
+        // TODO: async
         done();
     });
 
     //calculatePermissions
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user permissions', function (done) {
         this.timeout(1000);
-
+        // TODO: sync
+        // TODO: async
         done();
     });
 
     //getCertificates
     it(context.name + ' ' + context.adapterShortName + ' adapter: eturns SSL certificates by name', function (done) {
         this.timeout(1000);
-
+        // TODO: sync
+        // TODO: async
         done();
     });
 
