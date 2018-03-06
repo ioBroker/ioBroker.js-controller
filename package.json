@@ -17,7 +17,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "daemonize2": "^0.4.2",
-    "iobroker.admin": ">=2.0.9",
+    "iobroker.admin": "stable",
     "jszip": "^3.1.5",
     "mime": "^1.4.0",
     "mkdirp": "^0.5.1",
