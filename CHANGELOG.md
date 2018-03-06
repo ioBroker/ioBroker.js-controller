@@ -1,4 +1,22 @@
-# 1.2.5 (2017-01-27)
+# 1.2.6 (2018-03-06)
+Main changes: support of npm5, Multihost fixed, added promises to adapter.js
+
+* (bluefox) fix multihost connect
+* (bluefox) add "multihost status" command
+* (bluefox) make statistics interval adjustable
+* (bluefox) better scan of installed adapters
+* (bluefox) better deletion of adapters
+* (bluefox) fix requests like getStates('*.info.connection')
+* (bluefox) create instance's objects by start.
+* (AlCalzone) Add promisified methods to the adapter class
+* (AlCalzone) enable basic type-checking and fix found error
+* (Apollon77) fix potential error and check if that.log exists
+* (bluefox) updates npm packets
+* (Apollon77) log an error when npmInstallWithCheck throws
+* (AlCalzone) [npm5] Disable package-lock.json before installing anything
+* (Apollon77) use stable tag from admin in dependencies
+
+# 1.2.5 (2018-01-27)
 * (bluefox) move buildRepository.js to ioBroker.repositories
 * (bluefox) fix adapter download
 * (Apollon77) also include npm5 fix into reinstall.sh
@@ -10,7 +28,7 @@
 * (Apollon77) exit mocha tests explicitely when completed, needed pot. with most current version of mocha
 * (Apollon77) add npm5 check and "Block" to "iobroker install" commands
 
-# 1.2.4 (2017-12-xx)
+# 1.2.4 (2017-12-15)
 * (bluefox) The fix for npm5
 
 # 1.2.3 (2017-11-24)

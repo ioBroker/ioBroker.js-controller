@@ -82,6 +82,7 @@ function getConfig() {
         var _config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
         if (!_config.states)  _config.states  = {type: 'file'};
         if (!_config.objects) _config.objects = {type: 'file'};
+        if (!_config.system)  _config.system  = {};
         return _config;
     }
 }
@@ -397,14 +398,16 @@ function createObjects() {
 }
 
 function startAliveInterval() {
+    config.system = config.system || {};
+    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
     reportStatus();
-    setInterval(reportStatus, 15000);
+    setInterval(reportStatus, config.system.statisticsInterval);
 }
 
 function reportStatus() {
     var id = 'system.host.' + hostname;
     outputCount += 10;
-    states.setState(id + '.alive',   {val: true, ack: true, expire: 30, from: id});
+    states.setState(id + '.alive',   {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
     states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
     states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
     var mem = process.memoryUsage();
@@ -419,7 +422,7 @@ function reportStatus() {
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
     states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
     states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
-    inputCount = 0;
+    inputCount  = 0;
     outputCount = 0;
 }
 
