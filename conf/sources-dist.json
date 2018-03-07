@@ -79,7 +79,7 @@
   "cloud": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.cloud/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.cloud/master/admin/cloud.png",
-    "version": "2.4.4",
+    "version": "2.4.6",
     "type": "communication",
     "published": "2016-06-24T18:36:32.658Z"
   },
@@ -696,7 +696,7 @@
   "phantomjs": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.phantomjs/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.phantomjs/master/admin/phantomjs.png",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "type": "utility",
     "published": "2016-04-29T06:04:14.612Z"
   },
