@@ -1,4 +1,4 @@
-# 1.2.6 (2018-03-06)
+# 1.2.7 (2018-03-06)
 Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 
 * (bluefox) fix multihost connect
@@ -15,6 +15,7 @@ Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 * (Apollon77) log an error when npmInstallWithCheck throws
 * (AlCalzone) [npm5] Disable package-lock.json before installing anything
 * (Apollon77) use stable tag from admin in dependencies
+* (bluefox) fix empty ID error
 
 # 1.2.5 (2018-01-27)
 * (bluefox) move buildRepository.js to ioBroker.repositories
