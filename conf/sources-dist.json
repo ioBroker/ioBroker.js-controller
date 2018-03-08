@@ -933,7 +933,7 @@
   "tradfri": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/admin/tradfri.png",
-    "version": "1.0.6",
+    "version": "1.1.7",
     "type": "lighting",
     "published": "2017-08-23T11:33:34.827Z"
   },
