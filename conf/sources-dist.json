@@ -100,7 +100,7 @@
   "daswetter": {
     "meta": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/admin/daswettercom.png",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "weather",
     "published": "2017-05-14T10:42:31.173Z"
   },
@@ -115,7 +115,7 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/admin/discovery.png",
     "published": "2017-03-22T06:30:11.864Z",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "type": "general"
   },
   "dwd": {
@@ -131,6 +131,13 @@
     "version": "0.1.2",
     "type": "geoposition",
     "published": "2017-09-28T10:21:33.986Z"
+  },
+  "ebus": {
+    "meta": "https://raw.githubusercontent.com/rg-engineering/ioBroker.ebus/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.ebus/master/admin/myhomecontrol.png",
+    "version": "0.5.0",
+    "type": "hardware",
+    "published": "2018-03-03T13:10:00.000Z"
   },
   "email": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/io-package.json",
@@ -303,7 +310,7 @@
   "ical": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.ical/master/admin/ical.png",
-    "version": "1.4.0",
+    "version": "1.4.2",
     "type": "date-and-time",
     "published": "2015-02-22T11:33:05.718Z"
   },
@@ -441,7 +448,7 @@
     "type": "garden",
     "published": "2017-02-08T23:54:56.311Z"
   },
-    "landroid-s": {
+  "landroid-s": {
     "meta": "https://raw.githubusercontent.com/MeisterTR/ioBroker.landroid-s/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/MeisterTR/ioBroker.landroid-s/master/admin/landroid-s.png",
     "version": "2.0.0",
@@ -726,7 +733,7 @@
     "icon": "https://raw.githubusercontent.com/eisbaeeer/ioBroker.plexconnect/master/admin/plex-logo.png",
     "type": "multimedia",
     "published": "2018-02-23T20:39:21.007Z"
-  },  
+  },
   "proxy": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.proxy/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.proxy/master/admin/proxy.png",
@@ -814,7 +821,7 @@
   "sbfspot": {
     "meta": "https://raw.githubusercontent.com/rg-engineering/ioBroker.sbfspot/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.sbfspot/master/admin/myhomecontrol.png",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "type": "hardware",
     "published": "2017-06-03T14:49:48.110Z"
   },
@@ -1101,7 +1108,7 @@
   "vis-weather": {
     "meta": "https://raw.githubusercontent.com/rg-engineering/ioBroker.vis-weather/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.vis-weather/master/admin/vis-weather.png",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "type": "visualization-widgets",
     "published": "2017-05-14T10:52:23.840Z"
   },
