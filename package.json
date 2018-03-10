@@ -85,6 +85,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
+    "preinstall": "node lib/preinstall_check.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
