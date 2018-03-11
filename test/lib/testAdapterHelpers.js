@@ -261,10 +261,15 @@ function register(it, expect, context) {
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
-        //test with string empty
+        //test with string empty as state
         testString = context.adapter._fixId('');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace);
+
+        //test with string empty as subscribe
+        testString = context.adapter._fixId('', true);
+        expect(testString).to.be.a('string');
+        expect(testString).to.equal(adapterNamespace + '.');
 
         //test with string state
         testString = context.adapter._fixId('baz');
