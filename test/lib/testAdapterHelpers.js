@@ -10,7 +10,7 @@ const promiseSequence = require('../../lib/tools').promiseSequence;
  * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
  */
 /**
- * @param {Context} context 
+ * @param {Context} context
  */
 function register(it, expect, context) {
 
@@ -34,16 +34,16 @@ function register(it, expect, context) {
     });
 
     // NOT READY: Running this after the adapterGetPort (sync) test causes getPortRunning to already exist
-    
+
     // //adapterGetPort (async)
     // it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port (ASYNC)', function () {
     //     this.timeout(1000);
 
     //     const tests = [
-    //         //Throw Error            
+    //         //Throw Error
     //         () => context.adapter.getPortAsync('').should.be.rejectedWith('adapterGetPort: no port'),
     //         () => expect(context.adapter.getPortRunning).to.not.exist,
-            
+
     //         //Works like it should be
     //         () => context.adapter.getPortAsync(8080).to.be.fulfilled.then(port => {
     //             expect(port).to.be.at.least(8080);
@@ -54,7 +54,7 @@ function register(it, expect, context) {
 
     //     return promiseSequence(tests);
     // });
-    
+
     //checkPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
         this.timeout(1000);
@@ -84,10 +84,10 @@ function register(it, expect, context) {
 
             // User doesn't exist
             () => context.adapter.checkPasswordAsync('claus', '1234').should.eventually.equal(false),
-            
+
             // Wrong password
             () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.equal(false),
-        ]; 
+        ];
 
         return promiseSequence(tests);
     });
@@ -264,7 +264,7 @@ function register(it, expect, context) {
         //test with string empty
         testString = context.adapter._fixId('');
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.');
+        expect(testString).to.equal(adapterNamespace);
 
         //test with string state
         testString = context.adapter._fixId('baz');
