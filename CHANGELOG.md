@@ -1,3 +1,16 @@
+# 1.3.0 (2018-03-11)
+Main changes: socket.io Version downgraded because of bug. Better npm5 support
+
+* (AlCalzone) Remove the outdated npm package and disable package-lock before installing (#175)
+* (AlCalzone) reworked npm adapter version check without `npm` package
+* (AlCalzone) ignore local NPM for version check
+* (AlCalzone) don't modify the parent's process PATH variable
+* (AlCalzone) check npm version before installing and potentially disable package-lock
+* (AlCalzone) don't cancel installation, or we're breaking ioBroker anyways
+* (AlCalzone) ignore local npm version for preinstall check
+* (bluefox) move socket.io from 2.0.4 to 1.5.1 because of bug
+* (bluefox) add intro to default tabs
+
 # 1.2.7 (2018-03-06)
 Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 

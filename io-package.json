@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.2.7",
+        "version": "1.3.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -17,6 +17,17 @@
             "pl": "Kontroler JS"
         },
         "news": {
+            "1.3.0": {
+                "en": "socket.io Version was downgraded because of bug\nBetter npm5 support",
+                "de": "socket.io Die Version wurde aufgrund eines Fehlers heruntergestuft\nBessere npm5-Unterstützung",
+                "ru": "Версия socket.io была понижена из-за ошибки\nЛучшая поддержка npm5",
+                "pt": "A versão socket.io foi rebaixada por causa do erro\nMelhor suporte npm5",
+                "nl": "socket.io De versie is gedowngraded vanwege een bug\nBetere npm5-ondersteuning",
+                "fr": "La version de socket.io a été déclassée à cause d'un bug\nMeilleur support npm5",
+                "it": "socket.io La versione è stata declassata a causa di un bug\nMigliore supporto per npm5",
+                "es": "La versión de socket.io se ha degradado debido a errores\nMejor soporte npm5",
+                "pl": "Wersja socket.io została obniżona z powodu błędu\nLepsza obsługa npm5"
+            },
             "1.2.7": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
