@@ -342,6 +342,7 @@
                 "activeRepo": "default",
                 "diag": "extended",
                 "tabs": [
+                    "tab-intro",
                     "tab-adapters",
                     "tab-instances",
                     "tab-objects",
