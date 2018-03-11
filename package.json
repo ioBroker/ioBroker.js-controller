@@ -24,7 +24,6 @@
     "ncp": "^2.0.0",
     "node-schedule": "^1.3.0",
     "node.extend": "^2.0.0",
-    "npm": "^2.15.12",
     "prompt": "^1.0.0",
     "pyconf": "^1.1.2",
     "request": "^2.83.0",
@@ -86,6 +85,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
+    "preinstall": "node lib/preinstall_check.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
