@@ -11,7 +11,7 @@ const expect = chai.expect;
 before(() => {
     chai.should();
     chai.use(chaiAsPromised);
-})
+});
 
 var setup  = require(__dirname + '/setup4controller');
 

@@ -1204,7 +1204,10 @@ function processMessage(msg) {
                             } else {
                                 infoCount++;
                                 getVersionFromHost(doc.rows[i].id, function (ioPack, id) {
-                                    if (ioPack) result.hosts[ioPack.host] = ioPack;
+                                    if (ioPack) {
+                                        result.hosts[ioPack.host] = ioPack;
+                                        result.hosts[ioPack.host].controller = true;
+                                    }
 
                                     if (!--infoCount) {
                                         if (timeout) {
