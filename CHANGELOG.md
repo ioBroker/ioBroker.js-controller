@@ -1,3 +1,12 @@
+# 1.4.0 (2018-03-xx)
+Main changes: uninstall via npm, downgrade winston-syslog, refactored deleteAdapter
+
+* (AlCalzone) fix npm version preinstall check
+* (bluefox) remove winston-syslog 2.0 and replace it with 1.2.6
+* (AlCalzone) refactored and promisified `deleteAdapter` and `deleteInstance`
+* (bluefox) remove controller from the adapters list in admin
+* (bluefox) also uninstall adapters using npm
+
 # 1.3.0 (2018-03-11)
 Main changes: socket.io Version downgraded because of bug. Better npm5 support
 
