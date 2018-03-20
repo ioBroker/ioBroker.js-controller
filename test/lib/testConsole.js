@@ -120,7 +120,7 @@ function register(it, expect, context) {
             });
         });
     });
-    
+
     // user disable / enable
     it(testName + 'user disable/enable', function (done) {
         // add second user
@@ -351,7 +351,7 @@ function register(it, expect, context) {
     // stop adapter
     // start ??
     // stop ??
-    
+
     // status
     it(testName + 'status', function (done) {
         // delete non existing user
@@ -364,9 +364,9 @@ function register(it, expect, context) {
             });
         });
     });
-    // restart adapter 
+    // restart adapter
     // restart ??
-    
+
     // update
     // setup
     it(testName + 'setup', function (done) {
@@ -383,10 +383,10 @@ function register(it, expect, context) {
 
     // setup custom
     // url
-    
+
     // add a
     // install i
-    
+
     // upload u
     // delete del
     // unsetup
@@ -397,7 +397,7 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', function (done) {
-        this.timeout(20000);
+        this.timeout(40000);
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'update', [], {}, function (err) {
             expect(err).to.be.not.ok;
