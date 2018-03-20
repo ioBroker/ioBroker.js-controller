@@ -106,7 +106,8 @@
             "hobbyquaker <hq@ccu.io>"
         ],
         "license": "MIT",
-        "type": "general"
+        "type": "general",
+        "unsafePerm": true
     },
     "objects": [
         {
