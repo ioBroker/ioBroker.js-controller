@@ -113,6 +113,9 @@
         {
             "_id": "_design/system",
             "language": "javascript",
+            "common": {
+                "dontDelete": true
+            },
             "views": {
                 "host": {
                     "map": "function(doc) { if (doc.type === 'host') emit(doc._id, doc) }"
@@ -165,9 +168,27 @@
             "_id": "system.group.administrator",
             "type": "group",
             "common": {
-                "name": "Administrator",
+                "name": {
+                    "en": "Administrator",
+                    "de": "Administrator",
+                    "ru": "Администратор",
+                    "pt": "Administrador",
+                    "nl": "Beheerder",
+                    "fr": "Administrateur",
+                    "it": "Amministratore",
+                    "es": "Administrador",
+                    "pl": "Administrator"
+                },
                 "description": {
-                    "en": "Can do everything with ioBroker"
+                    "en": "Can do everything with System",
+                    "de": "Kann alles mit System machen",
+                    "ru": "Может делать все с помощью системы",
+                    "pt": "Pode fazer tudo com o sistema",
+                    "nl": "Kan alles doen met System",
+                    "fr": "Peut tout faire avec le système",
+                    "it": "Può fare tutto con il sistema",
+                    "es": "Puede hacer todo con System",
+                    "pl": "Potrafi zrobić wszystko dzięki Systemowi"
                 },
                 "members": [
                     "system.user.admin"
@@ -218,9 +239,27 @@
             "_id": "system.group.user",
             "type": "group",
             "common": {
-                "name": "User",
+                "name": {
+                    "en": "User",
+                    "de": "Benutzer",
+                    "ru": "Пользователь",
+                    "pt": "Do utilizador",
+                    "nl": "Gebruiker",
+                    "fr": "Utilisateur",
+                    "it": "Utente",
+                    "es": "Usuario",
+                    "pl": "Użytkownik"
+                },
                 "description": {
-                    "en": "Cannot modify anything"
+                    "en": "Cannot modify everything",
+                    "de": "Kann nicht alles ändern",
+                    "ru": "Не может изменять все",
+                    "pt": "Não é possível modificar tudo",
+                    "nl": "Kan niet alles wijzigen",
+                    "fr": "Impossible de tout modifier",
+                    "it": "Non è possibile modificare tutto",
+                    "es": "No se puede modificar todo",
+                    "pl": "Nie można modyfikować wszystkiego"
                 },
                 "members": [],
                 "dontDelete": true,
@@ -279,7 +318,8 @@
                     "nl": "Kamers",
                     "fr": "Pièces",
                     "it": "Camere",
-                    "es": "Habitaciones"
+                    "es": "Habitaciones",
+                    "pl": "Pokoje"
                 },
                 "desc": {
                     "en": "List of the rooms",
@@ -289,10 +329,11 @@
                     "nl": "Lijst met kamers",
                     "fr": "Liste des chambres",
                     "it": "Elenco delle stanze",
-                    "es": "Lista de las habitaciones"
+                    "es": "Lista de las habitaciones",
+                    "pl": "Lista pokoi"
                 },
                 "members": [],
-                "object-non-deletable": true
+                "dontDelete": true
             },
             "type": "enum",
             "acl": {
@@ -313,7 +354,8 @@
                     "nl": "functies",
                     "fr": "Les fonctions",
                     "it": "funzioni",
-                    "es": "Funciones"
+                    "es": "Funciones",
+                    "pl": "Funkcje"
                 },
                 "desc": {
                     "en": "List of the functions",
@@ -323,10 +365,11 @@
                     "nl": "Lijst met functies",
                     "fr": "Liste des fonctions",
                     "it": "Elenco delle funzioni",
-                    "es": "Lista de las funciones"
+                    "es": "Lista de las funciones",
+                    "pl": "Lista funkcji"
                 },
                 "members": [],
-                "object-non-deletable": true
+                "dontDelete": true
             },
             "type": "enum",
             "acl": {
@@ -347,6 +390,7 @@
                 "language": "",
                 "tempUnit": "°C",
                 "currency": "",
+                "dontDelete": true,
                 "dateFormat": "DD.MM.YYYY",
                 "isFloatComma": true,
                 "licenseConfirmed": false,
@@ -376,7 +420,8 @@
             "_id": "system.repositories",
             "type": "config",
             "common": {
-                "name": "System repositories"
+                "name": "System repositories",
+                "dontDelete": true
             },
             "native": {
                 "repositories": {
