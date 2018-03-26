@@ -22,7 +22,8 @@
                 ]
             },
             "styles-comment": "styles is CSS file as text, that will be added to DOM",
-            "styles": "#button-system{color: 'red'}"
+            "styles": "#button-system{color: 'red'}",
+            "noCustomInstall": true
         }
     },
     "model": {
