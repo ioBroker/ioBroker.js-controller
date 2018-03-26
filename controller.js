@@ -284,42 +284,42 @@ function createStates() {
 
 // read info from  '/etc/iob_vendor.json' and executes instructions stored there
 function checkVendor(data, keys) {
-    if (!isMaster) return;
-    
+    if (!isMaster) {
+        return Promise.resolve();
+    }
     if (!data) {
         if (fs.existsSync('/etc/iob-vendor.json')) {
             try {
                 data = JSON.parse(fs.readFileSync('/etc/iob-vendor.json'));
             } catch (e) {
                 logger.error('host.' + hostname + ' cannot read and parse "/etc/iob-vendor.json"');
-                return;
+                return Promise.resolve();
             }
         } else {
-            return;
+            return Promise.resolve();
         }
     }
 
-    if (!data) return;
+    if (!data) Promise.resolve();
 
+    let promises = [];
     if (data.uuid) {
         const uuid = data.uuid;
         data.uuid = null;
 
         // check UUID
-        objects.getObject('system.meta.uuid', (err, obj) => {
+        promises.push(objects.getObjectAsync('system.meta.uuid').then(obj => {
             if (obj && obj.native) {
                 if (obj.native.uuid !== uuid) {
                     obj.native.uuid = uuid;
-                    objects.setObject('system.meta.uuid', obj, err => {
-                        if (err) {
-                            logger.error(`Cannot update system.meta.uuid: ${err}`);
-                        } else {
-                            console.log('object system.meta.uuid updated: ' + uuid);
-                        }
+                    return objects.setObjectAsync('system.meta.uuid', obj).then(() => {
+                        logger.info('object system.meta.uuid updated: ' + uuid);
+                    }).catch(err => {
+                        logger.error(`Cannot update system.meta.uuid: ${err}`);
                     });
                 }
             } else {
-                objects.setObject('system.meta.uuid', {
+                return objects.setObjectAsync('system.meta.uuid', {
                     type: 'meta',
                     common: {
                         name: 'uuid',
@@ -330,51 +330,54 @@ function checkVendor(data, keys) {
                     native: {
                         uuid: uuid
                     }
-                }, err => {
-                    if (err) {
-                        logger.error(`Cannot create system.meta.uuid: ${err}`);
-                    } else {
-                        console.log('object system.meta.uuid created: ' + uuid);
-                    }
+                }).then(() => {
+                    logger.info('object system.meta.uuid created: ' + uuid);
+                }).catch(err => {
+                    logger.error(`Cannot create system.meta.uuid: ${err}`);
                 });
             }
-        });
+        }));
+    }
+
+    if (data.model) {
+        const model = data.model;
+        data.model = null;
+        promises.push(objects.getObjectAsync('system.host.' + hostname).then(obj => {
+            if (obj && obj.common) {
+                if ((model.name  && model.name !== 'JS controller' && obj.common.title === 'JS controller') ||
+                    (model.icon  && !obj.common.icon) ||
+                    (model.color && !obj.common.color)) {
+                    obj.common.title = model.name;
+                    obj.common.icon  = model.icon;
+                    obj.common.color = model.color;
+                    return objects.setObjectAsync(obj._id, obj).then(() => {
+                        logger.info(`object 'system.host.${hostname} updated`);
+                    }).catch(err => {
+                        logger.error(`Cannot update 'system.host.${hostname}: ${err}`);
+                    });
+                }
+            }
+        }));
     }
 
     if (data.vendor) {
         const vendor = data.vendor;
-        const model  = data.model;
         data._vendor  = vendor;
         data.vendor  = null;
 
         // store vendor
-        objects.getObject('system.config', (err, obj) => {
-            if (err) {
-                logger.error(`Cannot read system.config: ${err}`);
-            }
+        promises.push(objects.getObjectAsync('system.config').then(obj => {
             if (obj && obj.native) {
-                let diff = JSON.stringify(obj.native.vendor) !== JSON.stringify(vendor);
-                if (!diff && model && JSON.stringify(obj.native.model) !== JSON.stringify(model)) {
-                    diff = true;
-                }
-
-                if (diff) {
+                if (JSON.stringify(obj.native.vendor) !== JSON.stringify(vendor)) {
                     obj.native.vendor = vendor;
-                    if (model) {
-                        obj.native.model = model;
-                    } else if (!model && obj.native.model !== undefined) {
-                        delete obj.native.model;
-                    }
-                    objects.setObject(obj._id, obj, err => {
-                        if (err) {
-                            logger.error(`Cannot update system.meta.uuid: ${err}`);
-                        } else {
-                            console.log('object system.config updated');
-                        }
+                    return objects.setObjectAsync(obj._id, obj).then(() => {
+                        logger.info('object system.config updated');
+                    }).catch(err => {
+                        logger.error(`Cannot update system.meta.uuid: ${err}`);
                     });
                 }
             }
-        });
+        }));
     }
 
     // update all existing objects according to vendor
@@ -383,7 +386,7 @@ function checkVendor(data, keys) {
         if (keys.length) {
             let id = keys.shift();
             if (id.indexOf('*') === -1) {
-                objects.getObject(id, function (err, obj) {
+                promises.push(objects.getObjectAsync(id).then(obj => {
                     if (obj) {
                         const originalObj = JSON.stringify(obj);
                         // merge objects
@@ -391,30 +394,27 @@ function checkVendor(data, keys) {
                         if (id === 'system.config') {
                             obj.native = obj.native || {};
                             obj.native.vendor = data._vendor;
-                            obj.native.model = data.model;
-                            if (!obj.native.model) delete obj.native.model;
                         }
 
                         if (originalObj !== JSON.stringify(obj)) {
-                            objects.setObject(id, obj, err => {
+                            return objects.setObjectAsync(id, obj, err => {
                                 if (err) logger.error(`Cannot write ${id}: ${JSON.stringify(err)}`);
-                                setImmediate(checkVendor, data, keys);
+                                return checkVendor(data, keys);
                             });
                         } else {
-                            setImmediate(checkVendor, data, keys);
+                            return checkVendor(data, keys);
                         }
                     } else {
-                        objects.setObject(id, data.objects[id], err => {
+                        return objects.setObjectAsync(id, data.objects[id]).then(() => {
                             if (err) logger.error(`Cannot write ${id}: ${JSON.stringify(err)}`);
-                            setImmediate(checkVendor, data, keys);
+                            return checkVendor(data, keys);
                         });
                     }
-                });
+                }));
             } else {
                 id = id.replace('*', '');
-                objects.getObjectList({startkey: id, endkey: id + '\u9999'}, {checked: true}, function (err, arr) {
+                objects.getObjectListAsync({startkey: id, endkey: id + '\u9999'}, {checked: true}).then(arr => {
                     let tasks = [];
-                    if (err) logger.error(`Cannot call getObjectList: ${JSON.stringify(err)}`);
                     if (arr && arr.rows && arr.rows.length) {
                         for (let g = 0; g < arr.rows.length; g++) {
                             let obj = arr.rows[g].value;
@@ -429,16 +429,14 @@ function checkVendor(data, keys) {
                         }
                     }
 
-                    Promise.all(tasks).then(() => {
-                        setImmediate(checkVendor, data, keys);
-                    }).catch(err => {
-                        if (err) logger.error(`Cannot write: ${JSON.stringify(err)}`);
-                        setImmediate(checkVendor, data, keys)
-                    })
+                    return Promise.all(tasks).then(() => {
+                        return checkVendor(data, keys);
+                    });
                 });
             }
         }
     }
+    return Promise.all(promises);
 }
 
 // create "objects" object
@@ -459,17 +457,20 @@ function createObjects() {
                 logger.info('host.' + hostname + ' ' + type + ' connected');
 
                 if (connected === null) {
-                    checkVendor();
                     connected = true;
                     if (!isStopping) {
-                        // Do not start if we still stopping the instances
-                        checkHost(type, function () {
-                            startMultihost(config);
-                            setMeta();
-                            started = true;
-                            getInstances();
-                            startAliveInterval();
-                            initMessageQueue();
+                        checkVendor().then(() => {
+                            // Do not start if we still stopping the instances
+                            checkHost(type, () => {
+                                startMultihost(config);
+                                setMeta();
+                                started = true;
+                                getInstances();
+                                startAliveInterval();
+                                initMessageQueue();
+                            });
+                        }).catch((err) => {
+                            logger.error(`Cannot checkVendor: ${JSON.stringify(err)}`);
                         });
                     }
                 } else {
@@ -976,10 +977,10 @@ function setMeta() {
             type: 'host',
             common: {
                 name:             hostname,
-                title:            ioPackage.common.title,
+                title:            oldObj && oldObj.common && oldObj.common.title ? oldObj.common.title : ioPackage.common.title,
                 installedVersion: version,
                 platform:         ioPackage.common.platform,
-                cmd:              process.argv[0] + ' ' + process.execArgv.join(' ') + ' ' + process.argv.slice(1).join(' '),
+                cmd:              process.argv[0] + ' ' + (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') + process.argv.slice(1).join(' '),
                 hostname:         hostname,
                 address:          getIPs(),
                 type:             ioPackage.common.name
@@ -1006,6 +1007,12 @@ function setMeta() {
             }
         };
 
+        if (oldObj && oldObj.common && oldObj.common.icon) {
+            newObj.common.icon = oldObj.common.icon;
+        }
+        if (oldObj && oldObj.common && oldObj.common.color) {
+            newObj.common.color = oldObj.common.color;
+        }
         // remove dynamic information
         if (newObj.native && newObj.native.hardware && newObj.native.hardware.cpus) {
             for (let c = 0; c < newObj.native.hardware.cpus.length; c++) {
@@ -1015,6 +1022,10 @@ function setMeta() {
         if (oldObj && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) {
             newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
         }
+        delete oldObj.cmd;
+        delete oldObj.from;
+        delete oldObj.ts;
+        delete oldObj.acl;
 
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
             newObj.from = 'system.host.' + tools.getHostName();
