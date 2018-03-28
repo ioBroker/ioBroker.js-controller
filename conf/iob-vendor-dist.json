@@ -78,7 +78,8 @@
                     "repositories": {
                         "default": {
                             "link": "http://download.iobroker.net/sources-dist.json"
-                        }
+                        },
+                        "latest": "__delete__"
                     }
                 }
             }

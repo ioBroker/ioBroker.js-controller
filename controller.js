@@ -66,7 +66,6 @@ let inputCount              = 0;
 let outputCount             = 0;
 let mhService               = null; // multihost service
 let uptimeStart             = new Date().getTime();
-let isMaster                = false;
 
 const config = getConfig();
 
@@ -282,163 +281,6 @@ function createStates() {
     });
 }
 
-// read info from  '/etc/iob_vendor.json' and executes instructions stored there
-function checkVendor(data, keys) {
-    if (!isMaster) {
-        return Promise.resolve();
-    }
-    if (!data) {
-        if (fs.existsSync('/etc/iob-vendor.json')) {
-            try {
-                data = JSON.parse(fs.readFileSync('/etc/iob-vendor.json'));
-            } catch (e) {
-                logger.error('host.' + hostname + ' cannot read and parse "/etc/iob-vendor.json"');
-                return Promise.resolve();
-            }
-        } else {
-            return Promise.resolve();
-        }
-    }
-
-    if (!data) Promise.resolve();
-
-    let promises = [];
-    if (data.uuid) {
-        const uuid = data.uuid;
-        data.uuid = null;
-
-        // check UUID
-        promises.push(objects.getObjectAsync('system.meta.uuid').then(obj => {
-            if (obj && obj.native) {
-                if (obj.native.uuid !== uuid) {
-                    obj.native.uuid = uuid;
-                    return objects.setObjectAsync('system.meta.uuid', obj).then(() => {
-                        logger.info('object system.meta.uuid updated: ' + uuid);
-                    }).catch(err => {
-                        logger.error(`Cannot update system.meta.uuid: ${err}`);
-                    });
-                }
-            } else {
-                return objects.setObjectAsync('system.meta.uuid', {
-                    type: 'meta',
-                    common: {
-                        name: 'uuid',
-                        type: 'uuid'
-                    },
-                    ts: new Date().getTime(),
-                    from: 'system.host.' + hostname + '.tools',
-                    native: {
-                        uuid: uuid
-                    }
-                }).then(() => {
-                    logger.info('object system.meta.uuid created: ' + uuid);
-                }).catch(err => {
-                    logger.error(`Cannot create system.meta.uuid: ${err}`);
-                });
-            }
-        }));
-    }
-
-    if (data.model) {
-        const model = data.model;
-        data.model = null;
-        promises.push(objects.getObjectAsync('system.host.' + hostname).then(obj => {
-            if (obj && obj.common) {
-                if ((model.name  && model.name !== 'JS controller' && obj.common.title === 'JS controller') ||
-                    (model.icon  && !obj.common.icon) ||
-                    (model.color && !obj.common.color)) {
-                    obj.common.title = model.name;
-                    obj.common.icon  = model.icon;
-                    obj.common.color = model.color;
-                    return objects.setObjectAsync(obj._id, obj).then(() => {
-                        logger.info(`object 'system.host.${hostname} updated`);
-                    }).catch(err => {
-                        logger.error(`Cannot update 'system.host.${hostname}: ${err}`);
-                    });
-                }
-            }
-        }));
-    }
-
-    if (data.vendor) {
-        const vendor = data.vendor;
-        data._vendor  = vendor;
-        data.vendor  = null;
-
-        // store vendor
-        promises.push(objects.getObjectAsync('system.config').then(obj => {
-            if (obj && obj.native) {
-                if (JSON.stringify(obj.native.vendor) !== JSON.stringify(vendor)) {
-                    obj.native.vendor = vendor;
-                    return objects.setObjectAsync(obj._id, obj).then(() => {
-                        logger.info('object system.config updated');
-                    }).catch(err => {
-                        logger.error(`Cannot update system.meta.uuid: ${err}`);
-                    });
-                }
-            }
-        }));
-    }
-
-    // update all existing objects according to vendor
-    if (data.objects) {
-        keys = keys || Object.keys(data.objects);
-        if (keys.length) {
-            let id = keys.shift();
-            if (id.indexOf('*') === -1) {
-                promises.push(objects.getObjectAsync(id).then(obj => {
-                    if (obj) {
-                        const originalObj = JSON.stringify(obj);
-                        // merge objects
-                        tools.copyAttributes(data.objects[id], obj);
-                        if (id === 'system.config') {
-                            obj.native = obj.native || {};
-                            obj.native.vendor = data._vendor;
-                        }
-
-                        if (originalObj !== JSON.stringify(obj)) {
-                            return objects.setObjectAsync(id, obj, err => {
-                                if (err) logger.error(`Cannot write ${id}: ${JSON.stringify(err)}`);
-                                return checkVendor(data, keys);
-                            });
-                        } else {
-                            return checkVendor(data, keys);
-                        }
-                    } else {
-                        return objects.setObjectAsync(id, data.objects[id]).then(() => {
-                            if (err) logger.error(`Cannot write ${id}: ${JSON.stringify(err)}`);
-                            return checkVendor(data, keys);
-                        });
-                    }
-                }));
-            } else {
-                id = id.replace('*', '');
-                objects.getObjectListAsync({startkey: id, endkey: id + '\u9999'}, {checked: true}).then(arr => {
-                    let tasks = [];
-                    if (arr && arr.rows && arr.rows.length) {
-                        for (let g = 0; g < arr.rows.length; g++) {
-                            let obj = arr.rows[g].value;
-                            if (obj) {
-                                const originalObj = JSON.stringify(obj);
-                                // merge objects
-                                tools.copyAttributes(data.objects[id], obj);
-                                if (originalObj !== JSON.stringify(obj)) {
-                                    tasks.push(objects.setObjectAsync(id, obj));
-                                }
-                            }
-                        }
-                    }
-
-                    return Promise.all(tasks).then(() => {
-                        return checkVendor(data, keys);
-                    });
-                });
-            }
-        }
-    }
-    return Promise.all(promises);
-}
-
 // create "objects" object
 function createObjects() {
     return new Objects({
@@ -459,18 +301,14 @@ function createObjects() {
                 if (connected === null) {
                     connected = true;
                     if (!isStopping) {
-                        checkVendor().then(() => {
-                            // Do not start if we still stopping the instances
-                            checkHost(type, () => {
-                                startMultihost(config);
-                                setMeta();
-                                started = true;
-                                getInstances();
-                                startAliveInterval();
-                                initMessageQueue();
-                            });
-                        }).catch((err) => {
-                            logger.error(`Cannot checkVendor: ${JSON.stringify(err)}`);
+                        // Do not start if we still stopping the instances
+                        checkHost(type, () => {
+                            startMultihost(config);
+                            setMeta();
+                            started = true;
+                            getInstances();
+                            startAliveInterval();
+                            initMessageQueue();
                         });
                     }
                 } else {
@@ -2623,7 +2461,6 @@ function init() {
     // If "file" and on the local machine
     if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
         Objects = require(__dirname + '/lib/objects/objectsInMemServer');
-        isMaster = true; // check later the redis
     } else {
         Objects = require(__dirname + '/lib/objects');
     }
