@@ -4,10 +4,10 @@
 /* jshint expr:true */
 'use strict';
 
-var testAdapter = require(__dirname + '/lib/testAdapter');
-var dataDir = __dirname + '/../tmp/data-redis';
+const testAdapter = require(__dirname + '/lib/testAdapter');
+const dataDir = __dirname + '/../tmp/data-redis';
 
-var statesConfig = {
+const statesConfig = {
     options : {
         auth_pass: null,
         retry_max_delay: 15000
@@ -17,7 +17,7 @@ var statesConfig = {
     port:           6379
 };
 
-var objectsConfig = {
+const objectsConfig = {
     dataDir:        dataDir,
     type:           'file',
     host:           '127.0.0.1',
