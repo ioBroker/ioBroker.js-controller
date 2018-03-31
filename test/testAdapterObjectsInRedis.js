@@ -4,14 +4,14 @@
 /* jshint expr:true */
 'use strict';
 
-var expect  = require('chai').expect;
-var setup   = require(__dirname + '/lib/setup4controller');
-var fs      = require('fs');
-var objects = null;
-var states  = null;
+const expect   = require('chai').expect;
+const setup    = require(__dirname + '/lib/setup4controller');
+let   objects  = null;
+let   states   = null;
+const textName = 'Objects: ';
 
-describe('Objects: Test Objects', function() {
-    before('Objects: Start js-controller', function (_done) {
+describe(textName + 'Test Objects', function() {
+    before(textName + 'Start js-controller', function (_done) {
         this.timeout(2000);
 
         setup.startController({
@@ -38,7 +38,7 @@ describe('Objects: Test Objects', function() {
         );
     });
 
-    it('Objects: should create object', function (done) {
+    it(textName + 'should create object', function (done) {
         objects.setObject('testObject.0.test1', {
             common: {
                 name: 'test1'
@@ -59,7 +59,7 @@ describe('Objects: Test Objects', function() {
         });
     });
 
-    after('Objects: Stop js-controller', function (done) {
+    after(textName + 'Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(function () {
             done();

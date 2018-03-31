@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 
-const promiseSequence = require('../../lib/tools').promiseSequence;
+// const promiseSequence = require('../../lib/tools').promiseSequence;
 
 /**
  * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
@@ -13,8 +13,8 @@ const promiseSequence = require('../../lib/tools').promiseSequence;
  * @param {Context} context 
  */
 function register(it, expect, context) {
-    var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
-    var gid = 'myTestObject';
+    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
+    const gid = 'myTestObject';
 
     // setObject positive
     it(testName + 'Check if objects will be created', function (done) {
@@ -623,6 +623,7 @@ function register(it, expect, context) {
         });
     });
 
+    // files
 }
 
 module.exports.register = register;

@@ -5,8 +5,8 @@
 'use strict';
 
 function register(it, expect, context) {
-    var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
-    var gid = 'testStates';
+    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
+    const gid = 'testStates';
 
     // setState
     it(testName + 'Set local state', function (done) {
@@ -691,7 +691,6 @@ function register(it, expect, context) {
     });
 
     // getHistory - cannot be tested
- }
-
+}
 
 module.exports.register = register;

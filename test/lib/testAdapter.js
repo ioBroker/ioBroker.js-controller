@@ -13,7 +13,7 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-var setup  = require(__dirname + '/setup4controller');
+const setup  = require(__dirname + '/setup4controller');
 
 function testAdapter(options) {
     var statesConfig  = options.statesConfig;
@@ -256,7 +256,7 @@ function testAdapter(options) {
             });
         });
 
-        for (var t = 0; t < tests.length; t++) {
+        for (let t = 0; t < tests.length; t++) {
             tests[t].register(it, expect, context);
         }
 

@@ -22,7 +22,18 @@
         "user": "",
         "pass": "",
         "noFileCache": false,
-        "connectTimeout": 2000
+        "connectTimeout": 2000,
+        "backup": {
+            "disabled": false,
+            "files": 24,
+            "filesComment": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
+            "hours": 48,
+            "hoursComment": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
+            "period": 120,
+            "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
+            "path": "",
+            "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+        }
     },
     "states" : {
         "type": "file",
@@ -33,6 +44,17 @@
         "options": {
             "auth_pass" : null,
             "retry_max_delay" : 15000
+        },
+        "backup": {
+            "disabled": false,
+            "files": 24,
+            "filesComment": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
+            "hours": 48,
+            "hoursComment": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
+            "period": 120,
+            "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
+            "path": "",
+            "pathComment": "Absolute path to backup directory or empty to backup in data directory"
         }
     },
     "log": {
