@@ -550,13 +550,22 @@ function register(it, expect, context) {
                 expect(err).to.be.ok;
                 // license must be taken
                 setup.processCommand(context.objects, context.states, 'license', [licenseFile], {}, function (err) {
+                    fs.unlink(licenseFile);
                     expect(err).to.be.not.ok;
-                    // license must be taken
-                    setup.processCommand(context.objects, context.states, 'license', [licenseText], {}, function (err) {
-                        expect(err).to.be.not.ok;
-                        fs.unlink(licenseFile);
-                        done();
-                    });
+                    context.objects.getObjectAsync('system.adapter.vis.0')
+                        .then(obj => {
+                            expect(obj.native.license).to.be.equal(licenseText);
+                            // license must be taken
+                            setup.processCommand(context.objects, context.states, 'license', [licenseText], {}, function (err) {
+                                expect(err).to.be.not.ok;
+                                context.objects.getObjectAsync('system.adapter.vis.0')
+                                    .then(obj => {
+                                        expect(obj.native.license).to.be.equal(licenseText);
+                                        done();
+                                    });
+
+                            });
+                        });
                 });
             });
         });
