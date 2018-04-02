@@ -860,7 +860,7 @@ function setMeta() {
         if (oldObj && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) {
             newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
         }
-        
+
         if (oldObj) {
             delete oldObj.cmd;
             delete oldObj.from;
