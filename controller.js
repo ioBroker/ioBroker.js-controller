@@ -860,10 +860,13 @@ function setMeta() {
         if (oldObj && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) {
             newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
         }
-        delete oldObj.cmd;
-        delete oldObj.from;
-        delete oldObj.ts;
-        delete oldObj.acl;
+        
+        if (oldObj) {
+            delete oldObj.cmd;
+            delete oldObj.from;
+            delete oldObj.ts;
+            delete oldObj.acl;
+        }
 
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
             newObj.from = 'system.host.' + tools.getHostName();
