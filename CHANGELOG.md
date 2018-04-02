@@ -1,4 +1,4 @@
-# 1.4.0 (2018-03-xx)
+# 1.4.0 (2018-04-03)
 Main changes: uninstall via npm, downgrade winston-syslog, refactored deleteAdapter, object.json auto-backups
 
 * (AlCalzone) fix npm version pre-install check
