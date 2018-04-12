@@ -490,6 +490,13 @@
     "type": "iot-systems",
     "published": "2017-04-24T19:18:46.399Z"
   },
+  "maxcube": {
+    "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcube/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcube/master/admin/maxcube.png",
+    "version": "0.1.2",
+    "type": "climate-control",
+    "published": "2017-06-05T20:26:24.569Z"
+  },
   "maxcul": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcul/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcul/master/admin/maxcul.png",
