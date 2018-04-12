@@ -1,3 +1,14 @@
+# 1.4.1 (2018-04-12)
+Main changes: add instance with desired number, Force using of socket.io 2.1.0, Bugfixes
+
+* (bluefox) fix error with letsencrypt debug output
+* (bluefox) fix delObject
+* (bluefox) fix restore of backup
+* (bluefox) allow to add instance with desired number
+* (apollon77) fix auto multihost
+* (bluefox) fix for adapter update
+* (bluefox) Force using of socket.io 2.1.0
+
 # 1.4.0 (2018-04-03)
 Main changes: uninstall via npm, downgrade winston-syslog, refactored deleteAdapter, object.json auto-backups
 
