@@ -1,4 +1,4 @@
-# 1.4.1 (2018-04-12)
+# 1.4.2 (2018-04-12)
 Main changes: add instance with desired number, Force using of socket.io 2.1.0, Bugfixes
 
 * (bluefox) fix error with letsencrypt debug output
