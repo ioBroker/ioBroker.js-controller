@@ -6,7 +6,9 @@ Es gibt zwei Möglichkeiten:
 - Über CLI (Command Line Interface) 
 
 ## Über Admin Web Seite
+
 ![Screenshot](img/005-de-how to update adapter from git-01.jpg)
+
 ![Screenshot](img/005-de-how to update adapter from git-02.jpg)
 
 ## Über CLI
