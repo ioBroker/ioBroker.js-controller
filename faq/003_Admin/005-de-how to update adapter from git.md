@@ -7,9 +7,9 @@ Es gibt zwei Möglichkeiten:
 
 ## Über Admin Web Seite
 
-![Screenshot](img/005-de-how to update adapter from git-01.jpg)
+![Screenshot](img/005-de-how%20to%20update%20adapter%20from%20git-01.jpg)
 
-![Screenshot](img/005-de-how to update adapter from git-02.jpg)
+![Screenshot](img/005-de-how%20to%20update%20adapter%20from%20git-02.jpg)
 
 ## Über CLI
 Windows oder Linux Console aufmachen und folgendes ausführen:
