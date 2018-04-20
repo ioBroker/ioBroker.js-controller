@@ -65,7 +65,7 @@ let started                 = false;
 let inputCount              = 0;
 let outputCount             = 0;
 let mhService               = null; // multihost service
-let uptimeStart             = new Date().getTime();
+let uptimeStart             = Date.now();
 
 const config = getConfig();
 
@@ -154,9 +154,9 @@ function startMultihost(__config) {
 
 // get the list of IP addresses of this host
 function getIPs() {
-    if (!lastCalculationOfIps || new Date().getTime() - lastCalculationOfIps > 10000) {
+    if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
         const ifaces = os.networkInterfaces();
-        lastCalculationOfIps = new Date().getTime();
+        lastCalculationOfIps = Date.now();
         ipArr = [];
         for (let dev in ifaces) {
             if (!ifaces.hasOwnProperty(dev)) continue;
@@ -241,7 +241,7 @@ function createStates() {
                                     logger.warn('host.' + hostname + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled'));
                                     setImmediate(function () {
                                         obj.from = 'system.host.' + hostname;
-                                        obj.ts = new Date().getTime();
+                                        obj.ts = Date.now();
                                         objects.setObject(obj._id, obj);
                                     });
                                 }
@@ -439,7 +439,7 @@ function changeHost(objs, oldHostname, newHostname, callback) {
             obj.common.host = newHostname;
             logger.info('Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
             obj.from = 'system.host.' + tools.getHostName();
-            obj.ts = new Date().getTime();
+            obj.ts = Date.now();
             objects.setObject(obj._id, obj, function (/* err */) {
                 setImmediate(function () {
                     changeHost(objs, oldHostname, newHostname, callback);
@@ -773,7 +773,7 @@ function setIPs(ipList) {
                 oldObj.common.address = ipList;
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = 'system.host.' + tools.getHostName();
-                oldObj.ts = new Date().getTime();
+                oldObj.ts = Date.now();
                 objects.setObject(oldObj._id, oldObj, function (err) {
                     if (err) logger.error('Cannot write host object:' + err);
                 });
@@ -870,7 +870,7 @@ function setMeta() {
 
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
             newObj.from = 'system.host.' + tools.getHostName();
-            newObj.ts = new Date().getTime();
+            newObj.ts = Date.now();
             objects.setObject(id, newObj, function (err) {
                 if (err) logger.error('Cannot write host object:' + err);
             });
@@ -1167,12 +1167,22 @@ function processMessage(msg) {
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, function (err, sources) {
                                         if (err) logger.warn('host.' + hostname + ' warning: ' + err);
-                                        repos.native.repositories[active].json = sources;
-                                        sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                        repos.from = 'system.host.' + tools.getHostName();
-                                        repos.ts = new Date().getTime();
-                                        // Store uploaded repo
-                                        objects.setObject('system.repositories', repos);
+                                        if (!sources || !Object.keys(sources).length) {
+                                            logger.warn('host.' + hostname + ' warning: empty repo received!');
+                                            if (repos.native.repositories[active].json) {
+                                                // We have already repo, give it back
+                                                sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                            } else {
+                                                sendTo(msg.from, msg.command, null, msg.callback);
+                                            }
+                                        } else {
+                                            repos.native.repositories[active].json = sources;
+                                            sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                            repos.from = 'system.host.' + tools.getHostName();
+                                            repos.ts = Date.now();
+                                            // Store uploaded repo
+                                            objects.setObject('system.repositories', repos);
+                                        }
                                     });
                                 } else {
                                     // We have already repo, give it back
@@ -1402,7 +1412,7 @@ function processMessage(msg) {
                         logger.error('host.' + hostname + ' cannot get getHostInfo: ' + err);
                     }
                     data = data || {};
-                    data.Uptime = Math.round((new Date().getTime() - uptimeStart) / 1000);
+                    data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
                     sendTo(msg.from, msg.command, data, msg.callback);
                 });
             } else {
@@ -1847,7 +1857,7 @@ function installAdapters() {
 function cleanErrors(id, now, doOutput) {
     if (!procs[id] || !procs[id].errors || !procs[id].errors.length) return;
 
-    now = now || new Date().getTime();
+    now = now || Date.now();
 
     if (!doOutput && procs[id].lastCleanErrors && now - procs[id].lastCleanErrors < 1000) return;
 
@@ -1991,7 +2001,7 @@ function startInstance(id, wakeUp) {
                         // show for debug
                         console.error(text);
                         procs[id].errors = procs[id].errors || [];
-                        let now = new Date().getTime();
+                        let now = Date.now();
                         procs[id].errors.push({ts: now, text: text});
                         // limit output to 300 messages
                         if (procs[id].errors > 300) {
@@ -2112,7 +2122,7 @@ function startInstance(id, wakeUp) {
                 }
 
                 // Remember the last run
-                procs[id].lastStart = new Date().getTime();
+                procs[id].lastStart = Date.now();
                 if (!procs[id].process) {
                     let args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     procs[id].process = cp.fork(fileNameFull, args);
@@ -2398,7 +2408,7 @@ function stopInstances(forceStop, callback) {
             callback = null;
         } else {
             // Sometimes process receives SIGTERM twice
-            isStopping = isStopping || new Date().getTime();
+            isStopping = isStopping || Date.now();
         }
 
         if (forceStop || isDaemon) {
