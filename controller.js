@@ -1977,8 +1977,8 @@ function startInstance(id, wakeUp) {
             subscribe[procs[id].subscribe] = [id];
 
             // Subscribe on changes
-            if (procs[id].subscribe.match(/$messagebox/)) {
-                states.subscribeMessage(procs[id].subscribe.substring('messagebox'.length));
+            if (procs[id].subscribe.match(/^messagebox\./)) {
+                states.subscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
             }
@@ -2222,8 +2222,8 @@ function stopInstance(id, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/$messagebox/)) {
-                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox'.length));
+                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
                     }
@@ -2315,8 +2315,8 @@ function stopInstance(id, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/$messagebox/)) {
-                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox'.length));
+                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                        states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
                     }
