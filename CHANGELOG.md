@@ -1,3 +1,10 @@
+# 1.5.0 (2018-05-xx)
+* (bluefox) Breaking changes: "*?\" are no more allowed in IDs
+* (bluefox) the read file function was protected
+* (bluefox) possible access rights problem was closed
+* (bluefox) the user by changing of states and objects is logged
+* (apollon77) the node10 testing was added
+
 # 1.4.2 (2018-04-12)
 Main changes: add instance with desired number, Force using of socket.io 2.1.0, Bugfixes
 
