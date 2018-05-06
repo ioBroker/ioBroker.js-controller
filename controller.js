@@ -1590,7 +1590,7 @@ function getInstances() {
                         const adapterDir_ = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir_)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
-                            installQueue.push({id: instance._id, disabled: true});
+                            installQueue.push({id: instance._id, disabled: true, version: instance.common.version});
                             // start install queue if not started
                             if (installQueue.length === 1) installAdapters();
                         }
@@ -1799,6 +1799,9 @@ function installAdapters() {
 
     let task = installQueue[0];
     let name = task.id.split('.')[2];
+    if (task.version) {
+        name += '@' + task.version;
+    }
 
     if (procs[task.id].downloadRetry < 3) {
         procs[task.id].downloadRetry++;
