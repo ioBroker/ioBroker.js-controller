@@ -9,7 +9,8 @@
     "greenlock": "^2.2.7",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
-    "winston-syslog": "^1.2.6"
+    "winston-syslog": "^1.2.6",
+    "diskusage": "^0.2.4"
   },
   "bin": {
     "iobroker": "./iobroker.js"
