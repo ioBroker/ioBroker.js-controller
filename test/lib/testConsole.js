@@ -30,34 +30,34 @@ function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' console: ';
     const setup    = require(__dirname + '/../../lib/setup.js');
     // passwd, user passwd, user check
-    it(testName + 'user passwd', function (done) {
+    it(testName + 'user passwd', done => {
         this.timeout(2000);
         // set initial password
-        setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, function (err) {
+        setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
             expect(err).to.be.not.ok;
             // check password
-            setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, err => {
                 expect(err).to.be.not.ok;
                 // negative check
-                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '2'}, function (err) {
+                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '2'}, err => {
                     expect(err).to.be.ok;
                     // set new password
-                    setup.processCommand(context.objects, context.states, 'user', ['passwd', 'admin'], {password: context.appName.toLowerCase() + '1'}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'user', ['passwd', 'admin'], {password: context.appName.toLowerCase() + '1'}, err => {
                         expect(err).to.be.not.ok;
                         // check new Password
-                        setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '1'}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '1'}, err => {
                             expect(err).to.be.not.ok;
                             // set password back
-                            setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, function (err) {
+                            setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
                                 expect(err).to.be.not.ok;
                                 // check password
-                                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, function (err) {
+                                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, err => {
                                     expect(err).to.be.not.ok;
                                     // set password for non existing user
-                                    setup.processCommand(context.objects, context.states, 'passwd', ['uuuser'], {password: context.appName.toLowerCase()}, function (err) {
+                                    setup.processCommand(context.objects, context.states, 'passwd', ['uuuser'], {password: context.appName.toLowerCase()}, err => {
                                         expect(err).to.be.ok;
                                         // check password for non existing user
-                                        setup.processCommand(context.objects, context.states, 'user', ['check', 'uuuser'], {password: context.appName.toLowerCase()}, function (err) {
+                                        setup.processCommand(context.objects, context.states, 'user', ['check', 'uuuser'], {password: context.appName.toLowerCase()}, err => {
                                             expect(err).to.be.ok;
                                             done();
                                         });
@@ -72,18 +72,18 @@ function register(it, expect, context) {
     });
 
     // user get
-    it(testName + 'user get', function (done) {
+    it(testName + 'user get', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'user', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'user', [], {}, err => {
             expect(err).to.be.ok;
             // no user defined
-            setup.processCommand(context.objects, context.states, 'user', ['get'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['get'], {}, err => {
                 expect(err).to.be.ok;
                 // check admin
-                setup.processCommand(context.objects, context.states, 'user', ['get', 'admin'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'user', ['get', 'admin'], {}, err => {
                     expect(err).to.be.not.ok;
                     // check invalid user
-                    setup.processCommand(context.objects, context.states, 'user', ['get', 'aaaa'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'user', ['get', 'aaaa'], {}, err => {
                         expect(err).to.be.ok;
                         done();
                     });
@@ -93,24 +93,24 @@ function register(it, expect, context) {
     });
 
     // adduser user add
-    it(testName + 'user add', function (done) {
+    it(testName + 'user add', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'user', ['add'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'user', ['add'], {}, err => {
             expect(err).to.be.ok;
             // add admin not allowed
-            setup.processCommand(context.objects, context.states, 'user', ['add', 'admin'], {password: 'aaa'}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['add', 'admin'], {password: 'aaa'}, err => {
                 expect(err).to.be.ok;
                 // add user
-                setup.processCommand(context.objects, context.states, 'user', ['add', 'user'], {ingroup: 'user', password: 'user'}, function (err) {
+                setup.processCommand(context.objects, context.states, 'user', ['add', 'user'], {ingroup: 'user', password: 'user'}, err => {
                     expect(err).to.be.not.ok;
                     // add existing user not allowed
-                    setup.processCommand(context.objects, context.states, 'user', ['add', 'user'], {password: 'user'}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'user', ['add', 'user'], {password: 'user'}, err => {
                         expect(err).to.be.ok;
                         // add with invalid group
-                        setup.processCommand(context.objects, context.states, 'user', ['add', 'user1'], {ingroup: 'invalid', password: 'bbb'}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'user', ['add', 'user1'], {ingroup: 'invalid', password: 'bbb'}, err => {
                             expect(err).to.be.ok;
                             // check adduser
-                            setup.processCommand(context.objects, context.states, 'adduser', ['user2'], {ingroup: 'user', password: 'bbb'}, function (err) {
+                            setup.processCommand(context.objects, context.states, 'adduser', ['user2'], {ingroup: 'user', password: 'bbb'}, err => {
                                 expect(err).to.be.not.ok;
                                 done();
                             });
@@ -122,30 +122,30 @@ function register(it, expect, context) {
     });
 
     // user disable / enable
-    it(testName + 'user disable/enable', function (done) {
+    it(testName + 'user disable/enable', done => {
         // add second user
-        setup.processCommand(context.objects, context.states, 'user', ['add', 'user1'], {ingroup: 'user', password: ' bbb'}, function (err) {
+        setup.processCommand(context.objects, context.states, 'user', ['add', 'user1'], {ingroup: 'user', password: ' bbb'}, err => {
             expect(err).to.be.not.ok;
             // check if no args set
-            setup.processCommand(context.objects, context.states, 'user', ['enable'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['enable'], {}, err => {
                 expect(err).to.be.ok;
                 // enable admin
-                setup.processCommand(context.objects, context.states, 'user', ['enable', 'admin'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'user', ['enable', 'admin'], {}, err => {
                     expect(err).to.be.not.ok;
                     // test short command
-                    setup.processCommand(context.objects, context.states, 'user', ['e', 'admin'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'user', ['e', 'admin'], {}, err => {
                         expect(err).to.be.not.ok;
                         // check invalid user
-                        setup.processCommand(context.objects, context.states, 'user', ['enable', 'aaa'], {}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'user', ['enable', 'aaa'], {}, err => {
                             expect(err).to.be.ok;
                             // admin cannot be disabled
-                            setup.processCommand(context.objects, context.states, 'user', ['disable', 'admin'], {}, function (err) {
+                            setup.processCommand(context.objects, context.states, 'user', ['disable', 'admin'], {}, err => {
                                 expect(err).to.be.ok;
                                 // user can be disabled
-                                setup.processCommand(context.objects, context.states, 'user', ['disable', 'user1'], {}, function (err) {
+                                setup.processCommand(context.objects, context.states, 'user', ['disable', 'user1'], {}, err => {
                                     expect(err).to.be.not.ok;
                                     // user can be disabled
-                                    setup.processCommand(context.objects, context.states, 'user', ['get', 'user1'], {}, function (err) {
+                                    setup.processCommand(context.objects, context.states, 'user', ['get', 'user1'], {}, err => {
                                         expect(err).to.be.not.ok;
                                         done();
                                     });
@@ -159,21 +159,21 @@ function register(it, expect, context) {
     });
 
     // ud udel userdel deluser user del
-    it(testName + 'user del', function (done) {
+    it(testName + 'user del', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'user', ['del'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'user', ['del'], {}, err => {
             expect(err).to.be.ok;
             // delete admin not allowed
-            setup.processCommand(context.objects, context.states, 'user', ['del', 'admin'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['del', 'admin'], {}, err => {
                 expect(err).to.be.ok;
                 // delete user
-                setup.processCommand(context.objects, context.states, 'user', ['del', 'user'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'user', ['del', 'user'], {}, err => {
                     expect(err).to.be.not.ok;
                     // delete invalid user
-                    setup.processCommand(context.objects, context.states, 'user', ['del', 'user'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'user', ['del', 'user'], {}, err => {
                         expect(err).to.be.ok;
                         // check adduser
-                        setup.processCommand(context.objects, context.states, 'userdel', ['user2'], {}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'userdel', ['user2'], {}, err => {
                             expect(err).to.be.not.ok;
                             done();
                         });
@@ -184,18 +184,18 @@ function register(it, expect, context) {
     });
 
     // group add
-    it(testName + 'group add', function (done) {
+    it(testName + 'group add', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'group', ['add'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['add'], {}, err => {
             expect(err).to.be.ok;
             // add administrator not allowed
-            setup.processCommand(context.objects, context.states, 'group', ['add', 'administrator'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['add', 'administrator'], {}, err => {
                 expect(err).to.be.ok;
                 // add user
-                setup.processCommand(context.objects, context.states, 'group', ['add', 'users'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['add', 'users'], {}, err => {
                     expect(err).to.be.not.ok;
                     // add existing user not allowed
-                    setup.processCommand(context.objects, context.states, 'group', ['add', 'users'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['add', 'users'], {}, err => {
                         expect(err).to.be.ok;
                         done();
                     });
@@ -205,18 +205,18 @@ function register(it, expect, context) {
     });
 
     // group del
-    it(testName + 'group del', function (done) {
+    it(testName + 'group del', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'group', ['del'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['del'], {}, err => {
             expect(err).to.be.ok;
             // delete admin not allowed
-            setup.processCommand(context.objects, context.states, 'group', ['del', 'administrator'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['del', 'administrator'], {}, err => {
                 expect(err).to.be.ok;
                 // delete users
-                setup.processCommand(context.objects, context.states, 'group', ['del', 'users'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['del', 'users'], {}, err => {
                     expect(err).to.be.not.ok;
                     // delete invalid group
-                    setup.processCommand(context.objects, context.states, 'group', ['del', 'users'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['del', 'users'], {}, err => {
                         expect(err).to.be.ok;
                         done();
                     });
@@ -226,16 +226,16 @@ function register(it, expect, context) {
     });
 
     // group list
-    it(testName + 'group list', function (done) {
+    it(testName + 'group list', done => {
         // check if no args set
         // no user defined
-        setup.processCommand(context.objects, context.states, 'group', ['list'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['list'], {}, err => {
             expect(err).to.be.ok;
             // check admin
-            setup.processCommand(context.objects, context.states, 'group', ['list', 'administrator'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['list', 'administrator'], {}, err => {
                 expect(err).to.be.not.ok;
                 // check invalid user
-                setup.processCommand(context.objects, context.states, 'group', ['list', 'aaaa'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['list', 'aaaa'], {}, err => {
                     expect(err).to.be.ok;
                     done();
                 });
@@ -244,18 +244,18 @@ function register(it, expect, context) {
     });
 
     // group get
-    it(testName + 'group get', function (done) {
+    it(testName + 'group get', done => {
         // check if no args set
-        setup.processCommand(context.objects, context.states, 'group', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', [], {}, err => {
             expect(err).to.be.ok;
             // no user defined
-            setup.processCommand(context.objects, context.states, 'group', ['get'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['get'], {}, err => {
                 expect(err).to.be.ok;
                 // check admin
-                setup.processCommand(context.objects, context.states, 'group', ['get', 'administrator'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['get', 'administrator'], {}, err => {
                     expect(err).to.be.not.ok;
                     // check invalid user
-                    setup.processCommand(context.objects, context.states, 'group', ['get', 'aaaa'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['get', 'aaaa'], {}, err => {
                         expect(err).to.be.ok;
                         done();
                     });
@@ -265,30 +265,30 @@ function register(it, expect, context) {
     });
 
     // group disable / enable
-    it(testName + 'group disable/enable', function (done) {
+    it(testName + 'group disable/enable', done => {
         // add second group
-        setup.processCommand(context.objects, context.states, 'group', ['add', 'group1'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['add', 'group1'], {}, err => {
             expect(err).to.be.not.ok;
             // check if no args set
-            setup.processCommand(context.objects, context.states, 'group', ['enable'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['enable'], {}, err => {
                 expect(err).to.be.ok;
                 // enable administrator
-                setup.processCommand(context.objects, context.states, 'group', ['enable', 'administrator'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['enable', 'administrator'], {}, err => {
                     expect(err).to.be.not.ok;
                     // test short command
-                    setup.processCommand(context.objects, context.states, 'group', ['e', 'administrator'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['e', 'administrator'], {}, err => {
                         expect(err).to.be.not.ok;
                         // check invalid group
-                        setup.processCommand(context.objects, context.states, 'group', ['enable', 'aaa'], {}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'group', ['enable', 'aaa'], {}, err => {
                             expect(err).to.be.ok;
                             // administrator cannot be disabled
-                            setup.processCommand(context.objects, context.states, 'group', ['disable', 'administrator'], {}, function (err) {
+                            setup.processCommand(context.objects, context.states, 'group', ['disable', 'administrator'], {}, err => {
                                 expect(err).to.be.ok;
                                 // group can be disabled
-                                setup.processCommand(context.objects, context.states, 'group', ['disable', 'group1'], {}, function (err) {
+                                setup.processCommand(context.objects, context.states, 'group', ['disable', 'group1'], {}, err => {
                                     expect(err).to.be.not.ok;
                                     // group can be disabled
-                                    setup.processCommand(context.objects, context.states, 'group', ['get', 'group1'], {}, function (err) {
+                                    setup.processCommand(context.objects, context.states, 'group', ['get', 'group1'], {}, err => {
                                         expect(err).to.be.not.ok;
                                         done();
                                     });
@@ -302,21 +302,21 @@ function register(it, expect, context) {
     });
 
     // group useradd
-    it(testName + 'group useradd', function (done) {
+    it(testName + 'group useradd', done => {
         // add non existing user
-        setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {}, err => {
             expect(err).to.be.ok;
             // add user for tests
-            setup.processCommand(context.objects, context.states, 'user', ['add', 'user4'], {ingroup: 'user', password: 'bbb'}, function (err) {
+            setup.processCommand(context.objects, context.states, 'user', ['add', 'user4'], {ingroup: 'user', password: 'bbb'}, err => {
                 expect(err).to.be.not.ok;
                 // add normal user to normal group
-                setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {}, err => {
                     expect(err).to.be.not.ok;
                     // admin yet added
-                    setup.processCommand(context.objects, context.states, 'group', ['useradd', 'administrator', 'admin'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['useradd', 'administrator', 'admin'], {}, err => {
                         expect(err).to.be.not.ok;
                         // add to invalid group
-                        setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group5', 'admin'], {}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group5', 'admin'], {}, err => {
                             expect(err).to.be.ok;
                             done();
                         });
@@ -327,18 +327,18 @@ function register(it, expect, context) {
     });
 
     // group userdel
-    it(testName + 'group userdel', function (done) {
+    it(testName + 'group userdel', done => {
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group1', 'user5'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group1', 'user5'], {}, err => {
             expect(err).to.be.ok;
             // remove normal user from normal group
-            setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group1', 'user4'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group1', 'user4'], {}, err => {
                 expect(err).to.be.not.ok;
                 // admin not allowed
-                setup.processCommand(context.objects, context.states, 'group', ['userdel', 'administrator', 'admin'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'group', ['userdel', 'administrator', 'admin'], {}, err => {
                     expect(err).to.be.not.ok;
                     // remove from invalid group
-                    setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group5', 'admin'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group5', 'admin'], {}, err => {
                         expect(err).to.be.ok;
                         done();
                     });
@@ -353,12 +353,12 @@ function register(it, expect, context) {
     // stop ??
 
     // status
-    it(testName + 'status', function (done) {
+    it(testName + 'status', done => {
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'status', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'status', [], {}, err => {
             expect(err).to.be.not.ok;
             // remove normal user from normal group
-            setup.processCommand(context.objects, context.states, 'isrun', [], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'isrun', [], {}, err => {
                 expect(err).to.be.not.ok;
                 done();
             });
@@ -369,12 +369,12 @@ function register(it, expect, context) {
 
     // update
     // setup
-    it(testName + 'setup', function (done) {
+    it(testName + 'setup', done => {
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'setup', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'setup', [], {}, err => {
             expect(err).to.be.not.ok;
             // remove normal user from normal group
-            setup.processCommand(context.objects, context.states, 'setup', ['first'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'setup', ['first'], {}, err => {
                 expect(err).to.be.not.ok;
                 done();
             });
@@ -396,12 +396,12 @@ function register(it, expect, context) {
 
     // message
     // update
-    it(testName + 'update', function (done) {
+    it(testName + 'update', done => {
         this.timeout(40000);
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'update', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'update', [], {}, err => {
             expect(err).to.be.not.ok;
-            setup.processCommand(context.objects, context.states, 'update', ['http://download.iobroker.net/sources-dist.json'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'update', ['http://download.iobroker.net/sources-dist.json'], {}, err => {
                 expect(err).to.be.not.ok;
                 done();
             });
@@ -413,7 +413,7 @@ function register(it, expect, context) {
     // clean
     // restore
     // backup
-    it(testName + 'backup', function (done) {
+    it(testName + 'backup', done => {
         this.timeout(20000);
         // create backup
         var dir = getBackupDir();
@@ -428,7 +428,7 @@ function register(it, expect, context) {
             }
         }
 
-        setup.processCommand(context.objects, context.states, 'backup', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'backup', [], {}, err => {
             expect(err).to.be.not.ok;
             var files = fs.readdirSync(dir);
             // check 2017_03_09-13_48_33_backupioBroker.tar.gz
@@ -445,7 +445,7 @@ function register(it, expect, context) {
             //expect(found).to.be.true;
 
             var name = Math.round(Math.random() * 10000).toString();
-            setup.processCommand(context.objects, context.states, 'backup', [name], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'backup', [name], {}, err => {
                 expect(err).to.be.not.ok;
                 expect(require('fs').existsSync(getBackupDir() + name + '.tar.gz')).to.be.true;
             });
@@ -465,12 +465,12 @@ function register(it, expect, context) {
     // file f
 
     // id uuid
-    it(testName + 'uuid', function (done) {
+    it(testName + 'uuid', done => {
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'uuid', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'uuid', [], {}, err => {
             expect(err).to.be.not.ok;
             // remove normal user from normal group
-            setup.processCommand(context.objects, context.states, 'id', [], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'id', [], {}, err => {
                 expect(err).to.be.not.ok;
                 done();
             });
@@ -478,12 +478,12 @@ function register(it, expect, context) {
     });
 
     // v version
-    it(testName + 'version', function (done) {
+    it(testName + 'version', done => {
         // delete non existing user
-        setup.processCommand(context.objects, context.states, 'version', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'version', [], {}, err => {
             expect(err).to.be.not.ok;
             // remove normal user from normal group
-            setup.processCommand(context.objects, context.states, 'v', [], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'v', [], {}, err => {
                 expect(err).to.be.not.ok;
                 done();
             });
@@ -491,35 +491,35 @@ function register(it, expect, context) {
     });
 
     // repo
-    it(testName + 'repo', function (done) {
+    it(testName + 'repo', done => {
         // add non existing repo
-        setup.processCommand(context.objects, context.states, 'repo', ['add', 'local', 'some/path'], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'repo', ['add', 'local', 'some/path'], {}, err => {
             expect(err).to.be.not.ok;
             // set new repo as active
-            setup.processCommand(context.objects, context.states, 'repo', ['set', 'local'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'repo', ['set', 'local'], {}, err => {
                 expect(err).to.be.not.ok;
                 // try to delete active repo
-                setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, function (err) {
+                setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, err => {
                     expect(err).to.be.ok;
                     // set active repo to default
-                    setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, err => {
                         expect(err).to.be.not.ok;
                         // delete non-active repo
-                        setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, function (err) {
+                        setup.processCommand(context.objects, context.states, 'repo', ['del', 'local'], {}, err => {
                             expect(err).to.be.not.ok;
                             // add and set as active new repo, but with too less parameters
-                            setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1'], {}, function (err) {
+                            setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1'], {}, err => {
                                 expect(err).to.be.ok;
-                                setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1', 'some/path'], {}, function (err) {
+                                setup.processCommand(context.objects, context.states, 'repo', ['addset', 'local1', 'some/path'], {}, err => {
                                     expect(err).to.be.not.ok;
                                     // try to add new repo with existing name
-                                    setup.processCommand(context.objects, context.states, 'repo', ['add', 'local1', 'some/path1'], {}, function (err) {
+                                    setup.processCommand(context.objects, context.states, 'repo', ['add', 'local1', 'some/path1'], {}, err => {
                                         expect(err).to.be.ok;
                                         // set active repo to default
-                                        setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, function (err) {
+                                        setup.processCommand(context.objects, context.states, 'repo', ['set', 'default'], {}, err => {
                                             expect(err).to.be.not.ok;
                                             // try to delete non-active repo
-                                            setup.processCommand(context.objects, context.states, 'repo', ['del', 'local1'], {}, function (err) {
+                                            setup.processCommand(context.objects, context.states, 'repo', ['del', 'local1'], {}, err => {
                                                 expect(err).to.be.not.ok;
                                                 done();
                                             });
@@ -535,7 +535,7 @@ function register(it, expect, context) {
     });
 
     // license
-    it(testName + 'license', function (done) {
+    it(testName + 'license', done => {
         // test license
         const licenseText = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
         let licenseFile = __dirname + '/visLicense.data';
@@ -543,10 +543,10 @@ function register(it, expect, context) {
         const fs = require('fs');
         fs.writeFileSync(licenseFile, licenseText);
         // expect warning about license
-        setup.processCommand(context.objects, context.states, 'license', [], {}, function (err) {
+        setup.processCommand(context.objects, context.states, 'license', [], {}, err => {
             expect(err).to.be.ok;
             // expect warning about invalid license
-            setup.processCommand(context.objects, context.states, 'license', ['invalidLicense'], {}, function (err) {
+            setup.processCommand(context.objects, context.states, 'license', ['invalidLicense'], {}, err => {
                 expect(err).to.be.ok;
                 context.objects.setObjectAsync('system.adapter.vis.0', {
                     common: {
@@ -557,14 +557,14 @@ function register(it, expect, context) {
                     },
                     type: 'instance'
                 }).then(() => // license must be taken
-                    setup.processCommand(context.objects, context.states, 'license', [licenseFile], {}, function (err) {
+                    setup.processCommand(context.objects, context.states, 'license', [licenseFile], {}, err => {
                         fs.unlink(licenseFile);
                         expect(err).to.be.not.ok;
                         context.objects.getObjectAsync('system.adapter.vis.0')
                             .then(obj => {
                                 expect(obj.native.license).to.be.equal(licenseText);
                                 // license must be taken
-                                setup.processCommand(context.objects, context.states, 'license', [licenseText], {}, function (err) {
+                                setup.processCommand(context.objects, context.states, 'license', [licenseText], {}, err => {
                                     expect(err).to.be.not.ok;
                                     context.objects.getObjectAsync('system.adapter.vis.0')
                                         .then(obj => {
@@ -577,6 +577,14 @@ function register(it, expect, context) {
                     })
                 );
             });
+        });
+    });
+    
+    // info
+    it(testName + 'info', done => {
+        setup.processCommand(context.objects, context.states, 'info', [], {}, err => {
+            expect(err).to.be.not.ok;
+            done();
         });
     });
 }

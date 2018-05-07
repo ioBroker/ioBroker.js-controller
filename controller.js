@@ -38,6 +38,8 @@ let disconnectTimeout       = null;
 let connected               = null; // not false, because want to detect first connection
 let ipArr                   = [];
 let lastCalculationOfIps    = null;
+let lastDiskSizeCheck       = 0;
+
 const errorCodes            = [
     'OK', // 0
     '', // 1
@@ -403,6 +405,7 @@ function createObjects() {
 function startAliveInterval() {
     config.system = config.system || {};
     config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+    config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     reportStatus();
     setInterval(reportStatus, config.system.statisticsInterval);
 }
@@ -425,6 +428,24 @@ function reportStatus() {
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
     states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
     states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
+
+    if (config.system.checkDiskInterval && Date.now() - lastDiskSizeCheck >= config.system.checkDiskInterval) {
+        lastDiskSizeCheck = Date.now();
+        tools.getDiskInfo(os.platform(), (err, info) => {
+            if (err) {
+                logger.error('Cannot read disk size: ' + err);
+            }
+            try {
+                if (info) {
+                    states.setState(id + '.diskSize', {val: Math.round((info['Disk size'] || 0) / (1024 * 1024)), ack: true, from: id});
+                    states.setState(id + '.diskFree', {val: Math.round((info['Disk free'] || 0) / (1024 * 1024)), ack: true, from: id});
+                }
+            } catch (e) {
+                logger.error('Cannot read disk size: ' + e);
+            }
+        });
+    }
+
     inputCount  = 0;
     outputCount = 0;
 }
@@ -1030,6 +1051,59 @@ function setMeta() {
     };
     tasks.push(obj);
 
+    config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+
+    if (config.system.checkDiskInterval) {
+        obj = {
+            _id:    id + '.diskSize',
+            type:   'state',
+            common: {
+                name: hostname + ' disk total size',
+                desc: 'Disk size where the server is installed in MiB',
+                type: 'number',
+                read:   true,
+                write:  false,
+                role: 'state',
+                unit: 'MiB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id:    id + '.diskFree',
+            type:   'state',
+            common: {
+                name: hostname + ' disk free size',
+                desc: 'Disk free size where the server is installed in MiB',
+                type: 'number',
+                read:   true,
+                write:  false,
+                role: 'state',
+                unit: 'MiB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id:    id + '.diskWarning',
+            type:   'state',
+            common: {
+                name: hostname + ' disk warning',
+                desc:   'Show warning in admin if the free disk space below this value',
+                type:   'number',
+                read:   true,
+                write:  true,
+                def:    5,
+                role:   'state',
+                unit:   '%'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+    }
+
     extendObjects(tasks, function () {
         // create UUID if not exist
         tools.createUuid(objects, function (uuid) {
@@ -1318,7 +1392,7 @@ function processMessage(msg) {
 
         case 'getLocationOnDisk':
             if (msg.callback && msg.from) {
-                sendTo(msg.from, msg.command, {path: __dirname, platform: require('os').platform()}, msg.callback);
+                sendTo(msg.from, msg.command, {path: __dirname, platform: os.platform()}, msg.callback);
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
@@ -1328,7 +1402,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
 
-                if (require('os').platform() === 'linux') {
+                if (os.platform() === 'linux') {
                     let _spawn = require('child_process').spawn;
                     let _args = ['/dev'];
                     logger.info('host.' + hostname + ' ls /dev');
@@ -1413,6 +1487,15 @@ function processMessage(msg) {
                     }
                     data = data || {};
                     data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                    // add information about running instances
+                    let count = 0;
+                    for (var id in procs) {
+                        if (procs.hasOwnProperty(id) && procs[id].process) {
+                            count++;
+                        }
+                    }
+                    data['Active instances'] = count;
+
                     sendTo(msg.from, msg.command, data, msg.callback);
                 });
             } else {
@@ -1553,7 +1636,7 @@ function processMessage(msg) {
 }
 
 function getInstances() {
-    objects.getObjectView('system', 'instance', {}, function (err, doc) {
+    objects.getObjectView('system', 'instance', {}, (err, doc) => {
         if (err && err.status_code === 404) {
             logger.error('host.' + hostname + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
