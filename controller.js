@@ -415,14 +415,26 @@ function reportStatus() {
     outputCount += 10;
     states.setState(id + '.alive',   {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
     states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
+    states.setState(id + '.mem',     {val: Math.round(1000 * os.freemem() / os.totalmem()) / 10, ack: true, from: id});
     let mem = process.memoryUsage();
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memRss', {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapTotal', {val: Math.round(mem.heapTotal / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapUsed', {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
+
+    if (fs.existsSync('/proc/meminfo')) {
+        try {
+            let text = fs.readFileSync('/proc/meminfo');
+            let m = text.match(/MemAvailable:\s*(\d+)/);
+            if (m && m[1]) {
+                //noinspection JSUnresolvedVariable
+                states.setState(id + '.memAvailable', {val: Math.round(parseInt(m[1], 10) / 10485.76/* 1MB / 100 */)) / 100, ack: true, from: id});
+            }
+        }
+    }
+
     // Under windows toFixed returns string ?
     states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
@@ -931,6 +943,24 @@ function setMeta() {
         native: {}
     };
     tasks.push(obj);
+
+
+    if (fs.existsSync('/proc/meminfo')) {
+        obj = {
+            _id: id + '.memAvailable',
+            type: 'state',
+            common: {
+                type: 'number',
+                name: 'Available memory in MB from /proc/meminfo',
+                read: true,
+                write: false,
+                min: 0,
+                unit: 'MB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+    }
 
     obj = {
         _id: id + '.memHeapTotal',
