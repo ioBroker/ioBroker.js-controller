@@ -30,7 +30,7 @@ function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' console: ';
     const setup    = require(__dirname + '/../../lib/setup.js');
     // passwd, user passwd, user check
-    it(testName + 'user passwd', done => {
+    it(testName + 'user passwd', function (done) {
         this.timeout(2000);
         // set initial password
         setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
@@ -72,7 +72,7 @@ function register(it, expect, context) {
     });
 
     // user get
-    it(testName + 'user get', done => {
+    it(testName + 'user get', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'user', [], {}, err => {
             expect(err).to.be.ok;
@@ -93,7 +93,7 @@ function register(it, expect, context) {
     });
 
     // adduser user add
-    it(testName + 'user add', done => {
+    it(testName + 'user add', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'user', ['add'], {}, err => {
             expect(err).to.be.ok;
@@ -122,7 +122,7 @@ function register(it, expect, context) {
     });
 
     // user disable / enable
-    it(testName + 'user disable/enable', done => {
+    it(testName + 'user disable/enable', function (done) {
         // add second user
         setup.processCommand(context.objects, context.states, 'user', ['add', 'user1'], {ingroup: 'user', password: ' bbb'}, err => {
             expect(err).to.be.not.ok;
@@ -159,7 +159,7 @@ function register(it, expect, context) {
     });
 
     // ud udel userdel deluser user del
-    it(testName + 'user del', done => {
+    it(testName + 'user del', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'user', ['del'], {}, err => {
             expect(err).to.be.ok;
@@ -184,7 +184,7 @@ function register(it, expect, context) {
     });
 
     // group add
-    it(testName + 'group add', done => {
+    it(testName + 'group add', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'group', ['add'], {}, err => {
             expect(err).to.be.ok;
@@ -205,7 +205,7 @@ function register(it, expect, context) {
     });
 
     // group del
-    it(testName + 'group del', done => {
+    it(testName + 'group del', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'group', ['del'], {}, err => {
             expect(err).to.be.ok;
@@ -226,7 +226,7 @@ function register(it, expect, context) {
     });
 
     // group list
-    it(testName + 'group list', done => {
+    it(testName + 'group list', function (done) {
         // check if no args set
         // no user defined
         setup.processCommand(context.objects, context.states, 'group', ['list'], {}, err => {
@@ -244,7 +244,7 @@ function register(it, expect, context) {
     });
 
     // group get
-    it(testName + 'group get', done => {
+    it(testName + 'group get', function (done) {
         // check if no args set
         setup.processCommand(context.objects, context.states, 'group', [], {}, err => {
             expect(err).to.be.ok;
@@ -265,7 +265,7 @@ function register(it, expect, context) {
     });
 
     // group disable / enable
-    it(testName + 'group disable/enable', done => {
+    it(testName + 'group disable/enable', function (done) {
         // add second group
         setup.processCommand(context.objects, context.states, 'group', ['add', 'group1'], {}, err => {
             expect(err).to.be.not.ok;
@@ -302,7 +302,7 @@ function register(it, expect, context) {
     });
 
     // group useradd
-    it(testName + 'group useradd', done => {
+    it(testName + 'group useradd', function (done) {
         // add non existing user
         setup.processCommand(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {}, err => {
             expect(err).to.be.ok;
@@ -327,7 +327,7 @@ function register(it, expect, context) {
     });
 
     // group userdel
-    it(testName + 'group userdel', done => {
+    it(testName + 'group userdel', function (done) {
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'group', ['userdel', 'group1', 'user5'], {}, err => {
             expect(err).to.be.ok;
@@ -353,7 +353,7 @@ function register(it, expect, context) {
     // stop ??
 
     // status
-    it(testName + 'status', done => {
+    it(testName + 'status', function (done) {
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'status', [], {}, err => {
             expect(err).to.be.not.ok;
@@ -369,7 +369,7 @@ function register(it, expect, context) {
 
     // update
     // setup
-    it(testName + 'setup', done => {
+    it(testName + 'setup', function (done) {
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'setup', [], {}, err => {
             expect(err).to.be.not.ok;
@@ -396,7 +396,7 @@ function register(it, expect, context) {
 
     // message
     // update
-    it(testName + 'update', done => {
+    it(testName + 'update', function (done) {
         this.timeout(40000);
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'update', [], {}, err => {
@@ -413,7 +413,7 @@ function register(it, expect, context) {
     // clean
     // restore
     // backup
-    it(testName + 'backup', done => {
+    it(testName + 'backup', function (done) {
         this.timeout(20000);
         // create backup
         var dir = getBackupDir();
@@ -465,7 +465,7 @@ function register(it, expect, context) {
     // file f
 
     // id uuid
-    it(testName + 'uuid', done => {
+    it(testName + 'uuid', function (done) {
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'uuid', [], {}, err => {
             expect(err).to.be.not.ok;
@@ -478,7 +478,7 @@ function register(it, expect, context) {
     });
 
     // v version
-    it(testName + 'version', done => {
+    it(testName + 'version', function (done) {
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'version', [], {}, err => {
             expect(err).to.be.not.ok;
@@ -491,7 +491,7 @@ function register(it, expect, context) {
     });
 
     // repo
-    it(testName + 'repo', done => {
+    it(testName + 'repo', function (done) {
         // add non existing repo
         setup.processCommand(context.objects, context.states, 'repo', ['add', 'local', 'some/path'], {}, err => {
             expect(err).to.be.not.ok;
@@ -535,7 +535,7 @@ function register(it, expect, context) {
     });
 
     // license
-    it(testName + 'license', done => {
+    it(testName + 'license', function (done) {
         // test license
         const licenseText = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
         let licenseFile = __dirname + '/visLicense.data';
@@ -581,7 +581,7 @@ function register(it, expect, context) {
     });
     
     // info
-    it(testName + 'info', done => {
+    it(testName + 'info', function (done) {
         setup.processCommand(context.objects, context.states, 'info', [], {}, err => {
             expect(err).to.be.not.ok;
             done();
