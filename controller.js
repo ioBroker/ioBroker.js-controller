@@ -414,7 +414,7 @@ function reportStatus() {
     let id = 'system.host.' + hostname;
     outputCount += 10;
     states.setState(id + '.alive',   {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
-    states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
+    states.setState(id + '.load',    {val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id});
     states.setState(id + '.mem',     {val: Math.round(1000 * os.freemem() / os.totalmem()) / 10, ack: true, from: id});
     let mem = process.memoryUsage();
     //noinspection JSUnresolvedVariable
@@ -438,7 +438,7 @@ function reportStatus() {
     }
 
     // Under windows toFixed returns string ?
-    states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
+    states.setState(id + '.uptime', {val: Math.round(process.uptime()), ack: true, from: id});
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
     states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
     states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
