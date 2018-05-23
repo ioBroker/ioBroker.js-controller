@@ -427,7 +427,7 @@ function reportStatus() {
     if (fs.existsSync('/proc/meminfo')) {
         try {
             let text = fs.readFileSync('/proc/meminfo');
-            let m = text.match(/MemAvailable:\s*(\d+)/);
+            let m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
                 //noinspection JSUnresolvedVariable
                 states.setState(id + '.memAvailable', {val: Math.round(parseInt(m[1], 10) / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
