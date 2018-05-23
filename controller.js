@@ -426,7 +426,7 @@ function reportStatus() {
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
-            let text = fs.readFileSync('/proc/meminfo');
+            let text = fs.readFileSync('/proc/meminfo', 'utf8');
             let m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
                 //noinspection JSUnresolvedVariable
