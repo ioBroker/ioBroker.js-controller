@@ -7,17 +7,16 @@
 'use strict';
 
 function getAppName() {
-    var parts = __dirname.replace(/\\/g, '/').split('/');
+    const parts = __dirname.replace(/\\/g, '/').split('/');
     return parts[parts.length - 1].split('.')[0].toLowerCase();
 }
 
 module.exports = function (grunt) {
 
-    var srcDir    = __dirname + '/';
-    var pkg       = grunt.file.readJSON('package.json');
-    var iopackage = grunt.file.readJSON('io-package.json');
-    var appName   = getAppName();
-
+    const srcDir    = __dirname + '/';
+    const pkg       = grunt.file.readJSON('package.json');
+    const iopackage = grunt.file.readJSON('io-package.json');
+    const appName   = getAppName();
 
     // Project configuration.
     grunt.initConfig({

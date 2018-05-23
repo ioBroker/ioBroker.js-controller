@@ -93,9 +93,8 @@
   "daikin": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.daikin/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.daikin/master/admin/daikin.jpg",
-    "version": "0.2.3",
-    "type": "climate-control",
-    "published": "2017-03-29T22:00:25.803Z"
+    "version": "1.0.1",
+    "type": "climate-control"
   },
   "daswetter": {
     "meta": "https://raw.githubusercontent.com/rg-engineering/ioBroker.daswetter/master/io-package.json",
@@ -107,9 +106,8 @@
   "deconz": {
     "meta": "https://raw.githubusercontent.com/jey-cee/ioBroker.deconz/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/jey-cee/ioBroker.deconz/master/admin/deconz.png",
-    "version": "0.1.1",
-    "type": "hardware",
-    "published": "2018-01-02T20:06:31.173Z"
+    "version": "0.2.0",
+    "type": "hardware"
   },
   "discovery": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/io-package.json",
@@ -144,6 +142,13 @@
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.email/master/admin/email.png",
     "version": "1.0.2",
     "type": "messaging",
+    "published": "2015-01-02T23:50:13.927Z"
+  },
+  "enet": {
+    "meta": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.enet/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.enet/master/admin/enet.png",
+    "version": "1.0.0",
+    "type": "iot-systems",
     "published": "2015-01-02T23:50:13.927Z"
   },
   "epson_stylus_px830": {
@@ -298,6 +303,13 @@
     "icon": "https://raw.githubusercontent.com/Pix---/ioBroker.homepilot/master/admin/homepilot.png",
     "version": "0.3.1",
     "type": "iot-systems",
+    "published": "2016-07-09T11:17:48.404Z"
+  },
+  "hp-ilo": {
+    "meta": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.hp-ilo/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.hp-ilo/master/admin/hp-ilo.png",
+    "version": "1.0.0",
+    "type": "hardware",
     "published": "2016-07-09T11:17:48.404Z"
   },
   "hue": {
@@ -456,9 +468,16 @@
     "published": "2017-07-22T11:45:31.427Z"
   },
   "lgtv": {
-    "meta": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/io-package.json",
-    "icon": "https://raw.githubusercontent.com/SMundt/ioBroker.lgtv/master/admin/lgtv.png",
-    "version": "1.0.2",
+    "meta": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.lgtv/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.lgtv/master/admin/lgtv.png",
+    "version": "1.0.5",
+    "type": "multimedia",
+    "published": "2016-09-05T17:34:06.772Z"
+  },
+  "lgtv11": {
+    "meta": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.lgtv11/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.lgtv11/master/admin/lgtv2011.png",
+    "version": "1.0.3",
     "type": "multimedia",
     "published": "2016-09-05T17:34:06.772Z"
   },
@@ -647,9 +666,8 @@
   "nut": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.nut/master/admin/nut.png",
-    "version": "1.1.1",
-    "type": "hardware",
-    "published": "2016-07-06T10:12:46.812Z"
+    "version": "1.1.3",
+    "type": "hardware"
   },
   "onkyo": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.onkyo/master/io-package.json",
@@ -856,9 +874,8 @@
   "smartmeter": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.smartmeter/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.smartmeter/master/admin/smartmeter.png",
-    "version": "1.1.0",
-    "type": "energy",
-    "published": "2017-01-30T20:48:39.862Z"
+    "version": "1.1.3",
+    "type": "energy"
   },
   "socketio": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.socketio/master/io-package.json",
@@ -898,9 +915,8 @@
   "sql": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png",
-    "version": "1.6.9",
-    "type": "storage",
-    "published": "2015-12-06T16:07:51.458Z"
+    "version": "1.7.4",
+    "type": "storage"
   },
   "squeezebox": {
     "meta": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.squeezebox/master/io-package.json",

@@ -3,7 +3,9 @@
         "memoryLimitMB": 0,
         "hostname": "",
         "statisticsInterval": 15000,
-        "statisticsIntervalComment": "Interval how often the counters for input/output in adapters and controller will be updated"
+        "statisticsIntervalComment": "Interval how often the counters for input/output in adapters and controller will be updated",
+        "checkDiskInterval": 300000,
+        "checkDiskIntervalComment": "Interval how often the disk size will be checked"
     },
     "multihostService": {
         "enabled": false,

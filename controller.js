@@ -38,6 +38,8 @@ let disconnectTimeout       = null;
 let connected               = null; // not false, because want to detect first connection
 let ipArr                   = [];
 let lastCalculationOfIps    = null;
+let lastDiskSizeCheck       = 0;
+
 const errorCodes            = [
     'OK', // 0
     '', // 1
@@ -403,6 +405,7 @@ function createObjects() {
 function startAliveInterval() {
     config.system = config.system || {};
     config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+    config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     reportStatus();
     setInterval(reportStatus, config.system.statisticsInterval);
 }
@@ -411,20 +414,52 @@ function reportStatus() {
     let id = 'system.host.' + hostname;
     outputCount += 10;
     states.setState(id + '.alive',   {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
-    states.setState(id + '.load',    {val: parseFloat(os.loadavg()[0].toFixed(2)), ack: true, from: id});
-    states.setState(id + '.mem',     {val: Math.round(100 * os.freemem() / os.totalmem()), ack: true, from: id});
+    states.setState(id + '.load',    {val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id});
+    states.setState(id + '.mem',     {val: Math.round(1000 * os.freemem() / os.totalmem()) / 10, ack: true, from: id});
     let mem = process.memoryUsage();
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memRss', {val: parseFloat((mem.rss / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memRss', {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memHeapTotal', {val: parseFloat((mem.heapTotal / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapTotal', {val: Math.round(mem.heapTotal / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     //noinspection JSUnresolvedVariable
-    states.setState(id + '.memHeapUsed', {val: parseFloat((mem.heapUsed / 1048576/* 1MB */).toFixed(2)), ack: true, from: id});
+    states.setState(id + '.memHeapUsed', {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
+
+    if (fs.existsSync('/proc/meminfo')) {
+        try {
+            let text = fs.readFileSync('/proc/meminfo');
+            let m = text && text.match(/MemAvailable:\s*(\d+)/);
+            if (m && m[1]) {
+                //noinspection JSUnresolvedVariable
+                states.setState(id + '.memAvailable', {val: Math.round(parseInt(m[1], 10) / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
+            }
+        } catch (err) {
+            logger.error('Cannot read /proc/meminfo: ' + err);
+        }
+    }
+
     // Under windows toFixed returns string ?
-    states.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
+    states.setState(id + '.uptime', {val: Math.round(process.uptime()), ack: true, from: id});
     states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
     states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
     states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
+
+    if (config.system.checkDiskInterval && Date.now() - lastDiskSizeCheck >= config.system.checkDiskInterval) {
+        lastDiskSizeCheck = Date.now();
+        tools.getDiskInfo(os.platform(), (err, info) => {
+            if (err) {
+                logger.error('Cannot read disk size: ' + err);
+            }
+            try {
+                if (info) {
+                    states.setState(id + '.diskSize', {val: Math.round((info['Disk size'] || 0) / (1024 * 1024)), ack: true, from: id});
+                    states.setState(id + '.diskFree', {val: Math.round((info['Disk free'] || 0) / (1024 * 1024)), ack: true, from: id});
+                }
+            } catch (e) {
+                logger.error('Cannot read disk size: ' + e);
+            }
+        });
+    }
+
     inputCount  = 0;
     outputCount = 0;
 }
@@ -911,6 +946,24 @@ function setMeta() {
     };
     tasks.push(obj);
 
+
+    if (fs.existsSync('/proc/meminfo')) {
+        obj = {
+            _id: id + '.memAvailable',
+            type: 'state',
+            common: {
+                type: 'number',
+                name: 'Available memory in MB from /proc/meminfo',
+                read: true,
+                write: false,
+                min: 0,
+                unit: 'MB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+    }
+
     obj = {
         _id: id + '.memHeapTotal',
         type: 'state',
@@ -1029,6 +1082,59 @@ function setMeta() {
         native: {}
     };
     tasks.push(obj);
+
+    config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+
+    if (config.system.checkDiskInterval) {
+        obj = {
+            _id:    id + '.diskSize',
+            type:   'state',
+            common: {
+                name: hostname + ' disk total size',
+                desc: 'Disk size where the server is installed in MiB',
+                type: 'number',
+                read:   true,
+                write:  false,
+                role: 'state',
+                unit: 'MiB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id:    id + '.diskFree',
+            type:   'state',
+            common: {
+                name: hostname + ' disk free size',
+                desc: 'Disk free size where the server is installed in MiB',
+                type: 'number',
+                read:   true,
+                write:  false,
+                role: 'state',
+                unit: 'MiB'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id:    id + '.diskWarning',
+            type:   'state',
+            common: {
+                name: hostname + ' disk warning',
+                desc:   'Show warning in admin if the free disk space below this value',
+                type:   'number',
+                read:   true,
+                write:  true,
+                def:    5,
+                role:   'state',
+                unit:   '%'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+    }
 
     extendObjects(tasks, function () {
         // create UUID if not exist
@@ -1318,7 +1424,7 @@ function processMessage(msg) {
 
         case 'getLocationOnDisk':
             if (msg.callback && msg.from) {
-                sendTo(msg.from, msg.command, {path: __dirname, platform: require('os').platform()}, msg.callback);
+                sendTo(msg.from, msg.command, {path: __dirname, platform: os.platform()}, msg.callback);
             } else {
                 logger.error('host.' + hostname + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
@@ -1328,7 +1434,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
 
-                if (require('os').platform() === 'linux') {
+                if (os.platform() === 'linux') {
                     let _spawn = require('child_process').spawn;
                     let _args = ['/dev'];
                     logger.info('host.' + hostname + ' ls /dev');
@@ -1413,6 +1519,15 @@ function processMessage(msg) {
                     }
                     data = data || {};
                     data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                    // add information about running instances
+                    let count = 0;
+                    for (var id in procs) {
+                        if (procs.hasOwnProperty(id) && procs[id].process) {
+                            count++;
+                        }
+                    }
+                    data['Active instances'] = count;
+
                     sendTo(msg.from, msg.command, data, msg.callback);
                 });
             } else {
@@ -1553,7 +1668,7 @@ function processMessage(msg) {
 }
 
 function getInstances() {
-    objects.getObjectView('system', 'instance', {}, function (err, doc) {
+    objects.getObjectView('system', 'instance', {}, (err, doc) => {
         if (err && err.status_code === 404) {
             logger.error('host.' + hostname + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
@@ -1590,7 +1705,7 @@ function getInstances() {
                         const adapterDir_ = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir_)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
-                            installQueue.push({id: instance._id, disabled: true});
+                            installQueue.push({id: instance._id, disabled: true, version: instance.common.version});
                             // start install queue if not started
                             if (installQueue.length === 1) installAdapters();
                         }
@@ -1799,6 +1914,9 @@ function installAdapters() {
 
     let task = installQueue[0];
     let name = task.id.split('.')[2];
+    if (task.version) {
+        name += '@' + task.version;
+    }
 
     if (procs[task.id].downloadRetry < 3) {
         procs[task.id].downloadRetry++;
