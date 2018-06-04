@@ -72,7 +72,8 @@ let uptimeStart             = Date.now();
 const config = getConfig();
 
 function getConfig() {
-    if (!fs.existsSync(tools.getConfigFileName())) {
+    const configFile = tools.getConfigFileName();
+    if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
             isDaemon = true;
             logger = require(__dirname + '/lib/logger')('info', [tools.appName], true);
@@ -83,7 +84,7 @@ function getConfig() {
         process.exit(1);
         return null;
     } else {
-        let _config = JSON.parse(fs.readFileSync(tools.getConfigFileName()));
+        let _config = JSON.parse(fs.readFileSync(configFile));
         if (!_config.states)  _config.states  = {type: 'file'};
         if (!_config.objects) _config.objects = {type: 'file'};
         if (!_config.system)  _config.system  = {};
