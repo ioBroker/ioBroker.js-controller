@@ -31,7 +31,6 @@ function register(it, expect, context) {
     const setup    = require(__dirname + '/../../lib/setup.js');
     // passwd, user passwd, user check
     it(testName + 'user passwd', function (done) {
-        this.timeout(2000);
         // set initial password
         setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
             expect(err).to.be.not.ok;
@@ -69,7 +68,7 @@ function register(it, expect, context) {
                 });
             });
         });
-    });
+    }).timeout(2000)
 
     // user get
     it(testName + 'user get', function (done) {
@@ -397,7 +396,6 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', function (done) {
-        this.timeout(40000);
         // delete non existing user
         setup.processCommand(context.objects, context.states, 'update', [], {}, err => {
             expect(err).to.be.not.ok;
@@ -406,15 +404,14 @@ function register(it, expect, context) {
                 done();
             });
         });
-    });
+    }).timeout(40000);
 
     // upgrade
 
     // clean
     // restore
     // backup
-    it(testName + 'backup', function (done) {
-        this.timeout(20000);
+    it(testName + 'backup', done => {
         // create backup
         var dir = getBackupDir();
         var fs = require('fs');
@@ -451,7 +448,7 @@ function register(it, expect, context) {
             });
             done();
         });
-    });
+    }).timeout(20000);
 
     // list l
     // touch
@@ -558,7 +555,7 @@ function register(it, expect, context) {
                     type: 'instance'
                 }).then(() => // license must be taken
                     setup.processCommand(context.objects, context.states, 'license', [licenseFile], {}, err => {
-                        fs.unlink(licenseFile);
+                        fs.unlinkSync(licenseFile);
                         expect(err).to.be.not.ok;
                         context.objects.getObjectAsync('system.adapter.vis.0')
                             .then(obj => {
@@ -581,12 +578,12 @@ function register(it, expect, context) {
     });
     
     // info
-    it(testName + 'info', function (done) {
+    it(testName + 'info', done => {
         setup.processCommand(context.objects, context.states, 'info', [], {}, err => {
             expect(err).to.be.not.ok;
             done();
         });
-    });
+    }).timeout(6000)
 }
 
 

@@ -40,6 +40,7 @@ let ipArr                   = [];
 let lastCalculationOfIps    = null;
 let lastDiskSizeCheck       = 0;
 
+const DESIRED_TERMINATION   = 11;
 const errorCodes            = [
     'OK', // 0
     '', // 1
@@ -51,7 +52,8 @@ const errorCodes            = [
     'Adapter already running', // 7
     'node.js: Cannot find module', // 8
     '', // 9
-    'Cannot find start file of adapter' // 10
+    'Cannot find start file of adapter', // 10
+    'Desired termination' // 11 - DESIRED_TERMINATION
 ];
 let procs                   = {};
 let subscribe               = {};
@@ -2145,7 +2147,7 @@ function startInstance(id, wakeUp) {
                     }
 
                     // show stored errors
-                    cleanErrors(id, null, code !== 4294967196);
+                    cleanErrors(id, null, code !== 4294967196 && code !== DESIRED_TERMINATION);
 
                     if (mode !== 'once') {
                         if (signal) {
@@ -2179,6 +2181,9 @@ function startInstance(id, wakeUp) {
                             return;
                         } else {
                             //noinspection JSUnresolvedVariable
+                            if (code === DESIRED_TERMINATION) {
+                                logger.error(`host.${hostname} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
+                            } else
                             if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
@@ -2190,7 +2195,7 @@ function startInstance(id, wakeUp) {
                     if (procs[id] && procs[id].process) {
                         delete procs[id].process;
                     }
-                    if (!wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
+                    if (code !== DESIRED_TERMINATION && !wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
 
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
@@ -2203,16 +2208,19 @@ function startInstance(id, wakeUp) {
                         }, code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                     } else {
+                        if (code === DESIRED_TERMINATION) {
+                            logger.info(`host.${hostname} Do not restart adapter ${id} because desired by instance`);
+                        } else
                         if (mode !== 'once') {
-                            logger.info('host.' + hostname + ' Do not restart adapter ' + id + ' because disabled or deleted');
+                            logger.info(`host.${hostname} Do not restart adapter ${id} because disabled or deleted`);
                         } else {
-                            logger.info('host.' + hostname + ' instance ' + id + ' terminated while should be started once');
+                            logger.info(`host.${hostname} instance ${id} terminated while should be started once`);
                         }
                     }
                     storePids(); // Store all pids to make possible kill them all
                 });
                 if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
-                    logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[id].process.pid);
+                    logger.info(`host.${hostname} instance ${instance._id} started with pid ${procs[id].process.pid}`);
                 }
             } else {
                 if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
