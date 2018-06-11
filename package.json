@@ -36,7 +36,8 @@
     "tar": "^4.4.2",
     "winston": "^2.4.2",
     "winston-daily-rotate-file": "^1.7.2",
-    "yargs": "^11.0.0"
+    "yargs": "^11.0.0",
+    "iobroker.vis-jqui-mfd": "1.0.11"
   },
   "devDependencies": {
     "@types/node": "^6.0.109",
@@ -52,7 +53,7 @@
     "mocha": "^5.1.1"
   },
   "homepage": "http://www.iobroker.com",
-  "description": "...domesticate the Internet of Things",
+  "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
   "keywords": [
     "ioBroker",
     "Smarthome",
@@ -87,7 +88,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-    "preinstall": "node lib/preinstall_check.js",
+    "preinstall": "node lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
