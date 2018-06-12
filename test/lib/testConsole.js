@@ -484,11 +484,11 @@ function register(it, expect, context) {
         expect(err).to.be.not.ok;
         let obj = yield context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj.native.license).to.be.equal(licenseText);
-        
+
         // license must be taken
         err = yield setup.processCommandAsync(context.objects, context.states, 'license', [licenseText], {});
         expect(err).to.be.not.ok;
-        obj = context.objects.getObjectAsync('system.adapter.vis.0')
+        obj = yield context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj.native.license).to.be.equal(licenseText);
     }));
     
