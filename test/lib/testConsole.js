@@ -3,7 +3,7 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-const tools = require(__dirname + '/../../lib/tools.js');
+const tools = require('../../lib/tools.js');
 
 function getBackupDir() {
     let dataDir = tools.getDefaultDataDir();
@@ -28,47 +28,43 @@ function getBackupDir() {
 
 function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' console: ';
-    const setup    = require(__dirname + '/../../lib/setup.js');
+    const setup    = require('../../lib/setup.js');
     // passwd, user passwd, user check
-    it(testName + 'user passwd', function (done) {
-        // set initial password
-        setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
-            expect(err).to.be.not.ok;
-            // check password
-            setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, err => {
-                expect(err).to.be.not.ok;
-                // negative check
-                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '2'}, err => {
-                    expect(err).to.be.ok;
-                    // set new password
-                    setup.processCommand(context.objects, context.states, 'user', ['passwd', 'admin'], {password: context.appName.toLowerCase() + '1'}, err => {
-                        expect(err).to.be.not.ok;
-                        // check new Password
-                        setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase() + '1'}, err => {
-                            expect(err).to.be.not.ok;
-                            // set password back
-                            setup.processCommand(context.objects, context.states, 'passwd', ['admin'], {password: context.appName.toLowerCase()}, err => {
-                                expect(err).to.be.not.ok;
-                                // check password
-                                setup.processCommand(context.objects, context.states, 'user', ['check', 'admin'], {password: context.appName.toLowerCase()}, err => {
-                                    expect(err).to.be.not.ok;
-                                    // set password for non existing user
-                                    setup.processCommand(context.objects, context.states, 'passwd', ['uuuser'], {password: context.appName.toLowerCase()}, err => {
-                                        expect(err).to.be.ok;
-                                        // check password for non existing user
-                                        setup.processCommand(context.objects, context.states, 'user', ['check', 'uuuser'], {password: context.appName.toLowerCase()}, err => {
-                                            expect(err).to.be.ok;
-                                            done();
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    }).timeout(2000)
+    it(testName + 'user passwd', tools.poorMansAsync(function* () {
+        let err;
+
+        err = yield setup.processCommandAsync(context.objects, context.states, 'passwd', ['admin'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.not.ok;
+
+        // check password
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['check', 'admin'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.not.ok;
+        // negative check
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['check', 'admin'], { password: context.appName.toLowerCase() + '2' });
+        expect(err).to.be.ok;
+
+        // set new password
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['passwd', 'admin'], { password: context.appName.toLowerCase() + '1' });
+        expect(err).to.be.not.ok;
+        // check new Password
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['check', 'admin'], { password: context.appName.toLowerCase() + '1' });
+        expect(err).to.be.not.ok;
+
+        // set password back
+        err = yield setup.processCommandAsync(context.objects, context.states, 'passwd', ['admin'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.not.ok;
+        // check password
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['check', 'admin'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.not.ok;
+
+        // set password for non existing user
+        err = yield setup.processCommandAsync(context.objects, context.states, 'passwd', ['uuuser'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.ok;
+        // check password for non existing user
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['check', 'uuuser'], { password: context.appName.toLowerCase() });
+        expect(err).to.be.ok;
+
+    })).timeout(2000);
 
     // user get
     it(testName + 'user get', function (done) {
