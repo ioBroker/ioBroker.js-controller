@@ -25,11 +25,11 @@ function getNodeModulesRoot() {
 }
 
 const defaultPack = {
-    "name": "iobroker.core",
-    "version": "1.0.0",
-    "description": 'Build automatically by reinstall.js',
-    "private": true,
-    "dependencies": {}
+    name: 'iobroker.core',
+    version: '1.0.0',
+    description: 'Build automatically by reinstall.js',
+    private: true,
+    dependencies: {}
 };
 
 function savePackages(root) {
