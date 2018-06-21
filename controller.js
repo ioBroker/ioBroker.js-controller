@@ -1524,7 +1524,7 @@ function processMessage(msg) {
                     data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
                     // add information about running instances
                     let count = 0;
-                    for (var id in procs) {
+                    for (const id in procs) {
                         if (procs.hasOwnProperty(id) && procs[id].process) {
                             count++;
                         }
@@ -1664,6 +1664,14 @@ function processMessage(msg) {
                 let result = startMultihost();
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, {result: result}, msg.callback);
+                }
+            })();
+            break;
+
+        case 'getInterfaces':
+            (function () {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
                 }
             })();
             break;
