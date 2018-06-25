@@ -8,13 +8,13 @@ function register(it, expect, context) {
     const textName = context.name + ' objects: ';
 
     const namespace = 'testObject.0';
-    const testId = namespace + '.test1';
+    const testId = namespace + '.test2';
 
     it(textName + 'should create and read object', done => {
         const objects = context.objects;
         objects.setObject(testId, {
             common: {
-                name: 'test1'
+                name: 'test2'
             },
             native: {
 
@@ -27,7 +27,7 @@ function register(it, expect, context) {
             objects.getObject(testId, (err, obj) => {
                 expect(err).to.be.not.ok;
                 expect(obj).to.be.ok;
-                expect(obj.common.name).to.be.equal('test1');
+                expect(obj.common.name).to.be.equal('test2');
                 expect(obj._id).to.be.equal(testId);
                 console.log(JSON.stringify(obj));
                 done();
@@ -70,22 +70,22 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.findObject(testId, (err, id, idOrName) => {
             expect(err).to.be.not.ok;
-            expect(idOrName).to.be.equal('test1');
+            expect(idOrName).to.be.equal('test2');
             expect(id).to.be.equal(testId);
 
-            objects.findObject('test1', (err, id, idOrName) => {
+            objects.findObject('test2', (err, id, idOrName) => {
                 expect(err).to.be.not.ok;
                 expect(id).to.be.equal(testId);
-                expect(idOrName).to.be.equal('test1');
+                expect(idOrName).to.be.equal('test2');
 
-                objects.findObject('test2', (err, id, idOrName) => {
+                objects.findObject('test3', (err, id, idOrName) => {
                     expect(err).to.be.not.ok;
-                    expect(idOrName).to.be.equal('test2');
+                    expect(idOrName).to.be.equal('test3');
                     expect(id).to.be.equal(null);
 
-                    objects.findObject('test1', 'channel', (err, id, idOrName) => {
+                    objects.findObject('test2', 'channel', (err, id, idOrName) => {
                         expect(err).to.be.not.ok;
-                        expect(idOrName).to.be.equal('test1');
+                        expect(idOrName).to.be.equal('test2');
                         expect(id).to.be.equal(null);
                         done();
                     });
@@ -98,18 +98,19 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.findObject(testId).then(id => {
             expect(id).to.be.equal(testId);
-            return objects.findObject('test1');
+            return objects.findObject('test2');
         }).then(id => {
             expect(id).to.be.equal(testId);
 
-            return objects.findObject('test2');
+            return objects.findObject('test3');
         }).then(id => {
             expect(id).to.be.equal(null);
-            return objects.findObject('test1', 'channel');
+            return objects.findObject('test3', 'channel');
         }).then(id => {
             expect(id).to.be.equal(null);
             done();
         }).catch(err => {
+            console.error(err);
             expect(1).to.be.equal('Never happens');
         });
     });

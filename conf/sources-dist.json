@@ -2,7 +2,7 @@
   "admin": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
-    "version": "2.0.9",
+    "version": "3.4.6",
     "type": "general",
     "published": "2014-12-04T18:45:44.907Z"
   },
@@ -37,7 +37,7 @@
   "ble": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/admin/ble.png",
-    "version": "0.3.4",
+    "version": "0.5.2",
     "type": "hardware",
     "published": "2017-09-05T15:57:13.123Z"
   },
@@ -108,6 +108,13 @@
     "icon": "https://raw.githubusercontent.com/jey-cee/ioBroker.deconz/master/admin/deconz.png",
     "version": "0.2.0",
     "type": "hardware"
+  },
+  "denon": {
+    "meta": "https://raw.githubusercontent.com/foxriver76/ioBroker.denon/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/foxriver76/ioBroker.denon/master/admin/denon.png",
+    "version": "0.2.0",
+    "type": "multimedia",
+    "published": "2018-06-24T19:34:40.803Z"
   },
   "discovery": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.discovery/master/io-package.json",
@@ -463,7 +470,7 @@
   "landroid-s": {
     "meta": "https://raw.githubusercontent.com/MeisterTR/ioBroker.landroid-s/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/MeisterTR/ioBroker.landroid-s/master/admin/landroid-s.png",
-    "version": "2.0.0",
+    "version": "2.1.1",
     "type": "garden",
     "published": "2017-07-22T11:45:31.427Z"
   },
@@ -569,7 +576,7 @@
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-vacuum/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.mihome-vacuum/master/admin/mihome-vacuum.png",
     "published": "2017-04-10T17:10:21.690Z",
-    "version": "0.6.0",
+    "version": "1.1.0",
     "type": "household"
   },
   "mikrotik": {
@@ -912,6 +919,13 @@
     "published": "2017-10-02T23:46:12.134Z",
     "type": "multimedia"
   },
+  "spotify-premium": {
+    "meta": "https://raw.githubusercontent.com/twonky4/ioBroker.spotify-premium/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/twonky4/ioBroker.spotify-premium/master/admin/spotify-premium.png",
+    "version": "0.3.1",
+    "type": "multimedia",
+    "published": "2018-05-14T20:15:39.928Z"
+  },
   "sql": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.sql/master/admin/sql.png",
@@ -970,7 +984,7 @@
   "tradfri": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/admin/tradfri.png",
-    "version": "1.1.10",
+    "version": "1.4.1",
     "type": "lighting",
     "published": "2017-08-23T11:33:34.827Z"
   },
@@ -991,9 +1005,8 @@
   "upnp": {
     "meta": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/admin/upnp-discovery.png",
-    "version": "0.3.6",
-    "type": "network",
-    "published": "2016-10-31T18:40:22.374Z"
+    "version": "0.3.8",
+    "type": "network"
   },
   "vcard": {
     "meta": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/io-package.json",
@@ -1212,12 +1225,19 @@
     "type": "weather",
     "published": "2015-01-30T22:05:03.364Z"
   },
+  "zigbee": {
+    "meta": "https://raw.githubusercontent.com/kirovilya/ioBroker.zigbee/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/kirovilya/ioBroker.zigbee/master/admin/zigbee.png",
+    "version": "0.5.7",
+    "type": "hardware",
+    "published": "2018-06-10T07:00:00.364Z"
+  },
   "zont": {
     "meta": "https://raw.githubusercontent.com/kirovilya/ioBroker.zont/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/kirovilya/ioBroker.zont/master/admin/zont.png",
     "version": "0.5.2",
     "type": "communication",
-    "published": "2018-02-07T20:48:00.364Z"
+    "published": "2018-02-07T20:58:00.364Z"
   },
   "zwave": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.zwave/master/io-package.json",
