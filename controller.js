@@ -492,7 +492,7 @@ function changeHost(objs, oldHostname, newHostname, callback) {
 }
 
 function cleanAutoSubscribe(instance, autoInstance, callback) {
-    states.getState(autoInstance + '.subscribes', function (err, state) {
+    states.getState(autoInstance + '.subscribes', (err, state) => {
         if (!state || !state.val) {
             if (typeof callback === 'function') {
                 setImmediate(function () {
@@ -538,15 +538,9 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
 
         if (modified) {
             outputCount++;
-            states.setState(autoInstance + '.subscribes', subs, function () {
-                if (typeof callback === 'function') {
-                    callback();
-                }
-            });
+            states.setState(autoInstance + '.subscribes', subs, () => (typeof callback === 'function')  && callback());
         } else if (typeof callback === 'function') {
-            setImmediate(function () {
-                callback();
-            });
+            setImmediate(() => callback());
         }
     });
 }
@@ -556,14 +550,14 @@ function cleanAutoSubscribes(instance, callback) {
     instance = instance.substring(15); // get name.0
 
     // read all instances
-    objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, res) {
+    objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, res) => {
         let count = 0;
         if (res && res.rows) {
             for (let c = res.rows.length - 1; c >= 0; c--) {
                 // remove this instance from autoSubscribe
                 if (res.rows[c].value.common.subscribable) {
                     count++;
-                    cleanAutoSubscribe(instance, res.rows[c].id, function () {
+                    cleanAutoSubscribe(instance, res.rows[c].id, () => {
                         if (!--count && callback) callback();
                     });
                 }
@@ -1949,34 +1943,34 @@ function installAdapters() {
                 });
             }
 
-            child.on('exit', function (exitCode) {
+            child.on('exit', exitCode => {
                 logger.info(tools.appName + ' exit ' + exitCode);
                 if (!task.disabled) {
                     startInstance(task.id, task.wakeUp);
                 }
 
-                setTimeout(function () {
+                setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
             });
-            child.on('error', function (err) {
+            child.on('error', err => {
                 logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
-                setTimeout(function () {
+                setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
             })
         } catch (err) {
             logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
-            setTimeout(function () {
+            setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
             }, 1000);
         }
     } else {
         logger.error('host.' + hostname + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
-        setTimeout(function () {
+        setTimeout(() => {
             installQueue.shift();
             installAdapters();
         }, 500);
@@ -2665,7 +2659,7 @@ function init() {
             if (!fs.existsSync(__dirname + '/../../package.json')) {
                 fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                     name: 'iobroker.core',
-                    version: '0.1.0',
+                    version: '1.0.0',
                     private: true
                 }, null, 2));
             } else {
