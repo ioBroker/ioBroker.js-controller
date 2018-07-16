@@ -19,9 +19,9 @@
 * В категориях: нужно в админке третьей создать из шаблона комнату, и из шаблона функцию свет.
 * В объектах найти нужный switch и из шаблона выбрать название созданной комнаты и функцию свет.
 
-![Screen3](img/007-what%20is%20enum%20.png)
+![Screen3](img/007-what%20is%20enum%203.png)
 
-![Screen4](img/007-what%20is%20enum%20.png)
+![Screen4](img/007-what%20is%20enum%204.png)
 
 ## Где ещё почитать
 Можно почитать [здесь](https://github.com/ioBroker/ioBroker.text2command).
