@@ -232,12 +232,23 @@ function createStates() {
                     }
                 }
             } else
-            // If this system.adapter.NAME.0.alive
+            // If this NAME.0.info.connection
+            if (id.match(/^[^.]+\.\d+\.info\.connection$/)) {
+                if (state && !state.val) {
+                    tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
+                        .then(() => {
+                            logger.debug('host.' + hostname + ' set all states quality to 0x42 (device not connected');
+                        }).catch(e => {
+                            logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
+                        });
+                }
+            }
+            else    // If this system.adapter.NAME.0.alive
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     let enabled = state.val;
                     setImmediate(function () {
-                        objects.getObject(id.substring(0, id.length - '.alive'.length), function (err, obj) {
+                        objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
                             if (err) logger.error('Cannot read object: '  + err);
                             if (obj && obj.common) {
                                 // IF adapter enabled => disable it
@@ -253,6 +264,16 @@ function createStates() {
                             }
                         });
                     });
+                } else if (state && state.ack && !state.val) {
+                    id = id.substring(0, id.length - /*.alive*/ 6);
+                    if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
+                        tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
+                            .then(() => {
+                                logger.debug('host.' + hostname + ' set all states quality to 0x12 (instance not connected');
+                            }).catch(e => {
+                            logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
+                        });
+                    }
                 }
             } else
             if (subscribe[id]) {
@@ -265,7 +286,9 @@ function createStates() {
                         logger.warn('host.' + hostname + ' controller Adapter subscribed on ' + id + ' does not exist!');
                     }
                 }
-            } else
+            }
+            /* it is not used because of code before
+            else
             // Monitor activity of the adapter and restart it if stopped
             if (!isStopping && id.substring(id.length - '.alive'.length) === '.alive') {
                 let adapter = id.substring(0, id.length - '.alive'.length);
@@ -278,6 +301,7 @@ function createStates() {
                     startInstance(adapter, false);
                 }
             }
+             */
         },
         connected: function () {
             if (states.clearAllLogs)     states.clearAllLogs();
@@ -2686,6 +2710,9 @@ function init() {
 
     // Subscribe for all logging objects
     states.subscribe('system.adapter.*.alive');
+
+    // Subscribe for connection state of all instances
+    states.subscribe('*.info.connection');
 
     // Read current state of all log subscribers
     states.getKeys('*.logging', function (err, keys) {
