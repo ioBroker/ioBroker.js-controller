@@ -16,8 +16,17 @@ const cp         = require('child_process');
 const ioPackage  = require(__dirname + '/io-package.json');
 const tools      = require(__dirname + '/lib/tools');
 const version    = ioPackage.common.version;
+const pidusage   = require('pidusage');
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
+
+/* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
+   Currently Node.js on Windows platform do not implements os.loadavg() functionality - it returns [0,0,0]
+   Expect first results after 1 min from application start (before 1 min runtime it will return [0,0,0])
+   Requiring it on other operating systems have NO influence.*/
+if (os.platform() === 'win32') {
+    require('loadavg-windows');
+}
 
 // Change version in io-package.json and start grunt task to modify the version
 const title = tools.appName + '.js-controller';
@@ -440,35 +449,54 @@ function startAliveInterval() {
 function reportStatus() {
     let id = 'system.host.' + hostname;
     outputCount += 10;
-    states.setState(id + '.alive',   {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
-    states.setState(id + '.load',    {val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id});
-    states.setState(id + '.mem',     {val: Math.round(1000 * os.freemem() / os.totalmem()) / 10, ack: true, from: id});
+    states.setState(id + '.alive', {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
+
+    // provide infos about current process
+
+    // pidusage([pid,pid,...], function (err, stats) {
+    // => {
+    //   cpu: 10.0,            // percentage (from 0 to 100*vcore)
+    //   memory: 357306368,    // bytes
+    //   ppid: 312,            // PPID
+    //   pid: 727,             // PID
+    //   ctime: 867000,        // ms user + system time
+    //   elapsed: 6650000,     // ms since the start of the process
+    //   timestamp: 864000000  // ms since epoch
+    // }
+    pidusage(process.pid, (err, stats) => {
+        // controller.s might be stopped, but this is still running
+        if (!err && states && states.setState && stats) {
+            states.setState(id + '.cpu',     {ack: true, from: id, val: parseFloat(stats.cpu).toFixed(2)});
+            states.setState(id + '.cputime', {ack: true, from: id, val: stats.ctime / 1000});
+            outputCount+=2;
+        }
+    });
+
     let mem = process.memoryUsage();
-    //noinspection JSUnresolvedVariable
-    states.setState(id + '.memRss', {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
-    //noinspection JSUnresolvedVariable
+    states.setState(id + '.memRss',       {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     states.setState(id + '.memHeapTotal', {val: Math.round(mem.heapTotal / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
-    //noinspection JSUnresolvedVariable
-    states.setState(id + '.memHeapUsed', {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
+    states.setState(id + '.memHeapUsed',  {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
+
+
+    // provide machine infos
+
+    states.setState(id + '.load',         {val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id});  //require('loadavg-windows')
+    states.setState(id + '.uptime',       {val: Math.round(process.uptime()), ack: true, from: id});
+    states.setState(id + '.mem',          {val: Math.round(1000 * os.freemem() / os.totalmem()) / 10, ack: true, from: id});
+    states.setState(id + '.freemem',      {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
             let text = fs.readFileSync('/proc/meminfo', 'utf8');
             let m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                //noinspection JSUnresolvedVariable
                 states.setState(id + '.memAvailable', {val: Math.round(parseInt(m[1], 10) * 0.001024), ack: true, from: id});
+                outputCount++;
             }
         } catch (err) {
             logger.error('Cannot read /proc/meminfo: ' + err);
         }
     }
-
-    // Under windows toFixed returns string ?
-    states.setState(id + '.uptime', {val: Math.round(process.uptime()), ack: true, from: id});
-    states.setState(id + '.freemem', {val: Math.round(os.freemem() / 1048576/* 1MB */), ack: true, from: id});
-    states.setState(id + '.inputCount', {val: inputCount, ack: true, from: id});
-    states.setState(id + '.outputCount', {val: outputCount, ack: true, from: id});
 
     if (config.system.checkDiskInterval && Date.now() - lastDiskSizeCheck >= config.system.checkDiskInterval) {
         lastDiskSizeCheck = Date.now();
@@ -480,12 +508,17 @@ function reportStatus() {
                 if (info) {
                     states.setState(id + '.diskSize', {val: Math.round((info['Disk size'] || 0) / (1024 * 1024)), ack: true, from: id});
                     states.setState(id + '.diskFree', {val: Math.round((info['Disk free'] || 0) / (1024 * 1024)), ack: true, from: id});
+                    outputCount+=2;
                 }
             } catch (e) {
-                logger.error('Cannot read disk size: ' + e);
+                logger.error('Cannot read disk information: ' + e);
             }
         });
     }
+
+    // some statistics
+    states.setState(id + '.inputCount',   {val: inputCount, ack: true, from: id});
+    states.setState(id + '.outputCount',  {val: outputCount, ack: true, from: id});
 
     inputCount  = 0;
     outputCount = 0;
@@ -896,7 +929,8 @@ function setMeta() {
                 },
                 hardware: {
                     cpus:       os.cpus(),
-                    totalmem:   os.totalmem()
+                    totalmem:   os.totalmem(),
+                    networkInterfaces: {}
                 }
             }
         };
@@ -937,48 +971,82 @@ function setMeta() {
     let tasks = [];
 
     let obj = {
-        _id: id + '.mem',
-        type: 'state',
+        _id:       id + '.cpu',
+        type:      'state',
         common: {
-            type: 'number',
-            name: 'Memory usage',
-            unit: '%',
-            read: true,
+            name:  'Controller - cpu usage in % of one core',
+            type:  'number',
+            read:  true,
             write: false,
-            min:  0,
-            max:  100
+            min:   0,
+            role:  'value',
+            unit:  '% of one core'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.memHeapUsed',
-        type: 'state',
+        _id:       id + '.cputime',
+        type:      'state',
         common: {
-            type: 'number',
-            name: 'Memory from heap used in MB',
-            read: true,
+            name:  'Controller - accumulated cputime in seconds',
+            type:  'number',
+            read:  true,
             write: false,
-            min: 0,
-            unit: 'MB'
+            min:   0,
+            role:  'value',
+            unit:  'seconds'
         },
         native: {}
     };
     tasks.push(obj);
 
+    obj = {
+        _id:       id + '.mem',
+        type:      'state',
+        common: {
+            type:  'number',
+            role:  'value',
+            name:  hostname + ' - memory usage in %',
+            unit:  '%',
+            read:  true,
+            write: false,
+            min:   0,
+            max:   100
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    obj = {
+        _id:       id + '.memHeapUsed',
+        type:      'state',
+        common: {
+            type:  'number',
+            role:  'value',
+            name:  'Controller - heap memory used in MB',
+            read:  true,
+            write: false,
+            min:   0,
+            unit:  'MB'
+        },
+        native: {}
+    };
+    tasks.push(obj);
 
     if (fs.existsSync('/proc/meminfo')) {
         obj = {
-            _id: id + '.memAvailable',
-            type: 'state',
+            _id:       id + '.memAvailable',
+            type:      'state',
             common: {
-                type: 'number',
-                name: 'Available memory in MB from /proc/meminfo',
-                read: true,
+                type:  'number',
+                role:  'value',
+                name:  hostname + ' - available memory from /proc/meminfo in MB',
+                read:  true,
                 write: false,
-                min: 0,
-                unit: 'MB'
+                min:   0,
+                unit:  'MB'
             },
             native: {}
         };
@@ -986,119 +1054,125 @@ function setMeta() {
     }
 
     obj = {
-        _id: id + '.memHeapTotal',
-        type: 'state',
+        _id:       id + '.memHeapTotal',
+        type:      'state',
         common: {
-            type: 'number',
-            name: 'Memory heap reserved in MB',
-            read: true,
+            type:  'number',
+            role:  'value',
+            name:  'Controller - heap memory reserved in MB',
+            read:  true,
             write: false,
-            min: 0,
-            unit: 'MB'
+            min:   0,
+            unit:  'MB'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.memRss',
-        type: 'state',
+        _id:       id + '.memRss',
+        type:      'state',
         common: {
-            type: 'number',
-            name: 'Resident set size in MB',
-            desc: 'RSS is the resident set size, the portion of the process\'s memory held in RAM',
-            read: true,
+            type:  'number',
+            role:  'value',
+            name:  'Controller - resident set size memory in MB',
+            desc:  'RSS is the resident set size, the portion of the process\'s memory held in RAM',
+            read:  true,
             write: false,
-            min:  0,
-            unit: 'MB'
+            min:   0,
+            unit:  'MB'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.uptime',
-        type: 'state',
+        _id:       id + '.uptime',
+        type:      'state',
         common: {
-            type: 'number',
-            name: 'Uptime in seconds',
-            read: true,
+            type:  'number',
+            role:  'value',
+            name:  'Controller - uptime in seconds',
+            read:  true,
             write: false,
-            min: 0,
-            unit: 'seconds'
+            min:   0,
+            unit:  'seconds'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.load',
-        type: 'state',
+        _id:       id + '.load',
+        type:      'state',
         common: {
-            unit: '',
-            type: 'number',
-            read: true,
+            unit:  '',
+            type:  'number',
+            role:  'value',
+            read:  true,
             write: false,
-            name: 'Load Average 1min'
+            name:  hostname + ' - load average 1min'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.alive',
-        type: 'state',
+        _id:       id + '.alive',
+        type:      'state',
         common: {
-            name: 'Host alive',
-            read: true,
+            name:  hostname + ' - alive status',
+            read:  true,
             write: false,
-            type: 'boolean'
+            type:  'boolean',
+            role:  'indicator'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.freemem',
-        type: 'state',
+        _id:       id + '.freemem',
+        type:      'state',
         common: {
-            name: 'Available RAM in MB',
-            unit: 'MB',
-            read: true,
+            name:  hostname + ' - available RAM in MB',
+            unit:  'MB',
+            read:  true,
             write: false,
-            type: 'number'
+            type: 'number',
+            role: 'value'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id:    id + '.inputCount',
-        type:   'state',
+        _id:       id + '.inputCount',
+        type:      'state',
         common: {
-            name: hostname + ' - inputs level',
-            desc: 'State\'s inputs in 15 seconds',
-            type: 'number',
-            read:   true,
-            write:  false,
-            role: 'state',
-            unit: 'events/15 seconds'
+            name:  'Controller - input level in events/15 seconds',
+            desc:  'State\'s inputs in 15 seconds',
+            type:  'number',
+            read:  true,
+            write: false,
+            role:  'value',
+            unit:  'events/15 seconds'
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id:    id + '.outputCount',
-        type:   'state',
+        _id:       id + '.outputCount',
+        type:      'state',
         common: {
-            name: hostname + ' outputs level',
-            desc: 'State\'s outputs in 15 seconds',
-            type: 'number',
-            read:   true,
-            write:  false,
-            role: 'state',
-            unit: 'events/15 seconds'
+            name:  'Controller - output level in events/15 seconds',
+            desc:  'State\'s outputs in 15 seconds',
+            type:  'number',
+            read:  true,
+            write: false,
+            role:  'value',
+            unit:  'events/15 seconds'
         },
         native: {}
     };
@@ -1108,54 +1182,66 @@ function setMeta() {
 
     if (config.system.checkDiskInterval) {
         obj = {
-            _id:    id + '.diskSize',
-            type:   'state',
+            _id:       id + '.diskSize',
+            type:      'state',
             common: {
-                name: hostname + ' disk total size',
-                desc: 'Disk size where the server is installed in MiB',
-                type: 'number',
-                read:   true,
-                write:  false,
-                role: 'state',
-                unit: 'MiB'
+                name:  hostname + ' - disk total size',
+                desc:  'Disk size of logical volume where the server is installed in MiB',
+                type:  'number',
+                read:  true,
+                write: false,
+                role:  'value',
+                unit:  'MiB'
             },
             native: {}
         };
         tasks.push(obj);
 
         obj = {
-            _id:    id + '.diskFree',
-            type:   'state',
+            _id:       id + '.diskFree',
+            type:      'state',
             common: {
-                name: hostname + ' disk free size',
-                desc: 'Disk free size where the server is installed in MiB',
-                type: 'number',
-                read:   true,
-                write:  false,
-                role: 'state',
-                unit: 'MiB'
+                name:  hostname + ' - disk free size',
+                desc:  'Free disk size of the logical volume where the server is installed in MiB',
+                type:  'number',
+                read:  true,
+                write: false,
+                role:  'value',
+                unit:  'MiB'
             },
             native: {}
         };
         tasks.push(obj);
 
         obj = {
-            _id:    id + '.diskWarning',
-            type:   'state',
+            _id:        id + '.diskWarning',
+            type:       'state',
             common: {
-                name: hostname + ' disk warning',
-                desc:   'Show warning in admin if the free disk space below this value',
+                name:   hostname + ' - disk warning level',
+                desc:   'Show warning in admin if the free disk space is below this value',
                 type:   'number',
                 read:   true,
                 write:  true,
                 def:    5,
-                role:   'state',
+                role:   'level',
                 unit:   '%'
             },
             native: {}
         };
         tasks.push(obj);
     }
+
+    // delete obsolete states
+    objects.getObjectView('system', 'state', {startkey: 'system.host.' + hostname + '.', endkey: 'system.host.' + hostname + '.\u9999', include_docs: true}, function (_err, doc) {
+        // identify existing states for deletion, because they are not in the new tasks-list
+        let todelete = doc.rows.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
+
+        if (todelete && todelete.length > 0) {
+            delObjects(todelete, function () {
+                if (logger) logger.info('Some obsolete host states deleted.');
+            });
+        };
+    });
 
     extendObjects(tasks, function () {
         // create UUID if not exist

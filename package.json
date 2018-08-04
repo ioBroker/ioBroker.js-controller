@@ -2,7 +2,7 @@
   "name": "iobroker.js-controller",
   "version": "1.5.0",
   "engines": {
-    "node": ">=4"
+    "node": ">=4.8.7"
   },
   "optionalDependencies": {
     "redis": "^2.8.0",
@@ -19,7 +19,9 @@
     "bluebird": "^3.5.1",
     "daemonize2": "^0.4.2",
     "iobroker.admin": ">=2.0.9",
+    "jsonwebtoken": "^8.2.1",
     "jszip": "^3.1.5",
+    "loadavg-windows": "^1.0.2",
     "mime": "^1.4.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
@@ -29,7 +31,6 @@
     "prompt": "^1.0.0",
     "pyconf": "^1.1.2",
     "request": "^2.85.0",
-    "jsonwebtoken": "^8.2.1",
     "safe-replace": "^1.0.2",
     "semver": "^5.5.0",
     "socket.io": "1.7.2",
@@ -37,8 +38,7 @@
     "tar": "^4.4.2",
     "winston": "^2.4.2",
     "winston-daily-rotate-file": "^1.7.2",
-    "yargs": "^11.0.0",
-    "iobroker.vis-jqui-mfd": "1.0.11"
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "^6.0.109",
