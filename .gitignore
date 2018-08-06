@@ -1,3 +1,4 @@
-/_dist
+/.git
 /.idea
+/.vscode
 /node_modules

@@ -1,0 +1,2 @@
+* 🌐
+  * [:de:](adapterref/adapterliste.md)
