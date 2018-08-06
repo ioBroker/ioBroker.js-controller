@@ -9,6 +9,7 @@ Beware: Work in progress!
 |---|---|
 |**archive**|Source of existing information|
 |**docsify**|Documentation Prototyping System|
+|**media**|Official files and images|
 
 ## Changelog
 
