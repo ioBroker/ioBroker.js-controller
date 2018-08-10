@@ -8,7 +8,8 @@ Beware: Work in progress!
 | Folder | Description |
 |---|---|
 |**archive**|Source of existing information|
-|**docsify**|Documentation Prototyping System|
+|**docsify**|Documentation Prototyping System info for Docsify|
+|**docs**|Docsify root to be able to use it as github pages docroot|
 |**media**|Official files and images|
 
 ## Changelog
@@ -16,7 +17,7 @@ Beware: Work in progress!
 Read the change log [here](CHANGELOG.md).
 
 
-## License 
+## License
 
 The MIT License (MIT)
 
