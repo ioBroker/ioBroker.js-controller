@@ -2,6 +2,8 @@
 
 # ioBroker.docs - the ioBroker documentation project
 
+Try prototype at [https://iobroker.github.io/ioBroker.docs](https://iobroker.github.io/ioBroker.docs)
+
 This is the place where a new documention for ioBroker is born.  
 Beware: Work in progress!
 
