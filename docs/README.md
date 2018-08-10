@@ -1,4 +1,4 @@
-# Willkommen beim ioBroker {docsify-ignore-all}
+# Willkommen bei ioBroker {docsify-ignore-all}
 
 ## Einleitung
 
