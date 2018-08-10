@@ -1,4 +1,4 @@
-# Willkommen beim ioBroker
+# Willkommen beim ioBroker {docsify-ignore-all}
 
 ## Einleitung
 
@@ -9,7 +9,7 @@ von Systemen, die ohne ioBroker Insellösungen bleiben würden.
 
 Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von `Adaptern`
 ermöglicht die Kommunikation mit über 200 verschiedenen Plattformen 
-von A wie Alarmanlage bis Z wie Zeiterfassung. Sei es die Einbindung 
+von A wie Alexa bis Z wie Zeiterfasung. Sei es die Einbindung 
 kommerzieller Produkte aus fast allen Lebensbereichen oder die 
 Integration einer selbst erstellten Lösung - ioBroker macht fast 
 alles möglich. 
@@ -46,7 +46,7 @@ später feststellen, dass Systeme häufig nicht perfekt sind. Jedes
 System hat seine Stärken und Schwächen. ioBroker ist deshalb 
 plattformübergreifend. Der Parallelbetrieb mit bestehenden Lösungen 
 ist jederzeit möglich. Es können Synergieeffekte genutzt und das 
-beste aus allen Welten zusammengeführt werden. Dabei ist ioBroker 
+Beste aus allen Welten zusammengeführt werden. Dabei ist ioBroker 
 selbst auf fast allen Plattformen zu Hause. ioBoker kann unter Windows, 
 Linux, OSX oder auch als Dockerimage installiert werden. Vorkonfigurierte 
 Installationsimages nehmen dabei dem Anwender die Installationsarbeit ab.
@@ -65,7 +65,7 @@ können zu einem `Mutihost`-System verbunden werden. Dabei ist sogar die
 Mischung von Betriebssystemplattformen und die Kopplung von 
 SoC-Einplatinencomputern mit großen Multicore-Servern möglich. 
 Für Systeme mit höchsten Performanceanforderungen kann optional Redis, 
-eine besonders schnelle In-Memory-Datenbank, eingebunden werden.
+eine besonders schnelle Datenbank, eingebunden werden.
 
 ## Erweiterbarkeit
 
