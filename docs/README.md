@@ -9,7 +9,7 @@ von Systemen, die ohne ioBroker Insellösungen bleiben würden.
 
 Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von `Adaptern`
 ermöglicht die Kommunikation mit über 200 verschiedenen Plattformen 
-von A wie Alarmanlagen bis Z wie Zeiterfassung. Sei es die Einbindung 
+von A wie Alarmanlage bis Z wie Zeiterfassung. Sei es die Einbindung 
 kommerzieller Produkte aus fast allen Lebensbereichen oder die 
 Integration einer selbst erstellten Lösung - ioBroker macht fast 
 alles möglich. 
@@ -48,7 +48,7 @@ plattformübergreifend. Der Parallelbetrieb mit bestehenden Lösungen
 ist jederzeit möglich. Es können Synergieeffekte genutzt und das 
 beste aus allen Welten zusammengeführt werden. Dabei ist ioBroker 
 selbst auf fast allen Plattformen zu Hause. ioBoker kann unter Windows, 
-Linux oder auch als Dockerimage installiert werden. Vorkonfigurierte 
+Linux, OSX oder auch als Dockerimage installiert werden. Vorkonfigurierte 
 Installationsimages nehmen dabei dem Anwender die Installationsarbeit ab.
 
 Über eine optionale cloudbasierte Oberfläche ist für den Anwender oder 
@@ -72,7 +72,7 @@ eine besonders schnelle In-Memory-Datenbank, eingebunden werden.
 Die Programmierung erfolgt mit JavaScript, einer seit 1995 stetig weiter
 entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
 Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
-zu ioBroaker beitragen kann und auch individuelle Anforderungen
+zu ioBroker beitragen kann und auch individuelle Anforderungen
 umsetzbar sind.
 
 ## Community
