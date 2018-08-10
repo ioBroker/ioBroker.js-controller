@@ -1,10 +1,14 @@
+[Willkommen](README.md)
 * Überblick
-  * [Willkommen](/)
-  * [ioBroker im Detail](/d)
+  * [ioBroker im Detail](/a)
+  * [Was ist iobroker](b)
+  * [Wie funktioniert es](c)
+  * [Wie ist es (unter der Haube) aufgebaut](d)
+  * [Was brauche ich dafür](e)
 * Installation
-  * [Voraussetzungen](/c)
-  * [Hardware](/a)
-  * [ioBroker](/b)
+  * [Voraussetzungen](/r)
+  * [Hardware](/s)
+  * [ioBroker](/t)
   * [Adapter](install/adapter.md)
 * Tutorial - Erste Schritte
   * [Einstieg](/adapter/)
