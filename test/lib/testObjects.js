@@ -266,6 +266,7 @@ function register(it, expect, context) {
     it(textName + 'should getObjectList', done => {
         const objects = context.objects;
         objects.getObjectList({startkey: namespace, endkey: testId}, (err, res) => {
+            console.log(res.rows.map(e => e.id));
             expect(err).to.be.not.ok;
             expect(res.rows.length).to.be.equal(3);
             expect(res.rows[0].id).to.be.equal(testId);
