@@ -22,6 +22,10 @@ before_script:
   - sudo chmod ogu+x test/redis-socket/setup-socket.sh
 script:
   - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
+after_success:
+  - npm install -g npm@latest
+  - npm install --package-lock-only
+  - npm audit
 env:
   - CXX=g++-4.8
 addons:
