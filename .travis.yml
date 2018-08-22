@@ -25,6 +25,7 @@ after_success:
   - npm install -g npm@latest
   - npm install --package-lock-only --production
   - npm audit
+  - npm ls
 env:
   - CXX=g++-4.8
 addons:
