@@ -9,7 +9,7 @@
     "greenlock": "^2.3.13",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
-    "winston-syslog": "^1.2.6",
+    "winston-syslog": "^2.0.0",
     "diskusage": "^0.2.4"
   },
   "bin": {
@@ -36,8 +36,8 @@
     "socket.io": "1.7.2",
     "socket.io-client": "1.7.2",
     "tar": "^4.4.6",
-    "winston": "^2.4.2",
-    "winston-daily-rotate-file": "^1.7.2",
+    "winston": "^3.0.0",
+    "winston-daily-rotate-file": "^3.3.2",
     "yargs": "^12.0.1"
   },
   "devDependencies": {
