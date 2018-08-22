@@ -269,8 +269,9 @@ function register(it, expect, context) {
             console.log(res.rows.map(e => e.id));
             expect(err).to.be.not.ok;
             expect(res.rows.length).to.be.equal(3);
-            expect(res.rows[0].id).to.be.equal(testId);
-            expect(res.rows[0].value._id).to.be.equal(testId);
+            const obj = res.rows.find(val => val.value._id === testId);
+            expect(obj.id).to.be.equal(testId);
+            expect(obj.value._id).to.be.equal(testId);
 
             objects.getObjectList({startkey: '', endkey: '_'}, (err, res) => {
                 expect(err).to.be.not.ok;
@@ -284,13 +285,15 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.getObjectList({startkey: namespace, endkey: testId}).then(res => {
             expect(res.rows.length).to.be.equal(3);
-            expect(res.rows[0].id).to.be.equal(testId);
-            expect(res.rows[0].value._id).to.be.equal(testId);
+            const obj = res.rows.find(val => val.value._id === testId);
+            expect(obj.id).to.be.equal(testId);
+            expect(obj.value._id).to.be.equal(testId);
             return objects.getObjectList({startkey: '', endkey: '_'});
         }).then(res => {
             expect(res.rows.length).to.be.equal(0);
             done();
         }).catch(err => {
+            console.error(err);
             expect(1).to.be.equal('Never happens');
         });
     });

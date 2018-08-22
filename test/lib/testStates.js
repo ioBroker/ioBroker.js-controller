@@ -328,14 +328,14 @@ function register(it, expect, context) {
             "acl": {
               "object": {
                 "list": false,
-                "read": false,
+                "read": true, // required to read permissions
                 "write": false,
                 "delete": false
               },
               "state": {
                 "list": false,
-                "read": true,
-                "write": false,
+                "read": false,
+                "write": true,
                 "create": false,
                 "delete": false
               },
@@ -360,7 +360,7 @@ function register(it, expect, context) {
           },
           "native": {},
           "acl": {
-            "object": 1638,
+            "object": 1638, // 0666
             "owner": "system.user.admin",
             "ownerGroup": "system.group.administrator"
           },
@@ -380,7 +380,7 @@ function register(it, expect, context) {
                 "_id": "system.user.write-only2",
                 "native": {},
                 "acl": {
-                    "object": 1638
+                    "object": 1638 // 0666
                 }
             }, function (err) {
 
@@ -390,32 +390,40 @@ function register(it, expect, context) {
                         type: 'number',
                         role: 'level',
                         min: -100,
+                        def: 10,
                         max: 100
                     },
                     native: {
                     },
                     type: 'state',
                     acl: {
-                        object: 1638,
+                        object: 1638, // 0666
                         owner: "system.user.write-only2",
-                        ownerGroup:"system.group.administrator",
-                        state: 1638
+                        ownerGroup: "system.group.administrator",
+                        state: 1638 // 0666
                     }
                 }, function (err) {
                     expect(err).to.be.null;
+                    context.adapter.setForeignState(fGid, 1, false, function (err) {
+                        context.states.getState(fGid, function (err, state) {
+                            expect(err).to.be.null;
+                            expect(state).to.be.ok;
+                            expect(state.val).to.be.equal(1);
 
-                    context.states.getState(fGid, function (err, state) {
-                        expect(err).to.be.null;
+                            context.adapter.setForeignState(fGid, 2, false, {user: 'system.user.write-only2'}, function (err) {
+                                expect(err).to.be.not.ok;
 
-                        context.adapter.setForeignState(fGid, 1, false, {user: "system.user.write-only2"}, function (err) {
-                            expect(err).to.be.not.ok;
-
-                            context.states.getState(fGid, function (err, state) {
-                                expect(err).to.be.null;
-                                expect(state).to.be.ok;
-                                expect(state.val).to.equal(1);
-                                expect(state.ack).to.equal(false);
-                                done();
+                                context.states.getState(fGid, function (err, state) {
+                                    expect(err).to.be.null;
+                                    expect(state).to.be.ok;
+                                    expect(state.val).to.equal(2);
+                                    expect(state.ack).to.equal(false);
+                                    context.adapter.getForeignState(fGid, {user: 'system.user.write-only2'}, function (err, state) {
+                                        expect(err).to.be.ok;
+                                        expect(state).to.be.not.ok;
+                                        done();
+                                    });
+                                });
                             });
                         });
                     });

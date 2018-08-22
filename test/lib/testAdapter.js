@@ -27,6 +27,7 @@ function testAdapter(options) {
         require(__dirname + '/testHelperStates'),
         require(__dirname + '/testMessages'),
         require(__dirname + '/testObjectsFunctions'),
+        require(__dirname + '/testObjectsACL'),
         require(__dirname + '/testStates'),
         require(__dirname + '/testConsole')
     ];
