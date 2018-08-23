@@ -819,9 +819,7 @@ function collectDiagInfo(type, callback) {
                                     if (total !== null) {
                                         diag.vis = total;
                                     }
-                                    extendObjects(tasks, function () {
-                                        if (callback) callback(diag);
-                                    });
+                                    extendObjects(tasks, () => callback && callback(diag));
                                 });
                             } catch (e) {
                                 logger.error('cannot call visUtils: ' + e);
