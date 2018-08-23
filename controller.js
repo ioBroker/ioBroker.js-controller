@@ -324,6 +324,7 @@ function createObjects() {
     return new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
+        controller: true,
         logger:     logger,
         hostname:   hostname,
         connected:  function (type) {
@@ -379,7 +380,7 @@ function createObjects() {
             }, config.objects.connectTimeout || 2000);
 
         },
-        change: function (id, obj) {
+        change:     function (id, obj) {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             logger.info('host.' + hostname + ' object change ' + id);
             try{
@@ -1240,7 +1241,7 @@ function setMeta() {
             delObjects(todelete, function () {
                 if (logger) logger.info('Some obsolete host states deleted.');
             });
-        };
+        }
     });
 
     extendObjects(tasks, function () {

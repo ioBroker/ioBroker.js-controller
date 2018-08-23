@@ -95,10 +95,10 @@ function register(it, expect, context) {
         err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'admin'], { password: 'aaa' });
         expect(err).to.be.ok;
         // add user
-        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'user'], { ingroup: 'user', password: 'user' });
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'userNew'], { ingroup: 'user', password: 'user' });
         expect(err).to.be.not.ok;
         // add existing user not allowed
-        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'user'], { password: 'user' });
+        err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'userNew'], { password: 'user' });
         expect(err).to.be.ok;
         // add with invalid group
         err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['add', 'user1'], { ingroup: 'invalid', password: 'bbb' });
@@ -152,7 +152,7 @@ function register(it, expect, context) {
         // delete invalid user
         err = yield setup.processCommandAsync(context.objects, context.states, 'user', ['del', 'user'], {});
         expect(err).to.be.ok;
-        // check adduser
+        // check userdel
         err = yield setup.processCommandAsync(context.objects, context.states, 'userdel', ['user2'], {});
         expect(err).to.be.not.ok;
     }));
