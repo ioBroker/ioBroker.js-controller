@@ -714,31 +714,34 @@ function collectDiagInfo(type, callback) {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
         callback && callback(null);
     } else {
-        objects.getObject('system.config', function (err, systemConfig) {
-            objects.getObject('system.meta.uuid', function (err, obj) {
+        objects.getObject('system.config', (err, systemConfig) => {
+            objects.getObject('system.meta.uuid', (err, obj) => {
                 // create uuid
                 if (err || !obj) {
                     obj = {native: {uuid: 'not found'}};
                 }
-                objects.getObjectView('system', 'host', {}, function (_err, doc) {
+                objects.getObjectView('system', 'host', {}, (_err, doc) => {
                     // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
                     let diag = {
-                        uuid: obj.native.uuid,
-                        language: systemConfig.common.language,
-                        country: '',
-                        city: '',
-                        hosts: [],
-                        node: process.version,
-                        arch: os.arch(),
-                        adapters: {}
+                        uuid:           obj.native.uuid,
+                        language:       systemConfig.common.language,
+                        country:        '',
+                        city:           '',
+                        hosts:          [],
+                        node:           process.version,
+                        arch:           os.arch(),
+                        adapters:       {},
+                        statesType:     config.states.type, // redis or file
+                        objectsType:    config.objects.type // redis or file
                     };
                     if (type === 'extended' || type === 'no-city') {
+                        let cpus     = os.cpus();
+
                         diag.country = systemConfig.common.country;
-                        let cpus    = os.cpus();
-                        diag.model  = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
-                        diag.cpus   = cpus ? cpus.length : 1;
-                        diag.mem    = os.totalmem();
-                        diag.ostype = os.type();
+                        diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
+                        diag.cpus    = cpus ? cpus.length : 1;
+                        diag.mem     = os.totalmem();
+                        diag.ostype  = os.type();
                         delete diag.city;
                     }
                     if (type === 'extended') {
@@ -751,7 +754,7 @@ function collectDiagInfo(type, callback) {
                         if (doc && doc.rows.length) {
                             if (!semver) semver = require('semver');
 
-                            doc.rows.sort(function (a, b) {
+                            doc.rows.sort((a, b) => {
                                 try {
                                     return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
                                 } catch (e) {
@@ -770,7 +773,7 @@ function collectDiagInfo(type, callback) {
                             }
                         }
                     }
-                    objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                    objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
                         let visFound = false;
                         if (!_err && doc) {
                             if (doc && doc.rows.length) {
@@ -790,7 +793,7 @@ function collectDiagInfo(type, callback) {
                         if (visFound) {
                             let visUtils = require(__dirname + '/lib/vis/states');
                             try {
-                                visUtils(objects, null, 0, null, function (err, points) {
+                                visUtils(objects, null, 0, null, (err, points) => {
                                     let total = null;
                                     let tasks = [];
                                     if (points && points.length) {
@@ -1348,9 +1351,7 @@ function processMessage(msg) {
                 objects.getObject('system.config', function (err, systemConfig) {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                        collectDiagInfo(systemConfig.common.diag, function (obj) {
-                            if (obj) tools.sendDiagInfo(obj);
-                        });
+                        collectDiagInfo(systemConfig.common.diag, obj => obj && tools.sendDiagInfo(obj));
                     }
 
                     objects.getObject('system.repositories', function (err, repos) {
