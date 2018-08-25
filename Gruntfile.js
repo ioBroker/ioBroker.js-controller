@@ -29,11 +29,11 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         {
-                            match: /var version = '[\.0-9]*';/g,
+                            match: /var version = '[.0-9]*';/g,
                             replacement: "var version = '" + iopackage.common.version + "';"
                         },
                         {
-                            match: /"version"\: "[\.0-9]*",/g,
+                            match: /"version": "[.0-9]*",/g,
                             replacement: '"version": "' + iopackage.common.version + '",'
                         }
                     ]

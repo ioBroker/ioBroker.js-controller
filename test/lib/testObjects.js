@@ -298,6 +298,28 @@ function register(it, expect, context) {
         });
     });
 
+    it(textName + 'should create and read file', done => {
+        const objects = context.objects;
+        objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
+            expect(err).to.be.not.ok;
+
+            objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
+                expect(err).to.be.not.ok;
+                expect(data).to.be.equal('dataInFile');
+                expect(mimeType).to.be.equal('text/javascript');
+                objects.rm(testId, 'myFile/*', (err, files) => {
+                    expect(err).to.be.not.ok;
+                    expect(files[0].file).to.be.equal('abc.txt');
+                    expect(files[0].path).to.be.equal('myFile');
+                    objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
+                        expect(err).to.be.equal('Not exists');
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
     it(textName + 'should delete object', done => {
         const objects = context.objects;
         objects.delObject(testId, err => {
@@ -332,6 +354,7 @@ function register(it, expect, context) {
             done();
         });
     });
+
 
     it(textName + 'should close DB', done => {
         const objects = context.objects;
