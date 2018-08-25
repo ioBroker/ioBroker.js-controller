@@ -11,13 +11,29 @@ let   states   = null;
 const textName = 'Redis ';
 const tests    = require('./lib/testObjects');
 const fs       = require('fs');
-const isExecute = fs.existsSync('../lib/objects/objectsInRedis.js');
+const isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
 let   context  = {
     objects: null,
     name: textName
 };
 
-describe(textName + 'Test Objects', function() {
+const objectsConfig = {
+    dataDir:        __dirname + '/../tmp/data',
+    type:           'redis',
+    host:           '127.0.0.1',
+    port:           6379,
+    user:           '',
+    pass:           '',
+    redisNamespace: 'test',
+    noFileCache:    true,
+    connectTimeout: 2000,
+    onChange: (id, obj) => {
+        console.log('object changed. ' + id);
+    }
+};
+
+
+describe(textName + 'Test Objects', function () {
     before(textName + 'Start js-controller', function (_done) {
         this.timeout(2000);
 
@@ -26,15 +42,10 @@ describe(textName + 'Test Objects', function() {
             return done();
         }
         setup.startController({
-                objects: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, obj) {
-                        console.log('object changed. ' + id);
-                    }
-                },
+                objects: objectsConfig,
                 states: {
                     dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, state) {
+                    onChange: (id, state) => {
                         console.log('state changed. ' + id);
                     }
                 }
@@ -45,7 +56,7 @@ describe(textName + 'Test Objects', function() {
                 context.objects = _objects;
                 expect(objects).to.be.ok;
                 expect(states).to.be.ok;
-                _done();
+                _objects.destroyDB(() => _done());
             }
         );
     });

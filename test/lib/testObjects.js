@@ -1,7 +1,7 @@
 /* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
+/* jshint strict: false */
+/* jslint node: true */
+/* jshint expr: true */
 'use strict';
 
 function register(it, expect, context) {
@@ -320,6 +320,88 @@ function register(it, expect, context) {
         });
     });
 
+    it(textName + 'should read directory', done => {
+        const objects = context.objects;
+        objects.writeFile(testId, 'myFile/abc1.txt', 'dataInFile', err => {
+            expect(err).to.be.not.ok;
+            objects.writeFile(testId, 'myFile/abc2.txt', new Buffer('ABC'), err => {
+                expect(err).to.be.not.ok;
+                objects.readDir(testId, 'myFile/', (err, data) => {
+                    expect(err).to.be.not.ok;
+                    expect(data.length).to.be.equal(2);
+                    expect(data[0].file).to.be.equal('abc1.txt');
+                    expect(data[1].file).to.be.equal('abc2.txt');
+                    expect(data[1].stats.size).to.be.equal(3);
+                    done();
+                });
+            });
+        });
+    });
+
+    it(textName + 'should unlink file', done => {
+        const objects = context.objects;
+        objects.unlink(testId, 'myFile/abc1.txt', err => {
+            expect(err).to.be.not.ok;
+            objects.unlink(testId, 'myFile/abc1.txt', err => {
+                expect(err).to.be.equal('Not exists');
+                done();
+            });
+        });
+    });
+
+    it(textName + 'should rename file', done => {
+        const objects = context.objects;
+        objects.rename(testId, 'myFile/abc2.txt', 'myFile/abc3.txt', err => {
+            expect(err).to.be.not.ok;
+            objects.readFile(testId, 'myFile/abc3.txt', (err, data, meta) => {
+                expect(err).to.be.not.ok;
+                expect(data).to.be.ok;
+                objects.readFile(testId, 'myFile/abc2.txt', err => {
+                    expect(err).to.be.equal('Not exists');
+                    done();
+                });
+            });
+        });
+    });
+
+    it(textName + 'should touch file', done => {
+        const objects = context.objects;
+        objects.readDir(testId, 'myFile', (err, files) => {
+            expect(err).to.be.not.ok;
+            const file = files.find(f => f.file === 'abc3.txt');
+
+            setTimeout(() => {
+                objects.touch(testId, 'myFile/abc3.txt', err => {
+                    expect(err).to.be.not.ok;
+                    objects.readDir(testId, 'myFile', (err, files) => {
+                        const file1 = files.find(f => f.file === 'abc3.txt');
+                        expect(file1.modifiedAt).to.be.not.equal(file.modifiedAt);
+                        done();
+                    });
+                });
+            }, 200);
+        });
+    });
+
+    it(textName + 'should create directory', done => {
+        const objects = context.objects;
+        objects.mkdir(testId, 'myFile' + Math.round(Math.random() * 100000), err => {
+            expect(err).to.be.not.ok;
+            done();
+        });
+    });
+
+    // todo chmod
+    // tofo chown
+
+    it(textName + 'should enable file cache', done => {
+        const objects = context.objects;
+        objects.enableFileCache(true, err => {
+            expect(err).to.be.not.ok;
+            done();
+        });
+    });
+
     it(textName + 'should delete object', done => {
         const objects = context.objects;
         objects.delObject(testId, err => {
@@ -354,7 +436,6 @@ function register(it, expect, context) {
             done();
         });
     });
-
 
     it(textName + 'should close DB', done => {
         const objects = context.objects;
