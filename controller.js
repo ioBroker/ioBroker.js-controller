@@ -666,7 +666,7 @@ function delObjects(objs, callback) {
  */
 function checkHost(type, callback) {
     if (type === 'InMemoryDB') {
-        objects.getObjectView('system', 'host', {}, function (_err, doc) {
+        objects.getObjectView('system', 'host', {}, (_err, doc) => {
             if (!_err && doc && doc.rows &&
                 doc.rows.length === 1 &&
                 doc.rows[0].value.common.name !== hostname)
@@ -675,7 +675,7 @@ function checkHost(type, callback) {
                 let oldId  = doc.rows[0].value._id;
 
                 // find out all instances and rewrite it to actual hostname
-                objects.getObjectView('system', 'instance', {}, function (err, doc) {
+                objects.getObjectView('system', 'instance', {}, (err, doc) => {
                     if (err && err.status_code === 404) {
                         if (callback) callback();
                     } else if (doc.rows.length === 0) {
@@ -684,14 +684,14 @@ function checkHost(type, callback) {
                         if (callback) callback();
                     } else {
                         // reassign all instances
-                        changeHost(doc.rows, oldHostname, hostname, function () {
+                        changeHost(doc.rows, oldHostname, hostname, () => {
                             logger.info('Delete host ' + oldId);
 
                             // delete host object
-                            objects.delObject(oldId, function () {
+                            objects.delObject(oldId, () => {
 
                                 // delete all hosts states
-                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, function (_err, doc) {
+                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
                                     delObjects(doc.rows, function () {
                                         if (callback) callback();
                                     });
@@ -705,7 +705,7 @@ function checkHost(type, callback) {
             }
         });
     } else {
-        if (callback) callback();
+        callback && callback();
     }
 }
 
@@ -852,12 +852,10 @@ function setIPs(ipList) {
     // IPv4 address still not found, try again in 30 seconds
     if (!found && detectIpsCount < 10) {
         detectIpsCount++;
-        setTimeout(function () {
-            setIPs();
-        }, 30000);
+        setTimeout(() => setIPs(), 30000);
     } else if (found) {
         // IPv4 found => write to object
-        objects.getObject('system.host.' + hostname, function (err, oldObj) {
+        objects.getObject('system.host.' + hostname, (err, oldObj) => {
             let networkInterfaces = os.networkInterfaces();
             if (JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
                 JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
@@ -865,9 +863,7 @@ function setIPs(ipList) {
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = 'system.host.' + tools.getHostName();
                 oldObj.ts = Date.now();
-                objects.setObject(oldObj._id, oldObj, function (err) {
-                    if (err) logger.error('Cannot write host object:' + err);
-                });
+                objects.setObject(oldObj._id, oldObj, err => err && logger.error('Cannot write host object:' + err));
             }
         });
     } else {
@@ -900,7 +896,7 @@ function extendObjects(tasks, callback) {
 function setMeta() {
     let id = 'system.host.' + hostname;
 
-    objects.getObject(id, function (err, oldObj) {
+    objects.getObject(id, (err, oldObj) => {
         let newObj = {
             _id:  id,
             type: 'host',
@@ -963,11 +959,16 @@ function setMeta() {
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
             newObj.from = 'system.host.' + tools.getHostName();
             newObj.ts = Date.now();
-            objects.setObject(id, newObj, function (err) {
-                if (err) logger.error('Cannot write host object:' + err);
+            objects.setObject(id, newObj, err => {
+                if (err) {
+                    logger.error('Cannot write host object:' + err);
+                } else {
+                    setIPs(newObj.common.address);
+                }
             });
+        } else {
+            setIPs(newObj.common.address);
         }
-        setIPs(newObj.common.address);
     });
 
     let tasks = [];
