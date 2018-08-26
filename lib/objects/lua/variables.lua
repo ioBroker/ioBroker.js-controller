@@ -1,4 +1,4 @@
-local rep={}
+local rep = {}
 local keys=redis.call("keys", "cfg.o.*")
 local argStart="cfg.o."..KEYS[1]
 local argEnd="cfg.o."..KEYS[2]
