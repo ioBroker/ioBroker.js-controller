@@ -6,7 +6,7 @@
   },
   "optionalDependencies": {
     "redis": "^2.8.0",
-    "greenlock": "^2.3.13",
+    "greenlock": "^2.4.2",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
     "winston-syslog": "^2.0.0",
