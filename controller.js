@@ -324,6 +324,7 @@ function createObjects() {
     return new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
+        controller: true,
         logger:     logger,
         hostname:   hostname,
         connected:  function (type) {
@@ -379,7 +380,7 @@ function createObjects() {
             }, config.objects.connectTimeout || 2000);
 
         },
-        change: function (id, obj) {
+        change:     function (id, obj) {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             logger.info('host.' + hostname + ' object change ' + id);
             try{
@@ -665,7 +666,7 @@ function delObjects(objs, callback) {
  */
 function checkHost(type, callback) {
     if (type === 'InMemoryDB') {
-        objects.getObjectView('system', 'host', {}, function (_err, doc) {
+        objects.getObjectView('system', 'host', {}, (_err, doc) => {
             if (!_err && doc && doc.rows &&
                 doc.rows.length === 1 &&
                 doc.rows[0].value.common.name !== hostname)
@@ -674,7 +675,7 @@ function checkHost(type, callback) {
                 let oldId  = doc.rows[0].value._id;
 
                 // find out all instances and rewrite it to actual hostname
-                objects.getObjectView('system', 'instance', {}, function (err, doc) {
+                objects.getObjectView('system', 'instance', {}, (err, doc) => {
                     if (err && err.status_code === 404) {
                         if (callback) callback();
                     } else if (doc.rows.length === 0) {
@@ -683,14 +684,14 @@ function checkHost(type, callback) {
                         if (callback) callback();
                     } else {
                         // reassign all instances
-                        changeHost(doc.rows, oldHostname, hostname, function () {
+                        changeHost(doc.rows, oldHostname, hostname, () => {
                             logger.info('Delete host ' + oldId);
 
                             // delete host object
-                            objects.delObject(oldId, function () {
+                            objects.delObject(oldId, () => {
 
                                 // delete all hosts states
-                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, function (_err, doc) {
+                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
                                     delObjects(doc.rows, function () {
                                         if (callback) callback();
                                     });
@@ -704,7 +705,7 @@ function checkHost(type, callback) {
             }
         });
     } else {
-        if (callback) callback();
+        callback && callback();
     }
 }
 
@@ -713,31 +714,34 @@ function collectDiagInfo(type, callback) {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
         callback && callback(null);
     } else {
-        objects.getObject('system.config', function (err, systemConfig) {
-            objects.getObject('system.meta.uuid', function (err, obj) {
+        objects.getObject('system.config', (err, systemConfig) => {
+            objects.getObject('system.meta.uuid', (err, obj) => {
                 // create uuid
                 if (err || !obj) {
                     obj = {native: {uuid: 'not found'}};
                 }
-                objects.getObjectView('system', 'host', {}, function (_err, doc) {
+                objects.getObjectView('system', 'host', {}, (_err, doc) => {
                     // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
                     let diag = {
-                        uuid: obj.native.uuid,
-                        language: systemConfig.common.language,
-                        country: '',
-                        city: '',
-                        hosts: [],
-                        node: process.version,
-                        arch: os.arch(),
-                        adapters: {}
+                        uuid:           obj.native.uuid,
+                        language:       systemConfig.common.language,
+                        country:        '',
+                        city:           '',
+                        hosts:          [],
+                        node:           process.version,
+                        arch:           os.arch(),
+                        adapters:       {},
+                        statesType:     config.states.type, // redis or file
+                        objectsType:    config.objects.type // redis or file
                     };
                     if (type === 'extended' || type === 'no-city') {
+                        let cpus     = os.cpus();
+
                         diag.country = systemConfig.common.country;
-                        let cpus    = os.cpus();
-                        diag.model  = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
-                        diag.cpus   = cpus ? cpus.length : 1;
-                        diag.mem    = os.totalmem();
-                        diag.ostype = os.type();
+                        diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
+                        diag.cpus    = cpus ? cpus.length : 1;
+                        diag.mem     = os.totalmem();
+                        diag.ostype  = os.type();
                         delete diag.city;
                     }
                     if (type === 'extended') {
@@ -750,7 +754,7 @@ function collectDiagInfo(type, callback) {
                         if (doc && doc.rows.length) {
                             if (!semver) semver = require('semver');
 
-                            doc.rows.sort(function (a, b) {
+                            doc.rows.sort((a, b) => {
                                 try {
                                     return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
                                 } catch (e) {
@@ -769,7 +773,7 @@ function collectDiagInfo(type, callback) {
                             }
                         }
                     }
-                    objects.getObjectView('system', 'adapter', {}, function (__err, doc) {
+                    objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
                         let visFound = false;
                         if (!_err && doc) {
                             if (doc && doc.rows.length) {
@@ -789,7 +793,7 @@ function collectDiagInfo(type, callback) {
                         if (visFound) {
                             let visUtils = require(__dirname + '/lib/vis/states');
                             try {
-                                visUtils(objects, null, 0, null, function (err, points) {
+                                visUtils(objects, null, 0, null, (err, points) => {
                                     let total = null;
                                     let tasks = [];
                                     if (points && points.length) {
@@ -818,9 +822,7 @@ function collectDiagInfo(type, callback) {
                                     if (total !== null) {
                                         diag.vis = total;
                                     }
-                                    extendObjects(tasks, function () {
-                                        if (callback) callback(diag);
-                                    });
+                                    extendObjects(tasks, () => callback && callback(diag));
                                 });
                             } catch (e) {
                                 logger.error('cannot call visUtils: ' + e);
@@ -850,12 +852,10 @@ function setIPs(ipList) {
     // IPv4 address still not found, try again in 30 seconds
     if (!found && detectIpsCount < 10) {
         detectIpsCount++;
-        setTimeout(function () {
-            setIPs();
-        }, 30000);
+        setTimeout(() => setIPs(), 30000);
     } else if (found) {
         // IPv4 found => write to object
-        objects.getObject('system.host.' + hostname, function (err, oldObj) {
+        objects.getObject('system.host.' + hostname, (err, oldObj) => {
             let networkInterfaces = os.networkInterfaces();
             if (JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
                 JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
@@ -863,9 +863,7 @@ function setIPs(ipList) {
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = 'system.host.' + tools.getHostName();
                 oldObj.ts = Date.now();
-                objects.setObject(oldObj._id, oldObj, function (err) {
-                    if (err) logger.error('Cannot write host object:' + err);
-                });
+                objects.setObject(oldObj._id, oldObj, err => err && logger.error('Cannot write host object:' + err));
             }
         });
     } else {
@@ -898,7 +896,7 @@ function extendObjects(tasks, callback) {
 function setMeta() {
     let id = 'system.host.' + hostname;
 
-    objects.getObject(id, function (err, oldObj) {
+    objects.getObject(id, (err, oldObj) => {
         let newObj = {
             _id:  id,
             type: 'host',
@@ -961,11 +959,16 @@ function setMeta() {
         if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
             newObj.from = 'system.host.' + tools.getHostName();
             newObj.ts = Date.now();
-            objects.setObject(id, newObj, function (err) {
-                if (err) logger.error('Cannot write host object:' + err);
+            objects.setObject(id, newObj, err => {
+                if (err) {
+                    logger.error('Cannot write host object:' + err);
+                } else {
+                    setIPs(newObj.common.address);
+                }
             });
+        } else {
+            setIPs(newObj.common.address);
         }
-        setIPs(newObj.common.address);
     });
 
     let tasks = [];
@@ -1240,7 +1243,7 @@ function setMeta() {
             delObjects(todelete, function () {
                 if (logger) logger.info('Some obsolete host states deleted.');
             });
-        };
+        }
     });
 
     extendObjects(tasks, function () {
@@ -1349,9 +1352,7 @@ function processMessage(msg) {
                 objects.getObject('system.config', function (err, systemConfig) {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                        collectDiagInfo(systemConfig.common.diag, function (obj) {
-                            if (obj) tools.sendDiagInfo(obj);
-                        });
+                        collectDiagInfo(systemConfig.common.diag, obj => obj && tools.sendDiagInfo(obj));
                     }
 
                     objects.getObject('system.repositories', function (err, repos) {

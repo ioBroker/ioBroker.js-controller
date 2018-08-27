@@ -77,6 +77,9 @@ or
 or
 
 * run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
+### Install Redis (Optional)
+- Linux from here: https://redis.io/download
+- Windows from here: https://github.com/MicrosoftArchive/redis/releases
 
 ### Admin UI
 

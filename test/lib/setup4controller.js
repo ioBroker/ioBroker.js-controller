@@ -40,6 +40,7 @@ function startController(options, callback) {
             port:               options.objects.port || 19001,
             user:               options.objects.user || '',
             pass:               options.objects.pass || '',
+            redisNamespace:     options.objects.redisNamespace || '',
             noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
             connectTimeout:     options.objects.connectTimeout || 2000,
             dataDir:            options.objects.dataDir || ''
