@@ -30,7 +30,6 @@ const objectsConfig = {
     noFileCache:    true,
     connectTimeout: 2000
 };
-
 // states in files, objects in files
 testAdapter({
     statesConfig:  statesConfig,

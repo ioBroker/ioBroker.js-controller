@@ -410,15 +410,15 @@ function register(it, expect, context) {
                             expect(state).to.be.ok;
                             expect(state.val).to.be.equal(1);
 
-                            context.adapter.setForeignState(fGid, 2, false, {user: 'system.user.write-only2'}, function (err) {
+                            context.adapter.setForeignState(fGid, 2, false, {user: 'system.user.write-only2'}, err => {
                                 expect(err).to.be.not.ok;
 
-                                context.states.getState(fGid, function (err, state) {
+                                context.states.getState(fGid, (err, state) => {
                                     expect(err).to.be.null;
                                     expect(state).to.be.ok;
                                     expect(state.val).to.equal(2);
                                     expect(state.ack).to.equal(false);
-                                    context.adapter.getForeignState(fGid, {user: 'system.user.write-only2'}, function (err, state) {
+                                    context.adapter.getForeignState(fGid, {user: 'system.user.write-only2'}, (err, state) => {
                                         expect(err).to.be.ok;
                                         expect(state).to.be.not.ok;
                                         done();

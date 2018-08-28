@@ -35,21 +35,20 @@ describe('States-Redis: Test states', function() {
         setup.startController({
                 objects: {
                     dataDir: dataDir,
-                    onChange:function (id, obj) {
-                        console.log('object changed. ' + id);
-                    }
+                    onChange: (id, obj) =>
+                        console.log('object changed. ' + id)
                 },
                 states: {
                     type: 'redis',
                     host: '127.0.0.1',
                     port: 6379,
-                    onChange: function (id, state) {
+                    onChange: (id, state) => {
                         console.log('Redis-state changed. ' + id);
                         if (onStatesChanged) onStatesChanged(id, state);
                     }
                 }
             },
-            function (_objects, _states) {
+            (_objects, _states) => {
                 objects = _objects;
                 states  = _states;
                 states.subscribe('*');
@@ -60,11 +59,9 @@ describe('States-Redis: Test states', function() {
         );
     });
 
-    it('States-Redis: should setState', function (done) {
-        this.timeout(10000);
-
+    it('States-Redis: should setState', done => {
         var testID = 'testObject.0.test1';
-        onStatesChanged = function (id, state) {
+        onStatesChanged = (id, state) => {
             if (id === testID) {
                 expect(state).to.be.ok;
                 expect(state.val).to.be.equal(1);
@@ -72,7 +69,7 @@ describe('States-Redis: Test states', function() {
                 expect(state.ts).to.be.ok;
                 expect(state.q).to.be.equal(0);
 
-                states.getState(testID, function (err, state) {
+                states.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
                     expect(state.val).to.be.equal(1);
@@ -84,15 +81,15 @@ describe('States-Redis: Test states', function() {
             }
         };
 
-        states.setState(testID, 1, function (err) {
+        states.setState(testID, 1, err => {
             expect(err).to.be.not.ok;
         });
-    });
+    }).timeout(10000);
+
+    // todo: write more tests
 
     after('States-Redis: Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(function () {
-            done();
-        });
+        setup.stopController(() => done());
     });
 });
