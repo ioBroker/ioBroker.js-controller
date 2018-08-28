@@ -7,6 +7,7 @@
         "checkDiskInterval": 300000,
         "checkDiskIntervalComment": "Interval how often the disk size will be checked",
         "noChmod": false,
+        "instanceStartInterval": 2000,
         "noChmodComment": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)"
     },
     "multihostService": {

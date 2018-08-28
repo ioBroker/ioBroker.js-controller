@@ -9,7 +9,7 @@
   "alexa2": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-    "version": "0.3.8",
+    "version": "0.5.2",
     "type": "iot-systems",
     "published": "2018-07-20T15:00:00.000Z"
   },
@@ -44,7 +44,7 @@
   "ble": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/admin/ble.png",
-    "version": "0.3.4",
+    "version": "0.5.2",
     "type": "hardware",
     "published": "2017-09-05T15:57:13.123Z"
   },
@@ -90,6 +90,13 @@
     "type": "communication",
     "published": "2016-06-24T18:36:32.658Z"
   },
+  "contactid": {
+    "meta": "https://raw.githubusercontent.com/schmupu/ioBroker.contactid/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/schmupu/ioBroker.contactid/master/admin/contactid.png",
+    "type": "alarm",
+    "version": "0.1.2",
+    "published": "2018-08-27T21:45.0000Z"
+  },
   "cul": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg",
@@ -119,7 +126,7 @@
   "denon": {
     "meta": "https://raw.githubusercontent.com/foxriver76/ioBroker.denon/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/foxriver76/ioBroker.denon/master/admin/denon.png",
-    "version": "0.2.2",
+    "version": "0.3.5",
     "type": "multimedia",
     "published": "2018-06-24T19:34:40.803Z"
   },
@@ -157,6 +164,13 @@
     "version": "1.0.2",
     "type": "messaging",
     "published": "2015-01-02T23:50:13.927Z"
+  },
+  "energymanager": {
+    "meta": "https://raw.githubusercontent.com/unltdnetworx/ioBroker.energymanager/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/unltdnetworx/ioBroker.energymanager/master/admin/energymanager.png",
+    "version": "1.0.0",
+    "type": "energy",
+    "published": "2018-08-13T16:48:00.000Z"
   },
   "enet": {
     "meta": "https://raw.githubusercontent.com/SebastianSchultz/ioBroker.enet/master/io-package.json",
@@ -530,6 +544,13 @@
     "type": "weather",
     "published": "2018-07-12T11:00:00.000Z"
   },
+  "lupusec": {
+    "meta": "https://raw.githubusercontent.com/schmupu/ioBroker.lupusec/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/schmupu/ioBroker.lupusec/master/admin/lupusec.png",
+    "version": "0.2.7",
+    "type": "alarm",
+    "published": "2018-08-25T20:17:00.0000Z"
+  },
   "maxcube": {
     "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcube/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/ioBroker/ioBroker.maxcube/master/admin/maxcube.png",
@@ -899,6 +920,13 @@
     "type": "communication",
     "published": "2015-02-06T06:54:32.754Z"
   },
+  "sia": {
+    "meta": "https://raw.githubusercontent.com/schmupu/ioBroker.sia/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/schmupu/ioBroker.sia/master/admin/sia.png",
+    "type": "alarm",
+    "version": "0.0.5",
+    "published": "2018-08-27T21:45:00.0000Z"
+  },
   "smartmeter": {
     "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.smartmeter/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.smartmeter/master/admin/smartmeter.png",
@@ -1005,7 +1033,7 @@
   "tradfri": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.tradfri/master/admin/tradfri.png",
-    "version": "1.1.10",
+    "version": "1.4.1",
     "type": "lighting",
     "published": "2017-08-23T11:33:34.827Z"
   },
@@ -1026,8 +1054,9 @@
   "upnp": {
     "meta": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/Jey-Cee/ioBroker.upnp/master/admin/upnp-discovery.png",
-    "version": "0.3.8",
-    "type": "network"
+    "version": "0.3.9",
+    "type": "network",
+    "published": "2018-08-26T18:30:22.374Z"
   },
   "vcard": {
     "meta": "https://raw.githubusercontent.com/hometm/ioBroker.vcard/master/io-package.json",

@@ -202,7 +202,7 @@ function createStates() {
         connection: config.states,
         logger: logger,
         hostname: hostname,
-        change: function (id, state) {
+        change: (id, state) => {
             inputCount++;
             if (!id) {
                 logger.error('host.' + hostname + ' change event with no ID: ' + JSON.stringify(state));
@@ -327,7 +327,7 @@ function createObjects() {
         controller: true,
         logger:     logger,
         hostname:   hostname,
-        connected:  function (type) {
+        connected:  type => {
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -363,13 +363,13 @@ function createObjects() {
                 }
             }
         },
-        disconnected: function (/*error*/) {
+        disconnected: (/*error*/) => {
             if (disconnectTimeout) clearTimeout(disconnectTimeout);
-            disconnectTimeout = setTimeout(function () {
+            disconnectTimeout = setTimeout(() => {
                 connected = false;
                 disconnectTimeout = null;
                 logger.warn('host.' + hostname + ' Slave controller detected disconnection. Stop all instances.');
-                stopInstances(true, function () {
+                stopInstances(true, () => {
                     // if during stopping the DB has connection again
                     if (connected && !isStopping) {
                         getInstances();
@@ -380,10 +380,10 @@ function createObjects() {
             }, config.objects.connectTimeout || 2000);
 
         },
-        change:     function (id, obj) {
+        change:     (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             logger.info('host.' + hostname + ' object change ' + id);
-            try{
+            try {
                 if (procs[id]) {
                     // known adapter
                     if (!obj) {
@@ -1852,7 +1852,7 @@ function getInstances() {
 
 function initInstances() {
     let seconds = 0;
-    let interval = 2000;
+    let interval = (config.system && config.system.instanceStartInterval) || 2000;
     let id;
 
     // Start first admin
@@ -1870,9 +1870,7 @@ function initInstances() {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
-                    procs[id].restartTimer = setTimeout(function (_id) {
-                        startInstance(_id);
-                    }, interval * seconds, id);
+                    procs[id].restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
                     seconds += 2; // 4 seconds pause between starts
                 }
@@ -1898,9 +1896,7 @@ function initInstances() {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
-                    procs[id].restartTimer = setTimeout(function (_id) {
-                        startInstance(_id);
-                    }, interval * seconds, id);
+                    procs[id].restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
                     seconds += 2; // 4 seconds pause between starts
                 }
