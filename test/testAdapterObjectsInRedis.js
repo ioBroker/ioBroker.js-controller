@@ -11,7 +11,14 @@ let   states   = null;
 const textName = 'Redis ';
 const tests    = require('./lib/testObjects');
 const fs       = require('fs');
-const isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
+let  isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
+if (!isExecute) {
+    try {
+        const path = require.resolve('iobroker.objects-redis');
+        isExecute = !!path;
+    } catch (e) {
+    }
+}
 let   context  = {
     objects: null,
     name: textName
@@ -24,14 +31,13 @@ const objectsConfig = {
     port:           6379,
     user:           '',
     pass:           '',
-    redisNamespace: 'test',
+    redisNamespace: 'testOnlyObjects',
     noFileCache:    true,
     connectTimeout: 2000,
     onChange: (id, obj) => {
         console.log('object changed. ' + id);
     }
 };
-
 
 describe(textName + 'Test Objects', function () {
     before(textName + 'Start js-controller', function (_done) {
@@ -50,13 +56,13 @@ describe(textName + 'Test Objects', function () {
                     }
                 }
             },
-            function (_objects, _states) {
+            (_objects, _states) => {
                 objects = _objects;
                 states  = _states;
                 context.objects = _objects;
                 expect(objects).to.be.ok;
                 expect(states).to.be.ok;
-                _objects.destroyDB(() => _done());
+                _done();
             }
         );
     });

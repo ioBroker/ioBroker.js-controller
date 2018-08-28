@@ -4,10 +4,10 @@
 /* jshint expr:true */
 'use strict';
 
-var testAdapter = require(__dirname + '/../lib/testAdapter');
-var dataDir = __dirname + '/../../tmp/data-redis';
+const testAdapter = require(__dirname + '/../lib/testAdapter');
+const dataDir = __dirname + '/../../tmp/data-redis';
 
-var statesConfig = {
+const statesConfig = {
     options : {
         auth_pass: null,
         retry_max_delay: 15000
@@ -16,17 +16,31 @@ var statesConfig = {
     host:           '/var/run/redis.sock',
     port:           0
 };
-
-var objectsConfig = {
-    dataDir:        dataDir,
-    type:           'file',
-    host:           '127.0.0.1',
-    port:           19002,
-    user:           '',
-    pass:           '',
-    noFileCache:    true,
-    connectTimeout: 2000
-};
+let objectsConfig;
+if (isExecute) {
+    objectsConfig = {
+        dataDir:        __dirname + '/../tmp/data',
+        options : {
+            auth_pass: null,
+            retry_max_delay: 15000
+        },
+        redisNamespace: 'test',
+        type:           'redis',
+        host:           '127.0.0.1',
+        port:           6379,
+    };
+} else {
+    objectsConfig = {
+        dataDir:        dataDir,
+        type:           'file',
+        host:           '127.0.0.1',
+        port:           19002,
+        user:           '',
+        pass:           '',
+        noFileCache:    true,
+        connectTimeout: 2000
+    };
+}
 
 // states in REDIS, objects in files
 testAdapter({

@@ -301,6 +301,7 @@ function register(it, expect, context) {
     it(textName + 'should create and read file', done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
+            err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err}`);
             expect(err).to.be.not.ok;
 
             objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
@@ -309,8 +310,9 @@ function register(it, expect, context) {
                 expect(mimeType).to.be.equal('text/javascript');
                 objects.rm(testId, 'myFile/*', (err, files) => {
                     expect(err).to.be.not.ok;
-                    expect(files[0].file).to.be.equal('abc.txt');
-                    expect(files[0].path).to.be.equal('myFile');
+                    const file = files.find(f => f.file === 'abc.txt');
+                    expect(file.file).to.be.equal('abc.txt');
+                    expect(file.path).to.be.equal('myFile');
                     objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
                         expect(err).to.be.equal('Not exists');
                         done();
@@ -351,16 +353,20 @@ function register(it, expect, context) {
 
     it(textName + 'should rename file', done => {
         const objects = context.objects;
-        objects.rename(testId, 'myFile/abc2.txt', 'myFile/abc3.txt', err => {
+        objects.writeFile(testId, 'myFile1/abcRename.txt', new Buffer('abcd'), err => {
             expect(err).to.be.not.ok;
-            objects.readFile(testId, 'myFile/abc3.txt', (err, data, meta) => {
+            objects.rename(testId, 'myFile1/abcRename.txt', 'myFile/abc3.txt', err => {
                 expect(err).to.be.not.ok;
-                expect(data).to.be.ok;
-                objects.readFile(testId, 'myFile/abc2.txt', err => {
-                    expect(err).to.be.equal('Not exists');
-                    done();
+                objects.readFile(testId, 'myFile/abc3.txt', (err, data, meta) => {
+                    expect(err).to.be.not.ok;
+                    expect(data.toString('utf8')).to.be.equal('abcd');
+                    objects.readFile(testId, 'myFile1/abcRename.txt', err => {
+                        expect(err).to.be.equal('Not exists');
+                        done();
+                    });
                 });
             });
+
         });
     });
 

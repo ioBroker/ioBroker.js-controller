@@ -5,12 +5,13 @@
     "node": ">=4.8.7"
   },
   "optionalDependencies": {
-    "redis": "^2.8.0",
+    "diskusage": "^0.2.4",
     "greenlock": "^2.2.7",
+    "iobroker.objects-redis": "^0.1.0",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
-    "winston-syslog": "^1.2.6",
-    "diskusage": "^0.2.4"
+    "redis": "^2.8.0",
+    "winston-syslog": "^1.2.6"
   },
   "bin": {
     "iobroker": "./iobroker.js"

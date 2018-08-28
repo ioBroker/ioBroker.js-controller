@@ -106,7 +106,7 @@ function register(it, expect, context) {
 
     // getAdapterObjects
     it(testName + 'Read all objects of adapter', function (done) {
-        context.adapter.getAdapterObjects(function (objects) {
+        context.adapter.getAdapterObjects((objects) => {
             expect(objects).to.be.ok;
             expect(objects[context.adapterShortName + '.0.' + gid]).to.be.ok;
             expect(objects[context.adapterShortName + '.0.' + gid].type).to.be.equal('state');
@@ -232,8 +232,8 @@ function register(it, expect, context) {
     });
 
     // getForeignObjects
-    it(testName + 'Check get foreign objects', function (done) {
-        context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', function (err, objs) {
+    it(testName + 'Check get foreign objects', done => {
+        context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', (err, objs) => {
             expect(err).to.be.null;
 
             expect(objs).to.be.ok;
@@ -408,107 +408,111 @@ function register(it, expect, context) {
     });
 
     // subscribeObjects
-    it(testName + 'Try to subscribe on objects changes', function (done) {
-        context.adapter.subscribeObjects('*');
-        context.onAdapterObjectChanged = function (id, obj) {
-            if (id === context.adapterShortName + '.0.' + gid) {
-                expect(obj).to.be.ok;
-                expect(obj.common.name).to.equal('must be set');
-                context.onAdapterObjectChanged = null;
-                done();
-            }
-        };
-        context.adapter.setObjectNotExists(gid, {
-            common: {
-                name: 'must be set'
-            },
-            native: {
-                pparam: 10
-            },
-            type: 'state'
-        },
-        function (err) {
-            expect(err).to.be.null;
+    it(testName + 'Try to subscribe on objects changes', done => {
+        context.adapter.subscribeObjects('*', () => {
+            context.onAdapterObjectChanged = (id, obj) => {
+                if (id === context.adapterShortName + '.0.' + gid) {
+                    expect(obj).to.be.ok;
+                    expect(obj.common.name).to.equal('must be set');
+                    context.onAdapterObjectChanged = null;
+                    done();
+                }
+            };
+            context.adapter.setObjectNotExists(gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        pparam: 10
+                    },
+                    type: 'state'
+                },
+                err => {
+                    expect(err).to.be.null;
+                });
         });
     });
 
     // unsubscribeObjects
     it(testName + 'Try to unsubscribe on objects changes', function (done) {
         this.timeout(3000);
-        context.adapter.unsubscribeObjects('*');
-        context.onAdapterObjectChanged = function (id, obj) {
-            if (id === context.adapterShortName + '.0.' + gid) {
-                expect(obj).to.be.ok;
-                expect(obj).to.be.not.ok;
-            }
-        };
-        context.adapter.setObject(gid, {
-            common: {
-                name: 'must be set'
-            },
-            native: {
-                pparam: 10
-            },
-            type: 'state'
-        },
-        function (err) {
-            expect(err).to.be.null;
-            setTimeout(function () {
-                done();
-            }, 2000)
+        context.adapter.unsubscribeObjects('*', () => {
+            context.onAdapterObjectChanged = function (id, obj) {
+                if (id === context.adapterShortName + '.0.' + gid) {
+                    expect(obj).to.be.ok;
+                    expect(obj).to.be.not.ok;
+                }
+            };
+            context.adapter.setObject(gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        pparam: 10
+                    },
+                    type: 'state'
+                },
+                function (err) {
+                    expect(err).to.be.null;
+                    setTimeout(function () {
+                        done();
+                    }, 2000)
+                });
         });
     });
 
     // subscribeForeignObjects
     it(testName + 'Try to subscribe on foreign objects changes', function (done) {
-        context.adapter.subscribeForeignObjects(context.adapterShortName + 'f.*');
-        context.onAdapterObjectChanged = function (id, obj) {
-            if (id === context.adapterShortName + 'f.0.' + gid) {
-                expect(obj).to.be.ok;
-                expect(obj.common.name).to.equal('must be set');
-                context.onAdapterObjectChanged = null;
-                done();
-            }
-        };
-        context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                common: {
-                    name: 'must be set'
+        context.adapter.subscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+            context.onAdapterObjectChanged = function (id, obj) {
+                if (id === context.adapterShortName + 'f.0.' + gid) {
+                    expect(obj).to.be.ok;
+                    expect(obj.common.name).to.equal('must be set');
+                    context.onAdapterObjectChanged = null;
+                    done();
+                }
+            };
+            context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        pparam: 10
+                    },
+                    type: 'state'
                 },
-                native: {
-                    pparam: 10
-                },
-                type: 'state'
-            },
-            function (err) {
-                expect(err).to.be.null;
-            });
+                function (err) {
+                    expect(err).to.be.null;
+                });
+        });
     });
 
     // unsubscribeForeignObjects
     it(testName + 'Try to unsubscribe on foreign objects changes', function (done) {
         this.timeout(3000);
-        context.adapter.unsubscribeForeignObjects(context.adapterShortName + 'f.*');
-        context.onAdapterObjectChanged = function (id, obj) {
-            if (id === context.adapterShortName + 'f.0.' + gid) {
-                expect(obj).to.be.ok;
-                expect(obj).to.be.not.ok;
-            }
-        };
-        context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                common: {
-                    name: 'must be set'
+        context.adapter.unsubscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+            context.onAdapterObjectChanged = function (id, obj) {
+                if (id === context.adapterShortName + 'f.0.' + gid) {
+                    expect(obj).to.be.ok;
+                    expect(obj).to.be.not.ok;
+                }
+            };
+            context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        pparam: 10
+                    },
+                    type: 'state'
                 },
-                native: {
-                    pparam: 10
-                },
-                type: 'state'
-            },
-            function (err) {
-                expect(err).to.be.null;
-                setTimeout(function () {
-                    done();
-                }, 2000)
-            });
+                function (err) {
+                    expect(err).to.be.null;
+                    setTimeout(function () {
+                        done();
+                    }, 2000)
+                });
+        });
     });
 
     // getObject with acls
