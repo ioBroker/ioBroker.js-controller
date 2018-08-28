@@ -2223,6 +2223,7 @@ function startInstance(id, wakeUp) {
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
                 procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
 
+                states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
                 // catch error output
                 if (procs[id].process.stderr) {
                     procs[id].process.stderr.on('data', function (data) {
@@ -2243,7 +2244,7 @@ function startInstance(id, wakeUp) {
 
                 storePids(); // Store all pids to make possible kill them all
 
-                procs[id].process.on('exit', function (code, signal) {
+                procs[id].process.on('exit', (code, signal) => {
                     outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
@@ -2312,9 +2313,8 @@ function startInstance(id, wakeUp) {
                         if (procs[id].restartTimer) {
                             clearTimeout(procs[id].restartTimer);
                         }
-                        procs[id].restartTimer = setTimeout(function (_id) {
-                            startInstance(_id);
-                        }, code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
+                        procs[id].restartTimer = setTimeout(_id => startInstance(_id),
+                            code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                     } else {
                         if (code === DESIRED_TERMINATION) {
