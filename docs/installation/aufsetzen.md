@@ -1,3 +1,7 @@
+---
+title: "Installation"
+lastChanged: "28.08.2018"
+---
 
 # Aufsetzen eines ioBroker-Servers 
 

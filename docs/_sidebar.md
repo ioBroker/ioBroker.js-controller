@@ -1,34 +1,69 @@
-[Willkommen](README.md)
-* Überblick
-  * [ioBroker im Detail](/a)
-  * [Was ist iobroker](b)
-  * [Wie funktioniert es](c)
-  * [Wie ist es (unter der Haube) aufgebaut](d)
-  * [Was brauche ich dafür](e)
+* [Willkommen](README)
+  * [Einführung](intro/)
+
+* Konzepte
+  * [Konzeptübersicht](concept/)
+  * [Adapter](concept/)
+  * [Objekte](concept/)
+  * [States](concept/)
+  * [Funktionen](concept/)
+  * [Rollen](concept/)
+  * [Typen](concept/)
+
 * Installation
-  * [Voraussetzungen](/r)
-  * [Hardware](/s)
-  * [ioBroker](/t)
-  * [Adapter](install/adapter.md)
-* Tutorial - Erste Schritte
-  * [Einstieg](/adapter/)
-  * [Erste Einrichtung](/adapter/1)
-  * [Die Benutzeroberfläche](/adapter/2)
-* [Adapterreferenz <sup style="color:red">Neu</sup>](/adapterref/adapterliste)
+  * [Einleitung](installation/)
+  * [Hardware](installation/)
+  * Manuell
+  * [Linux](installation/)
+  * [Windows](installation/)
+  * [macOS](installation/)
+  * Fertige Images
+  * [Raspberry Pi](installation/)
+  * [Odroid](installation/)
+  * [Docker](installation/)
+ 
+* Tutorial für Einsteiger
+  * [Einleitung](tutorial/)
+  * [Erste Einrichtung](tutorial/)
+  * [Die Benutzeroberfläche](tutorial/)
+  * [Konfiguration](tutorial/)
+  * [Logging](tutorial/)
+  * [Adapter hinzufügen](tutorial/)
+  * [Logik definieren](tutorial/)
+  * [Visualiserung erstellen](tutorial/)
+  * [Datenhistorisierung](tutorial/)
+
+* [Adapterreferenz <sup style="color:red">Neu</sup>](adapterref/adapterliste)
+
+* Konfiguration
+  * [Einleitung](configuration/)
+  * [Security](configuration/)
+  * [Cloud-Services](configuration/) 
+
+* Logik
+  * [Einleitung](logic/)
+  * [Blockly](logic/)
+  * [JavaScript](logic/)
+  * [Node Red](logic/)
+
+* Visualisierung
+  * [Einleitung](viz/)
+
+* Best Practices
+  * [Einleitung](bestpractices/)
+
+* Entwickler
+  * [Einleitung](developers/)
+
 * Weitere Hilfen
-  * [Style Guide](bestpractices/style_guide_de.md)
-  * [Vorlage Adapterdoku](bestpractices/adapter_template.md)
-  * [Markdown](bestpractices/markdown.md)
+  * [Style Guide](bestpractices/style_guide_de)
+  * [Vorlage Adapterdoku](bestpractices/adapter_template)
+  * [Markdown](bestpractices/markdown)
+
+* [Impressum](appendix/impressum)
 
 <details>
 <summary>Parkplatz</summary>
-[Visualisierung](/1)
-[Steuerungslogik](/2)
-Best Practices
-[Community](/3)
-[Entwickler](/4)
-[System-Integratoren](/5)
-[Cloud-Services](/6)
+Community  
+System-Integratoren  
 </details>
-
-* [Impressum](impressum.md)
