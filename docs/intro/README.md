@@ -13,7 +13,7 @@ Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:
 * Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz]().
 * Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik]() beschrieben. 
 
-Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen in unsrem [Developer Guide]().
+Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Guide]().
 
 Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei](), die Dokumentation zu verbessern! 
 
