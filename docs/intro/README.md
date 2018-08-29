@@ -43,7 +43,7 @@ Wenn ein neuer Adapter mit dem Admin installiert wird, werden zuerst die Adapter
 
 In einem `Multihost`-System mit mehreren ioBroker-Servern können Instanzen von Adaptern auch auf verschiedenen Servern verteilt werden. Dadurch kann die Last verteilt oder direkt vor Ort zusätzliche Hardware angebunden werden (z.B. IO-Ports, USB).
 
-Die Kommunikation zwischen Adaptern, js-controller, Datenbanken und Webfrontends erfolgt über mehrere TCP/IP-Verbindungen. Der Datenausrausch erfolgt je nach gewählter Einstellung entweder im Klartext oder verschlüsselt.
+Die Kommunikation zwischen Adaptern, js-controller, Datenbanken und Webfrontends erfolgt über mehrere TCP/IP-Verbindungen. Der Datenaustausch erfolgt je nach gewählter Einstellung entweder im Klartext oder verschlüsselt.
 
 ioBroker und die Adapter sind vorwiegend in der Programmiersprache JavaScript geschrieben. Zur Ausführung von JavaSript benötigt man eine entsprechende Laufzeitumgebung. ioBroker setzt deshalb auf ˋNodejsˋ auf. Diese Laufzeitumgebung gibt es für verschiedenste Softwareplattformen wie Linux, Windows und macOS. Zur Installation von ioBroker und den Adaptern wird der JavaScript-Paketmanager ˋnpmˋ genutzt.
 
