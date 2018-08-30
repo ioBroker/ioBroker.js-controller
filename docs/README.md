@@ -1,6 +1,6 @@
 # Willkommen bei ioBroker {docsify-ignore-all}
 
-ioBroker ist die Integrationsplattform für das Internet der Dinge. 
+ioBroker ist eine Integrationsplattform für das Internet der Dinge. 
 
 ioBroker ist der zentrale Service zum Anbinden, Auswerten und Bedienen 
 von Systemen, die ohne ioBroker Insellösungen bleiben würden. 
@@ -65,7 +65,7 @@ SoC-Einplatinencomputern mit großen Multicore-Servern möglich.
 Für Systeme mit höchsten Performanceanforderungen kann optional Redis, 
 eine besonders schnelle Datenbank, eingebunden werden.
 
-## Erweiterbarkeit
+## Erweiterbar
 
 Die Programmierung erfolgt mit JavaScript, einer seit 1995 stetig weiter
 entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
