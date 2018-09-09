@@ -11,6 +11,10 @@
     <!-- <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css"> -->
   <!-- Custom theme styles -->
   <style>
+    .app-nav:not(:empty) ~ main .markdown-section {
+      padding-top: 5.5rem;
+    }
+
     :root {
       --base-font-size: 14px;
       /* Content */
@@ -21,6 +25,7 @@
       /* Sidebar */
       --sidebar-padding                  : 0 25px;
       --sidebar-width                    : 19rem;
+      --navbar-root-padding              : 0.75rem;
 
     }
   </style>

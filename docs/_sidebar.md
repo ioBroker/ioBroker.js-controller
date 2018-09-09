@@ -33,8 +33,6 @@
   * [Visualiserung erstellen](tutorial/)
   * [Datenhistorisierung](tutorial/)
 
-* [Adapterreferenz <sup style="color:red">Neu</sup>](adapterref/adapterliste)
-
 * Konfiguration
   * [Einleitung](configuration/)
   * [Security](configuration/)
@@ -48,9 +46,6 @@
 
 * Visualisierung
   * [Einleitung](viz/)
-
-* Best Practices
-  * [Einleitung](bestpractices/)
 
 * Entwickler
   * [Einleitung](developers/)

@@ -1,0 +1,1 @@
+* [Kategorien](adapterref/adapterliste)
