@@ -16,8 +16,6 @@ Official Web-Site: http://iobroker.net
 
 Forum: http://forum.iobroker.net
 
-Trello: https://trello.com/b/q0SZKdfW/iobroker-whiteboard
-
 ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
 
 Explanation of the concept: https://github.com/iobroker/iobroker
