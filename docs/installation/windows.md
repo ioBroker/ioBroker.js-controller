@@ -15,13 +15,14 @@ erfüllt.
 
 Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
 Laufzeitumgebung Node.js erforderlich. Im folgenden wird davon ausgegengen, dass auf dem
-PC noch kein Node.js installiert ist. 
+PC weder Node.js noch ioBroker installiert ist. 
 
-@@@ Prüfung, ob Nodejs vorhanden und ggf. Sprung zu Update hier einbauen @@@
+@@@ Prüfung, ob Nodejs/ioBroker vorhanden und ggf. Sprung zu Update hier einbauen @@@
 
 ### Herunterladen von Nodejs
 
-Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit Nodejs-Variante zu verwenden.
+?> Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
+   Nodejs-Variante zu verwenden.
 
 1. Welche Windows-Variante installiert ist, erfährt man, indem man zuerst mit den 
    Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnet und 
@@ -39,8 +40,7 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    beziehungsweise `X86-based PC` stehen.
 
 1. Entsprechend der gefundenen Windows-Variante von der Webseite
-   [https://nodejs.org/en/download/](https://nodejs.org/en/download/) die aktuelle 32- oder
-   64Bit-LTS-Version von Node.js als .msi-Datei herunterladen.
+   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version von Node.js in der 32- oder 64Bit-Variante als .msi-Datei herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
    *Download von Node.js*
@@ -167,11 +167,42 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    ~~~
    Damit sind die beiden `npm`-Installationsorte auf die gleiche Version aktualisiert.
 
-?> Das Update des Node.js-Paketmangers npm ist bei jeder Node.js-Nachinstallation 
+!> Das Update des Node.js-Paketmangers npm ist bei jeder Node.js-Nachinstallation 
    oder Node.js-Update zu wiederholen!
 
 
 ## Installation von ioBroker
+
+1. Ein Kommandozeilenfenster als Administrator öffen. Dazu mit den Tastenkombination 
+   <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort 
+   den Befehl 
+   ~~~
+   cmd
+   ~~~
+   eingeben. 
+   
+   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die 
+   Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
+   `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
+   der Eingabe des Administratorkennworts zu bestätigen ist.
+
+!> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
+   dem Wort `Administrator:` beginnen. 
+
+?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
+   werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige 
+   Pfadangabe bei allen Befehlen mit Anführungszeichen umschlossen werden. 
+   Beispielbefehl: `dir "C:\iobroker Produktion\Mein Ordner"`.
+
+2. 
+
+
+
+~~~bash
+curl -sL https://raw.githubusercontent.com/ioBroker/ioBroker/master/installer.sh | bash -
+~~~
+
+
 
    Abschließend das Kommandozeilenfenster durch das Ausführen des Befehls
    ~~~
