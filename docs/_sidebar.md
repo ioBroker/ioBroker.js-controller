@@ -15,7 +15,7 @@
   * [Hardware](installation/)
   * Manuell
   * [Linux](installation/)
-  * [Windows](installation/)
+  * [Windows](installation/windows)
   * [macOS](installation/)
   * Fertige Images
   * [Raspberry Pi](installation/)

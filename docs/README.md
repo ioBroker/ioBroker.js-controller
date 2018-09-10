@@ -22,7 +22,7 @@ grafisch aufbereitet dargestellt werden. Live-Bilder von
 Heizungssysteme und Klimatechnik - fast alles was vorstellbar ist,
 kann auch umgesetzt werden. 
 
-![VIS](/media/vis2.png ':size=500')  
+![VIS](media/vis2.png ':size=500')  
 *Beispiel für eine VIS-Benutzeroberfläche*
 
 Dabei hat der Anwender maximale Gestaltungsfreiheit. Die Erstellung 
