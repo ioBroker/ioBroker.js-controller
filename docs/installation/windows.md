@@ -13,18 +13,17 @@ da einige Befehle aufeinander aufbauen.
 !> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]() 
 erfüllt.
 
-Für das spätere Ausführen von ioBroker ist die Installation einer JavaScript-
-Laufzeitumgebung erforderlich. Sie heißt Nodejs und wird von der Node.js Foundation 
-zur Verfügung gestellt. Wir gehen in dieser Anleitung davon aus, dass auf dem PC
-noch kein Node.js installiert ist. 
+Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
+Laufzeitumgebung Node.js erforderlich. Im folgenden wird davon ausgegengen, dass auf dem
+PC noch kein Node.js installiert ist. 
 
-*** Prüfung, ob Nodejs vorhanden und ggf. Sprung zu Update hier einbauen...
+@@@ Prüfung, ob Nodejs vorhanden und ggf. Sprung zu Update hier einbauen @@@
 
 ### Herunterladen von Nodejs
 
 Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit Nodejs-Variante zu verwenden.
 
-1. Welche Windows-Variante installiert ist erfährt man, indem man zuerst mit den 
+1. Welche Windows-Variante installiert ist, erfährt man, indem man zuerst mit den 
    Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnet und 
    dort den Befehl 
    ~~~
@@ -60,9 +59,9 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
 
 ### Update des Node.js Paketmangers npm
 
-!> `npm` ist ein <u>N</u>ode.js <u>P</u>aket<u>m</u>anager und dient zur Installation 
-   von Programmen. Damit er funktioniert, ist direkt nach der Installation 
-   von Node.js ein Update von `npm` erforderlich.
+!> `npm` ist ein <u>N</u>ode.js <u>P</u>aket<u>m</u>anager und hilft bei der
+   Verwaltung von Programmen. Damit `npm` funktioniert, ist direkt nach der 
+   Installation von Node.js ein Update von `npm` erforderlich.
 
 1. Ein Kommandozeilenfenster als Administrator öffen. Dazu mit den Tastenkombination 
    <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort 
@@ -73,13 +72,15 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    eingeben. 
    
    Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die 
-   die Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
-   `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` zu
-   bestätigen ist.
+   Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
+   `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
+   der Eingabe des Administratorkennworts zu bestätigen ist.
    
 1. Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
-   dem Wort `Administrator:` beginnen. Den folgenden Befehl einfügen und anschließend mit der
-   <kbd>Eingabetaste</kbd> ausführen.
+   dem Wort `Administrator:` beginnen. 
+   
+   Den folgenden Befehl einfügen und anschließend mit der <kbd>Eingabetaste</kbd> 
+   ausführen.
    ~~~
    npm install -g npm@latest
    ~~~
@@ -95,12 +96,12 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    
 1. `npm` ist jetzt an zwei Orten installiert. Einmal im Node.js-Programmordner und
    einmal in einem Verzeichnis des aktuellen Windows-Benutzers. Da die Benutzer-Version
-   neuer ist als die im Node.js-Ordner, überschreiben wir die Node.js-Version mit der
-   Version aus dem Benutzerordner. 
+   von `npm` neuer ist als die im Node.js-Ordner, muss die Node.js-Version mit der
+   Version aus dem Benutzerordner überschrieben werden. 
 
 1. Zuerst prüfen, ob npm wirklich in den beiden Ordner steht. Dazu mit der 
    Tastenkombination <kbd>&#x229e; Windows</kbd> + <kbd>e</kbd> ein Explorerfenster 
-   öffnen. In der Adressleite den Pfad 
+   öffnen. In der Adresszeite den Pfad 
    ~~~
    %ProgramFiles%\nodejs\node_modules\npm
    ~~~
@@ -115,7 +116,7 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    ~~~
    öffnen. Hier sollten ebenfalls wie oben Dateien und Ordner stehen.
    
-3. Wenn alles so weit in Ornung ist, jetzt im Kommandozeilenfenster den folgenden Befehl ausführen:
+3. Wenn alles so weit in Ordnung ist, im Kommandozeilenfenster den folgenden Befehl ausführen:
    ~~~
    robocopy /r:0 /is /it "%ProgramFiles%\nodejs\node_modules\npm" "%APPDATA%\npm\node_modules\npm" npmrc
    ~~~
@@ -139,7 +140,7 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    Geschwindigkeit:               0.087 Megabytes/Min.
    ~~~
    
-4. Dann im Kommandozeilenfenster den folgenden Befehl ausführen:
+4. Jetzt im Kommandozeilenfenster den folgenden Befehl ausführen:
    ~~~
    robocopy /mir /zb /is /it /r:0 "%APPDATA%\npm\node_modules\npm" "%ProgramFiles%\nodejs\node_modules\npm" *.*
    ~~~
