@@ -19,6 +19,7 @@ const version    = ioPackage.common.version;
 const pidusage   = require('pidusage');
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
+const { LEVEL }  = require('triple-beam');
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
    Currently Node.js on Windows platform do not implements os.loadavg() functionality - it returns [0,0,0]
@@ -129,15 +130,15 @@ function startMultihost(__config) {
                 });
                 return;
             } catch (e) {
-                logger.warn('Cannot stop multihost: ' + e);
+                logger.warn('host.' + hostname + ' Cannot stop multihost: ' + e);
             }
         }
 
         if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
-            logger.warn('Host on this system is not possible, because IP address is for objects is ' + _config.objects.host);
+            logger.warn('host.' + hostname + ' Host on this system is not possible, because IP address is for objects is ' + _config.objects.host);
         } else
         if ((_config.states.host   || _config.states.host  === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type  === 'file') {
-            logger.warn('Host on this system is not possible, because IP address is for states is ' + _config.states.host);
+            logger.warn('host.' + hostname + ' Host on this system is not possible, because IP address is for states is ' + _config.states.host);
         }
 
         if (_config.multihostService.secure) {
@@ -147,7 +148,7 @@ function startMultihost(__config) {
                         _startMultihost(_config, secret);
                     });
                 } else {
-                    logger.error('Cannot start multihost: no system.config found')
+                    logger.error('host.' + hostname + ' Cannot start multihost: no system.config found')
                 }
             });
         } else {
@@ -160,7 +161,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn('Cannot stop multihost: ' + e);
+            logger.warn('host.' + hostname + ' Cannot stop multihost: ' + e);
         }
         return false;
     }
@@ -231,7 +232,7 @@ function createStates() {
                         }
 
                         // delete too old callbacks IDs
-                        let now = (new Date()).getTime();
+                        let now = Date.now();
                         for (let _id in callbacks) {
                             if (!callbacks.hasOwnProperty(_id)) continue;
                             if (now - callbacks[_id].time > 3600000) delete callbacks[_id];
@@ -258,7 +259,7 @@ function createStates() {
                     let enabled = state.val;
                     setImmediate(function () {
                         objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
-                            if (err) logger.error('Cannot read object: '  + err);
+                            if (err) logger.error('host.' + hostname + ' Cannot read object: '  + err);
                             if (obj && obj.common) {
                                 // IF adapter enabled => disable it
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
@@ -433,7 +434,7 @@ function createObjects() {
                     }
                 }
             } catch (err) {
-                logger.error('cannot process: ' + id);
+                logger.error('host.' + hostname + ' cannot process: ' + id);
             }
         }
     });
@@ -495,7 +496,7 @@ function reportStatus() {
                 outputCount++;
             }
         } catch (err) {
-            logger.error('Cannot read /proc/meminfo: ' + err);
+            logger.error('host.' + hostname + ' Cannot read /proc/meminfo: ' + err);
         }
     }
 
@@ -503,7 +504,7 @@ function reportStatus() {
         lastDiskSizeCheck = Date.now();
         tools.getDiskInfo(os.platform(), (err, info) => {
             if (err) {
-                logger.error('Cannot read disk size: ' + err);
+                logger.error('host.' + hostname + ' Cannot read disk size: ' + err);
             }
             try {
                 if (info) {
@@ -512,7 +513,7 @@ function reportStatus() {
                     outputCount+=2;
                 }
             } catch (e) {
-                logger.error('Cannot read disk information: ' + e);
+                logger.error('host.' + hostname + ' Cannot read disk information: ' + e);
             }
         });
     }
@@ -533,7 +534,7 @@ function changeHost(objs, oldHostname, newHostname, callback) {
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
             let obj = row.value;
             obj.common.host = newHostname;
-            logger.info('Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
+            logger.info('host.' + hostname + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
             obj.from = 'system.host.' + tools.getHostName();
             obj.ts = Date.now();
             objects.setObject(obj._id, obj, function (/* err */) {
@@ -563,7 +564,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         try {
             subs = JSON.parse(state.val)
         } catch (e) {
-            logger.error('Cannot parse subscribes: ' + state.val);
+            logger.error('host.' + hostname + ' Cannot parse subscribes: ' + state.val);
             if (typeof callback === 'function') {
                 setImmediate(function () {
                     callback();
@@ -631,7 +632,7 @@ function delObjects(objs, callback) {
     } else {
         let row = objs.shift();
         if (row && row.id) {
-            logger.info('Delete state "' + row.id + '"');
+            logger.info('host.' + hostname + ' Delete state "' + row.id + '"');
             if (row.value.type === 'state') {
                 states.delState(row.id, function (/* err */) {
                     objects.delObject(row.id, function (/* err */) {
@@ -685,7 +686,7 @@ function checkHost(type, callback) {
                     } else {
                         // reassign all instances
                         changeHost(doc.rows, oldHostname, hostname, () => {
-                            logger.info('Delete host ' + oldId);
+                            logger.info('host.' + hostname + ' Delete host ' + oldId);
 
                             // delete host object
                             objects.delObject(oldId, () => {
@@ -825,7 +826,7 @@ function collectDiagInfo(type, callback) {
                                     extendObjects(tasks, () => callback && callback(diag));
                                 });
                             } catch (e) {
-                                logger.error('cannot call visUtils: ' + e);
+                                logger.error('host.' + hostname + ' cannot call visUtils: ' + e);
                                 if (callback) callback(diag);
                             }
                         } else {
@@ -863,11 +864,11 @@ function setIPs(ipList) {
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = 'system.host.' + tools.getHostName();
                 oldObj.ts = Date.now();
-                objects.setObject(oldObj._id, oldObj, err => err && logger.error('Cannot write host object:' + err));
+                objects.setObject(oldObj._id, oldObj, err => err && logger.error('host.' + hostname + ' Cannot write host object:' + err));
             }
         });
     } else {
-        logger.info('No IPv4 address found after 5 minutes.');
+        logger.info('host.' + hostname + ' No IPv4 address found after 5 minutes.');
     }
 }
 
@@ -961,7 +962,7 @@ function setMeta() {
             newObj.ts = Date.now();
             objects.setObject(id, newObj, err => {
                 if (err) {
-                    logger.error('Cannot write host object:' + err);
+                    logger.error('host.' + hostname + ' Cannot write host object:' + err);
                 } else {
                     setIPs(newObj.common.address);
                 }
@@ -1241,7 +1242,7 @@ function setMeta() {
 
         if (todelete && todelete.length > 0) {
             delObjects(todelete, function () {
-                if (logger) logger.info('Some obsolete host states deleted.');
+                if (logger) logger.info('host.' + hostname + ' Some obsolete host states deleted.');
             });
         }
     });
@@ -1249,7 +1250,7 @@ function setMeta() {
     extendObjects(tasks, function () {
         // create UUID if not exist
         tools.createUuid(objects, function (uuid) {
-            if (uuid && logger) logger.info('Created UUID: ' + uuid);
+            if (uuid && logger) logger.info('host.' + hostname + ' Created UUID: ' + uuid);
         });
     });
 }
@@ -1275,7 +1276,7 @@ function sendTo(objName, command, message, callback) {
                 message: message,
                 id:      callbackId++,
                 ack:     false,
-                time:    (new Date()).getTime()
+                time:    Date.now()
             };
             if (callbackId > 0xFFFFFFFF) callbackId = 1;
             if (!callbacks) callbacks = {};
@@ -1316,13 +1317,13 @@ function processMessage(msg) {
             for (let i = 0; i < cmd.length; i++) {
                 args.push(cmd[i]);
             }
-            logger.info(tools.appName + ' ' + args.slice(1).join(' '));
+            logger.info('host.' + hostname + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
 
             let child = spawn('node', args);
             if (child.stdout) {
                 child.stdout.on('data', function (data) {
                     data = data.toString().replace('\n', '');
-                    logger.info(tools.appName + ' ' + data);
+                    logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
                 });
             }
@@ -1330,13 +1331,13 @@ function processMessage(msg) {
             if (child.stderr) {
                 child.stderr.on('data', function (data) {
                     data = data.toString().replace('\n', '');
-                    logger.error(tools.appName + ' ' + data);
+                    logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
                 });
             }
 
             child.on('exit', function (exitCode) {
-                logger.info(tools.appName + ' exit ' + exitCode);
+                logger.info('host.' + hostname + ' ' + tools.appName + ' exit ' + exitCode);
                 if (msg.from) {
                     sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
                     // Sometimes finished command is lost, recent it
@@ -1587,7 +1588,9 @@ function processMessage(msg) {
                 let lines = msg.message || 200;
                 let text  = '';
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-                if (!fs.existsSync(logFile_)) logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
+                if (!fs.existsSync(logFile_)) {
+                    logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
+                }
 
                 if (fs.existsSync(logFile_)) {
                     let stats = fs.statSync(logFile_);
@@ -1645,9 +1648,9 @@ function processMessage(msg) {
 
         case 'delLogs':
             let logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFile(__dirname +       '/log/' + tools.appName + '.log', '');
-            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFile(__dirname + '/../../log/' + tools.appName + '.log', '');
-            if (fs.existsSync(logFile)) fs.writeFile(logFile);
+            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
+            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
+            if (fs.existsSync(logFile)) fs.writeFileSync(logFile);
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
             break;
@@ -2033,25 +2036,25 @@ function installAdapters() {
     if (procs[task.id].downloadRetry < 3) {
         procs[task.id].downloadRetry++;
         logger.warn('host.' + hostname + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
-        logger.info(tools.appName + ' install ' + name);
+        logger.info('host.' + hostname + ' ' + tools.appName + ' install ' + name);
 
         try {
             let child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
             if (child.stdout) {
                 child.stdout.on('data', function (data) {
                     data = data.toString().replace('\n', '');
-                    logger.info(tools.appName + ' ' + data);
+                    logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
             }
             if (child.stderr) {
                 child.stderr.on('data', function (data) {
                     data = data.toString().replace('\n', '');
-                    logger.error(tools.appName + ' ' + data);
+                    logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
             }
 
             child.on('exit', exitCode => {
-                logger.info(tools.appName + ' exit ' + exitCode);
+                logger.info('host.' + hostname + ' ' + tools.appName + ' exit ' + exitCode);
                 if (!task.disabled) {
                     startInstance(task.id, task.wakeUp);
                 }
@@ -2062,14 +2065,14 @@ function installAdapters() {
                 }, 1000);
             });
             child.on('error', err => {
-                logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
+                logger.error('host.' + hostname + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
                 setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
             })
         } catch (err) {
-            logger.error('Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
+            logger.error('host.' + hostname + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
             setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
@@ -2100,7 +2103,7 @@ function cleanErrors(id, now, doOutput) {
                 let lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', 'debug:').split('\n');
                 for (let k = 0; k < lines.length; k++) {
                     if (lines[k]) {
-                        logger.error('Caught by controller[' + i + ']: ' + lines[k]);
+                        logger.error('host.' + hostname + ' Caught by controller[' + i + ']: ' + lines[k]);
                     }
                 }
             }
@@ -2338,7 +2341,7 @@ function startInstance(id, wakeUp) {
 
         case 'schedule':
             if (!instance.common.schedule) {
-                logger.error(instance._id + ' schedule attribute missing');
+                logger.error('host.' + hostname + ' ' + instance._id + ' schedule attribute missing');
                 break;
             }
             if (procs[id].schedule) {
@@ -2352,7 +2355,7 @@ function startInstance(id, wakeUp) {
                     return;
                 }
                 // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-                if (procs[id].lastStart && (new Date()).getTime() - procs[id].lastStart < 2000) {
+                if (procs[id].lastStart && Date.now() - procs[id].lastStart < 2000) {
                     logger.warn('host.' + hostname + ' instance ' + instance._id + ' does not started, because just executed');
                     return;
                 }
@@ -2422,7 +2425,7 @@ function startInstance(id, wakeUp) {
             break;
 
         default:
-            logger.error(instance._id + ' invalid mode');
+            logger.error('host.' + hostname + ' ' + instance._id + ' invalid mode');
 
     }
 }
@@ -2635,7 +2638,7 @@ function stopInstances(forceStop, callback) {
     }
 
     try {
-        let elapsed = (isStopping ? ((new Date()).getTime() - isStopping) : 0);
+        let elapsed = (isStopping ? (Date.now() - isStopping) : 0);
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
             isStopping = null;
@@ -2658,7 +2661,7 @@ function stopInstances(forceStop, callback) {
 
         waitForInstances();
     } catch (e) {
-        logger.error(e.message);
+        logger.error('host.' + hostname + ' ' + e.message);
         isStopping = null;
         if (timeout) clearTimeout(timeout);
         if (typeof callback === 'function') callback();
@@ -2691,7 +2694,7 @@ function stop() {
                     if (!procs.hasOwnProperty(i)) continue;
                     if (procs[i].process) {
                         if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
-                            logger.info('Adapter ' + procs[i].config.common.name + ' still running');
+                            logger.info('host.' + hostname + ' Adapter ' + procs[i].config.common.name + ' still running');
                         }
                     }
                 }
@@ -2746,12 +2749,10 @@ function init() {
         adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
     }
 
-    // If some message from logger
-    logger.on('logging', function (transport, level, msg/*, meta*/) {
-        if (transport.name !== tools.appName) return;
-        // Send to all adapter, that required logs
+    // normally first transport is file
+    logger.transports[0].on('logged', info => {
         for (let i = 0; i < logList.length; i++) {
-            states.pushLog(logList[i], {message: msg, severity: level, from: 'host.' + hostname, ts: (new Date()).getTime()});
+            states.pushLog(logList[i], {message: info.message, severity: info[LEVEL], from: 'host.' + hostname, ts: new Date(info.timestamp).getTime()});
         }
     });
 
@@ -2833,7 +2834,7 @@ function init() {
 
     process.on('uncaughtException', function (err) {
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
-            logger.error('fragmentedOperation: restart objects');
+            logger.error('host.' + hostname + ' fragmentedOperation: restart objects');
             // restart objects
             objects.destroy();
             objects = null;
@@ -2854,14 +2855,14 @@ function init() {
         uncaughtExceptionCount++;
         if (typeof err === 'object') {
             if (err.errno === 'EADDRINUSE') {
-                logger.error('Another instance is running or some application uses port!');
-                logger.error('uncaught exception: ' + err.message);
+                logger.error('host.' + hostname + ' Another instance is running or some application uses port!');
+                logger.error('host.' + hostname + ' uncaught exception: ' + err.message);
             } else {
-                logger.error('uncaught exception: ' + err.message);
-                logger.error(err.stack);
+                logger.error('host.' + hostname + ' uncaught exception: ' + err.message);
+                logger.error('host.' + hostname + ' ' + err.stack);
             }
         } else {
-            logger.error('uncaught exception: ' + err);
+            logger.error('host.' + hostname + ' uncaught exception: ' + err);
         }
         stop();
         // Restart itself
