@@ -10,13 +10,15 @@ da einige Befehle aufeinander aufbauen.
 
 ## Voraussetzungen
 
-Prüfen Sie zuerst, ob das System alle notwendigen [Installationsvoraussetzungen]() 
+!> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]() 
 erfüllt.
 
 Für das spätere Ausführen von ioBroker ist die Installation einer JavaScript-
 Laufzeitumgebung erforderlich. Sie heißt Nodejs und wird von der Node.js Foundation 
-zur Verfügung gestellt. Wir gehen in dieser Anlaeitung davon aus, dass auf dem PC
+zur Verfügung gestellt. Wir gehen in dieser Anleitung davon aus, dass auf dem PC
 noch kein Node.js installiert ist. 
+
+*** Prüfung, ob Nodejs vorhanden und ggf. Sprung zu Update hier einbauen...
 
 ### Herunterladen von Nodejs
 
@@ -39,7 +41,7 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
 
 1. Entsprechend der gefundenen Windows-Variante von der Webseite
    [https://nodejs.org/en/download/](https://nodejs.org/en/download/) die aktuelle 32- oder
-   64Bit-LTS-Version von Node.js herunterladen.
+   64Bit-LTS-Version von Node.js als .msi-Datei herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
    *Download von Node.js*
@@ -56,10 +58,11 @@ Je nach der installierten Windows Variante (32-/64Bit) ist die entsprechende 32-
    *Node.js Installation*
 
 
-### Update des Node.js-Paketmangers npm
+### Update des Node.js Paketmangers npm
 
-!> `npm` ist der Paketmanager von Node.js. Damit er funktioniert, ist direkt nach der Installation 
-von Node.js ein Update von `npm` erforderlich.
+!> `npm` ist ein <u>N</u>ode.js <u>P</u>aket<u>m</u>anager und dient zur Installation 
+   von Programmen. Damit er funktioniert, ist direkt nach der Installation 
+   von Node.js ein Update von `npm` erforderlich.
 
 1. Ein Kommandozeilenfenster als Administrator öffen. Dazu mit den Tastenkombination 
    <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort 
@@ -69,9 +72,12 @@ von Node.js ein Update von `npm` erforderlich.
    ~~~
    eingeben. 
    
-   Die Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` + `Eingabetaste` bestätigen.
+   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die 
+   die Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
+   `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` zu
+   bestätigen ist.
    
-1. Die Titelzeil im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
+1. Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
    dem Wort `Administrator:` beginnen. Den folgenden Befehl einfügen und anschließend mit der
    <kbd>Eingabetaste</kbd> ausführen.
    ~~~
@@ -94,18 +100,18 @@ von Node.js ein Update von `npm` erforderlich.
 
 1. Zuerst prüfen, ob npm wirklich in den beiden Ordner steht. Dazu mit der 
    Tastenkombination <kbd>&#x229e; Windows</kbd> + <kbd>e</kbd> ein Explorerfenster 
-   mit dem Pfad 
+   öffnen. In der Adressleite den Pfad 
    ~~~
    %ProgramFiles%\nodejs\node_modules\npm
    ~~~
-   öffnen. Hier sollten einige Dateien und Ordner enthalten sein:
+   eingeben und diesen öffnen. Hier sollten einige Dateien und Ordner enthalten sein:
    
    ![npm-Dateien](media/w04npm.png)  
    *npm-Dateien*
   
 2. Anschließend im Explorerfenster jetzt den Pfad
    ~~~
-   %APPDATA%\Roaming\npm\node_modules\npm
+   %APPDATA%\npm\node_modules\npm
    ~~~
    öffnen. Hier sollten ebenfalls wie oben Dateien und Ordner stehen.
    
