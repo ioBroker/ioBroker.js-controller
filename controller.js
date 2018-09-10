@@ -190,10 +190,14 @@ function getIPs() {
 // subscribe or unsubscribe loggers
 function logRedirect(isActive, id) {
     if (isActive) {
-        if (logList.indexOf(id) === -1) logList.push(id);
+        if (logList.indexOf(id) === -1) {
+            logList.push(id);
+        }
     } else {
         const pos = logList.indexOf(id);
-        if (pos !== -1) logList.splice(pos, 1);
+        if (pos !== -1) {
+            logList.splice(pos, 1);
+        }
     }
 }
 
@@ -398,15 +402,13 @@ function createObjects() {
                         procs[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
-                        stopInstance(id, function () {
+                        stopInstance(id, () => {
                             let _ipArr = getIPs();
 
                             if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
                                 if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
                                     if (procs[id].restartTimer) clearTimeout(procs[id].restartTimer);
-                                    procs[id].restartTimer = setTimeout(function (_id) {
-                                        startInstance(_id);
-                                    }, 2500, id);
+                                    procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
                                 }
                             } else {
                                 delete procs[id];
@@ -537,15 +539,11 @@ function changeHost(objs, oldHostname, newHostname, callback) {
             logger.info('host.' + hostname + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
             obj.from = 'system.host.' + tools.getHostName();
             obj.ts = Date.now();
-            objects.setObject(obj._id, obj, function (/* err */) {
-                setImmediate(function () {
-                    changeHost(objs, oldHostname, newHostname, callback);
-                });
+            objects.setObject(obj._id, obj, (/* err */) => {
+                setImmediate(() => changeHost(objs, oldHostname, newHostname, callback));
             });
         } else {
-            setImmediate(function () {
-                changeHost(objs, oldHostname, newHostname, callback);
-            });
+            setImmediate(() => changeHost(objs, oldHostname, newHostname, callback));
         }
     }
 }
@@ -554,9 +552,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
     states.getState(autoInstance + '.subscribes', (err, state) => {
         if (!state || !state.val) {
             if (typeof callback === 'function') {
-                setImmediate(function () {
-                    callback();
-                });
+                setImmediate(() => callback());
             }
             return;
         }
@@ -566,9 +562,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         } catch (e) {
             logger.error('host.' + hostname + ' Cannot parse subscribes: ' + state.val);
             if (typeof callback === 'function') {
-                setImmediate(function () {
-                    callback();
-                });
+                setImmediate(() => callback());
             }
             return;
         }
@@ -636,22 +630,16 @@ function delObjects(objs, callback) {
             if (row.value.type === 'state') {
                 states.delState(row.id, function (/* err */) {
                     objects.delObject(row.id, function (/* err */) {
-                        setImmediate(function () {
-                            delObjects(objs, callback);
-                        });
+                        setImmediate(() => delObjects(objs, callback));
                     });
                 });
             } else {
-                objects.delObject(row.id, function (/* err */) {
-                    setImmediate(function () {
-                        delObjects(objs, callback);
-                    });
+                objects.delObject(row.id, (/* err */) => {
+                    setImmediate(() => delObjects(objs, callback));
                 });
             }
         } else {
-            setImmediate(function () {
-                delObjects(objs, callback);
-            });
+            setImmediate(() => delObjects(objs, callback));
         }
     }
 }
@@ -693,9 +681,7 @@ function checkHost(type, callback) {
 
                                 // delete all hosts states
                                 objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
-                                    delObjects(doc.rows, function () {
-                                        if (callback) callback();
-                                    });
+                                    delObjects(doc.rows, () => callback && callback());
                                 });
                             });
                         });
@@ -883,11 +869,9 @@ function extendObjects(tasks, callback) {
     if (state !== undefined) {
         delete task.state;
     }
-    objects.extendObject(task._id, task, function () {
+    objects.extendObject(task._id, task, () => {
         if (state) {
-            states.setState(task._id, state, function () {
-                setImmediate(extendObjects, tasks, callback);
-            });
+            states.setState(task._id, state, () => setImmediate(extendObjects, tasks, callback));
         } else {
             setImmediate(extendObjects, tasks, callback);
         }
@@ -1321,7 +1305,7 @@ function processMessage(msg) {
 
             let child = spawn('node', args);
             if (child.stdout) {
-                child.stdout.on('data', function (data) {
+                child.stdout.on('data', data => {
                     data = data.toString().replace('\n', '');
                     logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
@@ -1329,34 +1313,32 @@ function processMessage(msg) {
             }
 
             if (child.stderr) {
-                child.stderr.on('data', function (data) {
+                child.stderr.on('data', data => {
                     data = data.toString().replace('\n', '');
                     logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
                 });
             }
 
-            child.on('exit', function (exitCode) {
+            child.on('exit', exitCode => {
                 logger.info('host.' + hostname + ' ' + tools.appName + ' exit ' + exitCode);
                 if (msg.from) {
                     sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
                     // Sometimes finished command is lost, recent it
-                    setTimeout(function () {
-                        sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
-                    }, 1000);
+                    setTimeout(() => sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode}), 1000);
                 }
             });
             break;
 
         case 'getRepository':
             if (msg.callback && msg.from) {
-                objects.getObject('system.config', function (err, systemConfig) {
+                objects.getObject('system.config', (err, systemConfig) => {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
                         collectDiagInfo(systemConfig.common.diag, obj => obj && tools.sendDiagInfo(obj));
                     }
 
-                    objects.getObject('system.repositories', function (err, repos) {
+                    objects.getObject('system.repositories', (err, repos) => {
                         // Check if repositories exists
                         if (!err && repos && repos.native && repos.native.repositories) {
                             let updateRepo = false;
@@ -1444,7 +1426,7 @@ function processMessage(msg) {
                                 }
                             } else {
                                 infoCount++;
-                                getVersionFromHost(doc.rows[i].id, function (ioPack, id) {
+                                getVersionFromHost(doc.rows[i].id, (ioPack, id) => {
                                     if (ioPack) {
                                         result.hosts[ioPack.host] = ioPack;
                                         result.hosts[ioPack.host].controller = true;
@@ -1467,7 +1449,7 @@ function processMessage(msg) {
                         sendTo(msg.from, msg.command, result, msg.callback);
                     } else {
                         // Start timeout and send answer in 5 seconds if some hosts are offline
-                        timeout = setTimeout(function () {
+                        timeout = setTimeout(() => {
                             logger.warn('host.' + hostname + ' some hosts are offline');
                             timeout = null;
                             sendTo(msg.from, msg.command, result, msg.callback);
@@ -1520,9 +1502,7 @@ function processMessage(msg) {
         case 'getDiagData':
             if (msg.callback && msg.from) {
                 if (msg.message) {
-                    collectDiagInfo(msg.message, function (obj) {
-                        sendTo(msg.from, msg.command, obj, msg.callback);
-                    });
+                    collectDiagInfo(msg.message, obj => sendTo(msg.from, msg.command, obj, msg.callback));
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
@@ -1550,9 +1530,7 @@ function processMessage(msg) {
                     let _child = _spawn('ls', _args);
                     let result = '';
                     if (_child.stdout) {
-                        _child.stdout.on('data', function (data) {
-                            result += data.toString();
-                        });
+                        _child.stdout.on('data', data => result += data.toString());
                     }
                     if (_child.stderr) {
                         _child.stderr.on('data', function (data) {
@@ -1560,7 +1538,7 @@ function processMessage(msg) {
                         });
                     }
 
-                    _child.on('exit', function (/*exitCode*/) {
+                    _child.on('exit', (/*exitCode*/) => {
                         result = result.replace(/(\r\n|\n|\r|\t)/gm, ' ');
                         let parts = result.split(' ');
                         let resList = [];
@@ -1598,17 +1576,14 @@ function processMessage(msg) {
                     fs.createReadStream(logFile_, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
                         end:   stats.size
-                    }).on('data', function (chunk) {
-                        text += chunk.toString();
-                    })
-                        .on('end', function () {  // done
+                    }).on('data', chunk => text += chunk.toString())
+                        .on('end', () => {  // done
                             let lines = text.split('\n');
                             lines.shift();
                             lines.push(stats.size);
                             sendTo(msg.from, msg.command, lines, msg.callback);
-                        }).on('error', function () {  // done
-                        sendTo(msg.from, msg.command, [stats.size], msg.callback);
-                    });
+                        }).on('error', () =>   // done
+                            sendTo(msg.from, msg.command, [stats.size], msg.callback));
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
@@ -1624,7 +1599,7 @@ function processMessage(msg) {
                 // node.js --version
                 // npm --version
                 // uptime
-                tools.getHostInfo(objects, function (err, data) {
+                tools.getHostInfo(objects, (err, data) => {
                     if (err) {
                         logger.error('host.' + hostname + ' cannot get getHostInfo: ' + err);
                     }
@@ -1658,7 +1633,7 @@ function processMessage(msg) {
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, function (err, base64) {
+                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
                     if (base64) {
                         sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
                     } else {
@@ -1678,7 +1653,7 @@ function processMessage(msg) {
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
-                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, function (err, base64) {
+                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, (err, base64) => {
                     if (base64) {
                         sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
                     } else {
@@ -1702,10 +1677,10 @@ function processMessage(msg) {
                 let logs  = [];
                 let count = 0;
                 function printLog(id, callback) {
-                    states.lenLog(id, function (err, len) {
+                    states.lenLog(id, (err, len) => {
                         logs.push('Subscriber - ' + id + ' (queued ' + len + ') ' + (err || ''));
                         if (len) {
-                            states.getLog(id, function (err, obj) {
+                            states.getLog(id, (err, obj) => {
                                 if (obj) {
                                     logs.push(id + ' (' + JSON.stringify(obj) + ')');
                                 }
@@ -1721,7 +1696,7 @@ function processMessage(msg) {
                 logs.push('Actual Loglist - ' + JSON.stringify(logList));
 
                 // Read current state of all log subscribers
-                states.getKeys('*.logging', function (err, keys) {
+                states.getKeys('*.logging', (err, keys) => {
                     if (keys && keys.length) {
                         states.getStates(keys, function (err, obj) {
                             if (obj) {
@@ -1733,7 +1708,7 @@ function processMessage(msg) {
                                         if ((typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
                                             (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
                                             count++;
-                                            printLog(id, function () {
+                                            printLog(id, () => {
                                                 if (!--count) {
                                                     for (let m = 0; m < logs.length; m++) {
                                                         logger.error('host.' + hostname + ' LOGINFO: ' + logs[m]);
@@ -1747,7 +1722,7 @@ function processMessage(msg) {
                                     }
                                 }
                             }
-                            setTimeout(function () {
+                            setTimeout(() => {
                                 for (let m = 0; m < logs.length; m++) {
                                     logger.error('host.' + hostname + ' LOGINFO: ' + logs[m]);
                                 }
@@ -2008,7 +1983,7 @@ function checkVersions(id, deps) {
 // Store process IDS to make possible kill them all by restart
 function storePids() {
     if (!storeTimer) {
-        storeTimer = setTimeout(function () {
+        storeTimer = setTimeout(() => {
             storeTimer = null;
             let pids = [];
             for (let id in procs) {
@@ -2041,13 +2016,13 @@ function installAdapters() {
         try {
             let child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
             if (child.stdout) {
-                child.stdout.on('data', function (data) {
+                child.stdout.on('data', data => {
                     data = data.toString().replace('\n', '');
                     logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
             }
             if (child.stderr) {
-                child.stderr.on('data', function (data) {
+                child.stderr.on('data', data => {
                     data = data.toString().replace('\n', '');
                     logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
@@ -2229,7 +2204,7 @@ function startInstance(id, wakeUp) {
                 states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
                 // catch error output
                 if (procs[id].process.stderr) {
-                    procs[id].process.stderr.on('data', function (data) {
+                    procs[id].process.stderr.on('data', data => {
                         if (!data || !procs[id] || typeof procs[id] !== 'object') return;
                         let text = data.toString();
                         // show for debug
@@ -2349,7 +2324,7 @@ function startInstance(id, wakeUp) {
                 logger.info('host.' + hostname + ' instance canceled schedule ' + instance._id);
             }
 
-            procs[id].schedule = schedule.scheduleJob(instance.common.schedule, function () {
+            procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
                 if (!procs[id]) {
                     logger.error('host.' + hostname + ' scheduleJob: Task deleted (' + id + ')');
                     return;
@@ -2368,7 +2343,7 @@ function startInstance(id, wakeUp) {
                     storePids(); // Store all pids to make possible kill them all
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
-                    procs[id].process.on('exit', function (code, signal) {
+                    procs[id].process.on('exit', (code, signal) => {
                         outputCount++;
                         states.setState(id + '.alive', {val: false, ack: true, from: 'system.host.' + hostname});
                         if (signal) {
@@ -2397,7 +2372,7 @@ function startInstance(id, wakeUp) {
                 storePids(); // Store all pids to make possible kill them all
                 logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
-                procs[id].process.on('exit', function (code, signal) {
+                procs[id].process.on('exit', (code, signal) => {
                     cleanAutoSubscribes(id);
 
                     outputCount++;
@@ -2483,7 +2458,7 @@ function stopInstance(id, callback) {
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
                     let timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
-                    sendTo(instance._id, 'stopInstance', null, function (result) {
+                    sendTo(instance._id, 'stopInstance', null, result => {
                         if (timeout) {
                             clearTimeout(timeout);
                             timeout = null;
@@ -2503,7 +2478,7 @@ function stopInstance(id, callback) {
 
                     let timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
                     // If no response from adapter, kill it in 1 second
-                    timeout = setTimeout(function () {
+                    timeout = setTimeout(() => {
                         timeout = null;
                         if (procs[id].process) {
                             logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
@@ -2700,9 +2675,7 @@ function stop() {
                 }
             }
             if (states  && states.destroy)  states.destroy();
-            setTimeout(function () {
-                process.exit(1);
-            }, 1000);
+            setTimeout(() => process.exit(1), 1000);
         });
     });
 }
@@ -2799,9 +2772,9 @@ function init() {
     states.subscribe('*.info.connection');
 
     // Read current state of all log subscribers
-    states.getKeys('*.logging', function (err, keys) {
+    states.getKeys('*.logging', (err, keys) => {
         if (keys && keys.length) {
-            states.getStates(keys, function (err, obj) {
+            states.getStates(keys, (err, obj) => {
                 if (obj) {
                     for (let i = 0; i < keys.length; i++) {
                         // We can JSON.parse, but index is 16x faster
@@ -2822,26 +2795,30 @@ function init() {
 
     objects.subscribe('system.adapter.*');
 
-    process.on('SIGINT', function () {
+    objects.getObjectsByPattern('*.logging', (err, objs) => {
+        if (objs && objs.length) {
+
+        }
+    });
+
+    process.on('SIGINT', () => {
         logger.info('host.' + hostname + ' received SIGINT');
         stop();
     });
 
-    process.on('SIGTERM', function () {
+    process.on('SIGTERM', () => {
         logger.info('host.' + hostname + ' received SIGTERM');
         stop();
     });
 
-    process.on('uncaughtException', function (err) {
+    process.on('uncaughtException', err => {
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
             logger.error('host.' + hostname + ' fragmentedOperation: restart objects');
             // restart objects
             objects.destroy();
             objects = null;
             // Give time to close the objects
-            setTimeout(function () {
-                objects = createObjects();
-            }, 3000);
+            setTimeout(() => objects = createObjects(), 3000);
             return;
         }
 
@@ -2868,7 +2845,6 @@ function init() {
         // Restart itself
         processMessage({command: 'cmdExec', message: {data: '_restart'}});
     });
-
 }
 
 init();
