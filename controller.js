@@ -2771,33 +2771,39 @@ function init() {
     // Subscribe for connection state of all instances
     states.subscribe('*.info.connection');
 
-    // Read current state of all log subscribers
-    states.getKeys('*.logging', (err, keys) => {
-        if (keys && keys.length) {
-            states.getStates(keys, (err, obj) => {
-                if (obj) {
-                    for (let i = 0; i < keys.length; i++) {
-                        // We can JSON.parse, but index is 16x faster
-                        if (obj[i]) {
-                            if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                                logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
-                            } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                                logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    });
-
     objects = createObjects();
 
     objects.subscribe('system.adapter.*');
 
-    objects.getObjectsByPattern('*.logging', (err, objs) => {
-        if (objs && objs.length) {
+    // Read current state of all log subscribers
+    states.getKeys('*.logging', (err, keys) => {
+        if (keys && keys.length) {
+            const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
+            objects.getObjects(oKeys, (err, objs) => {
+                const toDelete = keys.filter((id, i) => !objs[i]);
+                keys = keys.filter((id, i) => objs[i]);
 
+                states.getStates(keys, (err, obj) => {
+                    if (obj) {
+                        for (let i = 0; i < keys.length; i++) {
+                            // We can JSON.parse, but index is 16x faster
+                            if (obj[i]) {
+                                if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                                } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                                }
+                            }
+                        }
+                    }
+                });
+                if (toDelete.length) {
+                    toDelete.forEach(id => {
+                        logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
+                        states.delState(id);
+                    });
+                }
+            });
         }
     });
 
