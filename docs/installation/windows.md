@@ -13,38 +13,38 @@ Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine S
 !> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]() 
 erfüllt.
 
-Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
-Laufzeitumgebung Node.js erforderlich. Im Folgenden wird davon ausgegangen, dass auf dem
-PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, bitte mit 
-dem Abschnitt [Update]() fortfahren.
+Für die Ausführung von ioBroker wird Node.js benötigt. Im Folgenden wird davon ausgegangen, 
+dass auf dem PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, 
+bitte mit dem Abschnitt [Update]() fortfahren.
 
-Um zu erkennen, ob Node.js installiert ist, kann man zuerst mit der Tastenkombination 
-<kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und 
-dann dort den Befehl 
+Um zu erkennen, ob Node.js installiert ist, wird mit der Tastenkombination 
+<kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet und 
+dann dort der Befehl 
 ~~~
 cmd.exe /C node -v & pause
 ~~~
-eingeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
+eingegeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
 
 ![Node.js-Version](media/w02nodecheck.png ':size=400')  
 *Node.js-Prüfung*
 
-Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. Wenn die 
-Abfrage eine Node.js-Versionsnummer ausgegeben hat, ist zuerst zu prüfen, ob diese noch den
+Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. Wenn eine 
+Node.js-Versionsnummer ausgegeben wird, ist zuerst zu prüfen, ob diese noch den
 [Installationsvoraussetzungen]() entspricht. Ist noch kein ioBroker installiert, kann dann mit 
 der Installation im Abschnitt [Update des Paketmanagers npm](#npmupdate) fortgefahren werden.
 
 Lautet die Fehlermeldung 
 `Der Befehl "node" ist entweder falsch geschrieben oder konnte nicht gefunden werden.`,
-dann ist Node.js nicht installiert und die Installation 
+dann ist node.js nicht installiert und die Installation 
 [kann direkt beginnen](#nodeinst).
 
 
 ## Zusammenfassung
 
-?> Es wird empfohlen, dass Einsteiger der [detaillierten Anleitung](#nodeinst) folgen. Diese 
-Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
+?> Diese Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
 gedacht, die ioBroker schon mehrmals installiert haben. 
+
+Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen. 
 
 * Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download] 
    herunterladen und mit Standardeinstellungen installieren
@@ -70,13 +70,13 @@ gedacht, die ioBroker schon mehrmals installiert haben.
 ?> Passend zur installierten Windows-Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
    Node.js-Variante zu verwenden.
 
-1. Um zu erfahren, welche Windows-Variante installiert ist, kann man zuerst mit der 
-   Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnet und 
-   dann dort den Befehl 
+1. Um zu erfahren, welche Windows-Variante installiert ist, wird mit der 
+   Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet 
+   und dort der Befehl 
    ~~~
    msinfo32
    ~~~
-   eingeben. Nach dem Bestätigen des Befehls erscheint das folgende Fenster:
+   eingegeben. Nach dem Bestätigen des Befehls erscheint das folgende Fenster:
 
    ![Download](media/w00winbits.png ':size=550')  
    *Systeminformation*
@@ -132,7 +132,7 @@ gedacht, die ioBroker schon mehrmals installiert haben.
    `Eingabetaste` abzuschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
    der Eingabe des Administratorenkennworts zu bestätigen ist.
    
- !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat,
+ !> Die Titelzeile im schwarzen Kommandozeilenfenster, das sich jetzt geöffnet hat,
    muss mit dem Wort `Administrator:` beginnen.
    
 2. Den folgenden Befehl einfügen und anschließend mit der <kbd>Eingabetaste</kbd> 
