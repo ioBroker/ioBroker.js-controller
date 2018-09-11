@@ -1,6 +1,6 @@
 ---
 title: "Windows-Installation"
-lastChanged: "11.08.2018"
+lastChanged: "11.09.2018"
 ---
 
 # Installation von ioBroker unter Windows
@@ -14,7 +14,7 @@ da einige Befehle aufeinander aufbauen.
 erfüllt.
 
 Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
-Laufzeitumgebung Node.js erforderlich. Im folgenden wird davon ausgegengen, dass auf dem
+Laufzeitumgebung Node.js erforderlich. Im folgenden wird davon ausgegangen, dass auf dem
 PC weder Node.js noch ioBroker installiert ist. 
 
 @@@ Prüfung, ob Nodejs/ioBroker vorhanden und ggf. Sprung zu Update hier einbauen @@@
@@ -294,7 +294,7 @@ PC weder Node.js noch ioBroker installiert ist.
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
    beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081`  aufgerufen.  
    <br>
-   Die Konfiguration von ioBroker wird im Kapitel [Konfiguration]() beschrieben.
+   Die weitere Konfiguration von ioBroker wird im Kapitel [Konfiguration]() beschrieben.
 
 
 ## Update
