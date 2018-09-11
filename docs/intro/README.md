@@ -1,8 +1,8 @@
 ---
-lastChanged: "28.08.2018"
+lastChanged: "11.09.2018"
 ---
 
-# ioBroker
+# ioBroker {docsify-ignore-all}
 
 ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Home, der Gebäudeautomatisation sowie Active Assisted Living. ioBroker kann über modulare `Adapter` mit vielen bestehenden Systemen und Geräten kommunizieren. Über Regeln lassen sich Funktionsabläufe herstellerunabhängig erstellen. Mit ioBroker bereitgestellte graphische Oberflächen helfen, die Bedienung bzw. Überwachung von Geräten zu vereinfachen.
 
@@ -35,7 +35,7 @@ Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas
 [Blog]()  
 [Facebook]()
 
-## Architektur
+## Architekturüberblick
 
 ioBroker ist modular, d.h. aus vielen einzelnen Komponenten aufgebaut. Jedes Modul hat eine spezifische Aufgabe. Um den Überblick zu behalten, besitzt ioBroker deshalb einen zentralen Koordinator für alle seine Module. Dieser Koordinator ist der im Hintergrund arbeitende `js-controller`. Er ist zuständig für die zentrale Datenhaltung sowie Management und Kommunikation zwischen allen Modulen. Die Module selbst werden  `Adapter` genannt. Adapter werden vom Anwender nur bei
 Bedarf installiert. Die webbasierte Administrationsoberfläche `admin` ist selbst auch ein Adapter. Der Admin-Adapter oder kurz "Admin" ist die Managementoberfläche eines ioBroker-Systems. Der Admin wird in der Regel mit der Adresse [http://localhost:8081](http://localhost:8081) aufgerufen.

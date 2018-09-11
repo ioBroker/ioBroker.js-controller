@@ -1,9 +1,9 @@
 * [Willkommen](README)
   * [Einführung](intro/)
 
-* Konzepte <!-- Primär WAS es ist, ggf nicht WIE es geht, verweise auf weiter unten -->
+* Konzepte <!-- Primär WAS es ist, nicht WIE es geht; Verweise auf weiter unten -->
   * [Konzeptübersicht](concept/)
-  * [JS-Controller](concept/)
+  * [Architektur](concept/)
   * [Adapter](concept/)
   * [Repositories](concept/)
   * [Objekte](concept/)
@@ -13,18 +13,23 @@
 
 * Installation
   * [Einleitung](installation/)
-  * [Hardware](installation/)
+  * [Systemvoraussetzungen](installation/) <!-- RAM, CPU, OS, Node.js, npm, build-tools, Netzwerk -->
+  * [Hardware](installation/) <!-- welche HW wird empfohlen, was wurde getestet -->
   * Fertige Images
     * [Raspberry Pi](installation/)
     * [Odroid](installation/)
-    * [Docker](installation/)
-  * Manuell
+    * [Docker](installation/) <!-- NAS und so ... Forum-Links bis jemand Dinge dokumentiert? -->
+  * Manuelle Installation
     * [Linux](installation/)
     * [Windows](installation/windows)
     * [macOS](installation/)
-    * [Weiteres](installation/) <!-- NAS und so ... Forum Links bis jemand Dinge dokumentiert? -->
-  * [Multi-Host](installation/) <!-- einfach, einrichtung per Kommandos, Verweis auf weiter unten -->
-  * [Troubleshooting](installation/)
+    * [Weitere](installation/) <!-- NAS und so ... Forum Links bis jemand Dinge dokumentiert? -->
+  * Updates
+    * [Allgemein]() <!-- Verweis auf jeweiliges Inst.-Verfahren, OS, Adapter und dort dokumentieren -->
+    * [js-controller](installation/)
+  * [Multi-Host](installation/) <!-- Einrichtung, für Admin-Konfig Verweis auf weiter unten -->
+  * [Redis-DB](installation/) <!-- Einrichtung -->
+  * [Troubleshooting](installation/) <!-- übergreifendes, sonst direkt beim jeweiligen Inst.-Verfahren -->
 
 * Tutorial für Einsteiger
   * [Einleitung](tutorial/)
@@ -33,9 +38,9 @@
   * [Konfiguration](tutorial/)
   * [Logging](tutorial/)
   * [Adapter hinzufügen](tutorial/)
-  * [Einfache Logiken](tutorial/) <!-- einfach, Verweis auf unten -->
-  * [Visualiserung erstellen](tutorial/) <!-- Übersicht: Material, VIS mega kurz angerissen -->
-  * [Datenhistorisierung](tutorial/) <!-- Fokus Allgemein "Funktionen im Admin" am Beispiel History und allgemein, SQL/InfluxDB erwähnen -->
+  * [Einfache Logik](tutorial/) <!-- ein Beispiel, Verweis auf unten -->
+  * [Visualiserung erstellen](tutorial/) <!-- ein Beispiel: Material, VIS mega kurz angerissen -->
+  * [Datenhistorisierung](tutorial/) <!-- am Beispiel History, zus. SQL/InfluxDB erwähnen -->
 
 * Konfiguration
   * [Einleitung](configuration/)
@@ -49,8 +54,8 @@
     * [Android App](configuration/)
     * [iOS App](configuration/)
     * [Mediola Plugin](configuration/)
-  * [Multi-Host](configuration/) <!-- Tiefer als oben -->
-  * [Benutzer und Rechte](configuration/)
+  * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
+  * [Benutzer und Rechteverwaltung](configuration/)
 
 * Logik
   * [Einleitung](logic/)
@@ -68,14 +73,21 @@
 
 * Administration
   * [Einleitung](admin/)
-  * [node und npm Versionen](admin/)
-  * [node und npm Update](admin/)
-  * [js-controller Updates](admin/)
-  * [Logging](admin/) <!-- inkl. Syslog -->
+  * [Erstkonfiguration](admin/)
+  * [Aufbau des Adminfensters](admin/)
+  * [Übersicht](admin/)
+  * [Adapter](admin/)
+  * [Objekte](admin/)
+  * [Log](admin/) <!-- inkl. Syslog -->
+  * [Aufzählungen](admin/)
+  * [Ereignisse](admin/)
+  * [Skripte](admin/) <!-- Verweis auf Logik -->
+  * [Hosts](admin/)
+  * [Updates](admin/)
   * [Kommandozeilen-Tools](admin/)
   * [Redis](admin/)
   * [Backup](admin/)
-  * [Troubleshooting](admin/)
+  * [Troubleshooting](admin/) <!-- zus. Issue-Erstellung auf GitHub -->
 
 * Entwickler
   * [Einleitung](developers/)

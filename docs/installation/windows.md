@@ -334,9 +334,12 @@ gedacht, die ioBroker schon mehrmals installiert haben.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
-   beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081` aufgerufen.  
-   <br>
-   Die weitere Konfiguration von ioBroker wird im Kapitel [Konfiguration]() beschrieben.
+   aufgerufen. Die Konfiguration von ioBroker wird detailliert im Kapitel 
+   [Konfiguration]() beschrieben.
+   
+?> Für Einsteiger wird jetzt die Ausführung des [Tutorials]() empfohlen. Hier wird 
+   schrittweise die Administrationsoberfläche vorgestellt und wesentliche 
+   Basiseinstellungen vorgenommen. 
 
 
 ## Update
