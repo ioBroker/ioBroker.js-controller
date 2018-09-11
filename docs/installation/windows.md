@@ -15,9 +15,11 @@ erfüllt.
 
 Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
 Laufzeitumgebung Node.js erforderlich. Im Folgenden wird davon ausgegangen, dass auf dem
-PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, bitte mit dem Abschnitt [Update]() fortfahren.
+PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, bitte mit 
+dem Abschnitt [Update]() fortfahren.
 
-Um zu erkennen, ob Node.js installiert ist, kann man zuerst mit der Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und 
+Um zu erkennen, ob Node.js installiert ist, kann man zuerst mit der Tastenkombination 
+<kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und 
 dann dort den Befehl 
 ~~~
 cmd.exe /C node -v & pause
@@ -47,7 +49,8 @@ gedacht, die ioBroker schon mehrmals installiert haben.
 * Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download] 
    herunterladen und mit Standardeinstellungen installieren
 * `npm` wie [hier beschrieben](#npmupdate) reparieren
-* Kommandozeile `cmd.exe` als Administrator öffnen
+* Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
+  ausführen:
   ~~~cmd
   npm install --global windows-build-tools
   md C:\iobroker
@@ -83,7 +86,8 @@ gedacht, die ioBroker schon mehrmals installiert haben.
    beziehungsweise `X86-based PC` stehen.
 
 1. Entsprechend der gefundenen Windows-Variante jetzt von der Webseite
-   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version von Node.js in der 32- oder 64Bit-Variante als .msi-Datei herunterladen.
+   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version 
+   von Node.js in der 32- oder 64Bit-Variante als .msi-Datei herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
    *Download von Node.js*
@@ -125,8 +129,8 @@ gedacht, die ioBroker schon mehrmals installiert haben.
    `Eingabetaste` abzuschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
    der Eingabe des Administratorenkennworts zu bestätigen ist.
    
- !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
-   dem Wort `Administrator:` beginnen.
+ !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat,
+   muss mit dem Wort `Administrator:` beginnen.
    
 2. Den folgenden Befehl einfügen und anschließend mit der <kbd>Eingabetaste</kbd> 
    ausführen.
