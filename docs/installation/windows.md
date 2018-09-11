@@ -100,7 +100,10 @@ gedacht, die ioBroker schon mehrmals installiert haben.
  ?> In der Regel steht das Programm im Ordner `Downloads` und folgt dem Namensschema
    `node-<Version>.msi`.  
      
-1. Node.js mit den Standardeinstellungen installieren.  
+1. Falls eine Meldung erscheint, dass die App keine überprüfte App aus dem Microsoft Store ist, 
+   `Trotzdem installieren` auswählen.
+
+2. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern. 
    
    ![Installation von Node.js](media/w02nodeinst.gif)  
    *Node.js Installation*
