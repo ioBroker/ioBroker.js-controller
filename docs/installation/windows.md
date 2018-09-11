@@ -5,8 +5,8 @@ lastChanged: "11.09.2018"
 
 # Installation von ioBroker unter Windows
 
-Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine Schritte überspringen,
-da einige Befehle aufeinander aufbauen.
+Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine Schritte
+überspringen, da einige Befehle aufeinander aufbauen.
 
 ## Voraussetzungen
 
@@ -14,26 +14,66 @@ da einige Befehle aufeinander aufbauen.
 erfüllt.
 
 Für das spätere Ausführen von ioBroker ist die Installation der JavaScript-
-Laufzeitumgebung Node.js erforderlich. Im folgenden wird davon ausgegangen, dass auf dem
-PC weder Node.js noch ioBroker installiert ist. 
+Laufzeitumgebung Node.js erforderlich. Im Folgenden wird davon ausgegangen, dass auf dem
+PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, bitte mit dem Abschnitt [Update]() fortfahren.
 
-@@@ Prüfung, ob Nodejs/ioBroker vorhanden und ggf. Sprung zu Update hier einbauen @@@
+Um zu erkennen, ob Node.js installiert ist, kann man zuerst mit der Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und 
+dann dort den Befehl 
+~~~
+cmd.exe /C node -v & pause
+~~~
+eingeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
+
+![Node.js-Version](media/w02nodecheck.png ':size=400')  
+*Node.js-Prüfung*
+
+Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. Wenn die 
+Abfrage eine Node.js-Versionsnummer ausgegeben hat, ist zuerst zu prüfen, ob diese noch den
+[Installationsvoraussetzungen]() entspricht. Ist noch kein ioBroker installiert, kann dann mit 
+der Installation im Abschnitt [Update des Paketmanagers npm](#npmupdate) fortgefahren werden.
+
+Lautet die Fehlermeldung 
+`Der Befehl "node" ist entweder falsch geschrieben oder konnte nicht gefunden werden.`,
+dann ist Node.js nicht installiert und die Installation 
+[kann direkt beginnen](#nodeinst).
 
 
-## Installation von Node.js
+## Zusammenfassung
+
+?> Es wird empfohlen, dass Einsteiger der [detaillierten Anleitung](#nodeinst) folgen. Diese 
+Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
+gedacht, die ioBroker schon mehrmals installiert haben. 
+
+* Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download] 
+   herunterladen und mit Standardeinstellungen installieren
+* `npm` wie [hier beschrieben](#npmupdate) reparieren
+* Kommandozeile `cmd.exe` als Administrator öffnen
+  ~~~cmd
+  npm install --global windows-build-tools
+  md C:\iobroker
+  cd /d C:\iobroker
+  npm install https://github.com/ioBroker/ioBroker/tarball/master
+  npm install --production
+  iobroker status  
+  ~~~
+
+
+<div id="nodeinst"></div>
+
+## 1. Installation von Node.js
 
 ### Herunterladen
 
-?> Passend zur installierten Windows Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
+?> Passend zur installierten Windows-Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
    Node.js-Variante zu verwenden.
 
-1. Welche Windows-Variante installiert ist, kann man erfahren, indem man zuerst mit den 
+1. Um zu erfahren, welche Windows-Variante installiert ist, kann man zuerst mit der 
    Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnet und 
-   dort den Befehl 
+   dann dort den Befehl 
    ~~~
    msinfo32
    ~~~
-   eingibt. Nach dem Bestätigen des Befehls erscheint das folgende Fenster:
+   eingeben. Nach dem Bestätigen des Befehls erscheint das folgende Fenster:
 
    ![Download](media/w00winbits.png ':size=550')  
    *Systeminformation*
@@ -62,7 +102,9 @@ PC weder Node.js noch ioBroker installiert ist.
    *Node.js Installation*
 
 
-### Update des Paketmangers npm
+<div id="npmupdate"></div>
+
+## 2. Update des Paketmanagers npm
 
 ?> `npm` ist ein <u>N</u>ode.js-<u>P</u>aket<u>m</u>anager und hilft bei der
    Verwaltung und Installation von Programmen. 
@@ -78,10 +120,10 @@ PC weder Node.js noch ioBroker installiert ist.
    ~~~
    eingeben. 
    
-   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die 
+   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, ist die 
    Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
-   `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
-   der Eingabe des Administratorkennworts zu bestätigen ist.
+   `Eingabetaste` abzuschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
+   der Eingabe des Administratorenkennworts zu bestätigen ist.
    
  !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, muss mit 
    dem Wort `Administrator:` beginnen.
@@ -92,7 +134,7 @@ PC weder Node.js noch ioBroker installiert ist.
    npm install -g npm@latest
    ~~~
 
-   Eine typisches Ergebnis des Befehls kann wie folgt aussehen:
+   Ein typisches Ergebnis des Befehls kann wie folgt aussehen:
    ~~~
    C:\Windows\system32>npm install -g npm@latest
    C:\Users\Admin\AppData\Roaming\npm\npm -> C:\Users\Admin\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
@@ -108,7 +150,7 @@ PC weder Node.js noch ioBroker installiert ist.
 
 1. Zuerst prüfen, ob `npm` wirklich in den beiden Ordnern installiert ist. Dazu mit der 
    Tastenkombination <kbd>&#x229e; Windows</kbd> + <kbd>e</kbd> ein Explorerfenster 
-   öffnen. In der Adresszeite den Pfad 
+   öffnen. In der Adresszeile den Pfad 
    ~~~
    %ProgramFiles%\nodejs\node_modules\npm
    ~~~
@@ -174,20 +216,20 @@ PC weder Node.js noch ioBroker installiert ist.
    ~~~
    Damit sind die beiden `npm`-Installationsorte auf die gleiche Version aktualisiert.
 
-!> Das Update des Node.js-Paketmangers `npm` ist bei jeder Node.js-Nachinstallation 
+!> Das Update des Node.js-Paketmanagers `npm` ist bei jeder Node.js-Nachinstallation 
    und jedem Node.js-Update zu wiederholen!
 
 
-## Installation von ioBroker
+## 3. Installation von ioBroker
 
 ?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
    werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige 
    Pfadangabe bei allen Befehlen mit Anführungszeichen umschlossen werden.  
    Beispielbefehl: `dir "C:\ioBroker Testsystem"`.  
-   <br>
-   Der Standardinstallationsorder für ioBroker ist `C:\iobroker`.
 
-1. Ein Kommandozeilenfenster als Administrator öffen. Dazu mit den Tastenkombination 
+?> Der Standardinstallationsordner für ioBroker ist `C:\iobroker`.
+
+1. Ein Kommandozeilenfenster als Administrator öffnen. Dazu mit der Tastenkombination
    <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort 
    den Befehl 
    ~~~cmd
@@ -203,23 +245,23 @@ PC weder Node.js noch ioBroker installiert ist.
  !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, 
    muss mit dem Wort `Administrator:` beginnen. 
    
-1. Im Kommandozeilenfenster die folgenden Befehle zum Anlegen des Installationsordners
-   ausführen:
-   ~~~cmd
-   md C:\iobroker
-   ~~~
-   
  ?> Manche ioBroker-Adapter enthalten Komponenten, die für Windows kompiliert 
    werden müssen. Deshalb werden vor der Installation von ioBroker die sogenannten 
    `windows-build-tools` installiert. Mehr Informationen zu den `windows-build-tools`
    sind [hier zu finden](https://github.com/felixrieseberg/windows-build-tools).
 
-1. Die `windows-build-tools` werden mit dem folgenden Kommando installiert:
+2. Die `windows-build-tools` werden mit dem folgenden Kommando installiert:
    ~~~cmd
    npm install --global windows-build-tools
    ~~~
 
-1. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
+3. Dann im Kommandozeilenfenster den Befehl zum Anlegen des Installationsordners
+   ausführen:
+   ~~~cmd
+   md C:\iobroker
+   ~~~
+
+4. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
    ~~~cmd
    cd /d C:\iobroker
    npm install https://github.com/ioBroker/ioBroker/tarball/master
@@ -247,7 +289,7 @@ PC weder Node.js noch ioBroker installiert ist.
    found 0 vulnerabilities
    ~~~
 
-1. Die ioBroker Installation wird mit dem folgenden Komandos abgeschlossen:
+5. Die ioBroker Installation wird mit den folgenden Befehlen abgeschlossen:
    ~~~cmd
    cd /d C:\iobroker
    npm install --production
@@ -270,7 +312,7 @@ PC weder Node.js noch ioBroker installiert ist.
    run `npm audit fix` to fix them, or `npm audit` for details
    ~~~
 
-1. Anschließend kann mit dem Befehl
+6. Anschließend kann mit dem Befehl
    ~~~cmd
    iobroker status
    ~~~
@@ -292,7 +334,7 @@ PC weder Node.js noch ioBroker installiert ist.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
-   beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081`  aufgerufen.  
+   beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081` aufgerufen.  
    <br>
    Die weitere Konfiguration von ioBroker wird im Kapitel [Konfiguration]() beschrieben.
 
