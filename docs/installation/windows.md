@@ -1,6 +1,6 @@
 ---
 title: "Windows-Installation"
-lastChanged: "11.098.2018"
+lastChanged: "11.08.2018"
 ---
 
 # Installation von ioBroker unter Windows
@@ -221,7 +221,7 @@ PC weder Node.js noch ioBroker installiert ist.
 
 1. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
    ~~~cmd
-   cd /s C:\iobroker
+   cd /d C:\iobroker
    npm install https://github.com/ioBroker/ioBroker/tarball/master
    ~~~
 
@@ -249,7 +249,7 @@ PC weder Node.js noch ioBroker installiert ist.
 
 1. Die ioBroker Installation wird mit dem folgenden Komandos abgeschlossen:
    ~~~cmd
-   cd /s C:\iobroker
+   cd /d C:\iobroker
    npm install --production
    ~~~
    Der Installationsvorgang kann etwas dauern.
@@ -281,7 +281,7 @@ PC weder Node.js noch ioBroker installiert ist.
    ~~~
    lauten.
 
- ?> Zukünftig wird ioBroker bei jedem Systemneustart automatisch im Hintergrund 
+ ?> Zukünftig wird ioBroker bei jedem Systemneustart im Hintergrund automatisch 
    gestartet.
 
 1. Abschließend kann das Kommandozeilenfenster durch das Ausführen des Befehls
@@ -292,7 +292,10 @@ PC weder Node.js noch ioBroker installiert ist.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
-   beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081`  aufgerufen.
+   beziehungsweise `http://<Names-oder-Adresse-des-Rechners>:8081`  aufgerufen.  
+   <br>
+   Die Konfiguration von ioBroker wird im Kapitel [Konfiguration]() beschrieben.
+
 
 ## Update
 @@@ tbd @@@
