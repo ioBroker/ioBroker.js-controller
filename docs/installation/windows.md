@@ -25,7 +25,7 @@ cmd.exe /C node -v & pause
 ~~~
 eingegeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
 
-![Node.js-Version](media/w02nodecheck.png ':size=400')  
+![Node.js-Version](media/w02nodecheck.png)  
 *Node.js-Prüfung*
 
 Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. Wenn eine 
@@ -48,10 +48,12 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 * Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download] 
    herunterladen und mit Standardeinstellungen installieren
-* `npm` wie [hier beschrieben](#npmupdate) reparieren
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
   ~~~cmd
+  md %PROGRAMDATA%\npm
+  setx PATH "%PROGRAMDATA%\npm;%PATH%" /M
+  npm config set prefix %PROGRAMDATA%\npm
   npm install --global windows-build-tools
   md C:\iobroker
   cd /d C:\iobroker
@@ -63,37 +65,19 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 <div id="nodeinst"></div>
 
-## 1. Installation von Node.js
-
-### Herunterladen
+## Installation von Node.js
 
 ?> Passend zur installierten Windows-Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
-   Node.js-Variante zu verwenden.
+   Node.js-Variante zu verwenden. Es wird empfohlen, Node.js von dem Rechner aus
+   herunterzuladen, auf dem es installiert werden soll, da die Downloadwebseite die 
+   Windows-Variante automatisch berücksichtigt.
 
-1. Um zu erfahren, welche Windows-Variante installiert ist, wird mit der 
-   Tastenkombination  <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet 
-   und dort der Befehl 
-   ~~~
-   msinfo32
-   ~~~
-   eingegeben. Nach dem Bestätigen des Befehls erscheint das folgende Fenster:
-
-   ![Download](media/w00winbits.png ':size=550')  
-   *Systeminformation*
-
- ?> Im Beispiel sieht man, dass es sich hier um eine 64Bit-Installation (deutsch: `x64-basierter PC`,
-   englisch: `x64-based PC`) handelt. Bei einer 32Bit-Windowsvariante würde hier `X86-basierter PC`
-   beziehungsweise `X86-based PC` stehen.
-
-1. Entsprechend der gefundenen Windows-Variante jetzt von der Webseite
+1. Von der Webseite
    [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version 
-   von Node.js in der 32- oder 64Bit-Variante als .msi-Datei herunterladen.
+   von Node.js herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
    *Download von Node.js*
-
-
-### Installieren
 
 1. Das heruntergeladene Node.js-Installationsprogramm mit einem Doppelklick starten. 
   
@@ -103,131 +87,14 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 1. Falls eine Meldung erscheint, dass die App keine überprüfte App aus dem Microsoft Store ist, 
    `Trotzdem installieren` auswählen.
 
-2. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern. 
+1. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern. 
+   Eventuelle erscheinende Sicherheitsabfragen bestätigen.
    
-   ![Installation von Node.js](media/w02nodeinst.gif)  
+   ![Installation von Node.js](media/w03nodeinst.gif)  
    *Node.js Installation*
 
 
-<div id="npmupdate"></div>
-
-## 2. Update des Paketmanagers npm
-
-?> `npm` ist ein <u>N</u>ode.js-<u>P</u>aket<u>m</u>anager und hilft bei der
-   Verwaltung und Installation von Programmen. 
-   
-!> Damit `npm` funktioniert, ist direkt nach der Installation von Node.js
-   ein Update von `npm` erforderlich.
-
-1. Deshalb ein Kommandozeilenfenster als Administrator starten. Dazu mit der 
-   Tastenkombination <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den 
-   `Ausführen`-Dialog öffnen und dort den Befehl 
-   ~~~
-   cmd
-   ~~~
-   eingeben. 
-   
-   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, ist die 
-   Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
-   `Eingabetaste` abzuschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
-   der Eingabe des Administratorenkennworts zu bestätigen ist.
-   
- !> Die Titelzeile im schwarzen Kommandozeilenfenster, das sich jetzt geöffnet hat,
-   muss mit dem Wort `Administrator:` beginnen.
-   
-2. Den folgenden Befehl einfügen und anschließend mit der <kbd>Eingabetaste</kbd> 
-   ausführen.
-   ~~~cmd
-   npm install -g npm@latest
-   ~~~
-
-   Ein typisches Ergebnis des Befehls kann wie folgt aussehen:
-   ~~~
-   C:\Windows\system32>npm install -g npm@latest
-   C:\Users\Admin\AppData\Roaming\npm\npm -> C:\Users\Admin\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
-   C:\Users\Admin\AppData\Roaming\npm\npx -> C:\Users\Admin\AppData\Roaming\npm\node_modules\npm\bin\npx-cli.js
-   + npm@6.4.1
-   added 387 packages in 16.219s
-   ~~~
-   
- ?> `npm` ist jetzt an zwei Orten installiert. Einmal im Node.js-Programmordner und
-   einmal in einem Verzeichnis des aktuellen Windows-Benutzers. Da die Benutzer-Version
-   von `npm` neuer ist als die im Node.js-Ordner, muss die Node.js-Version mit der
-   Version aus dem Benutzerordner überschrieben werden. 
-
-1. Zuerst prüfen, ob `npm` wirklich in den beiden Ordnern installiert ist. Dazu mit der 
-   Tastenkombination <kbd>&#x229e; Windows</kbd> + <kbd>e</kbd> ein Explorerfenster 
-   öffnen. In der Adresszeile den Pfad 
-   ~~~
-   %ProgramFiles%\nodejs\node_modules\npm
-   ~~~
-   eingeben. Hier sollten einige Dateien und Ordner enthalten sein:
-   
-   ![npm-Dateien](media/w04npm.png ':size=400')  
-   *npm-Dateien*
-  
-2. Anschließend im Explorerfenster jetzt den Pfad
-   ~~~
-   %APPDATA%\npm\node_modules\npm
-   ~~~
-   öffnen. Hier sollten ebenfalls wie oben Dateien und Ordner stehen.
-   
-3. Wenn alles so weit in Ordnung ist, im Kommandozeilenfenster den folgenden Befehl ausführen:
-   ~~~cmd
-   robocopy /r:0 /is /it "%ProgramFiles%\nodejs\node_modules\npm" "%APPDATA%\npm\node_modules\npm" npmrc
-   ~~~
-   
-   Das gekürzte Ergebnis lautet:
-   ~~~
-   -------------------------------------------------------------------------------
-   ROBOCOPY     ::     Robustes Dateikopieren für Windows
-   -------------------------------------------------------------------------------
-     Quelle : C:\Program Files\nodejs\node_modules\npm\
-       Ziel : C:\Users\<Benutzer>\AppData\Roaming\npm\node_modules\npm\
-    Dateien : npmrc
-   -------------------------------------------------------------------------------
-
-          Insgesamt    Kopiert Übersprungen Keine Übereinstimmung  FEHLER   Extras
-   Verzeich.:     1          0            1                     0       0        0
-     Dateien:     1          1            0                     0       0        0
-       Bytes:    23         23            0                     0       0        0
-
-   Geschwindigkeit:                1533 Bytes/Sek.
-   Geschwindigkeit:               0.087 Megabytes/Min.
-   ~~~
-   
-4. Jetzt im Kommandozeilenfenster den folgenden Befehl ausführen:
-   ~~~cmd
-   robocopy /mir /zb /is /it /r:0 "%APPDATA%\npm\node_modules\npm" "%ProgramFiles%\nodejs\node_modules\npm" *.*
-   ~~~
-   
-   Das Ergebnis lautet gekürzt:
-   ~~~
-   -------------------------------------------------------------------------------
-   ROBOCOPY     ::     Robustes Dateikopieren für Windows
-   -------------------------------------------------------------------------------
-     Quelle : C:\Users\Admin\AppData\Roaming\npm\node_modules\npm\
-       Ziel : C:\Program Files\nodejs\node_modules\npm\
-    Dateien : *.*
-   -------------------------------------------------------------------------------
-    <lange Liste mit Dateien>
-   -------------------------------------------------------------------------------
-
-           Insgesamt   Kopiert Übersprungen Keine Übereinstimmung  FEHLER   Extras
-    Verzeich.:   746       475          271                     0       0      799
-      Dateien:  3630      3630            0                     0       0     3443
-        Bytes: 16.27 m   16.27 m          0                     0       0  13.12 m
-    
-    Geschwindigkeit:             3396273 Bytes/Sek.
-    Geschwindigkeit:             194.336 Megabytes/Min.
-   ~~~
-   Damit sind die beiden `npm`-Installationsorte auf die gleiche Version aktualisiert.
-
-!> Das Update des Node.js-Paketmanagers `npm` ist bei jeder Node.js-Nachinstallation 
-   und jedem Node.js-Update zu wiederholen!
-
-
-## 3. Installation von ioBroker
+## Installation von ioBroker
 
 ?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
    werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige 
@@ -251,18 +118,29 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    
  !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, 
    muss mit dem Wort `Administrator:` beginnen. 
-   
+
+ ?> `npm` ist ein Node.js-Paketmanager und hilft bei der Verwaltung und Installation 
+   von Programmen. 
+
+1. Zunächst wird das Verzeichnis, in dem `npm` seine Daten speichert,
+   an einen für alle Windows-Benutzer zugänglichen Ort geändert:
+   ~~~cmd
+   md %PROGRAMDATA%\npm
+   setx PATH "%PROGRAMDATA%\npm;%PATH%" /M
+   npm config set prefix %PROGRAMDATA%\npm
+   ~~~
+
  ?> Manche ioBroker-Adapter enthalten Komponenten, die für Windows kompiliert 
    werden müssen. Deshalb werden vor der Installation von ioBroker die sogenannten 
    `windows-build-tools` installiert. Mehr Informationen zu den `windows-build-tools`
    sind [hier zu finden](https://github.com/felixrieseberg/windows-build-tools).
 
-2. Die `windows-build-tools` werden mit dem folgenden Kommando installiert:
+1. Die `windows-build-tools` werden mit dem folgenden Kommando installiert:
    ~~~cmd
    npm install --global windows-build-tools
    ~~~
 
-3. Dann im Kommandozeilenfenster den Befehl zum Anlegen des Installationsordners
+1. Dann im Kommandozeilenfenster den Befehl zum Anlegen des Installationsordners
    ausführen:
    ~~~cmd
    md C:\iobroker
@@ -276,6 +154,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
    Das Ergebnis sollte so aussehen:
    ~~~
+   [...]
    ╭───────────────────────────────────────────────────────╮
    │ The iobroker files have been downloaded successfully. │
    │ To complete the installation, you need to run         │
@@ -296,12 +175,15 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    found 0 vulnerabilities
    ~~~
 
-5. Die ioBroker Installation wird mit den folgenden Befehlen abgeschlossen:
+1. Die ioBroker Installation wird mit den folgenden Befehlen abgeschlossen:
    ~~~cmd
    cd /d C:\iobroker
    npm install --production
    ~~~
-   Der Installationsvorgang kann etwas dauern.
+   Der Installationsvorgang kann etwas dauern. Es können bei der Ausführung
+   von npm einge rote Fehlermeldungen (gyp !ERR) im Zusammenhang mit
+   dem Modul `unix-dgram` erscheinen. Diese Fehlermeldungen können
+   ignoriert werden.
 
    Die letzten Zeilen der Installation sollten in etwa wie folgt enden:
    ~~~
