@@ -16,10 +16,9 @@ const cp         = require('child_process');
 const ioPackage  = require(__dirname + '/io-package.json');
 const tools      = require(__dirname + '/lib/tools');
 const version    = ioPackage.common.version;
-const pidusage   = require('pidusage');
+const pidUsage   = require('pidusage');
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
-const { LEVEL }  = require('triple-beam');
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
    Currently Node.js on Windows platform do not implements os.loadavg() functionality - it returns [0,0,0]
@@ -188,7 +187,8 @@ function getIPs() {
 }
 
 // subscribe or unsubscribe loggers
-function logRedirect(isActive, id) {
+function logRedirect(isActive, id, reason) {
+    console.warn(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
     if (isActive) {
         if (logList.indexOf(id) === -1) {
             logList.push(id);
@@ -215,7 +215,7 @@ function createStates() {
             }
             // If some log transporter activated or deactivated
             if (id.match(/.logging$/)) {
-                logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length));
+                logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
             // If this is messagebox
             if (id === 'messagebox.system.host.' + hostname) {
@@ -457,7 +457,7 @@ function reportStatus() {
 
     // provide infos about current process
 
-    // pidusage([pid,pid,...], function (err, stats) {
+    // pidUsage([pid,pid,...], function (err, stats) {
     // => {
     //   cpu: 10.0,            // percentage (from 0 to 100*vcore)
     //   memory: 357306368,    // bytes
@@ -467,7 +467,7 @@ function reportStatus() {
     //   elapsed: 6650000,     // ms since the start of the process
     //   timestamp: 864000000  // ms since epoch
     // }
-    pidusage(process.pid, (err, stats) => {
+    pidUsage(process.pid, (err, stats) => {
         // controller.s might be stopped, but this is still running
         if (!err && states && states.setState && stats) {
             states.setState(id + '.cpu',     {ack: true, from: id, val: parseFloat(stats.cpu).toFixed(2)});
@@ -1675,30 +1675,14 @@ function processMessage(msg) {
                 // this is temporary function to check the logging functionality
                 // Print all information into log
                 let logs  = [];
-                let count = 0;
-                function printLog(id, callback) {
-                    states.lenLog(id, (err, len) => {
-                        logs.push('Subscriber - ' + id + ' (queued ' + len + ') ' + (err || ''));
-                        if (len) {
-                            states.getLog(id, (err, obj) => {
-                                if (obj) {
-                                    logs.push(id + ' (' + JSON.stringify(obj) + ')');
-                                }
 
-                                printLog(id, callback);
-                            });
-                        } else {
-                            if (callback) callback();
-                        }
-                    });
-                }
                 // LogList
                 logs.push('Actual Loglist - ' + JSON.stringify(logList));
 
                 // Read current state of all log subscribers
                 states.getKeys('*.logging', (err, keys) => {
                     if (keys && keys.length) {
-                        states.getStates(keys, function (err, obj) {
+                        states.getStates(keys, (err, obj) => {
                             if (obj) {
                                 for (let i = 0; i < keys.length; i++) {
                                     // We can JSON.parse, but index is 16x faster
@@ -1707,17 +1691,9 @@ function processMessage(msg) {
 
                                         if ((typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
                                             (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
-                                            count++;
-                                            printLog(id, () => {
-                                                if (!--count) {
-                                                    for (let m = 0; m < logs.length; m++) {
-                                                        logger.error('host.' + hostname + ' LOGINFO: ' + logs[m]);
-                                                    }
-                                                    logs = [];
-                                                }
-                                            });
+                                            logs.push('Subscriber - ' + id + ' ENABLED');
                                         } else {
-                                            if (logs) logs.push('Subscriber - ' + id + ' (disabled)');
+                                            logs && logs.push('Subscriber - ' + id + ' (disabled)');
                                         }
                                     }
                                 }
@@ -2231,6 +2207,7 @@ function startInstance(id, wakeUp) {
 
                     if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
                         outputCount++;
+                        console.warn(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
                         states.setState(id + '.logging', {val: false, ack: true, from: 'system.host.' + hostname});
                     }
 
@@ -2722,10 +2699,12 @@ function init() {
         adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
     }
 
-    // normally first transport is file
-    logger.transports[0].on('logged', info => {
+    // find our notifier transport
+    let ts = logger.transports.find(t => t.name === 'NT');
+    ts.on('logged', info => {
+        info.from = 'host.' + hostname;
         for (let i = 0; i < logList.length; i++) {
-            states.pushLog(logList[i], {message: info.message, severity: info[LEVEL], from: 'host.' + hostname, ts: new Date(info.timestamp).getTime()});
+            states.pushLog(logList[i], info);
         }
     });
 
@@ -2789,9 +2768,9 @@ function init() {
                             // We can JSON.parse, but index is 16x faster
                             if (obj[i]) {
                                 if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
                                 } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''));
+                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
                                 }
                             }
                         }
