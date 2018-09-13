@@ -20,5 +20,5 @@ Detailbeschreibungen verwiesen werden.
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
    Hilf unserer ioBroker Community und erweitere diesen Artikel.  
-   Bitte beachtet den [ioBroker Style Guide](appendix/style_guide), 
+   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.

@@ -7,5 +7,3 @@
 
 * 🌐 Language
   * [:de: Deutsch](/README)
-  * [:gb: English](/_en/)
-  * [:ru: русский](/_ru/)

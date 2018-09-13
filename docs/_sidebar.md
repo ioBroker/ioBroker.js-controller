@@ -13,23 +13,23 @@
 
 * Installation
   * [Einleitung](install/README)
-  * [Systemvoraussetzungen](install/) <!-- RAM, CPU, OS, Node.js, npm, build-tools, Netzwerk -->
-  * [Hardware](install/) <!-- welche HW wird empfohlen, was wurde getestet -->
+  * [Systemvoraussetzungen](install/requirements)
+  * [Hardware](install/hardware)
   * Fertige Images
-    * [Übersicht](install/liste)
+    * [Übersicht](install/images)
   * Virtualisierungsplattformen
     * [Proxmox](install/proxmox)
-    * [Docker](install/docker) <!-- NAS und so ... Forum-Links bis jemand Dinge dokumentiert? -->
+    * [Docker](install/docker)
   * Manuelle Installation
     * [Linux](install/linux)
     * [Windows](install/windows)
     * [macOS](install/macos)
-  * Updates
-    * [Allgemein](ipdates) <!-- Verweis auf jeweiliges Inst.-Verfahren, OS, Adapter und dort dokumentieren -->
-    * [js-controller](installation/)
-  * [Multi-Host](installation/) <!-- Einrichtung, für Admin-Konfig Verweis auf weiter unten -->
-  * [Redis-DB](installation/) <!-- Einrichtung -->
-  * [Troubleshooting](installation/) <!-- übergreifendes, sonst direkt beim jeweiligen Inst.-Verfahren -->
+  * Softwareupdate
+    * [Allgemein](install/update)
+    * [Controller](install/updateself)
+  * [Multi-Host](install/multihost)
+  * [Redis-DB](install/redis)
+  * [Troubleshooting](install/help)
 
 * Tutorial für Einsteiger
   * [Einleitung](tutorial/README)

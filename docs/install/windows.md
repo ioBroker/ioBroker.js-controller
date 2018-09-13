@@ -1,9 +1,17 @@
 ---
-title: "Windows-Installation"
-lastChanged: "11.09.2018"
+title:       "Installation"
+lastChanged: "13.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/windows.md"
 ---
 
 # Installation von ioBroker unter Windows
+
+?> ***Dieser Artikel wird gerade erweitert***. 
+   <br><br>
+   Hilf unserer ioBroker Community.  
+   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
+   damit die Änderungen einfacher übernommen werden können.
+
 
 Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine Schritte
 überspringen, da einige Befehle aufeinander aufbauen.
@@ -51,9 +59,6 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
   ~~~cmd
-  md %PROGRAMDATA%\npm
-  setx PATH "%PROGRAMDATA%\npm;%PATH%" /M
-  npm config set prefix %PROGRAMDATA%\npm
   npm install --global windows-build-tools
   md C:\iobroker
   cd /d C:\iobroker
@@ -93,7 +98,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    *Node.js Installation*
 
 
-## Installation von ioBroker
+## 3. Installation von ioBroker
 
 ?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
    werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige 
@@ -117,17 +122,6 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    
  !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, 
    muss mit dem Wort `Administrator:` beginnen. 
-
- ?> `npm` ist ein Node.js-Paketmanager und hilft bei der Verwaltung und Installation 
-   von Programmen. 
-
-1. Zunächst wird das Verzeichnis, in dem `npm` seine Daten speichert,
-   an einen für alle Windows-Benutzer zugänglichen Ort geändert:
-   ~~~cmd
-   md %PROGRAMDATA%\npm
-   setx PATH "%PROGRAMDATA%\npm;%PATH%" /M
-   npm config set prefix %PROGRAMDATA%\npm
-   ~~~
 
  ?> Manche ioBroker-Adapter enthalten Komponenten, die für Windows kompiliert 
    werden müssen. Deshalb werden vor der Installation von ioBroker die sogenannten 
@@ -230,8 +224,8 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    Basiseinstellungen vorgenommen. 
 
 
-## Update
+## 4. Update
 @@@ tbd @@@
 
-## Fehlersuche
+## 5. Fehlersuche
 @@@ tbd @@@

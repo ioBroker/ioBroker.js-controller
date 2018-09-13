@@ -1,10 +1,10 @@
 ---
-title:       "Grundlagen"
+title:       "Installation"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/repositories.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/macos.md"
 ---
 
-# Repositories {docsify-ignore-all}
+# macOS {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

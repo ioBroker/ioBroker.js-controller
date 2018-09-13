@@ -1,10 +1,10 @@
 ---
 title:       "Installation"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/hardware.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/images.md"
 ---
 
-# Hardware {docsify-ignore-all}
+# Liste mit vorbereiteten Images für verschiedene Plattformen {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
@@ -12,4 +12,5 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
 
-@@@ Welche HW wird für ioBroker empfohlen, was wurde getestet, was ist experimentell? Keine Hardware für Adapter hier. @@@
+@@@ Liste aus Wordpress hier einfügen. Gliederung ggf. nach Einplatinencomputer, 
+Desktop-OS usw. @@@
