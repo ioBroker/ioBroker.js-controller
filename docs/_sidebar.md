@@ -35,12 +35,13 @@
   * [Einleitung](tutorial/README)
   * [Erste Einrichtung](tutorial/einrichtung)
   * [Benutzeroberfläche](tutorial/admin)
-  * [Erstkonfiguration](tutorial/konfig)
-  * [Logging](tutorial/)
-  * [Adapter hinzufügen](tutorial/)
-  * [Einfache Logik](tutorial/) <!-- ein Beispiel, Verweis auf unten -->
-  * [Visualiserung](tutorial/) <!-- ein Beispiel: Material, VIS mega kurz angerissen -->
-  * [Datenhistorisierung](tutorial/) <!-- am Beispiel History, zus. SQL/InfluxDB erwähnen -->
+  * [Konfiguration](tutorial/konfig)
+  * [Logging](tutorial/logging)
+  * [Adapter hinzufügen](tutorial/adapter)
+  * [Einfache Logik](tutorial/logik)
+  * [Visualiserung](tutorial/viz)
+  * [Datenhistorisierung](tutorial/history)
+  * [Diagramme](tutorial/flot)
 
 * Admin-Oberfläche
   * [Einleitung](admin/)

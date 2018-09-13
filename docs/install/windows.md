@@ -8,7 +8,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
 
 ?> ***Dieser Artikel wird gerade erweitert***. 
    <br><br>
-   Hilf unserer ioBroker Community.  
+   Hilf mit bei ioBroker.  
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
 

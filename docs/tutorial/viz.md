@@ -1,10 +1,10 @@
 ---
-title:       "Installation"
+title:       "Tutorial"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/update.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/viz.md"
 ---
 
-# Durchführen von Updates {docsify-ignore-all}
+# Einleitung {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
@@ -12,4 +12,4 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
 
-@@@ Verweise auf das jeweiliges Inst.-Verfahren für das Image, OS, Adapter @@@
+@@@ Kleines Beispielprojekt mit VIS. Hinweise auf Material, ... @@@

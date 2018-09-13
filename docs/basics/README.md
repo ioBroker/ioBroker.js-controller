@@ -6,19 +6,19 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/
 
 # Einleitung {docsify-ignore-all}
 
+?> ***Dies ist ein Platzhalter***. 
+   <br><br>
+   Hilf mit bei ioBroker und erweitere diesen Artikel.  
+   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
+   damit die Änderungen einfacher übernommen werden können.
+
 @@@   
-Primär wird in diesem Abschnitt der Dokumentaion das "WAS ist es" 
+Primär wird in diesem Abschnitt der Dokumentation das "WAS ist es" 
 beschrieben, nicht "WIE es geht".  
 
 Der Anwender soll nach dem Lesen der Grundlagen die verschiedenen 
 ioBroker-spezifischen Begriffe verstehen und zuordnen können.  
 
-In den Grundlagen sollte jeweils auf die jewils dazugehörenden 
+In den Grundlagenartikeln sollte auf die jeweils dazugehörenden 
 Detailbeschreibungen verwiesen werden.   
 @@@
-
-?> ***Dies ist ein Platzhalter***. 
-   <br><br>
-   Hilf unserer ioBroker Community und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
-   damit die Änderungen einfacher übernommen werden können.
