@@ -1,7 +1,7 @@
 ---
-title:       "Entwicklung"
+title:       "Admin"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/README.md"
 ---
 
 # Einleitung {docsify-ignore-all}
@@ -11,3 +11,4 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/develop
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
+

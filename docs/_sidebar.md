@@ -71,7 +71,7 @@
     * [Mediola Plugin](configuration/)
   * [Kommandozeilen-Tools](configuration/)
   * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
-  * [Redis](configuration/)
+  * [Datenhaltung mit Redis](configuration/)
   * [Datensicherung](configuration/)
   * [Troubleshooting](configuration/) <!-- zus. Issue-Erstellung auf GitHub -->
 
@@ -95,11 +95,14 @@
     * [Visualisierung anzeigen](viz/visshow)
 
 * Entwickler
-  * [Einleitung](developers/)
-  * [Mitarbeit (GitHub)](developers/)
-  * [Adapter-Entwicklung](developers/) <!-- Sub-Struktur: https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation und IDE, nodejs-versionen, eigener tag, mehr ROllen, Typen sonstwas ...-->
-  * [Veröffentlichen](developers/)
-  * [Best Practices](developers/)
+  * [Einleitung](developers/README)
+  * [Mitarbeit (GitHub)](developers/project)
+  * Adapterentwicklung
+    * [Einführung](developers/adapter)
+    * [Template](developers/adaptertemplate)
+    * [Debugging](developers/adapterdebug)
+  * [Veröffentlichen](developers/publish)
+  * [Best Practices](developers/bestpractices)
 
 * System-Integratoren
   * [Einleitung](integrators/README)
