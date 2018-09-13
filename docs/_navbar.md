@@ -1,5 +1,5 @@
 * [Doku](/README)
-* [Lösungen](bib/)
+* [Lösungen](lib/)
 * [Adapterreferenz](adapterref/adapterliste)
 * [Blog](http://iobroker.net/docu/?cat=1&lang=de)
 * [Forum](https://forum.iobroker.net)

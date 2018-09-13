@@ -23,12 +23,12 @@ Heizungssysteme und Klimatechnik - fast alles was vorstellbar ist,
 kann auch umgesetzt werden. 
 
 ![VIS](media/vis2.png ':size=500')  
-*Beispiel für eine VIS-Benutzeroberfläche*
+*Beispiel für eine selbst erstellte VIS-Benutzeroberfläche*
 
 Dabei hat der Anwender maximale Gestaltungsfreiheit. Die Erstellung 
 von Automatismen und Abläufen bei der Visualisierung ist auch ohne 
-Programmierkenntnisse möglich. Vorgefertigte `Widgets`, Bausteine zur 
-einfachen Verwendung, helfen dem Anwender dabei. Doch nicht nur die 
+Programmierkenntnisse möglich. Vorgefertigte Bausteine zur 
+einfachen Verwendung helfen dem Anwender dabei. Doch nicht nur die 
 Anzeige von Informationen ist möglich. Auch die Steuerung von Geräten 
 ist über die Visualiserungsoberfläche schnell umgesetzt. Die Bedienung 
 der Oberfläche ist dabei auf die unterschiedlichsten Endgeräte 

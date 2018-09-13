@@ -1,46 +1,63 @@
 * [Willkommen](README)
   * [Einführung](intro/)
 
-* Konzepte <!-- Primär WAS es ist, nicht WIE es geht; Verweise auf weiter unten -->
-  * [Konzeptübersicht](concept/)
-  * [Architektur](concept/)
-  * [Adapter](concept/)
-  * [Repositories](concept/)
-  * [Objekte](concept/)
-  * [States](concept/)
-  * [Funktionen](concept/)
-  * [Rollen](concept/)
+* Grundlagen
+  * [Einleitung](basics/README)
+  * [Systemaufbau](basics/systemaufbau)
+  * [Adapter & Controller](basics/adapter)
+  * [Repositories](basics/repositories)
+  * [Objekte](basics/objekte)
+  * [States & Datenpunkte](basics/states)
+  * [Funktionen](basics/funktionen)
+  * [Rollen](basics/rollen)
 
 * Installation
-  * [Einleitung](installation/)
-  * [Systemvoraussetzungen](installation/) <!-- RAM, CPU, OS, Node.js, npm, build-tools, Netzwerk -->
-  * [Hardware](installation/) <!-- welche HW wird empfohlen, was wurde getestet -->
+  * [Einleitung](install/README)
+  * [Systemvoraussetzungen](install/) <!-- RAM, CPU, OS, Node.js, npm, build-tools, Netzwerk -->
+  * [Hardware](install/) <!-- welche HW wird empfohlen, was wurde getestet -->
   * Fertige Images
-    * [Raspberry Pi](installation/)
-    * [Odroid](installation/)
-    * [Docker](installation/) <!-- NAS und so ... Forum-Links bis jemand Dinge dokumentiert? -->
+    * [Übersicht](install/liste)
+  * Virtualisierungsplattformen
+    * [Proxmox](install/proxmox)
+    * [Docker](install/docker) <!-- NAS und so ... Forum-Links bis jemand Dinge dokumentiert? -->
   * Manuelle Installation
-    * [Linux](installation/)
-    * [Windows](installation/windows)
-    * [macOS](installation/)
-    * [Weitere](installation/) <!-- NAS und so ... Forum Links bis jemand Dinge dokumentiert? -->
+    * [Linux](install/linux)
+    * [Windows](install/windows)
+    * [macOS](install/macos)
   * Updates
-    * [Allgemein]() <!-- Verweis auf jeweiliges Inst.-Verfahren, OS, Adapter und dort dokumentieren -->
+    * [Allgemein](ipdates) <!-- Verweis auf jeweiliges Inst.-Verfahren, OS, Adapter und dort dokumentieren -->
     * [js-controller](installation/)
   * [Multi-Host](installation/) <!-- Einrichtung, für Admin-Konfig Verweis auf weiter unten -->
   * [Redis-DB](installation/) <!-- Einrichtung -->
   * [Troubleshooting](installation/) <!-- übergreifendes, sonst direkt beim jeweiligen Inst.-Verfahren -->
 
 * Tutorial für Einsteiger
-  * [Einleitung](tutorial/)
-  * [Erste Einrichtung](tutorial/)
-  * [Die Benutzeroberfläche](tutorial/)
-  * [Konfiguration](tutorial/)
+  * [Einleitung](tutorial/README)
+  * [Erste Einrichtung](tutorial/einrichtung)
+  * [Benutzeroberfläche](tutorial/admin)
+  * [Erstkonfiguration](tutorial/konfig)
   * [Logging](tutorial/)
   * [Adapter hinzufügen](tutorial/)
   * [Einfache Logik](tutorial/) <!-- ein Beispiel, Verweis auf unten -->
-  * [Visualiserung erstellen](tutorial/) <!-- ein Beispiel: Material, VIS mega kurz angerissen -->
+  * [Visualiserung](tutorial/) <!-- ein Beispiel: Material, VIS mega kurz angerissen -->
   * [Datenhistorisierung](tutorial/) <!-- am Beispiel History, zus. SQL/InfluxDB erwähnen -->
+
+* Admin-Oberfläche
+  * [Einleitung](admin/)
+  * [Aufbau des Adminfensters](admin/)
+  * [Übersicht](admin/)
+  * [Adapter](admin/)
+  * [Objekte](admin/)
+  * [Log](admin/) <!-- inkl. Syslog -->
+  * [Aufzählungen](admin/)
+  * [Ereignisse](admin/)
+  * [Skripte](admin/) <!-- Verweis auf Logik -->
+  * [Hosts](admin/)
+  * [Updates](admin/)
+  * [Kommandozeilen-Tools](admin/)
+  * [Redis](admin/)
+  * [Backup](admin/)
+  * [Troubleshooting](admin/) <!-- zus. Issue-Erstellung auf GitHub -->
 
 * Konfiguration
   * [Einleitung](configuration/)
@@ -71,24 +88,6 @@
   * [Material](viz/)
   * [Vis](viz/)
 
-* Administration
-  * [Einleitung](admin/)
-  * [Erstkonfiguration](admin/)
-  * [Aufbau des Adminfensters](admin/)
-  * [Übersicht](admin/)
-  * [Adapter](admin/)
-  * [Objekte](admin/)
-  * [Log](admin/) <!-- inkl. Syslog -->
-  * [Aufzählungen](admin/)
-  * [Ereignisse](admin/)
-  * [Skripte](admin/) <!-- Verweis auf Logik -->
-  * [Hosts](admin/)
-  * [Updates](admin/)
-  * [Kommandozeilen-Tools](admin/)
-  * [Redis](admin/)
-  * [Backup](admin/)
-  * [Troubleshooting](admin/) <!-- zus. Issue-Erstellung auf GitHub -->
-
 * Entwickler
   * [Einleitung](developers/)
   * [Mitarbeit (GitHub)](developers/)
@@ -101,8 +100,8 @@
   * [Link-Box](integrators/)
 
 * Weitere Hilfen
-  * [Style Guide](bestpractices/style_guide_de)
-  * [Vorlage Adapterdoku](bestpractices/adapter_template)
-  * [Markdown](bestpractices/markdown)
+  * [Style Guide](appendix/style_guide)
+  * [Vorlage Adapterdoku](appendix/adapter_template)
+  * [Markdown](appendix/markdown)
 
 * [Impressum](appendix/impressum)

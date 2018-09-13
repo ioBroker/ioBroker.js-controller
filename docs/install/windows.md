@@ -8,7 +8,7 @@ lastChanged: "11.09.2018"
 Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine Schritte
 überspringen, da einige Befehle aufeinander aufbauen.
 
-## Voraussetzungen
+## 1. Voraussetzungen
 
 !> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]() 
 erfüllt.
@@ -28,10 +28,10 @@ eingegeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
 ![Node.js-Version](media/w02nodecheck.png)  
 *Node.js-Prüfung*
 
-Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. Wenn eine 
-Node.js-Versionsnummer ausgegeben wird, ist zuerst zu prüfen, ob diese noch den
-[Installationsvoraussetzungen]() entspricht. Ist noch kein ioBroker installiert, kann dann mit 
-der Installation im Abschnitt [Update des Paketmanagers npm](#npmupdate) fortgefahren werden.
+Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. 
+
+Wenn eine Node.js-Versionsnummer ausgegeben wird, ist zuerst zu prüfen, ob diese noch den
+[Installationsvoraussetzungen]() entspricht. 
 
 Lautet die Fehlermeldung 
 `Der Befehl "node" ist entweder falsch geschrieben oder konnte nicht gefunden werden.`,
@@ -39,7 +39,7 @@ dann ist node.js nicht installiert und die Installation
 [kann direkt beginnen](#nodeinst).
 
 
-## Zusammenfassung
+## 2. Schnellstart
 
 ?> Diese Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
 gedacht, die ioBroker schon mehrmals installiert haben. 
@@ -65,12 +65,11 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 <div id="nodeinst"></div>
 
-## Installation von Node.js
+## 3. Installation von Node.js
 
-?> Passend zur installierten Windows-Variante (32-/64Bit) ist die entsprechende 32- oder 64Bit
-   Node.js-Variante zu verwenden. Es wird empfohlen, Node.js von dem Rechner aus
-   herunterzuladen, auf dem es installiert werden soll, da die Downloadwebseite die 
-   Windows-Variante automatisch berücksichtigt.
+?> Es wird empfohlen, Node.js von dem Rechner aus herunterzuladen, auf dem es installiert 
+   werden soll. Die Downloadwebseite von Node.js berücksichtigt automatisch, ob Windows
+   als 32- oder 64Bit-Variante vorliegt.
 
 1. Von der Webseite
    [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version 
@@ -223,7 +222,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
-   aufgerufen. Die Konfiguration von ioBroker wird detailliert im Kapitel 
+   aufgerufen. Über das Netzwerk Die Konfiguration von ioBroker wird detailliert im Kapitel 
    [Konfiguration]() beschrieben.
    
 ?> Für Einsteiger wird jetzt die Ausführung des [Tutorials]() empfohlen. Hier wird 
