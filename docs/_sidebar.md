@@ -55,14 +55,11 @@
   * [Skripte](admin/) <!-- Verweis auf Logik -->
   * [Hosts](admin/)
   * [Updates](admin/)
-  * [Kommandozeilen-Tools](admin/)
-  * [Redis](admin/)
-  * [Backup](admin/)
-  * [Troubleshooting](admin/) <!-- zus. Issue-Erstellung auf GitHub -->
 
 * Konfiguration
   * [Einleitung](configuration/)
   * [Installations-Repositories](configuration/) <!-- Stable, Latest, GitHub, Warnungen -->
+  * [Benutzer und Rechteverwaltung](configuration/)
   * [Security](configuration/) <!-- SSL, Let's Encrypt, Cloud, VPN? -->
   * [Cloud-Services](configuration/) <!-- Unterpunkte sind auch "Marketing" und Buzzword Liste -->
     * [Visualisierungen](configuration/)
@@ -72,22 +69,30 @@
     * [Android App](configuration/)
     * [iOS App](configuration/)
     * [Mediola Plugin](configuration/)
+  * [Kommandozeilen-Tools](configuration/)
   * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
-  * [Benutzer und Rechteverwaltung](configuration/)
+  * [Redis](configuration/)
+  * [Datensicherung](configuration/)
+  * [Troubleshooting](configuration/) <!-- zus. Issue-Erstellung auf GitHub -->
 
 * Logik
-  * [Einleitung](logic/)
-  * [Blockly](logic/)
-  * [JavaScript](logic/)
-  * [TypeScript](logic/)
-  * [Node Red](logic/)
-  * [Troubleshooting](logic/)
-  * [Best Practices](logic/)
+  * [Einleitung](logik/README)
+  * [Blockly](logik/blockly)
+  * [JavaScript](logik/javascript)
+  * [TypeScript](logik/typescript)
+  * [Node Red](logik/nodered)
+  * [Troubleshooting](logik/help)
+  * [Best Practices](logik/examples)
 
-* Visualisierung
-  * [Einleitung](viz/)
-  * [Material](viz/)
-  * [Vis](viz/)
+* Visualisierungen
+  * [Einleitung](viz/README)
+  * [Material](viz/material)
+  * [Vis](viz/vis)
+    * [Projekt einrichten](viz/visproject)
+    * [Widgets und Icon-Sets](viz/viswidgets)
+    * [Einfache Visualisierung](viz/viseasy)
+    * [Bindings](viz/visbindings)
+    * [Visualisierung anzeigen](viz/visshow)
 
 * Entwickler
   * [Einleitung](developers/)
@@ -97,12 +102,12 @@
   * [Best Practices](developers/)
 
 * System-Integratoren
-  * [Einleitung](integrators/)
-  * [Link-Box](integrators/)
+  * [Einleitung](integrators/README)
+  * [Link-Box](integrators/linkbox)
 
 * Weitere Hilfen
   * [Style Guide](appendix/style_guide)
   * [Vorlage Adapterdoku](appendix/adapter_template)
-  * [Markdown](appendix/markdown)
+  * [Markdown-Hilfe](appendix/markdown)
 
 * [Impressum](appendix/impressum)

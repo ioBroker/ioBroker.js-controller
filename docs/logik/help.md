@@ -1,10 +1,10 @@
 ---
-title:       "Show Cases"
+title:       "Logik"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/showcases/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logik/help.md"
 ---
 
-# Show Cases {docsify-ignore-all}
+# Troubleshooting {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

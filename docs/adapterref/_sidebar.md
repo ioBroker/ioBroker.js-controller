@@ -1,1 +1,1 @@
-* [Kategorien](adapterref/adapterliste)
+* [Adapter nach Kategorien](adapterref/adapterliste)

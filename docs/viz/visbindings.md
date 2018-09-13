@@ -1,10 +1,10 @@
 ---
-title:       "Show Cases"
+title:       "Visualisierung"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/showcases/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/visbindings.md"
 ---
 
-# Show Cases {docsify-ignore-all}
+# Bindings {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

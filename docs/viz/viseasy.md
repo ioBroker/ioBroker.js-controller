@@ -1,10 +1,10 @@
 ---
-title:       "Show Cases"
+title:       "Visualisierung"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/showcases/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/viseasy.md"
 ---
 
-# Show Cases {docsify-ignore-all}
+# Einfache Visualisierung {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

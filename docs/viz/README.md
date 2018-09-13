@@ -1,11 +1,14 @@
 ---
-title: "Visualisierung"
-lastChanged: "28.08.2018"
+title:       "Visualisierung"
+lastChanged: "13.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/README.md"
 ---
 
-# Platzhalter {docsify-ignore-all}
+# Einleitung {docsify-ignore-all}
 
->! ***Das ist ein Platzhalter***.
+?> ***Dies ist ein Platzhalter***. 
+   <br><br>
+   Hilf mit bei ioBroker und erweitere diesen Artikel.  
+   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
+   damit die Änderungen einfacher übernommen werden können.
 
-Hilf unserer Community und erweitere diesen Artikel.  
-Bitte beachtet den [ioBroker Style Guide](appendix/style_guide), damit die Änderung einfacher übernommen werden kann. 
