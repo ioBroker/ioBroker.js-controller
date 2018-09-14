@@ -48,7 +48,6 @@
   * [Einleitung](tutorial/README)
   * [Erste Einrichtung](tutorial/einrichtung)
   * [Benutzeroberfläche](tutorial/admin)
-  * [Konfigurieren](tutorial/konfig)
   * [Adapter verwalten](tutorial/adapter)
   * [Einfache Logik](tutorial/logik)
   * [Visualiserung](tutorial/viz)
