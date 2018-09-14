@@ -1,3 +1,7 @@
+## 1.5.2 (2018-09-14) Evolution release (Ann)
+* (bluefox) Let's encrypt fixes
+* (bluefox) Fix SSL issue with authentication
+
 ## 1.5.1 (2018-09-14) Evolution release (Ann)
 ### Breaking changes:
 * (bluefox) Breaking changes: "][*,;'"`<>?" are no more allowed in IDs
