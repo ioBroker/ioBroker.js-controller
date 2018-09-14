@@ -1,13 +1,19 @@
+---
+title:       "Markdown"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendix/markdown.md"
+---
+
 Markdown: Syntax
 ================
 
 ?>Damit die Dokumentation von ioBroker schnell erstellbar und leicht 
 lesbar ist, wurde Markdown als vereinfachte Auszeichnungssprache 
-gewählt. Die folgende Dokumentation hilft, den Syntax und die 
+gewählt. Die folgende Anleitung hilft, den Syntax und die 
 Möglichkeiten von Markdown kennenzulernen und in großartige 
 Dokumente umzusetzen.
 
-Technisch werden die folgenden Features unterstützt:
+Technisch werden vom Dokumentationssystem die folgenden Features unterstützt:
 
 |Variante|Version|
 |------|-------|
@@ -42,7 +48,10 @@ Inhalt
     * [Backslash-Maskierung](#backslash)
 * [Emojies](#emojies)
 
-<h2 id="overview">Übersicht</h2>
+
+<div id="overview"></div>
+
+## Übersicht
 
 <h3 id="philosophy">Philosopie</h3>
 
@@ -60,7 +69,6 @@ Zum Beispiel sehen Sternchen um ein Wort tatsächlich wie eine
 \*Betonung\* aus. Listen in Markdown sehen aus wie Listen. Sogar
 Zitat-Blöcke sehen wie zitierte Textpassagen aus, wie man sie aus eMails
 kennt.
-
 
 
 <h3 id="html">Inline-HTML</h3>
@@ -176,8 +184,9 @@ Alptraum ist, jedes `<` und `&` zu kodieren).
 * * *
 
 
+<div id="block"></div>
 
-<h2 id="block">Block-Elemente</h2>
+## Block-Elemente
 
 
 <h3 id="p">Absätze und Zeilenumbrüche</h3>
@@ -557,8 +566,9 @@ generieren:
 * * *
 
 
+<div id="span"></div>
 
-<h2 id="span">Span-Elemente</h2>
+## Span-Elemente
 
 <h3 id="link">Links</h3>
 
@@ -861,8 +871,9 @@ anzugeben. Sollte dies nötig sein kann einfach der normale HTML-Tag
 * * *
 
 
+<div id="misc"></div>
 
-<h2 id="misc">Verschiedenes</h2>
+## Verschiedenes
 
 <h3 id="autolink">Automatische Links</h3>
 
@@ -927,7 +938,10 @@ Markdown bietet diese Möglichkeit für folgende Zeichen:
 
 * * *
 
-<h2 id="emojies">Verwendbare Emojis</h2>
+
+<div id="emojies"></div>
+
+## Verwendbare Emojis
 
 ### Personen
 |     |    |
@@ -1838,3 +1852,4 @@ Auch jede andere Art von Feedback ist willkommen.*
    [jg]: http://daringfireball.net/
    [md]: http://daringfireball.net/projects/markdown/
   [osd]: http://daringfireball.net/projects/markdown/syntax
+  

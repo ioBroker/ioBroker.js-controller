@@ -1,10 +1,10 @@
 ---
-title:       "Entwicklung - Adaptervorlage"
+title:       "System-Integratoren - Link-Box"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adaptertemplate.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/integrators/linkbox.md"
 ---
 
-# Javascript-Template als Basis für eigene Adapter
+# Link-Box {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

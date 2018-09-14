@@ -1,10 +1,10 @@
 ---
-title:       "Styleguide Dokumentation"
+title:       "Entwicklung - Styleguide Adapter-Dokumentation"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendix/style_guide.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdocstyleguide.md"
 ---
 
-# Style Guide Dokumentation {docsify-ignore-all}
+# Style Guide für die Erstellung einer Adapterdokumentation {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
@@ -12,11 +12,23 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendi
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
 
-
 * Die Dokumentation wird mit Hilfe der Sprache "Markdown" erstellt.
-* Datei- und Ordnernamen werden mit Kleinbuchstaben geschrieben.
-  Erlaubt sind die Zeichen `a-z`, `0-9`, der Unterstrich `_` sowie der
-  Dezimalpunkt `.`
+* Die Dateiablage für die Adapterdokumentation ist wie folgt geregelt:
+  * In jedem Adapter-Projekt gibt es einen Ordner
+    `doc/adapter/{github-projektname}`.
+  * In diesem Ordner liegt die Datei `io-info.json`.
+    Mit dieser Datei werden Metadaten sowie die Dateistruktur der
+    Dokumentation beschrieben. Zum Aufbau dieser Datei siehe ...
+  * Wenn die Dokumentation in deutsch vorliegt, wird sie im Unterordner
+    `de` gespeichert. Aktuell unterstützte Sprachen und damit Ordnernamen sind:
+    `en, de, ru, pt, nl, fr, it, es, pl`.
+  * Die eigentliche Adapterdokumentation steht in der Datei `README.md`,
+    die direkt im jeweilgen Sprachenordner liegt.
+  * Medien werden im Unterordner `media` abgelegt, der sich ebenfalls im
+    Sprachenordner befindet.
+  * Außer README.md werden Datei- und Ordnernamen mit Kleinbuchstaben geschrieben.
+    Erlaubt sind die Zeichen `a-z`, `0-9`, der Unterstrich `_` sowie der
+    Dezimalpunkt `.`
 * Dokumente sollen einen Zeilenumbruch bei 80 Zeichen haben.
 * Vorzugsweise erfolgt die Textformatierung wie in der Datei `.editorconfig`
   beschrieben.
@@ -49,11 +61,14 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendi
     mittels `[Medienbegriff](media/{dateiname})` und für Bilder mittels
     `![Medienbegriff](media/{dateiname})`.
   * Abbildungen weden vorzugsweise im Format SVG abgelegt. Wenn SVG
-    nicht möglich ist, dann als jpg oder png-Datei. Bitte ein Auge auf die
+    nicht möglich ist, dann als PNG-Datei. Bitte ein Auge auf die
     Dateigröße haben.
+  * Kurze Videos können als GIF-Datei eingebettet werden.
+  * Unter jedem Bild ist in kursiv eine kure Beschreibug des Inhalts
+    anzugeben.
 * Für Quelltextabschnitte gilt folgendes:
   * Je nach Quellcodesprache ist ein entsprechendes Markup zu wählen. Zum
-    Beispiel ` ```js`  für JavaScript.
+    Beispiel `~~~javascript`  für JavaScript.
   * Ein Quelltext kann, muss aber nicht vollständig sein. Quelltextblöcke
     stellen Beispiele zur Verdeutlichung des jeweis gerade beschriebenen
     Standpunkts dar. Es müssen also keine vollständig lauffähigen Programme
@@ -68,9 +83,10 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendi
   zu beachten:
   * Der "Hinweis:"-Bezeichner ist in italic zu setzen, also als `*Hinweis*:`.
   * Nach dem "Hinweis:"-Bezeichner ist mit einem Großbuchstaben fortzufahren.
-  * Der Hinweis ist an den Anfang eines neuen Absatzes zu setzen, damit er besser
-    sichtbar ist.
-* Für Adapter-Dokumentionen gibt es einen eigenen [Style Guide][].
+  * Der Hinweis ist an den Anfang eines neuen Absatzes zu setzen, damit er 
+    besser sichtbar ist.
+* Für die Adapter-Dokumentionen gibt es eine [Vorlage][]. Die relevanten
+  Vorlagenabschnitte sind in der hinterlegten Reihenfolge und Form zu nutzen.
 
 [Plugin]: http://editorconfig.org/#download
-[Style Guide]: dev/adapterdocstyleguide
+[Vorlage]: dev/adaptertemplate

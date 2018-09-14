@@ -103,13 +103,17 @@
 * Entwickler
   * [Einleitung](dev/README)
   * [Mitarbeit im Team](dev/project)
+  * [Erweiterung der Dokumentation](dev/doc)
   * Adapterentwicklung
     * [Einführung](dev/adapterdev)
     * [Entwicklungsumgebung](dev/ide)
     * [Adapterreferenz](dev/adapterref)
     * [Template](dev/adaptertemplate)
+    * [Vorlage Adapterdoku](dev/adapterdoctemplate)
+    * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
     * [Debugging](dev/adapterdebug)
     * [Veröffentlichen](dev/adapterpublish)
+  * [Style Guide Userinterface](dev/styleguideui)
   * [Best Practices](dev/bestpractices)
 
 * System-Integratoren
@@ -117,8 +121,7 @@
   * [Link-Box](integrators/linkbox)
 
 * Weitere Hilfen
-  * [Style Guide](appendix/style_guide)
-  * [Vorlage Adapterdoku](appendix/adapter_template)
-  * [Markdown-Hilfe](appendix/markdown)
+  * [Style Guide Dokumentation](appendix/style_guide)
+  * [Markdown Syntax](appendix/markdown)
 
 * [Impressum](appendix/impressum)

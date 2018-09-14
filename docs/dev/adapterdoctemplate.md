@@ -1,7 +1,22 @@
 ---
-date: "{Änderungsdatum des Artikels}"
-title: "{Seitentitel}"
-adapter: "{npm Paketname}"
+title:       "Entwicklung"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdoctemplate.md"
+---
+
+# Template für die Erstellung einer Adapterdokumentation
+
+?> ***Dies ist ein Platzhalter***. 
+   <br><br>
+   Hilf mit bei ioBroker und erweitere diesen Artikel.  
+   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
+   damit die Änderungen einfacher übernommen werden können.
+
+~~~markdown
+---
+title:       "{Seitentitel}"
+lastChanged: "{Änderungsdatum des Artikels}"
+editLink:    "{Link auf diese Datei auf GitHub}"
 ---
 
 
@@ -274,7 +289,7 @@ Performance
 * was auch immer
   Lösung:
 
-* und noch ein ganz böser
+* und noch ein ganz böser Bug
   Lösung:
 
 * weiß der Teufel
@@ -305,8 +320,6 @@ Zuerst die leichte Kost.
 
 
 ## Entwicklerbereich
-
-
-----------
+~~~
 
 
