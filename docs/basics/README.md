@@ -1,10 +1,10 @@
 ---
 title:       "Grundlagen"
-lastChanged: "13.09.2018"
+lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/README.md"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Grundlagen {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
@@ -17,7 +17,7 @@ Primär wird in diesem Abschnitt der Dokumentation das "WAS ist es"
 beschrieben, nicht "WIE es geht".  
 
 Der Anwender soll nach dem Lesen der Grundlagen die verschiedenen 
-ioBroker-spezifischen Begriffe verstehen und zuordnen können.  
+ioBroker-spezifischen Begriffe rudimentär verstehen und zuordnen können.  
 
 In den Grundlagenartikeln sollte auf die jeweils dazugehörenden 
 Detailbeschreibungen verwiesen werden.   
