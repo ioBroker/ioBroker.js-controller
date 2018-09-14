@@ -1,10 +1,10 @@
 ---
 title:       "Entwicklung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/README.md"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdev.md"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Entwickeln eines eigenen Adapters {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

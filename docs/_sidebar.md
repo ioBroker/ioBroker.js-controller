@@ -101,16 +101,16 @@
   * [Forum](trouble/forum)
 
 * Entwickler
-  * [Einleitung](developers/README)
-  * [Mitarbeit (GitHub)](developers/project)
+  * [Einleitung](dev/README)
+  * [Mitarbeit im Team](dev/project)
   * Adapterentwicklung
-    * [Einführung](developers/adapter)
-    * [Entwicklungsumgebung]()
-    * [Adapterreferenz]()
-    * [Template](developers/adaptertemplate)
-    * [Debugging](developers/adapterdebug)
-    * [Veröffentlichen](developers/adapterpublish)
-  * [Best Practices](developers/bestpractices)
+    * [Einführung](dev/adapterdev)
+    * [Entwicklungsumgebung](dev/ide)
+    * [Adapterreferenz](dev/adapterref)
+    * [Template](dev/adaptertemplate)
+    * [Debugging](dev/adapterdebug)
+    * [Veröffentlichen](dev/adapterpublish)
+  * [Best Practices](dev/bestpractices)
 
 * System-Integratoren
   * [Einleitung](integrators/README)

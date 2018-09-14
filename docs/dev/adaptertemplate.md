@@ -1,10 +1,10 @@
 ---
 title:       "Entwicklung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/bestpractices.md"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adaptertemplate.md"
 ---
 
-# Best Practices {docsify-ignore-all}
+# Template als Basis für eigene Adapter
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

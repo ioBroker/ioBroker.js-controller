@@ -1,10 +1,10 @@
 ---
-title:       "Entwicklung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/adaptertemplate.md"
+title:       "Entwicklung - Veröffentlichen von Adaptern"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterpublish.md"
 ---
 
-# Das Template zum eigenen Adapter
+# Veröffentlichen eines Adapters {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

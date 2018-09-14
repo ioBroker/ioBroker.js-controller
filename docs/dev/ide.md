@@ -1,10 +1,10 @@
 ---
-title:       "Entwicklung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/publish.md"
+title:       "Entwicklung - Entwicklungsoberfläche"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ide.md"
 ---
 
-# Veröffentlichen von Adaptern {docsify-ignore-all}
+# Entwicklerwerkzeuge {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

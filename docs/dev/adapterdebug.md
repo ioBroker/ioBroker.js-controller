@@ -1,10 +1,10 @@
 ---
 title:       "Entwicklung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/developer/project.md"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdebug.md"
 ---
 
-# Zur Weiterentwicklung von ioBroker beitragen {docsify-ignore-all}
+# Debugging von Adaptern
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
