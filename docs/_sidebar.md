@@ -98,10 +98,9 @@
   * [Datenwiederherstellung](trouble/restore)
   * [Forum](trouble/forum)
 
-* Entwickler
+* Unterstützung
   * [Einleitung](dev/README)
   * [Mitarbeit im Team](dev/project)
-  * [Erweiterung der Dokumentation](dev/doc)
   * Adapterentwicklung
     * [Einführung](dev/adapterdev)
     * [Entwicklungsumgebung](dev/ide)
@@ -111,6 +110,10 @@
     * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
     * [Debugging](dev/adapterdebug)
     * [Veröffentlichen](dev/adapterpublish)
+  * ioBroker Backend
+    * [Serverentwicklung](dev/backend)
+  * Dokumentation
+    * [Artikel schreiben](dev/doc)
   * [Style Guide Userinterface](dev/styleguideui)
   * [Best Practices](dev/bestpractices)
 
