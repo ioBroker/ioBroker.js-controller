@@ -1,10 +1,10 @@
 ---
 title:       "Installation"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/updateself.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/updateadapter.md"
 ---
 
-# Updaten des ioBroker js-Controllers {docsify-ignore-all}
+# Updaten von Adaptern
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
@@ -12,4 +12,4 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
 
-@@@ js-Controller up-/downgrade. @@@
+@@@ Link auf die Detailbescheibung, wie ein Adapter up-/downgrade wird. @@@

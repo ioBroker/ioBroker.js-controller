@@ -1,10 +1,10 @@
 ---
-title:       "Admin"
-lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/README.md"
+title:       "Grundlagen"
+lastChanged: "13.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/functions.md"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Funktionen {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

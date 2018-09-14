@@ -1,10 +1,10 @@
 ---
 title:       "Admin"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/enums.md"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Das Aufzählungen-Fenster {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

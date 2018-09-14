@@ -1,10 +1,10 @@
 ---
-title:       "Grundlagen"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/objekte.md"
+title:       "Admin"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/events.md"
 ---
 
-# Objekte {docsify-ignore-all}
+# Das Ereignisse-Fenster {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

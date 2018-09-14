@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/windows.md"
 ---
 
-# Installation von ioBroker unter Windows
+# Installation von ioBroker auf Windows
 
 ?> ***Dieser Artikel wird gerade erweitert***. 
    <br><br>
