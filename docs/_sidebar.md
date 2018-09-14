@@ -27,26 +27,12 @@
   * Softwareupdate
     * [Allgemein](install/update)
     * [Controller](install/updateself)
-  * [Multi-Host](install/multihost)
-  * [Redis-DB](install/redis)
   * [Troubleshooting](install/help)
-
-* Tutorial für Einsteiger
-  * [Einleitung](tutorial/README)
-  * [Erste Einrichtung](tutorial/einrichtung)
-  * [Benutzeroberfläche](tutorial/admin)
-  * [Konfiguration](tutorial/konfig)
-  * [Logging](tutorial/logging)
-  * [Adapter hinzufügen](tutorial/adapter)
-  * [Einfache Logik](tutorial/logik)
-  * [Visualiserung](tutorial/viz)
-  * [Datenhistorisierung](tutorial/history)
-  * [Diagramme](tutorial/flot)
 
 * Admin-Oberfläche
   * [Einleitung](admin/)
   * [Aufbau des Adminfensters](admin/)
-  * [Übersicht](admin/)
+  * [Systemeinstellungen](admin/)
   * [Adapter](admin/)
   * [Objekte](admin/)
   * [Log](admin/) <!-- inkl. Syslog -->
@@ -54,26 +40,19 @@
   * [Ereignisse](admin/)
   * [Skripte](admin/) <!-- Verweis auf Logik -->
   * [Hosts](admin/)
-  * [Updates](admin/)
 
-* Konfiguration
-  * [Einleitung](configuration/)
-  * [Installations-Repositories](configuration/) <!-- Stable, Latest, GitHub, Warnungen -->
-  * [Benutzer und Rechteverwaltung](configuration/)
-  * [Security](configuration/) <!-- SSL, Let's Encrypt, Cloud, VPN? -->
-  * [Cloud-Services](configuration/) <!-- Unterpunkte sind auch "Marketing" und Buzzword Liste -->
-    * [Visualisierungen](configuration/)
-    * [Editoren](configuration/)
-    * [Alexa Smarthome-Skill](configuration/)
-    * [Alexa Custom Skill](configuration/)
-    * [Android App](configuration/)
-    * [iOS App](configuration/)
-    * [Mediola Plugin](configuration/)
-  * [Kommandozeilen-Tools](configuration/)
-  * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
-  * [Datenhaltung mit Redis](configuration/)
-  * [Datensicherung](configuration/)
-  * [Troubleshooting](configuration/) <!-- zus. Issue-Erstellung auf GitHub -->
+* Tutorials
+  * [Einleitung](tutorial/README)
+  * [Erste Einrichtung](tutorial/einrichtung)
+  * [Benutzeroberfläche](tutorial/admin)
+  * [Konfigurieren](tutorial/konfig)
+  * [Adapter verwalten](tutorial/adapter)
+  * [Einfache Logik](tutorial/logik)
+  * [Visualiserung](tutorial/viz)
+  * [Datenhistorisierung](tutorial/history)
+  * [Diagramme](tutorial/flot)
+  * [Fehlersuche](tutorial/logging)
+  * [Updates](admin/)
 
 * Logik
   * [Einleitung](logik/README)
@@ -94,11 +73,33 @@
     * [Bindings](viz/visbindings)
     * [Visualisierung anzeigen](viz/visshow)
 
+* Erweiterte Konfiguration
+  * [Einleitung](configuration/)
+  * [Benutzer und Rechteverwaltung](configuration/)
+  * [SSL für Webzugriff](configuration/)
+  * [Kommandozeilen-Tools](configuration/)
+  * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
+  * [Datenhaltung mit Redis](configuration/)
+  * [Datensicherung](configuration/)
+  * [Melden von Fehlern](configuration/)
+
+* [Cloud-Services](cloud/)
+  * [Einleitung](cloud/README) <!-- Unterpunkte sind auch "Marketing" und Buzzword Liste -->
+  * [Visualisierungen](cloud/viz)
+  * [Editoren](cloud/editor)
+  * [Alexa Smarthome-Skill](cloud/alex)
+  * [Alexa Custom Skill](cloud/alexacustom)
+  * [Android App](cloud/)
+  * [iOS App](cloud/)
+  * [Mediola Plugin](cloud/)
+
 * Entwickler
   * [Einleitung](developers/README)
   * [Mitarbeit (GitHub)](developers/project)
   * Adapterentwicklung
     * [Einführung](developers/adapter)
+    * [Entwicklungsumgebung]()
+    * [Adapterbeschreibung]()
     * [Template](developers/adaptertemplate)
     * [Debugging](developers/adapterdebug)
   * [Veröffentlichen](developers/publish)
