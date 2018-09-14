@@ -99,18 +99,19 @@
   * [Forum](trouble/forum)
 
 * Unterstützung
-  * [Einleitung](dev/README)
-  * [Mitarbeit im Team](dev/project)
+  * [Einleitung](community/README)
+  * [Mitarbeit im Team](community/project)
   * Dokumentation
-    * [Artikel verfassen](dev/doc)
-    * [Style Guide Dokumentation](dev/styleguidedoc)
-    * [Markdown Syntax](dev/docmarkdown)
+    * [Artikel verfassen](community/doc)
+    * [Style Guide Dokumentation](community/styleguidedoc)
+    * [Markdown Syntax](community/docmarkdown)
 
 * Adapterentwicklung
   * [Einführung](dev/adapterdev)
   * [Entwicklungsumgebung](dev/ide)
   * [Adapterreferenz](dev/adapterref)
   * [Template](dev/adaptertemplate)
+  * [Adapter-Tests](dev/adaptertesting)
   * [Vorlage Adapterdoku](dev/adapterdoctemplate)
   * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
   * [Style Guide Userinterface](dev/styleguideui)

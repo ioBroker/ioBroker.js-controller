@@ -1,10 +1,10 @@
 ---
-title:       "Cloud"
+title:       "Entwicklung"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/alexasmart.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/community/README.md"
 ---
 
-# Der Alexa Smarthome-Skill {docsify-ignore-all}
+# Einleitung {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

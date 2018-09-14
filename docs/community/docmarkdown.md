@@ -1,23 +1,23 @@
 ---
 title:       "Markdown"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/docmarkdown.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/community/docmarkdown.md"
 ---
 
 Markdown: Syntax
 ================
 
-?>Damit die Dokumentation von ioBroker schnell erstellbar und leicht 
-lesbar ist, wurde Markdown als vereinfachte Auszeichnungssprache 
-gewählt. Die folgende Anleitung hilft, den Syntax und die 
-Möglichkeiten von Markdown kennenzulernen und in großartige 
+?>Damit die Dokumentation von ioBroker schnell erstellbar und leicht
+lesbar ist, wurde Markdown als vereinfachte Auszeichnungssprache
+gewählt. Die folgende Anleitung hilft, den Syntax und die
+Möglichkeiten von Markdown kennenzulernen und in großartige
 Dokumente umzusetzen.
 
 Technisch werden vom Dokumentationssystem die folgenden Features unterstützt:
 
 |Variante|Version|
 |------|-------|
-|Originales markdown.pl| - | 
+|Originales markdown.pl| - |
 |CommonMark|0.28|
 |GitHub Flavored Markdown|0.28|
 
@@ -268,7 +268,7 @@ pro Zeile umbricht und ein `>` vor jede Zeile setzt:
     > consectetuer adipiscing elit. Aliquam hendrerit mi posuere
     > lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet
     > vitae, risus.
-    > 
+    >
     > Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
     > Suspendisse id sem consectetuer libero luctus adipiscing.
 
@@ -297,12 +297,12 @@ Zitate können andere Markdown-Elemente enthalten, darunter Kopfzeilen,
 Listen und Code-Blöcke:
 
 	> ## Dies ist eine Überschrift.
-	> 
+	>
 	> 1.   Dies ist der erste Listenpunkt.
 	> 2.   Dies ist der zweite Listenpunkt.
-	> 
+	>
 	> Hier ist ein wenig Beispiel-Code:
-	> 
+	>
 	>     return shell_exec("echo $input | $Markdown_script");
 
 Jeder vernünftige Text-Editor sollte das Zitieren im Stil von E-Mail
@@ -557,7 +557,7 @@ generieren:
     ***
 
     *****
-	
+
     - - -
 
     ---------------------------------------
@@ -676,7 +676,7 @@ Abkürzung sogar für mehrere Wörter im Link-Text:
 	Besuchen Sie [Daring Fireball][] für weitere Informationen.
 
 Dann wird der Link definiert:
-	
+
 	[Daring Fireball]: http://daringfireball.net/
 
 Link-Definitionen können an einen beliebige Stelle im Markdown-Dokument
@@ -807,7 +807,7 @@ Ende:
 wird zu:
 
 	<p>Ein einzelner Backtick in einem Code-Bereich: <code>`</code></p>
-	
+
 	<p>Ein Backtick-umschlossener String in einem Code-Bereich: <code>`foo`</code></p>
 
 In Code-Bereichen werden das kaufmännische Und so wie spitze Klammern
@@ -883,7 +883,7 @@ einfach von spitzen Klammern umschlossen. Wenn man eine URL oder
 Mailadresse direkt zeigen will, kann man dies  so lösen:
 
     <http://example.com/>
-    
+
 Markdown wird dies in den folgenden HTML-Code umsetzen:
 
     <a href="http://example.com/">http://example.com/</a>
@@ -1846,10 +1846,9 @@ Weitergabe unter gleichen Bedingungen (BY-SA) 4.0 International Lizenz][by-sa].
 von [John Grubers][jg] [Markdown][md]. Diese Übersetzung bezieht sich
 auf den Stand vom 15.12.2013 (Markdown Version 1.0.1). Für die
 Richtigkeit der Übersetzung wird keine Gewähr übernommen. Bei Fehlern in
-der Übersetzung wird um eine kurze Nachricht an <lasar@liepins.net> gebeten. 
+der Übersetzung wird um eine kurze Nachricht an <lasar@liepins.net> gebeten.
 Auch jede andere Art von Feedback ist willkommen.*
 
    [jg]: http://daringfireball.net/
    [md]: http://daringfireball.net/projects/markdown/
   [osd]: http://daringfireball.net/projects/markdown/syntax
-  

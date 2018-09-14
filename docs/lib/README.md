@@ -6,14 +6,14 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/lib/REA
 
 # Lösungen und Tutorials
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.    
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 @@@  
-Hier sollen beispielhafte **übergreifende** Lösungen (wie erreicht man welches 
+Hier sollen beispielhafte **übergreifende** Lösungen (wie erreicht man welches
 Ziel am einfachsten) und How-Tos gesammelt werden.
 
 * Tutorials für Homematic
@@ -25,9 +25,9 @@ Ziel am einfachsten) und How-Tos gesammelt werden.
 * ...
 
 Anregung:
-Wenn es nur einen Adapter betrifft (Logik-Adapter ausgenommen), dann muss 
+Wenn es nur einen Adapter betrifft (Logik-Adapter ausgenommen), dann muss
 das Beispiel/die Lösung in die Referenzdokumentation des jeweiligen Adapters.
 
-Genauso könnten hier auch Konfigurationsbeispiele gesammelt werden von 
+Genauso könnten hier auch Konfigurationsbeispiele gesammelt werden von
 getesteten HW-Komponenten.   
 @@@

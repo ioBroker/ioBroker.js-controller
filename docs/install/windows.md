@@ -6,10 +6,10 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
 
 # Installation von ioBroker auf Windows
 
-?> ***Dieser Artikel wird gerade erweitert***. 
+?> ***Dieser Artikel wird gerade erweitert***.
    <br><br>
    Hilf mit bei ioBroker.  
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 
@@ -18,16 +18,16 @@ Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine S
 
 ## 1. Voraussetzungen
 
-!> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]() 
+!> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]()
 erfüllt.
 
-Für die Ausführung von ioBroker wird Node.js benötigt. Im Folgenden wird davon ausgegangen, 
-dass auf dem PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert, 
+Für die Ausführung von ioBroker wird Node.js benötigt. Im Folgenden wird davon ausgegangen,
+dass auf dem PC weder Node.js noch ioBroker installiert ist. Ist ioBroker bereits installiert,
 bitte mit dem Abschnitt [Update]() fortfahren.
 
-Um zu erkennen, ob Node.js installiert ist, wird mit der Tastenkombination 
-<kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet und 
-dann dort der Befehl 
+Um zu erkennen, ob Node.js installiert ist, wird mit der Tastenkombination
+<kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet und
+dann dort der Befehl
 ~~~
 cmd.exe /C node -v & pause
 ~~~
@@ -36,25 +36,25 @@ eingegeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
 ![Node.js-Version](media/w02nodecheck.png)  
 *Node.js-Prüfung*
 
-Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt. 
+Es wird entweder eine Fehlermeldung oder die installierte Node.js-Version angezeigt.
 
 Wenn eine Node.js-Versionsnummer ausgegeben wird, ist zuerst zu prüfen, ob diese noch den
-[Installationsvoraussetzungen]() entspricht. 
+[Installationsvoraussetzungen]() entspricht.
 
-Lautet die Fehlermeldung 
+Lautet die Fehlermeldung
 `Der Befehl "node" ist entweder falsch geschrieben oder konnte nicht gefunden werden.`,
-dann ist node.js nicht installiert und die Installation 
+dann ist node.js nicht installiert und die Installation
 [kann direkt beginnen](#nodeinst).
 
 
 ## 2. Schnellstart
 
 ?> Diese Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
-gedacht, die ioBroker schon mehrmals installiert haben. 
+gedacht, die ioBroker schon mehrmals installiert haben.
 
-Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen. 
+Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
-* Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download] 
+* Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download]
    herunterladen und mit Standardeinstellungen installieren
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
@@ -72,28 +72,28 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 ## 3. Installation von Node.js
 
-?> Es wird empfohlen, Node.js von dem Rechner aus herunterzuladen, auf dem es installiert 
+?> Es wird empfohlen, Node.js von dem Rechner aus herunterzuladen, auf dem es installiert
    werden soll. Die Downloadwebseite von Node.js berücksichtigt automatisch, ob Windows
    als 32- oder 64Bit-Variante vorliegt.
 
 1. Von der Webseite
-   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version 
+   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version
    von Node.js herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
    *Download von Node.js*
 
-1. Das heruntergeladene Node.js-Installationsprogramm mit einem Doppelklick starten. 
-  
+1. Das heruntergeladene Node.js-Installationsprogramm mit einem Doppelklick starten.
+
  ?> In der Regel steht das Programm im Ordner `Downloads` und folgt dem Namensschema
    `node-<Version>.msi`.  
-     
-1. Falls eine Meldung erscheint, dass die App keine überprüfte App aus dem Microsoft Store ist, 
+
+1. Falls eine Meldung erscheint, dass die App keine überprüfte App aus dem Microsoft Store ist,
    `Trotzdem installieren` auswählen.
 
-1. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern. 
+1. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern.
    Eventuelle erscheinende Sicherheitsabfragen bestätigen.
-   
+
    ![Installation von Node.js](media/w03nodeinst.gif)  
    *Node.js Installation*
 
@@ -101,30 +101,30 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 ## 3. Installation von ioBroker
 
 ?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
-   werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige 
+   werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige
    Pfadangabe bei allen Befehlen mit Anführungszeichen umschlossen werden.  
    Beispielbefehl: `dir "C:\ioBroker Testsystem"`.  
 
 ?> Der Standardinstallationsordner für ioBroker ist `C:\iobroker`.
 
 1. Ein Kommandozeilenfenster als Administrator öffnen. Dazu mit der Tastenkombination
-   <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort 
-   den Befehl 
+   <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort
+   den Befehl
    ~~~cmd
    cmd
    ~~~
-   eingeben. 
-   
-   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die 
+   eingeben.
+
+   Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die
    Eingabe **nicht** mit `OK` sondern mit der Tastenkombination `Strg` + `Umschalt` +
    `Eingabetaste` abschließen. Es erfolgt eine Sicherheitsabfrage, die mit `Ja` oder
    der Eingabe des Administratorkennworts zu bestätigen ist.
-   
- !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat, 
-   muss mit dem Wort `Administrator:` beginnen. 
 
- ?> Manche ioBroker-Adapter enthalten Komponenten, die für Windows kompiliert 
-   werden müssen. Deshalb werden vor der Installation von ioBroker die sogenannten 
+ !> Die Titelzeile im schwarzen Kommandozeilenfenster, dass sich jetzt geöffnet hat,
+   muss mit dem Wort `Administrator:` beginnen.
+
+ ?> Manche ioBroker-Adapter enthalten Komponenten, die für Windows kompiliert
+   werden müssen. Deshalb werden vor der Installation von ioBroker die sogenannten
    `windows-build-tools` installiert. Mehr Informationen zu den `windows-build-tools`
    sind [hier zu finden](https://github.com/felixrieseberg/windows-build-tools).
 
@@ -155,7 +155,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    │                  npm i --production                   │
    │                                                       │
    ╰───────────────────────────────────────────────────────╯
-   
+
    npm notice created a lockfile as package-lock.json. You should commit this file.
    npm WARN enoent ENOENT: no such file or directory, open 'C:\iobroker\package.json'
    npm WARN iobroker No description
@@ -201,11 +201,11 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    geprüft werden, ob ioBroker als Windows Dienst automatisch gestartet wurde.
    Die Antwort sollte
    ~~~
-   iobroker is running 
+   iobroker is running
    ~~~
    lauten.
 
- ?> Zukünftig wird ioBroker bei jedem Systemneustart im Hintergrund automatisch 
+ ?> Zukünftig wird ioBroker bei jedem Systemneustart im Hintergrund automatisch
    gestartet.
 
 1. Abschließend kann das Kommandozeilenfenster durch das Ausführen des Befehls
@@ -216,12 +216,12 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem
    Webbrowser und der Adresse [http://localhost:8081](http://localhost:8081)
-   aufgerufen. Über das Netzwerk Die Konfiguration von ioBroker wird detailliert im Kapitel 
+   aufgerufen. Über das Netzwerk Die Konfiguration von ioBroker wird detailliert im Kapitel
    [Konfiguration]() beschrieben.
-   
-?> Für Einsteiger wird jetzt die Ausführung des [Tutorials]() empfohlen. Hier wird 
-   schrittweise die Administrationsoberfläche vorgestellt und wesentliche 
-   Basiseinstellungen vorgenommen. 
+
+?> Für Einsteiger wird jetzt die Ausführung des [Tutorials]() empfohlen. Hier wird
+   schrittweise die Administrationsoberfläche vorgestellt und wesentliche
+   Basiseinstellungen vorgenommen.
 
 
 ## 4. Update

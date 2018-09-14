@@ -4,12 +4,12 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/virtualbox.md"
 ---
 
-# Einrichtung und Installation von ioBroker in VirtualBox 
+# Einrichtung und Installation von ioBroker in VirtualBox
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 @@@ http://www.iobroker.net/docu/?page_id=5358&lang=de @@@
@@ -179,40 +179,40 @@ Aufnahme125.jpg
 Nun updaten wir das System:
 apt-get install update
 1
-	
+
 apt-get install update
 apt-get install upgrade
 1
-	
+
 apt-get install upgrade
 
 Da SUDO nicht installiert ist, machen wie dies:
 aptitude install sudo
 1
-	
+
 aptitude install sudo
 
 Es folgt die NPM Installation:
 apt-get install npm
 1
-	
+
 apt-get install npm
 
 Dann Installieren wir CURL:
 apt-get install curl
 1
-	
+
 apt-get install curl
 
 Vorbereitung und Installation von NodeJs
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 1
-	
+
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 
 apt-get install nodejs
 1
-	
+
 apt-get install nodejs
 
 Wenn das erledigt ist, erfolgt die Installation von ioBroker
@@ -220,19 +220,19 @@ Wenn das erledigt ist, erfolgt die Installation von ioBroker
 Zuerst erstellen wir das Verzeichnis iobroker:
 mkdir /opt/iobroker
 1
-	
+
 mkdir /opt/iobroker
 
 Wir wechseln in das Verzeichnis iobroker:
 cd /opt/iobroker
 1
-	
+
 cd /opt/iobroker
 
 Nun Installieren wir iobroker:
 npm install --unsafe-perm iobroker
 1
-	
+
 npm install --unsafe-perm iobroker
 
 Am ende der Installation sollte folgendes erscheinen:
@@ -246,13 +246,13 @@ Ich nutze es im im Terminal mir die Speicherauslastung / CPU Last etc. anzusehen
 Installiert wird dies mit:
 apt-get install htop
 1
-	
+
 apt-get install htop
 
 ausgeführt wird es mit:
 htop
 1
-	
+
 htop
 
 Und sieht wie folgt aus:
@@ -274,18 +274,18 @@ VirtualBOX VM automatisch starten (Ubuntu 16.10):
 https://www.freesoftwareservers.com/ind … nd-vbox-5/
 
 Datei erstellen:
- 
+
 
 sudo nano /etc/init.d/StartVM &amp;&amp; sudo chmod +x /etc/init.d/StartVM &amp;&amp; sudo update-rc.d StartVM defaults 99 01
 1
-	
+
 sudo nano /etc/init.d/StartVM &amp;&amp; sudo chmod +x /etc/init.d/StartVM &amp;&amp; sudo update-rc.d StartVM defaults 99 01
 
 Dateiinhalt:
 
 ~~~bash
 #! /bin/sh
-# Start VirtualBox @boot 
+# Start VirtualBox @boot
 # /etc/init.d/StartVM
 #
 
@@ -363,7 +363,7 @@ Dort könnte sowas stehen:
 
 Das änderst du um in (Achtung, die Zahlen auf die eigene Umgebung anpassen)
 
-~~~	
+~~~
  auto eth0         
     iface eth0 inet static
         address 192.168.1.7

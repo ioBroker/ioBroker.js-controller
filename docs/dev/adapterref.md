@@ -6,13 +6,13 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
 
 # Adapterrefenz
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
-@@@ Sub-Struktur: https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation 
+@@@ Sub-Struktur: https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
 und IDE, nodejs-versionen, eigener tag, mehr ROllen, Typen sonstwas ... @@@
 
 ## Data structure - Objects and states
@@ -197,10 +197,10 @@ Here are two views defined for hm-rpc adapter: "listDevices" and "paramsetDescri
 To use view:
 
 ~~~javascript
-adapter.objects.getObjectView('hm-rpc', 'listDevices', 
-    {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}, 
+adapter.objects.getObjectView('hm-rpc', 'listDevices',
+    {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'},
     function (err, doc) {
-	    if (doc && doc.rows) {	
+	    if (doc && doc.rows) {
 		    for (var i = 0; i < doc.rows.length; i++) {
 			    var id  = doc.rows[i].id;
 			    var obj = doc.rows[i].value;
@@ -374,8 +374,8 @@ You can create adapter object with just by name, like utils.adapter('adapterName
 var adapter = utils.adapter({
     name: 'adapterName',    // mandatory - name of adapter
     dirname: '',            // optional - path to adapter (experts only)
-    systemConfig: false,    // optional - if system global config must be included in object 
-                            // (content of iobroker-data/iobroker.json) 
+    systemConfig: false,    // optional - if system global config must be included in object
+                            // (content of iobroker-data/iobroker.json)
         config: null,       // optional - alternate global configuration for adapter (experts only)
     instance: null,         // optional - instance of the adapter
     useFormatDate: false,   // optional - if adapter wants format date according to global settings.
@@ -536,16 +536,16 @@ After that you will get the event "stateChange" and can do something with this v
 Polling To read own states at start or to read the values with interval use function adapter.getState, like here:
 
 adapter.getState('myState', function (err, state) {
-* 
+*
 * adapter.log.info(
-* *   'State ' + adapter.namespace + '.myState -' + 
-* *   '  Value: '* * + state.val + 
-* *   ', ack: '* *   + state.ack + 
-* *   ', time stamp: '   + state.ts  + 
+* *   'State ' + adapter.namespace + '.myState -' +
+* *   '  Value: '* * + state.val +
+* *   ', ack: '* *   + state.ack +
+* *   ', time stamp: '   + state.ts  +
 * *   ', last changed: ' + state.lc
-* ); 
+* );
 
-}); 
+});
 
 Pay attention, that result will be returned asynchronous.
 
@@ -572,7 +572,7 @@ This change will not be executed by hm-rpc adapter, because ack is true. And thi
 States can be written as commands or as statuses. For that adapter.setState and adapter.setForeignState must be used:
 
 adapter.setForeignState('otherAdapter.X.someState', 1); // Control other adapter (there is no need to control own state, we can do it directly)
-adapter.setState('myState', 1, true); // indicate new status of own state 
+adapter.setState('myState', 1, true); // indicate new status of own state
 adapter.setState('myState', {val: 1, ack: true}); // the same as above
 
 adapter.setState('myState', 1, true, function (err) {

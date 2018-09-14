@@ -6,10 +6,10 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutoria
 
 # Einleitung {docsify-ignore-all}
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 @@@
@@ -21,11 +21,11 @@ Tutorials evtl. auch als Videos.
 
 
 #### Idee war einst
-Roten Faden durch ein Beispielprojekt-Tutorial hier vorstellen. 
+Roten Faden durch ein Beispielprojekt-Tutorial hier vorstellen.
 
 Nach Beendigung des Tutorials soll der Anwender ein überall
 funktionierendes kleines Beispielprojekt erstellt haben, das
-Adapterinstallation, Konfiguration, mini-Scripting und 
+Adapterinstallation, Konfiguration, mini-Scripting und
 mini-Visualisierung sowie eine Historisierung mit
 Diagrammdarstellung umfasst.
 

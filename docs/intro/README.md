@@ -7,15 +7,15 @@ lastChanged: "11.09.2018"
 ?> Diese Dokumentation entsteht gerade erst. Deshalb bitte nicht wundern,
    wenn Links nicht funktionieren oder Inhalte fehlen.
    <br><br>
-   Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, 
-   dass etwas fehlt oder besser beschrieben werden sollte, 
+   Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind,
+   dass etwas fehlt oder besser beschrieben werden sollte,
    [helfen Sie uns dabei][], die Dokumentation zu verbessern!
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf unserer ioBroker Community und erweitere diesen Artikel.  
-   Bitte beachtet den [ioBroker Style Guide](dev/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können. 
+   Bitte beachtet den [ioBroker Style Guide](community/styleguidedoc),
+   damit die Änderungen einfacher übernommen werden können.
 
 
 ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Home, der Gebäudeautomatisation sowie Active Assisted Living. ioBroker kann über modulare `Adapter` mit vielen bestehenden Systemen und Geräten kommunizieren. Über Regeln lassen sich Funktionsabläufe herstellerunabhängig erstellen. Mit ioBroker bereitgestellte graphische Oberflächen helfen, die Bedienung bzw. Überwachung von Geräten zu vereinfachen.
@@ -53,7 +53,7 @@ Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas
 
 
 [Download]: install/images
-[Adapter-Referenz]: adapterref/adapterliste 
+[Adapter-Referenz]: adapterref/adapterliste
 [Logik]: logic/README
-[Developer bereich]: dev/README 
-[helfen Sie uns dabei]: dev/doc
+[Developer bereich]: dev/README
+[Hilf uns dabei]: community/doc

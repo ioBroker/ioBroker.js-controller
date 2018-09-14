@@ -6,10 +6,10 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
 
 # Style Guide für die Erstellung einer Adapterdokumentation {docsify-ignore-all}
 
-?> ***Dies ist ein Platzhalter***. 
+?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 * Die Dokumentation wird mit Hilfe der Sprache "Markdown" erstellt.
@@ -83,7 +83,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
   zu beachten:
   * Der "Hinweis:"-Bezeichner ist in italic zu setzen, also als `*Hinweis*:`.
   * Nach dem "Hinweis:"-Bezeichner ist mit einem Großbuchstaben fortzufahren.
-  * Der Hinweis ist an den Anfang eines neuen Absatzes zu setzen, damit er 
+  * Der Hinweis ist an den Anfang eines neuen Absatzes zu setzen, damit er
     besser sichtbar ist.
 * Für die Adapter-Dokumentionen gibt es eine [Vorlage][]. Die relevanten
   Vorlagenabschnitte sind in der hinterlegten Reihenfolge und Form zu nutzen.
