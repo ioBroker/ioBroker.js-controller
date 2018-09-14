@@ -4,7 +4,7 @@
 * Grundlagen
   * [Einleitung](basics/README)
   * [Systemaufbau](basics/architecture)
-  * [Adapter & Controller](basics/adapter)
+  * [Adapter & Instanzen](basics/adapter)
   * [Repositories](basics/repositories)
   * [Objekte](basics/objects)
   * [States & Datenpunkte](basics/states)
@@ -37,6 +37,7 @@
   * [Systemeinstellungen](admin/settings)
   * [Admin-Übersicht](admin/overview)
   * [Adapter](admin/adapter)
+  * [Instanzen](admin/instanzen)
   * [Objekte](admin/objects)
   * [Log](admin/log)
   * [Aufzählungen](admin/enums)
