@@ -1,7 +1,7 @@
 ---
 title:       "Styleguide Dokumentation"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendix/styleguidedoc.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/styleguidedoc.md"
 ---
 
 # Style Guide Dokumentation {docsify-ignore-all}
