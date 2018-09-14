@@ -35,7 +35,7 @@
   * [Einleitung](admin/)
   * [Aufbau des Adminfensters](admin/screen)
   * [Systemeinstellungen](admin/settings)
-  * [Übersicht](admin/overview)
+  * [Admin-Übersicht](admin/overview)
   * [Adapter](admin/adapter)
   * [Objekte](admin/objects)
   * [Log](admin/log)
@@ -69,7 +69,7 @@
   * [Troubleshooting](logic/help)
   * [Best Practices](logic/examples)
 
-* Cloud-Services
+* Cloud-Services & Apps
   * [Einleitung](cloud/README)
   * [Visualisierungen](cloud/viz)
   * [Editoren](cloud/editor)
@@ -101,22 +101,22 @@
 * Unterstützung
   * [Einleitung](dev/README)
   * [Mitarbeit im Team](dev/project)
-  * Adapterentwicklung
-    * [Einführung](dev/adapterdev)
-    * [Entwicklungsumgebung](dev/ide)
-    * [Adapterreferenz](dev/adapterref)
-    * [Template](dev/adaptertemplate)
-    * [Vorlage Adapterdoku](dev/adapterdoctemplate)
-    * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
-    * [Debugging](dev/adapterdebug)
-    * [Veröffentlichen](dev/adapterpublish)
-  * ioBroker Backend
-    * [Serverentwicklung](dev/backend)
   * Dokumentation
     * [Artikel verfassen](dev/doc)
     * [Style Guide Dokumentation](dev/styleguidedoc)
     * [Markdown Syntax](dev/docmarkdown)
+
+* Adapterentwicklung
+  * [Einführung](dev/adapterdev)
+  * [Entwicklungsumgebung](dev/ide)
+  * [Adapterreferenz](dev/adapterref)
+  * [Template](dev/adaptertemplate)
+  * [Vorlage Adapterdoku](dev/adapterdoctemplate)
+  * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
   * [Style Guide Userinterface](dev/styleguideui)
+  * [Debugging](dev/adapterdebug)
+  * [Veröffentlichen](dev/adapterpublish)
+  * [JS-Controller](dev/controller)
   * [Best Practices](dev/bestpractices)
 
 * System-Integratoren
