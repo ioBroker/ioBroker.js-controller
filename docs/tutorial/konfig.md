@@ -1,10 +1,10 @@
 ---
-title:       "Tutorial"
+title:       "Tutorial - Konfiguration"
 lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/konfig.md"
 ---
 
-# Einige Konfigurationsschritte {docsify-ignore-all}
+# Konfiguration {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

@@ -1,10 +1,10 @@
 ---
-title:       "Installation"
+title:       "Erweiterte Konfiguration - Redis"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/redis.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/redis.md"
 ---
 
-# Installation von Redis für ioBroker {docsify-ignore-all}
+# Die Redis-Datenbank für ioBroker {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

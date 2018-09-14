@@ -1,10 +1,10 @@
 ---
-title:       "Visualisierung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/visbindings.md"
+title:       "Erweiterte Konfiguration - Authentifizierung"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/userrights.md"
 ---
 
-# Bindings {docsify-ignore-all}
+# Authentifizierung {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

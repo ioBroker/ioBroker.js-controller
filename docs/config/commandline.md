@@ -1,10 +1,10 @@
 ---
-title:       "Visualisierung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/visshow.md"
+title:       "Erweiterte Konfiguration - Kommandozeile"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/commandline.md"
 ---
 
-# Visualisierung anzeigen {docsify-ignore-all}
+# Die ioBroker-Kommandozeile {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

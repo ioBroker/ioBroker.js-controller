@@ -4,6 +4,12 @@ lastChanged: "11.09.2018"
 
 # ioBroker {docsify-ignore-all}
 
+?> Diese Dokumentation entsteht gerade erst. Deshalb bitte nicht wundern,
+   wenn Links nicht funktionieren oder Inhalte fehlen.
+   <br><br>
+   Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, 
+   dass etwas fehlt oder besser beschrieben werden sollte, 
+   [helfen Sie uns dabei](), die Dokumentation zu verbessern!
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

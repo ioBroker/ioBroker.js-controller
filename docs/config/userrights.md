@@ -1,10 +1,10 @@
 ---
-title:       "Erweiterte Konfiguration - Einleitung"
+title:       "Erweiterte Konfiguration - Benutzerverwaltung"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/README.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/userrights.md"
 ---
 
-# Erweiterte Konfiguration {docsify-ignore-all}
+# Zugriffsverwaltung mit Benutzer und Gruppen {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

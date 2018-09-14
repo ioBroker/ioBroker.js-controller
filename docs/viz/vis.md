@@ -11,3 +11,9 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/vis
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
+
+@@@  
+VIS ist eine mächtige Anwendung, die eine ausführliche Anleitung
+und Tutorials verdient. In welcher Form und an welcher Stelle 
+diese Anleitung bereitgestellt wird, ist noch nicht definiert.  
+@@@

@@ -1,10 +1,10 @@
 ---
-title:       "Visualisierung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/visproject.md"
+title:       "Erweiterte Konfiguration - Datensicherung"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/backup.md"
 ---
 
-# VIS-Projekt einrichten {docsify-ignore-all}
+# Datensicherung {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

@@ -1,10 +1,10 @@
 ---
-title:       "Visualisierung"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/viseasy.md"
+title:       "Erweiterte Konfiguration - Verschlüsselung"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/encryption.md"
 ---
 
-# Einfache Visualisierung {docsify-ignore-all}
+# Verschlüsselung für den Webzugriff {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

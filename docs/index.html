@@ -64,7 +64,7 @@
                 dateHtml = 'Last changed ' + vm.frontmatter.lastChanged;
               } 
               if (vm.frontmatter.editLink && vm.frontmatter.editLink !== "") {
-                editHtml = '[:pencil2: Edit Document](' + vm.frontmatter.editLink + ') &emsp; ';  
+                editHtml = '[:pencil: Edit Document](' + vm.frontmatter.editLink + ') &emsp; ';  
               }
               if (dateHtml != "" || editHtml !="") {
                 html += '\n---\n' + editHtml + dateHtml;
