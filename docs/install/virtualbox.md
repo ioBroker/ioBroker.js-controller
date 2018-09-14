@@ -9,7 +9,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
+   Bitte beachte den [ioBroker Style Guide](dev/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
 @@@ http://www.iobroker.net/docu/?page_id=5358&lang=de @@@

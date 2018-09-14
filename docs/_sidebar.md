@@ -113,16 +113,14 @@
   * ioBroker Backend
     * [Serverentwicklung](dev/backend)
   * Dokumentation
-    * [Artikel schreiben](dev/doc)
+    * [Artikel verfassen](dev/doc)
+    * [Style Guide Dokumentation](dev/styleguidedoc)
+    * [Markdown Syntax](dev/docmarkdown)
   * [Style Guide Userinterface](dev/styleguideui)
   * [Best Practices](dev/bestpractices)
 
 * System-Integratoren
   * [Einleitung](integrators/README)
   * [Link-Box](integrators/linkbox)
-
-* Weitere Hilfen
-  * [Style Guide Dokumentation](appendix/style_guide)
-  * [Markdown Syntax](appendix/markdown)
 
 * [Impressum](appendix/impressum)

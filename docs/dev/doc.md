@@ -1,10 +1,10 @@
 ---
-title:       "Erweiterte Konfiguration - Kommandozeile"
+title:       "Entwicklung - Dokumentation"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/commandline.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/doc.md"
 ---
 
-# Die ioBroker-Kommandozeile {docsify-ignore-all}
+# Mithilfe bei der Erstellung der Dokumentation {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

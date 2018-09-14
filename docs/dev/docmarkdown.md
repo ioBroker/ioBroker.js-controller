@@ -1,7 +1,7 @@
 ---
 title:       "Markdown"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/appendix/markdown.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/docmarkdown.md"
 ---
 
 Markdown: Syntax

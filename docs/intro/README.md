@@ -9,12 +9,12 @@ lastChanged: "11.09.2018"
    <br><br>
    Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, 
    dass etwas fehlt oder besser beschrieben werden sollte, 
-   [helfen Sie uns dabei](), die Dokumentation zu verbessern!
+   [helfen Sie uns dabei][], die Dokumentation zu verbessern!
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
    Hilf unserer ioBroker Community und erweitere diesen Artikel.  
-   Bitte beachtet den [ioBroker Style Guide](appendix/style_guide), 
+   Bitte beachtet den [ioBroker Style Guide](dev/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können. 
 
 
@@ -23,13 +23,13 @@ ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Ho
 Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:
 
 * Für Einsteiger empfehlen wir, zuerst einige Grundlagen über IOBroker nachzulesen. Dazu mehr im Kapitel [Einführung](#Einführung).
-* Erfahrene Anwender finden auf der [Download]()-Seite vorbereitete Images für verschiedene Systeme. Dort stehen auch detailierte Installationsanweisungen für einige Hardwareplattformen bereit.
-* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz]().
-* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik]() beschrieben.
+* Erfahrene Anwender finden auf der [Download][]-Seite vorbereitete Images für verschiedene Systeme. Dort stehen auch detailierte Installationsanweisungen für einige Hardwareplattformen bereit.
+* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz][].
+* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik][] beschrieben.
 
-Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Guide]().
+Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich][].
 
-Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei](), die Dokumentation zu verbessern!
+Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die Dokumentation zu verbessern!
 
 ## Einführung
 
@@ -50,3 +50,10 @@ Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas
 [Facebook]()
 
 > Überleitung zu den Konzepten
+
+
+[Download]: install/images
+[Adapter-Referenz]: adapterref/adapterliste 
+[Logik]: logic/README
+[Developer bereich]: dev/README 
+[helfen Sie uns dabei]: dev/doc
