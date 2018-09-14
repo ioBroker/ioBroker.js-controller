@@ -93,11 +93,11 @@
   * [Datensicherung](config/backup)
 
 * Fehlerbehebung
-  * [Einleitung](trouble/)
-  * [Fehlersuche](trouble/logging)
-  * [Datenwiederherstellung](trouble/restore)
+  * [Einleitung](trouble/README)
+  * [Fehlersuche](trouble/search)
   * [Adapterfehler](trouble/adapter)
   * [Melden von Fehlern](trouble/issue)
+  * [Datenwiederherstellung](trouble/restore)
   * [Forum](trouble/forum)
 
 * Entwickler
