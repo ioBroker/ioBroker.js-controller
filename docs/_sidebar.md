@@ -54,7 +54,8 @@
   * [Visualiserung](tutorial/viz)
   * [Datenhistorisierung](tutorial/history)
   * [Diagramme](tutorial/flot)
-  * [Updates](admin/)
+  * [Updates](tutorial/updates)
+  * [SSL mit Let`s encrypt](tutorial/encrypt)
 
 * Visualisierungen
   * [Einleitung](viz/README)
@@ -62,33 +63,34 @@
   * [Vis](viz/vis)
 
 * Logik
-  * [Einleitung](logik/README)
-  * [Blockly](logik/blockly)
-  * [JavaScript](logik/javascript)
-  * [TypeScript](logik/typescript)
-  * [Node Red](logik/nodered)
-  * [Troubleshooting](logik/help)
-  * [Best Practices](logik/examples)
+  * [Einleitung](logic/README)
+  * [Blockly](logic/blockly)
+  * [JavaScript](logic/javascript)
+  * [TypeScript](logic/typescript)
+  * [Node Red](logic/nodered)
+  * [Troubleshooting](logic/help)
+  * [Best Practices](logic/examples)
 
 * Cloud-Services
-  * [Einleitung](cloud/README) <!-- Unterpunkte sind auch "Marketing" und Buzzword Liste -->
+  * [Einleitung](cloud/README)
   * [Visualisierungen](cloud/viz)
   * [Editoren](cloud/editor)
   * [Alexa Smarthome-Skill](cloud/alexsmart)
-  * [Alexa Custom Skill](cloud/alexacustom)
-  * [IFTTT](cloud/)
-  * [Mediola Plugin](cloud/)
-  * [Android App](cloud/)
-  * [iOS App](cloud/)
+  * [Alexa Custom-Skill](cloud/alexacustom)
+  * [IFTTT](cloud/ifttt)
+  * [Mediola Plugin](cloud/mediola)
+  * [Android App](cloud/androidapp)
+  * [iOS App](cloud/iosapp)
 
 * Erweiterte Konfiguration
-  * [Einleitung](configuration/)
-  * [Benutzer und Rechteverwaltung](configuration/)
-  * [SSL für Webzugriff](configuration/)
-  * [Kommandozeilen-Tools](configuration/)
-  * [Multi-Host](configuration/) <!-- Hier die Benutzung und Besonderheiten im Admin -->
-  * [Datenhaltung mit Redis](configuration/)
-  * [Datensicherung](configuration/)
+  * [Einleitung](configuration/README)
+  * [Benutzer und Rechteverwaltung](configuration/userrights)
+  * [Authentifizierung](configuration/login)
+  * [SSL für Webzugriff](configuration/encryption)
+  * [Kommandozeilen-Tools](configuration/commandline)
+  * [Multi-Host](configuration/multihost)
+  * [Datenhaltung mit Redis](configuration/redis)
+  * [Datensicherung](configuration/backup)
 
 * Fehlerbehebung
   * [Einleitung](trouble/)

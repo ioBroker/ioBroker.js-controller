@@ -1,10 +1,10 @@
 ---
-title:       "Logik"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logik/nodered.md"
+title:       "Cloud"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/editor.md"
 ---
 
-# Node Red {docsify-ignore-all}
+# Editoren {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

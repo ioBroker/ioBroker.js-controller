@@ -13,7 +13,15 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutoria
    damit die Änderungen einfacher übernommen werden können.
 
 @@@
-Roten Faden durch das Tutorial hier vorstellen. 
+#### Idee ist jetzt
+Sammlung von in sich geschlossenen Kurztutorials für abgeschlossene Themenbereiche,
+Zielgruppengerecht für Einsteiger und Fortgeschrittene.
+
+Tutorials evtl. auch als Videos.
+
+
+#### Idee war einst
+Roten Faden durch ein Beispielprojekt-Tutorial hier vorstellen. 
 
 Nach Beendigung des Tutorials soll der Anwender ein überall
 funktionierendes kleines Beispielprojekt erstellt haben, das
@@ -22,5 +30,5 @@ mini-Visualisierung sowie eine Historisierung mit
 Diagrammdarstellung umfasst.
 
 Immer wieder auf das Kapitel "Konfiguation" für mehr Details
-verweisen.   
+verweisen.
 @@@

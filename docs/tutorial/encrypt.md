@@ -1,16 +1,13 @@
 ---
-title:       "Logik"
+title:       "Tutorial"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logik/examples.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/encrypt.md"
 ---
 
-# Beispiele {docsify-ignore-all}
+# Webzugriff mit SSL-Zertifikaten von Let's encrypt {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
    Bitte beachte den [ioBroker Style Guide](appendix/style_guide), 
    damit die Änderungen einfacher übernommen werden können.
-
-Beispiele für die Programmierung von Logiken sind der in der 
-[Lösungsbibliothek](lib/README) zu finden.

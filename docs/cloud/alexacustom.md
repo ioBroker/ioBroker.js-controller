@@ -1,10 +1,10 @@
 ---
-title:       "Logik"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logik/javascript.md"
+title:       "Cloud"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/alexacustom.md"
 ---
 
-# JavaScript {docsify-ignore-all}
+# Der Alexa Custom-Skill {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>

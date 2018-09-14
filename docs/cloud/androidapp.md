@@ -1,10 +1,10 @@
 ---
-title:       "Logik"
-lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logik/blockly.md"
+title:       "Cloud"
+lastChanged: "14.09.2018"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/androidapp.md"
 ---
 
-# Blockly {docsify-ignore-all}
+# Die Android App {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***. 
    <br><br>
