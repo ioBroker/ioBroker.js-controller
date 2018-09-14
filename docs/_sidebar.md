@@ -55,7 +55,6 @@
   * [Datenhistorisierung](tutorial/history)
   * [Diagramme](tutorial/flot)
   * [Updates](tutorial/updates)
-  * [SSL mit Let`s encrypt](tutorial/encrypt)
 
 * Visualisierungen
   * [Einleitung](viz/README)
