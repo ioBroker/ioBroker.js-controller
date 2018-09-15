@@ -243,14 +243,15 @@ function createStates() {
             } else
             // If this NAME.0.info.connection
             if (id.match(/^[^.]+\.\d+\.info\.connection$/)) {
-                if (state && !state.val) {
-                    tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
-                        .then(() => {
-                            logger.debug('host.' + hostname + ' set all states quality to 0x42 (device not connected');
-                        }).catch(e => {
-                            logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
-                        });
-                }
+                // Disabled in 1.5.x
+                // if (state && !state.val) {
+                //     tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
+                //         .then(() => {
+                //             logger.debug('host.' + hostname + ' set all states quality to 0x42 (device not connected');
+                //         }).catch(e => {
+                //             logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
+                //         });
+                // }
             }
             else    // If this system.adapter.NAME.0.alive
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
@@ -274,15 +275,16 @@ function createStates() {
                         });
                     });
                 } else if (state && state.ack && !state.val) {
-                    id = id.substring(0, id.length - /*.alive*/ 6);
-                    if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
-                        tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
-                            .then(() => {
-                                logger.debug('host.' + hostname + ' set all states quality to 0x12 (instance not connected');
-                            }).catch(e => {
-                            logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
-                        });
-                    }
+                    // Disabled in 1.5.x
+                    // id = id.substring(0, id.length - /*.alive*/ 6);
+                    // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
+                    //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
+                    //         .then(() => {
+                    //             logger.debug('host.' + hostname + ' set all states quality to 0x12 (instance not connected');
+                    //         }).catch(e => {
+                    //         logger.error('host.' + hostname + ' cannot set all states quality: ' + e);
+                    //     });
+                    // }
                 }
             } else
             if (subscribe[id]) {
@@ -2798,7 +2800,8 @@ function init() {
     states.subscribe('system.adapter.*.alive');
 
     // Subscribe for connection state of all instances
-    states.subscribe('*.info.connection');
+    // Disabled in 1.5.x
+    // states.subscribe('*.info.connection');
 
     // Read current state of all log subscribers
     states.getKeys('*.logging', function (err, keys) {

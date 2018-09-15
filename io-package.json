@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.2",
+        "version": "1.5.3",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -17,7 +17,7 @@
             "pl": "Kontroler JS"
         },
         "news": {
-            "1.5.2": {
+            "1.5.3": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",

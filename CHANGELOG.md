@@ -1,3 +1,6 @@
+## 1.5.3 (2018-09-15) Evolution release (Ann)
+* (bluefox) disable the auto-control of quality codes
+
 ## 1.5.2 (2018-09-14) Evolution release (Ann)
 * (bluefox) Let's encrypt fixes
 * (bluefox) Fix SSL issue with authentication
