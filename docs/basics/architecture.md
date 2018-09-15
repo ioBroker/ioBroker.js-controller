@@ -9,7 +9,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
 ## Architektur
@@ -29,3 +29,4 @@ Ausführung von JavaSript benötigt man eine entsprechende Laufzeitumgebung. ioB
 auf `Nodejs` auf. Diese Laufzeitumgebung gibt es für verschiedenste Softwareplattformen wie Linux, Windows und macOS. Zur Installation von ioBroker und den Adaptern wird der JavaScript-Paketmanager `npm` genutzt.
 
 @@@ Hübsches Bild mit Architekturschichten @@@
+@@@ JS-Controller erklären und Überleitung zu Adapter & Instanzen @@@

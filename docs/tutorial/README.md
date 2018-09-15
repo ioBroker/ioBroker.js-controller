@@ -9,13 +9,13 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutoria
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
 @@@
 #### Idee ist jetzt
 Sammlung von in sich geschlossenen Kurztutorials für abgeschlossene Themenbereiche,
-Zielgruppengerecht für Einsteiger und Fortgeschrittene.
+Zielgruppengerecht für Einsteiger (und Fortgeschrittene). Tutorials hier sollten aufeinander aufbauen
 
 Tutorials evtl. auch als Videos.
 

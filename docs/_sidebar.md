@@ -32,7 +32,7 @@
     * [Node.js & npm](install/updatenode)
 
 * Admin-Oberfläche
-  * [Einleitung](admin/)
+  * [Einleitung](admin/README)
   * [Aufbau des Adminfensters](admin/screen)
   * [Systemeinstellungen](admin/settings)
   * [Admin-Übersicht](admin/overview)

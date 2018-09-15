@@ -9,7 +9,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
+   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
 @@@   
@@ -18,6 +18,8 @@ beschrieben, nicht "WIE es geht".
 
 Der Anwender soll nach dem Lesen der Grundlagen die verschiedenen
 ioBroker-spezifischen Begriffe rudimentär verstehen und zuordnen können.  
+
+Ziel kurz und knackig erklären, 2-4 Zeilen, ggf wird das ganze später als eine Long-Scroller-Seite umgebaut
 
 In den Grundlagenartikeln sollte auf die jeweils dazugehörenden
 Detailbeschreibungen verwiesen werden.   
