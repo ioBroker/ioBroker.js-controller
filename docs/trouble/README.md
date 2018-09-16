@@ -12,5 +12,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/trouble
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
-@@@ Übergreifende Verfahren. Auf individuelle Hilfe beim jeweiligen, Adapter,
-Installationsverfahren und -plattform verweisen.  @@@
+@@@   
+Übergreifende Verfahren. Auf individuelle Hilfe beim jeweiligen, Adapter,
+Installationsverfahren und -plattform verweisen.  
+@@@

@@ -22,6 +22,7 @@
     * [VirtualBox](install/virtualbox)
     * [Docker](install/docker)
   * Manuelle Installation
+    * [Node.js](install/nodejs)
     * [Linux](install/linux)
     * [Windows](install/windows)
     * [macOS](install/macos)

@@ -16,9 +16,9 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install
 Die folgende Anleitung führt schrittweise durch die Installation. Bitte keine Schritte
 überspringen, da einige Befehle aufeinander aufbauen.
 
-## 1. Voraussetzungen
+## Voraussetzungen prüfen
 
-!> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen]()
+!> Zuerst prüfen, ob das System alle notwendigen [Installationsvoraussetzungen](install/requirements)
 erfüllt.
 
 Für die Ausführung von ioBroker wird Node.js benötigt. Im Folgenden wird davon ausgegangen,
@@ -47,15 +47,14 @@ dann ist node.js nicht installiert und die Installation
 [kann direkt beginnen](#nodeinst).
 
 
-## 2. Schnellstart
+## Schnellstart
 
 ?> Diese Zusammenfassung der Installationsschritte ist für erfahrene ioBroker-Anwender
 gedacht, die ioBroker schon mehrmals installiert haben.
 
 Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
-* Node.js LTS-Version passend zur Windows-Variante (32-/64Bit) von [https://nodejs.org/en/download]
-   herunterladen und mit Standardeinstellungen installieren
+* Node.js LTS-Version [herunterladen und installieren](install/nodejs).
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
   ~~~cmd
@@ -70,35 +69,12 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
 <div id="nodeinst"></div>
 
-## 3. Installation von Node.js
+## Installation von Node.js und npm
 
-?> Es wird empfohlen, Node.js von dem Rechner aus herunterzuladen, auf dem es installiert
-   werden soll. Die Downloadwebseite von Node.js berücksichtigt automatisch, ob Windows
-   als 32- oder 64Bit-Variante vorliegt.
-
-1. Von der Webseite
-   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version
-   von Node.js herunterladen.
-
-   ![Download von Node.js](media/w01downloadnode.png ':size=550')  
-   *Download von Node.js*
-
-1. Das heruntergeladene Node.js-Installationsprogramm mit einem Doppelklick starten.
-
- ?> In der Regel steht das Programm im Ordner `Downloads` und folgt dem Namensschema
-   `node-<Version>.msi`.  
-
-1. Falls eine Meldung erscheint, dass die App keine überprüfte App aus dem Microsoft Store ist,
-   `Trotzdem installieren` auswählen.
-
-1. Node.js mit den Standardeinstellungen installieren. Den Installationspfad nicht ändern.
-   Eventuelle erscheinende Sicherheitsabfragen bestätigen.
-
-   ![Installation von Node.js](media/w03nodeinst.gif)  
-   *Node.js Installation*
+Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/nodejs).
 
 
-## 3. Installation von ioBroker
+## Installation von ioBroker
 
 ?> ioBroker kann in einen frei wählbaren Ordner auf der lokalen Festplatte installiert
    werden. Wenn der Installationspfad Leerzeichen enthält, muss die vollständige
@@ -139,7 +115,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    md C:\iobroker
    ~~~
 
-4. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
+1. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
    ~~~cmd
    cd /d C:\iobroker
    npm install https://github.com/ioBroker/ioBroker/tarball/master
@@ -194,16 +170,31 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    run `npm audit fix` to fix them, or `npm audit` for details
    ~~~
 
-6. Anschließend kann mit dem Befehl
+1. Anschließend kann mit dem Befehl
    ~~~cmd
    iobroker status
    ~~~
    geprüft werden, ob ioBroker als Windows Dienst automatisch gestartet wurde.
-   Die Antwort sollte
+   Die Antwort sollte entweder
    ~~~
    iobroker is running
    ~~~
+   oder
+   ~~~
+   iobroker is not running
+   ~~~   
    lauten.
+
+   Wenn ioBroker nicht automatisch gestartet wurde, bitte die folgenden Befehle eingeben:
+   ~~~cmd
+   net start iobroker.exe
+   iobroker status
+   ~~~   
+   Die Antwort sollte jetzt
+   ~~~
+   iobroker is running
+   ~~~
+   lauten. 
 
  ?> Zukünftig wird ioBroker bei jedem Systemneustart im Hintergrund automatisch
    gestartet.
@@ -224,8 +215,8 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
    Basiseinstellungen vorgenommen.
 
 
-## 4. Update
+## Update
 @@@ tbd @@@
 
-## 5. Fehlersuche
+## Fehlersuche
 @@@ tbd @@@

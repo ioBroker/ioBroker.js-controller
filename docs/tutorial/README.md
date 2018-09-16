@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/README.md"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Tutorials {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
@@ -12,10 +12,11 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutoria
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
-@@@
+@@@   
 #### Idee ist jetzt
 Sammlung von in sich geschlossenen Kurztutorials für abgeschlossene Themenbereiche,
-Zielgruppengerecht für Einsteiger (und Fortgeschrittene). Tutorials hier sollten aufeinander aufbauen
+Zielgruppengerecht für Einsteiger (und Fortgeschrittene). Die Tutorials hier sollen
+aufeinander aufbauen.
 
 Tutorials evtl. auch als Videos.
 
@@ -30,5 +31,5 @@ mini-Visualisierung sowie eine Historisierung mit
 Diagrammdarstellung umfasst.
 
 Immer wieder auf das Kapitel "Konfiguation" für mehr Details
-verweisen.
+verweisen.   
 @@@

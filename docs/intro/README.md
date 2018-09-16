@@ -39,7 +39,7 @@ Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas
 >- [Einsteiger Tutorial]() folgen, dann
 >- Detailierte Infos zu den Einstellungen im [Configuration Guide]()
 >- Alles zur [Visualisierung]() (VIS,Materialize,habpanel)
->- Regeln anlegen in Javasccript, Blockly oder Node Red mit [Logik]()
+>- Regeln anlegen in Javascript, Blockly oder Node Red mit [Logik]()
 >- Hinweis auf die Community
 
 ## ioBroker Community
@@ -56,4 +56,4 @@ Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas
 [Adapter-Referenz]: adapterref/adapterliste
 [Logik]: logic/README
 [Developer bereich]: dev/README
-[Hilf uns dabei]: community/doc
+[helfen Sie uns dabei]: community/doc

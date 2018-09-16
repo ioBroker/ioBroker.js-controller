@@ -12,6 +12,6 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
-@@@
-Hier werden wir etwas detaillierter und Zielgruppe geht Richtung Fortgeschrittener.
-@@@
+@@@   
+Hier werden wir etwas detaillierter und Zielgruppe geht Richtung Fortgeschrittene.
+@@@  

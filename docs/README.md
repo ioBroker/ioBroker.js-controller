@@ -77,10 +77,10 @@ umsetzbar sind.
 
 Seit 2014 hat sich ioBroker aufgrund seiner vielen Vorzüge eine breite 
 Unterstützung von tausenden Anwendern und Entwicklern gesichert. Im eigens
-eingerichteten [Forum](https://forum.iobroker.net) treffen sich Anwender 
+eingerichteten [Forum][] treffen sich Anwender 
 und Entwickler und tauschen dort ihre Erfahrungen und Anregungen 
 miteinander aus. Da ioBroker Open Source-Software ist, stehen alle 
-Quelltexte auf der Plattform [GitHub](https://github.com/iobroker/iobroker) 
+Quelltexte auf der Plattform [GitHub][] 
 zur freien Verfügung. 
 
 !> Was ioBroker nicht ist:  
@@ -88,3 +88,6 @@ zur freien Verfügung.
    Helfern entwickelt und gepflegt. Deshalb erfolgt der Einsatz der Software
    auf eigene Haftung, ausgenommen dem Vorsatz einer mutwilligen Schädigung. 
    Es gibt keinen vertraglich festgelegten Support.
+
+[Forum]: https://forum.iobroker.net
+[GitHub]: https://github.com/iobroker/iobroker

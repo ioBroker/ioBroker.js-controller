@@ -12,7 +12,10 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/R
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.
 
-@@@
-Ziel hier ist "High Level" Beschreibung der wichtigsten Screens der Admin Oberfläche. Vllt je Screen ein Bild mit Erklärrung der wichtigen Bereiche.
-Sub-Dialoge und Details sollten in die Adapter-Referenz zum Admin Adapter verweisen.
+@@@   
+Ziel hier ist "High Level" Beschreibung der wichtigsten Screens der 
+Admin-Oberfläche. Vielleicht je Screen ein Bild mit Erklärung der 
+wesentlichen Bereiche.  
+Sub-Dialoge und Details (z.B. Feldbeschreibungen) sollten in die 
+Adapter-Referenz zum Admin-Adapter verweisen.   
 @@@

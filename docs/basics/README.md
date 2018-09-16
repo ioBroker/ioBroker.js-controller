@@ -19,7 +19,8 @@ beschrieben, nicht "WIE es geht".
 Der Anwender soll nach dem Lesen der Grundlagen die verschiedenen
 ioBroker-spezifischen Begriffe rudimentär verstehen und zuordnen können.  
 
-Ziel kurz und knackig erklären, 2-4 Zeilen, ggf wird das ganze später als eine Long-Scroller-Seite umgebaut
+Ziel ist kurz und knackig erklären, 2-4 Zeilen, ggf. wird das ganze 
+später als eine Long-Scroller-Seite umgebaut.
 
 In den Grundlagenartikeln sollte auf die jeweils dazugehörenden
 Detailbeschreibungen verwiesen werden.   

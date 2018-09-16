@@ -11,7 +11,3 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/sty
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
-
-## Admin
-
-## VIS-Editor
