@@ -95,9 +95,9 @@ eingerichtet ist und mit den gesteuerten Geräten zusammen funktioniert.
 
 ## Installation
 Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert. Die 
-ausführliche Anleitung für die dazu notwendigen Installatonschritte finden sie **hier**.
+ausführliche Anleitung für die dazu notwendigen Installatonschritte kann **hier** gefunden werden.
 
-Nach Abschluß der Installation einer Adapterinstanz öffnet sich automatisch 
+Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch 
 ein Konfigurationsfenster.
 
 
@@ -114,13 +114,13 @@ ioBroker-Servers befinden.
 
 | Feld         | Beschreibung |                                                                       
 |:-------------|:-------------|
-|**Hub User**|Für den Fall, dass Sie den Zugang zur Harmony Hub-Konfiguration mit einem Benutzer und einem Kennwort versehen haben, geben Sie bitte hier den Benutzernamen ein. Achten Sie dabei auf die Groß- und Kleinschreibung.|
-|**Hub Passwort**|Für den Fall, dass Sie den Zugang zur Harmony Hub-Konfiguration mit einem Benutzer und einem Kennwort versehen haben, geben Sie bitte hier das Kennwort ein. Achten Sie dabei auf die Groß- und Kleinschreibung.|
+|**Hub User**|Für den Fall, dass der Zugang zur Harmony Hub-Konfiguration mit einem Benutzer und einem Kennwort versehen ist, muss hier der Benutzername angegeben werden. Dabei ist auf die Groß- und Kleinschreibung zu achten.|
+|**Hub Passwort**|Für den Fall, dass der Zugang zur Harmony Hub-Konfiguration mit einem Benutzer und einem Kennwort versehen ist, muss hier das Kennwort eingegeben werden. Hierbei ist auf die Groß- und Kleinschreibung zu achten.|
 
 Die beiden Felder brauchen nur dann ausgefüllt werden, wenn der Hub mit einem Benutzernamen
 und einem Passwort gesichert ist.
 
-Nach Abschluß der Konfiguration wird der Konfigurationsdialog mit `SPEICHERN UND SCHLIEßEN`
+Nach Abschluss der Konfiguration wird der Konfigurationsdialog mit `SPEICHERN UND SCHLIEßEN`
 verlassen. Dadurch efolgt im Anschluß ein Neustart des Adapters.
 
 
@@ -149,8 +149,11 @@ darüber informiert, ob die Kommunikation mit dem Hub reibungslos erfolgt.
 
 ![Objekte](media/a_harmony_objekte.png "Harmony Objekte")<span style="color:grey">  
 *Objekte des Harmony-Adapters*</span>
-
-Die angelegten Objekte und ihre Bedeutungen sind wie folgt definiert:
+ 
+Jeder Datenpunkt ist mit seinem zugehörigen Datentyp sowie seinen Berechtigungen aufgehführt. 
+Berechtigungen können lesend (R) sowie schreibend (W) sein. Jeder Datenpunkt kann mindestens gelesen (R) werden, während
+andere ebenfalls beschrieben werden können. Zum auffinden eines bestimmten Datenpunkts empfiehlt sich die Suche mittels 
+der Tastenkombination "STRG + F".
 
 Objekt | Zugriff | Bescheibung 
 :------|:-------:|:-----------
