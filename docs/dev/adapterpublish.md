@@ -84,7 +84,9 @@ des Adapters zu aktualisieren.
 
 4. Der Adapter sollte in der io-package.json ein Listenattribut `docs` festlegen, unter der Angabe wo eine Anleitung
 in der jeweiligen Sprache zu finden ist. Als Key wird die Sprache angegeben und als Value der Pfad zur Markdown Datei.
-Zum jetzigen Zeitpunkt ist eine deutsche Dokumentation ausreichend. Ein Beispiel kann
+Eine englische Anleitung ist Pflicht (im Notfall kann auf die Standard README verwiesen werden). Ebenfalls ist eine deutsche 
+Anleitung wünschenswert, da ein Großteil der Nutzer deutsch spricht, jedoch ist dies optional. 
+Eine ausführliche Anleitung, kann dem Entwickler viel Zeit im Forum ersparen. Ein Beispiel kann
 [hier](https://github.com/foxriver76/ioBroker.denon/blob/master/docs/de/README.md) gefunden werden.
 
    Beispiel:
@@ -99,6 +101,7 @@ Zum jetzigen Zeitpunkt ist eine deutsche Dokumentation ausreichend. Ein Beispiel
    ```
 
 ### Latest
+
 Die Datei `sources-dist.json` muss editiert werden:
 
 Beispiel:
@@ -114,6 +117,7 @@ Beispiel:
 Das `published` Datum stellt das Datum der Erstveröffentlichung dar und sollte nicht mehr geändert werden.
 
 ### Stable
+
 Die Datei `sources-dist-stable.json` muss editiert werden:
 
 Beispiel:
@@ -128,6 +132,56 @@ Beispiel:
 ```
 
 Das `published` Datum stellt das Datum der Erstveröffentlichung dar und sollte nicht mehr geändert werden.
+
+## Verwaltung von Adapterversionen
+
+Die aktuelle Versionsnummer des Adapters wird sowohl in der io-package.json als auch in der package.json angegeben. Die
+beiden Angaben müssen übereinstimmen. Die Versionsnummer wird, durch zwei Punkte, in drei Teile separiert.
+
+```json
+"version": "1.7.6"
+```
+
+Wobei der erste Teil (von links nach rechts) den `Major Part` darstellt, der zweite Teil den `minor` Part und der Letzte
+den `micro` Part. Die Versionsnummern sollten entsprechend folgender Liste erhöht werden:
+
+- **micro**: Es wurden lediglich Fehler behoben
+- **minor**: Es wurden Features hinzugefügt, jedoch ist die Version mit vorherigen Versionen kompatibel
+- **major**: Große Änderungen, durch die, die Abwärtskompatibilität zu alten Version nicht mehr gegeben ist
+
+Ebenfalls sollte in der io-package.json das `news` Attribut gepflegt werden. Dies ermöglicht es Nutzern jede aufgelistete
+Version (unter der Voraussetzung, dass diese auf npm veröfefntlicht wurde) über die Admin-Oberfläche zu installieren.
+Hierbei sollte die Versionsnummer sowie die Änderungen hinterlegt werden. Die Änderungen können für jede unterstütze 
+Sprache dokumentiert werden, wobei diese mindestens auf Englisch angegeben sein sollten.
+
+Beispiel:
+
+```json
+"news": {
+    "1.7.6": {
+        "en": "Configuration dialog was corrected",
+        "de": "Konfigurationsdialog wurde korrigiert",
+        "ru": "Диалог конфигурации был исправлен",
+        "pt": "A caixa de diálogo de configuração foi corrigida",
+        "nl": "Configuratiedialoog is gecorrigeerd",
+        "fr": "La boîte de dialogue de configuration a été corrigée",
+        "it": "La finestra di configurazione è stata corretta",
+        "es": "Se corrigió el diálogo de configuración",
+        "pl": "Okno dialogowe konfiguracji zostało poprawione"
+    },
+    "1.7.5": {
+        "en": "The roles were tuned",
+        "de": "Die Rollen waren abgestimmt",
+        "ru": "Роли были настроены",
+        "pt": "Os papéis foram afinados",
+        "nl": "De rollen zijn afgestemd",
+        "fr": "Les rôles ont été réglés",
+        "it": "I ruoli erano sintonizzati",
+        "es": "Los roles fueron sintonizados",
+        "pl": "Role zostały dostrojone"
+    }
+}
+```
 
 ## Adapterkategorien
 
