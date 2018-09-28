@@ -179,6 +179,7 @@ Beispiel:
         "it": "I ruoli erano sintonizzati",
         "es": "Los roles fueron sintonizados",
         "pl": "Role zostały dostrojone"
+    }
 }
 ```
 
