@@ -15,10 +15,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
 * Die Dokumentation wird mit Hilfe der Sprache "Markdown" erstellt.
 * Die Dateiablage für die Adapterdokumentation ist wie folgt geregelt:
   * In jedem Adapter-Projekt gibt es einen Ordner
-    `doc/adapter/{github-projektname}`.
-  * In diesem Ordner liegt die Datei `io-info.json`.
-    Mit dieser Datei werden Metadaten sowie die Dateistruktur der
-    Dokumentation beschrieben. Zum Aufbau dieser Datei siehe ...
+    `/doc`.
   * Wenn die Dokumentation in deutsch vorliegt, wird sie im Unterordner
     `de` gespeichert. Aktuell unterstützte Sprachen und damit Ordnernamen sind:
     `en, de, ru, pt, nl, fr, it, es, pl`.
