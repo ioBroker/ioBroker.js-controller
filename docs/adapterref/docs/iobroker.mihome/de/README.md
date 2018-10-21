@@ -1,55 +1,76 @@
 ![Logo](media/mihome.png)
-# ioBroker mihome Adapter
-==============
+# ioBroker Mi Home Adapter
+Mit dem Mi Home Adapter wird ein Mi Control Hub (Gateway) in ein ioBroker System  
+eingebunden und ermöglicht so die Kommunikation verschiedener Xiaomi Sensoren,  
+Schalter etc. mit ioBroker.
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.mihome.svg)](https://www.npmjs.com/package/iobroker.mihome)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.mihome.svg)](https://www.npmjs.com/package/iobroker.mihome)
+Über ioBroker kann z.B. die Beleuchtung und der Lautsprecher des Gateways gesteuert  
+werden.
 
-[![NPM](https://nodei.co/npm/iobroker.mihome.png?downloads=true)](https://nodei.co/npm/iobroker.mihome/)
+## Voraussetzungen
+* Mi Home App auf Android oder iOS Gerät und frei geschaltete lokale Netzwerk Funktion
+* Angeschlossenes Mi Home Gateway
+* Betriebsbereites ioBroker System
 
-## Requirements 
-### Android (copied from [here](http://www.domoticz.com/wiki/Xiaomi_Gateway_(Aqara)) )
-You first need to enable local network functions by using the Android Mi Home 
-App https://play.google.com/store/apps/details?id=com.xiaomi.smarthome :
+### Installation der Mi Home App und freischalten der lokalen Netzwerk Funktion
 
-- Install the App on a Android device
-- Make sure you set your region to: Mainland China under settings -> Locale - at time of writing this seems to be required.
-- Mainland China and language can set on English
-- Select your Gateway in Mi Home
-- Then the 3 dots at the top right of the screen
-- Then click on about
-- Tap the version (2.27 is the current Android version as of 2 June 2017) number at the bottom of the screen repeatedly
-- You should see now 2 extra options listed in English (was Chinese in earlier versions)until you did now enable the developer mode. \[ if not try all steps again! \]
-- Choose the first new option
-- Then tap the first toggle switch to enable LAN functions. Note down the password (29p9i40jeypwck38 in the screenshot). Make sure you hit the OK button (to the right of the cancel button) to save your changes.
-- If you change here something, you lose your password!
+#### Android
+* [Android Mi Home App][Android App] auf einem Android Gerät herunterladen, installieren, öffnen und  
+den Geschäftsbedingungen zustimmen.
+* Als Land `Festland-China` auswählen 
+* Über `Anmelden` ein Konto erstellen
+* Nach der erfolgreichen Anmeldung über `+` ein Gerät hinzufügen
+* Unter `Haushaltssicherheit` den `MI Control Hub` auswählen und den Anweisungen   
+folgen
+* Nach erfolgreichem einbinden des Gateways die 3 Punkte am oberen rechten Bildschirm   
+und danach `About` betätigen
+* Den Text `Plug-in version` unten 10mal tippen
+* Nun ist der Entwickler Modus eingeschaltet und es sollten nach einer gewissen Zeit   
+2 weitere Menüpunkte erscheinen   
+>Falls nicht, wiederholt versuchen
+* Den Menüpunkt `Wireless communication protocol` auswählen
+* Den Schiebeschalter oben einschalten, das Passwort notieren und mit `OK` bestätigen.  
+>Das Passwort wird später bei der ioBroker Installation benötigt.
 
-![android](img/mihome-settings.png)
+Nun können weitere Geräte über das `+` Zeichen angelernt werden.
 
-### iOS
-You first need to enable local network functions by using the [iOS Mi Home App iosApp Mi](https://itunes.apple.com/fr/app/%E7%B1%B3%E5%AE%B6-%E7%B2%BE%E5%93%81%E5%95%86%E5%9F%8E-%E6%99%BA%E8%83%BD%E7%94%9F%E6%B4%BB/id957323480?mt=8)
-Install the App on a iOS device: 
-- Make sure you set your region to: Mainland China under settings -> Locale - required for the moment.
-- Mainland China and language can set on English
-- Select your Gateway in Mi Home
-- Then the 3 dots at the top right of the screen
-- Then click on about
-- Tap under Tutorial menu(on the blank part) repeatedly
-- You should see now 3 extra options listed in Chinese until you did now enable the developer mode. \[ if not try all steps again! \]
-- Choose the second new option
-- Then tap the first toggle switch to enable LAN functions. Note down the password (29p9i40jeypwck38 in the screenshot). Make sure you hit the OK button (to the right of the cancel button) to save your changes.
-- If you change here something, you lose your password!
+#### iOS
+* [iOS Mi Home App][ios App] auf einem iOS Gerät herunterladen, installieren, öffnen und der  
+Datenschutzerklärung zustimmen
+* Über Profil/Einstellungen/Ländereinstellungen das Land `Festland` auswählen. 
+* Über `Anmelden` ein Konto erstellen
+* Nach der erfolgreichen Anmeldung über `+` ein Gerät hinzufügen
+* Unter `Haushalt Sicherheit` den `MI Control Hub` auswählen und den Anweisungen   
+folgen
+* Nach erfolgreichem einbinden des Gateways die 3 Punkte am oberen rechten Bildschirm   
+betätigen und `About` betätigen
+* Wiederholt im leeren unteren Bereich tippen 
+* Nun ist der Entwickler Modus eingeschaltet und es sollten nach einer gewissen Zeit   
+weitere Menüpunkte erscheinen   
+> Falls es nicht gleich klappt, die Schritte wiederholen
+* Den 4. Menüpunkt auswählen
+* Den Schiebeschalter oben einschalten, das Passwort notieren und mit `OK` bestätigen.  
+>Das Passwort wird später bei der ioBroker Installation benötigt.
 
-## Usage
-You can use small button on temperature sensor to trigger "double Press" event. Just press twice within 5 seconds. You can set this interval in settings, but do not set it over 10 seconds.
+Nun können weitere Geräte über das `+` Zeichen angelernt werden.
 
-### Supported devices
+### Einstellung am Router
+Unter About/Hub info kann im Text nach _localip_ die vom Gateway verwendete IP Adresse   
+des Gateways ermittelt werden. Im verwendeten Router sollte diese IP dem Gateway fest   
+zugewiesen werden.  
+Falls die Bedienung der angelernten Geräte über die App nicht mehr gewollt ist, kann nach   
+dem anlernen aller Geräte im Router auch der Internet Zugriff des Gateways abgeschaltet   
+werden.
 
+
+### Unterstützte Geräte
+Die folgende Aufstellung erhebt keinen Anspruch auf Vollständigkeit:
 - gateway -           Xiaomi RGB Gateway
 - sensor_ht -         Xiaomi Temperature/Humidity
 - weather.v1 -        Xiaomi Temperature/Humidity/Pressure
 - switch -            Xiaomi Wireless Switch
 - sensor_switch.aq2 - Xiaomi Aqara Wireless Switch Sensor
+- sensor_switch.aq3 - Xiaomi Aqara Wireless Switch Sensor
 - plug -              Xiaomi Smart Plug
 - 86plug -            Xiaomi Smart Wall Plug
 - 86sw2 -             Xiaomi Wireless Dual Wall Switch
@@ -57,68 +78,48 @@ You can use small button on temperature sensor to trigger "double Press" event. 
 - natgas -            Xiaomi Mijia Honeywell Gas Alarm Detector
 - smoke -             Xiaomi Mijia Honeywell Fire Alarm Detector
 - ctrl_ln1 -          Xiaomi Aqara 86 Fire Wall Switch One Button
+- ctrl_ln1.aq1 -      Xiaomi Aqara Wall Switch LN
 - ctrl_ln2 -          Xiaomi 86 zero fire wall switch double key
+- ctrl_ln2.aq1 -      Xiaomi Aqara Wall Switch LN double key
 - ctrl_neutral2 -     Xiaomi Wired Dual Wall Switch
 - ctrl_neutral1 -     Xiaomi Wired Single Wall Switch
 - cube -              Xiaomi Cube
+- sensor_cube.aqgl01 - Xiaomi Cube
 - magnet -            Xiaomi Door Sensor
 - sensor_magnet.aq2 - Xiaomi Aqara Door Sensor
 - curtain -           Xiaomi Aqara Smart Curtain
 - motion -            Xiaomi Motion Sensor
-- sensor_motion.aq2   Xiaomi Aqara Motion Sensor
-- sensor_wleak.aq1    Xiaomi Aqara water sensor
-- ctrl_ln2.aq1        Xiaomi Aqara Wall Switch LN (Double)
+- sensor_motion.aq2 - Xiaomi Aqara Motion Sensor
+- sensor_wleak.aq1 -  Xiaomi Aqara water sensor
+- ctrl_ln2.aq1 -      Xiaomi Aqara Wall Switch LN (Double)
+- remote.b286acn01 -  Xiaomi Aqara Wireless Remote Switch (Double Rocker)
+- remote.b1acn01 -    Xiaomi Aqara Wireless Remote Switch
+- vibration -         Xiaomi vibration Sensor
+- wleak1 -            Xiaomi Aqara Water Sensor
+- lock_aq1 -          Xiaomi Lock
 
-## Changelog
-### 1.0.7 (2018-06-25)
-- (bluefox) The heartbeat timeout and the re-connection interval settings were added
+## ioBroker Mi Home Adapter Installation
+Weitere Einstellungen erfolgen nur noch über die ioBroker Admin-Oberfläche.  
+Den Adapter im Bereich `Adapter` suchen und über das `+` Zeichen installieren.
 
-### 1.0.6 (2018-05-26)
-- (bluefox) Added new Aqara cube sensor
+![Logo](media/Adapter.png)
 
-### 1.0.5 (2018-03-05)
-- (bluefox) Xiaomi Aqara Wall Switch LN Double was added
+Es öffnet sich dann folgendes Konfigurationsfenster:
 
-### 1.0.4 (2018-01-21)
-- (bluefox) The alarm state was fixed.
+![Logo](media/Adapterconfig1.PNG)
 
-### 1.0.3 (2018-01-21)
-- (bluefox) Invalid temperature values will be ignored
+Unter `Default Gateway Key` das oben ermittelte Passwort eintragen und mit `speichern`  
+`und schließen` das Fenster schließen. Der laufende Adapter sollte danach unter   
+`Instanzen` grün angezeigt werden:
 
-### 1.0.2 (2018-01-14)
-- (bluefox) Ignore unknown state of sensors
+![Logo](media/Instanz.PNG)
 
-### 1.0.0 (2018-01-05)
-- (bluefox) Do not overwrite the names
-- (bluefox) Ready for Admin3
+Unter `Objekte` wird nun das Gateway und seine angelernten Geräte angezeigt:
 
-### 0.3.3 (2017-11-26)
-- (bluefox) Allow multiple mihome gateways
+![Logo](media/Objekte.PNG)
 
-### 0.2.4 (2017-11-04)
-- (bluefox) Add aqara water sensor
+Die Anleitung wurde nach besten Wissen und Gewissen erstellt. 
 
-### 0.2.3 (2017-09-22)
-- (bluefox) Remove "." from id of the device
+[Android App]:(https://play.google.com/store/apps/details?id=com.xiaomi.smarthome)
 
-### 0.2.2 (2017-08-01)
-- (bluefox) Set after 300ms doublePress to false by Temperature Sensor\nAllow control of Plug
-
-### 0.2.1 (2017-07-29)
-- (bluefox) Implement double click on temperature sensor
-
-### 0.2.0 (2017-07-18)
-- (bluefox) fix battery level
-
-### 0.1.4 (2017-06-09)
-- (bluefox) add cube
-- (bluefox) remove voltage by gateway
-
-### 0.1.1 (2017-06-06)
-- (bluefox) Initial commit
-
-## License
-
-MIT
-
-Copyright (c) 2017-2018 bluefox <dogafox@gmail.com>
+[iOS App]:(https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8)
