@@ -120,8 +120,9 @@
   "deconz": {
     "meta": "https://raw.githubusercontent.com/jey-cee/ioBroker.deconz/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/jey-cee/ioBroker.deconz/master/admin/deconz.png",
-    "version": "0.2.0",
-    "type": "hardware"
+    "version": "0.2.5",
+    "type": "hardware",
+    "published": "2018-01-02T20:06:31.173Z"
   },
   "denon": {
     "meta": "https://raw.githubusercontent.com/foxriver76/ioBroker.denon/master/io-package.json",
@@ -459,6 +460,13 @@
     "version": "0.1.3",
     "type": "utility",
     "published": "2017-07-10T13:01:38.945Z"
+  },
+  "klf200": {
+    "meta": "https://raw.githubusercontent.com/MiSchroe/ioBroker.klf200/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/MiSchroe/ioBroker.klf200/master/admin/klf200.png",
+    "version": "0.9.5",
+    "type": "hardware",
+    "published": "2018-08-13T18:36:15.970Z"
   },
   "km200": {
     "meta": "https://raw.githubusercontent.com/frankjoke/ioBroker.km200/master/io-package.json",
@@ -1351,5 +1359,12 @@
     "version": "0.2.6",
     "type": "general",
     "published": "2018-07-28T10:40:00.000Z"
+  },
+  "wiffi-wz": {
+    "meta": "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.wiffi-wz/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/t4qjXH8N/ioBroker.wiffi-wz/master/admin/wiffi-wz.png",
+	"version": "1.3.1",
+    "type": "hardware",
+    "published": "2018-09-01T16:34:11.165Z"
   }
 }
