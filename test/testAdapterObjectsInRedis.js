@@ -23,6 +23,9 @@ let   context  = {
     objects: null,
     name: textName
 };
+if (!fs.existsSync(__dirname + '/../tmp')) {
+    fs.mkdirSync(__dirname + '/../tmp');
+}
 
 const objectsConfig = {
     dataDir:        __dirname + '/../tmp/data',

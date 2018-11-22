@@ -27,6 +27,11 @@ const statesConfig = {
     port:           0
 };
 let objectsConfig;
+
+if (!fs.existsSync(__dirname + '/../tmp')) {
+    fs.mkdirSync(__dirname + '/../tmp');
+}
+
 if (isExecute) {
     objectsConfig = {
         dataDir:        __dirname + '/../tmp/data',
