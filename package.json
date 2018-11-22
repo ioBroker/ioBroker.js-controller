@@ -19,7 +19,7 @@
     "bluebird": "^3.5.1",
     "daemonize2": "^0.4.2",
     "iobroker.admin": ">=2.0.9",
-    "iobroker.objects-redis": "^0.2.2",
+    "iobroker.objects-redis": "^0.2.4",
     "jsonwebtoken": "^8.3.0",
     "jszip": "^3.1.5",
     "loadavg-windows": "^1.0.2",
