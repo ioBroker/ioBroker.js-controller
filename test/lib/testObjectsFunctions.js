@@ -10,7 +10,7 @@
  * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
  */
 /**
- * @param {Context} context 
+ * @param {Context} context
  */
 function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
@@ -47,7 +47,7 @@ function register(it, expect, context) {
     });
 
     // NOT READY: need async functions on Objects
-    
+
     // // setObject positive (async)
     // it(testName + 'Check if objects will be created (ASYNC)', function () {
     //     this.timeout(1000);
@@ -76,16 +76,16 @@ function register(it, expect, context) {
     //             expect(obj.common.name).equal('test1');
     //             expect(obj.type).equal('state');
     //         })
-    //     ]; 
+    //     ];
 
     //     return promiseSequence(tests);
-        
+
     // });
-    
+
     // setObject negative
     it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
         this.timeout(1000);
-        var id = 'myTestObjectNoType';
+        const id = 'myTestObjectNoType';
         context.adapter.setObject(id, {
             common: {
                 name: 'test1',
@@ -302,25 +302,25 @@ function register(it, expect, context) {
                 expect(obj1.native.pparam).to.be.not.ok;
 
                 context.adapter.setObjectNotExists(gid + 'A', {
-                        common: {
-                            name: 'must be set'
-                        },
-                        native: {
-                            ppparam: 10
-                        },
-                        type: 'state'
+                    common: {
+                        name: 'must be set'
                     },
-                    function (err) {
+                    native: {
+                        ppparam: 10
+                    },
+                    type: 'state'
+                },
+                function (err) {
+                    expect(err).to.be.null;
+
+                    context.adapter.getObject(gid + 'A', function (err, obj1) {
                         expect(err).to.be.null;
 
-                        context.adapter.getObject(gid + 'A', function (err, obj1) {
-                            expect(err).to.be.null;
-
-                            expect(obj1.native).to.be.ok;
-                            expect(obj1.native.ppparam).to.be.equal(10);
-                            done();
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(10);
+                        done();
                     });
+                });
             });
         });
     });
@@ -328,45 +328,45 @@ function register(it, expect, context) {
     // setForeignObjectNotExists
     it(testName + 'Try to set existing foreign object', function (done) {
         context.adapter.setForeignObjectNotExists(context.adapterShortName + '.0.' + gid, {
-                common: {
-                    name: 'not must be set'
-                },
-                native: {
-                    ppparam: 11
-                },
-                type: 'state'
+            common: {
+                name: 'not must be set'
             },
-            function (err) {
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.ppparam).to.be.not.ok;
+
+                context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        ppparam: 9
+                    },
+                    type: 'state'
+                },
+                function (err) {
                     expect(err).to.be.null;
 
-                    expect(obj1.native).to.be.ok;
-                    expect(obj1.native.ppparam).to.be.not.ok;
+                    context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
+                        expect(err).to.be.null;
 
-                    context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
-                            common: {
-                                name: 'must be set'
-                            },
-                            native: {
-                                ppparam: 9
-                            },
-                            type: 'state'
-                        },
-                        function (err) {
-                            expect(err).to.be.null;
-
-                            context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
-                                expect(err).to.be.null;
-
-                                expect(obj1.native).to.be.ok;
-                                expect(obj1.native.ppparam).to.be.equal(9);
-                                done();
-                            });
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(9);
+                        done();
+                    });
                 });
             });
+        });
     });
 
     // delObject
@@ -419,17 +419,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObjectNotExists(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                err => {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -444,20 +444,20 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObject(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000)
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
 
@@ -473,17 +473,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -498,20 +498,20 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000)
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
 
@@ -521,68 +521,68 @@ function register(it, expect, context) {
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject('system.group.writer', {
-          "common": {
-            "name": "Writer",
-            "desc": "",
-            "members": [
-              "system.user.write-only"
-            ],
-            "acl": {
-              "object": {
-                "list": false,
-                "read": true,
-                "write": false,
-                "delete": false
-              },
-              "state": {
-                "list": false,
-                "read": false,
-                "write": false,
-                "create": false,
-                "delete": false
-              },
-              "users": {
-                "write": false,
-                "create": false,
-                "delete": false
-              },
-              "other": {
-                "execute": false,
-                "http": false,
-                "sendto": false
-              },
-              "file": {
-                "list": false,
-                "read": false,
-                "write": false,
-                "create": false,
-                "delete": false
-              }
-            }
-          },
-          "native": {},
-          "acl": {
-            "object": 1638,
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator"
-          },
-          "_id": "system.group.writer",
-          "type": "group"
+            'common': {
+                'name': 'Writer',
+                'desc': '',
+                'members': [
+                    'system.user.write-only'
+                ],
+                'acl': {
+                    'object': {
+                        'list': false,
+                        'read': true,
+                        'write': false,
+                        'delete': false
+                    },
+                    'state': {
+                        'list': false,
+                        'read': false,
+                        'write': false,
+                        'create': false,
+                        'delete': false
+                    },
+                    'users': {
+                        'write': false,
+                        'create': false,
+                        'delete': false
+                    },
+                    'other': {
+                        'execute': false,
+                        'http': false,
+                        'sendto': false
+                    },
+                    'file': {
+                        'list': false,
+                        'read': false,
+                        'write': false,
+                        'create': false,
+                        'delete': false
+                    }
+                }
+            },
+            'native': {},
+            'acl': {
+                'object': 1638,
+                'owner': 'system.user.admin',
+                'ownerGroup': 'system.group.administrator'
+            },
+            '_id': 'system.group.writer',
+            'type': 'group'
         }, function (err) {
             expect(err).to.be.null;
 
             context.adapter.setForeignObject('system.user.write-only', {
-                "type": "user",
-                "common": {
-                    "name": "write-only",
-                    "enabled": true,
-                    "groups": [],
-                    "password": "pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585"
+                'type': 'user',
+                'common': {
+                    'name': 'write-only',
+                    'enabled': true,
+                    'groups': [],
+                    'password': 'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585'
                 },
-                "_id": "system.user.write-only",
-                "native": {},
-                "acl": {
-                    "object": 1638
+                '_id': 'system.user.write-only',
+                'native': {},
+                'acl': {
+                    'object': 1638
                 }
             }, function (err) {
                 expect(err).to.be.null;
@@ -605,14 +605,14 @@ function register(it, expect, context) {
                     type: 'state',
                     acl: {
                         object: 1638,
-                        owner: "system.user.write-only",
-                        ownerGroup:"system.group.administrator",
+                        owner: 'system.user.write-only',
+                        ownerGroup:'system.group.administrator',
                         state: 1638
                     }
                 }, function (err) {
                     expect(err).to.be.null;
 
-                    context.objects.getObject(context.adapterShortName + 'f.0.' + gid, {user: "system.user.write-only"}, function (err, obj) {
+                    context.objects.getObject(context.adapterShortName + 'f.0.' + gid, {user: 'system.user.write-only'}, function (err, obj) {
                         expect(err).to.be.not.ok;
                         expect(obj).to.be.ok;
                         expect(obj.native).to.be.ok;

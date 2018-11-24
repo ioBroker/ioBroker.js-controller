@@ -33,30 +33,30 @@ describe('States-Redis-Socket: Test states', function () {
         cleanDbs();
 
         setup.startController({
-                objects: {
-                    dataDir: dataDir,
-                    onChange: (id, obj) => {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    type: 'redis',
-                    host: '/var/run/redis.sock',
-                    port: 0,
-                    onChange: (id, state) => {
-                        console.log('Redis-state-Socket changed. ' + id);
-                        if (onStatesChanged) onStatesChanged(id, state);
-                    }
+            objects: {
+                dataDir: dataDir,
+                onChange: (id, _obj) => {
+                    console.log('object changed. ' + id);
                 }
             },
-            (_objects, _states) => {
-                objects = _objects;
-                states  = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                setTimeout(_done, 5000);
+            states: {
+                type: 'redis',
+                host: '/var/run/redis.sock',
+                port: 0,
+                onChange: (id, state) => {
+                    console.log('Redis-state-Socket changed. ' + id);
+                    if (onStatesChanged) onStatesChanged(id, state);
+                }
             }
+        },
+        (_objects, _states) => {
+            objects = _objects;
+            states  = _states;
+            states.subscribe('*');
+            expect(objects).to.be.ok;
+            expect(states).to.be.ok;
+            setTimeout(_done, 5000);
+        }
         );
     });
 

@@ -10,7 +10,7 @@ let   objects  = null;
 let   states   = null;
 const textName = 'File';
 const tests    = require('./lib/testObjects');
-let   context  = {
+const   context  = {
     objects: null,
     name: textName
 };
@@ -20,27 +20,27 @@ describe(textName + ' Test Objects', function() {
         this.timeout(2000);
 
         setup.startController({
-                objects: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, obj) {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, state) {
-                        console.log('state changed. ' + id);
-                    }
+            objects: {
+                dataDir: __dirname + '/../tmp/data',
+                onChange: function (id, _obj) {
+                    console.log('object changed. ' + id);
                 }
             },
-            function (_objects, _states) {
-                objects = _objects;
-                states  = _states;
-                context.objects = _objects;
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                _done();
+            states: {
+                dataDir: __dirname + '/../tmp/data',
+                onChange: function (id, _state) {
+                    console.log('state changed. ' + id);
+                }
             }
+        },
+        function (_objects, _states) {
+            objects = _objects;
+            states  = _states;
+            context.objects = _objects;
+            expect(objects).to.be.ok;
+            expect(states).to.be.ok;
+            _done();
+        }
         );
     });
 

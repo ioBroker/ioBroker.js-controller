@@ -153,7 +153,7 @@ function register(it, expect, context) {
             expect(objs.length).to.be.equal(0);
 
             done();
-        }).catch(err => {
+        }).catch(_err => {
             expect(1).to.be.equal('Never happens');
         });
     });
@@ -194,7 +194,7 @@ function register(it, expect, context) {
             expect(keys.length).to.be.equal(0);
 
             done();
-        }).catch(err => {
+        }).catch(_err => {
             expect(1).to.be.equal('Never happens');
         });
     });
@@ -210,7 +210,7 @@ function register(it, expect, context) {
                 expect(objs[1]._id).to.be.equal(keys[1]);
                 done();
             });
-        })
+        });
     });
 
     it(textName + 'should read objects async', done => {
@@ -224,7 +224,7 @@ function register(it, expect, context) {
             expect(objs[0]._id).to.be.equal(gKeys[0]);
             expect(objs[1]._id).to.be.equal(gKeys[1]);
             done();
-        }).catch(err => {
+        }).catch(_err => {
             expect(1).to.be.equal('Never happens');
         });
     });
@@ -258,7 +258,7 @@ function register(it, expect, context) {
             expect(res.id).to.be.equal(namespace + '.otherAsync');
             expect(res.value.common.def).to.be.equal('default');
             done();
-        }).catch(err => {
+        }).catch(_err => {
             expect(1).to.be.equal('Never happens');
         });
     });
@@ -313,7 +313,7 @@ function register(it, expect, context) {
                     const file = files.find(f => f.file === 'abc.txt');
                     expect(file.file).to.be.equal('abc.txt');
                     expect(file.path).to.be.equal('myFile');
-                    objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
+                    objects.readFile(testId, 'myFile/abc.txt', (err, _data, _mimeType) => {
                         expect(err).to.be.equal('Not exists');
                         done();
                     });
@@ -357,7 +357,7 @@ function register(it, expect, context) {
             expect(err).to.be.not.ok;
             objects.rename(testId, 'myFile1/abcRename.txt', 'myFile/abc3.txt', err => {
                 expect(err).to.be.not.ok;
-                objects.readFile(testId, 'myFile/abc3.txt', (err, data, meta) => {
+                objects.readFile(testId, 'myFile/abc3.txt', (err, data, _meta) => {
                     expect(err).to.be.not.ok;
                     expect(data.toString('utf8')).to.be.equal('abcd');
                     objects.readFile(testId, 'myFile1/abcRename.txt', err => {
@@ -379,7 +379,7 @@ function register(it, expect, context) {
             setTimeout(() => {
                 objects.touch(testId, 'myFile/abc3.txt', err => {
                     expect(err).to.be.not.ok;
-                    objects.readDir(testId, 'myFile', (err, files) => {
+                    objects.readDir(testId, 'myFile', (_err, files) => {
                         const file1 = files.find(f => f.file === 'abc3.txt');
                         expect(file1.modifiedAt).to.be.not.equal(file.modifiedAt);
                         done();

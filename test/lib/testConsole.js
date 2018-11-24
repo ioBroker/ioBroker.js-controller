@@ -19,7 +19,7 @@ function getBackupDir() {
     dataDir = dataDir.replace(/\\/g, '/');
     if (dataDir[dataDir.length - 1] !== '/') dataDir += '/';
 
-    let parts = dataDir.split('/');
+    const parts = dataDir.split('/');
     parts.pop();// remove data or appName-data
     parts.pop();
 
@@ -350,14 +350,15 @@ function register(it, expect, context) {
     // backup
     it(testName + 'backup', tools.poorMansAsync(function* () {
         // create backup
-        var dir = getBackupDir();
-        var fs = require('fs');
+        const dir = getBackupDir();
+        const fs = require('fs');
+        let files;
         // delete existing files
         if (fs.existsSync(dir)) {
-            var files = fs.readdirSync(dir);
-            for (var f = 0; f < files.length; f++) {
-                if (files[f].match(/\.tar\.gz$/)) {
-                    fs.unlinkSync(dir + files[f]);
+            files = fs.readdirSync(dir);
+            for (const file of files) {
+                if (file.match(/\.tar\.gz$/)) {
+                    fs.unlinkSync(dir + file);
                 }
             }
         }
@@ -365,11 +366,11 @@ function register(it, expect, context) {
         let err;
         err = yield cli.processCommandAsync(context.objects, context.states, 'backup', [], {});
         expect(err).to.be.not.ok;
-        var files = fs.readdirSync(dir);
+        files = fs.readdirSync(dir);
         // check 2017_03_09-13_48_33_backupioBroker.tar.gz
-        var found = false;
+        let found = false;
         console.log('Check ' + dir);
-        for (var f = files.length - 1; f > 0; f--) {
+        for (let f = files.length - 1; f > 0; f--) {
             console.log('Detect ' + dir + files[f]);
             if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
                 found = true;
@@ -379,7 +380,7 @@ function register(it, expect, context) {
         // TODO why this does not work on TRAVIS
         //expect(found).to.be.true;
 
-        var name = Math.round(Math.random() * 10000).toString();
+        const name = Math.round(Math.random() * 10000).toString();
         err = yield cli.processCommandAsync(context.objects, context.states, 'backup', [name], {});
         expect(err).to.be.not.ok;
         expect(require('fs').existsSync(getBackupDir() + name + '.tar.gz')).to.be.true;
@@ -491,14 +492,12 @@ function register(it, expect, context) {
         obj = yield context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj.native.license).to.be.equal(licenseText);
     }));
-    
+
     // info
     it(testName + 'info', tools.poorMansAsync(function* () {
-        let err;
-        err = yield cli.processCommandAsync(context.objects, context.states, 'info', [], {});
+        const err = yield cli.processCommandAsync(context.objects, context.states, 'info', [], {});
         expect(err).to.be.not.ok;
     })).timeout(6000);
 }
-
 
 module.exports.register = register;

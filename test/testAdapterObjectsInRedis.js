@@ -16,10 +16,9 @@ if (!isExecute) {
     try {
         const path = require.resolve('iobroker.objects-redis');
         isExecute = !!path;
-    } catch (e) {
-    }
+    } catch (e) { /* OK */ }
 }
-let   context  = {
+const   context  = {
     objects: null,
     name: textName
 };
@@ -37,7 +36,7 @@ const objectsConfig = {
     redisNamespace: 'testOnlyObjects',
     noFileCache:    true,
     connectTimeout: 2000,
-    onChange: (id, obj) => {
+    onChange: (id, _obj) => {
         console.log('object changed. ' + id);
     }
 };
@@ -48,25 +47,25 @@ describe(textName + 'Test Objects', function () {
 
         if (!isExecute) {
             console.warn('REDIS Objects tests disabled');
-            return done();
+            return _done();
         }
         setup.startController({
-                objects: objectsConfig,
-                states: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: (id, state) => {
-                        console.log('state changed. ' + id);
-                    }
+            objects: objectsConfig,
+            states: {
+                dataDir: __dirname + '/../tmp/data',
+                onChange: (id, _state) => {
+                    console.log('state changed. ' + id);
                 }
-            },
-            (_objects, _states) => {
-                objects = _objects;
-                states  = _states;
-                context.objects = _objects;
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                _done();
             }
+        },
+        (_objects, _states) => {
+            objects = _objects;
+            states  = _states;
+            context.objects = _objects;
+            expect(objects).to.be.ok;
+            expect(states).to.be.ok;
+            _done();
+        }
         );
     });
 

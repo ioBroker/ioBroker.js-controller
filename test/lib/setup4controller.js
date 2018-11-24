@@ -89,7 +89,6 @@ function startController(options, callback) {
         Objects = require(rootDir + 'lib/objects/objectsInMemServer');
     }
 
-
     objects = new Objects(settingsObjects);
 
     let States;
@@ -122,7 +121,7 @@ function startController(options, callback) {
             debug: msg => console.log(msg),
             info:  msg => console.log(msg),
             warn:  msg => console.warn(msg),
-            error: msg => console.error(msg),
+            error: msg => console.error(msg)
         },
         connected: () => {
             isStatesConnected = true;

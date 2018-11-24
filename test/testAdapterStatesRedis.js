@@ -21,8 +21,7 @@ if (!isExecute) {
     try {
         const path = require.resolve('iobroker.objects-redis');
         isExecute = !!path;
-    } catch (e) {
-    }
+    } catch (e) { /* OK */ }
 }
 let objectsConfig;
 if (isExecute) {
@@ -35,7 +34,7 @@ if (isExecute) {
         redisNamespace: 'test',
         type:           'redis',
         host:           '127.0.0.1',
-        port:           6379,
+        port:           6379
     };
 } else {
     objectsConfig = {
