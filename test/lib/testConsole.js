@@ -28,7 +28,7 @@ function getBackupDir() {
 
 function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' console: ';
-    const cli    = require('../../lib/cli.js');
+    const cli    = require('../../lib/setup.js');
     // passwd, user passwd, user check
     it(testName + 'user passwd', tools.poorMansAsync(function* () {
         let err;
