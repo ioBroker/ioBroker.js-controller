@@ -1,1 +1,1 @@
-require(__dirname + '/lib/setup.js').execute();
+require('./lib/cli.js').execute();
