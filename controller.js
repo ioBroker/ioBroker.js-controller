@@ -333,9 +333,10 @@ function createStates() {
             }
              */
         },
-        connected: function () {
+        connected: () => {
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
+            deleteAllZipPackages();
         }
     });
 }
@@ -1182,6 +1183,17 @@ function setMeta() {
     };
     tasks.push(obj);
 
+    obj = {
+        _id:       id + '.zip',
+        type:      'channel',
+        common: {
+            name:  'ZIP files',
+            desc:  'Files for download'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
 
     if (config.system.checkDiskInterval) {
@@ -1301,6 +1313,30 @@ function getVersionFromHost(hostId, callback) {
             if (callback) setImmediate(callback, null, hostId);
         }
     });
+}
+/**
+    Helper function that serialize deletion of states
+    @param {object} list array with states
+    @param {function} cb optional callback
+ */
+function _deleteAllZipPackages(list, cb) {
+    if (!list || !list.length) {
+        cb && cb();
+    } else {
+        states.detBinaryState(list.shift(), err =>
+            setImmediate(() =>
+                _deleteAllZipPackages(list, cb)));
+    }
+}
+/**
+    This function deletes all ZIP packages that were not downloaded.
+    ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
+
+    @param {function} cb optional callback
+ */
+function deleteAllZipPackages(cb) {
+    states.getKeys('system.host.' + hostname + '.zip.*',
+        (err, list) => _deleteAllZipPackages(list, cb));
 }
 
 // Process message to controller, like execute some script
@@ -1670,10 +1706,26 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
                 zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, (err, base64) => {
-                    if (base64) {
-                        sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
+                    // If client supports file via link
+                    if (msg.message.link) {
+                        if (!err) {
+                            const buff = new Buffer(base64, 'base64');
+                            states.setBinaryState('system.host.' + hostname + '.zip.' + msg.message.link, buff, err => {
+                                if (err) {
+                                    sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                                } else {
+                                    sendTo(msg.from, msg.command, 'system.host.' + hostname + '.zip.' + msg.message.link, msg.callback);
+                                }
+                            });
+                        } else {
+                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                        }
                     } else {
-                        sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                        if (base64) {
+                            sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
+                        } else {
+                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                        }
                     }
                 });
             }

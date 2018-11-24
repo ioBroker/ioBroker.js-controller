@@ -6,6 +6,15 @@
 
 const testAdapter = require(__dirname + '/../lib/testAdapter');
 const dataDir = __dirname + '/../../tmp/data-redis';
+const fs       = require('fs');
+let  isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
+if (!isExecute) {
+    try {
+        const path = require.resolve('iobroker.objects-redis');
+        isExecute = !!path;
+    } catch (e) {
+    }
+}
 
 const statesConfig = {
     options : {
@@ -13,10 +22,16 @@ const statesConfig = {
         retry_max_delay: 15000
     },
     type:           'redis',
+    redisNamespace: 'testObjectsIo',
     host:           '/var/run/redis.sock',
     port:           0
 };
 let objectsConfig;
+
+if (!fs.existsSync(__dirname + '/../tmp')) {
+    fs.mkdirSync(__dirname + '/../tmp');
+}
+
 if (isExecute) {
     objectsConfig = {
         dataDir:        __dirname + '/../tmp/data',
@@ -24,10 +39,10 @@ if (isExecute) {
             auth_pass: null,
             retry_max_delay: 15000
         },
-        redisNamespace: 'test',
+        redisNamespace: 'testObjectsCfg',
         type:           'redis',
-        host:           '127.0.0.1',
-        port:           6379,
+        host:           '/var/run/redis.sock',
+        port:           0
     };
 } else {
     objectsConfig = {
