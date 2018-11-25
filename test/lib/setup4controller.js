@@ -37,7 +37,7 @@ function startController(options, callback) {
         connection: {
             type:               options.objects.type || 'file',
             host:               options.objects.host || '127.0.0.1',
-            port:               options.objects.port || 19001,
+            port:               (options.states.port === undefined) ? 19001 : options.states.port,
             user:               options.objects.user || '',
             pass:               options.objects.pass || '',
             redisNamespace:     options.objects.redisNamespace || '',
