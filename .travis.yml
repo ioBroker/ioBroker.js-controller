@@ -14,7 +14,7 @@ before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; sleep 10; fi'
-  - 'if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install redis-64 ; sleep 10; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install redis-64; powershell "$MyProcess = Start-Process redis-server.exe -PassThru"; sleep 10; fi'
   - sleep 15
 before_script:
   - export NPMVERSION=$(echo "$($(which npm) -v)"|cut -c1)
@@ -28,6 +28,8 @@ after_success:
   - npm install --package-lock-only --production
   - npm audit
   - npm ls
+after_script:
+  - 'if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install redis-64; powershell "Stop-Process -Id $MyProcess.Id"; fi'
 env:
   - CXX=g++-4.8
 addons:
