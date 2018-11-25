@@ -18,5 +18,4 @@ function register(it, expect, context) {
     // getBinaryState
 }
 
-
 module.exports.register = register;

@@ -13,7 +13,7 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-const setup  = require(__dirname + '/setup4controller');
+const setup  = require('./setup4controller');
 
 function testAdapter(options) {
     const statesConfig  = options.statesConfig;
@@ -21,15 +21,15 @@ function testAdapter(options) {
     options.name  = options.name || 'Test';
 
     const tests = [
-        require(__dirname + '/testAdapterHelpers'),
-        require(__dirname + '/testEnums'),
-        require(__dirname + '/testFiles'),
-        require(__dirname + '/testHelperStates'),
-        require(__dirname + '/testMessages'),
-        require(__dirname + '/testObjectsFunctions'),
-        require(__dirname + '/testObjectsACL'),
-        require(__dirname + '/testStates'),
-        require(__dirname + '/testConsole')
+        require('./testAdapterHelpers'),
+        require('./testEnums'),
+        require('./testFiles'),
+        require('./testHelperStates'),
+        require('./testMessages'),
+        require('./testObjectsFunctions'),
+        require('./testObjectsACL'),
+        require('./testStates'),
+        require('./testConsole')
     ];
 
     const context = {
@@ -49,7 +49,7 @@ function testAdapter(options) {
     };
 
     function startAdapter(callback) {
-        const Adapter = require(__dirname + '/../../lib/adapter.js');
+        const Adapter = require('../../lib/adapter.js');
 
         context.adapter = new Adapter({
             config: {
@@ -99,6 +99,7 @@ function testAdapter(options) {
         });
     }
 
+    // TODO: This is unused:
     function checkValueOfState(id, value, cb, counter) {
         counter = counter || 0;
         if (counter > 20) {
@@ -121,6 +122,7 @@ function testAdapter(options) {
         });
     }
 
+    // TODO: This is unused:
     function sendTo(target, command, message, callback) {
         context.onControllerStateChanged = function (id, state) {
             if (id === 'messagebox.system.adapter.test.0') {
@@ -134,7 +136,7 @@ function testAdapter(options) {
             from:       'system.adapter.test.0',
             callback: {
                 message: message,
-                id:      sendToID++,
+                id:      sendToID++, // TODO: sendToID is undefined!
                 ack:     false,
                 time:    (new Date()).getTime()
             }
@@ -180,31 +182,31 @@ function testAdapter(options) {
 
             _statesConfig.onChange = (id, state) => {
                 console.log('state changed. ' + id);
-                if (context.onControllerStateChanged) context.onControllerStateChanged(id, state)
+                if (context.onControllerStateChanged) context.onControllerStateChanged(id, state);
             };
             _objectsConfig.onChange = (id, obj) => {
                 console.log('object changed. ' + id);
-                if (context.onControllerObjectChanged) context.onControllerObjectChanged(id, obj)
+                if (context.onControllerObjectChanged) context.onControllerObjectChanged(id, obj);
             };
 
             setup.startController({
-                    objects: _objectsConfig,
-                    states: _statesConfig
-                },
-                (_objects, _states) => {
-                    context.objects = _objects;
-                    context.states  = _states;
-                    expect(context.objects).to.be.ok;
-                    expect(context.states).to.be.ok;
+                objects: _objectsConfig,
+                states: _statesConfig
+            },
+            (_objects, _states) => {
+                context.objects = _objects;
+                context.states  = _states;
+                expect(context.objects).to.be.ok;
+                expect(context.states).to.be.ok;
 
-                    if (objectsConfig.type === 'redis') {
-                        const objs = require('./objects.json');
-                        addObjects(_objects, objs, () =>
-                            startAdapter(() => _done()));
-                    } else {
-                        startAdapter(() => _done());
-                    }
+                if (objectsConfig.type === 'redis') {
+                    const objs = require('./objects.json');
+                    addObjects(_objects, objs, () =>
+                        startAdapter(() => _done()));
+                } else {
+                    startAdapter(() => _done());
                 }
+            }
             );
         });
 

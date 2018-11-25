@@ -73,8 +73,8 @@ describe('Test package.json and io-package.json', () => {
             }
         }
 
-        var licenseFileExists = fs.existsSync(__dirname + '/../LICENSE');
-        var fileContentReadme = fs.readFileSync(__dirname + '/../README.md', 'utf8');
+        const licenseFileExists = fs.existsSync(__dirname + '/../LICENSE');
+        const fileContentReadme = fs.readFileSync(__dirname + '/../README.md', 'utf8');
         if (fileContentReadme.indexOf('## Changelog') === -1) {
             console.log('Warning: The README.md should have a section ## Changelog');
             console.log();

@@ -40,8 +40,8 @@ let logger;
 let isDaemon                = false;
 let callbackId              = 1;
 let callbacks               = {};
-let hostname                = tools.getHostName();
-let logList                 = [];
+const hostname                = tools.getHostName();
+const logList                 = [];
 let detectIpsCount          = 0;
 let disconnectTimeout       = null;
 let connected               = null; // not false, because want to detect first connection
@@ -78,21 +78,21 @@ const errorCodes            = [
     '', // 24
     'Unsupported npm version' // 25
 ];
-let procs                   = {};
-let subscribe               = {};
+const procs                   = {};
+const subscribe               = {};
 let states                  = null;
 let objects                 = null;
 let storeTimer              = null;
 let isStopping              = null;
 let allInstancesStopped     = true;
-let stopTimeout             = 10000;
+const stopTimeout             = 10000;
 let uncaughtExceptionCount  = 0;
-let installQueue            = [];
+const installQueue            = [];
 let started                 = false;
 let inputCount              = 0;
 let outputCount             = 0;
 let mhService               = null; // multihost service
-let uptimeStart             = Date.now();
+const uptimeStart             = Date.now();
 
 const config = getConfig();
 
@@ -109,7 +109,7 @@ function getConfig() {
         process.exit(1);
         return null;
     } else {
-        let _config = JSON.parse(fs.readFileSync(configFile));
+        const _config = JSON.parse(fs.readFileSync(configFile));
         if (!_config.states)  _config.states  = {type: 'file'};
         if (!_config.objects) _config.objects = {type: 'file'};
         if (!_config.system)  _config.system  = {};
@@ -131,7 +131,7 @@ function _startMultihost(_config, secret) {
 }
 
 function startMultihost(__config) {
-    let _config = __config || getConfig();
+    const _config = __config || getConfig();
     if (_config.multihostService && _config.multihostService.enabled) {
         if (mhService) {
             try {
@@ -161,7 +161,7 @@ function startMultihost(__config) {
                         _startMultihost(_config, secret);
                     });
                 } else {
-                    logger.error('host.' + hostname + ' Cannot start multihost: no system.config found')
+                    logger.error('host.' + hostname + ' Cannot start multihost: no system.config found');
                 }
             });
         } else {
@@ -186,7 +186,7 @@ function getIPs() {
         const ifaces = os.networkInterfaces();
         lastCalculationOfIps = Date.now();
         ipArr = [];
-        for (let dev in ifaces) {
+        for (const dev in ifaces) {
             if (!ifaces.hasOwnProperty(dev)) continue;
 
             /*jshint loopfunc:true */
@@ -235,7 +235,7 @@ function createStates() {
             if (id === 'messagebox.system.host.' + hostname) {
                 // Read it from fifo list
                 states.delMessage('system.host.' + hostname, state._id);
-                let obj = state;
+                const obj = state;
                 if (obj) {
                     // If callback stored for this request
                     if (obj.callback &&
@@ -250,8 +250,8 @@ function createStates() {
                         }
 
                         // delete too old callbacks IDs
-                        let now = Date.now();
-                        for (let _id in callbacks) {
+                        const now = Date.now();
+                        for (const _id in callbacks) {
                             if (!callbacks.hasOwnProperty(_id)) continue;
                             if (now - callbacks[_id].time > 3600000) delete callbacks[_id];
                         }
@@ -275,7 +275,7 @@ function createStates() {
             else    // If this system.adapter.NAME.0.alive
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
-                    let enabled = state.val;
+                    const enabled = state.val;
                     setImmediate(function () {
                         objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
                             if (err) logger.error('host.' + hostname + ' Cannot read object: '  + err);
@@ -420,7 +420,7 @@ function createObjects() {
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
                         stopInstance(id, () => {
-                            let _ipArr = getIPs();
+                            const _ipArr = getIPs();
 
                             if (_ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname) {
                                 if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
@@ -432,7 +432,7 @@ function createObjects() {
                             }
                         });
                     } else {
-                        let __ipArr = getIPs();
+                        const __ipArr = getIPs();
                         if (procs[id].config && (__ipArr.indexOf(procs[id].config.common.host) !== -1 || procs[id].config.common.host === hostname)) {
                             if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
                                 startInstance(id);
@@ -443,7 +443,7 @@ function createObjects() {
                     }
 
                 } else if (obj && obj.common) {
-                    let _ipArr = getIPs();
+                    const _ipArr = getIPs();
                     // new adapter
                     if (_ipArr.indexOf(obj.common.host) !== -1 || obj.common.host === hostname) {
                         procs[id] = {config: obj};
@@ -468,7 +468,7 @@ function startAliveInterval() {
 }
 
 function reportStatus() {
-    let id = 'system.host.' + hostname;
+    const id = 'system.host.' + hostname;
     outputCount += 10;
     states.setState(id + '.alive', {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
 
@@ -493,7 +493,7 @@ function reportStatus() {
         }
     });
 
-    let mem = process.memoryUsage();
+    const mem = process.memoryUsage();
     states.setState(id + '.memRss',       {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     states.setState(id + '.memHeapTotal', {val: Math.round(mem.heapTotal / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     states.setState(id + '.memHeapUsed',  {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
@@ -508,8 +508,8 @@ function reportStatus() {
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
-            let text = fs.readFileSync('/proc/meminfo', 'utf8');
-            let m = text && text.match(/MemAvailable:\s*(\d+)/);
+            const text = fs.readFileSync('/proc/meminfo', 'utf8');
+            const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
                 states.setState(id + '.memAvailable', {val: Math.round(parseInt(m[1], 10) * 0.001024), ack: true, from: id});
                 outputCount++;
@@ -549,9 +549,9 @@ function changeHost(objs, oldHostname, newHostname, callback) {
     if (!objs || !objs.length) {
         if (callback) callback();
     } else {
-        let row = objs.shift();
+        const row = objs.shift();
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
-            let obj = row.value;
+            const obj = row.value;
             obj.common.host = newHostname;
             logger.info('host.' + hostname + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
             obj.from = 'system.host.' + tools.getHostName();
@@ -575,7 +575,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         }
         let subs;
         try {
-            subs = JSON.parse(state.val)
+            subs = JSON.parse(state.val);
         } catch (e) {
             logger.error('host.' + hostname + ' Cannot parse subscribes: ' + state.val);
             if (typeof callback === 'function') {
@@ -585,16 +585,16 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         }
         let modified = false;
         // look for all subscribes from this instance
-        for (let pattern in subs) {
+        for (const pattern in subs) {
             if (!subs.hasOwnProperty(pattern)) continue;
-            for (let id in subs[pattern]) {
+            for (const id in subs[pattern]) {
                 if (subs[pattern].hasOwnProperty(id) && id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
             let found = false;
-            for (let f in subs[pattern]) {
+            for (const f in subs[pattern]) {
                 if (subs[pattern].hasOwnProperty(f)) {
                     found = true;
                     break;
@@ -641,7 +641,7 @@ function delObjects(objs, callback) {
     if (!objs || !objs.length) {
         if (callback) callback();
     } else {
-        let row = objs.shift();
+        const row = objs.shift();
         if (row && row.id) {
             logger.info('host.' + hostname + ' Delete state "' + row.id + '"');
             if (row.value.type === 'state') {
@@ -677,8 +677,8 @@ function checkHost(type, callback) {
                 doc.rows.length === 1 &&
                 doc.rows[0].value.common.name !== hostname)
             {
-                let oldHostname = doc.rows[0].value.common.name;
-                let oldId  = doc.rows[0].value._id;
+                const oldHostname = doc.rows[0].value.common.name;
+                const oldId  = doc.rows[0].value._id;
 
                 // find out all instances and rewrite it to actual hostname
                 objects.getObjectView('system', 'instance', {}, (err, doc) => {
@@ -726,7 +726,7 @@ function collectDiagInfo(type, callback) {
                 }
                 objects.getObjectView('system', 'host', {}, (_err, doc) => {
                     // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
-                    let diag = {
+                    const diag = {
                         uuid:           obj.native.uuid,
                         language:       systemConfig.common.language,
                         country:        '',
@@ -739,7 +739,7 @@ function collectDiagInfo(type, callback) {
                         objectsType:    config.objects.type // redis or file
                     };
                     if (type === 'extended' || type === 'no-city') {
-                        let cpus     = os.cpus();
+                        const cpus     = os.cpus();
 
                         diag.country = systemConfig.common.country;
                         diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
@@ -795,11 +795,11 @@ function collectDiagInfo(type, callback) {
                         }
                         // read number of vis datapoints
                         if (visFound) {
-                            let visUtils = require(__dirname + '/lib/vis/states');
+                            const visUtils = require(__dirname + '/lib/vis/states');
                             try {
                                 visUtils(objects, null, 0, null, (err, points) => {
                                     let total = null;
-                                    let tasks = [];
+                                    const tasks = [];
                                     if (points && points.length) {
                                         for (let i = 0; i < points.length; i++) {
                                             if (points[i].id === 'vis.0.datapoints.total') {
@@ -844,7 +844,7 @@ function collectDiagInfo(type, callback) {
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
 function setIPs(ipList) {
-    let _ipList = ipList || getIPs();
+    const _ipList = ipList || getIPs();
 
     // check if IPs detected (because of DHCP delay)
     let found = false;
@@ -860,7 +860,7 @@ function setIPs(ipList) {
     } else if (found) {
         // IPv4 found => write to object
         objects.getObject('system.host.' + hostname, (err, oldObj) => {
-            let networkInterfaces = os.networkInterfaces();
+            const networkInterfaces = os.networkInterfaces();
             if (JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
                 JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
                 oldObj.common.address = ipList;
@@ -881,8 +881,8 @@ function extendObjects(tasks, callback) {
         if (typeof callback === 'function') callback();
         return;
     }
-    let task = tasks.shift();
-    let state = task.state;
+    const task = tasks.shift();
+    const state = task.state;
     if (state !== undefined) {
         delete task.state;
     }
@@ -896,10 +896,10 @@ function extendObjects(tasks, callback) {
 }
 
 function setMeta() {
-    let id = 'system.host.' + hostname;
+    const id = 'system.host.' + hostname;
 
     objects.getObject(id, (err, oldObj) => {
-        let newObj = {
+        const newObj = {
             _id:  id,
             type: 'host',
             common: {
@@ -973,7 +973,7 @@ function setMeta() {
         }
     });
 
-    let tasks = [];
+    const tasks = [];
 
     let obj = {
         _id:       id + '.cpu',
@@ -1250,7 +1250,7 @@ function setMeta() {
     // delete obsolete states
     objects.getObjectView('system', 'state', {startkey: 'system.host.' + hostname + '.', endkey: 'system.host.' + hostname + '.\u9999', include_docs: true}, function (_err, doc) {
         // identify existing states for deletion, because they are not in the new tasks-list
-        let todelete = doc.rows.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
+        const todelete = doc.rows.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
 
         if (todelete && todelete.length > 0) {
             delObjects(todelete, function () {
@@ -1278,7 +1278,7 @@ function sendTo(objName, command, message, callback) {
         message = command;
         command = 'send';
     }
-    let obj = {command: command, message: message, from: 'system.host.' + hostname};
+    const obj = {command: command, message: message, from: 'system.host.' + hostname};
     if (objName.substring(0, 'system.adapter.'.length) !== 'system.adapter.' &&
         objName.substring(0, 'system.host.'.length)    !== 'system.host.') objName = 'system.adapter.' + objName;
 
@@ -1323,7 +1323,7 @@ function _deleteAllZipPackages(list, cb) {
     if (!list || !list.length) {
         cb && cb();
     } else {
-        states.detBinaryState(list.shift(), err =>
+        states.detBinaryState(list.shift(), _err =>
             setImmediate(() =>
                 _deleteAllZipPackages(list, cb)));
     }
@@ -1346,16 +1346,16 @@ function processMessage(msg) {
     // and iobroker.socketio/lib/socket.js
 
     switch (msg.command) {
-        case 'cmdExec':
-            let spawn = require('child_process').spawn;
-            let args = [__dirname + '/' + tools.appName + '.js'];
-            let cmd = msg.message.data.split(' ');
+        case 'cmdExec': {
+            const spawn = require('child_process').spawn;
+            const args = [__dirname + '/' + tools.appName + '.js'];
+            const cmd = msg.message.data.split(' ');
             for (let i = 0; i < cmd.length; i++) {
                 args.push(cmd[i]);
             }
             logger.info('host.' + hostname + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
 
-            let child = spawn('node', args);
+            const child = spawn('node', args);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace('\n', '');
@@ -1381,6 +1381,7 @@ function processMessage(msg) {
                 }
             });
             break;
+        }
 
         case 'getRepository':
             if (msg.callback && msg.from) {
@@ -1399,7 +1400,7 @@ function processMessage(msg) {
                                 msg.message = msg.message.repo;
                             }
 
-                            let active = msg.message || systemConfig.common.activeRepo;
+                            const active = msg.message || systemConfig.common.activeRepo;
 
                             if (repos.native.repositories[active]) {
 
@@ -1453,7 +1454,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 // Get list of all hosts
                 objects.getObjectView('system', 'host', {}, function (err, doc) {
-                    let result = tools.getInstalledInfo(version);
+                    const result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     let infoCount = 0;
                     let timeout = null;
@@ -1516,7 +1517,7 @@ function processMessage(msg) {
         case 'getInstalledAdapter':
             if (msg.callback && msg.from && msg.message) {
                 // read adapter file
-                let dir = tools.getAdapterDir(msg.message);
+                const dir = tools.getAdapterDir(msg.message);
                 let _result = null;
                 if (fs.existsSync(dir + '/io-package.json')) {
                     try {
@@ -1576,10 +1577,10 @@ function processMessage(msg) {
                 ioPack = null;
 
                 if (os.platform() === 'linux') {
-                    let _spawn = require('child_process').spawn;
-                    let _args = ['/dev'];
+                    const _spawn = require('child_process').spawn;
+                    const _args = ['/dev'];
                     logger.info('host.' + hostname + ' ls /dev');
-                    let _child = _spawn('ls', _args);
+                    const _child = _spawn('ls', _args);
                     let result = '';
                     if (_child.stdout) {
                         _child.stdout.on('data', data => result += data.toString());
@@ -1592,8 +1593,8 @@ function processMessage(msg) {
 
                     _child.on('exit', (/*exitCode*/) => {
                         result = result.replace(/(\r\n|\n|\r|\t)/gm, ' ');
-                        let parts = result.split(' ');
-                        let resList = [];
+                        const parts = result.split(' ');
+                        const resList = [];
                         for (let t = 0; t < parts.length; t++) {
                             parts[t] = parts[t].trim();
                             if (parts[t]) resList.push(parts[t]);
@@ -1615,7 +1616,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
 
-                let lines = msg.message || 200;
+                const lines = msg.message || 200;
                 let text  = '';
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
                 if (!fs.existsSync(logFile_)) {
@@ -1623,14 +1624,14 @@ function processMessage(msg) {
                 }
 
                 if (fs.existsSync(logFile_)) {
-                    let stats = fs.statSync(logFile_);
+                    const stats = fs.statSync(logFile_);
 
                     fs.createReadStream(logFile_, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
                         end:   stats.size
                     }).on('data', chunk => text += chunk.toString())
                         .on('end', () => {  // done
-                            let lines = text.split('\n');
+                            const lines = text.split('\n');
                             lines.shift();
                             lines.push(stats.size);
                             sendTo(msg.from, msg.command, lines, msg.callback);
@@ -1673,14 +1674,15 @@ function processMessage(msg) {
             }
             break;
 
-        case 'delLogs':
-            let logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+        case 'delLogs': {
+            const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
             if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
             if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
             if (fs.existsSync(logFile)) fs.writeFileSync(logFile);
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
             break;
+        }
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
@@ -1755,7 +1757,7 @@ function processMessage(msg) {
                                 for (let i = 0; i < keys.length; i++) {
                                     // We can JSON.parse, but index is 16x faster
                                     if (obj[i]) {
-                                        let id = keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, '');
+                                        const id = keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, '');
 
                                         if ((typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) ||
                                             (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
@@ -1777,7 +1779,7 @@ function processMessage(msg) {
                 });
 
                 // Get list of all active adapters and send them message with command checkLogging
-                for (let _id in procs) {
+                for (const _id in procs) {
                     if (procs.hasOwnProperty(_id) && procs[_id].process) {
                         outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: 'system.host.' + hostname});
@@ -1788,7 +1790,7 @@ function processMessage(msg) {
 
         case 'updateMultihost':
             (function () {
-                let result = startMultihost();
+                const result = startMultihost();
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, {result: result}, msg.callback);
                 }
@@ -1816,19 +1818,19 @@ function getInstances() {
         } else if (doc.rows.length === 0) {
             logger.info('host.' + hostname + ' no instances found');
         } else {
-            let _ipArr = getIPs();
+            const _ipArr = getIPs();
             logger.info('host.' + hostname + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             let count = 0;
 
             // first mark all instances as disabled to detect disabled once
-            for (let id in procs) {
+            for (const id in procs) {
                 if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
 
             for (let i = 0; i < doc.rows.length; i++) {
-                let instance = doc.rows[i].value;
+                const instance = doc.rows[i].value;
 
                 // register all common fields, that may not be deleted, like "mobile" or "history"
                 //noinspection JSUnresolvedVariable
@@ -1839,7 +1841,7 @@ function getInstances() {
 
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') {
                     if (instance.common.host === hostname) {
-                        let name = instance._id.split('.')[2];
+                        const name = instance._id.split('.')[2];
                         const adapterDir_ = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir_)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
@@ -1874,7 +1876,7 @@ function getInstances() {
 
 function initInstances() {
     let seconds = 0;
-    let interval = (config.system && config.system.instanceStartInterval) || 2000;
+    const interval = (config.system && config.system.instanceStartInterval) || 2000;
     let id;
 
     // Start first admin
@@ -1924,8 +1926,8 @@ function initInstances() {
                 }
             }
         } else {
-            let name = id.split('.')[2];
-            let adapterDir = tools.getAdapterDir(name);
+            const name = id.split('.')[2];
+            const adapterDir = tools.getAdapterDir(name);
             if (!fs.existsSync(adapterDir)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
                 installQueue.push({id: id, disabled: true});
@@ -1954,7 +1956,7 @@ function checkVersion(id, name, version) {
         }
     }
     if (!isFound) {
-        for (let p in procs) {
+        for (const p in procs) {
             if (!procs.hasOwnProperty(p)) continue;
             if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name === name) {
                 if (version && !semver.satisfies(procs[p].config.common.version, version)) {
@@ -1983,7 +1985,7 @@ function checkVersions(id, deps) {
                 if (typeof deps[d] === 'object') {
                     if (!semver) semver = require('semver');
 
-                    for (let n in deps[d]) {
+                    for (const n in deps[d]) {
                         if (!deps[d].hasOwnProperty(n)) continue;
                         name    = n;
                         version = deps[d][n];
@@ -1998,16 +2000,16 @@ function checkVersions(id, deps) {
             }
         } else if (typeof deps === 'object') {
             if (deps.length !== undefined || deps[0]) {
-                for (let i in deps) {
+                for (const i in deps) {
                     if (!deps.hasOwnProperty(i)) continue;
-                    for (let __name in deps[i]) {
+                    for (const __name in deps[i]) {
                         if (!deps[i].hasOwnProperty(__name)) continue;
                         if (!checkVersion(id, __name, deps[__name][i])) {
                             return false;
                         }
                     }                }
             } else {
-                for (let _name in deps) {
+                for (const _name in deps) {
                     if (!deps.hasOwnProperty(_name)) continue;
                     if (!checkVersion(id, _name, deps[_name])) {
                         return false;
@@ -2029,8 +2031,8 @@ function storePids() {
     if (!storeTimer) {
         storeTimer = setTimeout(() => {
             storeTimer = null;
-            let pids = [];
-            for (let id in procs) {
+            const pids = [];
+            for (const id in procs) {
                 if (!procs.hasOwnProperty(id)) continue;
 
                 if (procs[id].process) {
@@ -2046,7 +2048,7 @@ function storePids() {
 function installAdapters() {
     if (!installQueue.length) return;
 
-    let task = installQueue[0];
+    const task = installQueue[0];
     let name = task.id.split('.')[2];
     if (task.version) {
         name += '@' + task.version;
@@ -2058,7 +2060,7 @@ function installAdapters() {
         logger.info('host.' + hostname + ' ' + tools.appName + ' install ' + name);
 
         try {
-            let child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
+            const child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace('\n', '');
@@ -2089,7 +2091,7 @@ function installAdapters() {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
-            })
+            });
         } catch (err) {
             logger.error('host.' + hostname + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
             setTimeout(() => {
@@ -2119,7 +2121,7 @@ function cleanErrors(id, now, doOutput) {
     if (doOutput) {
         for (let i = 0; i < procs[id].errors.length; i++) {
             if (procs[id].errors[i] && now - procs[id].errors[i].ts < 30000 && procs[id].errors[i].text) {
-                let lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', 'debug:').split('\n');
+                const lines = procs[id].errors[i].text.replace('\x1B[31merror\x1B[39m:', '').replace('\x1B[34mdebug\x1B[39m:', 'debug:').split('\n');
                 for (let k = 0; k < lines.length; k++) {
                     if (lines[k]) {
                         logger.error('host.' + hostname + ' Caught by controller[' + i + ']: ' + lines[k]);
@@ -2147,8 +2149,8 @@ function startInstance(id, wakeUp) {
         return;
     }
 
-    let instance = procs[id].config;
-    let name = id.split('.')[2];
+    const instance = procs[id].config;
+    const name = id.split('.')[2];
     let mode = instance.common.mode;
 
     if (procs[id].restartTimer) {
@@ -2184,7 +2186,7 @@ function startInstance(id, wakeUp) {
         return;
     }
 
-    let args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
+    const args = (instance && instance._id && instance.common) ? [instance._id.split('.').pop(), instance.common.loglevel || 'info'] : [0, 'info'];
 
     // define memory limit for adapter
     //noinspection JSUnresolvedVariable
@@ -2217,8 +2219,8 @@ function startInstance(id, wakeUp) {
     //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
         procs[id].subscribe = instance.common.subscribe || (instance._id + '.wakeup');
-        let parts = instance._id.split('.');
-        let instanceId = parts[parts.length - 1];
+        const parts = instance._id.split('.');
+        const instanceId = parts[parts.length - 1];
         procs[id].subscribe = procs[id].subscribe.replace('<INSTANCE>', instanceId);
 
         if (subscribe[procs[id].subscribe]) {
@@ -2250,11 +2252,11 @@ function startInstance(id, wakeUp) {
                 if (procs[id].process.stderr) {
                     procs[id].process.stderr.on('data', data => {
                         if (!data || !procs[id] || typeof procs[id] !== 'object') return;
-                        let text = data.toString();
+                        const text = data.toString();
                         // show for debug
                         console.error(text);
                         procs[id].errors = procs[id].errors || [];
-                        let now = Date.now();
+                        const now = Date.now();
                         procs[id].errors.push({ts: now, text: text});
                         // limit output to 300 messages
                         if (procs[id].errors > 300) {
@@ -2300,7 +2302,7 @@ function startInstance(id, wakeUp) {
                             }
 
                             if (isStopping) {
-                                for (let i in procs) {
+                                for (const i in procs) {
                                     if (!procs.hasOwnProperty(i)) continue;
                                     if (procs[i].process) {
                                         //console.log(procs[i].config.common.name + ' still running');
@@ -2383,7 +2385,7 @@ function startInstance(id, wakeUp) {
                 // Remember the last run
                 procs[id].lastStart = Date.now();
                 if (!procs[id].process) {
-                    let args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                    const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     procs[id].process = cp.fork(fileNameFull, args);
                     storePids(); // Store all pids to make possible kill them all
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
@@ -2458,7 +2460,7 @@ function stopInstance(id, callback) {
         return;
     }
 
-    let instance = procs[id].config;
+    const instance = procs[id].config;
     if (!instance || !instance.common || !instance.common.mode) {
         if (procs[id].process) {
             procs[id].stopping = true;
@@ -2521,7 +2523,7 @@ function stopInstance(id, callback) {
                         }
                     });
 
-                    let timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
+                    const timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
                     // If no response from adapter, kill it in 1 second
                     timeout = setTimeout(() => {
                         timeout = null;
@@ -2658,7 +2660,7 @@ function stopInstances(forceStop, callback) {
     }
 
     try {
-        let elapsed = (isStopping ? (Date.now() - isStopping) : 0);
+        const elapsed = (isStopping ? (Date.now() - isStopping) : 0);
         logger.debug('host.' + hostname + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
             isStopping = null;
@@ -2673,7 +2675,7 @@ function stopInstances(forceStop, callback) {
         if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
-            for (let id in procs) {
+            for (const id in procs) {
                 if (!procs.hasOwnProperty(id)) continue;
                 stopInstance(id);
             }
@@ -2710,7 +2712,7 @@ function stop() {
         states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
             logger.info('host.' + hostname + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
-                for (let i in procs) {
+                for (const i in procs) {
                     if (!procs.hasOwnProperty(i)) continue;
                     if (procs[i].process) {
                         if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
@@ -2768,7 +2770,7 @@ function init() {
     }
 
     // find our notifier transport
-    let ts = logger.transports.find(t => t.name === 'NT');
+    const ts = logger.transports.find(t => t.name === 'NT');
     ts.on('logged', info => {
         info.from = 'host.' + hostname;
         for (let i = 0; i < logList.length; i++) {
@@ -2792,7 +2794,7 @@ function init() {
                 }, null, 2));
             } else {
                 // npm3 requires version attribute
-                let p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
+                const p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
                 if (!p.version) {
                     fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                         name: 'iobroker.core',

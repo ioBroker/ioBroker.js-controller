@@ -4,13 +4,13 @@
 /* jshint expr:true */
 'use strict';
 
-var expect = require('chai').expect;
-var setup  = require(__dirname + '/lib/setup4controller');
-var fs     = require('fs');
-var objects     = null;
-var states      = null;
-var onStatesChanged = null;
-var dataDir = __dirname + '/../tmp/data';
+const expect = require('chai').expect;
+const setup  = require(__dirname + '/lib/setup4controller');
+const fs     = require('fs');
+let objects     = null;
+let states      = null;
+let onStatesChanged = null;
+const dataDir = __dirname + '/../tmp/data';
 
 function cleanDbs() {
     if (fs.existsSync(dataDir + '/objects.json')) {
@@ -27,40 +27,39 @@ function cleanDbs() {
     }
 }
 
-
 describe('States: Test states', function() {
     before('States: Start js-controller', function (_done) {
         this.timeout(2000);
         cleanDbs();
 
         setup.startController({
-                objects: {
-                    dataDir: dataDir,
-                    onChange:function (id, obj) {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    dataDir: dataDir,
-                    onChange: function (id, state) {
-                        console.log('state changed. ' + id);
-                        if (onStatesChanged) onStatesChanged(id, state);
-                    }
+            objects: {
+                dataDir: dataDir,
+                onChange: function (id, _obj) {
+                    console.log('object changed. ' + id);
                 }
             },
-            function (_objects, _states) {
-                objects = _objects;
-                states  = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                _done();
+            states: {
+                dataDir: dataDir,
+                onChange: function (id, state) {
+                    console.log('state changed. ' + id);
+                    if (onStatesChanged) onStatesChanged(id, state);
+                }
             }
+        },
+        function (_objects, _states) {
+            objects = _objects;
+            states  = _states;
+            states.subscribe('*');
+            expect(objects).to.be.ok;
+            expect(states).to.be.ok;
+            _done();
+        }
         );
     });
 
     it('States: should setState', function (done) {
-        var testID = 'testObject.0.test1';
+        const testID = 'testObject.0.test1';
         onStatesChanged = function (id, state) {
             if (id === testID) {
                 expect(state).to.be.ok;

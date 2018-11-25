@@ -63,7 +63,7 @@ gulp.task('renameFiles', done => {
     done();
 });
 
-gulp.task('replaceName', done => {
+gulp.task('replaceName', _done => {
     const patterns = [
         {
             match:       /iobroker/gi,
@@ -136,7 +136,8 @@ gulp.task('replaceName', done => {
             .pipe(replace(patterns[0].match, patterns[0].replacement))
             .pipe(replace(patterns[1].match, patterns[1].replacement))
             .pipe(gulp.dest(task.dest))
-    ));
+        )
+    );
 
     return Promise.all(tasks);
 });
@@ -216,7 +217,7 @@ gulp.task('jsdoc', done => {
                     allowUnknownTags: true
                 },
                 opts: {
-                    destination: "./doc"
+                    destination: './doc'
                 },
                 plugins: [
                     'plugins/markdown'
@@ -230,7 +231,7 @@ gulp.task('jsdoc', done => {
                     path: 'ink-docstrap',
                     theme: 'cerulean',
                     navType: 'vertical',
-                    linenums: true,
+                    linenums: true
                     //dateFormat: "MMMM Do YYYY, h:mm:ss a"
                 }
             },

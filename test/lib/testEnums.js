@@ -14,5 +14,4 @@ function register(it, expect, context) {
     // deleteStateFromEnum
 }
 
-
 module.exports.register = register;
