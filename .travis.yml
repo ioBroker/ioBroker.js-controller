@@ -24,10 +24,10 @@ before_script:
 script:
   - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
 after_success:
-  - npm install -g npm@latest
-  - npm install --package-lock-only --production
-  - npm audit
-  - npm ls
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install -g npm@latest; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install --package-lock-only --production; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm audit; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm ls; fi'
 env:
   - CXX=g++-4.8
 addons:
