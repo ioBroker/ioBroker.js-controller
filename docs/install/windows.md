@@ -54,7 +54,7 @@ gedacht, die ioBroker schon mehrmals installiert haben.
 
 Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 
-* Node.js LTS-Version [herunterladen und installieren](install/nodejs).
+* Node.js 8.x LTS-Version [herunterladen und installieren](install/nodejs).
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
   ~~~cmd
