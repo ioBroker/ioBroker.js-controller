@@ -356,7 +356,7 @@ sudo eopkg install nodejs
    als 32- oder 64-bit Variante vorliegt.
 
 1. Von der Webseite
-   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle LTS Version
+   [https://nodejs.org/en/download](https://nodejs.org/en/download/) die aktuelle 8.x LTS Version
    von Node.js herunterladen.
 
    ![Download von Node.js](media/w01downloadnode.png ':size=550')  
