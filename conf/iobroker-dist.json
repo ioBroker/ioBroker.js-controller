@@ -8,7 +8,9 @@
         "checkDiskIntervalComment": "Interval how often the disk size will be checked",
         "noChmod": false,
         "instanceStartInterval": 2000,
-        "noChmodComment": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)"
+        "noChmodComment": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)",
+        "compact": false,
+        "compactComment": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json"
     },
     "multihostService": {
         "enabled": false,
