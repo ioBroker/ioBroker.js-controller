@@ -1646,9 +1646,9 @@ function processMessage(msg) {
 
         case 'delLogs':
             let logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFile(__dirname +       '/log/' + tools.appName + '.log', '');
-            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFile(__dirname + '/../../log/' + tools.appName + '.log', '');
-            if (fs.existsSync(logFile)) fs.writeFile(logFile);
+            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
+            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
+            if (fs.existsSync(logFile)) fs.writeFileSync(logFile);
 
             if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
             break;
