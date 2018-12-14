@@ -61,7 +61,7 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
   npm install --global windows-build-tools
   md C:\iobroker
   cd /d C:\iobroker
-  npm install https://github.com/ioBroker/ioBroker/tarball/master
+  npm install iobroker
   npm install --production
   iobroker status  
   ~~~
@@ -118,7 +118,7 @@ Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/node
 1. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
    ~~~cmd
    cd /d C:\iobroker
-   npm install https://github.com/ioBroker/ioBroker/tarball/master
+   npm install iobroker
    ~~~
 
    Das Ergebnis sollte so aussehen:
