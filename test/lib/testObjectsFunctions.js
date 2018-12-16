@@ -521,8 +521,8 @@ function register(it, expect, context) {
         });
     });
 
-    // subscribeForeignObjects
-    it(testName + 'Try to subscribe on foreign objects changes', function (done) {
+    // check proteciton for subscribeForeignObjects
+    it(testName + 'check if protectedNative is protected in subscribeForeignObjects', function (done) {
         context.adapter.subscribeForeignObjects('system.adapter.tesla.0', () => {
             context.onAdapterObjectChanged = function (id, obj) {
                 if (id === 'system.adapter.tesla.0') {
