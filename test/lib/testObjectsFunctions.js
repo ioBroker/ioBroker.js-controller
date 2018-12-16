@@ -281,6 +281,40 @@ function register(it, expect, context) {
         });
     });
 
+    // protection check for getForeignObject
+    it(testName + 'Check if foreign system adapter objects are protected', function (done) {
+        this.timeout(1000);
+        // create a system.adapter object of another adapter
+        context.adapter.setForeignObject('system.adapter.tesla.0', {
+            common: {
+                name: 'tesla',
+                type: 'number',
+                role: 'level',
+                members: ['A']
+            },
+            native: {
+                model: 'S P85D'
+            },
+            protectedNative: {
+                username: 'tesla',
+                password: 'winning'
+            }
+        }, function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getForeignObject('system.adapter.tesla.0', function (err, obj) {
+                expect(err).to.be.not.ok;
+                expect(obj).to.be.ok;
+                expect(obj.native).to.be.ok;
+                expect(obj.common.name).equal('tesla');
+                expect(obj.native.model).equal('S P85D');
+                expect(obj.protectedNative).to.be.undefined;
+                expect(obj._id).equal('system.adapter.tesla.0');
+                done();
+            });
+        });
+    });
+
     // setObjectNotExists
     it(testName + 'Try to set existing object', function (done) {
         context.adapter.setObjectNotExists(gid, {
@@ -484,6 +518,43 @@ function register(it, expect, context) {
             function (err) {
                 expect(err).to.be.null;
             });
+        });
+    });
+
+    // subscribeForeignObjects
+    it(testName + 'Try to subscribe on foreign objects changes', function (done) {
+        context.adapter.subscribeForeignObjects('system.adapter.tesla.0', () => {
+            context.onAdapterObjectChanged = function (id, obj) {
+                if (id === 'system.adapter.tesla.0') {
+                    expect(obj).to.be.ok;
+                    expect(obj.common.name).to.equal('tesla');
+                    expect(obj.native).to.be.ok;
+                    expect(obj.common.name).equal('tesla');
+                    expect(obj.native.model).equal('S P85D');
+                    expect(obj.protectedNative).to.be.undefined;
+                    expect(obj._id).equal('system.adapter.tesla.0');
+                    context.onAdapterObjectChanged = null;
+                    done();
+                }
+            };
+            context.adapter.setForeignObject('system.adapter.tesla.0', {
+                    common: {
+                        name: 'tesla',
+                        type: 'number',
+                        role: 'level',
+                        members: ['A']
+                    },
+                    native: {
+                        model: 'S P85D'
+                    },
+                    protectedNative: {
+                        username: 'tesla',
+                        password: 'winning'
+                    }
+                },
+                function (err) {
+                    expect(err).to.be.null;
+                });
         });
     });
 
