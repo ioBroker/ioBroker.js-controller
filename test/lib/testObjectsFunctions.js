@@ -293,12 +293,14 @@ function register(it, expect, context) {
                 members: ['A']
             },
             native: {
-                model: 'S P85D'
-            },
-            protectedNative: {
+                model: 'S P85D',
                 username: 'tesla',
                 password: 'winning'
-            }
+            },
+            protectedNative: [
+                "username",
+                "password"
+            ]
         }, function (err) {
             expect(err).to.be.null;
 
@@ -308,7 +310,8 @@ function register(it, expect, context) {
                 expect(obj.native).to.be.ok;
                 expect(obj.common.name).equal('tesla');
                 expect(obj.native.model).equal('S P85D');
-                expect(obj.protectedNative).to.be.undefined;
+                expect(obj.native.username).to.be.undefined;
+                expect(obj.native.password).to.be.undefined;
                 expect(obj._id).equal('system.adapter.tesla.0');
                 done();
             });
@@ -327,12 +330,14 @@ function register(it, expect, context) {
                 members: ['A']
             },
             native: {
-                model: 'S P85D'
-            },
-            protectedNative: {
+                model: 'S P85D',
                 username: 'tesla',
                 password: 'winning'
-            }
+            },
+            protectedNative: [
+                "username",
+                "password"
+            ]
         }, function (err) {
             expect(err).to.be.null;
 
@@ -342,7 +347,8 @@ function register(it, expect, context) {
                 expect(obj.native).to.be.ok;
                 expect(obj.common.name).equal('tesla');
                 expect(obj.native.model).equal('S P85D');
-                expect(obj.protectedNative.password).equal('winning');
+                expect(obj.native.password).equal('winning');
+                expect(obj.native.username).equal('tesla');
                 expect(obj._id).equal('system.adapter.' + context.adapterShortName + '.0');
                 done();
             });
@@ -565,7 +571,8 @@ function register(it, expect, context) {
                     expect(obj.native).to.be.ok;
                     expect(obj.common.name).equal('tesla');
                     expect(obj.native.model).equal('S P85D');
-                    expect(obj.protectedNative).to.be.undefined;
+                    expect(obj.native.username).to.be.undefined;
+                    expect(obj.native.password).to.be.undefined;
                     expect(obj._id).equal('system.adapter.tesla.0');
                     context.onAdapterObjectChanged = null;
                     done();
@@ -579,12 +586,14 @@ function register(it, expect, context) {
                         members: ['A']
                     },
                     native: {
-                        model: 'S P85D'
-                    },
-                    protectedNative: {
+                        model: 'S P85D',
                         username: 'tesla',
                         password: 'winning'
-                    }
+                    },
+                    protectedNative: [
+                        "username",
+                        "password"
+                    ]
                 },
                 function (err) {
                     expect(err).to.be.null;
@@ -602,7 +611,8 @@ function register(it, expect, context) {
                     expect(obj.native).to.be.ok;
                     expect(obj.common.name).equal('tesla');
                     expect(obj.native.model).equal('S P85D');
-                    expect(obj.protectedNative.username).to.equal('tesla');
+                    expect(obj.native.username).to.equal('tesla');
+                    expect(obj.native.password).to.equal('winning');
                     expect(obj._id).equal('system.adapter.' + context.adapterShortName + '.0');
                     context.onAdapterObjectChanged = null;
                     done();
@@ -616,12 +626,14 @@ function register(it, expect, context) {
                         members: ['A']
                     },
                     native: {
-                        model: 'S P85D'
-                    },
-                    protectedNative: {
+                        model: 'S P85D',
                         username: 'tesla',
                         password: 'winning'
-                    }
+                    },
+                    protectedNative: [
+                        "username",
+                        "password"
+                    ]
                 },
                 function (err) {
                     expect(err).to.be.null;
