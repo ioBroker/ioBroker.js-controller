@@ -234,6 +234,8 @@ function testAdapter(options) {
             expect(context.adapter.config.paramString).to.be.equal('value1');
             expect(context.adapter.config.paramNumber).to.be.equal(42);
             expect(context.adapter.config.paramBoolean).to.be.equal(false);
+            expect(context.adapter.config.username).to.be.equal('tesla');
+            expect(context.adapter.config.password).to.be.equal('winning');
             let count = 0;
 
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.connected', function (err, state) {
