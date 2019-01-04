@@ -2272,9 +2272,12 @@ function startInstance(id, wakeUp) {
                     procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
                 }
 
-                states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
+                if (!procs[id].startedInCompactMode && procs[id].process) {
+                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
+                }
+
                 // catch error output
-                if (!procs[id].startedInCompactMode && procs[id].process.stderr) {
+                if (!procs[id].startedInCompactMode && procs[id].process && procs[id].process.stderr) {
                     procs[id].process.stderr.on('data', data => {
                         if (!data || !procs[id] || typeof procs[id] !== 'object') return;
                         const text = data.toString();
@@ -2293,7 +2296,7 @@ function startInstance(id, wakeUp) {
 
                 storePids(); // Store all pids to make possible kill them all
 
-                procs[id].process.on('exit', (code, signal) => {
+                procs[id].process && procs[id].process.on('exit', (code, signal) => {
                     outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
@@ -2378,7 +2381,7 @@ function startInstance(id, wakeUp) {
                     }
                     storePids(); // Store all pids to make possible kill them all
                 });
-                if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
+                if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
                     if (procs[id].startedInCompactMode) {
                         logger.info(`host.${hostname} instance ${instance._id} started in COMPACT mode`);
                     } else {
