@@ -2379,7 +2379,11 @@ function startInstance(id, wakeUp) {
                     storePids(); // Store all pids to make possible kill them all
                 });
                 if (!wakeUp && procs[id] && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
-                    logger.info(`host.${hostname} instance ${instance._id} started with pid ${procs[id].process.pid}`);
+                    if (procs[id].startedInCompactMode) {
+                        logger.info(`host.${hostname} instance ${instance._id} started in COMPACT mode`);
+                    } else {
+                        logger.info(`host.${hostname} instance ${instance._id} started with pid ${procs[id].process.pid}`);
+                    }
                 }
             } else {
                 if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
