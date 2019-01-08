@@ -1,202 +1,174 @@
-![Logo](media/homematic.png)
-# ioBroker HomeMatic ReGaHSS Adapter
-==================
+![](media/homematic.png) 
+HomeMatic ReGaHSS
+=================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.hm-rega.svg)](https://www.npmjs.com/package/iobroker.hm-rega)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.hm-rega.svg)](https://www.npmjs.com/package/iobroker.hm-rega)
+| Stand der Doku          | 08.01.2019                                           |
+|-------------------------|------------------------------------------------------|
+| aktuelle Version stable |                                                      |
+| aktuelle Version latest |                                                      |
+| OS                      |                                 |
+| node-Version                                                       |
+| Entwickler              | Pmant                                                |
+| Github                  |                                                 |
+| Lizenz                  |                                                 |
+| Kategorie               | ioT Systeme                                        |
+| Keywords                | \`Homematic\` \`home automation\` \`Hausautomation\` |
+| Abhängigkeiten          |                                                      |
 
-[![NPM](https://nodei.co/npm/iobroker.hm-rega.png?downloads=true)](https://nodei.co/npm/iobroker.hm-rega/)
+Homematic
+---------
 
-Connects HomeMatic CCU "Logic Layer" ("ReGaHSS") to ioBroker.
+Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
+unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
+in Haus oder Wohnung ermöglicht.
 
-## Purpose
-This Adapter can keep HomeMatic-CCU-Variables in sync with ioBroker and offers the possibility to start
-HomeMatic-CCU-Programs from ioBroker. Furthermore this adapter can be seen as a migration-helper, you can sync
-device/channel-names, rooms, functions and favorites from the CCU to ioBroker (this is one way only, changes on ioBroker
-side will be overwritten when synced again - so deactivate this features after the first sync).
+Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
+Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
+Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
+Drahtbus-Komponenten eingesetzt werden.
 
-## Install
-This adapter needs one (ore more) already installed and initialized hm-rpc adapter to work.
+Adapter Homematic ReGaHss
+-------------------------
 
-## Configuration
+Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ her.
+Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
+zwischen Homematic und ioBroker.
 
-## Changelog
-### 1.7.2 (2018-07-29)
-* (bluefox) Configuration dialog was corrected
+Falls mehrere Zentralen in ioBroker eingebunden werden sollen, ist für jede
+Zentrale eine eigene Instanz zu installieren und konfigurieren.
 
-### 1.7.1 (2018-06-25)
-* (bluefox) Forbidden characters were replaced
+Mit der Installation von ReGaHSS wird auch eine Instanz von „Homematic RPC“
+installiert, die vorab konfiguriert und aktiviert werden sollte.
 
-### 1.7.0 (2018-01-26)
-* (bluefox) Ready for Admin3
+Eine Instanz dieses Adapters kann bis zu 5 unterschiedliche Instanzen des
+Homematic RPC Adapters verwalten, die verschiedene Dienste zur Verfügung stellen
+(jeder Dienst benötigt eine eigene RPC-Instanz):
 
-### 1.6.6 (2017-09-23)
-* (AlGu1) Fix error if Lan Interfaces exits
+-   rfd (CCU-Funkdienst für Standardkomponenten)
 
-### 1.6.5 (2017-09-10)
-* (AlGu1) Change adapter logging of new values to debug
+-   hs485d (Wired) (für Drahtbus-Komponenten)
 
-### 1.6.4 (2017-09-10)
-* (AlGu1) Config Settings changed to set defaults after update adapter
+-   CuxD (Zusatzsoftware zur Bereitstellung einer universellen Schnittstelle)
 
-### 1.6.3 (2017-09-06)
-* (AlGu1) Read values from CCU in raw format and create JSON string and object in adapter
+-   Homematic IP (IP-gestützte Komponenten)
 
-### 1.6.2 (2017-09-05)
-* (AlGu1) dutycycle.fn script changed for better compatiblity without ReGaHss Beta version
+-   Virtual Devices
 
-### 1.6.1 (2017-09-05)
-* (AlGu1) Error in script file fixed
+### Voraussetzungen vor Installation
 
-### 1.6.0 (2017-09-05)
-* (AlGu1) Read DutyCycle and other params from listBidcosInterfaces
+-   Homematic Gateway (CCU/CCU2/CCU3 …) *oder*
 
-### 1.5.0 (2017-06-29)
-* (Apollon77) Also update names of states when syncing with CCU
+-   Funkmodul mit passender Software (piVCCU(*x)*, RaspberryMatic o.ä.)
 
-### 1.4.8 (2017-05-24)
-* (bluefox) Fix values conversion for CUxD
+Installation
+------------
 
-### 1.4.4 (2017-02-28)
-* (Apollon77) small fix (issue #23)
+Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert.
 
-### 1.4.3 (2017-02-01)
-* (Apollon77) respect settings and only sync variables and programs if selected in settings (issue #22)
+Nach Abschluss der Installation öffnet sich automatisch das
+Konfigurationsfenster.
 
-### 1.4.2 (2017-01-30)
-* (bluefox) remove error log in CCU by start
+Vor der eigentlichen Konfiguration sollte die (zusammen mit diesem Adapter
+erstellte) Instanz des HM-RPC-Adapters oder bei Bedarf weitere HM-RPC-Instanzen
+angelegt und konfiguriert werden.
 
-### 1.4.1 (2017-01-16)
-* (bluefox) merge rooms, functions and favorites with existing one
+Konfiguration
+-------------
 
-### 1.4.0 (2017-01-15)
-* (jens-maus) Add HMIP support
+![](media/01c7dbc4da0240421b0711b331971d2d.png)<span style="color:grey">  
+*Auswahlmenü oben*</span>
 
-### 1.3.0 (2016-08-23)
-* (bluefox) update states only if changed
+Im oberen Auswahlmenü können drei verschiedenen Bereiche ausgewählt werden:
 
-### 1.2.1 (2016-07-15)
-* (nobody) fix initial read of states
+### Bereich Haupteinstellungen
 
-### 1.2.0 (2016-05-27)
-* (bluefox) read variables anew if connection of rfd detected
-* (bluefox) read alarms
-* (bluefox) support of acknowledgment of alarms
+![](media/3e0325b2bf61e508e131f8792e2c004d.png)<span style="color:grey">  
+*Haupteinstellungen*</span>
 
-### 1.1.1 (2016-05-27)
-* (bluefox) fix min/max for variables
+In diesem Bereich werden die grundlegenden Einstellungen vorgenommen.
 
-### 1.1.0 (2016-04-19)
-* (bluefox) change timestamp and last change of states
+Im Pulldown-Menü kann die IP-Adresse der CCU ausgewählt werden; auch der
+Wiederverbindungsintervall (Standard 30 sec) kann vom User angepasst werden.
 
-### 1.0.0 (2016-04-19)
-* (bluefox) detect disconnection and handle it
+![](media/ce181cdbb3b8979e1233b57a4588cf1d.png)<span style="color:grey">  
+*Zuordnung der RPC-Instanzen*</span>
 
-### 0.3.7 (2016-04-18)
-* (bluefox) fix error with polling trigger
+Danach werden die erforderlichen Dienste aktiviert und mit der passenden
+HM-RPC-Instanz verknüpft.
 
-### 0.3.6 (2016-03-12)
-* (bluefox) fix read datapoints
+Polling
 
-### 0.3.5 (2016-03-12)
-* (bluefox) remove deprecated unescape
+Wenn aktiviert, erfolgt die regelmäßige Abfrage der RegaHSS-Daten von der CCU,
+die sich nach dem im Feld Intervalle eingestellten Sekunden richtet. Der
+Intervall sollte nicht zu niedrig eingestellt werden, da ein zu häufiges
+Abfragen zum Absturz der CCU führen kann.
 
-### 0.3.4 (2016-03-09)
-* (bluefox) remove deprecated unescape
+Trigger
 
-### 0.3.3 (2016-03-01)
-* (bluefox) remove deprecated unescape
-* (bluefox) add connection state
+Um die aktiven Abfragen von ioBroker an den RegaHSS zu minimieren, kann auf der
+CCU innerhalb eines Programms auch ein Trigger die Daten bei Änderung pushen.
+Dafür kann eine virtuelle Taste der CCU genutzt werden, die in einem
+CCU-Programm ausgelöst wird. Standardmäßig ist dies die Taste
+BidCosRF.50.PRESS_SHORT (s. Beispielprogramm).
 
-### 0.3.2 (2016-03-01)
-* (bluefox) remove deprecated unescape
+### Bereich Synchronisiere
 
-### 0.3.1 (2016-02-29)
-* (bluefox) fix dimmer and blinds values at start
+Hier kann der User festlegen, welche Information von der CCU in ioBroker
+übernommen werden. Es werden dann die entsprechenden Objekte und Datenpunkte in
+ioBroker angelegt.
 
-### 0.3.0 (2016-02-28)
-* (bluefox) remove deprecated unescape
+-   DutyCycle: Aktivieret die Angabe des Duty Cycles (in %)
 
-### 0.2.1 (2015-03-25)
-* (bluefox) fix "\n" in values
+-   Variablen: Aktiviert die Übernahme der Systemvariablen von der CCU
 
-### 0.2.0 (2015-03-24)
-* (bluefox) implement check init function
+-   Programme: Aktiviert die Übernahme der Programmbezeichnungen von der CCU
 
-### 0.1.16 (2015-01-04)
-* (bluefox) catch errors if states deleted
+-   Namen: Aktiviert die Übernahme der Klartextnamen der Datenpunkte von der CCU
 
-### 0.1.15 (2015-01-03)
-* (bluefox) add hm-rpc as dependency
+-   Favoriten: Aktiviert die Übernahme und Auflistung der Favoriten
 
-### 0.1.14 (2015-01-03)
-* (bluefox) enable npm install
+-   Räume: Aktiviert die Übernahme der Räume und einer Auflistung derselben
 
-### 0.1.13 (2014-12-11)
-* (bluefox) process errors
+-   Gewerke: Aktiviert die Übernahme der Gewerke und einer Auflistung derselben
 
-### 0.1.12 (2014-12-10)
-* (bluefox) update devices if hm-rpc updates the device list
+### Bereich Zusätzliche Einstellungen
 
-### 0.1.11 (2014-12-06)
-* (bluefox) update devices if hm-rpc updates the device list
+Hier kann der User entscheiden, ob https (verschlüsselte und abhörsichere
+Verbindung) genutzt werden soll. Wenn aktiviert, ist die Eingabe des
+Nutzernamens und das dazugehörige Passwort erforderlich
 
-### 0.1.10 (2014-11-21)
-* (bluefox) support of new naming concept with no parents and children
+Sind alle Einstellungen erfolgt, wird die Konfigurationsseite mit dem Befehl
+„speichern und schließen“ abgeschlossen (Button unterhalb des
+Einstellungsbereiches). Der Adapter wird geschlossen und die Instanz mit den
+neuen Werten gestartet.
 
-### 0.1.9 (2014-11-11)
-* (bluefox) fix error with stopping adapter
+### Instanz
 
-### 0.1.8 (2014-10-22)
-* (bluefox) fix error with scripts
-* (bluefox) add gruntfile.js and remove jscs warnings
+![](media/44785b82964bcdc198565b1681787dc0.png)<span style="color:grey">  
+*Instanz und Signal*</span>
 
-### 0.1.7
-* (Bluefox, Hobbyquaker) fix bug if no programs or variables exist
+Im Bereich *Instanzen* des ioBrokers findet sich nun die erstellte(n)
+Instanz(en). Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert
+oder mit der CCU verbunden ist.
 
-### 0.1.6
-* (hobbyquaker) added common.role for variables
-* (hobbyquaker) get state values
-* (hobbyquaker) queue device/channel renaming
+Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
-### 0.1.5
-* (hobbyquaker) enum fixes
+### Objekte des Adapters
 
-### 0.1.4
-* (hobbyquaker) fixes
-* (hobbyquaker) add settings ui
+Im Bereich Objekte werden in einer Baumstruktur alle vom Adapter von der CCU
+übermittelten Werte und Informationen dargestellt.
 
-### 0.1.3
-* (hobbyquaker) common.children vs children
+Da die Objekte anwenderspezifisch sind, werden hier nur die allgemeinen und für
+alle Anwender gleichen Objekte dargestellt.
 
-### 0.1.2
-* (hobbyquaker) Fix common.children in getPrograms
+![](media/c24d8382beda4c970093097959080524.png)<span style="color:grey">  
+*Ordnerstruktur*</span>
 
-### 0.1.1
-* (hobbyquaker) Fix common.name attribute
+Die ersten Ordner (i.d.R. Ziffern-ID) sind die in der CCU enthaltenen Programme.
 
-## License
+CCU- und Info-Ordner beinhalten die Basisinformationen des Gateways inkl.
+prozentualer Angabe des Duty Cycles (sofern aktiviert).
 
-The MIT License (MIT)
+Abschließend sind die in der CCU angelegten Variablen aufgelistet
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>
-
-Copyright (c) 2014 hobbyquaker
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+### FAQ
