@@ -13,8 +13,8 @@ const schedule   = require('node-schedule');
 const os         = require('os');
 const fs         = require('fs');
 const cp         = require('child_process');
-const ioPackage  = require(__dirname + '/io-package.json');
-const tools      = require(__dirname + '/lib/tools');
+const ioPackage  = require('./io-package.json');
+const tools      = require('./lib/tools');
 const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
 let   adapterDir = __dirname.replace(/\\/g, '/');
@@ -119,7 +119,7 @@ function getConfig() {
 }
 
 function _startMultihost(_config, secret) {
-    const MHService = require(__dirname + '/lib/multihostServer.js');
+    const MHService = require('./lib/multihostServer.js');
     const cpus    = os.cpus();
     mhService = new MHService(hostname, logger, _config, {
         node:   process.version,
@@ -277,7 +277,7 @@ function createStates() {
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    setImmediate(function () {
+                    setImmediate(() => {
                         objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
                             if (err) logger.error('host.' + hostname + ' Cannot read object: '  + err);
                             if (obj && obj.common) {
@@ -755,6 +755,7 @@ function collectDiagInfo(type, callback) {
                         delete diag.city;
                         delete diag.country;
                     }
+
                     if (!_err && doc) {
                         if (doc && doc.rows.length) {
                             if (!semver) semver = require('semver');
@@ -778,6 +779,7 @@ function collectDiagInfo(type, callback) {
                             }
                         }
                     }
+
                     objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
                         let visFound = false;
                         if (!_err && doc) {
@@ -1260,12 +1262,10 @@ function setMeta() {
         }
     });
 
-    extendObjects(tasks, function () {
+    extendObjects(tasks, () =>
         // create UUID if not exist
-        tools.createUuid(objects, function (uuid) {
-            if (uuid && logger) logger.info('host.' + hostname + ' Created UUID: ' + uuid);
-        });
-    });
+        tools.createUuid(objects, uuid =>
+            uuid && logger && logger.info('host.' + hostname + ' Created UUID: ' + uuid)));
 }
 
 // Subscribe on message queue
@@ -1416,7 +1416,7 @@ function processMessage(msg) {
                                 if (!repos.native.repositories[active].json || updateRepo) {
                                     logger.info('host.' + hostname + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
-                                    tools.getRepositoryFile(repos.native.repositories[active].link, function (err, sources) {
+                                    tools.getRepositoryFile(repos.native.repositories[active].link, {controller: version, node: process.version, name: tools.appName}, (err, sources) => {
                                         if (err) logger.warn('host.' + hostname + ' warning: ' + err);
                                         if (!sources || !Object.keys(sources).length) {
                                             logger.warn('host.' + hostname + ' warning: empty repo received!');
