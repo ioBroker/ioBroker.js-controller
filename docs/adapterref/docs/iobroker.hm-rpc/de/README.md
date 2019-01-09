@@ -13,7 +13,7 @@ HomeMatic RPC
 Homematic
 ---------
 
-Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
+Homematic ist ein Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
 
@@ -30,7 +30,8 @@ werden zwei Adapter benötigt:
 
 1.  Homematic ReGaHss
 
-Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ (**Re**sidential **Ga**teway) her.
+Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ 
+(**Re**sidential **Ga**teway) her.
 Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
 zwischen Homematic und ioBroker.
 
@@ -76,8 +77,8 @@ Haupteinstellungen
 
 ### HomeMatic Adresse
 
-Mit dem Pulldown-Menü kann die IP der CCU bzw. die IP des Hosts, auf dem der
-BidCos-Service läuft.
+IP-Adresse der CCU bzw. des Hosts, auf dem der BidCos-Service der Homematic
+läuft.
 
 ### HomeMatic Port
 
@@ -104,8 +105,8 @@ CUxD). Für jeden Typ muss eine eigene Instanz angelegt warden.
 Zur Kommunikation werden zwei Protokolle zur Verfügung gestellt: XML-RPC und
 BIN-RPC.
 
-*Achtung: CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
-XML-RPC-Protokoll*.
+!> CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
+XML-RPC-Protokoll.
 
 ### Synchronisiere Geräte neu (einmalig)
 
