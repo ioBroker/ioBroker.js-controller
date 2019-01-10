@@ -51,5 +51,15 @@ zwischen ioBroker, Gateway und Komponenten.
 ![Kommunikationsablauf](media/TradfriOverview_002.PNG)
 
 
+### Installation des Adapters und Konfiguration der Instanz
+
+<b>Schritt 1.</b>
+
+- Installieren des Adapters durch klicken auf ![Plus](media/Adapter.PNG) in der linken Navigationsleiste des Webinterface
+- in der nun erscheinenden Seite, in der Suche nach "Ikea Tradfri" suchen/filtern (siehe Abb. 01)
+- den Adapter über das Icon ![Plus](media/plus.PNG) (letzte Spalte, ganz rechts) installieren. (hierbei wird auto. eine neue Instanz 
+  des Adapters unter ![Plus](media/instanzen.PNG) angelegt)
+
+![Ikea Tradfri Adapter hinzufügen](media/TradfriAdapterInstanz_002.PNG)
 
 
