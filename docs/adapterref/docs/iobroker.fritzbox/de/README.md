@@ -1,17 +1,14 @@
-﻿![Logo](media/7ebb89e41edb7a99ba6c55005a3ae17e.png)
+![Logo](media/fritzbox.png)   
+Fritzbox
+========
 
-Logo
-
-Logo
-
-Fritzbox ========
-
-| Stand der Doku | 11.01.2019                      |
-| Entwickler     | ruhr70                          |
-| Kategorie      | Hardware                        |
-| Keywords       | Fritzbox, AVM, Telefon, Anruf   |
-| Abhängigkeiten | Freigeschalteter FB-Callmonitor |
-| Lizenz         | MIT                             |
+|Stand der Doku |11.01.2019                      |
+|----------------|---------------------------------|
+| Entwickler     |ruhr70                          |
+| Kategorie      |Hardware                        |
+| Keywords       |Fritzbox, AVM, Telefon, Anruf   |
+| Abhängigkeiten |Freigeschalteter FB-Callmonitor |
+| Lizenz         |MIT                             |
 
 AVM Fritz!Box®
 --------------
@@ -44,14 +41,14 @@ Konfiguration
 
 ### Settings
 
-\`Hier ist lediglich zu aktivieren, welche Daten in welcher Form übermittelt
-werden sollen´
+`Hier ist lediglich zu aktivieren, welche Daten in welcher Form übermittelt werden sollen´
+<p>Weitere Informationen im Forum <a href="https://forum.iobroker.net/viewtopic.php?f=20&t=3344&hilit=fritzbox" title="Titel">
+in diesem Thread</a></p>
 
-Weitere Informationen im Forum in diesem Thread
 
 ### Autosetup
 
-1.  Settings
+s. Settings
 
 Instanz
 -------
@@ -60,11 +57,7 @@ Unter *Instanzen* des ioBrokers finden sich die installierte Instanz des
 Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
 verbunden ist.
 
-![Instanz](media/85aaf3e54a5e6f9a63f01669aa739871.png)
-
-Instanz
-
-Instanz
+![Instanz](media/instanz.png)
 
 Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
@@ -77,11 +70,7 @@ Im Bereich Objekte werden in einer Baumstruktur alle von der FB dem Adapter
 Direkt im Instanzordner *fritzbox.x* findet sich der Datenpunkt *Message* mit
 Datum, Uhrzeit und Art der letzten Aktion.
 
-![Ordnerhierarchie](media/a1bdb123aa0906d63c347fed622b7c86.png)
-
-Ordnerhierarchie
-
-Ordnerhierarchie
+![Ordnerhierarchie](media/ordnerbaum.png)
 
 Nachfolgend werden die jeweiligen Kanäle und die darin angelegten Datenpunkte
 kurz beschrieben.
@@ -102,11 +91,7 @@ Datenpunkte zeigen in Realtime die Anrufe
 Innerhalb dieses Kanals werden 2 weitere Kanäle sowie einige Datenpunkte
 angelegt:
 
-![Kanal Calls](media/0e59d4a897cefa3d221fd0fd41ff9bf8.png)
-
-Kanal Calls
-
-Kanal Calls
+![Kanal Calls](media/calls.png)
 
 | **Datenpunkt**       | **Beschreibung**                            |
 |----------------------|---------------------------------------------|
@@ -191,9 +176,9 @@ TR-064 kann als Weiterentwicklung betrachtet werden, da dieser Adapter viel
 umfangreichere Informationen bietet, z.B. über die an der FB angemeldeten
 Geräte.
 
-Im Prinzip reicht es, wenn einer der beiden Adapter installiert ist. Da aber
-viele langjährige Benutzer den FB-Adapter nutzen und darauf ihre Visualisierung
-aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht mehr
-weiterentwickelt.
+Im Prinzip reicht es, wenn einer der beiden Adapter installiert ist. Da aber viele
+langjährige Benutzer den FB-Adapter nutzen und darauf ihre
+Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
+mehr weiterentwickelt.
 
-Neueinsteigern wird empfohlen, den TR-064-Adapter zu installieren.
+<p>Neueinsteigern wird empfohlen, den <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de" title="Titel">TR-064-Adapter</a> zu installieren.</p>
