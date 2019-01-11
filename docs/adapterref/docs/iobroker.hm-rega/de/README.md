@@ -18,14 +18,17 @@ HomeMatic ReGaHSS
 Homematic
 ---------
 
-Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
+>Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
 
-Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
+>Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
 Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
 Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
 Drahtbus-Komponenten eingesetzt werden.
+
+<a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage des Herstellers eQ3">
+Quelle:</a>
 
 Adapter Homematic ReGaHss
 -------------------------
