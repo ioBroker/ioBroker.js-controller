@@ -181,4 +181,4 @@ langjährige Benutzer den FB-Adapter nutzen und darauf ihre
 Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
 mehr weiterentwickelt.
 
-<p>Neueinsteigern wird empfohlen, den <a href="https://github.com/maloross/ioBroker.docs/tree/maloross-fritzbox-basis/docs/adapterref/docs/iobroker.tr-064/de" title="Titel">TR-064-Adapter</a> zu installieren.</p>
+<p>Neueinsteigern wird empfohlen, den <a href="hhttps://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064" title="Titel">TR-064-Adapter</a> zu installieren.</p>
