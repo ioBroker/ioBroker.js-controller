@@ -1,349 +1,217 @@
----
-editLink:    "https://github.com/Pmant/ioBroker.hm-rpc/blob/master/README.md"
-lastChanged: "03.08.2018"
----
-
-![HM-RPC](media/homematic.png ':size=120' ':no-zoom')
-
-# HM-RPC-Adapter
-Der hm-rpc Adapter bietet die Anbindung an die Kommunikationsmodule einer Homematic-Zentrale.
-Es werden die Module rfd (Funk), rfd-IP (HM-IP Funk), hs485d (wired), cuxd (Zusatzsoftware zur Anbindung externer Komponenten) und homegear (CCU Ersatz) unterstützt. Eine Instanz des Adapters ist für genau EINES dieser Module zuständig. Sollen mehrere Module parallel unterstützt werden, muss für jedes Modul eine eigene Instanz installiert werden.
-
-
-<!-- Einführungsbild-->
-![CCU1](media/CCU_600.png ':size=250' "HM-Cen-3-1-B") <span style="color:grey">  
-*HM-Cen-3-1-B*</span>
-
-
-## Steckbrief
-> Achtung! Die folgende Tabelle dient nur als Beispiel. Sie wird vom 
-  Dokumentengenerator dynamisch erzeugt und an dieser Stelle eingefügt.
-  Je nach den ausgewählten Feldern sind die Datenquellen z.B. `frontmatter`,
-  `io-package.json` und `package.json` des jeweilgen Adapters.
-
-|                         |                              |
-|-------------------------|:----------------------------:|
-| Stand der Doku          | {date:}                      | 
-| aktuelle Version stable | ![stable][logo]              |
-| aktuelle Version latest | ![latest][logo]              | 
-| OS                      | Linux, WIN, OS X             |
-| node-Version            | >= 4.0                       |
-| Entwickler              | hobbyquaker, bluefox   |
-| Github                  | https://github.com/ioBroker/ioBroker.hm-rpc       |
-| Lizenz                  | MIT                          |
-| Kategorie               | gemäß Adapterliste           |
-| Keywords                | Homematic, CCU                   |
-| Abhängigkeiten          | `dependencies`               |      
-
-
-
-## Beschreibung
-
-### HM-RPC
-Der **R**emote **P**rocedur **C**all, kurz RPC ist eine Technik zur Realisierung von 
-Interprozesskommunikation. Sie ermöglicht den Aufruf von Funktionen in anderen Adressräumen. 
-Im Normalfall werden die aufgerufenen Funktionen auf einem anderen Computer als das aufrufende 
-Programm ausgeführt. Es existieren viele Implementierungen dieser Technik, die in der Regel 
-untereinander nicht kompatibel sind.
-
-
-
-
-### HM-RPC-Adapter
-Der Adapter kommuniziert entweder über BIN-RPC oder XML-RPC mit dem entsprechenden Modul.
-Je nach verbundenem Dienst ist das entsprechende Protokoll zu wählen.
-
-Der Adapter arbeitet über eine Ereignisschnittstelle. Daher ist es wichtig, die Adapter 
-Adresse korrekt anzugeben. Die CCU sendet dann automatisch Ereignisse an den Adapter, 
-d.h. ein zyklisches Pollen wie z.B. bei hm-rega ist nicht notwendig. Zusätzlich verfügt 
-der Adapter über die Funktionalität, die Verbindung zur CCU zyklisch zu überwachen. 
-Werden neue Geräte an der CCU angelernt ist es notwendig, den Adapter neu zu starten 
-mit der Konfigration “Initiere Geräte neu (einmalig)”. Dadurch werden die Informationen 
-über die neuen Homematic-Geräte an den Adapter übertragen.
-
-
-
-## Voraussetzungen vor der Installation
-Der Anwender erhält hier Informationen, welche Schritte ggf. vor der Installation 
-des Adapters u.a. auf externen Systemen auszuführen sind. Dazu gehören z.B. die
-Registrierung von API-Keys oder die Konfiguration von angebundenen System 
-nach Herstellerdokumentation. 
-
-
-
-## Installation
-Hier werden Besonderheiten zur Installation beschrieben, die den Umfang der
-**hier** dokumentierten Standardinstallation überschreiten. Das kann z.B.
-die manuelle Installation von Software vor der eigentlichen Adapterinstallation
-oder die Freischaltung von Ports auf dem Server sein.
-
-> Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert. 
-  Die ausführliche Anleitung für die dazu notwendigen Installatonschritte ist
-  **hier** beschrieben.
-
-
-
-<a name="konfiguration"/>
-
-##  Konfiguration
-Kurzer Einleitungssatz zur Konfiguration. Für jedes Admin-Fenster ist ein separter
-Abschnitt vorzusehen.
-
-
-<a name="{Eindeutiger Fensterbezeichner}"/>
-
-### Fenster "{Fenstertitel}"
-![{alt-Name}](media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">  
-*{Bildbeschreibung}*</span>
-
-| Feld               | Beschreibung |                                                                       
-|:-------------------|:-------------|
-|**{Formularfeld 1}**|{Beschreibung}|
-|**{Formularfeld 2}**|{Beschreibung}|
-|**{Formularfeld n}**|{Beschreibung}|
-
-Platz für besondere Hinweise.
-
-
-<a name="{Eindeutiger Fensterbezeichner}"/>
-
-### Fenster "{Fenstertitel}"
-![{alt-Name}](media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">  
-*{Bildbeschreibung}*</span>
-
-| Feld               | Beschreibung |                                                                       
-|:-------------------|:-------------|
-|**{Formularfeld 1}**|{Beschreibung}|
-|**{Formularfeld 2}**|{Beschreibung}|
-|**{Formularfeld n}**|{Beschreibung}|
-
-Platz für besondere Hinweise.
-
-Abschließender Text zur Konfiguration
-
-> Nach Abschluß der Konfiguration wird der Konfigurationsdialog mit 
-  `SPEICHERN UND SCHLIEßEN` verlassen. Dadurch efolgt im Anschluß ein 
-  Neustart des Adapters.
-
-
-
-<a name="instanz"/>
-
-##  Instanzen
-> Die Installation des Adapters hat im Bereich `Objekte` eine aktive Instanz des 
-  {Adaptername}-Adapters angelegt.
-
-![Instanz](media/a_harmony_instanz.png "Instanz")<span style="color:grey">  
-*Erste Instanz*</span>
-
-Platz für weitere Hinweise zu Instanzen des Adapters. Z.B. ob mehrere Instanzen
-auf einen Server installierbar sind oder wie sich Instanzen auf 
-Multihost-Systemen verhalten.
-
-> Ob der Adapter aktiviert oder mit dem {Gerät}  verbunden ist, 
-  wird mit der Farbe des Status-Feldes der Instanz verdeutlicht. Zeigt der 
-  Mauszeiger auf das Symbol, werden weitere Detailinformationen dargestellt. 
-
-
-
-<a name="objekte"/>
-
-## Objekte des Adapters
-
-> Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im Hub 
-  erkannten Geräte und Aktivitäten aufgelistet. Zusätzlich wird auch noch 
-  darüber informiert, ob die Kommunikation mit dem Hub reibungslos erfolgt. 
-
-![alt-Objektename](media/{Bildname} ""{Bildbeschreibung}")<span style="color:grey">  
-*{Bildbeschreibung}*</span>
-
-> Die angelegten Objekte und ihre Bedeutungen sind wie folgt definiert:
-
-Objekt                    | Zugriff | Bescheibung 
-:-------------------------|:-------:|:-----------
-**{Instanz}**                 |  R  | Name der ersten *Instanz* des Adapters
-&emsp;**{Sub-Objekt}**        |  R  | Name des *{...}*, Liste, Bedeutung ...
-&emsp;&emsp;**{Sub-Objekt}**  |  R  | Name des *{...}*, Liste, Bedeutung ... 
-&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion 
-&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion 
-
-Mit der Tabelle wird versucht, den Objektbaum vereinfacht darzustellen
-und dem Anwender die Bedeutung und Anwendung der einzelnen Objekte zu
-veranschaulichen. Sie stellt die Referenzdokumentaion für den Anwender für 
-z.B. den Zugriffe mit JavaScript auf die Objekthierarchie dar.
-
-### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
-Hier könne Ausschnitte des Objektbaums hervorgehoben und besonders betrachtet 
-werden. 
-
-#### {Weitere tiefergehende Erläuterungen zu einzelnen Objekten oder Funktionen}
-Da der Platz für Beschreibungen in der Objekttabelle in der Regel nicht ausreichen 
-müssen hier z.B. einzelne Datenpunkte ausführlicher dokumentiert werden.
-
-Beispiel für beschreibbare Datenpunkte:
-#### Starten einer Aktivität
-Aktivitäten werden gestartet, wenn man bei einer Aktivität 
-`{Instanz}.{Hub Name}.activities.{Aktivität}` eine Zahl größer als 0 einträgt. 
-Während der Ausführung der Aktivität ändert sich dieser Wert zuerst 
-nach 1 (=startend) und dann nach 2 (=aktiv).
-
-### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
-Entsprechend dem Aufbau des Objektbaums und der Funktion des Adapters
-hier individuelle Gestaltungsmöglichkeiten gegeben.
-
-Beispiel für die Beschreibung einzelner Datenpunkte:
-#### Statuswerte
-`{Instanz}.{Hub Name}.activities.currentActivity` liefert die aktuell ausgeführte
-Aktivität als Zeichenfolge.
-
-`{Instanz}.{Hub Name}.activities.currentStatus` zeigt den Status des Harmony Hubs 
-an. Dabei bedeuten die Werte
-- 0 = inaktiv
-- 1 = startend
-- 2 = aktiv
-
-
-
-
-
-
-## Deinstallation
-sollte die Instanz wieder entfernt werden sollen wird diese über das zugeordnete Mülleimer-Icon 
-in der Rubrik Instanzen entfernt
-
-<img src="media/adapter_AdapterName_delete_01.png">
-
-Es erscheint eine Sicherheitsabfrage, die mit ***OK*** bestätigt werden muss
-
-<img src="media/adapter_AdapterName_delete_02.png">
-
-Anschließend erscheint wieder ein Fenster, dass die Abarbeitung der Deinstallationsbefehle zeigt
-
-<img src="media/adapter_AdapterName_delete_03.png">
-
-Bei dieser Deinstallation werden alle zu der Instanz gehörenden Objekte vollständig entfernt.
-
-Sollten die Installationsdateien vollständig von dem Host gelöscht werden, muss dies über das Mülleimer-Icon 
-in der Kachel des AdapterName-Adapters in der Rubrik Adapter geschehen.
-
-
-
-
-
-## Beispiele/Demo
-Lorem ipsum
-
-
-## Besonderheiten
-Backup
-Multihost
-History
-Performance
-
-
-## Bekannte Probleme
-
-* was auch immer
-  Lösung:
-
-* und noch ein ganz böser
-  Lösung:
-
-* weiß der Teufel
-  Lösung:
-
-
-
-## Einbinden der States
-
-### Blockly
-Lorem ipsum
-
-### Node-Red
-Lorem ipsum
-
-### vis
-Lorem ipsum
-
-### History
-Lorem ipsum
-
-
-## Links
-Irgendwo kommen auch noch Links zu GitHub (Entwicklerbereich?) und
-externen Ressourcen? Aber bitte nicht gleich am Doku-Anfang, eher am Ende.
-Zuerst die leichte Kost.
-
-
-
-----------
-
-
-
-
-
-# Snippets
-
-
-# Adapter - Homematic RPC
-
-Der hm-rpc Adapter bietet die Anbindung an die Kommunikationsmodule einer Homematic-Zentrale CCU2 / CCU1\. Es werden die Module rfd (funk), hs485d (wired), cuxd (Zusatzsoftware zur Anbindung externer Komponenten wie EnOcean, FS20 usw.) und homegear (CCU Ersatz) unterstützt. Eine Instanz des Adapters ist für genau EINES dieser Module zuständig. Sollen mehrere Module parallel unterstützt werden, muss für jedes Modul eine eigene Instanz installiert werden. Der Adapter kommuniziert entweder über BIN-RPC oder XML-RPC mit dem entsprechenden Modul.  Der Adapter arbeitet über eine Ereignisschnittstelle. Daher ist es wichtig, die Adapter Adresse korrekt anzugeben. Die CCU sendet dann automatisch Ereignisse an den Adapter, d.h. ein zyklisches Pollen wie z.B. bei hm-rega ist nicht notwendig. Zustätzlich verfügt der Adapter über die Funktionalität, die Verbindung zur CCU zyklisch zu überwachen. Werden neue Geräte an der CCU angelernt ist es notwendig, den Adapter neu zu starten mit der Konfigration “Initiere Geräte neu (einmalig)”. Dadurch werden die Informationen über die neuen Homematic-Geräte an den Adapter übertragen.
-
-
-## Konfiguration
-
-  [![](img/ioBroker_HM-rpc_Konfig01.jpg)](img/ioBroker_HM-rpc_Konfig01.jpg)  
+![](media/homematic.png)
+HomeMatic RPC
+=============
+
+| Stand der Doku | 09.01.2019                      |
+|----------------|---------------------------------|
+| Entwickler     | bluefox, hobbyquaker            |
+| Kategorie      | ioT Systeme                     |
+| Keywords       | Homematic, CCU, CUxD, RPC, REGA |
+| Abhängigkeiten |                                 |
+| Lizenz         | MIT                             |
+
+Homematic
+---------
+
+Homematic ist ein Smart Home System von eQ-3, das die umfassende Steuerung
+unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
+in Haus oder Wohnung ermöglicht.
+
+Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
+Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
+Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
+Drahtbus-Komponenten eingesetzt werden.
+
+Verwaltung und Steuerung von Homematic-Komponenten mit ioBroker
+---------------------------------------------------------------
+
+Um Homematic-Komponenten mit ioBroker optimal zu verwalten und zu steuern
+werden zwei Adapter benötigt:
+
+1.  Homematic ReGaHss
+
+Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ 
+(**Re**sidential **Ga**teway) her.
+Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
+zwischen Homematic und ioBroker.
+
+2.  Homematic RPC
+
+Der **R**emote **P**rocedur **C**all, kurz RPC ist eine Technik zur Realisierung
+von Interprozesskommunikation. Dieser Adapter bietet die Anbindung an die
+Kommunikationsmodule einer Homematic-Zentrale (CCU/CCU2/CCU3 ...). Es werden die
+Module rfd (Funk), HMIP-rfd, hs485d (wired), CuxD (Zusatzsoftware zur Anbindung
+externer Komponenten wie EnOcean, FS20 usw.) und Homegear (CCU Ersatz)
+unterstützt.
+
+Dieses Diagramm veranschaulicht den Aufbau und die Kommunikationsschnittstellen:
+![](media/Homematic_Aufbau.png)
+Quelle: http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png
+
+Adapter Homematic RPC
+---------------------
+
+Dieser Adapter bietet die Anbindung an die Kommunikationsmodule einer
+Homematic-Zentrale (CCU/CCU2/CCU3 ...). Eine Instanz des
+Adapters ist für genau EIN Module (rfd, wired usw.) zuständig. Sollen mehrere Module
+parallel unterstützt werden, muss für jedes Modul eine eigene Instanz
+installiert werden.
+
+Die Kommunikation des Adapters mit dem entsprechenden Modul erfolgt entweder
+über BIN-RPC oder XML-RPC. Da über eine Ereignisschnittstelle gearbeitet wird,
+ist die korrekte Adressierung wichtig. So werden Ereignisse automatisch dem
+Adapter übermittelt und ein zyklisches Pollen ist nicht notwendig.
+
+Zusätzlich verfügt der Adapter über die Funktionalität, die Verbindung zur CCU
+zyklisch zu überwachen.
+
+Werden neue Geräte an der CCU angelernt, so muss der Adapter mit der
+Konfiguration “Initiiere Geräte neu (einmalig)” neu gestartet werden. Dadurch
+werden die Informationen der neuen Homematic-Geräte an den Adapter übertragen.
+
+Konfiguration
+=============
+
+Haupteinstellungen
+------------------
 
 ### HomeMatic Adresse
 
-Hier wird die IP-Adresse der CCU eingegeben, deren Daten in ioBroker übernommen werden sollen. Es können über mehrere Instanzen des Adapters auch mehrere CCU eingebunden werden. Das Format dieser Adresse muss `192.168.xxx.yyy` sein.
+IP-Adresse der CCU bzw. des Hosts, auf dem der BidCos-Service der Homematic
+läuft.
 
-* * *
+### HomeMatic Port
 
-### Adapter Adresse
+Die Einstellung des Ports hängt von dem benötigtem Kommunikationsmodul ab, wird
+bei der Auswahl des Daemons automatisch eingetragen und sollte nur geändert
+werden, wenn die Ports vom Standard abweichen.
 
-Hier wird die IP-Adresse des Servers, auf dem ioBroker läuft eingegeben. Es stehen verschiedene Möglichkeiten mit ipv4 und ipv6 über das pulldown-Menü zur Verfügung. [![](img/ioBroker_HM-rpc_Konfig_Adresses.jpg)](img/ioBroker_HM-rpc_Konfig_Adresses.jpg) Standard ist ipv4 `0.0.0.0`; allerdings muss hier eine von außen (von der anzusprechenden CCU aus) erreichbare Adresse wie `192.168.xxx.yyy` eingegeben werden, da die CCU bei der Kommunikation die Ereignisse an diese Adresse sendet.
+Standardmäßig sind folgende Ports vorgesehen:
 
-* * *
+| Kommunikationsmodul | Standardport | HTTPS-Port |
+|---------------------|--------------|------------|
+| Funkgeräte (RFD)    | 2001         | 42001      |
+| Wired               | 2000         | 42000      |
+| CUxD                | 8701         | \--        |
+| Homematic IP        | 2010         | 42010      |
 
 ### Daemon
 
-Der zu überwachende Daemon (derzeit _rfd_, _hs485d_, _cuxd, Homematic IP_ oder _homegear_) 
-![](img/homematic-rpc-2_ioBroker_HM-rpc_Konfig_daemons.jpg)
-
-
-* * *
-
-### Homematic Port
-
-Der Port in der CCU über den die Daten abgerufen werden können. Für jedes Modul ist hier bereits der passende Standardport eingetragen, er muss daher nur angepasst werden, wenn er auf der CCU selbst verändert wurde.
-
-* * *
+CCU/Homematic unterstützt unterschiedliche Gerätetypen (wired, Funk, HMIP,
+CUxD). Für jeden Typ muss eine eigene Instanz angelegt warden.
 
 ### Protokoll
 
-Das Protokoll über das die Daten aus der CCU abgefragt werden sollen. Es stehen _XML-RPC_ und _BIN-RPC_ zur Verfügung. Das empfohlene Protokoll ist _BIN-RPC_.
+Zur Kommunikation werden zwei Protokolle zur Verfügung gestellt: XML-RPC und
+BIN-RPC.
 
-* * *
-
-### Adapter Port
-
-Der Port auf dem ioBroker-Server. Ist der eingegebene Wert 0 wird hier der gleiche Port verwendet, wie er auch auf der Homematic-Zentrale verwendet wird. Ansonsten kann man hier einen Port frei wählen. z.B.: 3000
-
-* * *
-
-### Verbindungs-Check Intervall (sek)
-
-Die Zeitabstände in denen die Verbindung geprüft werden soll (_default 180_)
-
-* * *
+!> CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
+XML-RPC-Protokoll.
 
 ### Synchronisiere Geräte neu (einmalig)
 
-Wenn in der CCU neue Geräte konfiguriert oder Änderungen an bestehenden Geräten durchgeführt wurden, werden die neuen Daten anschließend in ioBroker geladen.
+Beim erstmaligen Start des Adapters werden alle Geräte eingelesen. Werden später
+Änderungen innerhalb der CCU durchgeführt (Umbennung von Geräten, hinzufügen
+neuer Geräte usw.) ist diese Auswahl zu aktivieren und mit „Speichern und
+Schließen“ der Neustart des Adapters zu veranlassen.
 
-* * *
+### Adapter Addresse
 
-## <span id="Bedienung">Bedienung</span>
+Im Pulldown-Menü wird die IP des Hosts ausgewählt, auf dem der Adapter
+installiert ist. Die Auswahl von „0.0.0.0. auf alle IPs hören“ und „127.0.0.1“
+ist Spezialfällen vorbehalten.
 
-Eine manuelle Bedienung des Adapters findet nicht statt. Beim Start wird dem entsprechenden CCU Modul mitgeteilt, Änderungen automatisch an den Adapter zu senden. Diese Ereignisse werden dann in die Datenpunkte von ioBroker übernommen.
+### Adapter Port
+
+Standardmäßig ist hier Port “0” für die automatische Selektion des
+ioBroker-Ports eingestellt und sollte nur in Ausnahmefällen verändert werden.
+
+Zusätzliche Einstellungen
+-------------------------
+
+### Adapter Callback Addresse
+
+Wenn ioBroker hinter einem Router (z.B. in einem Docker-Container) läuft, können
+sich Ein- und Ausgangsadresse unterscheiden. Wird hier die IP des Routers
+eingetragen, lässt sich das Problem umgehen, da dann das Weiterleiten zu
+ioBroker vom Router übernommen wird.
+
+### Verbindungs-Check Intervall (sec)
+
+Im festgelegten Intervall wird eine Ping-Anfrage an die CCU gesendet.
+
+### Wiederverbindungs-Intervall (sec)
+
+Zeitspanne, nach der ein erneuter Verbindungsversuch gestartet wird.
+
+### Geräte nicht löschen
+
+Geräte werden standardmäßig auch aus der Objektliste entfernt, wenn sie
+innerhalb der CCU abgelernt wurden. Um diese Geräte in der Objektliste zu
+behalten, beispielweise weil sie nur temporär entfernt wurden, kann diese Option
+aktiviert werden.
+
+### Nutze HTTPS
+
+Ist diese Option aktiviert, wird eine sichere Verbindung hergestellt.
+Funktioniert nur mit XML-RPC Protokoll.
+
+### Nutzername und Passwort
+
+Bei Nutzung von HTTPS oder falls für die API der CCU eine Authentifikation
+erforderlich ist, sind die Daten hier einzutragen.
+
+Instanz
+-------
+
+![](media/10d34a2bc1518fa34233bdb04219e444.png)
+
+Unter *Instanzen* des ioBrokers finden sich die installierte Instanze des
+Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
+mit der CCU verbunden ist.
+
+Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
+
+Objekte des Adapters
+--------------------
+
+Im Bereich Objekte werden in einer Baumstruktur alle von der CCU dem Adapter
+übermittelten Werte und Informationen dargestellt.
+
+Welche Objekte und Werte angezeigt werden, ist von den Geräten (Funktion und
+Kanäle) und der Struktur innerhalb der CCU abhängig. 
+
+Die Zentrale wird mit der ID BidCoS-RF gekennzeichnet (hierunter sind alle virtuellen Tasten aufgeführt),
+Geräte werden unter ihrer Seriennummer angelegt und Gruppen mit
+INT000000*x* bezeichnet.
+
+### Kanal 0 (alle Geräte)
+
+Dieser Kanal wird für jedes Gerät angelegt und enthält Funktionsdaten, nachfolgend eine kurze Übersicht:
+
+| *Datenpunkt*                   | *Bedeutung*                                            |
+|--------------------------------|--------------------------------------------------------|
+| AES_Key                        | Verschlüsselte Aktivierung aktiv/deaktiv               |
+| Config (Pending/Pending Alarm) | Ausstehende Konfiguration                              |
+| Dutycycle / Dutycycle Alarm    | Sendezeit Homematic Geräte                             |
+| RSSI (Device/Peer)             | Funkstärke (Gerät \<-\> Zentrale)                      |
+| Low Bat/Low Bat Alarm          | niedrige Batterieladung                                |
+| Sticky unreach / unreach alarm | Systemmeldung Kommunikationsfehler (Störung lag vor)   |
+| Unreach/unreach alarm          | Systemmeldung Kommunikationsfehler (aktueller Zustand) |
+
+### Kanal 1-6
+
+Hier sind Messwerte, Steuerungs- und Zustandsdaten aufgelistet; je nach Funktion
+des Gerätes werden unterschiedliche Daten angezeigt. Nachfolgend ein kurzer
+Auszug:
+
+| *Funktion*              | *Kanal* | *Mögliche Werte*                                          |
+|-------------------------|---------|-----------------------------------------------------------|
+| Sensoren                | 1       | Temperatur, Feuchtigkeit, Füllstand, Öffnungszustand usw. |
+| Heizungsthermostate     | 4       | Betriebsmodi, Soll-/Ist-Temperatur, Ventilstellung usw.   |
+| Aktoren                 | 1       | Level (Rollladen, Dimmer), Laufrichtung (Rolllladen) usw. |
+| Geräte mit Messfunktion | 3       | Status                                                    |
+|                         | 6       | Verbrauchszähler, Spannung, Leistung usw.                 |
+
+FAQ
+---
