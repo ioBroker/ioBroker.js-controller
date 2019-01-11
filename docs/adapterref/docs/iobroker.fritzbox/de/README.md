@@ -1,210 +1,195 @@
-![Logo](media/fritzbox.png)
-ioBroker fritzbox Adapter
-===========================
+Fritzbox
+========
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.fritzbox.svg)](https://www.npmjs.com/package/iobroker.fritzbox)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.fritzbox.svg)](https://www.npmjs.com/package/iobroker.fritzbox)
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/ruhr70/ioBroker.fritzbox/master.svg)](https://travis-ci.org/ruhr70/ioBroker.fritzbox)
+| Stand der Doku | 12.01.2019                      |
+|----------------|---------------------------------|
+| Entwickler     | ruhr70                          |
+| Kategorie      | Hardware                        |
+| Keywords       | Fritzbox, AVM, Telefon, Anruf   |
+| Abhängigkeiten | Freigeschalteter FB-Callmonitor |
+| Lizenz         | MIT                             |
 
-[![NPM](https://nodei.co/npm/iobroker.fritzbox.png?downloads=true)](https://nodei.co/npm/iobroker.fritzbox/)
+AVM Fritz!Box®
+--------------
 
+Bei der Fritz!Box (Eigenschreibweise des Herstellers AVM) handelt es sich um die
+am weitesten verbreiteten Router auf dem Markt.
 
-## Changelog
-### 0.3.1 (2016-07-24)
-* (BasGo) enhanced TR-064 configuration
-* (BasGo) added rudimentary phonebook download into object store
+Es gibt mittlerweile Modelle für alle gängigen Internet-Anschlussarten: DSL-,
+Kabel-, Mobilfunk- und Glasfaserzugänge.
 
-### 0.3.0 (2015-06-26)
-* (UncleSamSwiss) added support for wlan.enabled (using TR-064)
+Adapter Fritzbox
+----------------
 
-### 0.2.1 (2015-06-28)
-* (ruhr) more configuration options
+Der Adapter stellt eine Verbindung zwischen Fritzbox (kurz FB) und ioBroker her
+und stellt Daten und Listen über Anrufe zur Verfügung.
 
-### 0.2.0 (2015-06-26)
-* (ruhr) 
+Voraussetzungen vor Installation
+--------------------------------
 
-## Install
+Der Datenaustausch erfolgt über den in der FB integrierten *Callmonitor*. Um
+diesen zu aktivieren, ruft man von einem angeschlossenen Telefon folgende Nummer
+an:
 
-```node iobroker.js add fritzbox```
+\#96\*5\* – Callmonitor einschalten
 
-## Configuration
+\#96\*4\* – Callmonitor ausschalten
 
-## Dokumentation der Datenpunkte
+Konfiguration
+-------------
 
-Unter **fritzbox.x.** legt der Adapter folgende Channel und Datenpunkte an:
+### Settings
 
-* message                                 (Meldung aus der Fritzbox)
+(grafik settings)
 
-* **calls.                                  (CHANNEL)**
-* calls.ring                              (true/false, steht ein Ruf an?)
-* calls.missedCount                       (Integer, read & write, Anzahl verpasster Anrufe)
-* calls.missedDateReset                   (Datum, zu dem calls.missedCount auf 0 gesetzt wurde
-* calls.ringActualNumber                  (aktuell anstehender Ruf (der Letzte, wenn es mehrere gibt))
-* calls.ringActualNumbers                 (alle aktuell anstehenden Rufe)
-* calls.ringLastNumber                    (letzter Anrufer)
-* calls.ringLastMissedNumber              (letzter verpasster Anrufer)
-* calls.callLastNumber                    (Wahlwiederholung, letzte gewählte Rufnummer)
-* calls.connectNumber                     (letztes aktuell verbundenes Gespräch)
-* calls.connectNumbers                    (alle aktuell verbundenen Gespräche)
+Hier erfolgen die wesentlichen Einstellungen, um den Datenaustausch zu
+ermöglichen. In den meisten Fällen sind dabei *Bridge Address* und *IP-Adresse
+der* FB identisch.
 
-* **calls.counterActualCalls.               (CHANNEL - Realtime)**
-* calls.counterActualCalls.ringCount      (Anzahl der anstehenden Anrufe (RING))
-* calls.counterActualCalls.callCount      (Anzahl der gehenden Anrufversuche (CALL))
-* calls.counterActualCalls.connectCount   (Anzahl der bestehenden Gespräche (CONNECT))
-* calls.counterActualCalls.allActiveCount (Anzahl aktiver Anrufe (CALL, RING & CONNECT)
+Wenn Polling aktiviert ist, sollte der Intervall nicht zu kurz gewählt werden,
+um Fehlverhalten und evtl. Störungen zu vermeiden.
 
-* **calls.telLinks.                         (CHANNEL - wählbare Rufnummern tel:+...)**
-* calls.telLinks.ringLastNumberTel        (letzter Anrufer als wählbarer Link)
-* calls.telLinks.ringLastMissedNumberTel  (letzter verpasster Anrufer als wählbarer Link)
-* calls.telLinks.callLastNumberTel        (Wahlwiederholung, letzte gewählte Rufnummer, wählbar)
+Unter dem Punkt *Rufnummern* kann eingestellt werden, wie unterdrückte oder
+unbekannte Rufnummern in den Listen dargestellt wird.
 
-* **history.                                (CHANNEL)**
-* history.allTableTxt                     (...)
-* history.allTableHTML                    (Anruferliste als html Tabelle)
-* history.allTableJSON                    (Anruferliste als JSON)
-* history.missedTableHTML                 (Liste verpasste Anrufe als html)
-* history.missedTableJSON                 (Liste verpasste Anrufe als JSON)
+Der Punkt *Ausgabe Anruferlisten* bietet die Erstellung der Listen in
+unterschiedlichen Formaten oder die Anzeige des Realtime-Callmonitors.
 
-* **history.cdr.                            (CHANNEL)**
-* history.cdr.json                        (CDR als JSON)
-* history.cdr.html                        (CDR als html)
-* history.cdr.txt                         (CDR als txt)
-* history.cdr.missedJSON                  (letzter verpasster Anruf als JSON)
-* history.cdr.missedHTML                  (letzte verpasster Anruf als html)
+### Autosetup
 
-* **callmonitor.                            (CHANNEL - Realtime)**
-* callmonitor.all                         (html Liste: alle aktiven Anrufe in allen Zuständen)
-* callmonitor.ring                        (html Liste: alle aktiven Anrufe
-* callmonitor.call                        (html Liste: alle gehenden Gespräche)
-* callmonitor.connect                     (html Liste: alle verbundenen Gespräche)
+Hier kann über den Button „Connect Bridge“ der Router gesucht und eingebunden
+werden. Die Einstellungen wie Datenausgabe und Format entsprechen denen unter
+*Settings*.
 
-* **system.                                 (CHANNEL)**
-* system.deltaTime                        (Deltazeit zwischen System und Fritzbox in Sek.)
-* system.deltaTimeOK                      (true/false Deltazeit zwischen System und Fritzbox in der Tolereanz)
+Instanz
+-------
 
-* **wlan.                                   (CHANNEL)**
-* wlan.enabled                            (true/false, read & write, Zustand des WLANs, nur verfügbar wenn Passwort konfiguriert ist)
+Unter *Instanzen* des ioBrokers finden sich die installierte Instanz des
+Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
+verbunden ist.
 
-* **phonebook.                              (CHANNEL)**
-* phonebook.tableJSON                     (Telefonbuch aller externen Nummern als JSON)
+(grafik instanz)
 
-## Beispiel-Widgets
+Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
-### Fritzbox Widget in groß
+Objekte des Adapters
+--------------------
 
-Enthält u.a.:
+Im Bereich Objekte werden in einer Baumstruktur alle von der FB dem Adapter
+übermittelten Werte, Listen und Informationen dargestellt (s. Einstellungen).
 
-* beim aktuellen Anruf einen roten Balken mit der Rufnummer des Anrufers
-* grafischen zeitlichen Verlauf für die Anzahl der Gespräche nach Anrufen, Rufaufbau und Gespräch
-* Zähler für verpasste Anrufe mit einem Button zum zurücksetzen
-* Liste der verpassten Anrufe
-* Liste aller Anrufe mit farblicher Markierung (Gespräch/kein Gespräch) und der Richtung
-* Zähler für: aktuell anstehende Anrufe, aktuelle Rufaufbauten für gehende Gespräche, verbundene Gespräche, Gesamtanzahl von Gesprächen/Gesprächsversuchen
-* ein Infofeld, welches gelb eingeblendet wird, wenn die Fritzboxzeit von der ioBroker-Systemzeit zu stark abweicht
+Direkt im Instanzordner *fritzbox.x* findet sich der Datenpunkt *Message* mit
+Datum, Uhrzeit und Art der letzten Aktion.
 
-![Fritzbox Widget groß](doc/iobroker_fritzbox_widget_gross.png)
+(grafik ordnerbaum)
 
-[ioBroker Fritzbox Widget in groß als VIS Importdatei](widgets/iobroker_fritzbox_widget_gross.json)
+Nachfolgend werden die jeweiligen Kanäle und die darin angelegten Datenpunkte
+kurz beschrieben.
 
+### Kanal callmonitor:
 
-### Fritzbox Widget Live-Anrufmonitor
+Datenpunkte zeigen in Realtime die Anrufe
 
-Zeigt alle aktiven Gespräche, Anrufe (klingeln) und gehende Rufaufbauten an. Bei den aktiven Gesprächen und den Anrufen wird die Dauer eingeblendet (sekündlich aktualisiert).
+| **Datenpunkt** | **Beschreibung**                                                      |
+|----------------|-----------------------------------------------------------------------|
+| all            | Anzeige von Datum, Uhrzeit und Rufnummer; ein und ausgehend           |
+| call           | Anzeige von Datum, Uhrzeit und Rufnummer; ausgehend                   |
+| connect        | Anzeige von Datum, Uhrzeit und Rufnummer einer bestehenden Verbindung |
+| ring           | Anzeige von Datum, Uhrzeit und Rufnummer ausgehender Anrufe           |
 
-![Fritzbox Widget Live-Anrufmonitor](doc/iobroker_fritzbox_anrufmonitor.png)
+### Kanal calls
 
-[ioBroker Widget Live-Anrufmonitor zum Import in VIS](widgets/iobroker_fritzbox_anrufmonitor.json)
+Innerhalb dieses Kanals werden 2 weitere Kanäle sowie einige Datenpunkte
+angelegt:
 
+Grafik calls
 
-### Fritzbox Widget Anruferliste mit dem "basic - HTML Widget"
+| **Datenpunkt**       | **Beschreibung**                            |
+|----------------------|---------------------------------------------|
+| callLastNumber       | Zuletzt gewählte Rufnummer                  |
+| connectNumber        | Letztes aktuell verbundenes Gespräch        |
+| connectNumbers       | alle aktuell verbundenen Gespräche          |
+| missedCount          | Zähler verpasste Anrufe                     |
+| missedDateReset      | Datum letzter Zähler-Reset                  |
+| ring                 | Signal eingehender Anruf                    |
+| ringActualNumber     | Rufnummer eines aktuell eingehenden Anrufs  |
+| RingActualNumbers    | Rufnummern aller aktuell eingehenden Anrufe |
+| ringLastMissedNumber | Rufnummer letzter                           |
+| ringLastNumber       | Rufnummer des letzten eingehenden Anrufs    |
 
-Die Spalteninhalte und die dazugehörigen Überschriften können mit dem Widget frei gewählt werden. Damit sind auch Überschriften in anderen Sprachen möglich.
+#### counterActualCalls
 
-![Fritzbox Widget Anruferliste mit dem basic - HTML Widget](doc/iobroker_fritzbox_html_table.png)
+Hier werden in Realtime die Werte der verschiedenen Zähler aktueller Anrufe
+aufgeführt:
 
-[ioBroker Widget Anruferliste mit dem basic - HTML Widget zum Import in VIS](widgets/iobroker_fritzbox_html_table.json)
+| **Datenpunkt** | **Beschreibung**                                     |
+|----------------|------------------------------------------------------|
+| allActiveCalls | Anzahl aller aktiven Anrufe (bestehende, eingehende) |
+| callCount      | Anzahl ausgehender Anrufe                            |
+| connectCount   | Anzahl bestehender Verbindungen                      |
+| ringCount      | Anzahl aktuell eingehender Anrufe                    |
 
+#### telLinks
 
-### Fritzbox Widgets Informationen zum aktuellen Anrufer, sowie vergangenen Anrufern
+Die unten aufgeführten Datenpunkte sind als Link formatiert, so dass die
+entsprechende Nummer über den Link anwählbar ist (z.B. über ein Widget in VIS):
 
-Die Informationswidgets sind Beispiele für einzelne Datenpunkte, die der Fritzbox-Adapter generiert.
+| **Datenpunkt**          | **Beschreibung**                             |
+|-------------------------|----------------------------------------------|
+| callLastNumberTel       | Letzter eingehender Anruf                    |
+| ringLastMissedNumberTel | Letzter verpasster Anruf                     |
+| ringLastNumberTel       | Wahlwiederholung, zuletzt gewählte Rufnummer |
 
-Es exestiert jeweils ein Datenpunkt mit der Rufnummer, wie sie von der Fritzbox ausgegeben wurde (a) und ein Datenpunkt mit der Rufnummer umgewandelt als wählbarer Link (b) (es wird z.B. die Rufnummer 020147114711 angezeigt und als Link mit tel:+4920147114711 versehen). Die Tel-Links machen z.B. für VIS Oberflächen auf Smartphones Sinn, um einen verpassten Anruf direkt per Fingertipp zurückrufen zu können.
+### Kanal cdr
 
-Beispielwidgets:
-* (1) letzter Anrufer 
-* (2) aktueller Anrufer (wird für die Dauer des Klingelns angezeigt) 
-* (3) letzter Anrufer, der verpasst (nicht angenommen wurden)
-* (4) Wahlwiederholung: zuletzt gewählte Rufnummer
+Diese Datenpunkte stellen Informationen in formatierter Form zur Verfügung (s.
+Einstellungen)
 
-![Fritzbox Widget Informationen zu den letzten Anrufen](doc/iobroker_fritzbox_letzte_telefonate.png)
+| **Datenpunkt** | **Beschreibung**         |
+|----------------|--------------------------|
+| html           | Letzter Anruf            |
+| json           |                          |
+| missedHTML     | Letzter verpasster Anruf |
+| missedJSON     |                          |
+| txt            | Letzter Anruf            |
 
-[ioBroker Widget Informationen zu den letzten Anrufen](widgets/iobroker_fritzbox_letzte_telefonate.json)
+### Kanal history
 
-## JSON Datenformat für JSON CDR und JSON Anruferliste
+Diese Datenpunkte stellen Tabellen formatierter Form zur Verfügung. Welche
+Informationen übermittelt werden, kann in den Einstellungen festgelegt werden
 
-```
-{
-"date":"25.07.15 16:40:21",
-"dateEpoch":1437835221000,
-"dateEpochNow":1437835221000,
-"deltaTime":0,
-"deltaTimeOK":true,
-"type":"DISCONNECT",
-"id":"1",
-"extensionLine":"11",
-"ownNumber":"021147114711",
-"externalNumber":"051112345678",
-"lineType":"POTS",
-"durationSecs":"55",
-"durationForm":"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;55",
-"durationSecs2":"55",
-"durationRingSecs":"",
-"connect":true,
-"direction":"out",
-"dateStartEpoch":1437835144000,
-"dateConnEpoch":1437835167000,
-"dateEndEpoch":1437835221000,
-"dateStart":"25.07.15 16:39:04",
-"dateConn":"25.07.15 16:39:27",
-"dateEnd":"25.07.15 16:40:21",
-"callSymbol":"<<-&nbsp;",
-"callSymbolColor":"<span style="\" color:green\""=""><b><<-&nbsp;</b></span>",
-"unknownNumber":false,
-"ownNumberForm":"021147114711&nbsp;&nbsp;&nbsp;",
-"externalNumberForm":"051112345678&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-"ownNumberE164":"+4921147114711",
-"externalE164":"+4951112345678",
-"externalTelLink":"<a style="\" text-decoration:"="" none;\"="" href="\" tel:+4951112345678\""="">051112345678&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>",
-"externalTelLinkCenter":"<a style="\" text-decoration:"="" none;\"="" href="\" tel:+4951112345678\""="">051112345678</a>"
-}
-```
+| **Datenpunkt**  | **Beschreibung** |
+|-----------------|------------------|
+| allTableHTML    |                  |
+| allTableJSON    | Alle Anrufe      |
+| allTableTxt     |                  |
+| missedTableHTML | Verpasste Anrufe |
+| missedTableHSON |                  |
 
-## todo
-* Doku der Datenpunkte
-* Import des xml Telefonbuch der Fritzbox
-* Feinere Konfiguration der Anruferliste (Tabellen)
+### Kanal system
 
-## License
+| **Datenpunkt** | **Beschreibung**                                           |
+|----------------|------------------------------------------------------------|
+| deltaTime      | Deltazeit zwischen ioBroker-Systemzeit und Fritzbox in sec |
+| deltaTimeOK    | Prüfergebnis (true/false)                                  |
 
-The MIT License (MIT)
+FAQ
+===
 
-Copyright (c) 2015, ruhr70
+F: Es gibt den Fritzbox- und den TR-064-Adapter, der auch auf FB-Callmonitor
+zugreift. Wo sind die Unterschiede, müssen beide Adapter installiert sein?
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+A: Der Fritzbox-Adapter stammt aus der Anfangsphase und stellte von den
+möglichen Informationen des Routers lediglich die zur Verfügung, die Anrufe
+betrafen.
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+TR-064 kann als Weiterentwicklung betrachtet werden, da dieser Adapter viel
+umfangreichere Informationen bietet, z.B. über die an der FB angemeldeten
+Geräte.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+Im Prinzip reicht es, wenn einer der beiden Adapter installiert ist. Da viele
+langjährige Benutzer den FB-Adapter nutzen, weil sie auf dessen Datenpunkte ihre
+Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
+mehr weiterentwickelt.
+
+Neueinsteigern wird empfohlen, den TR-064-Adapter zu installieren.
