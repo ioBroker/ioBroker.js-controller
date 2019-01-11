@@ -12,7 +12,6 @@ HomeMatic RPC
 
 Homematic
 ---------
-
 >Homematic ist ein Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
@@ -26,7 +25,6 @@ Quelle</a>
 
 Verwaltung und Steuerung von Homematic-Komponenten mit ioBroker
 ---------------------------------------------------------------
-
 Um Homematic-Komponenten mit ioBroker optimal zu verwalten und zu steuern
 werden zwei Adapter benötigt:
 
@@ -48,7 +46,8 @@ unterstützt.
 
 Dieses Diagramm veranschaulicht den Aufbau und die Kommunikationsschnittstellen:
 ![](media/Homematic_Aufbau.png)
-Quelle: http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png
+<a href="http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png" title="Wikimatic.de">
+Quelle</a>
 
 Adapter Homematic RPC
 ---------------------
@@ -107,8 +106,8 @@ CUxD). Für jeden Typ muss eine eigene Instanz angelegt warden.
 Zur Kommunikation werden zwei Protokolle zur Verfügung gestellt: XML-RPC und
 BIN-RPC.
 
-!> CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
-XML-RPC-Protokoll.
+`CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
+XML-RPC-Protokoll.`
 
 ### Synchronisiere Geräte neu (einmalig)
 
@@ -166,7 +165,7 @@ erforderlich ist, sind die Daten hier einzutragen.
 Instanz
 -------
 
-![](media/10d34a2bc1518fa34233bdb04219e444.png)
+![Ìnstanz](media/10d34a2bc1518fa34233bdb04219e444.png)
 
 Unter *Instanzen* des ioBrokers finden sich die installierte Instanze des
 Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
