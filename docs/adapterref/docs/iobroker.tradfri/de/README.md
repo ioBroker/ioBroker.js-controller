@@ -72,23 +72,16 @@ zwischen ioBroker, Gateway und Komponenten.
 ![Ikea Tradfri Instanzansicht](media/TradfriAdapterInstanz_003optimiert.PNG)
 
 - In der Spalte der jeweiligen Instanz bestehen folgende Anzeigen/ Aktionsmöglichkeiten Beschrieben von links nach rechts.
-<<<<<<< HEAD
   - <b>Anzeige Aktivitätsstatus</b> (einfaches Ampelsystem)
     - ![Status Grün](media/status_green.PNG) ->Instanz läuft innerhalb der zu erwartenden Parameter, alles ok
     - ![Status Gelb](media/status_yellow.PNG) -> Instanz läuft, allerdings gibt es ggf. Probleme mit der Konfiguration des Tradfri Gateway
     - ![Status Rot](media/status_red.PNG) -> Instanz ist zwar gestartet, hat aber Probleme sich mit dem Host zu verbinden. 
   - <b>Aktionen</b>
-    - ![Start Instanz](media/starting.PNG)Start und ![Stop Instanz](media/starting.PNG) Stop der Instanz ermöglichen diese Buttons
+    - ![Start Instanz](media/starting.PNG)Start und ![Stop Instanz](media/stop.PNG) Stop der Instanz ermöglichen diese Buttons
     - ![Start Instanz](media/konfiguration.PNG) Zugriff auf den Konfigurationsbereich der Instanz
     - ![Start Instanz](media/reload.PNG) Instanz wird neu gestartet 
     - ![Start Instanz](media/delete.PNG) Instanz wird unwiederruflich gelöscht
-=======
-  - Anzeige Aktivitätsstatus (einfaches Ampelsystem)
-    - ![Status Grün](media/status_green.PNG) ->Instanz läuft innerhalb der zu erwartenden Parameter, alles ok
-    - ![Status Gelb](media/status_yellow.PNG) -> Instanz läuft, allerdings gibt es ggf. Probleme mit der Konfiguration des Tradfri Gateway
-    - ![Status Rot](media/status_red.PNG) -> Instanz ist zwar gestartet, hat aber Probleme sich mit dem Host zu verbinden. 
- 
->>>>>>> 8bd0dd9f28a00a4c6f4e4d0ded3960e3c241aaaa
+
 
 
 
