@@ -4,16 +4,11 @@ HomeMatic ReGaHSS
 
 | Stand der Doku          | 08.01.2019                                           |
 |-------------------------|------------------------------------------------------|
-| aktuelle Version stable |                                                      |
-| aktuelle Version latest |                                                      |
-| OS                      |                                 |
-| node-Version                                                       |
-| Entwickler              | Pmant                                                |
-| Github                  |                                                 |
-| Lizenz                  |                                                 |
-| Kategorie               | ioT Systeme                                        |
-| Keywords                | \`Homematic\` \`home automation\` \`Hausautomation\` |
-| Abhängigkeiten          |                                                      |
+| Entwickler              |Pmant                                                |
+| Lizenz                  |MIT                                               |
+| Kategorie               |ioT Systeme                                        |
+| Keywords                |Homematic, home automation, Hausautomation, |
+| Abhängigkeiten          |Adapter <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>                                                 |
 
 Homematic
 ---------
@@ -33,14 +28,14 @@ Quelle:</a>
 Adapter Homematic ReGaHss
 -------------------------
 
-Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ her.
+Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ (**Re**sidential **Ga**teway) her.
 Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
 zwischen Homematic und ioBroker.
 
 Falls mehrere Zentralen in ioBroker eingebunden werden sollen, ist für jede
 Zentrale eine eigene Instanz zu installieren und konfigurieren.
 
-Mit der Installation von ReGaHSS wird auch eine Instanz von „Homematic RPC“
+Mit der Installation von ReGaHSS wird auch eine Instanz des Adapters <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>
 installiert, die vorab konfiguriert und aktiviert werden sollte.
 
 Eine Instanz dieses Adapters kann bis zu 5 unterschiedliche Instanzen des
