@@ -55,12 +55,29 @@ zwischen ioBroker, Gateway und Komponenten.
 
 <b>Schritt 1.</b>
 
-- Installieren des Adapters durch klicken auf ![Plus](media/Adapter.PNG) in der linken Navigationsleiste des Webinterface
+- Installieren des Adapters durch klicken auf ![Adapter](media/Adapter.PNG) in der linken Navigationsleiste des Webinterface
 - in der nun erscheinenden Seite, in der Suche nach "Ikea Tradfri" suchen/filtern (siehe Abb. 01)
 - den Adapter über das Icon ![Plus](media/plus.PNG) (letzte Spalte, ganz rechts) installieren. (hierbei wird auto. eine neue Instanz 
-  des Adapters unter ![Plus](media/instanzen.PNG) angelegt)
+  des Adapters unter ![Instanzen](media/instanzen.PNG) angelegt)
 
 
 ![Ikea Tradfri Adapter hinzufügen](media/TradfriAdapterInstanz_002.PNG)
+
+<b>Schritt 2.</b>
+
+- Durch wechseln der Ansicht in der linken Navigationsleiste ![Instanzen](media/instanzen.PNG) werden die aktuell vorhandenen
+  Instanzen angezeigt. Nach setzen des Filters auf "Tradfri" werden alle laufenden "Tradfri" Instanzen angezeigt. 
+  Dies sollte der unteren Abbildung entsprechen.
+
+![Ikea Tradfri Instanzansicht](media/TradfriAdapterInstanz_003optimiert.PNG)
+
+- In der Spalte der jeweiligen Instanz bestehen folgende Anzeigen/ Aktionsmöglichkeiten Beschrieben von links nach rechts.
+  - Anzeige Aktivitätsstatus (einfaches Ampelsystem)
+    - ![Status Grün](media/status_green.PNG) ->Instanz läuft innerhalb der zu erwartenden Parameter, alles ok
+    - ![Status Gelb](media/status_yellow.PNG) -> Instanz läuft, allerdings gibt es ggf. Probleme mit der Konfiguration des Tradfri Gateway
+    - ![Status Rot](media/status_red.PNG) -> Instanz ist zwar gestartet, hat aber Probleme sich mit dem Host zu verbinden. 
+ 
+
+
 
 
