@@ -1,13 +1,14 @@
+![Logo](media/fritzbox.png)   
 Fritzbox
 ========
 
-| Stand der Doku | 12.01.2019                      |
+|Stand der Doku |11.01.2019                      |
 |----------------|---------------------------------|
-| Entwickler     | ruhr70                          |
-| Kategorie      | Hardware                        |
-| Keywords       | Fritzbox, AVM, Telefon, Anruf   |
-| Abhängigkeiten | Freigeschalteter FB-Callmonitor |
-| Lizenz         | MIT                             |
+| Entwickler     |ruhr70                          |
+| Kategorie      |Hardware                        |
+| Keywords       |Fritzbox, AVM, Telefon, Anruf   |
+| Abhängigkeiten |Freigeschalteter FB-Callmonitor |
+| Lizenz         |MIT                             |
 
 AVM Fritz!Box®
 --------------
@@ -40,26 +41,14 @@ Konfiguration
 
 ### Settings
 
-(grafik settings)
+`Hier ist lediglich zu aktivieren, welche Daten in welcher Form übermittelt werden sollen´
+<p>Weitere Informationen im Forum <a href="https://forum.iobroker.net/viewtopic.php?f=20&t=3344&hilit=fritzbox" title="Titel">
+in diesem Thread</a></p>
 
-Hier erfolgen die wesentlichen Einstellungen, um den Datenaustausch zu
-ermöglichen. In den meisten Fällen sind dabei *Bridge Address* und *IP-Adresse
-der* FB identisch.
-
-Wenn Polling aktiviert ist, sollte der Intervall nicht zu kurz gewählt werden,
-um Fehlverhalten und evtl. Störungen zu vermeiden.
-
-Unter dem Punkt *Rufnummern* kann eingestellt werden, wie unterdrückte oder
-unbekannte Rufnummern in den Listen dargestellt wird.
-
-Der Punkt *Ausgabe Anruferlisten* bietet die Erstellung der Listen in
-unterschiedlichen Formaten oder die Anzeige des Realtime-Callmonitors.
 
 ### Autosetup
 
-Hier kann über den Button „Connect Bridge“ der Router gesucht und eingebunden
-werden. Die Einstellungen wie Datenausgabe und Format entsprechen denen unter
-*Settings*.
+s. Settings
 
 Instanz
 -------
@@ -68,7 +57,7 @@ Unter *Instanzen* des ioBrokers finden sich die installierte Instanz des
 Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
 verbunden ist.
 
-(grafik instanz)
+![Instanz](media/instanz.png)
 
 Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
@@ -81,7 +70,7 @@ Im Bereich Objekte werden in einer Baumstruktur alle von der FB dem Adapter
 Direkt im Instanzordner *fritzbox.x* findet sich der Datenpunkt *Message* mit
 Datum, Uhrzeit und Art der letzten Aktion.
 
-(grafik ordnerbaum)
+![Ordnerhierarchie](media/ordnerbaum.png)
 
 Nachfolgend werden die jeweiligen Kanäle und die darin angelegten Datenpunkte
 kurz beschrieben.
@@ -102,7 +91,7 @@ Datenpunkte zeigen in Realtime die Anrufe
 Innerhalb dieses Kanals werden 2 weitere Kanäle sowie einige Datenpunkte
 angelegt:
 
-Grafik calls
+![Kanal Calls](media/calls.png)
 
 | **Datenpunkt**       | **Beschreibung**                            |
 |----------------------|---------------------------------------------|
@@ -164,7 +153,7 @@ Informationen übermittelt werden, kann in den Einstellungen festgelegt werden
 | allTableJSON    | Alle Anrufe      |
 | allTableTxt     |                  |
 | missedTableHTML | Verpasste Anrufe |
-| missedTableHSON |                  |
+| missedTablejSON |                  |
 
 ### Kanal system
 
@@ -187,9 +176,9 @@ TR-064 kann als Weiterentwicklung betrachtet werden, da dieser Adapter viel
 umfangreichere Informationen bietet, z.B. über die an der FB angemeldeten
 Geräte.
 
-Im Prinzip reicht es, wenn einer der beiden Adapter installiert ist. Da viele
-langjährige Benutzer den FB-Adapter nutzen, weil sie auf dessen Datenpunkte ihre
+Im Prinzip reicht es, wenn einer der beiden Adapter installiert ist. Da aber viele
+langjährige Benutzer den FB-Adapter nutzen und darauf ihre
 Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
 mehr weiterentwickelt.
 
-Neueinsteigern wird empfohlen, den TR-064-Adapter zu installieren.
+<p>Neueinsteigern wird empfohlen, den <a href="https://github.com/maloross/ioBroker.docs/tree/maloross-fritzbox-basis/docs/adapterref/docs/iobroker.tr-064/de" title="Titel">TR-064-Adapter</a> zu installieren.</p>
