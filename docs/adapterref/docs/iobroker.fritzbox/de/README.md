@@ -1,5 +1,4 @@
-![Logo](media/fritzbox.png)   
-Fritzbox
+![Logo](media/fritzbox.png) Fritzbox
 ========
 
 |Stand der Doku |11.01.2019                      |
