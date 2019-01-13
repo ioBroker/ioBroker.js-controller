@@ -1,3 +1,10 @@
+/**
+ *      Gulp tasks: update default repo files, create template for news.
+ *
+ *      Copyright 2018-2019 bluefox <dogafox@gmail.com>,
+ *      MIT License
+ *
+ */
 'use strict';
 
 const gulp      = require('gulp');
@@ -169,6 +176,7 @@ gulp.task('replaceCore', done => {
     }
     done();
 });
+
 gulp.task('cleanRepo', done => {
     const sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
     for (const adapter in sources) {
@@ -238,7 +246,7 @@ gulp.task('jsdoc', done => {
             done));
 });
 
-gulp.task('default',    ['replaceCore', 'updateReadme']);
-gulp.task('p',          ['replaceCore', 'updateReadme']);
-gulp.task('rename',     ['replace:name', 'renameFiles']);
-gulp.task('doc',        ['jsdoc']);
+gulp.task('default',    gulp.series('replaceCore', 'updateReadme'));
+gulp.task('p',          gulp.series('replaceCore', 'updateReadme'));
+gulp.task('rename',     gulp.series('replace:name', 'renameFiles'));
+gulp.task('doc',        gulp.series('jsdoc'));
