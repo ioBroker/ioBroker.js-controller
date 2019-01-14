@@ -2502,19 +2502,14 @@ function stopInstance(id, callback) {
 
     const instance = procs[id].config;
     if (!instance || !instance.common || !instance.common.mode) {
-        if (procs[id].process && !procs[id].startedInCompactMode) {
+        if (procs[id].process) {
             procs[id].stopping = true;
-            procs[id].process.kill();
-            delete procs[id].process;
-        }
-        if (procs[id].startedInCompactMode) {
-            procs[id].stopping = true;
-
             try {
-                procs[id].process.stop();  // call stop directly in adapter.js
+                procs[id].process.kill();  // call stop directly in adapter.js or call kill of process
             } catch (e) {
                 logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
             }
+            delete procs[id].process;
         }
 
         if (procs[id].schedule) {
@@ -2563,7 +2558,12 @@ function stopInstance(id, callback) {
                         logger.info('host.' + hostname + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id].process) {
                             procs[id].stopping = true;
-                            procs[id].process.kill();
+                            try {
+                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                            } catch (e) {
+                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            }
+
                             delete procs[id].process;
                         }
 
@@ -2580,7 +2580,11 @@ function stopInstance(id, callback) {
                         if (procs[id].process) {
                             logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
-                            procs[id].process.kill();
+                            try {
+                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                            } catch (e) {
+                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            }
                             delete procs[id].process;
                         }
                         if (typeof callback === 'function') {
@@ -2591,7 +2595,11 @@ function stopInstance(id, callback) {
                 } else {
                     logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
-                    procs[id].process.kill();
+                    try {
+                        procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                    } catch (e) {
+                        logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                    }
                     delete procs[id].process;
                     if (typeof callback === 'function') {
                         callback();
@@ -2639,7 +2647,11 @@ function stopInstance(id, callback) {
             } else {
                 logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
-                procs[id].process.kill();
+                try {
+                    procs[id].process.kill(); // call stop directly in adapter.js
+                } catch (e) {
+                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                }
                 delete procs[id].process;
                 if (typeof callback === 'function') {
                     callback();
