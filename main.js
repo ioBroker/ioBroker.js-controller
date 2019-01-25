@@ -549,7 +549,7 @@ function reportStatus() {
 
 function changeHost(objs, oldHostname, newHostname, callback) {
     if (!objs || !objs.length) {
-        if (callback) callback();
+        if (typeof callback === 'function') callback();
     } else {
         const row = objs.shift();
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
@@ -641,7 +641,7 @@ function cleanAutoSubscribes(instance, callback) {
 
 function delObjects(objs, callback) {
     if (!objs || !objs.length) {
-        if (callback) callback();
+        if (typeof callback === 'function') callback();
     } else {
         const row = objs.shift();
         if (row && row.id) {
@@ -685,11 +685,11 @@ function checkHost(type, callback) {
                 // find out all instances and rewrite it to actual hostname
                 objects.getObjectView('system', 'instance', {}, (err, doc) => {
                     if (err && err.status_code === 404) {
-                        if (callback) callback();
+                        if (typeof callback === 'function') callback();
                     } else if (doc.rows.length === 0) {
                         logger.info('host.' + hostname + ' no instances found');
                         // no instances found
-                        if (callback) callback();
+                        if (typeof callback === 'function') callback();
                     } else {
                         // reassign all instances
                         changeHost(doc.rows, oldHostname, hostname, () => {
@@ -706,12 +706,12 @@ function checkHost(type, callback) {
                         });
                     }
                 });
-            } else if (callback) {
+            } else if (typeof callback === 'function') {
                 callback();
             }
         });
-    } else {
-        callback && callback();
+    } else if (typeof callback === 'function') {
+        callback();
     }
 }
 
@@ -756,42 +756,39 @@ function collectDiagInfo(type, callback) {
                         delete diag.city;
                         delete diag.country;
                     }
-                    if (!_err && doc) {
-                        if (doc && doc.rows.length) {
-                            if (!semver) semver = require('semver');
 
-                            doc.rows.sort((a, b) => {
-                                try {
-                                    return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
-                                } catch (e) {
-                                    logger.error('host.' + hostname + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
-                                    return 0;
-                                }
-                            });
+                    if (!_err && doc && doc.rows.length) {
+                        if (!semver) semver = require('semver');
 
-                            // Read installed versions of all hosts
-                            for (let i = 0; i < doc.rows.length; i++) {
-                                diag.hosts.push({
-                                    version:  doc.rows[i].value.common.installedVersion,
-                                    platform: doc.rows[i].value.common.platform,
-                                    type:     doc.rows[i].value.native.os.platform
-                                });
+                        doc.rows.sort((a, b) => {
+                            try {
+                                return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
+                            } catch (e) {
+                                logger.error('host.' + hostname + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
+                                return 0;
                             }
+                        });
+
+                        // Read installed versions of all hosts
+                        for (let i = 0; i < doc.rows.length; i++) {
+                            diag.hosts.push({
+                                version:  doc.rows[i].value.common.installedVersion,
+                                platform: doc.rows[i].value.common.platform,
+                                type:     doc.rows[i].value.native.os.platform
+                            });
                         }
                     }
                     objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
                         let visFound = false;
-                        if (!_err && doc) {
-                            if (doc && doc.rows.length) {
-                                // Read installed versions of all adapters
-                                for (let i = 0; i < doc.rows.length; i++) {
-                                    diag.adapters[doc.rows[i].value.common.name] = {
-                                        version:  doc.rows[i].value.common.version,
-                                        platform: doc.rows[i].value.common.platform
-                                    };
-                                    if (doc.rows[i].value.common.name === 'vis') {
-                                        visFound = true;
-                                    }
+                        if (!_err && doc && doc.rows.length) {
+                            // Read installed versions of all adapters
+                            for (let i = 0; i < doc.rows.length; i++) {
+                                diag.adapters[doc.rows[i].value.common.name] = {
+                                    version:  doc.rows[i].value.common.version,
+                                    platform: doc.rows[i].value.common.platform
+                                };
+                                if (doc.rows[i].value.common.name === 'vis') {
+                                    visFound = true;
                                 }
                             }
                         }
@@ -832,10 +829,10 @@ function collectDiagInfo(type, callback) {
                                 });
                             } catch (e) {
                                 logger.error('host.' + hostname + ' cannot call visUtils: ' + e);
-                                if (callback) callback(diag);
+                                if (typeof callback === 'function') callback(diag);
                             }
-                        } else {
-                            if (callback) callback(diag);
+                        } else if (typeof callback === 'function') {
+                            callback(diag);
                         }
                     });
                 });
@@ -1308,11 +1305,11 @@ function getVersionFromHost(hostId, callback) {
     states.getState(hostId + '.alive', function (err, state) {
         if (state && state.val)  {
             sendTo(hostId, 'getVersion', null, function (ioPack) {
-                if (callback) setImmediate(callback, ioPack);
+                if (typeof callback === 'function') setImmediate(callback, ioPack);
             });
         } else {
             logger.warn('host.' + hostname + ' "' + hostId + '" is offline');
-            if (callback) setImmediate(callback, null, hostId);
+            if (typeof callback === 'function') setImmediate(callback, null, hostId);
         }
     });
 }
@@ -1360,7 +1357,7 @@ function processMessage(msg) {
             const child = spawn('node', args);
             if (child.stdout) {
                 child.stdout.on('data', data => {
-                    data = data.toString().replace('\n', '');
+                    data = data.toString().replace(/\n/g, '');
                     logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
                 });
@@ -1368,7 +1365,7 @@ function processMessage(msg) {
 
             if (child.stderr) {
                 child.stderr.on('data', data => {
-                    data = data.toString().replace('\n', '');
+                    data = data.toString().replace(/\n/g, '');
                     logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                     if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
                 });
@@ -1638,14 +1635,17 @@ function processMessage(msg) {
                     fs.createReadStream(logFile_, {
                         start: (stats.size > 150 * lines) ? stats.size - 150 * lines : 0,
                         end:   stats.size
-                    }).on('data', chunk => text += chunk.toString())
+                    })
+                        .on('data', chunk => text += chunk.toString())
                         .on('end', () => {  // done
                             const lines = text.split('\n');
                             lines.shift();
                             lines.push(stats.size);
                             sendTo(msg.from, msg.command, lines, msg.callback);
-                        }).on('error', () =>   // done
-                        sendTo(msg.from, msg.command, [stats.size], msg.callback));
+                        })
+                        .on('error', () => {  // done
+                            sendTo(msg.from, msg.command, [stats.size], msg.callback);
+                        });
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
@@ -2072,13 +2072,13 @@ function installAdapters() {
             const child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
             if (child.stdout) {
                 child.stdout.on('data', data => {
-                    data = data.toString().replace('\n', '');
+                    data = data.toString().replace(/\n/g, '');
                     logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
             }
             if (child.stderr) {
                 child.stderr.on('data', data => {
-                    data = data.toString().replace('\n', '');
+                    data = data.toString().replace(/\n/g, '');
                     logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
                 });
             }
