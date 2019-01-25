@@ -3,8 +3,9 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2018 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2019 bluefox <dogafox@gmail.com>,
  *                     2014 hobbyquaker <hq@ccu.io>
+ *      MIT License
  *
  */
 'use strict';
@@ -13,8 +14,8 @@ const schedule   = require('node-schedule');
 const os         = require('os');
 const fs         = require('fs');
 const cp         = require('child_process');
-const ioPackage  = require('./io-package.json');
-const tools      = require('./lib/tools');
+const ioPackage  = require(__dirname + '/io-package.json');
+const tools      = require(__dirname + '/lib/tools');
 const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
 let   adapterDir = __dirname.replace(/\\/g, '/');
@@ -119,7 +120,7 @@ function getConfig() {
 }
 
 function _startMultihost(_config, secret) {
-    const MHService = require('./lib/multihostServer.js');
+    const MHService = require(__dirname + '/lib/multihostServer.js');
     const cpus    = os.cpus();
     mhService = new MHService(hostname, logger, _config, {
         node:   process.version,
@@ -277,7 +278,7 @@ function createStates() {
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    setImmediate(() => {
+                    setImmediate(function () {
                         objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
                             if (err) logger.error('host.' + hostname + ' Cannot read object: '  + err);
                             if (obj && obj.common) {
@@ -777,7 +778,6 @@ function collectDiagInfo(type, callback) {
                             });
                         }
                     }
-
                     objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
                         let visFound = false;
                         if (!_err && doc && doc.rows.length) {
@@ -1258,10 +1258,12 @@ function setMeta() {
         }
     });
 
-    extendObjects(tasks, () =>
+    extendObjects(tasks, function () {
         // create UUID if not exist
-        tools.createUuid(objects, uuid =>
-            uuid && logger && logger.info('host.' + hostname + ' Created UUID: ' + uuid)));
+        tools.createUuid(objects, function (uuid) {
+            if (uuid && logger) logger.info('host.' + hostname + ' Created UUID: ' + uuid);
+        });
+    });
 }
 
 // Subscribe on message queue
@@ -1412,7 +1414,13 @@ function processMessage(msg) {
                                 if (!repos.native.repositories[active].json || updateRepo) {
                                     logger.info('host.' + hostname + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
-                                    tools.getRepositoryFile(repos.native.repositories[active].link, {controller: version, node: process.version, name: tools.appName}, (err, sources) => {
+                                    tools.getRepositoryFile(repos.native.repositories[active].link, {
+                                        hash: repos.native.repositories[active].hash, 
+                                        sources: repos.native.repositories[active].json,
+                                        controller: version, 
+                                        node: process.version, 
+                                        name: tools.appName
+                                    }, (err, sources, sourcesHash) => {
                                         if (err) logger.warn('host.' + hostname + ' warning: ' + err);
                                         if (!sources || !Object.keys(sources).length) {
                                             logger.warn('host.' + hostname + ' warning: empty repo received!');
@@ -1424,6 +1432,7 @@ function processMessage(msg) {
                                             }
                                         } else {
                                             repos.native.repositories[active].json = sources;
+                                            repos.native.repositories[active].hash = sourcesHash || '';
                                             sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                             repos.from = 'system.host.' + tools.getHostName();
                                             repos.ts = Date.now();
@@ -2493,19 +2502,14 @@ function stopInstance(id, callback) {
 
     const instance = procs[id].config;
     if (!instance || !instance.common || !instance.common.mode) {
-        if (procs[id].process && !procs[id].startedInCompactMode) {
+        if (procs[id].process) {
             procs[id].stopping = true;
-            procs[id].process.kill();
-            delete procs[id].process;
-        }
-        if (procs[id].startedInCompactMode) {
-            procs[id].stopping = true;
-
             try {
-                procs[id].process.stop();  // call stop directly in adapter.js
+                procs[id].process.kill();  // call stop directly in adapter.js or call kill of process
             } catch (e) {
                 logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
             }
+            delete procs[id].process;
         }
 
         if (procs[id].schedule) {
@@ -2554,7 +2558,12 @@ function stopInstance(id, callback) {
                         logger.info('host.' + hostname + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id].process) {
                             procs[id].stopping = true;
-                            procs[id].process.kill();
+                            try {
+                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                            } catch (e) {
+                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            }
+
                             delete procs[id].process;
                         }
 
@@ -2571,7 +2580,11 @@ function stopInstance(id, callback) {
                         if (procs[id].process) {
                             logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
-                            procs[id].process.kill();
+                            try {
+                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                            } catch (e) {
+                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            }
                             delete procs[id].process;
                         }
                         if (typeof callback === 'function') {
@@ -2582,7 +2595,11 @@ function stopInstance(id, callback) {
                 } else {
                     logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
-                    procs[id].process.kill();
+                    try {
+                        procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                    } catch (e) {
+                        logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                    }
                     delete procs[id].process;
                     if (typeof callback === 'function') {
                         callback();
@@ -2630,7 +2647,11 @@ function stopInstance(id, callback) {
             } else {
                 logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
-                procs[id].process.kill();
+                try {
+                    procs[id].process.kill(); // call stop directly in adapter.js
+                } catch (e) {
+                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                }
                 delete procs[id].process;
                 if (typeof callback === 'function') {
                     callback();
