@@ -4,40 +4,38 @@ HomeMatic ReGaHSS
 
 | Stand der Doku          | 08.01.2019                                           |
 |-------------------------|------------------------------------------------------|
-| aktuelle Version stable |                                                      |
-| aktuelle Version latest |                                                      |
-| OS                      |                                 |
-| node-Version                                                       |
-| Entwickler              | Pmant                                                |
-| Github                  |                                                 |
-| Lizenz                  |                                                 |
-| Kategorie               | ioT Systeme                                        |
-| Keywords                | \`Homematic\` \`home automation\` \`Hausautomation\` |
-| Abhängigkeiten          |                                                      |
+| Entwickler              |Pmant                                                |
+| Lizenz                  |MIT                                               |
+| Kategorie               |ioT Systeme                                        |
+| Keywords                |Homematic, home automation, Hausautomation, |
+| Abhängigkeiten          |Adapter <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>                                                 |
 
 Homematic
 ---------
 
-Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
+>Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
 
-Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
+>Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
 Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
 Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
 Drahtbus-Komponenten eingesetzt werden.
 
+<a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage des Herstellers eQ3">
+Quelle:</a>
+
 Adapter Homematic ReGaHss
 -------------------------
 
-Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ her.
+Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ (**Re**sidential **Ga**teway) her.
 Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
 zwischen Homematic und ioBroker.
 
 Falls mehrere Zentralen in ioBroker eingebunden werden sollen, ist für jede
 Zentrale eine eigene Instanz zu installieren und konfigurieren.
 
-Mit der Installation von ReGaHSS wird auch eine Instanz von „Homematic RPC“
+Mit der Installation von ReGaHSS wird auch eine Instanz des Adapters <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>
 installiert, die vorab konfiguriert und aktiviert werden sollte.
 
 Eine Instanz dieses Adapters kann bis zu 5 unterschiedliche Instanzen des
