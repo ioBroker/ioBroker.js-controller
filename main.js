@@ -77,7 +77,8 @@ const errorCodes            = [
     '', // 22
     '', // 23
     '', // 24
-    'Unsupported npm version' // 25
+    'Unsupported npm version', // 25
+    'Corrupted file' // 26
 ];
 const procs                   = {};
 const subscribe               = {};
