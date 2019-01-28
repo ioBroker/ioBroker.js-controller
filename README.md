@@ -34,18 +34,13 @@ This is a Javascript/Node.js implementation of an ioBroker controller.
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install curl build-essential
-sudo curl -sL https://deb.nodesource.com/setup_6.x | sudo bash -
+sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 sudo apt-get install -y nodejs
 ```
 
-### Install ioBroker on linux
+### Install ioBroker 
 
-```
-sudo mkdir /opt/iobroker
-sudo cd /opt/iobroker
-sudo chmod 777 /opt/iobroker
-sudo npm install iobroker --unsafe-perm
-```
+see https://github.com/ioBroker/ioBroker/wiki/Installation
 
 After that the ioBroker should run and be available in browser under ```http://<ip>:8081/```
 
@@ -57,17 +52,6 @@ After that the ioBroker should run and be available in browser under ```http://<
 or
 
 * run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
-
-### Install js-controller on windows
-
-* Create and change to the directory under which you want to install ioBroker.
-
-    ```mkdir C:/iobroker```
-    ```cd C:/iobroker```
-
-* install npm packet from created directory
-
-    ```npm install iobroker```
 
 ### Start ioBroker controller on windows
 
@@ -90,7 +74,7 @@ There is a possibility to use REDIS as states database. It is reasonable to do t
 It is possible to switch anytime between REDIS and In-Memory Javascript DB. The only problem, that all states must be updated by adapters again (values will be lost).
 Objects and configuration are not affected.
 
-To install REDIS on linux/debuan just write: ```apt-get install redis-server``` .
+To install REDIS on linux/debian just write: ```apt-get install redis-server``` .
 
 If you plan to use mulithost installation you must allow connections to redis from any address (default only 127.0.0.1).
 To do that edit file */etc/redis/redis.conf* (```sudo nano /etc/redis/redis.conf```) and replace ```bind 127.0.0.1``` with ```bind 0.0.0.0``` .
