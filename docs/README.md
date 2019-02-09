@@ -20,7 +20,7 @@ alles möglich.
 !> Diese Dokumentation befindet sich im gerade Aufbau. Daher kann es 
    vorkommen, dass Links nicht funktionieren oder Inhalte fehlen.
    <br><br>
-   Beachten Sie, dass diese Dokumentation stetig erweitert wird. 
+   Bitte beachte, dass diese Dokumentation stetig erweitert wird. 
    Wir sind für jede Hilfe bei der Erstellung oder Verbesserung dankbar.
    Information dazu finden Sie [im Forum][].
    <br><br>
