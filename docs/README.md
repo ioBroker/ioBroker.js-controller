@@ -17,12 +17,11 @@ kommerzieller Produkte aus fast allen Lebensbereichen oder die
 Integration einer selbst erstellten Lösung - ioBroker macht fast 
 alles möglich.
 
-!> Die Dokumentation befindet sich im gerade Aufbau. Daher kann es 
-   vorkommen, dass Links noch nicht funktionieren oder Inhalte fehlen.
+!> Die Dokumentation befindet sich im Aufbau und wird stetig erweitert.
+   Daher kann es vorkommen,dass Links noch nicht funktionieren oder 
+   Inhalte fehlen.
    <br><br>
-   Diese Dokumentation wird stetig erweitert. Wir sind für jede Hilfe 
-   bei der Erstellung oder Verbesserung dankbar. Information dazu gibt 
-   es [im Forum][].
+   Wir sind für jede Hilfe bei der Erstellung oder Verbesserung dankbar. Information dazu gibt es [im Forum][].
    <br><br>
    **Bis alle Inhalte übernommen wurden, ist die alte Dokumentation noch
    [hier zu finden][]. Sie wird sukzessive durch die neue Dokumentation 
