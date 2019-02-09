@@ -17,15 +17,16 @@ alles möglich.
 
 ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
 
-?> Diese Dokumentation entsteht gerade erst. Deshalb bitte nicht wundern,
-   wenn Links nicht funktionieren oder Inhalte fehlen.
+!> Diese Dokumentation befindet sich im gerade Aufbau. Daher kann es 
+   vorkommen, dass Links nicht funktionieren oder Inhalte fehlen.
    <br><br>
-   Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind,
-   dass etwas fehlt oder besser beschrieben werden sollte,
-   [helfen Sie uns dabei][], die Dokumentation zu verbessern!
+   Beachten Sie, dass diese Dokumentation stetig erweitert wird. 
+   Wir sind für jede Hilfe bei der Erstellung oder Verbesserung dankbar.
+   Information dazu finden Sie [im Forum][].
    <br><br>
-   Bis alle Inhalte übernommen wurden, ist die bestehende Dokumentation noch
-   [hier zu finden][].
+   **Bis alle Inhalte übernommen wurden, ist die alte Dokumentation noch
+   [hier zu finden][]. Sie wird sukzessive mit der neuen Dokumentation
+   ersetzt.**
 
 ## Visualisierung
 
@@ -98,7 +99,7 @@ miteinander aus. Da ioBroker Open Source-Software ist, stehen alle
 Quelltexte auf der Plattform [GitHub][] 
 zur freien Verfügung. 
 
-!> Was ioBroker nicht ist:  
+?> Was ioBroker nicht ist:  
    ioBroker ist keine kommerzielle Software. ioBroker wird von ehrenamtlichen
    Helfern entwickelt und gepflegt. Deshalb erfolgt der Einsatz der Software
    auf eigene Haftung, ausgenommen dem Vorsatz einer mutwilligen Schädigung. 
@@ -106,5 +107,5 @@ zur freien Verfügung.
 
 [Forum]: https://forum.iobroker.net
 [GitHub]: https://github.com/iobroker/iobroker
-[helfen Sie uns dabei]: /community/doc
+[im Forum]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
 [hier zu finden]: http://www.iobroker.net/docu/?lang=de
