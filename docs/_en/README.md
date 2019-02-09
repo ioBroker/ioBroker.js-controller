@@ -1,4 +1,9 @@
-# Welcome to ioBroker
+---
+title:       "Welcome"
+lastChanged: "09.02.2019"
+---
+
+# Welcome to ioBroker {docsify-ignore-all}
 
 ## Introduction
 
@@ -11,6 +16,17 @@ An ioBroker system has a modular and extensible structure. A variety of
 from A) like alarm systems to Z) like z-wave. Commercial products from 
 hundrets of manufacures can be as easy integerated as
 self created solutions - ioBroker makes almost everything possible.
+
+!> This documentation is currently under construction. As a result, links
+   may not work or content may be missing. 
+   <br><br>
+   Please note, that this documentation is constantly being extended. We
+   are grateful for any help in creating or improving. Related information 
+   can be found [in the forum][].
+   <br><br>
+   **Until all contents have been taken over, the old documentation is 
+   still [available here][]. The old documentaion will gradually 
+   be replaced by the new one.**
 
 ## Visualization
 
@@ -69,7 +85,10 @@ is open source software, all source code is provided on the platform
 [GitHub](https://github.com/iobroker/iobroker). Programming is done 
 using JavaScript. Everyone can contribute.
 
-!> ioBroker is not:  
+?> ioBroker is not:  
    ioBroker isn't a commercial product. ioBroker is run by volunteers. 
    Therefore, the software is used on your own liability except the intention 
    of willful damage. There is no contracted support.
+
+[in the forum]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
+[available here]: http://www.iobroker.net/docu/?lang=en

@@ -8,14 +8,14 @@ lastChanged: "09.02.2019"
 ioBroker ist ein zentraler Service zum Anbinden, Auswerten und Bedienen 
 von Systemen, die ohne ioBroker Insellösungen bleiben würden. 
 
+ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
+
 Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von `Adaptern`
 ermöglicht die Kommunikation mit über 200 verschiedenen Plattformen 
 von A wie Alexa bis Z wie Zeiterfassung. Sei es die Einbindung 
 kommerzieller Produkte aus fast allen Lebensbereichen oder die 
 Integration einer selbst erstellten Lösung - ioBroker macht fast 
 alles möglich.
-
-ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
 
 !> Diese Dokumentation befindet sich im gerade Aufbau. Daher kann es 
    vorkommen, dass Links nicht funktionieren oder Inhalte fehlen.
@@ -25,7 +25,7 @@ ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
    Information dazu finden Sie [im Forum][].
    <br><br>
    **Bis alle Inhalte übernommen wurden, ist die alte Dokumentation noch
-   [hier zu finden][]. Sie wird sukzessive mit der neuen Dokumentation
+   [hier zu finden][]. Sie wird sukzessive durch die neue Dokumentation 
    ersetzt.**
 
 ## Visualisierung

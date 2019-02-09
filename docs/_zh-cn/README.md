@@ -1,3 +1,8 @@
+---
+title:       "欢迎来到"
+lastChanged: "09.02.2019"
+---
+
 # 欢迎来到ioBroker {docsify-ignore-all}
 
 ioBroker是物联网的集成平台。
@@ -7,6 +12,12 @@ ioBroker作为设备中枢以此解决设备信息不互通的问题。
 
 ioBroker具有模块化结构。各种`适配器`实现与200多个不同平台的通信，比如Alexa接入, Z-wave。
 无论是来自不同供应商的商业产品，还是整合diy的解决方案，几乎都可以接入ioBroker，一切皆有可能。
+
+!> 该文档目前正在建设中。 因此，链接可能无法正常工作或内容可能丢失。
+   <br><br>
+   请注意，本文档不断扩展。 我们感谢您在创建或改进方面提供的任何帮助。 相关信息可在[论坛][]中找到。
+   <br><br>
+   **在所有内容都被接管之前，旧文档仍然[可在此处][]。 旧文件将逐渐被新文件取代。。**
 
 ## 可视化
 
@@ -53,9 +64,12 @@ ioBroker代码是用JavaScript完成的，自1995年以来一直稳定开发脚�
 由于ioBroker是开源软件，所以每个人都可以在[GitHub]()上源看到源代码。
 
 
-!> 特别声明:  
+?> 特别声明:  
   ioBroker不是商业软件。ioBroker由志愿者共同开发和维护。
   因此，使用该软件的责任全部有自己承担。
 
 [论坛支持]: https://forum.iobroker.net
 [GitHub]: https://github.com/iobroker/iobroker
+
+[论坛]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
+[可在此处]: http://www.iobroker.net/docu/?lang=en
