@@ -16,7 +16,6 @@
     }
 
     :root {
-      --base-font-size                     : 14px;
       /* Content */
       --content-max-width                  : 70em;
       /* Plugin: Pagination */
@@ -25,10 +24,13 @@
       /* Sidebar */
       --sidebar-padding                    : 0 25px;
       --sidebar-width                      : 19rem;
-      --navbar-root-padding                : 0.75rem;
-      --kbd-padding                        : 3px 4px 4px 4px;
       --sidebar-nav-link-before-content-l3 : '';
       --sidebar-nav-indent                 : 0.5rem;
+      /* Navbar */
+      --navbar-root-padding                : 0.75rem;
+      /* look and feel */
+      --kbd-padding                        : 3px 4px 4px 4px;
+      --base-font-size                     : 14px;
     }
   </style>
 </head>
@@ -76,7 +78,8 @@
         function (hook) {
           var footer = [
             '<hr/><footer><span style="font-size: 9pt"><a href="https://github.com/ioBroker/ioBroker">ioBroker</a> &copy;2018. MIT license. ',
-            'The work of many contributors. Use it. Take action. Join us at <a href="https://github.com">https://github.com</a>.</span></footer>'
+            'The work of many contributors. Use it. Take action. Join us at <a href="https://github.com">https://github.com</a>.',
+            '<br>** <a href="http://www.iobroker.net/docu/?lang=de">Link to the old documentation</a> **</span></footer>'
           ].join('');
           hook.afterEach(function (html) {
             return html + footer
