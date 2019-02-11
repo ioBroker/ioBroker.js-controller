@@ -248,5 +248,5 @@ gulp.task('jsdoc', done => {
 
 gulp.task('default',    gulp.series('replaceCore', 'updateReadme'));
 gulp.task('p',          gulp.series('replaceCore', 'updateReadme'));
-gulp.task('rename',     gulp.series('replace:name', 'renameFiles'));
+gulp.task('rename',     gulp.series('replaceName', 'renameFiles'));
 gulp.task('doc',        gulp.series('jsdoc'));
