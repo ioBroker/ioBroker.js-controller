@@ -9,6 +9,7 @@
     "greenlock": "^2.4.2",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
+    "le-acme-core": "^2.1.4",
     "redis": "^2.8.0",
     "winston-syslog": "^2.0.0"
   },

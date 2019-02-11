@@ -14,10 +14,11 @@ const schedule   = require('node-schedule');
 const os         = require('os');
 const fs         = require('fs');
 const cp         = require('child_process');
-const ioPackage  = require(__dirname + '/io-package.json');
-const tools      = require(__dirname + '/lib/tools');
+const ioPackage  = require('./io-package.json');
+const tools      = require('./lib/tools');
 const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
+const EXIT_CODES = require('./lib/exitCodes');
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 
@@ -36,13 +37,13 @@ process.title = title;
 let Objects;
 let States;
 
-let semver;
+let semver                  = require('semver');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
 let callbacks               = {};
-const hostname                = tools.getHostName();
-const logList                 = [];
+const hostname              = tools.getHostName();
+const logList               = [];
 let detectIpsCount          = 0;
 let disconnectTimeout       = null;
 let connected               = null; // not false, because want to detect first connection
@@ -50,54 +51,35 @@ let ipArr                   = [];
 let lastCalculationOfIps    = null;
 let lastDiskSizeCheck       = 0;
 
-const DESIRED_TERMINATION   = 11;
-const errorCodes            = [
-    'OK', // 0
-    '', // 1
-    'Adapter has invalid config or no config found', // 2
-    'Adapter disabled or invalid config', // 3
-    'invalid config: no _id found', // 4
-    'invalid config', // 5
-    'uncaught exception', // 6
-    'Adapter already running', // 7
-    'node.js: Cannot find module', // 8
-    '', // 9
-    'Cannot find start file of adapter', // 10
-    'Desired termination', // 11 - DESIRED_TERMINATION
-    '', // 12
-    '', // 13
-    '', // 14
-    '', // 15
-    '', // 16
-    '', // 17
-    '', // 18
-    '', // 19
-    '', // 20
-    '', // 21
-    '', // 22
-    '', // 23
-    '', // 24
-    'Unsupported npm version', // 25
-    'Corrupted backup' // 26
-];
-const procs                   = {};
-const subscribe               = {};
+const procs                 = {};
+const subscribe             = {};
 let states                  = null;
 let objects                 = null;
 let storeTimer              = null;
 let isStopping              = null;
 let allInstancesStopped     = true;
-const stopTimeout             = 10000;
+const stopTimeout           = 10000;
 let uncaughtExceptionCount  = 0;
-const installQueue            = [];
+const installQueue          = [];
 let started                 = false;
 let inputCount              = 0;
 let outputCount             = 0;
 let mhService               = null; // multihost service
-const uptimeStart             = Date.now();
-const adapterModules          = {};
+const uptimeStart           = Date.now();
+const adapterModules        = {};
 
 const config = getConfig();
+
+
+function getErrorText(code) {
+    const texts = Object.keys(EXIT_CODES);
+    for (let i = 0; i < texts.length; i++) {
+        if (EXIT_CODES[texts[i]] === code) {
+            return texts[i];
+        }
+    }
+    return code;
+}
 
 function getConfig() {
     const configFile = tools.getConfigFileName();
@@ -109,7 +91,7 @@ function getConfig() {
             logger = require(__dirname + '/lib/logger')('info', [tools.appName]);
         }
         logger.error('host.' + hostname + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
-        process.exit(1);
+        process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
         return null;
     } else {
         const _config = JSON.parse(fs.readFileSync(configFile));
@@ -158,11 +140,10 @@ function startMultihost(__config) {
         }
 
         if (_config.multihostService.secure) {
-            objects.getObject('system.config', function (err, obj) {
+            objects.getObject('system.config', (err, obj) => {
                 if (obj && obj.native && obj.native.secret) {
-                    tools.decryptPhrase(obj.native.secret, _config.multihostService.password, function (secret) {
-                        _startMultihost(_config, secret);
-                    });
+                    tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                        _startMultihost(_config, secret));
                 } else {
                     logger.error('host.' + hostname + ' Cannot start multihost: no system.config found');
                 }
@@ -279,15 +260,15 @@ function createStates() {
             if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    setImmediate(function () {
-                        objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), function (err, obj) {
+                    setImmediate(() => {
+                        objects.getObject(id.substring(0, id.length - 6/*'.alive'.length*/), (err, obj) => {
                             if (err) logger.error('host.' + hostname + ' Cannot read object: '  + err);
                             if (obj && obj.common) {
                                 // IF adapter enabled => disable it
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
                                     obj.common.enabled = !!enabled;
                                     logger.warn('host.' + hostname + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled'));
-                                    setImmediate(function () {
+                                    setImmediate(() => {
                                         obj.from = 'system.host.' + hostname;
                                         obj.ts = Date.now();
                                         objects.setObject(obj._id, obj);
@@ -759,8 +740,6 @@ function collectDiagInfo(type, callback) {
                     }
 
                     if (!_err && doc && doc.rows.length) {
-                        if (!semver) semver = require('semver');
-
                         doc.rows.sort((a, b) => {
                             try {
                                 return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
@@ -1259,12 +1238,10 @@ function setMeta() {
         }
     });
 
-    extendObjects(tasks, function () {
+    extendObjects(tasks, () =>
         // create UUID if not exist
-        tools.createUuid(objects, function (uuid) {
-            if (uuid && logger) logger.info('host.' + hostname + ' Created UUID: ' + uuid);
-        });
-    });
+        tools.createUuid(objects, uuid =>
+            uuid && logger && logger.info('host.' + hostname + ' Created UUID: ' + uuid)));
 }
 
 // Subscribe on message queue
@@ -1942,7 +1919,7 @@ function initInstances() {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
                 installQueue.push({id: id, disabled: true});
                 // start install queue if not started
-                if (installQueue.length === 1) installAdapters();
+                installQueue.length === 1 && installAdapters();
             }
         }
     }
@@ -1954,7 +1931,6 @@ function checkVersion(id, name, version) {
     if (name === 'js-controller') {
         // Check only version
         if (version !== null) {
-            if (!semver) semver = require('semver');
             if (!semver.satisfies(ioPackage.common.version, version)) {
                 logger.error('host.' + hostname + ' startInstance ' + id + 'Invalid version of "' + name + '". Installed "' + ioPackage.common.version + '", required "' + version);
                 return false;
@@ -1993,8 +1969,6 @@ function checkVersions(id, deps) {
                 let version = null;
                 let name    = null;
                 if (typeof deps[d] === 'object') {
-                    if (!semver) semver = require('semver');
-
                     for (const n in deps[d]) {
                         if (!deps[d].hasOwnProperty(n)) continue;
                         name    = n;
@@ -2225,6 +2199,30 @@ function startInstance(id, wakeUp) {
     }
     procs[id].downloadRetry = 0;
 
+    // read node.js engine requirements
+    try {
+        // read directly from disk and not via require to allow "on the fly" updates of adapters.
+        let p = fs.readFileSync(adapterDir_ + '/package.json');
+        p = JSON.parse(p.toString());
+        procs[id].engine = p && p.engines && p.engines.node;
+    } catch (e) {
+        logger.error(`host.${hostname} startInstance ${name}.${args[0]}: Cannot read and parse "${adapterDir}/package.json"`);
+    }
+
+    // check node.js version if defined in package.json
+    if (procs[id].engine) {
+        if (!semver.satisfies(process.version.replace(/^v/, ''), procs[id].engine)) {
+            logger.warn(`host.${hostname} startInstance ${name}.${args[0]}: required node.js version ${procs[id].engine}, actual version ${process.version}`);
+            // disable instance
+            objects.getObject(id, (err, obj) => {
+                if (obj && obj.common && obj.common.enabled) {
+                    objects.setObject(obj._id, obj, err =>
+                        logger.warn(`host.${hostname} startInstance ${name}.${args[0]}: instance disabled because of node.js version mismatch`));
+                }
+            });
+            return;
+        }
+    }
 
     //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
@@ -2319,7 +2317,7 @@ function startInstance(id, wakeUp) {
                     }
 
                     // show stored errors
-                    cleanErrors(id, null, code !== 4294967196 && code !== DESIRED_TERMINATION);
+                    cleanErrors(id, null, code !== 4294967196 && code !== EXIT_CODES.ADAPTER_STOPPED_BY_CODE);
 
                     if (mode !== 'once') {
                         if (signal) {
@@ -2329,7 +2327,7 @@ function startInstance(id, wakeUp) {
                         }
 
                         if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                             if (procs[id].stopping !== undefined) {
                                 delete procs[id].stopping;
                             }
@@ -2353,13 +2351,13 @@ function startInstance(id, wakeUp) {
                             return;
                         } else {
                             //noinspection JSUnresolvedVariable
-                            if (code === DESIRED_TERMINATION) {
+                            if (code === EXIT_CODES.ADAPTER_STOPPED_BY_CODE) {
                                 logger.error(`host.${hostname} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
                             } else
                             if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
-                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                             }
                         }
                     }
@@ -2367,7 +2365,7 @@ function startInstance(id, wakeUp) {
                     if (procs[id] && procs[id].process) {
                         delete procs[id].process;
                     }
-                    if (code !== DESIRED_TERMINATION && !wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
+                    if (code !== EXIT_CODES.ADAPTER_STOPPED_BY_CODE && !wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
 
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
@@ -2379,7 +2377,7 @@ function startInstance(id, wakeUp) {
                             code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                     } else {
-                        if (code === DESIRED_TERMINATION) {
+                        if (code === EXIT_CODES.ADAPTER_STOPPED_BY_CODE) {
                             logger.info(`host.${hostname} Do not restart adapter ${id} because desired by instance`);
                         } else
                         if (mode !== 'once') {
@@ -2440,9 +2438,9 @@ function startInstance(id, wakeUp) {
                             logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                         } else {
                             if (code === 0 || code === '0') {
-                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                             } else {
-                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                             }
                         }
                         if (procs[id] && procs[id].process) delete procs[id].process;
@@ -2471,9 +2469,9 @@ function startInstance(id, wakeUp) {
                         logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                     } else {
                         if (code === 0 || code === '0') {
-                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                         } else {
-                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
+                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
                         }
                     }
                     delete procs[id].process;
@@ -2784,8 +2782,8 @@ function stop() {
                     }
                 }
             }
-            if (states  && states.destroy)  states.destroy();
-            setTimeout(() => process.exit(1), 1000);
+            states && states.destroy && states.destroy();
+            setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
         });
     });
 }
@@ -2945,7 +2943,7 @@ function init() {
         if (uncaughtExceptionCount) {
             console.error(err.message || err);
             if (err.stack) console.error(err.stack);
-            process.exit(2);
+            process.exit(EXIT_CODES.UNCAUGHT_EXCEPTION);
             return;
         }
         uncaughtExceptionCount++;
