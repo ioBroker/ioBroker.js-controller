@@ -1,5 +1,11 @@
-## 1.5.4 (2019-02-12) Evolution release (Ann)
-* (bluefox) disable the auto-control of quality codes
+## 1.5.5 (2019-02-12) Fixes for Evolution release (Ann)
+* (bluefox) Fix let's encrypt
+* (bluefox) Fix "iob" script
+* (Dominic Griesel) Revert the changes to `del[Foreign]State`, so the object is not deleted.
+* (bluefox) always install the version from repository and not the latest from npm
+* (Ingo Fischer) Root should always npm install with --unsafe-perm
+* (bluefox) fix iobroker stop
+* (bluefox) fix Empty ID error
 
 ## 1.5.3 (2018-09-15) Evolution release (Ann)
 * (bluefox) disable the auto-control of quality codes
