@@ -1,3 +1,6 @@
+## 1.5.4 (2019-02-12) Evolution release (Ann)
+* (bluefox) disable the auto-control of quality codes
+
 ## 1.5.3 (2018-09-15) Evolution release (Ann)
 * (bluefox) disable the auto-control of quality codes
 
