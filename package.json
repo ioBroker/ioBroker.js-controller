@@ -21,7 +21,6 @@
     "chokidar": "^2.0.4",
     "daemonize2": "^0.4.2",
     "event-stream": "^4.0.1",
-    "iobroker.admin": ">=2.0.9",
     "iobroker.objects-redis": "^0.2.4",
     "jsonwebtoken": "^8.3.0",
     "jszip": "^3.1.5",

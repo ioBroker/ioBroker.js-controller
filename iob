@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('./lib/setup.js');
+require('iobroker.js-controller/lib/setup').execute();

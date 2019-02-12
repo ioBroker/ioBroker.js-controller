@@ -4,7 +4,7 @@
  *      Controls Adapter-Processes
  *
  *      Copyright 2013-2019 bluefox <dogafox@gmail.com>,
- *                     2014 hobbyquaker <hq@ccu.io>
+ *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
  */
@@ -103,7 +103,7 @@ function getConfig() {
 }
 
 function _startMultihost(_config, secret) {
-    const MHService = require(__dirname + '/lib/multihostServer.js');
+    const MHService = require('./lib/multihostServer.js');
     const cpus    = os.cpus();
     mhService = new MHService(hostname, logger, _config, {
         node:   process.version,
@@ -774,7 +774,7 @@ function collectDiagInfo(type, callback) {
                         }
                         // read number of vis datapoints
                         if (visFound) {
-                            const visUtils = require(__dirname + '/lib/vis/states');
+                            const visUtils = require('./lib/vis/states');
                             try {
                                 visUtils(objects, null, 0, null, (err, points) => {
                                     let total = null;
@@ -1673,7 +1673,7 @@ function processMessage(msg) {
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
                     if (base64) {
                         sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
@@ -1685,7 +1685,7 @@ function processMessage(msg) {
             break;
 
         case 'writeDirAsZip':
-            zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+            zipFiles = zipFiles || require('./lib/zipFiles');
             zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
                 if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
             });
@@ -1693,7 +1693,7 @@ function processMessage(msg) {
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, (err, base64) => {
                     // If client supports file via link
                     if (msg.message.link) {
@@ -1721,7 +1721,7 @@ function processMessage(msg) {
             break;
 
         case 'writeObjectsAsZip':
-            zipFiles = zipFiles || require(__dirname + '/lib/zipFiles');
+            zipFiles = zipFiles || require('./lib/zipFiles');
             zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
                 if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
             });
@@ -2793,16 +2793,16 @@ function init() {
     // Get "objects" object
     // If "file" and on the local machine
     if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
-        Objects = require(__dirname + '/lib/objects/objectsInMemServer');
+        Objects = require('./lib/objects/objectsInMemServer');
     } else {
-        Objects = require(__dirname + '/lib/objects');
+        Objects = require('./lib/objects');
     }
 
     // Get "states" object
     if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0')) {
-        States  = require(__dirname + '/lib/states/statesInMemServer');
+        States  = require('./lib/states/statesInMemServer');
     } else {
-        States  = require(__dirname + '/lib/states');
+        States  = require('./lib/states');
     }
 
     // Detect if outputs to console are forced. By default they are disabled and redirected to log file
@@ -2814,9 +2814,9 @@ function init() {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
         config.log.noStdout = true;
-        logger = require(__dirname + '/lib/logger.js')(config.log);
+        logger = require('./lib/logger.js')(config.log);
     } else {
-        logger = require(__dirname + '/lib/logger.js')(config.log);
+        logger = require('./lib/logger.js')(config.log);
     }
 
     // Delete all log files older than x das
