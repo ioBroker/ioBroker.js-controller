@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.3",
+        "version": "1.5.4",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -14,9 +14,22 @@
             "fr": "Contrôleur JS",
             "it": "Controller JS",
             "es": "Controlador JS",
-            "pl": "Kontroler JS"
+            "pl": "Kontroler JS",
+            "zh-cn": "JS控制器"
         },
         "news": {
+            "1.5.4": {
+                "en": "let's encrypt was fixed\nFix iob script\nAlways install the version from repository and not the latest from npm\nRoot should always npm install with --unsafe-perm\niobroker stop was fixed",
+                "de": "Lass uns verschlüsseln wurde behoben\nIob -Skript korrigieren\nInstallieren Sie die Version immer aus dem Repository und nicht die neueste aus npm\nRoot sollte npm immer mit --unsafe-perm installieren\nIobroker-Stopp wurde behoben",
+                "ru": "«давайте шифровать» было исправлено\nИсправить скрипт iob\nВсегда устанавливайте версию из репозитория, а не самую последнюю из npm\nRoot всегда должен устанавливать npm с помощью --unsafe-perm\nостановка iobroker была исправлена",
+                "pt": "vamos criptografar foi corrigido\nCorrigir o script iob\nSempre instale a versão do repositório e não a mais recente do npm\nRaiz deve sempre instalar npm com --unsafe-perm\niobroker stop foi corrigido",
+                "nl": "laten we coderen was opgelost\nFix iob script\nInstalleer altijd de versie van de repository en niet de laatste van npm\nRoot moet altijd npm installeren met --unsafe-perm\niobroker stop was opgelost",
+                "fr": "chiffrons a été corrigé\nCorrection du script iob\nToujours installer la version depuis le référentiel et non la dernière depuis npm\nRoot devrait toujours installer npm avec --unsafe-perm\niobroker stop a été corrigé",
+                "it": "Let's Encrypt è stato corretto\nCorreggere lo script iob\nInstalla sempre la versione dal repository e non l'ultima da npm\nIl root dovrebbe sempre installare npm con --unsafe-perm\nl'arresto di iobroker è stato corretto",
+                "es": "Vamos a cifrar fue corregido\nCorregido el script iob\nSiempre instale la versión desde el repositorio y no la última desde npm\nLa raíz siempre debe instalar npm con --unsafe-perm\nla parada de iobroker fue arreglada",
+                "pl": "zaszyfrujmy zostało naprawione\nNapraw skrypt iob\nZawsze instaluj wersję z repozytorium, a nie najnowszą z npm\nKatalog główny powinien zawsze być npm install with --unsafe-perm\nZatrzymanie iobroker zostało naprawione",
+                "zh-cn": "让我们加密是固定的\n修复iob脚本\n始终从存储库安装版本，而不是从npm安装最新版本\nRoot应始终使用--unsafe-perm安装npm\niobroker停止是固定的"
+            },
             "1.5.3": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
@@ -71,54 +84,6 @@
                 "it": "vedi CHANGELOG.md",
                 "es": "ver CHANGELOG.md",
                 "pl": "zobacz CHANGELOG.md"
-            },
-            "1.2.4": {
-                "en": "The fix for npm5",
-                "de": "Der Fix für npm5",
-                "ru": "Исправление для npm5",
-                "pt": "A correção para npm5",
-                "fr": "Le correctif pour npm5",
-                "nl": "De oplossing voor npm5"
-            },
-            "1.2.3": {
-                "en": "fix logging level: silly\nfix dependency check\nfix small errors\nsee changelog",
-                "de": "Korrigiere Log-Silly\nKorrigiere Abhängigkeitsprüfung\nKorrigiere kleine Fehler\nSchaue Changelog",
-                "ru": "Поправлен лог silly\nИсправлена проверка зависимостей пакетов\nИсправлены маленькие ошибки\nСм. список изменений"
-            },
-            "1.2.0": {
-                "en": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly",
-                "de": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly",
-                "ru": "fixed upgrade command\nallow install from custom repositories\nremove online and sources repositories\nfix multihosts command\ncatch the error outputs of instances if they die\nno more support for node.js 0.10/0.12\nadd new logging level: silly"
-            },
-            "1.1.3": {
-                "en": "Extend statistics\nUpdate npm packets",
-                "de": "Statistik erweitern\nnpm Pakete aktualisieren",
-                "ru": "Расширение статистики\nОбновление пакетов npm"
-            },
-            "1.1.2": {
-                "en": "Close sockets by default for external connects",
-                "de": "Erlaube die Verbindung auf Objeke/States-Sockets nicht",
-                "ru": "По умолчанию закрыто соединение с сокетами для внешних подключений"
-            },
-            "1.1.1": {
-                "en": "Allow redis connections via unix sockets",
-                "de": "Erlaube Redis verbindungen via Unix Sockets",
-                "ru": "Allow redis unix socket connections"
-            },
-            "1.1.0": {
-                "en": "Close sockets by default for external connects",
-                "de": "Erlaube die Verbindung auf Objeke/States-Sockets nicht",
-                "ru": "По умолчанию закрыто соединение с сокетами для внешних подключений"
-            },
-            "1.0.3": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "Смотри CHANGELOG.md"
-            },
-            "1.0.0": {
-                "en": "No big changes, just version",
-                "de": "Keine große Änderungen, nur Versionsänderung",
-                "ru": "Никаких больших изменений. Только номер версии."
             }
         },
         "desc": {
@@ -130,7 +95,8 @@
             "fr": "Implémentation Javascript/Node.js du contrôleur ioBroker",
             "it": "Implementazione Javascript/Node.js del controller ioBroker",
             "es": "Implementación de JavaScript/Node.js del controlador ioBroker",
-            "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker"
+            "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker",
+            "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
         },
         "messagebox": true,
         "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
