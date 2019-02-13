@@ -1,4 +1,19 @@
-## 1.5.5 (2019-02-12) Fixes for Evolution release (Ann)
+## 2.0.0 (2019-xx-xx) Release Bea
+* Code refactoring
+* (bluefox) support of compact mode
+* (alcalzone) refactoring of many CLI commands
+* (bluefox) add possibility to return zip file as a link and not as base64
+* (alcalzone) Enable ESLint and fix most issues
+* (bluefox) add error codes
+* (alcalzone) Root should always npm install with --unsafe-perm
+* (bluefox) enable gzip for read repositories
+* (bluefox) Add some information to user-agent, like chrome, IE and Firefox do by update checks - the information is absolutely anonymous
+* (alcalzone) Support command `iobroker logs`
+* (bluefox) read hash of sources.json before read the whole file
+* (Moritz Heusinger) adding possibility to validate backup files
+* (bluefox) verify the version of node.js by start of the instance
+
+## 1.5.6 (2019-02-12) Fixes for Evolution release (Ann)
 * (bluefox) Fix let's encrypt
 * (bluefox) Fix "iob" script
 * (Dominic Griesel) Revert the changes to `del[Foreign]State`, so the object is not deleted.
