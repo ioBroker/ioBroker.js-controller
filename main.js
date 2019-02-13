@@ -120,11 +120,9 @@ function startMultihost(__config) {
     if (_config.multihostService && _config.multihostService.enabled) {
         if (mhService) {
             try {
-                mhService.close(function () {
+                mhService.close(() => {
                     mhService = null;
-                    setImmediate(function () {
-                        startMultihost(_config);
-                    });
+                    setImmediate(() => startMultihost(_config));
                 });
                 return;
             } catch (e) {
@@ -173,11 +171,10 @@ function getIPs() {
         for (const dev in ifaces) {
             if (!ifaces.hasOwnProperty(dev)) continue;
 
-            /*jshint loopfunc:true */
-            ifaces[dev].forEach(function (details) {
-                //noinspection JSUnresolvedVariable
-                if (!details.internal) ipArr.push(details.address);
-            });
+            /* jshint loopfunc:true */
+            ifaces[dev].forEach(details =>
+                // noinspection JSUnresolvedVariable
+                !details.internal && ipArr.push(details.address));
         }
     }
 
@@ -629,15 +626,12 @@ function delObjects(objs, callback) {
         if (row && row.id) {
             logger.info('host.' + hostname + ' Delete state "' + row.id + '"');
             if (row.value.type === 'state') {
-                states.delState(row.id, function (/* err */) {
-                    objects.delObject(row.id, function (/* err */) {
-                        setImmediate(() => delObjects(objs, callback));
-                    });
-                });
+                states.delState(row.id, (/* err */) =>
+                    objects.delObject(row.id, (/* err */) =>
+                        setImmediate(() => delObjects(objs, callback))));
             } else {
-                objects.delObject(row.id, (/* err */) => {
-                    setImmediate(() => delObjects(objs, callback));
-                });
+                objects.delObject(row.id, (/* err */) =>
+                    setImmediate(() => delObjects(objs, callback)));
             }
         } else {
             setImmediate(() => delObjects(objs, callback));
@@ -1227,14 +1221,13 @@ function setMeta() {
     }
 
     // delete obsolete states
-    objects.getObjectView('system', 'state', {startkey: 'system.host.' + hostname + '.', endkey: 'system.host.' + hostname + '.\u9999', include_docs: true}, function (_err, doc) {
+    objects.getObjectView('system', 'state', {startkey: 'system.host.' + hostname + '.', endkey: 'system.host.' + hostname + '.\u9999', include_docs: true}, (_err, doc) => {
         // identify existing states for deletion, because they are not in the new tasks-list
         const todelete = doc.rows.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
 
         if (todelete && todelete.length > 0) {
-            delObjects(todelete, function () {
-                if (logger) logger.info('host.' + hostname + ' Some obsolete host states deleted.');
-            });
+            delObjects(todelete, () =>
+                logger && logger.info('host.' + hostname + ' Some obsolete host states deleted.'));
         }
     });
 
@@ -1280,14 +1273,13 @@ function sendTo(objName, command, message, callback) {
 }
 
 function getVersionFromHost(hostId, callback) {
-    states.getState(hostId + '.alive', function (err, state) {
+    states.getState(hostId + '.alive', (err, state) => {
         if (state && state.val)  {
-            sendTo(hostId, 'getVersion', null, function (ioPack) {
-                if (typeof callback === 'function') setImmediate(callback, ioPack);
-            });
+            sendTo(hostId, 'getVersion', null, ioPack =>
+                typeof callback === 'function' && setImmediate(callback, ioPack));
         } else {
             logger.warn('host.' + hostname + ' "' + hostId + '" is offline');
-            if (typeof callback === 'function') setImmediate(callback, null, hostId);
+            typeof callback === 'function' && setImmediate(callback, null, hostId);
         }
     });
 }
@@ -1437,7 +1429,7 @@ function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host', {}, function (err, doc) {
+                objects.getObjectView('system', 'host', {}, (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     let infoCount = 0;
@@ -1570,9 +1562,8 @@ function processMessage(msg) {
                         _child.stdout.on('data', data => result += data.toString());
                     }
                     if (_child.stderr) {
-                        _child.stderr.on('data', function (data) {
-                            logger.error('host.' + hostname + ' ls ' + data);
-                        });
+                        _child.stderr.on('data', data =>
+                            logger.error('host.' + hostname + ' ls ' + data));
                     }
 
                     _child.on('exit', (/*exitCode*/) => {
@@ -1686,9 +1677,9 @@ function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
-                if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
-            });
+            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, new Buffer(msg.message.data, 'base64'), msg.message.options, err =>
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
+
             break;
 
         case 'readObjectsAsZip':
@@ -1722,9 +1713,8 @@ function processMessage(msg) {
 
         case 'writeObjectsAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, function (err) {
-                if (msg.callback && msg.from) sendTo(msg.from, msg.command, {error: err}, msg.callback);
-            });
+            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, err =>
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
             break;
 
         case 'checkLogging':
@@ -2752,10 +2742,10 @@ function stopInstances(forceStop, callback) {
     }
 
     // force after Xs
-    timeout = setTimeout(function () {
+    timeout = setTimeout(() => {
         timeout    = null;
         isStopping = null;
-        if (typeof callback === 'function') callback(true);
+        typeof callback === 'function' && callback(true);
         callback   = null;
     }, stopTimeout);
 }
@@ -2766,11 +2756,11 @@ function stop() {
         mhService = null;
     }
 
-    stopInstances(false, function (wasForced) {
+    stopInstances(false, wasForced => {
         if (objects && objects.destroy) objects.destroy();
 
         outputCount++;
-        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, function () {
+        states.setState('system.host.' + hostname + '.alive', {val: false, ack: true, from: 'system.host.' + hostname}, () => {
             logger.info('host.' + hostname + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
                 for (const i in procs) {
