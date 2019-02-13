@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.5",
+        "version": "1.5.6",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "1.5.5": {
+            "1.5.6": {
                 "en": "let's encrypt was fixed\nFix iob script\nAlways install the version from repository and not the latest from npm\nRoot should always npm install with --unsafe-perm\niobroker stop was fixed",
                 "de": "Lass uns verschlüsseln wurde behoben\nIob -Skript korrigieren\nInstallieren Sie die Version immer aus dem Repository und nicht die neueste aus npm\nRoot sollte npm immer mit --unsafe-perm installieren\nIobroker-Stopp wurde behoben",
                 "ru": "«давайте шифровать» было исправлено\nИсправить скрипт iob\nВсегда устанавливайте версию из репозитория, а не самую последнюю из npm\nRoot всегда должен устанавливать npm с помощью --unsafe-perm\nостановка iobroker была исправлена",
