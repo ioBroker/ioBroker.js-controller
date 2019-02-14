@@ -2307,7 +2307,7 @@ function startInstance(id, wakeUp) {
                     }
 
                     // show stored errors
-                    cleanErrors(id, null, code !== 4294967196 && code !== EXIT_CODES.ADAPTER_STOPPED_BY_CODE);
+                    cleanErrors(id, null, code !== EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX && code !== EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
 
                     if (mode !== 'once') {
                         if (signal) {
@@ -2341,10 +2341,10 @@ function startInstance(id, wakeUp) {
                             return;
                         } else {
                             //noinspection JSUnresolvedVariable
-                            if (code === EXIT_CODES.ADAPTER_STOPPED_BY_CODE) {
+                            if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                 logger.error(`host.${hostname} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
                             } else
-                            if (code === 4294967196 /* -100 */ && procs[id].config.common.restartSchedule) {
+                            if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX /* -100 */ && procs[id].config.common.restartSchedule) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
                                 logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
@@ -2355,8 +2355,17 @@ function startInstance(id, wakeUp) {
                     if (procs[id] && procs[id].process) {
                         delete procs[id].process;
                     }
-                    if (code !== EXIT_CODES.ADAPTER_STOPPED_BY_CODE && !wakeUp && connected && !isStopping && procs[id] && procs[id].config && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
-
+                    if (code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION &&
+                        !wakeUp &&
+                        connected &&
+                        !isStopping &&
+                        procs[id] &&
+                        procs[id].config &&
+                        procs[id].config.common &&
+                        procs[id].config.common.enabled &&
+                        (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) &&
+                        mode !== 'once'
+                    ) {
                         logger.info('host.' + hostname + ' Restart adapter ' + id + ' because enabled');
 
                         //noinspection JSUnresolvedVariable
@@ -2364,10 +2373,10 @@ function startInstance(id, wakeUp) {
                             clearTimeout(procs[id].restartTimer);
                         }
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                            code === 4294967196 ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
+                            code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
                         // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                     } else {
-                        if (code === EXIT_CODES.ADAPTER_STOPPED_BY_CODE) {
+                        if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                             logger.info(`host.${hostname} Do not restart adapter ${id} because desired by instance`);
                         } else
                         if (mode !== 'once') {
@@ -2386,7 +2395,7 @@ function startInstance(id, wakeUp) {
                     }
                 }
             } else {
-                if (!wakeUp && procs[id]) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
             }
             break;
 
@@ -2427,17 +2436,21 @@ function startInstance(id, wakeUp) {
                         } else if (code === null) {
                             logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                         } else {
-                            if (code === 0 || code === '0') {
-                                logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                            code = parseInt(code, 10);
+                            const text = `host.${hostname} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
+                            if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                                logger.info(text);
                             } else {
-                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                logger.error(text);
                             }
                         }
-                        if (procs[id] && procs[id].process) delete procs[id].process;
+                        if (procs[id] && procs[id].process) {
+                            delete procs[id].process;
+                        }
                         storePids(); // Store all pids to make possible kill them all
                     });
                 } else {
-                    if (!wakeUp) logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                    !wakeUp && logger.warn('host.' + hostname + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
                 }
             });
             logger.info('host.' + hostname + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
@@ -2458,10 +2471,12 @@ function startInstance(id, wakeUp) {
                     } else if (code === null) {
                         logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                     } else {
-                        if (code === 0 || code === '0') {
-                            logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                        code = parseInt(code, 10);
+                        const text = `host.${hostname} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
+                        if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                            logger.info(text);
                         } else {
-                            logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                            logger.error(text);
                         }
                     }
                     delete procs[id].process;
