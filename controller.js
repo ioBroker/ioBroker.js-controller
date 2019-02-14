@@ -2378,7 +2378,7 @@ function startInstance(id, wakeUp) {
                         } else if (code === null) {
                             logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                         } else {
-                            if (code === 0 || code === '0') {
+                            if (code === 0 || code === '0' || code === DESIRED_TERMINATION) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                             } else {
                                 logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
@@ -2409,7 +2409,7 @@ function startInstance(id, wakeUp) {
                     } else if (code === null) {
                         logger.error('host.' + hostname + ' instance ' + id + ' terminated abnormally');
                     } else {
-                        if (code === 0 || code === '0') {
+                        if (code === 0 || code === '0' || code === DESIRED_TERMINATION) {
                             logger.info('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
                         } else {
                             logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (errorCodes[code] || '') + ')');
