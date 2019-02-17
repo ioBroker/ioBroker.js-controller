@@ -1,4 +1,5 @@
 ## 1.5.7 (2019-02-14) Evolution release (Ann)
+Required versions of adapters (only if used) for normal functionality: javascript >= 3.6.5, dasWetter >= 2.7.1, upnp >= 1.0.0
 * (bluefox) Fix let's encrypt
 * (bluefox) Fix "iob" script
 * (Dominic Griesel) Revert the changes to `del[Foreign]State`, so the object is not deleted.
