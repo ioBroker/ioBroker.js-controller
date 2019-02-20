@@ -13,7 +13,8 @@
 * (Moritz Heusinger) adding possibility to validate backup files
 * (bluefox) verify the version of node.js by start of the instance
 
-## 1.5.6 (2019-02-12) Fixes for Evolution release (Ann)
+## 1.5.7 (2019-02-12) Fixes for Evolution release (Ann)
+* Required version for normal functionality: javascript 3.6.5, dasWetter: 2.7.1, upnp: 1.0.0
 * (bluefox) Fix let's encrypt
 * (bluefox) Fix "iob" script
 * (Dominic Griesel) Revert the changes to `del[Foreign]State`, so the object is not deleted.
