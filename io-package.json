@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.7",
+        "version": "2.0.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,17 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.0.0": {
+              "en": "see CHANGELOG.md",
+              "de": "Sehe CHANGELOG.md",
+              "ru": "см. CHANGELOG.md",
+              "pt": "veja CHANGELOG.md",
+              "nl": "zie CHANGELOG.md",
+              "fr": "voir CHANGELOG.md",
+              "it": "vedi CHANGELOG.md",
+              "es": "ver CHANGELOG.md",
+              "pl": "zobacz CHANGELOG.md"
+            },
             "1.5.7": {
                 "en": "let's encrypt was fixed\nFix iob script\nAlways install the version from repository and not the latest from npm\nRoot should always npm install with --unsafe-perm\niobroker stop was fixed",
                 "de": "Lass uns verschlüsseln wurde behoben\nIob -Skript korrigieren\nInstallieren Sie die Version immer aus dem Repository und nicht die neueste aus npm\nRoot sollte npm immer mit --unsafe-perm installieren\nIobroker-Stopp wurde behoben",

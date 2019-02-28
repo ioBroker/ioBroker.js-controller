@@ -5,24 +5,23 @@
 'use strict';
 
 function register(it, expect, context) {
-    var testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
-    var gid = 'system.adapter.' + context.adapterShortName;
+    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
+    const gid = 'system.adapter.' + context.adapterShortName;
     it(testName + 'check pushMessage', function (done) {
         context.adapter.states.subscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
 
-            context.adapter.on('message', function (obj) {
+            context.adapter.on('message', function (_obj) {
                 //done();
                 console.error('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             });
-
 
             context.states.pushMessage(gid, {test: 1}, function (err, id) {
                 expect(err).to.be.null;
                 expect(id).to.be.equal(gid);
                 done();
             });
-        })
+        });
     });
     it(testName + 'check lenMessage', function (done) {
         context.states.lenMessage(gid, function (err, length) {
@@ -57,7 +56,7 @@ function register(it, expect, context) {
                 expect(id).to.be.equal(gid);
                 done();
             });
-        })
+        });
     });
     it(testName + 'check lenLog', function (done) {
         context.states.lenLog(gid, function (err) {
@@ -91,11 +90,10 @@ function register(it, expect, context) {
             done();
         });
     });
-    
+
     // getSession
     // setSession
     // destroySession
 }
-
 
 module.exports.register = register;

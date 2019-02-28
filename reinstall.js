@@ -58,7 +58,7 @@ function savePackages(root) {
         newPack.dependencies[pack.name] = pack.version;
     });
     if (fs.existsSync(root + '/package.json')) {
-        let actual = require(root + '/package.json');
+        const actual = require(root + '/package.json');
         actual.dependencies = actual.dependencies || {};
         for (const pack in newPack.dependencies) {
             if (newPack.dependencies.hasOwnProperty(pack) && (!actual.dependencies[pack] || !actual.dependencies[pack].match(/^file:/)) ) {
@@ -146,12 +146,12 @@ function doAll() {
         .then(() => {
             console.log('\n\n\nEverything is done');
         }).catch(e => {
-        console.error('Cannot reinstall all packages: ' + e);
-        hadErrors = 1;
-    }).then(() => {
-        console.log(`\n\n\nFinished in ${Math.round((Date.now() - start) / 1000)} seconds.`);
-        process.exit(hadErrors);
-    });
+            console.error('Cannot reinstall all packages: ' + e);
+            hadErrors = 1;
+        }).then(() => {
+            console.log(`\n\n\nFinished in ${Math.round((Date.now() - start) / 1000)} seconds.`);
+            process.exit(hadErrors);
+        });
 }
 
 doAll();

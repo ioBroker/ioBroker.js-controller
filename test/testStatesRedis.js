@@ -4,13 +4,13 @@
 /* jshint expr:true */
 'use strict';
 
-var expect = require('chai').expect;
-var setup  = require(__dirname + '/lib/setup4controller');
-var fs     = require('fs');
-var objects     = null;
-var states      = null;
-var onStatesChanged = null;
-var dataDir = __dirname + '/../tmp/data';
+const expect = require('chai').expect;
+const setup  = require(__dirname + '/lib/setup4controller');
+const fs     = require('fs');
+let objects     = null;
+let states      = null;
+let onStatesChanged = null;
+const dataDir = __dirname + '/../tmp/data';
 
 function cleanDbs() {
     if (fs.existsSync(dataDir + '/objects.json')) {
@@ -33,38 +33,34 @@ describe('States-Redis: Test states', function() {
         cleanDbs();
 
         setup.startController({
-                objects: {
-                    dataDir: dataDir,
-                    onChange:function (id, obj) {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    type: 'redis',
-                    host: '127.0.0.1',
-                    port: 6379,
-                    onChange: function (id, state) {
-                        console.log('Redis-state changed. ' + id);
-                        if (onStatesChanged) onStatesChanged(id, state);
-                    }
-                }
+            objects: {
+                dataDir: dataDir,
+                onChange: (id, _obj) => console.log('object changed. ' + id)
             },
-            function (_objects, _states) {
-                objects = _objects;
-                states  = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                setTimeout(_done, 5000);
+            states: {
+                type: 'redis',
+                host: '127.0.0.1',
+                port: 6379,
+                onChange: (id, state) => {
+                    console.log('Redis-state changed. ' + id);
+                    if (onStatesChanged) onStatesChanged(id, state);
+                }
             }
+        },
+        (_objects, _states) => {
+            objects = _objects;
+            states  = _states;
+            states.subscribe('*');
+            expect(objects).to.be.ok;
+            expect(states).to.be.ok;
+            setTimeout(_done, 5000);
+        }
         );
     });
 
-    it('States-Redis: should setState', function (done) {
-        this.timeout(10000);
-
-        var testID = 'testObject.0.test1';
-        onStatesChanged = function (id, state) {
+    it('States-Redis: should setState', done => {
+        const testID = 'testObject.0.test1';
+        onStatesChanged = (id, state) => {
             if (id === testID) {
                 expect(state).to.be.ok;
                 expect(state.val).to.be.equal(1);
@@ -72,7 +68,7 @@ describe('States-Redis: Test states', function() {
                 expect(state.ts).to.be.ok;
                 expect(state.q).to.be.equal(0);
 
-                states.getState(testID, function (err, state) {
+                states.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
                     expect(state.val).to.be.equal(1);
@@ -84,15 +80,15 @@ describe('States-Redis: Test states', function() {
             }
         };
 
-        states.setState(testID, 1, function (err) {
+        states.setState(testID, 1, err => {
             expect(err).to.be.not.ok;
         });
-    });
+    }).timeout(10000);
+
+    // todo: write more tests
 
     after('States-Redis: Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(function () {
-            done();
-        });
+        setup.stopController(() => done());
     });
 });

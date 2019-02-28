@@ -86,7 +86,7 @@ function register(it, expect, context) {
             () => context.adapter.checkPasswordAsync('claus', '1234').should.eventually.equal(false),
 
             // Wrong password
-            () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.equal(false),
+            () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.equal(false)
         ];
 
         return promiseSequence(tests);
@@ -127,7 +127,7 @@ function register(it, expect, context) {
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);
-        var testValue, testValue2;
+        let testValue, testValue2;
 
         // Test with number
         testValue = context.adapter.formatValue(1000,'.,');
@@ -171,8 +171,8 @@ function register(it, expect, context) {
     // formatDate
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
         this.timeout(1000);
-        var testDate = new Date(0);
-        var testStringDate, testStringDate2;
+        const testDate = new Date(0);
+        let testStringDate, testStringDate2;
 
         expect(context.adapter.formatDate(new Date())).to.be.a('string');
 
@@ -196,22 +196,22 @@ function register(it, expect, context) {
         expect(testStringDate).to.contain('NaN'); // NaN.NaN.NaN
 
         // expect 03.03.2003 as output (time in second)
-        testStringDate = context.adapter.formatDate(1046681200, false, "DD.MM.YYYY");
+        testStringDate = context.adapter.formatDate(1046681200, false, 'DD.MM.YYYY');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.contain('03.03.2003');
 
         // expect 03.03.03 as output (time in milisecond) . year length 2
-        testStringDate = context.adapter.formatDate(1046681200000, false, "DD.MM.YY");
+        testStringDate = context.adapter.formatDate(1046681200000, false, 'DD.MM.YY');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.contain('03.03.03');
 
         // expect 03.09.12 as output (time in milisecond) . year length 2
-        testStringDate = context.adapter.formatDate(1346681200000, false, "DD.MM.YY");
+        testStringDate = context.adapter.formatDate(1346681200000, false, 'DD.MM.YY');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.contain('03.09.12');
 
         // test with min sec milli
-        testStringDate = context.adapter.formatDate(68033, true, "m.ss,sss");
+        testStringDate = context.adapter.formatDate(68033, true, 'm.ss,sss');
         expect(testStringDate).to.contain('1.08,033');
 
         testStringDate = context.adapter.formatDate(undefined, 'YYYY.MM.DD');
@@ -220,18 +220,17 @@ function register(it, expect, context) {
         done();
     });
 
-
     //_fixId
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check _fixId', function (done) {
         this.timeout(1000);
-        var adapterName = context.adapter.name;
+        const adapterName = context.adapter.name;
         expect(adapterName).to.equal('test');
-        var adapterInstance = context.adapter.instance;
+        const adapterInstance = context.adapter.instance;
         expect(adapterInstance).to.equal(0);
-        var adapterNamespace = context.adapter.namespace;
+        const adapterNamespace = context.adapter.namespace;
         expect(adapterNamespace).to.equal(adapterName + '.' + adapterInstance);
 
-        var testString;
+        let testString;
         //test with Object empty
         testString = context.adapter._fixId({});
         expect(testString).to.be.a('string');
@@ -302,7 +301,7 @@ function register(it, expect, context) {
     // idToDCS
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {
         this.timeout(1000);
-        var testString;
+        let testString;
 
         //test no id
         testString = context.adapter.idToDCS();
@@ -322,7 +321,7 @@ function register(it, expect, context) {
     // _DCS2ID
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check _DCS2ID', function (done) {
         this.timeout(1000);
-        var testString;
+        let testString;
 
         //test no parameters
         testString = context.adapter._DCS2ID();
@@ -371,6 +370,5 @@ function register(it, expect, context) {
         done();
     });
 }
-
 
 module.exports.register = register;

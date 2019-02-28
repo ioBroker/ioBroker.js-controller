@@ -5,21 +5,21 @@
 'use strict';
 
 // check if tmp directory exists
-var fs            = require('fs');
-var path          = require('path');
-var rootDir       = path.normalize(__dirname + '/../../');
-//var pkg           = require(rootDir + 'package.json');
-//var debug         = typeof v8debug === 'object';
+const fs            = require('fs');
+const path          = require('path');
+const rootDir       = path.normalize(__dirname + '/../../');
+//const pkg           = require(rootDir + 'package.json');
+//const debug         = typeof v8debug === 'object';
 
 function getAppName() {
-    var parts = __dirname.replace(/\\/g, '/').split('/');
+    const parts = __dirname.replace(/\\/g, '/').split('/');
     return parts[parts.length - 3].split('.')[0];
 }
 
-var appName = getAppName().toLowerCase();
+const appName = getAppName().toLowerCase();
 
-var objects;
-var states;
+let objects;
+let states;
 
 if (!fs.existsSync(rootDir + 'tmp')) {
     fs.mkdirSync(rootDir + 'tmp');
@@ -28,67 +28,70 @@ if (!fs.existsSync(rootDir + 'tmp')) {
 function startController(options, callback) {
     if (!options) options = {};
 
-    var isObjectConnected;
-    var isStatesConnected;
+    let isObjectConnected;
+    let isStatesConnected;
 
     console.log('startController...');
 
-    var settingsObjects = {
+    const settingsObjects = {
         connection: {
             type:               options.objects.type || 'file',
             host:               options.objects.host || '127.0.0.1',
-            port:               options.objects.port || 19001,
+            port:               (options.objects.port === undefined) ? 19001 : options.objects.port,
             user:               options.objects.user || '',
             pass:               options.objects.pass || '',
+            redisNamespace:     options.objects.redisNamespace || '',
             noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
             connectTimeout:     options.objects.connectTimeout || 2000,
             dataDir:            options.objects.dataDir || ''
         },
         logger: options.objects.logger || options.logger || {
-            silly: function (msg) {
-                console.log(msg);
-            },
-            debug: function (msg) {
-                console.log(msg);
-            },
-            info: function (msg) {
-                console.log(msg);
-            },
-            warn: function (msg) {
-                console.warn(msg);
-            },
-            error: function (msg) {
-                console.error(msg);
-            }
+            silly: msg => console.log(msg),
+            debug: msg => console.log(msg),
+            info:  msg => console.log(msg),
+            warn:  msg => console.warn(msg),
+            error: msg => console.error(msg)
         },
-        connected: function () {
-            isObjectConnected = true;
-            if (isStatesConnected) {
-                console.log('startController: started!');
-                callback && callback(objects, states);
+        connected: () => {
+            // clear all states
+            if (settingsObjects.connection.type === 'redis') {
+                objects.destroyDB(() => {
+                    isObjectConnected = true;
+                    if (isStatesConnected) {
+                        console.log('startController: started!');
+                        callback && callback(objects, states);
+                    }
+                });
+            } else {
+                isObjectConnected = true;
+                if (isStatesConnected) {
+                    console.log('startController: started!');
+                    callback && callback(objects, states);
+                }
             }
         },
         change: options.objects.onChange || null
     };
 
-    var Objects;
+    let Objects;
 
     if (options.objects && options.objects.type) {
         if (options.objects.type === 'file') {
             Objects = require(rootDir + 'lib/objects/objectsInMemServer');
         } else if (options.objects.type === 'redis') {
-            Objects = require(rootDir + 'lib/objects/objectsInRedis');
-        } else if (options.objects.type === 'couch') {
-            Objects = require(rootDir + 'lib/objects/objectsInCouch');
+            try {
+                Objects = require(rootDir + 'lib/objects/objectsInRedis');
+            } catch (e) {
+                Objects = require('iobroker.objects-redis');
+            }
         }
     } else {
         Objects = require(rootDir + 'lib/objects/objectsInMemServer');
     }
 
-
     objects = new Objects(settingsObjects);
 
-    var States;
+    let States;
     // Just open in memory DB itself
     if (options.states && options.states.type) {
         if (options.states.type === 'redis') {
@@ -100,7 +103,7 @@ function startController(options, callback) {
         States = require(rootDir + 'lib/states/statesInMemServer');
     }
 
-    var settingsStates = {
+    const settingsStates = {
         connection: {
             options : {
                 auth_pass : null,
@@ -108,29 +111,19 @@ function startController(options, callback) {
             },
             type:           options.states.type     || 'file',
             host:           options.states.host     || '127.0.0.1',
-            port:           (options.states.port===undefined) ? 19000 : options.states.port,
+            port:           (options.states.port === undefined) ? 19000 : options.states.port,
             user:           options.states.user     || '',
             pass:           options.states.pass     || '',
             dataDir:        options.states.dataDir  || ''
         },
         logger:         options.states.logger || options.logger || {
-            silly: function (msg) {
-                console.log(msg);
-            },
-            debug: function (msg) {
-                console.log(msg);
-            },
-            info: function (msg) {
-                console.log(msg);
-            },
-            warn: function (msg) {
-                console.warn(msg);
-            },
-            error: function (msg) {
-                console.error(msg);
-            }
+            silly: msg => console.log(msg),
+            debug: msg => console.log(msg),
+            info:  msg => console.log(msg),
+            warn:  msg => console.warn(msg),
+            error: msg => console.error(msg)
         },
-        connected: function () {
+        connected: () => {
             isStatesConnected = true;
             if (isObjectConnected) {
                 console.log('startController: started!');

@@ -19,5 +19,4 @@ function register(it, expect, context) {
     // deleteDevice
 }
 
-
 module.exports.register = register;

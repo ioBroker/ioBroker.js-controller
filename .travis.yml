@@ -1,11 +1,11 @@
 os:
   - linux
   - osx
+  - windows
 services:
   - redis-server
 language: node_js
 node_js:
-  - '4'
   - '6'
   - '8'
   - '10'
@@ -14,14 +14,20 @@ before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist; sleep 10; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install redis-64; powershell "Start-Process redis-server.exe -PassThru"; sleep 10; fi'
   - sleep 15
 before_script:
   - export NPMVERSION=$(echo "$($(which npm) -v)"|cut -c1)
   - 'if [[ $NPMVERSION == 5 ]]; then npm install -g npm@5; fi'
   - npm -v
-  - sudo chmod ogu+x test/redis-socket/setup-socket.sh
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-socket/setup-socket.sh; fi'
 script:
   - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
+after_success:
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install -g npm@latest; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install --package-lock-only --production; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm audit; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm ls; fi'
 env:
   - CXX=g++-4.8
 addons:
