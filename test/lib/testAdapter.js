@@ -54,8 +54,7 @@ function testAdapter(options) {
         context.adapter = new Adapter({
             config: {
                 states: statesConfig,
-                objects: objectsConfig,
-                common: {mode: 'once'}
+                objects: objectsConfig
             },
             dirname: __dirname + '/',
             name: context.adapterShortName,
