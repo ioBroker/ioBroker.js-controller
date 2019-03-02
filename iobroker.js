@@ -1,1 +1,1 @@
-require('./lib/setup.js').execute();
+require('./lib/setup').execute();

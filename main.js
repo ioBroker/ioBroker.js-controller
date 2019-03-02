@@ -86,9 +86,9 @@ function getConfig() {
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
             isDaemon = true;
-            logger = require(__dirname + '/lib/logger')('info', [tools.appName], true);
+            logger = require('./lib/logger')('info', [tools.appName], true);
         } else {
-            logger = require(__dirname + '/lib/logger')('info', [tools.appName]);
+            logger = require('./lib/logger')('info', [tools.appName]);
         }
         logger.error('host.' + hostname + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
@@ -2819,10 +2819,9 @@ function init() {
     if (process.argv.indexOf('start') !== -1) {
         isDaemon = true;
         config.log.noStdout = true;
-        logger = require('./lib/logger.js')(config.log);
-    } else {
-        logger = require('./lib/logger.js')(config.log);
     }
+
+    logger = require('./lib/logger.js')(config.log);
 
     // Delete all log files older than x das
     logger.activateDateChecker(true, config.log.maxDays);
