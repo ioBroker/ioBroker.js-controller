@@ -33,6 +33,8 @@ describe('Test package.json and io-package.json', () => {
         expect(npmPackage.author, 'ERROR: Author in package.json needs to exist').to.exist;
         expect(ioPackage.common.authors, 'ERROR: Authors in io-package.json needs to exist').to.exist;
 
+        expect(ioPackage.common.license, 'ERROR: License missing in io-package in common.license').to.exist;
+
         if (ioPackage.common.name.indexOf('template') !== 0) {
             if (Array.isArray(ioPackage.common.authors)) {
                 expect(ioPackage.common.authors.length, 'ERROR: Author in io-package.json needs to be set').to.not.be.equal(0);
