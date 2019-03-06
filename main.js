@@ -2844,7 +2844,7 @@ function init() {
     });
 
     logger.info('host.' + hostname + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-    logger.info('host.' + hostname + ' Copyright (c) 2014-2018 bluefox, 2014 hobbyquaker');
+    logger.info('host.' + hostname + ' Copyright (c) 2014-2019 bluefox, 2014 hobbyquaker');
     logger.info('host.' + hostname + ' hostname: ' + hostname + ', node: ' + process.version);
     logger.info('host.' + hostname + ' ip addresses: ' + getIPs().join(' '));
 
