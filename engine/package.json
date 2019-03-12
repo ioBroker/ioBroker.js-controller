@@ -1,0 +1,13 @@
+{
+  "name": "docs-backend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  },
+  "scripts": {
+
+  }
+}
