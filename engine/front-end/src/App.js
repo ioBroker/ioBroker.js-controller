@@ -5,28 +5,32 @@ import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import DialogError from './Dialogs/Error';
 
+import DialogError from './Dialogs/Error';
+import MDPage from './MDPage';
+import TreePage from './Pages/TreePage';
 
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
-import {FaExternalLinkAlt as IconLink} from 'react-icons/fa';
 
 // tabs
-import TabIntro from './Tabs/intro/Tab';
 import TabBlog from './Tabs/blog/Tab';
 import TabDownload from './Tabs/download/Tab';
 
+// pages
+import PageIntro from './Pages/Intro';
 
 import Loader from './Components/Loader';
 import I18n from './i18n';
 
 const styles = theme => ({
     root: {},
+
     tabContent: {
         padding: 10,
-        height: 'calc(100% - 64px - 48px - 20px)',
-        overflow: 'auto'
+        height: `calc(100% - ${theme.tabs.height + 6}px)`,
+        overflow: 'auto',
+        position: 'relative'
     },
     logoBig: {
         width: 135,
@@ -36,30 +40,57 @@ const styles = theme => ({
     tabs: theme.tabs
 });
 
-const TABS = {
-    'blog':     {component: TabBlog,     icon: null, name: 'Blog'},
-    'download': {component: TabDownload, icon: null, name: 'Download'},
-    'github':   {link: 'https://github.com/ioBroker', icon: (<IconLink style={{marginLeft: 10}} />), name: 'GitHub'},
-    'cloud':    {name: 'Cloud', menu: [
+const PAGES = {
+    'blog':     {tabIndex: 1, component: TabBlog,     icon: null, name: 'Blog'},
+    'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
+    'documentation':  {tabIndex: 3, name: 'documentation', content: '/content.json'},
+    'cloud':    {tabIndex: 4, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
         {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
         {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
         ]},
+    'intro':    {component: PageIntro, name: 'intro'},
+    'imprint':  {name: 'imprint', md: '/imprint.md'},
+    'privacy':  {name: 'privacy', md: '/privacy.md'}
 };
 
 class App extends Component {
     constructor(props) {
         super(props);
 
+        let hash = window.location.hash.substring(1);
+        if (hash) {
+            hash = hash.split('/')[0];
+        }
+
         this.state = {
-            selectedTab: '',
             errorText: '',
             loaded: true,
             themeType: 'light',
             mobile: false,
             menuOpened: [],
             anchorMenu: null,
+            language: 'en',
+            selectedPage: hash || 'intro'
         };
+        this.contentRef = React.createRef();
+
+        this.onHashChangeBound = this.onHashChange.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('hashchange', this.onHashChangeBound, false);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('hashchange', this.onHashChangeBound);
+    }
+
+    onHashChange() {
+        let selectedPage = window.location.hash.substring(1).split('/')[0];
+        if (selectedPage !== this.state.selectedPage) {
+            this.setState({selectedPage});
+        }
     }
 
     renderError() {
@@ -71,7 +102,7 @@ class App extends Component {
     }
 
     tabName2index(name) {
-        return Object.keys(TABS).indexOf(name || this.state.selectedTab);
+        return Object.keys(PAGES).filter(page => PAGES[page].tabIndex).indexOf(name || this.state.selectedPage);
     }
 
     renderLogo() {
@@ -79,7 +110,7 @@ class App extends Component {
             src={this.state.mobile ? LogoSmall : LogoBig}
             alt="logo"
             className={this.state.mobile ? this.props.classes.logoSmall : this.props.classes.logoBig}
-            onClick={() => this.setState({selectedTab: ''})}
+            onClick={() => this.onNavigate('intro')}
         />)
     }
 
@@ -89,7 +120,12 @@ class App extends Component {
         } else {
             window.open(url, target || '_blank');
         }
+    }
 
+    onNavigate(page) {
+        this.contentRef.current.scrollTop = 0;
+
+        window.location.hash = '#' + page;
     }
 
     renderMenu(name) {
@@ -102,7 +138,7 @@ class App extends Component {
                     this.setState({menuOpened, anchorMenu: null});
                 }}
             }>
-                {TABS[name].menu.map(item =>
+                {PAGES[name].menu.map(item =>
                     <MenuItem key={item.name} onClick={() => this.openLink(item.link, item.target)}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
                 )}
             </Menu>);
@@ -111,36 +147,46 @@ class App extends Component {
     }
 
     renderAppBar() {
-        const selected = this.tabName2index(this.state.selectedTab);
+        let selected = this.tabName2index(this.state.selectedPage);
+        if (this.state.selectedPage === 'intro') {
+            selected = 0;
+        } else if (selected === -1) {
+            selected = false;
+        } else {
+            selected = selected + 2;
+        }
+
         return (
             <Toolbar position="static" variant="dense" className={this.props.classes.tabs} >
-                <Tabs className={this.props.classes.tabs} value={!this.state.selectedTab ? -1 : selected + 2}
+                <Tabs className={this.props.classes.tabs} value={selected}
                       onChange={(e, value) => {
-                          const selectedTab = Object.keys(TABS)[value - 2];
-                          if (TABS[selectedTab].link) {
-                              this.openLink(TABS[selectedTab].link, TABS[selectedTab].target);
-                          } else if (TABS[selectedTab].menu) {
+                          const selectedPage = Object.keys(PAGES)[value - 2];
+                          if (PAGES[selectedPage].link) {
+                              this.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
+                          } else if (PAGES[selectedPage].menu) {
                               const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
-                              if (menuOpened.indexOf(selectedTab) === -1) {
-                                  menuOpened.push(selectedTab);
+                              if (menuOpened.indexOf(selectedPage) === -1) {
+                                  menuOpened.push(selectedPage);
                               }
                               this.setState({menuOpened, anchorMenu: e.target})
                           } else {
-                              this.setState({selectedTab});
+                              this.onNavigate(selectedPage);
                           }
                       }}>
                     {this.renderLogo()}
 
                     <div style={{flexGrow: 1}}/>
 
-                    {Object.keys(TABS).map(tab => {
-                        if (TABS[tab].menu) {
+                    {Object.keys(PAGES).map(tab => {
+                        if (!PAGES[tab].tabIndex) return;
+
+                        if (PAGES[tab].menu) {
                             return [
-                                (<Tab key={tab} fullWidth={false} label={TABS[tab].icon ? [(<span>{I18n.t(TABS[tab].name)}</span>), TABS[tab].icon] : I18n.t(TABS[tab].name)}/>),
+                                (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
                                 this.renderMenu(tab)
                             ];
                         } else {
-                            return (<Tab key={tab} fullWidth={false} label={TABS[tab].icon ? [(<span>{I18n.t(TABS[tab].name)}</span>), TABS[tab].icon] : I18n.t(TABS[tab].name)}/>);
+                            return (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
                         }
                     })}
 
@@ -149,26 +195,37 @@ class App extends Component {
         );
     }
 
-    renderFooter() {
-
-    }
-
     render() {
         if (!this.state.loaded) {
             return (<Loader theme={this.state.themeType}/>);
         }
 
-        const TabComponent = TABS[this.state.selectedTab] && TABS[this.state.selectedTab].component;
+        const PageComponent = PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].component;
 
         return (
             <div className="App">
                 {this.renderAppBar()}
-                <div className={this.props.classes.tabContent}>
-                    {!this.state.selectedTab ? <TabIntro  theme={this.state.themeType}/> : null}
-                    {TabComponent ? <TabComponent theme={this.state.themeType}/> : null}
+                <div className={this.props.classes.tabContent} ref={this.contentRef}>
+                    {PageComponent ? <PageComponent
+                        theme={this.state.themeType}
+                        mobile={this.state.mobile}
+                        onNavigate={this.onNavigate.bind(this)}
+                        language={this.state.language}
+                    /> : null}
+                    {PAGES[this.state.selectedPage].md ? (<MDPage
+                        path={PAGES[this.state.selectedPage].md}
+                        theme={this.state.themeType}
+                        mobile={this.state.mobile}
+                        onNavigate={this.onNavigate.bind(this)}
+                        language={this.state.language} />) : null}
+                    {PAGES[this.state.selectedPage].content ? (<TreePage
+                        contentPath={PAGES[this.state.selectedPage].content}
+                        theme={this.state.themeType}
+                        mobile={this.state.mobile}
+                        onNavigate={this.onNavigate.bind(this)}
+                        language={this.state.language} />) : null}
                 </div>
                 {this.renderError()}
-                {this.renderFooter()}
             </div>
         );
     }

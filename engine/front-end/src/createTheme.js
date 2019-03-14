@@ -24,6 +24,10 @@ export default type => {
                 height: 54,
                 width: '100%',
             },
+            content: {
+                minHeight: '100%',
+                color: '#2c3e50'
+            },
         });
     } else {
         return createMuiTheme({
@@ -47,6 +51,10 @@ export default type => {
                 color: '#1b4777',
                 height: 54,
                 width: '100%',
+            },
+            content: {
+                minHeight: '100%',
+                color: '#2c3e50'
             },
         });
 

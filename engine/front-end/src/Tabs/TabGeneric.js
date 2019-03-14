@@ -20,8 +20,10 @@ class TabGeneric extends Component {
 }
 
 TabGeneric.propTypes = {
+    onNavigate: PropTypes.func,
     baseURL: PropTypes.string,
     theme: PropTypes.string,
+    mobile: PropTypes.bool
 };
 
 export default TabGeneric;

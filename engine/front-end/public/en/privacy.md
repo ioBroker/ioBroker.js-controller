@@ -1,6 +1,6 @@
 ---
 title:       "Willkommen"
-lastChanged: "14.03.2019"
+lastChanged: "09.02.2019"
 ---
 
 # Willkommen bei ioBroker {docsify-ignore-all}

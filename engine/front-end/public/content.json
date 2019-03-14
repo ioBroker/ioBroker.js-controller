@@ -1,0 +1,22 @@
+{
+  "pages": {
+    "basics": {
+      "title": {
+        "en": "Basics",
+        "de": "Gründlagen",
+        "ru": "Основы"
+      },
+      "pages": {
+        "introduction": {
+          "content": "/basics/README.md",
+          "title": {
+            "en": "Introduction",
+            "de": "Einleitung",
+            "ru": "Введение"
+          }
+        }
+      },
+      "content": "/imprint.md"
+    }
+  }
+}
