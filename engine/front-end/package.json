@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "gulp": "^4.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "^2.1.8",
-    "@material-ui/core": "^3.9.2",
-    "react-showdown": "^1.6.0",
     "react-icons": "^3.5.0",
-    "gulp": "^4.0.0",
+    "react-scripts": "^2.1.8",
+    "react-showdown": "^1.6.0",
     "react-splitter-layout": "^3.0.1"
   },
   "scripts": {

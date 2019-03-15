@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 
 /**
  * Tests whether the given variable is a real object and not an Array
@@ -10,7 +10,7 @@ function isObject(it) {
     // typeof null === 'object'
     // typeof [] === 'object'
     // [] instanceof Object === true
-    return Object.prototype.toString.call(it) === "[object Object]";
+    return Object.prototype.toString.call(it) === '[object Object]';
 }
 
 /**
@@ -21,7 +21,7 @@ function isObject(it) {
 function isArray(it) {
     if (Array.isArray != null)
         return Array.isArray(it);
-    return Object.prototype.toString.call(it) === "[object Array]";
+    return Object.prototype.toString.call(it) === '[object Array]';
 }
 
 /**
@@ -32,7 +32,7 @@ function isArray(it) {
  * @returns {Promise<string>}
  */
 async function translateText(text, targetLang, yandex) {
-    if (targetLang === "en") {
+    if (targetLang === 'en') {
         return text;
     }
     if (yandex) {
@@ -50,8 +50,8 @@ async function translateText(text, targetLang, yandex) {
  * @returns {Promise<string>}
  */
 async function translateYandex(text, targetLang, yandex) {
-    if (targetLang === "zh-cn") {
-        targetLang = "zh";
+    if (targetLang === 'zh-cn') {
+        targetLang = 'zh';
     }
     try {
         const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandex}&text=${encodeURIComponent(text)}&lang=en-${targetLang}`;
@@ -59,9 +59,9 @@ async function translateYandex(text, targetLang, yandex) {
         if (response.data && response.data['text']) {
             return response.data['text'][0];
         }
-        throw new Error("Invalid response for translate request");
+        throw new Error('Invalid response for translate request');
     } catch (e) {
-        throw new Error(`Could not translate to "${targetLang}": ${e}`);
+        throw new Error(`Could not translate to '${targetLang}': ${e}`);
     }
 }
 
@@ -79,9 +79,9 @@ async function translateGoogle(text, targetLang) {
             // we got a valid response
             return response.data[0][0][0];
         }
-        throw new Error("Invalid response for translate request");
+        throw new Error('Invalid response for translate request');
     } catch (e) {
-        throw new Error(`Could not translate to "${targetLang}": ${e}`);
+        throw new Error(`Could not translate to '${targetLang}': ${e}`);
     }
 }
 

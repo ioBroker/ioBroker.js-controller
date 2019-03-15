@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from "@material-ui/core/styles";
+import {withStyles} from '@material-ui/core/styles';
 import {Converter} from 'react-showdown';
 import Paper from '@material-ui/core/Paper';
+
+import {MdEdit as IconEdit} from 'react-icons/md';
 
 import Loader from './Components/Loader';
 import I18n from './i18n';
@@ -298,7 +300,7 @@ ${_ll.join('\n')}
                 (<span className={this.props.classes.infoTitle}>{I18n.t('Last changed: ')}</span>),
                 (<span className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
                 ] : null}
-            {this.state.header.source ? (<a className={this.props.classes.infoEdit} href={this.state.header.source} target="_blank">{I18n.t('Edit on github')}</a>) : null}
+            {this.state.header.source ? (<a className={this.props.classes.infoEdit} href={this.state.header.source} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>) : null}
         </div>)
     }
 

@@ -2,3 +2,4 @@
 /.idea
 /.vscode
 /node_modules
+/engine/node_modules

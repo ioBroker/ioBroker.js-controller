@@ -1,10 +1,10 @@
 ---
-title:       "Grundlagen"
+title:       "Adapter und Controller"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/objects.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/adapter.md"
 ---
 
-# Objekte {docsify-ignore-all}
+# Adapter und Controller {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

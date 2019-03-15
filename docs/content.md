@@ -1,7 +1,7 @@
-* [Willkommen](README)
-  * [Einführung](intro/)
+* [Welcome](README)
+  * [Introduction](intro/)
 
-* Grundlagen
+* de:Grundlagen;en:Fundamentals;ru:Основы
   * [Einleitung](basics/README)
   * [Systemaufbau](basics/architecture)
   * [Adapter & Instanzen](basics/adapter)

@@ -1,10 +1,10 @@
 ---
-title:       "Grundlagen"
+title:       "Funktionen"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/roles.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/functions.md"
 ---
 
-# Rollen {docsify-ignore-all}
+# Funktionen {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

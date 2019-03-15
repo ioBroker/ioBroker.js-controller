@@ -1,10 +1,10 @@
 ---
-title:       "Grundlagen"
+title:       "Objekte"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/functions.md"
+editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/objects.md"
 ---
 
-# Funktionen {docsify-ignore-all}
+# Objekte {docsify-ignore-all}
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
