@@ -3,3 +3,6 @@
 /.vscode
 /node_modules
 /engine/node_modules
+/engine/front-end/public/de
+/engine/front-end/public/en
+/engine/front-end/public/ru

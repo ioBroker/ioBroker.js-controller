@@ -1,7 +1,5 @@
 ---
-title:       "Grundlagen"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/README.md"
 ---
 
 # Grundlagen {docsify-ignore-all}
@@ -26,22 +24,22 @@ In den Grundlagenartikeln sollte auf die jeweils dazugehörenden
 Detailbeschreibungen verwiesen werden.   
 @@@
 
-# Begriffserklärung
+## Begriffserklärung
 Um den Einstieg leicht und die weitere Hilfe verständlicher zu machen sind hier die wichtigsten Begriffe, die im und um den ioBroker auftreten erläutert.
 
 * `Host`: das Gerät, auf dem ioBroker installiert ist
 * `Adapter`: ein Modul beziehungsweise PlugIn für den ioBroker, um beispielsweise mit Hardware zu kommunizieren
-  * kann nicht gestartet werden
-  * pro Host kann es jeden Adapter nur einmal geben
+    - kann nicht gestartet werden
+    - pro Host kann es jeden Adapter nur einmal geben
 * `Instanz`: ausführbares Exemplar eines Adapters
-  * führt den vom Adapter bereitgestellten Code aus
-  * kann gestartet und gestoppt werden
-  * kann Einstellungen haben
-  * Adapter muss installiert sein, um Instanzen vom Adapter zu haben
+    - führt den vom Adapter bereitgestellten Code aus
+    - kann gestartet und gestoppt werden
+    - kann Einstellungen haben
+    - Adapter muss installiert sein, um Instanzen vom Adapter zu haben
 * `Objekt`: Feld in dem Daten gespeichert werden können
-  * die meisten Instanzen legen einen `channel` an
-  * ein `channel` ist ein Objekt, welches als Ordner fungiert
+    - die meisten Instanzen legen einen `channel` an
+    - ein `channel` ist ein Objekt, welches als Ordner fungiert
 * `Aufzählung`: enthält beispielsweise eine Liste an Räumen
 * `Log`: Protokoll dessen, welche Fehler aufgelaufen sind
-  * filterbar nach schwere des Ereignisses, Instanz und weiterem
+    - filterbar nach schwere des Ereignisses, Instanz und weiterem
 * `Ereignisse`: Liste aller Änderungen an Objekten

@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
 import TreePage from './Pages/TreePage';
+import Rooter from './Rooter';
 
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
@@ -27,8 +28,7 @@ const styles = theme => ({
     root: {},
 
     tabContent: {
-        padding: 10,
-        height: `calc(100% - ${theme.tabs.height + 6}px)`,
+        height: `calc(100% - ${theme.tabs.height}px)`,
         overflow: 'auto',
         position: 'relative'
     },
@@ -54,14 +54,11 @@ const PAGES = {
     'privacy':  {name: 'privacy', md: '/privacy.md'}
 };
 
-class App extends Component {
+class App extends Rooter {
     constructor(props) {
         super(props);
 
-        let hash = window.location.hash.substring(1);
-        if (hash) {
-            hash = hash.split('/')[0];
-        }
+        let hash = this.getLocation();
 
         this.state = {
             errorText: '',
@@ -71,25 +68,14 @@ class App extends Component {
             menuOpened: [],
             anchorMenu: null,
             language: 'en',
-            selectedPage: hash || 'intro'
+            selectedPage: hash.tab || 'intro'
         };
         this.contentRef = React.createRef();
-
-        this.onHashChangeBound = this.onHashChange.bind(this);
     }
 
-    componentDidMount() {
-        window.addEventListener('hashchange', this.onHashChangeBound, false);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('hashchange', this.onHashChangeBound);
-    }
-
-    onHashChange() {
-        let selectedPage = window.location.hash.substring(1).split('/')[0];
-        if (selectedPage !== this.state.selectedPage) {
-            this.setState({selectedPage});
+    onHashChange(location) {
+        if (location.tab !== this.state.selectedPage) {
+            this.setState({selectedPage: location.tab});
         }
     }
 
@@ -122,10 +108,10 @@ class App extends Component {
         }
     }
 
-    onNavigate(page) {
+    onNavigate(tab, doc, chapter) {
         this.contentRef.current.scrollTop = 0;
 
-        window.location.hash = '#' + page;
+        super.onNavigate(tab, doc, chapter);
     }
 
     renderMenu(name) {
@@ -142,7 +128,6 @@ class App extends Component {
                     <MenuItem key={item.name} onClick={() => this.openLink(item.link, item.target)}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
                 )}
             </Menu>);
-
         }
     }
 
@@ -212,13 +197,13 @@ class App extends Component {
                         onNavigate={this.onNavigate.bind(this)}
                         language={this.state.language}
                     /> : null}
-                    {PAGES[this.state.selectedPage].md ? (<MDPage
+                    {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].md ? (<MDPage
                         path={PAGES[this.state.selectedPage].md}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}
                         language={this.state.language} />) : null}
-                    {PAGES[this.state.selectedPage].content ? (<TreePage
+                    {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].content ? (<TreePage
                         contentPath={PAGES[this.state.selectedPage].content}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}

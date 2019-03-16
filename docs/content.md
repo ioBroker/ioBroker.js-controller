@@ -125,5 +125,3 @@
 * System-Integratoren
   * [Einleitung](integrators/README)
   * [Link-Box](integrators/linkbox)
-
-* [Impressum](appendix/impressum)

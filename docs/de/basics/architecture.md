@@ -1,7 +1,6 @@
 ---
 title:       "Architektur"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/architecture.md"
 ---
 
 # Systemaufbau {docsify-ignore-all}

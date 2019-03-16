@@ -1,7 +1,5 @@
 ---
-title:       "Funktionen"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/basics/functions.md"
 ---
 
 # Funktionen {docsify-ignore-all}

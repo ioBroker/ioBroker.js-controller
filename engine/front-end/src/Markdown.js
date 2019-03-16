@@ -5,7 +5,9 @@ import {Converter} from 'react-showdown';
 import Paper from '@material-ui/core/Paper';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
+import {MdClose as IconClose} from 'react-icons/md';
 
+import Rooter from './Rooter';
 import Loader from './Components/Loader';
 import I18n from './i18n';
 
@@ -51,8 +53,31 @@ const styles = theme => ({
                 borderRadius: '50%',
                 background: '#008aff',
             }
-        },        '& a': {
+        },
+        '& .notice': {
+            borderColor: '#9c989b',
+            borderWidth: '0 0 0 3px',
+            padding: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            borderStyle: 'solid',
+            background: '#dedede',
+            '&:before': {
+                content: 'hello',
+                borderRadius: '50%',
+                background: '#dedede',
+            }
+        },
+        '& a': {
             color: 'inherit'
+        },
+        '& code': {
+            margin: '0 0.15em',
+            padding: '0.125em 0.4em',
+            borderRadius: 2,
+            background: '#e3e3e3',
+            color: '#000000',
+            whiteSpace: 'nowrap',
         }
     },
     infoEdit: {
@@ -66,10 +91,43 @@ const styles = theme => ({
         right: 20,
         background: '#EEEEEE'
     },
+    contentDivClosed: {
+        position: 'fixed',
+        opacity: 0.8,
+        top: 60,
+        right: 20,
+        width: 25,
+        height: 25,
+    },
+    contentClose: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        cursor: 'pointer',
+
+        '&:hover': {
+            color: '#111111'
+        }
+    },
     contentLinks: {
         cursor: 'pointer',
         '&:hover': {
             color: '#111111'
+        }
+    },
+    headerTranslated: {
+        borderColor: '#009c4f',
+        borderWidth: '0 0 0 3px',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#bdded5',
+        '&:before': {
+            content: 'i',
+            borderRadius: '50%',
+            background: '#91dea9',
+            color: '#000000'
         }
     }
 });
@@ -77,7 +135,7 @@ const styles = theme => ({
 const converter = new Converter();
 let title;
 
-class Markdown extends Component {
+class Markdown extends Rooter {
     constructor(props) {
         super(props);
         // load page
@@ -85,7 +143,8 @@ class Markdown extends Component {
             text: '',
             loadTimeout: false,
             header: {},
-            content: {}
+            content: {},
+            hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
         if (!title) {
@@ -102,16 +161,6 @@ class Markdown extends Component {
         }, 300);
 
         this.contentRef = React.createRef();
-
-        this.onHashChangeBound = this.onHashChange.bind(this);
-    }
-
-    componentDidMount() {
-        window.addEventListener('hashchange', this.onHashChangeBound, false);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('hashchange', this.onHashChangeBound);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -120,23 +169,34 @@ class Markdown extends Component {
         }
     }
 
-    onHashChange() {
-        let hash = window.location.hash.substring(1).split('/');
-        if (hash.length > 1) {
-            const id = hash.pop();
-            const el = window.document.getElementById(id);
+    onHashChange(location) {
+        location = location || this.getLocation();
+        if (location.chapter) {
+            const el = window.document.getElementById(location.chapter);
             el && el.scrollIntoView(true);
         }
     }
 
     onNavigate(id) {
-        let hash = window.location.hash.substring(1).split('/');
-        if (hash.length === 2) {
-            hash[1] = id;
+        this.props.onNavigate(null, this.props.path, id);
+    }
+
+    static getTitle(text) {
+        let {body, header} = Markdown.extractHeader(text);
+        if (!header.title) {
+            // remove {docsify-bla}
+            body = body.replace(/{[^}]}/g, '');
+            body = body.trim();
+            const lines = body.replace(/\r/g, '').split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].startsWith('# ')) {
+                    return lines[i].substring(2).trim();
+                }
+            }
+            return '';
         } else {
-            hash.push(id);
+            return header.title;
         }
-        window.location.hash = '#' + hash.join('/');
     }
 
     load(path) {
@@ -146,9 +206,10 @@ class Markdown extends Component {
             .then(text => {
                 const {header, body, content} = this.format(text);
                 this.setState({text: body, header, loadTimeout: false, content});
-                if (header.title) {
-                    window.document.title = header.title;
-                } else {
+                let _title = header.title || Markdown.getTitle(text);
+                if (_title) {
+                    window.document.title = _title;
+                } else if (title) {
                     window.document.title = title;
                 }
                 setTimeout(() => this.onHashChange(), 200);
@@ -163,6 +224,27 @@ class Markdown extends Component {
         const content = {};
         let current = [null, null, null, null, null];
         lines.forEach((line, i) => {
+            if (line.trim().startsWith('@@@')) {
+                lines[i] = line.substring(3).trim();
+                const _ll = [];
+
+                let j = i;
+                while (j < lines.length && !lines[j].match(/@@@$/)) {
+                    _ll.push(lines[j]);
+                    lines[j] = '';
+                    j++;
+                }
+                _ll.push(lines[j].replace(/@@@$/, ''));
+                lines[j] = '';
+
+                if (j > i + 1) {
+                    _ll[0] = '<b>' + _ll[0] + '</b>';
+                }
+
+                lines[i] = `<div class="notice" markdown>
+${_ll.join('\n')}
+</div>`;
+            } else
             if (line.startsWith('?> ') || line.startsWith('!> ')) {
                 const _ll = [line.substring(3) + '<br/>'];
                 let j = i + 1;
@@ -294,13 +376,21 @@ ${_ll.join('\n')}
         return text;
     }
 
+    renderHeader() {
+        if (this.state.header.translatedFrom) {
+            return (<div className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>)
+        } else {
+            return null;
+        }
+    }
+
     renderInfo() {
         return (<div className={this.props.classes.info}>
             {this.state.header.lastChanged ? [
                 (<span className={this.props.classes.infoTitle}>{I18n.t('Last changed: ')}</span>),
                 (<span className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
                 ] : null}
-            {this.state.header.source ? (<a className={this.props.classes.infoEdit} href={this.state.header.source} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>) : null}
+            {this.state.header.editLink ? (<a className={this.props.classes.infoEdit} href={this.state.header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>) : null}
         </div>)
     }
 
@@ -319,36 +409,51 @@ ${_ll.join('\n')}
         </ul>);
     }
 
+    renderContentCloseButton() {
+        return (<IconClose className={this.props.classes.contentClose} onClick={() => {
+            this.setState({hideContent: !this.state.hideContent});
+            window.localStorage && window.localStorage.setItem('Docs.hideContent', this.state.hideContent ? 'false' : 'true');
+        }}/>);
+    }
+
     renderContent(root) {
         const links = Object.keys(this.state.content);
         if (!links.length) {
             return null;
         }
-        return (<Paper className={this.props.classes.contentDiv}>
-            <ul>
-            {
-                links.map(item => {
-                    if (this.state.content[item].level === 0) {
-                        const ch =this.state.content[item].children;
-                        return (
-                            <li><span onClick={() => this.onNavigate(item)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
-                                {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
-                            </li>
-                        );
+        if (this.state.hideContent) {
+            return (<Paper className={this.props.classes.contentDivClosed}>
+                {this.renderContentCloseButton()}
+            </Paper>);
+        } else {
+            return (<Paper className={this.props.classes.contentDiv}>
+                {this.renderContentCloseButton()}
+                <ul>
+                    {
+                        links.map(item => {
+                            if (this.state.content[item].level === 0) {
+                                const ch =this.state.content[item].children;
+                                return (
+                                    <li><span onClick={() => this.onNavigate(item)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
+                                        {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
+                                    </li>
+                                );
+                            }
+                        }).filter(e => e)
                     }
-                }).filter(e => e)
-            }
-        </ul>
-        </Paper>);
+                </ul>
+            </Paper>);
+        }
     }
 
     render() {
         if (this.state.loadTimeout && !this.state.text) {
             return (<Loader theme={this.props.theme}/>);
         }
-        const reactElement = converter.convert(this.state.text);
+        const reactElement = converter.convert(this.state.text || '');
 
         return (<div className={this.props.classes.root} ref={this.contentRef}>
+            {this.renderHeader()}
             {reactElement}
             <hr/>
             {this.renderInfo()}

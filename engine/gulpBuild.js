@@ -7,12 +7,12 @@ const languages = ['de', 'en', 'ru'];
 const FRONT_END_DIR = __dirname + '/front-end/public/';
 const SRC_DOC_DIR = path.join(path.normalize(__dirname + '/../docs/')).replace(/\\/g, '/');
 const IGNORE = ['/adapterref'];
+const GITHUB_ROOT = 'https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/';
 
 // possible inputs:
 // [en:Bascis;de:Einleitung;ru:Основы](basics/README)
 // de:Grundlagen;en:Fundamentals
 // Title
-
 async function translateTitle(title) {
     const words = {};
     title = title.trim();
@@ -129,6 +129,8 @@ function extractHeader(text) {
 
 function getTitle(text) {
     let {body, header} = extractHeader(text);
+    // remove {docsify-bla}
+    body = body.replace(/{[^}]}/g, '');
     body = body.trim();
     if (!header.title) {
         const lines = body.replace(/\r/g, '').split('\n');
@@ -153,7 +155,8 @@ function addHeader(text, header) {
 async function translateFile(fileName, data, originalLanguage, targetLanguage, root) {
     const name = fileName.replace('/' + originalLanguage + '/', '/' + targetLanguage + '/');
     let {header, body} = extractHeader(data);
-    header.translated = originalLanguage;
+    header.translatedFrom = originalLanguage;
+    header.editLink = GITHUB_ROOT + fileName.replace(root, '');
     writeSafe(path.join(FRONT_END_DIR, name.replace(root, '/')), addHeader(body, header));
     console.log(`WARNING: File ${fileName.replace(root, '/')} was translated from ${originalLanguage} to ${targetLanguage} automatically`);
     return Promise.resolve();
@@ -175,7 +178,12 @@ async function processFile(fileName, lang, root) {
     root     = root.replace(/\\/g, '/');
     fileName = fileName.replace(/\\/g, '/');
 
-    const data = fs.readFileSync(fileName);
+    let data = fs.readFileSync(fileName);
+    if (fileName.match(/\.md$/)) {
+        let {header, body} = extractHeader(data.toString());
+        header.editLink = GITHUB_ROOT + fileName.replace(root, '');
+        data = addHeader(body, header);
+    }
     writeSafe(path.join(FRONT_END_DIR, fileName.replace(root, '/')).replace(/\\/g, '/'), data);
 
     return Promise.all(languages.filter(ln => ln !== lang).map(ln => {
@@ -224,6 +232,41 @@ async function processFiles(root, lang, originalRoot) {
         return Promise.all(promises);
     }
 }
+
+function moveDir(source, target) {
+    fs.readdirSync(source).forEach(file => {
+        const sourceName = path.join(source, file);
+        const targetName = path.join(target, file);
+        const stat = fs.statSync(sourceName);
+        if (stat.isDirectory()) {
+            if (!fs.existsSync(targetName)) {
+                fs.mkdirSync(targetName);
+            }
+            moveDir(sourceName, targetName);
+            fs.rmdirSync(sourceName);
+        } else {
+            fs.writeFileSync(targetName, fs.readFileSync(sourceName));
+            fs.unlinkSync(sourceName);
+        }
+    });
+}
+
+function processOneAdapter(dir) {
+    dir = dir.replace(/\\/g, '/');
+    const name = dir.split('/').pop();
+    if (fs.existsSync(dir + '/de')) {
+        moveDir(dir + '/de', dir);
+    }
+}
+
+function moveAdapters() {
+    const dirs = fs.readdirSync(__dirname + '/../docs/de/adapterref');
+    dirs.filter(a => a.startsWith('iobroker.')).forEach(adapter => {
+        processOneAdapter(__dirname + '/../docs/de/adapterref/' + adapter);
+    });
+}
+moveAdapters();
+
 
 processContent(path.join(SRC_DOC_DIR, 'content.md')).then(content => {
     console.log(JSON.stringify(content));

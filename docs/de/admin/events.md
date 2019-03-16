@@ -1,7 +1,6 @@
 ---
 title:       "Admin"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/admin/events.md"
 ---
 
 # Das Ereignisse-Fenster {docsify-ignore-all}
