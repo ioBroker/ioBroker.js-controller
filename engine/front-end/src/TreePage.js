@@ -18,9 +18,9 @@ import {MdKeyboardArrowRight as IconExpand} from 'react-icons/md';
 import {MdUnfoldMore as IconExpandAll} from 'react-icons/md';
 import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
 
-import MDPage from '../MDPage';
-import Rooter from '../Rooter';
-import I18n from '../i18n';
+import MDPage from './MDPage';
+import Rooter from './Rooter';
+import I18n from './i18n';
 
 const styles = theme => ({
     expandButton: {
@@ -35,6 +35,7 @@ const styles = theme => ({
     icon: {
         color: '#bdbdbd',
         marginRight: 5,
+        maxHeight: 18
     },
     listItem: {
         padding: 0,
@@ -63,6 +64,10 @@ const styles = theme => ({
     drawer: {
         height: '100%',
         overflow: 'hidden'
+    },
+    selected: {
+        background: theme.palette.primary.light,
+        color: theme.palette.primary.contrastText,
     }
 });
 
@@ -85,6 +90,12 @@ class Intro extends Rooter {
         };
         this.menuSize = this.state.menuSize;
         this.load();
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.contentPath !== nextProps.contentPath) {
+            this.load(nextProps.contentPath);
+        }
     }
 
     load(contentPath) {
@@ -176,6 +187,18 @@ class Intro extends Rooter {
         }
     }
 
+    getItemIcon(root) {
+        if (root.content) {
+            if (root.icon) {
+                return (<img className={this.props.classes.icon} src={this.props.language + '/' + root.icon} alt="logo"/>);
+            } else {
+                return (<IconDocument className={this.props.classes.icon}/>);
+            }
+        } else {
+            return null;
+        }
+    }
+
     renderMenuItem(root, item, level) {
         let isExpanded = true;
 
@@ -185,15 +208,15 @@ class Intro extends Rooter {
 
         return [root.title ? (<ListItem
                 key={item}
-                className={this.props.classes.element}
+                className={this.props.classes.element + ' ' + (root.content && root.content === this.state.path ? this.props.classes.selected : '')}
                 onClick={() => this.onNavigate(item, root)}>
                 {this.renderFolderButtons(item, root.pages, isExpanded)}
                 <ListItemIcon>{root.pages ? (isExpanded ? (<IconFolderOpened/>) : (<IconFolder/>)) : null}</ListItemIcon>
                 <ListItemText
-                    classes={{primary: item === this.state.selected ? this.props.classes.selected : undefined, root: this.props.classes.listItem}}
+                    classes={{root: this.props.classes.listItem, primary: (root.content && root.content === this.state.path ? this.props.classes.selected : '')}}
                     style={{}} primary={[
-                        root.content ? (<IconDocument className={this.props.classes.icon}/>) : null,
-                        root.title[this.props.language] || root.title.en
+                        this.getItemIcon(root),
+                        (<span>{root.title[this.props.language] || root.title.en}</span>)
                 ]}/>
             </ListItem>) : null,
             isExpanded && root.pages ? Object.keys(root.pages).map(p =>

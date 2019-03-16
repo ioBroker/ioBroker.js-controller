@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
-import TreePage from './Pages/TreePage';
+import TreePage from './TreePage';
 import Rooter from './Rooter';
 
 import LogoBig from './assets/iobroker-logo.svg';
@@ -43,8 +43,9 @@ const styles = theme => ({
 const PAGES = {
     'blog':     {tabIndex: 1, component: TabBlog,     icon: null, name: 'Blog'},
     'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
-    'documentation':  {tabIndex: 3, name: 'documentation', content: '/content.json'},
-    'cloud':    {tabIndex: 4, name: 'Cloud', menu: [
+    'documentation':  {tabIndex: 3, name: 'Documentation', content: '/content.json'},
+    'adapters':  {tabIndex: 4, name: 'Adapters', content: '/adapters.json'},
+    'cloud':    {tabIndex: 5, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
         {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
         {link: 'https://iobroker.link', name: 'VPN', target: 'this'},

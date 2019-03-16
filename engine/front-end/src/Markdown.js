@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {Converter} from 'react-showdown';
 import Paper from '@material-ui/core/Paper';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
+import {MdExpandMore as IconExpandMore} from 'react-icons/md';
 
 import Rooter from './Rooter';
 import Loader from './Components/Loader';
@@ -129,6 +133,10 @@ const styles = theme => ({
             background: '#91dea9',
             color: '#000000'
         }
+    },
+    license: {
+        paddingLeft: 10,
+        fontWeight: 'bold'
     }
 });
 
@@ -144,6 +152,8 @@ class Markdown extends Rooter {
             loadTimeout: false,
             header: {},
             content: {},
+            license: '',
+            changeLog: '',
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
@@ -185,7 +195,7 @@ class Markdown extends Rooter {
         let {body, header} = Markdown.extractHeader(text);
         if (!header.title) {
             // remove {docsify-bla}
-            body = body.replace(/{[^}]}/g, '');
+            body = body.replace(/{[^}]*}/g, '');
             body = body.trim();
             const lines = body.replace(/\r/g, '').split('\n');
             for (let i = 0; i < lines.length; i++) {
@@ -204,14 +214,15 @@ class Markdown extends Rooter {
         fetch(`/${this.props.language}/${path}`)
             .then(res => res.text())
             .then(text => {
-                const {header, body, content} = this.format(text);
-                this.setState({text: body, header, loadTimeout: false, content});
+                const {header, body, content, license, changeLog} = this.format(text);
                 let _title = header.title || Markdown.getTitle(text);
                 if (_title) {
                     window.document.title = _title;
                 } else if (title) {
                     window.document.title = title;
                 }
+                this.setState({text: body, header, loadTimeout: false, content, license, changeLog});
+
                 setTimeout(() => this.onHashChange(), 200);
             });
     }
@@ -219,11 +230,45 @@ class Markdown extends Rooter {
     static text2link(text) {
         return text.replace(/[^a-zA-Zа-яА-Я0-9]/g, '').trim().replace(/\s/g, '').toLowerCase();
     }
-    static decorateText(text) {
+    static decorateText(text, header) {
         const lines = text.split('\n');
         const content = {};
         let current = [null, null, null, null, null];
+
+        let license = false;
+        let log = false;
+        const licenseLines = [];
+        const changeLog = [];
+
         lines.forEach((line, i) => {
+            if (header.adapter) {
+                if (!license && lines[i].startsWith('## License')) {
+                    license = true;
+                    lines[i] = '--delete--';
+                    line = '';
+                } else if (license) {
+                    licenseLines.push(lines[i]);
+                    lines[i] = '--delete--';
+                    line = '';
+                }
+                if (license && lines[i].startsWith('## ')) {
+                    license = false;
+                }
+
+                if (!log && lines[i].match(/^## Changelog/i)) {
+                    log = true;
+                    lines[i] = '--delete--';
+                    line = '';
+                } else if (log) {
+                    changeLog.push(lines[i]);
+                    lines[i] = '--delete--';
+                    line = '';
+                }
+                if (log && lines[i].startsWith('## ')) {
+                    log = false;
+                }
+            }
+
             if (line.trim().startsWith('@@@')) {
                 lines[i] = line.substring(3).trim();
                 const _ll = [];
@@ -320,9 +365,10 @@ ${_ll.join('\n')}
                 }
 
                 current[3] = content[t];
-                current[4] = null;            }
+                current[4] = null;
+            }
         });
-        return {lines, content};
+        return {lines: lines.filter(line => line !== '--delete--'), content, changeLog: changeLog.join('\n'), license: licenseLines.join('\n')};
     }
 
     format(text) {
@@ -330,9 +376,9 @@ ${_ll.join('\n')}
         let {header, body} = Markdown.extractHeader(text);
 
         body = Markdown.removeDocsify(body);
-        let {lines, content} = Markdown.decorateText(body);
+        let {lines, content, license, changeLog} = Markdown.decorateText(body, header);
 
-        return {header, body: lines.join('\n'), content};
+        return {header, body: lines.join('\n'), content, license, changeLog};
     }
 
     static extractHeader(text) {
@@ -416,7 +462,7 @@ ${_ll.join('\n')}
         }}/>);
     }
 
-    renderContent(root) {
+    renderContent() {
         const links = Object.keys(this.state.content);
         if (!links.length) {
             return null;
@@ -432,7 +478,6 @@ ${_ll.join('\n')}
                     {
                         links.map(item => {
                             if (this.state.content[item].level === 0) {
-                                const ch =this.state.content[item].children;
                                 return (
                                     <li><span onClick={() => this.onNavigate(item)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
                                         {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
@@ -446,6 +491,30 @@ ${_ll.join('\n')}
         }
     }
 
+    renderLicense() {
+        if (!this.state.license) {
+            return null;
+        } else {
+            return (<ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    {converter.convert(this.state.license)}
+                </ExpansionPanelDetails>
+            </ExpansionPanel>);
+        }
+    }
+    renderChangeLog() {
+        if (!this.state.changeLog) {
+            return null;
+        } else {
+            return (<ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    {converter.convert(this.state.changeLog)}
+                </ExpansionPanelDetails>
+            </ExpansionPanel>);
+        }
+    }
     render() {
         if (this.state.loadTimeout && !this.state.text) {
             return (<Loader theme={this.props.theme}/>);
@@ -456,6 +525,8 @@ ${_ll.join('\n')}
             {this.renderHeader()}
             {reactElement}
             <hr/>
+            {this.renderLicense()}
+            {this.renderChangeLog()}
             {this.renderInfo()}
             {this.renderContent()}
         </div>);

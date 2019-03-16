@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const fs = require('fs');
 const path = require('path');
+const request = require('request');
 const tools = require('./build-lib/tools');
 
 const languages = ['de', 'en', 'ru'];
@@ -8,6 +9,7 @@ const FRONT_END_DIR = __dirname + '/front-end/public/';
 const SRC_DOC_DIR = path.join(path.normalize(__dirname + '/../docs/')).replace(/\\/g, '/');
 const IGNORE = ['/adapterref'];
 const GITHUB_ROOT = 'https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/';
+const ADAPTERS_DIR = path.normalize(__dirname + '/../docs/LANG/adapterref/').replace(/\\/g, '/');
 
 // possible inputs:
 // [en:Bascis;de:Einleitung;ru:Основы](basics/README)
@@ -129,10 +131,11 @@ function extractHeader(text) {
 
 function getTitle(text) {
     let {body, header} = extractHeader(text);
-    // remove {docsify-bla}
-    body = body.replace(/{[^}]}/g, '');
-    body = body.trim();
     if (!header.title) {
+        // remove {docsify-bla}
+        body = body.replace(/{[^}]*}/g, '');
+        body = body.trim();
+
         const lines = body.replace(/\r/g, '').split('\n');
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].startsWith('# ')) {
@@ -233,7 +236,7 @@ async function processFiles(root, lang, originalRoot) {
     }
 }
 
-function moveDir(source, target) {
+function copyDir(source, target) {
     fs.readdirSync(source).forEach(file => {
         const sourceName = path.join(source, file);
         const targetName = path.join(target, file);
@@ -242,36 +245,152 @@ function moveDir(source, target) {
             if (!fs.existsSync(targetName)) {
                 fs.mkdirSync(targetName);
             }
-            moveDir(sourceName, targetName);
-            fs.rmdirSync(sourceName);
+            copyDir(sourceName, targetName);
         } else {
             fs.writeFileSync(targetName, fs.readFileSync(sourceName));
-            fs.unlinkSync(sourceName);
         }
     });
 }
 
-function processOneAdapter(dir) {
-    dir = dir.replace(/\\/g, '/');
-    const name = dir.split('/').pop();
-    if (fs.existsSync(dir + '/de')) {
-        moveDir(dir + '/de', dir);
+function prepareAdapterReadme(text, targetDir, repo) {
+    return new Promise(resolve => {
+        let {header, body} = extractHeader(text);
+        header.adapter = true;
+        header.license = repo.license;
+
+        writeSafe(targetDir + 'README.md', addHeader(body, header));
+        resolve();
+    });
+}
+const ADAPTER_TYPES = {
+
+};
+const urlsCache = {};
+
+function getIcon(url, checkFile) {
+    if (url) {
+        if (checkFile && fs.existsSync(checkFile)) {
+            return Promise.resolve(fs.readFileSync(checkFile));
+        } else {
+            return getUrl(url, true);
+        }
+    } else {
+        return Promise.resolve();
     }
 }
 
-function moveAdapters() {
-    const dirs = fs.readdirSync(__dirname + '/../docs/de/adapterref');
-    dirs.filter(a => a.startsWith('iobroker.')).forEach(adapter => {
-        processOneAdapter(__dirname + '/../docs/de/adapterref/' + adapter);
+function getUrl(url, binary) {
+    if (urlsCache[url]) {
+        return urlsCache[url];
+    }
+    urlsCache[url] = new Promise(resolve => {
+        console.log('Requested ' + url);
+        request(url, {encoding: null}, (err, state, file) => {
+            resolve(binary ? file : file.toString());
+        });
+    });
+    return urlsCache[url];
+}
+
+function processAdapterLang(adapter, repo, lang, content) {
+    const dirName = ADAPTERS_DIR.replace('/LANG/', '/' + lang + '/') + 'iobroker.' + adapter;
+
+    let iconName = repo.extIcon && repo.extIcon.split('/').pop();
+
+    // download logo
+    return getIcon(repo.extIcon, FRONT_END_DIR + languages[0] + '/adapterref/iobroker.' + adapter + '/' + iconName)
+        .then(icon => {
+            if (icon) {
+                writeSafe(FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + iconName, icon);
+            } else if (adapter !== 'js-controller') {
+                console.error('ADAPTER has no icon: ' + adapter);
+            }
+
+            content.pages[repo.type] = content.pages[repo.type] || {title: ADAPTER_TYPES[repo.type] || {en: repo.type}, pages: {}};
+            if (fs.existsSync(dirName)) {
+                content.pages[repo.type].pages[adapter] = {
+                    title: {en: adapter},
+                    content: 'adapterref/iobroker.' + adapter + '/README.md'
+                };
+
+                if (iconName) {
+                    content.pages[repo.type].pages[adapter].icon = 'adapterref/iobroker.' + adapter + '/' + iconName;
+                }
+
+                let text = fs.readFileSync(dirName + '/README.md').toString();
+                let {header, body} = extractHeader(text);
+                header.adapter = true;
+                header.license = repo.license;
+
+                writeSafe(FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/README.md', addHeader(body, header));
+                copyDir(dirName, FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/');
+                writeSafe(FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/README.md', addHeader(body, header));
+                return Promise.resolve();
+            } else {
+                if (!repo.readme) {
+                    repo.readme = repo.meta.replace('io-package.json', 'README.md');
+                }
+
+                // download readme
+                const link = repo.readme.replace('github.com', 'raw.githubusercontent.com').replace('/blob/master/', '/master/');
+                return getUrl(link)
+                    .then(body => {
+                        content.pages[repo.type].pages[adapter] = {
+                            title: {en: adapter},
+                            content: 'adapterref/iobroker.' + adapter + '/README.md'
+                        };
+                        if (iconName) {
+                            content.pages[repo.type].pages[adapter].icon = 'adapterref/iobroker.' + adapter + '/' + iconName;
+                        }
+
+                        return prepareAdapterReadme(body, FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/', repo);
+                    });
+            }
+        });
+}
+
+function processAdapter(adapter, repo, content) {
+    // Check if the documentation exists
+    const promises = languages.map(lang => processAdapterLang(adapter, repo, lang, content));
+
+    return Promise.all(promises);
+}
+
+function queuePromises(promises, cb) {
+    if (!promises || !promises.length) {
+        cb && cb();
+    } else {
+        const task = promises.shift();
+        task.then(() =>
+            setTimeout(() => queuePromises(promises, cb), 100));
+    }
+}
+
+function buildAdapterContent() {
+    return new Promise(resolve => {
+        const content = {pages: {}};
+        // get latest repo
+        request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
+            const repo = JSON.parse(body);
+            const promises = Object.keys(repo).filter(a => a !== 'js-controller').map(adapter => processAdapter(adapter, repo[adapter], content));
+            // const promises = [processAdapter('admin', repo.admin, content)];
+
+            queuePromises(promises, () => {
+                fs.writeFileSync(FRONT_END_DIR + 'adapters.json', JSON.stringify(content, null, 2));
+                resolve(content);
+            })
+        });
     });
 }
-moveAdapters();
 
-
-processContent(path.join(SRC_DOC_DIR, 'content.md')).then(content => {
+buildAdapterContent().then(content => {
     console.log(JSON.stringify(content));
-    return processFiles(SRC_DOC_DIR);
 });
+
+/*processContent(path.join(SRC_DOC_DIR, 'content.md')).then(content => {
+    console.log(JSON.stringify(content));
+    //return processFiles(SRC_DOC_DIR);
+});*/
 
 //gulp.task('build', function (done) {
 //    processContent(__dirname + '/docs/content.md');
