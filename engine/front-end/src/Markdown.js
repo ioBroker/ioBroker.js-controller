@@ -6,6 +6,9 @@ import Paper from '@material-ui/core/Paper';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
@@ -84,8 +87,23 @@ const styles = theme => ({
             whiteSpace: 'nowrap',
         }
     },
+    logoImage: {
+        width: 64
+    },
     infoEdit: {
         float: 'right'
+    },
+    adapterCard:{
+        marginBottom: 15,
+        marginTop: 15
+    },
+    adapterCardAttr:{
+        fontWeight: 'bold',
+        width: 150,
+        display: 'inline-block'
+    },
+    description: {
+        fontStyle: 'italic'
     },
     contentDiv: {
         position: 'fixed',
@@ -138,6 +156,7 @@ const styles = theme => ({
         }
     },
     license: {
+        paddingTop: 10,
         paddingLeft: 10,
         fontWeight: 'bold'
     }
@@ -145,6 +164,8 @@ const styles = theme => ({
 
 const converter = new Converter();
 let title;
+
+const ADAPTER_CARD = ['version', 'authors', 'keywords', 'mode', 'materialize', 'compact'];
 
 class Markdown extends Rooter {
     constructor(props) {
@@ -193,8 +214,8 @@ class Markdown extends Rooter {
         }
     }
 
-    onNavigate(id) {
-        this.props.onNavigate(null, null, this.props.path, id);
+    onNavigate(id, link) {
+        this.props.onNavigate(null, null, link || this.props.path, id);
     }
 
     static getTitle(text) {
@@ -235,9 +256,26 @@ class Markdown extends Rooter {
     }
 
     static text2link(text) {
+        const m = text.match(/\d+\.\)\s/);
+        if (m) {
+            text = text.replace(m[0], m[0].replace(/\s/, '&nbsp;'));
+        }
+
         return text.replace(/[^a-zA-Zа-яА-Я0-9]/g, '').trim().replace(/\s/g, '').toLowerCase();
     }
-    static decorateText(text, header) {
+
+    static text2docLink(text, path) {
+        const m = text.match(/\[([^\]]*)]\(([^)]*)\)/);
+        if (m) {
+            const parts = path.split('/');
+            parts.pop();
+            return {link: parts.join('/') + '/' + m[2], name: m[1]};
+        } else {
+            return null;
+        }
+    }
+
+    static decorateText(text, header, path) {
         const lines = text.split('\n');
         const content = {};
         let current = [null, null, null, null, null];
@@ -319,12 +357,19 @@ ${_ll.join('\n')}
 ${_ll.join('\n')}
 </div>`;
             } else if (line.startsWith('## ')) {
-                const name = line.substring(3).trim();
+                const name = line.substring(3).trim()
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '');
+
+                const link = Markdown.text2docLink(name, path);
+
                 const t = Markdown.text2link(name);
                 content[t] = {
                     level: 0,
-                    title: name,
-                    link: t
+                    title: link ? link.name : name,
+                    link:  link ? link.link : t,
+                    external: !!link
                 };
                 current[0] = content[t];
                 current[2] = null;
@@ -332,12 +377,19 @@ ${_ll.join('\n')}
                 current[4] = null;
                 current[5] = null;
             } else if (line.startsWith('### ')) {
-                const name = line.substring(4).trim();
+                const name = line.substring(4).trim()
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '');
+
+                const link = Markdown.text2docLink(name, path);
+
                 const t = Markdown.text2link(name);
                 content[t] = {
                     level: 1,
-                    title: name,
-                    link: t
+                    title: link ? link.name : name,
+                    link:  link ? link.link : t,
+                    external: !!link
                 };
                 if (current[0]) {
                     current[0].children = current[0].children || [];
@@ -349,12 +401,19 @@ ${_ll.join('\n')}
                 current[3] = null;
                 current[4] = null;
             } else if (line.startsWith('#### ')) {
-                const name = line.substring(5).trim();
+                const name = line.substring(5).trim()
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '');
+
+                const link = Markdown.text2docLink(name, path);
+
                 const t = Markdown.text2link(name);
                 content[t] = {
                     level: 2,
-                    title: name,
-                    link: t
+                    title: link ? link.name : name,
+                    link:  link ? link.link : t,
+                    external: !!link
                 };
                 if (current[1]) {
                     current[1].children = current[1].children || [];
@@ -365,12 +424,19 @@ ${_ll.join('\n')}
                 current[3] = null;
                 current[4] = null;
             } else if (line.startsWith('##### ')) {
-                const name = line.substring(6).trim();
+                const name = line.substring(6).trim()
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '')
+                    .replace(/^\*|\*$/g, '');
+
+                const link = Markdown.text2docLink(name, path);
+
                 const t = Markdown.text2link(name);
                 content[t] = {
                     level: 3,
-                    title: name,
-                    link: t
+                    title: link ? link.name : name,
+                    link:  link ? link.link : t,
+                    external: !!link
                 };
                 if (current[2]) {
                     current[2].children = current[2].children || [];
@@ -389,7 +455,7 @@ ${_ll.join('\n')}
         let {header, body} = Markdown.extractHeader(text);
 
         body = Markdown.removeDocsify(body);
-        let {lines, content, license, changeLog} = Markdown.decorateText(body, header);
+        let {lines, content, license, changeLog} = Markdown.decorateText(body, header, `${this.props.path[0] === '/' ? this.props.path : '/' + this.props.path}`);
 
         return {header, body: lines.join('\n'), content, license, changeLog};
     }
@@ -436,11 +502,38 @@ ${_ll.join('\n')}
     }
 
     renderHeader() {
+        const data = [];
+
         if (this.state.header.translatedFrom) {
-            return (<div className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>)
-        } else {
-            return null;
+            data.push((<div className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>));
         }
+        if (this.state.header.adapter) {
+            data.push((<h1>{this.state.header.title}</h1>));
+        }
+        if (this.state.header.description) {
+            data.push((<span className={this.props.classes.description}>{this.state.header.description}</span>));
+        }
+
+        if (Object.keys(this.state.header).find(attr => ADAPTER_CARD.indexOf(attr) !== -1)) {
+            data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
+                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Information')}</ExpansionPanelSummary>
+                <ExpansionPanelDetails><List>{
+                    ADAPTER_CARD
+                        .filter(attr => this.state.header.hasOwnProperty(attr))
+                        .map(attr => (
+                            <ListItem>
+                                <div className={this.props.classes.adapterCardAttr}>{I18n.t(attr)}: </div>
+                                <span>{this.state.header[attr].toString()}</span>
+                            </ListItem>))}
+                </List></ExpansionPanelDetails>
+                </ExpansionPanel>));
+        }
+
+        if (this.state.header.logo) {
+            data.push((<img src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>));
+        }
+
+        return data;
     }
 
     renderInfo() {
@@ -454,18 +547,17 @@ ${_ll.join('\n')}
     }
 
     _renderSubContent(menu) {
-        return (<ul>
-            {
-                menu.children.map(item => {
-                    const ch = this.state.content[item].children;
-                    return (
-                        <li><span onClick={() => this.onNavigate(item)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
-                            {ch ? this._renderSubContent(this.state.content[item]) : null}
-                        </li>
-                    );
-                }).filter(e => e)
-            }
-        </ul>);
+        return (<ul>{
+            menu.children.map(item => {
+                const ch = this.state.content[item].children;
+                const link = this.state.content[item].external && this.state.content[item].link;
+                return (
+                    <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
+                        {ch ? this._renderSubContent(this.state.content[item]) : null}
+                    </li>
+                );
+            }).filter(e => e)
+        }</ul>);
     }
 
     onToggleContentButton() {
@@ -489,19 +581,18 @@ ${_ll.join('\n')}
         } else {
             return (<Paper className={this.props.classes.contentDiv}>
                 {this.renderContentCloseButton()}
-                <ul>
-                    {
-                        links.map(item => {
-                            if (this.state.content[item].level === 0) {
-                                return (
-                                    <li><span onClick={() => this.onNavigate(item)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
-                                        {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
-                                    </li>
-                                );
-                            }
-                        }).filter(e => e)
-                    }
-                </ul>
+                <ul>{
+                    links.map(item => {
+                        if (this.state.content[item].level === 0) {
+                            const link = this.state.content[item].external && this.state.content[item].link;
+                            return (
+                                <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
+                                    {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
+                                </li>
+                            );
+                        }
+                    }).filter(e => e)
+                }</ul>
             </Paper>);
         }
     }

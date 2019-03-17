@@ -18,18 +18,18 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 
 ### alexa.0
 
-| State name | meaning |
-| - | - |
-| echo-devices.* | States per Echo device, see below |
-| history.* | Infos for command history, see below |
+| State name           | meaning                                                |
+| -------------------- | ------------------------------------------------------ |
+| echo-devices.*       | States per Echo device, see below                      |
+| history.*            | Infos for command history, see below                   |
 | smart-home-devices.* | States per smart home device and in general, see below |
-| requestResult | Error info for TuneIn requests |
+| requestResult        | Error info for TuneIn requests                         |
 
 
 #### alexa.0.echo-devices.Serialnumber
 
 | State name | meaning |
-| - | - |
+| --- | --- |
 | Bluetooth.MAC.connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
 | Bluetooth.MAC.unpair | Button to unpair this device |
 | Player-Controls.TuneIn | text field to put in a Station name to play this station on this device |
@@ -52,7 +52,7 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 #### alexa.0.history
 
 | State name | meaning |
-| - | - |
+| --- | --- |
 | #trigger | Button to get new History (more current then timestamp in creationTime) |
 | creationTime | only history entries are considered after this timestamp, updated with timestamp of selected record on update |
 | name | Name of the device that got the request |
@@ -62,7 +62,7 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 #### alexa.0.smart-home-devices
 
 | State name | meaning |
-| - | - |
+| --- | --- |
 | UniqueId.delete | Button to delete this smart home device |
 | UniqueId.isEnabled | indicator if the smart home device is enabled |
 | deleteAll | Button to delete all smart home devices in Amazon |
