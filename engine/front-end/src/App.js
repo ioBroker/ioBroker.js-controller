@@ -43,16 +43,16 @@ const styles = theme => ({
 const PAGES = {
     'blog':     {tabIndex: 1, component: TabBlog,     icon: null, name: 'Blog'},
     'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
-    'documentation':  {tabIndex: 3, name: 'Documentation', content: '/content.json'},
-    'adapters':  {tabIndex: 4, name: 'Adapters', content: '/adapters.json'},
+    'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
+    'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
     'cloud':    {tabIndex: 5, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
         {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
         {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
         ]},
     'intro':    {component: PageIntro, name: 'intro'},
-    'imprint':  {name: 'imprint', md: '/imprint.md'},
-    'privacy':  {name: 'privacy', md: '/privacy.md'}
+    'imprint':  {name: 'imprint', md: 'imprint.md'},
+    'privacy':  {name: 'privacy', md: 'privacy.md'}
 };
 
 class App extends Rooter {

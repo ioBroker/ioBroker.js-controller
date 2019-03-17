@@ -211,7 +211,7 @@ class Markdown extends Rooter {
 
     load(path) {
         path = path || this.props.path;
-        fetch(`/${this.props.language}/${path}`)
+        fetch(`${this.props.language}${path[0] === '/' ? path : '/' + path}`)
             .then(res => res.text())
             .then(text => {
                 const {header, body, content, license, changeLog} = this.format(text);
@@ -241,9 +241,14 @@ class Markdown extends Rooter {
         const changeLog = [];
 
         lines.forEach((line, i) => {
+            if (line.startsWith('=========')) {
+                line = '';
+                lines[i] = '--delete--';
+            }
             if (header.adapter) {
                 if (!license && lines[i].startsWith('## License')) {
                     license = true;
+                    log = false;
                     lines[i] = '--delete--';
                     line = '';
                 } else if (license) {
@@ -257,6 +262,7 @@ class Markdown extends Rooter {
 
                 if (!log && lines[i].match(/^## Changelog/i)) {
                     log = true;
+                    license = false;
                     lines[i] = '--delete--';
                     line = '';
                 } else if (log) {

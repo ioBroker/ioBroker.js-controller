@@ -71,7 +71,7 @@ const styles = theme => ({
     }
 });
 
-class Intro extends Rooter {
+class TreePage extends Rooter {
     constructor(props) {
         super(props);
         let expanded = window.localStorage ? window.localStorage.getItem('Docs.expanded') : '[]';
@@ -98,12 +98,32 @@ class Intro extends Rooter {
         }
     }
 
+    static findFirstPage(root) {
+        if (root.content) {
+            return root.content;
+        } else if (root.pages) {
+            for (const attr in root.pages) {
+                if (root.pages.hasOwnProperty(attr)) {
+                    const result = this.findFirstPage(root.pages[attr]);
+                    if (result) return result;
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
     load(contentPath) {
         contentPath = contentPath || this.props.contentPath;
         fetch(contentPath)
             .then(res => res.json())
             .then(content => {
-                this.setState({content});
+                let path = this.state.path;
+                if (!this.state.path) {
+                    path = TreePage.findFirstPage(content);
+                }
+
+                this.setState({content, path});
             });
     }
 
@@ -272,7 +292,7 @@ class Intro extends Rooter {
     }
 }
 
-Intro.propTypes = {
+TreePage.propTypes = {
     language: PropTypes.string,
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
@@ -280,4 +300,4 @@ Intro.propTypes = {
     contentPath: PropTypes.string
 };
 
-export default withStyles(styles)(Intro);
+export default withStyles(styles)(TreePage);

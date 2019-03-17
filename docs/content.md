@@ -1,5 +1,5 @@
 * [Welcome](README)
-  * [Introduction](intro/)
+  * [Introduction](intro/README)
 
 * de:Grundlagen;en:Fundamentals;ru:Основы
   * [Einleitung](basics/README)

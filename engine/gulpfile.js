@@ -6,6 +6,12 @@
 'use strict';
 
 const gulp = require('gulp');
+const documentation = require('./build-lib/documentaion');
+const adapters = require('./build-lib/adapters');
+const consts = require('./build-lib/consts');
+const utils = require('./build-lib/utils');
+const path = require('path');
+
 // const fs = require('fs');
 // const fileName = 'words.js';
 // const EMPTY = '';
@@ -402,11 +408,27 @@ gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
 //gulp.task('default', gulp.series('updatePackages', 'updateReadme'));
 */
+gulp.task('clean', done => {
+    consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));
 
-
-
-gulp.task('default1', function (done) {
     done();
 });
+
+gulp.task('documentation', () => {
+    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'))
+        .then(content => {
+            console.log(JSON.stringify(content));
+            return documentation.processFiles(consts.SRC_DOC_DIR);
+        });
+});
+
+gulp.task('adapters', () => {
+    return adapters.buildAdapterContent()
+        .then(content => {
+            console.log(JSON.stringify(content));
+        });
+});
+
+gulp.task('default', gulp.series('clean', 'documentation', 'adapters'));
 
 

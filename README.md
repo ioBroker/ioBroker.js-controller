@@ -13,10 +13,15 @@ This is the place where a new documention for ioBroker is born. Beware: Work in 
 |**docs**|Docsify root to be able to use it as github pages docroot|
 |**media**|Official files and images|
 
+## TODO
+- Download
+- Blog
+- About
+- FAQ
+- Translator
+
 ## Changelog
-
 Read the change log [here](CHANGELOG.md).
-
 
 ## License
 
