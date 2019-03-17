@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import SplitterLayout from 'react-splitter-layout';
+import Drawer from '@material-ui/core/Drawer';
 
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
@@ -81,10 +82,16 @@ class TreePage extends Rooter {
             expanded = [];
         }
         const location = this.getLocation();
+        let menuOpened = window.localStorage ? window.localStorage.getItem('Docs.menuOpened') !== 'false' : true;
+
+        if (this.props.mobile) {
+            menuOpened = false;
+        }
+
         this.state = {
             path: location.page || '',
             content: {},
-            menuOpened: window.localStorage ? window.localStorage.getItem('Docs.menuOpened') !== 'false' : true,
+            menuOpened,
             expanded,
             menuSize: window.localStorage ? parseFloat(window.localStorage.getItem('Docs.menuSize')) || 300 : 300
         };
@@ -203,7 +210,10 @@ class TreePage extends Rooter {
         }
 
         if (obj.content) {
-            super.onNavigate(null, obj.content);
+            if (this.props.mobile) {
+                this.setState({menuOpened: false});
+            }
+            super.onNavigate(null, null, obj.content);
         }
     }
 
@@ -256,39 +266,76 @@ class TreePage extends Rooter {
         this.setState({menuOpened: !this.state.menuOpened});
     }
 
+    renderList() {
+        return [
+            (<List className={this.props.classes.list}>{this.renderMenuItem(this.state.content, '', 0)}</List>),
+            (<Divider/>),
+            (<div className={this.props.classes.footer}>{this.getBottomButtons()}</div>)
+        ];
+    }
+
+    renderDesktopDrawer() {
+        if (this.state.menuOpened) {
+            return (<div className={this.props.classes.drawer}>
+                {this.renderList()}
+            </div>);
+        } else {
+            return null;
+        }
+    }
+
+    renderMobileDrawer() {
+        return (
+            <Drawer open={this.state.menuOpened}
+                    anchor="left"
+                    onClose={() => this.setState({menuOpened: false})}
+            >
+                {this.renderList()}
+            </Drawer>
+        )
+    }
+
+    renderPage() {
+        return (<MDPage
+            onMenuOpenClose={!this.state.resizing ? () => this.onMenuOpenClose() : null}
+            resizing={this.state.resizing }
+            contentWidth={this.state.menuSize}
+            menuOpened={this.state.menuOpened}
+            onNavigate={this.props.onNavigate}
+            language={this.props.language}
+            theme={this.props.theme}
+            mobile={this.props.mobile}
+            path={this.state.path}
+        />);
+    }
+
     render() {
-        return (<SplitterLayout
-            key="splitterLayout"
-            vertical={false}
-            primaryMinSize={100}
-            primaryIndex={1}
-            percentage={false}
-            secondaryInitialSize={this.state.menuSize}
-            onDragStart={() => this.setState({resizing: true})}
-            onSecondaryPaneSizeChange={size => this.menuSize = parseFloat(size)}
-            customClassName={this.props.classes.splitterDivs + ' ' + (!this.state.menuOpened ? this.props.classes.menuDivWithoutMenu : '')}
-            onDragEnd={() => {
-                window.localStorage && window.localStorage.setItem('Docs.menuSize', this.menuSize.toString());
-                this.setState({resizing: false, menuSize: this.menuSize});
-            }}
-        >
-            {this.state.menuOpened ? (<div className={this.props.classes.drawer}>
-                <List className={this.props.classes.list}>{this.renderMenuItem(this.state.content, '', 0)}</List>
-                <Divider/>
-                <div className={this.props.classes.footer}>{this.getBottomButtons()}</div>
-            </div>) : null}
-            <MDPage
-                onMenuOpenClose={!this.state.resizing ? () => this.onMenuOpenClose() : null}
-                resizing={this.state.resizing }
-                contentWidth={this.state.menuSize}
-                menuOpened={this.state.menuOpened}
-                onNavigate={this.props.onNavigate}
-                language={this.props.language}
-                theme={this.props.theme}
-                mobil={this.props.mobile}
-                path={this.state.path}
-            />
-        </SplitterLayout>);
+        if (this.props.mobile) {
+            return [
+                this.renderMobileDrawer(),
+                this.renderPage()
+            ];
+        } else {
+            return (<SplitterLayout
+                key="splitterLayout"
+                vertical={false}
+                primaryMinSize={100}
+                primaryIndex={1}
+                percentage={false}
+                secondaryInitialSize={this.state.menuSize}
+                onDragStart={() => this.setState({resizing: true})}
+                onSecondaryPaneSizeChange={size => this.menuSize = parseFloat(size)}
+                customClassName={this.props.classes.splitterDivs + ' ' + (!this.state.menuOpened ? this.props.classes.menuDivWithoutMenu : '')}
+                onDragEnd={() => {
+                    window.localStorage && window.localStorage.setItem('Docs.menuSize', this.menuSize.toString());
+                    this.setState({resizing: false, menuSize: this.menuSize});
+                }}
+            >
+                {this.renderDesktopDrawer()}
+                {this.renderPage()}
+            </SplitterLayout>);
+
+        }
     }
 }
 

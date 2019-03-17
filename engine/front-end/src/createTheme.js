@@ -24,7 +24,6 @@ export default type => {
                 background: '#e4e4e4',
                 color: '#1b4777',
                 height: APP_BAR_HEIGHT,
-                width: '100%',
             },
             content: {
                 minHeight: '100%',
@@ -52,7 +51,6 @@ export default type => {
                 background: '#e4e4e4',
                 color: '#1b4777',
                 height: APP_BAR_HEIGHT,
-                width: '100%',
             },
             content: {
                 minHeight: '100%',

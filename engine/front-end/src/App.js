@@ -5,6 +5,15 @@ import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+
+import {MdLanguage as IconLanguage} from 'react-icons/md';
+import {MdMenu as IconMenu} from 'react-icons/md';
 
 import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
@@ -37,19 +46,53 @@ const styles = theme => ({
         height: theme.tabs.height,
         cursor: 'pointer'
     },
-    tabs: theme.tabs
+    logoSmall: {
+        width: theme.tabs.height - 10,
+        height: theme.tabs.height - 10,
+        cursor: 'pointer'
+    },
+    tabs: Object.assign({display: 'flex'}, theme.tabs),
+    languageButton: {
+        width: 32,
+        height: 32,
+        cursor: 'pointer',
+        marginLeft: 15
+    },
+    languageText: {
+        paddingTop: 3,
+        cursor: 'pointer'
+    },
+    subMenu: {
+        marginLeft: 30,
+        padding: 0,
+    },
+    subMenuItem: {
+        padding: '3px 0 3px 10px'
+    },
+    subMenuItemText: {
+        fontSize: 14,
+    }
 });
+
+const LANGUAGES = [
+    'en', 'de', 'ru'
+];
 
 const PAGES = {
     'blog':     {tabIndex: 1, component: TabBlog,     icon: null, name: 'Blog'},
     'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
-    'cloud':    {tabIndex: 5, name: 'Cloud', menu: [
+    'about':  {tabIndex: 5, name: 'About', menu: [
+            {link: 'https://iobroker.net', name: 'Free', target: 'this'},
+            {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
+            {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
+    ]},
+    'cloud':    {tabIndex: 6, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
         {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
         {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
-        ]},
+    ]},
     'intro':    {component: PageIntro, name: 'intro'},
     'imprint':  {name: 'imprint', md: 'imprint.md'},
     'privacy':  {name: 'privacy', md: 'privacy.md'}
@@ -60,24 +103,67 @@ class App extends Rooter {
         super(props);
 
         let hash = this.getLocation();
+        let language = window.localStorage ? window.localStorage.getItem('Docs.language') || Rooter.detectLanguage() : Rooter.detectLanguage();
+        if (LANGUAGES.indexOf(language) === -1) {
+            language = 'de';
+        }
+
+        const width = window.innerWidth;
 
         this.state = {
             errorText: '',
             loaded: true,
             themeType: 'light',
-            mobile: false,
+            mobile: width < 650,
             menuOpened: [],
+            language,
+            showTabMenu: false,
+            languageMenu: false,
             anchorMenu: null,
-            language: 'en',
+            width: width,
+            height: window.innerHeight,
             selectedPage: hash.tab || 'intro'
         };
         this.contentRef = React.createRef();
+        this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
+    }
+
+    componentDidMount () {
+        super.componentDidMount();
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensionsBound);
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        window.removeEventListener('resize', this.updateWindowDimensionsBound);
+    }
+
+    updateWindowDimensions() {
+        if (this.resizeTimer) {
+            clearTimeout(this.resizeTimer);
+        }
+        this.resizeTimer = setTimeout(() => {
+            this.resizeTimer = null;
+            const width = window.innerWidth;
+            this.setState({width, height: window.innerHeight, mobile: width < 650});
+        }, 200);
     }
 
     onHashChange(location) {
+        const newState = {};
+        let changed = false;
         if (location.tab !== this.state.selectedPage) {
-            this.setState({selectedPage: location.tab});
+            newState.selectedPage = location.tab;
+            changed = true;
         }
+        if (location.language !== this.state.language) {
+            if (LANGUAGES.indexOf(location.language) !== -1) {
+                newState.language = location.language;
+                changed = true;
+            }
+        }
+        changed && this.setState(newState);
     }
 
     renderError() {
@@ -97,8 +183,33 @@ class App extends Rooter {
             src={this.state.mobile ? LogoSmall : LogoBig}
             alt="logo"
             className={this.state.mobile ? this.props.classes.logoSmall : this.props.classes.logoBig}
-            onClick={() => this.onNavigate('intro')}
+            onClick={() => this.onNavigate(this.state.language, 'intro')}
         />)
+    }
+
+    renderLanguage() {
+        return [
+            <div style={{display: 'inherit'}} onClick={e => {
+                this.setState({languageMenu: true, anchorMenu: e.target});
+            }}>
+                <IconLanguage className={this.props.classes.languageButton} />
+                <span className={this.props.classes.languageText}>{this.state.language.toUpperCase()}</span>
+            </div>,
+            this.state.languageMenu ? [
+                (<Menu id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
+                    this.setState({languageMenu: false, anchorMenu: null});
+                }}>
+                    {LANGUAGES.map(lang => (
+                        <MenuItem key={lang} selected={this.state.language === lang} onClick={() =>
+                            this.setState({languageMenu: false, anchorMenu: null}, () => {
+                                const location = this.getLocation();
+                                this.onNavigate(lang, location.tab, location.page, location.chapter);
+                            })
+                        }>{lang.toUpperCase()}</MenuItem>
+                    ))}
+                </Menu>)
+            ] : null
+        ];
     }
 
     openLink(url, target) {
@@ -109,15 +220,16 @@ class App extends Rooter {
         }
     }
 
-    onNavigate(tab, doc, chapter) {
+    onNavigate(language, tab, page, chapter) {
         this.contentRef.current.scrollTop = 0;
+        language = language || this.state.language;
 
-        super.onNavigate(tab, doc, chapter);
+        super.onNavigate(language, tab, page, chapter);
     }
 
     renderMenu(name) {
         if (this.state.menuOpened.indexOf(name) !== -1) {
-            return (<Menu id="simple-menu" anchorEl={this.state.anchorMenu} open={true} onClose={() => {
+            return (<Menu id="simple-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
                 const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
                 const pos = menuOpened.indexOf(name);
                 if (pos !== -1) {
@@ -132,21 +244,16 @@ class App extends Rooter {
         }
     }
 
-    renderAppBar() {
+    renderTabs() {
         let selected = this.tabName2index(this.state.selectedPage);
-        if (this.state.selectedPage === 'intro') {
-            selected = 0;
-        } else if (selected === -1) {
+        if (selected === -1) {
             selected = false;
-        } else {
-            selected = selected + 2;
         }
 
-        return (
-            <Toolbar position="static" variant="dense" className={this.props.classes.tabs} >
-                <Tabs className={this.props.classes.tabs} value={selected}
+        return (<Tabs className={this.props.classes.tabs} value={selected}
+                      variant="standard"
                       onChange={(e, value) => {
-                          const selectedPage = Object.keys(PAGES)[value - 2];
+                          const selectedPage = Object.keys(PAGES)[value];
                           if (PAGES[selectedPage].link) {
                               this.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
                           } else if (PAGES[selectedPage].menu) {
@@ -156,27 +263,85 @@ class App extends Rooter {
                               }
                               this.setState({menuOpened, anchorMenu: e.target})
                           } else {
-                              this.onNavigate(selectedPage);
+                              this.onNavigate(this.state.language, selectedPage);
                           }
                       }}>
-                    {this.renderLogo()}
 
-                    <div style={{flexGrow: 1}}/>
+            {Object.keys(PAGES).map(tab => {
+                if (!PAGES[tab].tabIndex) return;
 
+                if (PAGES[tab].menu) {
+                    return [
+                        (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
+                        this.renderMenu(tab)
+                    ];
+                } else {
+                    return (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
+                }
+            })}
+
+        </Tabs>);
+    }
+
+    renderPagesMenu() {
+        return [
+            (<IconButton onClick={() => this.setState({showTabMenu: true})}>
+                <IconMenu />
+            </IconButton>),
+            (<Drawer open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
+                <List>
                     {Object.keys(PAGES).map(tab => {
                         if (!PAGES[tab].tabIndex) return;
 
                         if (PAGES[tab].menu) {
                             return [
-                                (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
-                                this.renderMenu(tab)
+                                (<ListItem button key={tab}
+                                    onClick={e => {
+                                        const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
+                                        if (menuOpened.indexOf(tab) === -1) {
+                                            menuOpened.push(tab);
+                                        }
+                                        this.setState({menuOpened, anchorMenu: e.target})
+                                    }}
+                                >
+                                    {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
+                                    <ListItemText primary={I18n.t(PAGES[tab].name)} />
+                                </ListItem>),
+
+                                (<List className={this.props.classes.subMenu}>
+                                    {PAGES[tab].menu.map(item =>
+                                        (<ListItem classes={{root: this.props.classes.subMenuItem}}button key={item}
+                                                   onClick={() => this.openLink(item.link, item.target)}>
+                                            {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
+                                            <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
+                                        </ListItem>)
+                                    )}
+                                </List>)
                             ];
                         } else {
-                            return (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
+                            return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
+                                    this.setState({showTabMenu: false}, () => {
+                                        this.onNavigate(this.state.language, tab);
+                                    });
+                                }}>
+                                {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
+                                <ListItemText primary={I18n.t(PAGES[tab].name)} />
+                            </ListItem>);
                         }
                     })}
+                </List>
+            </Drawer>)
+        ];
+    }
 
-                </Tabs>
+    renderAppBar() {
+        return (
+            <Toolbar position="static" variant="dense" className={this.props.classes.tabs} >
+                {this.renderLogo()}
+                {this.renderLanguage()}
+                <div style={{flex: 1}}/>
+                {this.state.width > 1200 ? this.renderTabs() : this.renderPagesMenu()}
+
             </Toolbar>
         );
     }

@@ -90,6 +90,8 @@ const styles = theme => ({
     contentDiv: {
         position: 'fixed',
         width: '20%',
+        minWidth: 200,
+        overflowX: 'hidden',
         opacity: 0.8,
         top: 60,
         right: 20,
@@ -102,6 +104,7 @@ const styles = theme => ({
         right: 20,
         width: 25,
         height: 25,
+        cursor: 'pointer'
     },
     contentClose: {
         position: 'absolute',
@@ -176,6 +179,9 @@ class Markdown extends Rooter {
     componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.path !== nextProps.path) {
             this.load(nextProps.path);
+        } else
+        if (this.props.language !== nextProps.language) {
+            this.load(null, nextProps.language);
         }
     }
 
@@ -188,7 +194,7 @@ class Markdown extends Rooter {
     }
 
     onNavigate(id) {
-        this.props.onNavigate(null, this.props.path, id);
+        this.props.onNavigate(null, null, this.props.path, id);
     }
 
     static getTitle(text) {
@@ -209,9 +215,10 @@ class Markdown extends Rooter {
         }
     }
 
-    load(path) {
+    load(path, language) {
         path = path || this.props.path;
-        fetch(`${this.props.language}${path[0] === '/' ? path : '/' + path}`)
+        language = language || this.props.language;
+        fetch(`${language}${path[0] === '/' ? path : '/' + path}`)
             .then(res => res.text())
             .then(text => {
                 const {header, body, content, license, changeLog} = this.format(text);
@@ -461,11 +468,13 @@ ${_ll.join('\n')}
         </ul>);
     }
 
+    onToggleContentButton() {
+        this.setState({hideContent: !this.state.hideContent});
+        window.localStorage && window.localStorage.setItem('Docs.hideContent', this.state.hideContent ? 'false' : 'true');
+    }
+
     renderContentCloseButton() {
-        return (<IconClose className={this.props.classes.contentClose} onClick={() => {
-            this.setState({hideContent: !this.state.hideContent});
-            window.localStorage && window.localStorage.setItem('Docs.hideContent', this.state.hideContent ? 'false' : 'true');
-        }}/>);
+        return (<IconClose className={this.props.classes.contentClose} onClick={() => !this.state.hideContent && this.onToggleContentButton()}/>);
     }
 
     renderContent() {
@@ -474,7 +483,7 @@ ${_ll.join('\n')}
             return null;
         }
         if (this.state.hideContent) {
-            return (<Paper className={this.props.classes.contentDivClosed}>
+            return (<Paper className={this.props.classes.contentDivClosed} onClick={() => this.onToggleContentButton()}>
                 {this.renderContentCloseButton()}
             </Paper>);
         } else {

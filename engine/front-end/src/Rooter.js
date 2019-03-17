@@ -1,10 +1,21 @@
 import {Component} from 'react';
 
+
+
 class Rooter extends Component {
     constructor(props) {
         super(props);
 
         this.onHashChangeBound = this._onHashChange.bind(this);
+    }
+
+    static detectLanguage() {
+        let lang = window.navigator.language || window.navigator.userLanguage;
+        lang = lang.toLowerCase().substring(0, 2);
+        if (lang === 'zh') {
+            lang = 'zh-cn';
+        }
+        return lang;
     }
 
     componentDidMount() {
@@ -20,39 +31,51 @@ class Rooter extends Component {
             this.onHashChange(this.getLocation());
         }
     }
-    onNavigate(tab, doc, chapter) {
-        if (tab === null) {
+
+    onNavigate(language, tab, page, chapter) {
+        if (tab === null || language === null) {
             let location = this.getLocation();
-            tab = location.tab;
+            tab = tab || location.tab;
+            language = language || location.language;
         }
-        // rooter: #TAB/PAGE?chapterOnPage
-        // rooter: #TAB?chapterOnPage
-        window.location.hash = `#${tab}${doc ? '/' + doc : ''}${chapter ? '?' + chapter : ''}`;
+        // rooter: #LN/TAB/PAGE?chapterOnPage
+        // rooter: #LN/TAB?chapterOnPage
+        // rooter: #?chapterOnPage
+        window.location.hash = `#${language}/${tab}${page ? '/' + page : ''}${chapter ? '?' + chapter : ''}`;
     }
 
     getLocation() {
-        const hash = window.location.hash.substring(1);
+        let hash = window.location.hash.substring(1);
         let pos = hash.indexOf('/');
         const result = {
+            language: '',
             tab: '',
             page: '',
             chapter: ''
         };
+
         if (pos !== -1) {
-            result.tab = hash.substring(0, pos);
-            result.page = hash.substring(pos + 1);
-            pos = result.page.indexOf('?');
+            result.language = hash.substring(0, pos);
+            result.tab = hash.substring(pos + 1);
+            pos = result.tab.indexOf('/');
             if (pos !== -1) {
-                result.chapter = result.page.substring(pos + 1);
-                result.page = result.page.substring(0, pos);
+                result.page = result.tab.substring(pos + 1);
+                result.tab = result.tab.substring(0, pos);
+
+                pos = result.page.indexOf('?');
+
+                if (pos !== -1) {
+                    result.chapter = result.page.substring(pos + 1);
+                    result.page = result.page.substring(0, pos);
+                }
             }
         } else {
             pos = hash.indexOf('?');
             if (pos !== -1) {
-                result.page = hash.substring(pos + 1);
-                result.tab = hash.substring(0, pos);
+                result.language = hash.substring(pos + 1);
+                result.chapter = hash.substring(0, pos);
             } else {
-                result.tab = hash;
+                result.language = hash;
             }
         }
 

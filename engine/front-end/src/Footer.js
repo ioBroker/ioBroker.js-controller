@@ -77,9 +77,9 @@ class Loader extends React.Component {
             </div>
             <br/>
 
-            <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate('imprint')}>{I18n.t('Imprint')}</div>
+            <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate(null, 'imprint')}>{I18n.t('Imprint')}</div>
             <div className={this.props.classes.footerLink} style={{cursor: 'inherit'}}> | </div>
-            <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate('privacy')}>{I18n.t('Privacy policy')}</div>
+            <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate(null, 'privacy')}>{I18n.t('Privacy policy')}</div>
 
             <p className={this.props.classes.footerCopyright}>Copyright © 2014-2019 by the ioBroker Community and the ioBroker GmbH.</p>
             <img src={LogoIoBroker} className={this.props.classes.footerLogo} alt="logo"/>
@@ -89,6 +89,7 @@ class Loader extends React.Component {
 
 Loader.propTypes = {
     onNavigate: PropTypes.func,
+    language: PropTypes.string,
     mobile: PropTypes.bool,
     theme: PropTypes.string
 };

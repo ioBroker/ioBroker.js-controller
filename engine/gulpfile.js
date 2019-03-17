@@ -1,7 +1,8 @@
 /*!
+ * Copyright 2019, bluefox <dogafox@gmail.com>
  * ioBroker gulpfile
- * Date: 2019-01-28
- * Translate i18n files to flat and back
+ * Date: 2019-03-17
+ * Build documentation site
  */
 'use strict';
 
@@ -356,58 +357,56 @@ const path = require('path');
 //         }
 //     }
 // }
-
+//
 //TASKS
+//
+// gulp.task('adminWords2languages', function (done) {
+//     words2languages('./front-end/src/');
+//     done();
+// });
+//
+// gulp.task('adminWords2languagesFlat', function (done) {
+//     words2languagesFlat('./front-end/src/');
+//     done();
+// });
+//
+// gulp.task('adminLanguagesFlat2words', function (done) {
+//     languagesFlat2words('./front-end/src/');
+//     done();
+// });
+//
+// gulp.task('adminLanguages2words', function (done) {
+//     languages2words('./front-end/src/');
+//     done();
+// });
+//
+// gulp.task('translate', async function () {
+//     let yandex;
+//     const i = process.argv.indexOf('--yandex');
+//     if (i > -1) {
+//         yandex = process.argv[i + 1];
+//     }
+//
+//     if (fs.existsSync('./front-end/src/i18n/en/en.json')) {
+//         let enTranslations = require('./front-end/src/i18n/en.json');
+//         for (let l in languages) {
+//             console.log('Translate Text: ' + l);
+//             let existing = {};
+//             if (fs.existsSync('./front-end/src/i18n/' + l + '.json')) {
+//                 existing = require('./front-end/src/i18n/' + l + '.json');
+//             }
+//             for (let t in enTranslations) {
+//                 if (enTranslations.hasOwnProperty(t) && !existing[t]) {
+//                     existing[t] = await translate(enTranslations[t], l, yandex);
+//                 }
+//             }
+//             fs.writeFileSync('./front-end/src/i18n/' + l + '.json', JSON.stringify(existing, null, 4));
+//         }
+//     }
+// });
+//
+// gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
-/*gulp.task('adminWords2languages', function (done) {
-    words2languages('./front-end/src/');
-    done();
-});
-
-gulp.task('adminWords2languagesFlat', function (done) {
-    words2languagesFlat('./front-end/src/');
-    done();
-});
-
-gulp.task('adminLanguagesFlat2words', function (done) {
-    languagesFlat2words('./front-end/src/');
-    done();
-});
-
-gulp.task('adminLanguages2words', function (done) {
-    languages2words('./front-end/src/');
-    done();
-});
-
-gulp.task('translate', async function () {
-    let yandex;
-    const i = process.argv.indexOf('--yandex');
-    if (i > -1) {
-        yandex = process.argv[i + 1];
-    }
-    
-    if (fs.existsSync('./front-end/src/i18n/en/en.json')) {
-        let enTranslations = require('./front-end/src/i18n/en.json');
-        for (let l in languages) {
-            console.log('Translate Text: ' + l);
-            let existing = {};
-            if (fs.existsSync('./front-end/src/i18n/' + l + '.json')) {
-                existing = require('./front-end/src/i18n/' + l + '.json');
-            }
-            for (let t in enTranslations) {
-                if (enTranslations.hasOwnProperty(t) && !existing[t]) {
-                    existing[t] = await translate(enTranslations[t], l, yandex);
-                }
-            }
-            fs.writeFileSync('./front-end/src/i18n/' + l + '.json', JSON.stringify(existing, null, 4));
-        }
-    }
-});
-
-gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
-
-//gulp.task('default', gulp.series('updatePackages', 'updateReadme'));
-*/
 gulp.task('clean', done => {
     consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));
 

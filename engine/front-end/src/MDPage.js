@@ -26,17 +26,39 @@ const styles = theme => ({
         '&:hover': {
             color: 'white'
         }
+    },
+    menuOpenCloseButtonMobile: {
+        width: 22,
+        paddingLeft: 4
     }
 });
 
 class Imprint extends Component {
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.mobile !== nextProps.mobile) {
+            //setTimeout(() => this.forceUpdate(), 100);
+        }
+    }
+
+    renderOpenCloseButton() {
+        if (!this.props.onMenuOpenClose) return;
+        if (this.props.mobile) {
+            return (<div key="closeMenu"
+                         className={this.props.classes.menuOpenCloseButton + ' ' + this.props.classes.menuOpenCloseButtonMobile}
+                         style={{left: 0}}
+                         onClick={() => this.props.onMenuOpenClose()}>
+                <IconMenuClosed />
+            </div>);
+        } else {
+            return (<div key="closeMenu" className={this.props.classes.menuOpenCloseButton + ' ' + (this.props.mobile ? this.props.classes.menuOpenCloseButtonMobile : '')} style={{left: this.props.menuOpened ? this.props.contentWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
+                {this.props.menuOpened ? (<IconMenuOpened />) : (<IconMenuClosed />)}
+            </div>);
+        }
+    }
+
     render() {
         return [
-            this.props.onMenuOpenClose ?
-                (<div key="closeMenu" className={this.props.classes.menuOpenCloseButton} style={{left: this.props.menuOpened ? this.props.contentWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
-                    {this.props.menuOpened ? (<IconMenuOpened />) : (<IconMenuClosed />)}
-                </div>)
-                : null,
+            this.renderOpenCloseButton(),
             (<div className={this.props.classes.content}>
                 <MD path={this.props.path}
                     language={this.props.language}
