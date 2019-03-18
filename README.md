@@ -20,6 +20,9 @@ This is the place where a new documention for ioBroker is born. Beware: Work in 
 - FAQ
 - Translator
 
+## How to create the documentation
+
+
 ## Changelog
 Read the change log [here](CHANGELOG.md).
 

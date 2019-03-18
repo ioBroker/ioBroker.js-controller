@@ -45,9 +45,9 @@ const styles = theme => ({
             borderStyle: 'solid',
             background: '#eff6fb',
             '&:before': {
-                content: 'hello',
-                borderRadius: '50%',
-                background: '#008aff',
+                content: '"⚠"',
+                //borderRadius: '50%',
+                //background: '#008aff',
             }
         },
         '& .alarm': {
@@ -59,9 +59,9 @@ const styles = theme => ({
             borderStyle: 'solid',
             background: '#fbeff3',
             '&:before': {
-                content: 'hello',
-                borderRadius: '50%',
-                background: '#008aff',
+                content: '"⚠"',
+                //borderRadius: '50%',
+                //background: '#008aff',
             }
         },
         '& .notice': {
@@ -73,9 +73,9 @@ const styles = theme => ({
             borderStyle: 'solid',
             background: '#dedede',
             '&:before': {
-                content: 'hello',
-                borderRadius: '50%',
-                background: '#dedede',
+                content: '"✋"',
+                //borderRadius: '50%',
+                //background: '#dedede',
             }
         },
         '& a': {
@@ -167,9 +167,9 @@ const styles = theme => ({
         borderStyle: 'solid',
         background: '#bdded5',
         '&:before': {
-            content: 'i',
-            borderRadius: '50%',
-            background: '#91dea9',
+            content: '"i"',
+            //borderRadius: '50%',
+            //background: '#91dea9',
             color: '#000000'
         }
     },
@@ -181,6 +181,7 @@ const styles = theme => ({
     mdLink: {
         cursor: 'pointer',
         '&:after': {
+            content: '"🔗"',
             opacity: 0.7,
             fontSize: 14,
             marginLeft: 5
