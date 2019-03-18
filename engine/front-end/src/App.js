@@ -189,14 +189,14 @@ class App extends Rooter {
 
     renderLanguage() {
         return [
-            <div style={{display: 'inherit'}} onClick={e => {
+            <div key="langButton" style={{display: 'inherit'}} onClick={e => {
                 this.setState({languageMenu: true, anchorMenu: e.target});
             }}>
                 <IconLanguage className={this.props.classes.languageButton} />
                 <span className={this.props.classes.languageText}>{this.state.language.toUpperCase()}</span>
             </div>,
             this.state.languageMenu ? [
-                (<Menu id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
+                (<Menu key="langMenu" id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
                     this.setState({languageMenu: false, anchorMenu: null});
                 }}>
                     {LANGUAGES.map(lang => (

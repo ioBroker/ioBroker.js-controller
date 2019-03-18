@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import SplitterLayout from 'react-splitter-layout';
 import Drawer from '@material-ui/core/Drawer';
+import Input from '@material-ui/core/Input';
 
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
@@ -18,6 +19,7 @@ import {MdExpandMore as IconCollapse} from 'react-icons/md';
 import {MdKeyboardArrowRight as IconExpand} from 'react-icons/md';
 import {MdUnfoldMore as IconExpandAll} from 'react-icons/md';
 import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
+import {MdClear as IconClear} from 'react-icons/md';
 
 import MDPage from './MDPage';
 import Rooter from './Rooter';
@@ -59,7 +61,7 @@ const styles = theme => ({
         float: 'right'
     },
     list: {
-        height: 'calc(100% - 38px)',
+        height: 'calc(100% - 38px - 32px)',
         overflow: 'auto'
     },
     drawer: {
@@ -69,6 +71,23 @@ const styles = theme => ({
     selected: {
         background: theme.palette.primary.light,
         color: theme.palette.primary.contrastText,
+    },
+    searchInput: {
+        width: 'calc(100% - 20px)',
+        marginLeft: 10,
+        marginRight: 10,
+    },
+    searchInputWithClear: {
+        width: 'calc(100% - 50px)',
+        //transition: 'width 0.5s',
+    },
+    searchClear: {
+        padding: 3,
+        marginTop: 5,
+        cursor: 'pointer',
+        '&:hover': {
+            opacitiy: 0.7
+        }
     }
 });
 
@@ -93,6 +112,7 @@ class TreePage extends Rooter {
             content: {},
             menuOpened,
             expanded,
+            filter: '',
             menuSize: window.localStorage ? parseFloat(window.localStorage.getItem('Docs.menuSize')) || 300 : 300
         };
         this.menuSize = this.state.menuSize;
@@ -143,6 +163,15 @@ class TreePage extends Rooter {
     saveExpanded(expanded) {
         window.localStorage.setItem('Docs.expanded', JSON.stringify(expanded || this.state.expanded));
     }
+    onExpandAll() {
+        const expanded = this.getFolders();
+        this.setState({expanded});
+        this.saveExpanded(expanded);
+    }
+    onCollapseAll() {
+        this.setState({expanded: []});
+        this.saveExpanded([]);
+    }
 
     onExpand(id, e) {
         e && e.stopPropagation();
@@ -163,10 +192,6 @@ class TreePage extends Rooter {
             this.saveExpanded(expanded);
         }
     }
-    onCollapseAll() {
-        this.setState({expanded: []});
-        this.saveExpanded([]);
-    }
 
     getFolders(root, item, result) {
         root = root || this.state.content;
@@ -181,22 +206,16 @@ class TreePage extends Rooter {
         return result;
     }
 
-    onExpandAll() {
-        const expanded = this.getFolders();
-        this.setState({expanded});
-        this.saveExpanded(expanded);
-    }
-
     renderFolderButtons(item, children, isExpanded) {
         if (children) {
             return (
-                <IconButton className={this.props.classes.expandButton}
+                <IconButton key="expand" className={this.props.classes.expandButton}
                             onClick={isExpanded ? e => this.onCollapse(item, e) : e => this.onExpand(item, e)}>
                     {isExpanded ? (<IconCollapse fontSize="small"/>) : (<IconExpand fontSize="small"/>)}
                 </IconButton>
             );
         } else {
-            return (<div className={this.props.classes.expandButton}/>);
+            return (<div key="expand1" className={this.props.classes.expandButton}/>);
         }
     }
 
@@ -220,13 +239,26 @@ class TreePage extends Rooter {
     getItemIcon(root) {
         if (root.content) {
             if (root.icon) {
-                return (<img className={this.props.classes.icon} src={this.props.language + '/' + root.icon} alt="logo"/>);
+                return (<img key="icon1" className={this.props.classes.icon} src={this.props.language + '/' + root.icon} alt="logo"/>);
             } else {
-                return (<IconDocument className={this.props.classes.icon}/>);
+                return (<IconDocument key="icon" className={this.props.classes.icon}/>);
             }
         } else {
             return null;
         }
+    }
+
+    findNotFilteredOut(root) {
+        if (root.pages) {
+            const found = Object.keys(root.pages).find(attr => this.findNotFilteredOut(root.pages[attr]));
+            if (found) return true;
+        }
+        if (root.title) {
+            if ((root.title[this.props.language] || root.title.en).toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     renderMenuItem(root, item, level) {
@@ -236,20 +268,24 @@ class TreePage extends Rooter {
             isExpanded = this.state.expanded.indexOf(item) !== -1;
         }
 
-        return [root.title ? (<ListItem
+        const areChildrenVisible = !this.state.filter || this.findNotFilteredOut(root);
+
+        return [
+            root.title && (!this.state.filter || areChildrenVisible || (root.title[this.props.language] || root.title.en).toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1) ?
+            (<ListItem
                 key={item}
                 className={this.props.classes.element + ' ' + (root.content && root.content === this.state.path ? this.props.classes.selected : '')}
                 onClick={() => this.onNavigate(item, root)}>
                 {this.renderFolderButtons(item, root.pages, isExpanded)}
-                <ListItemIcon>{root.pages ? (isExpanded ? (<IconFolderOpened/>) : (<IconFolder/>)) : null}</ListItemIcon>
+                {root.pages ? (<ListItemIcon children={isExpanded ? (<IconFolderOpened/>) : (<IconFolder/>)}/>) : null}
                 <ListItemText
                     classes={{root: this.props.classes.listItem, primary: (root.content && root.content === this.state.path ? this.props.classes.selected : '')}}
                     style={{}} primary={[
                         this.getItemIcon(root),
-                        (<span>{root.title[this.props.language] || root.title.en}</span>)
+                        (<span key="text">{root.title[this.props.language] || root.title.en}</span>)
                 ]}/>
             </ListItem>) : null,
-            isExpanded && root.pages ? Object.keys(root.pages).map(p =>
+            areChildrenVisible && isExpanded && root.pages ? Object.keys(root.pages).map(p =>
                 this.renderMenuItem(root.pages[p], p, level + 1)) : null
         ];
     }
@@ -266,17 +302,31 @@ class TreePage extends Rooter {
         this.setState({menuOpened: !this.state.menuOpened});
     }
 
+    renderFilterInput() {
+        return [
+            (<Input
+                key="filter"
+                placeholder={I18n.t('Filter')}
+                onChange={e => this.setState({filter: e.target.value})}
+                value={this.state.filter}
+                className={this.props.classes.searchInput + ' ' + (this.state.filter ? this.props.classes.searchInputWithClear : '')}
+            />),
+            this.state.filter ? (<IconButton className={this.props.classes.searchClear} onClick={() => this.setState({filter: ''})}><IconClear fontSize="small"/></IconButton>) : null,
+            ];
+    }
+
     renderList() {
         return [
-            (<List className={this.props.classes.list}>{this.renderMenuItem(this.state.content, '', 0)}</List>),
-            (<Divider/>),
-            (<div className={this.props.classes.footer}>{this.getBottomButtons()}</div>)
+            this.renderFilterInput(),
+            (<List key="list" className={this.props.classes.list}>{this.renderMenuItem(this.state.content, '', 0)}</List>),
+            (<Divider  key="divider" />),
+            (<div  key="footer" className={this.props.classes.footer}>{this.getBottomButtons()}</div>)
         ];
     }
 
     renderDesktopDrawer() {
         if (this.state.menuOpened) {
-            return (<div className={this.props.classes.drawer}>
+            return (<div key="drawer" className={this.props.classes.drawer}>
                 {this.renderList()}
             </div>);
         } else {
@@ -286,7 +336,7 @@ class TreePage extends Rooter {
 
     renderMobileDrawer() {
         return (
-            <Drawer open={this.state.menuOpened}
+            <Drawer key="drawer1"  open={this.state.menuOpened}
                     anchor="left"
                     onClose={() => this.setState({menuOpened: false})}
             >
@@ -297,6 +347,7 @@ class TreePage extends Rooter {
 
     renderPage() {
         return (<MDPage
+            key="mdpage1"
             onMenuOpenClose={!this.state.resizing ? () => this.onMenuOpenClose() : null}
             resizing={this.state.resizing }
             contentWidth={this.state.menuSize}

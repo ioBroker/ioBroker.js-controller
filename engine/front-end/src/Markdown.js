@@ -9,10 +9,13 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
 import {MdExpandMore as IconExpandMore} from 'react-icons/md';
+import {FaGithub as IconGithub} from 'react-icons/fa';
 
 import Rooter from './Rooter';
 import Loader from './Components/Loader';
@@ -85,10 +88,14 @@ const styles = theme => ({
             background: '#e3e3e3',
             color: '#000000',
             whiteSpace: 'nowrap',
+        },
+        '& img': {
+            maxWidth: '100%'
         }
     },
     logoImage: {
-        width: 64
+        width: 64,
+        verticalAlign: 'middle',
     },
     infoEdit: {
         float: 'right'
@@ -96,6 +103,16 @@ const styles = theme => ({
     adapterCard:{
         marginBottom: 15,
         marginTop: 15
+    },
+    badgesDetails: {
+        display: 'block',
+        '& img': {
+            marginRight: 5,
+        }
+    },
+    titleText: {
+        display: 'inline-block',
+        marginLeft: 10,
     },
     adapterCardAttr:{
         fontWeight: 'bold',
@@ -113,7 +130,8 @@ const styles = theme => ({
         opacity: 0.8,
         top: 60,
         right: 20,
-        background: '#EEEEEE'
+        background: '#EEEEEE',
+        maxHeight: 'calc(100% - 70px)',
     },
     contentDivClosed: {
         position: 'fixed',
@@ -125,9 +143,9 @@ const styles = theme => ({
         cursor: 'pointer'
     },
     contentClose: {
-        position: 'absolute',
-        top: 5,
-        right: 5,
+        position: 'fixed',
+        top: 60 + 5,
+        right: 20 + 5,
         cursor: 'pointer',
 
         '&:hover': {
@@ -159,6 +177,18 @@ const styles = theme => ({
         paddingTop: 10,
         paddingLeft: 10,
         fontWeight: 'bold'
+    },
+    mdLink: {
+        cursor: 'pointer',
+        '&:after': {
+            opacity: 0.7,
+            fontSize: 14,
+            marginLeft: 5
+        }
+    },
+    info: {
+        paddingTop: 10,
+        paddingBottom: 10,
     }
 });
 
@@ -188,11 +218,7 @@ class Markdown extends Rooter {
         this.load();
 
         // Give 300ms to load the page. After that show the loading indicator.
-        setTimeout(() => {
-            if (!this.state.text) {
-                this.setState({loadTimeout: true});
-            }
-        }, 300);
+        setTimeout(() => !this.state.text && this.setState({loadTimeout: true}), 300);
 
         this.contentRef = React.createRef();
     }
@@ -214,8 +240,26 @@ class Markdown extends Rooter {
         }
     }
 
+    openLink(url, target) {
+        if (target === 'this') {
+            window.location = url;
+        } else {
+            window.open(url, target || '_blank');
+        }
+    }
+
     onNavigate(id, link) {
-        this.props.onNavigate(null, null, link || this.props.path, id);
+        if (link && link.match(/^https?:\/\//)) {
+            this.openLink(link);
+        } else if (id) {
+            const el = window.document.getElementById(id) || window.document.getElementById(id.replace('nbsp', ''));
+            if (el) {
+                el.scrollIntoView(true);
+            }
+
+        } else if (link) {
+            this.props.onNavigate(null, null, link);
+        }
     }
 
     static getTitle(text) {
@@ -273,6 +317,32 @@ class Markdown extends Rooter {
         } else {
             return null;
         }
+    }
+
+    static findTitle(line, level, path) {
+        let name = line.substring(level + 3).trim()
+        // remove bold and italic modifier
+            .replace(/^\*|\*$/g, '')
+            .replace(/^\*|\*$/g, '')
+            .replace(/^\*|\*$/g, '');
+
+        const t = Markdown.text2link(name);
+
+        // detect <a id="Systemeinstellungen"></a>9.) Systemeinstellungen
+        const m = name.match(/<a [^>]*>(.*)<\/a>/);
+        if (m) {
+            name = name.replace(m[0], m[1]).trim();
+        }
+
+        const link = Markdown.text2docLink(name, path);
+
+        return {
+            level: level,
+            title: link ? link.name : name,
+            link:  link ? link.link : t,
+            href:  t,
+            external: !!link
+        };
     }
 
     static decorateText(text, header, path) {
@@ -357,93 +427,46 @@ ${_ll.join('\n')}
 ${_ll.join('\n')}
 </div>`;
             } else if (line.startsWith('## ')) {
-                const name = line.substring(3).trim()
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '');
-
-                const link = Markdown.text2docLink(name, path);
-
-                const t = Markdown.text2link(name);
-                content[t] = {
-                    level: 0,
-                    title: link ? link.name : name,
-                    link:  link ? link.link : t,
-                    external: !!link
-                };
-                current[0] = content[t];
+                const cont = Markdown.findTitle(line, 0, path);
+                content[cont.href] = cont;
+                current[0] = cont;
                 current[2] = null;
                 current[3] = null;
                 current[4] = null;
                 current[5] = null;
             } else if (line.startsWith('### ')) {
-                const name = line.substring(4).trim()
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '');
+                const cont = Markdown.findTitle(line, 1, path);
+                content[cont.href] = cont;
 
-                const link = Markdown.text2docLink(name, path);
-
-                const t = Markdown.text2link(name);
-                content[t] = {
-                    level: 1,
-                    title: link ? link.name : name,
-                    link:  link ? link.link : t,
-                    external: !!link
-                };
                 if (current[0]) {
                     current[0].children = current[0].children || [];
-                    current[0].children.push(t);
+                    current[0].children.push(cont.href);
                 }
 
-                current[1] = content[t];
+                current[1] = cont;
                 current[2] = null;
                 current[3] = null;
                 current[4] = null;
             } else if (line.startsWith('#### ')) {
-                const name = line.substring(5).trim()
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '');
-
-                const link = Markdown.text2docLink(name, path);
-
-                const t = Markdown.text2link(name);
-                content[t] = {
-                    level: 2,
-                    title: link ? link.name : name,
-                    link:  link ? link.link : t,
-                    external: !!link
-                };
+                const cont = Markdown.findTitle(line, 2, path);
+                content[cont.href] = cont;
                 if (current[1]) {
                     current[1].children = current[1].children || [];
-                    current[1].children.push(t);
+                    current[1].children.push(cont.href);
                 }
 
-                current[2] = content[t];
+                current[2] = cont;
                 current[3] = null;
                 current[4] = null;
             } else if (line.startsWith('##### ')) {
-                const name = line.substring(6).trim()
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '')
-                    .replace(/^\*|\*$/g, '');
-
-                const link = Markdown.text2docLink(name, path);
-
-                const t = Markdown.text2link(name);
-                content[t] = {
-                    level: 3,
-                    title: link ? link.name : name,
-                    link:  link ? link.link : t,
-                    external: !!link
-                };
+                const cont = Markdown.findTitle(line, 3, path);
+                content[cont.href] = cont;
                 if (current[2]) {
                     current[2].children = current[2].children || [];
-                    current[2].children.push(t);
+                    current[2].children.push(cont.href);
                 }
 
-                current[3] = content[t];
+                current[3] = cont;
                 current[4] = null;
             }
         });
@@ -508,8 +531,17 @@ ${_ll.join('\n')}
             data.push((<div className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>));
         }
         if (this.state.header.adapter) {
-            data.push((<h1>{this.state.header.title}</h1>));
+            data.push((<h1>{[
+                this.state.header.logo ? (<img src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
+                (<div className={this.props.classes.titleText}>{this.state.header.title}</div>)
+            ]}</h1>));
+            if (this.state.header.readme) {
+                const link = this.state.header.readme.replace(/blob\/master\/README.md$/, '');
+                data.push((<IconButton title={I18n.t('Open repository')} onClick={() => this.openLink(link)}><IconGithub/></IconButton>));
+            }
         }
+
+
         if (this.state.header.description) {
             data.push((<span className={this.props.classes.description}>{this.state.header.description}</span>));
         }
@@ -529,8 +561,18 @@ ${_ll.join('\n')}
                 </ExpansionPanel>));
         }
 
-        if (this.state.header.logo) {
-            data.push((<img src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>));
+        if (Object.keys(this.state.header).find(attr => attr.startsWith('BADGE-'))) {
+            data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
+                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
+                <ExpansionPanelDetails classes={{root: this.props.classes.badgesDetails}}>{
+                    Object.keys(this.state.header).filter(attr => attr.startsWith('BADGE-'))
+                        .map(attr => [
+                                this.state.header[attr].indexOf('nodei.co') !== -1 ? (<br/>) : null,
+                                (<img src={this.state.header[attr]} alt={attr.substring(6)}/>)
+                            ]
+                        )}
+                </ExpansionPanelDetails>
+            </ExpansionPanel>));
         }
 
         return data;
@@ -609,6 +651,7 @@ ${_ll.join('\n')}
             </ExpansionPanel>);
         }
     }
+
     renderChangeLog() {
         if (!this.state.changeLog) {
             return null;
@@ -621,11 +664,44 @@ ${_ll.join('\n')}
             </ExpansionPanel>);
         }
     }
+
+    replaceHref(reactObj) {
+        const parts = this.props.path.split('/');
+        parts.pop();
+        const prefix = parts.join('/') + '/';
+
+        if (reactObj && reactObj.props && reactObj.props.children) {
+            reactObj.props.children.forEach((item, i) => {
+                if (item && item.type === 'a') {
+                    let link = item.props.href;
+                    if (link) {
+                        if (!link.match(/^https?:\/\//)) {
+                            link = prefix + link;
+                        }
+
+                        reactObj.props.children[i] = (<div
+                            className={this.props.classes.mdLink + ' md-link'}
+                            title={link}
+                            onClick={() => this.onNavigate(null, link)}>
+                            {item.props.children[0]}
+                        </div>);
+                    }
+                }
+
+                if (typeof item === 'object') {
+                    this.replaceHref(item);
+                }
+            });
+        }
+    }
+
     render() {
         if (this.state.loadTimeout && !this.state.text) {
             return (<Loader theme={this.props.theme}/>);
         }
         const reactElement = converter.convert(this.state.text || '');
+
+        this.replaceHref(reactElement);
 
         return (<div className={this.props.classes.root} ref={this.contentRef}>
             {this.renderHeader()}

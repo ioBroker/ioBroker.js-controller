@@ -6,9 +6,6 @@ const consts = require('./consts');
 
 const ADAPTERS_DIR = path.normalize(__dirname + '/../../docs/LANG/adapterref/').replace(/\\/g, '/');
 
-const ADAPTER_TYPES = {
-
-};
 const urlsCache = {};
 
 function fixImages(lang, adapter, body, link) {
@@ -77,7 +74,6 @@ function getAuthor(data) {
 function prepareAdapterReadme(lang, repo, data) {
     return new Promise(resolve => {
         let text = data.body;
-        let downloaded = data.downloaded;
         let link = data.link;
 
         if (!text) {
@@ -88,6 +84,7 @@ function prepareAdapterReadme(lang, repo, data) {
         let {header, body} = utils.extractHeader(text);
 
         header.adapter = true;
+        header.editLink = data.editLink;
         header.license = repo.license;
         header.authors = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
         header.description = repo.desc ? (repo.desc[lang] || repo.desc.en || repo.desc) : '';
@@ -97,6 +94,9 @@ function prepareAdapterReadme(lang, repo, data) {
         header.mode = repo.mode;
         header.materialize = repo.materialize || false;
         header.compact = repo.compact || false;
+        if (repo.published) {
+            header.published = repo.published;
+        }
         header.version = repo.version;
 
         const result = fixImages(lang, repo.name, body);
@@ -153,17 +153,18 @@ function prepareAdapterReadme(lang, repo, data) {
             new Promise(resolve1 => {
                 link = link.split('?')[0];
                 link = link.split(' ')[0];
-                let relative;
-                if (data.link) {
-                    const parts = (data.link || readme).split('/');
-                    parts.pop();
-                    relative = parts.join('/') + '/';
-                } else {
-                    relative = readme;
-                }
 
 
                 if (!fs.existsSync(localDirName + link)) {
+                    let relative;
+
+                    if (data.link) {
+                        const parts = data.link.split('/');
+                        parts.pop();
+                        relative = parts.join('/') + '/';
+                    } else {
+                        relative = link;
+                    }
                     request(relative + link, {encoding: null}, (err, status, body) => {
                         err && console.error('Cannot download ' + relative + link + ': ' + err);
                         body && utils.writeSafe(localDirName + link, body);
@@ -200,8 +201,8 @@ function getUrl(url, binary) {
         console.log('Requested ' + url);
         request(url, {encoding: null}, (err, state, file) => {
             err && console.error('Cannot download ' + url + ': ' + err);
-            if (state.statusCode !== 200) {
-                console.error('Cannot download ' + url + ': ' + state.statusCode);
+            if (!state || state.statusCode !== 200) {
+                console.error('Cannot download ' + url + ': ' + (state && state.statusCode));
                 resolve();
             } else {
                 resolve(binary ? file : file.toString());
@@ -217,7 +218,8 @@ function getReadme(lang, dirName, repo, adapter) {
             let body = fs.readFileSync(dirName + '/README.md').toString();
             utils.createDir(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter);
             utils.copyDir(dirName, consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/');
-            resolve([{body, downloaded: false}]);
+            let editLink = consts.GITHUB_EDIT_ROOT + dirName.replace(consts.SRC_DOC_DIR, '') + '/README.md';
+            resolve([{body, downloaded: false, editLink}]);
         } else {
             if (!repo.readme) {
                 repo.readme = repo.meta.replace('io-package.json', 'README.md');
@@ -249,7 +251,11 @@ function getReadme(lang, dirName, repo, adapter) {
                     let relative = results[0].link.split('/');
                     relative.pop();
                     relative = relative.join('/') + '/';
-                    results.forEach(item => item.relative = relative);
+                    results.forEach(item => {
+                        item.relative = relative;
+                        item.editLink = item.link.replace('/master/', '/edit/').replace('raw.githubusercontent.com', 'github.com');
+                    });
+
                     results[0].link = relative + 'README.md';
 
                     /*const {body, header} = utils.extractHeader(main.body);
@@ -281,12 +287,13 @@ function processAdapterLang(adapter, repo, lang, content) {
                 console.error('ADAPTER has no icon: ' + adapter);
             }
 
-            content.pages[repo.type] = content.pages[repo.type] || {title: ADAPTER_TYPES[repo.type] || {en: repo.type}, pages: {}};
+            content.pages[repo.type] = content.pages[repo.type] || {title: consts.ADAPTER_TYPES[repo.type] || {en: repo.type}, pages: {}};
 
-            content.pages[repo.type].pages[adapter] = {
-                title: {en: adapter},
+            content.pages[repo.type].pages[adapter] = content.pages[repo.type].pages[adapter] || {
+                title: {[lang]: adapter},
                 content: 'adapterref/iobroker.' + adapter + '/README.md'
             };
+            content.pages[repo.type].pages[adapter].title[lang] = adapter;
 
             if (iconName) {
                 content.pages[repo.type].pages[adapter].icon = 'adapterref/iobroker.' + adapter + '/' + iconName;
@@ -294,38 +301,67 @@ function processAdapterLang(adapter, repo, lang, content) {
 
             getReadme(lang, dirName, repo, adapter)
                 .then(results => {
+                    if (!results || !results[0] || !results[0].body) {
+                        return Promise.resolve();
+                    }
+                    const {body, header} = utils.extractHeader(results[0].body);
                     if (results.length > 1) {
                         const chapters = {pages: {}};
                         results.forEach((item, i) => {
-                            if (!i) return;
                             const name = lang + '/adapterref/iobroker.' + adapter + '/' + item.link.replace(item.relative, '');
                             const title = utils.getTitle(item.body);
                             chapters.pages[name] = {title: {[lang]: title}, content: name};
                         });
-                        const {body, header} = utils.extractHeader(results[0].body);
-                        header.chapters = JSON.stringify(chapters);
-                        results[0].body = utils.addHeader(body, header);
+                        results.forEach(item => {
+                            const {body, header} = utils.extractHeader(item.body);
+                            header.chapters = JSON.stringify(chapters);
+                            item.body = utils.addHeader(body, header);
+                        });
                     }
+
+                    if (repo.keywords) {
+                        content.pages[repo.type].pages[adapter].keywords = repo.keywords.join(', ');
+                    }
+                    content.pages[repo.type].pages[adapter].authors = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
+                    content.pages[repo.type].pages[adapter].license = repo.license;
+                    content.pages[repo.type].pages[adapter].published = repo.published;
+                    content.pages[repo.type].pages[adapter].version = repo.version;
+                    content.pages[repo.type].pages[adapter].materialize = repo.materialize;
+                    content.pages[repo.type].pages[adapter].compact = repo.compact;
+                    content.pages[repo.type].pages[adapter].description = repo.desc;
+                    content.pages[repo.type].pages[adapter].titleFull = repo.titleLang || repo.title;
+                    content.pages[repo.type].pages[adapter].created = repo.created;
+                    content.pages[repo.type].pages[adapter].github = repo.readme.replace('/blob/master/README.md', '').replace('raw.githubusercontent.com', 'github.com');
 
                     return Promise.all(results.map(result =>
                         prepareAdapterReadme(lang, repo, result)
                             .then(result =>
-                                result && utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + result.name, result.body))))
+                                result && utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + result.name, result.body))));
                 });
         });
 }
 
 function processAdapter(adapter, repo, content) {
-    // Check if the documentation exists
-    const promises = consts.LANGUAGES.map(lang => processAdapterLang(adapter, repo, lang, content));
+    return new Promise(resolve => {
+        // Check if the documentation exists
+        const promises = consts.LANGUAGES.map(lang => processAdapterLang(adapter, repo, lang, content));
 
-    return Promise.all(promises);
+        return Promise.all(promises)
+            .then(() => {
+                resolve()
+            });
+    });
 }
-
 
 function buildAdapterContent() {
     return new Promise(resolve => {
-        const content = {pages: {}};
+        const content = {pages: {
+            overview: {
+                title: consts.OVERVIEW,
+                content: 'adapters.md'
+            }
+        }};
+
         // get latest repo
         request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
             const repo = JSON.parse(body);
@@ -340,11 +376,13 @@ function buildAdapterContent() {
     });
 }
 
-/*buildAdapterContent().then(content => {
-    console.log(JSON.stringify(content));
-});
-*/
+if (!module.parent) {
+    buildAdapterContent().then(content => {
+        console.log(JSON.stringify(content));
+    });
+} else {
+    module.exports = {
+        buildAdapterContent
+    };
 
-module.exports = {
-    buildAdapterContent
-};
+}

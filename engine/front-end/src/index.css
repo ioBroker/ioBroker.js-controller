@@ -32,3 +32,12 @@ body {
   height: 100%;
   overflow: hidden;
 }
+
+
+.md-warn:before {
+  content: "i";
+}
+
+.md-link:after {
+  content: "🔗";
+}

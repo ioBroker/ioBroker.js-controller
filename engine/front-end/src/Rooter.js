@@ -33,9 +33,14 @@ class Rooter extends Component {
     }
 
     onNavigate(language, tab, page, chapter) {
-        if (tab === null || language === null) {
+        if (tab === null || language === null || page === null) {
             let location = this.getLocation();
-            tab = tab || location.tab;
+            if (tab === null) {
+                tab      = tab || location.tab;
+            }
+            if (page === null) {
+                page     = page || location.page;
+            }
             language = language || location.language;
         }
         // rooter: #LN/TAB/PAGE?chapterOnPage

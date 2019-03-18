@@ -119,7 +119,7 @@ function delDir(source) {
             });
             fs.rmdirSync(source);
         } else {
-            console.error(`${source} is not a directory`)
+            console.error(`${source} is not a directory`);
         }
     }
 }
