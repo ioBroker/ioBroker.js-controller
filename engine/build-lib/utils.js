@@ -112,7 +112,7 @@ function delDir(source) {
                 const stat = fs.statSync(sourceName);
                 if (stat.isDirectory()) {
                     delDir(sourceName);
-                    fs.rmdirSync(sourceName)
+                    //fs.rmdirSync(sourceName)
                 } else {
                     fs.unlinkSync(sourceName);
                 }

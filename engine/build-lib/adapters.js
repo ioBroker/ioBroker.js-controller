@@ -80,6 +80,11 @@ function prepareAdapterReadme(lang, repo, data) {
         let downloaded = data.downloaded;
         let link = data.link;
 
+        if (!text) {
+            console.error('No data found for ' + repo.name + ': ' + data.link);
+            return resolve();
+        }
+
         let {header, body} = utils.extractHeader(text);
 
         header.adapter = true;
@@ -148,9 +153,15 @@ function prepareAdapterReadme(lang, repo, data) {
             new Promise(resolve1 => {
                 link = link.split('?')[0];
                 link = link.split(' ')[0];
-                const parts = data.link.split('/');
-                parts.pop();
-                const relative = parts.join('/') + '/';
+                let relative;
+                if (data.link) {
+                    const parts = (data.link || readme).split('/');
+                    parts.pop();
+                    relative = parts.join('/') + '/';
+                } else {
+                    relative = readme;
+                }
+
 
                 if (!fs.existsSync(localDirName + link)) {
                     request(relative + link, {encoding: null}, (err, status, body) => {
@@ -164,7 +175,7 @@ function prepareAdapterReadme(lang, repo, data) {
             }));
 
         Promise.all(promises).then(() => {
-            resolve({body: utils.addHeader(lines.join('\n'), header), name: data.link.replace(data.relative, '')});
+            resolve({body: utils.addHeader(lines.join('\n'), header), name: data.link ? data.link.replace(data.relative, '') : 'README.md'});
         });
     });
 }
@@ -299,7 +310,7 @@ function processAdapterLang(adapter, repo, lang, content) {
                     return Promise.all(results.map(result =>
                         prepareAdapterReadme(lang, repo, result)
                             .then(result =>
-                                utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + result.name, result.body))))
+                                result && utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + result.name, result.body))))
                 });
         });
 }
@@ -318,7 +329,7 @@ function buildAdapterContent() {
         // get latest repo
         request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
             const repo = JSON.parse(body);
-            const promises = Object.keys(repo).filter(a => a !== 'js-controller' && a === 'admin').map(adapter =>
+            const promises = Object.keys(repo).filter(a => a !== 'js-controller'/* && a === 'admin'*/).map(adapter =>
                 processAdapter(adapter, repo[adapter], content));
 
             utils.queuePromises(promises, () => {
