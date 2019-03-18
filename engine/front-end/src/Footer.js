@@ -32,7 +32,7 @@ const styles = theme => ({
     },
     footerLogo: {
         width: 72,
-        filter: 'grayscale(100%) invert(1)'
+        filter: 'grayscale(100%) invert(1)',
     },
     footerIconText: {
         position: 'absolute',

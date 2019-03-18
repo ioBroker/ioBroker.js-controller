@@ -98,6 +98,18 @@ const styles = theme => ({
     },
     cardFilter: {
         marginLeft: 10,
+    },
+    cardVersionName: {
+        background: 'gray',
+        borderRadius: '3px 0 0 3px',
+        padding: '1px 3px 1px 3px',
+        color: 'white'
+    },
+    cardVersionValue: {
+        background: 'green',
+        borderRadius: '0 3px 3px 0',
+        padding: '1px 3px 1px 3px',
+        color: 'white'
     }
 });
 
@@ -165,22 +177,26 @@ class Adapters extends Component {
                 Object.keys(content.pages[type].pages).forEach(adapter => {
                     const obj = content.pages[type].pages[adapter];
                     result.total++;
-                    obj.published = new Date(obj.published);
+                    if (typeof obj.published !== 'object') {
+                        obj.published = new Date(obj.published);
+                    }
                     if (obj.published && this.forMonth < obj.published) {
                         result.newMonth++;
                     }
-                    obj.authors = (obj.authors || '').split(',').map(item => {
-                        const m = item.match(/([^<]*)<([^>]+)>/);
-                        if (m) {
-                            return {name: m[1].trim(), email: (m[2] || '').trim()};
-                        } else {
-                            return {name: item.trim(), email: ''};
-                        }
-                    });
+                    if (typeof obj.authors !== 'object') {
+                        obj.authors = (obj.authors || '').split(',').map(item => {
+                            const m = item.match(/([^<]*)<([^>]+)>/);
+                            if (m) {
+                                return {name: m[1].trim(), email: (m[2] || '').trim()};
+                            } else {
+                                return {name: item.trim(), email: ''};
+                            }
+                        });
 
-                    obj.keywords = obj.keywords || '';
-                    obj.keywords += obj.title;
-                    obj.keywords = obj.keywords.toLowerCase();
+                        obj.keywords = obj.keywords || '';
+                        obj.keywords += obj.title;
+                        obj.keywords = obj.keywords.toLowerCase();
+                    }
                 });
             }
         });
@@ -229,8 +245,8 @@ class Adapters extends Component {
         this.words.authors = this.words.authors || I18n.t('Authors:');
         this.words.stable = this.words.stable || I18n.t('Stable:');
         this.words.installs = this.words.installs || I18n.t('Installs:');
-        this.words.read = this.words.installs || I18n.t('Read');
-        this.words.github = this.words.installs || I18n.t('Github');
+        this.words.read = this.words.read || I18n.t('Read');
+        this.words.github = this.words.github || I18n.t('Github');
 
         return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
             <CardActionArea onClick={() => this.onNavigate(obj.content)}>

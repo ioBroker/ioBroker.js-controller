@@ -28,6 +28,7 @@ function fixImages(lang, adapter, body, link) {
                 } else if (
                     link.indexOf('shields.io') !== -1 ||
                     link.indexOf('herokuapp.com') !== -1 ||
+                    link.indexOf('snyk.io') !== -1 ||
                     link.indexOf('appveyor.com') !== -1 ||
                     link.indexOf('travis-ci.org') !== -1 ||
                     link.indexOf('iobroker.live') !== -1 ||
@@ -253,7 +254,7 @@ function getReadme(lang, dirName, repo, adapter) {
                     relative = relative.join('/') + '/';
                     results.forEach(item => {
                         item.relative = relative;
-                        item.editLink = item.link.replace('/master/', '/edit/').replace('raw.githubusercontent.com', 'github.com');
+                        item.editLink = item.link.replace('/master/', '/edit/master/').replace('raw.githubusercontent.com', 'github.com');
                     });
 
                     results[0].link = relative + 'README.md';
