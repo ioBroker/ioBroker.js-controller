@@ -99,7 +99,7 @@ async function processFile(fileName, lang, root) {
     let data = fs.readFileSync(fileName);
     if (fileName.match(/\.md$/)) {
         let {header, body} = utils.extractHeader(data.toString());
-        header.editLink = consts.GITHUB_ROOT + fileName.replace(root, '');
+        header.editLink = consts.GITHUB_EDIT_ROOT + fileName.replace(root, '');
         data = utils.addHeader(body, header);
     }
     utils.writeSafe(path.join(consts.FRONT_END_DIR, fileName.replace(root, '/')).replace(/\\/g, '/'), data);
@@ -114,7 +114,7 @@ async function processFile(fileName, lang, root) {
                 if (!fs.existsSync(langName)) {
                     return translation.translateFile(fileName, data.toString('utf-8'), lang, ln, root)
                         .then(text => {
-                            utils.writeSafe(path.join(consts.FRONT_END_DIR, fileName.replace(root, '/')), text);
+                            utils.writeSafe(path.join(consts.FRONT_END_DIR, name.replace(root, '/')), text);
                         });
                 } else {
                     return Promise.resolve();
@@ -154,12 +154,14 @@ async function processFiles(root, lang, originalRoot) {
     }
 }
 
-/*processContent(path.join(consts.SRC_DOC_DIR, 'content.md')).then(content => {
-    console.log(JSON.stringify(content));
-    return processFiles(consts.SRC_DOC_DIR);
-});*/
-
-module.exports = {
-    processContent,
-    processFiles
-};
+if (!module.parent) {
+    processContent(path.join(consts.SRC_DOC_DIR, 'content.md')).then(content => {
+        console.log(JSON.stringify(content));
+        return processFiles(consts.SRC_DOC_DIR);
+    });
+} else {
+    module.exports = {
+        processContent,
+        processFiles
+    };
+}

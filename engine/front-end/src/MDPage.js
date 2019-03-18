@@ -7,6 +7,7 @@ import {MdArrowBack as IconMenuOpened} from 'react-icons/md';
 
 import MD from './Markdown';
 import Footer from './Footer';
+import Adapters from "./Pages/Adapters";
 
 const styles = theme => ({
     content: theme.content,
@@ -33,7 +34,11 @@ const styles = theme => ({
     }
 });
 
-class Imprint extends Component {
+class MDPage extends Component {
+    constructor(props) {
+        super(props);
+        this.contentRef = React.createRef();
+    }
     componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.mobile !== nextProps.mobile) {
             //setTimeout(() => this.forceUpdate(), 100);
@@ -56,16 +61,32 @@ class Imprint extends Component {
         }
     }
 
+    onNavigate(language, tab, page, chapter) {
+        if (page) {
+            this.contentRef.current.parentNode.scrollTop = 0;
+        }
+
+        this.props.onNavigate(language, tab, page, chapter);
+    }
+
     render() {
         return [
             this.renderOpenCloseButton(),
-            (<div className={this.props.classes.content}>
-                <MD path={this.props.path}
-                    language={this.props.language}
-                    theme={this.props.theme}
-                    mobile={this.props.mobile}
-                    onNavigate={this.props.onNavigate}
-                />
+            (<div className={this.props.classes.content} ref={this.contentRef}>
+                {this.props.path === 'adapters.md' ?
+                    (<Adapters path={this.props.path}
+                         language={this.props.language}
+                         theme={this.props.theme}
+                         mobile={this.props.mobile}
+                         onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                    />)
+                    :
+                    (<MD path={this.props.path}
+                        language={this.props.language}
+                        theme={this.props.theme}
+                        mobile={this.props.mobile}
+                        onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                    />)}
             </div>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
         ];
@@ -73,7 +94,7 @@ class Imprint extends Component {
 }
 
 
-Imprint.propTypes = {
+MDPage.propTypes = {
     path: PropTypes.string,
     language: PropTypes.string,
     onNavigate: PropTypes.func,
@@ -84,4 +105,4 @@ Imprint.propTypes = {
     contentWidth: PropTypes.number,
 };
 
-export default withStyles(styles)(Imprint);
+export default withStyles(styles)(MDPage);
