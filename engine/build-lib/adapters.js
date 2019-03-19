@@ -219,7 +219,7 @@ function getReadme(lang, dirName, repo, adapter) {
             let body = fs.readFileSync(dirName + '/README.md').toString();
             utils.createDir(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter);
             utils.copyDir(dirName, consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/');
-            let editLink = consts.GITHUB_EDIT_ROOT + dirName.replace(consts.SRC_DOC_DIR, '') + '/README.md';
+            let editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + dirName.replace(consts.SRC_DOC_DIR, '') + '/README.md';
             resolve([{body, downloaded: false, editLink}]);
         } else {
             if (!repo.readme) {
@@ -385,5 +385,4 @@ if (!module.parent) {
     module.exports = {
         buildAdapterContent
     };
-
 }

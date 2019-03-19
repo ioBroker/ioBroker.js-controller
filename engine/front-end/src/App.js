@@ -23,8 +23,8 @@ import Rooter from './Rooter';
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
 
-// tabs
-import TabBlog from './Tabs/blog/Tab';
+// Pages
+import Blog from './Pages/Blog';
 import TabDownload from './Tabs/download/Tab';
 
 // pages
@@ -79,7 +79,7 @@ const LANGUAGES = [
 ];
 
 const PAGES = {
-    'blog':     {tabIndex: 1, component: TabBlog,     icon: null, name: 'Blog'},
+    'blog':     {tabIndex: 1, component: Blog,     icon: null, name: 'Blog'},
     'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},

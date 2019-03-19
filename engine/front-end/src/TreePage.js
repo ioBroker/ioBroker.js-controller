@@ -142,7 +142,8 @@ class TreePage extends Rooter {
 
     load(contentPath) {
         contentPath = contentPath || this.props.contentPath;
-        fetch(contentPath)
+        const d = new Date();
+        fetch(`${contentPath}?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
             .then(res => res.json())
             .then(content => {
                 let path = this.state.path;

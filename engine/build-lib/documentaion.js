@@ -99,7 +99,7 @@ async function processFile(fileName, lang, root) {
     let data = fs.readFileSync(fileName);
     if (fileName.match(/\.md$/)) {
         let {header, body} = utils.extractHeader(data.toString());
-        header.editLink = consts.GITHUB_EDIT_ROOT + fileName.replace(root, '');
+        header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + fileName.replace(root, '');
         data = utils.addHeader(body, header);
     }
     utils.writeSafe(path.join(consts.FRONT_END_DIR, fileName.replace(root, '/')).replace(/\\/g, '/'), data);

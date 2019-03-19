@@ -204,8 +204,9 @@ class Adapters extends Component {
     }
 
     load(path, language) {
-        adapterList = adapterList || fetch(`adapters.json`).then(res => res.json());
-        adapterStatistics = adapterStatistics || fetchLocal('http://iobroker.live/statistics.json').then(data => JSON.parse(data));
+        const d = new Date();
+        adapterList = adapterList || fetch(`adapters.json?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`).then(res => res.json());
+        adapterStatistics = adapterStatistics || fetchLocal(`http://iobroker.live/statistics.json?$t={d.getFullYear()}_${d.getMonth()}_${d.getDate()}`).then(data => JSON.parse(data));
         Promise.all([adapterList, adapterStatistics])
             .then(results => {
                 const stats = this.getCounters(results[0]);
