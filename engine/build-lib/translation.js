@@ -2,6 +2,15 @@ const utils = require('./utils');
 const consts = require('./consts');
 const request = require('request');
 let lastRequest = null;
+const {Translate} = require('@google-cloud/translate');
+// Your Google Cloud Platform project ID
+const projectId = 'web-site-1377';
+process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + '/../Web Site-f1730e0e4c78.json';
+
+// Instantiates a client
+const translate = new Translate({projectId: projectId,});
+
+const TRANSLATE_DELAY = 5000;
 
 /**
  * Choose the right tranalation API
@@ -56,20 +65,26 @@ async function translateYandex(text, targetLang, yandex) {
 
 
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
-    /*if (lastRequest && Date.now() - lastRequest < 1000) {
-        return setTimeout(() => translateGoogleSync(text, targetLang, sourceLang, cb), 1000 - Date.now() + lastRequest);
-    }*/
-    return cb(null, 'TOO_MANY: ' + text);
+    /*if (lastRequest && Date.now() - lastRequest < TRANSLATE_DELAY) {
+        return setTimeout(() => translateGoogleSync(text, targetLang, sourceLang, cb), TRANSLATE_DELAY - Date.now() + lastRequest);
+    }
 
+    lastRequest = Date.now();*/
+
+    translate
+        .translate(text, {to: targetLang, from: sourceLang})
+        .then(results => {
+            cb(null, results[0]);
+        })
+        .catch(err => {
+            cb(err);
+        });
+    /*
     const url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang || 'en'}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}&ie=UTF-8&oe=UTF-8`;
     console.log(`Translate ${sourceLang} => ${targetLang} : ${text}`);
     request(url, (err, state, body) => {
         if (err || !state || state.statusCode !== 200) {
-            if (state.statusCode === 429) {
-                cb(null, 'TOO_MANY: ' + text);
-            } else {
-                cb(err || state.statusCode);
-            }
+            cb(err || state.statusCode);
         } else {
             try {
                 const json = JSON.parse(body);
@@ -83,7 +98,7 @@ function translateGoogleSync(text, targetLang, sourceLang, cb) {
                 cb('Cannot parse answer: ' + body);
             }
         }
-    });
+    });*/
 }
 /**
  * Translates text with Google API
@@ -128,8 +143,29 @@ function partsTake(text) {
     while(lines.length && !lines[lines.length - 1].trim()) lines.pop();
 
     let source = false;
+    let code = false;
     lines.forEach((line, i) => {
-        if (source) {
+        if (code) {
+            if (line.endsWith('```')) {
+                code = false;
+                line = line.substring(0, line.length - 3);
+            }
+            parts[parts.length - 1].lines.push(line);
+        } else
+        if (line.trim().startsWith('```')) {
+            if (!parts[parts.length - 1]) {
+                parts.push({type: 'code', lines: []});
+            }
+
+            parts[parts.length - 1].lines = parts[parts.length - 1].source || [];
+            line = line.substring(3);
+            parts[parts.length - 1].lines.push(line);
+            if (!line.endsWith('```')) {
+                code = true;
+            } else {
+                parts.push({type: 'p', lines: []});
+            }
+        } else if (source) {
             if (line.endsWith(' -->')) {
                 source = false;
                 line = line.substring(0, line.length - 3);
@@ -140,6 +176,7 @@ function partsTake(text) {
             if (!parts[parts.length - 1]) {
                 parts.push({type: 'p', lines: []});
             }
+            source = true;
             parts[parts.length - 1].source = parts[parts.length - 1].source || [];
             line = line.substring('<!-- SOURCE: '.length);
             parts[parts.length - 1].source.push(line);
@@ -182,6 +219,14 @@ function partsSave(parts) {
             lines.push(part.text || part.lines.join('\n'));
         }
     });
+
+    // remove double new lines
+    for (let i = lines.length - 2; i >= 0; i--) {
+        if (!lines[i + 1] && !lines[i]) {
+            lines.splice(i + 1, 1);
+        }
+    }
+
     return lines.join('\n');
 }
 

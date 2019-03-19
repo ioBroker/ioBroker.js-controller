@@ -17,7 +17,7 @@ import {MdClose as IconClose} from 'react-icons/md';
 import {MdExpandMore as IconExpandMore} from 'react-icons/md';
 import {FaGithub as IconGithub} from 'react-icons/fa';
 
-import Rooter from './Rooter';
+import Router from './Router';
 import Loader from './Components/Loader';
 import I18n from './i18n';
 import Utils from './Utils';
@@ -199,7 +199,7 @@ let title;
 
 const ADAPTER_CARD = ['version', 'authors', 'keywords', 'mode', 'materialize', 'compact'];
 
-class Markdown extends Rooter {
+class Markdown extends Router {
     constructor(props) {
         super(props);
         // load page

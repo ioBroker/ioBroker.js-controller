@@ -2,7 +2,7 @@ import {Component} from 'react';
 
 
 
-class Rooter extends Component {
+class Router extends Component {
     constructor(props) {
         super(props);
 
@@ -90,4 +90,4 @@ class Rooter extends Component {
 
 
 
-export default Rooter;
+export default Router;

@@ -4,7 +4,6 @@ const utils = require('./utils');
 const consts = require('./consts');
 const translation = require('./translation');
 
-
 // build list of blogs
 function build(lang, content) {
     return new Promise(resolve => {
@@ -21,7 +20,7 @@ function build(lang, content) {
                 let text = fs.readFileSync(path.join(consts.SRC_BLOG_DIR + lang, item)).toString('utf-8');
                 let {body, header} = utils.extractHeader(text);
                 body = body.replace(/\r/g, '');
-                header.title = utils.getTitle(body) || '';
+                header.title = header.title || utils.getTitle(body) || '';
                 header.editLink = consts.GITHUB_EDIT_ROOT + 'blog/' + lang + '/' + item;
 
                 const lines = body.trim().split('\n');
@@ -45,7 +44,6 @@ function build(lang, content) {
                 // remove leading empty lines
                 while(lines.length && !lines[0]) lines.shift();
 
-
                 // remove title from text
                 if (header.title) {
                     if (lines[0].startsWith('# ')) {
@@ -56,15 +54,29 @@ function build(lang, content) {
                     }
                 }
 
+                // take first paragraph as description
+                const desc = [];
+                let i = 0;
+                while(lines[i]) {
+                    if (lines[i].startsWith('<!-- SOURCE: ')) {
+                        break;
+                    }
+                    desc.push(lines[i]);
+                    i++;
+                }
+
                 if (d) {
                     const date = d[1] + '.' + d[2] + '.' + d[3] + (d[4] ? '_' + d[4] : '');
                     content.pages[name] = content.pages[name] || {
                         date,
                         title: {},
+                        logo: header.logo || '',
                         type: header.type || 'news',
                         originalName: item,
+                        desc: {}
                     };
                     content.pages[name].title[lang] = header.title || date;
+                    content.pages[name].desc[lang] = desc.join('\\n');
                     utils.writeSafe(consts.FRONT_END_DIR + lang + '/blog/' + name + '.md', utils.addHeader(lines.join('\n'), header));
                 } else {
                     console.error('Invalid name format: ' + name + '. Expected YEAR_MM_DD.md or YEAR_MM_DD_N.md');
@@ -132,6 +144,27 @@ function sync2Languages(fromLang, toLang, content, cb) {
                 header.translatedFrom = fromLang;
                 const localHeader = JSON.parse(JSON.stringify(header));
                 delete localHeader.editLink;
+                content.pages[file].title[toLang] = title;
+
+                const lines = body.trim().split('\n');
+
+                // remove leading empty lines
+                while(lines.length && !lines[0]) lines.shift();
+
+                // take first paragraph as description
+                const desc = [];
+                let i = 0;
+                while(lines[i]) {
+                    if (lines[i].startsWith('<!-- SOURCE: ')) {
+                        break;
+                    }
+                    desc.push(lines[i]);
+                    i++;
+                }
+
+                content.pages[file].desc[toLang] = desc.join('\\n');
+
+
                 utils.writeSafe(toFile, utils.addHeader(body, localHeader));
                 utils.writeSafe(toFilePublic, utils.addHeader(body, header));
                 setTimeout(() => sync2Languages(fromLang, toLang, content, cb), 500);
@@ -168,7 +201,11 @@ function buildAll() {
                 processTasks(tasks, content, () => {
                     // sort files
                     const names = Object.keys(content.pages);
-                    names.sort((a, b) => a - b);
+                    names.sort((a, b) => {
+                        if (b > a) return 1;
+                        if (b < a) return -1;
+                        return 0;
+                    });
                     const old = content.pages;
                     content.pages = {};
                     names.forEach(name => content.pages[name] = old[name]);
@@ -185,6 +222,6 @@ if (!module.parent) {
     buildAll().then(() => console.log('Done'));
 } else {
     module.exports = {
-        buildAdapterContent
+        build: buildAll
     };
 }

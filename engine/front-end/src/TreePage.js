@@ -22,7 +22,7 @@ import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
 import {MdClear as IconClear} from 'react-icons/md';
 
 import MDPage from './MDPage';
-import Rooter from './Rooter';
+import Router from './Router';
 import I18n from './i18n';
 
 const styles = theme => ({
@@ -91,7 +91,7 @@ const styles = theme => ({
     }
 });
 
-class TreePage extends Rooter {
+class TreePage extends Router {
     constructor(props) {
         super(props);
         let expanded = window.localStorage ? window.localStorage.getItem('Docs.expanded') : '[]';

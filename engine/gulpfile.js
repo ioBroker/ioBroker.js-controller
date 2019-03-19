@@ -9,6 +9,7 @@
 const gulp = require('gulp');
 const documentation = require('./build-lib/documentaion');
 const adapters = require('./build-lib/adapters');
+const blog = require('./build-lib/blog');
 const consts = require('./build-lib/consts');
 const utils = require('./build-lib/utils');
 const path = require('path');
@@ -409,7 +410,6 @@ const path = require('path');
 
 gulp.task('clean', done => {
     consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));
-
     done();
 });
 
@@ -418,6 +418,13 @@ gulp.task('documentation', () => {
         .then(content => {
             console.log(JSON.stringify(content));
             return documentation.processFiles(consts.SRC_DOC_DIR);
+        });
+});
+
+gulp.task('blog', () => {
+    return blog.build()
+        .then(() => {
+            console.log('Done');
         });
 });
 

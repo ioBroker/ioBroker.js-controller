@@ -18,7 +18,7 @@ import {MdMenu as IconMenu} from 'react-icons/md';
 import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
 import TreePage from './TreePage';
-import Rooter from './Rooter';
+import Router from './Router';
 
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
@@ -98,12 +98,12 @@ const PAGES = {
     'privacy':  {name: 'privacy', md: 'privacy.md'}
 };
 
-class App extends Rooter {
+class App extends Router {
     constructor(props) {
         super(props);
 
         let hash = this.getLocation();
-        let language = window.localStorage ? window.localStorage.getItem('Docs.language') || Rooter.detectLanguage() : Rooter.detectLanguage();
+        let language = window.localStorage ? window.localStorage.getItem('Docs.language') || Router.detectLanguage() : Router.detectLanguage();
         if (LANGUAGES.indexOf(language) === -1) {
             language = 'de';
         }
