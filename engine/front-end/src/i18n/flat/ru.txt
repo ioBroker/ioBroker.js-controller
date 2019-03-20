@@ -1,34 +1,34 @@
-About
-Adapters
-All
-Authors:
-Blog
-Cloud
-Collapse all
-Date
-Details
-Documentation
-Download
-Edit on github
-Expand all
-Filter
+Около
+адаптеры
+Все
+Авторы:
+Блог
+облако
+Свернуть все
+Дата
+подробности
+Документация
+Скачать
+Редактировать на github
+Расширить все
+Фильтр
 Github
-Imprint
-Info
-Installs:
-Last changed:
+выходные данные
+Информация
+Установок:
+Последнее изменение:
 Linux
-List of adapters
-New in last month:
-News, announcements and ideas about ioBroker
-Platform
-Privacy policy
-Read
-Stable:
-Total:
-This page has been translated automatically from "%s". Help us translate this page into English by clicking on Edit below.
-ioBroker Blog
-password
-posted on %s
-readme
-user
+Список адаптеров
+Новое в прошлом месяце:
+Новости, объявления и идеи о ioBroker
+Платформа
+Политика конфиденциальности
+Читать
+Стабильная:
+Всего:
+Эта страница была автоматически переведена с "%s". Помогите нам перевести эту страницу на английский, нажав «Изменить» ниже.
+Блог ioBroker
+пароль
+опубликовано на %s
+Прочти меня
+пользователь
