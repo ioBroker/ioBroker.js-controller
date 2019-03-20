@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
+function getFileHash(text) {
+    return crypto.createHash('sha256').update(text.trim()).digest('base64');
+}
 function queuePromises(promises, cb) {
     if (!promises || !promises.length) {
         cb && cb();
@@ -132,5 +136,6 @@ module.exports = {
     createDir,
     writeSafe,
     copyDir,
-    delDir
+    delDir,
+    getFileHash
 };

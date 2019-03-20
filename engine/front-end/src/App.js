@@ -102,8 +102,8 @@ class App extends Router {
     constructor(props) {
         super(props);
 
-        let hash = this.getLocation();
-        let language = window.localStorage ? window.localStorage.getItem('Docs.language') || Router.detectLanguage() : Router.detectLanguage();
+        let hash = Router.getLocation();
+        let language = hash.language || Router.detectLanguage();
         if (LANGUAGES.indexOf(language) === -1) {
             language = 'de';
         }
@@ -202,7 +202,7 @@ class App extends Router {
                     {LANGUAGES.map(lang => (
                         <MenuItem key={lang} selected={this.state.language === lang} onClick={() =>
                             this.setState({languageMenu: false, anchorMenu: null}, () => {
-                                const location = this.getLocation();
+                                const location = Router.getLocation();
                                 this.onNavigate(lang, location.tab, location.page, location.chapter);
                             })
                         }>{lang.toUpperCase()}</MenuItem>

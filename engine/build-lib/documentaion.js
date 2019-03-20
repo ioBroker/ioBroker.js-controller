@@ -104,7 +104,9 @@ async function processFile(fileName, lang, root) {
     }
     utils.writeSafe(path.join(consts.FRONT_END_DIR, fileName.replace(root, '/')).replace(/\\/g, '/'), data);
 
-    return Promise.all(consts.LANGUAGES.filter(ln => ln !== lang).map(ln => {
+    return Promise.resolve();
+
+    /*return Promise.all(consts.LANGUAGES.filter(ln => ln !== lang).map(ln => {
         const name = fileName.replace('/' + lang + '/', '/' + ln + '/');
 
         if (!fs.existsSync(name)) {
@@ -127,8 +129,137 @@ async function processFile(fileName, lang, root) {
             // the file will be copied later
             return Promise.resolve();
         }
-    }));
+    }));*/
 }
+function extractLicenseAndChangelog(data) {
+    const lines = data.trim().split('\n');
+    const changelog = [];
+    let changelogA = false;
+    const license = [];
+    let licenseA = false;
+    let newLines = [];
+    data.forEach(line => {
+        if (licenseA) {
+            license.push(line);
+        } else if (changelogA) {
+            changelog.push(line);
+        } else if (line.match(/#+\sChangelog/i)) {
+            changelog.push('## Changelog');
+            changelogA = true;
+            licenseA = false;
+        } else if (line.match(/#+\sLicense/i)) {
+            license.push('## License');
+            changelogA = false;
+            licenseA = true;
+        } else {
+            newLines.push(line);
+        }
+    });
+    while (newLines.length && !newLines[0].trim()) newLines.shift();
+    while (newLines.length && !newLines[newLines.length - 1].trim()) newLines.pop();
+
+    while (changelog.length && !changelog[0].trim()) changelog.shift();
+    while (changelog.length && !changelog[changelog.length - 1].trim()) changelog.pop();
+
+    while (license.length && !license[0].trim()) license.shift();
+    while (license.length && !license[license.length - 1].trim()) license.pop();
+
+    return {body: newLines.join('\n'), license: license.join('\n'), changelog: changelog.join('\n')};
+}
+
+function addChangelogAndLicense(body, changelog, license) {
+    return body.trim().replace(/\n+$/, '') +
+        (changelog ? '\n\n' + changelog.trim().replace(/\n+$/, '') : '') +
+        (license ? '\n\n' + license.trim().replace(/\n+$/, '') : '');
+}
+
+async function translateFile(sourceFileName, fromLang, toLang, root) {
+    const targetFileName = sourceFileName.replace('/' + fromLang + '/', '/' + toLang + '/');
+    let {header, body} = utils.extractHeader(fs.readFileSync(sourceFileName).toString('utf-8'));
+    if (header.translatedFrom) {
+        // this is not the source
+        return Promise.resolve();
+
+    }
+
+    header.translatedFrom = fromLang;
+    header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + targetFileName.replace(root, '');
+
+    let actualText;
+    if (fs.existsSync(targetFileName)) {
+        let {body, header} = utils.extractHeader(fs.readFileSync(targetFileName).toString('utf-8'));
+        actualText = body;
+        if (header.translatedFrom !== fromLang) {
+            return Promise.resolve();
+        }
+        if (header.hash === utils.getFileHash(body)) {
+            return Promise.resolve();
+        }
+    }
+
+    const data = extractLicenseAndChangelog(body);
+
+    return translation.translateMD(fromLang, data.body, toLang, actualText, true)
+        .then(result => {
+            actualText = result.result;
+            header.title = header.title || utils.getTitle(body);
+            return translation.translateText(fromLang, header.title, toLang);
+        }).then(title => {
+            header.title = title;
+            header.translatedFrom = fromLang;
+            header.hash = utils.getFileHash(body);
+            utils.writeSafe(targetFileName, utils.addHeader(addChangelogAndLicense(actualText, data.changelog, data.license), header));
+            console.log(`WARNING: File ${sourceFileName.replace(root, '/')} was translated from ${fromLang} to ${toLang} automatically`);
+        });
+}
+
+function getAllFiles(root, onlyMd, _result) {
+    _result = _result || [];
+    fs.readdirSync(root).filter(name => !name.startsWith('_')).forEach(name => {
+        const fileName = path.join(root, name).replace(/\\/g, '/');
+        const stat = fs.statSync(fileName);
+        if (stat.isDirectory()) {
+            getAllFiles(fileName, onlyMd, _result);
+        } else {
+            if (!onlyMd || name.match(/\.md$/i)) {
+                _result.push(fileName);
+            }
+        }
+    });
+    return _result;
+}
+
+function sync2Languages(fromLang, toLang, cb, files) {
+    files = files || getAllFiles(consts.SRC_DOC_DIR + fromLang, true).sort();
+    if (!files.length) {
+        return cb && cb();
+    }
+    const file = files.shift();
+    translateFile(file, fromLang, toLang, consts.SRC_DOC_DIR).then(() => {
+        setTimeout(() => sync2Languages(fromLang, toLang, cb, files), 100);
+    });
+}
+
+function processTasks(tasks, cb) {
+    if (!tasks || !tasks.length) {
+        cb && cb();
+    } else {
+        const task = tasks.shift();
+        sync2Languages(task.fromLang, task.toLang, () =>
+            setTimeout(() => processTasks(tasks, cb), 0));
+    }
+}
+
+function syncDocs(cb) {
+    const tasks = [];
+    consts.LANGUAGES.map(lang => {
+        consts.LANGUAGES
+            .filter(lang2 => lang2 !== lang)
+            .map(lang2 => tasks.push({fromLang: lang, toLang: lang2}));
+    });
+    processTasks(tasks, () => cb);
+}
+
 
 // process all files in directory recursively
 async function processFiles(root, lang, originalRoot) {
@@ -155,10 +286,12 @@ async function processFiles(root, lang, originalRoot) {
 }
 
 if (!module.parent) {
-    processContent(path.join(consts.SRC_DOC_DIR, 'content.md')).then(content => {
-        console.log(JSON.stringify(content));
-        return processFiles(consts.SRC_DOC_DIR);
-    });
+    processContent(path.join(consts.SRC_DOC_DIR, 'content.md'))
+        .then(content => {
+            console.log(JSON.stringify(content));
+            processFiles(consts.SRC_DOC_DIR).then(() =>
+                new Promise(resolve => syncDocs(() => resolve())));
+        });
 } else {
     module.exports = {
         processContent,

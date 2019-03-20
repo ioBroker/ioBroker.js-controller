@@ -1,6 +1,7 @@
 const utils = require('./utils');
 const consts = require('./consts');
 const request = require('request');
+const fs = require('fs');
 let lastRequest = null;
 const {Translate} = require('@google-cloud/translate');
 // Your Google Cloud Platform project ID
@@ -65,40 +66,47 @@ async function translateYandex(text, targetLang, yandex) {
 
 
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
-    /*if (lastRequest && Date.now() - lastRequest < TRANSLATE_DELAY) {
-        return setTimeout(() => translateGoogleSync(text, targetLang, sourceLang, cb), TRANSLATE_DELAY - Date.now() + lastRequest);
-    }
-
-    lastRequest = Date.now();*/
-
-    translate
-        .translate(text, {to: targetLang, from: sourceLang})
-        .then(results => {
-            cb(null, results[0]);
-        })
-        .catch(err => {
-            cb(err);
-        });
-    /*
-    const url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang || 'en'}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}&ie=UTF-8&oe=UTF-8`;
-    console.log(`Translate ${sourceLang} => ${targetLang} : ${text}`);
-    request(url, (err, state, body) => {
-        if (err || !state || state.statusCode !== 200) {
-            cb(err || state.statusCode);
-        } else {
-            try {
-                const json = JSON.parse(body);
-                if (json instanceof Array) {
-                    // we got a valid response
-                    cb(null, json[0][0][0]);
-                } else {
-                    cb('Invalid answer: ' + body);
-                }
-            } catch (e) {
-                cb('Cannot parse answer: ' + body);
-            }
+    if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
+        translate
+            .translate(text, {to: targetLang, from: sourceLang})
+            .then(results => {
+                cb(null, results[0]);
+            })
+            .catch(err => {
+                cb(err);
+            });
+    } else {
+        return cb(null, 'TR: ' + text);
+        if (lastRequest && Date.now() - lastRequest < TRANSLATE_DELAY) {
+            return setTimeout(() => translateGoogleSync(text, targetLang, sourceLang, cb), TRANSLATE_DELAY - Date.now() + lastRequest);
         }
-    });*/
+
+        lastRequest = Date.now();
+
+        const url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang || 'en'}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}&ie=UTF-8&oe=UTF-8`;
+        console.log(`Translate ${sourceLang} => ${targetLang} : ${text}`);
+        request(url, (err, state, body) => {
+            if (err || !state || state.statusCode !== 200) {
+                if (state.statusCode === 429) {
+                    cb(null, 'TR: ' + text);
+                } else {
+                    cb(err || state.statusCode);
+                }
+            } else {
+                try {
+                    const json = JSON.parse(body);
+                    if (json instanceof Array) {
+                        // we got a valid response
+                        cb(null, json[0][0][0]);
+                    } else {
+                        cb('Invalid answer: ' + body);
+                    }
+                } catch (e) {
+                    cb('Cannot parse answer: ' + body);
+                }
+            }
+        });
+    }
 }
 /**
  * Translates text with Google API
@@ -122,139 +130,225 @@ async function translateGoogle(text, targetLang, sourceLang) {
         throw new Error(`Could not translate to '${targetLang}': ${e}`);
     }
 }
-
-async function translateFile(fileName, data, originalLanguage, targetLanguage, root) {
-    const name = fileName.replace('/' + originalLanguage + '/', '/' + targetLanguage + '/');
-    let {header, body} = utils.extractHeader(data);
-    header.translatedFrom = originalLanguage;
-    header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + fileName.replace(root, '');
-    console.log(`WARNING: File ${fileName.replace(root, '/')} was translated from ${originalLanguage} to ${targetLanguage} automatically`);
-    return Promise.resolve(utils.addHeader(body, header));
-}
-
-function partsTake(text) {
+function partsTake(text, addIds) {
     const lines = text.trim().replace(/\r/g, '').split('\n');
 
-    const parts = [];
+    let parts = [];
     // remove leading empty lines
     while(lines.length && !lines[0].trim()) lines.shift();
 
     // remove trailing empty lines
     while(lines.length && !lines[lines.length - 1].trim()) lines.pop();
 
-    let source = false;
-    let code = false;
+    let current = '';
     lines.forEach((line, i) => {
-        if (code) {
+        let last = parts.length - 1;
+        if (line.trim().startsWith('<!-- ID: ')) {
+            parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
+            current = '';
+        } else
+        if (current === 'code') {
             if (line.endsWith('```')) {
-                code = false;
-                line = line.substring(0, line.length - 3);
+                current = '';
             }
-            parts[parts.length - 1].lines.push(line);
+            parts[last].lines.push(line);
         } else
         if (line.trim().startsWith('```')) {
-            if (!parts[parts.length - 1]) {
-                parts.push({type: 'code', lines: []});
-            }
+            parts.push({type: 'code', lines: []});
+            last++;
 
-            parts[parts.length - 1].lines = parts[parts.length - 1].source || [];
-            line = line.substring(3);
-            parts[parts.length - 1].lines.push(line);
+            parts[last].lines = parts[last].lines || [];
+            parts[last].lines.push(line);
+
             if (!line.endsWith('```')) {
-                code = true;
+                current = 'code';
             } else {
-                parts.push({type: 'p', lines: []});
+                current = '';
             }
-        } else if (source) {
+        } else if (current === 'source') {
             if (line.endsWith(' -->')) {
-                source = false;
-                line = line.substring(0, line.length - 3);
+                current = '';
+                line = line.substring(0, line.length - 4);
             }
-            parts[parts.length - 1].source.push(line);
+            parts[last].source.push(line);
         } else
         if (line.trim().startsWith('<!-- SOURCE: ')) {
-            if (!parts[parts.length - 1]) {
-                parts.push({type: 'p', lines: []});
+            if (!parts[last]) {
+                console.error('Source without text!!!');
             }
-            source = true;
-            parts[parts.length - 1].source = parts[parts.length - 1].source || [];
+            if (!line.endsWith(' -->')) {
+                current = 'source';
+            } else {
+                line = line.substring(0, line.length - 4);
+                current = '';
+            }
+            parts[last].source = parts[last].source || [];
             line = line.substring('<!-- SOURCE: '.length);
-            parts[parts.length - 1].source.push(line);
+
+            // extract id
+            const m = line.match(/^(\d+)\s|^(\d+)$/);
+            if (m) {
+                parts[last].id = parseInt(m[1] || m[2], 10);
+                line = line.substring((m[1] || m[2]).length + 1);
+            }
+            if (line.trim()) {
+                parts[last].source.push(line);
+            } else {
+                parts[last].doNotTranslate = true;
+            }
         } else
         // If chapter
         if (line.trim().startsWith('#')) {
             parts.push({type: 'h', lines: [line]});
-            parts.push({type: 'p', lines: []});
-        } else if (!line.trim()) {
-            if (!parts[parts.length - 1]) {
-                parts.push({type: 'p', lines: []});
+        } else if (line.trim()) {
+            if (!current) {
+                current = 'p';
+                parts.push({type: current, lines: []});
+                last++;
             }
-            parts[parts.length - 1].lines.push('');
-            parts.push({type: 'p', lines: []});
+            parts[last].lines.push(line);
         } else {
-            if (!parts[parts.length - 1]) {
-                parts.push({type: 'p', lines: []});
-            }
-            parts[parts.length - 1].lines.push(line);
+            current = '';
         }
     });
+
+    parts = parts.filter(part => part.lines.length);
+
+    if (addIds) {
+        parts.forEach(part => {
+            if (!part.id) {
+                part.id = Math.round((Math.random() * 1000000));
+            }
+        });
+    }
+
     return parts;
 }
 
-function partsSave(parts) {
+function partsSave(parts, saveNoSource) {
     const lines = [];
     parts.forEach(part => {
-        if (part.original) {
-            // if last line is empty, put <!----> just before it
-            if (part.text && part.text.match(/\n$/)) {
-                const text = part.text.replace(/\n$/, '');
-                lines.push(text);
-                lines.push('<!-- SOURCE: ' + (part.original || part.lines.join('\n')) + ' -->');
-                lines.push('');
+        let text = part.text || part.lines.join('\n');
+        if (text.replace(/\n/g, '').trim() || (part.original && part.original.replace(/\n$/, ''))) {
+            text = text.replace(/\n$/, '');
+
+            if (part.original) {
+                // if last line is empty, put <!----> just before it
+                if (text.match(/\n$/)) {
+                    lines.push(text);
+                    !saveNoSource && lines.push('<!-- SOURCE: ' + part.id + ' ' + part.original.replace(/\n$/, '') + ' -->\n');
+                } else {
+                    lines.push(text + '\n');
+                    !saveNoSource && lines.push('<!-- SOURCE: ' + part.id + ' ' + part.original.replace(/\n$/, '') + ' -->\n');
+                }
             } else {
-                lines.push(part.text || part.lines.join('\n'));
-                lines.push('<!-- SOURCE: ' + (part.original || part.lines.join('\n')) + ' -->');
+                if (text.match(/\n$/)) {
+                    lines.push(text);
+                    !saveNoSource && lines.push('<!-- ID: ' + part.id + ' -->\n');
+                } else {
+                    lines.push(text + '\n');
+                    !saveNoSource && lines.push('<!-- ID: ' + part.id + ' -->\n');
+                }
             }
-        } else {
-            lines.push(part.text || part.lines.join('\n'));
+            lines.push('\n');
         }
     });
 
     // remove double new lines
-    for (let i = lines.length - 2; i >= 0; i--) {
-        if (!lines[i + 1] && !lines[i]) {
-            lines.splice(i + 1, 1);
+    let changed;
+    do {
+        changed = false;
+        for (let i = lines.length - 2; i >= 0; i--) {
+            if (!lines[i + 1] && !lines[i]) {
+                lines.splice(i + 1, 1);
+                changed = true;
+            }
+        }
+    } while (changed);
+
+    return lines.join('');
+}
+
+function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
+    partsTarget = partsTarget || [];
+
+    let untranslated;
+    for (let i = 0; i < partsSource.length; i++) {
+        // do not translate twice
+        if (partsSource[i].translated) continue;
+        // do not translate code, but copy that
+        if (partsSource[i].type === 'code') {
+            if (!partsTarget[i] || partsSource[i].lines.join().trim() !== partsTarget[i].lines.join().trim()) {
+                partsTarget[i] = JSON.parse(JSON.stringify(partsSource[i]));
+            }
+            partsSource[i].translated = true;
+            continue;
+        }
+        // if nothing exists => translate
+        if (!partsTarget || !partsTarget[i] || !partsTarget[i].source) {
+            untranslated = i;
+            break;
+        }
+        // Do not translate text, modified by user
+        if (partsTarget[i].doNotTranslate) {
+            partsSource[i].translated = true;
+            continue;
+        }
+        // If text is not empty and differs => re-translate
+        if (partsSource[i].lines.join().replace(/[\n\s]/).trim() &&
+            partsTarget[i].source.join('').trim() !== partsSource[i].lines.join('').trim()) {
+            untranslated = i;
+            break;
+        } else if (!partsTarget[i].original) {
+            partsSource[i].translated = true;
+            partsTarget[i].original = partsTarget[i].lines.join('\n');
         }
     }
 
-    return lines.join('\n');
-}
-
-function partsTranslate(fromLang, parts, toLang, cb) {
-    const untranslated = parts.find(item => !item.translated && item.lines.join().replace(/[\n\s]/).trim());
-    if (untranslated) {
-        untranslated.original = untranslated.lines.join('\n');
-        return translateText(fromLang, untranslated.original, toLang)
+    if (untranslated !== undefined) {
+        partsTarget[untranslated] = JSON.parse(JSON.stringify(partsSource[untranslated]));
+        partsTarget[untranslated].original = partsTarget[untranslated].lines.join('\n');
+        return translateText(fromLang, partsTarget[untranslated].original, toLang)
             .then(text => {
-                untranslated.translated = true;
-                untranslated.text = text;
-                setTimeout(() => partsTranslate(fromLang, parts, toLang, cb), 0);
+                partsSource[untranslated].translated = true;
+                partsTarget[untranslated].text = text; // remember translated text
+                setTimeout(() => partsTranslate(fromLang, partsSource, toLang, partsTarget, cb), 0);
             }).catch(e => {
                 console.error('Cannot translate: ' + e);
-                untranslated.translated = true;
-                untranslated.text = untranslated.original;
-            })
+                partsSource[untranslated].translated = true;
+                partsTarget[untranslated].text = partsTarget[untranslated].original;
+            });
     } else {
-        cb && cb(parts);
+        cb && cb(partsTarget);
     }
 }
 
-function translateMD(fromLang, text, toLang) {
+function tryToMerge(source, target) {
+    const newTarget = [];
+    source.forEach((item, i) => {
+        const found = target.find(it => it.id === item.id);
+        if (found) {
+            newTarget[i] = found;
+            target.splice(target.indexOf(found), 1);
+        } else {
+            newTarget[i] = JSON.parse(JSON.stringify(item));
+        }
+    });
+    return newTarget;
+}
+
+function translateMD(fromLang, text, toLang, translatedText, saveNoSource) {
     return new Promise(resolve => {
-        const parts = partsTake(text);
+        const partsSource = partsTake(text, true);
+        let partsTarget = translatedText && partsTake(translatedText);
+
+        if (partsTarget) {
+            partsTarget = tryToMerge(partsSource, partsTarget);
+        }
+
         console.log(`____________TRANSLATE ${fromLang} => ${toLang}_______________`);
-        partsTranslate(fromLang, parts, toLang, parts => {
-            resolve(partsSave(parts));
+        partsTranslate(fromLang, partsSource, toLang, partsTarget, parts => {
+            resolve({result: partsSave(parts, saveNoSource), source: partsSave(partsSource)});
         });
     });
 }
@@ -264,7 +358,6 @@ function translateText(fromLang, text, toLang) {
 }
 
 module.exports = {
-    translateFile,
     translateMD,
     translateText
 };

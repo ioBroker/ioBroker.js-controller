@@ -28,13 +28,13 @@ class Router extends Component {
 
     _onHashChange() {
         if (this.onHashChange) {
-            this.onHashChange(this.getLocation());
+            this.onHashChange(Router.getLocation());
         }
     }
 
     onNavigate(language, tab, page, chapter) {
         if (tab === null || language === null || page === null) {
-            let location = this.getLocation();
+            let location = Router.getLocation();
             if (tab === null) {
                 tab      = tab || location.tab;
             }
@@ -49,7 +49,7 @@ class Router extends Component {
         window.location.hash = `#${language}/${tab}${page ? '/' + page : ''}${chapter ? '?' + chapter : ''}`;
     }
 
-    getLocation() {
+    static getLocation() {
         let hash = window.location.hash.substring(1);
         let pos = hash.indexOf('/');
         const result = {

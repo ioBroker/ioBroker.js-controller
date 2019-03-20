@@ -58,7 +58,7 @@ function build(lang, content) {
                 const desc = [];
                 let i = 0;
                 while(lines[i]) {
-                    if (lines[i].startsWith('<!-- SOURCE: ')) {
+                    if (lines[i].startsWith('<!-- SOURCE: ') || lines[i].startsWith('<!-- ID: ')) {
                         break;
                     }
                     desc.push(lines[i]);
@@ -106,26 +106,27 @@ function sync2Languages(fromLang, toLang, content, cb) {
         const toFile = consts.SRC_BLOG_DIR + toLang + '/' + content.pages[file].originalName;
 
         //const fromFilePublic = consts.FRONT_END_DIR + fromLang + '/blog/' + file + '.md';
-        const toFilePublic = consts.FRONT_END_DIR + toLang + '/blog/' + file + '.md';
+        //const toFilePublic = consts.FRONT_END_DIR + toLang + '/blog/' + file + '.md';
 
         // read from
         if (fs.existsSync(fromFile)) {
             let {header} = utils.extractHeader(fs.readFileSync(fromFile).toString('utf-8'));
             if (!header.translatedFrom) {
                 let doTranslate = !fs.existsSync(toFile);
-                /*if (!doTranslate) {
+                if (!doTranslate) {
                     let {header} = utils.extractHeader(fs.readFileSync(toFile).toString('utf-8'));
+                    let {body} = utils.extractHeader(fs.readFileSync(fromFile).toString('utf-8'));
                     if (header.translatedFrom === fromLang) {
-                        doTranslate = true;
+                        doTranslate = header.hash !== utils.getFileHash(body);
                     }
-                }*/
+                }
                 return doTranslate;
             }
         }
     });
 
     if (file) {
-        // const fromFile = consts.SRC_BLOG_DIR + fromLang + '/' + content.pages[file].originalName;
+        const fromFile = consts.SRC_BLOG_DIR + fromLang + '/' + content.pages[file].originalName;
         const toFile = consts.SRC_BLOG_DIR + toLang + '/' + content.pages[file].originalName;
 
         const fromFilePublic = consts.FRONT_END_DIR + fromLang + '/blog/' + file + '.md';
@@ -133,16 +134,26 @@ function sync2Languages(fromLang, toLang, content, cb) {
 
         // read from
         let {body, header} = utils.extractHeader(fs.readFileSync(fromFilePublic).toString('utf-8'));
+        let originalBody = body;
+        const originalHeader = header;
+        let translatedBody;
+        if (fs.existsSync(toFile)) {
+            let {body} = utils.extractHeader(fs.readFileSync(toFile).toString('utf-8'));
+            translatedBody = body;
+        }
 
-        translation.translateMD(fromLang, body, toLang)
-            .then(_body => {
-                body = _body;
-                return translation.translateText(fromLang, header.title, toLang);
+        translation.translateMD(fromLang, originalBody, toLang, translatedBody)
+            .then(result => {
+                body = result.result;
+                originalBody = result.source;
+                utils.writeSafe(fromFile, utils.addHeader(originalBody, originalHeader));
+                return translation.translateText(fromLang, originalHeader.title, toLang);
             }).then(title => {
-                header.title = title;
+                originalHeader.title = title;
                 content.pages[file].title[toLang] = title;
-                header.translatedFrom = fromLang;
-                const localHeader = JSON.parse(JSON.stringify(header));
+                originalHeader.translatedFrom = fromLang;
+                originalHeader.hash = utils.getFileHash(originalBody);
+                const localHeader = JSON.parse(JSON.stringify(originalHeader));
                 delete localHeader.editLink;
                 content.pages[file].title[toLang] = title;
 
@@ -164,10 +175,9 @@ function sync2Languages(fromLang, toLang, content, cb) {
 
                 content.pages[file].desc[toLang] = desc.join('\\n');
 
-
                 utils.writeSafe(toFile, utils.addHeader(body, localHeader));
-                utils.writeSafe(toFilePublic, utils.addHeader(body, header));
-                setTimeout(() => sync2Languages(fromLang, toLang, content, cb), 500);
+                utils.writeSafe(toFilePublic, utils.addHeader(body, originalHeader));
+                setTimeout(() => sync2Languages(fromLang, toLang, content, cb), 200);
             });
     } else {
         cb && cb(content);

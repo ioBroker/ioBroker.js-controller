@@ -99,7 +99,9 @@ const styles = theme => ({
         verticalAlign: 'middle',
     },
     infoEdit: {
-        float: 'right'
+        float: 'right',
+        textDecoration: 'none',
+        color: 'gray'
     },
     adapterCard:{
         marginBottom: 15,
@@ -235,7 +237,7 @@ class Markdown extends Router {
     }
 
     onHashChange(location) {
-        location = location || this.getLocation();
+        location = location || Router.getLocation();
         if (location.chapter) {
             const el = window.document.getElementById(location.chapter);
             el && el.scrollIntoView(true);

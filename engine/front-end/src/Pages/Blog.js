@@ -10,6 +10,7 @@ import I18n from '../i18n';
 import Utils from '../Utils';
 import Router from '../Router';
 import {Converter} from "react-showdown";
+import {MdEdit as IconEdit} from "react-icons/md";
 
 const styles = theme => ({
     root: {
@@ -38,29 +39,33 @@ const styles = theme => ({
         width: '80%',
         textAlign: 'left',
         padding: 10,
-        margin: 20,
+        margin: 'auto',
+        overflowWrap: 'break-word'
     },
     pageLogoDiv:{
         width: '100%',
         height: 250,
-        textAlign: 'center'
+        textAlign: 'center',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover'
     },
     pageLogo: {
         height: '100%',
     },
     pageTitle: {
         fontSize: 32,
-        fontFamily: 'Open Sans,sans-serif',
+        //fontFamily: 'Open Sans,sans-serif',
         fontWeight: 400,
         lineHeight: '42px',
     },
     pagePosted: {
         fontSize: 14,
-        fontFamily: 'Open Sans,sans-serif',
+        //fontFamily: 'Open Sans,sans-serif',
     },
     pageDesc: {
         fontWeight: 400,
-        fontFamily: 'Open Sans,sans-serif',
+        //fontFamily: 'Open Sans,sans-serif',
         marginTop: 50,
     },
     pageTitleNextButton: {
@@ -68,7 +73,31 @@ const styles = theme => ({
     },
     pageTitlePrevButton: {
         float: 'right'
-    }
+    },
+    pageTitleTranslated: {
+        borderColor: '#009c4f',
+        borderWidth: '0 0 0 3px',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#bdded5',
+        '&:before': {
+            content: '"i"',
+            //borderRadius: '50%',
+            //background: '#91dea9',
+            color: '#000000'
+        }
+    },
+    info: {
+        paddingTop: 10,
+        paddingBottom: 20,
+    },
+    infoEdit: {
+        float: 'right',
+        textDecoration: 'none',
+        color: 'gray'
+    },
 });
 
 const converter = new Converter();
@@ -97,7 +126,7 @@ class Blog extends Router {
     }
 
     onHashChange() {
-        let location = this.getLocation();
+        let location = Router.getLocation();
         if (location.page !== this.page) {
             this.page = location.page;
             if (location.page) {
@@ -116,7 +145,7 @@ class Blog extends Router {
             .then(res => res.json())
             .then(content => {
                 this.setState({content}, () => {
-                    let location = this.getLocation();
+                    let location = Router.getLocation();
                     this.page = location.page;
                     if (location.page) {
                         this.loadBlog(location.page);
@@ -127,7 +156,7 @@ class Blog extends Router {
 
     loadBlog(page, language) {
         language = language || this.props.language;
-        page = page || this.getLocation().page;
+        page = page || Router.getLocation().page;
 
         fetch(`${language}/blog/${page}.md`)
             .then(res => res.text())
@@ -178,8 +207,8 @@ class Blog extends Router {
     renderEntry(page) {
         const data = this.state.content.pages[page];
 
-        return (<Paper  className={this.props.classes.pagePage}>
-            {data.logo ? (<div className={this.props.classes.pageLogoDiv} onClick={() => this.props.onNavigate(null, null, page)} style={{cursor: 'pointer'}}><img src={data.logo} className={this.props.classes.pageLogo} alt="logo"/></div>) : null}
+        return (<Paper key={page} className={this.props.classes.pagePage}>
+            {data.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + data.logo + ')'}}></div>) : null}
             <h2 className={this.props.classes.pageTitle}  style={{cursor: 'pointer'}} onClick={() => this.props.onNavigate(null, null, page)}>{data.title[this.props.language] || data.title.en}</h2>
             <div className={this.props.classes.pagePosted}><strong>{data.author || data.Author}</strong> {I18n.t(' posted on %s', Blog.page2Date(page))}</div>
             <p className={this.props.classes.pageDesc}>{data.desc && (data.desc[this.props.language] || data.desc.en || '').replace(/\\n/g, '\n')}</p>
@@ -216,14 +245,23 @@ class Blog extends Router {
         let prev = pos + 1 < pages.length ? Blog.page2Date(pages[pos + 1]) : '';
 
         return (<Paper  className={this.props.classes.pagePage}>
-            {header.logo ? (<div className={this.props.classes.pageLogoDiv}><img src={header.logo} className={this.props.classes.pageLogo} alt="logo"/></div>) : null}
+            {header.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}></div>) : null}
             <div className={this.props.classes.pageTitleDiv}>
                 <h2 className={this.props.classes.pageTitle}>{header.title}</h2>
                 <div className={this.props.classes.pagePosted}><strong>{header.author || header.Author}</strong> {I18n.t(' posted on %s', d.toLocaleDateString())}</div>
                 {next ? (<Button variant="contained" className={this.props.classes.pageTitleNextButton} onClick={() => this.onNavigate(null, null, pages[pos - 1])}>{next}&lt;=</Button>) : null}
                 {prev ? (<Button variant="contained" className={this.props.classes.pageTitlePrevButton} onClick={() => this.onNavigate(null, null, pages[pos + 1])}>=&gt;{prev}</Button>) : null}
             </div>
+
+            {header.translatedFrom ?
+                (<div className={this.props.classes.pageTitleTranslated}>{I18n.t('Translated from %s', header.translatedFrom)}</div>) : null}
+
             <div className={this.props.classes.pageDesc}>{reactElement}</div>
+
+            {header.editLink ?
+                (<div className={this.props.classes.info}>
+                    <a className={this.props.classes.infoEdit} href={header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>
+                </div>) : null}
         </Paper>);
     }
 
@@ -232,7 +270,7 @@ class Blog extends Router {
             return (<Loader theme={this.props.theme}/>);
         }
 
-        return [(<div className={this.props.classes.root}>
+        return [(<div key="blog" className={this.props.classes.root}>
                 {this.renderHeader()}
                 {this.state.text ? this.renderPage() : this.renderEntries()}
                 </div>),

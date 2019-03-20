@@ -15,7 +15,7 @@ This is the place where a new documention for ioBroker is born. Beware: Work in 
 
 ## TODO
 - Download
-- Blog
+- sitemap
 - About
 - FAQ
 - Translator

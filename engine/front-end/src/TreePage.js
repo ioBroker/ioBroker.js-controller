@@ -100,7 +100,7 @@ class TreePage extends Router {
         } catch (e) {
             expanded = [];
         }
-        const location = this.getLocation();
+        const location = Router.getLocation();
         let menuOpened = window.localStorage ? window.localStorage.getItem('Docs.menuOpened') !== 'false' : true;
 
         if (this.props.mobile) {

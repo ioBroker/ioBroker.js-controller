@@ -1,69 +1,68 @@
 * [Welcome](README)
   * [Introduction](intro/README)
 
-* de:Grundlagen;en:Fundamentals;ru:Основы
-  * [Einleitung](basics/README)
-  * [Systemaufbau](basics/architecture)
+* en:Fundamentals;de:Grundlagen;ru:Основы
+  * [Introduction](basics/README)
+  * [Architecture](basics/architecture)
   * [Adapter & Instanzen](basics/adapter)
   * [Repositories](basics/repositories)
-  * [Objekte](basics/objects)
-  * [States & Datenpunkte](basics/states)
-  * [Funktionen](basics/functions)
-  * [Rollen](basics/roles)
+  * [Objects](basics/objects)
+  * [States or Datapoints](basics/states)
+  * [Functions](basics/functions)
+  * [Roles](basics/roles)
 
-* Installation
-  * [Einleitung](install/README)
-  * [Systemvoraussetzungen](install/requirements)
+* en:Installation;de:Installation;ru:Установка
+  * [Introduction](install/README)
+  * [Requirements](install/requirements)
   * [Hardware](install/hardware)
-  * Fertige Images
-    * [Übersicht](install/images)
-  * Virtualisierungsplattformen
+  * en:Ready images;de:Fertigimages;ru:Готовые образы
+    * [Overview](install/images)
+  * en:Virtualization platforms;de:Virtualisierungsplattformen;ru:Платформы виртуализации
     * [Proxmox](install/proxmox)
     * [VirtualBox](install/virtualbox)
     * [Docker](install/docker)
-  * Manuelle Installation
+  * en:Manual installation;de:Manuelle Installation;ru:Ручная установка
     * [Node.js](install/nodejs)
     * [Linux](install/linux)
     * [Windows](install/windows)
     * [macOS](install/macos)
-  * Softwareupdate
-    * [Allgemein](install/update)
+  * en:Software update;de:Softwareupdate;ru:Обновление
+    * [General](install/update)
     * [ioBroker](install/updateself)
     * [Adapter](install/updateadapter)
     * [Node.js & npm](install/updatenode)
 
-* Admin-Oberfläche
-  * [Einleitung](admin/README)
-  * [Aufbau des Adminfensters](admin/screen)
-  * [Systemeinstellungen](admin/settings)
-  * [Admin-Übersicht](admin/overview)
+* en:Admin interface;de:Admin-Oberfläche;ru:Интерфейс админки
+  * [Introduction](admin/README)
+  * [Admin windows](admin/screen)
+  * [Sytsem settings](admin/settings)
+  * [Admin-Overview](admin/overview)
   * [Adapter](admin/adapter)
-  * [Instanzen](admin/instanzen)
-  * [Objekte](admin/objects)
+  * [Instances](admin/instances)
+  * [Objects](admin/objects)
   * [Log](admin/log)
-  * [Aufzählungen](admin/enums)
-  * [Ereignisse](admin/events)
-  * [Skripte](admin/scripts)
+  * [Enumerations](admin/enums)
+  * [Scrips](admin/scripts)
   * [Hosts](admin/hosts)
 
-* Tutorials
-  * [Einleitung](tutorial/README)
-  * [Erste Einrichtung](tutorial/einrichtung)
-  * [Benutzeroberfläche](tutorial/admin)
-  * [Adapter verwalten](tutorial/adapter)
-  * [Einfache Logik](tutorial/logik)
-  * [Visualiserung](tutorial/viz)
-  * [Datenhistorisierung](tutorial/history)
-  * [Diagramme](tutorial/flot)
+* en:Tutorials;de:Tutorials;ru:Уроки
+  * [Introduction](tutorial/README)
+  * [First setup](tutorial/setup)
+  * [User interface](tutorial/admin)
+  * [Manage adapters](tutorial/adapter)
+  * [Simple logic](tutorial/logic)
+  * [Visualisation](tutorial/viz)
+  * [Data logging](tutorial/history)
+  * [Charts](tutorial/flot)
   * [Updates](tutorial/updates)
 
-* Visualisierungen
-  * [Einleitung](viz/README)
+* en:Visualisations;de:Visualisierungen;ru:Визуализация
+  * [Introduction](viz/README)
   * [Material](viz/material)
   * [Vis](viz/vis)
 
-* Logik
-  * [Einleitung](logic/README)
+* en:Logic & Automation;de:Logik & Automatisierung;ru:Автоматизация
+  * [Introduction](logic/README)
   * [Blockly](logic/blockly)
   * [JavaScript](logic/javascript)
   * [TypeScript](logic/typescript)
@@ -71,10 +70,10 @@
   * [Troubleshooting](logic/help)
   * [Best Practices](logic/examples)
 
-* Cloud-Services & Apps
-  * [Einleitung](cloud/README)
-  * [Visualisierungen](cloud/viz)
-  * [Editoren](cloud/editor)
+* en:Cloud-Services & Apps;de:Cloud-Services & Apps;ru:Облачные сервисы & Apps
+  * [Introduction](cloud/README)
+  * [Visualisations](cloud/viz)
+  * [Editors](cloud/editor)
   * [Alexa Smarthome-Skill](cloud/alexasmart)
   * [Alexa Custom-Skill](cloud/alexacustom)
   * [IFTTT](cloud/ifttt)
@@ -82,46 +81,49 @@
   * [Android App](cloud/androidapp)
   * [iOS App](cloud/iosapp)
 
-* Erweiterte Konfiguration
-  * [Einleitung](config/README)
-  * [Benutzer und Rechteverwaltung](config/userrights)
-  * [Authentifizierung](config/login)
-  * [SSL für Webzugriff](config/encryption)
-  * [Kommandozeilen-Tools](config/commandline)
+* en:Advanced configuration;de:Erweiterte Konfiguration;ru:Экспертные настройки
+  * [Introduction](config/README)
+  * [User und rights control](config/userrights)
+  * [Authentication](config/login)
+  * [SSL for Web access](config/encryption)
+  * [CLI](config/commandline)
   * [Multi-Host](config/multihost)
-  * [Datenhaltung mit Redis](config/redis)
-  * [Datensicherung](config/backup)
+  * [Data storage with Redis](config/redis)
+  * [Backup](config/backup)
 
-* Fehlerbehebung
-  * [Einleitung](trouble/README)
-  * [Fehlersuche](trouble/search)
-  * [Adapterfehler](trouble/adapter)
-  * [Melden von Fehlern](trouble/issue)
-  * [Datenwiederherstellung](trouble/restore)
+* en:Troubleshooting;de:Fehlerbehebung;ru:Поиск и решение проблем
+  * [Introduction](trouble/README)
+  * [Error search](trouble/search)
+  * [Errors in adapter](trouble/adapter)
+  * [Error reporting](trouble/issue)
+  * [Restore of configuration](trouble/restore)
   * [Forum](trouble/forum)
 
-* Unterstützung
-  * [Einleitung](community/README)
-  * [Mitarbeit im Team](community/project)
-  * Dokumentation
-    * [Artikel verfassen](community/doc)
-    * [Style Guide Dokumentation](community/styleguidedoc)
+* en:FAQ;de:FAQ;ru:ЧаВо
+  * [Basics](faq/basics)
+
+* en:Support;de:Unterstützung;ru:Поддержка
+  * [Introduction](community/README)
+  * [Work im team](community/project)
+  * en:Documentation;de:Dokumentation;ru:Документация
+    * [Write an article](community/doc)
+    * [Style Guide Documentation](community/styleguidedoc)
     * [Markdown Syntax](community/docmarkdown)
 
-* Adapterentwicklung
-  * [Einführung](dev/adapterdev)
-  * [Entwicklungsumgebung](dev/ide)
-  * [Adapterreferenz](dev/adapterref)
+* en:Adapter development;de:Adapterentwicklung;ru:Разработка драйвера
+  * [Introduction](dev/adapterdev)
+  * [IDEs](dev/ide)
+  * [Adapter reference](dev/adapterref)
   * [Template](dev/adaptertemplate)
-  * [Adapter-Tests](dev/adaptertesting)
-  * [Vorlage Adapterdoku](dev/adapterdoctemplate)
-  * [Style Guide Adapter-Doku](dev/adapterdocstyleguide)
-  * [Style Guide Userinterface](dev/styleguideui)
+  * [Adapter tests](dev/adaptertesting)
+  * [Adapter doc template](dev/adapterdoctemplate)
+  * [Style Guide Adapter-Doc](dev/adapterdocstyleguide)
+  * [Style Guide GUI](dev/styleguideui)
   * [Debugging](dev/adapterdebug)
-  * [Veröffentlichen](dev/adapterpublish)
+  * [Publish](dev/adapterpublish)
   * [JS-Controller](dev/controller)
   * [Best Practices](dev/bestpractices)
 
-* System-Integratoren
-  * [Einleitung](integrators/README)
+* en:System integrators;de:System-Integratoren;ru:Системные интеграторы
+  * [Introduction](integrators/README)
   * [Link-Box](integrators/linkbox)
