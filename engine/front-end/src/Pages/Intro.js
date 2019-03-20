@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Footer from "../Footer";
+import Footer from '../Footer';
+import Typed from 'react-typed';
 
 const styles = theme => ({
     aaa: {
@@ -16,9 +17,22 @@ class Intro extends Component {
         setTimeout(() => this.setState({loading: false}), 500);
     }
 
+    renderCallToAction() {
+        return (<div className={this.props.classes.linuxShell}>
+            <div className={this.props.classes.linuxShellHeader}></div>
+            <div className={this.props.classes.linuxShellWindow}>
+                <Typed
+                    strings={['curl -sL https://iobroker.net/install.sh | bash -']}
+                    typeSpeed={40}
+                />
+            </div>
+        </div>);
+    }
+
     render() {
         return [
             (<div className={this.props.classes.content} key="content">Hello world1</div>),
+            this.renderCallToAction(),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
         ];
     }
