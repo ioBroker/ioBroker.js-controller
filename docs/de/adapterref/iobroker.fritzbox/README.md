@@ -1,16 +1,5 @@
-![Logo](media/fritzbox.png) Fritzbox
-========
-
-|Stand der Doku |11.01.2019                      |
-|----------------|---------------------------------|
-| Entwickler     |ruhr70                          |
-| Kategorie      |Hardware                        |
-| Keywords       |Fritzbox, AVM, Telefon, Anruf   |
-| Abhängigkeiten |Freigeschalteter FB-Callmonitor |
-| Lizenz         |MIT                             |
-
-AVM Fritz!Box®
---------------
+![Logo](media/fritzbox.png) 
+# AVM Fritz!Box®
 
 Bei der Fritz!Box (Eigenschreibweise des Herstellers AVM) handelt es sich um die
 am weitesten verbreiteten Router auf dem Markt.
@@ -18,14 +7,12 @@ am weitesten verbreiteten Router auf dem Markt.
 Es gibt mittlerweile Modelle für alle gängigen Internet-Anschlussarten: DSL-,
 Kabel-, Mobilfunk- und Glasfaserzugänge.
 
-Adapter Fritzbox
-----------------
+## Adapter Fritzbox
 
 Der Adapter stellt eine Verbindung zwischen Fritzbox (kurz FB) und ioBroker her
 und stellt Daten und Listen über Anrufe zur Verfügung.
 
-Voraussetzungen vor Installation
---------------------------------
+## Voraussetzungen vor Installation
 
 Der Datenaustausch erfolgt über den in der FB integrierten *Callmonitor*. Um
 diesen zu aktivieren, ruft man von einem angeschlossenen Telefon folgende Nummer
@@ -35,8 +22,7 @@ an:
 
 \#96\*4\* – Callmonitor ausschalten
 
-Konfiguration
--------------
+## Konfiguration
 
 ### Settings
 
@@ -52,9 +38,7 @@ in diesem Thread</a></p>
 
 s. Settings
 
-Instanz
--------
-
+## Instanz
 Unter *Instanzen* des ioBrokers finden sich die installierte Instanz des
 Adapters. Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert und
 verbunden ist.
@@ -63,8 +47,7 @@ verbunden ist.
 
 Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
-Objekte des Adapters
---------------------
+## Objekte des Adapters
 
 Im Bereich Objekte werden in einer Baumstruktur alle von der FB dem Adapter
 übermittelten Werte, Listen und Informationen dargestellt (s. Einstellungen).
@@ -164,9 +147,7 @@ Informationen übermittelt werden, kann in den Einstellungen festgelegt werden
 | deltaTime      | Deltazeit zwischen ioBroker-Systemzeit und Fritzbox in sec |
 | deltaTimeOK    | Prüfergebnis (true/false)                                  |
 
-FAQ
-===
-
+## FAQ
 F: Es gibt den Fritzbox- und den TR-064-Adapter, der auch auf FB-Callmonitor
 zugreift. Wo sind die Unterschiede, müssen beide Adapter installiert sein?
 
@@ -183,4 +164,4 @@ langjährige Benutzer den FB-Adapter nutzen und darauf ihre
 Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
 mehr weiterentwickelt.
 
-<p>Neueinsteigern wird empfohlen, den <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de" title="Titel">TR-064-Adapter</a> zu installieren.</p>
+Neueinsteigern wird empfohlen, den [TR-064-Adapter](https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de) zu installieren.</p>

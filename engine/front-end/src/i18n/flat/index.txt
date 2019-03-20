@@ -1,0 +1,34 @@
+About
+Adapters
+All
+Authors:
+Blog
+Cloud
+Collapse all
+Date
+Details
+Documentation
+Download
+Edit on github
+Expand all
+Filter
+Github
+Imprint
+Info
+Installs:
+Last changed:
+Linux
+List of adapters
+New in last month:
+News, announcements and ideas about ioBroker
+Platform
+Privacy policy
+Read
+Stable:
+Total:
+Translated from %s
+ioBroker Blog
+password
+posted on %s
+readme
+user

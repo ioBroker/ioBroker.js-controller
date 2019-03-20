@@ -83,9 +83,8 @@ const styles = theme => ({
         borderStyle: 'solid',
         background: '#bdded5',
         '&:before': {
-            content: '"i"',
-            //borderRadius: '50%',
-            //background: '#91dea9',
+            content: '"🛈"',
+            marginRight: 10,
             color: '#000000'
         }
     },
@@ -100,7 +99,9 @@ const styles = theme => ({
     },
 });
 
+
 const converter = new Converter();
+
 
 class Blog extends Router {
     constructor(props) {
@@ -168,7 +169,7 @@ class Blog extends Router {
     renderHeader() {
         return (<div key={"header"}  style={this.page ? {cursor: 'pointer'} : {}} onClick={() => this.onNavigate(null, null, '')} className={this.props.classes.header}>
             <h1 key="title" className={this.props.classes.headerTitle}>{I18n.t('ioBroker Blog')}</h1>
-            <div key="notice"  className={this.props.classes.headerNotice}>{I18n.t('News, announcement, ideas about ioBroker')}</div>
+            <div key="notice"  className={this.props.classes.headerNotice}>{I18n.t('News, announcements and ideas about ioBroker')}</div>
         </div>);
     }
 

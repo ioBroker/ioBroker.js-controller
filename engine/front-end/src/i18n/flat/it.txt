@@ -1,0 +1,34 @@
+Di
+Adattatori
+Tutti
+autori:
+blog
+Nube
+Comprimi tutto
+Data
+Dettagli
+Documentazione
+Scaricare
+Modifica su github
+Espandi tutto
+Filtro
+Github
+Impronta
+Informazioni
+Installa:
+Ultima modifica:
+Linux
+Elenco di adattatori
+Novità del mese scorso:
+Notizie, annunci e idee su ioBroker
+piattaforma
+Politica sulla riservatezza
+Leggere
+Stabile:
+Totale:
+Questa pagina è stata tradotta automaticamente da "%s". Aiutaci a tradurre questa pagina in inglese facendo clic su Modifica sotto.
+Blog di ioBroker
+parola d'ordine
+pubblicato su %s
+readme
+utente

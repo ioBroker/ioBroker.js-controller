@@ -34,10 +34,12 @@ body {
 }
 
 
-.md-warn:before {
-  content: "i";
+/*.md-warn:before {
+  content: "🛈";
+  padding: 10px;
+  font-size: 22px;
 }
 
 .md-link:after {
   content: "🔗";
-}
+}*/

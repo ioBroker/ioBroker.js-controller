@@ -170,9 +170,8 @@ const styles = theme => ({
         borderStyle: 'solid',
         background: '#bdded5',
         '&:before': {
-            content: '"i"',
-            //borderRadius: '50%',
-            //background: '#91dea9',
+            content: '"🛈"',
+            marginRight: 10,
             color: '#000000'
         }
     },

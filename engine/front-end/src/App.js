@@ -25,7 +25,7 @@ import LogoSmall from './assets/iobroker-logo-small.png';
 
 // Pages
 import Blog from './Pages/Blog';
-import TabDownload from './Tabs/download/Tab';
+import Downloads from './Pages/Downloads';
 
 // pages
 import PageIntro from './Pages/Intro';
@@ -80,7 +80,7 @@ const LANGUAGES = [
 
 const PAGES = {
     'blog':     {tabIndex: 1, component: Blog,     icon: null, name: 'Blog'},
-    'download': {tabIndex: 2, component: TabDownload, icon: null, name: 'Download'},
+    'download': {tabIndex: 2, component: Downloads, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
     'about':  {tabIndex: 5, name: 'About', menu: [
@@ -98,6 +98,7 @@ const PAGES = {
     'privacy':  {name: 'privacy', md: 'privacy.md'}
 };
 
+
 class App extends Router {
     constructor(props) {
         super(props);
@@ -107,6 +108,7 @@ class App extends Router {
         if (LANGUAGES.indexOf(language) === -1) {
             language = 'de';
         }
+        I18n.setLanguage(language);
 
         const width = window.innerWidth;
 
@@ -160,6 +162,7 @@ class App extends Router {
         if (location.language !== this.state.language) {
             if (LANGUAGES.indexOf(location.language) !== -1) {
                 newState.language = location.language;
+                I18n.setLanguage(newState.language);
                 changed = true;
             }
         }

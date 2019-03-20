@@ -138,7 +138,7 @@ function extractLicenseAndChangelog(data) {
     const license = [];
     let licenseA = false;
     let newLines = [];
-    data.forEach(line => {
+    lines.forEach(line => {
         if (licenseA) {
             license.push(line);
         } else if (changelogA) {
@@ -198,6 +198,8 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
     }
 
     const data = extractLicenseAndChangelog(body);
+
+    // console.log(`Translate ${fromLang} => ${toLang}: "${sourceFileName}"`);
 
     return translation.translateMD(fromLang, data.body, toLang, actualText, true)
         .then(result => {

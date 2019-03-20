@@ -1,0 +1,34 @@
+O
+Adaptery
+Wszystko
+Autorski:
+Blog
+Chmura
+Zwinąć wszystkie
+Data
+Detale
+Dokumentacja
+Ściągnij
+Edytuj na githubie
+Rozwiń wszystkie
+Filtr
+Github
+Odcisk
+Informacje
+Instaluje:
+Ostatnia zmiana:
+Linux
+Lista adapterów
+Nowość w zeszłym miesiącu:
+Wiadomości, ogłoszenia i pomysły na temat ioBroker
+Platforma
+Polityka prywatności
+Czytać
+Stabilny:
+Całkowity:
+Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
+Blog ioBroker
+hasło
+opublikowano na %s
+readme
+użytkownik
