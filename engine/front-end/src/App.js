@@ -75,10 +75,10 @@ const styles = theme => ({
 });
 
 const LANGUAGES = {
-    'en': 'En',
-    'de': 'De',
-    'ru': 'Ру',
-    'zh-cn': 'zh-cn'
+    'en': {full: 'English', short: 'En'},
+    'de': {full: 'Deutsch', short: 'De'},
+    'ru': {full: 'Русский', short: 'Ру'},
+    'zh-cn': {full: 'Chinese', short: 'zh-cn'},
 };
 
 const PAGES = {
@@ -199,7 +199,7 @@ class App extends Router {
                 this.setState({languageMenu: true, anchorMenu: e.target});
             }}>
                 <IconLanguage className={this.props.classes.languageButton} />
-                <span className={this.props.classes.languageText}>{this.state.language.toUpperCase()}</span>
+                <span className={this.props.classes.languageText}>{LANGUAGES[this.state.language].short}</span>
             </div>,
             this.state.languageMenu ? [
                 (<Menu key="langMenu" id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
@@ -211,7 +211,7 @@ class App extends Router {
                                 const location = Router.getLocation();
                                 this.onNavigate(lang, location.tab, location.page, location.chapter);
                             })
-                        }>{LANGUAGES[lang].toUpperCase()}</MenuItem>
+                        }>{LANGUAGES[lang].full}</MenuItem>
                     ))}
                 </Menu>)
             ] : null

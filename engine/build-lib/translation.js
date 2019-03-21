@@ -144,8 +144,29 @@ function partsTake(text, addIds) {
     let current = '';
     lines.forEach(line => {
         let last = parts.length - 1;
-        line = line.trim()
 
+        if (current === 'code') {
+            if (line.trim().endsWith('```')) {
+                current = '';
+            }
+            parts[last].lines.push(line);
+            return;
+        }
+
+        line = line.trim();
+        if (line.trim().startsWith('```')) {
+            parts.push({type: 'code', lines: []});
+            last++;
+
+            parts[last].lines = parts[last].lines || [];
+            parts[last].lines.push(line);
+
+            if (!line.substring(3).endsWith('```')) {
+                current = 'code';
+            } else {
+                current = '';
+            }
+        } else
         if (line.startsWith('|') && line.endsWith('|')) {
             parts.push({type: 't', lines: [line]});
         } else
@@ -153,25 +174,7 @@ function partsTake(text, addIds) {
             parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
             current = '';
         } else
-        if (current === 'code') {
-            if (line.endsWith('```')) {
-                current = '';
-            }
-            parts[last].lines.push(line);
-        } else
-        if (line.startsWith('```')) {
-            parts.push({type: 'code', lines: []});
-            last++;
-
-            parts[last].lines = parts[last].lines || [];
-            parts[last].lines.push(line);
-
-            if (!line.endsWith('```')) {
-                current = 'code';
-            } else {
-                current = '';
-            }
-        } else if (current === 'source') {
+        if (current === 'source') {
             if (line.endsWith(' -->')) {
                 current = '';
                 line = line.substring(0, line.length - 4);
@@ -313,9 +316,21 @@ function partsTake(text, addIds) {
 function partsSave(parts, saveNoSource) {
     const lines = [];
     parts.forEach((part, i) => {
-        let text = part.text || part.lines.join('\n');
+        let text = (part.text || part.lines.join('\n')).trim();
+
+        if (part.type === 'code') {
+            console.log(text)
+
+        }
+
         if (text.replace(/\n/g, '').trim() || (part.original && part.original.replace(/\n$/, ''))) {
             text = text.replace(/\n$/, '');
+            if (part.type === 'h') {
+                const m = text.match(/^(#*) (.+)$/);
+                if (m) {
+                    text = m[1] + ' ' + m[2][0].toUpperCase() + m[2].substring(1);
+                }
+            }
 
             if (part.links) {
                 part.links.forEach((item, i) => {
@@ -333,10 +348,9 @@ function partsSave(parts, saveNoSource) {
             }
             if (part.images) {
                 part.images.forEach((item, i) => {
-                    text = text.replace(`§§IIIII_${i}§§`, `![${item.text}](${item.link}${item.title ? ' ' + item.title : ''})`);
+                    text = text.replace(`§§IIIII_${i}§§`, `![${item.text}](${item.link}${item.title ? ' "' + item.title + '"' : ''})`);
                 });
             }
-
 
             if (part.original) {
                 // if last line is empty, put <!----> just before it
@@ -356,6 +370,7 @@ function partsSave(parts, saveNoSource) {
                     !saveNoSource && lines.push('<!-- ID: ' + part.id + ' -->\n');
                 }
             }
+
             // do not add new line after headers and tables (only after last table line)
             if (part.type !== 'h' && part.type !== 't') {
                 lines.push('\n');
@@ -505,7 +520,7 @@ function translateText(fromLang, text, toLang) {
         return Promise.resolve(text);
     } else
     // detect table header and do not translate it
-    if (text.trim().match(/^[|-]$/)) {
+    if (text.trim().match(/^[-|:]$/)) {
         return Promise.resolve(text);
     } else
     // it must be some words and not only special chars
@@ -558,7 +573,7 @@ function translateText(fromLang, text, toLang) {
 
             if (text.indexOf(' ** ') !== -1) {
                 // then with **
-                let parts = text.split(' **');
+                let parts = text.split(/ \*\*[^*]/);
                 if (parts.length > 1) {
                     if (parts.length % 2 === 0) {
                         console.error('Cannot restore formatting!: ' + text);
@@ -578,7 +593,7 @@ function translateText(fromLang, text, toLang) {
             // then with *
             const pos = text.indexOf(' * ') !== -1;
             if (pos !== -1 && pos) {
-                let parts = text.split(' *');
+                let parts = text.split(/ \*[^*]/);
                 if (parts.length > 1) {
                     if (parts.length % 2 === 0) {
                         console.error('Cannot restore formatting!: ' + text);
@@ -611,6 +626,7 @@ function translateText(fromLang, text, toLang) {
                     });
                 }
             }*/
+            text = text.replace(/& EMSP;/ig, '&emsp;');
 
             return text;
         });

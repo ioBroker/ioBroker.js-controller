@@ -1,3 +1,6 @@
+---
+lastChanged: 20.07.2018
+---
 ![Harmony](media/harmony.png)
 # Logitech Harmony
 
@@ -67,8 +70,7 @@ Der Adapter findet automatisch alle Harmony Hubs, die sich im Subnetz des
 ioBroker-Servers befinden.
 
 ### Fenster "Logitech Harmony adapter settings"
-![Admin](media/a_harmony_admin_settings.png "Admin Oberfläche")<span style="color:grey">  
-*Admin Oberfläche*</span>
+![Admin](media/a_harmony_admin_settings.png "Admin Oberfläche")
 
 | Feld         | Beschreibung |                                                                       
 |:-------------|:-------------|
@@ -85,8 +87,7 @@ verlassen. Dadurch efolgt im Anschluß ein Neustart des Adapters.
 Die Installation des Adapters hat im Bereich `Objekte` eine aktive Instanz des 
 Logitech Harmony-Hub-Adapters angelegt.
 
-![Instanz](media/a_harmony_instanz.png "Instanz")<span style="color:grey">  
-*Erste Instanz*</span>
+![Instanz](media/a_harmony_instanz.png "Erste Instanz")
 
 Auf einem ioBroker Server lässt sich immer nur eine Instanz des Logitech 
 Harmony-Adapters installieren.
@@ -101,32 +102,30 @@ Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im Hub
 erkannten Geräte und Aktivitäten aufgelistet. Zusätzlich wird auch noch 
 darüber informiert, ob die Kommunikation mit dem Hub reibungslos erfolgt. 
 
-![Objekte](media/a_harmony_objekte.png "Harmony Objekte")<span style="color:grey">  
-*Objekte des Harmony-Adapters*</span>
+![Objekte](media/a_harmony_objekte.png "Objekte des Harmony-Adapters")
  
 Jeder Datenpunkt ist mit seinem zugehörigen Datentyp sowie seinen Berechtigungen aufgehführt. 
 Berechtigungen können lesend (R) sowie schreibend (W) sein. Jeder Datenpunkt kann mindestens gelesen (R) werden, während
 andere ebenfalls beschrieben werden können. Zum auffinden eines bestimmten Datenpunkts empfiehlt sich die Suche mittels 
 der Tastenkombination "STRG + F".
 
-Objekt | Zugriff | Bescheibung 
-:------|:-------:|:-----------
-**harmony.0** | R | Name der ersten *Instanz* des Logitech Harmony-Adapters
-&emsp;**Harmony Hub**| R | Name des *Hubs*
-&emsp;&emsp;**Apple TV Generation 3**| R | Name eines *Geräts*, enthält Gerätefunktionen 
-&emsp;&emsp;**Denon AV-Empfänger**| R | Name eines *Geräts*, enthält Gerätefunktionen 
-&emsp;&emsp;**:**| R | Weitere *Geräte*
-&emsp;&emsp;**activities**| R | Liste mit allen im Harmony Hub programmierten *Aktivitäten* 
-&emsp;&emsp;***hubBlocked***| R | Zeigt an, ob der Hub gerade beschäftigt ist
-&emsp;&emsp;***hubConnected***| R | Status der Verbindung zwischen Adapter und Hub
+| Objekt | Zugriff | Bescheibung| 
+|------|-------|-----------|
+|**harmony.0** | R | Name der ersten *Instanz* des Logitech Harmony-Adapters|
+|&emsp;**Harmony Hub**| R | Name des *Hubs*|
+|&emsp;&emsp;**Apple TV Generation 3**| R | Name eines *Geräts*, enthält Gerätefunktionen| 
+|&emsp;&emsp;**Denon AV-Empfänger**| R | Name eines *Geräts*, enthält Gerätefunktionen| 
+|&emsp;&emsp;**:**| R | Weitere *Geräte*|
+|&emsp;&emsp;**activities**| R | Liste mit allen im Harmony Hub programmierten *Aktivitäten*| 
+|&emsp;&emsp;***hubBlocked***| R | Zeigt an, ob der Hub gerade beschäftigt ist|
+|&emsp;&emsp;***hubConnected***| R | Status der Verbindung zwischen Adapter und Hub|
 
 ### Gerätefunktionen
 Öffnet man ein Gerät, so erhält man eine Liste mit allen zum Gerät gehörenden
 Funktionalitäten. Diese Gerätefunktionen sind gerätespezifisch und unterscheiden sich 
 deshalb bei Geräten unterschiedlichen Typs.
 
-![Gerät](media/a_harmony_geraet.png "Harmony Gerät")<span style="color:grey">  
-*Gerätefunktionen*</span>
+![Gerät](media/a_harmony_geraet.png "Gerätefunktionen")
 
 #### Auslösen einer Gerätefunktion
 Jede Gerätefunktion `{Instanz}.{Hub Name}.{Gerät}.{Gerätefunktion}` löst eine 
@@ -144,8 +143,7 @@ Nach dem Auslösen der Gerätefunktion ändert sich der Wert wieder auf 0.
 Unterhalb von `activities`werden alle am Harmony Hub programmierten Aktivitäten
 aufgelistet.
 
-![Aktivitäten](media/a_harmony_activities.png "Aktivitäten")<span style="color:grey">  
-*Aktivitäten*</span>
+![Aktivitäten](media/a_harmony_activities.png "Aktivitäten")
 
 #### Starten einer Aktivität
 Aktivitäten werden gestartet, wenn man bei einer Aktivität 
@@ -175,8 +173,6 @@ an. Dabei bedeuten die Werte
 Die Bedeutung der Werte ist analog zu 
 `{Instanz}.{Hub Name}.activities.currentStatus`.
 
-<a name="deinstallation"/>
-
 ## Deinstallation
 > T: Ich bin der Meinung, dass eine Standarddeinstallation eines Adapters in einem 
   zentralen Artikel ausführlich dokumentiert wird. Beim Adapter wird (immer) 
@@ -202,9 +198,13 @@ Sollten die Installationsdateien vollständig von dem Host gelöscht werden, mus
 in der Kachel des Harmony-Adapters in der Rubrik Adapter geschehen.
 
 ## Besonderheiten
-Backup  
+
+Backup
+
 Multihost  
+
 History  
+
 Performance
 
 ## FAQ
@@ -246,7 +246,7 @@ Performance
    5-10 Minuten nach dem WLAN-Routerstart ein.
 
 8. **Der HUB wird nicht gefunden.**
-   
+
    Prüfe nach, ob der Hub sich wirklich um gleichen Netzwerksubnetz und VLAN
    wie der ioBroker-Server befindet. Sind Multicasts erlaubt oder werden diese 
    vom Router gefiltert? Leuchtet die Status-LED am Hub grün?
@@ -263,6 +263,7 @@ Performance
 ### JavaScript
 Auslösen von Gerätefunktionen. Hier wird der Denon AV-Empfänger ein- oder ausgeschaltet,
 wenn sich der Wert eines anderen Datenpunktes verändert.
+
 ```
 if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
   setState("harmony.0.Harmony Hub.Denon AV-Empfänger.PowerOn"/*Denon AV-Empfänger:PowerOn*/, '1', true);
@@ -279,41 +280,31 @@ if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
 Auslösen von Gerätefunktionen. Hier wird der Denon AV-Empfänger ein- oder ausgeschaltet,
 wenn sich der Wert eines anderen Datenpunktes verändert.
 
-![Blockly](media/a_hamony_simple_blockly.jpg)
-**Blockly**
+![Blockly](media/a_hamony_simple_blockly.jpg "Blockly")
 
-[Quelltext][blockly]
+[Quelltext](media/a_harmony_blockly.xml)
 
 ### Node-Red
 > zugehörige node-red-Elemente
+
 > Beispiele
+
 > Exporte zum Weiterverwenden
 
 ### vis
 > zugehörige vis-Elemente
-> Beispiele
-> Exporte zum Weiterverwenden
-> Code-Fragmente
+
+>  Beispiele
+
+>  Exporte zum Weiterverwenden
+
+>  Code-Fragmente
 
 ## Links
 > Referenzen auf andere Dokumente im ioBroker-Portal
+
 > Weblinks z.B. zum Hersteller
+
 > GitHub-Links
-* Herstellerseite https://www.logitech.com/de-de/product/harmony-hub (20.07.2018)
 
-## Historie
-> Der folgende Text dient nur als Platzhalter. Die Historie wird
-  vom Dokumentengenerator dynamisch erzeugt und hier eingefügt. Datenquelle
-  ist io-package.json -> common.news in der jeweiligen Doku-Sprache
-
-| Version | Änderung                                  |
-|:-------:|:------------------------------------------|
-|0.9.1    |Fix für problematische Zeichen             |
-|0.7.1    |Bug fixes                                  |
-|0.7.0    |Unterstützung für mehrere Hubs hinzugefügt |
-|0.6.2    |falscher Port korrigiert                   |
-|0.1.0    |Initialer commit                           |   
-
-
-[logo]: https://badge.fury.io/js/svgo.svg "npm logo"
-[blockly]: media/a_harmony_blockly.xml "Blockly"
+* Herstellerseite [https://www.logitech.com/de-de/product/harmony-hub](https://www.logitech.com/de-de/product/harmony-hub)

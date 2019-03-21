@@ -21,6 +21,7 @@ import Router from './Router';
 import Loader from './Components/Loader';
 import I18n from './i18n';
 import Utils from './Utils';
+import Page404 from './Pages/404';
 
 const styles = theme => ({
     root: {
@@ -211,6 +212,7 @@ class Markdown extends Router {
             content: {},
             license: '',
             changeLog: '',
+            notFound: false,
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
@@ -271,6 +273,11 @@ class Markdown extends Router {
         fetch(`${language}${path[0] === '/' ? path : '/' + path}`)
             .then(res => res.text())
             .then(text => {
+                if (text.startsWith('<!DOCTYPE html>')) {
+                    // page not found
+                    return this.setState({notFound: true});
+                }
+
                 const {header, body, content, license, changeLog} = this.format(text);
                 let _title = header.title || Utils.getTitle(text);
                 if (_title) {
@@ -466,6 +473,9 @@ class Markdown extends Router {
     }
 
     render() {
+        if (this.state.notFound) {
+            return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
+        }
         if (this.state.loadTimeout && !this.state.text) {
             return (<Loader theme={this.props.theme}/>);
         }

@@ -1,18 +1,7 @@
 ﻿![Logo](media/tradfri.png)
-Ikea tradfri Adapter
-=============
+# Ikea tradfri Adapter
 
-| Stand der Doku | 10.01.2019                      |
-|----------------|---------------------------------|
-| Entwickler     | AlCalzone            	   |
-| Kategorie      | ioT Systeme                     |
-| Keywords       | Ikea, Tradfri, SmartHome |
-| Abhängigkeiten |                                 |
-| Lizenz         | MIT                             |
-
-Tradfri
----------
-
+## Tradfri
 Tradfri ist ein SmartHome System der Firma Ikea. Zum jetzigen Zeitpunkt umfasst
 dieses System verschiedenste Komponenten aus:
 
@@ -26,8 +15,7 @@ dieses System verschiedenste Komponenten aus:
 Das Tradfri System ist somit eines der umfangreichesten SmartHome Komponentensystem
 was es momentan auf dem Markt gibt.
 
-Voraussetzungen zur Verwendung von Tradfri mit ioBroker
----------------------------------------------------------------
+## Voraussetzungen zur Verwendung von Tradfri mit ioBroker
 
 - RaspberryPi 3 Model B+
 - Tradfri Gateway
@@ -35,9 +23,7 @@ Voraussetzungen zur Verwendung von Tradfri mit ioBroker
 - Tradfri Fernbedienung
 
 
-Verwaltung und Steuerung von Tradfri mit ioBroker
----------------------------------------------------------------
-
+## Verwaltung und Steuerung von Tradfri mit ioBroker
 Um Tradfri mit ioBroker optimal zu verwalten und zu steuern
 wird folgender Adapter benötigt:
 
@@ -52,7 +38,6 @@ zwischen ioBroker, Gateway und Komponenten.
 
 
 ### Installation des Adapters und Konfiguration der Instanz
-
 <b>Schritt 1.</b>
 
 - Installieren des Adapters durch klicken auf ![Adapter](media/Adapter.PNG) in der linken Navigationsleiste des Webinterface

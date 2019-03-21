@@ -96,58 +96,47 @@ CUxD). Für jeden Typ muss eine eigene Instanz angelegt warden.
 Zur Kommunikation werden zwei Protokolle zur Verfügung gestellt: XML-RPC und
 BIN-RPC.
 
-`CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das
-XML-RPC-Protokoll.`
+*CUxD benötigt zwingend das BIN-RPC-Protokoll; HMIP und RFD das XML-RPC-Protokoll.*
 
 ### Synchronisiere Geräte neu (einmalig)
-
 Beim erstmaligen Start des Adapters werden alle Geräte eingelesen. Werden später
 Änderungen innerhalb der CCU durchgeführt (Umbennung von Geräten, hinzufügen
 neuer Geräte usw.) ist diese Auswahl zu aktivieren und mit „Speichern und
 Schließen“ der Neustart des Adapters zu veranlassen.
 
 ### Adapter Addresse
-
 Im Pulldown-Menü wird die IP des Hosts ausgewählt, auf dem der Adapter
-installiert ist. Die Auswahl von „0.0.0.0. auf alle IPs hören“ und „127.0.0.1“
+installiert ist. Die Auswahl von "0.0.0.0. auf alle IPs hören" und "127.0.0.1"
 ist Spezialfällen vorbehalten.
 
 ### Adapter Port
-
-Standardmäßig ist hier Port “0” für die automatische Selektion des
+Standardmäßig ist hier Port "0" für die automatische Selektion des
 ioBroker-Ports eingestellt und sollte nur in Ausnahmefällen verändert werden.
 
 ## Zusätzliche Einstellungen
-
 ### Adapter Callback Addresse
-
 Wenn ioBroker hinter einem Router (z.B. in einem Docker-Container) läuft, können
 sich Ein- und Ausgangsadresse unterscheiden. Wird hier die IP des Routers
 eingetragen, lässt sich das Problem umgehen, da dann das Weiterleiten zu
 ioBroker vom Router übernommen wird.
 
 ### Verbindungs-Check Intervall (sec)
-
 Im festgelegten Intervall wird eine Ping-Anfrage an die CCU gesendet.
 
 ### Wiederverbindungs-Intervall (sec)
-
 Zeitspanne, nach der ein erneuter Verbindungsversuch gestartet wird.
 
 ### Geräte nicht löschen
-
 Geräte werden standardmäßig auch aus der Objektliste entfernt, wenn sie
 innerhalb der CCU abgelernt wurden. Um diese Geräte in der Objektliste zu
 behalten, beispielweise weil sie nur temporär entfernt wurden, kann diese Option
 aktiviert werden.
 
 ### Nutze HTTPS
-
 Ist diese Option aktiviert, wird eine sichere Verbindung hergestellt.
 Funktioniert nur mit XML-RPC Protokoll.
 
 ### Nutzername und Passwort
-
 Bei Nutzung von HTTPS oder falls für die API der CCU eine Authentifikation
 erforderlich ist, sind die Daten hier einzutragen.
 
@@ -173,7 +162,6 @@ Geräte werden unter ihrer Seriennummer angelegt und Gruppen mit
 INT000000*x* bezeichnet.
 
 ### Kanal 0 (alle Geräte)
-
 Dieser Kanal wird für jedes Gerät angelegt und enthält Funktionsdaten, nachfolgend eine kurze Übersicht:
 
 | *Datenpunkt*                   | *Bedeutung*                                            |
@@ -187,7 +175,6 @@ Dieser Kanal wird für jedes Gerät angelegt und enthält Funktionsdaten, nachfo
 | Unreach/unreach alarm          | Systemmeldung Kommunikationsfehler (aktueller Zustand) |
 
 ### Kanal 1-6
-
 Hier sind Messwerte, Steuerungs- und Zustandsdaten aufgelistet; je nach Funktion
 des Gerätes werden unterschiedliche Daten angezeigt. Nachfolgend ein kurzer
 Auszug:

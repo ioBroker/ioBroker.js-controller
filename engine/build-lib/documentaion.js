@@ -55,7 +55,6 @@ async function translateTitle(title) {
         });
     }
 
-
     return words;
 }
 
@@ -183,8 +182,9 @@ function replaceImages(text, sourceFile, targetFile) {
     sourceFile = sourceFile.substring(i);
     const tParts = targetFile.split('/');
     const sParts = sourceFile.split('/');
+    sParts.pop();
 
-    const prefix = Array(tParts.length).join('../');
+    const prefix = Array(tParts.length).join('../') + sParts.join('/');
 
     lines.forEach((line, i) => {
         // Find images in line and store it
@@ -202,9 +202,9 @@ function replaceImages(text, sourceFile, targetFile) {
                         link = link.substring(0, pos);
                     }
                     if (!link.match(/^https?:/)) {
-                        link = prefix + link;
+                        link = prefix + (link[0] === '/' ? link : '/' + link);
 
-                        lines[i] = lines[i].replace(item, `![${text}](${link}${title ? ' ' + title: ''})`);
+                        lines[i] = lines[i].replace(item, `![${text}](${link}${title ? ' "' + title + '"' : ''})`);
                     }
                 }
             });
@@ -223,16 +223,19 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
     }
 
     header.translatedFrom = fromLang;
+    header.translatedWarning = consts.TRANSLATION_NOTICE[toLang];
     header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + targetFileName.replace(root, '');
 
     let actualText;
     if (fs.existsSync(targetFileName)) {
-        let {body, header} = utils.extractHeader(fs.readFileSync(targetFileName).toString('utf-8'));
-        actualText = body;
+        let result = utils.extractHeader(fs.readFileSync(targetFileName).toString('utf-8'));
+        actualText = result.body;
         if (header.translatedFrom !== fromLang) {
             return Promise.resolve();
         }
-        if (header.hash === utils.getFileHash(body)) {
+        const data = extractLicenseAndChangelog(body);
+
+        if (result.header.hash === utils.getFileHash(data.body)) {
             return Promise.resolve();
         }
     }
@@ -250,7 +253,8 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
         }).then(title => {
             header.title = title;
             header.translatedFrom = fromLang;
-            header.hash = utils.getFileHash(body);
+            header.translatedWarning = consts.TRANSLATION_NOTICE[toLang];
+            header.hash = utils.getFileHash(data.body);
             utils.writeSafe(targetFileName, utils.addHeader(addChangelogAndLicense(actualText, data.changelog, data.license), header));
             console.log(`WARNING: File ${sourceFileName.replace(root, '/')} was translated from ${fromLang} to ${toLang} automatically`);
         });
@@ -336,7 +340,7 @@ if (!module.parent) {
         });
     });*/
 
-    translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'de', 'ru')
+    translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.harmony/README.md', 'de', 'ru')
         .then(() => {
             console.log('done');
         })

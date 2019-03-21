@@ -34,6 +34,7 @@ const styles = theme => ({
         maxWidth: 350,
         display: 'inline-block',
         verticalAlign: 'top',
+        textAlign: 'left',
     },
     cardMedia: {
         height: 64,
@@ -63,7 +64,8 @@ const styles = theme => ({
         borderBottom: '1px solid #DDD'
     },
     details: {
-        display: 'inline-block'
+        display: 'inline-block',
+        textAlign: 'center'
     },
     pageHeader: {
         marginLeft: 20,
@@ -387,7 +389,7 @@ class Adapters extends Component {
         }
     }
 
-    renderType(type) {
+    renderType(type, i) {
         const items = this.state.content.pages[type];
         if (!items || !items.pages) return;
 
@@ -400,7 +402,11 @@ class Adapters extends Component {
         }
 
         return (<ExpansionPanel key={type} expanded={isExpanded} onChange={e => this.onToggle(type, e)}>
-            <ExpansionPanelSummary expandIcon={<IconExpandMore />} className={isExpanded ? this.props.classes.titleExpanded : ''}>{
+            <ExpansionPanelSummary
+                expandIcon={<IconExpandMore />}
+                style={{width: 'calc(100% - 48px)'}} //workaround because of the bug. On mobile devices the first element is broken
+                className={isExpanded ? this.props.classes.titleExpanded : ''}
+            >{
                 this.state.content.pages[type].title[this.props.language] || this.state.content.pages[type].title.en || type
             }</ExpansionPanelSummary>
             <ExpansionPanelDetails classes={{root: this.props.classes.details}}>

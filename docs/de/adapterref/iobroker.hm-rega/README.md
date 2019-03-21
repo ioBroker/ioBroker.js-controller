@@ -2,14 +2,14 @@
 # HomeMatic ReGaHSS
 
 ## Homematic
->Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
-unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
-in Haus oder Wohnung ermöglicht.
+> Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
+  unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
+  in Haus oder Wohnung ermöglicht.
 
->Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
-Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
-Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
-Drahtbus-Komponenten eingesetzt werden.
+> Die Geräte beinhaltet Produkte zur Licht-, Rollladen- und Heizungssteuerung,
+  Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
+  Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
+  Drahtbus-Komponenten eingesetzt werden.
 
 [Quelle](https://www.eq-3.de/produkte/homematic.html)
 
@@ -21,8 +21,7 @@ zwischen Homematic und ioBroker.
 Falls mehrere Zentralen in ioBroker eingebunden werden sollen, ist für jede
 Zentrale eine eigene Instanz zu installieren und konfigurieren.
 
-Mit der Installation von ReGaHSS wird auch eine Instanz des Adapters <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>
-installiert, die vorab konfiguriert und aktiviert werden sollte.
+Mit der Installation von ReGaHSS wird auch eine Instanz des Adapters "hm-rpc"installiert, die vorab konfiguriert und aktiviert werden sollte.
 
 Eine Instanz dieses Adapters kann bis zu 5 unterschiedliche Instanzen des
 Homematic RPC Adapters verwalten, die verschiedene Dienste zur Verfügung stellen

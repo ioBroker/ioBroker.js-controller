@@ -13,44 +13,44 @@ werden.
 * Betriebsbereites ioBroker System
 
 ### Installation der Mi Home App und freischalten der lokalen Netzwerk Funktion
-
 #### Android
+
 * [Android App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) auf einem Android Gerät herunterladen, installieren, öffnen und
 den Geschäftsbedingungen zustimmen.
-* Als Land `Festland-China` auswählen 
-* Über `Anmelden` ein Konto erstellen
+* Als Land *Festland-China* auswählen 
+* Über *Anmelden* ein Konto erstellen
 * Nach der erfolgreichen Anmeldung über `+` ein Gerät hinzufügen
-* Unter `Haushaltssicherheit` den `MI Control Hub` auswählen und den Anweisungen   
+* Unter *Haushaltssicherheit* den `MI Control Hub` auswählen und den Anweisungen   
 folgen
 * Nach erfolgreichem einbinden des Gateways die 3 Punkte am oberen rechten Bildschirm   
-und danach `About` betätigen
-* Den Text `Plug-in version` unten 10mal tippen
+und danach *About* betätigen
+* Den Text *Plug-in version* unten 10mal tippen
 * Nun ist der Entwickler Modus eingeschaltet und es sollten nach einer gewissen Zeit   
 2 weitere Menüpunkte erscheinen   
->Falls nicht, wiederholt versuchen
+> Falls nicht, wiederholt versuchen
 * Den Menüpunkt `Wireless communication protocol` auswählen
 * Den Schiebeschalter oben einschalten, das Passwort notieren und mit `OK` bestätigen.  
->Das Passwort wird später bei der ioBroker Installation benötigt.
+> Das Passwort wird später bei der ioBroker Installation benötigt.
 
 Nun können weitere Geräte über das `+` Zeichen angelernt werden.
 
 #### iOS
 * [iOS App](https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) auf einem iOS Gerät herunterladen, installieren, öffnen und der
 Datenschutzerklärung zustimmen
-* Über Profil/Einstellungen/Ländereinstellungen das Land `Festland` auswählen. 
-* Über `Anmelden` ein Konto erstellen
+* Über Profil/Einstellungen/Ländereinstellungen das Land *Festland* auswählen. 
+* Über *Anmelden* ein Konto erstellen
 * Nach der erfolgreichen Anmeldung über `+` ein Gerät hinzufügen
-* Unter `Haushalt Sicherheit` den `MI Control Hub` auswählen und den Anweisungen   
+* Unter *Haushalt Sicherheit* den `MI Control Hub` auswählen und den Anweisungen   
 folgen
 * Nach erfolgreichem einbinden des Gateways die 3 Punkte am oberen rechten Bildschirm   
-betätigen und `About` betätigen
+betätigen und *About* betätigen
 * Wiederholt im leeren unteren Bereich tippen 
 * Nun ist der Entwickler Modus eingeschaltet und es sollten nach einer gewissen Zeit   
 weitere Menüpunkte erscheinen   
 > Falls es nicht gleich klappt, die Schritte wiederholen
 * Den 4. Menüpunkt auswählen
 * Den Schiebeschalter oben einschalten, das Passwort notieren und mit `OK` bestätigen.  
->Das Passwort wird später bei der ioBroker Installation benötigt.
+> Das Passwort wird später bei der ioBroker Installation benötigt.
 
 Nun können weitere Geräte über das `+` Zeichen angelernt werden.
 
@@ -100,7 +100,7 @@ Die folgende Aufstellung erhebt keinen Anspruch auf Vollständigkeit:
 
 ## ioBroker Mi Home Adapter Installation
 Weitere Einstellungen erfolgen nur noch über die ioBroker Admin-Oberfläche.  
-Den Adapter im Bereich `Adapter` suchen und über das `+` Zeichen installieren.
+Den Adapter im Bereich *Adapter* suchen und über das `+` Zeichen installieren.
 
 ![Logo](media/Adapter.png)
 
@@ -108,13 +108,13 @@ Es öffnet sich dann folgendes Konfigurationsfenster:
 
 ![Logo](media/Adapterconfig1.PNG)
 
-Unter `Default Gateway Key` das oben ermittelte Passwort eintragen und mit `speichern`  
-`und schließen` das Fenster schließen. Der laufende Adapter sollte danach unter   
-`Instanzen` grün angezeigt werden:
+Unter `Default Gateway Key` das oben ermittelte Passwort eintragen und mit *speichern*  
+*und schließen* das Fenster schließen. Der laufende Adapter sollte danach unter   
+*Instanzen* grün angezeigt werden:
 
 ![Logo](media/Instanz.PNG)
 
-Unter `Objekte` wird nun das Gateway und seine angelernten Geräte angezeigt:
+Unter *Objekte* wird nun das Gateway und seine angelernten Geräte angezeigt:
 
 ![Logo](media/Objekte.PNG)
 

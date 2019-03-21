@@ -5,7 +5,7 @@ module.exports = {
     SRC_DOC_DIR: path.join(path.normalize(__dirname + '/../../docs/')).replace(/\\/g, '/'),
     SRC_BLOG_DIR: path.join(path.normalize(__dirname + '/../../blog/')).replace(/\\/g, '/'),
     GITHUB_EDIT_ROOT: 'https://github.com/ioBroker/ioBroker.docs/edit/engine/',
-    LANGUAGES: ['de', 'en', 'ru'],
+    LANGUAGES: ['de', 'en', 'ru', 'zh-cn'],
 
 
     OVERVIEW: {
@@ -55,5 +55,17 @@ module.exports = {
         "visualization-widgets": {                 "en": "Visualization Widgets",                           "de": "Visualisierung Widgets",                          "ru": "Визуальные виджеты",                              "pt": "Widgets de visualização",                         "nl": "Visualisatie Widgets",                            "fr": "Widgets de visualisation",                        "it": "Widget di visualizzazione",                       "es": "Widgets de visualización",                        "pl": "Widżetowe widżety"},
         "visualization": {                         "en": "Visualisation",                                   "de": "Visualisierung",                                  "ru": "Визуализация",                                    "pt": "Visualização",                                    "nl": "Visualisatie",                                    "fr": "Visualisation",                                   "it": "visualizzazione",                                 "es": "Visualización",                                   "pl": "Wyobrażanie sobie"},
         "weather": {                               "en": "Weather",                                         "de": "Wetter",                                          "ru": "Погода",                                          "pt": "Tempo",                                           "nl": "Weer",                                            "fr": "Météo",                                           "it": "Tempo metereologico",                             "es": "Tiempo",                                          "pl": "Pogoda"},
+    },
+    TRANSLATION_NOTICE: {
+        "en": "If you want to edit this document please delete \"translatedFrom\" field, elsewise this document will be translated automatically again",
+        "de": "Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld \"translationsFrom\". Andernfalls wird dieses Dokument automatisch erneut übersetzt",
+        "ru": "Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен",
+        "pt": "Se você quiser editar este documento, por favor, exclua o campo \"translatedFrom\", caso contrário este documento será traduzido automaticamente novamente",
+        "nl": "Als u dit document wilt bewerken, verwijder dan het veld \"translationFrom\", anders wordt dit document automatisch opnieuw vertaald",
+        "fr": "Si vous souhaitez éditer ce document, supprimez le champ \"translateFrom\", sinon ce document sera traduit de nouveau automatiquement.",
+        "it": "Se vuoi modificare questo documento, cancella il campo \"translatedFrom\", altrimenti questo documento verrà automaticamente tradotto di nuovo",
+        "es": "Si desea editar este documento, elimine el campo \"traducido de\", de lo contrario, este documento se traducirá automáticamente de nuevo",
+        "pl": "Jeśli chcesz edytować ten dokument, usuń pole „translatedFrom”, w przeciwnym razie ten dokument zostanie ponownie przetłumaczony automatycznie",
+        "zh-cn": "如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译"
     }
 };
