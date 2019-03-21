@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/README.md"
 ---
 
-# Tutorials {docsify-ignore-all}
+# Tutorials
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

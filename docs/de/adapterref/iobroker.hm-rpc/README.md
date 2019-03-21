@@ -1,17 +1,10 @@
+---
+lastChanged: 09.01.2019
+---
 ![](media/homematic.png)
-HomeMatic RPC
-=============
+# HomeMatic RPC
 
-| Stand der Doku | 09.01.2019                      |
-|----------------|---------------------------------|
-| Entwickler     | bluefox, hobbyquaker            |
-| Kategorie      | ioT Systeme                     |
-| Keywords       | Homematic, CCU, CUxD, RPC, REGA |
-| Abhängigkeiten |                                 |
-| Lizenz         | MIT                             |
-
-Homematic
----------
+## Homematic
 >Homematic ist ein Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
@@ -23,19 +16,18 @@ Drahtbus-Komponenten eingesetzt werden.
 <a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage des Herstellers eQ3">
 Quelle</a>
 
-Verwaltung und Steuerung von Homematic-Komponenten mit ioBroker
----------------------------------------------------------------
+## Verwaltung und Steuerung von Homematic-Komponenten mit ioBroker
 Um Homematic-Komponenten mit ioBroker optimal zu verwalten und zu steuern
 werden zwei Adapter benötigt:
 
-1.  Homematic ReGaHss
+### 1. Homematic ReGaHss
 
 Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ 
 (**Re**sidential **Ga**teway) her.
 Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
 zwischen Homematic und ioBroker.
 
-2.  Homematic RPC
+### 2. Homematic RPC
 
 Der **R**emote **P**rocedur **C**all, kurz RPC ist eine Technik zur Realisierung
 von Interprozesskommunikation. Dieser Adapter bietet die Anbindung an die
@@ -45,12 +37,12 @@ externer Komponenten wie EnOcean, FS20 usw.) und Homegear (CCU Ersatz)
 unterstützt.
 
 Dieses Diagramm veranschaulicht den Aufbau und die Kommunikationsschnittstellen:
-![](media/Homematic_Aufbau.png)
-<a href="http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png" title="Wikimatic.de">
-Quelle</a>
 
-Adapter Homematic RPC
----------------------
+![](media/Homematic_Aufbau.png)
+
+[Quelle](http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png)
+
+## Adapter Homematic RPC
 
 Dieser Adapter bietet die Anbindung an die Kommunikationsmodule einer
 Homematic-Zentrale (CCU/CCU2/CCU3 ...). Eine Instanz des
@@ -70,11 +62,9 @@ Werden neue Geräte an der CCU angelernt, so muss der Adapter mit der
 Konfiguration “Initiiere Geräte neu (einmalig)” neu gestartet werden. Dadurch
 werden die Informationen der neuen Homematic-Geräte an den Adapter übertragen.
 
-Konfiguration
-=============
+## Konfiguration
 
-Haupteinstellungen
-------------------
+### Haupteinstellungen
 
 ### HomeMatic Adresse
 
@@ -127,8 +117,7 @@ ist Spezialfällen vorbehalten.
 Standardmäßig ist hier Port “0” für die automatische Selektion des
 ioBroker-Ports eingestellt und sollte nur in Ausnahmefällen verändert werden.
 
-Zusätzliche Einstellungen
--------------------------
+## Zusätzliche Einstellungen
 
 ### Adapter Callback Addresse
 
@@ -162,8 +151,7 @@ Funktioniert nur mit XML-RPC Protokoll.
 Bei Nutzung von HTTPS oder falls für die API der CCU eine Authentifikation
 erforderlich ist, sind die Daten hier einzutragen.
 
-Instanz
--------
+## Instanz
 
 ![Ìnstanz](media/10d34a2bc1518fa34233bdb04219e444.png)
 
@@ -173,9 +161,7 @@ mit der CCU verbunden ist.
 
 Platziert man den Mauszeiger auf ein Symbol, erhält man Detailinformationen.
 
-Objekte des Adapters
---------------------
-
+## Objekte des Adapters
 Im Bereich Objekte werden in einer Baumstruktur alle von der CCU dem Adapter
 übermittelten Werte und Informationen dargestellt.
 
@@ -214,5 +200,4 @@ Auszug:
 | Geräte mit Messfunktion | 3       | Status                                                    |
 |                         | 6       | Verbrauchszähler, Spannung, Leistung usw.                 |
 
-FAQ
----
+## FAQ

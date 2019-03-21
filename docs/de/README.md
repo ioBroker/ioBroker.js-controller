@@ -3,7 +3,7 @@ title:       "Willkommen"
 lastChanged: "14.03.2019"
 ---
 
-# Willkommen bei ioBroker {docsify-ignore-all}
+# Willkommen bei ioBroker
 
 ioBroker ist ein zentraler Service zum Anbinden, Auswerten und Bedienen 
 von Systemen, die ohne ioBroker Insellösungen bleiben würden. 

@@ -2,7 +2,7 @@
 lastChanged: "13.09.2018"
 ---
 
-# Funktionen {docsify-ignore-all}
+# Funktionen
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

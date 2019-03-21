@@ -18,9 +18,8 @@ Der Datenaustausch erfolgt über den in der FB integrierten *Callmonitor*. Um
 diesen zu aktivieren, ruft man von einem angeschlossenen Telefon folgende Nummer
 an:
 
-\#96\*5\* – Callmonitor einschalten
-
-\#96\*4\* – Callmonitor ausschalten
+* ```\#96\*5\*``` – Callmonitor einschalten
+* ```\#96\*4\*``` – Callmonitor ausschalten
 
 ## Konfiguration
 
@@ -30,13 +29,11 @@ Hier ist lediglich zu aktivieren, welche Daten in welcher Form übermittelt werd
 
 ![Beitrag aus dem Forum](media/konfig_fehler.png)
 
-<p>Weitere Informationen im Forum <a href="https://forum.iobroker.net/viewtopic.php?f=20&t=3344&hilit=fritzbox" title="Titel">
-in diesem Thread</a></p>
-
+Weitere Informationen im Forum [in diesem Thread](https://forum.iobroker.net/viewtopic.php?f=20&t=3344&hilit=fritzbox).
 
 ### Autosetup
 
-s. Settings
+sehe [Settings](#settings)
 
 ## Instanz
 Unter *Instanzen* des ioBrokers finden sich die installierte Instanz des
@@ -60,7 +57,7 @@ Datum, Uhrzeit und Art der letzten Aktion.
 Nachfolgend werden die jeweiligen Kanäle und die darin angelegten Datenpunkte
 kurz beschrieben.
 
-### Kanal callmonitor:
+### Kanal callmonitor
 
 Datenpunkte zeigen in Realtime die Anrufe
 
@@ -164,4 +161,4 @@ langjährige Benutzer den FB-Adapter nutzen und darauf ihre
 Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
 mehr weiterentwickelt.
 
-Neueinsteigern wird empfohlen, den [TR-064-Adapter](https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de) zu installieren.</p>
+Neueinsteigern wird empfohlen, den [TR-064-Adapter](https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de) zu installieren.

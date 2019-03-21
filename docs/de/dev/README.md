@@ -1,13 +1,28 @@
 ---
 title:       "Entwicklung"
-lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/README.md"
+lastChanged: "21.21.2019"
 ---
 
-# Adapterentwicklung {docsify-ignore-all}
-
+# Adapterentwicklung
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
    Hilf mit bei ioBroker und erweitere diesen Artikel.  
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
+
+## Nützliche Links
+### Übersetzungshilfe
+[http://iobroker.net:3000/](http://iobroker.net:3000/)
+Damit kann man die Texte in 9 Sprachen übersetzen und das Ergebnis kann man direkt in words.js benutzen
+
+image
+
+### Adapter checker
+[https://adapter-check.iobroker.in/](https://adapter-check.iobroker.in/)
+
+image
+
+### Adapter creator
+[https://adapter-creator.iobroker.in/](https://adapter-creator.iobroker.in/)
+
+image

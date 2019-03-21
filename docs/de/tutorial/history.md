@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/history.md"
 ---
 
-# Datenhistorisierung {docsify-ignore-all}
+# Datenhistorisierung
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Adapter-Fenster {docsify-ignore-all}
+# Das Adapter-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

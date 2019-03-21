@@ -2,7 +2,7 @@
 lastChanged: "14.09.2018"
 ---
 
-# Grundlagen {docsify-ignore-all}
+# Grundlagen
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

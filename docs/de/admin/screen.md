@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Die Administrationsoberfläche {docsify-ignore-all}
+# Die Administrationsoberfläche
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

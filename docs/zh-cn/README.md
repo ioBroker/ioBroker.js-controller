@@ -3,7 +3,7 @@ title:       "欢迎来到"
 lastChanged: "09.02.2019"
 ---
 
-# 欢迎来到ioBroker {docsify-ignore-all}
+# 欢迎来到ioBroker
 
 ioBroker是物联网的集成平台。
 

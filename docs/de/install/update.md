@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/update.md"
 ---
 
-# Durchführen von Updates {docsify-ignore-all}
+# Durchführen von Updates
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

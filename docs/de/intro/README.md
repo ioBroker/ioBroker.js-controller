@@ -2,7 +2,7 @@
 lastChanged: "11.09.2018"
 ---
 
-# ioBroker {docsify-ignore-all}
+# ioBroker
 
 ?> Diese Dokumentation entsteht gerade erst. Deshalb bitte nicht wundern,
    wenn Links nicht funktionieren oder Inhalte fehlen.

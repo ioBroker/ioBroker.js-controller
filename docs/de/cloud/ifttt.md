@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/ifttt.md"
 ---
 
-# Verwendung von IFTTT {docsify-ignore-all}
+# Verwendung von IFTTT
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

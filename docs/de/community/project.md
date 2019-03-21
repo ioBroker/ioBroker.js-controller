@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/community/project.md"
 ---
 
-# Zur Weiterentwicklung von ioBroker beitragen {docsify-ignore-all}
+# Zur Weiterentwicklung von ioBroker beitragen
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

@@ -3,7 +3,7 @@ title:       "安装ioBroker"
 lastChanged: "2019/01/29"
 ---
 
-# 安装 {docsify-ignore-all}
+# 安装
 
 ?> ***这是一个占位符***.
    <br><br>

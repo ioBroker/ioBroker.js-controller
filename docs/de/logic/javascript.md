@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logic/javascript.md"
 ---
 
-# JavaScript {docsify-ignore-all}
+# JavaScript
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

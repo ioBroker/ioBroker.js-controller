@@ -2,7 +2,7 @@
 lastChanged: "13.09.2018"
 ---
 
-# States und Datenpunkte {docsify-ignore-all}
+# States und Datenpunkte
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

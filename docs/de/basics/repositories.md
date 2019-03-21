@@ -2,7 +2,7 @@
 lastChanged: "13.09.2018"
 ---
 
-# Repositories {docsify-ignore-all}
+# Repositories
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

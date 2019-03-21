@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Hosts-Fenster {docsify-ignore-all}
+# Das Hosts-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

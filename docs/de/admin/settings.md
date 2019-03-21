@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Systemeinstellungen {docsify-ignore-all}
+# Systemeinstellungen
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

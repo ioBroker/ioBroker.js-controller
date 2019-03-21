@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logic/README.md"
 ---
 
-# Logiken {docsify-ignore-all}
+# Logiken
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

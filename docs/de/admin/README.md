@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Einleitung {docsify-ignore-all}
+# Einleitung
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

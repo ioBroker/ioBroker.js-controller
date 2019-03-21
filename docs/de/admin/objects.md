@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Objekte-Fenster {docsify-ignore-all}
+# Das Objekte-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

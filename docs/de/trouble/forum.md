@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/trouble/forum.md"
 ---
 
-# Hilfe im Forum {docsify-ignore-all}
+# Hilfe im Forum
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

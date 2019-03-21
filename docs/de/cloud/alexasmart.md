@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/alexasmart.md"
 ---
 
-# Der Alexa Smarthome-Skill {docsify-ignore-all}
+# Der Alexa Smarthome-Skill
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

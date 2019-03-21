@@ -6,7 +6,7 @@ let lastRequest = null;
 const {Translate} = require('@google-cloud/translate');
 // Your Google Cloud Platform project ID
 const projectId = 'web-site-1377';
-process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + '/../Web Site-f1730e0e4c78.json';
+process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + '/../google-keys.json';
 
 // Instantiates a client
 const translate = new Translate({projectId: projectId,});
@@ -130,6 +130,7 @@ async function translateGoogle(text, targetLang, sourceLang) {
         throw new Error(`Could not translate to '${targetLang}': ${e}`);
     }
 }
+
 function partsTake(text, addIds) {
     const lines = text.trim().replace(/\r/g, '').split('\n');
 
@@ -141,9 +142,14 @@ function partsTake(text, addIds) {
     while(lines.length && !lines[lines.length - 1].trim()) lines.pop();
 
     let current = '';
-    lines.forEach((line, i) => {
+    lines.forEach(line => {
         let last = parts.length - 1;
-        if (line.trim().startsWith('<!-- ID: ')) {
+        line = line.trim()
+
+        if (line.startsWith('|') && line.endsWith('|')) {
+            parts.push({type: 't', lines: [line]});
+        } else
+        if (line.startsWith('<!-- ID: ')) {
             parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
             current = '';
         } else
@@ -153,7 +159,7 @@ function partsTake(text, addIds) {
             }
             parts[last].lines.push(line);
         } else
-        if (line.trim().startsWith('```')) {
+        if (line.startsWith('```')) {
             parts.push({type: 'code', lines: []});
             last++;
 
@@ -172,7 +178,7 @@ function partsTake(text, addIds) {
             }
             parts[last].source.push(line);
         } else
-        if (line.trim().startsWith('<!-- SOURCE: ')) {
+        if (line.startsWith('<!-- SOURCE: ')) {
             if (!parts[last]) {
                 console.error('Source without text!!!');
             }
@@ -191,16 +197,16 @@ function partsTake(text, addIds) {
                 parts[last].id = parseInt(m[1] || m[2], 10);
                 line = line.substring((m[1] || m[2]).length + 1);
             }
-            if (line.trim()) {
+            if (line) {
                 parts[last].source.push(line);
             } else {
                 parts[last].doNotTranslate = true;
             }
         } else
         // If chapter
-        if (line.trim().startsWith('#')) {
+        if (line.startsWith('#')) {
             parts.push({type: 'h', lines: [line]});
-        } else if (line.trim()) {
+        } else if (line) {
             if (!current) {
                 current = 'p';
                 parts.push({type: current, lines: []});
@@ -210,6 +216,85 @@ function partsTake(text, addIds) {
         } else {
             current = '';
         }
+
+        let changed = false;
+        // Find images in line and store it
+        let m = line.match(/!\[[^]*]\([^)]+\)/g);
+        if (m) {
+            m.forEach(item => {
+                let mm = item.match(/^!\[([^]*)]\(([^)]+)\)$/);
+                if (mm) {
+                    mm[2] = mm[2].trim();
+                    const pos = mm[2].indexOf(' ');
+                    parts[last].images = parts[last].images || [];
+                    if (pos !== -1) {
+                        parts[last].images.push({
+                            text: mm[1].trim(),
+                            link: mm[2].substring(0, pos),
+                            title: mm[2].substring(pos + 1).trim().replace(/^"|"$/g, '')
+                        });
+                    } else {
+                        parts[last].images.push({
+                            text: mm[1].trim(),
+                            link: mm[2]
+                        });
+                    }
+
+                    line = line.replace(item, '§§IIIII_' + (parts[last].images.length - 1) + '§§');
+                    changed = true;
+                }
+            });
+        }
+
+        // Find links in line and store it
+        m = line.match(/\[[^]*]\([^)]+\)/g);
+        if (m) {
+            m.forEach((item, i) => {
+                let mm = item.match(/^\[([^]*)]\(([^)]+)\)$/);
+                if (mm) {
+                    mm[2] = mm[2].trim();
+                    parts[last].links = parts[last].links || [];
+                    parts[last].links.push({
+                        text: mm[1].trim(),
+                        link: mm[2].trim(),
+                    });
+
+                    line = line.replace(item, '§§LLLLL_' + (parts[last].links.length - 1) + '§§');
+                    changed = true;
+                }
+            });
+        }
+        // Find codes in line and store it
+        m = line.match(/```[^`]+```/g);
+        if (m) {
+            m.forEach((item, i) => {
+                let mm = item.match(/^```([^`]+)```$/);
+                if (mm) {
+                    parts[last].codes = parts[last].codes || [];
+                    parts[last].codes.push({code: mm[1], single: false});
+                    // do not CAOT, because it can be replaced with cyrillic one
+                    line = line.replace(item, '§§JJJJJ_' + (parts[last].codes.length - 1) + '§§');
+                    changed = true;
+                }
+            });
+        }
+
+        m = line.match(/`[^`]+`/g);
+        if (m) {
+            m.forEach((item, i) => {
+                let mm = item.match(/^`([^`]+)`$/);
+                if (mm) {
+                    parts[last].codes = parts[last].codes || [];
+                    parts[last].codes.push({code: mm[1], single: true});
+                    line = line.replace(item, '§§SSSSS_' + (parts[last].codes.length - 1) + '§§');
+                    changed = true;
+                }
+            });
+        }
+        if (changed) {
+            parts[last].lines[parts[last].lines.length - 1] = line;
+        }
+
     });
 
     parts = parts.filter(part => part.lines.length);
@@ -227,10 +312,31 @@ function partsTake(text, addIds) {
 
 function partsSave(parts, saveNoSource) {
     const lines = [];
-    parts.forEach(part => {
+    parts.forEach((part, i) => {
         let text = part.text || part.lines.join('\n');
         if (text.replace(/\n/g, '').trim() || (part.original && part.original.replace(/\n$/, ''))) {
             text = text.replace(/\n$/, '');
+
+            if (part.links) {
+                part.links.forEach((item, i) => {
+                    text = text.replace(`§§LLLLL_${i}§§`, `[${item.text}](${item.link})`);
+                });
+            }
+            if (part.codes) {
+                part.codes.forEach((item, i) => {
+                    if (item.single) {
+                        text = text.replace(`§§SSSSS_${i}§§`, `\`${item.code}\``);
+                    } else {
+                        text = text.replace(`§§JJJJJ_${i}§§`, `\`\`\`${item.code}\`\`\``);
+                    }
+                });
+            }
+            if (part.images) {
+                part.images.forEach((item, i) => {
+                    text = text.replace(`§§IIIII_${i}§§`, `![${item.text}](${item.link}${item.title ? ' ' + item.title : ''})`);
+                });
+            }
+
 
             if (part.original) {
                 // if last line is empty, put <!----> just before it
@@ -250,7 +356,12 @@ function partsSave(parts, saveNoSource) {
                     !saveNoSource && lines.push('<!-- ID: ' + part.id + ' -->\n');
                 }
             }
-            lines.push('\n');
+            // do not add new line after headers and tables (only after last table line)
+            if (part.type !== 'h' && part.type !== 't') {
+                lines.push('\n');
+            } else if (part.type === 't' && parts[i + 1] && parts[i + 1].type !== 't') {
+                lines.push('\n');
+            }
         }
     });
 
@@ -267,6 +378,37 @@ function partsSave(parts, saveNoSource) {
     } while (changed);
 
     return lines.join('');
+}
+
+function translateLinks(fromLang, part, toLang, cb) {
+    if (!part.links && !part.images) {
+        cb();
+    } else {
+        let item = part.links && part.links.find(item => item.text && !item.translated);
+        item = item || (part.images && part.images.find(item => item.text && !item.translated));
+        if (item) {
+            translateText(fromLang, item.text, toLang)
+                .then(text => {
+                    item.original = item.text;
+                    item.text = text;
+                    item.translated = true;
+                    setTimeout(() => translateLinks(fromLang, part, toLang, cb), 0);
+                });
+        } else {
+            item = (part.images && part.images.find(item => item.title && !item.translatedTitle));
+            if (item) {
+                translateText(fromLang, item.title, toLang)
+                    .then(title => {
+                        item.originalTitle = item.title;
+                        item.title = title;
+                        item.translatedTitle = true;
+                        setTimeout(() => translateLinks(fromLang, part, toLang, cb), 0);
+                    });
+            } else {
+                cb();
+            }
+        }
+    }
 }
 
 function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
@@ -310,9 +452,12 @@ function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
         partsTarget[untranslated].original = partsTarget[untranslated].lines.join('\n');
         return translateText(fromLang, partsTarget[untranslated].original, toLang)
             .then(text => {
-                partsSource[untranslated].translated = true;
                 partsTarget[untranslated].text = text; // remember translated text
-                setTimeout(() => partsTranslate(fromLang, partsSource, toLang, partsTarget, cb), 0);
+                //setTimeout(() => partsTranslate(fromLang, partsSource, toLang, partsTarget, cb), 0);
+                translateLinks(fromLang, partsTarget[untranslated], toLang, () => {
+                    partsSource[untranslated].translated = true;
+                    setTimeout(() => partsTranslate(fromLang, partsSource, toLang, partsTarget, cb), 0);
+                });
             }).catch(e => {
                 console.error('Cannot translate: ' + e);
                 partsSource[untranslated].translated = true;
@@ -347,6 +492,7 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource) {
         }
 
         console.log(`____________TRANSLATE ${fromLang} => ${toLang}_______________`);
+
         partsTranslate(fromLang, partsSource, toLang, partsTarget, parts => {
             resolve({result: partsSave(parts, saveNoSource), source: partsSave(partsSource)});
         });
@@ -354,7 +500,120 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource) {
 }
 
 function translateText(fromLang, text, toLang) {
-    return _translateText(text, toLang, false, fromLang);
+    // detect LINKS, IMAGES and CODES and if the line has only that, do not translate it
+    if (text.trim().match(/^[^\w]*§§[ILJ]+_\d+§§[^\w]*$/)) {
+        return Promise.resolve(text);
+    } else
+    // detect table header and do not translate it
+    if (text.trim().match(/^[|-]$/)) {
+        return Promise.resolve(text);
+    } else
+    // it must be some words and not only special chars
+    if (!text.trim().match(/\w/)) {
+        return Promise.resolve(text);
+    }
+
+    // remove new lines, because translator thinks it is end of sentence.
+    if (text.indexOf('\n') !== -1) {
+        // allow \n only after .
+        const lines = text.split('\n');
+        const newLines = [lines[0].trim()];
+        for (let i = 1; i < lines.length; i++) {
+            // if previous line ends with . or | => start new line
+            if (lines[i - 1].trim().match(/[.|]$/) || lines[i].trim().startsWith('* ')) {
+                newLines.push(lines[i].trim());
+            } else {
+                // add to previous line
+                newLines[newLines.length - 1] += ' ' + lines[i].trim();
+            }
+        }
+        text = newLines.join('\n');
+    }
+
+    console.log(`${fromLang}=>${toLang}: ${text}`);
+
+    return _translateText(text, toLang, false, fromLang)
+        .then(text => {
+            // restore formatting of *, **, *** and __
+            // | ** точка данных ** | ** Описание ** |  => | **точка данных** | **Описание** |
+
+            // start with ***
+            if (text.indexOf(' *** ') !== -1) {
+                let parts = text.split(' ***');
+                if (parts.length > 1) {
+                    if (parts.length % 2 === 0) {
+                        console.error('Cannot restore formatting!: ' + text);
+                    } else {
+                        text = '';
+                        parts.forEach((part, i) => {
+                            if (i%2 === 0){
+                                text += part;
+                            } else {
+                                text += ' ***' + part.trim() + '***';
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (text.indexOf(' ** ') !== -1) {
+                // then with **
+                let parts = text.split(' **');
+                if (parts.length > 1) {
+                    if (parts.length % 2 === 0) {
+                        console.error('Cannot restore formatting!: ' + text);
+                    } else {
+                        text = '';
+                        parts.forEach((part, i) => {
+                            if (i % 2 === 0) {
+                                text += part;
+                            } else {
+                                text += ' **' + part.trim() + '**';
+                            }
+                        });
+                    }
+                }
+            }
+
+            // then with *
+            const pos = text.indexOf(' * ') !== -1;
+            if (pos !== -1 && pos) {
+                let parts = text.split(' *');
+                if (parts.length > 1) {
+                    if (parts.length % 2 === 0) {
+                        console.error('Cannot restore formatting!: ' + text);
+                    } else {
+                        text = '';
+                        parts.forEach((part, i) => {
+                            if (i % 2 === 0) {
+                                text += part;
+                            } else {
+                                text += ' *' + part.trim() + '*';
+                            }
+                        });
+                    }
+                }
+            }
+
+            // then with __
+            /*parts = text.split(' __');
+            if (parts.length > 1) {
+                if (parts.length % 2 === 0) {
+                    console.error('Cannot restore formatting!: ' + text);
+                } else {
+                    text = '';
+                    parts.forEach((part, i) => {
+                        if (i % 2 === 0) {
+                            text += part;
+                        } else {
+                            text += ' __' + part.trim() + '__';
+                        }
+                    });
+                }
+            }*/
+
+            return text;
+        });
 }
 
 module.exports = {

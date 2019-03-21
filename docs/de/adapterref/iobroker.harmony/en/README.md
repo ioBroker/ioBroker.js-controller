@@ -1,6 +1,6 @@
-![Harmony](media/harmony.png ':size=100x100')
-
+![Harmony](media/harmony.png)
 # Logitech Harmony adapter
+
 The Logitech Harmony adapter allows easy integration of one or 
 even multiple Logitech Harmony hubs into an ioBroker system.
 

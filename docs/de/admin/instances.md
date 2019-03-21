@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Instanzen-Fenster {docsify-ignore-all}
+# Das Instanzen-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

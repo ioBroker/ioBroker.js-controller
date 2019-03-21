@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterpublish.md"
 ---
 
-# Veröffentlichen eines Adapters {docsify-ignore-all}
+# Veröffentlichen eines Adapters
 Bevor über das veröffentlichen eines Adapters nachgedacht wird, sollte dieser im
 [Forum Test Thread](https://forum.iobroker.net/viewforum.php?f=36) zum testen angeboten werden. Sollten die Tests
 erfolgreich verlaufen und der Adapter stabil laufen, sollte dieser vorerst in das Latest-Repository aufgenommen werden.

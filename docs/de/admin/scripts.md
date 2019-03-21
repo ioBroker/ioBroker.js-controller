@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Der Skript-Bereich für Logiken {docsify-ignore-all}
+# Der Skript-Bereich für Logiken
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

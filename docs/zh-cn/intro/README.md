@@ -3,7 +3,7 @@ title:       "ioBroker简介"
 lastChanged: "2019/01/29"
 ---
 
-# ioBroker {docsify-ignore-all}
+# ioBroker
 
 ?> 这个文档刚刚开始更新。所以如果链接不起作用或内容丢失，请不要感到惊讶。
    <br><br>

@@ -2,7 +2,7 @@
 lastChanged: "13.09.2018"
 ---
 
-# Objekte {docsify-ignore-all}
+# Objekte
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

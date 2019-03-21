@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/hardware.md"
 ---
 
-# Hardware {docsify-ignore-all}
+# Hardware
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

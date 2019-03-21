@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/bestpractices.md"
 ---
 
-# Best Practices {docsify-ignore-all}
+# Best Practices
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

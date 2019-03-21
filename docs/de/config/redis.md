@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/redis.md"
 ---
 
-# Die Redis-Datenbank für ioBroker {docsify-ignore-all}
+# Die Redis-Datenbank für ioBroker
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

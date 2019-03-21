@@ -1,4 +1,4 @@
-# Impressum {docsify-ignore-all}
+# Impressum
 
 ## According to § 5 TMG:
 

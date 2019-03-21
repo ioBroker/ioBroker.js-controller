@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Log-Fenster {docsify-ignore-all}
+# Das Log-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

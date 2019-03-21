@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/trouble/adapter.md"
 ---
 
-# Lösen von Fehlern bei Adaptern {docsify-ignore-all}
+# Lösen von Fehlern bei Adaptern
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

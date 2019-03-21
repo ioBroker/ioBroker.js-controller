@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Aufzählungen-Fenster {docsify-ignore-all}
+# Das Aufzählungen-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

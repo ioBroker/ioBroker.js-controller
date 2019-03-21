@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/backup.md"
 ---
 
-# Datensicherung {docsify-ignore-all}
+# Datensicherung
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

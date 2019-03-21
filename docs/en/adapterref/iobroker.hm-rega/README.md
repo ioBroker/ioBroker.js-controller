@@ -1,17 +1,14 @@
 ---
 translatedFrom: de
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/en/adapterref/iobroker.hm-rega/README.md
-title: no title
-hash: 343/MWkd4rVMjw6n3a8I0X0tdyV2WhOu8De3zmZDkZA=
+title: HomeMatic ReGaHSS
+hash: j3gYuQNzNYZZREoSAcfez5FHHAVibeJ09uzWyKhw0fk=
 ---
 ! [] (Media / homematic.png)
-HomeMatic ReGaHSS
-=================
 
-| Status of the documentary | 08.01.2019 | | ------------------------- | ----------------------- ------------------------------- | | Developer | Pmant | | License | MIT | | Category | ioT Systems | | Keywords | Homematic, home automation, home automation, | | Dependencies | Adapter <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Documentation adapter hm-rpc">hm-rpc</a> |
+# HomeMatic ReGaHSS
 
-HomeMatic
----------
+## Homematic
 
 > Homematic is eQ-3's Smart Home System, which provides comprehensive control
 different functions using scenarios (from simple to complex)
@@ -22,10 +19,9 @@ Hazard detectors, safety sensors and weather data measurement products. The
 Radio communication simplifies retrofitting. In new buildings can
 Wire bus components are used.
 
-<a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage of the manufacturer eQ3">Source:</a>
+[Source] (https://www.eq-3.de/produkte/homematic.html)
 
-Adapter Homematic ReGaHss
--------------------------
+## Adapter Homematic ReGaHss
 
 This adapter connects to the homematic logic layer "ReGaHSS" (** Re ** sidential ** Gateway).
 It synchronizes clear names, system variables, rooms, trades and programs
@@ -41,23 +37,17 @@ Manage Homematic RPC adapters that provide various services
 (each service requires its own RPC instance):
 
 - rfd (CCU service for standard components)
-
 - hs485d (Wired) (for wire bus components)
-
 - CuxD (additional software for providing a universal interface)
-
 - Homematic IP (IP-based components)
-
 - Virtual Devices
 
 ### Requirements before installation
 
 - Homematic Gateway (CCU / CCU2 / CCU3 ...) * or *
-
 - Radio module with suitable software (piVCCU (* x) *, RaspberryMatic or similar)
 
-installation
-------------
+## installation
 
 An instance of the adapter is installed via the ioBroker Admin interface.
 
@@ -68,23 +58,25 @@ Before the actual configuration should be the (along with this adapter
 created instance of the HM-RPC adapter or, if required, further HM-RPC instances
 created and configured.
 
-configuration
--------------
+## configuration
 
-! [] (media / 01c7dbc4da0240421b0711b331971d2d.png) <span style="color:grey">* Selection menu above *</span>
+! [] (Media / 01c7dbc4da0240421b0711b331971d2d.png)
+** Selection menu above **
 
 In the upper selection menu, three different areas can be selected:
 
 ### area main settings
 
-! [] (media / 3e0325b2bf61e508e131f8792e2c004d.png) <span style="color:grey">* Main</span> Settings <span style="color:grey">*</span>
+! [] (Media / 3e0325b2bf61e508e131f8792e2c004d.png)
+** Main Settings **
 
 The basic settings are made in this area.
 
 In the pull-down menu, the IP address of the CCU can be selected; also the
 Reconnection interval (default 30 sec) can be adjusted by the user.
 
-! [] (media / ce181cdbb3b8979e1233b57a4588cf1d.png) <span style="color:grey">* Assignment of RPC instances *</span>
+! [] (Media / ce181cdbb3b8979e1233b57a4588cf1d.png)
+** Assignment of RPC instances **
 
 Then the required services are activated and with the appropriate
 HM-RPC instance linked.
@@ -111,17 +103,11 @@ be taken over. There will then be the corresponding objects and data points in
 ioBroker created.
 
 - DutyCycle: Activates the specification of the duty cycle (in%)
-
 - Variables: Activates the transfer of system variables from the CCU
-
 - Programs: Activates the transfer of program names from the CCU
-
 - Names: Activates the transfer of the plaintext names of the data points from the CCU
-
 - Favorites: Activates the acquisition and listing of favorites
-
 - Rooms: Activates the takeover of the rooms and a listing of them
-
 - Trades: Activates the acquisition of the trades and a listing of the same
 
 ### Additional Settings area
@@ -137,7 +123,8 @@ new values started.
 
 ### instance
 
-! [] (media / 44785b82964bcdc198565b1681787dc0.png) <span style="color:grey">* instance and signal *</span>
+! [] (Media / 44785b82964bcdc198565b1681787dc0.png)
+** Instance and signal **
 
 In the area * Instances * of the ioBroker you can now find the created (s)
 Instance (s). On the left is visualized in the traffic light system, if the adapter is activated
@@ -153,7 +140,8 @@ transmitted values and information shown.
 Since the objects are user-specific, only the general and for
 all users have the same objects displayed.
 
-! [] (media / c24d8382beda4c970093097959080524.png) <span style="color:grey">* folder structure *</span>
+! [] (Media / c24d8382beda4c970093097959080524.png)
+** ** folder structure
 
 The first folders are the programs contained in the CCU.
 

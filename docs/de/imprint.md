@@ -3,7 +3,7 @@ title:       "Impressum"
 lastChanged: "14.09.2018"
 ---
 
-# Impressum {docsify-ignore-all}
+# Impressum
 
 ## Angaben gemäß § 5 TMG:
 

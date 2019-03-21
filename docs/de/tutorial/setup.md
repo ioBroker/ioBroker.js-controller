@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/tutorial/einrichtung.md"
 ---
 
-# Erste Einrichtung {docsify-ignore-all}
+# Erste Einrichtung
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

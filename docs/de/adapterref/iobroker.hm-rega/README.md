@@ -1,18 +1,7 @@
 ![](media/homematic.png) 
-HomeMatic ReGaHSS
-=================
+# HomeMatic ReGaHSS
 
-| Stand der Doku          | 08.01.2019                                           |
-|-------------------------|------------------------------------------------------|
-| Entwickler              |Pmant                                                |
-| Lizenz                  |MIT                                               |
-| Kategorie               |ioT Systeme                                        |
-| Keywords                |Homematic, home automation, Hausautomation, |
-| Abhängigkeiten          |Adapter <a href="https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.hm-rpc/de" title="Dokumentation Adapter hm-rpc">hm-rpc</a>                                                 |
-
-Homematic
----------
-
+## Homematic
 >Homematic ist das Smart Home System von eQ-3, das die umfassende Steuerung
 unterschiedlichster Funktionen mithilfe von Szenarien (von einfach bis komplex)
 in Haus oder Wohnung ermöglicht.
@@ -22,12 +11,9 @@ Gefahrenmelder, Sicherheitssensoren und Produkte zur Wetterdatenmessung. Die
 Funkkommunikation vereinfacht dabei das Nachrüsten. In Neubauten können
 Drahtbus-Komponenten eingesetzt werden.
 
-<a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage des Herstellers eQ3">
-Quelle:</a>
+[Quelle](https://www.eq-3.de/produkte/homematic.html)
 
-Adapter Homematic ReGaHss
--------------------------
-
+## Adapter Homematic ReGaHss
 Dieser Adapter stellt eine Verbindung zur Homematic Logikschicht „ReGaHSS“ (**Re**sidential **Ga**teway) her.
 Er synchronisiert Klarnamen, Systemvariablen, Räume, Gewerke und Programme
 zwischen Homematic und ioBroker.
@@ -43,23 +29,16 @@ Homematic RPC Adapters verwalten, die verschiedene Dienste zur Verfügung stelle
 (jeder Dienst benötigt eine eigene RPC-Instanz):
 
 -   rfd (CCU-Funkdienst für Standardkomponenten)
-
 -   hs485d (Wired) (für Drahtbus-Komponenten)
-
 -   CuxD (Zusatzsoftware zur Bereitstellung einer universellen Schnittstelle)
-
 -   Homematic IP (IP-gestützte Komponenten)
-
 -   Virtual Devices
 
 ### Voraussetzungen vor Installation
-
 -   Homematic Gateway (CCU/CCU2/CCU3 …) *oder*
-
 -   Funkmodul mit passender Software (piVCCU(*x)*, RaspberryMatic o.ä.)
 
-Installation
-------------
+## Installation
 
 Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert.
 
@@ -70,26 +49,24 @@ Vor der eigentlichen Konfiguration sollte die (zusammen mit diesem Adapter
 erstellte) Instanz des HM-RPC-Adapters oder bei Bedarf weitere HM-RPC-Instanzen
 angelegt und konfiguriert werden.
 
-Konfiguration
--------------
+## Konfiguration
 
-![](media/01c7dbc4da0240421b0711b331971d2d.png)<span style="color:grey">  
-*Auswahlmenü oben*</span>
+![](media/01c7dbc4da0240421b0711b331971d2d.png)
+**Auswahlmenü oben**
 
 Im oberen Auswahlmenü können drei verschiedenen Bereiche ausgewählt werden:
 
 ### Bereich Haupteinstellungen
-
-![](media/3e0325b2bf61e508e131f8792e2c004d.png)<span style="color:grey">  
-*Haupteinstellungen*</span>
+![](media/3e0325b2bf61e508e131f8792e2c004d.png)
+**Haupteinstellungen**
 
 In diesem Bereich werden die grundlegenden Einstellungen vorgenommen.
 
 Im Pulldown-Menü kann die IP-Adresse der CCU ausgewählt werden; auch der
 Wiederverbindungsintervall (Standard 30 sec) kann vom User angepasst werden.
 
-![](media/ce181cdbb3b8979e1233b57a4588cf1d.png)<span style="color:grey">  
-*Zuordnung der RPC-Instanzen*</span>
+![](media/ce181cdbb3b8979e1233b57a4588cf1d.png)
+**Zuordnung der RPC-Instanzen**
 
 Danach werden die erforderlichen Dienste aktiviert und mit der passenden
 HM-RPC-Instanz verknüpft.
@@ -116,17 +93,11 @@ Hier kann der User festlegen, welche Information von der CCU in ioBroker
 ioBroker angelegt.
 
 -   DutyCycle: Aktivieret die Angabe des Duty Cycles (in %)
-
 -   Variablen: Aktiviert die Übernahme der Systemvariablen von der CCU
-
 -   Programme: Aktiviert die Übernahme der Programmbezeichnungen von der CCU
-
 -   Namen: Aktiviert die Übernahme der Klartextnamen der Datenpunkte von der CCU
-
 -   Favoriten: Aktiviert die Übernahme und Auflistung der Favoriten
-
 -   Räume: Aktiviert die Übernahme der Räume und einer Auflistung derselben
-
 -   Gewerke: Aktiviert die Übernahme der Gewerke und einer Auflistung derselben
 
 ### Bereich Zusätzliche Einstellungen
@@ -142,8 +113,8 @@ neuen Werten gestartet.
 
 ### Instanz
 
-![](media/44785b82964bcdc198565b1681787dc0.png)<span style="color:grey">  
-*Instanz und Signal*</span>
+![](media/44785b82964bcdc198565b1681787dc0.png)
+**Instanz und Signal**
 
 Im Bereich *Instanzen* des ioBrokers findet sich nun die erstellte(n)
 Instanz(en). Links ist im Ampelsystem visualisiert, ob der Adapter aktiviert
@@ -159,8 +130,8 @@ Im Bereich Objekte werden in einer Baumstruktur alle vom Adapter von der CCU
 Da die Objekte anwenderspezifisch sind, werden hier nur die allgemeinen und für
 alle Anwender gleichen Objekte dargestellt.
 
-![](media/c24d8382beda4c970093097959080524.png)<span style="color:grey">  
-*Ordnerstruktur*</span>
+![](media/c24d8382beda4c970093097959080524.png)
+**Ordnerstruktur**
 
 Die ersten Ordner (i.d.R. Ziffern-ID) sind die in der CCU enthaltenen Programme.
 

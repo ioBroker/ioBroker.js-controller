@@ -1,11 +1,6 @@
----
-editLink:    "https://github.com/Pmant/ioBroker.harmony/blob/master/README.md"
-lastChanged: "03.08.2018"
----
+![Harmony](media/harmony.png)
+# Logitech Harmony
 
-![Harmony](media/harmony.png ':size=120' ':no-zoom')
-
-# Logitech Harmony-Adapter
 Der Logitech Harmony-Adapter ermöglicht die einfache Einbindung eines oder 
 auch mehrerer Logitech Harmony Hubs in ein ioBroker-System. 
 
@@ -14,36 +9,7 @@ Smart Home-Geräten gesteuert werden. Mit dem ioBroker lassen sich über den Hub
 Aktivitäten starten und beenden, der Status von Aktivitäten abfragen sowie 
 Geräte durch virtuelle Tastendrücke fernsteuern.
 
-
-![Harmony Hub](media/harmony_850.jpg "Logitech Harmony Hub mit 
-Harmony Elite Fernbedienung") <span style="color:grey">  
-*Logitech Harmony Hub mit Harmony Elite Fernbedienung*</span>
-
-
-
-## Steckbrief
-> Achtung! Die folgende Tabelle dient nur als Beispiel. Sie wird vom 
-  Dokumentengenerator dynamisch erzeugt und an dieser Stelle eingefügt.
-  Je nach den ausgewählten Feldern sind die Datenquellen z.B. `frontmatter`,
-  `io-package.json` und `package.json` des jeweilgen Adapters.
-  Eventuell kann der Steckbrief auch an einer anderen Stelle der Dokumentation
-  plaziert werden.
-
-|                         |                                         |
-|-------------------------|:---------------------------------------:|
-| Stand der Doku          | 29.07.2018                              |
-| aktuelle Version stable | ![stable][logo]                         |
-| aktuelle Version latest | ![latest][logo]                         | 
-| OS                      | Linux, Windows; OS X                    |
-| node-Version            | >= 4.x                                  |
-| Entwickler              | Pmant                                   |
-| Github                  | LINK                                    |
-| Lizenz                  | MIT                                     |
-| Kategorie               | Multimedia                              |
-| Keywords                | `harmony` `hub` `logitech` `home automation`             |
-| Abhängigkeiten          | `harmonyhubjs-client` `harmonyhubjs-discover` `semaphore`|          
-
-
+![Harmony Hub](media/harmony_850.jpg "Logitech Harmony Hub mit Harmony Elite Fernbedienung")
 
 ## Überblick
 
@@ -81,17 +47,13 @@ befinden.
 Objekte zur Auslösung von Funktionen und Aktivitäten (=Befehlsmakros) werden vom
 Adapter automatisch im ioBroker angelegt. Auch der aktuelle Status des Hubs steht
 zur Verfügung. Durch geziehltes Beschreiben oder Lesen der angelegten Objekten 
-kann deren Status geändert und damit Aktionen ausgelöst oder auch abgefragt werden.  
-
-
+kann deren Status geändert und damit Aktionen ausgelöst oder auch abgefragt werden.
 
 ## Voraussetzungen vor der Installation
 Über den ioBroker Adapter für das Logitech Harmony-System lassen sich keine Geräte oder
 Aktivitäten neu anlegen oder verändern. Deshalb ist es erforderlich, dass vor der Nutzung 
 des Adapters das Fernbedienungssystem, wie in der Anleitung von Logitech beschrieben, 
 eingerichtet ist und mit den gesteuerten Geräten zusammen funktioniert.
-
-
 
 ## Installation
 Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert. Die 
@@ -100,13 +62,9 @@ ausführliche Anleitung für die dazu notwendigen Installatonschritte kann **hie
 Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch 
 ein Konfigurationsfenster.
 
-
-
 ##  Konfiguration
 Der Adapter findet automatisch alle Harmony Hubs, die sich im Subnetz des 
 ioBroker-Servers befinden.
-
-
 
 ### Fenster "Logitech Harmony adapter settings"
 ![Admin](media/a_harmony_admin_settings.png "Admin Oberfläche")<span style="color:grey">  
@@ -123,8 +81,6 @@ und einem Passwort gesichert ist.
 Nach Abschluss der Konfiguration wird der Konfigurationsdialog mit `SPEICHERN UND SCHLIEßEN`
 verlassen. Dadurch efolgt im Anschluß ein Neustart des Adapters.
 
-
-
 ##  Instanzen
 Die Installation des Adapters hat im Bereich `Objekte` eine aktive Instanz des 
 Logitech Harmony-Hub-Adapters angelegt.
@@ -138,8 +94,6 @@ Harmony-Adapters installieren.
 Ob der Adapter aktiviert oder mit dem Logitech Harmony Hub verbunden ist, wird 
 mit der Farbe des Status-Feldes der Instanz verdeutlicht. Zeigt der Mauszeiger
 auf das Symbol, werden weitere Detailinformationen dargestellt. 
-
-
 
 ## Objekte des Adapters
 
@@ -186,7 +140,6 @@ vorgegeben Länge ausgegeben. Größere Werte als 250ms können zur
 Mehrfachbetätigung der Gerätefunktion führen.
 Nach dem Auslösen der Gerätefunktion ändert sich der Wert wieder auf 0.
 
-
 ### Aktivitäten
 Unterhalb von `activities`werden alle am Harmony Hub programmierten Aktivitäten
 aufgelistet.
@@ -222,8 +175,6 @@ an. Dabei bedeuten die Werte
 Die Bedeutung der Werte ist analog zu 
 `{Instanz}.{Hub Name}.activities.currentStatus`.
 
-
-
 <a name="deinstallation"/>
 
 ## Deinstallation
@@ -235,24 +186,20 @@ Die Bedeutung der Werte ist analog zu
 sollte die Instanz wieder entfernt werden sollen wird diese über das zugeordnete Mülleimer-Icon 
 in der Rubrik Instanzen entfernt
 
-<img src="media/adapter_harmony_delete_01.png">
+![Delete](media/adapter_harmony_delete_01.png)
 
 Es erscheint eine Sicherheitsabfrage, die mit ***OK*** bestätigt werden muss
 
-<img src="media/adapter_harmony_delete_02.png">
+![Delete2](media/adapter_harmony_delete_02.png)
 
 Anschließend erscheint wieder ein Fenster, dass die Abarbeitung der Deinstallationsbefehle zeigt
 
-<img src="media/adapter_harmony_delete_03.png">
+![Delete3](media/adapter_harmony_delete_03.png)
 
 Bei dieser Deinstallation werden alle zu der Instanz gehörenden Objekte vollständig entfernt.
 
 Sollten die Installationsdateien vollständig von dem Host gelöscht werden, muss dies über das Mülleimer-Icon 
 in der Kachel des Harmony-Adapters in der Rubrik Adapter geschehen.
-
-
-
-<a name="besonderheiten"/>
 
 ## Besonderheiten
 Backup  
@@ -260,12 +207,8 @@ Multihost
 History  
 Performance
 
-
-
-<a name="faq"/>
-
 ## FAQ
->Im Forum nach häufig auftretenden Fragen suchen und hier Referenzantwort geben
+!> Im Forum nach häufig auftretenden Fragen suchen und hier Referenzantwort geben
 
 1. **Die Verbindung zum Hub wird immer wieder unterbrochen.**  
 
@@ -314,19 +257,13 @@ Performance
     
    Auf einem ioBroker Server lässt sich immer nur eine Instanz des Logitech 
    Harmony-Adapters installieren.
- 
-
-
-
-
-<a name="beispiele"/>
 
 ## Beispiele
 
 ### JavaScript
 Auslösen von Gerätefunktionen. Hier wird der Denon AV-Empfänger ein- oder ausgeschaltet,
 wenn sich der Wert eines anderen Datenpunktes verändert.
-```javascript
+```
 if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
   setState("harmony.0.Harmony Hub.Denon AV-Empfänger.PowerOn"/*Denon AV-Empfänger:PowerOn*/, '1', true);
   // Bei Kontrolle Schalter == AN keine Verzögerung Schalter
@@ -342,8 +279,8 @@ if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
 Auslösen von Gerätefunktionen. Hier wird der Denon AV-Empfänger ein- oder ausgeschaltet,
 wenn sich der Wert eines anderen Datenpunktes verändert.
 
-![Blockly](media/a_hamony_simple_blockly.jpg "Blockly")<span style="color:grey">  
-*Blockly*</span>
+![Blockly](media/a_hamony_simple_blockly.jpg)
+**Blockly**
 
 [Quelltext][blockly]
 
@@ -358,22 +295,14 @@ wenn sich der Wert eines anderen Datenpunktes verändert.
 > Exporte zum Weiterverwenden
 > Code-Fragmente
 
-
-
-<a name="links"/>
-
 ## Links
 > Referenzen auf andere Dokumente im ioBroker-Portal
 > Weblinks z.B. zum Hersteller
 > GitHub-Links
 * Herstellerseite https://www.logitech.com/de-de/product/harmony-hub (20.07.2018)
 
-
-
-<a name="historie"/>
-
 ## Historie
-> Der folgende Text dient nur als Platzhalter. Die Historie wird  
+> Der folgende Text dient nur als Platzhalter. Die Historie wird
   vom Dokumentengenerator dynamisch erzeugt und hier eingefügt. Datenquelle
   ist io-package.json -> common.news in der jeweiligen Doku-Sprache
 

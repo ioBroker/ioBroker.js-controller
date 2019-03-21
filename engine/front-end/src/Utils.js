@@ -171,7 +171,7 @@ class Utils {
                 lines[i] = `<div class="notice" markdown>
     ${_ll.join('\n')}
     </div>`;
-            } else if (line.startsWith('?> ') || line.startsWith('!> ')) {
+            } else if (line.startsWith('?> ') || line.startsWith('!> ') || line.startsWith('> ')) {
                 const _ll = [line.substring(3) + '<br/>'];
                 let j = i + 1;
                 while (j < lines.length && lines[j].startsWith('   ')) {
@@ -183,7 +183,7 @@ class Utils {
                     _ll[0] = '<b>' + _ll[0] + '</b>';
                 }
 
-                lines[i] = `<div class="${line[0] === '?' ? 'warn' : 'alarm'}" markdown>
+                lines[i] = `<div class="${line[0] === '?' ? 'warn' : (line[0] === '!' ? 'alarm' : 'notice')}" markdown>
     ${_ll.join('\n')}
     </div>`;
             } else if (line.startsWith('## ')) {
@@ -236,47 +236,6 @@ class Utils {
             changeLog: changeLog.join('\n'),
             license: licenseLines.join('\n')
         };
-    }
-
-    static extractHeader(text) {
-        const attrs = {};
-        if (text.substring(0, 3) === '---') {
-            const pos = text.substring(3).indexOf('\n---');
-            if (pos !== -1) {
-                const _header = text.substring(3, pos + 3);
-                const lines = _header.replace(/\r/g, '').split('\n');
-                lines.forEach(line => {
-                    if (!line.trim()) {
-                        return;
-                    }
-                    const pos = line.indexOf(':');
-                    if (pos !== -1) {
-                        const attr = line.substring(0, pos).trim();
-                        attrs[attr] = line.substring(pos + 1).trim();
-                        attrs[attr] = attrs[attr].replace(/^['"]|['"]$/g, '');
-                        if (attrs[attr] === 'true') {
-                            attrs[attr] = true;
-                        } else if (attrs[attr] === 'false') {
-                            attrs[attr] = false;
-                        } else if (parseFloat(attrs[attr]).toString() === attrs[attr]) {
-                            attrs[attr] = parseFloat(attrs[attr]);
-                        }
-                    } else {
-                        attrs[line.trim()] = true;
-                    }
-                });
-                text = text.substring(pos + 7);
-            }
-        }
-        return {header: attrs, body: text};
-    }
-
-    static removeDocsify(text) {
-        const m = text.match(/{docsify-[^}]*}/g);
-        if (m) {
-            m.forEach(doc => text = text.replace(doc, ''));
-        }
-        return text;
     }
 }
 

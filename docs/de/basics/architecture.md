@@ -3,7 +3,7 @@ title:       "Architektur"
 lastChanged: "13.09.2018"
 ---
 
-# Systemaufbau {docsify-ignore-all}
+# Systemaufbau
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

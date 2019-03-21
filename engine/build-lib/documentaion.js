@@ -173,13 +173,53 @@ function addChangelogAndLicense(body, changelog, license) {
         (license ? '\n\n' + license.trim().replace(/\n+$/, '') : '');
 }
 
+function replaceImages(text, sourceFile, targetFile) {
+    const lines = text.split('\n');
+    targetFile = targetFile.replace(/\\/g, '/');
+    sourceFile = sourceFile.replace(/\\/g, '/');
+    let i = 0;
+    while (sourceFile[i] === targetFile[i]) i++;
+    targetFile = targetFile.substring(i);
+    sourceFile = sourceFile.substring(i);
+    const tParts = targetFile.split('/');
+    const sParts = sourceFile.split('/');
+
+    const prefix = Array(tParts.length).join('../');
+
+    lines.forEach((line, i) => {
+        // Find images in line and store it
+        let m = line.match(/!\[[^]*]\([^)]+\)/g);
+        if (m) {
+            m.forEach(item => {
+                let mm = item.match(/^!\[([^]*)]\(([^)]+)\)$/);
+                if (mm) {
+                    let link = mm[2].trim();
+                    const text = mm[1].trim();
+                    const pos = link.indexOf(' ');
+                    let title = '';
+                    if (pos !== -1) {
+                        title = link.substring(pos + 1).trim().replace(/^"|"$/g, '');
+                        link = link.substring(0, pos);
+                    }
+                    if (!link.match(/^https?:/)) {
+                        link = prefix + link;
+
+                        lines[i] = lines[i].replace(item, `![${text}](${link}${title ? ' ' + title: ''})`);
+                    }
+                }
+            });
+        }
+    });
+    return lines.join('\n');
+}
+
 async function translateFile(sourceFileName, fromLang, toLang, root) {
+    root = root || consts.SRC_DOC_DIR;
     const targetFileName = sourceFileName.replace('/' + fromLang + '/', '/' + toLang + '/');
     let {header, body} = utils.extractHeader(fs.readFileSync(sourceFileName).toString('utf-8'));
     if (header.translatedFrom) {
         // this is not the source
         return Promise.resolve();
-
     }
 
     header.translatedFrom = fromLang;
@@ -201,9 +241,10 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
 
     // console.log(`Translate ${fromLang} => ${toLang}: "${sourceFileName}"`);
 
-    return translation.translateMD(fromLang, data.body, toLang, actualText, true)
+    return translation.translateMD(fromLang, data.body, toLang, actualText, true, sourceFileName)
         .then(result => {
             actualText = result.result;
+            actualText = replaceImages(actualText, sourceFileName, targetFileName);
             header.title = header.title || utils.getTitle(body);
             return translation.translateText(fromLang, header.title, toLang);
         }).then(title => {
@@ -237,7 +278,7 @@ function sync2Languages(fromLang, toLang, cb, files) {
         return cb && cb();
     }
     const file = files.shift();
-    translateFile(file, fromLang, toLang, consts.SRC_DOC_DIR).then(() => {
+    translateFile(file, fromLang, toLang).then(() => {
         setTimeout(() => sync2Languages(fromLang, toLang, cb, files), 100);
     });
 }
@@ -261,7 +302,6 @@ function syncDocs(cb) {
     });
     processTasks(tasks, () => cb);
 }
-
 
 // process all files in directory recursively
 async function processFiles(root, lang, originalRoot) {
@@ -288,15 +328,23 @@ async function processFiles(root, lang, originalRoot) {
 }
 
 if (!module.parent) {
-    processContent(path.join(consts.SRC_DOC_DIR, 'content.md'))
+    /*syncDocs(() => {
+        processContent(path.join(consts.SRC_DOC_DIR, 'content.md'))
         .then(content => {
             console.log(JSON.stringify(content));
-            processFiles(consts.SRC_DOC_DIR).then(() =>
-                new Promise(resolve => syncDocs(() => resolve())));
+            return processFiles(consts.SRC_DOC_DIR);
         });
+    });*/
+
+    translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'de', 'ru')
+        .then(() => {
+            console.log('done');
+        })
+    //console.log(replaceImages(fs.readFileSync('C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md').toString(), 'C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md'));
 } else {
     module.exports = {
         processContent,
-        processFiles
+        processFiles,
+        syncDocs
     };
 }

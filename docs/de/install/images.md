@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/images.md"
 ---
 
-# Liste mit vorbereiteten Images für verschiedene Plattformen {docsify-ignore-all}
+# Liste mit vorbereiteten Images für verschiedene Plattformen
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdev.md"
 ---
 
-# Entwickeln eines eigenen Adapters {docsify-ignore-all}
+# Entwickeln eines eigenen Adapters
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

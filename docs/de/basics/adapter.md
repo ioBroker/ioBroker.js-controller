@@ -2,7 +2,7 @@
 lastChanged: "13.09.2018"
 ---
 
-# Adapter und Controller {docsify-ignore-all}
+# Adapter und Controller
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

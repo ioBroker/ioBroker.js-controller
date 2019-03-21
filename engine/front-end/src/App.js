@@ -74,9 +74,12 @@ const styles = theme => ({
     }
 });
 
-const LANGUAGES = [
-    'en', 'de', 'ru'
-];
+const LANGUAGES = {
+    'en': 'En',
+    'de': 'De',
+    'ru': 'Ру',
+    'zh-cn': 'zh-cn'
+};
 
 const PAGES = {
     'blog':     {tabIndex: 1, component: Blog,     icon: null, name: 'Blog'},
@@ -105,7 +108,7 @@ class App extends Router {
 
         let hash = Router.getLocation();
         let language = hash.language || Router.detectLanguage();
-        if (LANGUAGES.indexOf(language) === -1) {
+        if (!LANGUAGES[language]) {
             language = 'de';
         }
         I18n.setLanguage(language);
@@ -160,7 +163,7 @@ class App extends Router {
             changed = true;
         }
         if (location.language !== this.state.language) {
-            if (LANGUAGES.indexOf(location.language) !== -1) {
+            if (LANGUAGES[location.language]) {
                 newState.language = location.language;
                 I18n.setLanguage(newState.language);
                 changed = true;
@@ -202,13 +205,13 @@ class App extends Router {
                 (<Menu key="langMenu" id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
                     this.setState({languageMenu: false, anchorMenu: null});
                 }}>
-                    {LANGUAGES.map(lang => (
+                    {Object.keys(LANGUAGES).map(lang => (
                         <MenuItem key={lang} selected={this.state.language === lang} onClick={() =>
                             this.setState({languageMenu: false, anchorMenu: null}, () => {
                                 const location = Router.getLocation();
                                 this.onNavigate(lang, location.tab, location.page, location.chapter);
                             })
-                        }>{lang.toUpperCase()}</MenuItem>
+                        }>{LANGUAGES[lang].toUpperCase()}</MenuItem>
                     ))}
                 </Menu>)
             ] : null

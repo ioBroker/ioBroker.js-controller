@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/cloud/mediola.md"
 ---
 
-# Das Mediola-Plugin {docsify-ignore-all}
+# Das Mediola-Plugin
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

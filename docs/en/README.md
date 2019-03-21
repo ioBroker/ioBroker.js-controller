@@ -3,7 +3,7 @@ title:       "Welcome"
 lastChanged: "09.02.2019"
 ---
 
-# Welcome to ioBroker {docsify-ignore-all}
+# Welcome to ioBroker
 
 ## Introduction
 

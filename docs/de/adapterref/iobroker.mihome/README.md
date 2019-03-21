@@ -15,7 +15,7 @@ werden.
 ### Installation der Mi Home App und freischalten der lokalen Netzwerk Funktion
 
 #### Android
-* [Android Mi Home App][Android App] auf einem Android Gerät herunterladen, installieren, öffnen und  
+* [Android App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) auf einem Android Gerät herunterladen, installieren, öffnen und
 den Geschäftsbedingungen zustimmen.
 * Als Land `Festland-China` auswählen 
 * Über `Anmelden` ein Konto erstellen
@@ -35,7 +35,7 @@ und danach `About` betätigen
 Nun können weitere Geräte über das `+` Zeichen angelernt werden.
 
 #### iOS
-* [iOS Mi Home App][ios App] auf einem iOS Gerät herunterladen, installieren, öffnen und der  
+* [iOS App](https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) auf einem iOS Gerät herunterladen, installieren, öffnen und der
 Datenschutzerklärung zustimmen
 * Über Profil/Einstellungen/Ländereinstellungen das Land `Festland` auswählen. 
 * Über `Anmelden` ein Konto erstellen
@@ -118,8 +118,4 @@ Unter `Objekte` wird nun das Gateway und seine angelernten Geräte angezeigt:
 
 ![Logo](media/Objekte.PNG)
 
-Die Anleitung wurde nach besten Wissen und Gewissen erstellt. 
-
-[Android App]:(https://play.google.com/store/apps/details?id=com.xiaomi.smarthome)
-
-[iOS App]:(https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8)
+Die Anleitung wurde nach besten Wissen und Gewissen erstellt.

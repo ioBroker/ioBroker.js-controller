@@ -1,42 +1,35 @@
 ---
+lastChanged: 09.01.2019
 translatedFrom: de
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/en/adapterref/iobroker.hm-rpc/README.md
-title: no title
-hash: O+B+3V7sEq3xZfQV7EAx6RGZCH3VBMKFhRhS8o/2uRE=
+title: HomeMatic RPC
+hash: wV1fZqfAh9EFOGCer+o8MlBv4xZrmQCVgr3iaDdqH28=
 ---
 ! [] (Media / homematic.png)
-HomeMatic RPC
-=============
 
-| Status of the documentary | 09.01.2019 |
-| ---------------- | -------------------------------- - |
-| Developer | bluefox, hobby quaker |
-| Category | ioT systems |
-| Keywords | Homematic, CCU, CUxD, RPC, REGA |
-| Dependencies | |
-| License | WITH | |
+# HomeMatic RPC
 
-HomeMatic
----------
+## Homematic
+
 > Homematic is a smart home system from eQ-3 that provides comprehensive control
 different functions using scenarios (from simple to complex)
 in house or apartment allows.
 
 &gt; The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and weather data measurement products. Radio communication simplifies retrofitting. In new buildings wire bus components can be used. <a href="https://www.eq-3.de/produkte/homematic.html" title="Homepage of the manufacturer eQ3">source</a>
 
-Management and control of homematic components with ioBroker
--------------------------------------------------- -------------
+## Administration and control of homematic components with ioBroker
+
 To optimally manage and control homematic components with ioBroker
 if two adapters are needed:
 
-1. Homematic ReGaHss
+### 1. Homematic ReGaHss
 
 This adapter connects to the homematic logic layer "ReGaHSS"
 (** Re ** presidential ** gateway) ago.
 It synchronizes clear names, system variables, rooms, trades and programs
 between Homematic and ioBroker.
 
-2. Homematic RPC
+### 2. Homematic RPC
 
 The ** R ** emote ** P ** rocedur ** C ** all, short RPC is a technique for the realization
 of interprocess communication. This adapter provides the connection to the
@@ -45,10 +38,13 @@ Modules rfd (wireless), HMIP-rfd, hs485d (wired), CuxD (additional software for 
 external components like EnOcean, FS20 etc.) and Homegear (CCU replacement)
 supported.
 
-This diagram illustrates the structure and communication interfaces:! [] (Media / Homematic_Aufbau.png) <a href="http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png" title="Wikimatic.de">Source</a>
+This diagram illustrates the structure and communication interfaces:
 
-Adapter Homematic RPC
----------------------
+! [] (Media / Homematic_Aufbau.png)
+
+[Source] (http://www.wikimatic.de/wiki/Datei:Homematic_Aufbau.png)
+
+## Adapter Homematic RPC
 
 This adapter provides the connection to the communication modules of a
 Homematic center (CCU / CCU2 / CCU3 ...). An instance of
@@ -68,11 +64,9 @@ If new devices are taught in at the CCU, the adapter must be connected to the
 Configuration "Initiate devices restart (once)". Thereby
 The information from the new Homematic devices is transferred to the adapter.
 
-configuration
-=============
+## configuration
 
-main settings
-------------------
+### Main Settings
 
 ### HomeMatic address
 
@@ -125,8 +119,7 @@ is reserved for special cases.
 By default, this port is "0" for automatic selection of the
 ioBroker ports and should only be changed in exceptional cases.
 
-Additional settings
--------------------------
+## Additional settings
 
 ### Adapter Callback Address
 
@@ -160,8 +153,7 @@ Works only with XML-RPC protocol.
 When using HTTPS or if for the API of the CCU an authentication
 is required, the data must be entered here.
 
-instance
--------
+## instance
 
 ! [Instance] (media / 10d34a2bc1518fa34233bdb04219e444.png)
 
@@ -171,8 +163,7 @@ connected to the CCU.
 
 If you place the mouse pointer on a symbol, you will get detailed information.
 
-Objects of the adapter
---------------------
+## Objects of the adapter
 
 In the Objects area, in a tree structure, all of the CCU's become the adapter
 transmitted values and information shown.
@@ -212,5 +203,4 @@ Abstract:
 | Devices with measuring function | 3 | Status |
 | | 6 | Consumption meter, voltage, power, etc. |
 
-FAQ
----
+## FAQ

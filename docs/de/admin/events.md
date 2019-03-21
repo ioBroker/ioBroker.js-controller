@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Ereignisse-Fenster {docsify-ignore-all}
+# Das Ereignisse-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

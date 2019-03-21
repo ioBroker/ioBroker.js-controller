@@ -3,7 +3,7 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Übersicht-Fenster {docsify-ignore-all}
+# Das Übersicht-Fenster
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

@@ -4,7 +4,7 @@ lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/logic/examples.md"
 ---
 
-# Beispiele {docsify-ignore-all}
+# Beispiele
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

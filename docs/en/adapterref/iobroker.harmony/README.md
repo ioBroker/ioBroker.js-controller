@@ -1,13 +1,12 @@
 ---
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/en/adapterref/iobroker.harmony/README.md
-lastChanged: 03.08.2018
 translatedFrom: de
-title: Logitech Harmony adapter
-hash: merUFJHIvqYvHyKzgC9w0dY1Y3YvoI+Tp3bFI+v9Rnk=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/engine/docs/en/adapterref/iobroker.harmony/README.md
+title: Logitech Harmony
+hash: wtXKBDr9IlxWqevhz7QGJu4BiY5S9OkeTwo3E0WfKyU=
 ---
-[Harmony] (media / harmony.png ': size = 120' ': no-zoom')
+! [Harmony] (media / harmony.png)
 
-# Logitech Harmony adapter
+# Logitech Harmony
 
 The Logitech Harmony adapter allows easy integration of one or more
 even multiple Logitech Harmony hubs into an ioBroker system.
@@ -17,30 +16,7 @@ Smart home devices are controlled. With the ioBroker can be about the hub
 Start and stop activities, query the status of activities as well
 Remotely control devices with virtual keystrokes.
 
-! [Harmony Hub] (media / harmony_850.jpg &quot;Logitech Harmony Hub with Harmony Elite Remote Control&quot;) <span style="color:grey">* Logitech Harmony Hub with Harmony Elite Remote Control *</span>
-
-## Characteristics
-
-> Attention! The following table is only an example. She is from the
-  Document generator generated dynamically and inserted at this point.
-  Depending on the selected fields, the data sources are e.g. `Frontmatter`,
-  `io-package.json` and` package.json` of the respective adapter.
-  Possibly the profil can also be found elsewhere in the documentation
-  be placed.
-
-| | |
-| ------------------------- |: ---------------------- -----------------: |
-| Status of the documentary | 29.07.2018 |
-| current version stable | ! [stable] [logo] |
-| current version latest | ! [latest] [logo] |
-| OS | Linux, Windows; OS X |
-| node version | > = 4.x |
-| Developer | Pmant |
-| Github | LINK |
-| License | WITH | |
-| Category | Multimedia |
-| Keywords | `harmony`` hub` `logitech`` home automation` |
-| Dependencies | `harmonyhubjs-client`` harmonyhubjs-discover` `semaphore` |
+! [Harmony Hub] (media / harmony_850.jpg "Logitech Harmony Hub with Harmony Elite Remote Control")
 
 ## Overview
 
@@ -226,22 +202,20 @@ The meaning of the values is analogous to
 If the instance should be removed again, it will be assigned via the assigned trashcan icon
 removed in the section Instances
 
-<img src="media/adapter_harmony_delete_01.png">
+[Delete] (media / adapter_harmony_delete_01.png)!
 
 A confirmation prompt appears, which must be confirmed with *** OK ***
 
-<img src="media/adapter_harmony_delete_02.png">
+[Delete2] (media / adapter_harmony_delete_02.png)!
 
 Then a window will appear again, showing the processing of the uninstall commands
 
-<img src="media/adapter_harmony_delete_03.png">
+[Delete3] (media / adapter_harmony_delete_03.png)!
 
 This uninstall removes all objects belonging to the instance completely.
 
 If the installation files are completely deleted from the host, this must be done via the trashcan icon
 done in the tile of the Harmony adapter in the section Adapters.
-
-<a name="besonderheiten"/>
 
 ## Particularities
 
@@ -250,11 +224,9 @@ multihost
 History
 performance
 
-<a name="faq"/>
-
 ## FAQ
 
-> Search the forum for frequently asked questions and give a reference answer here
+!> Search the forum for frequently asked questions and give a reference answer here
 
 1. ** The connection to the hub is interrupted again and again. **
 
@@ -304,8 +276,6 @@ performance
    On an ioBroker server you can only ever use one instance of the Logitech
    Install Harmony adapters.
 
-<a name="beispiele"/>
-
 ## examples
 
 ### JavaScript
@@ -313,16 +283,18 @@ performance
 Trigger device functions. This is where the Denon AV receiver is turned on or off,
 if the value of another data point changes.
 
-```javascript
-if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
-  setState("harmony.0.Harmony Hub.Denon AV-Empfänger.PowerOn"/*Denon AV-Empfänger:PowerOn*/, '1', true);
-  // Bei Kontrolle Schalter == AN keine Verzögerung Schalter
-} else if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == false) {
-  // Bei Kontrolle Schalter == AUS schalte mit Verzögerung
-  var timeout = setTimeout(function () {
-    setState("harmony.0.Harmony Hub.Denon AV-Empfänger.PowerOn"/*Denon AV-Empfängerr:PowerOn*/, '1', true);
-  }, 1000);
+```
+
+if (getState ("hm-rpc.0.MEQ01234567.2.STATE"). val == true) {
+  setState ("harmony.0.Harmony Hub.Denon AV Receiver.PowerOn" / * Denon AV Receiver: PowerOn * /, '1', true);
+  // on control switch == on no delay switch
+} else if (getState ("hm-rpc.0.MEQ01234567.2.STATE"). val == false) {
+  // At control switch == OFF switch with delay
+  var timeout = setTimeout (function () {
+    setState ("harmony.0.Harmony Hub.Denon AV Receiver.PowerOn" / * Denon AV Receiver: PowerOn * /, '1', true);
+  }, 1000);
 }
+
 ```
 
 ### Blockly
@@ -330,7 +302,8 @@ if (getState("hm-rpc.0.MEQ01234567.2.STATE").val == true) {
 Trigger device functions. This is where the Denon AV receiver is turned on or off,
 if the value of another data point changes.
 
-! [Blockly] (media / a_hamony_simple_blockly.jpg &quot;Blockly&quot;) <span style="color:grey">* Blockly *</span>
+! [Blockly] (media / a_hamony_simple_blockly.jpg)
+** ** Blockly
 
 [Source] [Blockly]
 
@@ -347,16 +320,12 @@ if the value of another data point changes.
 > Exports for reuse
 > Code Fragments
 
-<a name="links"/>
-
 ## Left
 
 > References to other documents in the ioBroker portal
 > Web links, e.g. to the manufacturer
 > GitHub links
 * Manufacturer Page https://www.logitech.com/en-us/product/harmony-hub (20.07.2018)
-
-<a name="historie"/>
 
 ## History
 

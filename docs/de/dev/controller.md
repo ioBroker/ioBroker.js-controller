@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/controller.md"
 ---
 
-# ioBroker Backend-Entwicklung {docsify-ignore-all}
+# ioBroker Backend-Entwicklung
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

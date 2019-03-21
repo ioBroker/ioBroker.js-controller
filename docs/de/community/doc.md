@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/community/doc.md"
 ---
 
-# Mithilfe bei der Erstellung der Dokumentation {docsify-ignore-all}
+# Mithilfe bei der Erstellung der Dokumentation
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

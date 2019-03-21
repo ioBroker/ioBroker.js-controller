@@ -4,7 +4,7 @@ lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdocstyleguide.md"
 ---
 
-# Style Guide für die Erstellung einer Adapterdokumentation {docsify-ignore-all}
+# Style Guide für die Erstellung einer Adapterdokumentation
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
