@@ -2,7 +2,7 @@
 
 # ioBroker.docs - the ioBroker documentation project
 
-Try prototype at [https://iobroker.github.io/ioBroker.docs](https://iobroker.github.io/ioBroker.docs)
+Try prototype at [http://www.iobroker.net/react/](http://www.iobroker.net/react/)
 
 This is the place where a new documention for ioBroker is born. Beware: Work in progress!
 
