@@ -2,7 +2,9 @@ Di
 Adattatori
 Tutti
 autori:
+badge
 blog
+changelog
 Nube
 Comprimi tutto
 Data
@@ -15,20 +17,29 @@ Filtro
 Github
 Impronta
 Informazioni
+Informazione
 Installa:
 Ultima modifica:
+Licenza
 Linux
 Elenco di adattatori
 Novità del mese scorso:
 Notizie, annunci e idee su ioBroker
+Apri repository
 piattaforma
 Politica sulla riservatezza
 Leggere
 Stabile:
 Totale:
 Questa pagina è stata tradotta automaticamente da "%s". Aiutaci a tradurre questa pagina in inglese facendo clic su Modifica sotto.
+autori
+compatto
 Blog di ioBroker
+parole chiave
+materializzarsi
+modalità
 parola d'ordine
 pubblicato su %s
 readme
 utente
+versione

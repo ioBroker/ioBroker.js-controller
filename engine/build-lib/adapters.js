@@ -552,7 +552,7 @@ function buildAdapterContent() {
                     }};
 
                 const promises = Object.keys(repo)
-                    .filter(a => a !== 'js-controller' && a === 'fritzbox')
+                    .filter(a => a !== 'js-controller')// && a === 'fritzbox')
                     .map(adapter =>
                         processAdapter(adapter, repo[adapter], content));
 

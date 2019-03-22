@@ -2,15 +2,13 @@
 title:       "Willkommen"
 lastChanged: "14.03.2019"
 ---
-
 # Willkommen bei ioBroker
-
 ioBroker ist ein zentraler Service zum Anbinden, Auswerten und Bedienen 
 von Systemen, die ohne ioBroker Insellösungen bleiben würden. 
 
 ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
 
-Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von `Adaptern`
+Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von *Adaptern*
 ermöglicht die Kommunikation mit über 200 verschiedenen Plattformen 
 von A wie Alexa bis Z wie Zeiterfassung. Sei es die Einbindung 
 kommerzieller Produkte aus fast allen Lebensbereichen oder die 
@@ -28,7 +26,6 @@ alles möglich.
    ersetzt.**
 
 ## Visualisierung
-
 Die Schnittstelle zum Benutzer ist die Visualisierung. ioBroker 
 stellt dazu mit `VIS` eine mächtige Umgebung zur Verfügung. 
 Aktuelle Werte von Sensoren können genau so wie historische Verläufe 
@@ -37,7 +34,7 @@ grafisch aufbereitet dargestellt werden. Live-Bilder von
 Heizungssysteme und Klimatechnik - fast alles was vorstellbar ist,
 kann auch umgesetzt werden. 
 
-![VIS](media/vis2.png ':size=500')  
+![VIS](media/vis2.png)  
 *Beispiel für eine selbst erstellte VIS-Benutzeroberfläche*
 
 Dabei hat der Anwender maximale Gestaltungsfreiheit. Die Erstellung 
@@ -53,7 +50,6 @@ Drop realisiert werden.
 
 
 ## Plattformübergreifend
-
 Jeder, der sich mit Hausautomation beschäftigt, wird früher oder 
 später feststellen, dass Systeme häufig nicht perfekt sind. Jedes 
 System hat seine Stärken und Schwächen. ioBroker ist deshalb 
@@ -70,7 +66,6 @@ ioBroker-System 7x24h möglich. Die Zugriffsteuerung kann mittels
 Benutzer und Gruppen vom Anwender frei konfiguriert werden.
 
 ## Skalierbar
-
 Sollen im Laufe der Zeit weitere Systeme angebunden werden, können vom 
 Anwender jederzeit zusätzliche Adapter bei laufendem Betrieb hinzugefügt 
 werden. Auch ioBroker selbst ist skalierbar. Mehrere ioBroker-Server 
@@ -81,7 +76,6 @@ Für Systeme mit höchsten Performanceanforderungen kann optional Redis,
 eine besonders schnelle Datenbank, eingebunden werden.
 
 ## Erweiterbar
-
 Die Programmierung erfolgt mit JavaScript, einer seit 1995 stetig weiter
 entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
 Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
@@ -89,7 +83,6 @@ zu ioBroker beitragen kann und auch individuelle Anforderungen
 umsetzbar sind.
 
 ## Community
-
 Seit 2014 hat sich ioBroker aufgrund seiner vielen Vorzüge eine breite 
 Unterstützung von tausenden Anwendern und Entwicklern gesichert. Im eigens
 eingerichteten [Forum](https://forum.iobroker.net) treffen sich Anwender 

@@ -18,6 +18,7 @@ function queuePromises(promises, cb) {
 
 function extractHeader(text) {
     const attrs = {};
+    if (!text) return ;
     if (text.substring(0, 3) === '---') {
         const pos = text.substring(3).indexOf('\n---');
         if (pos !== -1) {

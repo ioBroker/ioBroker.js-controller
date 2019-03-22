@@ -2,7 +2,9 @@ Wat betreft
 Adapters
 Allemaal
 auteurs:
+badges
 blog
+changelog
 Wolk
 Alles inklappen
 Datum
@@ -15,20 +17,29 @@ Filter
 Github
 afdruk
 info
+Informatie
 installeert:
 Laatste wijziging:
+Licentie
 Linux
 Lijst met adapters
 Nieuw in vorige maand:
 Nieuws, aankondigingen en ideeën over ioBroker
+Open repository
 Platform
 Privacybeleid
 Lezen
 Stal:
 Totaal:
 Deze pagina is automatisch vertaald uit "%s". Help ons deze pagina in het Engels te vertalen door hieronder op Bewerken te klikken.
+auteurs
+compact
 ioBroker Blog
+trefwoorden
+materialiseren
+mode
 wachtwoord
 gepost op %s
 Leesmij
 gebruiker
+versie

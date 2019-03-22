@@ -25,7 +25,7 @@ Die Kommunikation zwischen Adaptern, js-controller, Datenbanken und Webfrontends
 
 ioBroker und Adapter sind vorwiegend in der Programmiersprache JavaScript geschrieben. Zur
 Ausführung von JavaSript benötigt man eine entsprechende Laufzeitumgebung. ioBroker setzt deshalb
-auf `Nodejs` auf. Diese Laufzeitumgebung gibt es für verschiedenste Softwareplattformen wie Linux, Windows und macOS. Zur Installation von ioBroker und den Adaptern wird der JavaScript-Paketmanager `npm` genutzt.
+auf `Node.js` auf. Diese Laufzeitumgebung gibt es für verschiedenste Softwareplattformen wie Linux, Windows und macOS. Zur Installation von ioBroker und den Adaptern wird der JavaScript-Paketmanager `npm` genutzt.
 
 @@@ Hübsches Bild mit Architekturschichten @@@
 @@@ JS-Controller erklären und Überleitung zu Adapter & Instanzen @@@

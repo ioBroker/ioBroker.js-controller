@@ -109,132 +109,100 @@ class Utils {
     static decorateText(text, header, path) {
         const lines = text.split('\n');
         const content = {};
-        let current = [null, null, null, null, null];
+        let current = [null, null, null, null];
 
-        let license = false;
-        let log = false;
-        const licenseLines = [];
-        const changeLog = [];
+        const parts = [];
+        let changeLog;
+        let licenseLines;
+        while (lines.length && !lines[0].trim()) lines.shift();
+        while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
 
-        lines.forEach((line, i) => {
+        let title;
+
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trimRight();
+            let last = parts.length - 1;
+
             if (line.startsWith('=========')) {
-                line = '';
-                lines[i] = '--delete--';
-            }
-            if (header.adapter) {
-                if (!license && lines[i].startsWith('## License')) {
-                    license = true;
-                    log = false;
-                    lines[i] = '--delete--';
-                    line = '';
-                } else if (license) {
-                    licenseLines.push(lines[i]);
-                    lines[i] = '--delete--';
-                    line = '';
+                continue;
+            } else
+            if (line.match(/^# /)) {
+                const cont = Utils.findTitle(line, -1, path);
+                title = cont.title;
+            } else
+            if (line.match(/^##+ /)) {
+                parts.push({lines: [line], type: 'chapter'});
+                last++;
+                if (line.match(/ license$/i)) {
+                    parts[last].license = true;
+                    licenseLines = last;
+                } else
+                if (line.match(/ changelog$/i)) {
+                    parts[last].changelog = true;
+                    changeLog = last;
+                } else {
+                    let level = line.split('#') - 3;
+                    const cont = Utils.findTitle(line, 0, path);
+                    content[cont.href] = cont;
+                    current[level] = cont;
+                    level++;
+                    while(current[level] !== undefined) level = null;
                 }
-                if (license && lines[i].startsWith('## ')) {
-                    license = false;
+            } else
+            if (line.startsWith('@@@')) {
+                line = line.substring(3).trim();
+                parts.push({lines: [line], type: '@@@'});
+                last++;
+                if (line.trim().endsWith('@@@')) {
+                    parts[last].lines[0] = line.substring(0, line.length - 3);
+                } else {
+                    while(i + 1 < lines.length && !lines[i + 1].trim().endsWith('@@@')) {
+                        parts[last].lines.push(lines[i + 1].trim());
+                        i++;
+                    }
                 }
-
-                if (!log && lines[i].match(/^## Changelog/i)) {
-                    log = true;
-                    license = false;
-                    lines[i] = '--delete--';
-                    line = '';
-                } else if (log) {
-                    changeLog.push(lines[i]);
-                    lines[i] = '--delete--';
-                    line = '';
+            } else if (line.startsWith('```')) {
+                parts.push({lines: [line], type: 'code'});
+                last++;
+                if (!line.trim().endsWith('```')) {
+                    while(i + 1 < lines.length && !lines[i + 1].trim().endsWith('```')) {
+                        parts[last].lines.push(lines[i + 1]);
+                        i++;
+                    }
                 }
-                if (log && lines[i].startsWith('## ')) {
-                    log = false;
-                }
-            }
-
-            if (line.trim().startsWith('@@@')) {
-                lines[i] = line.substring(3).trim();
-                const _ll = [];
-
-                let j = i;
-                while (j < lines.length && !lines[j].match(/@@@$/)) {
-                    _ll.push(lines[j]);
-                    lines[j] = '';
-                    j++;
-                }
-                _ll.push(lines[j].replace(/@@@$/, ''));
-                lines[j] = '';
-
-                if (j > i + 1) {
-                    _ll[0] = '<b>' + _ll[0] + '</b>';
-                }
-
-                lines[i] = `<div class="notice" markdown>
-    ${_ll.join('\n')}
-    </div>`;
             } else if (line.startsWith('?> ') || line.startsWith('!> ') || line.startsWith('> ')) {
-                const _ll = [line.substring(3) + '<br/>'];
-                let j = i + 1;
-                while (j < lines.length && lines[j].startsWith('   ')) {
-                    _ll.push(lines[j].substring(3));
-                    lines[j] = '';
-                    j++;
+                parts.push({lines: [line.substring(3)], type: line.startsWith('?>') ? 'warn' : (line.startsWith('!>') ? 'alarm' : 'notice')});
+                last++;
+                while(i + 1 < lines.length && lines[i + 1].trim()) {
+                    parts[last].lines.push(lines[i + 1]);
+                    i++;
                 }
-                if (j > i + 1) {
-                    _ll[0] = '<b>' + _ll[0] + '</b>';
+            } else if (line.trim()) {
+                parts.push({lines: [line], type: 'p'});
+                last++;
+                while(i + 1 < lines.length && lines[i + 1].trim()) {
+                    parts[last].lines.push(lines[i + 1].trim());
+                    i++;
                 }
-
-                lines[i] = `<div class="${line[0] === '?' ? 'warn' : (line[0] === '!' ? 'alarm' : 'notice')}" markdown>
-    ${_ll.join('\n')}
-    </div>`;
-            } else if (line.startsWith('## ')) {
-                const cont = Utils.findTitle(line, 0, path);
-                content[cont.href] = cont;
-                current[0] = cont;
-                current[2] = null;
-                current[3] = null;
-                current[4] = null;
-                current[5] = null;
-            } else if (line.startsWith('### ')) {
-                const cont = Utils.findTitle(line, 1, path);
-                content[cont.href] = cont;
-
-                if (current[0]) {
-                    current[0].children = current[0].children || [];
-                    current[0].children.push(cont.href);
-                }
-
-                current[1] = cont;
-                current[2] = null;
-                current[3] = null;
-                current[4] = null;
-            } else if (line.startsWith('#### ')) {
-                const cont = Utils.findTitle(line, 2, path);
-                content[cont.href] = cont;
-                if (current[1]) {
-                    current[1].children = current[1].children || [];
-                    current[1].children.push(cont.href);
-                }
-
-                current[2] = cont;
-                current[3] = null;
-                current[4] = null;
-            } else if (line.startsWith('##### ')) {
-                const cont = Utils.findTitle(line, 3, path);
-                content[cont.href] = cont;
-                if (current[2]) {
-                    current[2].children = current[2].children || [];
-                    current[2].children.push(cont.href);
-                }
-
-                current[3] = cont;
-                current[4] = null;
             }
-        });
+        }
+
+        if (changeLog !== undefined) {
+            const _changeLog = changeLog;
+            changeLog = parts[changeLog].lines.join('\n');
+            parts.splice(_changeLog, 1);
+        }
+        if (licenseLines !== undefined) {
+            const _licenseLines = licenseLines;
+            licenseLines = parts[licenseLines].lines.join('\n');
+            parts.splice(licenseLines, 1);
+        }
         return {
-            lines: lines.filter(line => line !== '--delete--'),
+            parts,
             content,
-            changeLog: changeLog.join('\n'),
-            license: licenseLines.join('\n')
+            title,
+            changeLog: changeLog,
+            license: licenseLines
         };
     }
 }

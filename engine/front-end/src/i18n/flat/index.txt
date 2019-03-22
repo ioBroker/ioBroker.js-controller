@@ -2,7 +2,9 @@ About
 Adapters
 All
 Authors:
+Badges
 Blog
+Changelog
 Cloud
 Collapse all
 Date
@@ -15,20 +17,29 @@ Filter
 Github
 Imprint
 Info
+Information
 Installs:
 Last changed:
+License
 Linux
 List of adapters
 New in last month:
 News, announcements and ideas about ioBroker
+Open repository
 Platform
 Privacy policy
 Read
 Stable:
 Total:
 Translated from %s
+authors
+compact
 ioBroker Blog
+keywords
+materialize
+mode
 password
 posted on %s
 readme
 user
+version

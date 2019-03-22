@@ -2,7 +2,9 @@ Acerca de
 Adaptadores
 Todos
 Autores:
+Insignias
 Blog
+Registro de cambios
 Nube
 Desplegar todo
 Fecha
@@ -15,20 +17,29 @@ Filtrar
 Github
 Imprimir
 Información
+Información
 Instala:
 Último cambio:
+Licencia
 Linux
 Lista de adaptadores
 Nuevo en el mes pasado:
 Noticias, anuncios e ideas sobre ioBroker.
+Repositorio abierto
 Plataforma
 Política de privacidad
 Leer
 Estable:
 Total:
 Esta página ha sido traducida automáticamente de "%s". Ayúdenos a traducir esta página al inglés haciendo clic en Editar a continuación.
+autores
+compacto
 ioBroker Blog
+palabras clave
+materializar
+modo
 contraseña
 publicado en %s
 readme
 usuario
+versión

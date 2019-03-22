@@ -2,7 +2,9 @@ Sobre
 Adaptadores
 Todos
 Autores:
+Distintivos
 Blog
+Changelog
 Nuvem
 Recolher todos
 Encontro
@@ -15,20 +17,29 @@ Filtro
 Github
 Imprimir
 Info
+Em formação
 Instala:
 Última alteração:
+Licença
 Linux
 Lista de adaptadores
 Novo no mês passado:
 Notícias, anúncios e ideias sobre o ioBroker
+Repositório Aberto
 Plataforma
 Política de Privacidade
 Ler
 Estável:
 Total:
 Esta página foi traduzida automaticamente de "%s". Ajude-nos a traduzir esta página para o inglês clicando em Editar abaixo.
+autores
+compactar
 Blog do ioBroker
+palavras-chave
+materializar
+modo
 senha
 postado em %s
 readme
 do utilizador
+versão

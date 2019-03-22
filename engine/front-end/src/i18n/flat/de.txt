@@ -2,7 +2,9 @@
 Adapter
 Alles
 Autoren:
+Abzeichen
 Blog
+Änderungsprotokoll
 Wolke
 Alles einklappen
 Datum
@@ -15,20 +17,29 @@ Filter
 Github
 Impressum
 Info
+Information
 Installiert:
 Zuletzt geändert:
+Lizenz
 Linux
 Liste der Adapter
 Neu im letzten Monat:
 Neuigkeiten, Ankündigungen und Ideen zu ioBroker
+Repository öffnen
 Plattform
 Datenschutz-Bestimmungen
 Lesen
 Stabil:
 Gesamt:
-Diese Seite wurde automatisch von "%s" übersetzt. Helfen Sie uns, diese Seite ins Englische zu übersetzen, indem Sie unten auf Bearbeiten klicken.
+Diese Seite wurde automatisch von "%s" übersetzt. Helfen Sie uns, diese Seite auf Deutsch zu übersetzen, indem Sie unten auf Bearbeiten klicken.
+Autoren
+Kompaktmodus
 ioBroker Blog
+Schlüsselwörter
+Admin3
+Modus
 Passwort
 gepostet am %s
 Readme
 Nutzer
+Version

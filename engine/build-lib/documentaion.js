@@ -192,14 +192,14 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
         if (header.translatedFrom !== fromLang) {
             return Promise.resolve();
         }
-        const data = extractLicenseAndChangelog(body);
+        const data = utils.extractLicenseAndChangelog(body);
 
         if (result.header.hash === utils.getFileHash(data.body)) {
             return Promise.resolve();
         }
     }
 
-    const data = extractLicenseAndChangelog(body);
+    const data = utils.extractLicenseAndChangelog(body);
 
     // console.log(`Translate ${fromLang} => ${toLang}: "${sourceFileName}"`);
 
@@ -214,7 +214,7 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
             header.translatedFrom = fromLang;
             header.translatedWarning = consts.TRANSLATION_NOTICE[toLang];
             header.hash = utils.getFileHash(data.body);
-            utils.writeSafe(targetFileName, utils.addHeader(addChangelogAndLicense(actualText, data.changelog, data.license), header));
+            utils.writeSafe(targetFileName, utils.addHeader(utils.addChangelogAndLicense(actualText, data.changelog, data.license), header));
             console.log(`WARNING: File ${sourceFileName.replace(root, '/')} was translated from ${fromLang} to ${toLang} automatically`);
         });
 }
@@ -283,11 +283,13 @@ if (!module.parent) {
         });
     });*/
 
-    translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.harmony/README.md', 'de', 'ru')
+    /*translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.harmony/README.md', 'de', 'ru')
         .then(() => {
             console.log('done');
-        })
+        })*/
     //console.log(replaceImages(fs.readFileSync('C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md').toString(), 'C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md'));
+    //sync2Languages('de', 'en', () => console.log('done1'), ['C:/pWork/ioBroker.docs/docs/de/README.md'])
+    syncDocs(() => console.log('DONE'));
 } else {
     module.exports = {
         processContent,

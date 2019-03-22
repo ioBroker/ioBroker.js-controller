@@ -497,7 +497,7 @@ function tryToMerge(source, target) {
     return newTarget;
 }
 
-function translateMD(fromLang, text, toLang, translatedText, saveNoSource) {
+function translateMD(fromLang, text, toLang, translatedText, saveNoSource, fileName) {
     return new Promise(resolve => {
         const partsSource = partsTake(text, true);
         let partsTarget = translatedText && partsTake(translatedText);
@@ -506,7 +506,7 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource) {
             partsTarget = tryToMerge(partsSource, partsTarget);
         }
 
-        console.log(`____________TRANSLATE ${fromLang} => ${toLang}_______________`);
+        console.log(`____________TRANSLATE ${fromLang} => ${toLang}_______________: ${fileName}`);
 
         partsTranslate(fromLang, partsSource, toLang, partsTarget, parts => {
             resolve({result: partsSave(parts, saveNoSource), source: partsSave(partsSource)});
@@ -552,9 +552,21 @@ function translateText(fromLang, text, toLang) {
             // restore formatting of *, **, *** and __
             // | ** точка данных ** | ** Описание ** |  => | **точка данных** | **Описание** |
 
+            if (text.startsWith('!&gt;')) {
+                text = text.replace('&gt;', '>');
+            }
+            if (text.startsWith('° C')) {
+                text = text.replace('°C');
+            }
+            if (text.startsWith('° F')) {
+                text = text.replace('°F');
+            }
+            if (text.startsWith('% s')) {
+                text = text.replace(' %s ');
+            }
             // start with ***
             if (text.indexOf(' *** ') !== -1) {
-                let parts = text.split(' ***');
+                let parts = (text + ' ').split(' ***');
                 if (parts.length > 1) {
                     if (parts.length % 2 === 0) {
                         console.error('Cannot restore formatting!: ' + text);
@@ -564,16 +576,35 @@ function translateText(fromLang, text, toLang) {
                             if (i%2 === 0){
                                 text += part;
                             } else {
-                                text += ' ***' + part.trim() + '***';
+                                text += ' ***' + part.trim() + '*** ';
                             }
                         });
+                        text = text.replace(/\s\s/g, ' ');
+                    }
+                }
+            }
+            if (text.indexOf(' **_ ') !== -1) {
+                let parts = (text + ' ').split(/ \*\*_| _\*\*/);
+                if (parts.length > 1) {
+                    if (parts.length % 2 === 0) {
+                        console.error('Cannot restore formatting!: ' + text);
+                    } else {
+                        text = '';
+                        parts.forEach((part, i) => {
+                            if (i%2 === 0){
+                                text += part;
+                            } else {
+                                text += ' **_' + part.trim() + '_** ';
+                            }
+                        });
+                        text = text.replace(/\s\s/g, ' ');
                     }
                 }
             }
 
             if (text.indexOf(' ** ') !== -1) {
                 // then with **
-                let parts = text.split(/ \*\*[^*]/);
+                let parts = (text + ' ').split(/ \*\*[^*]/);
                 if (parts.length > 1) {
                     if (parts.length % 2 === 0) {
                         console.error('Cannot restore formatting!: ' + text);
@@ -583,17 +614,18 @@ function translateText(fromLang, text, toLang) {
                             if (i % 2 === 0) {
                                 text += part;
                             } else {
-                                text += ' **' + part.trim() + '**';
+                                text += ' **' + part.trim() + '** ';
                             }
                         });
                     }
                 }
+                text = text.replace(/\s\s/g, ' ');
             }
 
             // then with *
             const pos = text.indexOf(' * ') !== -1;
             if (pos !== -1 && pos) {
-                let parts = text.split(/ \*[^*]/);
+                let parts = (text + ' ').split(/ \*[^*]/);
                 if (parts.length > 1) {
                     if (parts.length % 2 === 0) {
                         console.error('Cannot restore formatting!: ' + text);
@@ -603,9 +635,10 @@ function translateText(fromLang, text, toLang) {
                             if (i % 2 === 0) {
                                 text += part;
                             } else {
-                                text += ' *' + part.trim() + '*';
+                                text += ' *' + part.trim() + '* ';
                             }
                         });
+                        text = text.replace(/\s\s/g, ' ');
                     }
                 }
             }

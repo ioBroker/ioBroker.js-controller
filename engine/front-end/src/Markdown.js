@@ -28,7 +28,9 @@ const styles = theme => ({
         width: 'calc(100% - 40px)',
         maxWidth: 1000,
         margin: 20,
-
+        '& .md-link': {
+            display: 'inline-block'
+        },
         '& h2': {
             width: '100%',
             textAlign: 'left',
@@ -37,48 +39,6 @@ const styles = theme => ({
         },
         '& hr': {
             borderWidth: '0 0 1px 0'
-        },
-        '& .warn': {
-            borderColor: '#0b87da',
-            borderWidth: '0 0 0 3px',
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-            borderStyle: 'solid',
-            background: '#eff6fb',
-            '&:before': {
-                content: '"⚠"',
-                //borderRadius: '50%',
-                //background: '#008aff',
-            }
-        },
-        '& .alarm': {
-            borderColor: '#da0b50',
-            borderWidth: '0 0 0 3px',
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-            borderStyle: 'solid',
-            background: '#fbeff3',
-            '&:before': {
-                content: '"⚠"',
-                //borderRadius: '50%',
-                //background: '#008aff',
-            }
-        },
-        '& .notice': {
-            borderColor: '#9c989b',
-            borderWidth: '0 0 0 3px',
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-            borderStyle: 'solid',
-            background: '#dedede',
-            '&:before': {
-                content: '"✋"',
-                //borderRadius: '50%',
-                //background: '#dedede',
-            }
         },
         '& a': {
             color: 'inherit'
@@ -183,6 +143,7 @@ const styles = theme => ({
     },
     mdLink: {
         cursor: 'pointer',
+        textDecoration: 'underline',
         '&:after': {
             content: '"🔗"',
             opacity: 0.7,
@@ -193,7 +154,67 @@ const styles = theme => ({
     info: {
         paddingTop: 10,
         paddingBottom: 10,
-    }
+    },
+
+    warn: {
+        borderColor: '#0b87da',
+        borderWidth: '0 0 0 3px',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#eff6fb',
+        '&:before': {
+            content: '"⚠"',
+            //borderRadius: '50%',
+            //background: '#008aff',
+        }
+    },
+    alarm: {
+        borderColor: '#da0b50',
+        borderWidth: '0 0 0 3px',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#fbeff3',
+        '&:before': {
+            content: '"⚠"',
+            //borderRadius: '50%',
+            //background: '#008aff',
+        }
+    },
+    notice: {
+        borderColor: '#9c989b',
+        borderWidth: '0 0 0 3px',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#dedede',
+        '&:before': {
+            content: '"✋"',
+            //borderRadius: '50%',
+            //background: '#dedede',
+        }
+    },
+    todo: {
+        borderColor: '#00769c',
+        borderWidth: '0 0 0 3px',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginTop: 5,
+        marginBottom: 5,
+        borderStyle: 'solid',
+        background: '#c4d2de',
+        /*&:before': {
+            content: '"✋"',
+            //borderRadius: '50%',
+            //background: '#dedede',
+        }*/
+    },
 });
 
 const converter = new Converter();
@@ -206,7 +227,8 @@ class Markdown extends Router {
         super(props);
         // load page
         this.state = {
-            text: '',
+            parts: [],
+            title: '',
             loadTimeout: false,
             header: {},
             content: {},
@@ -223,7 +245,7 @@ class Markdown extends Router {
         this.load();
 
         // Give 300ms to load the page. After that show the loading indicator.
-        setTimeout(() => !this.state.text && this.setState({loadTimeout: true}), 300);
+        setTimeout(() => !this.state.parts.length && this.setState({loadTimeout: true}), 300);
 
         this.contentRef = React.createRef();
     }
@@ -278,14 +300,14 @@ class Markdown extends Router {
                     return this.setState({notFound: true});
                 }
 
-                const {header, body, content, license, changeLog} = this.format(text);
-                let _title = header.title || Utils.getTitle(text);
+                const {header, parts, content, license, changeLog, title} = this.format(text);
+                let _title = header.title || title || Utils.getTitle(text);
                 if (_title) {
                     window.document.title = _title;
                 } else if (title) {
                     window.document.title = title;
                 }
-                this.setState({text: body, header, loadTimeout: false, content, license, changeLog});
+                this.setState({parts, header, loadTimeout: false, content, license, changeLog, title});
 
                 setTimeout(() => this.onHashChange(), 200);
             });
@@ -296,9 +318,9 @@ class Markdown extends Router {
         let {header, body} = Utils.extractHeader(text);
 
         body = Utils.removeDocsify(body);
-        let {lines, content, license, changeLog} = Utils.decorateText(body, header, `${this.props.path[0] === '/' ? this.props.path : '/' + this.props.path}`);
+        let {parts, content, license, changeLog, title} = Utils.decorateText(body, header, `${this.props.path[0] === '/' ? this.props.path : '/' + this.props.path}`);
 
-        return {header, body: lines.join('\n'), content, license, changeLog};
+        return {header, parts, content, license, changeLog, title};
     }
 
     renderHeader() {
@@ -317,7 +339,6 @@ class Markdown extends Router {
                 data.push((<IconButton title={I18n.t('Open repository')} onClick={() => this.openLink(link)}><IconGithub/></IconButton>));
             }
         }
-
 
         if (this.state.header.description) {
             data.push((<span className={this.props.classes.description}>{this.state.header.description}</span>));
@@ -476,16 +497,30 @@ class Markdown extends Router {
         if (this.state.notFound) {
             return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
         }
-        if (this.state.loadTimeout && !this.state.text) {
+        if (this.state.loadTimeout && !this.state.parts.length) {
             return (<Loader theme={this.props.theme}/>);
         }
-        const reactElement = converter.convert(this.state.text || '');
+        const reactElements = this.state.parts.map(part => {
+            const rct = converter.convert(part.lines.join('\n'));
+            this.replaceHref(rct);
 
-        this.replaceHref(reactElement);
+            if (part.type === 'warn') {
+                return (<div className={this.props.classes.warn}>{rct}</div>);
+            } else if (part.type === 'alarm') {
+                return (<div className={this.props.classes.alarm}>{rct}</div>);
+            } else if (part.type === 'notice') {
+                return (<div className={this.props.classes.notice}>{rct}</div>);
+            }  else if (part.type === '@@@') {
+                return (<div className={this.props.classes.todo}>{rct}</div>);
+            } else {
+                return rct;
+            }
+        });
 
         return (<div className={this.props.classes.root} ref={this.contentRef}>
             {this.renderHeader()}
-            {reactElement}
+            {this.state.title ? (<h1>{this.state.title}</h1>) : null}
+            {reactElements}
             <hr/>
             {this.renderLicense()}
             {this.renderChangeLog()}

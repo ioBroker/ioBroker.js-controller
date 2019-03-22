@@ -2,7 +2,9 @@ O
 Adaptery
 Wszystko
 Autorski:
+Odznaki
 Blog
+Lista zmian
 Chmura
 Zwinąć wszystkie
 Data
@@ -15,20 +17,29 @@ Filtr
 Github
 Odcisk
 Informacje
+Informacja
 Instaluje:
 Ostatnia zmiana:
+Licencja
 Linux
 Lista adapterów
 Nowość w zeszłym miesiącu:
 Wiadomości, ogłoszenia i pomysły na temat ioBroker
+Otwórz repozytorium
 Platforma
 Polityka prywatności
 Czytać
 Stabilny:
 Całkowity:
 Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
+autorski
+kompaktowy
 Blog ioBroker
+słowa kluczowe
+zmaterializować
+tryb
 hasło
 opublikowano na %s
 readme
 użytkownik
+wersja

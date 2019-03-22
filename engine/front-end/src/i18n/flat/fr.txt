@@ -2,7 +2,9 @@ Sur
 Adaptateurs
 Tout
 Auteurs:
+Insignes
 Blog
+Changelog
 Nuage
 Réduire tout
 Rendez-vous amoureux
@@ -15,20 +17,29 @@ Filtre
 Github
 Imprimer
 Info
+Information
 Installe:
 Dernière modification:
+Licence
 Linux
 Liste des adaptateurs
 Nouveau dans le mois dernier:
 Nouvelles, annonces et idées sur ioBroker
+Référentiel ouvert
 Plate-forme
 Politique de confidentialité
 Lis
 Stable:
 Total:
 Cette page a été traduite automatiquement à partir de "%s". Aidez-nous à traduire cette page en anglais en cliquant sur Modifier ci-dessous.
+auteurs
+compact
 Blog ioBroker
+mots clés
+se concrétiser
+mode
 mot de passe
 posté sur %s
 readme
 utilisateur
+version
