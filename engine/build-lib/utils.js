@@ -5,6 +5,7 @@ const crypto = require('crypto');
 function getFileHash(text) {
     return crypto.createHash('sha256').update(text.trim()).digest('base64');
 }
+
 function queuePromises(promises, cb) {
     if (!promises || !promises.length) {
         cb && cb();
@@ -128,6 +129,69 @@ function delDir(source) {
     }
 }
 
+function extractLicenseAndChangelog(text) {
+    const lines = text.trim().split('\n');
+    const changelog = [];
+    let changelogA = false;
+    const license = [];
+    let licenseA = false;
+    let newLines = [];
+    lines.forEach(line => {
+        if (line.match(/#+\sChangelog/i)) {
+            changelog.push('## Changelog');
+            changelogA = true;
+            licenseA = false;
+        } else if (line.match(/#+\sLicense/i)) {
+            license.push('## License');
+            changelogA = false;
+            licenseA = true;
+        } else if (line.match(/^# |^## /)) {
+            // if some other chapter detected
+            newLines.push(line);
+            changelogA = false;
+            licenseA = false;
+        } else if (licenseA) {
+            license.push(line);
+        } else if (changelogA) {
+            changelog.push(line);
+        } else {
+            newLines.push(line);
+        }
+    });
+    while (newLines.length && !newLines[0].trim()) newLines.shift();
+    while (newLines.length && !newLines[newLines.length - 1].trim()) newLines.pop();
+
+    while (changelog.length && !changelog[0].trim()) changelog.shift();
+    while (changelog.length && !changelog[changelog.length - 1].trim()) changelog.pop();
+
+    while (license.length && !license[0].trim()) license.shift();
+    while (license.length && !license[license.length - 1].trim()) license.pop();
+
+    return {body: newLines.join('\n'), license: license.join('\n'), changelog: changelog.join('\n')};
+}
+
+function addChangelogAndLicense(body, changelog, license) {
+    return body.trim().replace(/\n+$/, '') +
+        (changelog ? '\n\n' + changelog.trim().replace(/\n+$/, '') : '') +
+        (license ? '\n\n' + license.trim().replace(/\n+$/, '') : '');
+}
+
+function getAllFiles(root, onlyMd, _result) {
+    _result = _result || [];
+    fs.readdirSync(root).filter(name => !name.startsWith('_')).forEach(name => {
+        const fileName = path.join(root, name).replace(/\\/g, '/');
+        const stat = fs.statSync(fileName);
+        if (stat.isDirectory()) {
+            getAllFiles(fileName, onlyMd, _result);
+        } else {
+            if (!onlyMd || name.match(/\.md$/i)) {
+                _result.push(fileName);
+            }
+        }
+    });
+    return _result;
+}
+
 module.exports = {
     queuePromises,
     extractHeader,
@@ -137,5 +201,8 @@ module.exports = {
     writeSafe,
     copyDir,
     delDir,
-    getFileHash
+    getFileHash,
+    extractLicenseAndChangelog,
+    addChangelogAndLicense,
+    getAllFiles
 };

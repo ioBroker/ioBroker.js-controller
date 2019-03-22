@@ -1,4 +1,7 @@
-![Logo](media/fritzbox.png) 
+---
+local: true
+---
+![Logo](media/fritzbox.png)
 # AVM Fritz!Box®
 
 Bei der Fritz!Box (Eigenschreibweise des Herstellers AVM) handelt es sich um die
@@ -162,3 +165,41 @@ Visualisierung aufgebaut haben, bleibt er weiterhin verfügbar, wird aber nicht
 mehr weiterentwickelt.
 
 Neueinsteigern wird empfohlen, den [TR-064-Adapter](https://github.com/ioBroker/ioBroker.docs/tree/master/docs/adapterref/docs/iobroker.tr-064/de) zu installieren.
+
+## Changelog
+### 0.3.1 (2016-07-24)
+* (BasGo) enhanced TR-064 configuration
+* (BasGo) added rudimentary phonebook download into object store
+
+### 0.3.0 (2015-06-26)
+* (UncleSamSwiss) added support for wlan.enabled (using TR-064)
+
+### 0.2.1 (2015-06-28)
+* (ruhr) more configuration options
+
+### 0.2.0 (2015-06-26)
+* (ruhr)
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2015, ruhr70
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

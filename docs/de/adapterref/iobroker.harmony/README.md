@@ -1,5 +1,6 @@
 ---
 lastChanged: 20.07.2018
+local:       true
 ---
 ![Harmony](media/harmony.png)
 # Logitech Harmony

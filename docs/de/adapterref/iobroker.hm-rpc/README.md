@@ -1,7 +1,8 @@
 ---
 lastChanged: 09.01.2019
+local:       true
 ---
-![](media/homematic.png)
+![logo](media/homematic.png)
 # HomeMatic RPC
 
 ## Homematic

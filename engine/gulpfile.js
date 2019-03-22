@@ -117,14 +117,13 @@ gulp.task('clean', done => {
     done();
 });
 
+// Build content.md file
 gulp.task('documentation', () => {
-    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'))
-        .then(content => {
-            console.log(JSON.stringify(content));
-            return documentation.processFiles(consts.SRC_DOC_DIR);
-        });
+    // build content
+    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'));
 });
 
+// translate and copy blogs
 gulp.task('blog', () => {
     return blog.build()
         .then(() => {
@@ -132,13 +131,31 @@ gulp.task('blog', () => {
         });
 });
 
-gulp.task('adapters', () => {
+// download all adapters
+gulp.task('downloadAdapters', () => {
     return adapters.buildAdapterContent()
         .then(content => {
             console.log(JSON.stringify(content));
         });
 });
 
-gulp.task('default', gulp.series('clean', 'documentation', 'adapters'));
+// copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
+gulp.task('copyFiles', () => {
+    return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
+});
+
+// translate all documents: adapters and docu
+gulp.task('syncDocs', done => {
+    documentation.syncDocs(done);
+});
+
+gulp.task('default', gulp.series(
+    'clean',            // clean dir
+    'blog',             // translate and copy blogs
+    'downloadAdapters', // download all adapters an create adapter.json
+    'syncDocs',         // translate documents and adapters
+    'documentation',    // create content for documentation
+    'copyFiles'         // copy all adapters and docs to public
+));
 
 

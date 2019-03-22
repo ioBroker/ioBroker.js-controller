@@ -1,4 +1,7 @@
-![](media/homematic.png) 
+---
+local:       true
+---
+![logo](media/homematic.png)
 # HomeMatic ReGaHSS
 
 ## Homematic

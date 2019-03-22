@@ -1,4 +1,7 @@
-﻿![Logo](media/tradfri.png)
+﻿---
+local:       true
+---
+![logo](media/tradfri.png)
 # Ikea tradfri Adapter
 
 ## Tradfri
