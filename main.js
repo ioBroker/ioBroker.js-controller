@@ -1315,40 +1315,63 @@ function processMessage(msg) {
     // and iobroker.socketio/lib/socket.js
 
     switch (msg.command) {
+        case 'shell':
+            if (config.system && config.system.allowShellCommands) {
+                const { exec } = require('child_process');
+                logger.info('host.' + hostname + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
+                exec(msg.message, (err, stdout, stderr) => {
+                    if (err) {
+                        return logger.error(`error: ${err}`);
+                    }
+
+                    logger.info(`stdout: ${stdout}`);
+                    logger.error(`stderr: ${stderr}`);
+                });
+            } else {
+                logger.warning('host.' + hostname + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
+            }
+
+            break;
+
         case 'cmdExec': {
             const spawn = require('child_process').spawn;
             const args = [__dirname + '/' + tools.appName + '.js'];
-            const cmd = msg.message.data.split(' ');
-            for (let i = 0; i < cmd.length; i++) {
-                args.push(cmd[i]);
-            }
-            logger.info('host.' + hostname + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
-
-            const child = spawn('node', args);
-            if (child.stdout) {
-                child.stdout.on('data', data => {
-                    data = data.toString().replace(/\n/g, '');
-                    logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
-                    if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
-                });
-            }
-
-            if (child.stderr) {
-                child.stderr.on('data', data => {
-                    data = data.toString().replace(/\n/g, '');
-                    logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
-                    if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
-                });
-            }
-
-            child.on('exit', exitCode => {
-                logger.info('host.' + hostname + ' ' + tools.appName + ' exit ' + exitCode);
-                if (msg.from) {
-                    sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
-                    // Sometimes finished command is lost, recent it
-                    setTimeout(() => sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode}), 1000);
+            if (!msg.message.data) {
+                logger.warn('host.' + hostname + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}');
+            } else {
+                const cmd = msg.message.data.split(' ');
+                for (let i = 0; i < cmd.length; i++) {
+                    args.push(cmd[i]);
                 }
-            });
+                logger.info('host.' + hostname + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
+
+                const child = spawn('node', args);
+                if (child.stdout) {
+                    child.stdout.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
+                        if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+                    });
+                }
+
+                if (child.stderr) {
+                    child.stderr.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
+                        if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+                    });
+                }
+
+                child.on('exit', exitCode => {
+                    logger.info('host.' + hostname + ' ' + tools.appName + ' exit ' + exitCode);
+                    if (msg.from) {
+                        sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
+                        // Sometimes finished command is lost, recent it
+                        setTimeout(() => sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode}), 1000);
+                    }
+                });
+            }
+
             break;
         }
 
