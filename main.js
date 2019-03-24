@@ -446,7 +446,7 @@ function startAliveInterval() {
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     setInterval(reportStatus, config.system.statisticsInterval);
     reportStatus();
-    tools.measureEventLoop(1000, (lag) => eventLoopLags.push(lag));
+    tools.measureEventLoopLag(1000, (lag) => eventLoopLags.push(lag));
 }
 
 function reportStatus() {
@@ -523,7 +523,8 @@ function reportStatus() {
     states.setState(id + '.outputCount',  {val: outputCount, ack: true, from: id});
 
     if (eventLoopLags.length) {
-        states.setState(id + '.eventLoopLag', {val: Math.ceil(eventLoopLags.reduce((a, b) => (a + b)) / eventLoopLags.length), ack: true, from: id}); // average of measured values
+        const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => (a + b)) / eventLoopLags.length);
+        states.setState(id + '.eventLoopLag', {val: eventLoopLag, ack: true, from: id}); // average of measured values
         eventLoopLags = [];
     }
 
@@ -1165,8 +1166,8 @@ function setMeta() {
         _id:       id + '.eventLoopLag',
         type:      'state',
         common: {
-            name:  'Controller - 15 seconds average of event nodejs loop lag in ms',
-            desc:  'Average nodejs event loop lag in ms',
+            name:  'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
+            desc:  'Average Node.js event loop lag in ms',
             type:  'number',
             read:  true,
             write: false,
