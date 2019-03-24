@@ -215,6 +215,9 @@ const styles = theme => ({
             //background: '#dedede',
         }*/
     },
+    paragraph: {
+
+    }
 });
 
 const converter = new Converter();
@@ -252,6 +255,7 @@ class Markdown extends Router {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.path !== nextProps.path) {
+            this.setState({notFound: false, parts :[]});
             this.load(nextProps.path);
         } else
         if (this.props.language !== nextProps.language) {
@@ -267,24 +271,22 @@ class Markdown extends Router {
         }
     }
 
-    openLink(url, target) {
-        if (target === 'this') {
-            window.location = url;
-        } else {
-            window.open(url, target || '_blank');
-        }
-    }
-
     onNavigate(id, link) {
         if (link && link.match(/^https?:\/\//)) {
-            this.openLink(link);
+            Utils.openLink(link);
         } else if (id) {
             const el = window.document.getElementById(id) || window.document.getElementById(id.replace('nbsp', ''));
             if (el) {
                 el.scrollIntoView(true);
             }
-
         } else if (link) {
+            if (link.indexOf('..')) {
+                // intro/../../download
+                const parts = link.split('/');
+
+
+            }
+
             this.props.onNavigate(null, null, link);
         }
     }
@@ -292,25 +294,27 @@ class Markdown extends Router {
     load(path, language) {
         path = path || this.props.path;
         language = language || this.props.language;
-        fetch(`${language}${path[0] === '/' ? path : '/' + path}`)
-            .then(res => res.text())
-            .then(text => {
-                if (text.startsWith('<!DOCTYPE html>')) {
-                    // page not found
-                    return this.setState({notFound: true});
-                }
+        if (path && language) {
+            fetch(`${language}${path[0] === '/' ? path : '/' + path}`)
+                .then(res => res.text())
+                .then(text => {
+                    if (text.startsWith('<!DOCTYPE html>')) {
+                        // page not found
+                        return this.setState({notFound: true});
+                    }
 
-                const {header, parts, content, license, changeLog, title} = this.format(text);
-                let _title = header.title || title || Utils.getTitle(text);
-                if (_title) {
-                    window.document.title = _title;
-                } else if (title) {
-                    window.document.title = title;
-                }
-                this.setState({parts, header, loadTimeout: false, content, license, changeLog, title});
+                    const {header, parts, content, license, changeLog, title} = this.format(text);
+                    let _title = header.title || title || Utils.getTitle(text);
+                    if (_title) {
+                        window.document.title = _title;
+                    } else if (title) {
+                        window.document.title = title;
+                    }
+                    this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title});
 
-                setTimeout(() => this.onHashChange(), 200);
-            });
+                    setTimeout(() => this.onHashChange(), 200);
+                });
+        }
     }
 
     format(text) {
@@ -336,7 +340,7 @@ class Markdown extends Router {
             ]}</h1>));
             if (this.state.header.readme) {
                 const link = this.state.header.readme.replace(/blob\/master\/README.md$/, '');
-                data.push((<IconButton title={I18n.t('Open repository')} onClick={() => this.openLink(link)}><IconGithub/></IconButton>));
+                data.push((<IconButton title={I18n.t('Open repository')} onClick={() => Utils.openLink(link)}><IconGithub/></IconButton>));
             }
         }
 
@@ -500,20 +504,20 @@ class Markdown extends Router {
         if (this.state.loadTimeout && !this.state.parts.length) {
             return (<Loader theme={this.props.theme}/>);
         }
-        const reactElements = this.state.parts.map(part => {
+        const reactElements = this.state.parts.map((part, i) => {
             const rct = converter.convert(part.lines.join('\n'));
             this.replaceHref(rct);
 
             if (part.type === 'warn') {
-                return (<div className={this.props.classes.warn}>{rct}</div>);
+                return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);
             } else if (part.type === 'alarm') {
-                return (<div className={this.props.classes.alarm}>{rct}</div>);
+                return (<div key={'parts' + i} className={this.props.classes.alarm}>{rct}</div>);
             } else if (part.type === 'notice') {
-                return (<div className={this.props.classes.notice}>{rct}</div>);
+                return (<div key={'parts' + i} className={this.props.classes.notice}>{rct}</div>);
             }  else if (part.type === '@@@') {
-                return (<div className={this.props.classes.todo}>{rct}</div>);
+                return (<div key={'parts' + i} className={this.props.classes.todo}>{rct}</div>);
             } else {
-                return rct;
+                return <div key={'parts' + i} className={this.props.classes.paragraph}>{rct}</div>;
             }
         });
 

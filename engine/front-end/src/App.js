@@ -19,6 +19,7 @@ import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
 import TreePage from './TreePage';
 import Router from './Router';
+import Utils from './Utils';
 
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
@@ -209,21 +210,13 @@ class App extends Router {
                         <MenuItem key={lang} selected={this.state.language === lang} onClick={() =>
                             this.setState({languageMenu: false, anchorMenu: null}, () => {
                                 const location = Router.getLocation();
-                                this.onNavigate(lang, location.tab, location.page, location.chapter);
+                                this.onNavigate(lang, location.tab || 'intro', location.page, location.chapter);
                             })
                         }>{LANGUAGES[lang].full}</MenuItem>
                     ))}
                 </Menu>)
             ] : null
         ];
-    }
-
-    openLink(url, target) {
-        if (target === 'this') {
-            window.location = url;
-        } else {
-            window.open(url, target || '_blank');
-        }
     }
 
     onNavigate(language, tab, page, chapter) {
@@ -244,7 +237,7 @@ class App extends Router {
                 }}
             }>
                 {PAGES[name].menu.map(item =>
-                    <MenuItem key={item.name} onClick={() => this.openLink(item.link, item.target)}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
+                    <MenuItem key={item.name} onClick={() => Utils.openLink(item.link, item.target)}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
                 )}
             </Menu>);
         }
@@ -261,7 +254,7 @@ class App extends Router {
                       onChange={(e, value) => {
                           const selectedPage = Object.keys(PAGES)[value];
                           if (PAGES[selectedPage].link) {
-                              this.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
+                              Utils.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
                           } else if (PAGES[selectedPage].menu) {
                               const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
                               if (menuOpened.indexOf(selectedPage) === -1) {
@@ -317,7 +310,7 @@ class App extends Router {
                                 (<List className={this.props.classes.subMenu}>
                                     {PAGES[tab].menu.map(item =>
                                         (<ListItem classes={{root: this.props.classes.subMenuItem}}button key={item}
-                                                   onClick={() => this.openLink(item.link, item.target)}>
+                                                   onClick={() => Utils.openLink(item.link, item.target)}>
                                             {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
                                             <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
                                         </ListItem>)

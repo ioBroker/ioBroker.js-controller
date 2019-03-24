@@ -145,54 +145,73 @@ function partsTake(text, addIds) {
     lines.forEach(line => {
         let last = parts.length - 1;
 
+        let lineTrimmed = line.trim();
+
         if (current === 'code') {
-            if (line.trim().endsWith('```')) {
+            if (lineTrimmed.endsWith('```')) {
                 current = '';
             }
-            parts[last].lines.push(line);
+            parts[last].lines.push(line.trimRight());
             return;
         }
 
-        line = line.trim();
-        if (line.trim().startsWith('```')) {
+        if (!lineTrimmed) {
+            parts.push({type: 'decoration', lines: ['']});
+            current = '';
+        } else
+        // detect
+        //    - blabla
+        //    - seconds blabla
+        // or
+        //    * blabla
+        //    * seconds blabla
+        // or
+        //    1. blabla
+        //    2. seconds blabla
+        if (lineTrimmed.match(/^-\s/) || lineTrimmed.match(/^\*\s/) || lineTrimmed.match(/^\d+\.\s/)) {
+            parts.push({type: 'list', lines: []});
+            last++;
+            parts[last].lines.push(line);
+            current = '';
+        } else
+        if (lineTrimmed.startsWith('```')) {
             parts.push({type: 'code', lines: []});
             last++;
 
-            parts[last].lines = parts[last].lines || [];
             parts[last].lines.push(line);
 
-            if (!line.substring(3).endsWith('```')) {
+            if (!lineTrimmed.substring(3).endsWith('```')) {
                 current = 'code';
             } else {
                 current = '';
             }
         } else
-        if (line.startsWith('|') && line.endsWith('|')) {
-            parts.push({type: 't', lines: [line]});
+        if (lineTrimmed.startsWith('|') && lineTrimmed.endsWith('|')) {
+            parts.push({type: 'table', lines: [line]});
         } else
-        if (line.startsWith('<!-- ID: ')) {
+        if (lineTrimmed.startsWith('<!-- ID: ')) {
             parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
             current = '';
         } else
         if (current === 'source') {
-            if (line.endsWith(' -->')) {
+            if (lineTrimmed.endsWith(' -->')) {
                 current = '';
-                line = line.substring(0, line.length - 4);
+                line = lineTrimmed.substring(0, line.length - 4);
             }
             parts[last].source.push(line);
         } else
-        if (line.startsWith('<!-- SOURCE: ')) {
+        if (lineTrimmed.startsWith('<!-- SOURCE: ')) {
             if (!parts[last]) {
                 console.error('Source without text!!!');
             }
-            if (!line.endsWith(' -->')) {
+            if (!lineTrimmed.endsWith(' -->')) {
                 current = 'source';
             } else {
-                line = line.substring(0, line.length - 4);
+                lineTrimmed = lineTrimmed.substring(0, line.length - 4);
                 current = '';
             }
             parts[last].source = parts[last].source || [];
-            line = line.substring('<!-- SOURCE: '.length);
+            line = lineTrimmed.substring('<!-- SOURCE: '.length);
 
             // extract id
             const m = line.match(/^(\d+)\s|^(\d+)$/);
@@ -207,8 +226,8 @@ function partsTake(text, addIds) {
             }
         } else
         // If chapter
-        if (line.startsWith('#')) {
-            parts.push({type: 'h', lines: [line]});
+        if (lineTrimmed.startsWith('#')) {
+            parts.push({type: 'header', lines: [line]});
         } else if (line) {
             if (!current) {
                 current = 'p';
@@ -224,6 +243,12 @@ function partsTake(text, addIds) {
         // Find images in line and store it
         let m = line.match(/!\[[^]*]\([^)]+\)/g);
         if (m) {
+            if (!current) {
+                current = 'p';
+                parts.push({type: current, lines: []});
+                last++;
+            }
+
             m.forEach(item => {
                 let mm = item.match(/^!\[([^]*)]\(([^)]+)\)$/);
                 if (mm) {
@@ -252,6 +277,12 @@ function partsTake(text, addIds) {
         // Find links in line and store it
         m = line.match(/\[[^]*]\([^)]+\)/g);
         if (m) {
+            if (!current) {
+                current = 'p';
+                parts.push({type: current, lines: []});
+                last++;
+            }
+
             m.forEach((item, i) => {
                 let mm = item.match(/^\[([^]*)]\(([^)]+)\)$/);
                 if (mm) {
@@ -270,6 +301,12 @@ function partsTake(text, addIds) {
         // Find codes in line and store it
         m = line.match(/```[^`]+```/g);
         if (m) {
+            if (!current) {
+                current = 'p';
+                parts.push({type: current, lines: []});
+                last++;
+            }
+
             m.forEach((item, i) => {
                 let mm = item.match(/^```([^`]+)```$/);
                 if (mm) {
@@ -284,6 +321,12 @@ function partsTake(text, addIds) {
 
         m = line.match(/`[^`]+`/g);
         if (m) {
+            if (!current) {
+                current = 'p';
+                parts.push({type: current, lines: []});
+                last++;
+            }
+
             m.forEach((item, i) => {
                 let mm = item.match(/^`([^`]+)`$/);
                 if (mm) {
@@ -297,7 +340,6 @@ function partsTake(text, addIds) {
         if (changed) {
             parts[last].lines[parts[last].lines.length - 1] = line;
         }
-
     });
 
     parts = parts.filter(part => part.lines.length);
@@ -316,16 +358,28 @@ function partsTake(text, addIds) {
 function partsSave(parts, saveNoSource) {
     const lines = [];
     parts.forEach((part, i) => {
-        let text = (part.text || part.lines.join('\n')).trim();
 
         if (part.type === 'code') {
-            console.log(text)
+            // Remove by all lines the tabs
+            if (part.lines[0][0] === ' ') {
+                const pos = part.lines[0].indexOf('`');
+                part.lines.forEach((_, i) => {
+                    const tabs = part.lines[i].substring(0, pos);
+                    if (tabs.trim()) {
+                        console.log('Invalid formatting of code!!!');
+                        console.log(part.lines.join('\n'));
+                    }
+                    part.lines[i] = part.lines[i].substring(pos);
+                });
+            }
 
         }
 
+        let text = (part.text || part.lines.join('\n')).trimRight();
+
         if (text.replace(/\n/g, '').trim() || (part.original && part.original.replace(/\n$/, ''))) {
             text = text.replace(/\n$/, '');
-            if (part.type === 'h') {
+            if (part.type === 'header') {
                 const m = text.match(/^(#*) (.+)$/);
                 if (m) {
                     text = m[1] + ' ' + m[2][0].toUpperCase() + m[2].substring(1);
@@ -334,21 +388,25 @@ function partsSave(parts, saveNoSource) {
 
             if (part.links) {
                 part.links.forEach((item, i) => {
-                    text = text.replace(`§§LLLLL_${i}§§`, `[${item.text}](${item.link})`);
+                    const reg = new RegExp(`§§L+_${i}§§`);
+                    text = text.replace(reg, `[${item.text}](${item.link})`);
                 });
             }
             if (part.codes) {
                 part.codes.forEach((item, i) => {
                     if (item.single) {
-                        text = text.replace(`§§SSSSS_${i}§§`, `\`${item.code}\``);
+                        const reg = new RegExp(`§§S+_${i}§§`);
+                        text = text.replace(reg, `\`${item.code}\``);
                     } else {
-                        text = text.replace(`§§JJJJJ_${i}§§`, `\`\`\`${item.code}\`\`\``);
+                        const reg = new RegExp(`§§J+_${i}§§`);
+                        text = text.replace(reg, `\`\`\`${item.code}\`\`\``);
                     }
                 });
             }
             if (part.images) {
                 part.images.forEach((item, i) => {
-                    text = text.replace(`§§IIIII_${i}§§`, `![${item.text}](${item.link}${item.title ? ' "' + item.title + '"' : ''})`);
+                    const reg = new RegExp(`§§I+_${i}§§`);
+                    text = text.replace(reg, `![${item.text}](${item.link}${item.title ? ' "' + item.title + '"' : ''})`);
                 });
             }
 
@@ -372,9 +430,11 @@ function partsSave(parts, saveNoSource) {
             }
 
             // do not add new line after headers and tables (only after last table line)
-            if (part.type !== 'h' && part.type !== 't') {
+            if (part.type !== 'header' && part.type !== 'table' && part.type !== 'list') {
                 lines.push('\n');
-            } else if (part.type === 't' && parts[i + 1] && parts[i + 1].type !== 't') {
+            } else if (part.type === 'table' && parts[i + 1] && parts[i + 1].type !== 'table') {
+                lines.push('\n');
+            } else if (part.type === 'list' && parts[i + 1] && parts[i + 1].type !== 'list') {
                 lines.push('\n');
             }
         }
@@ -434,7 +494,7 @@ function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
         // do not translate twice
         if (partsSource[i].translated) continue;
         // do not translate code, but copy that
-        if (partsSource[i].type === 'code') {
+        if (partsSource[i].type === 'code' || partsSource[i].type === 'decoration') {
             if (!partsTarget[i] || partsSource[i].lines.join().trim() !== partsTarget[i].lines.join().trim()) {
                 partsTarget[i] = JSON.parse(JSON.stringify(partsSource[i]));
             }
@@ -552,18 +612,22 @@ function translateText(fromLang, text, toLang) {
             // restore formatting of *, **, *** and __
             // | ** точка данных ** | ** Описание ** |  => | **точка данных** | **Описание** |
 
-            if (text.startsWith('!&gt;')) {
+            if (text.startsWith('!&gt;') || text.startsWith('?&gt;')) {
                 text = text.replace('&gt;', '>');
             }
-            if (text.startsWith('° C')) {
-                text = text.replace('°C');
+            text = text.replace('° C', '°C');
+            text = text.replace('° F', '°F');
+            text = text.replace('% s', ' %s ');
+            text = text.replace(/HTTP:\s\/\//i, 'http://');
+            text = text.replace(/HTTPS:\s\/\//i, 'https://');
+
+            const m = text.match(/https?:\/\/[-.\w\d]+:\s\d+/);
+            if (m) {
+                m.forEach(m => {
+                    text = text.replace(m.replace(/\s/g, ''));
+                });
             }
-            if (text.startsWith('° F')) {
-                text = text.replace('°F');
-            }
-            if (text.startsWith('% s')) {
-                text = text.replace(' %s ');
-            }
+
             // start with ***
             if (text.indexOf(' *** ') !== -1) {
                 let parts = (text + ' ').split(' ***');
@@ -660,6 +724,7 @@ function translateText(fromLang, text, toLang) {
                 }
             }*/
             text = text.replace(/& EMSP;/ig, '&emsp;');
+            text = text.replace(/& amp;/ig, '&amp;');
 
             return text;
         });

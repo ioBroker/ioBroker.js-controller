@@ -5,7 +5,7 @@ auteurs:
 badges
 blog
 changelog
-Wolk
+Cloud
 Alles inklappen
 Datum
 Details
@@ -15,10 +15,12 @@ Bewerken op github
 Alles uitvouwen
 Filter
 Github
+Succes
 afdruk
 info
 Informatie
 installeert:
+Meld je nu aan
 Laatste wijziging:
 Licentie
 Linux
@@ -27,13 +29,22 @@ Nieuw in vorige maand:
 Nieuws, aankondigingen en ideeën over ioBroker
 Open repository
 Platform
+berichten
 Privacybeleid
 Lezen
 Stal:
+De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.
+Thema's
 Totaal:
 Deze pagina is automatisch vertaald uit "%s". Help ons deze pagina in het Engels te vertalen door hieronder op Bewerken te klikken.
+gebruikers
 auteurs
 compact
+Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!
+U hebt de afbeeldingen alleen nodig als u problemen ondervindt met installatiescripts.
+De installatie is zo eenvoudig als het schrijven van 1 of 3 regels.
+Installeer Node.js (niet vereist als het al is geïnstalleerd):
+Installeer ioBroker:
 ioBroker Blog
 trefwoorden
 materialiseren

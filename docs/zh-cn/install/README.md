@@ -1,27 +1,24 @@
 ---
-title:       "安装ioBroker"
-lastChanged: "2019/01/29"
+title: 安装
+lastChanged: 13.09.2018
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/README.md
+translatedFrom: de
+translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
+hash: PIYqzmU1OH9UJEdNCh59kEh7XBXEgdxpinImKm5bGhM=
 ---
+＃安装
+？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
 
-# 安装
+@@@本文件：本节等待我的内容。在选择安装类型时，请指导我的行为。红线穿过章节。
 
-?> ***这是一个占位符***.
-   <br><br>
-   请您帮助ioBroker完善这篇文章。  
-   请注意[ioBroker风格指南](community/styleguidedoc), 
-   这样可以更容易地合并您的提交。
+建议主题：
 
-@@@   
-关于本章节：   
-本章节将介绍如何正确的, 最优的安装ioBroker.
-
-建议主题：   
-* 硬件平台推荐
-* 系统参数要求
-* 设置ioBroker
-* 如何安装稳定版/最新版/GitHub版本
-* 安装取决于平台，请参阅导航树链接
-* 安装后的其他步骤：教程初始设置
-* 如果不起作用，请参阅本章末尾的帮助
+*平台推荐
+*要求
+*设置变体
+*如有必要，剪切稳定/最新/ GitHub
+*根据平台安装请参见导航树链接
+*安装后的其他步骤：教程初始设置
+*如果不起作用，请参阅本章末尾的帮助
 
 @@@

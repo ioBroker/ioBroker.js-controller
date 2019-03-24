@@ -5,7 +5,7 @@ Autorski:
 Odznaki
 Blog
 Lista zmian
-Chmura
+Cloud
 Zwinąć wszystkie
 Data
 Detale
@@ -15,10 +15,12 @@ Edytuj na githubie
 Rozwiń wszystkie
 Filtr
 Github
+Powodzenia
 Odcisk
 Informacje
 Informacja
 Instaluje:
+Dołącz teraz
 Ostatnia zmiana:
 Licencja
 Linux
@@ -27,13 +29,22 @@ Nowość w zeszłym miesiącu:
 Wiadomości, ogłoszenia i pomysły na temat ioBroker
 Otwórz repozytorium
 Platforma
+Posty
 Polityka prywatności
 Czytać
 Stabilny:
+Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
+Tematy
 Całkowity:
 Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
+Użytkownicy
 autorski
 kompaktowy
+Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
+Potrzebne są obrazy tylko w przypadku problemów ze skryptami instalacyjnymi.
+Instalacja jest tak prosta, jak napisanie 1 lub 3 linii.
+Zainstaluj Node.js (nie jest wymagane, jeśli jest zainstalowany):
+Zainstaluj ioBroker:
 Blog ioBroker
 słowa kluczowe
 zmaterializować

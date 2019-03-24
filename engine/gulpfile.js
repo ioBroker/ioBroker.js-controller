@@ -111,20 +111,15 @@ gulp.task('translate', async function () {
 
 gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
+gulp.task('syncDocsTest', done => documentation.syncDocs('iobroker.sayit', done));
 
-gulp.task('clean', done => {
+gulp.task('0.clean', done => {
     consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));
     done();
 });
 
-// Build content.md file
-gulp.task('documentation', () => {
-    // build content
-    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'));
-});
-
 // translate and copy blogs
-gulp.task('blog', () => {
+gulp.task('1.blog', () => {
     return blog.build()
         .then(() => {
             console.log('Done');
@@ -132,30 +127,34 @@ gulp.task('blog', () => {
 });
 
 // download all adapters
-gulp.task('downloadAdapters', () => {
+gulp.task('2.downloadAdapters', () => {
     return adapters.buildAdapterContent()
         .then(content => {
             console.log(JSON.stringify(content));
         });
 });
 
+// translate all documents: adapters and docu
+gulp.task('3.syncDocs', done => documentation.syncDocs(done));
+
+// Build content.md file
+gulp.task('4.documentation', () => {
+    // build content
+    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'));
+});
+
 // copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
-gulp.task('copyFiles', () => {
+gulp.task('5.copyFiles', () => {
     return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
 });
 
-// translate all documents: adapters and docu
-gulp.task('syncDocs', done => {
-    documentation.syncDocs(done);
-});
-
 gulp.task('default', gulp.series(
-    'clean',            // clean dir
-    'blog',             // translate and copy blogs
-    'downloadAdapters', // download all adapters an create adapter.json
-    'syncDocs',         // translate documents and adapters
-    'documentation',    // create content for documentation
-    'copyFiles'         // copy all adapters and docs to public
+    '0.clean',            // clean dir
+    '1.blog',             // translate and copy blogs
+    '2.downloadAdapters', // download all adapters an create adapter.json
+    '3.syncDocs',         // translate documents and adapters
+    '4.documentation',    // create content for documentation
+    '5.copyFiles'         // copy all adapters and docs to public
 ));
 
 

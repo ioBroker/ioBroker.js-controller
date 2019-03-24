@@ -21,6 +21,7 @@ import {MdExpandMore as IconExpandMore} from 'react-icons/md';
 
 import Loader from '../Components/Loader';
 import I18n from '../i18n';
+import Utils from "../Utils";
 
 const MARGIN = 10;
 
@@ -235,14 +236,6 @@ class Adapters extends Component {
         this.props.onNavigate(null, null, link);
     }
 
-    openLink(url, target) {
-        if (target === 'this') {
-            window.location = url;
-        } else {
-            window.open(url, target || '_blank');
-        }
-    }
-
     renderAdapter(type, adapter, obj) {
         this.words = this.words || {};
         this.words.authors = this.words.authors || I18n.t('Authors:');
@@ -276,7 +269,7 @@ class Adapters extends Component {
             </CardActionArea>
             <CardActions>
                 <Button size="small" color="primary" onClick={() => this.onNavigate(obj.content)}>{this.words.read}</Button>
-                <Button size="small" color="primary" onClick={() => this.openLink(obj.github)}>{this.words.github}</Button>
+                <Button size="small" color="primary" onClick={() => Utils.openLink(obj.github)}>{this.words.github}</Button>
             </CardActions>
         </Card>);
     }

@@ -15,10 +15,12 @@ Edit on github
 Expand all
 Filter
 Github
+Good luck
 Imprint
 Info
 Information
 Installs:
+Join now
 Last changed:
 License
 Linux
@@ -27,13 +29,22 @@ New in last month:
 News, announcements and ideas about ioBroker
 Open repository
 Platform
+Posts
 Privacy policy
 Read
 Stable:
+The page you are looking for
+Themes
 Total:
 Translated from %s
+Users
 authors
 compact
+forum-text
+instruction1
+instruction2
+instruction3
+instruction4
 ioBroker Blog
 keywords
 materialize

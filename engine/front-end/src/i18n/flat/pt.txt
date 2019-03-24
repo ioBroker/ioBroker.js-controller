@@ -5,7 +5,7 @@ Autores:
 Distintivos
 Blog
 Changelog
-Nuvem
+Cloud
 Recolher todos
 Encontro
 Detalhes
@@ -15,10 +15,12 @@ Editar no github
 Expandir todos
 Filtro
 Github
+Boa sorte
 Imprimir
 Info
 Em formação
 Instala:
+Entrar
 Última alteração:
 Licença
 Linux
@@ -27,13 +29,22 @@ Novo no mês passado:
 Notícias, anúncios e ideias sobre o ioBroker
 Repositório Aberto
 Plataforma
+Postagens
 Política de Privacidade
 Ler
 Estável:
+A página que você está procurando pode ter sido removida, teve seu nome alterado ou está temporariamente indisponível.
+Temas
 Total:
 Esta página foi traduzida automaticamente de "%s". Ajude-nos a traduzir esta página para o inglês clicando em Editar abaixo.
+Comercial
 autores
 compactar
+Junte-se agora à comunidade em rápido crescimento, faça perguntas e obtenha respostas!
+Você só precisa das imagens se tiver problemas com os scripts de instalação.
+A instalação é tão fácil quanto escrever 1 ou 3 linhas.
+Instale o Node.js (não obrigatório se ainda estiver instalado):
+Instale o ioBroker:
 Blog do ioBroker
 palavras-chave
 materializar

@@ -18,7 +18,7 @@ function queuePromises(promises, cb) {
 
 function extractHeader(text) {
     const attrs = {};
-    if (!text) return ;
+    if (text === undefined || text === null) return ;
     if (text.substring(0, 3) === '---') {
         const pos = text.substring(3).indexOf('\n---');
         if (pos !== -1) {
@@ -193,6 +193,63 @@ function getAllFiles(root, onlyMd, _result) {
     return _result;
 }
 
+function extractBadges(body) {
+    const badges = {};
+
+    // replace all images like "mediaDir/blabla.png" with "LN/adapterref/iobroker.adapterName/mediaDir/blabla.png"
+    let images = body.match(/!\[[^\]]*]\([^)]*\)/g);
+    if (images) {
+        images.forEach(image => {
+            const m = image.match(/!\[([^\]]*)]\(([^)]*)\)/);
+            if (m && m.length === 3) {
+                let alt = m[1];
+                let link = m[2];
+                if (link.toLowerCase().match(/^https?:\/\//) &&
+                    (link.indexOf('shields.io') !== -1 ||
+                     link.indexOf('herokuapp.com') !== -1 ||
+                     link.indexOf('snyk.io') !== -1 ||
+                     link.indexOf('appveyor.com') !== -1 ||
+                     link.indexOf('travis-ci.org') !== -1 ||
+                     link.indexOf('iobroker.live') !== -1 ||
+                     link.indexOf('nodei.co') !== -1)) {
+                    badges[alt] = link;
+                    body = body.replace(image, '--delete--');
+                }
+            }
+        });
+    }
+
+    // [](https://www.npmjs.com/package/iobroker.admin)
+    const lines = body.split('\n');
+    for (let i = lines.length - 1; i >= 0; i--) {
+        if (lines[i].indexOf('--delete--') !== -1) {
+            lines.splice(i, 1);
+        }
+    }
+    body = lines.join('\n').trim();
+
+    return {body, badges};
+}
+
+function addBadgesToBody(body, badges) {
+    if (!badges  || !Object.keys(badges).length) return body;
+    const lines = body.split('\n');
+    let i = 0;
+    // skip logo and title
+    while (lines[i].startsWith('# ') || lines[i].startsWith('![')) i++;
+
+    lines.splice(i, 0, '');
+
+    Object.keys(badges).map((badge, j) =>
+        lines.splice(i + j + 1, 0, `![${badge}](${badges[badge]})`));
+
+    if (lines[i + 1 + Object.keys(badges).length]) {
+        lines.splice(i + 1 + Object.keys(badges).length, 0, '');
+    }
+
+    return lines.join('\n');
+}
+
 module.exports = {
     queuePromises,
     extractHeader,
@@ -205,5 +262,7 @@ module.exports = {
     getFileHash,
     extractLicenseAndChangelog,
     addChangelogAndLicense,
-    getAllFiles
+    getAllFiles,
+    extractBadges,
+    addBadgesToBody
 };
