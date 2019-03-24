@@ -1,7 +1,6 @@
 ---
 title:       "System-Integratoren - Link-Box"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/integrators/linkbox.md"
 ---
 
 # Link-Box

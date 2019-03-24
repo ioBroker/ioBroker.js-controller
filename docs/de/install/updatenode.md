@@ -1,7 +1,6 @@
 ---
 title:       "Installation"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/install/updatenode.md"
 ---
 
 # Updaten von Node.js und npm
