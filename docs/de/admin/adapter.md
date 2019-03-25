@@ -20,7 +20,7 @@ Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 ## Die Titelzeile
 in der Titelzeile befinden sich Icons für die wichtigsten Vorgänge. Zu jedem Icon gibt es eine Kontexthilfe. Dazu einfach mit der Maus eine Weile auf dem Icon bleiben.
 
-![Der Reiter Admin](media/Admin_konfig_Haupteinstellungen.png)
+![Der Reiter Admin](media/ADMIN_Adapter_Kachel_numbers.png)
 
 ### Die Icons im einzelnen:
 
