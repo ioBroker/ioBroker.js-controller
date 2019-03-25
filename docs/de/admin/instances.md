@@ -34,12 +34,13 @@ Bei Anwahl dieses Icons werden weitere Spalten zur Konfiguration der Instanzen a
 
 **3.) Nur Instanzen des ausgewählten Hosts anzeigen**
 
+![Die verfügbaren Hosts](/media/ADMIN_Instanzen_hosts.png)
+
 In Multihost-Systemen werden die Instanzen aller Hosts über den Admin des Masters verwaltet. Die Information 
 auf welchem Host sich diese Instanz befindet steht in der Spalte ***Server***
 
 Wenn im Header ein Host ausgewählt ist, kann man sich mit diesem Button nur die dort installiertne Instanzen anzeigen lassen.
 
-![Die verfügbaren Hosts](/media/ADMIN_Instanzen_hosts.png)
 
 
 
@@ -53,7 +54,7 @@ In dieses Feld kann ein Begriff zum Filtern oder zur Suche nach Instanzen eingeg
 
 Die ersten Zahlen geben den bisher von den Instanzen verbrauchten Arbeitsspeicher und den restlichen freien Speicher in MB an. Dahinter den freien Speicher in %. In den eckigen Klammern steht der Name des ioBroker-Servers und die Anzahl der laufenden Prozesse.
 
-Der Seiteninhalt
+## Der Seiteninhalt
 iobroker_admin_instanzen_headline_columns
 
 Auf der Seite werden die installierten Instanzen der Adapter tabellarisch dargestellt.

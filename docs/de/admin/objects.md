@@ -115,7 +115,7 @@ Mit diesem Button wird eine komplette Objektstruktur als json-Datei auf den ioBr
 
 Mit diesem Button wird die ausgewählte Objektstruktur als json-Datei vom ioBroker Server heruntergeladen und kann gespeichert werden.
 
-##Der Seiteninhalt
+## Der Seiteninhalt
 
 iobroker_admin_objekte_headline_columns
 
