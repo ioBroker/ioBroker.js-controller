@@ -62,7 +62,7 @@ Der Adapter admin dient der Bedienung der gesamten ioBroker-Installation. Er ste
 Dieser Adapter wird direkt bei der Installation von ioBroker angelegt eine manuelle Installation ist nicht notwendig
 
 ## Konfiguration
-adapter_admin_konfiguration
+![Haupteinstellungen](media/Admin_konfig_Haupteinstellungen.png)
 
 ### IP
 Hier wird die IP-Adresse unter der der Adapter erreichbar ist eingegeben. Verschiedene Ipv4 und Ipv6 Möglichkeiten stehen zur Auswahl. Default ist 0.0.0.0. Dies darf nicht verändert werden!
