@@ -65,7 +65,7 @@ Die Hauptseite des Administrators besteht aus mehreren Reitern. In der Grundinst
 
 Ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften verlinkt sind.
 
-### [Adapter](../admin/adapter.md)
+### [Adapter](adapter.md)
 Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 
 ### Instanzen

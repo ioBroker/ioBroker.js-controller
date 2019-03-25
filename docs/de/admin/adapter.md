@@ -3,15 +3,6 @@ title:       "Admin"
 lastChanged: "14.09.2018"
 ---
 
-# Das Adapter-Fenster
-
-?> ***Dies ist ein Platzhalter***
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können.
-
-
 # Der Reiter Adapter
 Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 
@@ -25,7 +16,7 @@ in der Titelzeile befinden sich Icons für die wichtigsten Vorgänge. Zu jedem I
 ### Die Icons im einzelnen:
 
 
-**1.)  Ansicht umschalten **
+**1.)  Ansicht umschalten**
 
 Mit diesem Button kann zwischen der Kachelansicht und der Tabellenansicht umgeschaltet werden (Toggle-Funktion)
 
