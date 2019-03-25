@@ -22,6 +22,7 @@ import Loader from './Components/Loader';
 import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
+import Editor from './Pages/Editor';
 
 const styles = theme => ({
     root: {
@@ -63,6 +64,13 @@ const styles = theme => ({
         float: 'right',
         textDecoration: 'none',
         color: 'gray'
+    },
+    infoEditLocal: {
+        float: 'right',
+        textDecoration: 'none',
+        marginRight: 15,
+        cursor: 'pointer',
+        display: 'inline-block'
     },
     adapterCard:{
         marginBottom: 15,
@@ -237,7 +245,9 @@ class Markdown extends Router {
             content: {},
             license: '',
             changeLog: '',
+            text: this.props.text || '',
             notFound: false,
+            editMode: false,
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
@@ -245,20 +255,42 @@ class Markdown extends Router {
             title = window.title;
         }
 
-        this.load();
+        this.mounted = false;
 
-        // Give 300ms to load the page. After that show the loading indicator.
-        setTimeout(() => !this.state.parts.length && this.setState({loadTimeout: true}), 300);
+        if (!this.state.text) {
+            this.load();
+
+            // Give 300ms to load the page. After that show the loading indicator.
+            setTimeout(() => !this.state.parts.length && this.setState({loadTimeout: true}), 300);
+        } else {
+            this.parseText();
+        }
 
         this.contentRef = React.createRef();
     }
 
+    componentWillMount() {
+        this.mounted = true;
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.path !== nextProps.path) {
-            this.setState({notFound: false, parts :[]});
+            this.mounted && this.setState({notFound: false, parts :[]});
             this.load(nextProps.path);
+        } else if (this.props.text !== nextProps.text) {
+            this.setState({text: nextProps.text});
+            if (!nextProps.text) {
+                if (this.props.path !== nextProps.path) {
+                    this.mounted && this.setState({notFound: false, parts :[]});
+                    this.load(nextProps.path);
+                }
+            } else {
+                this.mounted && this.setState({text: nextProps.text}, () =>
+                    this.parseText());
+            }
         } else
         if (this.props.language !== nextProps.language) {
+            this.mounted && this.setState({notFound: false, parts :[]});
             this.load(null, nextProps.language);
         }
     }
@@ -291,29 +323,35 @@ class Markdown extends Router {
         }
     }
 
+    parseText(text) {
+        text = text || this.state.text || '';
+        if (this.props.editEnabled) {
+            this.editText = text;
+        }
+        if (!text || text.startsWith('<!DOCTYPE html>')) {
+            // page not found
+            return this.setState({notFound: true});
+        }
+
+        const {header, parts, content, license, changeLog, title} = this.format(text);
+        let _title = header.title || title || Utils.getTitle(text);
+        if (_title) {
+            window.document.title = _title;
+        } else if (title) {
+            window.document.title = title;
+        }
+        this.mounted && this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title});
+
+        setTimeout(() => this.onHashChange(), 200);
+    }
+
     load(path, language) {
         path = path || this.props.path;
         language = language || this.props.language;
         if (path && language) {
             fetch(`${language}${path[0] === '/' ? path : '/' + path}`)
                 .then(res => res.text())
-                .then(text => {
-                    if (text.startsWith('<!DOCTYPE html>')) {
-                        // page not found
-                        return this.setState({notFound: true});
-                    }
-
-                    const {header, parts, content, license, changeLog, title} = this.format(text);
-                    let _title = header.title || title || Utils.getTitle(text);
-                    if (_title) {
-                        window.document.title = _title;
-                    } else if (title) {
-                        window.document.title = title;
-                    }
-                    this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title});
-
-                    setTimeout(() => this.onHashChange(), 200);
-                });
+                .then(text => this.parseText(text));
         }
     }
 
@@ -322,7 +360,7 @@ class Markdown extends Router {
         let {header, body} = Utils.extractHeader(text);
 
         body = Utils.removeDocsify(body);
-        let {parts, content, license, changeLog, title} = Utils.decorateText(body, header, `${this.props.path[0] === '/' ? this.props.path : '/' + this.props.path}`);
+        let {parts, content, license, changeLog, title} = Utils.decorateText(body, header, `${this.props.path && (this.props.path[0] === '/' ? this.props.path : '/' + this.props.path)}`);
 
         return {header, parts, content, license, changeLog, title};
     }
@@ -383,10 +421,20 @@ class Markdown extends Router {
     renderInfo() {
         return (<div className={this.props.classes.info}>
             {this.state.header.lastChanged ? [
-                (<span className={this.props.classes.infoTitle}>{I18n.t('Last changed: ')}</span>),
-                (<span className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
+                (<span key="lastChangedTitle" className={this.props.classes.infoTitle}>{I18n.t('Last changed: ')}</span>),
+                (<span key="lastChangedValue" className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
                 ] : null}
-            {this.state.header.editLink ? (<a className={this.props.classes.infoEdit} href={this.state.header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>) : null}
+            {this.state.header.editLink ?
+                (<a className={this.props.classes.infoEdit} href={this.state.header.editLink} target="_blank"><IconGithub />{I18n.t('Edit on github')}</a>) : null}
+            {this.props.editEnabled && this.editText ?
+                (<div className={this.props.classes.infoEditLocal} onClick={() => {
+                    if (this.props.onFooterEnable) {
+                        this.props.onFooterEnable(false, () => this.setState({editMode: true}));
+                    } else {
+                        this.setState({editMode: true});
+                    }
+                }}><IconEdit />{I18n.t('Edit local')}</div>) : null}
+
         </div>)
     }
 
@@ -468,7 +516,7 @@ class Markdown extends Router {
     }
 
     replaceHref(reactObj) {
-        const parts = this.props.path.split('/');
+        const parts = (this.props.path || '').split('/');
         parts.pop();
         const prefix = parts.join('/') + '/';
 
@@ -482,6 +530,7 @@ class Markdown extends Router {
                         }
 
                         reactObj.props.children[i] = (<div
+                            key={'link' + i}
                             className={this.props.classes.mdLink + ' md-link'}
                             title={link}
                             onClick={() => this.onNavigate(null, link)}>
@@ -501,9 +550,19 @@ class Markdown extends Router {
         if (this.state.notFound) {
             return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
         }
+        if (this.state.editMode) {
+            return (<Editor
+                language={this.props.language}
+                mobile={this.props.mobile}
+                theme={this.props.theme}
+                path={this.state.header.editLink}
+                onClose={() => this.setState({editMode: false})}
+            />);
+        }
         if (this.state.loadTimeout && !this.state.parts.length) {
             return (<Loader theme={this.props.theme}/>);
         }
+
         const reactElements = this.state.parts.map((part, i) => {
             const rct = converter.convert(part.lines.join('\n'));
             this.replaceHref(rct);
@@ -540,6 +599,9 @@ Markdown.propTypes = {
     theme: PropTypes.string,
     mobile: PropTypes.bool,
     path:  PropTypes.string,
+    text:  PropTypes.string,
+    onFooterEnable: PropTypes.func,
+    editEnabled:  PropTypes.bool,
 };
 
 export default withStyles(styles)(Markdown);

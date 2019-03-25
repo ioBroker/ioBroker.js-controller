@@ -3,11 +3,10 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
-import {MdContentCopy as IconCopy} from 'react-icons/md';
-import {FaUsers as IconForum} from 'react-icons/fa'
-import {FaAddressCard as IconUsers} from 'react-icons/fa'
-import {FaComments as IconPosts} from 'react-icons/fa'
-import {FaComment as IconThemes} from 'react-icons/fa'
+import {FaUsers as IconForum} from 'react-icons/fa';
+import {FaAddressCard as IconUsers} from 'react-icons/fa';
+import {FaComments as IconPosts} from 'react-icons/fa';
+import {FaComment as IconThemes} from 'react-icons/fa';
 
 import Footer from '../Footer';
 import BackImage from '../assets/background.jpg';

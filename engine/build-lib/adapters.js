@@ -12,62 +12,15 @@ const ADAPTERS_DIR = path.normalize(__dirname + '/../../docs/LANG/adapterref/').
 const urlsCache = {};
 
 function fixImages(lang, adapter, body) {
-    const badges = {};
-    const doDownload = [];
     const prefix = `${lang}/adapterref/iobroker.${adapter}/`;
 
-    // replace all images like "mediaDir/blabla.png" with "LN/adapterref/iobroker.adapterName/mediaDir/blabla.png"
-    let images = body.match(/!\[[^\]]*]\([^)]*\)/g);
-    if (images) {
-        images.forEach(image => {
-            const m = image.match(/!\[([^\]]*)]\(([^)]*)\)/);
-            if (m && m.length === 3) {
-                let alt = m[1];
-                let link = m[2];
-                if (!link.toLowerCase().match(/^https?:\/\//)) {
-                    doDownload.indexOf(link) === -1 && doDownload.push(link);
-                    body = body.replace(image, `![${alt}](${prefix + link})`);
-                } else if (
-                    link.indexOf('shields.io') !== -1 ||
-                    link.indexOf('herokuapp.com') !== -1 ||
-                    link.indexOf('snyk.io') !== -1 ||
-                    link.indexOf('appveyor.com') !== -1 ||
-                    link.indexOf('travis-ci.org') !== -1 ||
-                    link.indexOf('iobroker.live') !== -1 ||
-                    link.indexOf('nodei.co') !== -1) {
-                    badges[alt] = link;
-                    body = body.replace(image, '--delete--');
-                }
-            }
-        });
-    }
-
     // replace all images like "<img src="src/img/rooms/006-double-bed.svg" height="48" />" with "<img src="LN/adapterref/iobroker.adapterName/src/img/rooms/006-double-bed.svg" height="48" />"
-    images = body.match(/<img [^>]+>/g);
-    if (images) {
-        images.forEach(image => {
-            const m = image.match(/src="([^"]*)"/);
-            if (m && m.length === 2) {
-                let link = m[1];
-                if (!link.toLowerCase().match(/^https?:\/\//)) {
-                    let newImage = image.replace(link, prefix + link);
-                    doDownload.indexOf(link) === -1 && doDownload.push(link);
-                    body = body.replace(image, newImage);
-                }
-            }
-        });
-    }
+    const res = utils.replaceImages(body, prefix);
+    body = res.body;
 
-    // [](https://www.npmjs.com/package/iobroker.admin)
-    const lines = body.split('\n');
-    for (let i = lines.length - 1; i >= 0; i--) {
-        if (lines[i].indexOf('--delete--') !== -1) {
-            lines.splice(i, 1);
-        }
-    }
     body = lines.join('\n').trim();
 
-    return {body, badges, doDownload};
+    return {body, badges: res.badges, doDownload: res.doDownload};
 }
 
 function getAuthor(data) {

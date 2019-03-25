@@ -1,5 +1,3 @@
-const utils = require('./utils');
-const consts = require('./consts');
 const request = require('request');
 const fs = require('fs');
 let lastRequest = null;
@@ -64,7 +62,6 @@ async function translateYandex(text, targetLang, yandex) {
     }
 }
 
-
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
     if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
         translate
@@ -108,6 +105,7 @@ function translateGoogleSync(text, targetLang, sourceLang, cb) {
         });
     }
 }
+
 /**
  * Translates text with Google API
  * @param {string} text The text to translate

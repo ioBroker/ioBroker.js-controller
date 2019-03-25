@@ -250,6 +250,70 @@ function addBadgesToBody(body, badges) {
     return lines.join('\n');
 }
 
+function replaceImages(body, prefix, noBadges) {
+    const doDownload = [];
+    const badges = {};
+
+    if (prefix[prefix.length - 1] !== '/') {
+        prefix += '/';
+    }
+
+    // replace all images like "mediaDir/blabla.png" with "LN/adapterref/iobroker.adapterName/mediaDir/blabla.png"
+    let images = body.match(/!\[[^\]]*]\([^)]*\)/g);
+    if (images) {
+        images.forEach(image => {
+            const m = image.match(/!\[([^\]]*)]\(([^)]*)\)/);
+            if (m && m.length === 3) {
+                let alt = m[1];
+                let link = m[2];
+                if (!link.toLowerCase().match(/^https?:\/\//)) {
+                    doDownload.indexOf(link) === -1 && doDownload.push(link);
+                    body = body.replace(image, `![${alt}](${prefix + (link[0] === '/' ? link.substring(1) : link)})`);
+                } else if (
+                    !noBadges &&
+                    (link.indexOf('shields.io')    !== -1 ||
+                     link.indexOf('herokuapp.com') !== -1 ||
+                     link.indexOf('snyk.io')       !== -1 ||
+                     link.indexOf('appveyor.com')  !== -1 ||
+                     link.indexOf('travis-ci.org') !== -1 ||
+                     link.indexOf('iobroker.live') !== -1 ||
+                     link.indexOf('nodei.co')      !== -1)) {
+                    badges[alt] = link;
+                    body = body.replace(image, '--delete--');
+                }
+            }
+        });
+
+        // remove delete lines from array
+        const lines = body.split('\n');
+        for (let i = lines.length - 1; i >= 0; i--) {
+            if (lines[i].indexOf('--delete--') !== -1) {
+                lines.splice(i, 1);
+            }
+        }
+
+        body = lines.join('\n');
+    }
+
+    // replace all images like "<img src="src/img/rooms/006-double-bed.svg" height="48" />" with "<img src="LN/adapterref/iobroker.adapterName/src/img/rooms/006-double-bed.svg" height="48" />"
+    images = body.match(/<img [^>]+>/g);
+    if (images) {
+        images.forEach(image => {
+            const m = image.match(/src="([^"]*)"/);
+            if (m && m.length === 2) {
+                let link = m[1];
+                if (!link.toLowerCase().match(/^https?:\/\//)) {
+                    let newImage = image.replace(link, prefix + (link[0] === '/' ? link.substring(1) : link));
+                    doDownload.indexOf(link) === -1 && doDownload.push(link);
+                    body = body.replace(image, newImage);
+                }
+            }
+        });
+    }
+
+    return {body, doDownload, badges};
+}
+
 module.exports = {
     queuePromises,
     extractHeader,
@@ -264,5 +328,6 @@ module.exports = {
     addChangelogAndLicense,
     getAllFiles,
     extractBadges,
-    addBadgesToBody
+    addBadgesToBody,
+    replaceImages
 };

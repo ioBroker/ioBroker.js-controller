@@ -271,9 +271,12 @@ class TreePage extends Router {
 
         const areChildrenVisible = !this.state.filter || this.findNotFilteredOut(root);
 
+        const style = {paddingLeft: (level - 1) * 15};
+
         return [
             root.title && (!this.state.filter || areChildrenVisible || (root.title[this.props.language] || root.title.en).toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1) ?
             (<ListItem
+                style={style}
                 key={item}
                 className={this.props.classes.element + ' ' + (root.content && root.content === this.state.path ? this.props.classes.selected : '')}
                 onClick={() => this.onNavigate(item, root)}>
@@ -320,8 +323,8 @@ class TreePage extends Router {
         return [
             this.renderFilterInput(),
             (<List key="list" className={this.props.classes.list}>{this.renderMenuItem(this.state.content, '', 0)}</List>),
-            (<Divider  key="divider" />),
-            (<div  key="footer" className={this.props.classes.footer}>{this.getBottomButtons()}</div>)
+            (<Divider key="divider" />),
+            (<div key="footer" className={this.props.classes.footer}>{this.getBottomButtons()}</div>)
         ];
     }
 

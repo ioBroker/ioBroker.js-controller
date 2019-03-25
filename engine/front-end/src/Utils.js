@@ -34,6 +34,13 @@ class Utils {
         return {header: attrs, body: text};
     }
 
+    static addHeader(text, header) {
+        const lines = Object.keys(header).map(attr => `${attr}: ${header[attr]}`);
+        lines.unshift('---');
+        lines.push('---');
+        return lines.join('\n') + '\n' + text;
+    }
+
     static removeDocsify(text) {
         const m = text.match(/{docsify-[^}]*}/g);
         if (m) {
@@ -107,6 +114,7 @@ class Utils {
     }
 
     static decorateText(text, header, path) {
+        path = path || '';
         const lines = text.split('\n');
         const content = {};
         let current = [null, null, null, null];
@@ -241,6 +249,10 @@ class Utils {
         } else {
             window.open(url, target || '_blank');
         }
+    }
+
+    static padding(num) {
+        return num > 10 ? num.toString() : '0' + num;
     }
 }
 

@@ -98,9 +98,20 @@ async function processFile(fileName, lang, root) {
     let data = fs.readFileSync(fileName);
     if (fileName.match(/\.md$/)) {
         let {header, body} = utils.extractHeader(data.toString());
+
         header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + fileName.replace(root, '');
-        data = utils.addHeader(body, header);
+
+        let prefix = fileName.replace(root, '');
+        let pos = prefix.lastIndexOf('/');
+        if (pos !== -1) {
+            prefix = prefix.substring(0, pos + 1);
+        }
+
+        const res = utils.replaceImages(body, prefix, true);
+
+        data = utils.addHeader(res.body, header);
     }
+
     utils.writeSafe(path.join(consts.FRONT_END_DIR, fileName.replace(root, '/')).replace(/\\/g, '/'), data);
 
     return Promise.resolve();
@@ -131,6 +142,7 @@ async function processFile(fileName, lang, root) {
     }));*/
 }
 
+// replace images during translation
 function replaceImages(text, sourceFile, targetFile) {
     const lines = text.split('\n');
     targetFile = targetFile.replace(/\\/g, '/');
@@ -234,7 +246,6 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
                         Object.keys(badges).map((name, i) => nBadges[results[i]] = badges[name]);
 
                         actualText = utils.addBadgesToBody(actualText, nBadges);
-
 
                         // add badges
                         utils.writeSafe(targetFileName, utils.addHeader(utils.addChangelogAndLicense(actualText, data.changelog, data.license), header));
@@ -343,7 +354,8 @@ if (!module.parent) {
         })*/
     //console.log(replaceImages(fs.readFileSync('C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md').toString(), 'C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md'));
     //sync2Languages('de', 'en', () => console.log('done1'), ['C:/pWork/ioBroker.docs/docs/de/README.md'])
-    syncDocs(() => console.log('DONE'));
+    //syncDocs(() => console.log('DONE'));
+    processFiles(consts.SRC_DOC_DIR).then(() => console.log('done'));
 } else {
     module.exports = {
         processContent,

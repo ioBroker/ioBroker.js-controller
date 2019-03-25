@@ -37,6 +37,9 @@ const styles = theme => ({
 class MDPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            footer: true
+        };
         this.contentRef = React.createRef();
     }
     componentWillReceiveProps(nextProps, nextContext) {
@@ -46,7 +49,7 @@ class MDPage extends Component {
     }
 
     renderOpenCloseButton() {
-        if (!this.props.onMenuOpenClose) return;
+        if (!this.props.onMenuOpenClose || !this.state.footer) return;
         if (this.props.mobile) {
             return (<div key="closeMenu"
                          className={this.props.classes.menuOpenCloseButton + ' ' + this.props.classes.menuOpenCloseButtonMobile}
@@ -72,7 +75,7 @@ class MDPage extends Component {
     render() {
         return [
             this.renderOpenCloseButton(),
-            (<div className={this.props.classes.content} ref={this.contentRef}>
+            (<div key="mdpage" className={this.props.classes.content} ref={this.contentRef}>
                 {this.props.path === 'adapters.md' ?
                     (<Adapters path={this.props.path}
                          language={this.props.language}
@@ -89,13 +92,15 @@ class MDPage extends Component {
                     />)
                     :
                     (<MD path={this.props.path}
-                        language={this.props.language}
-                        theme={this.props.theme}
-                        mobile={this.props.mobile}
-                        onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                         language={this.props.language}
+                         theme={this.props.theme}
+                         mobile={this.props.mobile}
+                         onFooterEnable={(enabled, cb) => this.setState({footer: enabled}, () => cb && cb())}
+                         editEnabled={true}
+                         onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
                     />)}
             </div>),
-            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
+            this.state.footer ? (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>) : null
         ];
     }
 }
