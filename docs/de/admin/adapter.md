@@ -46,15 +46,15 @@ Nach Anklicken dieses Icons öffnet sich ein entsprechendes Auswahlfenster:
 
 ![Installieren von GitHub](media/ADMIN_Adapter_GitHub.png)
 
-Unter dem Reiter Von github wird einfach im Pulldownmenü der gewünschte Adapter ausgewählt und die neueste Vorabversion wird installiert.
+Unter dem Reiter ***VON GITHUB*** wird einfach im Pulldownmenü der gewünschte Adapter ausgewählt und die neueste Vorabversion wird installiert.
 
-Bei Anwahl des Reiters Beliebig kann ein beliebiger Dateipfad oder ein beliebiger URL (z.B. ein URL zu einem externen Adapterentwickler) in das Feld eingegeben werden und der entsprechende Adapter installiert werden.
+Bei Anwahl des Reiters ***BELIEBIG*** kann ein beliebiger Dateipfad oder ein beliebiger URL (z.B. ein URL zu einem externen Adapterentwickler) in das Feld eingegeben werden und der entsprechende Adapter installiert werden.
 
 **Die Nutzung dieser Option birgt einige Gefahren und geschieht daher auf eigene Gefahr.**
 
 **6.) Expertenmodus einschalten**
 
-Der Expertenmodus ermöglicht es auch ältere Versionen eines Adapters zu installieren. Wenn dieser Button angewählt ist, erscheint in der Kachel ein zusätzliches Icon über das frühere Versionen installiert werden können.
+Der Expertenmodus ermöglicht es auch ältere Versionen eines Adapters zu installieren. Wenn dieser Button (9)angewählt ist, erscheint in der Kachel ein zusätzliches Icon über das frühere Versionen installiert werden können.
 
 ![Installieren anderer Versionen](media/ADMIN_Adapter_Kachel_versions.png)
 
