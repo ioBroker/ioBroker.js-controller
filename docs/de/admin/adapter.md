@@ -44,7 +44,7 @@ Durch Anklicken dieses Icons (8) werden alle verfügbaren Adapter aktualisiert.
 
 Nach Anklicken dieses Icons öffnet sich ein entsprechendes Auswahlfenster:
 
-![Installieren von GitHub](media/ADMIN_Adapter_GitHub.png
+![Installieren von GitHub](media/ADMIN_Adapter_GitHub.png)
 
 Unter dem Reiter Von github wird einfach im Pulldownmenü der gewünschte Adapter ausgewählt und die neueste Vorabversion wird installiert.
 
@@ -56,7 +56,7 @@ Bei Anwahl des Reiters Beliebig kann ein beliebiger Dateipfad oder ein beliebige
 
 Der Expertenmodus ermöglicht es auch ältere Versionen eines Adapters zu installieren. Wenn dieser Button angewählt ist, erscheint in der Kachel ein zusätzliches Icon über das frühere Versionen installiert werden können.
 
-![Installieren anderer Versionen](media/ADMIN_Adapter_Kachel_versions.png
+![Installieren anderer Versionen](media/ADMIN_Adapter_Kachel_versions.png)
 
 
 **7.) Filter**

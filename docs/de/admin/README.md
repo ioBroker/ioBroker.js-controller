@@ -1,30 +1,15 @@
 ---
 title:       "Admin"
-lastChanged: "14.09.2018"
+lastChanged: "25.03.2019"
 ---
 
 # Einleitung
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
-   damit die Änderungen einfacher übernommen werden können.
 
-@@@   
-Ziel hier ist "High Level" Beschreibung der wichtigsten Screens der 
-Admin-Oberfläche. Vielleicht je Screen ein Bild mit Erklärung der 
-wesentlichen Bereiche.  
-Sub-Dialoge und Details (z.B. Feldbeschreibungen) sollten in die 
-Adapter-Referenz zum Admin-Adapter verweisen.   
-@@@
+> **Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.**
 
 
-
-!> Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.
-
-
-Der Adapter admin dient der Bedienung der gesamten ioBroker-Installation. Er stellt ein Webinterface zur Verfügung. Dieses wird unter der <IP-Adresse des Servers>:8081 aufgerufen. Dieser Adapter wird direkt bei der Installation von ioBroker angelegt.
+Der Adapter Admin dient der Bedienung der gesamten ioBroker-Installation. Er stellt ein Webinterface zur Verfügung. Dieses wird unter der <IP-Adresse des Servers>:8081 aufgerufen. Dieser Adapter wird direkt bei der Installation von ioBroker angelegt.
 
 Über das vom Adapter zur Verfügung gestellte GUI können u.a. folgenden Funktionen abgerufen werden:
 
@@ -72,18 +57,12 @@ Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 Hier werden die bereits über den Reiter Adapter installierten Instanzen aufgelistet und können entsprechend konfiguriert werden.
 
 ### Objekte
-Die verwalteten Objekte (z.B. die Geräte/Variablen/Programme der CCU). Hier können Objekte angelegt und gelöscht werden. Über die Pfeil hoch und Pfeil runter Knöpfe können ganze Objektstrukturen hoch- oder runtergeladen werden. Ein weiterer Knopf ermöglicht die Anzeige der Expertenansicht.
+Die verwalteten Objekte Strukturen und Datenpunkte der Geräte, die über Adapter eingebunden sind. Hier können Objekte angelegt und gelöscht werden. Über die Pfeil hoch und Pfeil runter Knöpfe können ganze Objektstrukturen hoch- oder runtergeladen werden.
 
-Werden Werte in roter Schrift angezeigt, sind sie noch nicht bestätigt (ack = false).
-
-### Zustände
-Die aktuellen Zustände der Objekte.
+Werden Werte in roter Schrift angezeigt, sind sie noch nicht vom Empfänger bestätigt (ack = false).
 
 ### Ereignisse
 Eine Liste der laufenden Aktualisierung der Zustände.
-
-### Gruppen
-Hier werden die angelegten Usergruppen angelegt und die Rechte verwaltet
 
 ### Benutzer
 Hier können Benutzer angelegt und zu den bestehenden Gruppen hinzugefügt werden.
