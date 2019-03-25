@@ -1,17 +1,18 @@
 ![Logo](media/ioBroker_logo_s.png)
 
-# ioBroker.docs - the ioBroker documentation project
+# ioBroker.docs - ioBroker new website project & documentation
 
 Try prototype at [http://www.iobroker.net/react/](http://www.iobroker.net/react/)
 
-This is the place where a new documention for ioBroker is born. Beware: Work in progress!
+Content:
 
 | Folder | Description |
 |---|---|
-|**archive**|Source of existing information|
-|**docsify**|Documentation Prototyping System info for Docsify|
-|**docs**|Docsify root to be able to use it as github pages docroot|
-|**media**|Official files and images|
+|**archive**|archived informations from older documentions|
+|**blog**|source for blog messages|
+|**docs**|official iobroker documentation source files|
+|**engine**|dynamic webpage generation engine|
+|**media**|official files and logos|
 
 ## TODO
 - Download
@@ -21,7 +22,7 @@ This is the place where a new documention for ioBroker is born. Beware: Work in 
 - Translator
 
 ## How to create the documentation
-
+See [how to participate](http://www.iobroker.net/react/)
 
 ## Changelog
 Read the change log [here](CHANGELOG.md).
