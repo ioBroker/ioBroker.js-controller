@@ -175,7 +175,14 @@ function replaceImages(text, sourceFile, targetFile) {
 async function translateFile(sourceFileName, fromLang, toLang, root) {
     root = root || consts.SRC_DOC_DIR;
     const targetFileName = sourceFileName.replace('/' + fromLang + '/', '/' + toLang + '/');
-    let {header, body} = utils.extractHeader(fs.readFileSync(sourceFileName).toString('utf-8'));
+
+    const resultSrc = utils.extractHeader(fs.readFileSync(sourceFileName).toString('utf-8'));
+    if (!resultSrc) {
+        console.error('File ' + sourceFileName  + ' is empty!!!');
+        return Promise.resolve();
+    }
+
+    let header = resultSrc.header;
     if (header.translatedFrom) {
         // this is not the source
         return Promise.resolve();
@@ -185,6 +192,11 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
     header.translatedWarning = consts.TRANSLATION_NOTICE[toLang];
     header.editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + targetFileName.replace(root, '');
 
+    const data = utils.extractLicenseAndChangelog(resultSrc.body);
+    const {badges, body} = utils.extractBadges(data.body);
+
+    let localHash = utils.getFileHash(body);
+
     let actualText;
     if (fs.existsSync(targetFileName)) {
         let result = utils.extractHeader(fs.readFileSync(targetFileName).toString('utf-8'));
@@ -192,18 +204,16 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
         if (header.translatedFrom !== fromLang) {
             return Promise.resolve();
         }
-        const data = utils.extractLicenseAndChangelog(body);
 
-        if (result.header.hash === utils.getFileHash(data.body)) {
+        // Check src hash and compare it with stored one
+        if (result.header.hash === localHash) {
             return Promise.resolve();
         }
     }
 
-    const data = utils.extractLicenseAndChangelog(body);
-
     // console.log(`Translate ${fromLang} => ${toLang}: "${sourceFileName}"`);
 
-    return translation.translateMD(fromLang, data.body, toLang, actualText, true, sourceFileName)
+    return translation.translateMD(fromLang, body, toLang, actualText, true, sourceFileName)
         .then(result => {
             actualText = result.result;
             actualText = replaceImages(actualText, sourceFileName, targetFileName);
@@ -213,41 +223,85 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
             header.title = title;
             header.translatedFrom = fromLang;
             header.translatedWarning = consts.TRANSLATION_NOTICE[toLang];
-            header.hash = utils.getFileHash(data.body);
-            utils.writeSafe(targetFileName, utils.addHeader(utils.addChangelogAndLicense(actualText, data.changelog, data.license), header));
-            console.log(`WARNING: File ${sourceFileName.replace(root, '/')} was translated from ${fromLang} to ${toLang} automatically`);
+            header.hash = localHash;
+
+            return new Promise(resolve => {
+                // translate badges
+                Promise.all(Object.keys(badges).map(name =>
+                    translation.translateText(fromLang, name, toLang)))
+                    .then(results => {
+                        const nBadges = {};
+                        Object.keys(badges).map((name, i) => nBadges[results[i]] = badges[name]);
+
+                        actualText = utils.addBadgesToBody(actualText, nBadges);
+
+
+                        // add badges
+                        utils.writeSafe(targetFileName, utils.addHeader(utils.addChangelogAndLicense(actualText, data.changelog, data.license), header));
+                        console.log(`WARNING: File ${sourceFileName.replace(root, '/')} was translated from ${fromLang} to ${toLang} automatically`);
+                        resolve(true);
+                    });
+            });
         });
 }
 
-function sync2Languages(fromLang, toLang, cb, files) {
+function sync2Languages(fromLang, toLang, testDir, cb, files) {
+    if (typeof testDir === 'function') {
+        cb = testDir;
+        testDir = '';
+    }
+
     files = files || utils.getAllFiles(consts.SRC_DOC_DIR + fromLang, true).sort();
+
+    if (testDir) {
+        files = files.filter(file => file.indexOf('/' + testDir + '/') !== -1);
+    }
+
     if (!files.length) {
         return cb && cb();
     }
+
     const file = files.shift();
-    translateFile(file, fromLang, toLang).then(() => {
-        setTimeout(() => sync2Languages(fromLang, toLang, cb, files), 100);
+    translateFile(file, fromLang, toLang).then(translated => {
+        if (translated) {
+            const parts = file.replace(/\\/g, '/').split('/');
+            parts.pop();
+            const fls = utils.getAllFiles(parts.join('/'), false).sort();
+            fls.filter(f => !f.match(/\.md$/))
+                .forEach(file =>
+                    utils.writeSafe(file.replace('/' + fromLang + '/', '/' + toLang + '/'), fs.readFileSync(file)));
+        }
+        setTimeout(() => sync2Languages(fromLang, toLang, testDir, cb, files), 100);
     });
 }
 
-function processTasks(tasks, cb) {
+function processTasks(tasks, testDir, cb) {
+    if (typeof testDir === 'function') {
+        cb = testDir;
+        testDir = '';
+    }
+
     if (!tasks || !tasks.length) {
         cb && cb();
     } else {
         const task = tasks.shift();
-        sync2Languages(task.fromLang, task.toLang, () =>
-            setTimeout(() => processTasks(tasks, cb), 0));
+        sync2Languages(task.fromLang, task.toLang, testDir, () =>
+            setTimeout(() => processTasks(tasks, testDir, cb), 0));
     }
 }
 
-function syncDocs(cb) {
+function syncDocs(testDir, cb) {
     const tasks = [];
+    if (typeof testDir === 'function') {
+        cb = testDir;
+        testDir = '';
+    }
     consts.LANGUAGES.map(lang => {
         consts.LANGUAGES
             .filter(lang2 => lang2 !== lang)
             .map(lang2 => tasks.push({fromLang: lang, toLang: lang2}));
     });
-    processTasks(tasks, () => cb);
+    processTasks(tasks, testDir, cb);
 }
 
 // process all files in directory recursively

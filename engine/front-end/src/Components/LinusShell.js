@@ -5,6 +5,7 @@ import Typed from 'react-typed';
 import IconButton from '@material-ui/core/IconButton';
 
 import {MdContentCopy as IconCopy} from 'react-icons/md';
+import Utils from '../Utils';
 
 const styles = theme => ({
     linuxShell: {
@@ -97,26 +98,6 @@ class LinusShell extends React.Component {
         };
     }
 
-    static onCopy(e, text) {
-        const el = window.document.createElement('textarea');
-        el.value = text;
-        el.style.position = 'absolute';
-        el.style.left = '-9999px';
-        window.document.body.appendChild(el);
-        el.select();
-        const selection = window.document.getSelection();
-        const range = window.document.createRange();
-        range.selectNode(el);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        console.log('copy success', window.document.execCommand('copy'));
-        selection.removeAllRanges();
-        window.document.body.removeChild(el);
-        console.log(text);
-        e.stopPropagation();
-        e.preventDefault();
-    }
-
     onLinuxSize(newState) {
         window.localStorage && window.localStorage.setItem('Docs.linuxSize', newState);
         this.setState({linuxSize: newState});
@@ -171,7 +152,7 @@ class LinusShell extends React.Component {
                     className={this.props.classes.linuxShellWindowCopy + ' ' + (this.state.animationDone ? this.props.classes.linuxShellHeaderWindowCopyDone : '')}
                     title={this.props.copyTitle || 'copy to clipboard'}
                     onClick={e => {
-                        LinusShell.onCopy(e, this.props.typedText);
+                        Utils.onCopy(e, this.props.typedText);
                         this.setState({text: ['', this.props.copiedText || 'copied to clipboard']});
                     }}><IconCopy/></IconButton>
             </div>

@@ -5,7 +5,7 @@ Autores:
 Insignias
 Blog
 Registro de cambios
-Nube
+Cloud
 Desplegar todo
 Fecha
 Detalles
@@ -15,10 +15,12 @@ Editar en github
 Expandir todo
 Filtrar
 Github
+Buena suerte
 Imprimir
 Información
 Información
 Instala:
+Únete ahora
 Último cambio:
 Licencia
 Linux
@@ -27,13 +29,22 @@ Nuevo en el mes pasado:
 Noticias, anuncios e ideas sobre ioBroker.
 Repositorio abierto
 Plataforma
+Mensajes
 Política de privacidad
 Leer
 Estable:
+Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.
+Temas
 Total:
 Esta página ha sido traducida automáticamente de "%s". Ayúdenos a traducir esta página al inglés haciendo clic en Editar a continuación.
+Usuarios
 autores
 compacto
+¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!
+Solo necesita las imágenes si tiene problemas con los scripts de instalación.
+La instalación es tan fácil como escribir 1 o 3 líneas.
+Instale Node.js (no es necesario si aún está instalado):
+Instalar ioBroker:
 ioBroker Blog
 palabras clave
 materializar

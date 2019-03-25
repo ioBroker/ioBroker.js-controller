@@ -5,7 +5,7 @@ autori:
 badge
 blog
 changelog
-Nube
+Cloud
 Comprimi tutto
 Data
 Dettagli
@@ -15,10 +15,12 @@ Modifica su github
 Espandi tutto
 Filtro
 Github
+In bocca al lup
 Impronta
 Informazioni
 Informazione
 Installa:
+Iscriviti adesso
 Ultima modifica:
 Licenza
 Linux
@@ -27,13 +29,22 @@ Novità del mese scorso:
 Notizie, annunci e idee su ioBroker
 Apri repository
 piattaforma
+Messaggi
 Politica sulla riservatezza
 Leggere
 Stabile:
+La pagina che stai cercando potrebbe essere stata rimossa, il suo nome è cambiato o temporaneamente non disponibile.
+Temi
 Totale:
 Questa pagina è stata tradotta automaticamente da "%s". Aiutaci a tradurre questa pagina in inglese facendo clic su Modifica sotto.
+utenti
 autori
 compatto
+Unisciti ora alla comunità in rapida crescita, fai domande e ottieni risposte!
+Hai bisogno delle immagini solo se hai problemi con gli script di installazione.
+L'installazione è facile come scrivere 1 o 3 linee.
+Installa Node.js (non richiesto se è ancora installato):
+Installa ioBroker:
 Blog di ioBroker
 parole chiave
 materializzarsi

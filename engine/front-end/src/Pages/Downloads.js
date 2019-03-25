@@ -1,23 +1,25 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Footer from '../Footer';
-import Router from "../Router";
+import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
+import IconButton from '@material-ui/core/IconButton';
 
-import Loader from "./Blog";
+import Select from '@material-ui/core/Select';
+import Loader from '../Components/Loader';
 import I18n from '../i18n';
+import Footer from '../Footer';
+import Utils from '../Utils';
+import {MdContentCopy as IconCopy} from "react-icons/md";
 
 const MARGIN = 10;
 
@@ -76,9 +78,41 @@ const styles = theme => ({
         fontWeight: 'bold',
         flex: 1,
     },
-    cardLineValue: {
-
-    }
+    cardLineValue: {},
+    instructionDiv: {
+        width: 'calc(100% - 80px)',
+        marginLeft: 20,
+        marginRight: 20,
+        maxWidth: 750,
+        marginBottom: 10,
+        marginTop: 5,
+        minWidth: 100,
+        padding: 20,
+        '&:before': {
+            content: '"⚠"',
+            color: '#ff5a5a',
+            fontSize: 24,
+            paddingRight: 10,
+            //borderRadius: '50%',
+            //background: '#008aff',
+        }
+    },
+    instructionCode: {
+        position: 'relative',
+        background: '#999999',
+        padding: 5,
+        borderRadius: 3,
+        color: '#FFFFFF'
+    },
+    instructionCopy: {
+        position: 'absolute',
+        top: -4,
+        right: -9,
+        color: '#FFFFFF',
+        opacity: 0.8,
+        cursor: 'pointer',
+        zIndex: 1,
+    },
 });
 
 const IGONRED_ATTRS = ['file', 'date', 'linux', 'picture', 'device', 'info', 'details'];
@@ -190,18 +224,40 @@ class Downloads extends Component {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary" onClick={() => this.openLink(image.file)}>{I18n.t('Download')}</Button>
-                {image.info && (<Button size="small" color="primary" onClick={() => this.openLink(image.info)}>{I18n.t('Info')}</Button>)}
+                <Button size="small" color="primary" onClick={() => Utils.openLink(image.file)}>{I18n.t('Download')}</Button>
+                {image.info && (<Button size="small" color="primary" onClick={() => Utils.openLink(image.info)}>{I18n.t('Info')}</Button>)}
             </CardActions>
         </Card>);
     }
 
-    openLink(url, target) {
-        if (target === 'this') {
-            window.location = url;
-        } else {
-            window.open(url, target || '_blank');
-        }
+    renderInfoAboutInstall() {
+        return (
+            <Paper key="instruction" className={this.props.classes.instructionDiv}>
+                {I18n.t('instruction1')}<br/>
+                {I18n.t('instruction2')}<br/><br/>
+                <b>1. </b>{I18n.t('instruction3')}
+                <pre className={this.props.classes.instructionCode}>
+                    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -<br/>
+                    sudo apt-get install -y nodejs<br/>
+                    <IconButton
+                        className={this.props.classes.instructionCopy}
+                        title={I18n.t( 'copy to clipboard')}
+                        onClick={e => {
+                            Utils.onCopy(e, 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -\nsudo apt-get install -y nodejs');
+                        }}><IconCopy fontSize="small"/></IconButton>
+                </pre>
+                <b>2. </b>{I18n.t('instruction4')}
+                <pre className={this.props.classes.instructionCode}>
+                    curl -sL https://iobroker.net/install.sh | bash -<br/>
+                    <IconButton
+                        className={this.props.classes.instructionCopy}
+                        title={I18n.t( 'copy to clipboard')}
+                        onClick={e => {
+                            Utils.onCopy(e, 'curl -sL https://iobroker.net/install.sh | bash -');
+                        }}><IconCopy fontSize="small"/></IconButton>
+                </pre>
+            </Paper>
+        )
     }
 
     renderSelector() {
@@ -209,7 +265,7 @@ class Downloads extends Component {
         const types = [];
         this.state.content.forEach(item => types.indexOf(item.device) === -1 && types.push(item.device));
 
-        return (<FormControl className={this.props.classes.formControl}>
+        return (<FormControl key="selector" className={this.props.classes.formControl}>
             <Select
                 value={this.state.filter}
                 onChange={e => this.setState({filter: e.target.value})}
@@ -229,7 +285,8 @@ class Downloads extends Component {
 
         return [
             this.renderSelector(),
-            (<div className={this.props.classes.root}>
+            this.renderInfoAboutInstall(),
+            (<div key="table" className={this.props.classes.root}>
                 {this.state.content && this.state.content.map(image => this.renderImage(image))}
             </div>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),

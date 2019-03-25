@@ -124,7 +124,7 @@ class Utils {
             let last = parts.length - 1;
 
             if (line.startsWith('=========')) {
-                continue;
+                // ignore it
             } else
             if (line.match(/^# /)) {
                 const cont = Utils.findTitle(line, -1, path);
@@ -170,8 +170,15 @@ class Utils {
                         i++;
                     }
                 }
-            } else if (line.startsWith('?> ') || line.startsWith('!> ') || line.startsWith('> ')) {
-                parts.push({lines: [line.substring(3)], type: line.startsWith('?>') ? 'warn' : (line.startsWith('!>') ? 'alarm' : 'notice')});
+            } else if (line.startsWith('?> ') || line.startsWith('!> ')) {
+                parts.push({lines: [line.substring(3)], type: line.startsWith('?>') ? 'warn' : 'alarm'});
+                last++;
+                while(i + 1 < lines.length && lines[i + 1].trim()) {
+                    parts[last].lines.push(lines[i + 1]);
+                    i++;
+                }
+            } else if (line.startsWith('> ')) {
+                parts.push({lines: [line.substring(2)], type: 'notice'});
                 last++;
                 while(i + 1 < lines.length && lines[i + 1].trim()) {
                     parts[last].lines.push(lines[i + 1]);
@@ -204,6 +211,36 @@ class Utils {
             changeLog: changeLog,
             license: licenseLines
         };
+    }
+
+    static onCopy(e, text) {
+        const el = window.document.createElement('textarea');
+        el.value = text;
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        window.document.body.appendChild(el);
+        el.select();
+        const selection = window.document.getSelection();
+        const range = window.document.createRange();
+        range.selectNode(el);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        console.log('copy success', window.document.execCommand('copy'));
+        selection.removeAllRanges();
+        window.document.body.removeChild(el);
+        console.log(text);
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }
+
+    static openLink(url, target) {
+        if (target === 'this') {
+            window.location = url;
+        } else {
+            window.open(url, target || '_blank');
+        }
     }
 }
 

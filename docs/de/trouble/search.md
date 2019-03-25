@@ -1,7 +1,6 @@
 ---
 title:       "Fehlerbehebung - Fehlersuche"
 lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/trouble/search.md"
 ---
 
 # Fehlersuche und Fehlereingrenzung

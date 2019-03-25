@@ -7,6 +7,7 @@ import I18n from './i18n';
 import LogoIoBroker from './assets/iobroker-logo-small.png';
 import {FaGithubSquare as IconGithub} from 'react-icons/fa';
 import {FaFacebook as IconFacebook} from 'react-icons/fa';
+import Utils from './Utils';
 
 
 const styles = theme => ({
@@ -50,29 +51,22 @@ const styles = theme => ({
 });
 
 class Loader extends React.Component {
-    openLink(url, target) {
-        if (target === 'this') {
-            window.location = url;
-        } else {
-            window.open(url, target || '_blank');
-        }
-    }
     render() {
         return (<div className={this.props.classes.footer}>
             <div title="Repository" className={this.props.classes.footerIconDiv}>
                 <IconGithub className={this.props.classes.footerIcon}
-                        onClick={() => this.openLink('https://github.com/ioBroker')}
+                        onClick={() => Utils.openLink('https://github.com/ioBroker')}
                 />
             </div>
             <div title="Community adapters repository" className={this.props.classes.footerIconDiv}>
                 <IconGithub className={this.props.classes.footerIcon}
-                        onClick={() => this.openLink('https://github.com/iobroker-community-adapters')}
+                        onClick={() => Utils.openLink('https://github.com/iobroker-community-adapters')}
                 />
                 <div className={this.props.classes.footerIconText}>Community</div>
             </div>
             <div title="Unofficial Facebook group" className={this.props.classes.footerIconDiv}>
                 <IconFacebook className={this.props.classes.footerIcon}
-                            onClick={() => this.openLink('https://www.facebook.com/groups/440499112958264')}
+                            onClick={() => Utils.openLink('https://www.facebook.com/groups/440499112958264')}
                 />
             </div>
             <br/>

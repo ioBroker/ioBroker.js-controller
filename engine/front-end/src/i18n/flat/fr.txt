@@ -5,7 +5,7 @@ Auteurs:
 Insignes
 Blog
 Changelog
-Nuage
+Cloud
 Réduire tout
 Rendez-vous amoureux
 Détails
@@ -15,10 +15,12 @@ Télécharger
 Développer tout
 Filtre
 Github
+Bonne chance
 Imprimer
 Info
 Information
 Installe:
+Adhérer
 Dernière modification:
 Licence
 Linux
@@ -27,13 +29,22 @@ Nouveau dans le mois dernier:
 Nouvelles, annonces et idées sur ioBroker
 Référentiel ouvert
 Plate-forme
+Des postes
 Politique de confidentialité
 Lis
 Stable:
+La page que vous recherchez a peut-être été supprimée, si son nom a été modifié ou si elle est temporairement indisponible.
+Des thèmes
 Total:
 Cette page a été traduite automatiquement à partir de "%s". Aidez-nous à traduire cette page en anglais en cliquant sur Modifier ci-dessous.
+Utilisateurs
 auteurs
 compact
+Rejoignez maintenant la communauté en pleine croissance, posez des questions et obtenez des réponses!
+Vous n'avez besoin des images que si vous rencontrez des problèmes d'installation de scripts.
+L'installation est aussi simple que d'écrire 1 ou 3 lignes.
+Installez Node.js (non requis si déjà installé):
+Installez ioBroker:
 Blog ioBroker
 mots clés
 se concrétiser

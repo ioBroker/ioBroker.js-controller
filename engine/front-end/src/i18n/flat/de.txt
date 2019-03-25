@@ -5,7 +5,7 @@ Autoren:
 Abzeichen
 Blog
 Änderungsprotokoll
-Wolke
+Cloud
 Alles einklappen
 Datum
 Einzelheiten
@@ -15,10 +15,12 @@ Bearbeiten Sie auf Github
 Alle erweitern
 Filter
 Github
+Viel Glück
 Impressum
 Info
 Information
 Installiert:
+Jetzt beitreten
 Zuletzt geändert:
 Lizenz
 Linux
@@ -27,13 +29,22 @@ Neu im letzten Monat:
 Neuigkeiten, Ankündigungen und Ideen zu ioBroker
 Repository öffnen
 Plattform
+Beiträge
 Datenschutz-Bestimmungen
 Lesen
 Stabil:
+Die von Ihnen gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
+Themes
 Gesamt:
 Diese Seite wurde automatisch von "%s" übersetzt. Helfen Sie uns, diese Seite auf Deutsch zu übersetzen, indem Sie unten auf Bearbeiten klicken.
+Benutzer
 Autoren
 Kompaktmodus
+Trete jetzt der schnell wachsenden Community bei, stelle die Fragen und bekomme die Antworten von Profis!
+Sie benötigen die Images nur, wenn Sie Probleme mit Installationsskripten haben.
+Die Installation ist so einfach wie das Schreiben von 1 oder 3 Zeilen.
+Installieren Sie Node.js (nicht erforderlich, falls schon nicht installiert):
+Installieren Sie ioBroker:
 ioBroker Blog
 Schlüsselwörter
 Admin3

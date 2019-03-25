@@ -1,7 +1,6 @@
 ---
 title:       "Visualisierung"
 lastChanged: "13.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/viz/vis.md"
 ---
 
 # Visualisierungen mit VIS {docsify-ignore-all}

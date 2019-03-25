@@ -7,6 +7,8 @@ Copyright 2019 Robin Selmer
 https://codepen.io/robinselmer/pen/vJjbOZ
 */
 
+import I18n from '../i18n';
+
 const styles = theme => ({
     content: Object.assign({background: 'black', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}, theme.content),
     root: {
@@ -61,7 +63,7 @@ const styles = theme => ({
         boxSizing: 'inherit',
         position: 'absolute',
         height: '100%',
-        width: '1000px',
+        width: 'calc(100% - 8rem)',
         maxWidth: '100%',
         padding: '4rem',
         textTransform: 'uppercase',
@@ -91,10 +93,9 @@ class Page404 extends Component {
                     <div className={this.props.classes.overlay}>
                         <div className={this.props.classes.terminal}>
                             <h1>Error<span className={this.props.classes.errorcode}>404</span></h1>
-                            <p className={this.props.classes.output}>The page you are looking for might have been removed,
-                                had its name changed or
-                                is temporarily unavailable</p>
-                            <p className={this.props.classes.output}>Good luck</p>
+                            <p className={this.props.classes.output}>
+                                {I18n.t('The page you are looking for')}</p>
+                            <p className={this.props.classes.output}>{I18n.t('Good luck')}</p>
                         </div>
                     </div>
                 </div>

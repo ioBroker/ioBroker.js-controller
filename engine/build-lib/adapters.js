@@ -11,7 +11,6 @@ const ADAPTERS_DIR = path.normalize(__dirname + '/../../docs/LANG/adapterref/').
 
 const urlsCache = {};
 
-
 function fixImages(lang, adapter, body) {
     const badges = {};
     const doDownload = [];
@@ -194,7 +193,8 @@ function prepareAdapterReadme(lang, repo, data) {
                 link = link.split('?')[0];
                 link = link.split(' ')[0];
 
-                if (!fs.existsSync(localDirName + link)) {
+                const fileName = path.normalize(localDirName + link).replace(/\\/g, '/');
+                if (!fs.existsSync(fileName)) {
                     let relative;
 
                     if (data.link) {
@@ -545,14 +545,14 @@ function buildAdapterContent() {
         .then(repo =>
             new Promise(resolve => {
                 const content = {pages: {
-                        overview: {
-                            title: consts.OVERVIEW,
-                            content: 'adapters.md'
-                        }
-                    }};
+                    overview: {
+                        title: consts.OVERVIEW,
+                        content: 'adapters.md'
+                    }
+                }};
 
                 const promises = Object.keys(repo)
-                    .filter(a => a !== 'js-controller')// && a === 'fritzbox')
+                    .filter(a => a !== 'js-controller')// && a === 'sayit')
                     .map(adapter =>
                         processAdapter(adapter, repo[adapter], content));
 
