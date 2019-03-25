@@ -8,9 +8,9 @@ Content:
 
 | Folder | Description |
 |---|---|
-|**archive**|Archived informations|
-|**blog**|blog messages|
-|**docs**|official iobroker documentation|
+|**archive**|archived informations from older documentions|
+|**blog**|source for blog messages|
+|**docs**|official iobroker documentation source files|
 |**engine**|dynamic webpage generation engine|
 |**media**|official files and logos|
 
