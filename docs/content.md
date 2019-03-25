@@ -60,6 +60,17 @@
   * [Introduction](viz/README)
   * [Material](viz/material)
   * [Vis](viz/vis)
+    * en:Widgets;de:Widgets;ru:Виджеты
+      * [Allgemeine Einstellungen](viz/widgets)
+      * [Widget Sets](viz/widgetsets)
+        * [Basic](viz/basic)
+        * [Fancyswitch](viz/fancyswitch)
+        * [Hqwidgets](viz/hqwidgets)
+        * [Jqui](viz/jqui)
+        * [Jquimfd](viz/jquimfd)
+        * [Metro](viz/metro)
+        * [Rgraph](viz/rgraph)
+      * [Widgets Help old](viz/widgethelp_old)
 
 * en:Logic & Automation;de:Logik & Automatisierung;ru:Автоматизация
   * [Introduction](logic/README)
