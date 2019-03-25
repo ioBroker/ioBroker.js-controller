@@ -27,7 +27,7 @@ werden. Ein weiterer Knopf ermöglicht die Anzeige der Expertenansicht.
 In der Titelzeile befinden sich Icons für die wichtigsten Vorgänge. Zu jedem Icon gibt es eine Kontexthilfe. 
 Dazu einfach mit der Maus eine Weile auf dem Icon bleiben.
 
-![Die Icons des Objekte-Reiters](/media/ADMIN_Objekte_numbers.png)
+![Die Icons des Objekte-Reiters](media/ADMIN_Objekte_numbers.png)
 
 ### Die Icons im einzelnen:
 
@@ -60,7 +60,7 @@ Mit diesen beiden Buttons kann die gesamte Baumstruktur auf- bzw. zugeklappt wer
 Mit diesem Button werden weitere Informationen zu den jeweiligen Zuständen der Datenpunkte 
 angezeigt. (Toggle-Modus)
 
-![Statusansicht](/media/ADMIN_Objekte_status_tree.png)
+![Statusansicht](media/ADMIN_Objekte_status_tree.png)
 
 Hier mit zusammengeklappter Menüleiste
 
@@ -83,7 +83,7 @@ Dieser Button ist hier ohne Funktion
 Nach Anwählen dieses Icons können weitere Objekte hinzugefügt werden. Ist ein Ordner angewählt wird 
 dieser als Parent in der Objektstruktur übernommen. Ein Konfigurationsfenster öffnet sich:
 
-![Neues Objekt](/media/ADMIN_Objekte_new_01.png)
+![Neues Objekt](media/ADMIN_Objekte_new_01.png)
 
 
 Hier muss jetzt der Name für das neue Objekt ausgewählt werden, wobei als Typ gemäß der hierarchischen 
@@ -92,7 +92,7 @@ Logikwert, Schalter, Zeichenkette, Zahl, Werteliste, Feld, Objekt und gemischt z
 
 Sobald man das Eingabefenster mit ok bestätigt öffnet sich ein weiteres Fenster:
 
-![Neues Objekt](/media/ADMIN_Objekte_new_02.png)
+![Neues Objekt](media/ADMIN_Objekte_new_02.png)
 
 Hier können noch einige Daten eingegeben werden. So kann dem Objekt eine Rolle und ein icon 
 hinzugefügt werden.
