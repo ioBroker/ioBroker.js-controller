@@ -3,7 +3,7 @@ title:       "Willkommen"
 lastChanged: "14.03.2019"
 ---
 # Willkommen bei ioBroker
-ioBroker ist ein zentraler Service zum Anbinden, Auswerten und Bedienen 
+ioBroker ist ein zentraler Service zur Anbindung, Auswertung und Bedienung 
 von Systemen, die ohne ioBroker Insellösungen bleiben würden. 
 
 ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
@@ -42,11 +42,14 @@ von Automatismen und Abläufen bei der Visualisierung ist auch ohne
 Programmierkenntnisse möglich. Vorgefertigte Bausteine zur 
 einfachen Verwendung helfen dem Anwender dabei. Doch nicht nur die 
 Anzeige von Informationen ist möglich. Auch die Steuerung von Geräten 
-ist über die Visualiserungsoberfläche schnell umgesetzt. Die Bedienung 
-der Oberfläche ist dabei auf die unterschiedlichsten Endgeräte 
-abgestimmt - vom Smartphone über das Wandtablet mit Touchfunktion 
+ist über die Visualisierungsoberfläche schnell umgesetzt. Die Bedienung 
+der Oberfläche kann dabei auf die unterschiedlichsten Endgeräte 
+abgestimmt werden - vom Smartphone über das Wandtablet mit Touchfunktion 
 bis hin zum Personal Computer - alles kann durch einfaches Drag and 
 Drop realisiert werden.
+
+Einfache vorgefertigte Bedienoberflächen können mit dem Material- oder dem 
+HabPanel-Adapter schnell realisiert werden.
 
 
 ## Plattformübergreifend
@@ -81,6 +84,9 @@ entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
 Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
 zu ioBroker beitragen kann und auch individuelle Anforderungen
 umsetzbar sind.
+
+Die Variante 'Blockly' ermöglicht es Einsteigern ohne umfangreiche Programmierkenntnisse 
+selber per 'drag and drop' schnell zu Ergebnissen zu kommen.
 
 ## Community
 Seit 2014 hat sich ioBroker aufgrund seiner vielen Vorzüge eine breite 
