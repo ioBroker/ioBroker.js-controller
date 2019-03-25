@@ -1,6 +1,6 @@
 ---
-title:       "Admin"
-lastChanged: "14.09.2018"
+title:       "Adapter"
+lastChanged: "25.03.2019"
 ---
 
 # Der Reiter Adapter

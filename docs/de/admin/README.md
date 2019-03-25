@@ -53,10 +53,10 @@ Ausführliche Informationen sind in den Seiten hinterlegt, die über die Übersc
 ### [Adapter](adapter.md)
 Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 
-### Instanzen
+### [Instanzen](instances.md)
 Hier werden die bereits über den Reiter Adapter installierten Instanzen aufgelistet und können entsprechend konfiguriert werden.
 
-### Objekte
+### [Objekte](objects.md)
 Die verwalteten Objekte Strukturen und Datenpunkte der Geräte, die über Adapter eingebunden sind. Hier können Objekte angelegt und gelöscht werden. Über die Pfeil hoch und Pfeil runter Knöpfe können ganze Objektstrukturen hoch- oder runtergeladen werden.
 
 Werden Werte in roter Schrift angezeigt, sind sie noch nicht vom Empfänger bestätigt (ack = false).
