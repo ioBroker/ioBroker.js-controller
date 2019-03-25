@@ -16,11 +16,8 @@ function fixImages(lang, adapter, body) {
 
     // replace all images like "<img src="src/img/rooms/006-double-bed.svg" height="48" />" with "<img src="LN/adapterref/iobroker.adapterName/src/img/rooms/006-double-bed.svg" height="48" />"
     const res = utils.replaceImages(body, prefix);
-    body = res.body;
 
-    body = lines.join('\n').trim();
-
-    return {body, badges: res.badges, doDownload: res.doDownload};
+    return {body: res.body, badges: res.badges, doDownload: res.doDownload};
 }
 
 function getAuthor(data) {
@@ -539,12 +536,19 @@ function copyAdapterToFrontEnd(lang, adapter) {
                 return Promise.all(files.filter(f => f.match(/\.md$/i)).map(file => {
                     const text = fs.readFileSync(file).toString('utf-8');
                     const {header} = utils.extractHeader(text);
-                    const link = header.local ?
-                        consts.GITHUB_EDIT_ROOT.replace('/edit/', '/').replace('github.com', 'raw.githubusercontent.com') +
-                        'docs/' + lang + '/adapterref/iobroker.' + adapter + file.replace(dirName, '') :
-                        repo[adapter].readme.replace('/blob/master/README.md', '')
-                            .replace('/master/README.md', '')
-                            .replace('github.com', 'raw.githubusercontent.com') + '/master/' + file.replace(dirName, '');
+                    let link = '';
+                    if (header.local) {
+                        link = consts.GITHUB_EDIT_ROOT.replace('/edit/', '/').replace('github.com', 'raw.githubusercontent.com') +
+                            'docs/' + lang + '/adapterref/iobroker.' + adapter + file.replace(dirName, '');
+                    } else {
+                        if (!repo[adapter].readme) {
+                            console.error(`Adapter ${adapter} has no readme. Please fix it!!!!`);
+                        } else {
+                            link = repo[adapter].readme.replace('/blob/master/README.md', '')
+                                .replace('/master/README.md', '')
+                                .replace('github.com', 'raw.githubusercontent.com') + '/master/' + file.replace(dirName, '');
+                        }
+                    }
 
                     return prepareAdapterReadme(lang, repo[adapter], {
                         body: text,

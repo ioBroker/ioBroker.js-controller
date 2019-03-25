@@ -66,7 +66,6 @@ const styles = theme => ({
     },
     details: {
         display: 'inline-block',
-        textAlign: 'center'
     },
     pageHeader: {
         marginLeft: 20,
@@ -402,7 +401,7 @@ class Adapters extends Component {
             >{
                 this.state.content.pages[type].title[this.props.language] || this.state.content.pages[type].title.en || type
             }</ExpansionPanelSummary>
-            <ExpansionPanelDetails classes={{root: this.props.classes.details}}>
+            <ExpansionPanelDetails classes={{root: this.props.classes.details}} style={this.props.mobile ? {textAlign: 'center'} :  {}>
                 {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter]) && this.renderAdapter(type, adapter, items.pages[adapter]))}
             </ExpansionPanelDetails>
         </ExpansionPanel>);

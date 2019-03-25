@@ -19,7 +19,7 @@ import Loader from '../Components/Loader';
 import I18n from '../i18n';
 import Footer from '../Footer';
 import Utils from '../Utils';
-import {MdContentCopy as IconCopy} from "react-icons/md";
+import {MdContentCopy as IconCopy} from 'react-icons/md';
 
 const MARGIN = 10;
 
@@ -284,8 +284,8 @@ class Downloads extends Component {
         }
 
         return [
-            this.renderSelector(),
             this.renderInfoAboutInstall(),
+            this.renderSelector(),
             (<div key="table" className={this.props.classes.root}>
                 {this.state.content && this.state.content.map(image => this.renderImage(image))}
             </div>),
