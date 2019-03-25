@@ -19,7 +19,7 @@ Hier werden die bereits über den Reiter Adapter installierten Instanzen aufgeli
 ## Die Titelzeile
 in der Titelzeile befinden sich Icons für die wichtigsten Vorgänge. Zu jedem Icon gibt es eine Kontexthilfe. Dazu einfach mit der Maus eine Weile auf dem Icon bleiben. Außerdem gibt es noch Informationen zu der Auslastung des Servers
 
-![Die Icons in der Titelzeile](/media/ADMIN_Instanzen_numbers.png)
+![Die Icons in der Titelzeile](media/ADMIN_Instanzen_numbers.png)
 
 Die Icons im einzelnen:
 
@@ -39,7 +39,7 @@ auf welchem Host sich diese Instanz befindet steht in der Spalte ***Server***
 
 Wenn im Header ein Host ausgewählt ist, kann man sich mit diesem Button nur die dort installiertne Instanzen anzeigen lassen.
 
-![Die verfügbaren Hosts](/media/ADMIN_Instanzen_hosts.png)
+![Die verfügbaren Hosts](media/ADMIN_Instanzen_hosts.png)
 
 
 
@@ -53,7 +53,8 @@ In dieses Feld kann ein Begriff zum Filtern oder zur Suche nach Instanzen eingeg
 
 Die ersten Zahlen geben den bisher von den Instanzen verbrauchten Arbeitsspeicher und den restlichen freien Speicher in MB an. Dahinter den freien Speicher in %. In den eckigen Klammern steht der Name des ioBroker-Servers und die Anzahl der laufenden Prozesse.
 
-Der Seiteninhalt
+##Der Seiteninhalt
+
 iobroker_admin_instanzen_headline_columns
 
 Auf der Seite werden die installierten Instanzen der Adapter tabellarisch dargestellt.
