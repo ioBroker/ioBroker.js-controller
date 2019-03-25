@@ -21,32 +21,9 @@ Adapter-Referenz zum Admin-Adapter verweisen.
 
 
 
-Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.
-
- 
-
-1 Adapter Admin
-1.1 Steckbrief
-1.2 ausführliche Beschreibung
-1.3 Installation
-1.4 Konfiguration
-1.5 Bedienung
-1.6 Reiter
-1.6.1 Adapter
-1.6.2 Instanzen
-1.6.3 Objekte
-1.6.4 Zustände
-1.6.5 Ereignisse
-1.6.6 Gruppen
-1.6.7 Benutzer
-1.6.8 Aufzählungen
-1.6.9 hosts
-1.6.10 Log
-1.6.11 Systemeinstellungen
+!> Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.
 
 
-
-# Beschreibung
 Der Adapter admin dient der Bedienung der gesamten ioBroker-Installation. Er stellt ein Webinterface zur Verfügung. Dieses wird unter der <IP-Adresse des Servers>:8081 aufgerufen. Dieser Adapter wird direkt bei der Installation von ioBroker angelegt.
 
 Über das vom Adapter zur Verfügung gestellte GUI können u.a. folgenden Funktionen abgerufen werden:
@@ -88,7 +65,7 @@ Die Hauptseite des Administrators besteht aus mehreren Reitern. In der Grundinst
 
 Ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften verlinkt sind.
 
-### Adapter
+### [Adapter](../adapter.md)
 Hier werden die verfügbaren und installierten Adapter angezeigt und verwaltet.
 
 ### Instanzen
