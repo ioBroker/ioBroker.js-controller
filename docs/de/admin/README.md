@@ -6,7 +6,7 @@ lastChanged: "25.03.2019"
 # Einleitung
 
 
-> **Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.**
+!> **Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften der Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.**
 
 
 Der Adapter Admin dient der Bedienung der gesamten ioBroker-Installation. Er stellt ein Webinterface zur Verfügung. Dieses wird unter der <IP-Adresse des Servers>:8081 aufgerufen. Dieser Adapter wird direkt bei der Installation von ioBroker angelegt.
