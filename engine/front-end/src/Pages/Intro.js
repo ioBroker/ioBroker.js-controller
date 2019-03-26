@@ -11,6 +11,9 @@ import {FaComment as IconThemes} from 'react-icons/fa';
 import Footer from '../Footer';
 import ForumInfo from '../Components/ForumInfo';
 import Subscribe from '../Components/Subscribe';
+import Press from '../Components/Press';
+import Adapters from '../Components/Adapters';
+
 import BackImage from '../assets/background.jpg';
 import LinusShell from '../Components/LinusShell';
 import I18n from '../i18n';
@@ -166,7 +169,9 @@ class Intro extends Component {
                 />) : null}
             </div>),
             (<ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<Subscribe key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<Adapters key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
         ];
     }

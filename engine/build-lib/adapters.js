@@ -238,10 +238,13 @@ function getReadme(lang, dirName, repo, adapter) {
                     .then(results => {
                         if (links.length) {
                             const readmeParsed = utils.extractHeader(readmeDoc);
+                            if (!results[0].body) {
+                                return;
+                            }
 
                             // insert the changelog, logo, licenses, badges info from readme into first file
                             const {badges} = fixImages(lang, adapter, readmeParsed.body);
-                            const linkParsed = utils.extractHeader(results[0].body);
+                            const linkParsed = utils.extractHeader(results[0].body) || {};
                             Object.keys(badges).forEach(name => {
                                 linkParsed.header['BADGE-' + name] = badges[name];
                             });
@@ -485,6 +488,19 @@ function downloadRepo() {
     return repoPromise;
 }
 
+let statisticsPromise;
+function downloadStatistics() {
+    statisticsPromise = statisticsPromise || new Promise(resolve => {
+        request('http://iobroker.live/statistics.json', (err, state, body) => {
+            const stat = JSON.parse(body);
+            resolve(stat);
+        });
+    });
+
+    return statisticsPromise;
+
+}
+
 // Download stable and latest repositories
 // Apply versions from stable to latest repo
 // For every adapter in latest repo
@@ -506,10 +522,23 @@ function buildAdapterContent() {
                     .map(adapter =>
                         processAdapter(adapter, repo[adapter], content));
 
-                utils.queuePromises(promises, () => {
-                    fs.writeFileSync(consts.FRONT_END_DIR + 'adapters.json', JSON.stringify(content, null, 2));
-                    resolve(content);
-                });
+                downloadStatistics()
+                    .then(stat => {
+                        utils.queuePromises(promises, () => {
+                            Object.keys(stat.adapters).forEach(a => {
+                                Object.keys(content.pages).find(type => {
+                                   if (content.pages[type].pages && content.pages[type].pages[a]) {
+                                       content.pages[type].pages[a].installs = stat.adapters[a];
+                                       return true;
+                                   }
+                                });
+                            });
+
+                            fs.writeFileSync(consts.FRONT_END_DIR + 'adapters.json', JSON.stringify(content, null, 2));
+                            resolve(content);
+                        });
+                    })
+
                 /*const a = 'fritzbox';
                 const dirName = ADAPTERS_DIR.replace('/LANG/', '/en/') + 'iobroker.' + a;
                 downloadReadme('en', dirName, repo[a], a)

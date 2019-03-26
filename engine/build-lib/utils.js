@@ -131,7 +131,7 @@ function delDir(source) {
 }
 
 function extractLicenseAndChangelog(text) {
-    const lines = text.trim().split('\n');
+    const lines = (text || '').trim().split('\n');
     const changelog = [];
     let changelogA = false;
     const license = [];

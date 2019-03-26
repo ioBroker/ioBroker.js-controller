@@ -1,0 +1,473 @@
+---
+BADGE-Number of Installations: http://iobroker.live/badges/backitup-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.backitup.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.backitup.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.backitup.png?downloads=true
+---
+Backitup ist eine Backuplösung, mit der das zyklische Sichern einer IoBroker-Installation sowie einer Homematic CCU möglich ist.
+
+Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installationen auch auf Windows und Mac Installationen verwendet werden.
+
+Für den CIFS Mount muss zwingend cifs-utils installiert sein.
+
+    - sudo apt-get install cifs-utils
+
+Für den NFS Mount muss zwingend nfs-common installiert sein.
+
+    - sudo apt-get install nfs-common
+
+## Inhaltsverzeichnis:
+1. Backup Type
+   - 1.1 Minimales Backup (Standard IoBroker Backup)
+   - 1.2 Komplettes Backup
+   - 1.3 CCU Backup (CCU-Original / pivCCU / Raspberrymatic)
+   - 1.4 Optionales Mysql-Backup (Localhost)
+   - 1.5 Optionales Redis-Backup
+
+2. Vorbereitung
+
+3. Ftp, CIFS, NFS, Copy und Dropbox
+
+4. Verwendung
+   - 4.1 Erstellte Datenpunkte
+   - 4.3 History-Log mit CCS formatieren
+   - 4.4 Backupstatus im OneClick-Button darstellen
+   - 4.5 Benachrichtigen nach erfolgreichen Backups
+5. Restore eines Backups
+   - 5.1 Minimal Backup wiederherstellen
+   - 5.2 Komplett Backup wiederherstellen
+   - 5.3 Raspberrymatic/CCU Backup wiederherstellen
+6. Fehlersuche
+   - 6.1 Logging aktivieren
+   - 6.2 Debugging aktivieren
+7. Aufgetretene Fehler / Lösungen
+   - 7.1 Webinterface nach Restore nicht erreichbar
+   - 7.2 JS-Datenbunkt nicht beschreibbar
+   - 7.3 Fehlermeldung: "Komando nicht gefunden"
+   - 7.4 Komplett-Backup bleibt hängen
+   - 7.5 Geänderte Werte in Dp werden nicht übernommen
+
+
+## 1. Backuptypen:
+
+Backitup bietet die Möglichkeit drei (optional mit DB-Backup) verschiedene Backuptypen zyklisch oder auf Knopfdruck durch zu führen. Jedes Backup wird standardmäßig im Verzeichnis /opt/iobroker/backups/ abgelegt. Optional kann ein FTP-Upload eingerichtet oder alternativ ein CIFS-Mount genutzt werden.
+
+1. Standard Backup
+   - Dieses Backup entspricht dem in IoBroker enthaltenen Backup welches man in der Konsole über den Aufruf „./iobroker backup“ starten kann. Nur wird es hier durch die festgelegten Einstellungen in der Adapterkonfiguration oder dem Widget OneClick-Backup durchgeführt ohne die Konsole verwenden zu müssen.
+2. Komplettes Backup
+   - Dieses Backup sichert den kompletten IoBroker Ordner inklusive aller Unterordner und deren Dateien samt Dateiberechtigungen. Hierbei sollte die Dateigröße nicht ausser Acht gelassen werden, denn ein solches Backup hat oft mehrere hundert MB.
+Um sicher zu gehen dass alle aktuellsten States gesichert werden muss hier in der Konfiguration der Haken bei IoBroker Stop/Start gesetzt werden.
+3. CCU Backup (Homematic)
+   -  Dieses Backup bietet die Möglichkeit 3 verschiedene Varianten einer Homematic Installations (CCU-Original / pivCCU / Raspberrymatic) zu sichern. Auch die Ausführung dieses Backups kann durch die festgelegten Einstellungen in der Adapterkonfiguration oder dem Widget OneClick-Backup durchgeführt werden.
+4. Mysql-Backup (Localhost)
+   - Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup egal ob „minimal“ oder „komplett“ erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.
+5. Redis-Backup
+   - Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup egal ob „minimal“ oder „komplett“ erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.
+
+## 2. Vorbereitung:
+
+Folgende Schritte sollten durchgeführt werden um den Adapter verwenden zu können (wenn das Backup-Script v1/v2/v3 verwendet wurde, zuerst Alles löschen (Datenpunkte/Enum.functions/Shell-Script und JavaScript deaktivieren oder löschen!)
+
+
+## 3. Ftp, CIFS, NFS, Copy oder Dropbox für das optionale weitersichern auf einen Nas nutzen?
+
+  - CIFS:
+    -	CIFS-Mount ist unter Linux kein Problem.
+    -   Es sollte beachtet werden, dass cifs-utils installiert ist
+    -   Die Pfadangabe sollte wie folgt aussehen (Bsp: "/Freigabename/Pfadangabe")
+    -	Optional kann man aktivieren/deaktivieren, ob die Backups vom NAS gelöscht werden sollen
+  - NFS:
+    -	NFS-Mount ist unter Linux kein Problem.
+    -   Es sollte beachtet werden, dass nfs-common installiert ist
+    -   Die Pfadangabe sollte wie folgt aussehen (Bsp: "/Freigabename/Pfadangabe")
+    -	Optional kann man aktivieren/deaktivieren, ob die Backups vom NAS gelöscht werden sollen
+  - FTP:
+    -	FTP ist auf allen OS möglich und dient als eine Alternative zum CIFS Mount
+    -   Die Pfadangabe unter FTP muss immer mit "/" beginnen (Bsp: "/Pfadangabe")
+    -	Optional kann man aktivieren/deaktivieren, ob die Backups vom NAS gelöscht werden sollen
+  - Copy:
+    -	Sollte kein CIFS-Mount möglich sein, besteht eine weitere Möglichkeit der Copy-Funktion
+    -   Hier muss in den CIFS-Einstellungen die Pfadangabe eingetragen werden, wo hin kopiert werden soll
+    -   Die Angabe der IP Adresse muss für die Copy-Funktion leer bleiben
+  - Dropbox: 
+    -	Um die Sicherung in der Dropbox zu nutzen, muss ein Access Token und eine APP unter https://www.dropbox.com/developers/apps erstellt werden
+    -   Schritt 1: Den Button "Create Backup" nutzen
+    -   Schritt 2: "Dropbox API" auswählen
+    -   Schritt 3: "App folder" auswählen
+    -   Schritt 4: "Name your app" vergeben
+    -   Schritt 5: "Generated access token" Button drücken (Der Token wird in den Einstellungen von Backitup eingetragen)
+    -   In deiner Dropbox gibt es nun einen neuen Ordner mit dem Namen "Apps"
+
+
+
+## 4. Verwendung:
+
+1.	Der Adapter erstellt 7 Datenpunkte zur Verwendung in Vis
+	- oneClick.ccu -> dient als Auslösetrigger für ein CCU-Backup (Kann in Vis durch einen Button auf true gesetzt werden)
+	- oneClick.minimal -> dient als Auslösetrigger für ein Standard-Backup (Kann in Vis durch einen Button auf true gesetzt werden)
+	- oneClick.total -> dient als Auslösetrigger für ein Komplett-Backup (Kann in Vis durch einen Button auf true gesetzt werden)
+
+	- history.html -> dient als History-Log welcher in Vis via CCS vom Design anpassbar ist.
+	- history.ccuLastTime -> speichert das Erstell-Datum und die Uhrzeit des letzten CCU Backups
+	- history.minimalLastTime -> speichert das Erstell-Datum und die Uhrzeit des letzten Standard Backups
+	- history.totalLastTime -> speichert das Erstell-Datum und die Uhrzeit des letzten Komplett Backups
+    - history.totalSuccess -> zeigt bei erfolgreichen Backup den State "true"
+    - history.ccuSuccess -> zeigt bei erfolgreichen Backup den State "true"
+    - history.minimalSuccess -> zeigt bei erfolgreichen Backup den State "true"
+
+2. History-Log in Vis anzeigen
+   - Es ist möglich den History-Log bspw. in einem Html-Widget durch eintragen folgender Zeile in HTML darzustellen:
+```
+{backitup.0.history.html}
+```
+Syntax: {BackitupInstanz.history.html}
+
+
+3. CCS-Formatierung des History-Logs:
+```
+   .html{
+       display:block;
+       width:100%;
+   /*    overflow-y:scroll; */
+   }
+   .backup-type-minimal
+       {
+           float:left;
+           color:white;
+           font-size:20px;
+       }
+   .backup-type-total
+       {
+           float:left;
+           color:yellow;
+           font-size:20px;
+       }
+   .backup-type-ccu
+       {
+           float:left;
+           color:red;
+           font-size:20px;
+    }
+   ```
+4. OneClick-Button mit Status-Text
+   - Wenn ein OneClick-Datenpunkt auf true gesetzt wird startet das entsprechende Backup und nach einer vordefinierten Zeit wird dieser Datenpunkt wieder auf false gesetzt somit ist es möglich einen Button mit Status zu erstellen, hierzu folgende Zeile anpassen und in Vis als Knopftext eintragen:
+```
+{wert: backitup.0.oneClick.minimal; wert === "true" || wert === true ? "Minimal Backup </br> wird erstellt" : "Minimal Backup </br> starten"}
+
+```
+Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || wert === true ? "Text während der Backuperstellung" : "Standard-Text"}
+
+5. Backitup unterstützt für die Benachrichtigung nach einem erfolgreichen Backup folgende Messenger.
+   - Telegram
+   - Pushover
+   - E-Mail 
+
+## 5. Restore:
+
+Ab Version 0.30 hat backitup eine Restorefunktion.
+Es ist aktuell möglich das total-Backup, das minimal-Backup, als auch mysql und Redis entweder vom lokalen Pfad, aus der Dropbox, via FTP oder vom NAS wiederherzustellen.
+Aktuell befindet sich der Restore noch in der Betaphase.
+
+Das CCU-Backup muss weiterhin über das Webinterface der CCU wiederhergestellt werden.
+
+Bei allen Backuptypen wird beim Restore iobroker gestoppt und im Anschluss automatisch wieder gestartet.
+
+Wer seine Backups lieber manuell wiederherstellen möchte, sollte folgende Punkte durchführen:
+
+1. Restore eines minimalen / normalen IoBroker Backups:
+    - Das Backup muss wie gewohnt im  Verzeichnis „opt/iobroker/backups/“ liegen
+    - Es kann über die Konsole mit Hilfe des Befehls: „iobroker restore (Nummer des Backups aus der Liste)“ wieder hergestellt werden.
+    - Nach dem Restore ist ein "iobroker upload all" nötig
+
+2. Restore eines kompletten Backups:
+    - Den Befehl:“sudo  iobroker stop“ über die Konsole ausführen
+    - Das erstellte Backup muss in das Verzeichnis  „/opt/iobroker“ kopiert werden
+    - Den Befehl: "sudo tar -xzvf Backupname.tar.gz -C /opt/iobroker " im Verzeichnis "/opt/iobroker" über die Konsole ausführen
+    - Warten - Während der Wiederherstellung wird euch angezeigt was gerade gemacht wird
+    - Den Befehl: „sudo iobroker start“ über die Konsole ausführen
+
+3. Restore eines Raspberrymatic / CCU Backups:
+    - *.sbk Datei via SCP in das Verzeichnis „ /usr/local/tmp directory“ auf die Raspberrymatic  kopieren
+    - Über die Konsole  als Root-User  auf der Raspberrymatic einloggen
+    - Den Befehl: „/bin/restoreBackup.sh /user/local/tmp/EuerBackupDateiname“ auf der Raspberrymatic ausführen.
+    - Den Befehl:“reboot“ auf der Raspberrymatic ausführen um den PI neu zu starten
+    - Alternativ kann das Backup natürlich auch wie gewohnt über das Webinterface wieder hergestellt werden.
+4. Restore Redis:
+    - Die Redis-Datenbank muss bei einem Restore in den dazugehörigen Ordner entpackt werden (Bsp: /var/lib/redis) 
+
+
+
+## 6. Fehlersuche:
+
+1. Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden 
+
+## 7. Aufgetretene Fehler / Lösungen:
+
+Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vorhanden.
+
+1.	Olifall (aus dem Forum) hatte das Problem dass nach dem Restore das Webinterface des IoBrokers nicht mehr erreichbar war, durch folgende Schritte über die Konsole konnte er dies beheben:
+    - sudo iobroker status
+    - Meldung = "No connection to states 127.0.0.0:6379[redis]"
+    - sudo apt-get install redis-server
+
+2.	Sollte der CIFS-Mount mit IP-Adresse nicht möglich sein, sollte der Hostname des NAS verwendet werden
+3.  Wenn ihr beim cifs-mount ein Passwort mit Sonderzeichen verwendet, haben User festgestellt, dass dann das Passwort mit Anführungszeichen in der Config hinterlegt werden muss.
+4.  cifs-mount kann laut einigen Usern mit sehr langen Passwörtern nicht umgehen. Falls der mount nicht klappen sollte, kürz das Passwort etwas ein (12 Zeichen sind funktionieren bei mir).
+5.  Sollte der Adapter sich nicht installieren lassen, prüft eure Versionen von node und nodejs. Der Adapter unterstützt Versionen < Node 6 nicht.
+6.  Falls Ihr iobroker nicht als root laufen habt, bietet backitup die Option den mount für cifs/nfs mit sudo auszuführen.
+    Dafür muss eurer System aber die root-Passwortabfrage bei dem Aufruf mit sudo deaktiviert haben.
+
+    Hier ein kleines Tutorial wie das ganze mit wenigen Schritten machbar ist.
+
+        -   sudo visudo
+
+    In der Datei am Ende folgende Zeile einfügen:
+
+        - Username ALL=(ALL) NOPASSWD: /bin/mount, /bin/umount, /bin/systemctl, /usr/bin/systemd-run
+
+    "Username" durch euren iob User ersetzen
+
+    Dann mit STR+o speichern, mit Enter bestätigen und im Anschluss mit STR+x schließen.
+    Danach empfehle ich einen reboot ... Dies ist aber System abhängig.
+
+    Ich möchte aber hier noch einmal betonen, dass diese Dinge nicht mit backitup zu tun haben und auch backitup deswegen kein Problem hat.
+    Diese Dinge betreffen einzig und allein euer System.
+7.  Wenn euer iobroker System mit dem neuen Installer Script installiert wurde, kann es vorkommen, dass ihr nicht alle Rechte für den neuen User iobroker habt. 
+    Dies betrifft dann leider auch backitup, da backitup einige systemrelevante Befehle benutzt.
+
+    Um das Problem mit fehlenden Rechten zu beheben, gibt es inzwischen einen Fix für den Installerscript von iobroker.
+    Führt bitte folgende Befehle auf eure Iobrokerumgebung in der Konsole aus:
+
+    ```
+    curl -sL https://iobroker.net/fix.sh | bash -
+    sudo reboot
+    ```
+8.  Solltet Ihr eine Fehlermeldung beim erstellen der Redis Datenbank bekommen, prüft bitte, ob euer User iobroker die Rechte hat und ob er in der User-Gruppe Redis vorhanden ist.
+    Wenn dies nicht der Fall ist, könnt ihr das mit folgenden Befehl in der Konsole beheben.
+    
+    ```
+    sudo usermod -a -G redis iobroker
+    sudo reboot
+    ```
+    Wenn ihr nicht mit dem Installerscript eure Iobroker Installation aufgesetzt habt und euer User einen anderen Namen hat, bitte in dem Befehl "iobroker" durch euren User ersetzen.
+
+## Changelog
+
+### 1.1.3 (12.03.2019)
+* (simatec) Timeout for email sending
+* (simatec) Timeout for pushover sending
+* (simatec) Timeout for telegram sending
+* (simatec) Code cleaned up
+
+### 1.1.2 (21.02.2019)
+* (simatec) exec Start for iobroker
+* (simatec) Fix umount before Restore
+
+### 1.1.1 (12.02.2019)
+* (simatec) Fix iobroker-stop for total backup
+
+### 1.1.0 (10.02.2019)
+* (simatec) stable Release
+
+### 1.0.9 (02.02.2019)
+* (simatec) Add New umount query
+* (simatec) Add Umount wait by device busy
+* (simatec) Add Timeout for History settings
+* (simatec) Add Notification only on error
+
+### 1.0.8 (26.01.2019)
+* (simatec) modification for new installer
+* (simatec) WOL-waittime adjustable
+* (simatec) Fix History settings
+
+### 1.0.7 (17.01.2019)
+* (simatec) better start/stop Handling for backup and restore
+
+### 1.0.6 (16.01.2019)
+* (simatec) Fix Start/Stop for new iobroker-installer
+
+### 1.0.5 (14.01.2019)
+* (simatec) Fix compact mode
+* (simatec) Fix total backup
+* (simatec) better history handling for html
+* (simatec) better history handling
+* (simatec) error Message for telegram
+* (simatec) error Message for E-Mail
+* (simatec) error Message for pushover
+
+### 1.0.4 (08.01.2019)
+* (simatec) support for compact mode
+
+### 1.0.3 (06.01.2019)
+* (simatec) Bugfix
+
+### 1.0.2 (05.01.2019)
+* (simatec) Fix start/stop for new iobroker-Installer
+
+### 1.0.1 (30.12.2018)
+* (simatec) Fix delete old Files
+* (simatec) Add wake on LAN for CIFS and NFS
+
+### 1.0.0 (24.12.2018)
+* (simatec) Stable Release
+
+### 0.4.4 (19.12.2018)
+* (simatec) Fix cifs-mount User
+
+### 0.4.3 (17.12.2018)
+* (simatec) Add device ID for pushover
+
+### 0.4.2 (10.12.2018)
+* (simatec) Fix mount / umount
+* (simatec) Fix Readme
+
+### 0.4.1 (07.12.2018)
+* (simatec) Added boolean for backup Success
+* (simatec) Added Selection menu SMB type (CIFS)
+* (simatec) Added Checkbox for mount as root (sudo)
+
+### 0.4.0 (04.12.2018)
+* (simatec) Added Pushover Notification
+
+### 0.3.9 (03.12.2018)
+* (simatec) Fix cifs/nfs mount and umount
+
+### 0.3.8 (08.11.2018)
+* (simatec) Fix notifications format
+* (simatec) Fix Telegram User
+
+### 0.3.7 (07.11.2018)
+* (simatec) Added e-mail notification
+* (simatec) Create backup directory on first boot
+* (simatec) many small changes
+* (peoples) Fix Telegram SilentNotice
+* (peoples) Added Possibility to select a Telegram Receiver
+* (peoples) Added Possibility to select a Telegram Notification length
+* (peoples) Some Translations
+
+### 0.3.6 (16.10.2018)
+* (simatec) Fix Dropbox Backup
+* (simatec) Fix Restore path for ownDir
+* (simatec) Fix FTP and NAS path
+* (simatec) Fix Access Token for dropbox
+
+### 0.3.5 (03.10.2018)
+* (simatec) Fix Translation
+* (simatec) Fix Filename Suffix for Restore
+* (peoples) Bugfix Title for Backup deletion
+
+### 0.3.4 (01.10.2018)
+* (simatec) Fix Restart after total-backup
+
+### 0.3.3 (27.09.2018)
+* (simatec) Fix Backup-Directoy for dropbox
+* (simatec) Fix Restart after total-backup
+* (simatec) Fix error Log on cifs
+
+### 0.3.2 (25.09.2018)
+* (simatec) Fix Filename for ccu backup
+
+### 0.3.1 (25.09.2018)
+* (simatec) Fix FTP Directory
+* (simatec) delete old Files
+
+### 0.3.0 (24.09.2018)
+* (bluefox/simatec) Add Multiplatform (Windows/Linux/Mac)
+* (bluefox/simatec) Backitup switched to Javascript
+* (bluefox/simatec) shell support removed
+* (bluefox/simatec) Deleting old backups up to the last X backups added
+* (bluefox/simatec) restore feature added (beta)
+* (bluefox/simatec) Restore added via NAS/FTP/Local/Dropbox (Beta)
+* (simatec) NFS support added
+* (bluefox) Dropbox Support added
+* (bluefox) Fix History
+* (peoples) Added silent mode for telegram
+* (simatec) Redis/mysql added with standard backup
+* (simatec) translations added
+* (simatec) Docs adapted
+
+### 0.2.7 (29.07.2018)
+* (simatec) Fix Delete old Files
+
+### 0.2.6 (27.07.2018)
+* (bluefox) Configurable redis path was added
+* (simatec) Translations Script
+* (simatec) Fix FTP Upload
+
+### 0.2.5 (26.07.2018)
+* (simatec) Check for dependencies
+* (simatec) Delete older files if number of files greater than X
+* (simatec) Check for Backup Dir
+* (simatec) Translations added
+
+### 0.2.4 (23.07.2018)
+ * (peoples) Some Bugfixes
+ * (peoples) Added translations in words.js
+
+
+### 0.2.3 (19.07.2018)
+ * (bluefox) The backup buttons in configuration dialog were added
+ * (bluefox) Show bash output text
+ * (peoples) Bug Fix Mysql-Login Error
+
+### 0.2.2 (17.07.2018)
+ * (peoples/simatec/bluefox) Bug Fix Code
+
+### 0.2.1 (15.07.2018)
+ * (peoples/simatec) Bug Fix
+
+### 0.2.0 (14.07.2018)
+ * (blufox) Code formatting
+
+### 0.1.8 (11.07.2018)
+ * (darkiop) MySQL-Sicherung um Host- und Portabfrage erweitert
+ * (peoples) Versendende Telegram-Instanz wählbar
+ * (peoples) Telegram-Nachrichten angepasst an Verbindungstyp
+ * (peoples) History-Log angepasst an Verbindungstyp
+ * (simatec) Komprimierung der MySQL-Datenbank-Sicherung eingebaut
+ * (simatec) Anpassung der Konfigoberfläche an Telegram-Instanz Auswahl
+
+### 0.1.7 (05.07.2018)
+ * (peoples) Datenpunkte in io-package definiert
+
+### 0.1.6 (04.07.2018)
+ * (simatec/peoples) Beta Version
+
+### 0.1.5 (03.07.2018)
+ * (peoples) Log Einträge neu formatiert
+
+### 0.1.4 (02.07.2018)
+ * (simatec/peoples) diverse Anpassungen
+
+### 0.1.3 (01.07.2018)
+ * (simatec/peoples) Sprachen hinzugefügt
+
+### 0.1.2 (30.06.2018)
+ * (simatec/peoples) Erste Beta-Version
+
+### 0.1.0 (25.06.2018)
+ * (simatec/peoples) Erste Git-Adapter-Version
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2019 simatec <nais@gmx.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

@@ -17,27 +17,39 @@ const styles = theme => ({
         background: '#FFFFFF',
         width: 'calc(100% - 60px)',
         textAlign: 'center',
-        padding: 30,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
     title: {
-
+        fontSize: 32,
+        padding: 15,
+        fontWeight: 'bold'
+    },
+    preBox: {
+        display: 'inline-block',
+        maxWidth: 1100,
     },
     box: {
-
+        display: 'flex',
+        width: '100%',
     },
     card: {
-
+        flex: 1,
+        cursor: 'pointer',
+        margin: 10
     },
     cardLink: {
-
+        height: 48
     }
 });
 
 const PRESS = [
     {title: '2018.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/select/ct/2018/17/1534562336998502'},
     {title: '2018.08', alt: 'Smarthome DIY', image: ImageSmarthomeDIY, link: 'https://leanpub.com/smarthdiy'},
-    {title: '2018.17', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/select/ct/2017/18/1503875643519180'},
     {title: '2018.04', alt: 'Linux Magazin', image: ImageLinuxMagazin, link: 'http://www.linux-magazin.de/ausgaben/2018/04/io-broker/'},
+    {title: '2017.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/select/ct/2017/18/1503875643519180'},
     {title: '2017.07', alt: 'Linux Magazin', image: ImageLinuxMagazin, link: 'http://www.linux-magazin.de/ausgaben/2017/07/io-broker/'},
     {title: '2017.03', alt: 'Home&Smart',    image: ImageHomeAndSmart, link: 'https://www.homeandsmart.de/iobroker-integrations-plattform-iot'},
 ];
@@ -46,11 +58,14 @@ class Press extends Component {
     render() {
         return (<div key="press" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
             <div className={this.props.classes.title}>{I18n.t('ioBroker in The Press')}</div>
-            {PRESS.map(p => (<div key={p.title + p.alt} className={this.props.classes.box}>
-                <div className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
-                    <img className={this.props.classes.cardLink} src={p.image} alt={p.alt}/>
-                    <div className={this.props.classes.card}>{p.title}</div>
-                </div>)}
+            <div className={this.props.classes.preBox}>
+                <div className={this.props.classes.box}>
+                {PRESS.map(p => (
+                    <div key={p.title + p.alt} className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
+                        <img className={this.props.classes.cardLink} src={p.image} alt={p.alt}/>
+                        <div className={this.props.classes.card}>{p.title}</div>
+                    </div>))}
+                </div>
             </div>
         </div>);
     }

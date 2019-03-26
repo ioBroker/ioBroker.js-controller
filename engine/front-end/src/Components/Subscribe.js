@@ -22,6 +22,13 @@ const styles = theme => ({
     input: {
         display: 'inline-block',
         width: 200,
+        marginBottom: 5,
+    },
+    inputRoot: {
+        textAlign: 'center'
+    },
+    inputRootNotEmpty: {
+        textAlign: 'left'
     },
     button: {
         display: 'inline-block',
@@ -91,6 +98,7 @@ class Subscribe extends Component {
         return (<div key="subscribe" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
             <Input
                 placeholder={(I18n.t('Newsletter subscribe'))}
+                classes={{input: this.state.inputFocused || this.state.email ? this.props.classes.inputRootNotEmpty : this.props.classes.inputRoot }}
                 className={this.props.classes.input}
                 onFocus={() => this.setState({inputFocused: true})}
                 onBlur={() => this.setState({inputFocused: false})}
@@ -98,7 +106,7 @@ class Subscribe extends Component {
             /><br/>
             <Button
                 color="primary"
-                className={this.props.classes.button + ' ' + (this.state.inputFocused ? this.props.classes.buttonFull : '')}
+                className={this.props.classes.button + ' ' + (this.state.inputFocused || this.state.email ? this.props.classes.buttonFull : '')}
                 disbled={!!this.state.email}
                 onClick={() => this.onSubscribe()}>
                 <IconEmail fontSize="small" style={{marginRight: 5}}/>

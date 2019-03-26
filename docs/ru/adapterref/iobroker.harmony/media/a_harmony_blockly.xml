@@ -1,0 +1,75 @@
+<block xmlns="http://www.w3.org/1999/xhtml" type="controls_if" id="?5f2Q;%s3J)j`=w+(JJm" x="113" y="112.99999999999994">
+  <mutation elseif="1"></mutation>
+  <value name="IF0">
+    <block type="logic_compare" id="qcKV[)q6u}?V#KQ=%Z9^">
+      <field name="OP">EQ</field>
+      <value name="A">
+        <block type="get_value" id="Q@vB@|0x82t1MV(4_K#D">
+          <field name="ATTR">val</field>
+          <field name="OID">hm-rpc.0.MEQ0165864.2.STATE</field>
+        </block>
+      </value>
+      <value name="B">
+        <block type="logic_boolean" id="Mt^s4uN(2xfLS{3s,#cC">
+          <field name="BOOL">TRUE</field>
+        </block>
+      </value>
+    </block>
+  </value>
+  <statement name="DO0">
+    <block type="update" id="4a[{alj:Vq2aGq@!|n[~">
+      <mutation delay_input="false"></mutation>
+      <field name="OID">harmony.0.Woonkamer.Onkyo_AV_Receiver.PowerOn</field>
+      <field name="WITH_DELAY">FALSE</field>
+      <value name="VALUE">
+        <block type="text" id="gA)m;Nv-1-4JRZCz{)w=">
+          <field name="TEXT">1</field>
+        </block>
+      </value>
+      <next>
+        <block type="comment" id="{=BTv2=d]A!Y8yG^:I4]">
+          <field name="COMMENT">Bei kontrolle schalter = AN kein delay schalte</field>
+        </block>
+      </next>
+    </block>
+  </statement>
+  <value name="IF1">
+    <block type="logic_compare" id="M]xH9[ITv+6Nc{,Kc1+F">
+      <field name="OP">EQ</field>
+      <value name="A">
+        <block type="get_value" id="6xrYTG:3rg=YzM`u9-_w">
+          <field name="ATTR">val</field>
+          <field name="OID">hm-rpc.0.MEQ0165864.2.STATE</field>
+        </block>
+      </value>
+      <value name="B">
+        <block type="logic_boolean" id="7Lpn`xX+)/].)XML6/qo">
+          <field name="BOOL">FALSE</field>
+        </block>
+      </value>
+    </block>
+  </value>
+  <statement name="DO1">
+    <block type="comment" id="~6?Ql)MAmo);:Y3d!b+5">
+      <field name="COMMENT">Bei kontrolle schalter = AUS schalte mit delay</field>
+      <next>
+        <block type="timeouts_settimeout" id="^tFK[S8%S)zp%d5;,r-f">
+          <field name="NAME">timeout</field>
+          <field name="DELAY">1000</field>
+          <statement name="STATEMENT">
+            <block type="update" id="kU~2dFzbn3M5@__qyh4^">
+              <mutation delay_input="false"></mutation>
+              <field name="OID">harmony.0.Woonkamer.Onkyo_AV_Receiver.PowerOn</field>
+              <field name="WITH_DELAY">FALSE</field>
+              <value name="VALUE">
+                <block type="text" id="6!J?[c)l#ii*_{;b}|yf">
+                  <field name="TEXT">1</field>
+                </block>
+              </value>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  </statement>
+</block>

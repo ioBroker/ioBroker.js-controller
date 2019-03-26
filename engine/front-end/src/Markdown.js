@@ -11,7 +11,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 
-
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
 import {MdExpandMore as IconExpandMore} from 'react-icons/md';
