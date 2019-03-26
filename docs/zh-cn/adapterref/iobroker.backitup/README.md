@@ -7,7 +7,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.backitup/README.md
 title: 没有标题
-hash: +xOmuPvKI9Iq2qYtWitfFl3l3Qebi5FUwrKFt46Gbig=
+hash: TLC0vtNil1nGmmBsoKFHBHe0rwOlsNBfag6GkVIl9Xs=
 ---
 Backitup是一种备份解决方案，可以对IoBroker安装以及Homematic CCU进行循环备份。
 
@@ -184,8 +184,8 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
 
 2.恢复完整备份：
      - 通过控制台执行命令：“sudo iobroker stop”
-     - 必须将创建的备份复制到目录“root /”
-     - 从控制台运行命令：“sudo tar -xzvf Backupname.tar.gz -C /”
+     - 必须将创建的备份复制到目录“/ opt / iobroker”
+     - 通过控制台在“/ opt / iobroker”目录中执行命令：“sudo tar -xzvf Backupname.tar.gz -C / opt / iobroker”
      - 等待 - 在恢复期间，您将看到正在完成的工作
      - 通过控制台执行命令：“sudo iobroker start”
 
@@ -241,7 +241,7 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
 请在控制台中的Iobroker环境中运行以下命令：
 
 ```
-curl -sL https://raw.githubusercontent.com/ioBroker/ioBroker/master/fix_installation.sh | bash
+curl -sL https://iobroker.net/fix.sh | bash -
 sudo reboot
 ```
 

@@ -4,74 +4,104 @@ BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.admin.svg
 BADGE-Stable: http://iobroker.live/badges/admin-stable.svg
 BADGE-installed: http://iobroker.live/badges/admin-installed.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
+chapters: {"pages":{"de/adapterref/iobroker.admin-2/README.md":{"title":{"de":"no title"},"content":"de/adapterref/iobroker.admin-2/README.md"},"de/adapterref/iobroker.admin-2/admin/tab-adapters.md":{"title":{"de":"Der Reiter Adapter"},"content":"de/adapterref/iobroker.admin-2/admin/tab-adapters.md"},"de/adapterref/iobroker.admin-2/admin/tab-instances.md":{"title":{"de":"Der Reiter Instanzen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-instances.md"},"de/adapterref/iobroker.admin-2/admin/tab-objects.md":{"title":{"de":"Der Reiter Objekte"},"content":"de/adapterref/iobroker.admin-2/admin/tab-objects.md"},"de/adapterref/iobroker.admin-2/admin/tab-states.md":{"title":{"de":"Der Reiter Zustände"},"content":"de/adapterref/iobroker.admin-2/admin/tab-states.md"},"de/adapterref/iobroker.admin-2/admin/tab-groups.md":{"title":{"de":"Der Reiter Gruppen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-groups.md"},"de/adapterref/iobroker.admin-2/admin/tab-users.md":{"title":{"de":"Der Reiter Benutzer"},"content":"de/adapterref/iobroker.admin-2/admin/tab-users.md"},"de/adapterref/iobroker.admin-2/admin/tab-events.md":{"title":{"de":"Der Reiter Ereignisse"},"content":"de/adapterref/iobroker.admin-2/admin/tab-events.md"},"de/adapterref/iobroker.admin-2/admin/tab-hosts.md":{"title":{"de":"Der Reiter Hosts"},"content":"de/adapterref/iobroker.admin-2/admin/tab-hosts.md"},"de/adapterref/iobroker.admin-2/admin/tab-enums.md":{"title":{"de":"Der Reiter Aufzählungen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-enums.md"},"de/adapterref/iobroker.admin-2/admin/tab-log.md":{"title":{"de":"Der Reiter Log"},"content":"de/adapterref/iobroker.admin-2/admin/tab-log.md"},"de/adapterref/iobroker.admin-2/admin/tab-system.md":{"title":{"de":"Die Systemeinstellungen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-system.md"}}}
+translatedFrom: de
+translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.admin-2/README.md
+title: 没有标题
+hash: k4IUgPdp7JdnkhVG20ud9BIBeLMtR2mzJ4Hr8SN1rBU=
 ---
-# Admin
+##详细说明
+适配器管理员用于操作整个ioBroker安装。他提供了一个Web界面。这在`<IP-Adresse des Servers>:8081`下调用。在ioBroker的安装过程中直接创建此适配器。
 
-管理适配器用于配置整个ioBroker-Installation及其所有适配器。
-它提供了一个Web界面，可以通过“http：//<服务器的IP地址>：8081”打开
-在Web浏览器中。此适配器与ioBroker一起自动安装。
+适配器提供的GUI可以包括但不限于：检索以下函数：
 
-## 配置：
+*安装额外的适配器
+*访问对象概述
+*访问对象的状态概述
+*访问用户和组管理
+*访问日志文件
+*主持人的管理
 
-适配器“admin”的配置对话框提供以下设置：
-![img_002](img/admin_img_002.png)
+##安装
+在ioBroker的安装过程中直接创建此适配器，无需手动安装
 
-**IP：** 可以在此处选择“admin”Web服务器的IP地址。
-可以选择不同的IPv4和IPv6地址。默认值为0.0.0.0 \。
-如果您认为，0.0.0.0是无效设置，请让它留在那里，因为它
-绝对有效。如果更改地址，您将能够访问Web服务器
-只能通过这个地址。 **端口：** 您可以指定“admin”Web服务器的端口。
-如果PC或设备上有更多Web服务器，则必须自定义端口以避免出现问题
-双端口分配。 **编码：** 如果应使用安全的https协议，则启用此选项。
+##配置
+![adapter_admin_konfiguration](../../../de/adapterref/iobroker.admin-2/img/admin_konfiguration.png)
 
-**身份验证：** 如果您希望使用登录名/密码进行身份验证，则应启用此复选框。
-用户“admin”的默认密码是“iobroker”**缓冲区：** 加速页面加载启用此选项。
-通常只有开发人员想要取消选中此选项。
+#### IP
+此处输入可以到达适配器的IP地址。提供各种Ipv4和Ipv6选项。 <span style="color: #ff0000;">**默认值为0.0.0.0 \。这不能改变！**</span>
 
-## 处理：
+#### Port
+这里，设置了可以调用管理员的端口。如果服务器上正在运行多个Web服务器，则必须调整此端口，以便重复端口分配没有问题。
 
-管理员的主页包含多个选项卡。 **适配器：** 这里的实例
-可以安装或删除适配器。使用更新按钮
-![img_005](img/admin_img_005.png)
-如果新版本的适配器可用，我们可以在左上角看到。
-![img_001](img/admin_img_001.jpg)
+####加密
+如果要使用安全协议https，则必须选中此框。
 
-显示适配器的可用和已安装版本。对于整体观看的状态
-适配器是彩色的（红色=在计划中;橙色= alpha;黄色= beta）。更新版本的更新
-适配器也在这里制作。如果有更新的版本，标签的字体将为绿色。
-如果最后一列中的问号图标处于活动状态，您可以从那里获取包含适配器信息的网站。
-可用的适配器按字母顺序排序。已安装的实例位于列表的上半部分。
+####身份验证
+如果要进行身份验证，则需要放置一个钩子。
 
-**实例：** 此处列出了已安装的实例，可以进行相应的配置。如果标题
-实例加下划线，您可以点击它，相应的网站将被打开。
+##操作
+在Web浏览器中，转到以下页面：
 
-![img_003](img/admin_img_003.png)
+`<IP-Adresse des Servers>:8081`
 
-**对象：** 管理对象（例如连接硬件的设置/变量/程序）
+##骑手
+管理员的主页面包含多个选项卡。在基本安装中，选项卡如图所示。使用右上角的铅笔图标（1），可以在安装其他适配器后添加其他选项卡。还可以禁用车手以获得更好的概览。
 
-![img_004](img/admin_img_004.png)
+![iobroker_adapter_admin_001a](../../../de/adapterref/iobroker.admin-2/img/admin_ioBroker_Adapter_Admin_001a.jpg)
 
-**国家：** 当前状态（对象的值）
-如果安装了适配器历史记录，则可以记录所选的数据点。
-已记录的数据点在右侧选择，并显示绿色徽标。
+详细信息在标题链接的页面中提供。
 
-**脚本：** 此选项卡仅在安装了“javascript”适配器时才有效。
+### [适配器](admin/tab-adapters.md)
+此处显示和管理可用和已安装的适配器。
 
-**节点红色：** 此选项卡仅在安装并启用“node-red”适配器时可见。
+### [实例](admin/tab-instances.md)
+此处列出了已通过“适配器”选项卡安装的实例，并可进行相应配置。
 
-**主机：** 安装了ioBroker的计算机。这里可以安装最新版本的js-controller。
-如果有新版本，则选项卡的字母为绿色。要搜索新版本，您必须单击更新
-左下角的图标。
+### [对象](admin/tab-objects.md)
+管理对象（例如，CCU的设备/变量/程序）。这里可以创建和删除对象。
+_arrow up和_ down箭头按钮可用于上载或下载整个对象结构。
+另一个按钮允许您查看专家视图。
 
-**枚举：** 此处列出了CCU的收藏，交易和空格。
+如果值以红色显示，则尚未确认（`ack = false`）。
 
-**用户：** 这里可以添加用户。要执行此操作，请单击（+）。默认情况下有一个管理员。
+### [条件](admin/tab-states.md)
+对象的当前状态。
 
-**组：** 如果单击左下角的（+），则可以创建用户组。从下拉菜单中，用户被分配到组。
+### [活动](admin/tab-events.md)
+状态更新列表。
 
-**事件：** 条件的运行更新列表。 **日志：** 此处显示日志在选项卡实例中显示记录的日志级别
-可以设置单个实例。在选择菜单中，选择显示的最小日志级别。如果发生错误
-日志的字体显示为红色。
+### [组](admin/tab-groups.md)
+此处，创建创建的用户组并管理权限
+
+### [用户](admin/tab-users.md)
+此处可以创建用户并将其添加到现有组。
+
+### [枚举](admin/tab-enums.md)
+这里列出了Homematic CCU的最爱，行业和房间。
+
+### [主机](admin/tab-hosts.md)
+有关安装ioBroker的计算机的信息。
+在这里，您可以更新js控制器的当前版本。
+如果有新版本，则选项卡的选项卡显示为绿色。
+
+### [日志](admin/tab-log.md)
+这里显示日志
+
+在Instances选项卡中，可以为各个实例设置要记录的日志级别。
+在选择菜单中，选择要显示的最小日志级别。
+如果发生错误，选项卡的标签将显示为红色。
+
+安装其他适配器后，您可以使用右上角的铅笔图标激活其他选项卡（1）。此选项卡的说明位于相应的适配器上。
+
+### [系统设置](admin/tab-system.md)
+在打开的菜单中，进行语言，时间和日期格式以及其他系统范围设置等设置。
+
+![管理员系统设置](../../../de/adapterref/iobroker.admin-2/img/admin_Systemeinstellungen.jpg)
+
+也可以在此处设置存储库和安全设置。
+可以通过本节标题中的链接获得更深入的描述。
 
 ## Changelog
 ### 3.6.0 (2018-11-08)

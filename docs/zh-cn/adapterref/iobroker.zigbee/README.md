@@ -8,17 +8,15 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.zigbee/README.md
 title: 适用于Zigbee设备的ioBroker适配器
-hash: bY1ThHcJ6EOoAgCt5rpSEeLhfvB6vMOAp2UpPdfu9Us=
+hash: veWf6Ic8BYSpHiwxg87GNeC9GPi+9HS7kqOpfNOSH9c=
 ---
 #ioBroker适用于Zigbee设备的适配器
-<img src="../../admin/zigbee.png"  width="64">
-
 在Zigbee网络协调员的帮助下，基于德州仪器SoC cc253x（及其他），将创建自己的网络，可以加入其他Zigbee设备。由于与协调器的直接交互，Zigbee适配器允许控制设备，而无需制造商的任何网关/桥接器（Xiaomi / Tradfri / Hue）。关于Zigbee网络的功能可以[在这里阅读（英文）](https://github.com/Koenkk/zigbee2mqtt/wiki/ZigBee-network)。
 
 ##硬件
 对于其中一个枚举设备/棒的实现，使用了特殊的ZNP固件：[cc2530，cc2530，cc2530 + RF。](https://github.com/Koenkk/zigbee2mqtt/wiki/Supported-sniffer-devices#zigbee-coordinator)
 
-<span><img src="https://ae01.alicdn.com/kf/HTB1Httue3vD8KJjSsplq6yIEFXaJ/Wireless-Zigbee-CC2531-Sniffer-Bare-Board-Packet-Protocol-Analyzer-Module-USB-Interface-Dongle-Capture-Packet.jpg_640x640.jpg" width="100"></span> <span><img src="http://img.dxcdn.com/productimages/sku_429478_2.jpg" width="100"></span> <span><img src="http://img.dxcdn.com/productimages/sku_429601_2.jpg" width="100"></span> <span><img src="https://ae01.alicdn.com/kf/HTB1zAA5QVXXXXahapXXq6xXFXXXu/RF-TO-USB-CC2530-CC2591-RF-switch-USB-transparent-serial-data-transmission-equipment.jpg_640x640.jpg" width="100"></span>
+![](img/CC2531.png)![](img/sku_429478_2.png)§IIIIIII_2§![](../../../de/adapterref/iobroker.zigbee/img/CC2591.png)
 
 所需的闪存/编程器和准备过程在[这里（英文）]（https://github.com/Koenkk/zigbee2mqtt/wiki/Getting-started）或[这里（俄罗斯）](https://github.com/kirovilya/ioBroker.zigbee/wiki/%D0%9F%D1%80%D0%BE%D1%88%D0%B8%D0%B2%D0%BA%D0%B0)中描述。
 
@@ -35,7 +33,7 @@ hash: bY1ThHcJ6EOoAgCt5rpSEeLhfvB6vMOAp2UpPdfu9Us=
 不在列表中的Zigbee设备可以配对，但适配器无法与它们通信。
 
 ##其他信息
-还有一个[友谊项目](https://github.com/koenkk/zigbee2mqtt)具有相同的功能和相同的技术，它们通过MQTT协议与相同的设备通信。如果Zigbee2MQTT项目中包含任何改进或新支持的设备，那么这些设备也可以添加到此项目中。如果您发现任何差异，请写一个问题，我们会照顾它
+还有一个[友谊项目](https://github.com/koenkk/zigbee2mqtt)具有相同的功能和相同的技术，它们通过MQTT协议与相同的设备通信。如果Zigbee2MQTT项目中包含任何改进或新支持的设备，那么这些设备也可以添加到此项目中。如果您发现差异，请写一个问题，我们会照顾它
 
 ## Changelog
 

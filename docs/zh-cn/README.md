@@ -4,10 +4,10 @@ lastChanged: 14.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/README.md
-hash: lAAPVaapo172IAh9IPDCbJ7b9VdDpcJTeNmw2NJIAi0=
+hash: LCHCatkmoOyoNjrSPWLc0umuC5dR5s62Bl3UittK/QA=
 ---
 ＃欢迎来到ioBroker
-ioBroker是连接，评估和操作系统的核心服务，无需ioBroker孤岛解决方案。
+ioBroker是一个中央服务，用于连接，评估和操作没有ioBroker孤岛解决方案的系统。
 
 ioBroker是*物联网的*集成平台。
 
@@ -21,7 +21,9 @@ ioBroker系统具有模块化结构。各种*适配器*允许与像Alexa到Z这�
 
 ![VIS](../de/media/vis2.png)*自创的VIS用户界面示例*
 
-用户拥有最大的设计自由度。即使没有编程知识，也可以在可视化中创建自动化和过程。易于使用的预制构建块有助于用户。但不仅可以显示信息。通过可视化界面也可以快速实现设备控制。该界面的操作适用于各种设备 - 从带触摸功能的墙上平板电脑上的智能手机到个人计算机 - 一切都可以通过简单的拖放实现。
+用户拥有最大的设计自由度。即使没有编程知识，也可以在可视化中创建自动化和过程。易于使用的预制构建块有助于用户。但不仅可以显示信息。通过可视化界面也可以快速实现设备控制。界面的操作可适用于各种设备 - 从智能手机到具有触摸功能的墙壁平板电脑到个人计算机 - 一切都可以通过简单的拖放实现。
+
+使用材料适配器或HabPanel适配器可以快速实现简单的预制用户界面。
 
 ##跨平台
 熟悉家庭自动化的人迟早会发现系统往往并不完美。每个系统都有自己的优点和缺点。因此ioBroker是跨平台的。可以随时使用现有解决方案进行并行操作。可以使用协同效应，并将所有世界中最好的结合在一起。 IoBroker几乎适用于所有平台。 ioBoker可以安装在Windows，Linux，OSX或Dockerimage下。预配置的安装映像将删除用户的安装工作。
@@ -34,6 +36,8 @@ ioBroker系统具有模块化结构。各种*适配器*允许与像Alexa到Z这�
 
 ##可扩展
 编程是使用JavaScript完成的，JavaScript是一种自1995年以来不断开发的脚本语言。这很容易学习，因此可以快速实现新的要求。这使得每个人都可以为ioBroker做出贡献并实现个性化需求。
+
+变体'Blockly'使没有广泛编程技能的初学者可以通过'拖放'快速获得结果。
 
 ##社区
 自2014年以来，ioBroker因其众多优势而得到了数千名用户和开发人员的广泛支持。用户和开发人员在专门创建的[论坛](https://forum.iobroker.net)中进行会面，并交流他们的经验和建议。由于ioBroker是开源软件，因此所有源文本都可以在平台上免费获得[GitHub上](https://github.com/ioBroker)。
