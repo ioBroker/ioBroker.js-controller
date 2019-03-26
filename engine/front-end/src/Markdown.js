@@ -247,7 +247,6 @@ class Markdown extends Router {
             changeLog: '',
             text: this.props.text || '',
             notFound: false,
-            editMode: false,
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
@@ -428,11 +427,7 @@ class Markdown extends Router {
                 (<a className={this.props.classes.infoEdit} href={this.state.header.editLink} target="_blank"><IconGithub />{I18n.t('Edit on github')}</a>) : null}
             {this.props.editEnabled && this.editText ?
                 (<div className={this.props.classes.infoEditLocal} onClick={() => {
-                    if (this.props.onFooterEnable) {
-                        this.props.onFooterEnable(false, () => this.setState({editMode: true}));
-                    } else {
-                        this.setState({editMode: true});
-                    }
+                    this.props.onEditMode && this.props.onEditMode(true);
                 }}><IconEdit />{I18n.t('Edit local')}</div>) : null}
 
         </div>)
@@ -550,13 +545,15 @@ class Markdown extends Router {
         if (this.state.notFound) {
             return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
         }
-        if (this.state.editMode) {
+        if (this.props.editMode) {
             return (<Editor
                 language={this.props.language}
                 mobile={this.props.mobile}
                 theme={this.props.theme}
                 path={this.state.header.editLink}
-                onClose={() => this.setState({editMode: false})}
+                onClose={() => {
+                    this.props.onEditMode && this.props.onEditMode(false);
+                }}
             />);
         }
         if (this.state.loadTimeout && !this.state.parts.length) {
@@ -600,7 +597,8 @@ Markdown.propTypes = {
     mobile: PropTypes.bool,
     path:  PropTypes.string,
     text:  PropTypes.string,
-    onFooterEnable: PropTypes.func,
+    editMode: PropTypes.bool,
+    onEditMode: PropTypes.func,
     editEnabled:  PropTypes.bool,
 };
 

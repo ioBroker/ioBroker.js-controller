@@ -18,6 +18,12 @@ export default type => {
                     main: '#3399CC',
                     dark: '#068ACC',
                     contrastText: '#ee0000',
+                },
+                darkPart: {
+                    background: '#e4e4e4'
+                },
+                lightPart: {
+                    background: '#fbfbfb'
                 }
             },
             tabs: {
@@ -45,6 +51,12 @@ export default type => {
                     main: '#3399CC',
                     dark: '#068ACC',
                     contrastText: '#ee0000',
+                },
+                darkPart: {
+                    background: '#e4e4e4'
+                },
+                lightPart: {
+                    background: '#fbfbfb'
                 }
             },
             tabs: {

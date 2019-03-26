@@ -9,6 +9,8 @@ import {FaComments as IconPosts} from 'react-icons/fa';
 import {FaComment as IconThemes} from 'react-icons/fa';
 
 import Footer from '../Footer';
+import ForumInfo from '../Components/ForumInfo';
+import Subscribe from '../Components/Subscribe';
 import BackImage from '../assets/background.jpg';
 import LinusShell from '../Components/LinusShell';
 import I18n from '../i18n';
@@ -49,52 +51,8 @@ const styles = theme => ({
         fontSize: 24,
     },
 
-    forumDiv: {
-        background: '#e4e4e4',
-        width: 'calc(100% - 60px)',
-        textAlign: 'center',
-        padding: 30,
-    },
-    forumTitle: {
-        fontSize: 20,
-    },
-    forumDivInfo: {
-        width: '100%',
-        maxWidth: 600,
-        display: 'inline-block',
-    },
-    forumDivInfoBox: {
-        width: '100%',
-        display: 'flex',
-        paddingTop: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    forumDivInfoCard: {
-        width: 200,
-        flex: 1,
-    },
-    forumIconMain: {
-        display: 'inline-block',
-        width: 64,
-        height: 64,
-    },
-    forumDivInfoIcon: {
-        width: 32,
-        height: 32,
-    },
-    forumDivInfoText: {
-        fontSize: 20
-    },
-    forumDivInfoValue: {
-        fontSize: 32
-    },
-    forumButton: {
-        display: 'inline-block',
-        color: '#FFFFFF',
-        fontSize: 20,
-        marginTop: 20,
-    },
+    darkPart: theme.palette.darkPart,
+    lightPart: theme.palette.lightPart,
 });
 
 class Intro extends Component {
@@ -189,6 +147,8 @@ class Intro extends Component {
     // Actual 262 official adapters. Discover all...
 
     render() {
+        let i = 0;
+
         return [
             (<div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
                 <div className={this.props.classes.title}>
@@ -205,7 +165,8 @@ class Intro extends Component {
                     typedText="curl -sL https://iobroker.net/install.sh | bash -"
                 />) : null}
             </div>),
-            this.renderForum(),
+            (<ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<Subscribe key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
         ];
     }

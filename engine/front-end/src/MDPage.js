@@ -38,10 +38,17 @@ class MDPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            footer: true
+            editMode: false
         };
+        this.mounted = false;
+
         this.contentRef = React.createRef();
     }
+
+    componentDidMount() {
+        this.mounted = true;
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         if (this.props.mobile !== nextProps.mobile) {
             //setTimeout(() => this.forceUpdate(), 100);
@@ -49,7 +56,10 @@ class MDPage extends Component {
     }
 
     renderOpenCloseButton() {
-        if (!this.props.onMenuOpenClose || !this.state.footer) return;
+        if (!this.props.onMenuOpenClose || this.props.editMode) {
+            return null;
+        }
+
         if (this.props.mobile) {
             return (<div key="closeMenu"
                          className={this.props.classes.menuOpenCloseButton + ' ' + this.props.classes.menuOpenCloseButtonMobile}
@@ -70,6 +80,10 @@ class MDPage extends Component {
         }
 
         this.props.onNavigate(language, tab, page, chapter);
+    }
+
+    onEditMode(editMode) {
+        this.props.onEditMode(editMode);
     }
 
     render() {
@@ -95,12 +109,13 @@ class MDPage extends Component {
                          language={this.props.language}
                          theme={this.props.theme}
                          mobile={this.props.mobile}
-                         onFooterEnable={(enabled, cb) => this.setState({footer: enabled}, () => cb && cb())}
+                         editMode={this.props.editMode}
+                         onEditMode={this.onEditMode.bind(this)}
                          editEnabled={true}
                          onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
                     />)}
             </div>),
-            this.state.footer ? (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>) : null
+            !this.props.editMode ? (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>) : null
         ];
     }
 }
@@ -111,6 +126,8 @@ MDPage.propTypes = {
     language: PropTypes.string,
     onNavigate: PropTypes.func,
     onMenuOpenClose: PropTypes.func,
+    editMode: PropTypes.bool,
+    onEditMode: PropTypes.func,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
     menuOpened: PropTypes.bool,

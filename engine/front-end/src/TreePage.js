@@ -113,6 +113,7 @@ class TreePage extends Router {
             menuOpened,
             expanded,
             filter: '',
+            editMode: false,
             menuSize: window.localStorage ? parseFloat(window.localStorage.getItem('Docs.menuSize')) || 300 : 300
         };
         this.menuSize = this.state.menuSize;
@@ -301,9 +302,13 @@ class TreePage extends Router {
         ];
     }
 
-    onMenuOpenClose() {
-        window.localStorage && window.localStorage.setItem('Docs.menuOpened', this.state.menuOpened ? 'false' : 'true');
-        this.setState({menuOpened: !this.state.menuOpened});
+    onMenuOpenClose(menuOpened, cb) {
+        if (menuOpened === undefined) {
+            menuOpened = !this.state.menuOpened;
+        }
+        window.localStorage && window.localStorage.setItem('Docs.menuOpened', menuOpened.toString());
+        this.setState({menuOpened}, () =>
+            cb && cb());
     }
 
     renderFilterInput() {
@@ -329,7 +334,7 @@ class TreePage extends Router {
     }
 
     renderDesktopDrawer() {
-        if (this.state.menuOpened) {
+        if (this.state.menuOpened && !this.state.editMode) {
             return (<div key="drawer" className={this.props.classes.drawer}>
                 {this.renderList()}
             </div>);
@@ -349,10 +354,16 @@ class TreePage extends Router {
         )
     }
 
+    onEditMode(editMode, cb) {
+        this.setState({editMode});
+    }
+
     renderPage() {
         return (<MDPage
             key="mdpage1"
-            onMenuOpenClose={!this.state.resizing ? () => this.onMenuOpenClose() : null}
+            onMenuOpenClose={!this.state.resizing ? (opened, cb) => this.onMenuOpenClose(opened, cb) : null}
+            onEditMode={this.onEditMode.bind(this)}
+            editMode={this.state.editMode}
             resizing={this.state.resizing }
             contentWidth={this.state.menuSize}
             menuOpened={this.state.menuOpened}
