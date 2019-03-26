@@ -53,7 +53,7 @@ Ereignis steht oben.
 Durch Anklicken der Spaltenköpfe kann nach gewissen Kriterien gefiltert werden.
 
 
-###Die Tabelle besteht aus folgenden Spalten:
+### Die Tabelle besteht aus folgenden Spalten:
 
 
 **1.) Typ**
@@ -75,7 +75,7 @@ allen TEMPERATURE Datenpunkten.
 Dies ist der aktuelle Wert des jeweiligen Datenpunktes.
 
 
-**4.) Bestätigt
+**4.) Bestätigt**
 
 Wurde dieser Wert geändert und dieses vom System übernommen ist der Wert true, ansonsten false.
 
@@ -96,6 +96,6 @@ Nach diesen kann in dieser Spalte gefiltert werden.
 Dies ist der Zeitstempel zu dem der Datenpunkt zuletzt aktualisiert wurde.
 
 
-**7.) geändert
+**7.) Geändert**
 
 Dies ist der Zeitstempel zu dem sich der Wert des Datenpunktes zuletzt geändert hat.
