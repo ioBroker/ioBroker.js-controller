@@ -1,5 +1,5 @@
 ---
-title:       "Admin"
+title:       "Ereignisse"
 lastChanged: "26.03.2019"
 ---
 
@@ -72,6 +72,7 @@ allen TEMPERATURE Datenpunkten.
 
  
 **3.) Wert**
+
 Dies ist der aktuelle Wert des jeweiligen Datenpunktes.
 
 
