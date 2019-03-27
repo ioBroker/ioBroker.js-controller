@@ -94,13 +94,3 @@ Datenpunkte können von der rechten Seite durch einfaches Ziehen in die gewünsc
 Aufzählung auf der linken Seite gezogen werden.
 
 Das Löschen eines Datenpunktes in der Aufzählung geschieht über das Mülleimer-Icon 
-
-11.) Element löschen
-Mit dem Mülleimer-Icon wird das Element in dieser Zeile gelöscht
-
- 
-
-12.) Information
-Nach Anklicken dieses Icons wird ein weiteres Fenster mit erweiterten Informationen zu dem angewählten Element angezeigt.
-
-iobroker_adapter_admin_enums_info

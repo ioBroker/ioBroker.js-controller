@@ -86,7 +86,7 @@ hoch- oder runtergeladen werden.
 Werden Werte in roter Schrift angezeigt, sind sie noch nicht vom Empfänger 
 bestätigt (ack = false).
 
-### [Aufzählungen](enums.md])
+### [Aufzählungen](enums.md)
 Hier werden die Favoriten, Gewerke und Räume aus der Homematic-CCU aufgelistet.
 
 ### [Log](log.md)
