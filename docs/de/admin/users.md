@@ -22,7 +22,7 @@ Nach Anklicken dieses Icons öffnet sich ein weiteres Fenster:
 
 Dieses Fenster besteht aus zwei Untereinheiten. 
 
-###Allgemein**
+### Allgemein
 Hier werden die grundlegenden Dinge eingetragen:
 
 **Name**
@@ -47,7 +47,7 @@ Drag and Drop auf das Fenster gezogen werden.
 
 Mit der dort eingestellten Farbe wird die Kachel der Gruppe unterlegt.
 
-###Zugriffsrechte
+### Zugriffsrechte
 Die Rechte werden für Gruppen vergeben. Damit User bestimmte Rechte haben müssen 
 sie der entsprechenden Gruppe zugeordnet werden.
 
@@ -65,6 +65,7 @@ Nach Anklicken dieses Icons öffnet sich ein weiteres Fenster:
 Der Name des Users. Dieser Name ist frei wählbar, muss aber eindeutig sein.
 
 **ID**
+
 Die ID wird automatisch ausgefüllt
 
 **Beschreibung**
@@ -81,4 +82,5 @@ Wird automatisch angezeigt und enthält die vollständige ID sytem.group.Usernam
 Das Passwort des Users
 
 **Passwort wiederholen**
+
 Zur Sicherheit vor Tippfehlern muss das PAsswort hier ein zweites Mal eingegeben werden
