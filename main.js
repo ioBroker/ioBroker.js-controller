@@ -37,7 +37,7 @@ process.title = title;
 let Objects;
 let States;
 
-let semver                  = require('semver');
+const semver                = require('semver');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
@@ -64,12 +64,12 @@ const installQueue          = [];
 let started                 = false;
 let inputCount              = 0;
 let outputCount             = 0;
+let eventLoopLags           = [];
 let mhService               = null; // multihost service
 const uptimeStart           = Date.now();
 const adapterModules        = {};
 
 const config = getConfig();
-
 
 function getErrorText(code) {
     const texts = Object.keys(EXIT_CODES);
@@ -444,8 +444,9 @@ function startAliveInterval() {
     config.system = config.system || {};
     config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
-    reportStatus();
     setInterval(reportStatus, config.system.statisticsInterval);
+    reportStatus();
+    tools.measureEventLoopLag(1000, (lag) => eventLoopLags.push(lag));
 }
 
 function reportStatus() {
@@ -478,7 +479,6 @@ function reportStatus() {
     states.setState(id + '.memRss',       {val: Math.round(mem.rss / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     states.setState(id + '.memHeapTotal', {val: Math.round(mem.heapTotal / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
     states.setState(id + '.memHeapUsed',  {val: Math.round(mem.heapUsed / 10485.76/* 1MB / 100 */) / 100, ack: true, from: id});
-
 
     // provide machine infos
 
@@ -521,6 +521,12 @@ function reportStatus() {
     // some statistics
     states.setState(id + '.inputCount',   {val: inputCount, ack: true, from: id});
     states.setState(id + '.outputCount',  {val: outputCount, ack: true, from: id});
+
+    if (eventLoopLags.length) {
+        const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => (a + b)) / eventLoopLags.length);
+        states.setState(id + '.eventLoopLag', {val: eventLoopLag, ack: true, from: id}); // average of measured values
+        eventLoopLags = [];
+    }
 
     inputCount  = 0;
     outputCount = 0;
@@ -1157,6 +1163,22 @@ function setMeta() {
     tasks.push(obj);
 
     obj = {
+        _id:       id + '.eventLoopLag',
+        type:      'state',
+        common: {
+            name:  'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
+            desc:  'Average Node.js event loop lag in ms',
+            type:  'number',
+            read:  true,
+            write: false,
+            role:  'value',
+            unit:  'ms'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    obj = {
         _id:       id + '.zip',
         type:      'channel',
         common: {
@@ -1408,10 +1430,10 @@ function processMessage(msg) {
                                     logger.info('host.' + hostname + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, {
-                                        hash: repos.native.repositories[active].hash, 
+                                        hash: repos.native.repositories[active].hash,
                                         sources: repos.native.repositories[active].json,
-                                        controller: version, 
-                                        node: process.version, 
+                                        controller: version,
+                                        node: process.version,
                                         name: tools.appName
                                     }, (err, sources, sourcesHash) => {
                                         if (err) logger.warn('host.' + hostname + ' warning: ' + err);
@@ -2229,7 +2251,7 @@ function startInstance(id, wakeUp) {
             // disable instance
             objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.enabled) {
-                    objects.setObject(obj._id, obj, err =>
+                    objects.setObject(obj._id, obj, _err =>
                         logger.warn(`host.${hostname} startInstance ${name}.${args[0]}: instance disabled because of node.js version mismatch`));
                 }
             });
