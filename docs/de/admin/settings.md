@@ -1,5 +1,5 @@
 ---
-title:       "Settings"
+title:       "Systemeinstellungen"
 lastChanged: "27.03.2019"
 ---
 

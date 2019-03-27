@@ -113,15 +113,57 @@ class Utils {
         };
     }
 
+    static extractLicenseAndChangelog(text, ignoreHeaders) {
+        const lines = (text || '').trim().split('\n');
+        const changelog = [];
+        let changelogA = false;
+        const license = [];
+        let licenseA = false;
+        let newLines = [];
+        lines.forEach(line => {
+            if (line.match(/#+\sChangelog/i)) {
+                !ignoreHeaders && changelog.push('## Changelog');
+                changelogA = true;
+                licenseA = false;
+            } else if (line.match(/#+\sLicense/i)) {
+                !ignoreHeaders && license.push('## License');
+                changelogA = false;
+                licenseA = true;
+            } else if (line.match(/^# |^## /)) {
+                // if some other chapter detected
+                newLines.push(line);
+                changelogA = false;
+                licenseA = false;
+            } else if (licenseA) {
+                license.push(line);
+            } else if (changelogA) {
+                changelog.push(line);
+            } else {
+                newLines.push(line);
+            }
+        });
+        while (newLines.length && !newLines[0].trim()) newLines.shift();
+        while (newLines.length && !newLines[newLines.length - 1].trim()) newLines.pop();
+
+        while (changelog.length && !changelog[0].trim()) changelog.shift();
+        while (changelog.length && !changelog[changelog.length - 1].trim()) changelog.pop();
+
+        while (license.length && !license[0].trim()) license.shift();
+        while (license.length && !license[license.length - 1].trim()) license.pop();
+
+        return {body: newLines.join('\n'), license: license.join('\n'), changelog: changelog.join('\n')};
+    }
+
     static decorateText(text, header, path) {
         path = path || '';
-        const lines = text.split('\n');
+
+        let {body, license, changelog} = Utils.extractLicenseAndChangelog(text, true);
+
+        const lines = body.split('\n');
         const content = {};
         let current = [null, null, null, null];
 
         const parts = [];
-        let changeLog;
-        let licenseLines;
         while (lines.length && !lines[0].trim()) lines.shift();
         while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
 
@@ -138,24 +180,22 @@ class Utils {
                 const cont = Utils.findTitle(line, -1, path);
                 title = cont.title;
             } else
+            if (line.trim().startsWith('|') && line.endsWith('|')) {
+                if (parts[last].type !== 'table') {
+                    parts.push({type: 'table', lines: [line]});
+                } else {
+                    parts[last].lines.push(line);
+                }
+            } else
             if (line.match(/^##+ /)) {
                 parts.push({lines: [line], type: 'chapter'});
                 last++;
-                if (line.match(/ license$/i)) {
-                    parts[last].license = true;
-                    licenseLines = last;
-                } else
-                if (line.match(/ changelog$/i)) {
-                    parts[last].changelog = true;
-                    changeLog = last;
-                } else {
-                    let level = line.split('#') - 3;
-                    const cont = Utils.findTitle(line, 0, path);
-                    content[cont.href] = cont;
-                    current[level] = cont;
-                    level++;
-                    while(current[level] !== undefined) level = null;
-                }
+                let level = line.split('#') - 3;
+                const cont = Utils.findTitle(line, 0, path);
+                content[cont.href] = cont;
+                current[level] = cont;
+                level++;
+                while(current[level] !== undefined) level = null;
             } else
             if (line.startsWith('@@@')) {
                 line = line.substring(3).trim();
@@ -202,22 +242,12 @@ class Utils {
             }
         }
 
-        if (changeLog !== undefined) {
-            const _changeLog = changeLog;
-            changeLog = parts[changeLog].lines.join('\n');
-            parts.splice(_changeLog, 1);
-        }
-        if (licenseLines !== undefined) {
-            const _licenseLines = licenseLines;
-            licenseLines = parts[licenseLines].lines.join('\n');
-            parts.splice(licenseLines, 1);
-        }
         return {
             parts,
             content,
             title,
-            changeLog: changeLog,
-            license: licenseLines
+            changeLog: changelog,
+            license
         };
     }
 

@@ -14,12 +14,17 @@ import Utils from '../Utils';
 const styles = theme => ({
     mainDiv: {
         background: '#FFFFFF',
-        width: 'calc(100% - 60px)',
+        width: 'calc(100% - 100px)',
         textAlign: 'center',
         paddingTop: 10,
         paddingBottom: 50,
         paddingLeft: 50,
         paddingRight: 50,
+    },
+    mainDivMobile: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        width: 'calc(100% - 40px)',
     },
     title: {
         fontSize: 32,
@@ -99,7 +104,7 @@ class Adapters extends Component {
             <div className={this.props.classes.boxDiv}>
                 <div className={this.props.classes.box}>
                     {this.state.adapters.map(a => (
-                        <div className={this.props.classes.adapter} title={a.name + ', ' + I18n.t('installed %s times', a.installs)}>
+                        <div key={a} className={this.props.classes.adapter} title={a.name + ', ' + I18n.t('installed %s times', a.installs)}>
                             <img className={this.props.classes.icon} src={a.icon} alt={a.name} onClick={() => this.props.onNavigate(null, 'adapters', `adapterref/iobroker.${a.name}/README.md`)}/>
                         </div>))}
                 </div>

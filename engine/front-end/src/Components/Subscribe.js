@@ -44,8 +44,13 @@ const styles = theme => ({
         width: 200,
         color: '#FFFFFF',
         opacity: 1,
+    },
+    tooltipError: {
+        color: '#881d0d !important'
     }
 });
+
+const regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 class Subscribe extends Component {
     constructor(props) {
@@ -59,18 +64,23 @@ class Subscribe extends Component {
 
     onSubscribe() {
         if (this.state.email) {
-            fetch(`https://subscription.iobroker.in/v1/subscriptions?email=${encodeURIComponent(this.state.email)}&lang=${this.props.language}`)
-                .then(data => data.json())
-                .then(data => {
-                    if (data.result === 'added') {
-                        this.setState({tooltip: I18n.t('Subscribed!')});
-                    } else {
-                        this.setState({tooltip: I18n.t('Cannot subscribe: ') + I18n.t(data.result)});
-                    }
-                })
-                .catch(e => {
-                    this.setState({tooltip: I18n.t('Cannot subscribe: ') + e.toString()});
-                });
+            if (regEmail.test(this.state.email.toLowerCase())) {
+                const url = `https://emails.iobroker.in/v1/subscriptions?email=${encodeURIComponent(this.state.email)}&lang=${this.props.language}`;
+                fetch(url)
+                    .then(data => data.json())
+                    .then(data => {
+                        if (data.result === 'added') {
+                            this.setState({tooltip: I18n.t('Subscribed!')});
+                        } else {
+                            this.setState({tooltip: I18n.t('Cannot subscribe: ') + I18n.t(data.result), errorTooltip: true});
+                        }
+                    })
+                    .catch(e => {
+                        this.setState({tooltip: I18n.t('Cannot subscribe: ') + e.toString(), errorTooltip: true});
+                    });
+            } else {
+                this.setState({tooltip: I18n.t('invalid email'), errorTooltip: true});
+            }
         }
     }
 
@@ -79,27 +89,31 @@ class Subscribe extends Component {
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             open={!!this.state.tooltip}
             autoHideDuration={6000}
-            onClose={() => this.setState({tooltip: ''})}
+            onClose={() => this.setState({tooltip: '', errorTooltip: false})}
             message={<span id="message-id">{this.state.tooltip}</span>}
+            classes={{root: this.state.errorTooltip ? this.props.classes.tooltipError: undefined}}
             action={[
                 <IconButton
                     key="close"
                     color="inherit"
                     className={this.props.classes.close}
-                    onClick={() => this.setState({tooltip: ''})}
+                    onClick={() => this.setState({tooltip: '', errorTooltip: false})}
                 >
                     <IconClose />
                 </IconButton>,
             ]}
-        />)
+        />);
     }
 
     render() {
+        const error = this.state.email && !regEmail.test(this.state.email.toLowerCase());
         return (<div key="subscribe" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
             <Input
+                error={error}
                 placeholder={(I18n.t('Newsletter subscribe'))}
                 classes={{input: this.state.inputFocused || this.state.email ? this.props.classes.inputRootNotEmpty : this.props.classes.inputRoot }}
                 className={this.props.classes.input}
+                onKeyUp={e => e.keyCode === 13 && this.onSubscribe()}
                 onFocus={() => this.setState({inputFocused: true})}
                 onBlur={() => this.setState({inputFocused: false})}
                 onChange={e => this.setState({email: e.target.value})}
@@ -107,7 +121,7 @@ class Subscribe extends Component {
             <Button
                 color="primary"
                 className={this.props.classes.button + ' ' + (this.state.inputFocused || this.state.email ? this.props.classes.buttonFull : '')}
-                disbled={!!this.state.email}
+                disabled={error || !this.state.email}
                 onClick={() => this.onSubscribe()}>
                 <IconEmail fontSize="small" style={{marginRight: 5}}/>
                 {this.state.inputFocused ? I18n.t('Subscribe') : ''}
