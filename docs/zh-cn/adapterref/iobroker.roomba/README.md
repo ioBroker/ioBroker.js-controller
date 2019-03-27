@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: S4TNaFxVIuPwTwbWbPmrlzQQE+pc3XoeS0XoM+9NIiQ=
+hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ---
 ![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -65,20 +65,20 @@ sudo npm install canvas --unsafe-perm=true
 ###支持的固件版本
 |软件版本|固件信息|支持|
 | ---------------- | ------------- | --------- |
-| v1.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle)| **支持（包括地图）** |
-| v3.2.xx | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| **支持**（没有地图）|
-| v3.2.xx | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle）| **支持**（没有地图）|
+| v1.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle)| ![**支持（！＃c5f015）（https://placehold.it/15/c5f015/000000?text=+) **](https://placehold.it/15/c5f015/000000?text=+)包括地图）** |
+| v3.2.xx | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| ![＃c5f015]（https://placehold.it/15/c5f015/000000?text=+) **支持**（！[＃f03c15](https://placehold.it/15/f03c15/000000?text=+)NOmap）|
+| v3.2.xx | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle）| ！[＃c5f015]（https://placehold.it/15/c5f015/000000?text=+) **支持**（！[＃f03c15]（https://placehold.it/15/f03c15/000000？ text = +）没有地图）|
 
 ###支持Roomba
 |意甲|模型_（不完整）_ |软件版本|固件信息|支持|
 | ----- | --------------------- | ---------------- | ------------- | --------- |
 | Roomba®6xx| 605,606,612,616,671,676,680,696 | v3.2.40 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| （最有可能）|
-| Roomba®6xx| 675 | v3.2.40 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle）| **支持**（没有地图）|
+| Roomba®7xx| 774,785，| -  | | ![＃f03c15](https://placehold.it/15/f03c15/000000?text=+)_Model不提供Wifi连接，因此没有support_ |
 | Roomba®8xx| 880,886,891,896 | -  | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| （最有可能）|
-| Roomba®8xx| [895]（（https://forum.iobroker.net/post/245274））| v3.2.10 / 40/69 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| **支持**（没有地图）|
+| Roomba®8xx| [895]（（https://forum.iobroker.net/post/245274））| v3.2.10 / 40/69 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle)| ![＃c5f015]（https://placehold.it/15/c5f015/000000?text=+) **支持**（！[＃f03c15](https://placehold.it/15/f03c15/000000?text=+)NOmap）|
 | Roomba®9xx| 965,981 | -  | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle)| （最有可能）|
-| Roomba®9xx| [960]（https://forum.iobroker.net/user/jb_sullivan），[966]（https://forum.iobroker.net/user/thomaslpz),980 | v2.4.6-3 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle)| **支持（包括地图）** |
-| Roomba®i| [i7（7150）]（https://forum.iobroker.net/post/240589），i7 +（7550）| v1.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle)| **支持（包括地图）** |
+| Roomba®9xx| [960]（https://forum.iobroker.net/user/jb_sullivan），[966]（https://forum.iobroker.net/user/thomaslpz),980 | v2.4.6-3 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle)|支持![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**（包括地图）** |
+| Roomba®i| [i7（7150）]（https://forum.iobroker.net/post/240589），i7 +（7550）| v1.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle)|支持![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**（包括地图）** |
 | Roomba®e5| e5 | v3.4.42 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle)| _unknown_ |
 | Roomba®e5| e5 | v3.4.42 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle）| _unknown_ |
 

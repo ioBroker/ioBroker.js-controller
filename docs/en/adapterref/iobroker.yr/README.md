@@ -1,7 +1,4 @@
 
----
-lastChanged: 2019.03.26
----
 ![Logo](admin/yr.png)
 # ioBroker.yr
 

@@ -1,13 +1,13 @@
 ![Logo](admin/ping.png)
-ioBroker PING Adapter
-==============
+# PING Adapter
+
 ![Number of Installations](http://iobroker.live/badges/ping-installed.svg) ![Number of Installations](http://iobroker.live/badges/ping-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.ping.svg)](https://www.npmjs.com/package/iobroker.ping)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.ping.svg)](https://www.npmjs.com/package/iobroker.ping)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.ping)
 
 [![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)](https://nodei.co/npm/iobroker.ping/)
 
-# Pings configured IP addresses.
+## Pings configured IP addresses.
 
 Pings specified IP addresses in defined interval and monitors the results.
 
@@ -63,12 +63,6 @@ Pings specified IP addresses in defined interval and monitors the results.
 
 ### 0.0.1 (2014-11-02)
 * (bluefox) support of server (actual no authentication)
-
-## Install
-
-```node iobroker.js add ping```
-
-## Configuration
 
 ## License
 

@@ -4,7 +4,7 @@ lastChanged: 26.03.2019
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/admin/overview.md
-hash: 5OV6/Tfof4F7LSwEcYVVCBvKGAWlqPYYn5JmtQlJCRg=
+hash: PD6yIIqFzsSUrDaS2ybFDiFqx6FBchPXTCkYWisNvOc=
 ---
 # Окно обзора
 ?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть легко приняты. ---

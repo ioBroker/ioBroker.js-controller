@@ -43,7 +43,7 @@ An instance of the adapter is installed via the ioBroker Admin interface. The de
 
 | Field | Description |
 |:-------------|:-------------|
-| Query Interval | Here an alternative value in milliseconds can be set. In this interval, the states of the sun battery are updated
+| Query Interval | Here an alternative value in milliseconds can be set. In this interval, the states of the sun battery are updated |
 
 After completing the configuration, the configuration dialog is quit with `SPEICHERN UND SCHLIEßEN`.
 This will result in a subsequent restart of the adapter.
@@ -66,163 +66,163 @@ Permissions can be read (R) as well as write (W). Each data point can at least b
 #### Channel: info
 * info.connection
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value, which is true if the connection between ioBroker and battery is made. *
 
 * info.lastSync
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Timestamp | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Timestamp | R |
 
    * Read-only timestamp, updated every time the data is updated. *
 
 #### Channel: status
 * status.consumption
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value, which contains the current consumption of the house in Watt. *
 
 * status.production
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value, which indicates how many watts are currently being produced by the PV system. *
 
 * status.pacTotal
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
 * Read only number value, which indicates the inverter AC power.
 If the value is greater than 0, the battery is discharged, with a value less than 0, charged. *
 
 * status.relativeSoc
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value representing the current battery level. *
 
 * status.userSoc
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value representing the current battery level. *
 
 * status.acFrequency
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value, which represents the AC frequency in Hertz. *
 
 * status.acVoltage
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value, which represents the current AC (AC) current voltage of the inverter. *
 
 * status.batteryVoltage
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
    * Read only number value, which represents the current DC (DC) voltage of the battery. *
 
 * status.systemTime
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Date | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Date | R |
 
    * Read only ISO date representing the system time of the battery. *
 
 * status.systemInstalled
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value, which is true if the system is installed correctly. *
 
 * status.batteryCharging
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value. This is true if the sun battery is currently charging. *
 
 * status.flowConsumptionBattery
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value. This is true if the battery is currently being discharged. *
 
 * status.flowConsumptionGrid
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value, which is true if power is currently sourced from the grid. *
 
 * status.flowConsumptionProduction
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value. This is true if power is currently consumed directly from the PV system. *
 
 * status.flowGridBattery
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read-only Boolean indicator, which is true if the battery is currently being charged through the network. *
 
 * status.flowProductionBattery
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value, which is true if the battery is currently being charged directly through the PV system. *
 
 * status.flowProductionGrid
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read only Boolean value, which is true if the generated power is currently being fed into the grid. *
 
 * status.gridFeedIn
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R |
 
 * Read only number value, which represents the amount of power in watts currently being fed into the grid.
 If the value is positive, it is currently being fed into the grid; if it is negative, the amount of electricity will be drawn from the grid. *
@@ -230,9 +230,9 @@ If the value is positive, it is currently being fed into the grid; if it is nega
 #### Channel: control
 * control.charge
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R / W |
 
    * Number value, which allows to set the maximum discharge of the battery in watts. *
 
@@ -246,9 +246,9 @@ setState('sonnen.0.control.charge', 1250); // Die Batterie wird mit maximal 1250
 
 * control.discharge
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R / W |
 
    * Number Value, which allows to set the maximum charge of the battery in watts. *
 

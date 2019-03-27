@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: 37RT07TH8KkLYoZuy4j2vBmQfHza2r/Egjxr7hI4Ygk=
+hash: D2+N/guf37V/MaNUbADVccgWuAcuSrOXPp20XtwZ8Os=
 ---
 ![商标](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -13,8 +13,10 @@ hash: 37RT07TH8KkLYoZuy4j2vBmQfHza2r/Egjxr7hI4Ygk=
 ![测试](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.history.png?downloads=true)
 
-＃ioBroker.history ===============================
-此适配器将状态历史保存在两个阶段的过程中。
+＃ioBroker.history
+[![Greenkeeper徽章]（https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg）](https://greenkeeper.io/)
+
+此适配器将状态历史记录保存在两个阶段的过程中。
 首先，数据点存储在RAM中，一旦达到maxLength，它们就会存储在磁盘上。
 
 要设置要存储的数据点，必须在管理员“对象”选项卡（最后一个按钮）中配置它们。
@@ -231,7 +233,7 @@ history2db.js可以在目录“converter”中找到。
 
 可能的选项和参数：
 
- - **DB-Instance** DB-Instance将数据发送到.Required参数。需要成为scriptname后的第一个参数。
+ - **DB-Instance** DB-Instance将数据发送到.Required参数。需要成为scriptname之后的第一个参数。
  - **Loglevel** 输出Loglevel（默认值：info）。如果set需要是scriptname之后的第二个参数。
  -  **开始日期**：以yyyymmdd格式开始的日期（例如20161028）。使用“0”来使用检测到的最早值。如果set需要是scriptname之后的第三个参数。
  - **path-to-Data** 数据文件的路径。默认为iobroker-install-directory / iobroker-data / history-data。如果set需要是scriptname之后的第四个参数。
@@ -242,143 +244,142 @@ history2db.js可以在目录“converter”中找到。
  - **- processAllDPs** 使用此参数，您可以确保历史文件中的所有现有数据点都传输到数据库中，如果这些数据库到目前为止还没有存在。
  - ** - 模拟**：使用此参数启用模拟模式，意味着没有真正的写入事件，并且在退出时也不会更新analyze-datafiles。
 
-## 1.8.5（2018-07-02）
-*（Apollon77）在storeState中修复了错误
+## Changelog
+### 1.8.5 (2018-07-02)
+* (Apollon77) Error fixed in storeState
 
-## 1.8.4（2018-06-24）
-*（Apollon77）修复/允许禁用开始和结束值的写入
+### 1.8.4 (2018-06-24)
+* (Apollon77) Fixing/allow to disable writing of start and end values
 
-## 1.8.0（2018-06-19 / 24）
-*（Apollon77）添加将数据写入其他ID的选项，以便更轻松地更改设备。检索数据适用于两个ID
+### 1.8.0 (2018-06-19/24)
+* (Apollon77) Add option to write data to a different ID to make device changes easier. Retrieving data works for both IDs
 
-## 1.7.4（2018-04-03）
-*（AlCalzone）修复具有特殊字符的状态的文件名处理
+### 1.7.4 (2018-04-03)
+* (AlCalzone) Fix filename handling for states with special characters
 
-## 1.7.3（2018-03-28）
-*（Apollon77）尊重“永远保持”设置以保留数据点配置
+### 1.7.3 (2018-03-28)
+* (Apollon77) Respect 'keep forever' setting for retention from datapoint configuration
 
-## 1.7.2（2018-02-05）
-*（bondrogeen）Admin3修复
+### 1.7.2 (2018-02-05)
+* (bondrogeen) Admin3 Fixes
 
-## 1.7.1（2018-01-31）
-*（Bluefox）Admin3修复
+### 1.7.1 (2018-01-31)
+* (Bluefox) Admin3 Fixes
 
-## 1.7.0（2018-01-17）
-*（bluefox）为Admin3做好准备
+### 1.7.0 (2018-01-17)
+* (bluefox) Ready for Admin3
 
-## 1.6.6（2017-12-20）
-*（bluefox）翻译
+### 1.6.6 (2017-12-20)
+* (bluefox) translations
 
-## 1.6.5（2017-10-05）
-*（Apollon77）修复relog值功能
+### 1.6.5 (2017-10-05)
+* (Apollon77) fix relog value feature
 
-## 1.6.4（2017-08-12）
-*（bluefox）添加“保存最后一个值”选项
+### 1.6.4 (2017-08-12)
+* (bluefox) add "save last value" option
 
-## 1.6.3（2017-08-03）
-*（Apollon77）修复日志间隔的行为以始终记录当前值
+### 1.6.3 (2017-08-03)
+* (Apollon77) fix behaviour of log interval to always log the current value
 
-## 1.6.2（2017-04-07）
-*修复数据类型转换
+### 1.6.2 (2017-04-07)
+* fix in datatype conversions
 
-### 1.6.0（2017-02-28）
-*（Apollon77）替换历史文件名中的一些字符
+### 1.6.0 (2017-02-28)
+* (Apollon77) Replace some characters in history filenames
 
-### 1.5.3（2017-02-22）
-*（Apollon77）针对旧配置的小修复
+### 1.5.3 (2017-02-22)
+* (Apollon77) Small fix for older configurations
 
 ### 1.5.2
-*（Apollon77）增强混合类型数据点的Min-Delta逻辑
+* (Apollon77) Enhance Min-Delta logic for datapoints from type mixed
 
-### 1.5.1（2017-01-16）
-*（bluefox）修复Adapter config和Datapoint config中float值的处理。
+### 1.5.1 (2017-01-16)
+* (bluefox) Fix handling of float values in Adapter config and Datapoint config.
 
-### 1.5.0（2016-12-01）
-*（Apollon77）添加消息enableHistory / disableHistory
-*（Apollon77）仅在值与数字的最小值不同时才添加对日志更改的支持
-*（Apollon77）修正聚合计算
+### 1.5.0 (2016-12-01)
+* (Apollon77) Add messages enableHistory/disableHistory
+* (Apollon77) add support to log changes only if value differs a minimum value for numbers
+* (Apollon77) Fixing aggregate calculation
 
-### 1.4.0（2016-10-29）
-*（Apollon77）添加选项以重新记录未更改的值，以便于可视化
-*（Apollon77）添加了转换器脚本以将历史数据移动到db
+### 1.4.0 (2016-10-29)
+* (Apollon77) add option to re-log unchanged values to make it easier for visualization
+* (Apollon77) added converter scripts to move history data to db
 
-### 1.3.1（2016-09-25）
-*（Apollon77）修正：ts被指定为val
-*（bluefox）修复历史对象的选择器
+### 1.3.1 (2016-09-25)
+* (Apollon77) Fixed: ts is assigned as val
+* (bluefox) Fix selector for history objects
 
-### 1.3.0（2016-08-30）
-*（bluefox）仅与新管理员兼容
+### 1.3.0 (2016-08-30)
+* (bluefox) сompatible only with new admin
 
-### 1.2.0（2016-08-27）
-*（bluefox）将对象的名称从历史记录更改为自定义
+### 1.2.0 (2016-08-27)
+* (bluefox) change name of object from history to custom
 
-### 1.1.0（2016-08-27）
-*（bluefox）修复最后一点的聚合
-*（bluefox）聚合none只传递原始数据而不进行任何聚合
+### 1.1.0 (2016-08-27)
+* (bluefox) fix aggregation of last point
+* (bluefox) aggregation none just deliver the raw data without any aggregation
 
-### 1.0.5（2016-07-24）
-*（bluefox）修复大间隔的聚合
+### 1.0.5 (2016-07-24)
+* (bluefox) fix aggregation on large intervals
 
-### 1.0.4（2016-07-05）
-*（bluefox）在几秒钟内修复聚合
+### 1.0.4 (2016-07-05)
+* (bluefox) fix aggregation on seconds
 
-### 1.0.3（2016-05-31）
-*（bluefox）如果忽略null则绘制到最后的行
+### 1.0.3 (2016-05-31)
+* (bluefox) draw line to the end if ignore null
 
-### 1.0.2（2016-05-29）
-*（bluefox）互相切换max和min
+### 1.0.2 (2016-05-29)
+* (bluefox) switch max and min with each other
 
-### 1.0.1（2016-05-28）
-*（bluefox）也计算“on change”的结束/开始值
+### 1.0.1 (2016-05-28)
+* (bluefox) calculate end/start values for "on change" too
 
-### 1.0.0（2016-05-20）
-*（bluefox）更改默认聚合名称
+### 1.0.0 (2016-05-20)
+* (bluefox) change default aggregation name
 
-### 0.4.1（2016-05-14）
-*（bluefox）支持sessionId
+### 0.4.1 (2016-05-14)
+* (bluefox) support sessionId
 
-### 0.4.0（2016-05-05）
-*（bluefox）使用sql适配器的聚合文件
-*（bluefox）修复退出时的值存储
-*（bluefox）每5分钟存储所有缓存数据
-*（bluefox）支持ms
+### 0.4.0 (2016-05-05)
+* (bluefox) use aggregation file from sql adapter
+* (bluefox) fix the values storage on exit
+* (bluefox) store all cached data every 5 minutes
+* (bluefox) support of ms
 
-### 0.2.1（2015-12-14）
-*（bluefox）添加设置说明
-*（bluefox）将聚合函数放入单独的文件中以启用与其他适配器的共享
-*（smile-Jack）添加生成演示数据
-*（微笑杰克）在自己的分叉中获得历史
-*（bluefox）添加storeAck标志
-*（bluefox）onchange的模型
+### 0.2.1 (2015-12-14)
+* (bluefox) add description of settings
+* (bluefox) place aggregate function into separate file to enable sharing with other adapters
+* (smiling-Jack) Add generate Demo data
+* (smiling-Jack) get history in own fork
+* (bluefox) add storeAck flag
+* (bluefox) mockup for onchange
 
-### 0.2.0（2015-11-15）
-*（Smiling_Jack）保存并加载适配器而不是js-controller
-*（Smiling_Jack）数据点的聚合
-*（Smiling_Jack）支持存储路径
+### 0.2.0 (2015-11-15)
+* (Smiling_Jack) save and load in adapter and not in js-controller
+* (Smiling_Jack) aggregation of data points
+* (Smiling_Jack) support of storage path
 
-### 0.1.3（2015-02-19）
-*（bluefox）修复历史记录中的小错误（感谢Dschaedl）
-*（bluefox）更新管理页面
+### 0.1.3 (2015-02-19)
+* (bluefox) fix small error in history (Thanks on Dschaedl)
+* (bluefox) update admin page
 
-### 0.1.2（2015-01-20）
-*（bluefox）按配置启用保存和关闭按钮
+### 0.1.2 (2015-01-20)
+* (bluefox) enable save&close button by config
 
-### 0.1.1（2015-01-10）
-*（bluefox）检查状态是否未被删除
+### 0.1.1 (2015-01-10)
+* (bluefox) check if state was not deleted
 
-### 0.1.0（2015-01-02）
-*（bluefox）启用npm install
+### 0.1.0 (2015-01-02)
+* (bluefox) enable npm install
 
-### 0.0.8（2014-12-25）
-*（bluefox）支持去抖动间隔
+### 0.0.8 (2014-12-25)
+* (bluefox) support of de-bounce interval
 
-### 0.0.7（2014-11-01）
-*（bluefox）存储每一个变化而不仅仅是lc！= ts
+### 0.0.7 (2014-11-01)
+* (bluefox) store every change and not only lc != ts
 
-### 0.0.6（2014-10-19）
-*（bluefox）添加配置页面
-
-## Changelog
+### 0.0.6 (2014-10-19)
+* (bluefox) add configuration page
 
 ## License
 

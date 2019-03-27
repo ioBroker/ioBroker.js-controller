@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
+hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/paw-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.paw.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.paw.svg)
 ![NPM](https://nodei.co/npm/iobroker.paw.png?downloads=true)
@@ -16,15 +17,11 @@ hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
 
 ## Beschreibung
 Es ist ein Adapter zur Steuerung von Android-Geräten.
-Es kann Texte sprechen, die Lautstärke regeln, SMS senden, Anrufe tätigen, vibrieren und vieles mehr ...
+Es kann Texte sprechen, die Lautstärke regeln, Anrufe tätigen, vibrieren und vieles mehr ...
 Unterstützung für Tasker- und Locale-Plug-Ins.
 
 ## Installieren Sie das Programm und konfigurieren Sie den Adapter.
-Laden Sie die Anwendung herunter und installieren Sie sie. [apk](https://github.com/bondrogeen/ioBroker.paw/raw/master/app/app-release.apk)
-
-> !!! Vergessen Sie nicht, die Anwendung zu aktualisieren.
-
-Es ist auch bei Google Play:
+> !!! Vergessen Sie nicht, den Adapter mit der Anwendung zu aktualisieren. Wenn Sie die alte Version verwenden, können Fehler auftreten.
 
 <a href="https://play.google.com/store/apps/details?id=ru.codedevice.iobrokerpawii" target="_blank"><img alt="Bekomm es auf Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60"/></a>
 
@@ -120,15 +117,17 @@ sendTo("paw.0",'dev1',{
     log(JSON.stringify(res));
 });
 
-// send message.
-sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+// !!! Not working yet
 
-sendTo("paw.0",'192.168.1.71',{
-    message: '8123456789',
-    text:  'Any text'
-},function (res){
-    log(JSON.stringify(response));
-});
+// send message.
+//sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+//
+//sendTo("paw.0",'192.168.1.71',{
+//    message: '8123456789',
+//    text:  'Any text'
+//},function (res){
+//    log(JSON.stringify(response));
+//});
 
 
 // setting the volume from 0 to 15, the maximum volume is set by the system,
@@ -218,6 +217,7 @@ sendTo("paw.0",'dev2',{
 },function (res){
     log(JSON.stringify(res));
 });
+
 
 
 ```

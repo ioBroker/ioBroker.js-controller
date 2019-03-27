@@ -3,7 +3,7 @@
 # ioBroker.paw 2  BETA
 =================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.paw.svg)](https://www.npmjs.com/package/iobroker.paw)
+![Number of Installations](http://iobroker.live/badges/paw-installed.svg) ![Number of Installations](http://iobroker.live/badges/paw-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.paw.svg)](https://www.npmjs.com/package/iobroker.paw)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.paw.svg)](https://www.npmjs.com/package/iobroker.paw)
 
 [![NPM](https://nodei.co/npm/iobroker.paw.png?downloads=true)](https://nodei.co/npm/iobroker.paw/)
@@ -11,18 +11,13 @@
 ## Description
 
 It is an adapter to control Android devices. 
-It can speak texts, control volume, send SMS, make calls, vibrate, and much more ...
+It can speak texts, control volume, make calls, vibrate, and much more ...
 Tasker and Locale Plug-in support.
 
 ## Install the program and configure the adapter.
 
 
- 
-Download and install the application. [apk](https://github.com/bondrogeen/ioBroker.paw/raw/master/app/app-release.apk)
-
-> !!! Do not forget to update the application.   
-
-It's also on Google Play:
+> !!! Do not forget to update the adapter with the application. If you use the old version, errors may occur.
 
 <a href="https://play.google.com/store/apps/details?id=ru.codedevice.iobrokerpawii" target="_blank">
   <img alt="Get it on Google Play"
@@ -153,15 +148,17 @@ sendTo("paw.0",'dev1',{
     log(JSON.stringify(res));
 });
 
-// send message.
-sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+// !!! Not working yet
 
-sendTo("paw.0",'192.168.1.71',{
-    message: '8123456789',
-    text:  'Any text'
-},function (res){
-    log(JSON.stringify(response));
-});
+// send message.  
+//sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+//
+//sendTo("paw.0",'192.168.1.71',{
+//    message: '8123456789',
+//    text:  'Any text'
+//},function (res){
+//    log(JSON.stringify(response));
+//});
 
 
 // setting the volume from 0 to 15, the maximum volume is set by the system,
@@ -253,7 +250,9 @@ sendTo("paw.0",'dev2',{
 });
 
 
+
 ```
+
 ### 0.3.1
 * (bondrogeen) (adapter) Minor fixes. (app) added widget and expanded item functionality
 

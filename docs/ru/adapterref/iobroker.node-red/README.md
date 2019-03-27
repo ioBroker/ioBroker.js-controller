@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.node-red/README.md
 title: ioBroker - красный адаптер для узла
-hash: 6nDiKCG5sDpMw4QOrCbKZ58n1xKuED6dvLUU6GqCqvM=
+hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
 ---
 ![логотип](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -13,8 +13,8 @@ hash: 6nDiKCG5sDpMw4QOrCbKZ58n1xKuED6dvLUU6GqCqvM=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
-# IoBroker node-red Adapter ==============
-# Запускает нод-красный экземпляр и связывается с ним.
+# IoBroker node-red Adapter
+## Запускает экземпляр узла красного цвета и связывается с ним.
 *** Для работы этого адаптера требуется как минимум nodejs 4.x ***
 
 Этот адаптер использует красный сервер узла с https://github.com/node-red/node-red

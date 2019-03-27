@@ -1,10 +1,79 @@
 ---
-title: 管理员
-lastChanged: 14.09.2018
+title: 日志
+lastChanged: 27.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/admin/log.md
-hash: m0C2GgoKlE5KxXYjmFHdCffv7yQzveIeGplhwSaWJU0=
+hash: g5WIrovC4KOFTr6YfMUWgBujfAwCSRp8OyXONFu9hF8=
 ---
-＃日志窗口
-？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
+＃日志页面
+![日志页面](../../de/admin/media/ADMIN_Log_numbers.png)
+
+这里连续输出系统的消息。最新消息位于顶部。
+
+##标题栏
+标题栏包含最重要流程的图标。每个图标都有一个上下文帮助。只需将鼠标停留在图标上一段时间即可。
+
+###详细图标：
+** 1.）更新日志**
+
+此按钮可更新列表。
+
+** 2.）停止更新**
+
+通过单击此按钮，将停止不断更新列表。
+现在不显示暂停图标，而是显示未显示的新消息数。
+
+** 3.）清除清单**
+
+通过单击此图标，只会删除屏幕上的列表
+
+** 4.）清除登录主机**
+
+单击此图标将永久删除主机上的整个日志。
+
+** 5.）下载日志**使用此按钮，您可以从目录/ opt / iobroker / logs下载最后几天的完整日期日志：
+
+![登录下载](../../de/admin/media/ADMIN_Log_download.png)
+
+您将看到以下屏幕：![完整的日志](../../de/admin/media/ADMIN_Log_download02.png)
+
+由于在日志窗口中经常会切断行，因此检查是否有更多信息非常重要。
+
+** 6.）主机列表**
+
+只有来自此处主机的消息才会显示在日志中。在多主机环境中，您可以将主机设置为在此处进行登录。
+
+![主持人](../../de/admin/media/ADMIN_Log_hosts.png)
+
+##页面内容
+![主持人](../../de/admin/media/ADMIN_Log_numbers02.png)
+
+在页面上，现有对象列表。
+
+列标题1和3包含用作过滤条件的下拉菜单，在第4列中可以自由输入过滤条件
+
+** 1.）来源**
+
+使用此下拉菜单，可以根据日志记录实例过滤消息。在菜单中，仅显示实例，页面上也有条目。
+
+** 2.）时间**
+
+这里列出了消息的时间戳。此列不可过滤。
+
+** 3.）显示日志级别**
+
+此菜单用于设置消息的严重性。但是，这只是现有列表的过滤器。
+要在特定级别设置实例的日志记录，必须在“实例”页面上进行设置。
+
+错误以红色显示：
+
+![错误](../../de/admin/media/ADMIN_Log02_error.png)
+
+如果任何主机上出现错误，则标题*** Log ***在菜单栏中显示为红色。
+
+** 4.）消息**
+
+在此列中，只要它适合列，就会显示相应的消息。
+其余的被切断了。使用鼠标悬停，您仍然可以看到整个消息。
+要在论坛中发帖，请下载日志并将消息复制到那里。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: ojQGzLlL+5fNwArqwcLHZkA4o+ceZjJj1Q3RMIjIJ94=
+hash: iZakKvBm2wUi91/Foakx3ln7VF+mcOTraWBlB5bQjsc=
 ---
 ![логотип](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -13,8 +13,10 @@ hash: ojQGzLlL+5fNwArqwcLHZkA4o+ceZjJj1Q3RMIjIJ94=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
-# IoBroker.lupusec =================
-Требуется node.js 6.0 или выше и Admin v3!
+# IoBroker.lupusec
+=================
+
+** Требуется node.js 8.0 или выше и Admin v3! **
 
 Этот адаптер соединяет систему сигнализации Lupusec XT1 Plus, XT2, XT2 Plus и XT3 с ioBroker.
 XT1 (без плюса) не будет поддерживаться. Вы можете прочитать состояние датчиков Lupusec, таких как датчики дверей, окон, воды, дыма и состояние системы охранной сигнализации.
@@ -55,68 +57,33 @@ XT1 (без плюса) не будет поддерживаться. Вы мо�
 Если у вас есть устройство, которого нет в списке выше, свяжитесь со мной по адресу Thorsten Stueben <thorsten@stueben.de>.
 
 ## Changelog
+### 1.1.0 (23.03.2019)
+* (Stübi) Totally redesign of the Lupusec adapter. Node 8 or higher is now required
 
 ### 1.0.0 (22.12.2018)
-* (Stübi) Support js-controller compact mode   
-
-### 0.4.1 (22.12.2018)
-* (Stübi) Changed core adapter   
-
-### 0.4.0 (07.12.2018)
-* (Stübi) Add Light sensor (type 78)  
-
-### 0.3.9 (26.11.2018)
-* (Stübi) Add Apple home alarm status  
-
-### 0.3.8 (13.11.2018)
-* (Stübi) Add dimmer / relais (type 66)  
-
-### 0.3.7 (12.11.2018)
-* (Stübi) Bugfixing
-
-### 0.3.6 (31.10.2018)
+* (Stübi) Support js-controller compact mode
+* (Stübi) Changed core adapter
+* (Stübi) Add Light sensor (type 78)
+* (Stübi) Add Apple home alarm status
+* (Stübi) Add dimmer / relais (type 66)
 * (Stübi) Bugfixing and new status alarm_ex
-
-### 0.3.5 (21.10.2018)
 * (Stübi) Bugfixing and changing of the polling mechanism
-
-### 0.3.4 (30.09.2018)
 * (Stübi) password will be encrypted. Translation of configuration
-
-### 0.3.2 (15.09.2018)
 * (Stübi) add debug messages
-
-### 0.3.1 (12.09.2018)
 * (Stübi) Hue, room sensor, power switch added
-
-### 0.2.7 (19.08.2018)
 * (Stübi) Fixing error update function
-
-### 0.2.6 (17.08.2018)
 * (Stübi) Improvements and new add/del/update Object function
-
-### 0.2.5 (10.08.2018)
 * (Stübi) Changes of roles and icons added to devices
-
-### 0.2.4 (16.07.2018)
 * (Stübi) Wrong device description removed
-
-### 0.2.3 (16.07.2018)
 * (Stübi) RSSI Status an Device shutter (type 76) supported
-
-### 0.2.2 (13.07.2018)
 * (Stübi) Devices thermostat (type 79) and switch (type 48) supported
-
-### 0.2.1 (08.06.2018)
 * (Stübi) Directory widged deleted
-
-### 0.2.0 (03.06.2018)
 * (Stübi) Port can be added
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

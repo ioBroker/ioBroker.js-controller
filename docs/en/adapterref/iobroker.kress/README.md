@@ -1,18 +1,13 @@
-[![Kress-Robotics](admin/kress-2.png)](https://www.kress-robotik.com/de/)
-
-Bild-Quelle: https://www.kress-robotik.com/de/
-
-ioBroker.kress
-=============
+![Kress-Robotics](admin/kress-2.png)
+# ioBroker.kress
  
-![Number of Installations](http://iobroker.live/badges/kress-installed.svg) ![Number of Installations](http://iobroker.live/badges/kress-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.kress.svg)](https://www.npmjs.com/package/iobroker.kress)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.kress.svg)](https://www.npmjs.com/package/iobroker.kress)
-
+![Number of Installations](http://iobroker.live/badges/kress-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/kress-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.kress.svg)](https://www.npmjs.com/package/iobroker.kress)
 [![NPM](https://nodei.co/npm/iobroker.kress.png?downloads=true)](https://nodei.co/npm/iobroker.kress/)
-
-**Tests:** Linux/Mac: [![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.kress.svg?branch=master)](https://travis-ci.org/MeisterTR/ioBroker.kress)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.kress?branch=master&svg=true)](https://ci.appveyor.com/project/MeisterTR/ioBroker-kress/)
-
+[![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.kress.svg?branch=master)](https://travis-ci.org/MeisterTR/ioBroker.kress)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.kress?branch=master&svg=true)](https://ci.appveyor.com/project/MeisterTR/ioBroker-kress/)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.kress.svg)](https://www.npmjs.com/package/iobroker.kress)
 
 [Deutsche Beschreibung hier](README_de.md)
 
@@ -20,18 +15,20 @@ This adapter connects IoBroker with your Kress cloud support
 Temperatures, mowing times, battery level and various other data are read out from the mower
 The adapter can control the mower and you can change config params like mowtimes.
 
-## installation
+## Installation
 At least Node 4.X.X must be installed, Node 0.10 and 0.12 are no longer supported by this adapter.
 
-## settings
+## Settings
 - to connect to the mower type in email and password from your worx account in the Config.
 
-
-## second mower
+## Second mower
 -If two mowers are to be integrated, a second instance must be installed, one is selected in the Config mower 0 and in the second mower 1 and so on.
 
+## Notice
+Bild-Quelle: https://www.kress-robotik.com/de/
+
 ## Changelog
-#### 2.5.5 (17.07.2018)
+### 2.5.5 (17.07.2018)
 * (MeisterTR) initinal relase
  
 ## License
@@ -56,3 +53,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+

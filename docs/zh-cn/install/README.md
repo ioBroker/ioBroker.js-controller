@@ -1,12 +1,12 @@
 ---
-title: 安装
+title: 介绍
 lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/README.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: PIYqzmU1OH9UJEdNCh59kEh7XBXEgdxpinImKm5bGhM=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/README.md
+hash: HPbM4KsR9GyLJ2ExpHDiPUSRQMQjOXcuJes7dnKkpkU=
 ---
-＃安装
+＃简介
 ？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
 
 @@@本文件：本节等待我的内容。在选择安装类型时，请指导我的行为。红线穿过章节。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.yr/README.md
 title: ioBroker.yr
-hash: 5qdg/c8Aor4SO0NCMWBSaAxtXCkdR1s5M1UQURZfeRM=
+hash: s+SkqMZbnSFY2acITgHvIqIIe9qKW6oTr0EU8TLj2nE=
 ---
 ![Logo](../../../en/adapterref/iobroker.yr/admin/yr.png)
 
@@ -13,10 +13,10 @@ hash: 5qdg/c8Aor4SO0NCMWBSaAxtXCkdR1s5M1UQURZfeRM=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.yr.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.yr.png?downloads=true)
 
-# IoBroker.yr ==================================
+# IoBroker.yr
 holt 48h Wettervorhersage von [yr.nr.](yr.no)
 
-[yr.no] (yr.no) ist ein gemeinsamer Dienst des [Norwegian Meteorological Institute] (met.no) und der [Norwegian Broadcasting Corporation]](nrk.no)
+[yr.no] (yr.no) ist eine gemeinsame Dienstleistung des [Norwegian Meteorological Institute] (met.no) und der [Norwegian Broadcasting Corporation](nrk.no)
 
 http://om.yr.no/verdata/free-weather-data/
 
@@ -105,7 +105,6 @@ Icons werden hier [https://github.com/YR/weather-symbols](https://github.com/YR/
 * (bluefox) move weather widgets to this adapter
 
 ## License
-
 The MIT License (MIT)
 
 Copyright (c) 2014-2018 hobbyquaker <hq@ccu.io>

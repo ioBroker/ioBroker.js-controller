@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 БЕТА
-hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
+hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
 ---
 ![логотип](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
+![Количество установок](http://iobroker.live/badges/paw-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.paw.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.paw.svg)
 ![NPM](https://nodei.co/npm/iobroker.paw.png?downloads=true)
@@ -16,15 +17,11 @@ hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
 
 ## Описание
 Это адаптер для управления устройствами Android.
-Он может говорить тексты, контролировать громкость, отправлять SMS, совершать звонки, вибрировать и многое другое ...
+Он может говорить тексты, контролировать громкость, совершать звонки, вибрировать и многое другое ...
 Поддержка плагинов Tasker и Locale.
 
 ## Установите программу и настройте адаптер.
-Загрузите и установите приложение. [APK](https://github.com/bondrogeen/ioBroker.paw/raw/master/app/app-release.apk)
-
-> !!! Не забудьте обновить приложение.
-
-Это также в Google Play:
+> !!! Не забудьте обновить адаптер с приложением. Если вы используете старую версию, могут возникнуть ошибки.
 
 <a href="https://play.google.com/store/apps/details?id=ru.codedevice.iobrokerpawii" target="_blank"><img alt="Получить его в Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60"/></a>
 
@@ -120,15 +117,17 @@ sendTo("paw.0",'dev1',{
     log(JSON.stringify(res));
 });
 
-// send message.
-sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+// !!! Not working yet
 
-sendTo("paw.0",'192.168.1.71',{
-    message: '8123456789',
-    text:  'Any text'
-},function (res){
-    log(JSON.stringify(response));
-});
+// send message.
+//sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+//
+//sendTo("paw.0",'192.168.1.71',{
+//    message: '8123456789',
+//    text:  'Any text'
+//},function (res){
+//    log(JSON.stringify(response));
+//});
 
 
 // setting the volume from 0 to 15, the maximum volume is set by the system,
@@ -220,6 +219,7 @@ sendTo("paw.0",'dev2',{
 });
 
 
+
 ```
 
 ### 0.3.1
@@ -229,7 +229,7 @@ sendTo("paw.0",'dev2',{
 * (foxriver76) добавлена совместимость в компактном режиме
 
 #### 0.2.8
-* (bondrogeen) незначительное исправление элемента приложения, карта SDK> = 29 и изменение добавленного устройства
+* (bondrogeen) незначительное исправление предмета приложения, карта SDK> = 29 и измененное добавление устройства.
 
 #### 0.2.7
 * (bondrogeen) диалоговое окно исправлений, приложение noti SDK> = 26

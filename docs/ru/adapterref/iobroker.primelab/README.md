@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: KqAHMbBHKfDe3rP5hsDIbGLyVJaQBRPWFx0GvKuqP/0=
+hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
 ---
-![логотип](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
-
 ![Количество установок](http://iobroker.live/badges/primelab-stable.svg)
+
+--- lastChanged: 2019.03.27 --- ![логотип](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
 
 # IoBroker.primelab
 ### Немецкий:
@@ -33,7 +33,6 @@ Messwerte:
     - 429-pH-PoolLab
 
 ## Changelog
-
 ### 1.0.2
 * (Jey Cee) fix Adapter stop
 
@@ -47,6 +46,8 @@ Messwerte:
 * (Jey Cee) inital version
 
 ## License
+Copyright 2019, Jey-Cee
+
 This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
 To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc/4.0/

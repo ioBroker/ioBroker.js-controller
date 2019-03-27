@@ -3,11 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 8uArILQcXoIm3R6vAKGn06Km8xh7PXGDGvSMF+SREe4=
+hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
 ---
 ![логотип](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
-# IoBroker.onvif =================
+![Количество установок](http://iobroker.live/badges/onvif-stable.svg)
+
+# IoBroker.onvif
 # RU
 ## Настройка
 1. Открыть настройки драйвера

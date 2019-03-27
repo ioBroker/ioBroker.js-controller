@@ -111,7 +111,34 @@ gulp.task('translate', async function () {
 
 gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
-gulp.task('syncDocsTest', done => documentation.syncDocs('iobroker.sayit', done));
+gulp.task('downloadAndSyncOne', done => {
+    const ADAPTER_NAME = 'alexa2'; // <= edit this
+
+    // delete all
+    consts.LANGUAGES.forEach(lang => {
+        utils.delDir(consts.SRC_DOC_DIR + '/adapterref/' + lang + '/iobroker.' + ADAPTER_NAME);
+    });
+
+    return adapters.buildAdapterContent(ADAPTER_NAME)
+        .then(content => {
+            documentation.syncDocs('iobroker.' + ADAPTER_NAME, () => {
+                Promise.all(consts.LANGUAGES.map(lang => adapters.copyAdapterToFrontEnd(lang, ADAPTER_NAME)))
+                    .then(() => {
+                        done();
+                    });
+            });
+        });
+
+});
+
+gulp.task('syncDocsTest', done => documentation.syncDocs('iobroker.ping', done));
+
+gulp.task('downloadAdapterTest', () => {
+    return adapters.buildAdapterContent('ping')
+        .then(content => {
+            console.log(JSON.stringify(content));
+        });
+});
 
 gulp.task('0.clean', done => {
     consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));

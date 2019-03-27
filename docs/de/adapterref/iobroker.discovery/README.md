@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
+hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -13,7 +13,7 @@ hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
-# IoBroker Discover Adapter ===============
+# IoBroker Discover Adapter
 ** Geräte mit allen bekannten Methoden erkennen. **
 
 Dies sind spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.

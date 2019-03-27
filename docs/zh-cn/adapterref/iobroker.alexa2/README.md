@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: BETUPt5sfnfHnfbVc/NvgU2FhyUg61czcNtFLQrdETw=
+hash: pBl2tAb1qw0O3fAefVBcE+S9J0awSMnW3iE2a2aeOvA=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -194,7 +194,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 | json |最后一个命令数据的Json能够处理所有信息，例如在自己的JavaScripts中| JSON |
 |名字|获得最后一个请求的设备的名称信息|
 | serialNumber |获得最后一个请求的设备的序列号信息|
-|状态| Alexa的最后一个命令的状态SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT;通过说出唤醒字来激活设备时，或者当设备丢弃输入为“不适合我”时，生成最后一个
+|状态|最后一个命令到Alexa的状态SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT;通过说出唤醒字来激活设备时，或者当设备丢弃输入为“不适合我”时，生成最后一个
 |摘要|设备收到的文本/摘要/操作|信息|
 
 #### Alexa.0.smart-home-devices
@@ -244,15 +244,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 *如果cookie / csrf无效，则自动停用
 
 ##安装
-使用GitHub中的ioBroker“Install”选项或从最新的存储库中执行iobroker根目录中的以下命令（例如在/ opt / iobroker中）
-
-```
-npm install iobroker.alexa2
-npm add alexa2
-iobroker upload alexa2
-```
-
-然后进入ioBroker Admin并添加一个Alexa实例。
+像往常一样使用稳定的存储库，最新的存储库或使用GitHub中的ioBroker“安装”选项
 
 ＃＃ 故障排除
 ###通过电子邮件/密码确定Cookie的问题

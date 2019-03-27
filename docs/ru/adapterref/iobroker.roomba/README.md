@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: S4TNaFxVIuPwTwbWbPmrlzQQE+pc3XoeS0XoM+9NIiQ=
+hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -24,13 +24,13 @@ hash: S4TNaFxVIuPwTwbWbPmrlzQQE+pc3XoeS0XoM+9NIiQ=
 3. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - версии прошивки)
 4. [Каналы и состояния] (# каналы - состояния)
 5. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
-6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
+6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
 7. [Changelog] (# changelog)
 8. [Кредиты] (# кредитов)
 9. [Лицензия] (# лицензия)
 
 ## Монтаж
-ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas) для того, чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
+ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
 
 Тем не менее, вы, вероятно, должны установить пакетные зависимости canvas с помощью следующей команды:
 
@@ -65,20 +65,20 @@ sudo npm install canvas --unsafe-perm=true
 ### Поддерживаемые версии прошивки
 | Версия ПО | Информация о прошивке | Поддерживается |
 | ---------------- | ------------- | --------- |
-| v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | **поддерживается (включая карту)** |
-| v3.2.xx | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **поддерживается** (без карты) |
-| v3.2.xx | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **поддерживается** (без карты) |
+| v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) ** поддерживается (! [# c5f015](https://placehold.it/15/c5f015/000000?text=+) вкл. карта) ** |
+| v3.2.xx | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
+| v3.2.xx | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15] (https://placehold.it/15/f03c15/000000? текст = +) НЕТ карта) |
 
 ### Поддерживаемые Roomba
 | Серия | Модели _ (неполные) _ | Версия ПО | Информация о прошивке | Поддерживается |
 | ----- | --------------------- | ---------------- | ------------- | --------- |
 | Roomba® 6xx | 605, 606, 612, 616, 671, 676, 680, 696 | v3.2.40 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | (скорее всего) |
-| Roomba® 6xx | 675 | v3.2.40 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **поддерживается** (без карты) |
+| Roomba® 7xx | 774, 785, | - | | ![# f03c15](https://placehold.it/15/f03c15/000000?text=+) _Model не предлагает подключение к Wi-Fi, поэтому нет поддержки_ |
 | Roomba® 8xx | 880, 886, 891, 896 | - | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | (скорее всего) |
-| Roomba® 8xx | [895] ((https://forum.iobroker.net/post/245274)) | v3.2.10 / 40/69 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **поддерживается** (без карты) |
+| Roomba® 8xx | [895] ((https://forum.iobroker.net/post/245274)) | v3.2.10 / 40/69 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
 | Roomba® 9xx | 965, 981 | - | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | (скорее всего) |
-| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan), [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | **поддерживается (включая карту)** |
-| Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | **поддерживается (включая карту)** |
+| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan) [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
+| Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® e5 | е5 | v3.4.42 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unknown_ |
 | Roomba® e5 | е5 | v3.4.42 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unknown_ |
 
@@ -166,7 +166,7 @@ sudo npm install canvas --unsafe-perm=true
 | - | - | refreshedTimestamp | Отметка времени последнего обновления |
 
 ## Описание настроек _ (не полностью) _
-Следующая полезная нагрузка будет получена при вызове ```getPreferences()``` (см. Https://github.com/koalazak/dorita980#getpreferences):
+Следующая полезная информация будет получена при вызове ```getPreferences()``` (см. Https://github.com/koalazak/dorita980#getpreferences):
 
 | Объект | Индекс | Тип | Описание | ioBroker State |
 | ------ | ----- | ---- | ----------- | -------------- |

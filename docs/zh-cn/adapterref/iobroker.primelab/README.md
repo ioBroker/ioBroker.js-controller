@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: KqAHMbBHKfDe3rP5hsDIbGLyVJaQBRPWFx0GvKuqP/0=
+hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
 ---
-![商标](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
-
 ![安装数量](http://iobroker.live/badges/primelab-stable.svg)
+
+--- lastChanged：2019.03.27 ---![商标](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
 
 ＃ioBroker.primelab
 ###德语：
@@ -33,7 +33,6 @@ PrimeLab适配器可以在https://primelab.cloud页面上自动检索存储在�
      -  429-pH-PoolLab
 
 ## Changelog
-
 ### 1.0.2
 * (Jey Cee) fix Adapter stop
 
@@ -47,6 +46,8 @@ PrimeLab适配器可以在https://primelab.cloud页面上自动检索存储在�
 * (Jey Cee) inital version
 
 ## License
+Copyright 2019, Jey-Cee
+
 This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
 To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc/4.0/

@@ -65,6 +65,8 @@ function downloadImagesForReadme(lang, repo, data) {
     });
 }
 
+
+
 // add system information to file header
 function prepareAdapterReadme(lang, repo, data) {
     return new Promise(resolve => {
@@ -102,9 +104,14 @@ function prepareAdapterReadme(lang, repo, data) {
 
         const lines = body.split('\n');
 
+        // remove empty lines at start
+        while(lines.length && !lines[0].trim()) {
+            lines.shift();
+        }
+
         // remove logo
         if (lines.length && lines[0].trim().startsWith('![')) {
-            header.logo = lines[0].trim().replace(/^!\[[^\]]*]\(/, '').replace(/\)$/, '');
+            header.logo = utils.normalizePath(lines[0].trim().replace(/^!\[[^\]]*]\(/, '').replace(/\)$/, ''));
             lines.shift();
         }
 
@@ -506,7 +513,7 @@ function downloadStatistics() {
 // For every adapter in latest repo
 //    execute processAdapter (it downloads the readme from repo and stores it in docs)
 // and then save adapters.json with the full list of adapters.
-function buildAdapterContent() {
+function buildAdapterContent(adapter) {
     return downloadRepo()
         .then(repo =>
             new Promise(resolve => {
@@ -518,14 +525,14 @@ function buildAdapterContent() {
                 }};
 
                 const promises = Object.keys(repo)
-                    .filter(a => a !== 'js-controller')// && a === 'sayit')
+                    .filter(a => a !== 'js-controller' && (!adapter || a === adapter))
                     .map(adapter =>
                         processAdapter(adapter, repo[adapter], content));
 
                 downloadStatistics()
                     .then(stat => {
                         utils.queuePromises(promises, () => {
-                            Object.keys(stat.adapters).forEach(a => {
+                            Object.keys(stat.adapters).filter(a => !adapter || adapter === a).forEach(a => {
                                 Object.keys(content.pages).find(type => {
                                    if (content.pages[type].pages && content.pages[type].pages[a]) {
                                        content.pages[type].pages[a].installs = stat.adapters[a];
@@ -614,6 +621,7 @@ if (!module.parent) {
 } else {
     module.exports = {
         buildAdapterContent,
+        copyAdapterToFrontEnd,
         copyAllAdaptersToFrontEnd
     };
 }

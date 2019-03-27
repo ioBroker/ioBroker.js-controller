@@ -1,13 +1,13 @@
 ![Logo](admin/node-red.png)
 # ioBroker node-red Adapter
-==============
+
 ![Number of Installations](http://iobroker.live/badges/node-red-installed.svg) ![Number of Installations](http://iobroker.live/badges/node-red-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.node-red.svg)](https://www.npmjs.com/package/iobroker.node-red)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.node-red.svg)](https://www.npmjs.com/package/iobroker.node-red)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.node-red)
 
 [![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)](https://nodei.co/npm/iobroker.node-red/)
 
-# Starts node-red instance and communicates with it.
+## Starts node-red instance and communicates with it.
 
 ***This adapter needs at least nodejs 4.x to work***
 

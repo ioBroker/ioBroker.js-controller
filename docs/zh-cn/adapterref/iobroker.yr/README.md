@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yr/README.md
 title: ioBroker.yr
-hash: 5qdg/c8Aor4SO0NCMWBSaAxtXCkdR1s5M1UQURZfeRM=
+hash: s+SkqMZbnSFY2acITgHvIqIIe9qKW6oTr0EU8TLj2nE=
 ---
 ![商标](../../../en/adapterref/iobroker.yr/admin/yr.png)
 
@@ -13,7 +13,7 @@ hash: 5qdg/c8Aor4SO0NCMWBSaAxtXCkdR1s5M1UQURZfeRM=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.yr.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.yr.png?downloads=true)
 
-＃ioBroker.yr =================================
+＃ioBroker.yr
 从[yr.no](yr.no)获取48小时天气预报
 
 [yr.no]（yr.no）是[挪威气象研究所]（met.no）和[挪威广播公司]的联合服务](nrk.no)
@@ -105,7 +105,6 @@ http://om.yr.no/verdata/free-weather-data/
 * (bluefox) move weather widgets to this adapter
 
 ## License
-
 The MIT License (MIT)
 
 Copyright (c) 2014-2018 hobbyquaker <hq@ccu.io>

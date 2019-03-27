@@ -2,6 +2,18 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+const BADGES = [
+    'shields.io',
+    'herokuapp.com',
+    'snyk.io',
+    'appveyor.com',
+    'travis-ci.org',
+    'codacy.com',
+    'iobroker.live',
+    'greenkeeper.io',
+    'nodei.co'
+];
+
 function getFileHash(text) {
     return crypto.createHash('sha256').update(text.trim()).digest('base64');
 }
@@ -205,13 +217,7 @@ function extractBadges(body) {
                 let alt = m[1];
                 let link = m[2];
                 if (link.toLowerCase().match(/^https?:\/\//) &&
-                    (link.indexOf('shields.io') !== -1 ||
-                     link.indexOf('herokuapp.com') !== -1 ||
-                     link.indexOf('snyk.io') !== -1 ||
-                     link.indexOf('appveyor.com') !== -1 ||
-                     link.indexOf('travis-ci.org') !== -1 ||
-                     link.indexOf('iobroker.live') !== -1 ||
-                     link.indexOf('nodei.co') !== -1)) {
+                    BADGES.find(badge => link.indexOf(badge) !== -1)) {
                     badges[alt] = link;
                     body = body.replace(image, '--delete--');
                 }
@@ -269,15 +275,7 @@ function replaceImages(body, prefix, noBadges) {
                 if (!link.toLowerCase().match(/^https?:\/\//)) {
                     doDownload.indexOf(link) === -1 && doDownload.push(link);
                     body = body.replace(image, `![${alt}](${prefix + (link[0] === '/' ? link.substring(1) : link)})`);
-                } else if (
-                    !noBadges &&
-                    (link.indexOf('shields.io')    !== -1 ||
-                     link.indexOf('herokuapp.com') !== -1 ||
-                     link.indexOf('snyk.io')       !== -1 ||
-                     link.indexOf('appveyor.com')  !== -1 ||
-                     link.indexOf('travis-ci.org') !== -1 ||
-                     link.indexOf('iobroker.live') !== -1 ||
-                     link.indexOf('nodei.co')      !== -1)) {
+                } else if (!noBadges && BADGES.find(badge => link.indexOf(badge) !== -1)) {
                     badges[alt] = link;
                     body = body.replace(image, '--delete--');
                 }
@@ -314,6 +312,21 @@ function replaceImages(body, prefix, noBadges) {
     return {body, doDownload, badges};
 }
 
+// de/adapterref/iobroker.ping/../../../en/adapterref/iobroker.ping/admin/ping.png
+//
+function normalizePath(path) {
+    if (path.indexOf('../') !== -1) {
+        const parts = path.split('/');
+        const pos = parts.indexOf('..');
+        if (pos > 0) {
+            parts.splice(pos - 1, 2);
+            path = parts.join('/');
+            return normalizePath(path);
+        }
+    }
+    return path;
+}
+
 module.exports = {
     queuePromises,
     extractHeader,
@@ -329,5 +342,6 @@ module.exports = {
     getAllFiles,
     extractBadges,
     addBadgesToBody,
-    replaceImages
+    replaceImages,
+    normalizePath
 };

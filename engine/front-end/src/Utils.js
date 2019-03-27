@@ -180,7 +180,7 @@ class Utils {
                 const cont = Utils.findTitle(line, -1, path);
                 title = cont.title;
             } else
-            if (line.trim().startsWith('|') && line.endsWith('|')) {
+            if (line.trim().startsWith('| ')) {
                 if (parts[last].type !== 'table') {
                     parts.push({type: 'table', lines: [line]});
                 } else {

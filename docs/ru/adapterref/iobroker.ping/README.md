@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ping/README.md
-title: Пингует настроенные IP-адреса.
-hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
+title: Адаптер PING
+hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 ---
-![логотип](../../../en/adapterref/iobroker.ping/admin/ping.png) ioBroker PING Adapter ==============
+![логотип](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
 ![Количество установок](http://iobroker.live/badges/ping-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.ping.svg)
@@ -13,13 +13,9 @@ hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)
 
-# Пингует настроенные IP-адреса.
+# Адаптер PING
+## Пингует настроенные IP-адреса.
 Звонит по указанным IP-адресам через определенный интервал и отслеживает результаты.
-
-## Установить
-```node iobroker.js add ping```
-
-## Конфигурация
 
 ## Changelog
 ### 1.4.1 (2019-01-08)

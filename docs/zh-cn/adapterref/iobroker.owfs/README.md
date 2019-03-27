@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.owfs/README.md
 title: ioBroker OWFS适配器
-hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
+hash: w4iaPF0/v9YW60yr3gLQaEQPm5p2VBWypsVIKvgvFQk=
 ---
 ![商标](../../../en/adapterref/iobroker.owfs/admin/owfs.png)
 
@@ -12,7 +12,7 @@ hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
 ![下载](https://img.shields.io/npm/dm/iobroker.owfs.svg)
 ![NPM](https://nodei.co/npm/iobroker.owfs.png?downloads=true)
 
-#ioBroker OWFS适配器==============
+#ioBroker OWFS适配器
 ## * ioBroker的一个有线文件系统*适配器。
 支持的
 

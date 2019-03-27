@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: S4TNaFxVIuPwTwbWbPmrlzQQE+pc3XoeS0XoM+9NIiQ=
+hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ---
 ![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -38,7 +38,7 @@ Sie müssen jedoch wahrscheinlich Paketabhängigkeiten von Canvas mit dem folgen
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
-Wenn Sie eine Fehlermeldung erhalten, dass die Zeichenfläche nicht installiert ist, versuchen Sie, sie manuell im Ordner "ioBroker.roomba" (über SSH) zu installieren, indem Sie Folgendes ausführen:
+Wenn Sie eine Fehlermeldung erhalten, dass die Zeichenfläche nicht installiert ist, versuchen Sie, sie manuell im Ordner "ioBroker.roomba" (über SSH) zu installieren.
 
 ```
 sudo npm install canvas --unsafe-perm=true
@@ -65,22 +65,22 @@ Für die manuelle Einrichtung siehe https://github.com/koalazak/dorita980#how-to
 ### Unterstützte Firmware-Versionen
 | Software-Version | Firmware-Info | Unterstützt |
 | ---------------- | ------------- | --------- |
-| v1.4 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | **unterstützt (inkl. Karte)** |
-| v3.2.xx | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **unterstützt** (NEIN Karte) |
-| v3.2.xx | [Versionshinweise] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **unterstützt** (NEIN Karte) |
+| v1.4 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) ** unterstützt (! [# c5f015](https://placehold.it/15/c5f015/000000?text=+) inkl. map) ** |
+| v3.2.xx | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **unterstützt** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) NEIN Karte) |
+| v3.2.xx | [Versionshinweise] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **unterstützt** (! [# f03c15] (https://placehold.it/15/f03c15/000000? text = +) NEIN map) |
 
 ### Unterstützte Roomba
 | Serie | Modelle _ (unvollständig) _ | Software-Version | Firmware-Info | Unterstützt |
 | ----- | --------------------- | ---------------- | ------------- | --------- |
 | Roomba® 6xx | 605, 606, 612, 616, 671, 676, 680, 696 | v3.2.40 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | (höchstwahrscheinlich) |
-| Roomba® 6xx | 675 | v3.2.40 | [Versionshinweise] (https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **unterstützt** (NEIN Karte) |
+| Roomba® 7xx | 774, 785, - | | ![# f03c15](https://placehold.it/15/f03c15/000000?text=+) _Model bietet keine WLAN-Konnektivität an, daher kein Support_ |
 | Roomba® 8xx | 880, 886, 891, 896 | - | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | (höchstwahrscheinlich) |
-| Roomba® 8xx | [895] ((https://forum.iobroker.net/post/245274)) | v3.2.10 / 40/69 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | **unterstützt** (NEIN Karte) |
+| Roomba® 8xx | [895] ((https://forum.iobroker.net/post/245274)) | v3.2.10 / 40/69 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **unterstützt** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) NEIN Karte) |
 | Roomba® 9xx | 965, 981 | - | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | (höchstwahrscheinlich) |
-| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan), [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | **unterstützt (inkl. Karte)** |
-| Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | **unterstützt (inkl. Karte)** |
+| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan), [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | Unterstützt ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **(inkl. Karte)** |
+| Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | Unterstützt ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **(inkl. Karte)** |
 | Roomba® e5 | e5 | v3.4.42 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unbekannt_ |
-| Roomba® e5 | e5 | v3.4.42 | [Versionshinweise] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unbekannt_ |
+| Roomba® e5 | e5 | v3.4.42 | [Release Notes] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unbekannt_ |
 
 Bitte helfen Sie mir bei den unterstützten Geräten und lassen Sie mich nach [über ein Problem wissen](https://github.com/Zefau/ioBroker.roomba/issues), ob Ihr Roomba-Modell unterstützt wird!
 
@@ -149,19 +149,19 @@ Nach erfolgreichem Setup werden folgende Kanäle und Zustände erstellt:
 | Staaten | - | angedockt | Geben Sie an, ob der Roboter angedockt ist
 | Staaten | - | Signal | Signalstärke |
 | Staaten | - | Status | Aktueller Status des Roboters |
-| Statistik | - | - | Statistische Informationen |
-| Statistik | Missionen | - | Missionsstatistik |
-| Statistik | Missionen | fehlgeschlagen | Anzahl fehlgeschlagener Reinigungsaufträge |
-| Statistik | Missionen | Erfolg haben | Anzahl erfolgreicher Reinigungsaufträge |
-| Statistik | Missionen | total | Anzahl der Reinigungsaufträge |
-| Statistik | Zeit | - | Zeitstatistik |
-| Statistik | Zeit | avgMin | **UNBEKANNT** |
-| Statistik | Zeit | hOnDock | **UNBEKANNT** |
-| Statistik | Zeit | nAvail | **UNBEKANNT** |
-| Statistik | Zeit | estCap | **UNBEKANNT** |
-| Statistik | Zeit | nLithChrg | **UNBEKANNT** |
-| Statistik | Zeit | nNimhChrg | **UNBEKANNT** |
-| Statistik | Zeit | nDocks | **UNBEKANNT** |
+| Statistiken | - | - | Statistische Informationen |
+| Statistiken | Missionen | - | Missionsstatistik |
+| Statistiken | Missionen | fehlgeschlagen | Anzahl fehlgeschlagener Reinigungsaufträge |
+| Statistiken | Missionen | Erfolg haben | Anzahl erfolgreicher Reinigungsaufträge |
+| Statistiken | Missionen | total | Anzahl der Reinigungsaufträge |
+| Statistiken | Zeit | - | Zeitstatistik |
+| Statistiken | Zeit | avgMin | **UNBEKANNT** |
+| Statistiken | Zeit | hOnDock | **UNBEKANNT** |
+| Statistiken | Zeit | nAvail | **UNBEKANNT** |
+| Statistiken | Zeit | estCap | **UNBEKANNT** |
+| Statistiken | Zeit | nLithChrg | **UNBEKANNT** |
+| Statistiken | Zeit | nNimhChrg | **UNBEKANNT** |
+| Statistiken | Zeit | nDocks | **UNBEKANNT** |
 | - | - | refreshDateTime | DateTime der letzten Aktualisierung |
 | - | - | RefreshTimestamp | Zeitstempel der letzten Aktualisierung |
 

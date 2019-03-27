@@ -3,11 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 8uArILQcXoIm3R6vAKGn06Km8xh7PXGDGvSMF+SREe4=
+hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
 ---
 ![商标](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
-＃ioBroker.onvif =================
+![安装数量](http://iobroker.live/badges/onvif-stable.svg)
+
+＃ioBroker.onvif
 #RU
 ## Настройка
 1.ОткрытьНастройкидрайвера

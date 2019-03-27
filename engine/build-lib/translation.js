@@ -153,8 +153,8 @@ function partsTake(text, addIds) {
             return;
         }
 
-        if (!lineTrimmed) {
-            parts.push({type: 'decoration', lines: ['']});
+        if (!lineTrimmed || lineTrimmed.startsWith('=====')) {
+            parts.push({type: 'decoration', lines: [lineTrimmed]});
             current = '';
         } else
         // detect
@@ -525,6 +525,15 @@ function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
         partsTarget[untranslated].original = partsTarget[untranslated].lines.join('\n');
         return translateText(fromLang, partsTarget[untranslated].original, toLang)
             .then(text => {
+                if (partsTarget[untranslated].type === 'table') {
+                    if (!text.startsWith('|')) {
+                        text = '| ' + text;
+                    }
+                    if (!text.endsWith('|')) {
+                        text = text + ' |';
+                    }
+                }
+
                 partsTarget[untranslated].text = text; // remember translated text
                 //setTimeout(() => partsTranslate(fromLang, partsSource, toLang, partsTarget, cb), 0);
                 translateLinks(fromLang, partsTarget[untranslated], toLang, () => {

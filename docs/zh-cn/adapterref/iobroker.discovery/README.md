@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
+hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -13,7 +13,7 @@ hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
-#ioBroker发现适配器==============
+#ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
 这是特殊的适配器，它试图找到可以从主机访问的所有可能的设备。

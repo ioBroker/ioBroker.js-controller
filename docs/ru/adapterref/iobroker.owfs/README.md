@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.owfs/README.md
 title: Адаптер ioBroker OWFS
-hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
+hash: w4iaPF0/v9YW60yr3gLQaEQPm5p2VBWypsVIKvgvFQk=
 ---
 ![логотип](../../../en/adapterref/iobroker.owfs/admin/owfs.png)
 
@@ -12,11 +12,11 @@ hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.owfs.svg)
 ![NPM](https://nodei.co/npm/iobroker.owfs.png?downloads=true)
 
-# IoBroker Адаптер OWFS ==============
+# IoBroker Адаптер OWFS
 ## *Однопроводный адаптер файловой системы* для ioBroker.
 поддержанный
 
-Этот адаптер использует библиотеку owfs с https://www.npmjs.com/package/owjs и, соответственно, требует наличия сервера owfs.
+Этот адаптер использует библиотеку owfs с https://www.npmjs.com/package/owjs и соответственно требует сервера owfs.
 
 ## Установить OWFS Linux
 ```sudo apt-get install owfs```

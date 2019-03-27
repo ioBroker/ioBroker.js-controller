@@ -3,16 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 8uArILQcXoIm3R6vAKGn06Km8xh7PXGDGvSMF+SREe4=
+hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
 ---
 ![Logo](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
-# IoBroker.onvif ===================
+![Anzahl der Installationen](http://iobroker.live/badges/onvif-stable.svg)
+
+# IoBroker.onvif
 # RU
 ## Настройка
 1. Открыть Настройки драйвера
 2. Нажать кнопку сканирования (сверху справа)
-3. Ввести необходимые настройки или оставить по умолчанию: startRange - начальный ip
+3. Ввести необходимые настройки или оставить по умолчанию: startRange - Seite 1 von 3
 
 End-Range - Port-Übersicht - Port-Liste - Port-Liste - Port-Liste - Port-Liste - Portierung - Port-Liste - Port-Liste - Portierung
 
@@ -83,7 +85,7 @@ Verwenden Sie dazu den Befehl:
 sendTo('onvif.0', command, message, callback);
 ```
 
-Beispiel für ein Skript zur Anforderung des Snapshots und zum Senden an Telegramm:
+Beispiel eines Skripts zum Anfordern des Snapshots und zum Senden an Telegramm:
 
 ```
 const fs = require('fs');

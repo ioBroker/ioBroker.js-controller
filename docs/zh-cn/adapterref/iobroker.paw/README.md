@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
+hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
 ---
 ![商标](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
+![安装数量](http://iobroker.live/badges/paw-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.paw.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.paw.svg)
 ![NPM](https://nodei.co/npm/iobroker.paw.png?downloads=true)
@@ -16,15 +17,11 @@ hash: GD75LOwlkRbSG1u6gMyiUZGrnst7+vfXGEjZryqdL2w=
 
 ##说明
 它是一个控制Android设备的适配器。
-它可以说文本，控制音量，发送短信，拨打电话，振动等等......
+它可以说文本，控制音量，拨打电话，振动等等......
 Tasker和Locale插件支持。
 
 ##安装程序并配置适配器。
-下载并安装该应用程序。 [APK](https://github.com/bondrogeen/ioBroker.paw/raw/master/app/app-release.apk)
-
-> !!!不要忘记更新应用程序。
-
-它也在Google Play上：
+> !!!不要忘记使用应用程序更新适配器。如果您使用旧版本，可能会发生错误。
 
 <a href="https://play.google.com/store/apps/details?id=ru.codedevice.iobrokerpawii" target="_blank"><img alt="在Google Play上获取它" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60"/></a>
 
@@ -120,15 +117,17 @@ sendTo("paw.0",'dev1',{
     log(JSON.stringify(res));
 });
 
-// send message.
-sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+// !!! Not working yet
 
-sendTo("paw.0",'192.168.1.71',{
-    message: '8123456789',
-    text:  'Any text'
-},function (res){
-    log(JSON.stringify(response));
-});
+// send message.
+//sendTo("paw.0",'dev1',{message: '8123456789',text:  'Any text'});
+//
+//sendTo("paw.0",'192.168.1.71',{
+//    message: '8123456789',
+//    text:  'Any text'
+//},function (res){
+//    log(JSON.stringify(response));
+//});
 
 
 // setting the volume from 0 to 15, the maximum volume is set by the system,
@@ -218,6 +217,7 @@ sendTo("paw.0",'dev2',{
 },function (res){
     log(JSON.stringify(res));
 });
+
 
 
 ```

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.owfs/README.md
 title: ioBroker-OWFS-Adapter
-hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
+hash: w4iaPF0/v9YW60yr3gLQaEQPm5p2VBWypsVIKvgvFQk=
 ---
 ![Logo](../../../en/adapterref/iobroker.owfs/admin/owfs.png)
 
@@ -12,7 +12,7 @@ hash: s+bO5m+oxXEhzub7QvW8T2OdPY6b1yykHdvl00WP+bY=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.owfs.svg)
 ![NPM](https://nodei.co/npm/iobroker.owfs.png?downloads=true)
 
-# IoBroker OWFS Adapter ===============
+# IoBroker OWFS-Adapter
 ## * Einadernes Dateisystemadapter für ioBroker.
 Unterstützt
 

@@ -69,67 +69,67 @@ Permissions can be read (R) as well as write (W). Each data point can at least b
 ### Channel: Info
 * info.connection
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
    * Read-only indicator that is true if the ioBroker is connected to the Xbox. *
 
 * info.currentTitles
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
 * Read only JSON string, which consists of key-value pairs. The key is the name of a running title, and the value of the ID of the title is converted to the hexadecimal system. This ID can be used to start the desired title with the settings.launchTitle State. *
 
 * info.activeTitleName
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
     * Contains the name of the active title (title in the foreground), in the form of a string. *
 
 * info.activeTitleId
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
     * Contains the ID of the title converted to hexadecimal in the foreground as a string. *
 
 * info.activeTitleImage
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
 * Contains the link to the cover image of the title in the foreground in the form of a string.
 The state is only present as well as functional if the authentication in the adapter settings has been activated. *
 
 * info.activeTitleType
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
     * Contains the type of title that is in the foreground, in the form of a read-only string. Eg 'Game'. *
 
 * info.gamertag
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R |
 
 * String value containing the gamertag of the currently authenticated account.
 The state is only present as well as functional if the authentication in the adapter settings has been activated. *
 
 * info.authenticated
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R |
 
 * Boolean value, which is true if authentication with Xbox Live was successful, otherwise false.
 The state is only present as well as functional if the authentication in the adapter settings has been activated. *
@@ -137,17 +137,17 @@ The state is only present as well as functional if the authentication in the ada
 ### Channel: Settings
 * settings.power
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Boolean | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Boolean | R / W |
 
 * Boolean value with which the Xbox can be switched on and off. Also serves as an indicator whether the Xbox is on or off. *
 
 * settings.launchTitle
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R / W |
 
 * By setting the string value to a hexadecimal title ID, a title can be started on the Xbox.
 The title ID of an active game can be found out by the info.currentTitles State.
@@ -161,9 +161,9 @@ setState('settings.launchTitle', '2340236c', false); // Starte Red Dead Redempti
 
 * settings.inputText
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | String | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | String | R / W |
 
 * By describing the String States, text can be inserted in an active input field, eg. B. to send a private message or enter a code.
 The state is acknowledged as soon as it is submitted to the Xbox, which does not mean that the command was executed. *
@@ -251,9 +251,9 @@ Also, the authenticated account must be logged on to the Xbox and a game must be
 ### Channel: Media
 * media.seek
 
-    | Data type | authorization |
-    |:---:|:---:|
-    | Number | R / W |
+|     | Data type | authorization |
+|     |:---:|:---:|
+|     | Number | R / W |
 
 * Number value to jump to a specific location of media content. The state is confirmed as soon as it arrives at the server, which does not mean that it was executed. *
 

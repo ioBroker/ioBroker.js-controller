@@ -242,15 +242,8 @@ With #brightness you can adjust the brightness of your light, #colorName is to p
 * self deactivation if cookie/csrf invalid
 
 ## Installation
-Use the ioBroker "Install" options from GitHub or from the latest repository
-execute the following command in the iobroker root directory (e.g. in /opt/iobroker)
-```
-npm install iobroker.alexa2
-npm add alexa2
-iobroker upload alexa2
-```
+As usual using stable repository, latest repository or use the ioBroker "Install" options from GitHub
 
-Then go into ioBroker Admin and add an Alexa instance.
 
 ## Troubleshooting
 

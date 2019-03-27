@@ -650,9 +650,13 @@ class Markdown extends Router {
         const rows = [];
         for (let i = 2; i < lines.length; i++) {
             const parts = lines[i].replace(/^\||\|$/g, '').split('|').map(a => a.trim());
-            rows.push((<TableRow className={this.props.classes.tableRow} key={'row' + i}>
-                {parts.map((p, j) => (<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{converter.convert(p)}</TableCell>))}
-            </TableRow>));
+
+            const cells = [];
+            for (let j = 0; j < header.length; j++) {
+                cells.push((<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{converter.convert(parts[j] || '')}</TableCell>));
+            }
+
+            rows.push((<TableRow className={this.props.classes.tableRow} key={'row' + i}>{cells}</TableRow>));
         }
         return (
             <Table padding="dense" className={this.props.classes.table}>

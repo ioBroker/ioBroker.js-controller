@@ -180,7 +180,7 @@ Those who prefer to manually restore their backups should do the following:
 1. Restore a minimal / normal IoBroker backup:
     - The backup must be in the "opt / iobroker / backups /" directory as usual
     - It can be restored via the console using the command: "iobroker restore (number of backup from the list)".
-    - After the restore an "iobroker upload all" is necessary
+    - After the restore, an "iobroker upload all" is necessary
 
 2. Restore a complete backup:
     - Execute the command: "sudo iobroker stop" via the console

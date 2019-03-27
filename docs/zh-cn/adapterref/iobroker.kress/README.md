@@ -2,22 +2,19 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kress/README.md
-title: 无题
-hash: c9ajOWy060qBgt59SnKZoxSZoe5/ECl/vr7DuJQTqz0=
+title: ioBroker.kress
+hash: 5xYDrlXWt4DNMGHF7cB0Qb5R6BLJ+kr8LT0KCAfbZwc=
 ---
+![克雷斯 - 机器人](../../../en/adapterref/iobroker.kress/admin/kress-2.png)
+
 ![安装数量](http://iobroker.live/badges/kress-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.kress.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.kress.svg)
 ![NPM](https://nodei.co/npm/iobroker.kress.png?downloads=true)
 ![特拉维斯-CI](https://api.travis-ci.org/MeisterTR/ioBroker.kress.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.kress?branch=master&svg=true)
+![下载](https://img.shields.io/npm/dm/iobroker.kress.svg)
 
-[![克勒斯-机器人]（管理员/ KRESS-2.png）](https://www.kress-robotik.com/de/)
-
-Bild-Quelle：https：//www.kress-robotik.com/de/
-
-ioBroker.kress =============
-
+＃ioBroker.kress
 [Deutsche Beschreibung hier](README_de.md)
 
 此适配器连接IoBroker与您的Kress云支持温度，割草时间，电池电量和从割草机读取的各种其他数据适配器可以控制割草机，您可以像mowtimes一样更改配置参数。
@@ -31,8 +28,11 @@ ioBroker.kress =============
 ##第二割草机
  - 如果要集成两台割草机，则必须安装第二个实例，在Config割草机0和第二个割草机1中选择一个，依此类推。
 
+＃＃ 注意
+Bild-Quelle：https：//www.kress-robotik.com/de/
+
 ## Changelog
-#### 2.5.5 (17.07.2018)
+### 2.5.5 (17.07.2018)
 * (MeisterTR) initinal relase
 
 ## License

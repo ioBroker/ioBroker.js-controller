@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
+hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -13,7 +13,7 @@ hash: t2jmJ5rbLu/SwF6++81FinapfXq7DS+vp5vZd/zH/4Q=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
-# IoBroker Discover Adapter ==============
+# IoBroker Откройте для себя адаптер
 ** Обнаружение устройств всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.

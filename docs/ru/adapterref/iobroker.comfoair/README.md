@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.comfoair/README.md
 title: ioBroker.comfoair
-hash: 6GAu1GeuUy1Oo5FXAaT0gUvgzOqnDZQt1u0x3oIDq0A=
+hash: S9K1a3yVexs78RmHnVbpTahxsJOEcYDrKK6FU83wulo=
 ---
 ![логотип](../../../en/adapterref/iobroker.comfoair/admin/comfoair.png)
 
@@ -15,26 +15,44 @@ hash: 6GAu1GeuUy1Oo5FXAaT0gUvgzOqnDZQt1u0x3oIDq0A=
 # IoBroker.comfoair
 Адаптер ioBroker для Zehnder Comfoair 'CA' -вентиляций (т.е. ComfoAir CA350, НЕ ComfoAir Q350 ...)
 
-Чтобы использовать этот адаптер, вам понадобится конвертер RS232 в LAN или WiFi, чтобы подключить ioBroker к вашему Zehnder Comfoair.
+Чтобы использовать этот адаптер, вам понадобится конвертер RS232 в LAN или WiFi, чтобы подключить ioBroker к Zehnder Comfoair.
 Установите оборудование для TCP-соединения с comfoair: то есть адаптер RS232-LAN к последовательному интерфейсу comfoair. Подключайте контакты 2, 3 и 5 только (должны работать также с TX, RX и GND - контакты соединения cc-Ease тоже).
 На самом деле этот адаптер работает только с LAN-подключением. Прямая связь, основанная на прямом последовательном соединении, находится в стадии разработки.
 
 Установите адаптер, создайте экземпляр.
+
+## CCEase и использование интерфейса RS232
+Comfoair знает 5 различных режимов RS232: завершение / без подключения, только ПК, только CCEase, PC Master, режим регистрации ПК. По умолчанию используется только CCEase.
+Параллельное использование CCEase и RS232 приводит к ошибкам! Настоятельно рекомендуется отсоединить панель CCEase, когда вы используете этот адаптер, или переключиться в режим PC Master, что также приведет к отключению CCEase.
+Аппаратное решение для коммутатора трафика данных находится в стадии оценки, поддержка приветствуется.
+
+## Config
 Установите comfoair - IP-адрес, порт и опрос - intervall.
 
-Значения вашего comfoair теперь должны быть видны в канале «status» и «Temperature».
+### RS-232 Ручной режим
+В этом режиме вы получаете объект rs232mode в «control» и в «state» канале. В «контрольном» канале вы можете установить режим RSM32 PCMaster и PCLogmode. В режиме PCMaster дисплей CCEase будет отключен, и между comfoair и CCEase не будет передаваться данные.
+Чтобы переключиться обратно в режим CCEase only, вам нужно «полностью перезагрузить» ваш comfoair (выключить - включить).
+
+## Использование адаптера
+Значения вашего comfoair должны быть видны в «статус» и «температуры» канала
 
 Устанавливая / изменяя значения в канале «control», вы управляете вентиляцией comfoair.
-
-Может работать, даже если подключена CC-Ease Panel (на свой страх и риск). Хорошо работает, если ccEASE - Панель отключена.
 
 Проверено на comfoair CA350.
 
 ## Changelog
 
+### 0.1.4
+
+-   README-Update 'NO PARALLEL USE', discard 'Safe-Mode'.
+
+### 0.1.3
+
+-   RS - 232 interface: manual- or safe - mode possible.
+
 ### 0.1.2
 
-- ReadME updated, minor bugfixes.
+-   ReadME updated, minor bugfixes.
 
 ### 0.1.1
 

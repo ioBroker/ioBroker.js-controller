@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ping/README.md
-title: Ping配置了IP地址。
-hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
+title: PING适配器
+hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 ---
-![商标](../../../en/adapterref/iobroker.ping/admin/ping.png)ioBrokerPING适配器==============
+![商标](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
 ![安装数量](http://iobroker.live/badges/ping-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ping.svg)
@@ -13,13 +13,9 @@ hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)
 
-#Pings配置的IP地址。
+#PING适配器
+## Pings配置了IP地址。
 Ping在定义的时间间隔内指定IP地址并监视结果。
-
-##安装
-```node iobroker.js add ping```
-
-##配置
 
 ## Changelog
 ### 1.4.1 (2019-01-08)

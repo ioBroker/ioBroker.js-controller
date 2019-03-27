@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.comfoair/README.md
 title: ioBroker.comfoair
-hash: 6GAu1GeuUy1Oo5FXAaT0gUvgzOqnDZQt1u0x3oIDq0A=
+hash: S9K1a3yVexs78RmHnVbpTahxsJOEcYDrKK6FU83wulo=
 ---
 ![Logo](../../../en/adapterref/iobroker.comfoair/admin/comfoair.png)
 
@@ -20,21 +20,39 @@ Installieren Sie Hardware für die TCP - Verbindung zu comfoair: d. H. Einen RS2
 Eigentlich funktioniert dieser Adapter nur mit einer LAN-Verbindung. Eine direkte Verbindung, die auf einer direkten seriellen Verbindung basiert, ist in Entwicklung.
 
 Adapter installieren, Instanz erstellen.
+
+## CCEase und Verwendung der RS232-Schnittstelle
+Das comfoair kennt 5 verschiedene RS232-Modi: Ende / ohne Verbindung, nur PC, nur CCEase, PC Master, PC Logmode. Die Standardeinstellung ist nur CCEase.
+Die parallele Verwendung von CCEase und RS232 führt zu Fehlern! Es wird dringend empfohlen, die CCEase-Steuerkonsole während der Verwendung dieses Adapters zu trennen oder in den PC-Master-Modus zu wechseln, wodurch CCEase deaktiviert wird.
+Eine hardwarebasierte Lösung für einen Datenverkehr-Switch befindet sich in der Evaluierungsphase, der Support ist willkommen.
+
+## Config
 Setze comfoair - IP-Adresse, Port und Polling - Intervall.
 
-Die Werte Ihres Unternehmens sollten jetzt im Status- und Temperatur-Kanal sichtbar sein.
+### RS-232-manueller Modus
+In diesem Modus erhalten Sie ein rs232mode-Objekt im 'control' und im 'state' - Kanal. Im 'control' - Kanal können Sie den RS232-Modus PCMaster und PCLogmode einstellen. Im PCMaster-Modus ist das Display Ihres CCEase ausgeschaltet und es gibt keinen Datenverkehr zwischen dem Comfoair und dem CCEase.
+Um wieder in den CCEase-Modus zu wechseln, müssen Sie den Comfoair "hard-reset" (ausschalten - einschalten).
+
+## Verwendung des Adapters
+Die Werte Ihres Unternehmens sollten im "Status" - und "Temperatur" -Kanal sichtbar sein.
 
 Durch Einstellen / Ändern von Werten im 'control' - Kanal steuern Sie Ihre Komfortbelüftung.
-
-Kann auch funktionieren, wenn das CC-Ease Panel angeschlossen ist (auf eigenes Risiko). Funktioniert gut, wenn ccEASE - Panel getrennt ist.
 
 Getestet auf comfoair CA350.
 
 ## Changelog
 
+### 0.1.4
+
+-   README-Update 'NO PARALLEL USE', discard 'Safe-Mode'.
+
+### 0.1.3
+
+-   RS - 232 interface: manual- or safe - mode possible.
+
 ### 0.1.2
 
-- ReadME updated, minor bugfixes.
+-   ReadME updated, minor bugfixes.
 
 ### 0.1.1
 

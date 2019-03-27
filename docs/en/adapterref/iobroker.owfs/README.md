@@ -1,6 +1,5 @@
 ![Logo](admin/owfs.png)
 # ioBroker OWFS Adapter
-==============
 
 ![Number of Installations](http://iobroker.live/badges/owfs-installed.svg) ![Number of Installations](http://iobroker.live/badges/owfs-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.owfs.svg)](https://www.npmjs.com/package/iobroker.owfs)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.owfs.svg)](https://www.npmjs.com/package/iobroker.owfs)

@@ -1,6 +1,6 @@
 ![Logo](admin/discovery.png)
 # ioBroker Discover Adapter
-==============
+
 ![Number of Installations](http://iobroker.live/badges/discovery-installed.svg) ![Number of Installations](http://iobroker.live/badges/discovery-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.discovery)

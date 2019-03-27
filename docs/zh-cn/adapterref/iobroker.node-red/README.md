@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.node-red/README.md
 title: ioBroker节点红色适配器
-hash: 6nDiKCG5sDpMw4QOrCbKZ58n1xKuED6dvLUU6GqCqvM=
+hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
 ---
 ![商标](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -13,8 +13,8 @@ hash: 6nDiKCG5sDpMw4QOrCbKZ58n1xKuED6dvLUU6GqCqvM=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
-#ioBroker node-red Adapter ==============
-＃启动node-red实例并与之通信。
+#ioBroker node-red Adapter
+##启动node-red实例并与之通信。
 ***这个适配器至少需要nodejs 4.x才能工作***
 
 此适配器使用https://github.com/node-red/node-red中的节点红色服务器

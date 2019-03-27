@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: KqAHMbBHKfDe3rP5hsDIbGLyVJaQBRPWFx0GvKuqP/0=
+hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
 ---
-![Logo](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
-
 ![Anzahl der Installationen](http://iobroker.live/badges/primelab-stable.svg)
+
+--- zuletzt geändert: 2019.03.27 --- ![Logo](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
 
 # IoBroker.primelab
 ### Deutsche:
@@ -33,7 +33,6 @@ Lesungen:
     - 429-pH-PoolLab
 
 ## Changelog
-
 ### 1.0.2
 * (Jey Cee) fix Adapter stop
 
@@ -47,6 +46,8 @@ Lesungen:
 * (Jey Cee) inital version
 
 ## License
+Copyright 2019, Jey-Cee
+
 This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
 To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc/4.0/
