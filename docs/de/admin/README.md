@@ -100,7 +100,7 @@ ausgewählt. Sollte ein Error auftreten, erscheint die Beschriftung des Reiters 
 ### [Ereignisse](events.md)
 Eine Liste der laufenden Aktualisierung der Zustände.
 
-### Benutzer
+### [Benutzer](users.md)
 Hier können Benutzer angelegt und zu den bestehenden Gruppen hinzugefügt werden.
 
 ### [Skripte](scripts.md)
