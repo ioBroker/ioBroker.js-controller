@@ -11,6 +11,7 @@ lastChanged: "26.03.2019"
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 ---
+
 # Der Reiter Übersicht
 
 Hier werden Informationen zu allen Adaptern mit eigenem Webinterface sowie zu den Hosts 
