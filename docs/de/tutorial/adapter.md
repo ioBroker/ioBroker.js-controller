@@ -23,8 +23,7 @@ Diese Funktion steht über den Admin nicht zur Verfügung, sie wird bei der Erst
 
 ``iobroker install AdapterName``
 
-###Erzeugung einer Instanz eines Adapters
-
+### Erzeugung einer Instanz eines Adapters
 Um einen Adapter in ioBroker nutzen zu können benötigt man eine (oder mehrere) Instanzen dieses Adapters. Diese Instanzen werden im Admin über den Reiter Instanzen konfiguriert.
 
 **Über den Admin**
@@ -100,7 +99,7 @@ Dazu muss im Reiter Admin der Expertenmodus aktiviert werden. Danach erscheinen 
 
 ``iobroker upload AdapterName``
 
-###Downgrade eines Adapters
+### Downgrade eines Adapters
 Sollte es mit einer neuen Version Probleme geben kann man einen Adapter auch wieder downgraden.
 
 **Über den Admin**
@@ -126,12 +125,15 @@ und ver.si.on die entsprechend formatierte Versionsnummer.
 
 ``npm install iobroker.AdapterName@ver.si.on``
 
-**Diese Version sollte nur verwendet werden, wenn alle anderen Methoden aus welchem Grund auch immer nicht funktionieren. **
+**Diese Version sollte nur verwendet werden, wenn alle anderen Methoden aus welchem Grund 
+auch immer nicht funktionieren.**
 
-<span style="color:red"> Achtung! Auf neueren Installationen verursacht die direkte Verwendung von npm install Rechteprobleme nach der Installation oder schlägt fehl. Es wird empfohlen, auf die iobroker-Kommandos zurückzugreifen.!! </span>
+<span style="color:red"> Achtung! Auf neueren Installationen verursacht die direkte Verwendung 
+von npm install Rechteprobleme nach der Installation oder schlägt fehl. Es wird empfohlen, auf die 
+iobroker-Kommandos zurückzugreifen.!! </span>
 
 ## zusätzliche wichtige Informationen
-###Die Adapterliste im Admin
+### Die Adapterliste im Admin
 Hier befindet sich tatsächlich nur eine Liste der im ausgewählten Repository (Haupteinstellungen) 
 vorhandenen Adapter. Was hier angezeigt wird befindet sich noch nicht auf dem Host.
 
@@ -158,15 +160,16 @@ Diese Stufen können alle die gleiche Version haben, wenn nicht viel verändert 
 aber auch größere Sprünge in den verschiedenen Repositories bzw. Github geben.
 
 **Das Repository** aus dem man seine Adapterversionen angeboten bekommen 
-möchte wird in den Systemeinstellungen in der Unterseite [Haupteinstellungen]
-(../admin/settings.md#Hauteinstellungen) festgelegt.
+möchte wird in den Systemeinstellungen in der Unterseite 
+[Haupteinstellungen](../admin/settings.md#Haupteinstellungen) festgelegt.
 
-Die dazu verfügbaren Repositories sind in der Unterseite [Verwahrungsorte]
-(../admin/settings.md#Verwahrungsorte) aufgelistet.
+Die dazu verfügbaren Repositories sind in der Unterseite 
+[Verwahrungsorte](../admin/settings.md#Verwahrungsorte) aufgelistet.
 
 Die Entwickler- oder Betaversionen von Github werden über das Octocat Symbol installiert.
 http://www.iobroker.net/docu/?page_id=5 … stallieren
-Entweder einfach im pulldownmenü Github, oder über Eingabe der Adresse des Github Repositories unter dem Reiter beliebig Dieses kommt besonders bei “externen” Adapterentwicklern vor.
+Entweder einfach im pulldownmenü Github, oder über Eingabe der Adresse des Github Repositories 
+unter dem Reiter beliebig Dieses kommt besonders bei “externen” Adapterentwicklern vor.
 
 <span style="color:red"> **Eine Installation von GitHub sollte nur nach Rücksprache mit dem Entwickler durchgeführt werden.** </span>
 
