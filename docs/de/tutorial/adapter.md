@@ -184,3 +184,4 @@ anschließend noch ein Upload manuell durchgeführt werden.
 Dazu muss im Reiter Admin der Expertenmodus aktiviert werden. Danach erscheinen weitere 
 Icons in der Kachel. Der nach oben gerichtete Pfeil (3. Icon von rechts) führt diesen Upload aus.
 
+
