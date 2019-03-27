@@ -104,11 +104,11 @@ Eine Liste der laufenden Aktualisierung der Zustände.
 Hier können Benutzer angelegt und zu den bestehenden Gruppen hinzugefügt werden.
 
 ### [Skripte](scripts.md)
+Auf dieser Seite könne eigene Skripte mit javascript, Blocly oder Typescript erstellt werden.
 
-### hosts
-Informationen über den Rechner, auf dem ioBroker installiert ist. Hier kann die 
-aktuelle Version des js-Controllers upgedated werden. Liegt eine neue Version vor, 
-erscheint die Beschriftung des Reiters in grüner Farbe.
+### [Hosts](hosts.md)
+Informationen über den Rechner, auf dem ioBroker installiert ist.  Liegt eine neue Version vor, 
+erscheint ein Hinweis in diesem Eintrag der Menüleiste.
 
 
 ## [Systemeinstellungen](settings.md) (Schraubenschlüssel-Icon)
