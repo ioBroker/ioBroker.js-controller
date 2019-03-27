@@ -166,8 +166,9 @@ möchte wird in den Systemeinstellungen in der Unterseite
 Die dazu verfügbaren Repositories sind in der Unterseite 
 [Verwahrungsorte](../admin/settings.md#Verwahrungsorte) aufgelistet.
 
-**Die Entwickler- oder Betaversionen** von Github werden über das Octocat Symbol installiert.
-http://www.iobroker.net/docu/?page_id=5 … stallieren
+**Die Entwickler- oder Betaversionen** von Github werden über das 
+[Octocat Symbol](../admin/adapter.md#die-icons-im-einzelnen) #5 installiert.
+
 Entweder einfach im pulldownmenü ***Github***, oder über Eingabe der Adresse des Github 
 Repositories unter dem Reiter ***beliebig*** Dieses kommt besonders bei “externen” 
 Adapterentwicklern vor.
