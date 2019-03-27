@@ -116,8 +116,8 @@ Dort bitte die gewünschte Version anklicken.
 
 ``iobroker install AdapterName@ver.si.on``
 
-Wobei AdapterName der Name des gewünschten Adapters laut Liste in iobroker update ist, 
-und ver.si.on die entsprechend formatierte Versionsnummer.
+Wobei ***AdapterName*** der Name des gewünschten Adapters laut Liste in iobroker update ist, 
+und ***ver.si.on*** die entsprechend formatierte Versionsnummer.
 
 ***Über die Konsole per npm (nur für Experten!)***
 
@@ -168,8 +168,9 @@ Die dazu verfügbaren Repositories sind in der Unterseite
 
 **Die Entwickler- oder Betaversionen** von Github werden über das Octocat Symbol installiert.
 http://www.iobroker.net/docu/?page_id=5 … stallieren
-Entweder einfach im pulldownmenü Github, oder über Eingabe der Adresse des Github Repositories 
-unter dem Reiter beliebig Dieses kommt besonders bei “externen” Adapterentwicklern vor.
+Entweder einfach im pulldownmenü ***Github***, oder über Eingabe der Adresse des Github 
+Repositories unter dem Reiter ***beliebig*** Dieses kommt besonders bei “externen” 
+Adapterentwicklern vor.
 
 <span style="color:red"> **Eine Installation von GitHub sollte nur nach Rücksprache mit dem Entwickler durchgeführt werden.** </span>
 
