@@ -54,7 +54,7 @@ Unterseite “Verwahrungsorte” aufgelisteten Repositories zur Verfügung
 
 
 
-##Verwahrungsorte
+## Verwahrungsorte
 ![Die Verwahrungsorte](media/ADMIN_Settings_repos.png)
 
 ioBroker kann die Adapterliste von unterschiedlichen Quellen beziehen. Bei der Installation sind folgende Quellen eingetragen:
@@ -66,7 +66,7 @@ Sollten aus einer älteren Installation hier noch andere Repositories eingetrage
 sollten diese gelöscht werden, da sie nicht mehr gepflegt werden.
 
 
-##Zertifikate
+## Zertifikate
 ![Zertifikate](media/ADMIN_Settings_certificates.png)
 
 Hier ist die zentrale Stelle für die Zertifikate, die für die SSL/HTTPS Kommunikation benutzt 
@@ -83,7 +83,7 @@ Zertifikate können wahlweise als Pfad angegeben werden oder komplett per drag a
 drop hochgeladen werden
 
 
-##Let’s Encrypt
+## Let’s Encrypt
 ![Let’s Encrypt](media/ADMIN_Settings_letsencrypt.png)
 
 
@@ -152,14 +152,14 @@ Let’s Encrypt funktioniert nur mit einer node.js version>=4.5
 
 
 
-##Zugriffsrechte
+## Zugriffsrechte
 ![Zugriffsrechte](media/ADMIN_Settings_zugriffsrechte.png)
 
 In dieser Unterseite können für alle User/Gruppen die Zugriffsrechte für verschieden 
 Bereiche festgelegt werden
 
 
-##Statistik
+## Statistik
 ![Statistik](media/ADMIN_Settings_statistics.png)
 
 Damit wir ein wenig den Überblick über die Installationen (verwendete Adapter) und die geografische Verteilung haben würden wir uns sehr freuen, wenn wir diese Informationen bekommen.
