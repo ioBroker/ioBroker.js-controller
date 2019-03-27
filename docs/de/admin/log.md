@@ -55,11 +55,11 @@ Da in der Auflistung im Log-Fenster oft Zeilen abgeschnitten werden, ist es wich
 
 In dem Log werden nur Meldungen angezeigt, die von dem hier eingestellten Host kommen. In Multihost-Umgebungen kann man hier den zu loggenden Host einstellen.
  
-![komplettes Log](media/ADMIN_Log_download02.png)
+![Die Hosts](media/ADMIN_Log_hosts.png) 
 
 ## Der Seiteninhalt
 
-![Die Hosts](media/ADMIN_Log_hosts.png) 
+![Die Hosts](media/ADMIN_Log_numbers02.png) 
 
 Auf der Seite werden die vorhandenen Objekte tabellarisch dargestellt.
 
