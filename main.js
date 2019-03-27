@@ -37,7 +37,7 @@ process.title = title;
 let Objects;
 let States;
 
-const semver                  = require('semver');
+const semver                = require('semver');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
