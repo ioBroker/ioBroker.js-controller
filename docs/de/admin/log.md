@@ -85,7 +85,7 @@ auf der Instanzen-Seite eingestellt werden.
 
 Fehler werden in roter Schrift dargestellt:
 
-![Error](media/ADMIN_Log_error.png)
+![Error](media/ADMIN_Log02_error.png)
 
 Liegt ein Fehler auf irgendeinem Host vor, erscheint auch die Beschriftung ***Log*** 
 in der Menüleiste in roter Schrift.
