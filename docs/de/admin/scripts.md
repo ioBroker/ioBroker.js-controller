@@ -1,5 +1,5 @@
 ---
-title:       "Admin"
+title:       "Skripts"
 lastChanged: "14.09.2018"
 ---
 

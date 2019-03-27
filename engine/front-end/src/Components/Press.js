@@ -15,10 +15,10 @@ import Utils from '../Utils';
 const styles = theme => ({
     mainDiv: {
         background: '#FFFFFF',
-        width: 'calc(100% - 60px)',
+        width: 'calc(100% - 40px)',
         textAlign: 'center',
         paddingTop: 5,
-        paddingBottom: 5,
+        paddingBottom: 15,
         paddingLeft: 20,
         paddingRight: 20,
     },
@@ -32,16 +32,22 @@ const styles = theme => ({
         maxWidth: 1100,
     },
     box: {
-        display: 'flex',
+        display: 'inline-block',
         width: '100%',
     },
     card: {
-        flex: 1,
+        display: 'inline-block',
         cursor: 'pointer',
         margin: 10
     },
     cardLink: {
         height: 48
+    },
+    cardLinkMobile: {
+        height: 32
+    },
+    cardTitle: {
+        marginTop: -8,
     }
 });
 
@@ -62,8 +68,8 @@ class Press extends Component {
                 <div className={this.props.classes.box}>
                 {PRESS.map(p => (
                     <div key={p.title + p.alt} className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
-                        <img className={this.props.classes.cardLink} src={p.image} alt={p.alt}/>
-                        <div className={this.props.classes.card}>{p.title}</div>
+                        <img className={this.props.classes.cardLink + ' ' + (this.props.mobile ? this.props.classes.cardLinkMobile : '')} src={p.image} alt={p.alt}/>
+                        <div className={this.props.classes.cardTitle}>{p.title}</div>
                     </div>))}
                 </div>
             </div>

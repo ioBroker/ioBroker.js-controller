@@ -5,12 +5,15 @@ import {withStyles} from "@material-ui/core/styles";
 import {MdMenu as IconMenuClosed} from 'react-icons/md';
 import {MdArrowBack as IconMenuOpened} from 'react-icons/md';
 
-import MD from './Markdown';
+import Markdown from './Markdown';
 import Footer from './Footer';
 import Adapters from "./Pages/Adapters";
 
 const styles = theme => ({
     content: theme.content,
+    contentMenuClosed: {
+        marginLeft: 20,
+    },
     menuOpenCloseButton: {
         position: 'fixed',
         left: 0,
@@ -89,7 +92,7 @@ class MDPage extends Component {
     render() {
         return [
             this.renderOpenCloseButton(),
-            (<div key="mdpage" className={this.props.classes.content} ref={this.contentRef}>
+            (<div key="mdpage" className={this.props.classes.content + ' ' + (!this.props.mobile && !this.props.menuOpened ? this.props.classes.contentMenuClosed : '')} ref={this.contentRef}>
                 {this.props.path === 'adapters.md' ?
                     (<Adapters path={this.props.path}
                          language={this.props.language}
@@ -105,7 +108,7 @@ class MDPage extends Component {
                          onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
                     />)
                     :
-                    (<MD path={this.props.path}
+                    (<Markdown path={this.props.path}
                          language={this.props.language}
                          theme={this.props.theme}
                          mobile={this.props.mobile}

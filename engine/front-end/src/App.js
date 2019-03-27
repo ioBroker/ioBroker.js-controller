@@ -284,10 +284,10 @@ class App extends Router {
 
     renderPagesMenu() {
         return [
-            (<IconButton onClick={() => this.setState({showTabMenu: true})}>
+            (<IconButton key="menuButton" onClick={() => this.setState({showTabMenu: true})}>
                 <IconMenu />
             </IconButton>),
-            (<Drawer open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
+            (<Drawer key="drawer" open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
                 <List>
                     {Object.keys(PAGES).map(tab => {
                         if (!PAGES[tab].tabIndex) return;

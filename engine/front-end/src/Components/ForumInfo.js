@@ -51,6 +51,10 @@ const styles = theme => ({
     forumDivInfoValue: {
         fontSize: 32
     },
+    forumDivInfoValueMobile: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
     forumButton: {
         display: 'inline-block',
         color: '#FFFFFF',
@@ -87,17 +91,17 @@ class ForumInfo extends Component {
                     <div className={this.props.classes.forumDivInfoCard}>
                         <IconPosts className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Posts')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue}>245000+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')} >245000+</span>
                     </div>
                     <div className={this.props.classes.forumDivInfoCard}>
                         <IconUsers className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Users')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue}>18400+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>18400+</span>
                     </div>
                     <div className={this.props.classes.forumDivInfoCard}>
                         <IconThemes className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Themes')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue}>21000+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>21000+</span>
                     </div>
                 </div>
             </div><br/>

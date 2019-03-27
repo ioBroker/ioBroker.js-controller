@@ -8,8 +8,12 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
@@ -22,6 +26,7 @@ import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
 import Editor from './Pages/Editor';
+import Snackbar from "@material-ui/core/Snackbar";
 
 const styles = theme => ({
     root: {
@@ -90,6 +95,10 @@ const styles = theme => ({
         width: 150,
         display: 'inline-block'
     },
+    adapterCardListItem: {
+        paddingTop: 3,
+        paddingBottom: 3,
+    },
     description: {
         fontStyle: 'italic'
     },
@@ -144,9 +153,10 @@ const styles = theme => ({
         }
     },
     license: {
-        paddingTop: 10,
         paddingLeft: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 0,
+        paddingTop: 1,
     },
     mdLink: {
         cursor: 'pointer',
@@ -162,6 +172,57 @@ const styles = theme => ({
         paddingTop: 10,
         paddingBottom: 10,
     },
+    email: {
+        fontStyle: 'italic',
+        cursor: 'pointer',
+        textDecoration: 'underline'
+    },
+    name: {
+        fontStyle: 'italic'
+    },
+
+    table: {
+        width: 'auto',
+    },
+    tableHead: {
+        background: '#555555',
+    },
+    tableRowHead: {
+        height: 24,
+    },
+    tableCellHead: {
+        color: '#FFFFFF',
+        padding: '3px 10px',
+        border: '1px solid rgba(224, 224, 224, 1)',
+        margin: 0,
+        '&>p': {
+            margin: 0,
+        }
+    },
+    tableBody: {
+
+    },
+    tableRow: {
+        height: 24,
+    },
+    tableCell: {
+        padding: '3px 10px',
+        margin: 0,
+        border: '1px solid rgba(224, 224, 224, 1)',
+        '&>p': {
+            margin: 0,
+        }
+    },
+
+    summary: {
+        transition: 'background 0.5s, color: 0.5s',
+    },
+    summaryExpanded: {
+        fontWeight: 'bold',
+        //color: '#FFFFFF',
+        background: '#DDDDDD'
+    },
+
 
     warn: {
         borderColor: '#0b87da',
@@ -224,7 +285,8 @@ const styles = theme => ({
     },
     paragraph: {
 
-    }
+    },
+
 });
 
 const converter = new Converter();
@@ -244,6 +306,7 @@ class Markdown extends Router {
             content: {},
             license: '',
             changeLog: '',
+            tooltip: '',
             text: this.props.text || '',
             notFound: false,
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
@@ -363,6 +426,21 @@ class Markdown extends Router {
         return {header, parts, content, license, changeLog, title};
     }
 
+    formatAuthors(text) {
+        return text.split(',').map(a => {
+            const m = a.trim().match(/<([-.\w\d_@]+)>$/);
+            if (m) {
+                const email = m[1];
+                return (<span className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
+                    Utils.onCopy(e, email);
+                    this.setState({tooltip: I18n.t('Copied')});
+                }}>{a.replace(m[0], '').trim()}</span>);
+            } else {
+                return (<span className={this.props.classes.name}>{a}</span>);
+            }
+        });
+    }
+
     renderHeader() {
         const data = [];
 
@@ -386,14 +464,14 @@ class Markdown extends Router {
 
         if (Object.keys(this.state.header).find(attr => ADAPTER_CARD.indexOf(attr) !== -1)) {
             data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
-                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Information')}</ExpansionPanelSummary>
+                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Information')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails><List>{
                     ADAPTER_CARD
                         .filter(attr => this.state.header.hasOwnProperty(attr))
                         .map(attr => (
-                            <ListItem>
+                            <ListItem className={this.props.classes.adapterCardListItem}>
                                 <div className={this.props.classes.adapterCardAttr}>{I18n.t(attr)}: </div>
-                                <span>{this.state.header[attr].toString()}</span>
+                                <span>{attr === 'authors' ? this.formatAuthors(this.state.header[attr]) : this.state.header[attr].toString()}</span>
                             </ListItem>))}
                 </List></ExpansionPanelDetails>
                 </ExpansionPanel>));
@@ -401,7 +479,7 @@ class Markdown extends Router {
 
         if (Object.keys(this.state.header).find(attr => attr.startsWith('BADGE-'))) {
             data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
-                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
+                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails classes={{root: this.props.classes.badgesDetails}}>{
                     Object.keys(this.state.header).filter(attr => attr.startsWith('BADGE-'))
                         .map(attr => [
@@ -423,7 +501,10 @@ class Markdown extends Router {
                 (<span key="lastChangedValue" className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
                 ] : null}
             {this.state.header.editLink ?
-                (<a className={this.props.classes.infoEdit} href={this.state.header.editLink} target="_blank"><IconGithub />{I18n.t('Edit on github')}</a>) : null}
+                (<a className={this.props.classes.infoEdit}
+                    href={this.state.header.editLink}
+                    target="_blank"><IconGithub />{I18n.t('Edit on github')}
+                    </a>) : null}
             {this.props.editEnabled && this.editText ?
                 (<div className={this.props.classes.infoEditLocal} onClick={() => {
                     this.props.onEditMode && this.props.onEditMode(true);
@@ -488,7 +569,10 @@ class Markdown extends Router {
             return null;
         } else {
             return (<ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></ExpansionPanelSummary>
+                <ExpansionPanelSummary
+                    className={this.props.classes.summary}
+                    classes={{expanded: this.props.classes.summaryExpanded}}
+                    expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     {converter.convert(this.state.license)}
                 </ExpansionPanelDetails>
@@ -501,12 +585,32 @@ class Markdown extends Router {
             return null;
         } else {
             return (<ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</ExpansionPanelSummary>
+                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     {converter.convert(this.state.changeLog)}
                 </ExpansionPanelDetails>
             </ExpansionPanel>);
         }
+    }
+
+    renderSnackbar() {
+        return (<Snackbar
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            open={!!this.state.tooltip}
+            autoHideDuration={6000}
+            onClose={() => this.setState({tooltip: ''})}
+            message={<span id="message-id">{this.state.tooltip}</span>}
+            action={[
+                <IconButton
+                    key="close"
+                    color="inherit"
+                    className={this.props.classes.close}
+                    onClick={() => this.setState({tooltip: ''})}
+                >
+                    <IconClose />
+                </IconButton>,
+            ]}
+        />)
     }
 
     replaceHref(reactObj) {
@@ -540,6 +644,50 @@ class Markdown extends Router {
         }
     }
 
+    renderTable(lines) {
+        const header = lines[0].replace(/^\||\|$/g, '').split('|').map(h => h.trim());
+
+        const rows = [];
+        for (let i = 2; i < lines.length; i++) {
+            const parts = lines[i].replace(/^\||\|$/g, '').split('|').map(a => a.trim());
+            rows.push((<TableRow className={this.props.classes.tableRow} key={'row' + i}>
+                {parts.map((p, j) => (<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{converter.convert(p)}</TableCell>))}
+            </TableRow>));
+        }
+        return (
+            <Table padding="dense" className={this.props.classes.table}>
+                <TableHead className={this.props.classes.tableHead}>
+                    <TableRow className={this.props.classes.tableRowHead}>{header.map((h, i) => (<TableCell className={this.props.classes.tableCellHead} key={'header' + i}>{converter.convert(h)}</TableCell>))}</TableRow>
+                </TableHead>
+                <TableBody className={this.props.classes.tableBody}>{rows}</TableBody>
+            </Table>);
+
+        /*<Table className={classes.table}>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Dessert (100g serving)</TableCell>
+                    <TableCell align="right">Calories</TableCell>
+                    <TableCell align="right">Fat (g)</TableCell>
+                    <TableCell align="right">Carbs (g)</TableCell>
+                    <TableCell align="right">Protein (g)</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {rows.map(row => (
+                    <TableRow key={row.id}>
+                        <TableCell component="th" scope="row">
+                            {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.calories}</TableCell>
+                        <TableCell align="right">{row.fat}</TableCell>
+                        <TableCell align="right">{row.carbs}</TableCell>
+                        <TableCell align="right">{row.protein}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>*/
+    }
+
     render() {
         if (this.state.notFound) {
             return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
@@ -560,19 +708,24 @@ class Markdown extends Router {
         }
 
         const reactElements = this.state.parts.map((part, i) => {
-            const rct = converter.convert(part.lines.join('\n'));
-            this.replaceHref(rct);
-
-            if (part.type === 'warn') {
-                return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);
-            } else if (part.type === 'alarm') {
-                return (<div key={'parts' + i} className={this.props.classes.alarm}>{rct}</div>);
-            } else if (part.type === 'notice') {
-                return (<div key={'parts' + i} className={this.props.classes.notice}>{rct}</div>);
-            }  else if (part.type === '@@@') {
-                return (<div key={'parts' + i} className={this.props.classes.todo}>{rct}</div>);
+            if (part.type === 'table') {
+                return this.renderTable(part.lines);
             } else {
-                return <div key={'parts' + i} className={this.props.classes.paragraph}>{rct}</div>;
+                const rct = converter.convert(part.lines.join('\n'));
+
+                this.replaceHref(rct);
+
+                if (part.type === 'warn') {
+                    return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);
+                } else if (part.type === 'alarm') {
+                    return (<div key={'parts' + i} className={this.props.classes.alarm}>{rct}</div>);
+                } else if (part.type === 'notice') {
+                    return (<div key={'parts' + i} className={this.props.classes.notice}>{rct}</div>);
+                }  else if (part.type === '@@@') {
+                    return (<div key={'parts' + i} className={this.props.classes.todo}>{rct}</div>);
+                } else {
+                    return <div key={'parts' + i} className={this.props.classes.paragraph}>{rct}</div>;
+                }
             }
         });
 
@@ -585,6 +738,7 @@ class Markdown extends Router {
             {this.renderChangeLog()}
             {this.renderInfo()}
             {this.renderContent()}
+            {this.renderSnackbar()}
         </div>);
     }
 }
