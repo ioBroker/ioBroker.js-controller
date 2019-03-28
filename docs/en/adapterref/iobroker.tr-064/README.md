@@ -66,7 +66,8 @@ The html output can be configured by a template
 ### command & commandResult state
 With the command state you can call every tr-064 command from this [documentation](https://avm.de/service/schnittstellen/).
 e.g.
-```javascript
+
+```
 command = {
     "service": "urn:dslforum-org:service:WLANConfiguration:1",
     "action": "X_AVM-DE_SetWPSConfig",
@@ -76,6 +77,7 @@ command = {
     }
 };
 ```
+
 The command state shoud be set to a JSON of the above Lines. So { ... } (without command = and line breaks)
 The callback of the call will set the commandResult state.
 
