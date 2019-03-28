@@ -36,7 +36,7 @@ Die Adapteransicht teilt sich in drei Bereiche auf:
 ![Die Struktur des Admin](media/ADMIN_Screen_numbers.png)
 
 1. [Menü-Sidebar](#Menüpunkte)
-2. [Hauptfenster](#Das_Hauptfenster)
+2. [Hauptfenster](#das-hauptfenster)
 3. [Systemeinstellungen](#Systemeinstellungen)
 
 
