@@ -56,8 +56,11 @@ auf mobilen Geräten mehr Platz zu schaffen.
 über das "Burger-Icon" kann die Menüleiste wieder angezeigt werden
 
 
-Ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften 
-verlinkt sind.
+## Das Hauptfenster
+Das Hauptfenster zeigt den jeweils zum ausgewählten Menüpunkt gehörenden Inhalt an.
+
+Ausführliche Informationen zu diesem Inhalt sind in den Seiten hinterlegt, die über die 
+Überschriften verlinkt sind.
 
 ### [Übersicht](overview.md)
 Hier werden alle Seiten mit eigenem Webinterface sowie Informationen zu den 
@@ -102,10 +105,6 @@ Auf dieser Seite könne eigene Skripte mit javascript, Blocly oder Typescript er
 ### [Hosts](hosts.md)
 Informationen über den Rechner, auf dem ioBroker installiert ist.  Liegt eine neue Version vor, 
 erscheint ein Hinweis in diesem Eintrag der Menüleiste.
-
-
-## Das Hauptfenster
-Das Hauptfenster zeigt den jeweils zum ausgewählten Menüpunkt gehörenden Inhalt an.
 
 
 ## [Systemeinstellungen](settings.md) (Schraubenschlüssel-Icon)
