@@ -3,65 +3,58 @@ title:       "Admin"
 lastChanged: "25.03.2019"
 ---
 
-# Einleitung
-
+# Die Admin-Oberfläche
 
 !> **Wegen des Umfangs der Dokumentation ist dies nur eine Übersicht, ausführliche 
 Informationen sind in den Seiten hinterlegt, die über die Überschriften der 
 Abschnitte zu den Reitern verlinkt sind. Bitte die Überschriften anklicken.**
 
 
-Der Adapter Admin dient der Bedienung der gesamten ioBroker-Installation. Er stellt 
-ein Webinterface zur Verfügung. Dieses wird unter der 
-``<IP-Adresse des Servers>:8081`` aufgerufen. Dieser Adapter wird direkt 
-bei der Installation von ioBroker angelegt.
+Der Adapter Admin dient der Bedienung der gesamten ioBroker-Installation. 
+Er stellt ein Webinterface zur Verfügung. Dieses wird unter der 
+``<IP-Adresse des Servers>:8081`` aufgerufen.
 
-![Der Admin in der Kachelansicht](media/ADMIN_Adapter_Kachel.png)
-
-Über das vom Adapter zur Verfügung gestellte GUI können u.a. folgenden 
-Funktionen abgerufen werden:
-
-* Installation weiterer Adapter
-* Zugriff auf Objektübersicht
-* Zugriff auf die Zustandsübersicht der Objekte
-* Zugriff auf Benutzer und Gruppen Administration
-* Zugriff auf das Logfile
-* Verwaltung der Hosts
-
-## Installation
 Dieser Adapter wird direkt bei der Installation von ioBroker angelegt eine manuelle 
 Installation ist nicht notwendig
 
-## Konfiguration (im Reiter Instanzen)
-![Haupteinstellungen](media/Admin_konfig_Haupteinstellungen.png)
+![Der Admin in der Kachelansicht](media/ADMIN_Adapter_Kachel.png)
 
-### IP
-Hier wird die IP-Adresse unter der der Adapter erreichbar ist eingegeben. Verschiedene Ipv4 und Ipv6 Möglichkeiten stehen zur Auswahl. Default ist 0.0.0.0. Dies darf nicht verändert werden!
+Über das vom Adapter zur Verfügung gestellte GUI können u.a. folgende 
+Funktionen abgerufen werden:
 
-### Port
-Hier wird der Port, unter der der Administrator aufgerufen werden kann eingestellt. 
-Falls auf dem Server mehrere Webserver laufen muss dieser Port angepasst werden, 
-damit es nicht zu Problemen wegen doppelter Portvergabe kommt.
+* Eingabe von systemweiten Einstellungen
+* Installation weiterer Adapter und Instanzen
+* Zugriff auf die Konfiguration der Instanzen
+* Zugriff auf Objektübersicht
+* Zugriff auf die Zustandsübersicht der Objekte
+* Zugriff auf die Administration von Benutzern und Gruppen
+* Zugriff auf das Logfile
+* Verwaltung der Hosts
 
-### Verschlüsselung
-Soll das sichere Protokoll https verwendet werden ist hier ein Haken zu setzen.
+Die Adapteransicht teilt sich in drei Bereiche auf:
 
-### Authentifikation
-Soll eine Authentifizierung erfolgen ist hier ein Haken zu setzen.
+![Die Struktur des Admin](media/ADMIN_Screen_numbers.png)
 
-## Bedienung
-Über den Webbrowser die folgende Seite aufrufen: ``<IP-Adresse des Servers>:8081``
+1. Menü-Sidebar 
+2. Hauptfenster
+3. Systemeinstellungen
 
-## Reiter
-Die Hauptseite des Administrators besteht aus mehreren Reitern. In der Grundinstallation 
-werden die Reiter wie in der Abbildung angezeigt. Über das Dreieck-Icon links oben (1) 
-können nach der Installation zusätzlicher Adapter weitere Reiter hinzugefügt werden. 
-Dort können auch Reiter deaktiviert werden um eine besser Übersicht zu erhalten.
+
+## Menüpunkte
+Die Menüleiste enthält mehrere Menüpunkte. In der Grundinstallation werden diese 
+Punkte wie in der Abbildung angezeigt. Über das Dreieck-Icon links oben (1) können 
+nach der Installation zusätzlicher Adapter weitere Punkte hinzugefügt oder deaktiviert 
+werden um eine bessere Übersicht zu erhalten.
+
+![Menüpunkte](media/ADMIN_Screen01_menuitems_numbers.png)
 
 Über das **X**  (2) kann die Menüleiste mit den Reitern ausgeblendet werden um 
 auf mobilen Geräten mehr Platz zu schaffen.
 
-![Admin](media/Adapter_admin_first_view_items.png)
+![Menü eingeklappt](media/ADMIN_Screen01_menucollapsed.png)
+
+über das "Burger-Icon" kann die Menüleiste wieder angezeigt werden
+
 
 Ausführliche Informationen sind in den Seiten hinterlegt, die über die Überschriften 
 verlinkt sind.
@@ -111,8 +104,12 @@ Informationen über den Rechner, auf dem ioBroker installiert ist.  Liegt eine n
 erscheint ein Hinweis in diesem Eintrag der Menüleiste.
 
 
+## Das Hauptfenster
+Das Hauptfenster zeigt den jeweils zum ausgewählten Menüpunkt gehörenden Inhalt an.
+
+
 ## [Systemeinstellungen](settings.md) (Schraubenschlüssel-Icon)
 In dem sich hier öffnenden Menü werden Einstellungen wie Sprache, Zeit- und 
 Datumsformat sowie weitere systemweite Einstellungen getätigt.
 
-Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werden.
+Auch die Repositories und Sicherheitseinstellungen können hier eingestellt werden.
