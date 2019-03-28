@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: BQomfImdqLTMv7RTxOxAV4JOyXcA1kC0gplk6fkISb4=
+hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
 ---
 ![商标](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)
 ![安装数量](http://iobroker.live/badges/smartmeter-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.smartmeter.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)
@@ -15,8 +16,6 @@ hash: BQomfImdqLTMv7RTxOxAV4JOyXcA1kC0gplk6fkISb4=
 ![NPM](https://nodei.co/npm/iobroker.smartmeter.png?downloads=true)
 
 ＃ioBroker.smartmeter
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg）](https://greenkeeper.io/)
-
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
 这个适用于ioBroker的适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。

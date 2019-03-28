@@ -57,6 +57,9 @@ const styles = theme => ({
         cursor: 'pointer'
     },
     tabs: Object.assign({display: 'flex'}, theme.tabs),
+    tab:  {
+        minWidth: 'inherit'
+    },
     languageButton: {
         width: 32,
         height: 32,
@@ -77,13 +80,21 @@ const styles = theme => ({
     subMenuItemText: {
         fontSize: 14,
     },
+    searchDiv: {
+        marginLeft: 10,
+        display: 'inline-block',
+        background: '#CCCCCC',
+        borderRadius: 3,
+        height: 36,
+        whiteSpace: 'nowrap'
+    },
     search: {
         width: 120,
         transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
         //padding: '8px 8px 8px 72px',
         boxSizing: 'content-box',
         backgroundColor: '#CCCCCC',
-        padding: '3px 0',
+        padding: '3px 0 1px 0',
         border: 0,
         marginLeft: 10,
         borderRadius: 3,
@@ -94,10 +105,6 @@ const styles = theme => ({
             border: 0
         }
     },
-    searchDiv: {
-        marginLeft: 10,
-        display: 'inline-block',
-    },
     searchInput: {
         display: 'inline-block',
     },
@@ -107,27 +114,35 @@ const styles = theme => ({
     searchButton: {
         float: 'left',
         marginLeft: 5,
+        marginTop: 10,
+        height: 20,
+        width: 20,
     },
     searchResultsDiv: {
         minWidth: 100,
         padding: 10,
+        zIndex: 100,
     },
 
     sRdiv: {
-        zIndex: 100,
+        cursor: 'pointer',
+        '&:hover': {
+            background: '#EEEEEE'
+        }
+    },
+    sRdivNotLast: {
         borderBottom: '1px solid #CCCCCC',
-        cursor: 'pointer'
     },
     sRdivType: {
         display: 'inline-block',
         borderRight: '1px solid #CCCCCC',
-        padding: 5,
+        padding: '2px 5px',
         textAlign: 'right',
-        width: 100,
+        width: 120,
     },
     sRdivText: {
         display: 'inline-block',
-        padding: 20,
+        padding: '2px 5px',
     },
 });
 
@@ -158,6 +173,8 @@ const PAGES = {
     'privacy':  {name: 'privacy', md: 'privacy.md'}
 };
 
+const MOBILE_WIDTH = 650;
+const TABS_WIDTH = 1150;
 
 class App extends Router {
     constructor(props) {
@@ -176,7 +193,7 @@ class App extends Router {
             errorText: '',
             loaded: true,
             themeType: 'light',
-            mobile: width < 650,
+            mobile: width < MOBILE_WIDTH,
             menuOpened: [],
             language,
             showTabMenu: false,
@@ -211,7 +228,7 @@ class App extends Router {
         this.resizeTimer = setTimeout(() => {
             this.resizeTimer = null;
             const width = window.innerWidth;
-            this.setState({width, height: window.innerHeight, mobile: width < 650});
+            this.setState({width, height: window.innerHeight, mobile: width < MOBILE_WIDTH});
         }, 200);
     }
 
@@ -279,8 +296,8 @@ class App extends Router {
     }
 
     onSearch() {
-        if (this.state.search) {
-            window.fetch(`http://localhost/search?ln=${this.state.language}&q=${encodeURIComponent(this.state.search)}`)
+        if (this.state.search || this.searchValue) {
+            window.fetch(`http://localhost:5000/search?ln=${this.state.language}&q=${encodeURIComponent(this.state.search || this.searchValue)}`)
                 .then(data => data.json())
                 .then(searchResults => this.setState({searchResults}));
         } else {
@@ -289,17 +306,18 @@ class App extends Router {
     }
 
     renderSearch() {
-        return (<div><Input
+        return (<div className={this.props.classes.searchDiv}><Input
             className={this.props.classes.search + ' ' + (this.state.searchFocus ? this.props.classes.searchFocus : '')}
-            value={this.state.search}
+            //value={this.state.search}
             placeholder={I18n.t('Search...')}
             classes={{input: this.props.classes.searchInput}}
             onFocus={() => this.setState({searchFocus: true})}
-            onBlur={() => this.setState({searchFocus: false})}
+            onBlur={() => setTimeout(() => this.setState({searchFocus: false}), 100)}
             onChange={e => {
                 this.searchAnchor = this.searchAnchor || e.target;
+                this.searchValue = e.target.value;
 
-                this.setState({search: e.target.value});
+                //this.setState({search: e.target.value});
                 this.searchTimeout && clearTimeout(this.searchTimeout);
                 this.searchTimeout = setTimeout(() => {
                     this.searchTimeout = null;
@@ -316,19 +334,23 @@ class App extends Router {
         /><IconSearch className={this.props.classes.searchButton}/></div>);
     }
 
-    renderSearchResult(result) {
+    renderSearchResult(result, last) {
         const type = result.id.split('/').shift();
-        const tab = type === 'adapterref' ? 'adapters' : 'documentation';
-        return (<div className={this.props.classes.sRdiv}>
+        const tab = type === '...' ? type : (type === 'adapterref' ? 'adapters' : 'documentation');
+        return (<div className={this.props.classes.sRdiv + ' ' + (!last ? this.props.classes.sRdivNotLast : '')}
+                     onClick={e => {
+                         e.preventDefault();
+                         e.stopPropagation();
+                         this.setState({searchResults: null});
+                         this.onNavigate(null, tab, result.id)
+                     }}>
                 <div className={this.props.classes.sRdivType}>{I18n.t(tab)}</div>
-                <div className={this.props.classes.sRdivText} onClick={() => {
-                    this.setState({searchResults: null});
-                    this.onNavigate(null, tab, result.id)
-                }}>{result.title}</div>
+                <div className={this.props.classes.sRdivText}>{type === '...' ? I18n.t('More %s results', result.title) : result.title}</div>
             </div>);
     }
 
     renderSearchResults() {
+        const len = this.state.searchResults &&this.state.searchResults.length;
         return (<Popper
             placement="bottom"
             disablePortal={false}
@@ -343,13 +365,10 @@ class App extends Router {
                     element: this.searchAnchor,
                 },
             }}
-        >
-            {this.state.searchResults && (this.state.searchResults.length ?
-                (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map(link => this.renderSearchResult(link))}</Paper>) :
-                (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)
-            )
-            }
-        </Popper>);
+            children={this.state.searchResults && this.state.searchResults.length ?
+                    (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map((link, i) => this.renderSearchResult(link, len - 1 === i))}</Paper>) :
+                    (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)}
+        />);
     }
 
     onNavigate(language, tab, page, chapter) {
@@ -382,7 +401,8 @@ class App extends Router {
             selected = false;
         }
 
-        return (<Tabs className={this.props.classes.tabs} value={selected}
+        return (<Tabs className={this.props.classes.tabs}
+                      value={selected}
                       variant="standard"
                       onChange={(e, value) => {
                           const selectedPage = Object.keys(PAGES)[value];
@@ -404,11 +424,11 @@ class App extends Router {
 
                 if (PAGES[tab].menu) {
                     return [
-                        (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
+                        (<Tab classes={{root: this.props.classes.tab}} key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
                         this.renderMenu(tab)
                     ];
                 } else {
-                    return (<Tab key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
+                    return (<Tab key={tab} classes={{root: this.props.classes.tab}} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
                 }
             })}
 
@@ -473,7 +493,7 @@ class App extends Router {
                 {this.renderLanguage()}
                 {this.renderSearch()}
                 <div style={{flex: 1}}/>
-                {this.state.width > 1200 ? this.renderTabs() : this.renderPagesMenu()}
+                {this.state.width > TABS_WIDTH ? this.renderTabs() : this.renderPagesMenu()}
             </Toolbar>
         );
     }

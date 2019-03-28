@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: pBl2tAb1qw0O3fAefVBcE+S9J0awSMnW3iE2a2aeOvA=
+hash: +f7NJ15+RIjZxu8p56EbSDytpQqsmUu7u9S7GUmcJkc=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -11,26 +11,27 @@ hash: pBl2tAb1qw0O3fAefVBcE+S9J0awSMnW3iE2a2aeOvA=
 ![NPM版本](https://img.shields.io/npm/v/iobroker.alexa2.svg)
 ![建立状态](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)
 
-＃ioBroker.alexa2 <！ -   - > <！ -   - >
+＃ioBroker.alexa2
 此适配器允许您远程控制您的Alexa（Amazon Echo）设备。
 
 非常感谢适用于适配器的良好版本1的soef以及来自ioBroker-Forum的脚本中的Hauke和ruhr70（尤其是媒体进度更新）！还要非常感谢支持记录所有这些以及来自ioBroker论坛的众多用户的测试支持！
 
-###国家及其含义：
+##国家及其含义：
 在适配器命名空间（例如alexa2.0）中，创建了一些通道
 
-#### Alexa2.0
+### Alexa2.0
 |州名|意义|
 | - | - |
-|直言不讳。* |将文本命令发送到虚拟设备，就像您要对它说话一样
+|直言不讳。* |将文本命令发送到虚拟设备，就像您要对它说话一样 |
 | echo-devices。* |每个Echo设备的状态，见下文|
 |历史。* |命令历史信息，见下文|
 |智能家居设备。* |每个智能家居设备的状态和一般情况，见下文|
 |信息。* |有关适配器状态的一般信息|
-| requestResult | TuneIn和智能家居设备请求的错误信息
+| requestResult | TuneIn和智能家居设备请求的错误信息 |
 
-#### Alexa2.0.bespoken。*
+### Alexa2.0.bespoken。*
 Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上，您可以使用它向“您的”Alexa /亚马逊帐户发送命令。通过这种方式，您可以触发通常无法通过Alexa应用程序访问的技能操作。根据其工作方式的性质，只有命令可能不直接与“您说话的设备”交互，就像执行某个操作并提供答案的普通命令一样。播放音频或视频等通常由您说出的设备完成的命令将无效！
 
 请求Bespoken将花费几秒钟，因为发送的文本首先被转换为音频，然后发送到Alexa语音服务，然后由Alexa回答并发回。所以它最多可能需要10秒。
@@ -39,13 +40,13 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 | - | - |
 | #sendText |要发送到虚拟设备的文本|
 |回答|从设备回答文本|
-| anwserJson |来自适配器的答案为JSON，可能包含其他信息，如卡片信息或此类信息
+| anwserJson |来自适配器的答案为JSON，可能包含其他信息，如卡片信息或此类信息 |
 |状态|与beceoken进行通信的状态（OK =完成/等待下一个命令，PROCESSING =等待来自bespoken的回答，FAILURE =处理时发生错误）|
 
-#### Alexa2.0.echo-devices.Serialnumber。*
+### Alexa2.0.echo-devices.Serialnumber。*
 在“echo-devices”下，每个亚马逊回声设备都列有它的序列号。并非每个设备都显示所有状态。每个设备都有自己的状态，如下所述：
 
-#### Alexa2.0.echo-devices.Serialnumber.Alarm。*
+### Alexa2.0.echo-devices.Serialnumber.Alarm。*
 每个设备的警报（Wecker）设置（如果有）。
 
 |州名|意义|价值|
@@ -55,15 +56,15 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 |触发|如果达到并触发警报，则为true。时钟必须与Amazon和iobroker同步，一旦达到闹钟时间，请使用此选项触发其他操作真/假|
 |新的|此设备的新警报时间。如果在此处输入值，将创建新的警报时间输入（hh：mm：ss，不需要秒）|
 
-#### Alexa2.0.echo-devices.Serialnumber.Bluetooth。*
+### Alexa2.0.echo-devices.Serialnumber.Bluetooth。*
 在这里，您可以找到所有已连接或已知的具有MAC地址的蓝牙设备。每个设备的状态：
 
 |州名|意义|
 | - | - |
 |连接|显示当前连接状态并允许连接（设置为true）或断开连接（设置为false）|
-| unpair |用于从echo设备取消配对此设备的按钮
+| unpair |用于从echo设备取消配对此设备的按钮 |
 
-#### Alexa2.0.echo-devices.Serialnumber.Commands。*
+### Alexa2.0.echo-devices.Serialnumber.Commands。*
 使用命令，您可以在Alexa-Device上触发某些操作。如果您在多房间设备上使用它们，那么它们将独立执行，并且*不会*在单个设备上同步运行！
 
 |州名|意义|价值|
@@ -87,7 +88,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 通常，每个说话命令只能发送250个字符。通过使用分号，可以根据需要编写，只要用分号分隔250个字符即可。
 然后Alexa会在一个小小的休息时间之后互相讲话。您还可以通过编写#Volume来使用该卷以及更多255个块;＃Block1;＃Block2，a.s.o此处设置的卷将用于定义的说话卷。
 
-#### Alexa2.0.echo-devices.Serialnumber.Info。*
+### Alexa2.0.echo-devices.Serialnumber.Info。*
 有关Alexa设备的信息
 
 |州名|意义|价值|
@@ -101,7 +102,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 |名字| Alexa设备名称|信息|
 | SerialNumber | Alexa设备的序列号|
 
-#### Alexa2.0.echo-devices.Serialnumber.Music-Provider。*
+### Alexa2.0.echo-devices.Serialnumber.Music-Provider。*
 直接告诉Alexa播放音乐或支持音乐提供商的播放列表。实际上支持的是：我的图书馆，亚马逊音乐，调整。您还可以在短语中包含多房间设备组名称以在该组中播放（例如“SWR3 auf Erdgeschoss”）
 
 |州名|意义|价值|
@@ -113,7 +114,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 | Tune-In |使用Tune In |的短语文字输入|
 | Tune-In-Playlist |播放列表与Tune In |文字输入|
 
-#### Alexa2.0.echo-devices.Serialnumber.Player。*
+### Alexa2.0.echo-devices.Serialnumber.Player。*
 用于控制设备播放以及查看当前状态和媒体信息的状态
 
 |州名|意义|价值|
@@ -147,18 +148,18 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 |服务|当前音乐服务的名称|信息|
 |音量|播放音量。您可以输入介于0-100％|之间的值输入音量|
 
-#### Alexa2.0.echo-devices.Serialnumber.Reminder。*
+### Alexa2.0.echo-devices.Serialnumber.Reminder。*
 每个设备的提醒（Erinnerungen）设置（如果有）。
 
 |州名|意义|价值|
 | - | - | - |
 |启用|显示提醒状态并允许更改提醒：使用true激活提醒 - 使用false取消提醒，将在禁用后自动删除一段时间真/假|
-|时间|提醒的时间。覆盖现有提醒设置新时间的时间时间输入|如果你有一个现有的提醒，你可以通过简单地用格式hh：mm：ss覆盖时间来改变时间，不需要秒来设置
+|时间|提醒的时间。覆盖现有提醒设置新时间的时间时间输入|如果你有一个现有的提醒，你可以通过简单地用格式hh：mm：ss覆盖时间来改变时间，不需要秒来设置 |
 |触发|如果到达并触发了提醒，则为true。时钟必须与Amazon和iobroker同步，一旦达到提醒时间，请使用此选项触发其他操作真/假|
 
 |新的|以格式添加新提醒<br>时间（小时：分钟），文本<br> |文字输入<br> 12:00，提醒我
 
-#### Alexa2.0.echo-devices.Serialnumber.Routines。*
+### Alexa2.0.echo-devices.Serialnumber.Routines。*
 在Alexa App中设置的例程概述。自创程序有一个序列号，亚马逊显示为'预先配置：......'每个例程都可以通过一个按钮运行一次。
 
 |州名|意义|价值|
@@ -166,7 +167,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 |例程的序列号或内部名称例程的名称|按键
 
-#### Alexa2.0.echo-devices.Serialnumber.Timer。*
+### Alexa2.0.echo-devices.Serialnumber.Timer。*
 您可以在每个Alexa设备上运行一个或多个计时器。由于计时器非常动态，因此不会像Alarm或Reminders那样创建更多的对象，但是存在获取触发信息的方法。
 
 |州名|意义|价值|
@@ -174,7 +175,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 |触发|计时器被触发了|信息
 
-#### Alexa2.0.echo-devices.Serialnumber.online
+### Alexa2.0.echo-devices.Serialnumber.online
 这个Alexa设备是否在线并连接到亚马逊云？
 
 |州名|意义|价值|
@@ -182,7 +183,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 |在线|设备在线吗？ |真假
 
-#### Alexa2.0.history
+### Alexa2.0.history
 |州名|意义|价值|
 | - | - | - |
 | #trigger |按钮获取新的历史记录（更新当前时间戳创建时间），仅在不使用推送连接时才需要按钮|
@@ -194,10 +195,10 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 | json |最后一个命令数据的Json能够处理所有信息，例如在自己的JavaScripts中| JSON |
 |名字|获得最后一个请求的设备的名称信息|
 | serialNumber |获得最后一个请求的设备的序列号信息|
-|状态|最后一个命令到Alexa的状态SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT;通过说出唤醒字来激活设备时，或者当设备丢弃输入为“不适合我”时，生成最后一个
+|状态|最后一个命令到Alexa的状态SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT;通过说出唤醒字来激活设备时，或者当设备丢弃输入为“不适合我”时，生成最后一个 |
 |摘要|设备收到的文本/摘要/操作|信息|
 
-#### Alexa.0.smart-home-devices
+### Alexa.0.smart-home-devices
 包括Alexa从您的技能中了解到的所有智能家居设备。对于所有已知设备，说明如下：
 
 |州名|意义|价值|
@@ -205,7 +206,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 | deleteAll |删除Alexa中的所有智能家居设备，与Alexa App中的按钮相同按钮| discoverDevices |找到新的智能家居设备，与Alexa App中的按钮相同按钮| queryAll |查询所有设备，仅在至少一个设备能够检索信息时才可见按键
 
-#### Alexa.0.smart-home-devices.serialNumber。*
+### Alexa.0.smart-home-devices.serialNumber。*
 |州名|意义|价值|
 | - | - | - |
 
@@ -213,7 +214,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 | #query |查询此设备的数据，仅在智能家居设备/技能支持检索信息时可见按钮|
 |活跃的|显示可以激活/停用的场景|真/假|
-| powerState |打开/关闭电源|多变的，真/假的
+| powerState |打开/关闭电源|多变的，真/假的 |
 | ...... |更多可能的状态取决于智能家居设备的类型信息或多变的:-) |
 
 **  - >彩色/灯光设备的特殊状态**
@@ -231,7 +232,7 @@ Bespoken通常是一个帮助自动测试技能的服务提供商。但事实上
 
 使用#brightness可以调整灯光的亮度，＃colorName是选择一种预定义的颜色（0-144）。对于HUE环境光，您可以在#colorTemperatureName中选择0到18之间的值。所有灯都可以通过#powerState打开和关闭。
 
-#### Alexa2.0-info。*
+### Alexa2.0-info。*
 |州名|意义|价值|
 | - | - | - |
 |连接|如果连接到Alexa是OK |信息 - > true / false |

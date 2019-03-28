@@ -4,14 +4,14 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/intro/README.md
 title: ioBroker
-hash: rO4zP/V+ylQitNglKeKmIekGGCo2BRDGr/u3nay8Lyo=
+hash: /CaZHm9u0gqghR16DPYkzmh1iYzcjMSdbEMj1DGfF7w=
 ---
 #ioBroker
 ？&gt;这个文档刚刚开始出现。所以如果链接不起作用或内容丢失，请不要感到惊讶。 <br><br>该文档不断扩展。如果您认为缺少或更好地描述了某些内容，[帮助我们] []会改进文档！
 
 ？&gt; ***这是一张通配符***。 <br><br>帮助我们的ioBroker社区并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
 
-ioBroker是智能家居，楼宇自动化和主动辅助生活的自动化任务的中央服务器。 ioBroker可以通过模块化`Adapter`与许多现有系统和设备进行通信。使用规则，无论制造商如何，都可以创建功能过程。 ioBroker提供的图形界面有助于简化设备的操作或监控。
+ioBroker是智能家居，楼宇自动化和主动辅助生活的自动化任务的中央服务器。 ioBroker可以通过模块化**适配器**与许多现有系统和设备进行通信。使用规则，无论制造商如何，都可以创建功能过程。 ioBroker提供的图形界面有助于简化设备的操作或监控。
 
 本文档是所有ioBroker用户的核心参考：
 

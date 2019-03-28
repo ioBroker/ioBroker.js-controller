@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.telegram
-hash: tbkO4QFjGv4W24/10mg5Q6clQWYyClDrwgTOJXOcMpA=
+title: ioBroker-Telegrammadapter
+hash: 1Bjep1eOMl3zub539VLi/Z+5ykymigkNSOdY5OmXnjk=
 ---
-# Zu https://github.com/iobroker-community-adapters/ioBroker.telegram verschoben
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/telegram-stable.svg)
@@ -14,7 +13,7 @@ hash: tbkO4QFjGv4W24/10mg5Q6clQWYyClDrwgTOJXOcMpA=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.telegram.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.telegram.png?downloads=true)
 
-# IoBroker Telegrammadapter ===============
+# IoBroker-Telegrammadapter
 ## Aufbau
 Fragen Sie nach [@BotFather](https://telegram.me/botfather), um einen neuen Bot anzulegen. §JJJJJ_0§§.
 
@@ -29,9 +28,9 @@ Um ein Gespräch mit Ihrem Bot zu beginnen, müssen Sie den Benutzer mit "/ Kenn
 
 ** Hinweis: ** Sie können die Kurzform "/ p Phrase" verwenden.
 
-Um ein schönes Avatar-Bild hinzuzufügen, geben Sie ```/setuserpic``` ein und laden Sie das gewünschte Bild (512x512 Pixel) hoch, wie dieses [Logo](img/logo.png).
+Um ein schönes Avatar-Bild hinzuzufügen, geben Sie `/setuserpic` ein und laden Sie das gewünschte Bild (512x512 Pixel) hoch, wie dieses [Logo](img/logo.png).
 
-Sie können eine Nachricht an alle authentifizierten Benutzer über messageBox ```sendTo('telegram', 'Test message')``` oder an einen bestimmten Benutzer ```sendTo('telegram', '@userName Test message')``` senden.
+Sie können eine Nachricht an alle authentifizierten Benutzer über messageBox `sendTo('telegram', 'Test message')` oder an einen bestimmten Benutzer `sendTo('telegram', '@userName Test message')` senden.
 Der Benutzer muss zuvor authentifiziert werden.
 
 Sie können den Benutzer auch so angeben:
@@ -47,12 +46,12 @@ Wenn Sie das obige Beispiel verwenden, müssen Sie wissen, dass Sie 'UserName' e
 Es ist möglich, mehrere Empfänger anzugeben (trennen Sie die Benutzernamen einfach durch Komma).
 Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
 
-Sie können auch eine Nachricht über den Status senden, setzen Sie einfach den Status *"telegram.INSTANCE.communicate.response"* mit dem Wert *"@ userName Testnachricht"*
+Sie können auch eine Nachricht über den Status senden, setzen Sie einfach den Status *"telegram.INSTANCE.communicate.response"* mit dem Wert *"@ Benutzername Testnachricht"*
 
 ## Verwendungszweck
 Sie können das Telegramm mit dem Adapter [text2Befehl](https://github.com/ioBroker/ioBroker.text2command) verwenden. Es gibt vordefinierte Kommunikationsschemas, die Sie in Textform an Sie nach Hause senden können.
 
-Um ein Foto zu senden, senden Sie einfach einen Pfad zu einer Datei anstelle von Text oder URL: ```sendTo('telegram', 'absolute/path/file.png')``` oder ```sendTo('telegram', 'https://telegram.org/img/t_logo.png')```.
+Um ein Foto zu senden, senden Sie einfach einen Pfad zu einer Datei anstelle von Text oder URL: `sendTo('telegram', 'absolute/path/file.png')` oder `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
 
 Beispiel zum Senden eines Screenshots von der Webcam an das Telegramm:
 
@@ -83,7 +82,6 @@ on("someState", function (obj) {
         setTimeout(sendImage, 30000);
     }
 });
-
 ```
 
 Folgende Meldungen sind für Aktionen reserviert:
@@ -203,16 +201,16 @@ Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blo
 ## Chat-ID
 Ab Version 0.4.0 können Sie die Chat-ID verwenden, um Nachrichten an den Chat zu senden.
 
-```sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');```
+`sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ## Aktualisiere Nachrichten
-Mit den folgenden Methoden können Sie eine vorhandene Nachricht im Nachrichtenverlauf ändern, anstatt eine neue mit einem Ergebnis einer Aktion zu senden. Dies ist am nützlichsten für Nachrichten mit *Inline-Tastaturen* die Rückrufabfragen verwenden, kann jedoch auch dazu beitragen, das Durcheinander in Gesprächen mit normalen Chat-Bots zu reduzieren.
+Mit den folgenden Methoden können Sie eine vorhandene Nachricht im Nachrichtenverlauf ändern, anstatt eine neue mit einem Ergebnis einer Aktion zu senden. Dies ist am nützlichsten für Nachrichten mit *Inline-Tastaturen* die Rückrufabfragen verwenden, kann jedoch auch dazu beitragen, das Durcheinander in normalen Chat-Bots zu reduzieren.
 
 ### EditMessageText
 Verwenden Sie diese Methode, um Text zu bearbeiten, der vom Bot oder über den Bot (für Inline-Bots) gesendet wird. Wenn die bearbeitete Nachricht vom Bot gesendet wird, wird die bearbeitete Nachricht zurückgegeben, andernfalls wird *True* zurückgegeben.
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -232,7 +230,7 @@ if (command ==="1_2") {
 }
 ```
 
-* oder neuer Text für letzte Nachricht: *
+*oder neuer Text für letzte Nachricht:*
 
 ```
 if (command ==="1_2") {
@@ -255,7 +253,7 @@ Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blo
 Verwenden Sie diese Methode, um nur das Antwort-Markup von Nachrichten zu bearbeiten, die vom Bot oder über den Bot (für Inline-Bots) gesendet werden. Wenn die bearbeitete Nachricht vom Bot gesendet wird, wird die bearbeitete Nachricht zurückgegeben, andernfalls wird *True* zurückgegeben.
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -285,7 +283,7 @@ Verwenden Sie diese Methode, um eine Nachricht einschließlich Servicemeldungen 
 Gibt bei Erfolg *True* zurück.
 
 ```
-if (command ==="delete") {
+if (command === "delete") {
     sendTo('telegram', {
         user: user,
         deleteMessage: {
@@ -318,17 +316,17 @@ Sie können den Statuswert festlegen, wenn Sie jetzt die ID:
 ```
 
 ## Abruf- oder Servermodus
-Wenn der Abfragemodus verwendet wird, fragt der Adapter den Telegrammserver standardmäßig alle 300ms nach Updates ab. Es verwendet Datenverkehr und Nachrichten können bis zum Abrufintervall verzögert werden. Das Abfrageintervall kann in der Adapterkonfiguration definiert werden.
+Wenn der Abrufmodus verwendet wird, fragt der Adapter den Telegrammserver standardmäßig alle 300ms nach Aktualisierungen ab. Es verwendet Datenverkehr und Nachrichten können bis zum Abrufintervall verzögert werden. Das Abfrageintervall kann in der Adapterkonfiguration definiert werden.
 
 Um den Servermodus zu verwenden, muss Ihre ioBroker-Instanz über das Internet erreichbar sein (z. B. mit dem dynamischen DNS-Dienst noip.com).
 
-Telegramm kann nur mit HTTPS-Servern arbeiten. Sie können jedoch **let's-Verschlüsselung** -Zertifikate verwenden.
+Telegramm kann nur mit HTTPS-Servern arbeiten, aber Sie können ** let's-Verschlüsselung von Zertifikaten verwenden.
 
 Folgende Einstellungen müssen für den Servermodus vorgenommen werden:
 
 - URL - in der Form https://ihredomain.com:8443.
 - IP - IP-Adresse, an die der Server gebunden wird. Standardeinstellung 0.0.0.0. Ändern Sie es nicht, wenn Sie sich nicht sicher sind.
-- Port - Tatsächlich werden nur 443, 80, 88, 8443 Ports von Telegramm unterstützt, Sie können jedoch Ports über Ihren Router an jeden weiterleiten.
+- Port - Tatsächlich werden nur 443, 80, 88, 8443 Ports von Telegramm unterstützt, aber Sie können Ports über Ihren Router an jeden weiterleiten.
 - Öffentliches Zertifikat - erforderlich, wenn ** Verschlüsselung deaktiviert ist.
 - Privater Schlüssel - erforderlich, wenn ** Verschlüsselung deaktiviert ist.
 - Kettenzertifikat (optional)

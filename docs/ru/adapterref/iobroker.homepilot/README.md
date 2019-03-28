@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: xMYZBXTOwQJk/YHoaY54tHLKepzY0e9jhhDcxHhdtQ8=
+hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 ---
 ![логотип](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
@@ -12,12 +12,11 @@ hash: xMYZBXTOwQJk/YHoaY54tHLKepzY0e9jhhDcxHhdtQ8=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
 ![Открытые вопросы](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
+![Знак Кодаси](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![Трэвис-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 # IoBroker.homepilot
-[![Значок Codacy] (https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)](https://www.codacy.com/app/Pix---/ioBroker.homepilot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pix---/ioBroker.homepilot&amp;utm_campaign=Badge_Grade)
-
 : de: [Dokumentation](/docs/de/doc_homepilot_de.md)
 
 : uk: [Документация](/docs/en/doc_homepilot_en.md)

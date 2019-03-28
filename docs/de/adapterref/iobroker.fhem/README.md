@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fhem/README.md
 title: ioBroker.fhem
-hash: N5iJnz+zMACr/jOpD4kKZSjgK6n51TAKFE52hRcrxjE=
+hash: OTu+lFTj7lttlyJ7nwZz62mxUIImTL766Zs6iY46Sx0=
 ---
 ![Logo](../../../en/adapterref/iobroker.fhem/admin/fhem.png)
 
@@ -12,14 +12,12 @@ hash: N5iJnz+zMACr/jOpD4kKZSjgK6n51TAKFE52hRcrxjE=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.fhem.svg)
 ![NPM](https://nodei.co/npm/iobroker.fhem.png?downloads=true)
 
-# IoBroker.fhem ===================
+# IoBroker.fhem
 Dieser Adapter ermöglicht die Verbindung von FHEM mit ioBroker.
 
 Um die Verbindung zu aktivieren, muss das Telnet in FHEM aktiviert sein. Um es zu aktivieren (standardmäßig aktiviert), überprüfen Sie die folgenden Einstellungen in fhen.cfg:
 
-```
-define telnetPort telnet 7072 global
-```
+```define telnetPort telnet 7072 global```
 
 Der gleiche Port und die IP-Adresse des FHEM-Hosts (oder localhost, wenn FHEM und ioBroker auf demselben PC ausgeführt werden) sollten für die Einstellungen des Adapters verwendet werden.
 
@@ -44,12 +42,12 @@ Eigentlich werden nur folgende Attribute unterstützt:
   * Ablesungen xxx mit irgendwelchen PossibleSets werden Rolle = state.xxx gesetzt
   * Lesungen xxx ohne PossibleSets werden Rolle = Wert.xxx gesetzt
   * Lesungen xxx mit PossibleSets "noArg" wird role = button.xxx gesetzt
-  * Messwerte xxx mit "Slider" von PossibleSets werden auf Rolle = Ebene gesetzt. Xxx, min = Slider (min), max = Slider (max)
+  * Messwerte xxx mit "Slider" von PossibleSets werden auf Rolle = Ebene gesetzt.xxx, min = Slider (min), max = Slider (max)
   * Ablesungen "gewünschte Temperatur" werden eingestellt rolle = Füllstand.Temperatur, min = 5, max = 35, Einheit = °C.
   * Ablesungen "pct, Helligkeit, Dimmen" werden eingestellt rolle = level.dimmer, min = 0, max = 100, Einheit =%
   * Ablesungen "Volumen, Volumen, Gruppenvolumen" wird gesetzt rolle = level.volume, min = 0, max = 100, Einheit =%
-  * Ablesungen "GroupVolume" wird Rolle = Level.Volumen.Gruppe, min = 0, max = 100, Einheit =% gesetzt.
-* SmartName for Cloud Adapter wird automatisch mit Alias oder Name gesetzt (nur fhem.0 und Objekte mit der Rolle = level.temperature, level.dim, level.volume)
+  * Ablesungen "GroupVolume" wird gesetzt rolle = level.volume.group, min = 0, max = 100, unit =%
+* SmartName für Cloud Adapter wird automatisch mit Alias oder Name gesetzt (nur fhem.0 und Objekte mit der Rolle = level.temperature, level.dim, level.volume)
 
 ## Changelog
 ### 1.1.0 (2018-10-22)

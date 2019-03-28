@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
+hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ---
 ![логотип](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
+![Значок Greenkeeper](https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)
 ![Количество установок](http://iobroker.live/badges/ekey-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.ekey.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ekey.svg)
@@ -14,8 +15,8 @@ hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.ekey?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
-# IoBroker.ekey ======================
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)](https://greenkeeper.io/)
+# IoBroker.ekey
+======================
 
 [![Статус зависимости] (https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg)](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey) [![Изменение климата] (https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg)](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 

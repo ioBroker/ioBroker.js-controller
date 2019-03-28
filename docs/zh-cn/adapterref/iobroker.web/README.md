@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 04MJnPlVJTWOaRDcaQCT90y8oQhXwCNTIZEekXjHNNA=
+hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -13,7 +13,7 @@ hash: 04MJnPlVJTWOaRDcaQCT90y8oQhXwCNTIZEekXjHNNA=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
-＃ioBroker.web ===========================
+＃ioBroker.web
 基于Node.js的Web服务器并表示从ioBroker DB读取文件
 
 ##调整Web套接字

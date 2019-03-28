@@ -1,23 +1,23 @@
 ![Logo](admin/alexa.png)
 # ioBroker.alexa2
 ![Number of Installations](http://iobroker.live/badges/alexa2-installed.svg) ![Number of Installations](http://iobroker.live/badges/alexa2-stable.svg) 
-<!-- -->
+
 [![NPM version](https://img.shields.io/npm/v/iobroker.alexa2.svg)](https://www.npmjs.com/package/iobroker.alexa2)
 [![Build Status](https://travis-ci.org/Apollon77/ioBroker.alexa2.svg?branch=master)](https://travis-ci.org/Apollon77/ioBroker.alexa2)
 [![Build status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)](https://ci.appveyor.com/project/Apollon77/iobroker-alexa)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Apollon77/iobroker.alexa2/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)](https://greenkeeper.io/)
-<!-- -->
+
 
 This adapter allows you to remote control your Alexa (Amazon Echo) devices.
 
 Big thanks go to soef for the good version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
 Also big thanks to to meicker for support in documenting all of this and numerous users from ioBroker Forum for their testing support!
 
-### States and their meanings:
+## States and their meanings:
 
 In the adapter namespace (e.g. alexa2.0) some channels are created
 
-#### alexa2.0
+### alexa2.0
 
 | State name | meaning |
 | - | - |
@@ -28,7 +28,7 @@ In the adapter namespace (e.g. alexa2.0) some channels are created
 | info.*| General information about the adapter status |
 | requestResult | Error info for TuneIn and smart-home device requests |
 
-#### alexa2.0.bespoken.*
+### alexa2.0.bespoken.*
 Bespoken is normally a service provider to help automatically testing skills. But in fact you can use it to send commands to "your" Alexa/Amazon account. With this you can trigger skill actions that normally are not accessible via the Alexa App. By nature of the way it works only commands are possible that do not interact directly with the "Device you speak to", like normal commands that do a certain action and provide an answer. Playing Audio or Video or such that normally will be done by the device you spoke the command to will not work!
 
 A Request to Bespoken will take some seconds because the sent text is first converted into audio, which is then send to Alexa Voice Services and is then answered by Alexa and send back. So it easiely can take up to 10s.
@@ -40,10 +40,10 @@ A Request to Bespoken will take some seconds because the sent text is first conv
 | anwserJson | Answer from the adapter as JSON, may contain additional informations like card infos or such |
 | status | Status of the communication with bespoken (OK=Done/Wait for next command, PROCESSING=wait for answer from bespoken, FAILURE=Error happend while processing) |
 
-#### alexa2.0.echo-devices.Serialnumber.*
+### alexa2.0.echo-devices.Serialnumber.*
 Under "echo-devices" every amazon echo device is listed with it's serial number. Not every device shows all the states. Every device has it's own states as described below:
 
-#### alexa2.0.echo-devices.Serialnumber.Alarm.*
+### alexa2.0.echo-devices.Serialnumber.Alarm.*
 Alarm (Wecker) settings for each device, if available.
 
 | State name | meaning | value |
@@ -53,7 +53,7 @@ Alarm (Wecker) settings for each device, if available.
 | triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
 | new | time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
 
-#### alexa2.0.echo-devices.Serialnumber.Bluetooth.*
+### alexa2.0.echo-devices.Serialnumber.Bluetooth.*
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
 
 
@@ -62,7 +62,7 @@ Here you find all connected or known bluetooth device(s) with MAC address(es). T
 | connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
 | unpair | Button to unpair this device from the echo device |
 
-#### alexa2.0.echo-devices.Serialnumber.Commands.*
+### alexa2.0.echo-devices.Serialnumber.Commands.*
 With Commands you can trigger some actions on your Alexa-Device. If you use these on a multiroom device then they are executed independently and *will not* run in sync on the single devices!
 
 | State name | meaning | value |
@@ -86,7 +86,7 @@ Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volum
 Normally you only can send 250 characters per speak command. By using the semicolon it is possible to write as much as you want, as long as you separate 250 characters with a semicolon.
 Alexa will then speak the text after each other with a small break. You also can use the volume together with more 255 blocks by writing #Volume;#Block1;#Block2, a.s.o A volume set here will be used over a defined speak-volume.
 
-#### alexa2.0.echo-devices.Serialnumber.Info.*
+### alexa2.0.echo-devices.Serialnumber.Info.*
 Information about the Alexa device
 
 | State name | meaning | value |
@@ -100,7 +100,7 @@ Information about the Alexa device
 | name | Name of Alexa Device | Information |
 | SerialNumber | Serial number of Alexa device |
 
-#### alexa2.0.echo-devices.Serialnumber.Music-Provider.*
+### alexa2.0.echo-devices.Serialnumber.Music-Provider.*
 Directly tell Alexa to play Music or a playlist from supported music providers. Actually supported are: My Library, Amazon Music, Tune In. You can also include a multiroom device group name in the phrase to play it on this group (e.g. "SWR3 auf Erdgeschoss")
 
 | State name | meaning | value |
@@ -112,7 +112,7 @@ Directly tell Alexa to play Music or a playlist from supported music providers. 
 | Tune-In | Phrase to play with Tune In | Text input |
 | Tune-In-Playlist | Playlist to play with Tune In | Text input |
 
-#### alexa2.0.echo-devices.Serialnumber.Player.*
+### alexa2.0.echo-devices.Serialnumber.Player.*
 States to control the Playback of the device and to see the current status and media information
 
 | State name | meaning | value |
@@ -146,7 +146,7 @@ States to control the Playback of the device and to see the current status and m
 | service | name of the current music service | Information |
 | volume | Volume of playback. You can enter a value between 0-100% | INPUT Volume |
 
-#### alexa2.0.echo-devices.Serialnumber.Reminder.*
+### alexa2.0.echo-devices.Serialnumber.Reminder.*
 Reminder (Erinnerungen) settings for each device, if available.
 
 | State name | meaning | value |
@@ -156,14 +156,14 @@ Reminder (Erinnerungen) settings for each device, if available.
 | triggered | true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
 | new | Add a new reminder in the format <br> time(hh:mm),text<br> | Text Input <br>12:00,Remind me
 
-#### alexa2.0.echo-devices.Serialnumber.Routines.*
+### alexa2.0.echo-devices.Serialnumber.Routines.*
 Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
 
 | State name | meaning | value |
 | - | - | - |
 | Serial or internal name of routine | name of routine | Button
 
-#### alexa2.0.echo-devices.Serialnumber.Timer.*
+### alexa2.0.echo-devices.Serialnumber.Timer.*
 You can have one or more timer running on each Alexa device. Because of the very dynamic nature of timers there will be no further objects created like with Alarm or Reminders, but a way to get a triggered info exists.
 
 | State name | meaning | value |
@@ -171,14 +171,14 @@ You can have one or more timer running on each Alexa device. Because of the very
 | triggered | A timer got triggered | Information
 
 
-#### alexa2.0.echo-devices.Serialnumber.online
+### alexa2.0.echo-devices.Serialnumber.online
 Is this Alexa device online and connected to the Amazon cloud ?
 
 | State name | meaning | value |
 | - | - | - |
 | online | Is the device online ? | True / False
 
-#### alexa2.0.history
+### alexa2.0.history
 
 | State name | meaning | value |
 | - | - | - |
@@ -194,7 +194,7 @@ Is this Alexa device online and connected to the Amazon cloud ?
 | status | Status of last command to Alexa | SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT; last one is generated when activating the device by saying the wake word, or when the device discarded input as "not for me" |
 | summary | text/summary/action received by the device | Information |
 
-#### alexa.0.smart-home-devices
+### alexa.0.smart-home-devices
 Includes all smart home devices Alexa knows from your skills. States as follows, for all known devices:
 
 | State name | meaning | value |
@@ -203,7 +203,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 | discoverDevices | finds new smart home devices, same as the button in the Alexa App | Button
 | queryAll | queries all devices, only visible when at least one device is able to retrieve information | Button
 
-#### alexa.0.smart-home-devices.serialNumber.*
+### alexa.0.smart-home-devices.serialNumber.*
 | State name | meaning | value |
 | - | - | - |
 | #delete | delete smart home device from Alexa | Button
@@ -228,7 +228,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 
 With #brightness you can adjust the brightness of your light, #colorName is to pick one predefined color (0-144). For HUE Ambient light you can choose between 19 Values fom 0-18 in #colorTemperatureName. All light can switched on and off with #powerState.
 
-#### alexa2.0-info.*
+### alexa2.0-info.*
 | State name | meaning | value |
 | - | - | - |
 | connection | If connection to Alexa is OK | Information -> true / false |

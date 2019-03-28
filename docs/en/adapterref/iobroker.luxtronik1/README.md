@@ -21,9 +21,13 @@ Set comfoair - IP-adress, port and polling - intervall
 Tested on luxtronik 1 and AlphaInnotec heatpump
 
 Reads different values and stats of your heatpump (temperatures, errors, running time,...).
-Planned: additional stats and values and control functions (set temperatures, heat-curve, mode).
+Planned: control functions (set temperatures, heating-curve, mode).
 
 ## Changelog
+
+### 0.0.3
+
+-   Reads mode heating, water and heating-curve
 
 ### 0.0.2
 

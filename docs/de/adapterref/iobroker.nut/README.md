@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 4SodBEOGgVC7xNDqnGGZNac7CikqEi3lP5gVhp2Mgd8=
+hash: 4V5c4I6Vh/5cCcmu/zWPK9gorBweyRSZKnlLDbsUZkc=
 ---
 ![Logo](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/nut-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.nut.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nut.svg)
@@ -15,8 +16,6 @@ hash: 4SodBEOGgVC7xNDqnGGZNac7CikqEi3lP5gVhp2Mgd8=
 ![NPM](https://nodei.co/npm/iobroker.nut.png?downloads=true)
 
 # IoBroker.nut
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)](https://greenkeeper.io/)
-
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
 
 Dieser Adapter für ioBroker stellt eine Verbindung zu einem definierten NUT-Server her, um den Status und die Details einer verbundenen USV / USV in den Zuständen des ioRoker anzugeben, sodass sie dort verwendet werden können.
@@ -77,7 +76,7 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 Wenn Sie Probleme haben und der Adapter die Daten nicht liefert, können Sie die beiden Skripts im Verzeichnis "test" der Adapterinstallation (normalerweise in node_modules / iobroker.nut / test relativ zu Ihrem iobroker-Installationsverzeichnis) zum Ausprobieren verwenden die Befehlszeile. Rufen Sie die Skripts mit "node Dateiname.js" auf, um die erwarteten Parameter anzuzeigen. </ P>
 
 * **test_upslist.js** Stellt eine Verbindung zum NUT-Server her und gibt eine Liste der verfügbaren USV-Namen zurück
-* **test_upsvars.js** Stellt für eine definierte USV eine Verbindung zum NUT-Server her und gibt eine Liste der verfügbaren USV-Variablen zurück
+* **test_upsvars.js** Stellt eine Verbindung zu dem NUT-Server für eine definierte USV her und gibt eine Liste der verfügbaren USV-Variablen zurück
 
 ## Machen
 * docs für die Webseite

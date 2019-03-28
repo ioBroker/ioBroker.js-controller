@@ -2,11 +2,11 @@
 # ioBroker.places
 ![Number of Installations](http://iobroker.live/badges/places-installed.svg) ![Number of Installations](http://iobroker.live/badges/places-stable.svg) 
 [![NPM version](https://img.shields.io/npm/v/iobroker.places.svg)](https://www.npmjs.com/package/iobroker.places)
-[![Dependency Status](https://img.shields.io/david/basgo/iobroker.places.svg)](https://david-dm.org/basgo/iobroker.places)
+[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.places.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.places)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.places.svg)](https://www.npmjs.com/package/iobroker.places)
-[![Github Issues](http://githubbadges.herokuapp.com/BasGo/ioBroker.places/issues.svg)](https://github.com/BasGo/ioBroker.places/issues)
-[![Travis-CI](https://img.shields.io/travis/BasGo/ioBroker.places/master.svg)](https://travis-ci.org/BasGo/ioBroker.places)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)](https://ci.appveyor.com/project/BasGo/iobroker-places/branch/master)
+[![Github Issues](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)](https://github.com/iobroker-community-adapters/ioBroker.places/issues)
+[![Travis-CI](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.places)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/iobroker-places/branch/master)
 
 ## Description
 This is an ioBroker adapter for processing location information messages which should contain a user, a geoposition and a timestamp as minimum. The adapters analyzes whether the location information is within a radius around the location configuration of ioBroker or optional other places.
@@ -31,7 +31,7 @@ There is just one mandatory configuration value: the radius (meters) which will 
 
 To process location update just send a message using the following syntax:
 
-```javascript
+```
 // send a message to all instances of places adapter
 sendTo('locations', {
         user:       "Name of person", 
@@ -61,7 +61,7 @@ sendTo('locations.0', {
 
 The following block shows how response messages look like. For each value the ioBroker object tree has an according state.
 
-```javascript
+```
 {
     "user":         "Name of person",       // name of person (may have been replaced by user mapping)
     "latitude":     50.9576191,
@@ -94,7 +94,7 @@ Enable the option to **store raw requests**.
 ### 2. Create script (ioBroker.javascript)
 Create a short script with a subscription to the raw request, f.e. from **telegram.0.communicate.requestRaw**, and send a new request object to iobroker.places (or an instance of it):
 
-```javascript
+```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
     var data = JSON.parse(obj.newState.val);
     if (data.from && data.location) {

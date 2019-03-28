@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.snmp/README.md
 title: ioBroker.snmp
-hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
+hash: yys9Kg/cH7SuwJuiyiwBEtiXaUYwVB/m9dQgMSpbFB4=
 ---
 ![логотип](../../../en/adapterref/iobroker.snmp/admin/snmp.png)
 
@@ -13,23 +13,24 @@ hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
 ![тесты](https://travis-ci.org/CTJaeger/ioBroker.snmp.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.snmp.png?downloads=true)
 
-# IoBroker.snmp =================
-### Информация
+# IoBroker.snmp
+## Информация
 Этот адаптер опрашивает информацию с устройства SNMP, например, принтеры, сеть ...
 
+## Changelog
 ### 0.5.0
-* (Marcolotti) Добавить документацию (de, en, ru)
-* (Marcolotti) Добавить языки (de, en, ru)
+* (Marcolotti) Add documentation (de,en,ru)
+* (Marcolotti) Add languages (de,en,ru)
 
 ### 0.0.3
-* (Apollon77) Исправить тип объекта
+* (Apollon77)  Fix Object Type
 
 ### 0.0.2
-* (Bluefox) Исправления
+* (Bluefox)    Fixes
 
 ### 0.0.1
-* (Bluefox) рефакторинг
-* (Marcolotti) первый выпуск
+* (Bluefox)    refactoring
+* (Marcolotti) initial release
 
 ## License
 The MIT License (MIT)

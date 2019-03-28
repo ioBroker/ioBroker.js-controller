@@ -1,8 +1,5 @@
-# Moved to https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum
-
 ![Logo](admin/mihome-vacuum.png)
 # ioBroker mihome-vacuum adapter
-=================
 
 ![Number of Installations](http://iobroker.live/badges/mihome-vacuum-installed.svg) ![Number of Installations](http://iobroker.live/badges/mihome-vacuum-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)](https://www.npmjs.com/package/iobroker.mihome-vacuum)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)](https://www.npmjs.com/package/iobroker.mihome-vacuum)

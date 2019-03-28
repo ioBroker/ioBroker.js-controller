@@ -69,6 +69,11 @@ https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Changelog
 
+### 0.2.276
+* (Dutchman) implemented meter readings
+* (Dutchman & @AlCalzone) code improvements & stability
+* (Dutchman) fix issue with liquid unit reading (m3)
+
 ### 0.2.273
 * (Dutchman) fix issue in daily reset of start values
 * (Dutchman) Fix badges in readme

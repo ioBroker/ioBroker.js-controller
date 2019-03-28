@@ -2,6 +2,8 @@ const config = require('../config');
 const http = !config.secure ? require('http') : require('https');
 const express = require('express');
 const logger  = new require('./logger')();
+const path = require('path');
+const fs = require('fs');
 const port = normalizePort(process.env.PORT || config.port || 443);
 
 const app = {
@@ -21,7 +23,7 @@ function init() {
         };
     }
 
-    app.app.use(express.static(config.public));
+    app.app.use(express.static(path.join(__dirname, '..', config.public)));
 
     if (!config.secure) {
         app.app.use((req, res, next) => {

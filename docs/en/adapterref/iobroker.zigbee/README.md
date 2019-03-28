@@ -4,36 +4,36 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.zigbee.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.zigbee.svg
 BADGE-Tests: https://travis-ci.org/ioBroker/ioBroker.zigbee.svg?branch=master
 BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.zigbee/README.md
-title: ioBroker adapter for Zigbee devices
-hash: veWf6Ic8BYSpHiwxg87GNeC9GPi+9HS7kqOpfNOSH9c=
 ---
-# IoBroker Adapter for Zigbee devices
-With the help of a coordinator for Zigbee network, based on Texas Instruments SoC cc253x (and others), will create its own network, which can join other Zigbee devices. Thanks to the direct interaction with the coordinator, the Zigbee adapter allows the control of the devices without any gateways / bridges of the manufacturers (Xiaomi / Tradfri / Hue). About functioning of the Zigbee networks can [read here (English)](https://github.com/Koenkk/zigbee2mqtt/wiki/ZigBee-network).
+# ioBroker adapter for working with Zigbee-devices
+With the Zigbee-coordinator based on Texas Instruments SoC cc253x (and others), it creates its own zigbee-network, into which zigbee-devices are connected. By work directly with the coordinator, the driver allows you to manage devices without additional gateways / bridge from device manufacturers (Xiaomi / TRADFRI / Hue). About the device Zigbee-network can be read [here (in English)](https://github.com/Koenkk/zigbee2mqtt/wiki/ZigBee-network).
 
-## The hardware
-For the implementation of one of the enumerated devices / sticks is used, which are flashed with special ZNP firmware: [cc2530, cc2530, cc2530 + RF.](https://github.com/Koenkk/zigbee2mqtt/wiki/Supported-sniffer-devices#zigbee-coordinator)
+## Hardware
+For work, you need one of the following devices, flashed with a special ZNP firmware: [cc2531, cc2530, cc2530 + RF](https://github.com/Koenkk/zigbee2mqtt/wiki/Supported-sniffer-devices#zigbee-coordinator)
 
-![](img/CC2531.png) ![](../../../de/adapterref/iobroker.zigbee/img/sku_429478_2.png) §IIIIIII_2§§ §IIIII_3§§
+![](img/CC2531.png)
+![](img/sku_429478_2.png)
+![](img/sku_429601_2.png)
+![](img/CC2591.png)
 
-The required flasher / programmer and the preparation process are described in [here (English)] (https://github.com/Koenkk/zigbee2mqtt/wiki/Getting-started) or [here (Russian)](https://github.com/kirovilya/ioBroker.zigbee/wiki/%D0%9F%D1%80%D0%BE%D1%88%D0%B8%D0%B2%D0%BA%D0%B0).
+The necessary equipment for the firmware and the device preparation process is described [here (in English)](https://github.com/Koenkk/zigbee2mqtt/wiki/Getting-started) or [here (in Russian)](https://github.com/kirovilya/ioBroker.zigbee/wiki/%D0%9F%D1%80%D0%BE%D1%88%D0%B8%D0%B2%D0%BA%D0%B0)
 
-The devices connected to the Zigbee network transmit their status to the coordinator and notify them of events (push-button, motion detection, temperature change). This information is displayed in the adapter under the respective objects. In addition, it is possible to send some events / status back to the Zigbee device (state change sockets and lights, color and brightness settings).
+The devices connected to the Zigbee-network inform the coordinator of their status and events (button presses, motion detection, temperature change). This information is reflected in the ioBroker object-states. Some ioBroker states have feedback and send commands to the zigbee-device when the value changes (switching the state of the outlet or lamp, changing the scene or the brightness of the lamp).
 
-## Settings and pairing
-![](https://raw.githubusercontent.com/kirovilya/files/master/config.PNG)
+## Work with adapter
+To start the driver, you must specify the name of the port on which the cc253x device is connected.
 
-At the beginning, the USB port to which the cc253x is connected must be specified. How to recognize this [described here (Russian)](https://github.com/kirovilya/ioBroker.zigbee/wiki#%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%B0%D0%B4%D0%B0%D0%BF%D1%82%D0%B5%D1%80%D0%B0)
+To connect devices, you need to switch the Zigbee-coordinator to pairing mode by pressing the green button. The countdown will begin (60 seconds) until the device connectivity is available.
+To connect Zigbee devices in most cases, just press the pairing button on the device itself. But there are features for some devices. More information about pairing with devices can be found [here (in English)](https://github.com/Koenkk/zigbee2mqtt/wiki/Pairing-devices) or [here (in Russian)](https://github.com/kirovilya/ioBroker.zigbee/wiki#%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B8%D0%B2%D0%B0%D0%B5%D0%BC%D1%8B%D0%B5-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0)
 
-To connect the devices, put the Zigbee Network Coordinator in pairing mode by clicking on the green button in the adapter. Pairing mode is now active for 60 seconds. To connect the devices, pressing the button on the device to be connected is sufficient in the normal case. But there are also "special" devices. How to connect them is described [here English] (https://github.com/Koenkk/zigbee2mqtt/wiki/Pairing-devices) [or Russian](https://github.com/kirovilya/ioBroker.zigbee/wiki#%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B8%D0%B2%D0%B0%D0%B5%D0%BC%D1%8B%D0%B5-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0).
+After successful pairing, the device appears in the configuration panel. If the device appears in the configuration panel but has the type "undefined", then this is an unknown device and can not be work with it. If the device is in the list of available devices, but added as "undefined", then try to remove the device and add it again.
 
-After successful pairing, the device is displayed in the adapter. If a device (from the list) has the name "undefined", then try to delete it and pair it again. If it still does not work, please write an issue.
-Zigbee devices that are not in the list can be paired, but the adapter can not communicate with them.
+## Additional info
+There is a [friendly project](https://github.com/koenkk/zigbee2mqtt) with similar functionality on the same technologies, where you can work with the same devices using the MQTT protocol. Therefore, if any improvements or support for new zigbee-devices occur in the Zigbee2MQTT project, we can transfer and add the same functionality to this adapter. If you notice this, then write the issue - we'll postpone it.
 
-## Additional Information
-There is also a [Friendship project](https://github.com/koenkk/zigbee2mqtt) with the same functions and the same technology, which communicates with the same devices via an MQTT protocol. If any improvements or newly supported devices are included in the Zigbee2MQTT project, those can also be added to this project. Should you notice differences, please write an issue, we will take care of it
+There are knowledge bases that can be useful for working with Zigbee-devices and equipment:
+* in English https://github.com/koenkk/zigbee2mqtt/wiki
+* in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
 

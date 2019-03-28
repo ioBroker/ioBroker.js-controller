@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.landroid/README.md
 title: kein Titel
-hash: nrhYzTv+S3fXxWmbq8DAA3EMYA9YHt10hc+2MC11yMk=
+hash: qaS8jul+706hiqWqPN7W+SgKJAgitxi6ySYv+mNmgiA=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.landroid.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.landroid.svg)
@@ -12,10 +12,9 @@ hash: nrhYzTv+S3fXxWmbq8DAA3EMYA9YHt10hc+2MC11yMk=
 ![NPM](https://nodei.co/npm/iobroker.landroid.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.landroid/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.landroid?branch=master&svg=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.landroid.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.landroid/master/admin/landroid.png" width="64"/> ioBroker.landroid </h1>
-
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.landroid.svg)](https://greenkeeper.io/)
 
 ## Ein Worx Landroid-Adapter für ioBroker
 Dies ist ein ioBroker-Adapter für Ihre Worx Landroid-Mähmaschine. Es wurde mit einem Landroid WG796E getestet.

@@ -3,16 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: [Beta  - 已发布] SourceAnalytix
-hash: owuV3WE3lin3Rp4b08vvlLx5mJnF+ounVyzBX6PTFHg=
+hash: x4Jcz2GtRG/pKhPzA8CnttAg9HW2mFikuPbGhV95eHQ=
 ---
 ![测试](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
 ＃[Beta  - 已发布] SourceAnalytix
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg）](https://greenkeeper.io/)
-
 ##警告，此适配器需要节点8或更高！
 ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表值。
 您需要从设备输入数据（Wh，l / h或m3的总量），此适配器将：
@@ -72,6 +71,11 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 * [x]确保在适配器关闭时存储所有值以防止数据间隔
 
 ## Changelog
+
+### 0.2.276
+* (Dutchman) implemented meter readings
+* (Dutchman & @AlCalzone) code improvements & stability
+* (Dutchman) fix issue with liquid unit reading (m3)
 
 ### 0.2.273
 * (Dutchman) fix issue in daily reset of start values

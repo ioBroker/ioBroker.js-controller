@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum
-hash: 6Cep76PzwOlz7ts1x9vgh+PzEWvFSzfvZJpo5uvhnpo=
+title: ioBroker mihome-Vakuumadapter
+hash: 397aoJdVXEmf4jU9mhgcGIdTtzu5ml/ND4jdJKe9Hu8=
 ---
-# Verschoben zu https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mihome-vacuum-stable.svg)
@@ -14,7 +13,7 @@ hash: 6Cep76PzwOlz7ts1x9vgh+PzEWvFSzfvZJpo5uvhnpo=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
-miohome-vakuumadapter ===================
+# IoBroker mihome-Vakuumadapter
 [Deutsche beschreibung hier](README_de.md)
 
 Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
@@ -110,17 +109,17 @@ In der config add alexa state wird aktiviert, hier wird ein Hack gesetzt, ein zu
 
 Pause Pause mit Starttaste fortsetzen
 Wenn diese Option aktiviert ist, nimmt Vacuum die Zonenreinigung wieder auf, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonencause angehalten wurde.
-Wenn diese Option deaktiviert ist, startet der Staubsauger eine neue "normale Reinigung", wenn Sie den Startbefehl senden, auch wenn er während einer laufenden zoneclean angehalten wurde.
+Wenn diese Option deaktiviert ist, startet der Staubsauger eine neue "normale Reinigung", wenn Sie den Startbefehl senden, auch wenn er während eines laufenden zoneclean angehalten wurde.
 
 - Experimentell: Mit der Checkbox "Eigene Befehle senden" werden Objekte angelegt, über die Sie eigene Befehle an den Roboter senden und empfangen können.
 
 #### Zweiter Roboter
-Wenn zwei Roboter über ioBroker gesteuert werden sollen, müssen zwei Instanzen erstellt werden. Der zweite Roboter muss seinen eigenen Port ändern (Standard: 53421), so dass beide Roboter unterschiedliche Ports haben.
+Wenn zwei Roboter über ioBroker gesteuert werden sollen, müssen zwei Instanzen erstellt werden. Der zweite Roboter muss seinen eigenen Port ändern (Standardeinstellung: 53421), damit beide Roboter unterschiedliche Ports haben.
 
 ## Funktionen
 ### Befehle der S50 (zweite Generation)
 Die Kartengröße beträgt immer 52000 mm x 52000 mm, daher sind Werte von 0 bis 51999 mm möglich.
-Leider kann die Position und Position der Karte nicht abgefragt werden, dies kann sich von Saug zu Saug ändern. Als Basis dient immer die letzte Saugkarte sowie in der App.
+Leider kann die Position und Position der Karte nicht abgefragt werden, dies kann sich von Saugkraft zu Saugkraft ändern. Als Basis dient immer die letzte Saugkarte sowie in der App.
 Wenn der Roboter nur einen Bereich aufnimmt und die Karte immer auf dieselbe Weise erstellt, können Sie ihn zuverlässig an Orte senden oder den Bereich absaugen lassen.
 
 #### Gehe zu
@@ -187,7 +186,7 @@ Die folgenden Methoden und Parameter werden unterstützt:
 Weitere Methoden und Parameter finden Sie hier ([Verknüpfung](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)).
 
 ### Senden Sie benutzerdefinierte Befehle mit sendTo
-Sie können diese benutzerdefinierten Befehle auch von anderen Adaptern mit `sendTo` senden. Verwendung mit `method_id` und `params` wie oben definiert:
+Sie können diese benutzerdefinierten Befehle auch von anderen Adaptern aus mit `sendTo` senden. Verwendung mit `method_id` und `params` wie oben definiert:
 
 ```
 sendTo("mihome-vacuum.0", "sendCustomCommand",
@@ -221,7 +220,7 @@ Die unterstützten Befehle sind:
 | Status des Verbrauchsmaterials (Pinsel usw.) zurücksetzen | `resetConsumables` | - Keine - | Rufsignatur unbekannt |
 | Holen Sie sich eine Zusammenfassung aller vorherigen Reinigungsvorgänge | `getCleaningSummary` | - Keine - | |
 | Holen Sie sich eine detaillierte Zusammenfassung eines vorherigen Reinigungsvorgangs | `getCleaningRecord` | `recordId` | |
-| Holen Sie sich eine Karte | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis zu tun ist
+| Holen Sie sich eine Karte | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis zu tun ist |
 | Den aktuellen Status des Roboters abrufen `getStatus` | - Keine - | |
 | Rufen Sie die Seriennummer des Roboters ab `getSerialNumber` | - Keine - | |
 | Detaillierte Geräteinformationen anzeigen `getDeviceDetails` | - Keine - | |
@@ -240,7 +239,7 @@ Entschuldigung, noch nicht fertig.
 ![Widget](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
 
 ## Bugs
-- Gelegentliche Verbindungsabbrüche sind jedoch nicht auf den Adapter zurückzuführen, sondern meist auf seine eigenen Netzwerke
+- gelegentliche Verbindungsabbrüche sind jedoch nicht auf den Adapter zurückzuführen, sondern meist auf seine eigenen Netzwerke
 - Widget zur Zeit ohne Funktion
 
 ## Changelog

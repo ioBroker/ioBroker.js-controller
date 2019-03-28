@@ -3,14 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: vart56HLN0h2tcy1pehj3w84wBmASv8521pU3K0FHu0=
+hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
 ---
-![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg）](https://greenkeeper.io/)
+![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
 ![替代文字](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/discovergy-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.discovergy.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
 
 ＃ioBroker.discovergy
 这是适用于您的Discovergy Power测量仪的ioBroker适配器。

@@ -4,6 +4,7 @@ BADGE-Build status: https://ci.appveyor.com/api/projects/status/9c3a9qlw4ut32hbu
 BADGE-Number of Installations: http://iobroker.live/badges/sonnen-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.sonnen.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.sonnen.svg
+BADGE-Greenkeeper badge: https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.sonnen.png?downloads=true
 ---
 ![Logo](media/sonnen.png)

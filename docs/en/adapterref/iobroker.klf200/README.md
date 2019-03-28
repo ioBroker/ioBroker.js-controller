@@ -7,107 +7,118 @@ BADGE-GitHub license: https://img.shields.io/github/license/MiSchroe/ioBroker.kl
 BADGE-NPM version: https://img.shields.io/npm/v/iobroker.klf200.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.klf200.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.klf200.png?downloads=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.klf200/README.md
-title: KLF-200 adapter documentation
-hash: Ju0Pch23b2A9SxISJePGcq8iK7w8OF/BBWi9nSZbzys=
 ---
 # KLF-200 adapter documentation
-This adapter is used to control a VELUX® KLF-200 interface. This adapter is neither an official VELUX product nor is it supported by the company that owns the VELUX products.
 
-The main purpose of this adapter is the control of electric skylights and / or electric blinds or shutters.
-However, the KLF-200 interface is able to connect other devices such as lamps, switches, blinds, etc.
-I did not design the adapter for use with these devices. So it could be possible that these devices can also be controlled by this adapter.
+This adapter is for controlling a VELUX® KLF-200 interface. This adapter is neither an official VELUX product nor is it supported by the company that owns the VELUX products.
 
-The adapter uses the internal REST API of the KLF-200 interface and you do not need to connect the inputs and outputs, although it is still possible to use them in parallel.
+The main intention of this adapter is to control electric roof windows and/or electric blinds or roller shutters. Though the KLF-200 interface is able to connect to further devices like lights, switches, canvas blinds etc. I haven't developed the adapter for use with these kind of devices. Thus, it could be possible, that these devices could be controlled by this adapter, too.
 
----
+The adapter works with the internal REST API of the KLF-200 interface and you don't need to wire the inputs and outputs of the box, though it's still possible to use them in parallel.
+
+----------------------------------------------------------------------------------------------------------------
 
 ## Prepare your KLF-200 interface
-To use this adapter, you must set up your KLF-200 box in **interface mode** It does not work if you use your box as a repeater.
 
-> For a detailed explanation of the following tasks, please read the manuals provided with the box.
->> It is assumed that you have successfully logged into your box in a web browser.
+To use this adapter you have to setup your KLF-200 box in the **interface mode**. It doesn't work if you use your box as a repeater.
 
-### Products
-Any product you want to control with this adapter must be registered on the My Products page.
-You can register new products either by
+> For a detailed explanation of how to accomplish the following tasks please read the manuals that came with your box.
+>
+> It is assumed that you have successfully logged into your box in a web browser.
 
-- Copy from another remote
+
+### Setup products
+
+Each product that you want to control by this adapter has to be registered on the "My products" page. You can register new products either by
+- Copy from another remote control
 - Search for products
 
-When all your products are registered, you should see a list like the following:
+If all of your products are registered you should see a list like the following:
 
-![Screenshot of "My products" of the KLF-200 interface](../../../de/adapterref/iobroker.klf200/img/ProductList.PNG)
+![Screenshot of "My products" of the KLF-200 interface](img/ProductList.PNG)
 
-### Set up scenes
-To record a scene, click the button
 
-![Record program button](../../../de/adapterref/iobroker.klf200/img/RecordProgramButton.PNG)
+### Setup scenes
 
-This will open the *program preparation in progress* window. Now use the remote control provided with your product to change something, e.g. open the window to 40%. Then enter a name for the program and click *Save Program*
+To record a scene you have to click on the button
 
-![Screenshot of Recording in progress](../../../de/adapterref/iobroker.klf200/img/RecordingInProgress.PNG)
+![Record program button](img/RecordProgramButton.PNG)
 
-> TIP:> - Name your program by product and opening level, for example window bathroom 40%. However, the adapter does not use naming conventions.
-> - If your window is closed, start with 100% opening and continue down with each additional program until you reach 0%.
-> - You have a maximum of 32 programs that you can store in the box. Therefore, plan your number of steps as there is no real difference between a 30% or 40% open window.
+This will open the *Recording in progress* window. Now, use your remote control that comes with your product to change something, e.g. open the window to 40%. Then type in a name for the program and click on *Save program*.
 
-When you're done recording programs, you'll get a list like this:
+![Screenshot of Recording in progress](img/RecordingInProgress.PNG)
 
-![Screenshot of the program list](../../../de/adapterref/iobroker.klf200/img/ProgramList.PNG)
+> HINT:
+> * Name your program after product and opening level, e.g. Window bathroom 40%, though the adapter doesn't use any naming conventions.
+> * If your window is closed start with an opening level of 100% and go down with each subsequent program until you reach 0%.
+> * You have a maximum of 32 programs you can save in the box. Therefore, plan your number of steps as there is no real difference in a window opened 30% or 40%.
 
-### Establish connections
-This last step is optional. If you are not using the input and output lines, you may have noticed that the small LED on the box is constantly flashing. To get rid of the annoying flashing, you need to set up at least one connection.
+If you have finished recording programs you will end with a list like the following:
 
-You just have to set it up in the box, you do not have to wire anything! Just pick something.
+![Screenshot of the program list](img/ProgramList.PNG)
 
----
+
+### Setup connections
+
+This last step is optional. If you don't use the input and output wires you may have noticed that the tiny LED on the box is flashing all the time. To get rid of the annoying flashing you have to setup at least one connection.
+
+You only have to set it up in the box you don't need to wire anything! Just choose anything you like.
+
+----------------------------------------------------------------------------------------------------------------
 
 ## Configure the adapter
-![Screenshot of the adapter configuration](../../../de/adapterref/iobroker.klf200/img/AdapterConfiguration.PNG)
+
+![Screenshot of the adapter configuration](img/AdapterConfiguration.PNG)
 
 ### Host
-Host name of your KLF-200 interface. This is the same address you enter in the address bar of your web browser to connect to your box.
+
+Host name of your KLF-200 interface. This is the same you type into the address bar of your web browser to connect to your box.
 
 ### Password
-The password you need to connect to your KLF-200 interface. It's the same thing you use when connecting in your web browser.
 
-> The default password of the KLF-200 is `velux123`, but you should have changed it anyway!
+The password you need to connect to your KLF-200 interface. It's the same you use when connecting to your box in your web browser.
 
-### Query frequency in minutes
-<span style="color: #ff0000"><strong><em>This option is planned for a future release. If you want to reload the configuration, you must restart the adapter.</em></strong></span>
+> The default password of the KLF-200 is `velux123`, but you should have changed it, anyway!
 
-The number of minutes after which the adapter reloads the configuration from the KLF-200 interface.
+### Polling interval in minutes
 
----
+<span style="color: #ff0000">**_This option is planned for a future release. If you want to reload the configuratio you have to restart the adapter._**</span>
 
-## Using the adapter
-After the adapter has read the metadata from the KLF-200 interface, you will find the following states in the object tree:
+The number of minutes after which the adapter reloads the configuration from the KLF-200 interface again.
 
-Device | Channel | State | Data type | Description --- | --- | --- | --- | --- products | | | | Has a subentry for each product in the product list of the KLF-200.
-products | | productsFound | value | The number of products in the list. Read-only.
-products | 0..n | category | text | Product category. Read-only.
-products | 0..n | level | level | Current state of the product Set this value for the corresponding scene to be executed. Read Write.
-products | 0..n | scenesCount | value | Number of scenes in which the product is used. Read-only.
-scenes | | | | Has a subentry for each product in the product list of the KLF-200.
-scenes | | scenesFound | value | The number of scenes in the list. Read-only.
-scenes | 0..n | productsCount | value | Number of products in this scene. Read-only.
-scenes | 0..n | run | button.play | Indicates if the scene is running. Set this value to run the scene. Read Write.
-scenes | 0..n | silent | indicator.silent | Indicates whether the scene is running in quiet mode (if supported by the products in the scene). Read-only.
+----------------------------------------------------------------------------------------------------------------
 
-> **IMPORTANT:** > The IDs used in the channels are the IDs coming from the KLF-200 interface. If you make changes to the product list or program list in your KLF-200, the IDs may change.
+## Use the adapter
 
-To execute a scene, you can set the status `run` of the scene to `true` or set the status `level` of the product to a value that corresponds to a scene that sets the product to this level ,
+After the adapter has read the meta data from the KLF-200 interface you will find the following states in the object tree:
+
+Device   | Channel | State         | Data type        | Description
+---------|---------|---------------|------------------|------------------------------------------------------
+products |         |               |                  | Has a sub-entry for each product found in the product list of the KLF-200.
+products |         | productsFound | value            | The number of products in the list. Read-only.
+products | 0..n    | category      | text             | Category of the product. Read-only.
+products | 0..n    | level         | level            | Current level of the product. Set to run the corresponding scene. Read/write.
+products | 0..n    | scenesCount   | value            | Number of scenes in which the product is used. Read-only.
+scenes   |         |               |                  | Has a sub-entry for each scene found in the program list of the KLF-200.
+scenes   |         | scenesFound   | value            | The number of scenes in the list. Read-only.
+scenes   | 0..n    | productsCount | value            | Number of products in this scene. Read-only.
+scenes   | 0..n    | run           | button.play      | Indicates if the scene is running. Set to run the scene. Read/write.
+scenes   | 0..n    | silent        | indicator.silent | Indicates if the scene is run in silent mode (if supported by the products of the scene). Read-only.
+
+> **IMPORTANT:**
+>
+> The IDs that are used in the channels are the IDs coming from the KLF-200 interface. If you make changes at the products list or at the program list in your KLF-200 the IDs may change.
+
+To run a scene you can either set the `run` state of the scene to `true` or you can set the `level` state of the product to a value that corresponds to a scene that sets the product to that level.
 
 ### Example
-Suppose your bathroom window is on channel `0`. You have a scene on channel `10` that opens the bathroom window to 40%.
 
-```javascript
+Assuming your bathroom window is channel `0`. You have a scene on Channel `10` that opens the bathroom window at 40%.
+
+````javascript
 // Variant 1: Open the bathroom window at 40% using the scenes run state:
 setState('klf200.0.scenes.10.run', true);
-/*
+/* 
     The following will happen:
     1. Your window will start to move to 40% opening level.
     2. After your window has stopped, klf200.0.scenes.10.run will be set to 'false' again.
@@ -131,22 +142,23 @@ setState('klf200.0.products.0.level', 41);
     2. klf200.0.products.0.level will be reset to the previous value, e.g. 40
 */
 
-```
+````
 
----
 
-## Known restrictions
-The adapter controls the KLF-200 using the internal REST API, which is used by the Web interface of the box.
-Although we use only a subset of the API, there are some limitations:
+----------------------------------------------------------------------------------------------------------------
 
-- The adapter can not read the current opening degree of a window. If you control it with your remote control or it closes due to rain, the adapter will not know about it and will still display the last known value.
-- The KLF-200 interface is limited to a maximum of 32 scenes.
-- The adapter does not know when an action ended. The state stays true for at least 30 seconds.
-- Do not perform scenes too fast in a row. The KLF-200 can then report errors. (You can find the errors in the log.)
+## Known limitations
 
----
+The adapter controls the KLF-200 using the internal REST API that is used by the web interface of the box. Though we use only a subset of the API there are some restrictions:
 
-VELUX and the VELUX logo are registered trademarks of VKR Holding A / S.
+* The adapter can't read the current opening level of a window. If you control it with your remote control or it will be closed due to rain the adapter doesn't know about it and it will still show the last known value.
+* The KLF-200 interface is limited to a maximum of 32 scenes.
+* The adapter doesn't know, when an action has finished. The running state will stay `true` for at least 30 seconds.
+* Don't run scenes to fast after each other. The KLF-200 may throw errors. (You will find the errors in the log.)
+
+----------------------------------------------------------------------------------------------------------------
+
+VELUX and the VELUX logo are registered trademarks of VKR Holding A/S.
 
 ## Changelog
 

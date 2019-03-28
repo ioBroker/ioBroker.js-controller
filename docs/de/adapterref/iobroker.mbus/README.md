@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
+hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
 ---
 ![Logo](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/mbus-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.mbus.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mbus.svg)
@@ -14,8 +15,8 @@ hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.mbus?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.mbus.png?downloads=true)
 
-# IoBroker.mbus ========================
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)](https://greenkeeper.io/)
+# IoBroker.mbus
+======================
 
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
@@ -23,7 +24,7 @@ Dieser Adapter für ioBroker stellt über TCP oder seriell eine Verbindung zu ei
 
 ## Beschreibung der Parameter
 ### Gateway IP / TCP-Port
-IP-Adresse und Port des M-Bus Master / Gateways bei Verwendung von TCP.
+IP-Adresse und Port des M-Bus Master / Gateway bei Verwendung von TCP.
 
 ### Serielle Schnittstelle / Baudrate
 Serielle Schnittstelle und Baudrate des M-Bus Master / Gateways.
@@ -35,7 +36,7 @@ Intervall in Sekunden zum Aktualisieren der Daten. Der Standardwert (falls leer)
 Sie können primäre (1-250) und sekundäre (16 Zeichen) M-Bus-IDs verwenden
 
 ## Wie lese ich das Gerät auf Anfrage?
-In den erstellten Zuständen für jedes Gerät gibt es einen Zustand namens "UpdateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, wird das Intervall neu gestartet, nachdem die Daten empfangen wurden.
+In den erstellten Zuständen für jedes Gerät gibt es einen Zustand namens "UpdateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, startet das Intervall neu, nachdem die Daten empfangen wurden.
 
 ## Machen
 * verschlüsselte Nutzdatenbehandlung (falls von jedem benötigt)

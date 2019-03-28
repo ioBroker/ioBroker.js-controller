@@ -1,6 +1,5 @@
 ![Logo](admin/snmp.png)
 # ioBroker.snmp
-=================
 
 ![Number of Installations](http://iobroker.live/badges/snmp-installed.svg) ![Number of Installations](http://iobroker.live/badges/snmp-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.snmp.svg)](https://www.npmjs.com/package/iobroker.snmp)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.snmp.svg)](https://www.npmjs.com/package/iobroker.snmp)
@@ -8,8 +7,10 @@
 
 [![NPM](https://nodei.co/npm/iobroker.snmp.png?downloads=true)](https://nodei.co/npm/iobroker.snmp/)
 
-### Info
+## Info
 This adapter polls information from SNMP Device like Printers, Network ...
+
+## Changelog
 ### 0.5.0
 * (Marcolotti) Add documentation (de,en,ru)
 * (Marcolotti) Add languages (de,en,ru)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sony-bravia/README.md
 title: без названия
-hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
+hash: XCOASiAyMqK7o0Z23u+O+56fjJ7pRsxUwo53KyuS+k8=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sony-bravia.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sony-bravia.svg)
@@ -12,10 +12,9 @@ hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
 ![NPM](https://nodei.co/npm/iobroker.sony-bravia.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sony-bravia/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.sony-bravia?branch=master&svg=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sony-bravia/master/admin/sony-bravia.png" width="64"/> ioBroker.sony-BRAVIA </h1>
-
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg)](https://greenkeeper.io/)
 
 ## Адаптер Sony Bravia для Android Smart-TV для ioBroker
 Это адаптер ioBroker для вашего Sony Bravia Smart-TV с ОС Android. Протестировано с KD-65X8507C.
@@ -24,7 +23,7 @@ hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
 * Включите телевизор
 * На телевизоре выберите «Настройки»> «Сеть»> «Настройка домашней сети»> «Удаленное устройство / Рендерер»> «Вкл.».
 * На телевизоре выберите «Настройки»> «Сеть»> «Настройка домашней сети»> «Управление IP»> «Аутентификация»> «Обычный и общий ключ».
-* На телевизоре выберите «Настройки»> «Сеть»> «Настройка домашней сети»> «Удаленное устройство / средство рендеринга»> «Ввести предварительный общий ключ»> «0000» (или любой другой ключ PSK).
+* На телевизоре выберите «Настройки»> «Сеть»> «Настройка домашней сети»> «Удаленное устройство / средство рендеринга»> «Введите предварительный общий ключ»> «0000» (или то, что вы хотите, чтобы ваш ключ PSK был)
 * На телевизоре выберите «Настройки»> «Сеть»> «Настройка домашней сети»> «Удаленное устройство / Рендерер»> «Простое управление IP»> «Вкл.».
 
 ## Changelog

@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.homee/README.md
 title: ioBroker homee适配器
-hash: 9vcI7FKhF9O/zUxisnOnNIvDoBqzWG1bNE4Gj9G3eHY=
+hash: TTc69nv+1qEEwSCcsluUShKWKjdRud6tieAyi14pIQM=
 ---
 ![商标](../../../en/adapterref/iobroker.homee/admin/homee.png)
 
 ![安装数量](http://iobroker.live/badges/homee-stable.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)
 
-＃ioBroker homee Adapter [![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg）](https://greenkeeper.io/)
+#ioBroker homee适配器
 =================
 
 ##说明
 此适配器将ioBroker连接到homee，并提供以下功能：
 
-*允许通过IP或家庭ID和用户名/密码连接
+*允许通过IP或家庭ID和用户名/密码进行连接
 *读取所有设备（节点）和状态（属性）并显示其值，包括ioBroker中的更新
 *允许更改ioBroker中的值并将它们发送回家中以控制设备
 *充当ioBroker历史记录提供商，用于在家中启用历史记录的所有州设备。这意味着您可以使用存储在homee中的历史值来使用flot，Admin或JavaScript（包括数据级别上的所有聚合）在ioBroker中显示，例如从历史适配器

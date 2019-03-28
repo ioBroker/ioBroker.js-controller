@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ham-wemo/README.md
 title: 基于homebridge-platform-wemo的ioBroker Wemo适配器
-hash: U1upq2NvjTL6z460993OoevlvEMlO11geTRsJqicQrU=
+hash: hx6VgM2P5/guHzDNcKGwUoLd2cDvrtZycBsfurE7Sh0=
 ---
 ![商标](../../../en/adapterref/iobroker.ham-wemo/admin/ham-wemo.png)
 
 ![安装数量](http://iobroker.live/badges/ham-wemo-stable.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg)
 
-＃ioBroker基于homebridge-platform-wemo的Wemo适配器[![Greenkeeper徽章]（https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg）](https://greenkeeper.io/)
+＃ioBroker基于homebridge-platform-wemo的Wemo适配器
 =================
 
 ##说明

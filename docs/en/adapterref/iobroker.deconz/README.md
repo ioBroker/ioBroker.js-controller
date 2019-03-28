@@ -25,6 +25,18 @@ Required node.js >= 0.12.
 
 ## Changelog
 
+### 1.0.0
+*  (thewhobox) skip helper groups
+*  (thewhobox) added channels for lights, groups and sensors
+*  (thewhobox) skip unusable sensors
+*  (thewhobox/KristianHeider) turn light/groups on when changing brightness
+*  (jey-cee) added object group for remotes
+*  (jey-cee) stop overwrite objects on adapter start
+*  (jey-cee) prepared for compact mode
+*  (jey-cee) new possible to change offset (if the device accept it)
+*  (jey-cee) new possible to change duration (if the device accept it)
+
+
 ### 0.4.0
 * (asgothian) Fix for hue change
 * (halloamt)  Added support for dimming lights and groups

@@ -1,318 +1,320 @@
----
-BADGE-Build Status Travis: https://travis-ci.org/foxriver76/ioBroker.xbox.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/s1we3cpcbxm97upp/branch/master?svg=true
-BADGE-Number of Installations: http://iobroker.live/badges/xbox-stable.svg
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.xbox.svg
-BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.xbox.svg
-BADGE-NPM: https://nodei.co/npm/iobroker.xbox.png?downloads=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.xbox/README.md
-title: Xbox adapter
-hash: B+HOIdyHj0b3Mv2rWY8zlsmiUO0i+KPHylmETFM704c=
----
-![logo](../../../de/adapterref/iobroker.xbox/media/xbox.png)
+![Logo](admin/xbox.png)
+# ioBroker.xbox
+===========================
 
-# Xbox adapter
-The Xbox Adapter allows the integration of an Xbox One or Xbox One X game console into the ioBroker system.
+[![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.xbox.svg?branch=master)](https://travis-ci.org/foxriver76/ioBroker.xbox)[![Build status](https://ci.appveyor.com/api/projects/status/s1we3cpcbxm97upp/branch/master?svg=true)](https://ci.appveyor.com/project/foxriver76/iobroker-xbox/branch/master)
+![Number of Installations](http://iobroker.live/badges/xbox-installed.svg) ![Number of Installations](http://iobroker.live/badges/xbox-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.xbox.svg)](https://www.npmjs.com/package/iobroker.xbox)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.xbox.svg)](https://www.npmjs.com/package/iobroker.xbox)
+[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.xbox.svg)](https://greenkeeper.io/)
 
-## Overview
-### Xbox One game console
-The Xbox One is a game console developed by Microsoft that currently plays popular video games. In addition, the Xbox One is able to control various components of the home theater system and enables the use of Microsoft Apps. <br/> Further characteristics of the Xbox One are currently the Xbox One X and the Xbox One S, which offer the same functions as the origin console, but with improved performance.
+[![NPM](https://nodei.co/npm/iobroker.xbox.png?downloads=true)](https://nodei.co/npm/iobroker.xbox/)
 
-### Xbox Adapter
-The Xbox Adapter can be set up for one Xbox One console each, allowing control and reading of information. <br/> The adapter automatically creates all commands and states in the form of objects. A large part of the states can also be read out, such as: For example, the current title, the power-on state, etc. By designating or reading the created objects, their status can be changed and thus actions can be triggered or queried.
+## Steps 
 
-## Prerequisites before installation
-1. Before the adapter can be added, at least Python 3.5 must be on the host system
+* Fulfill the requirements
+* Install the adapter and control your Xbox One or Xbox One X
 
-be installed.
+## Requirements
 
-2. If the Xbox is to be switched on via the adapter, the
+* You need to have Python >= 3.5 installed
+* For Linux additional packages are required.
+   
+   The required packages will automatically be installed. Due to this fact root privileges are required as well as the 
+   --unsafe-perm flag. If this fails, you have to install the packages manually (build-essential libssl-dev libffi-dev 
+   python3-dev).
+* If you want to power your Xbox on with this adapter, you have to
+[configure the instant-on power modus](https://support.xbox.com/en-GB/xbox-one/console/learn-about-power-modes) on your Xbox.
 
-['Fast Startup' mode](https://support.xbox.com/de-DE/xbox-one/console/learn-about-power-modes) be configured in the console.
-
-Thanksgiving
-Many thanks to [Team Open Xbox](https://openxbox.org/) for the development and provision of [xbox-rest-server](https://github.com/OpenXbox/xbox-smartglass-rest-python) and the associated libraries.
+## Acknowledgement
+Thanks to [Team Open Xbox](https://openxbox.org/) for developing and maintaining the
+[xbox-rest-server](https://github.com/OpenXbox/xbox-smartglass-rest-python) and the related libraries.
+Without their effort, developing this package would not be possible.
 
 ## Installation
-An instance of the adapter is installed via the ioBroker Admin interface. The detailed instructions for the necessary installation steps can be found here (TODO: LINK). <br/><br/> After completing the installation of an adapter instance, a configuration window opens automatically.
+You can install the adapter via Admin interface or on your terminal.
 
-## Configuration
-![Adapter Configuration](../../../de/adapterref/iobroker.xbox/media/adapter-configuration.png "configuration") <br/> <span style="color:grey">* Admin interface *</span>
+### Admin
+1. Open your ioBroker web interface in a browser (eg: 192.168.30.70:8081)
+2. Click on Tab "Adapters"
+3. Type "Xbox" in the filter
+4. Click on the three points and then on the "+" symbol of the Xbox adapter <br/>
+![Add Adapter](/docs/en/img/plusAddAdapter.png)
 
-| Field | Description |
-|:-------------|:-------------|
-| Xbox Live ID | Enter the Live ID of the Xbox, which can be found in the console settings. |
-| IP | Enter the IP address of the console here. |
-| Authentication with Xbox Live | If the checkbox has been ticked, the email address and password will log in to Xbox Live. |
-| E-mail address | Enter the e-mail address of the Xbox Live account here. |
-| Password | Enter the password for the Xbox Live account. |
+### Terminal
+Navigate into your ioBroker folder and execute the following command (on Linux Root privileges are required to install 
+the additional packages, use sudo):
+ 
+```bash
+npm i iobroker.xbox --unsafe-perm
+```
 
-After completing the configuration, the configuration dialog is quit with `SPEICHERN UND SCHLIEßEN`.
-This will result in a subsequent restart of the adapter.
+### Setup
+1. Fill in the Live ID of your Xbox in the settings of the adapter. You can find the Live ID in the settings of your console.
+2. Fill in the ip address of your Xbox. <br/>
+![Adapter Configuration](/docs/en/img/adapter-configuration.png)
+3. If you want to use the features which require authentication on Xbox Live,
+you have to enable the authenticate checkbox.
+4. Provide the e-mail address as well as the password of you Xbox Live account.
 
-## Instances
-The installation of the adapter has created an active instance of the Xbox Adapter in the section `Instanzen`. <br/><br/> ![instance](../../../de/adapterref/iobroker.xbox/media/instance.png "instance") <br/> <span style="color:grey">* First instance *</span>
+## States
+In this section you can find a description of every state of the adapter.
 
-On an ioBroker server several Xbox Adapter instances can be created. Also, one can be connected to multiple ioBroker servers at the same time. If several devices are to be controlled by an ioBroker server, an instance should be created for each Xbox. <br/><br/> Whether the adapter is enabled or connected to the Xbox is indicated by the color of the instance&#39;s Status field. If the mouse pointer points to the symbol, further detailed information is displayed.
+### Channel Info
 
-## Objects of the adapter
-In the section `Objekte` all information and activities supported by the Xbox are listed in a tree structure. In addition, it also informs you whether the communication with the Xbox is running smoothly.
-
-![objects](../../../de/adapterref/iobroker.xbox/media/objects.png "Xbox objects") </br> <span style="color:grey">* Objects of the Xbox Adapter *</span>
-
-Subsequently, the objects are subdivided by channel.
-Each data point is associated with its associated data type and permissions. If it is a button, the description of the type and the rights is omitted.
-Permissions can be read (R) as well as write (W). Each data point can at least be read (R) while others can also be described. To search for a specific data point, the search is recommended using the key combination "CTRL + F".
-
-### Channel: Info
 * info.connection
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
-
-   * Read-only indicator that is true if the ioBroker is connected to the Xbox. *
+    |Data type|Permission|
+    |:---:|:---:|
+    |boolean|R|
+   
+   *Read-only boolean indicator. Is true if adapter is connected to Xbox.*
 
 * info.currentTitles
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-* Read only JSON string, which consists of key-value pairs. The key is the name of a running title, and the value of the ID of the title is converted to the hexadecimal system. This ID can be used to start the desired title with the settings.launchTitle State. *
+   *Read-only JSON string, which consits of key-value pairs. The key is the name of an active title,
+   while the value is the title id converted to hexadecimal. The hex title id can be used to launch a
+   title via the settings.launchTitlte state.*
 
 * info.activeTitleName
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-    * Contains the name of the active title (title in the foreground), in the form of a string. *
+    *Contains the name of the active title (which is focused) as read-only string.*
 
 * info.activeTitleId
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-    * Contains the ID of the title converted to hexadecimal in the foreground as a string. *
+    *Contains the id (converted to hex) of the active title (which is focused) as read-only string.*
 
 * info.activeTitleImage
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-* Contains the link to the cover image of the title in the foreground in the form of a string.
-The state is only present as well as functional if the authentication in the adapter settings has been activated. *
+    *Contains the link to the active title (which is focused) cover image as a string.
+    The state is only available when authenticate is activated in the settings.*
 
 * info.activeTitleType
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-    * Contains the type of title that is in the foreground, in the form of a read-only string. Eg 'Game'. *
+    *Contains the type of the active title (which is focused) as a read-only string, e.g. 'Game'.*
 
 * info.gamertag
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R|
 
-* String value containing the gamertag of the currently authenticated account.
-The state is only present as well as functional if the authentication in the adapter settings has been activated. *
+    *String which contains the gamertag of the currently authenticated user.
+    The state is only available when authenticate is activated in the settings.*
 
 * info.authenticated
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|
+    |:---:|:---:|
+    |boolean|R|
 
-* Boolean value, which is true if authentication with Xbox Live was successful, otherwise false.
-The state is only present as well as functional if the authentication in the adapter settings has been activated. *
+    *Boolean value which indicates if you are successfully authenticated on Xbox Live.
+    The state is only available when authenticate is activated in the settings.*
+   
+### Channel Settings
 
-### Channel: Settings
 * settings.power
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R / W |
+    |Data type|Permission|
+    |:---:|:---:|
+    |boolean|R/W|
 
-* Boolean value with which the Xbox can be switched on and off. Also serves as an indicator whether the Xbox is on or off. *
+   *Boolean-value to turn your Xbox on and off. State also indicates current power status of the Xbox.*
 
 * settings.launchTitle
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R / W |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R/W|
 
-* By setting the string value to a hexadecimal title ID, a title can be started on the Xbox.
-The title ID of an active game can be found out by the info.currentTitles State.
-The state is acknowledged as soon as it is submitted to the Xbox, which does not mean that the command was executed. *
+   *A writable string, which allows the user to launch a specific title by its title id
+   (converted to hexadecimal). To find out about the hex code of a desired title, you can
+   use the info.currentTitles state. The command is acknowledged when it has arrived at the server,
+   which does not mean, that the command has been executed.*
 
-   * Example: *
-
-```javascript
-setState('settings.launchTitle', '2340236c', false); // Starte Red Dead Redemption 2
-```
+   *Example:*
+    ```javascript
+    setState('settings.launchTitle', '2340236c', false); // Launch Red Dead Redemption 2
+    ```
 
 * settings.inputText
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | String | R / W |
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|R/W|
 
-* By describing the String States, text can be inserted in an active input field, eg. B. to send a private message or enter a code.
-The state is acknowledged as soon as it is submitted to the Xbox, which does not mean that the command was executed. *
+   *Writable string, which allows the user to fill text into an active text field, e.g. to send
+   private messages. The command is acknowledged when it has arrived at the server, which does
+   not mean, that the command has been executed.*
 
-   * Example: *
-
-```javascript
-setState('settings.inputText', 'H1 M8 h0w d0 u do?', false); // Versendet einen nerdigen Text
-```
+   *Example:*
+   ```javascript
+   setState('settings.inputText', 'H1 M8 h0w d0 u do?', false); // Send a super nerdy text to someone
+   ```
 
 * settings.gameDvr
 
-* Button, which records the last minute of a game when pressed. The button is available if the authentication has been made in the settings.
-Also, the authenticated account must be logged on to the Xbox and a game must be in the foreground.
+    *Button which records the previous minute of gameplay. The button is available when
+    authenticate is turned on in the settings. You have to be logged in on your Xbox with the same account
+    as you are authenticated with. A game needs to be in foreground.*
 
-### Channel: Gamepad
+### Channel Gamepad
+
 * gamepad.a
 
-   * Emulates the A button of the controller. *
+   *Emulates the A button of your gamepad.*
 
 * gamepad.b
 
-   * Emulates the B button of the controller. *
+   *Emulates the B button of your gamepad.*
 
 * gamepad.x
 
-   * Emulates the X button of the controller. *
-
+   *Emulates the X button of your gamepad.*
+   
 * gamepad.y
 
-   * Emulates the Y button of the controller. *
-
+   *Emulates the Y button of your gamepad.*
+   
 * gamepad.clear
 
-   * Emulates the 'Clear' button of the controller. *
-
+   *Emulates the Clear button of your Xbox.*
+   
 * gamepad.dPadDown
 
-   * Emulates the DPAD down button of the controller. *
-
+   *Emulates the DPad Down button of your Xbox.*
+   
 * gamepad.dPadUp
 
-   * Emulates the DPAD high button of the controller. *
-
+   *Emulates the DPad Up button of your Xbox.*
+   
 * gamepad.dPadRight
 
-   * Emulates the DPAD right button of the controller. *
-
+   *Emulates the DPad Right button of your Xbox.*
+   
 * gamepad.dPadLeft
 
-   * Emulates the DPAD left button of the controller. *
-
+   *Emulates the DPad Left button of your Xbox.*
+   
 * gamepad.enroll
 
-   * Emulates the 'Enroll' button of the controller. *
-
+   *Emulates the Enroll button of your Xbox.*
+   
 * gamepad.leftShoulder
 
-   * Emulates a press of the controller's left shoulder button. *
-
+   *Emulates the Left Shoulder button of your Xbox.*
+   
 * gamepad.rightShoulder
 
-   * Emulates a press of the controller's right shoulder button. *
-
+   *Emulates the Right Shoulder button of your Xbox.*
+   
 * gamepad.leftThumbstick
 
-   * Emulates a press of the left stick of the controller. *
-
+   *Emulates the Left Thumbstick button of your Xbox.*
+   
 * gamepad.rightThumbstick
 
-   * Emulates a press of the controller's right stick. *
-
+   *Emulates the Right Thumbstick button of your Xbox.*
+   
 * gamepad.menu
 
-   * Emulates the menu button of the controller. *
-
+   *Emulates the Menu button of your Xbox.*
+   
 * gamepad.nexus
 
-   * Emulates the controller's Nexus (Xbox) button. *
-
+   *Emulates the Nexus (Xbox) button of your Xbox.*
+ 
 * gamepad.view
 
-   * Emulate the 'View' button of the controller. *
+   *Emulates the View button of your Xbox.*
+   
+### Channel Media
 
-### Channel: Media
 * media.seek
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R / W |
+    |Data type|Permission|
+    |:---:|:---:|
+    |number|R/W|
 
-* Number value to jump to a specific location of media content. The state is confirmed as soon as it arrives at the server, which does not mean that it was executed. *
+   *Jump to a specific position on media content. The state will be
+   acknowledged when it has been arrived at the REST server, which not means, that it has been
+   executed.*
 
 * media.play
 
-   * Button to play media content. *
-
+   *Play button for media content.*
+   
 * media.pause
 
-   * Button for pausing media content. *
-
+   *Pause button for media content.*
+   
 * media.playPause
 
-   * Combined play / pause button for media content. *
-
+   *Combined Play and Pause button for media content.*
+   
 * media.back
 
-   * Back button for media content. *
-
+   *Back button for media content.*
+   
 * media.channelDown
 
-   * Button that shuts down the media content channel. *
-
+   *Channel Down button for media content.*
+   
 * media.channelUp
 
-   * Button that moves up the channel for media content. *
-
+   *Channel Up button for media content.*
+   
 * media.fastForward
 
-   * Button for fast forwarding media content. *
-
+   *Fast Forward button for media content.*
+   
 * media.menu
 
-   * Menu button for media content. *
-
+   *Menu button for media content.*
+   
 * media.nextTrack
 
-   * Button that skips to the next track when playing media content. *
-
+   *Next Track button for media content.*
+   
 * media.previousTrack
 
-   * Button that skips to the previous track when playing media content. *
-
+   *Previous Track button for media content.*
+   
 * media.record
 
-   * Recording button for media content. *
-
+   *Record button for media content.*
+   
 * media.rewind
 
-   * Button for rewinding media content. *
-
+   *Rewind button for media content.*
+   
 * media.stop
 
-   * Stop button for media content. *
-
+   *Stop button for media content.*
+   
 * media.view
 
-   * View button for media content. *
-
+   *View button for media content.*
+   
 ## Changelog
 
 ### 0.5.6

@@ -7,28 +7,23 @@ BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.feiertage/i
 BADGE-NPM: https://nodei.co/npm/iobroker.feiertage.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.feiertage/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.feiertage?branch=master&svg=true
-translatedFrom: de
-translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.feiertage/README.md
-title: ioBroker.feiertage
-hash: qYlYYqvosUfbrKQMNrhWrO1zVhlTljZdm86GWXv9XIM=
 ---
-![логотип](../../../de/adapterref/iobroker.feiertage/../../admin/feiertage.png)
+![Logo](../../admin/feiertage.png)
+# ioBroker.feiertage
 
-# IoBroker.feedage
-## Описание
-Этот адаптер предоставляет дату, продолжительность до этой даты в днях и название следующего немецкого праздника и предоставляет информацию о том, является ли сегодня, завтра или послезавтра праздничным днем.
+## Description
+This adapter delivers date, distance in days to this date and name of the next German holiday. Furthermore it tells if today, tommorw or the day after tommorow is a holiday in Germany.
 
-## Точки данных
-![старый текст](../../../de/adapterref/iobroker.feiertage/img/DatapointsScreenshot.jpg "Скриншот данных точек")
+## Datapoints
+![alt text](img/DatapointsScreenshot.jpg "Screenshot Datapoints")
 
-## Настройки
-Праздники, которые следует учитывать при заполнении данных точек, могут быть выбраны.
+## Configuration
+Only selected holidays count in the process.
 
-![старый текст](../../../de/adapterref/iobroker.feiertage/img/SettingScreenshot.jpg "Настройки скриншота")
+![alt text](img/SettingScreenshot.jpg "Screenshot Settings")
 
-## Активация
-Адаптер запускается каждый день в полночь. Более частый старт не нужен.
+## Schedule
+The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
 ### 1.0.11 (2018-10-29)

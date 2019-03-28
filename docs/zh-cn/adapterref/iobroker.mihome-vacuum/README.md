@@ -2,19 +2,18 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum
-hash: 6Cep76PzwOlz7ts1x9vgh+PzEWvFSzfvZJpo5uvhnpo=
+title: ioBroker mihome-vacuum适配器
+hash: 397aoJdVXEmf4jU9mhgcGIdTtzu5ml/ND4jdJKe9Hu8=
 ---
+![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
+
 ![安装数量](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
 ![测试](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum
-![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
-
-＃ioBroker mihome-vacuum adapter =================
+＃ioBroker mihome-vacuum adapter
 [Deutsche beschreibung hier](README_de.md)
 
 此适配器允许您控制小米吸尘器。
@@ -174,7 +173,7 @@ xVal, yval
 | get_timer | |返回set timer设置吸入次数BSp。 12点30分在5天内|
 | set_timer | [[“TIME_IN_MS”，[“30 12 * * 1,2,3,4,5”，[“start_clean”，“”]]]] |启用/禁用计时器|
 | upd_timer | [“1481997713308”，“开/关”] | |
-| | |拯救Do Not Distrube的时代
+| | |拯救Do Not Distrube的时代 |
 | get_dnd_timer | |删除DND时间|
 | close_dnd_timer | | DND设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
@@ -229,9 +228,9 @@ sendTo("mihome-vacuum.0",
 |设置新的*请勿打扰*计时器| `setDNDTimer`| `startHour`，`startMinute`，`endHour`，`endMinute`| |
 |删除*请勿打扰*计时器| `deleteDNDTimer`| - 无 -  | |
 |检索当前的风扇速度| `getFanSpeed`| - 无 -  | |
-|设置新的风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是介于1和100之间的数字
+|设置新的风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是介于1和100之间的数字 |
 |启动遥控器功能| `startRemoteControl`| - 无 -  | |
-|发出远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须是顺序的，持续时间以ms为单位
+|发出远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须是顺序的，持续时间以ms为单位 |
 |结束遥控器功能| `stopRemoteControl`| - 无 -  | |
 |结束遥控器功能| `stopRemoteControl` | - 无 -  | |
 

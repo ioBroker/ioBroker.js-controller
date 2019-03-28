@@ -4,14 +4,14 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/intro/README.md
 title: ioBroker
-hash: rO4zP/V+ylQitNglKeKmIekGGCo2BRDGr/u3nay8Lyo=
+hash: /CaZHm9u0gqghR16DPYkzmh1iYzcjMSdbEMj1DGfF7w=
 ---
 # IoBroker
 ?> This documentation is just beginning to emerge. So please do not be surprised if links do not work or content is missing. <br><br> This documentation is constantly being expanded. If you think something is missing or better described, [help us] [] improve the documentation!
 
 ?> ***This is a wildcard*** . <br><br> Help our ioBroker community and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
 
-ioBroker is a central server for automation tasks around smart home, building automation and Active Assisted Living. ioBroker can communicate with many existing systems and devices via modular `Adapter`. Using rules, functional processes can be created regardless of the manufacturer. Graphical interfaces provided by ioBroker help to simplify the operation or monitoring of devices.
+ioBroker is a central server for automation tasks around smart home, building automation and Active Assisted Living. ioBroker can communicate with many existing systems and devices via modular **adapters** Using rules, functional processes can be created regardless of the manufacturer. Graphical interfaces provided by ioBroker help to simplify the operation or monitoring of devices.
 
 This documentation is the central reference for all ioBroker users:
 

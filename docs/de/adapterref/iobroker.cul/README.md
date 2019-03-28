@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cul/README.md
-title: kein Titel
-hash: qA12jQGu5EHoCcnIod0dTXur7REUIDJ3T+LzgsFhjO4=
+title: ioBroker.cul
+hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
 ---
 ![Logo](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -13,7 +13,7 @@ hash: qA12jQGu5EHoCcnIod0dTXur7REUIDJ3T+LzgsFhjO4=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.cul.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.cul.png?downloads=true)
 
-# IoBroker.cul ===================================
+# IoBroker.cul
 ioBroker-Adapter zur Steuerung von FS20, Max !, HMS und anderen Geräten über [CUL](http://busware.de/tiki-index.php?page=CUL) / [Culfw](http://culfw.de). Abhängig von https://github.com/hobbyquaker/cul
 
 ## Unterstützte Geräte

@@ -3,14 +3,15 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: vart56HLN0h2tcy1pehj3w84wBmASv8521pU3K0FHu0=
+hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
 ---
-![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png) [![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)](https://greenkeeper.io/)
+![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
 ![альтернативный текст](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/discovergy-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.discovergy.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
 
 # IoBroker.discovergy
 Это адаптер ioBroker для вашего измерителя мощности Discovergy Power.
@@ -28,7 +29,7 @@ https://api.discovergy.com/docs/
 Перейдите в свой лог-файл и загрузите его, создайте проблему на github с указанными значениями.
 Не копируйте и не вставляйте с веб-интерфейса администратора, здесь отсутствует информация, которая мне нужна!
 
-Вы можете проверить этот адаптер, используя демонстрационные учетные данные Discovergy (или свои собственные :-)): username = demo@discovergy.com pass = demo
+Вы можете протестировать этот адаптер, используя демонстрационные учетные данные Discovergy (или свои собственные :-)): username = demo@discovergy.com pass = demo
 
 ## Сделать
 * Переводы

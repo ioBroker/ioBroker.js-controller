@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: [Бета - выпущен] SourceAnalytix
-hash: owuV3WE3lin3Rp4b08vvlLx5mJnF+ounVyzBX6PTFHg=
+hash: x4Jcz2GtRG/pKhPzA8CnttAg9HW2mFikuPbGhV95eHQ=
 ---
 # [Бета - выпущен] SourceAnalytix
 
@@ -11,8 +11,7 @@ hash: owuV3WE3lin3Rp4b08vvlLx5mJnF+ounVyzBX6PTFHg=
 ![Количество установок](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)](https://greenkeeper.io/)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
 ## Внимание, этому адаптеру нужен узел 8 или выше !!!
 ioBroker SourceAnalytix позволяет вам отслеживать и отслеживать потребление, стоимость и значения счетчиков для ваших устройств.
@@ -26,7 +25,7 @@ ioBroker SourceAnalytix позволяет вам отслеживать и от
 ## Как
 * [ ] Сделать
 
-Этот адаптер имеет свои корни благодаря пиксам еще в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Этот адаптер имеет свои корни благодаря пиксам в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Что было улучшено @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
 
@@ -73,6 +72,11 @@ ioBroker SourceAnalytix позволяет вам отслеживать и от
 * [x] убедитесь, что все значения сохраняются при выключении адаптера, чтобы предотвратить пробелы в данных
 
 ## Changelog
+
+### 0.2.276
+* (Dutchman) implemented meter readings
+* (Dutchman & @AlCalzone) code improvements & stability
+* (Dutchman) fix issue with liquid unit reading (m3)
 
 ### 0.2.273
 * (Dutchman) fix issue in daily reset of start values

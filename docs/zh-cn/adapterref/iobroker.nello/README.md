@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: 2dDX5FB0xiyLJjU3OvO3U8y3up+w3gkG4d4YUXDOUZM=
+hash: +ujTBqRIPaMS7TG7Sl3TND/WYFxQWQ7fM02PlrlhgCk=
 ---
 ![商标](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
@@ -12,12 +12,11 @@ hash: 2dDX5FB0xiyLJjU3OvO3U8y3up+w3gkG4d4YUXDOUZM=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nello.svg)
 ![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.nello.svg?branch=master)
 ![下载](https://img.shields.io/npm/dm/iobroker.nello.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)
 ![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)
 
 ＃ioBroker.nello nello one将您的对讲机与智能手机和Wi-Fi连接起来。此适配器使用官方API（https://nellopublicapi.docs.apiary.io/）将您的nello连接到ioBroker。
 开发人员可以通过https://github.com/Zefau/nello.io找到nello.io API的javascript实现。
-
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg）](https://greenkeeper.io/)
 
 ## [德语自述文件/ Deutsche Anleitung](https://github.com/Zefau/ioBroker.nello/blob/master/README.de.md)
 **目录**
@@ -77,7 +76,7 @@ nello.0	2018-11-24 21:29:47.342	info	starting. Version X.X.X in /opt/iobroker/no
 | timeWindows | deleteAllTimeWindows |删除所有时间窗口|
 | timeWindows | **createTimeWindow** \ * |用于创建新时间窗的JSON对象（[文档](#adding-a-new-time-window)）|
 | timeWindows.0000000000000000000 | -  |时间窗口：时间窗口的描述|
-| timeWindows.0000000000000000000 |启用|说明是否启用了时间窗口
+| timeWindows.0000000000000000000 |启用|说明是否启用了时间窗口 |
 | timeWindows.0000000000000000000 | icalObj |日历数据的JSON对象|
 | timeWindows.0000000000000000000 | icalRaw | iCal格式的日历数据文本|
 | timeWindows.0000000000000000000 | id |时间窗口的ID |
@@ -86,7 +85,7 @@ nello.0	2018-11-24 21:29:47.342	info	starting. Version X.X.X in /opt/iobroker/no
 | timeWindows.0000000000000000000 |州|国家|
 | timeWindows.0000000000000000000 | **deleteTimeWindow** \ * |删除此时间窗|
 | - | **＃95; openDoor** \ * |打开位置XXXXX |
-| -  | id |位置XXXXX的ID
+| -  | id |位置XXXXX的ID |
 | -  | refreshedDateTime |上次更新（日期时间）的位置XXXXX |
 | -  | refreshedTimestamp |上次更新（时间戳）位置XXXXX |
 

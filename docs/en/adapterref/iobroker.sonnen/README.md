@@ -1,264 +1,242 @@
----
-BADGE-Build Status Travis: https://travis-ci.org/foxriver76/ioBroker.sonnen.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/9c3a9qlw4ut32hbu/branch/master?svg=true
-BADGE-Number of Installations: http://iobroker.live/badges/sonnen-stable.svg
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.sonnen.svg
-BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.sonnen.svg
-BADGE-NPM: https://nodei.co/npm/iobroker.sonnen.png?downloads=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.sonnen/README.md
-title: sun adapter
-hash: lxJCrd7DQbd7wr05NwFGschEwXwRlMxnxcLgswKIwDg=
----
-![logo](../../../de/adapterref/iobroker.sonnen/media/sonnen.png)
+![Logo](admin/sonnen.png)
+# ioBroker.sonnen
+===========================
 
-# Sun adapter
-The sonnen adapter allows the integration of a sonnenBatterie in the ioBroker.
+[![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.sonnen.svg?branch=master)](https://travis-ci.org/foxriver76/ioBroker.sonnen)[![Build status](https://ci.appveyor.com/api/projects/status/9c3a9qlw4ut32hbu/branch/master?svg=true)](https://ci.appveyor.com/project/foxriver76/iobroker-sonnen/branch/master)
+![Number of Installations](http://iobroker.live/badges/sonnen-installed.svg) ![Number of Installations](http://iobroker.live/badges/sonnen-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
+[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg)](https://greenkeeper.io/)
 
-## Overview
-### Sunbattery
-With the sonnenBatterie self-generated energy from the solar system can be stored for personal use and used exactly when it is needed. This makes it possible to become independent of anonymous energy companies and even to become a self-sufficient power producer. Thanks to the integrated energy manager, the intelligent high-tech electricity storage unit ensures that the household is supplied with its own power in the best possible way.
-This is not only cost effective, but also environmentally friendly! The sonnenBatterie is available in various and flexible memory models.
 
-### Sun adapter
-The sun adapter can monitor and control a solar battery in the network. The Discovery Adapter (TODO: Link) allows solar batteries to be found on the network automatically. <br/> The adapter creates states for monitoring and controlling the sun battery in the form of objects. A large part of the states only serves to monitor the battery, while describing some states, the battery can be additionally controlled.
+[![NPM](https://nodei.co/npm/iobroker.sonnen.png?downloads=true)](https://nodei.co/npm/iobroker.sonnen/) 
+## Installation
+You can either install the adapter via the ioBroker web interface or on your local machine via npm.
 
-## Prerequisites before installation
-The prerequisite for operating a solar battery with the ioBroker is the successful installation of the battery by an electrician. Also, the battery must be in the same network as the ioBroker.
+### Browser-based
+1. Open your ioBroker web interface in a browser (eg: 192.168.30.70:8081)
+2. Click on Tab "Adapters"
+3. Type "sonnen" in the filter
+4. Click on the three points and then on the "+" symbol of the sonnen adapter<br/>
+![Add Adapter](/docs/en/media/addInstance.png)
 
-### Installation
-An instance of the adapter is installed via the ioBroker Admin interface. The detailed instructions for the necessary installation steps can be found here (TODO: LINK). <br/><br/> After completing the installation of an adapter instance, a configuration window opens automatically.
+### Local machine
+Navigate into your iobroker folder and execute the following command: 
+```bash
+npm i iobroker.sonnen
+```
 
-## Configuration
-### Main Settings Window
-![Main Settings](../../../de/adapterref/iobroker.sonnen/media/mainSettings.png "main settings")
+## Setup
+Additional to the adapter installation you have to add an instance of the adapter.
 
-| Field | Description |
-|:-------------|:-------------|
-| IP address | Here, the IP address of the desired solar battery should be specified. |
+### ioBroker 
+1. Open your ioBroker interface in a browser (eg: 192.168.1.33:8081)
+2. Navigate to Tab "Adapters"
+3. Click on the three points and then on the "+" symbol of the sonnen adapter
+![Add Adapter](/docs/en/media/addInstance.png)
+4. Now you can see the main settings of the adapter configuration page --> type in the ip-address of your sonnen battery
+![Main Settings](/docs/en/media/mainSettings.png)
+5. If you want to thange the interval in which the states are polled, click on the tab "Advanced Settings"
+6. You can set the poll interval between 2000 ms (2 seconds) and 60000 ms (1 minute), the default value is 7 seconds
+![Advanced Settings](/docs/en/media/advancedSettings.png)
+7. Click on Save & Close
 
-### "Advanced Settings" window
-![Advanced Settings](../../../de/adapterref/iobroker.sonnen/media/advancedSettings.png "Advanced settings")
-
-| Field | Description |
-|:-------------|:-------------|
-| Query Interval | Here an alternative value in milliseconds can be set. In this interval, the states of the sun battery are updated |
-
-After completing the configuration, the configuration dialog is quit with `SPEICHERN UND SCHLIEßEN`.
-This will result in a subsequent restart of the adapter.
-
-## Instances
-The installation of the adapter has created an active instance of the sun adapter in the area `Objekte`. <br/><br/> ![instance](../../../de/adapterref/iobroker.sonnen/media/instance.png "instance") <span style="color:grey">* First instance *</span>
-
-On a ioBroker server several sun adapter instances can be created. Conversely, a solar battery can also be operated with several ioBroker servers. If several devices are to be controlled by one ioBroker server, one instance should be created per battery. <br/><br/> Whether the adapter is activated or connected to the battery is indicated by the color of the status field of the instance. If the mouse pointer points to the symbol, further detailed information is displayed.
-
-## Objects of the adapter
-In the section `Objekte`, all devices and activities recognized by the adapter in the hub are listed in a tree structure. In addition, information is also provided as to whether the communication with the hub takes place smoothly.
-
-![objects](../../../de/adapterref/iobroker.sonnen/media/objects.png "sunning objects") <span style="color:grey">* objects of the sun adapter *</span>
-
-Subsequently, the objects are divided into states and buttons. Since there are two different APIs depending on the battery, only the states that are supported by the respective battery are created.
-Each data point is associated with its associated data type and permissions.
-Permissions can be read (R) as well as write (W). Each data point can at least be read (R) while others can also be described. To search for a specific data point, the search is recommended using the key combination "CTRL + F".
+## Usage
+Here you can find a description of the states and how to use them. The most states of this adapter are read-only states.
+Note, that there are two different sonnen API's so if you are missing states, they are probably not supported.
 
 ### States
+
 #### Channel: info
+
 * info.connection
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value, which is true if the connection between ioBroker and battery is made. *
-
+   *Read-only boolean which is true if the adapter is connected to the battery.*
+   
 * info.lastSync
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Timestamp | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |timestamp|R|
 
-   * Read-only timestamp, updated every time the data is updated. *
-
+   *Read-only timestamp w. r. t. the last successful synchronization time.*
+   
 #### Channel: status
+   
 * status.consumption
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value, which contains the current consumption of the house in Watt. *
-
+   *Read-only number, which represents the current consumption of your house in watts.*
+   
 * status.production
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value, which indicates how many watts are currently being produced by the PV system. *
-
+   *Read-only number, which represents the current production of you photovoltaics system in watts.*
+   
 * status.pacTotal
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-* Read only number value, which indicates the inverter AC power.
-If the value is greater than 0, the battery is discharged, with a value less than 0, charged. *
-
+   *Read-only number, which represents the inverter AC Power in watts. If the value is greater than 0 the battery is discharging, if greater than zero it is charging.*
+   
 * status.relativeSoc
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value representing the current battery level. *
-
+   *Read-only number, which represents the state of charge of your battery in percent.*
+   
 * status.userSoc
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value representing the current battery level. *
-
+   *Read-only number, which represents the state of charge of your battery in percent.*
+   
 * status.acFrequency
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value, which represents the AC frequency in Hertz. *
-
+   *Read-only number, which represents the AC Frequency in hertz.*
+   
 * status.acVoltage
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value, which represents the current AC (AC) current voltage of the inverter. *
-
+   *Read-only number, which represents the current AC voltage of your inverter.*
+   
 * status.batteryVoltage
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-   * Read only number value, which represents the current DC (DC) voltage of the battery. *
-
+   *Read-only number, which represents the current DC voltage of the battery.*
+   
 * status.systemTime
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Date | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |date|R|
 
-   * Read only ISO date representing the system time of the battery. *
-
+   *Read-only ISO date, which represents the system time of your battery.*
+   
 * status.systemInstalled
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value, which is true if the system is installed correctly. *
-
+   *Read-only boolean indicator. True if system is installed otherwise false.*
+   
 * status.batteryCharging
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value. This is true if the sun battery is currently charging. *
-
+   *Read-only boolean indicator. True if battery is charging, otherwise false.*
+   
 * status.flowConsumptionBattery
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value. This is true if the battery is currently being discharged. *
-
+   *Read-only boolean indicator. True if you are consuming from battery, otherwise false.*
+   
 * status.flowConsumptionGrid
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value, which is true if power is currently sourced from the grid. *
-
+   *Read-only boolean indicator. True if you are consuming from grid, otherwise false.*
+   
 * status.flowConsumptionProduction
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value. This is true if power is currently consumed directly from the PV system. *
-
+   *Read-only boolean indicator. True if you are consuming from your current production, otherwise false.*
+   
 * status.flowGridBattery
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read-only Boolean indicator, which is true if the battery is currently being charged through the network. *
-
+   *Read-only boolean indicator. True if grid charges battery, otherwise false.*
+   
 * status.flowProductionBattery
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value, which is true if the battery is currently being charged directly through the PV system. *
-
+   *Read-only boolean indicator. True if production charges battery, otherwise false.*
+   
 * status.flowProductionGrid
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Boolean | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
 
-   * Read only Boolean value, which is true if the generated power is currently being fed into the grid. *
-
+   *Read-only boolean indicator. True if production flows into grid, otherwise false.*
+   
 * status.gridFeedIn
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
 
-* Read only number value, which represents the amount of power in watts currently being fed into the grid.
-If the value is positive, it is currently being fed into the grid; if it is negative, the amount of electricity will be drawn from the grid. *
-
+   *Read-only number, which represents the amount of watts consuming from or feeding in grid. If the number is positive you are feeding the grid, if negative you are consuming from grid.*
+   
 #### Channel: control
+
 * control.charge
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R / W |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R/W|
 
-   * Number value, which allows to set the maximum discharge of the battery in watts. *
-
-* Note: If an invalid value is set, it will be confirmed anyway. The confirmation (Acknowledge) of the value only means that the command has been transmitted to the battery. *
-
-   * Example: *
-
-```javascript
-setState('sonnen.0.control.charge', 1250); // Die Batterie wird mit maximal 1250 Watt geladen
-```
-
+   *Number-value which allows you to control the charging rate of the battery in watts. If you set garbage here it will also be acknowledged, because acknowldging just means that the battery received your command.*
+   
+   *Example:*
+    ```javascript
+    setState('sonnen.0.control.charge', 1250); // Do not charge more than 1250 watts
+    ```
+   
 * control.discharge
 
-|     | Data type | authorization |
-|     |:---:|:---:|
-|     | Number | R / W |
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R/W|
 
-   * Number Value, which allows to set the maximum charge of the battery in watts. *
-
-* Note: If an invalid value is set, it will be confirmed anyway. The confirmation (Acknowledge) of the value only means that the command has been transmitted to the battery. *
-
-   * Example: *
-
-```javascript
-setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1250 Watt entladen
-```
+   *Number-value which allows you to control the discharging rate of the battery in watts. If you set garbage here it will also be acknowledged, because acknowldging just means that the battery received your command.*
+   
+   *Example:*
+    ```javascript
+    setState('sonnen.0.control.discharge', 1250); // Do not discharge more than 1250 watts
+    ```
 
 ## Changelog
 ### 1.2.0

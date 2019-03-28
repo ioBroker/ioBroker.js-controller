@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fronius/README.md
 title: 无题
-hash: wpEf6EX6FKAn1iJFf8THR4Aw/wXOYtvmFDLyHNZYQfQ=
+hash: rKpemGzj26qLZjuzhdgtDp0lBXcaaPCOgdQXZ9rN2jU=
 ---
 ![安装数量](http://iobroker.live/badges/fronius-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fronius.svg)
@@ -13,10 +13,9 @@ hash: wpEf6EX6FKAn1iJFf8THR4Aw/wXOYtvmFDLyHNZYQfQ=
 ![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.fronius/master/admin/fronius.png" width="64"/> ioBroker.fronius </h1>
-
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg）](https://greenkeeper.io/)
 
 ##用于ioBroker的Fronius逆变器适配器
 这是适用于Fronius PV逆变器的ioBroker适配器，带有Fronius Datalogger Web 2.0.4-1版本或Fronius Datamanager 3.0.3-1版本。

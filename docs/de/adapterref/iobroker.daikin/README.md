@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.daikin/README.md
 title: ioBroker.daikin
-hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
+hash: VP5fbClhWQRh8dvqK+L/9ZCpfk3VD2amiEvyQvLNGl0=
 ---
 ![Logo](../../../en/adapterref/iobroker.daikin/admin/daikin.jpg)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/daikin-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.daikin.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.daikin.svg)
@@ -15,8 +16,6 @@ hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
 ![NPM](https://nodei.co/npm/iobroker.daikin.png?downloads=true)
 
 # IoBroker.daikin
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg)](https://greenkeeper.io/)
-
 [![Wartbarkeit] (https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/mainainability)](https://codeclimate.com/github/Apollon77/ioBroker.daikin/maintainability) [![Testabdeckung] (https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/test_coverage)](https://codeclimate.com/github/Apollon77/ioBroker.daikin/test_coverage)
 
 Dieser Adapter verbindet sich mit einem Daikin Air Conditioner-Gerät und ermöglicht die Steuerung des Geräts und das Ablesen von Werten.

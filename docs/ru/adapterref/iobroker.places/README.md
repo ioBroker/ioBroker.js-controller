@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.places/README.md
 title: ioBroker.places
-hash: 699AW5/zj67nyWmkPFOvuPyuzBD73yQJbVkav9B3qHk=
+hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
 ---
 ![логотип](../../../en/adapterref/iobroker.places/admin/places.png)
 
 ![Количество установок](http://iobroker.live/badges/places-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.places.svg)
-![Статус зависимости](https://img.shields.io/david/basgo/iobroker.places.svg)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.places.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.places.svg)
-![Github Issues](http://githubbadges.herokuapp.com/BasGo/ioBroker.places/issues.svg)
-![Трэвис-CI](https://img.shields.io/travis/BasGo/ioBroker.places/master.svg)
+![Github Issues](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)
+![Трэвис-CI](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
 # IoBroker.places
@@ -30,14 +30,14 @@ hash: 699AW5/zj67nyWmkPFOvuPyuzBD73yQJbVkav9B3qHk=
 
 * **Геокодирование Карт Google** можно активировать, чтобы получить реальный адрес и высоту для заданной геопозиции.
 
-* **Места** - это гибкий список, содержащий пользовательские места, где каждое место должно иметь допустимые значения для имени, широты и долготы.
+* **Места** - это гибкий список, содержащий пользовательские места, где каждое место должно иметь допустимые значения имени, широты и долготы.
 
 * **Пользователи** - это гибкий список, содержащий сопоставления пользователей.
 
 ## Использование
 Для обработки обновления местоположения просто отправьте сообщение, используя следующий синтаксис:
 
-```javascript
+```
 // send a message to all instances of places adapter
 sendTo('locations', {
         user:       "Name of person",
@@ -66,7 +66,7 @@ sendTo('locations.0', {
 ## Структура для возвращаемых сообщений
 Следующий блок показывает, как выглядят ответные сообщения. Для каждого значения дерево объектов ioBroker имеет соответствующее состояние.
 
-```javascript
+```
 {
     "user":         "Name of person",       // name of person (may have been replaced by user mapping)
     "latitude":     50.9576191,
@@ -98,7 +98,7 @@ sendTo('locations.0', {
 ### 2. Создать скрипт (ioBroker.javascript)
 Создайте короткий скрипт с подпиской на необработанный запрос, например из **telegram.0.communicate.requestRaw** и отправьте новый объект запроса в iobroker.places (или его экземпляр):
 
-```javascript
+```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
     var data = JSON.parse(obj.newState.val);
     if (data.from && data.location) {

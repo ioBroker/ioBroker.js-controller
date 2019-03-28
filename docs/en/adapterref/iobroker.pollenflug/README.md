@@ -1,6 +1,6 @@
 ![Logo](admin/pollenflug.png)
-
 # Pollen risk index
+
 [![Travis CI Build Status](https://travis-ci.org/schmupu/ioBroker.pollenflug.svg?branch=master)](https://travis-ci.org/schmupu/ioBroker.pollenflug)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.pollenflug?branch=master&svg=true)](https://ci.appveyor.com/project/schmupu/ioBroker-pollenflug/)
 ![Number of Installations](http://iobroker.live/badges/pollenflug-installed.svg) ![Number of Installations](http://iobroker.live/badges/pollenflug-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.pollenflug.svg)](https://www.npmjs.com/package/iobroker.pollenflug)
@@ -88,18 +88,15 @@ This format can more simply used in ioBroker.
 
 ![ioBroker3](docs/iobroker-pollenflug3.png)
 
-
-
 URL addess of the pollen images from DWD
 
 ![ioBroker4](https://www.dwd.de/DWD/warnungen/medizin/pollen/pollen_1_0.png)
-
 
 ## Example
 If new data from DWD arrived (the today date will change), the script will show the 
 pollen risk index for Hasel and Erle. 
 
-```sh
+```
 on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
     let hasel = getState("pollenflug.0.region#12.Hasel.text_today"/*today*/).val;
     let erle  = getState("pollenflug.0.region#12.Erle.text_today"/*today*/).val;

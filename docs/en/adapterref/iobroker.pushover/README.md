@@ -1,6 +1,5 @@
 ![Logo](admin/pushover.png)
 # ioBroker pushover Adapter
-==============
 
 ![Number of Installations](http://iobroker.live/badges/pushover-installed.svg) ![Number of Installations](http://iobroker.live/badges/pushover-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.pushover.svg)](https://www.npmjs.com/package/iobroker.pushover)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.pushover.svg)](https://www.npmjs.com/package/iobroker.pushover)
@@ -22,7 +21,7 @@ First of all it is required an account on pushover.
 
 To send notification from ScriptEngine just write: 
 
-```javascript
+```
 // send notification to all instances of pushover adapter
 sendTo("pushover", "message body");
 
@@ -48,7 +47,6 @@ url,                   // optional  - a supplementary URL to show with your mess
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
 });
-
 ```
 
 ## Changelog
@@ -87,7 +85,7 @@ url,                   // optional  - a supplementary URL to show with your mess
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

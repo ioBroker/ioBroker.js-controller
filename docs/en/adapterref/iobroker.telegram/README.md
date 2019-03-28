@@ -1,9 +1,5 @@
-# Moved to https://github.com/iobroker-community-adapters/ioBroker.telegram
-
-
 ![Logo](admin/telegram.png)
 # ioBroker telegram Adapter
-==============
 
 ![Number of Installations](http://iobroker.live/badges/telegram-installed.svg) ![Number of Installations](http://iobroker.live/badges/telegram-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.telegram.svg)](https://www.npmjs.com/package/iobroker.telegram)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.telegram.svg)](https://www.npmjs.com/package/iobroker.telegram)
@@ -25,10 +21,10 @@ To start a conversation with your bot you need to authenticate user with "/passw
 
 **Note:** you can use short form "/p phrase".
 
-To add nice avatar picture enter ```/setuserpic``` and upload him desired picture (512x512 pixels), like this one [logo](img/logo.png).
+To add nice avatar picture enter `/setuserpic` and upload him desired picture (512x512 pixels), like this one [logo](img/logo.png).
 
-You can send message to all authenticated users over messageBox ```sendTo('telegram', 'Test message')```
-or to specific user ```sendTo('telegram', '@userName Test message')```.
+You can send message to all authenticated users over messageBox `sendTo('telegram', 'Test message')`
+or to specific user `sendTo('telegram', '@userName Test message')`.
 User must be authenticated before.
 
 You can specify user in that way too:
@@ -38,6 +34,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
     console.log('Sent to ' + res + ' users');
 });
 ```
+
 If you use the example above be aware of that you have to replace 'UserName' with either the firstname or the Public-Telegram-Username of the User you want to send the message to. (Depends on if the 'Store username not firstname' setting in the Adaptersettings is enabled or not)
 If the option is set and the user did not specify a public username in his telegram account, then the adapter will continue to use the firstname of the user. Keep in mind that if the user sets a public username later (after authenticating to your bot) the saved firstname will be replaced by the username the next time the user sends a message to the bot.
 
@@ -49,7 +46,7 @@ You can send message over state too, just set state *"telegram.INSTANCE.communic
 ## Usage
 You can use telegram with [text2command](https://github.com/ioBroker/ioBroker.text2command) adapter. There are predefined communication schema and you can command to you home in text form.
 
-To send photo, just send a path to file instead of text or URL: ```sendTo('telegram', 'absolute/path/file.png')``` or ```sendTo('telegram', 'https://telegram.org/img/t_logo.png')```.
+To send photo, just send a path to file instead of text or URL: `sendTo('telegram', 'absolute/path/file.png')` or `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
 
 Example how to send screenshot from webcam to telegram:
 
@@ -80,7 +77,6 @@ on("someState", function (obj) {
         setTimeout(sendImage, 30000);
     }
 });
-
 ```
 
 Following messages are reserved for actions:
@@ -120,6 +116,7 @@ sendTo('telegram.0', {
 Adapter tries to detect the type of message (photo, video, audio, document, sticker, action, location) depends on text in the message if the text is path to existing file, it will be sent as according type.
 
 Location will be detected on attribute latitude:
+
 ```
 sendTo('telegram.0', {
     latitude:               52.522430,
@@ -132,6 +129,7 @@ sendTo('telegram.0', {
 You have the possibility to define extra the type of the message in case you want to send the data as buffer.
 
 Following types are possible: *sticker*, *video*, *document*, *audio*, *photo*.
+
 ```
 sendTo('telegram.0', {
     text: fs.readFileSync('/opt/path/picture.png'),
@@ -197,7 +195,7 @@ You can read more [here](https://github.com/yagop/node-telegram-bot-api/blob/rel
 ## Chat ID
 From version 0.4.0 you can use chat ID to send messages to chat.
 
-```sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');```
+`sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ## Updating messages
 The following methods allow you to change an existing message in the message history instead of sending a new one with a result of an action. This is most useful for messages with *inline keyboards* using callback queries, but can also help reduce clutter in conversations with regular chat bots.
@@ -206,7 +204,7 @@ The following methods allow you to change an existing message in the message his
 Use this method to edit text sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise *True* is returned.
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -227,6 +225,7 @@ if (command ==="1_2") {
 ```
 
 *or new text for last message:*
+
 ```
 if (command ==="1_2") {
     sendTo('telegram', {
@@ -248,7 +247,7 @@ You can read more [here](https://github.com/yagop/node-telegram-bot-api/blob/rel
 Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise *True* is returned.
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -276,7 +275,7 @@ Use this method to delete a message, including service messages, with the follow
 Returns *True* on success.
 
 ```
-if (command ==="delete") {
+if (command === "delete") {
     sendTo('telegram', {
         user: user,
         deleteMessage: {

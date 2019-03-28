@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.email/README.md
-title: Перемещено на https://github.com/iobroker-community-adapters/ioBroker.email
-hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
+title: электронная почта ioBroker
+hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 ---
-# Перемещено на https://github.com/iobroker-community-adapters/ioBroker.email
 ![логотип](../../../en/adapterref/iobroker.email/admin/email.png)
 
 ![Количество установок](http://iobroker.live/badges/email-stable.svg)
@@ -13,19 +12,19 @@ hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-# IoBroker email ==============
+# IoBroker email
 Отправляйте электронные письма от ioBroker.
 
 Вся работа заставляет [nodemailer](https://github.com/nodemailer/nodemailer), а ioBroker просто использует ее.
 
 ** Для этого адаптера требуется nodejs 6.x или выше !! **
 
-Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, в этом случае вам потребуется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать вашу учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
+Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, и в этом случае вам потребуется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать вашу учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
 
 ## Использование
 Чтобы отправить письмо от ScriptEngine, просто напишите:
 
-```javascript
+```
 // send email to all instances of email adapter
 sendTo("email", "Email body");
 
@@ -59,7 +58,6 @@ sendTo("email", {
         {path: "path/to/file/image1.jpg", cid: "image1"}
     ]
 });
-
 ```
 
 Для отправки электронной почты с другого адаптера используйте функцию **adapter.sendTo**
@@ -148,7 +146,7 @@ sendTo("email", {
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox
+Copyright (c) 2014-2019 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

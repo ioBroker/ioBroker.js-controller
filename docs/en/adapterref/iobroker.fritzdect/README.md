@@ -1,69 +1,124 @@
----
-BADGE-Number of Installations: http://iobroker.live/badges/fritzdect-stable.svg
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.fritzdect.svg
-BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.fritzdect.svg
-BADGE-Build Status: https://travis-ci.org/foxthefox/ioBroker.fritzdect.svg?branch=master
-BADGE-NPM: https://nodei.co/npm/iobroker.fritzdect.png?downloads=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.fritzdect/README.md
-title: installation instructions
-hash: lGaWT1nRwOi9PZbQFpJ0OKapX9z2FxtoOlSKxYorj5Q=
----
-![logo](../../../de/adapterref/iobroker.fritzdect/../../admin/fritzdect_logo.png)
+![Logo](admin/fritzdect_logo.png)
+# ioBroker.fritzdect
 
-# Installation instructions
-## FritzBox settings
-A user must be created who has access to the DECT objects
+![Number of Installations](http://iobroker.live/badges/fritzdect-installed.svg) ![Number of Installations](http://iobroker.live/badges/fritzdect-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fritzdect.svg)](https://www.npmjs.com/package/iobroker.fritzdect)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.fritzdect.svg)](https://www.npmjs.com/package/iobroker.fritzdect)
+[![Build Status](https://travis-ci.org/foxthefox/ioBroker.fritzdect.svg?branch=master)](https://travis-ci.org/foxthefox/ioBroker.fritzdect)
 
-![fritzbox](../../../de/adapterref/iobroker.fritzdect/fritzdect_einstellung.PNG)
+[![NPM](https://nodei.co/npm/iobroker.fritzdect.png?downloads=true)](https://nodei.co/npm/iobroker.fritzdect/)
 
-if a special user has been created (ie not admin is used for iobroker), then the permissions have to be set and the default that only admin logs in must be changed to user.
+Fritzbox DECT adapter for ioBroker
 
-![fritzbox](../../../de/adapterref/iobroker.fritzdect/fritz_iobroker_user.PNG)
+## Installation:
+released version on npm with
+```javascript
+ npm install iobroker.fritzdect
+```
 
-![fritzbox](../../../de/adapterref/iobroker.fritzdect/fritz_user.PNG)
 
-## Adapter settings
-* Enter IP with prefix "http://"
-* Polling interval can be chosen arbitrarily (default 5min = 300sec). This is necessary for tracking outside of ioBroker, since the FritzBox does not provide automatic updates.
+or the actual version from github with 
+```javascript
+npm install https://github.com/foxthefox/ioBroker.fritzdect/tarball/master --production
+```
+## Setup
 
-![admin](../../../de/adapterref/iobroker.fritzdect/fritzdect_admin.PNG)
+IP-address and password of Fritzbox should be defined via admin page, before the first start of the instance.
+The IP-address must be written with leading 'http://'
 
-## Adapter Start
-with the start of the adapter the following is done:
+The devices are detected automatically during startup of fritzdect instance. If devices are added to the fritzbox during a running adapter instance, then please restart the adapter for object creation.
 
-* the FW Fritzbox is queried and written in the log (some Fritz boxes do not answer and this generates an error).
-* the data points (objects) are created for devices
-* the data points (objects) for groups are created
-* the objects are supplied with data
+Several permissions have to be set in the fritzbox in order to interact with the adapter!
 
-The following objects are written only once at startup:
+A german explanatory doc is available here: [install_de](./docs/de/install.md)
 
-* id
-* fwversion
-* manufacturer
-* product name
-* masterdviceid
-* members
+The widget requires that also vis-metro and vis-jqui-mfd are installed
 
-## Thermostat function
-The thermostat can be operated in automatic mode (temperature control) and is controlled to the setpoint temperature.
-The setpoint temperature can be the comfort temperature, the setback temperature or a self-selected temperature.
+## ioBroker objects
 
-In addition, the valve can be completely closed and it corresponds to the OFF state.
-The other direction can also be selected with ON and would correspond to a BOOST or sauna mode (do not forget to have it fixed again ;-)).
+objects in *italic* are not part of all fritz.box configurations
 
-These currently 3 operating modes can be preselected with 0, 1 or 2 in the data point mode.
-With the preselection of 0-AUTO, the last setpoint temperature is selected.
+### all devices
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|devicetype.id|text|-|internal id of device|
+|devicetype.name|text|-|name of device|
+|devicetype.mode|text|-|mode, manuell or auto|
+|devicetype.present|boolean|-|true/false -> connected/not available|
+|devicetype.productname|text|-|product name|
+|devicetype.manufacturer|text|-|product manufacturer|
+|devicetype.fwversion|text|-|product FW version|
 
-### Temperature with offset
-It is possible to correct the measured temperature in the FritzBox, this is the measured temperature and there is an offset. This offset is taken into account for the data point .temp. Here you get the internal temperature measurement.
-The actual temperature (actualtemp) used internally in the radiator controller is also changed by the offset. That the HKR internally regulates the corrected value.
-Comparable for the target / Istverlaufs is therefore atualtemp and targettemp.
+### groups
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|group.masterdeviceid|text|-|internal id of group|
+|group.members|text|-|member id's of group|
 
-## Troubleshooting
-It is advisable to look at the log, if not meaningful or too little information is to select the debug mode on the expert setting of the instance.
+### templates
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|template.id|text|-|internal id of template|
+|template.name|text|-|name of template|
+|template.toggle|boolean|x|toggle switch for template activation|
+|template.lasttemplate|text|-|last confirmed template|
+
+### switch e.g DECT200/DECT210
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|DECT200.state|boolean|x|true/false -> ON/OFF|
+|DECT200.power|value|-|actual power in W|
+|DECT200.energy|value|-|actual energy consumption in Wh|
+|DECT200.lock|boolean|-|UI/API lock|
+|DECT200.devicelock|boolean|-|Button lock|
+|*DECT200.temp*|value|-|actual temperature in °C|
+|*DECT200.voltage*|value|-|actual voltage in V|
+
+### thermostat eg. COMET/DECT300/ Heater group
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|COMET.temp|value|-|actual temperature in °C including offset|
+|COMET.actualtemp|value|x|actual temperature in °C|
+|COMET.targettemp|value|x|target temperature in °C|
+|COMET.comfytemp|value|-|comfort temperature in °C|
+|COMET.nighttemp|value|-|night temperature in °C|
+|COMET.mode|array|x| 0=AUTO/1=OFF/2=ON state of thermostat|
+|COMET.lasttarget|value|-| last target temperature in °C|
+|COMET.batterylow|boolean|-|battery status|
+|COMET.errorcode|number|-|errorcode|
+|COMET.lock|boolean|-|UI/API lock|
+|COMET.devicelock|boolean|-|Button lock|
+|*COMET.battery*|value|-|actual capacity in %|
+|*COMET.summeractive*|boolean|-|summer program status|
+|*COMET.holidayactive*|boolean|-|holiday program status|
+|*COMET.windowopenactiv*|boolean|-|status of window open detection|
+
+### repeater e.g. DECT100
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|DECT100.temp|value|-|actual temperature in °C|
+
+### contact
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|Contact.state|boolean|-|true/false -> ON/OFF|
+
+### button
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|Button.lastclick|number|-|timestamp|
+
+### guest WLAN
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|GuestWLAN.state|boolean|x|true/false -> ON/OFF|
+
+
+## Known Issues:
+After startup of adapter the firmware version of fritzbox is requested, some models do not respond to this request and therefore an error is logged.
+
+## TODO:
+* universal object names
+* improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
 ### 0.2.1

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fronius/README.md
 title: без названия
-hash: wpEf6EX6FKAn1iJFf8THR4Aw/wXOYtvmFDLyHNZYQfQ=
+hash: rKpemGzj26qLZjuzhdgtDp0lBXcaaPCOgdQXZ9rN2jU=
 ---
 ![Количество установок](http://iobroker.live/badges/fronius-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.fronius.svg)
@@ -13,10 +13,9 @@ hash: wpEf6EX6FKAn1iJFf8THR4Aw/wXOYtvmFDLyHNZYQfQ=
 ![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.fronius/master/admin/fronius.png" width="64"/> ioBroker.fronius </h1>
-
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)](https://greenkeeper.io/)
 
 ## Адаптер Fronius для ioBroker
 Это адаптер ioBroker для вашего фотоэлектрического инвертора Fronius с Fronius Datalogger Web начиная с версии 2.0.4-1 или Fronius Datamanager начиная с версии 3.0.3-1.

@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.daikin/README.md
 title: ioBroker.daikin
-hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
+hash: VP5fbClhWQRh8dvqK+L/9ZCpfk3VD2amiEvyQvLNGl0=
 ---
 ![логотип](../../../en/adapterref/iobroker.daikin/admin/daikin.jpg)
 
+![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg)
 ![Количество установок](http://iobroker.live/badges/daikin-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.daikin.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.daikin.svg)
@@ -15,8 +16,6 @@ hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
 ![NPM](https://nodei.co/npm/iobroker.daikin.png?downloads=true)
 
 # IoBroker.daikin
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg)](https://greenkeeper.io/)
-
 [![Сопровождаемость] (https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/maintainability)](https://codeclimate.com/github/Apollon77/ioBroker.daikin/maintainability) [![Тестовое покрытие] (https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/test_coverage)](https://codeclimate.com/github/Apollon77/ioBroker.daikin/test_coverage)
 
 Этот адаптер подключается к устройству Daikin Air Conditioner и позволяет управлять устройством и считывать значения с него.

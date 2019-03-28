@@ -3,69 +3,66 @@ BADGE-Build Status: https://travis-ci.org/dkleber89/ioBroker.beckhoff.svg?branch
 BADGE-Build status: https://ci.appveyor.com/api/projects/status/laebb0pq4pd4d08x/branch/master?svg=true
 BADGE-npm: https://img.shields.io/npm/v/iobroker.beckhoff.svg
 BADGE-Number of Installations: http://iobroker.live/badges/beckhoff-installed.svg
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.beckhoff/README.md
-title: ioBroker.beckhoff
-hash: S29NCZ8nEb3vlwEpYsnmZdwhh1H2xueGjmH9n6pgfAc=
 ---
-![logo](../../../de/adapterref/iobroker.beckhoff/img/beckhoff.png)
+![Logo](docs/en/img/beckhoff.png)
 
-# IoBroker.beckhoff
-This ioBroker adapter implements communication with a Beckhof controller (Twincat 2 or 3) via the ADS protocol.
-The ADS Protocol is implemented in every Beckhoff controller and can be used without a license.
+# ioBroker.beckhoff
+This adapter for ioBroker can Communicate with a Beckhoff Automation System (Twincat 2 or 3) over the ADS Protocol.
+The ADS Protocol is implemented in every System of Beckhoff and can be used without any License on ioBroker or Automation System.
 
-This project has no connection with the company Beckhoff
+This Project is not affilate to Beckhoff in any way
 
 ## Description
-### Conditions
-* Beckhoff with network connection which hangs in a network reachable by the ioBroker
-    * The controller must be assigned a fixed IP address
-    * The controller must be pingable by the ioBroker
-  * TwinCat 2 **except BC** (Required symbol information is not stored in the BC runtime environment) or TwinCat 3
+### Requirements
+* Beckhoff PLC that has an ethernet connection and is connected to your LAN
+    * Make your you give the PLC a fixed IP address
+    * Make sure you can ping the PLC from ioBroker
+    * TwinCat 2 **excluding BC Runtimes** (Needed Symbolinformation are not saved on BC Runtime) or TwinCat 3
 
-### Configuration of the controller
-1. In the project ADS must be activated. To do this, go to the task configuration in the control project and activate the checkbox `Create symbols`. Then download the configuration to the controller and restart it. A restart is only necessary if TwinCat 2 is used.
+### PLC Configuration
+1. Enable ADS on your PLC project. To do this click on your task and then enable the checkbox before `Create symbols`. Download the new configuration and make sure you reboot your PLC. The reboot is only needed when you are using TwinCat 2.
 
-    ![create symbols](../../../de/adapterref/iobroker.beckhoff/img/createSymbols.png)
+    ![createSymbols](img/createSymbols.png)
+    
+2. Now add a static route to our Beckhoff PLC. The route should point to your server that will run the proxy application.
+    
+    Here an example to add a Static Route directly on PLC u can add this Route also from your EngineeringPC to the PLC.
 
-2. A static route must be created in the controller. The route must match the ioBroker (IP address and AMS Net ID).
+    ![createSymbols](img/addRoute.png)
+    
+    Important is that the AmsNetId and the AdressInfo (IP-Adress) matches with the Adapter Settings. For further Information about TwinCat Router and Security read Documentation on Synchronisierung [Beckhoff Information System](https://infosys.beckhoff.com/ "Beckhoff Information System")
+    
+3. On TwinCat 2 Create a Struct and fill in your needed Symbols. Then add this Struct to a GlobalVariableTable.
 
-    Here's an example of what that might look like when the route is added directly to the controller. The route can also be added via the Engineer calculator.
+    ##### Currently Supported Types: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL
+    
+    OPTIONAL: You can create a Variable in root of Struct with the exact name -> ioBrokerResync (Not Casesensitiv and not matter which Type) -> Every time this Variable changes his value the Table get resynced in ioBroker.
 
-    ![create symbols](../../../de/adapterref/iobroker.beckhoff/img/addRoute.png)
+4. On TwinCat 3 Create a GlobalVariableTable and fill in your needed Symbols.
 
-    Further information on the TwinCat Router and the controller in general can be found in [Beckhoff Information System](https://infosys.beckhoff.com/ "Beckhoff Information System").
+    ##### Currently Supported Types: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL
+    
+    OPTIONAL: You can create a Variable in root of Variable Table with the exact name -> ioBrokerResync (Not Casesensitiv and not matter which Type) -> Every time this Variable changes his value the Table get resynced in ioBroker.
 
-3. For TwinCat 2, a structure must still be created in the controller. Then add the structure to a global variable table. All required variables can then be created here. The data exchange is then carried out independently by ADS and the adapter.
+### Adapter Configuration
+1. Choose your Runtime Version
+2. Fill in Target IP-Adress and AMS-Net-ID.
+3. On TwinCat 2 fill in the Instance Name of Struct.
+4. On TwinCat 3 fill in the correct Tablename of the before created GlobalVariableTable.
+5. All other Points u mostly not need to Change.
 
-    ##### Currently supported data types: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL
-    OPTIONAL: A variable can be created directly in the variable table without nesting with an exact name -> ioBrokerResync (case and data type does not matter) -> Each time this value changes, the variable table in the ioBroker is read in again.
+### Dataexchange
+* When some Value is changed in PLC then it will be automatic transferred to ioBroker
+* When a Value is changed in ioBroker (Important: ACK need to be FALSE!!) then the Value will be automatic transferred to PLC. After that the Adapter set ACK to TRUE.
 
-3. For TwinCat 3, a global variable table must still be created in the controller. All required variables can then be created here. The data exchange is then carried out independently by ADS and the adapter.
-
-    ##### Currently supported data types: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL
-    OPTIONAL: A variable can be created directly in the variable table without nesting with an exact name -> ioBrokerResync (case and data type does not matter) -> Each time this value changes, the variable table in the ioBroker is read in again.
-
-### Adapter Settings
-1. Select runtime version
-2. Enter the IP address and AMS Net ID destination.
-3. For TwinCat 2, enter the instance name of the structure from the global variable table.
-4. For TwinCat 3, enter the correct variable table name.
-5. The remaining points usually do not need to be changed.
-
-### Data exchange
-* As soon as a variable in the control changes, this value is automatically transferred to the respective state in the ioBroker.
-* If a value in the ioBroker is changed (Important: ACK must be FALSE !!) it is automatically transferred to the controller. If the value is accepted by the controller, ACK is set to TRUE.
-
-### Important
-1. The TwinCAT AMS router does not permit multiple TCP connections from the same host. If two instances are being set up by the same host to the same TwinCat router, the router automatically closes the first connection and only replies to the latest one.
-2. The adapter automatically syncronizes all variables in ioBroker. There are several ways a resync can be triggered:
-    * If the value of the Resyc variable changes (see [here] (# Configuration-of-Control))
-    * If the controller is not in RUN mode longer than the Reconnect Interval -> then the variable table is resynchronized when the controller enters RUN mode.
-    * When the project is loaded on the controller. Exception -> OnlineChange
-    * When the adapter is restarted.
-3. "Synchronization" or "reading in" does not mean the value exchange of the variables but rather the synchronization of the variables themselves and the creation or deletion of these in the ioBroker
+### Attention
+1. TwinCAT AMS Router doesn't allow multiple TCP connections from the same host. So when you use two instances on the same host to connect to the same TwinCAT router, you will see that TwinCAT will close the first TCP connection and only respond to the newest.
+2. The Adapter Sync the complete GlobalVariableTable. U have different options to trigger a resync:
+    * Create a resync Variable in PLC (See [here](#PLC-Configuration)) 
+    * When the PLC are not in Run longer your Resync Intervall -> Then the Sync will triggered after the start of PLC.
+    * Every Time you Download the Project to your PLC except "OnlineChange"
+    * Restart the Adapter
+3. Sync never meant the Dataexchange of the Symbols. Sync is the create or delete the States in ioBroker dependent on the GlobalVariableTable in the PLC.
 
 ## Changelog
 ### 1.0.0 (2019-03-23)

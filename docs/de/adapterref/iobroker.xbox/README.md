@@ -4,6 +4,7 @@ BADGE-Build status: https://ci.appveyor.com/api/projects/status/s1we3cpcbxm97upp
 BADGE-Number of Installations: http://iobroker.live/badges/xbox-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.xbox.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.xbox.svg
+BADGE-Greenkeeper badge: https://badges.greenkeeper.io/foxriver76/ioBroker.xbox.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.xbox.png?downloads=true
 ---
 ![Logo](media/xbox.png)

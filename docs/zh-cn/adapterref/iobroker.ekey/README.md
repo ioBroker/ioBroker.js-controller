@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
+hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ---
 ![商标](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)
 ![安装数量](http://iobroker.live/badges/ekey-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ekey.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.ekey.svg)
@@ -14,8 +15,8 @@ hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.ekey?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
-＃ioBroker.ekey ======================
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg）](https://greenkeeper.io/)
+#ioBroker.ekey
+======================
 
 [![依赖状态]（https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg）](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey)[![代码气候]（https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg）](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 

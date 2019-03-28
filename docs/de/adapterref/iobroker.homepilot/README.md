@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: xMYZBXTOwQJk/YHoaY54tHLKepzY0e9jhhDcxHhdtQ8=
+hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 ---
 ![Logo](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
@@ -12,12 +12,11 @@ hash: xMYZBXTOwQJk/YHoaY54tHLKepzY0e9jhhDcxHhdtQ8=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
 ![Offene Punkte](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
+![Codacy-Abzeichen](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![Travis-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 # IoBroker.homepilot
-[![Codacy Badge] (https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)](https://www.codacy.com/app/Pix---/ioBroker.homepilot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pix---/ioBroker.homepilot&amp;utm_campaign=Badge_Grade)
-
 : de: [Dokumentation](/docs/de/doc_homepilot_de.md)
 
 : uk: [Dokumentation](/docs/en/doc_homepilot_en.md)

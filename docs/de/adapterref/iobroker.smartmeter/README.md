@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: BQomfImdqLTMv7RTxOxAV4JOyXcA1kC0gplk6fkISb4=
+hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/smartmeter-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.smartmeter.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)
@@ -15,8 +16,6 @@ hash: BQomfImdqLTMv7RTxOxAV4JOyXcA1kC0gplk6fkISb4=
 ![NPM](https://nodei.co/npm/iobroker.smartmeter.png?downloads=true)
 
 # IoBroker.smartmeter
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)](https://greenkeeper.io/)
-
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
 Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um ihre Daten zur Verfügung zu stellen.
@@ -27,7 +26,7 @@ Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Pro
 
 ## Derzeit bekannte Probleme
 * Dieser Adapter verwendet die Serialport Library. Dies kann eine längere Installationszeit bedeuten, wenn es kompiliert werden muss
-* Es scheint, dass die Speicherbehandlung manchmal suboptimal ist und beim Lesen von Daten zu Abstürzen mit SIGABRT oder SIGSEGV führen kann. Der iobroker Controller startet den Adapter automatisch neu. 2-3 Loglines sind hier der einzige Effekt :-)
+* Es scheint, dass die Speicherbehandlung manchmal nicht optimal ist und beim Lesen von Daten zu Abstürzen mit SIGABRT oder SIGSEGV führen kann. Der iobroker Controller startet den Adapter automatisch neu. 2-3 Loglines sind hier der einzige Effekt :-)
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -55,7 +54,7 @@ Baudrate für die erste serielle Verbindung, wenn nicht Standardwerte pro Transp
 
 ### D0: SignOn-Message-Befehl
 Befehl für SignIn-Message, Standard "?" Pflichtfelder abfragen, andere Werte je nach Gerät.
-Beispiel: Der 2WR5-Wärmemengenzähler verwendet "#", um mehr Daten abzufragen (optionale Felder zusammen mit allen obligatorischen Feldern)
+Beispiel: Der 2WR5-Wärmezähler verwendet "#", um mehr Daten abzufragen (optionale Felder zusammen mit allen obligatorischen Feldern)
 
 ### D0: Modus überschreiben
 Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die den Spezifikationen nicht entsprechen und daher Probleme verursachen. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.

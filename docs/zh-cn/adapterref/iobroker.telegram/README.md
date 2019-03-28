@@ -2,19 +2,18 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.telegram
-hash: tbkO4QFjGv4W24/10mg5Q6clQWYyClDrwgTOJXOcMpA=
+title: ioBroker电报适配器
+hash: 1Bjep1eOMl3zub539VLi/Z+5ykymigkNSOdY5OmXnjk=
 ---
+![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
+
 ![安装数量](http://iobroker.live/badges/telegram-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.telegram.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.telegram.svg)
 ![测试](https://travis-ci.org/ioBroker/ioBroker.telegram.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.telegram.png?downloads=true)
 
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.telegram
-![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
-
-#ioBroker telegram Adapter ==============
+#ioBroker电报适配器
 ##配置
 请[@BotFather](https://telegram.me/botfather)创建新的bot```/newbot```。
 
@@ -29,9 +28,9 @@ hash: tbkO4QFjGv4W24/10mg5Q6clQWYyClDrwgTOJXOcMpA=
 
 **注意：**您可以使用简短形式的“/ p短语”。
 
-要添加漂亮的头像图片，请输入```/setuserpic```并上传他想要的图片（512x512像素），如此[商标](img/logo.png)。
+要添加好的头像图片，请输入`/setuserpic`并上传他想要的图片（512x512像素），如此[商标](img/logo.png)。
 
-您可以通过messageBox```sendTo('telegram', 'Test message')```或特定用户```sendTo('telegram', '@userName Test message')```向所有经过身份验证的用户发送消息。
+您可以通过messageBox`sendTo('telegram', 'Test message')`或特定用户`sendTo('telegram', '@userName Test message')`向所有经过身份验证的用户发送消息。
 用户必须先进行身份验证。
 
 您也可以这样指定用户：
@@ -52,7 +51,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 ##用法
 您可以使用带有[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器的电报。有预定义的通信模式，您可以以文本形式命令回家。
 
-要发送照片，只需发送文件路径而不是文本或URL：```sendTo('telegram', 'absolute/path/file.png')```或```sendTo('telegram', 'https://telegram.org/img/t_logo.png')```。
+要发送照片，只需发送文件路径而不是文本或URL：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`。
 
 示例如何将网络摄像头的屏幕截图发送到电报：
 
@@ -83,7 +82,6 @@ on("someState", function (obj) {
         setTimeout(sendImage, 30000);
     }
 });
-
 ```
 
 以下消息保留用于操作：
@@ -203,7 +201,7 @@ if (command ==="1_2") {
 ##聊天ID
 从版本0.4.0开始，您可以使用聊天ID将消息发送到聊天室。
 
-```sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');```
+`sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ##更新消息
 以下方法允许您更改消息历史记录中的现有消息，而不是发送带有操作结果的新消息。这对于使用回调查询的*内联键盘*的消息最有用，但也可以帮助减少与常规聊天机器人的对话中的混乱。
@@ -212,7 +210,7 @@ if (command ==="1_2") {
 使用此方法编辑机器人或机器人发送的文本（对于内联机器人）。成功时，如果机器人发送编辑的消息，则返回编辑的消息，否则返回* True *。
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -255,7 +253,7 @@ if (command ==="1_2") {
 使用此方法仅编辑机器人或机器人发送的消息的回复标记（对于内联机器人）。成功时，如果机器人发送编辑的消息，则返回编辑的消息，否则返回* True *。
 
 ```
-if (command ==="1_2") {
+if (command === "1_2") {
     sendTo('telegram', {
         user: user,
         text: 'New text before buttons',
@@ -285,7 +283,7 @@ if (command ==="1_2") {
 成功时返回* True *。
 
 ```
-if (command ==="delete") {
+if (command === "delete") {
     sendTo('telegram', {
         user: user,
         deleteMessage: {

@@ -1,6 +1,5 @@
 ![Logo](admin/fhem.png)
 # ioBroker.fhem
-=================
 
 ![Number of Installations](http://iobroker.live/badges/fhem-installed.svg) ![Number of Installations](http://iobroker.live/badges/fhem-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fhem.svg)](https://www.npmjs.com/package/iobroker.fhem)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fhem.svg)](https://www.npmjs.com/package/iobroker.fhem)
@@ -12,9 +11,7 @@ This adapter allows connect FHEM to ioBroker.
 
 To enable the connection the telnet must be enabled in FHEM. To enable it (enabled by default) check following settings in fhen.cfg:
 
-```
-define telnetPort telnet 7072 global
-```
+```define telnetPort telnet 7072 global```
 
 Exactly same port and the IP address of FHEM host (or localhost if FHEM and ioBroker run on same PC) should be used for settings of adapter.
 
@@ -114,3 +111,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+

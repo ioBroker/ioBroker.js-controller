@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pushover/README.md
 title: ioBroker Pushover-Adapter
-hash: jZTsbhVy6PzUiAmu4SsqGc6Hfxh7RwoOCFHu7gj+Qdg=
+hash: 02hWTpLiS+mqDlE/19oNgDHZRUJh4zVatZ6xr2n7PEI=
 ---
 ![Logo](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -12,7 +12,7 @@ hash: jZTsbhVy6PzUiAmu4SsqGc6Hfxh7RwoOCFHu7gj+Qdg=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.pushover.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushover.png?downloads=true)
 
-# IoBroker Pushover-Adapter ===============
+# IoBroker Pushover-Adapter
 Senden Sie Pushover-Benachrichtigungen von ioBroker.
 
 ## Aufbau
@@ -26,7 +26,7 @@ Zunächst ist ein Konto bei Pushover erforderlich.
 ## Verwendungszweck
 Um eine Benachrichtigung von ScriptEngine zu senden, schreiben Sie einfach:
 
-```javascript
+```
 // send notification to all instances of pushover adapter
 sendTo("pushover", "message body");
 
@@ -52,7 +52,6 @@ url,                   // optional  - a supplementary URL to show with your mess
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
 });
-
 ```
 
 ## Changelog
@@ -91,7 +90,7 @@ url,                   // optional  - a supplementary URL to show with your mess
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

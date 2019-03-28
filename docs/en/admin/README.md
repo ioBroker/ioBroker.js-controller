@@ -4,55 +4,52 @@ lastChanged: 25.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/README.md
-hash: UHSSTzB4gc5y1Sz7l0gCXlSOUZcW+YagLLDWITPD+Ks=
+hash: 9kaGmV0wXLOfnt01imNBd0v8p3T4QA2mVvYX/dtIzJY=
 ---
-# Introduction
+# The admin interface
 !> **Because of the size of the documentation, this is just an overview, detailed information is stored in the pages that are linked by the headings of the sections to the tabs. Please click on the headings.**
 
-The Adapter Admin is used to operate the entire ioBroker installation. He provides a web interface. This is called under ``<IP-Adresse des Servers>:8081``. This adapter is created directly during the installation of ioBroker.
+The Adapter Admin is used to operate the entire ioBroker installation.
+He provides a web interface. This is called under ``<IP-Adresse des Servers>:8081``.
+
+This adapter is created directly during the installation of ioBroker a manual installation is not necessary
 
 ![The admin in the tile view](../../de/admin/media/ADMIN_Adapter_Kachel.png)
 
-The GUI provided by the adapter may include but is not limited to: following functions are retrieved:
+The GUI provided by the adapter may include but is not limited to: the following functions are retrieved:
 
-* Installation of additional adapters
+* Enter system-wide settings
+* Installation of further adapters and instances
+* Access to the configuration of the instances
 * Access to object overview
 * Access to the status overview of the objects
-* Access to users and groups administration
+* Access to the administration of users and groups
 * Access to the logfile
 * Administration of the hosts
 
-## Installation
-This adapter is created directly during the installation of ioBroker a manual installation is not necessary
+The adapter view is divided into three sections:
 
-## Configuration (in the Instances tab)
-![main settings](../../de/admin/media/Admin_konfig_Haupteinstellungen.png)
+![The structure of the admin](../../de/admin/media/ADMIN_Screen_numbers.png)
 
-### IP
-Here the IP address under which the adapter can be reached is entered. Various Ipv4 and Ipv6 options are available. Default is 0.0.0.0. This must not be changed!
+1. [Menu Sidebar] (# menu items)
+2. [main window] (# the main window)
+3. [System Settings] (# System Settings)
 
-### Port
-Here, the port under which the administrator can be called is set.
-If several web servers are running on the server, this port must be adapted so that there are no problems with duplicate port assignment.
+## Menu items
+The menu bar contains several menu items. In the basic installation, these points are displayed as shown in the figure. Via the triangle icon in the top left corner (1), additional points can be added or deactivated after installing additional adapters for a better overview.
 
-### Encryption
-If you want to use the secure protocol https you have to check this box.
-
-### Authentication
-If an authentication is to take place here is a hook to put.
-
-## Service
-Call the following page via the web browser: ``<IP-Adresse des Servers>:8081``
-
-## Equestrian
-The main page of the administrator consists of several tabs. In the basic installation, the tabs are displayed as shown. The triangle icon on the top left (1) can be used to add additional tabs after installing additional adapters.
-There also riders can be disabled to get a better overview.
+![menu items](../../de/admin/media/ADMIN_Screen01_menuitems_numbers.png)
 
 The menu bar with the tabs can be hidden via the **X** (2) to make more space on mobile devices.
 
-![Admin](../../de/admin/media/Adapter_admin_first_view_items.png)
+![Menu collapsed](../../de/admin/media/ADMIN_Screen01_menucollapsed.png)
 
-Detailed information is provided in the pages linked by the headings.
+The menu bar can be displayed again via the "Burger icon"
+
+## The main window
+The main window displays the contents of the selected menu item.
+
+Detailed information on this content is available in the pages linked by the headings.
 
 ### [Overview](overview.md)
 All pages with their own web interface and information about the hosts are displayed here.
@@ -88,7 +85,7 @@ On this page you can create your own scripts with javascript, Blocly or Typescri
 ### [hosts](hosts.md)
 Information about the computer where ioBroker is installed. If a new version is available, a note appears in this entry in the menu bar.
 
-## [system settings](settings.md) (wrench icon)
+## [system settings](settings.md)
 In the menu that opens, settings such as language, time and date format and other system-wide settings are made.
 
 The repositories and security settings can also be set here.

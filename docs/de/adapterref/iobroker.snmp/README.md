@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.snmp/README.md
 title: ioBroker.snmp
-hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
+hash: yys9Kg/cH7SuwJuiyiwBEtiXaUYwVB/m9dQgMSpbFB4=
 ---
 ![Logo](../../../en/adapterref/iobroker.snmp/admin/snmp.png)
 
@@ -13,23 +13,24 @@ hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
 ![Tests](https://travis-ci.org/CTJaeger/ioBroker.snmp.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.snmp.png?downloads=true)
 
-# IoBroker.snmp ===================
-### Info
+# IoBroker.snmp
+## Info
 Dieser Adapter fragt Informationen vom SNMP-Gerät ab, z. B. Drucker, Netzwerk ...
 
-0,5,0
-* (Marcolotti) Dokumentation hinzufügen (de, en, ru)
-* (Marcolotti) Sprachen hinzufügen (de, en, ru)
+## Changelog
+### 0.5.0
+* (Marcolotti) Add documentation (de,en,ru)
+* (Marcolotti) Add languages (de,en,ru)
 
-0.0.3
-* (Apollon77) Objekttyp fixieren
+### 0.0.3
+* (Apollon77)  Fix Object Type
 
-0,02
-* (Bluefox) Korrekturen
+### 0.0.2
+* (Bluefox)    Fixes
 
 ### 0.0.1
-* (Bluefox) Refactoring
-* (Marcolotti) erste Veröffentlichung
+* (Bluefox)    refactoring
+* (Marcolotti) initial release
 
 ## License
 The MIT License (MIT)

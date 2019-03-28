@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fhem/README.md
 title: ioBroker.fhem
-hash: N5iJnz+zMACr/jOpD4kKZSjgK6n51TAKFE52hRcrxjE=
+hash: OTu+lFTj7lttlyJ7nwZz62mxUIImTL766Zs6iY46Sx0=
 ---
 ![商标](../../../en/adapterref/iobroker.fhem/admin/fhem.png)
 
@@ -12,14 +12,12 @@ hash: N5iJnz+zMACr/jOpD4kKZSjgK6n51TAKFE52hRcrxjE=
 ![下载](https://img.shields.io/npm/dm/iobroker.fhem.svg)
 ![NPM](https://nodei.co/npm/iobroker.fhem.png?downloads=true)
 
-＃ioBroker.fhem =================
+＃ioBroker.fhem
 此适配器允许将FHEM连接到ioBroker。
 
 要启用连接，必须在FHEM中启用telnet。要启用它（默认启用），请检查fhen.cfg中的以下设置：
 
-```
-define telnetPort telnet 7072 global
-```
+```define telnetPort telnet 7072 global```
 
 应该使用完全相同的端口和FHEM主机的IP地址（或者如果FHEM和ioBroker在同一台PC上运行，则为localhost）来设置适配器。
 

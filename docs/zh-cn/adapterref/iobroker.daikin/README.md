@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.daikin/README.md
 title: ioBroker.daikin
-hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
+hash: VP5fbClhWQRh8dvqK+L/9ZCpfk3VD2amiEvyQvLNGl0=
 ---
 ![商标](../../../en/adapterref/iobroker.daikin/admin/daikin.jpg)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg)
 ![安装数量](http://iobroker.live/badges/daikin-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.daikin.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.daikin.svg)
@@ -15,8 +16,6 @@ hash: HHKMwavhzIDZuWpiltZ1aS+BjM4YC1Bf2LRoFMo08KE=
 ![NPM](https://nodei.co/npm/iobroker.daikin.png?downloads=true)
 
 ＃ioBroker.daikin
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.daikin.svg）](https://greenkeeper.io/)
-
 [![可维护性]（https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/maintainability）](https://codeclimate.com/github/Apollon77/ioBroker.daikin/maintainability)[![测试覆盖率]（https://api.codeclimate.com/v1/badges/ccc74a3ef8de69265ca1/test_coverage）](https://codeclimate.com/github/Apollon77/ioBroker.daikin/test_coverage)
 
 此适配器连接到Daikin空调设备，允许控制设备并从中读取值。

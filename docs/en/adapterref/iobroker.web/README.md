@@ -1,6 +1,5 @@
 ![Logo](admin/web.png)
 # ioBroker.web
-===========================
 
 ![Number of Installations](http://iobroker.live/badges/web-installed.svg) ![Number of Installations](http://iobroker.live/badges/web-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.web.svg)](https://www.npmjs.com/package/iobroker.web)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.web.svg)](https://www.npmjs.com/package/iobroker.web)

@@ -51,7 +51,7 @@ function downloadImagesForReadme(lang, repo, data) {
                         relative = link;
                     }
                     request(relative + link, {encoding: null}, (err, status, body) => {
-                        err && console.error('Cannot download ' + relative + link + ': ' + err);
+                        err && console.error('Cannot _download ' + relative + link + ': ' + err);
                         body && utils.writeSafe(localDirName + link, body);
                         resolve1()
                     });
@@ -162,7 +162,7 @@ function prepareAdapterReadme(lang, repo, data) {
                         relative = link;
                     }
                     request(relative + link, {encoding: null}, (err, status, body) => {
-                        err && console.error('Cannot download ' + relative + link + ': ' + err);
+                        err && console.error('Cannot __download ' + relative + link + ': ' + err);
                         body && utils.writeSafe(localDirName + link, body);
                         resolve1()
                     });
@@ -201,7 +201,7 @@ function getUrl(url, binary) {
         request(url, {encoding: null}, (err, state, file) => {
             err && console.error('Cannot download ' + url + ': ' + err);
             if (!state || state.statusCode !== 200) {
-                console.error('Cannot download ' + url + ': ' + (state && state.statusCode));
+                !err && console.error('Cannot download ' + url + ': ' + (state && state.statusCode));
                 resolve();
             } else {
                 resolve(binary ? file : file.toString());

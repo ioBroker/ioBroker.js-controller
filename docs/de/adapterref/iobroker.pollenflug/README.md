@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pollenflug/README.md
 title: Pollenrisikoindex
-hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
+hash: RjP/kMcMjP8AFiLqq64h2tjH2yUsQbolm3pTtgV7UQs=
 ---
 ![Logo](../../../en/adapterref/iobroker.pollenflug/admin/pollenflug.png)
 
@@ -18,7 +18,7 @@ hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
 ![DWDLogo](../../../en/adapterref/iobroker.pollenflug/docs/dwdlogo.png)
 
 Der Deutsche Wetterdienst DWD erstellt tägliche Prognosen für den Pollenrisikoindex.
-Die Pollenarten werden vorhergesagt: Hasel, Erle, Esche, Birke, Gras, Roggen, Beifuß und Ambrosia für heute und morgen, am Freitag auch für übermorgen (Sonntag).
+Die Pollenarten werden vorhergesagt: Hasel, Erle, Esche, Birke, Gras, Roggen, Beifuß und Ambrosia für heute und morgen, am Freitag auch übermorgen (Sonntag).
 Täglich aktualisiert.
 Informationen zu den Pollenkreisen finden Sie unter: https://www.dwd.de/pollenflug Copyright der verwendeten Pollendaten: © Deutscher Wetterdienst (Quelle: Deutscher Wetterdienst)
 
@@ -77,7 +77,7 @@ Dieses Format kann einfacher in ioBroker verwendet werden.
 |-----	|---------- |------------------------------------ |
 | -1 | -1 | keine Daten verfügbar |
 | 0 | 0 | keine Pollenkonzentration |
-| 1 | 0-1 | keine zu niedrige Pollenkonzentration
+| 1 | 0-1 | keine zu niedrige Pollenkonzentration |
 | 2 | 1 | niedrige Pollenkonzentration |
 | 3 | 1-2 | niedrige bis mittlere Pollenkonzentration |
 | 4 | 2 | durchschnittliche Pollenkonzentration |
@@ -95,7 +95,7 @@ URL-Addess der Pollenbilder aus DWD
 ## Beispiel
 Wenn neue Daten vom DWD eingetroffen sind (das heutige Datum ändert sich), zeigt das Skript den Pollenrisikoindex für Hasel und Erle an.
 
-```sh
+```
 on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
     let hasel = getState("pollenflug.0.region#12.Hasel.text_today"/*today*/).val;
     let erle  = getState("pollenflug.0.region#12.Erle.text_today"/*today*/).val;

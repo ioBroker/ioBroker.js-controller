@@ -7,28 +7,23 @@ BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.feiertage/i
 BADGE-NPM: https://nodei.co/npm/iobroker.feiertage.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.feiertage/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.feiertage?branch=master&svg=true
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.feiertage/README.md
-title: ioBroker.feiertage
-hash: qYlYYqvosUfbrKQMNrhWrO1zVhlTljZdm86GWXv9XIM=
 ---
-![logo](../../../de/adapterref/iobroker.feiertage/../../admin/feiertage.png)
+![Logo](../../admin/feiertage.png)
+# ioBroker.feiertage
 
-# IoBroker.feedage
 ## Description
-This adapter provides the date, the duration up to this date in days and the name of the next German holiday and provides information whether today, tomorrow or the day after tomorrow is a public holiday.
+This adapter delivers date, distance in days to this date and name of the next German holiday. Furthermore it tells if today, tommorw or the day after tommorow is a holiday in Germany.
 
-## Data points
-![old text](../../../de/adapterref/iobroker.feiertage/img/DatapointsScreenshot.jpg "Screenshot data points")
+## Datapoints
+![alt text](img/DatapointsScreenshot.jpg "Screenshot Datapoints")
 
-## Settings
-Holidays that should be considered when filling the data points can be selected.
+## Configuration
+Only selected holidays count in the process.
 
-![old text](../../../de/adapterref/iobroker.feiertage/img/SettingScreenshot.jpg "Screenshot settings")
+![alt text](img/SettingScreenshot.jpg "Screenshot Settings")
 
-## Activation
-The adapter starts every day at midnight. A more frequent start is not necessary.
+## Schedule
+The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
 ### 1.0.11 (2018-10-29)

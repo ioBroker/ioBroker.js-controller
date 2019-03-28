@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.snmp/README.md
 title: ioBroker.snmp
-hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
+hash: yys9Kg/cH7SuwJuiyiwBEtiXaUYwVB/m9dQgMSpbFB4=
 ---
 ![商标](../../../en/adapterref/iobroker.snmp/admin/snmp.png)
 
@@ -13,23 +13,24 @@ hash: Nx4/y8XutOVwnBkSgy6FoGn0acbcL7vtyQAD6FxtGVw=
 ![测试](https://travis-ci.org/CTJaeger/ioBroker.snmp.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.snmp.png?downloads=true)
 
-#ioBroker.snmp =================
-###信息
+#ioBroker.snmp
+##信息
 此适配器轮询来自SNMP设备的信息，如打印机，网络......
 
+## Changelog
 ### 0.5.0
-*（Marcolotti）添加文档（de，en，ru）
-*（Marcolotti）添加语言（de，en，ru）
+* (Marcolotti) Add documentation (de,en,ru)
+* (Marcolotti) Add languages (de,en,ru)
 
 ### 0.0.3
-*（Apollon77）修复对象类型
+* (Apollon77)  Fix Object Type
 
 ### 0.0.2
-*（Bluefox）修复
+* (Bluefox)    Fixes
 
 ### 0.0.1
-*（Bluefox）重构
-*（Marcolotti）首发
+* (Bluefox)    refactoring
+* (Marcolotti) initial release
 
 ## License
 The MIT License (MIT)

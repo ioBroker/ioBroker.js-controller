@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ham-wemo/README.md
 title: ioBroker Wemo Adapter basierend auf Homebridge-Plattform-Wemo
-hash: U1upq2NvjTL6z460993OoevlvEMlO11geTRsJqicQrU=
+hash: hx6VgM2P5/guHzDNcKGwUoLd2cDvrtZycBsfurE7Sh0=
 ---
 ![Logo](../../../en/adapterref/iobroker.ham-wemo/admin/ham-wemo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/ham-wemo-stable.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg)
 
-# IoBroker Wemo Adapter basierend auf homebridge-platform-wemo [![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg)](https://greenkeeper.io/)
+# IoBroker Wemo Adapter basierend auf Homebridge-Plattform-Wemo
 =================
 
 ## Beschreibung

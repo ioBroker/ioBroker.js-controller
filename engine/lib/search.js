@@ -8,7 +8,7 @@ const utils = require('../build-lib/utils');
 
 let langs;
 let titles = {};
-function loadDocuments(dir, root, docs) {
+function loadDocuments(lang, dir, root, docs) {
     if (dir.endsWith('/') || dir.endsWith('\\')) {
         dir = dir.substring(0, dir.length - 1);
     }
@@ -21,7 +21,7 @@ function loadDocuments(dir, root, docs) {
             const name = path.join(dir, file);
             const stat = fs.statSync(name);
             if (stat.isDirectory()) {
-                loadDocuments(name, root, docs);
+                loadDocuments(lang, name, root, docs);
             } else if (file.match(/\.md$/)) {
                 const text = fs.readFileSync(name).toString('utf-8');
                 let {header, body} = utils.extractHeader(text);
@@ -30,7 +30,11 @@ function loadDocuments(dir, root, docs) {
                 console.log('Indexed: ' + name);
                 const id = name.replace(/\\/g, '/').replace(root + '/', '');
                 const title = header.title || utils.getTitle(result.body);
-                titles[id] = {title};
+                if (title.indexOf('object') !== -1) {
+                    console.log(JSON.stringify(title));
+                }
+                titles[lang] = titles[lang] || {};
+                titles[lang][id] = {title};
                 docs.push({id, title, text: result.body});
             }
         });
@@ -69,8 +73,14 @@ function init(app) {
     langs = {};
 
     config.LANGUAGES.forEach(lang => {
-        const documents = loadDocuments(path.join(__dirname, '..', config.public, lang));
-        let miniSearch = new MiniSearch({fields: ['title', 'text']});
+        const documents = loadDocuments(lang, path.join(__dirname, '..', config.public, lang));
+        let miniSearch = new MiniSearch({
+            fields: ['title', 'text'],
+            searchOptions: {
+                boost: { title: 2 },
+                //fuzzy: 0.2
+            }
+        });
         miniSearch.addAll(documents);
         langs[lang] = miniSearch;
     });
@@ -87,7 +97,14 @@ function search(lang, text) {
     if (!langs[lang]) {
         return [{id: 0, text: 'language unknown'}];
     } else {
-        return langs[lang].search(text).map(s => s.title = Object.assign({}, s, titles[s.id]));
+        const r = langs[lang].search(text).map(s =>
+            s.title = Object.assign({}, s, titles[lang][s.id]));
+        if (r.length > 12) {
+            const l = r.length;
+            r.splice(12, r.length - 1);
+            r.push({id: '...', title: l - 12});
+        }
+        return r;
     }
 }
 /*

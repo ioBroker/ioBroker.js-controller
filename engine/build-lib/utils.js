@@ -59,8 +59,23 @@ function extractHeader(text) {
             text = text.substring(pos + 7);
         }
     }
-    return {header: attrs, body: text};
+
+    return {header: attrs, body: trim(text, '\n').trimRight()};
 }
+
+function trim(text, char) {
+    char = char || ' ';
+    // remove leading \n
+    while(text && text[0] === char) {
+        text = text.substring(1);
+    }
+    // remove trailing \n
+    while(text && text[text.length - 1] ===char) {
+        text = text.substring(0, text.length - 1);
+    }
+    return text;
+}
+
 
 function getTitle(text) {
     let {body, header} = extractHeader(text);
@@ -343,5 +358,6 @@ module.exports = {
     extractBadges,
     addBadgesToBody,
     replaceImages,
-    normalizePath
+    normalizePath,
+    trim
 };

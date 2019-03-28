@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 4SodBEOGgVC7xNDqnGGZNac7CikqEi3lP5gVhp2Mgd8=
+hash: 4V5c4I6Vh/5cCcmu/zWPK9gorBweyRSZKnlLDbsUZkc=
 ---
 ![商标](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)
 ![安装数量](http://iobroker.live/badges/nut-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nut.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.nut.svg)
@@ -15,8 +16,6 @@ hash: 4SodBEOGgVC7xNDqnGGZNac7CikqEi3lP5gVhp2Mgd8=
 ![NPM](https://nodei.co/npm/iobroker.nut.png?downloads=true)
 
 #ioBroker.nut
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg）](https://greenkeeper.io/)
-
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.nut)
 
 此ioBroker适配器连接到定义的NUT服务器，以提供ioBroker状态的已连接UPS / USV的状态和详细信息，以便在此处使用。

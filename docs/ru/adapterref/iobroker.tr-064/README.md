@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: gQb6+lw6ghlkjZdyw4RE6KoR3pbJ2ScyXASA/1CoXQ0=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![логотип](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -33,7 +33,7 @@ FritzBox позвонит по внешнему номеру, и ваш теле
 
 ### ToPauseState
 - Значения: кольцо, соединение, конец
-- Может использоваться для приостановки видеоплеера при входящем звонке (звонок) или при снятии трубки (соединение)
+- Может использоваться для приостановки видеоплеера при входящем звонке (звонок) или при снятии телефона (соединение).
 - Резюме можно сделать по конечному значению.
 
 ### Присутствие
@@ -75,7 +75,7 @@ Callmonitor будет создавать состояния в реальном
 С помощью состояния команды вы можете вызывать каждую команду tr-064 из этого [документация](https://avm.de/service/schnittstellen/).
 например
 
-```javascript
+```
 command = {
     "service": "urn:dslforum-org:service:WLANConfiguration:1",
     "action": "X_AVM-DE_SetWPSConfig",

@@ -108,6 +108,7 @@ function sync2Languages(fromLang, toLang, content, cb) {
         //const fromFilePublic = consts.FRONT_END_DIR + fromLang + '/blog/' + file + '.md';
         //const toFilePublic = consts.FRONT_END_DIR + toLang + '/blog/' + file + '.md';
 
+
         // read from
         if (fs.existsSync(fromFile)) {
             let {header} = utils.extractHeader(fs.readFileSync(fromFile).toString('utf-8'));
@@ -133,7 +134,7 @@ function sync2Languages(fromLang, toLang, content, cb) {
         const toFilePublic = consts.FRONT_END_DIR + toLang + '/blog/' + file + '.md';
 
         // read from
-        let {body, header} = utils.extractHeader(fs.readFileSync(fromFilePublic).toString('utf-8'));
+        let {body, header} = utils.extractHeader(fs.readFileSync(fromFile).toString('utf-8'));
         let originalBody = body;
         const originalHeader = header;
         let translatedBody;
@@ -144,9 +145,12 @@ function sync2Languages(fromLang, toLang, content, cb) {
 
         translation.translateMD(fromLang, originalBody, toLang, translatedBody)
             .then(result => {
-                body = result.result;
-                originalBody = result.source;
+                body = utils.trim(result.result, '\n');
+                originalBody = utils.trim(result.source, '\n');
+                const text = utils.addHeader(originalBody, originalHeader);
                 utils.writeSafe(fromFile, utils.addHeader(originalBody, originalHeader));
+                let rr = utils.extractHeader(fs.readFileSync(fromFile).toString('utf-8'));
+                originalBody = rr.body;
                 return translation.translateText(fromLang, originalHeader.title, toLang);
             }).then(title => {
                 originalHeader.title = title;

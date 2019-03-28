@@ -109,7 +109,7 @@ class Subscribe extends Component {
         const error = this.state.email && !regEmail.test(this.state.email.toLowerCase());
         return (<div key="subscribe" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
             <Input
-                error={error}
+                error={!!error}
                 placeholder={(I18n.t('Newsletter subscribe'))}
                 classes={{input: this.state.inputFocused || this.state.email ? this.props.classes.inputRootNotEmpty : this.props.classes.inputRoot }}
                 className={this.props.classes.input}

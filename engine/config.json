@@ -1,6 +1,6 @@
 {
   "secure": false,
-  "port": 80,
+  "port": 5000,
   "public": "front-end/build/",
   "certs": {
     "key": "",

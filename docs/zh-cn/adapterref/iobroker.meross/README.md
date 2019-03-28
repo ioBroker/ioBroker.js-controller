@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: 7i/wfV3jGXnachiDO/6+D9empqg5lehEudExP7AWbTU=
+hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
 ![安装数量](http://iobroker.live/badges/meross-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.meross.svg)
@@ -14,7 +15,7 @@ hash: 7i/wfV3jGXnachiDO/6+D9empqg5lehEudExP7AWbTU=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
-＃ioBroker.meross [![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg）](https://greenkeeper.io/)
+＃ioBroker.meross
 ##说明
 此适配器允许通过连接到Meross云服务器来控制Meross设备。
 

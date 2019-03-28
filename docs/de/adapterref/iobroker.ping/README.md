@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ping/README.md
-title: Pings konfigurierte IP-Adressen.
-hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
+title: PING-Adapter
+hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 ---
-![Logo](../../../en/adapterref/iobroker.ping/admin/ping.png) ioBroker PING-Adapter ===============
+![Logo](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/ping-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.ping.svg)
@@ -13,13 +13,9 @@ hash: gvtpb9DhTrRG+6kkkThPnBq3CN/LevWUUeUtQXYV4BU=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)
 
-# Pings konfigurierte IP-Adressen.
+# PING-Adapter
+## Pings konfigurierte IP-Adressen.
 Pingt angegebene IP-Adressen in definierten Intervallen und überwacht die Ergebnisse.
-
-## Installieren
-```node iobroker.js add ping```
-
-## Aufbau
 
 ## Changelog
 ### 1.4.1 (2019-01-08)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pollenflug/README.md
 title: Индекс риска пыльцы
-hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
+hash: RjP/kMcMjP8AFiLqq64h2tjH2yUsQbolm3pTtgV7UQs=
 ---
 ![логотип](../../../en/adapterref/iobroker.pollenflug/admin/pollenflug.png)
 
@@ -20,7 +20,7 @@ hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
 Немецкая служба погоды DWD готовит ежедневные прогнозы индекса риска пыльцы.
 Прогнозируются виды пыльцы: орешник, ольха, ясень, береза, трава, рожь, полынь и амброзия на сегодня и завтра, в пятницу также на послезавтра (воскресенье).
 Обновляется ежедневно утром.
-Информацию о округах пыльцы можно найти по адресу: https://www.dwd.de/pollenflug Авторские права на используемые данные пыльцы: © Deutscher Wetterdienst (Quelle: Deutscher Wetterdienst)
+Информацию о округах пыльцы можно найти по адресу: https://www.dwd.de/pollenflug. Авторские права на используемые данные пыльцы: © Deutscher Wetterdienst (Quelle: Deutscher Wetterdienst).
 
 ## Установка и настройка
 Требуется node.js 8.0 или выше и Admin v3! Выберите округ в конфигурации адаптера ioBroker. Вы получите индекс риска пыльцы для этого округа. Индекс будет обновляться один раз в день, около 11 часов.
@@ -95,7 +95,7 @@ URL-адрес изображения пыльцы из DWD
 ## Пример
 Если поступят новые данные из DWD (изменится сегодняшняя дата), сценарий покажет индекс риска пыльцы для Hasel и Erle.
 
-```sh
+```
 on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
     let hasel = getState("pollenflug.0.region#12.Hasel.text_today"/*today*/).val;
     let erle  = getState("pollenflug.0.region#12.Erle.text_today"/*today*/).val;

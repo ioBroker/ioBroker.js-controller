@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.places/README.md
 title: ioBroker.places
-hash: 699AW5/zj67nyWmkPFOvuPyuzBD73yQJbVkav9B3qHk=
+hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
 ---
 ![Logo](../../../en/adapterref/iobroker.places/admin/places.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/places-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.places.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/basgo/iobroker.places.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.places.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.places.svg)
-![Github-Probleme](http://githubbadges.herokuapp.com/BasGo/ioBroker.places/issues.svg)
-![Travis-CI](https://img.shields.io/travis/BasGo/ioBroker.places/master.svg)
+![Github-Probleme](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)
+![Travis-CI](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
 # IoBroker.places
@@ -26,7 +26,7 @@ Es gibt nur einen obligatorischen Konfigurationswert: den Radius (Meter), anhand
 
 * **Name für Zuhause** kann verwendet werden, um einen benutzerdefinierten Namen für den Heimatort festzulegen.
 
-* **Google Maps API-Schlüssel** wird zur Aktivierung der Geokodierung verwendet. Ein fehlender API-Schlüssel wird von einer konfigurierten vis-map-Instanz abgerufen (sofern verfügbar), wenn die Konfigurationsseite geöffnet wurde.
+* **Google Maps-API-Schlüssel** wird zur Aktivierung der Geokodierung verwendet. Ein fehlender API-Schlüssel wird von einer konfigurierten vis-map-Instanz abgerufen (sofern verfügbar), wenn die Konfigurationsseite geöffnet wurde.
 
 * **Google Maps Geocoding** kann aktiviert werden, um eine reale Adresse und eine Höhe für eine bereitgestellte Geoposition zu erhalten.
 
@@ -35,9 +35,9 @@ Es gibt nur einen obligatorischen Konfigurationswert: den Radius (Meter), anhand
 * **Benutzer** ist eine flexible Liste mit Benutzerzuordnungen.
 
 ## Verwendungszweck
-Um die Standortaktualisierung zu verarbeiten, senden Sie einfach eine Nachricht mit der folgenden Syntax:
+Um die Standortaktualisierung durchzuführen, senden Sie einfach eine Nachricht mit der folgenden Syntax:
 
-```javascript
+```
 // send a message to all instances of places adapter
 sendTo('locations', {
         user:       "Name of person",
@@ -66,7 +66,7 @@ sendTo('locations.0', {
 ## Struktur für zurückgegebene Nachrichten
 Der folgende Block zeigt, wie Antwortnachrichten aussehen. Für jeden Wert hat der ioBroker-Objektbaum einen entsprechenden Status.
 
-```javascript
+```
 {
     "user":         "Name of person",       // name of person (may have been replaced by user mapping)
     "latitude":     50.9576191,
@@ -98,7 +98,7 @@ Aktivieren Sie die Option zum Speichern von unbearbeiteten Anforderungen.
 ### 2. Skript erstellen (ioBroker.javascript)
 Erstellen Sie ein kurzes Skript mit einem Abonnement für die Rohanfrage, z. B. von **telegram.0.communicate.requestRaw** und senden Sie ein neues Anforderungsobjekt an iobroker.places (oder eine Instanz davon):
 
-```javascript
+```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
     var data = JSON.parse(obj.newState.val);
     if (data.from && data.location) {

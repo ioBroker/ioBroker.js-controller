@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
+hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ---
 ![Logo](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/ekey-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.ekey.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.ekey.svg)
@@ -14,14 +15,14 @@ hash: Fy8fZXYnKn0RYfUvNA86SQMCuvo29jFsSfBb76v5sAk=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.ekey?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
-# IoBroker.ekey =======================
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)](https://greenkeeper.io/)
+# IoBroker.ekey
+======================
 
 [![Abhängigkeitsstatus] (https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg)](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey) [![Code Climate] (https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg)](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 
 Dieser Adapter für ioBroker stellt eine Verbindung zu einem ekey-Connector-UDP her.
 
-Implementiert wie beschrieben in http://descargas.futurasmus-knxgroup.org/DOC/DE/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf oder hier https://www.ekey.net/assets/media_center/DE/User_Guide_ekey_net_4_6 .pdf
+Implementiert wie beschrieben in http://descargas.futurasmus-knxgroup.org/DOC/DE/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf oder hier https://www.ekey.net/assets/media_center/DE/User_Guide_ekey_net_4. .pdf
 
 ![Bild](../../../en/adapterref/iobroker.ekey/img/ekey.png)
 

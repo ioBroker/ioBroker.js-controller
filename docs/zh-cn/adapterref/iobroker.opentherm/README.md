@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.opentherm/README.md
 title: Opentherm集成ioBroker
-hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
+hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
 ---
 ![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -11,10 +11,9 @@ hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
 ![安装数量](http://iobroker.live/badges/opentherm-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
 
 #openntherm集成ioBroker
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg）](https://greenkeeper.io/)
-
 此适配器将opentherm网关的所有功能集成到ioBroker中。
 Opentherm是几种现代加热系统（如Remeha）使用的网关协议。
 

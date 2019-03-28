@@ -4,6 +4,7 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.info.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.info.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.info.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/iobroker-community-adapters/ioBroker.info/master.svg
+BADGE-Greenkeeper badge: https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.info.svg
 BADGE-Dependency Status: https://img.shields.io/david/iobroker-community-adapters/iobroker.info.svg
 BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adapters/ioBroker.info/badge.svg
 ---
@@ -52,14 +53,12 @@ Bei Windows System sollten die zyklische Ladevorgänge der Systemdaten nicht zu 
 
 # Info Tab
 
-Fast alle Blöcke können mit einem Klick auf ![Blöcke zu/aufklappen](img/expand.png) zu bzw. aufgeklappt werden.
+Der Info Tab enthält verschiedene Informationen zu Ihrem System und zum ioBroker. Der Tab ist in verschiedene Blöcke unterteilt, die individuell angepasst werden können. Fast alle Blöcke können mit einem Klick auf ![Blöcke zu/aufklappen](img/expand.png) zu bzw. aufgeklappt werden.
 
 ## Uhr
 
 <img height="50" align="left" src="img/clock.png">
 Die Uhr hat keine besondere Funktion (ich habe mir aber Mühe gegeben) und kann jederzeit in der Konfiguration ausgeschaltete werden.
-
-<br><br>
 
 ## Meldungen
 
@@ -91,7 +90,7 @@ Von hier aus kann mit einem Klick auf ![Update Button](img/update_button.png) di
 Wenn Sie mit der Maus über ![Changelog Icon](img/changelog.png) fahren, sehen Sie die wichtigsten Neuerungen seit Ihrer Version. 
 Mit einem Klick auf ![Dokumentation](img/readme.png), wird die komplette Beschreibung des Adapters angezeigt.
 
-<br>
+Wenn der Host - also JS-Controller - veraltet ist, dann erscheint eine extra Box unterhalb von "Neue Adapter" mit der Meldung, dass man den Host updaten sollte. 
 
 ## Neue Adapter
 
@@ -153,9 +152,9 @@ Unter Software findet man Daten zum Betriebssystem, installierte Software, laufe
 
 Hier findet man Daten alle zum CPU wie Geschwindigkeit, Auslastung und Temperatur.
 
-Probleme mit Windows: Um die Temperatur eines Windows Systems zu erkennen, wird wmic verwendet. In manchen fälle muss wmic mit Administratorrechten ausgeführt werden. Wenn Sie also keine Werte erhalten, versuchen Sie es erneut mit den entsprechenden Berechtigungen auszuführen. Wenn Sie immer noch keine Werte erhalten, unterstützt Ihr System diese Funktion möglicherweise nicht.
+**Probleme mit Windows:** Um die Temperatur eines Windows Systems zu erkennen, wird wmic verwendet. In manchen fälle muss wmic mit Administratorrechten ausgeführt werden. Wenn Sie also keine Werte erhalten, versuchen Sie es erneut mit den entsprechenden Berechtigungen auszuführen. Wenn Sie immer noch keine Werte erhalten, unterstützt Ihr System diese Funktion möglicherweise nicht.
 
-Probleme mit Linux: In einigen Fällen müssen Sie das Linux-Sensor-Paket installieren, um die Temperatur messen zu können, z.B. auf DEBIAN-basierten Systemen durch Ausführen von:
+**Probleme mit Linux:** In einigen Fällen müssen Sie das Linux-Sensor-Paket installieren, um die Temperatur messen zu können, z.B. auf DEBIAN-basierten Systemen durch Ausführen von:
 
 ```
 $ sudo apt-get install lm-sensors
@@ -169,7 +168,7 @@ Hier sind alle Daten zum Hauptspeicher wie freie Speicher oder Daten zum RAM Rie
 
 Alle Daten zu Festplatten, Partitionen, Raids und Roms.
 
-Probleme mit Linux: UM in der Lage sein den S.M.A.R.T. Status unter Linux sehen zu können, müssen Sie die smartmontools installieren. Auf DEBIAN-basierten Linux-Distributionen können Sie es installieren, indem Sie Folgendes ausführen:
+**Probleme mit Linux:** UM in der Lage sein den S.M.A.R.T. Status unter Linux sehen zu können, müssen Sie die smartmontools installieren. Auf DEBIAN-basierten Linux-Distributionen können Sie es installieren, indem Sie Folgendes ausführen:
 
 ```
 $ sudo apt-get install smartmontools
@@ -187,33 +186,64 @@ Alle Daten zu den Netzwerkverbindungen.
 
 Alle Daten zu der Batterie, falls eine vorhanden ist.
 
-Probleme mit Windows: Um den Batteriezustand eines Windows Systems zu erkennen, wird wmic verwendet. In manchen fälle muss wmic mit Administratorrechten ausgeführt werden. Wenn Sie also keine Werte erhalten, versuchen Sie es erneut mit den entsprechenden Berechtigungen auszuführen. Wenn Sie immer noch keine Werte erhalten, unterstützt Ihr System diese Funktion möglicherweise nicht.
+**Probleme mit Windows:** Um den Batteriezustand eines Windows Systems zu erkennen, wird wmic verwendet. In manchen fälle muss wmic mit Administratorrechten ausgeführt werden. Wenn Sie also keine Werte erhalten, versuchen Sie es erneut mit den entsprechenden Berechtigungen auszuführen. Wenn Sie immer noch keine Werte erhalten, unterstützt Ihr System diese Funktion möglicherweise nicht.
 
 ## Adapteranfragen
 
-<img height="200" src="img/adapter_requests.png">
+<img height="200" align="left" src="img/adapter_requests.png">
+Alle Adapter Anfragen wurden in im Github als Issue aufgenommen. Jeder der sich irgendwas wünscht, kann sein Wünsch hier eintragen und jeder der Entwickeln kann, kann sich dann ein Issue aussuchen und daraus ein Adapter entwickeln.
+
+In dieser Auflistung wird ein Titel angezeigt und mit einem Klick auf ![Blöcke zu/aufklappen](img/expand.png), werden dann genauere Informationen sichtbar. Oben Links wann der Wunsch erstellt wurde, rechts den aktuellen Status und unten eine genaue Beschreibung. Sollte ein Entwickler sich den Wunsch ausgesucht haben, dann wird diese hier als "assined to" ausgewiesen.
+
+Mit einem Klick auf ![Link Button](img/link.png), kommt ihr direkt zu Github und könnt dort eigene Wünsche hinzufügen.
+Wenn man auf dem Titel eine Wunsches klickt, landet man direkt auf dem Wunsch bei Github und kann ggf. dafür Stimmen. Wünsche mit viele Stimmen werden natürlich bevorzugt behandelt. 
 
 Das Panel "Adapteranfragen" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden.
 
 ## Probleme und Fehler
 
-<img height="200" src="img/issues_bugs.png">
+<img height="200" align="left" src="img/issues_bugs.png">
+Natürlich sind keine Adapter Fehlerfrei und manche Anwender haben vielleicht auch Erweiterungsideen dazu. Hier wird alles gesammelt, was zu den installierten Adapter bekannt ist. Man kann diese Liste auch nutzen, um zu erfahren ob ein Fehler dass man eben gefunden hat, auch dem Entwickler bekannt ist, denn nur bekannte Fehler können auch behoben werden.
+
+Mit einem Klick auf ![Blöcke zu/aufklappen](img/expand.png), rechts vom Adapternamen, öffnet sich die Liste der bekannten Probleme/Wünsche. Diese können ebenfalls geöffnet werden, wo man dann eine genaue Beschreibung dazu findet. 
+
+Wenn man auf dem Namen des Adapters klickt, lanndet man direkt auf der Issues-Liste auf Github und kann ggf. ein neuen Fehler oder Erweiterungswunsch eintragen.
+Klickt man auf den Titel eines Issues, landet man direkt bei der Meldung auf Github und kann ggf. dem entwickler weitere Informationen dazu, als Kommentar hinterlegen.
 
 Das Panel "Probleme und Fehler" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden.
 
 ## ioBroker-Adapter auf Github
 
-<img height="200" src="img/adapter_search.png">
+<img height="200" align="left" src="img/adapter_search.png">
+Die Anzahl der offiziellen Adaptern für ioBroker ist inzwischen schon beachtlich. Es gibt aber natürlich auch noch viel mehr Adaptern, die im Netz verfügbar sind. Diese werden hier gesucht und angezeigt.
 
-Das Panel "ioBroker-Adapter auf Github" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden.
+Wenn man mit einem Klick auf ![Blöcke zu/aufklappen](img/expand.png) den Panel aufklappt, wird hier die komplette Beschreibung zum Adapter angezeigt.
+
+Das Panel "ioBroker-Adapter auf Github" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden. Man kann auch die Reihenfolge der Sortierung anpassen.
+
+```
+ACHTUNG!!! Möglicherweise befinden sich diese Adapter in einem noch sehr frühen Entwicklungsstadium.
+Diese sollten nicht auf ein Produktivsystem installiert werden.
+Jede Installation erfolgt auf eigene Gefahr!
+```
 
 ## News
 
-<img height="200" src="img/news.png">
+<img height="200" align="left" src="img/news.png">
+Hin un wieder werden offizielle News vom ioBroker Team veröffentlicht. Hier werden diese dann angezeigt.
+
+Mit einem Klick auf ![Link](img/link.png), kommt man direkt zur offizielle ioBroker Seite.
+
+Die News werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder mit localhost:8081 zugreift. Nutz man aber ein Hostnamen wie meinhaus.de:8081, muss man sich eine kostenlose API-Key bei Feednami besorgen. Um sich dort zu registrieren, klicken Sie [hier](https://toolkit.sekando.com/docs/en/setup/hostnames) und folgen den Anweisungen.
 
 ## Forum
 
-<img height="200" src="img/forum.png">
+<img height="200" align="right" src="img/forum.png">
+Hier werden die neusten Einträge des Forums in der ausgewählten Sprache angezeigt. Sollte kein Forum in der Sprache geben, dann werden Daten aud dem englischen Forum angezeigt.
+
+Mit einem Klick auf ![Link](img/link.png), kommt man direkt zum Forum.
+
+Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder mit localhost:8081 zugreift. Nutz man aber ein Hostnamen wie meinhaus.de:8081, muss man sich eine kostenlose API-Key bei Feednami besorgen. Um sich dort zu registrieren, klicken Sie [hier](https://toolkit.sekando.com/docs/en/setup/hostnames) und folgen den Anweisungen.
 
 ## Changelog
 

@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.email/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.email
-hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
+title: ioBroker E-Mail
+hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 ---
-# Zu https://github.com/iobroker-community-adapters/ioBroker.email verschoben
 ![Logo](../../../en/adapterref/iobroker.email/admin/email.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/email-stable.svg)
@@ -13,19 +12,19 @@ hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-# IoBroker email ================
+# IoBroker E-Mail
 Senden Sie E-Mails von ioBroker.
 
 Der gesamte Job macht [nodemailer](https://github.com/nodemailer/nodemailer) und ioBroker einfach dazu.
 
 ** Dieser Adapter benötigt Nodejs 6.x oder höher !! **
 
-Für die Verwendung von Google Mail müssen Sie möglicherweise "Weniger sichere Apps zulassen" in Ihrem Google Mail-Konto konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssen Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie Ihr Konto außerdem mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP verwenden zu können.
+Zur Verwendung von Google Mail müssen Sie möglicherweise "Weniger sichere Apps zulassen" in Ihrem Google Mail-Konto konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssen Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie Ihr Konto außerdem mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP verwenden zu können.
 
 ## Verwendungszweck
 Um E-Mails von ScriptEngine zu senden, schreiben Sie einfach:
 
-```javascript
+```
 // send email to all instances of email adapter
 sendTo("email", "Email body");
 
@@ -59,7 +58,6 @@ sendTo("email", {
         {path: "path/to/file/image1.jpg", cid: "image1"}
     ]
 });
-
 ```
 
 Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **adapter.sendTo**
@@ -148,7 +146,7 @@ Für andere Dienste siehe Dokumentation von **Nodemailer** `§§LLLLL_0§§`
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox
+Copyright (c) 2014-2019 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

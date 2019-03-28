@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: 7i/wfV3jGXnachiDO/6+D9empqg5lehEudExP7AWbTU=
+hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 ---
 ![логотип](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
+![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
 ![Количество установок](http://iobroker.live/badges/meross-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.meross.svg)
@@ -14,7 +15,7 @@ hash: 7i/wfV3jGXnachiDO/6+D9empqg5lehEudExP7AWbTU=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
-# IoBroker.meross [![Значок Greenkeeper] (https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)](https://greenkeeper.io/)
+# IoBroker.meross
 ## Описание
 Этот адаптер позволяет управлять устройствами Meross, подключаясь к облачным серверам Meross.
 

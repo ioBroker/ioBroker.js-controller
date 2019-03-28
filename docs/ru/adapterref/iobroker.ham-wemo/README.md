@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ham-wemo/README.md
 title: ioBroker Wemo адаптер на основе homebridge-platform-wemo
-hash: U1upq2NvjTL6z460993OoevlvEMlO11geTRsJqicQrU=
+hash: hx6VgM2P5/guHzDNcKGwUoLd2cDvrtZycBsfurE7Sh0=
 ---
 ![логотип](../../../en/adapterref/iobroker.ham-wemo/admin/ham-wemo.png)
 
 ![Количество установок](http://iobroker.live/badges/ham-wemo-stable.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg)
 
-# IoBroker Адаптер Wemo на основе homebridge-platform-wemo [![Значок Greenkeeper] (https://badges.greenkeeper.io/ioBroker/ioBroker.ham-wemo.svg)](https://greenkeeper.io/)
+# IoBroker Wemo-адаптер на основе homebridge-platform-wemo
 =================
 
 ## Описание

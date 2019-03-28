@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pushover/README.md
 title: ioBroker pushover适配器
-hash: jZTsbhVy6PzUiAmu4SsqGc6Hfxh7RwoOCFHu7gj+Qdg=
+hash: 02hWTpLiS+mqDlE/19oNgDHZRUJh4zVatZ6xr2n7PEI=
 ---
 ![商标](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -12,11 +12,11 @@ hash: jZTsbhVy6PzUiAmu4SsqGc6Hfxh7RwoOCFHu7gj+Qdg=
 ![下载](https://img.shields.io/npm/dm/iobroker.pushover.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushover.png?downloads=true)
 
-#ioBroker pushover Adapter ==============
+#ioBroker pushover适配器
 从ioBroker发送推送通知。
 
 ##配置
-首先，它需要一个关于pushover的帐户。
+首先，它需要一个推卸帐户。
 ![Pushover配置](../../../en/adapterref/iobroker.pushover/img/Screen0.png)
 
 ![API令牌](../../../en/adapterref/iobroker.pushover/img/Screen1.png)
@@ -26,7 +26,7 @@ hash: jZTsbhVy6PzUiAmu4SsqGc6Hfxh7RwoOCFHu7gj+Qdg=
 ##用法
 要从ScriptEngine发送通知，只需写：
 
-```javascript
+```
 // send notification to all instances of pushover adapter
 sendTo("pushover", "message body");
 
@@ -52,7 +52,6 @@ url,                   // optional  - a supplementary URL to show with your mess
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
 });
-
 ```
 
 ## Changelog
@@ -91,7 +90,7 @@ url,                   // optional  - a supplementary URL to show with your mess
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

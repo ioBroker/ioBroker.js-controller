@@ -3,20 +3,21 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homee/README.md
 title: ioBroker homee Adapter
-hash: 9vcI7FKhF9O/zUxisnOnNIvDoBqzWG1bNE4Gj9G3eHY=
+hash: TTc69nv+1qEEwSCcsluUShKWKjdRud6tieAyi14pIQM=
 ---
 ![Logo](../../../en/adapterref/iobroker.homee/admin/homee.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/homee-stable.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)
 
-# IoBroker homee Adapter [![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)](https://greenkeeper.io/)
+# IoBroker homee Adapter
 =================
 
 ## Beschreibung
 Dieser Adapter verbindet den ioBroker mit dem homee und bietet die folgenden Funktionen:
 
 * ermöglicht die Verbindung über IP oder Homee-ID und Benutzername / Passwort
-* Lesen Sie alle Geräte (Knoten) und Zustände (Attribute) und zeigen Sie deren Werte einschließlich Aktualisierungen im ioBroker an
+* Lesen Sie alle Geräte (Knoten) und Zustände (Attribute) und zeigen Sie deren Werte einschließlich Aktualisierungen in ioBroker an
 * Erlauben Sie das Ändern von Werten in ioBroker und senden Sie sie zur Steuerung an Geräte zurück
 * fungiert als ioBroker-Verlaufsanbieter für alle Statusgeräte, auf denen der Verlauf in homee aktiviert ist. Das bedeutet, dass Sie die in homee gespeicherten Verlaufswerte verwenden können, um in ioBroker mit Flot, Admin oder auch JavaScript anzuzeigen, einschließlich aller Aggregationen auf Datenebene, wie sie z. Verlaufsadapter
 

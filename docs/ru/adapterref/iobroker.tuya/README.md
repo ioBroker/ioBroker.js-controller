@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
+hash: i2NPZSlWkdJ7vYze/ua0fXPQV1wB44Q2tnGuI1v7gn4=
 ---
 ![логотип](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
+![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
 ![Количество установок](http://iobroker.live/badges/tuya-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.tuya.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.tuya.svg)
@@ -15,9 +16,7 @@ hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 # IoBroker.tuya
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)](https://greenkeeper.io/)
-
-Адаптер ioBroker для подключения к нескольким небольшим и дешевым устройствам Wi-Fi, которые подключены к Tuya Cloud и в основном используют приложение Smartlife / Alexa-Skill. Адаптер поддерживает чтение обновлений состояния в реальном времени и управление этими устройствами после синхронизации с соответствующим приложением для мобильного телефона.
+Адаптер ioBroker для подключения к нескольким небольшим и дешевым Wi-Fi-устройствам, которые подключены к Tuya Cloud и в основном используют приложение Smartlife / Alexa-Skill. Адаптер поддерживает чтение обновлений состояния в реальном времени и управление этими устройствами после синхронизации с соответствующим приложением для мобильного телефона.
 
 Устройства Tuya - это интеллектуальные устройства ESP8266MOD WiFi от Shenzhen Xenon.
 
@@ -31,7 +30,7 @@ hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
 ### Основные функции
 Адаптер контролирует локальную сеть на наличие UDP-пакетов устройств Tuya. Необходимо, чтобы хост ioBroker, на котором работает адаптер, был расположен в том же сегменте сети, что и устройства, и многоадресная рассылка UDP должна поддерживаться маршрутизатором!
 
-Все обнаруженные устройства добавляются в адаптер, и в качестве базовых функций адаптер запрашивает данные в определенный интервал опроса. Без синхронизации с соответствующим мобильным приложением (см. Ниже) никакие дополнительные функции, такие как обновления в реальном времени или управление, невозможны.
+Все обнаруженные устройства добавляются в адаптер, и в качестве базовых функций адаптер запрашивает данные в определенный интервал опроса. Без синхронизации с соответствующим мобильным приложением (см. Ниже) НИКАКИЕ дополнительные функции, такие как обновления в реальном времени или управление, невозможны.
 
 ### Расширенная функциональность после синхронизации устройства
 Чтобы получить полную функциональность адаптера, ключ шифрования должен быть известен адаптеру.
@@ -56,7 +55,7 @@ hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
 Некоторые образы для некоторых мобильных ОС можно найти по адресу [Прокси-страницу](PROXY.md).
 
 ## Кредиты
-Работа адаптера была бы невозможна без большой работы @codetheweb и @ NorthernMan54 (https://github.com/codetheweb/tuyapi) и https://github.com/clach04/python-tuya и многих других. ,
+Работа адаптера была бы невозможна без большой работы @codetheweb и @ NorthernMan54 (https://github.com/codetheweb/tuyapi) и https://github.com/clach04/python-tuya и многих других ,
 
 ## Сделать
 * улучшить тестирование: проверки состояния и setState

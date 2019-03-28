@@ -183,12 +183,17 @@ function partsTake(text, addIds) {
             } else {
                 current = '';
             }
+            line = '';
         } else
         if (lineTrimmed.startsWith('|') && lineTrimmed.endsWith('|')) {
             parts.push({type: 'table', lines: [line]});
         } else
         if (lineTrimmed.startsWith('<!-- ID: ')) {
-            parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
+            if (parts[last]) {
+                parts[last].id = parseInt(line.substring('<!-- ID: '.length, line.length - 4));
+            } else {
+                console.warn('ID ' + line.substring('<!-- ID: '.length, line.length - 4) + ' skipped');
+            }
             current = '';
         } else
         if (current === 'source') {

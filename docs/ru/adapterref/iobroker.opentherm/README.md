@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.opentherm/README.md
 title: Opentherm интеграция ioBroker
-hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
+hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
 ---
 ![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -11,10 +11,9 @@ hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
 ![Количество установок](http://iobroker.live/badges/opentherm-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
 
 # Opentherm интеграция ioBroker
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)](https://greenkeeper.io/)
-
 Этот адаптер объединяет все функции шлюза opentherm в ioBroker.
 Opentherm - это протокол шлюза, используемый несколькими современными системами отопления, такими как Remeha.
 
@@ -51,7 +50,7 @@ Opentherm - это протокол шлюза, используемый нес�
 ### 0.1.6
 * Создание логических каналов
 * создание штатов
-* уменьшено ведение журнала, все полученные сообщения все еще находятся в журнале во время бета-тестирования данных
+* уменьшено ведение журнала, все полученные сообщения все еще находятся в журнале во время бета-тестирования для сбора данных
 * создание файла определения (пожалуйста, не стесняйтесь предоставить вход)
 
 ### 0.1.0

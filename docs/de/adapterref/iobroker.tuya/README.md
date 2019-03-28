@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
+hash: i2NPZSlWkdJ7vYze/ua0fXPQV1wB44Q2tnGuI1v7gn4=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/tuya-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.tuya.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tuya.svg)
@@ -15,8 +16,6 @@ hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 # IoBroker.tuya
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)](https://greenkeeper.io/)
-
 ioBroker-Adapter zum Anschluss an mehrere kleine und günstige WLAN-Geräte, die an die Tuya Cloud angeschlossen sind und hauptsächlich die Smartlife App / Alexa-Skill verwenden. Der Adapter unterstützt das Lesen von Echtzeitstatus-Aktualisierungen und die Steuerung dieser Geräte, sobald sie mit der entsprechenden Mobiltelefon-App synchronisiert wurden.
 
 Tuya-Geräte sind ESP8266MOD-WLAN-Smart-Geräte von Shenzhen Xenon.
@@ -56,7 +55,7 @@ Die Synchronisierung wird nur anfangs benötigt oder nachdem Sie Ihrer App neue 
 Einige Bilder für einige mobile Betriebssysteme finden Sie unter den [Proxy-Seite](PROXY.md).
 
 ## Credits
-Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb und @ NorthernMan54 (https://github.com/codetheweb/tuyapi) und https://github.com/clach04/python-tuya und vielen mehr nicht möglich .
+Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb und @ NorthernMan54 (https://github.com/codetheweb/tuyapi) und https://github.com/clach04/python-tuya und vielen mehr nicht möglich gewesen .
 
 ## Machen
 * Verbessern Sie das Testen: Statusprüfungen und SetState's

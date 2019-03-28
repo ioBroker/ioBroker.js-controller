@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: lhphtdXTt7a/hbYIlDJjNr8u4s9h7WIDlqGFNaDdm/o=
+hash: dtJxhyPKy8uUbDfthaxzW7LDafKlcLlV2d+sXBsDOc4=
 ---
 ![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -22,12 +22,16 @@ hash: lhphtdXTt7a/hbYIlDJjNr8u4s9h7WIDlqGFNaDdm/o=
 
 Установить comfoair - IP-адрес, порт и опрос - intervall
 
-Испытано на тепловых насосах luxtronik 1 и AlphaInnotec
+Проверено на тепловых насосах luxtronik 1 и AlphaInnotec
 
 Читает различные значения и характеристики вашего теплового насоса (температуры, ошибки, время работы, ...).
-Запланировано: дополнительная статистика, значения и функции управления (заданные температуры, кривая нагрева, режим).
+Запланировано: функции управления (заданные температуры, кривая нагрева, режим).
 
 ## Changelog
+
+### 0.0.3
+
+-   Reads mode heating, water and heating-curve
 
 ### 0.0.2
 

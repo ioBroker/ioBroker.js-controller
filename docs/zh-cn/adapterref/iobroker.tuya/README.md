@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
+hash: i2NPZSlWkdJ7vYze/ua0fXPQV1wB44Q2tnGuI1v7gn4=
 ---
 ![商标](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
 ![安装数量](http://iobroker.live/badges/tuya-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tuya.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.tuya.svg)
@@ -15,8 +16,6 @@ hash: 4JKNgyT51t9U/W5Rn7obRXVV7XvGZCz1MW4H7EI0xYw=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 ＃ioBroker.tuya
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg）](https://greenkeeper.io/)
-
 ioBroker适配器连接到几个小而便宜的Wifi设备，这些设备与Tuya Cloud相连，主要使用Smartlife App / Alexa-Skill。适配器支持在与相应的移动电话应用程序同步后读取实时状态更新和控制这些设备。
 
 图雅设备是来自深圳氙气灯的ESP8266MOD WiFi智能设备。

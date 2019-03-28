@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: D2+N/guf37V/MaNUbADVccgWuAcuSrOXPp20XtwZ8Os=
+hash: 53hn13Dh6RRRv4n3c+VoxnzrU3iuVzgw/v9Ik5WnRtU=
 ---
 ![Logo](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -12,10 +12,9 @@ hash: D2+N/guf37V/MaNUbADVccgWuAcuSrOXPp20XtwZ8Os=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.history.svg)
 ![Tests](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.history.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg)
 
 # IoBroker.history
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg)](https://greenkeeper.io/)
-
 Dieser Adapter speichert den Statusverlauf in einem zweistufigen Prozess.
 Zunächst werden Datenpunkte im RAM gespeichert, sobald sie maxLength erreichen, werden sie auf der Festplatte gespeichert.
 
@@ -29,7 +28,7 @@ Um Diagramme zu aktivieren, müssen Sie einen ** Flot-Adapter installieren.
 - **Wertursprung speichern** - Wenn das Feld "from" ebenfalls gespeichert wird. Kann Platz auf der Festplatte speichern.
 - **De-Bounce-Intervall** - Schutz gegen zu häufige Änderungen eines bestimmten Wertes und Definieren der Zeit in ms, in der nach einer Wertänderung andere Änderungen nicht protokolliert werden
 - **Speicheraufbewahrung** - Wie viele Werte in der Vergangenheit werden auf der Festplatte gespeichert.
-- **Unveränderte Werte protokollieren beliebige (s)** - Wenn Sie "Nur Änderungen protokollieren" verwenden, können Sie hier ein Zeitintervall in Sekunden einstellen, nach dem auch unveränderte Werte in den DB neu protokolliert werden
+- **Unveränderte Werte protokollieren beliebige (s)** - Wenn Sie "Nur Änderungen protokollieren" verwenden, können Sie hier ein Zeitintervall in Sekunden einstellen, nach dem auch unveränderte Werte erneut in den DB geschrieben werden
 
 Die meisten dieser Werte werden in den Detaileinstellungen für den Datenpunkt vorbelegt und können dort geändert werden. Zusätzlich können Sie auf der Datenpunktseite eine "Alias-ID" angeben. Mit diesem können Sie z. Nachdem Sie einen Geräte- und Datenpunktnamen geändert haben, protokollieren Sie die Daten immer noch mit der alten ID, indem Sie diese ID dort eingeben. Alle Daten werden als diese protokolliert.
 
@@ -72,7 +71,7 @@ Möglichkeiten:
 - **start** - (optional) Zeit in ms - *neues Datum (). getTime ()* '
 - **end** - (optional) Zeit in ms - *neues Datum (). getTime ()* 'ist standardmäßig (jetzt + 5000 Sekunden)
 - **Schritt** - (optional) wird in Aggregatschritten (m4, max, min, Durchschnitt, gesamt) in ms von Intervallen verwendet
-- **Anzahl** - Anzahl der Werte, wenn das Aggregat 'onchange' ist, oder Anzahl der Intervalle, wenn eine andere Aggregatmethode verwendet wird Count wird ignoriert, wenn step eingestellt ist.
+- **Anzahl** - Anzahl der Werte, wenn das Aggregat "onchange" ist, oder Anzahl der Intervalle, wenn eine andere Aggregatmethode verwendet wird. Count wird ignoriert, wenn step eingestellt ist.
 - **von** - wenn *von* in der Antwort enthalten sein soll
 - **ack** - wenn *ack* in der Antwort enthalten sein soll
 - **q** - wenn *q* in der Antwort enthalten sein soll
@@ -107,7 +106,7 @@ Die Nachricht kann eines der folgenden drei Formate haben:
 Der Adapter unterstützt das Aktivieren und Deaktivieren der Protokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
 
 ### Aktivieren
-Für die Nachricht muss die "id" des Datenpunkts vorhanden sein. Zusätzliche optionale "Optionen" zur Definition der datenpunktspezifischen Einstellungen
+Für die Nachricht muss die "id" des Datenpunkts vorhanden sein. Zusätzliche optionale "Optionen" zum Definieren der datenpunktspezifischen Einstellungen:
 
 ```
 sendTo('history.0', 'enableHistory', {
@@ -176,7 +175,7 @@ Mit dieser Änderung wird die Frage gestellt, wie die gesammelten Daten aus der 
 Zu diesem Zweck wurden einige Konverter-Skripts erstellt, die helfen und die Arbeit erledigen können. Diese Skripts werden von der Befehlszeile aus aufgerufen.
 
 ### Bereiten Sie vorhandene Daten im Übertragungsziel vor und analysieren Sie sie
-Bei der Konvertierung von Daten sollten nur die Daten übertragen werden, die noch nicht vorhanden sind. Zu diesem Zweck existiert der erste Satz von Skripten mit dem Namen **analysis <db> .js** Dieses Skript sollte zu Beginn einmal aufgerufen werden, um Daten für vorhandene Daten zu sammeln und diese in lokalen .json-Dateien zu speichern, die vom Real Converter-Skript verwendet werden.
+Bei der Konvertierung von Daten sollten nur die Daten übertragen werden, die noch nicht vorhanden sind. Daher existiert der erste Satz von Skripten mit dem Namen **analysis <db> .js** Dieses Skript sollte zu Beginn einmal aufgerufen werden, um Daten für vorhandene Daten zu sammeln und diese in lokalen .json-Dateien zu speichern, die vom Real Converter-Skript verwendet werden.
 Es werden zwei Arten von Daten erfasst:
 
 - **frühester Wert für Datenpunkt-ID** Der Zeitstempel des allerersten Eintrags für jeden vorhandenen Datenpunkt wird gespeichert und von importiert verwendet, um standardmäßig alle neueren Werte zu ignorieren. Es wird davon ausgegangen, dass die Daten ab diesem ersten Eintrag vollständig gefüllt sind und alle früheren Werte andernfalls doppelt vorhanden wären. Diese Annahme kann beim Import durch Parameter überschrieben werden.
@@ -223,19 +222,19 @@ Um die Daten zurückzusetzen, löschen Sie die Dateien "earliestDBValues.json", 
 
 Der Konverter durchläuft dann in der Zeit alle verfügbaren Tage rückwärts und bestimmt, welche Daten an InfluxDB übertragen werden.
 
-Wenn Sie den Vorgang abbrechen möchten, drücken Sie "x" oder "<STRG-C>" und der Konverter bricht nach der aktuellen Datei ab.
+Wenn Sie den Vorgang abbrechen möchten, drücken Sie "x" oder "<CTRL-C>" und der Konverter bricht nach der aktuellen Datei ab.
 
 Das Konvertierungsskript selbst sollte mit allen History-Adaptern funktionieren, die "storeState" -Methoden unterstützen.
 
 Hinweis: Die Migration vieler Daten führt zu einer gewissen Belastung des Systems, insbesondere wenn die Konverter- und Zieldatenbankinstanz auf demselben Computer ausgeführt wird. Überwachen Sie die Last und Leistung Ihres Systems während der Aktion und verwenden Sie möglicherweise den Parameter "delayMultiplicator", um die Verzögerungen im Konverter zu erhöhen.
 
-** Verwendung: ** nodejs history2influx.js DB-Instance [Loglevel] [Startdatum | 0] [Pfad-zu-Daten] [delayMultiplicator] [--logChangesOnly [relog-Interval (m)]] [- -ignoreExistingDBValues] [--processNonExistingValuesOnly] [--processAllDPs] [--simulate] ** Beispiel **: nodejs history2influx.js influxdb.0 info 20161001 / path / to / data 2 --logChangesOnly 30 --processNonExevalOnly
+** Verwendung: ** nodejs history2influx.js DB-Instance [Loglevel] [Startdatum | 0] [Pfad-zu-Daten] [delayMultiplicator] [--logChangesOnly [relog-Interval (m)]] [- -ignoreExistingDBValues] [--processNonExistingValuesOnly] [--processAllDPs] [--simulate] ** Beispiel **: nodejs history2influx.js influxdb.0 info 20161001 / path / to / data 2
 
 Mögliche Optionen und Parameter:
 
 - **DB-Instanz** DB-Instanz zum Senden der Daten an den erforderlichen Parameter. Muss der erste Parameter nach dem Skriptnamen sein.
 - **Loglevel** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt, muss der zweite Parameter hinter dem Skriptnamen stehen.
-- **Startdatum** Tag, an dem im Format yyyymmdd (z. B. 20161028) begonnen werden soll. Verwenden Sie "0", um erkannte früheste Werte zu verwenden. Wenn gesetzt, muss der dritte Parameter hinter dem Skriptnamen stehen.
+- **Startdatum** Tag, an dem im Format yyyymmdd (z. B. 20161028) begonnen wird. Verwenden Sie "0", um erkannte früheste Werte zu verwenden. Wenn gesetzt, muss der dritte Parameter hinter dem Skriptnamen stehen.
 - **Pfad zu Daten** Pfad zu den Datendateien. Definiert das iobroker-Installationsverzeichnis / iobroker-data / history-data. Wenn gesetzt, muss der vierte Parameter hinter dem Skriptnamen stehen.
 - **<delayMultiplicator>** Ändern Sie die Verzögerungen zwischen mehreren Aktionen im Skript durch einen Multiplikator. "2" würde bedeuten, dass die Verzögerungen, die der Konvertierte von sich aus berechnet hatte, verdoppelt wurden. Wenn gesetzt, muss der fünfte Parameter hinter dem Skriptnamen stehen.
 - **- logChangesOnly [relog-Interval (m)]** Wenn --logChangesOnly gesetzt ist, werden die Daten analysiert und reduziert, sodass nur geänderte Werte in InfluxDB gespeichert werden. Zusätzlich kann ein "relog-Intervall (s)" in Minuten eingestellt werden, um nach diesem Intervall unveränderte Werte erneut zu protokollieren.

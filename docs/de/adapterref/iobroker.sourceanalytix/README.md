@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: [Beta-veröffentlicht] SourceAnalytix
-hash: owuV3WE3lin3Rp4b08vvlLx5mJnF+ounVyzBX6PTFHg=
+hash: x4Jcz2GtRG/pKhPzA8CnttAg9HW2mFikuPbGhV95eHQ=
 ---
 # [Beta-veröffentlicht] SourceAnalytix
 
@@ -11,8 +11,7 @@ hash: owuV3WE3lin3Rp4b08vvlLx5mJnF+ounVyzBX6PTFHg=
 ![Anzahl der Installationen](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)](https://greenkeeper.io/)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
 ## Achtung, dieser Adapter benötigt Knoten 8 oder höher !!!
 Mit ioBroker SourceAnalytix können Sie die Verbrauchs-, Kosten- und Zählerwerte Ihrer Geräte nachverfolgen.
@@ -26,7 +25,7 @@ Sie benötigen Daten als Eingabe (Gesamtmenge an Wh, l / h oder m3) von Ihren Ge
 ## Wie man
 * [ ] Machen
 
-Dieser Adapter hat Wurzeln dank dank pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Dieser Adapter hat Wurzeln dank dank pix in 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Welches wurde von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht
 
@@ -47,7 +46,7 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [] Rekalkalierung basierend auf Zählerwerten (konfigurierbar nach Datum)
 * [] Berechnungen für Viertelwerte
 * [] Speicherung von Zählerwerten für jeden Zustand
-* [] fügt Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzu, konfigurierbar in Adaptereinstellungen
+* [] fügt Objektstatus für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzu, konfigurierbar in Adaptereinstellungen
 * [] Code-Optimierung
 * [x] Kompaktmodus
 * [x] Unterstützung für die Berechnung der Wh-Werte hinzufügen
@@ -63,7 +62,7 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [x] Kostenberechnung
 * [x] einstellbarer Startpunkt der Messung
 * [x] Unterstützung mehrerer Gerätezustände
-* [x] Schreibe einen Zählerwert in ein Objekt, das in Berechnungen verwendet werden soll
+* [x] Meterwert in ein Objekt schreiben, das in Berechnungen verwendet werden soll
 * [x] -Konfiguration in den Adaptereinstellungen (derzeit werden nur Demoobjekte der Erkennung unterstützt)
 * [x] temporäre Zustände für Berechnungen löschen
 * [x] Berechnung für m3-Werte
@@ -73,6 +72,11 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [x] Stellen Sie sicher, dass alle Werte gespeichert werden, wenn der Adapter heruntergefahren wird, um Datenlücken zu vermeiden
 
 ## Changelog
+
+### 0.2.276
+* (Dutchman) implemented meter readings
+* (Dutchman & @AlCalzone) code improvements & stability
+* (Dutchman) fix issue with liquid unit reading (m3)
 
 ### 0.2.273
 * (Dutchman) fix issue in daily reset of start values

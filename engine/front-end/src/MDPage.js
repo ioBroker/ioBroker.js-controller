@@ -21,7 +21,7 @@ const styles = theme => ({
         top: theme.tabs.height + 2,
         paddingTop: 8,
         cursor: 'pointer',
-        zIndex: 1,
+        zIndex: 0,
         height: 25,
         width: 18,
         background: theme.palette.secondary.light,

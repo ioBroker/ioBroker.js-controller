@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
+hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
 ---
 ![商标](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
+![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)
 ![安装数量](http://iobroker.live/badges/mbus-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mbus.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.mbus.svg)
@@ -14,8 +15,8 @@ hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.mbus?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.mbus.png?downloads=true)
 
-＃ioBroker.mbus ======================
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg）](https://greenkeeper.io/)
+＃ioBroker.mbus
+======================
 
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 

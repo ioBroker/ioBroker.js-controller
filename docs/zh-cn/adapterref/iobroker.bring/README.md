@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: EG7xfJyq/qRZYg9VctTZlelxO4Q8EknXrX6ZY2CMseA=
+hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
 ---
 ![商标](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
@@ -12,10 +12,11 @@ hash: EG7xfJyq/qRZYg9VctTZlelxO4Q8EknXrX6ZY2CMseA=
 ![安装数量](http://iobroker.live/badges/bring-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.bring.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.bring.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
 ![NPM](https://nodei.co/npm/iobroker.bring.png?downloads=true)
 
-＃ioBroker.bring ===========================
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg）](https://greenkeeper.io/)
+＃ioBroker.bring
+===========================
 
 ＃＃ 状态
 有关创建状态的说明，请参见下文。
@@ -124,6 +125,8 @@ NoHead Html表格没有表格标题。*
 这可以使用e。 G。通过智能助手进行语音输出。*
 
 ## Changelog
+### 1.3.4
+* (foxriver76) add possibility to use this widget multiple times on same page
 
 ### 1.3.3
 * (foxriver76) also change height and div sizes according to users specification

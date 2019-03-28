@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.landroid/README.md
 title: 无题
-hash: nrhYzTv+S3fXxWmbq8DAA3EMYA9YHt10hc+2MC11yMk=
+hash: qaS8jul+706hiqWqPN7W+SgKJAgitxi6ySYv+mNmgiA=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.landroid.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.landroid.svg)
@@ -12,10 +12,9 @@ hash: nrhYzTv+S3fXxWmbq8DAA3EMYA9YHt10hc+2MC11yMk=
 ![NPM](https://nodei.co/npm/iobroker.landroid.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.landroid/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.landroid?branch=master&svg=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.landroid.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.landroid/master/admin/landroid.png" width="64"/> ioBroker.landroid </h1>
-
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.landroid.svg）](https://greenkeeper.io/)
 
 ##适用于ioBroker的Worx Landroid适配器
 这是适用于Worx Landroid割草机的ioBroker适配器。它已经过Landroid WG796E的测试。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: 2dDX5FB0xiyLJjU3OvO3U8y3up+w3gkG4d4YUXDOUZM=
+hash: +ujTBqRIPaMS7TG7Sl3TND/WYFxQWQ7fM02PlrlhgCk=
 ---
 ![Logo](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
@@ -12,12 +12,11 @@ hash: 2dDX5FB0xiyLJjU3OvO3U8y3up+w3gkG4d4YUXDOUZM=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.nello.svg)
 ![Travis CI](https://travis-ci.org/Zefau/ioBroker.nello.svg?branch=master)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nello.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)
 ![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)
 
 # IoBroker.nello nello one verbindet Ihre Gegensprechanlage mit Ihrem Smartphone und WLAN. Dieser Adapter verbindet Ihr Nello One mit dem offiziellen API (https://nellopublicapi.docs.apiary.io/) mit ioBroker.
 Entwickler finden die Javascript-Implementierung der API nello.io unter https://github.com/Zefau/nello.io.
-
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)](https://greenkeeper.io/)
 
 ## [Deutsche Liesmich / Deutsche Anleitung](https://github.com/Zefau/ioBroker.nello/blob/master/README.de.md)
 **Inhaltsverzeichnis**
@@ -77,7 +76,7 @@ Wenn Sie ioBroker.nello erfolgreich eingerichtet haben, finden Sie Ihre Türen a
 | timeWindows | deleteAllTimeWindows | Löschen aller Zeitfenster |
 | timeWindows | **createTimeWindow** \ * | JSON-Objekt zum Erstellen eines neuen Zeitfensters ([Dokumentation](#adding-a-new-time-window)) |
 | timeWindows.0000000000000000000 | - | Zeitfenster: Beschreibung des Zeitfensters |
-| timeWindows.0000000000000000000 | aktiviert | Geben Sie an, ob das Zeitfenster aktiviert ist
+| timeWindows.0000000000000000000 | aktiviert | Geben Sie an, ob das Zeitfenster aktiviert ist |
 | timeWindows.0000000000000000000 | icalObj | JSON-Objekt der Kalenderdaten |
 | timeWindows.0000000000000000000 | icalRaw | Text der Kalenderdaten im iCal-Format |
 | timeWindows.0000000000000000000 | id | ID des Zeitfensters |
@@ -119,7 +118,7 @@ Der ioBroker.cloud / ioBroker.iot-Adpater empfängt das Ereignis von nello und s
 ##### IoBroker.cloud
 1. Gehen Sie zu den Adaptereinstellungen von ioBroker.cloud und navigieren Sie zur Registerkarte _Services und IFTTT_.
 2. Fügen Sie der "_White-Liste für Services_" den Begriff "_nello_" hinzu, und kopieren Sie den Link für die benutzerdefinierten Services ("_Use folgenden Link für benutzerdefinierten Service_") / `` `.
-3. Fügen Sie `` `custom_nello``` hinzu (stellen Sie sicher, dass der Begriff, der an` `` custom_``` angehängt ist, mit dem Wort in der Whitelist in Schritt # 2 übereinstimmt.
+3. Fügen Sie `` `custom_nello``` hinzu (stellen Sie sicher, dass der Begriff, der an` `` custom_``` angehängt ist, mit dem in Schritt 2 Whitelist-Wort übereinstimmt.
 4. Fügen Sie Ihren API-Schlüssel hinzu, sodass die URL schließlich wie folgt aussieht: `` `https:// iobroker.net / service / custom_nello / xxxxxx```.
 5. Gehen Sie zur **nello-Adapterkonfiguration** und fügen Sie den Link in "_ioBroker.iot Service URL_" (in Option 1) ein.
 6. Speichern Sie die Einstellungen des nello Adapters und warten Sie, bis der Adapter neu gestartet wurde. Dann klingeln Sie an Ihrer Tür und vergewissern Sie sich, dass der Status von ioBroker.cloud erstellt wurde. Sie finden den Zustand `` custom_nello``` in den ioBroker-Objekten über `` cloud.0.services```.
@@ -128,7 +127,7 @@ Der ioBroker.cloud / ioBroker.iot-Adpater empfängt das Ereignis von nello und s
 Option 2: DynDNS-URL
 Um Ereignisse (Türklingelringe) zu empfangen, können Sie alternativ eine externe URL (mit Port) in den Adaptereinstellungen des ioBroker.nello angeben.
 Diese URL (inkl. Port) wird an die Nello-API gesendet und registriert. Wenn ein Türklingelring von der API registriert wird, überträgt die API diese Informationen an die angegebene URL. Weitere Informationen finden Sie unter https://en.wikipedia.org/wiki/Webhook.
-Wenn Sie keine DynDNS-Adresse haben und keine Ahnung haben, von was für einer Scheiße ich rede, lesen Sie bitte https://www.howtogeek.com/66438/wie- mit-ddns /.
+Wenn Sie keine DynDNS-Adresse haben und keine Ahnung haben, von was für einem Scheiß ich rede, lesen Sie bitte https://www.howtogeek.com/66438/how-to-easily-access-your-home-network-from-anywhere- mit-ddns /.
 
 1. Platzieren Sie die externe DynDNS-Adresse einschließlich eines Ports Ihrer Wahl in den Adaptereinstellungen des ioBroker.nello
 2. Öffnen Sie den Port Ihrer Wahl in Ihrem Router und leiten Sie ihn an den ioBroker weiter
@@ -177,7 +176,7 @@ Wenn Sie ioBroker.nello erfolgreich erweitert haben, werden die folgenden zusät
 | Veranstaltungen | refreshDateTime | DateTime des letzten Ereignisses |
 | Veranstaltungen | RefreshTimestamp | Zeitstempel des letzten Ereignisses |
 
-** Anmerkung: Sie sehen diese Zustände nur dann _, wenn Sie ioBroker.nello erfolgreich vorgerüstet haben UND ein erstes Ereignis als erkannt erkannt wurde (jemand hat bei Ihnen geklingelt)! **
+** Anmerkung: Sie sehen diese Zustände nur dann _, wenn Sie ioBroker.nello erfolgreich vorgerüstet haben UND ein erstes Ereignis als erkannt erkannt wurde (jemand hat bei Ihnen angerufen)!
 
 Der Status "Feed" liefert eine JSON aller Ereignisse, die vom Webhook registriert wurden. Hierbei handelt es sich um ein Array von Objekten, bei dem jedes Objekt die folgenden Werte bereitstellt (Einzelheiten finden Sie unter https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/add-/-update-webhook):
 
@@ -192,7 +191,7 @@ Der Status "Feed" liefert eine JSON aller Ereignisse, die vom Webhook registrier
 ### Offene Tür
 Um die Tür Ihres Nello zu öffnen, drücken Sie die Taste des Bundesstaates §§JJJJJ0.
 
-### Ein neues Zeitfenster hinzufügen Um ein neues Zeitfenster hinzuzufügen, fügen Sie den Inhalt in den Status ```timeWindows.createTimeWindow``` ein. Das folgende Format wird erwartet:
+### Hinzufügen eines neuen Zeitfensters Fügen Sie zum Hinzufügen eines neuen Zeitfensters den Inhalt in den Status ```timeWindows.createTimeWindow``` ein. Das folgende Format wird erwartet:
 ```
 {"name":"<NAME>","ical":"<iCal-String>"}
 ```
@@ -247,7 +246,7 @@ Erstellen Sie nun ein neues Skript im Ordner "common" mit der Funktion:
 cloud('nello.0.#YOUR DOOR ID#._openDoor', 'Tür öffnen');
 ```
 
-Ersetzen Sie **# YOUR DOOR ID #** (auch #) durch die ID der Tür, die Sie öffnen möchten. Sie finden die ID im Statusbaum ioBroker.nello (Registerkarte "Objekte" von ioBroker).
+Ersetzen Sie **# IHRE TÜR-ID #** (auch #) durch die ID der Tür, die Sie öffnen möchten. Sie finden die ID im Statusbaum ioBroker.nello (Registerkarte "Objekte" von ioBroker).
 
 Suchen / entdecken Sie neue Geräte in Ihrer Alexa-App und erstellen Sie eine Routine in der Alexa-App (z. B. "Alexa, open door"), und weisen Sie ihr den neu entdeckten Status zu. Fertig! Jetzt können Sie Alexa sagen, dass Sie Ihre Tür für Sie öffnen sollen.
 
@@ -277,7 +276,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 
 _ (aktualisiert am 18.08.2011 zur Unterstützung der Sprachausgabe von mehreren alexa-Geräten gleichzeitig) _
 
-Sie können diese Funktion in ioBroker.javascript verwenden, um einen Satz mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
+Sie können diese Funktion in ioBroker.javascript verwenden, um einen Satz mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten zu sagen.
 
 Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript (oder verwenden Sie das oben erstellte), und fügen Sie den folgenden Listener hinzu:
 

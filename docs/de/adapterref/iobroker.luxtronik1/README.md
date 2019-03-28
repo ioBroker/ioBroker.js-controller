@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: lhphtdXTt7a/hbYIlDJjNr8u4s9h7WIDlqGFNaDdm/o=
+hash: dtJxhyPKy8uUbDfthaxzW7LDafKlcLlV2d+sXBsDOc4=
 ---
 ![Logo](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -25,9 +25,13 @@ Setze comfoair - IP-Adresse, Port und Polling - Intervall
 Getestet an luxtronik 1 und AlphaInnotec Wärmepumpe
 
 Liest verschiedene Werte und Werte Ihrer Wärmepumpe (Temperaturen, Fehler, Laufzeit, ...).
-Geplant: zusätzliche Werte und Werte und Steuerfunktionen (Temperatureinstellungen, Heizkurve, Modus).
+Geplant: Steuerfunktionen (Solltemperaturen, Heizkurve, Modus).
 
 ## Changelog
+
+### 0.0.3
+
+-   Reads mode heating, water and heating-curve
 
 ### 0.0.2
 

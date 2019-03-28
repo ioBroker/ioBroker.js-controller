@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sony-bravia/README.md
 title: kein Titel
-hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
+hash: XCOASiAyMqK7o0Z23u+O+56fjJ7pRsxUwo53KyuS+k8=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sony-bravia.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sony-bravia.svg)
@@ -12,10 +12,9 @@ hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
 ![NPM](https://nodei.co/npm/iobroker.sony-bravia.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sony-bravia/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.sony-bravia?branch=master&svg=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sony-bravia/master/admin/sony-bravia.png" width="64"/> ioBroker.sony-bravia </h1>
-
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg)](https://greenkeeper.io/)
 
 ## Ein Sony Bravia Android Smart-TV-Adapter für ioBroker
 Dies ist ein ioBroker-Adapter für Ihr Sony Bravia Smart-TV mit Android-Betriebssystem. Getestet mit KD-65X8507C.
@@ -24,7 +23,7 @@ Dies ist ein ioBroker-Adapter für Ihr Sony Bravia Smart-TV mit Android-Betriebs
 * Schalten Sie Ihren Fernseher ein
 * Gehen Sie am Fernsehgerät auf Einstellungen> Netzwerk> Heimnetzwerk-Setup> Remote-Gerät / Renderer> Ein
 * Gehen Sie am Fernsehgerät auf Einstellungen> Netzwerk> Heimnetzwerk-Setup> IP-Steuerung> Authentifizierung> Normal und Pre-Shared Key
-* Auf dem Fernsehgerät gehen Sie zu Einstellungen> Netzwerk> Heimnetzwerk-Setup> Remote-Gerät / Renderer> Geben Sie den vorinstallierten Schlüssel ein> 0000 (oder wie auch immer Sie Ihren PSK-Schlüssel haben möchten).
+* Auf dem Fernsehgerät gehen Sie zu Einstellungen> Netzwerk> Heimnetzwerk-Setup> Remote-Gerät / Renderer> Geben Sie den Pre-Shared Key ein> 0000 (oder wie auch immer Sie Ihren PSK-Schlüssel haben möchten)
 * Gehen Sie am Fernsehgerät auf Einstellungen> Netzwerk> Heimnetzwerk-Setup> Remote-Gerät / Renderer> Einfache IP-Steuerung> Ein
 
 ## Changelog

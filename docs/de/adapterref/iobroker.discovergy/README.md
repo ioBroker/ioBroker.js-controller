@@ -3,14 +3,15 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: vart56HLN0h2tcy1pehj3w84wBmASv8521pU3K0FHu0=
+hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
 ---
-![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png) [![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)](https://greenkeeper.io/)
+![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
 ![Alt-Text](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/discovergy-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.discovergy.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
 
 # IoBroker.discovergy
 Dies ist ein ioBroker-Adapter für Ihr Discovergy Power-Messgerät.

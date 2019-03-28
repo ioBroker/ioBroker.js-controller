@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.panasonic-viera/README.md
 title: без названия
-hash: LA7ATFG/zljkZjH46Nu6M9taHAMoeNQRNBS+c5F2ZyY=
+hash: GVCo/n7v1IUIfXugCMhb63trhPaj06CHTl+zP+GPYKo=
 ---
 ![Количество установок](http://iobroker.live/badges/panasonic-viera-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.panasonic-viera.svg)
@@ -13,10 +13,9 @@ hash: LA7ATFG/zljkZjH46Nu6M9taHAMoeNQRNBS+c5F2ZyY=
 ![NPM](https://nodei.co/npm/iobroker.panasonic-viera.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.panasonic-viera/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.panasonic-viera?branch=master&svg=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.panasonic-viera.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.panasonic-viera/master/admin/panasonic-viera.png" width="64"/> ioBroker.panasonic-VIERA </h1>
-
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.panasonic-viera.svg)](https://greenkeeper.io/)
 
 ## Адаптер Panasonic Viera Smart-TV для ioBroker
 Это адаптер ioBroker для вашего телевизора Panasonic Viera Smart. Протестировано с Panasonic TX-50DX780 и TX-50EXW.

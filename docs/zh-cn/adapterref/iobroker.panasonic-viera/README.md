@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.panasonic-viera/README.md
 title: 无题
-hash: LA7ATFG/zljkZjH46Nu6M9taHAMoeNQRNBS+c5F2ZyY=
+hash: GVCo/n7v1IUIfXugCMhb63trhPaj06CHTl+zP+GPYKo=
 ---
 ![安装数量](http://iobroker.live/badges/panasonic-viera-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.panasonic-viera.svg)
@@ -13,10 +13,9 @@ hash: LA7ATFG/zljkZjH46Nu6M9taHAMoeNQRNBS+c5F2ZyY=
 ![NPM](https://nodei.co/npm/iobroker.panasonic-viera.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.panasonic-viera/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.panasonic-viera?branch=master&svg=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.panasonic-viera.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.panasonic-viera/master/admin/panasonic-viera.png" width="64"/> ioBroker.panasonic-VIERA </h1>
-
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.panasonic-viera.svg）](https://greenkeeper.io/)
 
 ##适用于ioBroker的Panasonic Viera智能电视适配器
 这是适用于Panasonic Viera智能电视的ioBroker适配器。使用Panasonic TX-50DX780和TX-50EXW进行测试。

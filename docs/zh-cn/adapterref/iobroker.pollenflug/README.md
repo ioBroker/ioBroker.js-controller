@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pollenflug/README.md
 title: 花粉风险指数
-hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
+hash: RjP/kMcMjP8AFiLqq64h2tjH2yUsQbolm3pTtgV7UQs=
 ---
 ![商标](../../../en/adapterref/iobroker.pollenflug/admin/pollenflug.png)
 
@@ -95,7 +95,7 @@ hash: NkPjN63taAgECFANng1gfGLXo10RTHpxiAlaRQS2aDU=
 ##示例
 如果来自DWD的新数据到达（今天的日期将改变），该脚本将显示Hasel和Erle的花粉风险指数。
 
-```sh
+```
 on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
     let hasel = getState("pollenflug.0.region#12.Hasel.text_today"/*today*/).val;
     let erle  = getState("pollenflug.0.region#12.Erle.text_today"/*today*/).val;

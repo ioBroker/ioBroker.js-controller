@@ -2,18 +2,17 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.email/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.email
-hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
+title: ioBroker电子邮件
+hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 ---
+![商标](../../../en/adapterref/iobroker.email/admin/email.png)
+
 ![安装数量](http://iobroker.live/badges/email-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.email.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.email
-![商标](../../../en/adapterref/iobroker.email/admin/email.png)
-
-#ioBroker email ==============
+#ioBroker电子邮件
 从ioBroker发送电子邮件。
 
 整个工作使得[nodemailer](https://github.com/nodemailer/nodemailer)和ioBroker只使用它。
@@ -25,7 +24,7 @@ hash: 5isKTT65TITgheokl/6APmqn+i1mcxGGKaBU8VI2Q2A=
 ##用法
 要从ScriptEngine发送电子邮件，只需写：
 
-```javascript
+```
 // send email to all instances of email adapter
 sendTo("email", "Email body");
 
@@ -59,7 +58,6 @@ sendTo("email", {
         {path: "path/to/file/image1.jpg", cid: "image1"}
     ]
 });
-
 ```
 
 要从其他适配器发送电子邮件，请使用** adapter.sendTo **函数。
@@ -148,7 +146,7 @@ sendTo("email", {
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox
+Copyright (c) 2014-2019 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

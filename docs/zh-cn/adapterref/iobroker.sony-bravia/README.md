@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sony-bravia/README.md
 title: 无题
-hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
+hash: XCOASiAyMqK7o0Z23u+O+56fjJ7pRsxUwo53KyuS+k8=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sony-bravia.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.sony-bravia.svg)
@@ -12,10 +12,9 @@ hash: 5O0+Trqo+j5g4oFq0tK+rKl/tHDAzNSq7rUwwAcLKwU=
 ![NPM](https://nodei.co/npm/iobroker.sony-bravia.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sony-bravia/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.sony-bravia?branch=master&svg=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg)
 
 <h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sony-bravia/master/admin/sony-bravia.png" width="64"/> ioBroker.sony，BRAVIA </h1>
-
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sony-bravia.svg）](https://greenkeeper.io/)
 
 ##适用于ioBroker的Sony Bravia Android智能电视适配器
 这是适用于Android OS索尼Bravia智能电视的ioBroker适配器。用KD-65X8507C测试。

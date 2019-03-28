@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.opentherm/README.md
 title: Opentherm Integration ioBroker
-hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
+hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
 ---
 ![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -11,10 +11,9 @@ hash: dV68z48hIK6slmvwYtJBYgqJisH12SBBQutKPvgOihk=
 ![Anzahl der Installationen](http://iobroker.live/badges/opentherm-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
 
 # Opentherm-Integration ioBroker
-[![Greenkeeper-Abzeichen] (https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)](https://greenkeeper.io/)
-
 Dieser Adapter integriert alle Funktionen des opentherm Gateways in ioBroker.
 Opentherm ist ein Gateway-Protokoll, das von mehreren modernen Heizungssystemen wie Remeha verwendet wird.
 
@@ -23,10 +22,10 @@ Weitere Informationen finden Sie unter http://otgw.tclcode.com/index.html#intro 
 ### Featured Funktionalität im Endzustand:
 * Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Monitorsoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
 * Passen Sie nach Möglichkeit die Werte in ioBroker an und senden Sie den Befehl an Opentherm
-* Bitte zögern Sie nicht, Funktionsanfragen hinzuzufügen
+* Fühlen Sie sich frei, Funktionswünsche hinzuzufügen
 
 Derzeit implementiert
-* Verbinden Sie sich per TCP / IP mit dem OpenTherm Gateway
+* Stellen Sie über TCP / IP eine Verbindung zu OpenTherm Gateway her
 * Stellen Sie eine direkte Verbindung mit OpenTherm Gateway über eine USB-Verbindung her
 
 ## Machen

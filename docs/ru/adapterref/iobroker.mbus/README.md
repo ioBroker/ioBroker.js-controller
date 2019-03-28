@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
+hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
 ---
 ![логотип](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
+![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)
 ![Количество установок](http://iobroker.live/badges/mbus-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mbus.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mbus.svg)
@@ -14,8 +15,8 @@ hash: K3T4gDegiqOkuBf5INK7iJAGZJuZTqHs0QKJAt3TcoI=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.mbus?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.mbus.png?downloads=true)
 
-# IoBroker.mbus ======================
-[![Значок Greenkeeper] (https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)](https://greenkeeper.io/)
+# IoBroker.mbus
+======================
 
 [![Изменение климата] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
@@ -29,7 +30,7 @@ IP-адрес и порт M-Bus Master / Gateway при использовани
 Последовательный порт и скорость передачи данных M-Bus Master / Gateway.
 
 ### Обновить интервал
-Интервал в секундах для обновления данных. По умолчанию (если пусто) 3600 с (1 час). Подумайте, как устройства на шине M-Bus питаются, чтобы предотвратить разрядку батарей. Если вы установите интервал в 0, то устройство будет считываться только один раз при запуске адаптера, но больше не автоматически.
+Интервал в секундах для обновления данных. По умолчанию (если пусто) 3600 с (1 час). Подумайте, как устройства на шине M-Bus питаются, чтобы предотвратить разрядку батарей. Если вы установите интервал в 0, то устройство будет считываться только один раз при запуске адаптера, но больше не будет автоматически.
 
 ### Идентификаторы устройств
 Вы можете использовать основной (1-250) и дополнительный (16 символов) идентификаторы M-Bus

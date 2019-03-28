@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 04MJnPlVJTWOaRDcaQCT90y8oQhXwCNTIZEekXjHNNA=
+hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -13,7 +13,7 @@ hash: 04MJnPlVJTWOaRDcaQCT90y8oQhXwCNTIZEekXjHNNA=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
-# IoBroker.web ============================
+# IoBroker.web
 Webserver auf der Basis von Node.js und express zum Lesen der Dateien aus der ioBroker-Datenbank
 
 ## Tuning von Web-Sockets

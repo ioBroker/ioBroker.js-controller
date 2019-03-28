@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homee/README.md
 title: ioBroker Homee Адаптер
-hash: 9vcI7FKhF9O/zUxisnOnNIvDoBqzWG1bNE4Gj9G3eHY=
+hash: TTc69nv+1qEEwSCcsluUShKWKjdRud6tieAyi14pIQM=
 ---
 ![логотип](../../../en/adapterref/iobroker.homee/admin/homee.png)
 
 ![Количество установок](http://iobroker.live/badges/homee-stable.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)
 
-# IoBroker homee Adapter [![Значок Greenkeeper] (https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)](https://greenkeeper.io/)
+# IoBroker homee Адаптер
 =================
 
 ## Описание

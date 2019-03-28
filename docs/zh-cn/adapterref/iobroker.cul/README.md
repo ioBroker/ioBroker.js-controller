@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cul/README.md
-title: 无题
-hash: qA12jQGu5EHoCcnIod0dTXur7REUIDJ3T+LzgsFhjO4=
+title: ioBroker.cul
+hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
 ---
 ![商标](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -13,7 +13,7 @@ hash: qA12jQGu5EHoCcnIod0dTXur7REUIDJ3T+LzgsFhjO4=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.cul.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.cul.png?downloads=true)
 
-＃ioBroker.cul ==================================
+#ioBroker.cul
 ioBroker适配器通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[culfw](http://culfw.de)控制FS20，Max！，HMS和其他设备。取决于https://github.com/hobbyquaker/cul
 
 ##支持的设备

@@ -4,14 +4,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: gQb6+lw6ghlkjZdyw4RE6KoR3pbJ2ScyXASA/1CoXQ0=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![Logo](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
 # IoBroker.tr-064
 ### Info
 Dieser Adapter liest die wichtigsten Informationen aus der AVM Fritz! Box wie Anrufliste oder Anzahl der Nachrichten auf dem Anrufbeantworter.
-Basierend auf diesem §§LLLL_0§§
+Basierend auf diesem [AVM-Dokumentationen](https://avm.de/service/schnittstellen/)
 
 ### Einfache Zustände und Funktionen
 - WLAN für 2,4 GHz und 5 GHz ein- und ausschalten,
@@ -46,7 +46,7 @@ Der Status cbIndex kann auf Adresse # des Antwortgeräts gesetzt werden.
 
 ### Anrufüberwachung
 Der Anrufmonitor erstellt Echtzeitzustände für jeden eingehenden und ausgehenden Anruf.
-Wenn das Telefonbuch aktiviert ist (Standardeinstellung), werden die Nummern in Namen aufgelöst. Es gibt auch einen Status, der ein Klingeltelefon anzeigt.
+Wenn das Telefonbuch aktiviert ist (Standardeinstellung), werden die Nummern in Namen aufgelöst. Es gibt auch einen Status, der ein klingelndes Telefon anzeigt.
 
 ### Telefonbuch
 - Wenn das Telefonbuch aktiviert ist, wird der Name der Telefonnummer des Anrufers abgerufen.
@@ -75,7 +75,7 @@ Die HTML-Ausgabe kann durch eine Vorlage konfiguriert werden
 Mit dem Befehlsstatus können Sie jeden tr-064-Befehl von diesem [Dokumentation](https://avm.de/service/schnittstellen/) aus aufrufen.
 z.B.
 
-```javascript
+```
 command = {
     "service": "urn:dslforum-org:service:WLANConfiguration:1",
     "action": "X_AVM-DE_SetWPSConfig",

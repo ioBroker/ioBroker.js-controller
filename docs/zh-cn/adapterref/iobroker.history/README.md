@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: D2+N/guf37V/MaNUbADVccgWuAcuSrOXPp20XtwZ8Os=
+hash: 53hn13Dh6RRRv4n3c+VoxnzrU3iuVzgw/v9Ik5WnRtU=
 ---
 ![商标](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -12,11 +12,10 @@ hash: D2+N/guf37V/MaNUbADVccgWuAcuSrOXPp20XtwZ8Os=
 ![下载](https://img.shields.io/npm/dm/iobroker.history.svg)
 ![测试](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.history.png?downloads=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg)
 
 ＃ioBroker.history
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg）](https://greenkeeper.io/)
-
-此适配器将状态历史记录保存在两个阶段的过程中。
+此适配器将状态历史保存在两个阶段的过程中。
 首先，数据点存储在RAM中，一旦达到maxLength，它们就会存储在磁盘上。
 
 要设置要存储的数据点，必须在管理员“对象”选项卡（最后一个按钮）中配置它们。
