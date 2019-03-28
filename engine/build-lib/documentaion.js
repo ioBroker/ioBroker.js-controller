@@ -213,7 +213,7 @@ async function translateFile(sourceFileName, fromLang, toLang, root) {
     if (fs.existsSync(targetFileName)) {
         let result = utils.extractHeader(fs.readFileSync(targetFileName).toString('utf-8'));
         actualText = result.body;
-        if (header.translatedFrom !== fromLang) {
+        if (result.header.translatedFrom !== fromLang) {
             return Promise.resolve();
         }
 

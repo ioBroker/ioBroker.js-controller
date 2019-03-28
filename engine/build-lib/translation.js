@@ -49,10 +49,10 @@ async function translateYandex(text, targetLang, yandex) {
                         if (json && json.text && json.text[0]) {
                             resolve(json.text[0]);
                         } else {
-                            reject('Invalid answer: ' + body)
+                            reject('Invalid answer: ' + body);
                         }
                     } catch (e) {
-                        reject('Cannot parse answer: ' + body)
+                        reject('Cannot parse answer: ' + body);
                     }
                 }
             });
@@ -526,10 +526,10 @@ function partsTranslate(fromLang, partsSource, toLang, partsTarget, cb) {
         return translateText(fromLang, partsTarget[untranslated].original, toLang)
             .then(text => {
                 if (partsTarget[untranslated].type === 'table') {
-                    if (!text.startsWith('|')) {
+                    if (!text.trim().startsWith('|')) {
                         text = '| ' + text;
                     }
-                    if (!text.endsWith('|')) {
+                    if (!text.trim().endsWith('|')) {
                         text = text + ' |';
                     }
                 }
@@ -627,6 +627,7 @@ function translateText(fromLang, text, toLang) {
             text = text.replace('% s', ' %s ');
             text = text.replace(/HTTP:\s\/\//i, 'http://');
             text = text.replace(/HTTPS:\s\/\//i, 'https://');
+            text = text.replace(/IoBroker/g, 'ioBroker');
 
             const m = text.match(/https?:\/\/[-.\w\d]+:\s\d+/);
             if (m) {
@@ -644,7 +645,7 @@ function translateText(fromLang, text, toLang) {
                     } else {
                         text = '';
                         parts.forEach((part, i) => {
-                            if (i%2 === 0){
+                            if (i % 2 === 0){
                                 text += part;
                             } else {
                                 text += ' ***' + part.trim() + '*** ';
@@ -662,7 +663,7 @@ function translateText(fromLang, text, toLang) {
                     } else {
                         text = '';
                         parts.forEach((part, i) => {
-                            if (i%2 === 0){
+                            if (i % 2 === 0){
                                 text += part;
                             } else {
                                 text += ' **_' + part.trim() + '_** ';
@@ -691,6 +692,12 @@ function translateText(fromLang, text, toLang) {
                     }
                 }
                 text = text.replace(/\s\s/g, ' ');
+            }
+
+            // Fix in one line * text * => *text*
+            if (text.trimLeft().startsWith('* ') && text.trimRight().endsWith(' *')) {
+                text = text.replace(/\*\s/, '*');
+                text = text.trimRight().replace(/\s\*$/, '*');
             }
 
             // then with *

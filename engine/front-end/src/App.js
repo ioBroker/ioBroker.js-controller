@@ -11,9 +11,13 @@ import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Input from '@material-ui/core/Input';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
 
 import {MdLanguage as IconLanguage} from 'react-icons/md';
 import {MdMenu as IconMenu} from 'react-icons/md';
+import {MdSearch as IconSearch} from 'react-icons/md';
 
 import DialogError from './Dialogs/Error';
 import MDPage from './MDPage';
@@ -72,7 +76,59 @@ const styles = theme => ({
     },
     subMenuItemText: {
         fontSize: 14,
-    }
+    },
+    search: {
+        width: 120,
+        transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+        //padding: '8px 8px 8px 72px',
+        boxSizing: 'content-box',
+        backgroundColor: '#CCCCCC',
+        padding: '3px 0',
+        border: 0,
+        marginLeft: 10,
+        borderRadius: 3,
+        '&:after' : {
+            border: 0
+        },
+        '&:before' : {
+            border: 0
+        }
+    },
+    searchDiv: {
+        marginLeft: 10,
+        display: 'inline-block',
+    },
+    searchInput: {
+        display: 'inline-block',
+    },
+    searchFocus: {
+        width: 200,
+    },
+    searchButton: {
+        float: 'left',
+        marginLeft: 5,
+    },
+    searchResultsDiv: {
+        minWidth: 100,
+        padding: 10,
+    },
+
+    sRdiv: {
+        zIndex: 100,
+        borderBottom: '1px solid #CCCCCC',
+        cursor: 'pointer'
+    },
+    sRdivType: {
+        display: 'inline-block',
+        borderRight: '1px solid #CCCCCC',
+        padding: 5,
+        textAlign: 'right',
+        width: 100,
+    },
+    sRdivText: {
+        display: 'inline-block',
+        padding: 20,
+    },
 });
 
 const LANGUAGES = {
@@ -128,7 +184,10 @@ class App extends Router {
             anchorMenu: null,
             width: width,
             height: window.innerHeight,
-            selectedPage: hash.tab || 'intro'
+            selectedPage: hash.tab || 'intro',
+            search: '',
+            searchResults: null,
+            searchFocus: false,
         };
         this.contentRef = React.createRef();
         this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
@@ -217,6 +276,80 @@ class App extends Router {
                 </Menu>)
             ] : null
         ];
+    }
+
+    onSearch() {
+        if (this.state.search) {
+            window.fetch(`http://localhost/search?ln=${this.state.language}&q=${encodeURIComponent(this.state.search)}`)
+                .then(data => data.json())
+                .then(searchResults => this.setState({searchResults}));
+        } else {
+            this.setState({searchResults: null});
+        }
+    }
+
+    renderSearch() {
+        return (<div><Input
+            className={this.props.classes.search + ' ' + (this.state.searchFocus ? this.props.classes.searchFocus : '')}
+            value={this.state.search}
+            placeholder={I18n.t('Search...')}
+            classes={{input: this.props.classes.searchInput}}
+            onFocus={() => this.setState({searchFocus: true})}
+            onBlur={() => this.setState({searchFocus: false})}
+            onChange={e => {
+                this.searchAnchor = this.searchAnchor || e.target;
+
+                this.setState({search: e.target.value});
+                this.searchTimeout && clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    this.searchTimeout = null;
+                    this.onSearch();
+                }, 300);
+            }}
+            onKeyUp={e => {
+                if (e.keyCode === 13) {
+                    this.searchTimeout && clearTimeout(this.searchTimeout);
+                    this.searchTimeout = null;
+                    this.onSearch();
+                }
+            }}
+        /><IconSearch className={this.props.classes.searchButton}/></div>);
+    }
+
+    renderSearchResult(result) {
+        const type = result.id.split('/').shift();
+        const tab = type === 'adapterref' ? 'adapters' : 'documentation';
+        return (<div className={this.props.classes.sRdiv}>
+                <div className={this.props.classes.sRdivType}>{I18n.t(tab)}</div>
+                <div className={this.props.classes.sRdivText} onClick={() => {
+                    this.setState({searchResults: null});
+                    this.onNavigate(null, tab, result.id)
+                }}>{result.title}</div>
+            </div>);
+    }
+
+    renderSearchResults() {
+        return (<Popper
+            placement="bottom"
+            disablePortal={false}
+            anchorEl={this.searchAnchor}
+            open={!!this.state.searchResults && this.state.searchFocus}
+            modifiers={{
+                flip: {
+                    enabled: true,
+                },
+                arrow: {
+                    enabled: true,
+                    element: this.searchAnchor,
+                },
+            }}
+        >
+            {this.state.searchResults && (this.state.searchResults.length ?
+                (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map(link => this.renderSearchResult(link))}</Paper>) :
+                (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)
+            )
+            }
+        </Popper>);
     }
 
     onNavigate(language, tab, page, chapter) {
@@ -338,9 +471,9 @@ class App extends Router {
             <Toolbar position="static" variant="dense" className={this.props.classes.tabs} >
                 {this.renderLogo()}
                 {this.renderLanguage()}
+                {this.renderSearch()}
                 <div style={{flex: 1}}/>
                 {this.state.width > 1200 ? this.renderTabs() : this.renderPagesMenu()}
-
             </Toolbar>
         );
     }
@@ -376,6 +509,7 @@ class App extends Router {
                         language={this.state.language} />) : null}
                 </div>
                 {this.renderError()}
+                {this.renderSearchResults()}
             </div>
         );
     }

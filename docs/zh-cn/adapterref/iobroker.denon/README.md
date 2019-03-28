@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.denon/README.md
 title: ioBroker.denon
-hash: cRIoJ/jTJ5an0IAOxshQM3FTCC38XhcdeV5G/x/Iksw=
+hash: e4i+gX4TyFbXSpQQZr3P6qkymJ+uPqUccthOL0ManTI=
 ---
 ![商标](../../../en/adapterref/iobroker.denon/admin/denon.png)
 
@@ -12,10 +12,11 @@ hash: cRIoJ/jTJ5an0IAOxshQM3FTCC38XhcdeV5G/x/Iksw=
 ![安装数量](http://iobroker.live/badges/denon-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.denon.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.denon.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/foxriver76/ioBroker.denon.svg)
 ![NPM](https://nodei.co/npm/iobroker.denon.png?downloads=true)
 
-＃ioBroker.denon ===========================
-[![Greenkeeper徽章]（https://badges.greenkeeper.io/foxriver76/ioBroker.denon.svg）](https://greenkeeper.io/)
+＃ioBroker.denon
+===========================
 
 ##安装
 您可以通过ioBroker Web界面安装适配器，也可以通过npm安装本地计算机。

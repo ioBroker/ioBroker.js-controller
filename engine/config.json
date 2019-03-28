@@ -1,0 +1,11 @@
+{
+  "secure": false,
+  "port": 80,
+  "public": "front-end/build/",
+  "certs": {
+    "key": "",
+    "cert": "",
+    "chain": ""
+  },
+  "LANGUAGES": ["de", "en", "ru", "zh-cn"]
+}

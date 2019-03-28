@@ -32,7 +32,7 @@
     * [Adapter](install/updateadapter)
     * [Node.js & npm](install/updatenode)
 
-* en:Admin interface;de:Admin-Oberfläche;ru:Интерфейс админки
+* [en:Admin interface;de:Admin-Oberfläche;ru:Интерфейс админки](admin/README)
   * [Introduction](admin/README)
   * [Admin windows](admin/screen)
   * [Sytsem settings](admin/settings)

@@ -4,104 +4,76 @@ BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.admin.svg
 BADGE-Stable: http://iobroker.live/badges/admin-stable.svg
 BADGE-installed: http://iobroker.live/badges/admin-installed.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
-chapters: {"pages":{"de/adapterref/iobroker.admin-2/README.md":{"title":{"de":"no title"},"content":"de/adapterref/iobroker.admin-2/README.md"},"de/adapterref/iobroker.admin-2/admin/tab-adapters.md":{"title":{"de":"Der Reiter Adapter"},"content":"de/adapterref/iobroker.admin-2/admin/tab-adapters.md"},"de/adapterref/iobroker.admin-2/admin/tab-instances.md":{"title":{"de":"Der Reiter Instanzen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-instances.md"},"de/adapterref/iobroker.admin-2/admin/tab-objects.md":{"title":{"de":"Der Reiter Objekte"},"content":"de/adapterref/iobroker.admin-2/admin/tab-objects.md"},"de/adapterref/iobroker.admin-2/admin/tab-states.md":{"title":{"de":"Der Reiter Zustände"},"content":"de/adapterref/iobroker.admin-2/admin/tab-states.md"},"de/adapterref/iobroker.admin-2/admin/tab-groups.md":{"title":{"de":"Der Reiter Gruppen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-groups.md"},"de/adapterref/iobroker.admin-2/admin/tab-users.md":{"title":{"de":"Der Reiter Benutzer"},"content":"de/adapterref/iobroker.admin-2/admin/tab-users.md"},"de/adapterref/iobroker.admin-2/admin/tab-events.md":{"title":{"de":"Der Reiter Ereignisse"},"content":"de/adapterref/iobroker.admin-2/admin/tab-events.md"},"de/adapterref/iobroker.admin-2/admin/tab-hosts.md":{"title":{"de":"Der Reiter Hosts"},"content":"de/adapterref/iobroker.admin-2/admin/tab-hosts.md"},"de/adapterref/iobroker.admin-2/admin/tab-enums.md":{"title":{"de":"Der Reiter Aufzählungen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-enums.md"},"de/adapterref/iobroker.admin-2/admin/tab-log.md":{"title":{"de":"Der Reiter Log"},"content":"de/adapterref/iobroker.admin-2/admin/tab-log.md"},"de/adapterref/iobroker.admin-2/admin/tab-system.md":{"title":{"de":"Die Systemeinstellungen"},"content":"de/adapterref/iobroker.admin-2/admin/tab-system.md"}}}
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.admin-2/README.md
-title: no title
-hash: k4IUgPdp7JdnkhVG20ud9BIBeLMtR2mzJ4Hr8SN1rBU=
 ---
-## Detailed description
-The adapter admin is used to operate the entire ioBroker installation. He provides a web interface. This is called under `<IP-Adresse des Servers>:8081`. This adapter is created directly during the installation of ioBroker.
+# Admin
 
-The GUI provided by the adapter may include but is not limited to: following functions are retrieved:
-
-* Installation of additional adapters
-* Access to object overview
-* Access to the status overview of the objects
-* Access to users and groups administration
-* Access to the logfile
-* Administration of the hosts
-
-## Installation
-This adapter is created directly during the installation of ioBroker a manual installation is not necessary
+The admin adapter is used to configure the whole ioBroker-Installation and all its adapters. 
+It provides a web-interface, which can be opened by "http://<IP-Address of the server>:8081" 
+in the web browser. This adapter is automatically installed together with ioBroker.
 
 ## Configuration
-![adapter_admin_konfiguration](../../../de/adapterref/iobroker.admin-2/img/admin_konfiguration.png)
+The configuration dialog of the adapter "admin" provides the following settings: 
 
-#### IP
-Here the IP address under which the adapter can be reached is entered. Various Ipv4 and Ipv6 options are available. <span style="color: #ff0000;">** Default is 0.0.0.0 \. This must not be changed! **</span>
+![img_002](img/admin_img_002.png)
 
-#### Port
-Here, the port under which the administrator can be called is set. If several web servers are running on the server, this port must be adapted so that there are no problems with duplicate port assignment.
+**IP:** the IP-address of the "admin" web-server can be chosen here. 
+Different IPv4 and IPv6 addresses can be selected. The default value is 0.0.0.0. 
+If you think, that 0.0.0.0 is invalid setting, please let it stay there, because it 
+is absolutely valid. If you change the address, you will be able to reach the web-server 
+only through this address. **Port:** You can specify the port of the "admin" web-server. 
+If there are more web servers on the PC or device the port must be customized to avoid problems 
+of a double port allocation. **Coding:** enable this option if secure https protocol should be used. 
 
-#### Encryption
-If you want to use the secure protocol https you have to check this box.
+**Authentication:** If you want the authentication with login/password you should enable this check-box. 
+Default password for user "admin" is "iobroker" **Buffer:** to speed up the load of the pages enable this option. 
+Normally only the developer wants to have this option unchecked.
 
-#### Authentication
-If an authentication is to take place here is a hook to put.
+## Handling
+The main page of the admin consist of several tabs. **Adapter:** Here the instances of 
+a adapters can be installed or deleted. With the update button 
 
-## Service
-From the web browser, go to the following page:
+![img_005](img/admin_img_005.png)
 
-`<IP-Adresse des Servers>:8081`
+on the top left we can get if the new versions of adapters are available. 
 
-## Equestrian
-The main page of the administrator consists of several tabs. In the basic installation, the tabs are displayed as shown. Using the pencil icon on the top right (1), additional tabs can be added after installing additional adapters. There also riders can be disabled to get a better overview.
+![img_001](img/admin_img_001.jpg)
 
-![iobroker_adapter_admin_001a](../../../de/adapterref/iobroker.admin-2/img/admin_ioBroker_Adapter_Admin_001a.jpg)
+The available and installed versions of the adapter is shown. For overall view the state of the 
+adapter is coloured (red=in planning; orange=alpha; yellow=beta). The updates to a newer version of 
+the adapter are made here also. If there is a newer version the lettering of the tab will be green. 
+If the question mark icon in the last column is active you can get from there to web site with information of the adapter. 
+The available adapter are sorted in alphabetical order. Already installed instance are in the upper part of the list. 
 
-Detailed information is provided in the pages linked by the headings.
+**Instance:** The already installed instance are listed here and can be accordingly configured. If the title of the 
+instance are underlined you can click on it and the corresponding web site will be opened. 
 
-### [adapter](admin/tab-adapters.md)
-Here the available and installed adapters are displayed and managed.
+![img_003](img/admin_img_003.png)
 
-### [instances](admin/tab-instances.md)
-Here, the instances already installed via the Adapter tab are listed and can be configured accordingly.
+**Objects:** the managed objects (for example setup / variables / programs of the connected hardware) 
 
-### [objects](admin/tab-objects.md)
-The managed objects (e.g., the devices / variables / programs of the CCU). Here objects can be created and deleted.
-The _arrow up and _ down arrow buttons can be used to upload or download entire object structures.
-Another button allows you to view the expert view.
+![img_004](img/admin_img_004.png)
 
-If values are displayed in red, they are not yet confirmed (`ack = false`).
+**States:** the current states (values of the objects)   
+If the adapter history is installed, you can log chosen data points. 
+The logged data points are selected on the right and appear with a green logo. 
 
-### [conditions](admin/tab-states.md)
-The current states of the objects.
+**Scripts:** this tab is only active if the "javascript" adapter is installed.
 
-### [Events](admin/tab-events.md)
-A list of status updates.
+**Node-red:** this tab is only visible if the "node-red" adapter installed and enabled.
 
-### [groups](admin/tab-groups.md)
-Here, the created user groups are created and the rights are managed
+**Hosts:** the computer which ioBroker is installed on. Here the latest version of js-controller can be installed on. 
+If there is a new version the letters of the tab are green. To search for a new version you have to click on the update 
+icon on the bottom left corner. 
 
-### [user](admin/tab-users.md)
-Here users can be created and added to the existing groups.
+**Enumeration:** here the favourites, trades and spaces from the CCU are listed. 
 
-### [enumerations](admin/tab-enums.md)
-Here the favorites, trades and rooms from the Homematic CCU are listed.
+**Users:** here the users can be added. To do this click on the (+). By default there is an admin. 
 
-### [hosts](admin/tab-hosts.md)
-Information about the computer where ioBroker is installed.
-Here you can update the current version of the js controller.
-If a new version is available, the tab of the tab appears in green.
+**Groups:** if you click on the (+) on the bottom left you can create user groups. From the pull-down menu the users get assigned to the groups. 
 
-### [log](admin/tab-log.md)
-Here the log is displayed
-
-In the Instances tab, the log levels to be logged can be set for the individual instances.
-In the selection menu, the minimum log level to be displayed is selected.
-If an error occurs, the label of the tab appears in red.
-
-After installing additional adapters, you can activate additional tabs using the pencil icon in the top right (1). The description of this tab is located at the corresponding adapter.
-
-### [system settings](admin/tab-system.md)
-In the menu that opens, settings such as language, time and date format and other system-wide settings are made.
-
-![Admin system settings](../../../de/adapterref/iobroker.admin-2/img/admin_Systemeinstellungen.jpg)
-
-The repositories and security settings can also be set here.
-A more in-depth description can be obtained through the link in the title of this section.
+**Event:** A list of the running updates of the conditions. **Log:** here the log is displayed In the tab instance the the logged log level 
+of the single instance can be set. In the selection Menu the the displayed minimum log level is selected. If an error occurs the 
+lettering of the log appears in red.
 
 ## Changelog
 ### 3.6.0 (2018-11-08)

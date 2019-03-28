@@ -91,7 +91,9 @@ class Editor extends Component {
                 .then(text => {
                     const {header, body} = Utils.extractHeader(text || '');
                     const d = new Date();
-                    header.lastChanged = `${d.getFullYear()}.${Utils.padding(d.getMonth() + 1)}.${Utils.padding(d.getDate())}`;
+                    if (header.editLink && header.editLink.indexOf('iobroker.docs') !== -1) {
+                        header.lastChanged = `${d.getFullYear()}.${Utils.padding(d.getMonth() + 1)}.${Utils.padding(d.getDate())}`;
+                    }
                     this.setState({code: Utils.addHeader(body, header)});
                 });
         }

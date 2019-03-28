@@ -17,8 +17,11 @@ import TableRow from '@material-ui/core/TableRow';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
+import {MdMenu as IconMenu} from 'react-icons/md';
 import {MdExpandMore as IconExpandMore} from 'react-icons/md';
 import {FaGithub as IconGithub} from 'react-icons/fa';
+import IconGlobe from './assets/globe.svg';
+import IconLink from './assets/link.svg';
 
 import Router from './Router';
 import Loader from './Components/Loader';
@@ -147,9 +150,11 @@ const styles = theme => ({
         borderStyle: 'solid',
         background: '#bdded5',
         '&:before': {
-            content: '"🛈"',
+            content: 'url(' + IconGlobe + ')',
             marginRight: 10,
-            color: '#000000'
+            color: '#000000',
+            height: 20,
+            width: 20,
         }
     },
     license: {
@@ -162,10 +167,13 @@ const styles = theme => ({
         cursor: 'pointer',
         textDecoration: 'underline',
         '&:after': {
-            content: '"🔗"',
+            //content: '"🔗"',
+            content: 'url(' + IconLink + ')',
+            width: 16,
+            height: 16,
             opacity: 0.7,
             fontSize: 14,
-            marginLeft: 5
+            //marginLeft: 5
         }
     },
     info: {
@@ -510,7 +518,7 @@ class Markdown extends Router {
                     this.props.onEditMode && this.props.onEditMode(true);
                 }}><IconEdit />{I18n.t('Edit local')}</div>) : null}
 
-        </div>)
+        </div>);
     }
 
     _renderSubContent(menu) {
@@ -533,7 +541,11 @@ class Markdown extends Router {
     }
 
     renderContentCloseButton() {
-        return (<IconClose className={this.props.classes.contentClose} onClick={() => !this.state.hideContent && this.onToggleContentButton()}/>);
+        if (this.state.hideContent) {
+            return (<IconMenu className={this.props.classes.contentClose}/>);
+        } else {
+            return (<IconClose className={this.props.classes.contentClose} onClick={() => this.onToggleContentButton()}/>);
+        }
     }
 
     renderContent() {
@@ -715,7 +727,18 @@ class Markdown extends Router {
             if (part.type === 'table') {
                 return this.renderTable(part.lines);
             } else {
-                const rct = converter.convert(part.lines.join('\n'));
+                let line = part.lines.join('\n');
+                if (part.type === 'code') {
+                    line = line.trim().replace(/^```javascript/, '```');
+                }
+                if (line.indexOf('*Number value') !== -1) {
+                    console.log('AAA');
+                }
+                const trimmed = line.trim();
+                if (trimmed.match(/^\*[^\s]/) && trimmed.match(/[^\s]\*$/)) {
+                    line = trimmed;
+                }
+                const rct = converter.convert(line);
 
                 this.replaceHref(rct);
 

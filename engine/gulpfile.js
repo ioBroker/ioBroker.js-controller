@@ -112,12 +112,14 @@ gulp.task('translate', async function () {
 gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
 gulp.task('downloadAndSyncOne', done => {
-    const ADAPTER_NAME = 'alexa2'; // <= edit this
+    const ADAPTER_NAME = 'admin-2'; // <= edit this
 
     // delete all
-    consts.LANGUAGES.forEach(lang => {
-        utils.delDir(consts.SRC_DOC_DIR + '/adapterref/' + lang + '/iobroker.' + ADAPTER_NAME);
-    });
+    /*consts.LANGUAGES.forEach(lang => {
+        utils.delDir(consts.SRC_DOC_DIR + lang + '/adapterref/iobroker.' + ADAPTER_NAME);
+    });*/
+    //utils.delDir(consts.SRC_DOC_DIR + 'de/adapterref/iobroker.' + ADAPTER_NAME);
+    //utils.delDir(consts.SRC_DOC_DIR + 'en/adapterref/iobroker.' + ADAPTER_NAME);
 
     return adapters.buildAdapterContent(ADAPTER_NAME)
         .then(content => {

@@ -18,7 +18,7 @@ lastChanged: "11.09.2018"
    damit die Änderungen einfacher übernommen werden können.
 
 
-ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Home, der Gebäudeautomatisation sowie Active Assisted Living. ioBroker kann über modulare `Adapter` mit vielen bestehenden Systemen und Geräten kommunizieren. Über Regeln lassen sich Funktionsabläufe herstellerunabhängig erstellen. Mit ioBroker bereitgestellte graphische Oberflächen helfen, die Bedienung bzw. Überwachung von Geräten zu vereinfachen.
+ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Home, der Gebäudeautomatisation sowie Active Assisted Living. ioBroker kann über modulare **Adapter** mit vielen bestehenden Systemen und Geräten kommunizieren. Über Regeln lassen sich Funktionsabläufe herstellerunabhängig erstellen. Mit ioBroker bereitgestellte graphische Oberflächen helfen, die Bedienung bzw. Überwachung von Geräten zu vereinfachen.
 
 Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:
 

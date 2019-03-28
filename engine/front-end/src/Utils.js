@@ -36,9 +36,13 @@ class Utils {
 
     static addHeader(text, header) {
         const lines = Object.keys(header).map(attr => `${attr}: ${header[attr]}`);
-        lines.unshift('---');
-        lines.push('---');
-        return lines.join('\n') + '\n' + text;
+        if (lines) {
+            lines.unshift('---');
+            lines.push('---');
+            return lines.join('\n') + '\n' + text;
+        } else {
+            return lines.join('\n');
+        }
     }
 
     static removeDocsify(text) {
@@ -180,7 +184,7 @@ class Utils {
                 const cont = Utils.findTitle(line, -1, path);
                 title = cont.title;
             } else
-            if (line.trim().startsWith('| ')) {
+            if (line.trim().startsWith('|')) {
                 if (parts[last].type !== 'table') {
                     parts.push({type: 'table', lines: [line]});
                 } else {
@@ -209,14 +213,16 @@ class Utils {
                         i++;
                     }
                 }
-            } else if (line.startsWith('```')) {
+            } else if (line.trim().startsWith('```')) {
                 parts.push({lines: [line], type: 'code'});
                 last++;
-                if (!line.trim().endsWith('```')) {
+                if (!line.substring(3).trim().endsWith('```')) {
                     while(i + 1 < lines.length && !lines[i + 1].trim().endsWith('```')) {
                         parts[last].lines.push(lines[i + 1]);
                         i++;
                     }
+                    parts[last].lines.push(lines[i + 1]);
+                    i++;
                 }
             } else if (line.startsWith('?> ') || line.startsWith('!> ')) {
                 parts.push({lines: [line.substring(3)], type: line.startsWith('?>') ? 'warn' : 'alarm'});
@@ -235,8 +241,10 @@ class Utils {
             } else if (line.trim()) {
                 parts.push({lines: [line], type: 'p'});
                 last++;
-                while(i + 1 < lines.length && lines[i + 1].trim()) {
-                    parts[last].lines.push(lines[i + 1].trim());
+                while(i + 1 < lines.length && //lines[i + 1].trim() &&
+                    //!lines[i + 1].trim().match(/^>\s|^\?>\s|^!>\s|^@@@|^#+|^====|^\|/)) {
+                    !lines[i + 1].trim().match(/^```|^>\s|^\?>\s|^!>\s|^@@@|^#+|^====|^\|/)) {
+                    parts[last].lines.push(lines[i + 1].trimRight());
                     i++;
                 }
             }
