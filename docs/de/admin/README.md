@@ -35,9 +35,9 @@ Die Adapteransicht teilt sich in drei Bereiche auf:
 
 ![Die Struktur des Admin](media/ADMIN_Screen_numbers.png)
 
-1. Menü-Sidebar 
-2. Hauptfenster
-3. Systemeinstellungen
+1. [Menü-Sidebar](#Menüpunkte)
+2. [Hauptfenster](#Das_Hauptfenster)
+3. [Systemeinstellungen](#Systemeinstellungen)
 
 
 ## Menüpunkte
@@ -107,7 +107,7 @@ Informationen über den Rechner, auf dem ioBroker installiert ist.  Liegt eine n
 erscheint ein Hinweis in diesem Eintrag der Menüleiste.
 
 
-## [Systemeinstellungen](settings.md) (Schraubenschlüssel-Icon)
+## [Systemeinstellungen](settings.md)
 In dem sich hier öffnenden Menü werden Einstellungen wie Sprache, Zeit- und 
 Datumsformat sowie weitere systemweite Einstellungen getätigt.
 
