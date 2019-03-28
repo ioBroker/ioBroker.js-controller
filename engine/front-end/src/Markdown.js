@@ -57,7 +57,7 @@ const styles = theme => ({
             borderRadius: 2,
             background: '#e3e3e3',
             color: '#000000',
-            whiteSpace: 'nowrap',
+            whiteSpace: 'pre',
         },
         '& img': {
             maxWidth: '100%'
