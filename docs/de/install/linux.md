@@ -1,6 +1,6 @@
 ---
 title:       "Linux"
-lastChanged: "13.09.2018"
+lastChanged: "28.03.2019"
 ---
 
 # ioBroker Installation unter Linux
@@ -58,31 +58,31 @@ oder SSD, USB-Stick, usw. (je nach verwendeter Hardware)
 * Putty: http://www.putty.org/
 
 ## Installationsanleitung
-###Installation Betriebssystem
+### Installation Betriebssystem
 
-Das gewünschte Basis-Betriebssystem (Raspian Stretch, Ubuntu, Debian, usw.) – je nach verwendeter Hardware installieren.
+* Das gewünschte Basis-Betriebssystem (Raspian Stretch, Ubuntu, Debian, usw.) – je nach verwendeter Hardware installieren.
 
-Hilfe und Anleitungen zu den jeweiligen Versionen findet ihr auf den entsprechenden Supportseite, Youtube, usw.
+    Hilfe und Anleitungen zu den jeweiligen Versionen gibt es auf den entsprechenden Supportseiten, 
+Youtube, usw.
 
-NUR wenn root-Zugang per SSH oder sftp unbedingt benötigt wird, **KANN** auch Falls ihr es wollt, könnt ihr euch den Root Zugang für SSH freigeschaltet werden.
+* NUR wenn root-Zugang per SSH oder sftp unbedingt benötigt wird, **KANN** auch der 
+Root Zugang für SSH freigeschaltet werden.
 
-Wir raten, aus den bekannten Sicherheitsaspekten, davon ab. Für die Installation von ioBroker 
+    Wir raten, aus den bekannten Sicherheitsaspekten, davon ab. Für die Installation von ioBroker 
 reicht es aus, den Befehl sudo zu verwenden und dem jeweiligen Befehl voran zu stellen.
 
 ### Installation Node.js
-Die momentan empfohlene Version ist node 8.x; mit js-controller 1.5.7 auch node 10.x, dann in Schritt 4.1. die “8.x” gegen 10.x” austauschen
-
-<span style="color:red"> ungerade Versionen sind grundsätzlich nicht empfohlen, da es sich um Entwicklerversionen handelt. </span>
-
----
 
 Die folgende Anleitung ist auch bei einem Downgrade zu verwenden.
 
- 
+Die momentan empfohlene Version ist node 8.x; mit js-controller 1.5.7 auch node 10.x, dann in Schritt 4.1. die “8.x” gegen 10.x” austauschen.
+
+<span style="color:red"> ungerade nodejs-Versionen sind grundsätzlich nicht empfohlen, da es sich um Entwicklerversionen handelt. </span>
+
 
 1. System-Update: ``sudo apt-get update && sudo apt-get upgrade``
 
-    Je nach verwendetem OS kann das Update auch mittels: ``sudo apt update && sudo apt upgrade`` 
+    Je nach verwendetem OS kann das Update auch mittels ``sudo apt update && sudo apt upgrade`` 
 ausgeführt werden.
 
 2. Auf bereits vorhandene Versionen von nodejs und npm testen.
@@ -94,7 +94,7 @@ ausgeführt werden.
     ``npm -v``
 
     nur wenn **ALLE** diese Befehle kein Ergebnis bringen (also keine Versionsnummer mehr 
-anzeigen) mit Schritt 4. dieses Abschnittes weitermachen, sonst wenn die Version nicht der 
+anzeigen) mit Schritt 4. dieses Abschnittes weitermachen, sonst, oder wenn die Version nicht der 
 gewünschten entspricht folgendes vorher ausführen:
 
 3. Die existierenden node & node.js Versionen deinstallieren
@@ -116,15 +116,15 @@ libpam0g-dev nodejs``
 
     ``sudo reboot``
 
-    Nach der Installation müssen das Kommandos “node -v” und “nodejs -v” die gleiche 
+    Nach der Installation müssen die Kommandos “node -v” und “nodejs -v” die gleiche 
 Versionsnummer zurückgeben.
     
     Falls ``node -v`` eine Fehlermeldung wie “nicht gefunden” erzeugt, dann bitte ein 
 
     ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` an der Konsole ausführen.
 
-    Sind die Versionen unterschiedlich, bitte nochmals den Abschnitt “Installation Node.js” 
-abarbeiten
+    Sind die Versionen unterschiedlich, bitte nochmals den Abschnitt 
+[Installation Node.js](install/linux.md#installation-nodejs) abarbeiten
 
     Als letzte Überprüfung bitte noch die Version von npm mittels ``npm -v`` überprüfen.
 
@@ -132,11 +132,13 @@ abarbeiten
 npm-Update durchführen
 
 ### Installation ioBroker
-Die Installation kann mit dem User pi aber auch mit dem User root erfolgen. An der Konsole
+Die Installation kann mit dem User pi aber auch mit dem User root erfolgen. 
+
+An der Konsole ausführen:
 
 ``curl -sL https://iobroker.net/install.sh | bash -``
 
-ausführen
+---
 
 Die Installation erfolgt in 4 Schritten:
 
@@ -153,6 +155,8 @@ Zum Abschluss kommt dann noch die Meldung
 ``ioBroker was installed successfully``
 
 ``Open http://localhost:8081 in a browser and start configuring!``
+
+---
 
 ioBroker nun über die angegebene IP im Webbrowser aufrufen: ``http://<IP-Adresse>:8081``
  
