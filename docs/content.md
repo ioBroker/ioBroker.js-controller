@@ -32,17 +32,16 @@
     * [Adapter](install/updateadapter)
     * [Node.js & npm](install/updatenode)
 
-* [en:Admin interface;de:Admin-Oberfläche;ru:Интерфейс админки](admin/README)
-  * [Introduction](admin/README)
-  * [Admin windows](admin/screen)
-  * [Sytsem settings](admin/settings)
+* [en:Admin interface;de:Admin-Oberfläche;ru:Интерфейс админки](admin/README.md)
+  * [System settings](admin/settings)
   * [Admin-Overview](admin/overview)
   * [Adapter](admin/adapter)
   * [Instances](admin/instances)
   * [Objects](admin/objects)
-  * [Log](admin/log)
   * [Enumerations](admin/enums)
-  * [Scrips](admin/scripts)
+  * [Log](admin/log)
+  * [Events](admin/events)
+  * [User](admin/users)
   * [Hosts](admin/hosts)
 
 * en:Tutorials;de:Tutorials;ru:Уроки
