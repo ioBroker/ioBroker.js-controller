@@ -1,24 +1,7 @@
 ---
-lastChanged: "11.09.2018"
+title:       "Aufbau der Doku"
+lastChanged: "29.03.2019"
 ---
-
-# ioBroker
-
-?> Diese Dokumentation entsteht gerade erst. Deshalb bitte nicht wundern,
-   wenn Links nicht funktionieren oder Inhalte fehlen.
-   <br><br>
-   Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind,
-   dass etwas fehlt oder besser beschrieben werden sollte,
-   [helfen Sie uns dabei][], die Dokumentation zu verbessern!
-
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf unserer ioBroker Community und erweitere diesen Artikel.  
-   Bitte beachtet den [ioBroker Style Guide](community/styleguidedoc),
-   damit die Änderungen einfacher übernommen werden können.
-
-
-ioBroker ist ein zentraler Server für Automatisierungsaufgaben rund um Smart Home, der Gebäudeautomatisation sowie Active Assisted Living. ioBroker kann über modulare **Adapter** mit vielen bestehenden Systemen und Geräten kommunizieren. Über Regeln lassen sich Funktionsabläufe herstellerunabhängig erstellen. Mit ioBroker bereitgestellte graphische Oberflächen helfen, die Bedienung bzw. Überwachung von Geräten zu vereinfachen.
 
 Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:
 
@@ -31,29 +14,71 @@ Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von io
 
 Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die Dokumentation zu verbessern!
 
-## Einführung
 
-> - [Konzepte]() lesen
-> - Im [Installation Guide]() die richtige HW heraussuchen (da müssen Empfehlungen rein, was wir für HW/Docker/Image für was gut finden)
-> - Experimente mit raspberry sind einfach
-> - [Einsteiger Tutorial]() folgen, dann
-> - Detailierte Infos zu den Einstellungen im [Configuration Guide]()
-> - Alles zur [Visualisierung]() (VIS,Materialize,habpanel)
-> - Regeln anlegen in Javascript, Blockly oder Node Red mit [Logik]()
-> - Hinweis auf die Community
+# Verwendung der Doku
 
-## ioBroker Community
+## Seitenstruktur
+Diese Seite ist in einem ***responsiven Design*** erstellt worden. Dies bedeutet, dass sie je nach
+Auflösung der Anzeige des Lesegeräts (PC/Tablet/Handy) anders dargestellt wird um eine optimale
+Lesbarkeit zu ermöglichen.
 
-> Wir stellen uns vor  
-    [Forum]()  
-    [Blog]()  
-    [Facebook]()
+So werden bei niedrigen (effektiven) Auflösungen auch teilweise Bedienelemente versteckt um
+Platz für die Hauptfenster zu schaffen.
 
-> Überleitung zu den Konzepten
+Daher kann es durchaus sein, dass die aktuelle Darstellung von den Screenshots abweicht.
+
+### Verschiedene Menüs
+Um eine größtmögliche Übersicht zu erhalten gibt es insgesamt drei verschiedene Menüs:
+
+![Seiten-Menüs](media/Seite_numbers.png)
 
 
-[Download]: install/images
-[Adapter-Referenz]: adapterref/adapterliste
-[Logik]: logic/README
-[Developer bereich]: dev/README
-[helfen Sie uns dabei]: community/doc
+**1.) Doku-Menü**
+Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen 
+ausgeblendet. Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
+
+![Doku-Menü](media/Dokumenu.png)
+
+In der obersten Zeile befindet sich ein Filterfeld. Durch Eingabe eines Begriffs wird der 
+gesamte Menübaum nach diesem Begriff gefiltert und nur noch passende Menüpunkte 
+angezeigt.
+
+Über das Icon mit dem Pfeil kann das Menü wieder versteckt werden um mehr Platz 
+für den Inhalt zu machen.
+
+**2.) Seitenmenü**
+
+Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der Seite sichtbar, 
+das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet. Dann  muss es durch 
+Anklicken des Burger-Icons geöffnet werden:
+
+![Seiten-Menü](media/Seitenmenu.png)
+
+Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr Platz 
+für den Inhalt zu machen.
+
+**3.) Themenmenü**
+
+In diesem Menü werden die Haupt-Themen des angewählten Artikels angezeigt um
+schneller zu einem gesuchten Punkt navigieren zu können.
+
+![Themen-Menü](media/Themenmenu.png)
+
+Über das Icon mit dem **X** kann das Menü wieder versteckt werden.
+
+### Weitere Bedienelemente
+**4.) Sprachauswahl**
+
+Die Website ist mehrsprachig angelegt. Nach und nach werden weitere Sprachen hinzugefügt.
+Einige werden zuerst automatisch generiert, native Speaker sind eingeladen die Texte zu verbessern.
+
+An dem Weltkugel-Icon kann die gewünschte Sprache ausgewählt werden.
+
+![Sprachauswahl](media/Languages.png)
+
+Diese Sprachliste wird bei Bedarf erweitert.
+
+
+**5.) Suche**
+
+Dieses Feld bedarf keiner Erklärung. Bitte ausgiebig verwenden!
