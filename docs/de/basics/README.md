@@ -13,8 +13,8 @@ Hardware (USB-Stick o.ä.) an den ioBroker Server angesteckt werden.
 
 # Modularität
 ioBroker ist modular aufgebaut. Diese Module heißen bei ioBroker ***Adapter***. 
-Es gibt [über 250 Adapter](download.iobroker.net/list.html) zur Anbindung von 
-diverser Hardware oder Einbindung verschiedenster Informationen wie Wetter, 
+Es gibt [über 250 Adapter](http://download.iobroker.net/list.html) zur Anbindung 
+von diverser Hardware oder Einbindung verschiedenster Informationen wie Wetter, 
 Kalender usw.
 
 Daher müssen in einer Installation nur die Adapter installiert werden, die für die 
