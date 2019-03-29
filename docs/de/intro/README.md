@@ -3,17 +3,7 @@ title:       "Aufbau der Doku"
 lastChanged: "29.03.2019"
 ---
 
-Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:
-
-* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über IOBroker nachzulesen. Dazu mehr im Kapitel [Einführung](#Einführung).
-* Erfahrene Anwender finden auf der [Download](../../download)-Seite vorbereitete Images für verschiedene Systeme. Dort stehen auch detailierte Installationsanweisungen für einige Hardwareplattformen bereit.
-* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz][../../adapters].
-* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik][../logic] beschrieben.
-
-Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich][].
-
-Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die Dokumentation zu verbessern!
-
+**Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:**
 
 # Verwendung der Doku
 
@@ -82,3 +72,20 @@ Diese Sprachliste wird bei Bedarf erweitert.
 **5.) Suche**
 
 Dieses Feld bedarf keiner Erklärung. Bitte ausgiebig verwenden!
+
+---
+
+
+* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über ioBroker nachzulesen. 
+Dazu mehr im Kapitel [Einführung](#Einführung).
+* Auf der [Download](../../download)-Seite gibt es vorbereitete Images für verschiedene Systeme. 
+Dort stehen auch detaillierte Installationsanweisungen für einige Hardwareplattformen bereit.
+* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz][../../adapters].
+* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik][../logic] beschrieben.
+
+Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich][].
+
+Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die Dokumentation zu verbessern!
+
+
+
