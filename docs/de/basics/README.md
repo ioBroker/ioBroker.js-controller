@@ -37,7 +37,7 @@ Leistungsverteilung sein.
 ### Anforderungen an die Hardware
 Ein ioBroker Server kann nahezu auf jeder Hardware installiert werden. Einzige 
 Bedingung ist, dass es für das entsprechende Betriebssystem eine aktuelle Version von 
-[nodejs](www.nodejs.org) gibt.
+[nodejs](https://nodejs.org) gibt.
 
 Für eine größere Installation wird außerdem ein Arbeitsspeicher (RAM) von mindestens 
 2GB empfohlen. Zum Testen reicht ein Raspberry Pi 2/3 mit 1GB RAM, als Slave für einzelne 
@@ -51,8 +51,8 @@ Zu jedem Adapter gibt es einen so genannten Namespace, der sämtliche Daten zu e
 Instanz des Adapters enthält. Dementsprechend lautet der Name des Namespaces z.B.: 
 ***AdapterName.0***
 
-Innerhalb dieses Bereiches werden dann die Geräte, deren Kanäle und wiederum deren 
-Datenpunkte angelegt.
+Innerhalb dieses Bereiches legt ioBroker die Geräte, deren Kanäle und wiederum deren 
+Datenpunkte mit ihren Werten (Zuständen) an.
 
 ![Objektstruktur](../admin/media/ADMIN_Objekte_status_tree.png)
 
