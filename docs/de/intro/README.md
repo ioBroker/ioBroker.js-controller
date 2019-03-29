@@ -23,13 +23,13 @@ Um eine größtmögliche Übersicht zu erhalten gibt es insgesamt drei verschied
 ![Seiten-Menüs](media/Seite_numbers.png)
 
 
-**1.) Seitenmenü**
+**1.) Hauptmenü**
 
 Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der Seite sichtbar, 
 das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet. Dann  muss es durch 
 Anklicken des Burger-Icons geöffnet werden:
 
-![Seiten-Menü](media/Seitenmenu.png)
+![Seiten-Menü](media/Hauptmenu.png)
 
 Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr Platz 
 für den Inhalt zu machen.
