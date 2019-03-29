@@ -31,7 +31,7 @@ In diesen Instanzen findet die entsprechende Konfiguration statt.
 ## Server
 Eine Besonderheit von ioBroker besteht darin, dass die Aufgaben auch auf mehrere 
 Server verteilt werden **können**.  In so einem Fall spricht man von einem 
-***Multihost-System***. Gründe für die Aufteilung können räumlicher Art oder wegen 
+***Multihost-System***. Gründe für die Aufteilung können räumlicher Art oder eine
 Leistungsverteilung sein.
 
 ### Anforderungen an die Hardware
@@ -54,7 +54,7 @@ Instanz des Adapters enthält. Dementsprechend lautet der Name des Namespaces z.
 Innerhalb dieses Bereiches werden dann die Geräte, deren Kanäle und wiederum deren 
 Datenpunkte angelegt.
 
-![Objektstruktur](admin/media/ADMIN_Objekte_status_tree.png)
+![Objektstruktur](../admin/media/ADMIN_Objekte_status_tree.png)
 
 in diesem Beispiel handelt es sich um einen selbst angelegten Namespace für eigene Messwerte
 
