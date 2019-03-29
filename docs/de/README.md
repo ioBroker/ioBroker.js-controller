@@ -1,18 +1,26 @@
 ---
 title:       "Willkommen"
-lastChanged: "14.03.2019"
+lastChanged: "29.03.2019"
 ---
 # Willkommen bei ioBroker
-ioBroker ist ein zentraler Service zur Anbindung, Auswertung und Bedienung 
-von Systemen, die ohne ioBroker Insellösungen bleiben würden. 
+!> **Hinweis für Einsteiger**
+    
+> Sollten beim Lesen dieser ersten Worte schon zu viele unbekannten Begriffe 
+verwendet worden sein, werden diese nochmals auf der [nächsten Seite](basics/README.md)
+ausführlich erklärt.
 
-ioBroker ist *die* Integrationsplattform für das Internet der Dinge.
 
-Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von *Adaptern*
+ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
+ioBroker Insellösungen bleiben würden in einem Gesamtsystem zu integrieren. 
+
+ioBroker ist daher ***die*** Integrationsplattform für das Internet der Dinge.
+
+Ein ioBroker-System ist modular aufgebaut. Eine Vielzahl von ***Adaptern***
 ermöglicht die Kommunikation mit über 200 verschiedenen Plattformen 
-von A wie Alexa bis Z wie Zeiterfassung. Sei es die Einbindung 
-kommerzieller Produkte aus fast allen Lebensbereichen oder die 
-Integration einer selbst erstellten Lösung - ioBroker macht fast 
+von A wie Alexa bis Z wie Zeiterfassung. 
+
+Sei es die Einbindung kommerzieller Produkte aus fast allen Lebensbereichen 
+oder die Integration einer selbst erstellten Lösung - ioBroker macht fast 
 alles möglich.
 
 !> Die Dokumentation befindet sich im Aufbau und wird stetig erweitert.
@@ -25,11 +33,49 @@ alles möglich.
    [hier zu finden](http://www.iobroker.net). Sie wird sukzessive durch die neue Dokumentation 
    ersetzt.**
 
+
+## Plattformübergreifend
+Jeder, der sich mit Hausautomation beschäftigt, wird früher oder 
+später feststellen, dass Systeme häufig nicht perfekt sind. Jedes 
+System hat seine Stärken und Schwächen. ioBroker ist deshalb 
+plattformübergreifend. Der Parallelbetrieb mit bestehenden Lösungen 
+ist jederzeit möglich. Es können Synergieeffekte genutzt und das 
+Beste aus allen Welten zusammengeführt werden. 
+
+ioBroker selbst IST auf fast allen Plattformen zu Hause. ioBoker kann unter 
+Windows, Linux, OSX oder auch als Dockerimage installiert werden. 
+Vorkonfigurierte Installationsimages nehmen dabei dem Anwender die 
+Installationsarbeit ab.
+
+Über einen optionalen cloudbasierte Zugriff ist für den Anwender oder 
+für Systemintegratoren die Remote-Verwaltung auf ein lokal installiertes 
+ioBroker-System 24/7 möglich. Die Zugriffsteuerung kann mittels 
+Benutzer und Gruppen vom Anwender frei konfiguriert werden.
+
+## Skalierbar
+Sollen im Laufe der Zeit weitere Smarthome-Systeme angebunden werden, 
+können diese vom Anwender jederzeit über zusätzliche Adapter bei laufendem 
+Betrieb implementiert werden. Auch ioBroker selbst ist skalierbar. 
+Mehrere ioBroker-Server können zu einem `Mutihost`-System verbunden werden. 
+Dabei ist sogar die Mischung von Betriebssystemplattformen und die Kopplung von 
+SoC-Einplatinencomputern mit großen Multicore-Servern möglich. 
+Für Systeme mit höchsten Performanceanforderungen kann optional Redis, 
+eine besonders schnelle Datenbank, eingebunden werden.
+
+## Programmierbar
+Eine optionale Programmierung erfolgt mit JavaScript, einer seit 1995 stetig 
+weiter entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
+Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
+zu ioBroker beitragen kann und auch individuelle Anforderungen umsetzbar sind.
+
+Für Einsteiger in die Programmierung ist die Variante 'Blockly' vorhanden, die es 
+ermöglicht ohne umfangreiche Programmierkenntnisse selber per 'drag and drop' 
+schnell zu Ergebnissen zu kommen.
+
 ## Visualisierung
-Die Schnittstelle zum Benutzer ist die Visualisierung. ioBroker 
-stellt dazu mit `VIS` eine mächtige Umgebung zur Verfügung. 
-Aktuelle Werte von Sensoren können genau so wie historische Verläufe 
-grafisch aufbereitet dargestellt werden. Live-Bilder von 
+ioBroker stellt mit `VIS` ein mächtiges Tool zur Erstellung einer individuellen 
+Visualisierung zur Verfügung. Aktuelle Werte von Sensoren können genau 
+so wie historische Verläufe grafisch aufbereitet dargestellt werden. Live-Bilder von 
 Überwachungskameras, die Implementierung einer Alarmanlage, 
 Heizungssysteme und Klimatechnik - fast alles was vorstellbar ist,
 kann auch umgesetzt werden. 
@@ -37,10 +83,8 @@ kann auch umgesetzt werden.
 ![VIS](media/vis2.png)  
 *Beispiel für eine selbst erstellte VIS-Benutzeroberfläche*
 
-Dabei hat der Anwender maximale Gestaltungsfreiheit. Die Erstellung 
-von Automatismen und Abläufen bei der Visualisierung ist auch ohne 
-Programmierkenntnisse möglich. Vorgefertigte Bausteine zur 
-einfachen Verwendung helfen dem Anwender dabei. Doch nicht nur die 
+Dabei hat der Anwender maximale Gestaltungsfreiheit. Vorgefertigte Bausteine 
+zur einfachen Verwendung helfen dem Anwender dabei. Doch nicht nur die 
 Anzeige von Informationen ist möglich. Auch die Steuerung von Geräten 
 ist über die Visualisierungsoberfläche schnell umgesetzt. Die Bedienung 
 der Oberfläche kann dabei auf die unterschiedlichsten Endgeräte 
@@ -52,41 +96,6 @@ Einfache vorgefertigte Bedienoberflächen können mit dem Material- oder dem
 HabPanel-Adapter schnell realisiert werden.
 
 
-## Plattformübergreifend
-Jeder, der sich mit Hausautomation beschäftigt, wird früher oder 
-später feststellen, dass Systeme häufig nicht perfekt sind. Jedes 
-System hat seine Stärken und Schwächen. ioBroker ist deshalb 
-plattformübergreifend. Der Parallelbetrieb mit bestehenden Lösungen 
-ist jederzeit möglich. Es können Synergieeffekte genutzt und das 
-Beste aus allen Welten zusammengeführt werden. Dabei ist ioBroker 
-selbst auf fast allen Plattformen zu Hause. ioBoker kann unter Windows, 
-Linux, OSX oder auch als Dockerimage installiert werden. Vorkonfigurierte 
-Installationsimages nehmen dabei dem Anwender die Installationsarbeit ab.
-
-Über eine optionale cloudbasierte Oberfläche ist für den Anwender oder 
-Systemintegratoren der Remote-Zugriff auf ein lokal installiertes 
-ioBroker-System 7x24h möglich. Die Zugriffsteuerung kann mittels 
-Benutzer und Gruppen vom Anwender frei konfiguriert werden.
-
-## Skalierbar
-Sollen im Laufe der Zeit weitere Systeme angebunden werden, können vom 
-Anwender jederzeit zusätzliche Adapter bei laufendem Betrieb hinzugefügt 
-werden. Auch ioBroker selbst ist skalierbar. Mehrere ioBroker-Server 
-können zu einem `Mutihost`-System verbunden werden. Dabei ist sogar die 
-Mischung von Betriebssystemplattformen und die Kopplung von 
-SoC-Einplatinencomputern mit großen Multicore-Servern möglich. 
-Für Systeme mit höchsten Performanceanforderungen kann optional Redis, 
-eine besonders schnelle Datenbank, eingebunden werden.
-
-## Erweiterbar
-Die Programmierung erfolgt mit JavaScript, einer seit 1995 stetig weiter
-entwickelten Skriptsprache. Diese ist einfach zu erlernen, so dass neue
-Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
-zu ioBroker beitragen kann und auch individuelle Anforderungen
-umsetzbar sind.
-
-Die Variante 'Blockly' ermöglicht es Einsteigern ohne umfangreiche Programmierkenntnisse 
-selber per 'drag and drop' schnell zu Ergebnissen zu kommen.
 
 ## Community
 Seit 2014 hat sich ioBroker aufgrund seiner vielen Vorzüge eine breite 
