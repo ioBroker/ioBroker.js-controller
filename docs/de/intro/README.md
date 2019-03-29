@@ -23,7 +23,19 @@ Um eine größtmögliche Übersicht zu erhalten gibt es insgesamt drei verschied
 ![Seiten-Menüs](media/Seite_numbers.png)
 
 
-**1.) Doku-Menü**
+**1.) Seitenmenü**
+
+Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der Seite sichtbar, 
+das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet. Dann  muss es durch 
+Anklicken des Burger-Icons geöffnet werden:
+
+![Seiten-Menü](media/Seitenmenu.png)
+
+Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr Platz 
+für den Inhalt zu machen.
+
+
+**2.) Doku-Menü**
 Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen 
 ausgeblendet. Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
 
@@ -34,17 +46,6 @@ gesamte Menübaum nach diesem Begriff gefiltert und nur noch passende Menüpunkt
 angezeigt.
 
 Über das Icon mit dem Pfeil kann das Menü wieder versteckt werden um mehr Platz 
-für den Inhalt zu machen.
-
-**2.) Seitenmenü**
-
-Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der Seite sichtbar, 
-das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet. Dann  muss es durch 
-Anklicken des Burger-Icons geöffnet werden:
-
-![Seiten-Menü](media/Seitenmenu.png)
-
-Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr Platz 
 für den Inhalt zu machen.
 
 **3.) Themenmenü**
