@@ -1,45 +1,60 @@
 ---
-lastChanged: "14.09.2018"
+Title: "ioBroker Grundlagen"
+lastChanged: "29.03.2019"
 ---
 
-# Grundlagen
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc),
-   damit die Änderungen einfacher übernommen werden können.
+ioBroker ist eine reine Softwarelösung um verschiedene IoT-Systeme zu einem 
+Gesamtsystem zu verbinden. Demnach wird auch zu jedem System weiterhin eine 
+Zentrale (Gateway/Interface) benötigt um dessen Geräte einbinden zu können.
 
-@@@   
-Primär wird in diesem Abschnitt der Dokumentation das "WAS ist es"
-beschrieben, nicht "WIE es geht".  
+In Sonderfällen kann so eine Zentrale per Software nachgebildet werden, oder als
+Hardware (USB-Stick o.ä.) an den ioBroker Server angesteckt werden.
 
-Der Anwender soll nach dem Lesen der Grundlagen die verschiedenen
-ioBroker-spezifischen Begriffe rudimentär verstehen und zuordnen können.  
+# Modularität
+ioBroker ist modular aufgebaut. Diese Module heißen bei ioBroker ***Adapter***. 
+Es gibt [über 250 Adapter](download.iobroker.net/list.html) zur Anbindung von 
+diverser Hardware oder Einbindung verschiedenster Informationen wie Wetter, 
+Kalender usw.
 
-Ziel ist kurz und knackig erklären, 2-4 Zeilen, ggf. wird das ganze 
-später als eine Long-Scroller-Seite umgebaut.
+Daher müssen in einer Installation nur die Adapter installiert werden, die für die 
+individuellen Bedürfnisse benötigt werden. Dies spart Speicherplatz und Rechenpower.
 
-In den Grundlagenartikeln sollte auf die jeweils dazugehörenden
-Detailbeschreibungen verwiesen werden.   
-@@@
+Zu jedem Adapter werden so genannte ***Instanzen*** erstellt. Dieses sind die 
+"Arbeitsversionen" der Adapter. Je nach Adapter können beliebig viele Instanzen 
+erzeugt werden um verschiedene Subsysteme oder unterschiedliche Aufgabenbereiche 
+voneinander abzugrenzen.
 
-## Begriffserklärung
-Um den Einstieg leicht und die weitere Hilfe verständlicher zu machen sind hier die wichtigsten Begriffe, die im und um den ioBroker auftreten erläutert.
+In diesen Instanzen findet die entsprechende Konfiguration statt.
 
-* `Host`: das Gerät, auf dem ioBroker installiert ist
-* `Adapter`: ein Modul beziehungsweise PlugIn für den ioBroker, um beispielsweise mit Hardware zu kommunizieren
-    - kann nicht gestartet werden
-    - pro Host kann es jeden Adapter nur einmal geben
-* `Instanz`: ausführbares Exemplar eines Adapters
-    - führt den vom Adapter bereitgestellten Code aus
-    - kann gestartet und gestoppt werden
-    - kann Einstellungen haben
-    - Adapter muss installiert sein, um Instanzen vom Adapter zu haben
-* `Objekt`: Feld in dem Daten gespeichert werden können
-    - die meisten Instanzen legen einen `channel` an
-    - ein `channel` ist ein Objekt, welches als Ordner fungiert
-* `Aufzählung`: enthält beispielsweise eine Liste an Räumen
-* `Log`: Protokoll dessen, welche Fehler aufgelaufen sind
-    - filterbar nach schwere des Ereignisses, Instanz und weiterem
-* `Ereignisse`: Liste aller Änderungen an Objekten
+# Architektur
+## Server
+Eine Besonderheit von ioBroker besteht darin, dass die Aufgaben auch auf mehrere 
+Server verteilt werden **können**.  In so einem Fall spricht man von einem 
+***Multihost-System***. Gründe für die Aufteilung können räumlicher Art oder wegen 
+Leistungsverteilung sein.
+
+### Anforderungen an die Hardware
+Ein ioBroker Server kann nahezu auf jeder Hardware installiert werden. Einzige 
+Bedingung ist, dass es für das entsprechende Betriebssystem eine aktuelle Version von 
+[nodejs](www.nodejs.org) gibt.
+
+Für eine größere Installation wird außerdem ein Arbeitsspeicher (RAM) von mindestens 
+2GB empfohlen. Zum Testen reicht ein Raspberry Pi 2/3 mit 1GB RAM, als Slave für einzelne 
+Adapter in einer Multihost-Umgebung reichen teilweise sogar noch kleinere Kleinrechner.
+
+## Software
+ioBroker verwaltet die Daten in einer Datenbank. Dementsprechend ist auch die Struktur 
+der Daten organisiert.
+
+Zu jedem Adapter gibt es einen so genannten Namespace, der sämtliche Daten zu einer 
+Instanz des Adapters enthält. Dementsprechend lautet der Name des Namespaces z.B.: 
+***AdapterName.0***
+
+Innerhalb dieses Bereiches werden dann die Geräte, deren Kanäle und wiederum deren 
+Datenpunkte angelegt.
+
+![Objektstruktur](admin/media/ADMIN_Objekte_status_tree.png)
+
+in diesem Beispiel handelt es sich um einen selbst angelegten Namespace für eigene Messwerte
+
