@@ -451,6 +451,7 @@ function processAdapterLang(adapter, repo, lang, content) {
                     content.pages[repo.type].pages[adapter].license     = repo.license;
                     content.pages[repo.type].pages[adapter].published   = repo.published;
                     content.pages[repo.type].pages[adapter].version     = repo.version;
+                    content.pages[repo.type].pages[adapter].latestVersion = repo.latestVersion;
                     content.pages[repo.type].pages[adapter].materialize = repo.materialize;
                     content.pages[repo.type].pages[adapter].compact     = repo.compact;
                     content.pages[repo.type].pages[adapter].description = repo.desc;
@@ -480,7 +481,7 @@ function processAdapter(adapter, repo, content) {
 let repoPromise;
 function downloadRepo() {
     repoPromise = repoPromise || new Promise(resolve => {
-        request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
+        request('http://iobroker.live/sources-dist.json', (err, state, body) => {
             const stable = JSON.parse(body);
             request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
                 const latest = JSON.parse(body);

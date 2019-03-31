@@ -1,11 +1,11 @@
 ![Logo](admin/deconz.png)
-# ioBroker deConz dresden-elektronik Adapter
+
+ioBroker deConz dresden-elektronik Adapter
 ==============
 
-![Number of Installations](http://iobroker.live/badges/deconz-installed.svg) ![Number of Installations](http://iobroker.live/badges/deconz-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.deconz.svg)](https://www.npmjs.com/package/iobroker.deconz)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.deconz.svg)](https://www.npmjs.com/package/iobroker.deconz)
+![Number of Installations](http://iobroker.live/badges/deconz-installed.svg) ![Number of Installations](http://iobroker.live/badges/deconz-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.deconz.svg)](https://www.npmjs.com/package/iobroker.deconz)  [![Downloads](https://img.shields.io/npm/dm/iobroker.deconz.svg)](https://www.npmjs.com/package/iobroker.deconz) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)](https://greenkeeper.io/)
 
-[![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)](https://nodei.co/npm/iobroker.deconz/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)](https://nodei.co/npm/iobroker.deconz/)
 
 English
 --------------------
@@ -13,9 +13,9 @@ Connects to deConz software developed by dresden-elektronik. This software aims 
 
 
 You must first link to deConz.
-1.  a) For that find first the IP address by pressing "Find deConz" button. It is only enabled if no IP address entered.
-    b) If "Find deConz" will not find your deConz installation you have to enter the ip address.
-2. After IP address is found the USER must be created. For that press the "Create User" button and then press "Link" button on HUE bridge. "Create User" button is only enabled if no USER entered
+1.  a) Enter ip address for deConz 
+    b) Enter port if you have changed it, otherwise leave it empty.
+2. After IP address and port is entered and saved hit "Create API Key" Button. Now you can enter the credentials for deConz or go to Phoscon APP and register ioBroker as third party APP.
 
 ## Notice
 
@@ -24,6 +24,10 @@ You must first link to deConz.
 Required node.js >= 0.12.
 
 ## Changelog
+
+### 1.0.1
+* small fixes
+
 
 ### 1.0.0
 *  (thewhobox) skip helper groups

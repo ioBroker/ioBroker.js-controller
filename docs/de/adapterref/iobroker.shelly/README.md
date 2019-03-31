@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
+hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -14,7 +14,7 @@ hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.shelly.svg)
 ![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
-# IoBroker.shelly ===================
+# IoBroker.shelly
 Benötigt node.js 6.0 oder höher und Admin v3!
 
 Der Adapter kommuniziert mit Shelly-Geräten von REST api und dem CoAP-Protokoll mit der Standard-Shelly-Firmware (kein Flashen der Firmware erforderlich!).
@@ -44,6 +44,9 @@ Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](http
 * Shelly2LED (SH2LED-1)
 
 ## Changelog
+
+### 2.1.9 (31.03.2019)
+* Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb
 
 ### 2.1.8 (19.03.2019)
 * Consider roller (shutter) position in CoAP message 

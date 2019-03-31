@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP云AccessPoint适配器
-hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
+hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
 ---
 ![商标](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -12,8 +12,9 @@ hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
 ![下载](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![建立状态](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
-＃ioBroker HomeMatic IP云AccessPoint适配器=================
+＃ioBroker HomeMatic IP Cloud AccessPoint适配器
 ##说明
 此适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint进行通信
 
@@ -82,7 +83,7 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 @@Author@@ <@@email@@>
+Copyright (c) 2018-2019 jogibear9988 <jochen.kuehner@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

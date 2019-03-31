@@ -62,7 +62,8 @@ const styles = theme => ({
     },
     list: {
         height: 'calc(100% - 38px - 32px)',
-        overflow: 'auto'
+        overflowX: 'hidden',
+        overflowY: 'auto',
     },
     drawer: {
         height: '100%',
@@ -88,6 +89,13 @@ const styles = theme => ({
         '&:hover': {
             opacitiy: 0.7
         }
+    },
+    splitterDivs: {
+        /*'& .layout-pane': {
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+        }*/
     }
 });
 

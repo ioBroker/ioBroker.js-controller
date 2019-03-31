@@ -2,32 +2,53 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
-title: ioBroker deConz dresden-elektronik Adapter
-hash: rFoxZkqrp24KrsTgFzZZ2FeLSIQv57k4WEscPDQ9i5w=
+title: kein Titel
+hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/deconz-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.deconz.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
-# IoBroker deConz dresden-elektronik Adapter ===============
+ioBroker deConz dresden-elektronik Adapter
+
+==============
+
 Deutsch -------------------- Verbindet sich mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
 Sie müssen zuerst auf deConz verlinken.
 
-1. a) Finden Sie dazu zunächst die IP-Adresse, indem Sie auf die Schaltfläche "deConz suchen" klicken. Sie ist nur aktiviert, wenn keine IP-Adresse eingegeben wurde.
+1. a) Geben Sie die IP-Adresse für deConz ein
 
-    b) Wenn "find deConz" Ihre deConz-Installation nicht findet, müssen Sie die IP-Adresse eingeben.
+    b) Geben Sie port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
 
-2. Nachdem die IP-Adresse gefunden wurde, muss der USER erstellt werden. Klicken Sie dazu auf die Schaltfläche "Create User" und dann auf die Schaltfläche "Link" auf der HUE-Brücke. Die Schaltfläche "Benutzer erstellen" ist nur aktiviert, wenn kein USER eingegeben wurde
+2. Nachdem Sie die IP-Adresse und den Port eingegeben und gespeichert haben, klicken Sie auf die Schaltfläche "Create API Key". Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
 
 ## Beachten
 ### Kein Support für Beta-Versionen von deConz
 Erforderliche node.js> = 0,12.
 
 ## Changelog
+
+### 1.0.1
+* small fixes
+
+
+### 1.0.0
+*  (thewhobox) skip helper groups
+*  (thewhobox) added channels for lights, groups and sensors
+*  (thewhobox) skip unusable sensors
+*  (thewhobox/KristianHeider) turn light/groups on when changing brightness
+*  (jey-cee) added object group for remotes
+*  (jey-cee) stop overwrite objects on adapter start
+*  (jey-cee) prepared for compact mode
+*  (jey-cee) new possible to change offset (if the device accept it)
+*  (jey-cee) new possible to change duration (if the device accept it)
+*  (jey-cee) get API key with credentials
+
 
 ### 0.4.0
 * (asgothian) Fix for hue change

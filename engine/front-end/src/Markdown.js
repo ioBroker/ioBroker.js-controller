@@ -82,9 +82,9 @@ const styles = theme => ({
         cursor: 'pointer',
         display: 'inline-block'
     },
-    adapterCard:{
-        marginBottom: 15,
-        marginTop: 15
+    adapterCard: {
+        marginBottom: 0,
+        marginTop: 0,
     },
     badgesDetails: {
         display: 'block',
@@ -410,9 +410,10 @@ class Markdown extends Router {
         if (_title) {
             window.document.title = _title;
         } else if (title) {
+            _title = title;
             window.document.title = title;
         }
-        this.mounted && this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title});
+        this.mounted && this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title: _title});
 
         setTimeout(() => this.onHashChange(), 200);
     }
@@ -460,21 +461,21 @@ class Markdown extends Router {
         }
         if (this.state.header.adapter) {
             data.push((<h1>{[
-                this.state.header.logo ? (<img src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
-                (<div className={this.props.classes.titleText}>{this.state.header.title}</div>)
+                this.state.header.logo ? (<img key="logo" src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
+                (<div key="title" className={this.props.classes.titleText}>{this.state.header.title}</div>)
             ]}</h1>));
             if (this.state.header.readme) {
                 const link = this.state.header.readme.replace(/blob\/master\/README.md$/, '');
-                data.push((<IconButton title={I18n.t('Open repository')} onClick={() => Utils.openLink(link)}><IconGithub/></IconButton>));
+                data.push((<IconButton key="github" title={I18n.t('Open repository')} onClick={() => Utils.openLink(link)}><IconGithub/></IconButton>));
             }
         }
 
         if (this.state.header.description) {
-            data.push((<span className={this.props.classes.description}>{this.state.header.description}</span>));
+            data.push((<span key="description" className={this.props.classes.description}>{this.state.header.description}</span>));
         }
 
         if (Object.keys(this.state.header).find(attr => ADAPTER_CARD.indexOf(attr) !== -1)) {
-            data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
+            data.push((<ExpansionPanel key="header" className={this.props.classes.adapterCard}>
                 <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Information')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails><List>{
                     ADAPTER_CARD
@@ -489,7 +490,7 @@ class Markdown extends Router {
         }
 
         if (Object.keys(this.state.header).find(attr => attr.startsWith('BADGE-'))) {
-            data.push((<ExpansionPanel className={this.props.classes.adapterCard}>
+            data.push((<ExpansionPanel key="header_badges" className={this.props.classes.adapterCard}>
                 <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails classes={{root: this.props.classes.badgesDetails}}>{
                     Object.keys(this.state.header).filter(attr => attr.startsWith('BADGE-'))

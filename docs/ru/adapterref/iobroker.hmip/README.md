@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Облако Адаптер AccessPoint
-hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
+hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
 ---
 ![логотип](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -12,8 +12,9 @@ hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![Статус сборки](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
-# IoBroker HomeMatic IP Cloud Access Adapter =================
+# IoBroker Адаптер HomeMatic IP Cloud AccessPoint
 ## Описание
 Этот адаптер позволяет обмениваться данными с HomematicIP CloudAccessPoint через API отдыха Homematic IP Cloud.
 
@@ -23,11 +24,11 @@ hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
 ## Информация
 Большинство IP-устройств Homematic уже работают с последней версией адаптера.
 
-Я буду постоянно его улучшать, но это займет время. Любая помощь от сообщества, например, Запрос на тягу будет высоко оценен.
+Я буду улучшать это постоянно, но это займет время. Любая помощь от сообщества, например, Запрос на тягу будет высоко оценен.
 
 Для не работающих устройств HmIP, пожалуйста, создайте проблему с этой информацией (пожалуйста, по одному на устройство и, если возможно, техническое имя в теме).
 Переключите регистрацию адаптера в ioBroker в глупый режим и добавьте json устройства, которое напечатано в журнал в выпуске.
-Мне также может понадобиться json изменения состояния.
+Мне также может понадобиться JSON изменения состояния.
 
 Спасибо
 
@@ -36,10 +37,10 @@ hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
 Например, прямые соединения между устройствами не имеют событий в приложении и также не могут быть инициированы через этот адаптер !!!
 
 ## Настройки
-* введите свой SGTIN (задняя часть точки доступа) и PIN-код (если задан ранее) и подтвердите данные нажатием синей светодиодной кнопки. Это создаст токен аутентификации.
+* введите свой SGTIN (задняя часть точки доступа) и PIN-код (если он был установлен ранее) и подтвердите данные нажатием синей светодиодной кнопки. Это создаст токен аутентификации.
 
 ## Спасибо
-CoreGreenberet для его библиотеки Python (https://github.com/coreGreenberet/homematicip-rest-api)
+в coreGreenberet за его библиотеку Python (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Дискуссия в форуме ioBroker
 https://forum.iobroker.net/viewtopic.php?f=36&t=21000#p220517
@@ -82,7 +83,7 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 @@Author@@ <@@email@@>
+Copyright (c) 2018-2019 jogibear9988 <jochen.kuehner@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

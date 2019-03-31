@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
+hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -14,18 +14,18 @@ hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.shelly.svg)
 ![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
-# IoBroker.shelly =================
+# IoBroker.shelly
 Требуется node.js 6.0 или выше и Admin v3!
 
 Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP с прошивкой Shelly по умолчанию (прошивка не требуется!).
 Поскольку CoAP использует многоадресные UDP-пакеты, устройства Shelly должны находиться в той же подсети, что и ioBroker.
-Если вы используете ioBroker в контейнере Docker, контейнер должен работать в режиме хоста или Macvlan.
+Если вы используете ioBroker в контейнере Docker, он должен работать в режиме хоста или Macvlan.
 
 Более подробную информацию об устройстве вы найдете здесь: [изобилующий раковинами](https://shelly.cloud/)
 
 ## Монтаж
 1. Установите адаптер
-2. Конфигурация не требуется. Шелли устройства будут обнаружены и добавлены автоматически. Иногда вам нужно перезапустить устройство Шелли или управлять им один раз с помощью приложения, прежде чем оно появится в ioBroker.
+2. Конфигурация не требуется. Шелли устройства будут обнаружены и добавлены автоматически. Иногда вам нужно перезапустить устройство Шелли или управлять им один раз с помощью приложения, прежде чем оно появится изначально в ioBroker.
 
 ## Поддерживаемые устройства
 * Shelly1 (SHSW-1, проверено)
@@ -44,6 +44,9 @@ hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
 * Shelly2LED (SH2LED-1)
 
 ## Changelog
+
+### 2.1.9 (31.03.2019)
+* Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb
 
 ### 2.1.8 (19.03.2019)
 * Consider roller (shutter) position in CoAP message 

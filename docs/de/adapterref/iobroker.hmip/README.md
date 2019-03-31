@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP-Cloud-AccessPoint-Adapter
-hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
+hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -12,8 +12,9 @@ hash: Dxtpe5ZPSR50pjpG+9oL1un7Rsj17nSyt7OrYX4URpA=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
-# IoBroker HomeMatic IP Cloud AccessPoint Adapter ==================
+# IoBroker HomeMatic IP Cloud AccessPoint Adapter
 ## Beschreibung
 Dieser Adapter ermöglicht die Kommunikation mit einem HomematicIP CloudAccessPoint über die Rest-API der Homematic IP Cloud
 
@@ -82,7 +83,7 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 @@Author@@ <@@email@@>
+Copyright (c) 2018-2019 jogibear9988 <jochen.kuehner@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

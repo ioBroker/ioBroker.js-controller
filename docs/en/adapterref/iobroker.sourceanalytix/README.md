@@ -27,9 +27,9 @@ https://github.com/hdering/homematic_verbrauchszaehler
 ## Known issues
 
 * [ ] Period calculation selectable but not yet implemented
-* [ ] store current meter values not yet implemented
 * [ ] quarters not calculated
 * [ ] monthly costprice not yet implemented in calculation
+* [x] store current meter values not yet implemented
 * [x] Meter value selectable  but not yet implemented
 * [x] adapter restart needed to add calculation of new objects
 * [x] statest for cost type delivery are not writen
@@ -41,9 +41,9 @@ https://github.com/hdering/homematic_verbrauchszaehler
 * [ ] Cost default value to 0 with error message if not provided
 * [ ] recalcalation based on meter values (configurable by date)
 * [ ] calculations for quarter values
-* [ ] storage of meter values for every state
 * [ ] add object states for previous [x]day, [x]week, [x]month, [x]quarter, [x]year configurable in adapter settings
 * [ ] code optimalisation
+* [x] storage of meter values for every state
 * [x] compact mode
 * [x] add support for calculation of wh values
 * [x] Fix basic translations
@@ -68,6 +68,9 @@ https://github.com/hdering/homematic_verbrauchszaehler
 * [x] ensure all values are stored when adapter shuts down to prevent data gaps
 
 ## Changelog
+
+### 0.2.281
+* (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 
 ### 0.2.276
 * (Dutchman) implemented meter readings

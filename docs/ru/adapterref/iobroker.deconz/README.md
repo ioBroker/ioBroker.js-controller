@@ -2,32 +2,53 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
-title: ioBroker deConz Дрезден-Электроник Адаптер
-hash: rFoxZkqrp24KrsTgFzZZ2FeLSIQv57k4WEscPDQ9i5w=
+title: без названия
+hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
 ---
 ![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Количество установок](http://iobroker.live/badges/deconz-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.deconz.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
-# IoBroker deConz Дрезден-Электроник Адаптер ==============
-Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением ZigBee Gateway с использованием аппаратного обеспечения от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуля для Raspberry Pi.
+ioBroker deConz Дрезден-Электроник Адаптер
+
+==============
+
+Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение является универсальным решением ZigBee Gateway, использующим оборудование от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуль для Raspberry Pi.
 
 Вы должны сначала связаться с deConz.
 
-1. а) Для этого сначала найдите IP-адрес, нажав кнопку «Найти деКонц». Он активируется только в том случае, если IP-адрес не введен.
+1. а) Введите IP-адрес для deConz
 
-    б) Если «Найти deConz» не найдет вашу установку deConz, вы должны ввести IP-адрес.
+    б) Введите порт, если вы его изменили, иначе оставьте его пустым.
 
-2. После того, как IP-адрес найден, пользователь должен быть создан. Для этого нажмите кнопку «Создать пользователя», а затем нажмите кнопку «Ссылка» на мосту HUE. Кнопка «Создать пользователя» активна, только если не введен пользователь
+2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или перейти к приложению Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
 
 ## Уведомление
 ### Нет поддержки бета-версий deConz
 Обязательный node.js> = 0.12.
 
 ## Changelog
+
+### 1.0.1
+* small fixes
+
+
+### 1.0.0
+*  (thewhobox) skip helper groups
+*  (thewhobox) added channels for lights, groups and sensors
+*  (thewhobox) skip unusable sensors
+*  (thewhobox/KristianHeider) turn light/groups on when changing brightness
+*  (jey-cee) added object group for remotes
+*  (jey-cee) stop overwrite objects on adapter start
+*  (jey-cee) prepared for compact mode
+*  (jey-cee) new possible to change offset (if the device accept it)
+*  (jey-cee) new possible to change duration (if the device accept it)
+*  (jey-cee) get API key with credentials
+
 
 ### 0.4.0
 * (asgothian) Fix for hue change

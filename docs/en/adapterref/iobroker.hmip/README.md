@@ -1,6 +1,5 @@
 ![Logo](admin/homematic.png)
 # ioBroker HomeMatic IP Cloud AccessPoint Adapter
-=================
 
 ![Number of Installations](http://iobroker.live/badges/hmip-installed.svg) ![Number of Installations](http://iobroker.live/badges/hmip-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.hmip.svg)](https://www.npmjs.com/package/iobroker.hmip)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)](https://www.npmjs.com/package/iobroker.hmip)
@@ -78,7 +77,7 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 @@Author@@ <@@email@@>
+Copyright (c) 2018-2019 jogibear9988 <jochen.kuehner@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

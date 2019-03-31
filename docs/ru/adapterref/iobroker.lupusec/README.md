@@ -3,19 +3,19 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: iZakKvBm2wUi91/Foakx3ln7VF+mcOTraWBlB5bQjsc=
+hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
 ---
 ![логотип](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
-![Статус сборки](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
-![Количество установок](http://iobroker.live/badges/lupusec-stable.svg)
+![Travis Build Status](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
+![AppVeyor Статус сборки](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.lupusec?branch=master&svg=true)
+![Стабильная версия](http://iobroker.live/badges/lupusec-stable.svg)
+![Количество установок](http://iobroker.live/badges/lupusec-installed.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lupusec.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 # IoBroker.lupusec
-=================
-
 ** Требуется node.js 8.0 или выше и Admin v3! **
 
 Этот адаптер соединяет систему сигнализации Lupusec XT1 Plus, XT2, XT2 Plus и XT3 с ioBroker.
@@ -57,6 +57,9 @@ XT1 (без плюса) не будет поддерживаться. Вы мо�
 Если у вас есть устройство, которого нет в списке выше, свяжитесь со мной по адресу Thorsten Stueben <thorsten@stueben.de>.
 
 ## Changelog
+### 1.1.1 (27.03.2019)
+* (Stübi) Lupusec alarm online status added
+
 ### 1.1.0 (23.03.2019)
 * (Stübi) Totally redesign of the Lupusec adapter. Node 8 or higher is now required
 

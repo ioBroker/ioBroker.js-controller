@@ -2,32 +2,53 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
-title: ioBroker deConz dresden-elektronik适配器
-hash: rFoxZkqrp24KrsTgFzZZ2FeLSIQv57k4WEscPDQ9i5w=
+title: 无题
+hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![安装数量](http://iobroker.live/badges/deconz-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.deconz.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
-＃ioBroker deConz dresden-elektronik适配器==============
+ioBroker deConz dresden-elektronik适配器
+
+==============
+
 English --------------------连接到dresden-elektronik开发的deConz软件。该软件旨在成为一个通用的ZigBee网关解决方案，使用来自德累斯顿电子硬件的ConBee USB棒和RaspBee的硬件，用于Raspberry Pi。
 
 您必须先链接到deConz。
 
-1. a）首先按“查找deConz”按钮找到IP地址。仅在未输入IP地址时启用。
+1. a）输入deConz的IP地址
 
-    b）如果“Find deConz”找不到你的deConz安装，你必须输入ip地址。
+    b）如果已更改端口，请输入端口，否则将其留空。
 
-2.找到IP地址后，必须创建USER。为此，按“创建用户”按钮，然后按HUE桥上的“链接”按钮。仅当未输入USER时，才会启用“创建用户”按钮
+2.输入IP地址和端口并保存后点击“创建API密钥”按钮。现在您可以输入deConz的凭据或转到Phoscon APP并将ioBroker注册为第三方APP。
 
 ＃＃ 注意
 ###不支持deConz的Beta版本
 必需的node.js> = 0.12。
 
 ## Changelog
+
+### 1.0.1
+* small fixes
+
+
+### 1.0.0
+*  (thewhobox) skip helper groups
+*  (thewhobox) added channels for lights, groups and sensors
+*  (thewhobox) skip unusable sensors
+*  (thewhobox/KristianHeider) turn light/groups on when changing brightness
+*  (jey-cee) added object group for remotes
+*  (jey-cee) stop overwrite objects on adapter start
+*  (jey-cee) prepared for compact mode
+*  (jey-cee) new possible to change offset (if the device accept it)
+*  (jey-cee) new possible to change duration (if the device accept it)
+*  (jey-cee) get API key with credentials
+
 
 ### 0.4.0
 * (asgothian) Fix for hue change

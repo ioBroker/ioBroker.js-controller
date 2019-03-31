@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: [Beta-veröffentlicht] SourceAnalytix
-hash: x4Jcz2GtRG/pKhPzA8CnttAg9HW2mFikuPbGhV95eHQ=
+hash: Ar3csPWlLCr3Mbrnwh11QGKUzvlyGx1rHsICAQy2YPE=
 ---
 # [Beta-veröffentlicht] SourceAnalytix
 
@@ -25,15 +25,15 @@ Sie benötigen Daten als Eingabe (Gesamtmenge an Wh, l / h oder m3) von Ihren Ge
 ## Wie man
 * [ ] Machen
 
-Dieser Adapter hat Wurzeln dank dank pix in 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Dieser Adapter hat Wurzeln dank dank pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Welches wurde von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht
 
 ## Bekannte Probleme
 * [] Periodenberechnung wählbar, aber noch nicht implementiert
-* [] aktuelle, noch nicht implementierte Zählerwerte speichern
 * [] Viertel nicht berechnet
 * [] monatlicher Kostenpreis, der noch nicht in die Berechnung übernommen wurde
+* [x] Aktuelle, noch nicht implementierte Zählerwerte speichern
 * [x] Zählerwert wählbar, aber noch nicht implementiert
 * [x] Adapter-Neustart erforderlich, um die Berechnung neuer Objekte hinzuzufügen
 * [x] Statest für Kostenart Lieferung wird nicht geschrieben
@@ -45,9 +45,9 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [] Kostenvorgabewert auf 0 mit Fehlermeldung, falls nicht angegeben
 * [] Rekalkalierung basierend auf Zählerwerten (konfigurierbar nach Datum)
 * [] Berechnungen für Viertelwerte
-* [] Speicherung von Zählerwerten für jeden Zustand
-* [] fügt Objektstatus für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzu, konfigurierbar in Adaptereinstellungen
+* [] fügt Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzu, konfigurierbar in Adaptereinstellungen
 * [] Code-Optimierung
+* [x] Speicherung von Zählerwerten für jeden Zustand
 * [x] Kompaktmodus
 * [x] Unterstützung für die Berechnung der Wh-Werte hinzufügen
 * [x] Grundübersetzungen korrigieren
@@ -62,7 +62,7 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [x] Kostenberechnung
 * [x] einstellbarer Startpunkt der Messung
 * [x] Unterstützung mehrerer Gerätezustände
-* [x] Meterwert in ein Objekt schreiben, das in Berechnungen verwendet werden soll
+* [x] Schreibe einen Zählerwert in ein Objekt, das in Berechnungen verwendet werden soll
 * [x] -Konfiguration in den Adaptereinstellungen (derzeit werden nur Demoobjekte der Erkennung unterstützt)
 * [x] temporäre Zustände für Berechnungen löschen
 * [x] Berechnung für m3-Werte
@@ -72,6 +72,9 @@ Welches wurde von @hadering verbessert und auf github https://github.com/hdering
 * [x] Stellen Sie sicher, dass alle Werte gespeichert werden, wenn der Adapter heruntergefahren wird, um Datenlücken zu vermeiden
 
 ## Changelog
+
+### 0.2.281
+* (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 
 ### 0.2.276
 * (Dutchman) implemented meter readings

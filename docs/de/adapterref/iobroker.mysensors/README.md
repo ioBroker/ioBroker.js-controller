@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
+hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
 ---
 ![Logo](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -13,12 +13,12 @@ hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.mysensors.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mysensors.png?downloads=true)
 
-# IoBroker.mysensors ===================
+# IoBroker.mysensors
 Dieser Adapter kommuniziert mit [Mysensoren](http://www.mysensors.org) Seriell- oder Ethernet-Gateway (TCP oder UDP).
 Das in diesem Fall ausgewählte Ethernet-Gateway ioBroker ist ein Server, der Verbindungen erwartet.
 
 ## TCP Client
-Diese Option funktioniert nur zusammen mit der TCP <=> seriellen Bridge, wie z. B. [esp-link](https://github.com/jeelabs/esp-link).
+Diese Option funktioniert nur in Verbindung mit TCP -> serielle Bridge wie [esp-link](https://github.com/jeelabs/esp-link).
 
 ## Voraussetzungen
 Um die serielle Schnittstelle unter Windows verwenden zu können, muss VS die Binärdatei erstellen.

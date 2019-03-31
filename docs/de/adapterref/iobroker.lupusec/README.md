@@ -3,26 +3,26 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: iZakKvBm2wUi91/Foakx3ln7VF+mcOTraWBlB5bQjsc=
+hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
-![Build-Status](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
-![Anzahl der Installationen](http://iobroker.live/badges/lupusec-stable.svg)
+![Travis Build Status](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
+![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.lupusec?branch=master&svg=true)
+![Stabile Version](http://iobroker.live/badges/lupusec-stable.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/lupusec-installed.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.lupusec.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 # IoBroker.lupusec
-=================
-
 ** Erfordert node.js 8.0 oder höher und Admin v3! **
 
 Dieser Adapter verbindet das Lupusec-Alarmsystem XT1 Plus, XT2, XT2 Plus und XT3 mit dem ioBroker.
 Der XT1 (ohne Plus) wird nicht unterstützt. Sie können den Status der Lupusec-Sensoren wie Türen, Fenster, Wasser- und Rauchsensoren sowie den Status der Alarmanlage ablesen.
 Sie können Schalter einschalten und das Alarmsystem aktivieren / deaktivieren.
 
-Detaillierte Informationen finden Sie hier: [Lupus](https://www.lupus-electronics.de/en)
+Ausführliche Informationen finden Sie hier: [Lupus](https://www.lupus-electronics.de/en)
 
 ## Installation
 1. Installieren Sie den Adapter
@@ -32,7 +32,7 @@ Am einfachsten ist es, den lupusec.iobroker-Adapter über den Discovery-Adapter 
 2. Manuelle Konfiguration des Adapters
 
 Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie möglichst https (empfohlen).
-Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren), wählen Sie einen Benutzer mit Schreibzugriff.
+Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren oder deaktivieren), wählen Sie einen Benutzer mit Schreibzugriff aus.
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte des ioBroker-Objekts angezeigt.
 Vollständig unterstützt und individuell angepasst sind folgende Geräte:
@@ -52,11 +52,14 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
   - Lichtsensor (Typ 78)
   - Heizkörperthermostat (Typ 79)
 
-Die beiden Status apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen das Alarmsystem für Bereich 1 und 2 ein- und ausschalten.
+Die beiden Zustände apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen das Alarmsystem für Bereich 1 und 2 ein- und ausschalten.
 
 Wenn Sie ein Gerät besitzen, das nicht in der obigen Liste aufgeführt ist, wenden Sie sich bitte an Thorsten Stueben <thorsten@stueben.de>.
 
 ## Changelog
+### 1.1.1 (27.03.2019)
+* (Stübi) Lupusec alarm online status added
+
 ### 1.1.0 (23.03.2019)
 * (Stübi) Totally redesign of the Lupusec adapter. Node 8 or higher is now required
 

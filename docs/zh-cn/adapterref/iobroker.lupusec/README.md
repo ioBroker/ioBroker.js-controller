@@ -3,19 +3,19 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: iZakKvBm2wUi91/Foakx3ln7VF+mcOTraWBlB5bQjsc=
+hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
-![建立状态](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
-![安装数量](http://iobroker.live/badges/lupusec-stable.svg)
+![特拉维斯建设状态](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
+![AppVeyor构建状态](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.lupusec?branch=master&svg=true)
+![稳定的版本](http://iobroker.live/badges/lupusec-stable.svg)
+![安装数量](http://iobroker.live/badges/lupusec-installed.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lupusec.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 ＃ioBroker.lupusec
-=================
-
 **需要node.js 8.0或更高版本以及Admin v3！**
 
 该适配器将Lupusec报警系统XT1 Plus，XT2，XT2 Plus和XT3与ioBroker连接起来。
@@ -57,6 +57,9 @@ hash: iZakKvBm2wUi91/Foakx3ln7VF+mcOTraWBlB5bQjsc=
 如果您拥有上面列表中未列出的设备，请通过Thorsten Stueben <thorsten@stueben.de>与我联系。
 
 ## Changelog
+### 1.1.1 (27.03.2019)
+* (Stübi) Lupusec alarm online status added
+
 ### 1.1.0 (23.03.2019)
 * (Stübi) Totally redesign of the Lupusec adapter. Node 8 or higher is now required
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
+hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
 ---
 ![логотип](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -13,12 +13,12 @@ hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.mysensors.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mysensors.png?downloads=true)
 
-# IoBroker.mysensors =================
+# IoBroker.mysensors
 Этот адаптер связывается с [mysensors](http://www.mysensors.org) последовательным или сетевым шлюзом (TCP или UDP).
 В этом случае выбран Ethernet-шлюз, ioBroker является сервером, который ожидает соединения.
 
 ## TCP-клиент
-Этот параметр работает только вместе с последовательным мостом TCP <=>, например, [особ-ссылка](https://github.com/jeelabs/esp-link).
+Этот параметр работает только вместе с последовательным мостом TCP & lt; =>, например, [особ-ссылка](https://github.com/jeelabs/esp-link).
 
 ## Предварительные требования
 Чтобы использовать последовательный порт в Windows, необходимо создать двоичный файл.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: [Beta  - 已发布] SourceAnalytix
-hash: x4Jcz2GtRG/pKhPzA8CnttAg9HW2mFikuPbGhV95eHQ=
+hash: Ar3csPWlLCr3Mbrnwh11QGKUzvlyGx1rHsICAQy2YPE=
 ---
 ![测试](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -30,9 +30,9 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 
 ＃＃ 已知的问题
 * []期间计算可选但尚未实施
-* []存储尚未实现的当前仪表值
 * []季度未计算
 * []月度成本价格尚未在计算中实施
+* [x]存储尚未实现的当前仪表值
 * [x]米值可选但尚未实施
 * [x]适配器重启需要添加新对象的计算
 * [x]成本类型交付的最终状态未被写入
@@ -44,9 +44,9 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 * []成本默认值为0，如果未提供，则显示错误消息
 * []基于仪表值的重新计算（可按日期配置）
 * []计算季度值
-* []存储每个州的仪表值
 * []为适配器设置中可配置的前[x]天，[x]周，[x]月，[x]季度，[x]年添加对象状态
 * []代码优化
+* [x]存储每个州的仪表值
 * [x]紧凑模式
 * [x]添加对wh值计算的支持
 * [x]修复基本翻译
@@ -71,6 +71,9 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 * [x]确保在适配器关闭时存储所有值以防止数据间隔
 
 ## Changelog
+
+### 0.2.281
+* (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 
 ### 0.2.276
 * (Dutchman) implemented meter readings

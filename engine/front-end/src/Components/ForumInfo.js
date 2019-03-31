@@ -66,6 +66,10 @@ const styles = theme => ({
 class ForumInfo extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            users: 18490
+        };
+        this.load();
     }
 
     onGoToForum() {
@@ -82,6 +86,14 @@ class ForumInfo extends Component {
         }
     }
 
+    load() {
+        fetch(`https://forum.iobroker.net/api/users/`)
+            .then(res => res.json())
+            .then(users => {
+                this.setState({users: users.userCount});
+            });
+    }
+
     render() {
         return (<div key="forum" className={this.props.classes.forumDiv + ' '  + (this.props.backClass || '')}>
             <IconForum className={this.props.classes.forumIconMain}/><br/>
@@ -96,7 +108,7 @@ class ForumInfo extends Component {
                     <div className={this.props.classes.forumDivInfoCard}>
                         <IconUsers className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Users')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>18400+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>{this.state.users}</span>
                     </div>
                     <div className={this.props.classes.forumDivInfoCard}>
                         <IconThemes className={this.props.classes.forumDivInfoIcon}/><br/>

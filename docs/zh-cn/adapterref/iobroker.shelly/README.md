@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
+hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -14,7 +14,7 @@ hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
 ![下载](https://img.shields.io/npm/dm/iobroker.shelly.svg)
 ![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
-＃ioBroker.shelly =================
+＃ioBroker.shelly
 需要node.js 6.0或更高版本以及Admin v3！
 
 适配器通过REST api与Shelly设备通信，使用默认Shelly固件与CoAP协议通信（不需要刷新固件！）。
@@ -44,6 +44,9 @@ hash: iTZ24wv7VPSFx9I1I0uKeEtbGYOylVSdzg+T+Q3pdF4=
 * Shelly2LED（SH2LED-1）
 
 ## Changelog
+
+### 2.1.9 (31.03.2019)
+* Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb
 
 ### 2.1.8 (19.03.2019)
 * Consider roller (shutter) position in CoAP message 

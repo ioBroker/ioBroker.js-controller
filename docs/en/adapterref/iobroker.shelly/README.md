@@ -1,6 +1,5 @@
 ![Logo](admin/shelly.png)
 # ioBroker.shelly
-=================
 
 [![Build Status](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)](https://travis-ci.org/schmupu/ioBroker.shelly)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)](https://ci.appveyor.com/project/schmupu/ioBroker-shelly/)
@@ -40,6 +39,9 @@ You will find more and detailed information about the device here : [Shelly](htt
 * Shelly2LED (SH2LED-1)
 
 ## Changelog
+
+### 2.1.9 (31.03.2019)
+* Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb
 
 ### 2.1.8 (19.03.2019)
 * Consider roller (shutter) position in CoAP message 

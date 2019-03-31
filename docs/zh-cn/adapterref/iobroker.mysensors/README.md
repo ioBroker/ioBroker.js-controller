@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
+hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
 ---
 ![商标](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -13,12 +13,12 @@ hash: MTKTY7bxv8lLiSNzdt7rB0mKYl8xAKDonrbbtSVKGfc=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.mysensors.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mysensors.png?downloads=true)
 
-#ioBroker.mysensors =================
+＃ioBroker.mysensors
 此适配器与[mysensors](http://www.mysensors.org)串行或以太网网关（TCP或UDP）通信。
 在这种情况下选择的以太网网关ioBroker是服务器，它需要连接。
 
 ## TCP客户端
-此选项仅与TCP <=>串行桥一起使用，如[ESP-链接](https://github.com/jeelabs/esp-link)。
+此选项仅与TCP＆lt; =＆gt;串行桥一起使用，如[ESP-链接](https://github.com/jeelabs/esp-link)。
 
 ##预先要求
 要在Windows上使用串行端口，需要VS来构建二进制文件。
