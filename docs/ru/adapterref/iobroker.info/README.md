@@ -136,6 +136,8 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 
 ### Системная информация (детальный просмотр)
 
+![Системная информация](img/systeminfo_detail.png)
+
 Здесь много информации о домашней системе отображается и хранится в виде объекта. Они могут быть использованы вами довольно удобно. Большая часть данных считывается и сохраняется только при первой зарядке адаптера, так как они не так легко меняются.
 
 Некоторые данные также обновляются циклически. Как часто это происходит, можно указать в конфигурации.
@@ -249,8 +251,10 @@ $ sudo apt-get install smartmontools
 
 ## Changelog
 
-### 1.3.x (2019-04-01)
+### 1.3.0 (2019-03-29)
 * (ldittmar) better system information
+* (ldittmar) documentation in all languages
+* (ldittmar) some fixes
 
 ### 1.2.7 (2019-03-17)
 * (ldittmar) little fixes

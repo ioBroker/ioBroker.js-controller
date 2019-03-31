@@ -2,14 +2,14 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vcard/README.md
-title: kein Titel
-hash: UCPJo61e0J9T+5Ei3ugEPsnIWep5/zjz0mGKw0KDCYw=
+title: vCard Adapter für ioBroker
+hash: rUHMx/sduIGMe3JSK2JEegk6Z/mN1Wdwbdw1sMIrHBg=
 ---
 ![Logo](../../../en/adapterref/iobroker.vcard/admin/vcard.png)
 
-#vCard Adapter für ioBroker
-##Beschreibung:
-Das Hauptaugenmerk des vCard Adapters liegt darauf, die Telefonnummern der Ausgänge des ioBroker.fritzBox Adapters zu ersetzen.
+# VCard Adapter für ioBroker
+## Beschreibung
+Das Hauptaugenmerk des vCard-Adapters liegt darauf, die Telefonnummern der Ausgänge des ioBroker.fritzBox-Adapters zu ersetzen.
 
 Dieser Adapter liest eine vCard-Datei und bietet die Möglichkeit:
 
@@ -25,14 +25,23 @@ h) Wenn bei einer Ausgabe mehrere Ergebnisse vorhanden sind, werden die verschie
 
 _Der Adapter wurde bisher mit Exporten von "Mac-Kontakten" und "Outlook" (vCard-Dateiversion 3.0) getestet.
 
-### VCF-Pfad:
+### VCF-Pfad
 * Windows: c: /data/vcard.vcf
 * Linux: /tmp/vcard.vcf
 * http: http://192.168.1.1/data/vcard.vcf
 * http (FritzBox Nas): http://192.168.1.1/nas/filelink.lua?id=164fe89123456789
 
-### CSS-Beispiel (für feste Spaltenbreite):
-** Style-Header: ** ` <style type="text/css"> spanVcard1 { display: inline-block; width: 300px; } </style> `
+### CSS-Beispiel (für feste Spaltenbreite)
+** Style-Header: **
+
+```
+<style type="text/css">
+spanVcard1 {
+display: inline-block;
+width: 300px;
+}
+</style>
+```
 
 ** Style Prefix: ** `<spanVcard1>`
 
@@ -40,53 +49,54 @@ _Der Adapter wurde bisher mit Exporten von "Mac-Kontakten" und "Outlook" (vCard-
 
 ** Hinweis: Jeder Kanal benötigt ein eigenes Tag (z. B. spanVcard1, spanVcard2, spanVcard3, spanVcard4, spanVcard5)! **
 
-##Voraussetzungen:
+## Voraussetzungen:
 - [ioBroker] (http://www.ioBroker.net "ioBroker-Startseite")
 
-##Änderungsprotokoll:
-### 0.0.9 (2016-11-12)
-* Die Kategorie der Adapter wurde geändert
-
-0,08 (27.05.2016)
-* Bugfixing neuer Channels
-
-### 0.0.7 (2016-05-21)
-* Tippfehler
-* Liesmich aktualisiert
-
-### 0.0.6 (2015-01-16)
-* Tippfehler
-* Liesmich aktualisiert
-
-0.0 0.0 (2015-11-15)
-* Lesen von Kontakten über http aktualisiert
-* Mehrere Kanäle haben einen Ausgang abonniert
-* CSS-Beispiel aktualisiert
-
-### 0.0.4 (2015-11-6)
-* Fehlende Abhängigkeit
-
-### 0.0.3 (2015-10-25)
-* Drei Kanäle zum Ersetzen von Zahlen
-* Kanäle können mit den Ausgängen anderer Adapter verbunden werden (kein Skript erforderlich)
-* Ersetzte Namen können durch CSS formatiert werden
-* VCF-Dateien können über http gelesen werden
-
-### 0.0.2 (2015-10-02)
-* Aktualisierungen der Dokumentation
-* Fehlendes Symbol
-* vcard-json Problem mit Leerzeichen (in Outlook-Dateien)
-
-### 0.0.1 (2015-09-18)
-* Erste Version
-
-##STUTZEN:
+## LOP
 * Lesen von Kontakten über CardDav
 
-## License
-The MIT License (MIT)
+## Changelog
 
-Copyright (c) 2016 hometm 
+### 0.0.9 (2016-11-12)
+* Addapter category changed 
+
+### 0.0.8 (2016-05-27)
+* Bugfixing new Channels  
+
+### 0.0.7 (2016-05-21)
+* Typos  
+* Readme updated  
+
+### 0.0.6 (2015-01-16)
+* Typos  
+* Readme updated  
+
+### 0.0.5 (2015-11-15)
+* Reading contacts via http updated  
+* Multiple channels subscribed to one output fixed  
+* CSS Example updated
+
+### 0.0.4 (2015-11-6)  
+* Missing dependency  
+
+### 0.0.3 (2015-10-25)
+* Three channels for replacing numbers
+* Channels can be connected to outputs of other adapters (no script needed)
+* Replaced names can be formated by CSS  
+* VCF files can be read via http
+
+### 0.0.2 (2015-10-02)
+* Documentation updates
+* Missing icon
+* vcard-json issue with white spaces (inside Outlook files)
+
+### 0.0.1 (2015-09-18)
+* Initial version
+
+## License
+![Number of Installations](http://iobroker.live/badges/vcard-installed.svg) ![Number of Installations](http://iobroker.live/badges/vcard-stable.svg) The MIT License (MIT)
+
+Copyright (c) 2016-2019 hometm 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

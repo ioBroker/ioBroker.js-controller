@@ -134,6 +134,8 @@ Mit einem Klick auf ![Systeminfo Detailansicht](img/sysinfo_detail_button.png), 
 
 ### Systeminformationen (Detailansicht)
 
+![Systeminformationen](img/systeminfo_detail.png)
+
 Hier werden sehr viele Informationen über das Hausptsystems angezeigt und als Objekt gespeichert. Diese können dann auch ganz bequem von Ihnen verwendet werden. Die meisten Daten werden nur beim ersten Laden des Adapters gelesen und gespeichert, denn diese ändern sich nicht so ohne weiteres.
 
 Einige Daten werden aber auch zyklisch aktualisiert. Wie oft das passiert, kann in der Konfiguration eingestellt werden.
@@ -247,8 +249,10 @@ Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder 
 
 ## Changelog
 
-### 1.3.x (2019-04-01)
+### 1.3.0 (2019-03-29)
 * (ldittmar) better system information
+* (ldittmar) documentation in all languages
+* (ldittmar) some fixes
 
 ### 1.2.7 (2019-03-17)
 * (ldittmar) little fixes

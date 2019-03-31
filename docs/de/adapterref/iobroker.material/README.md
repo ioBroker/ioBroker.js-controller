@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.material/README.md
 title: ioBroker.material
-hash: Q8Y6m2vj9Mh9XVrXnfMsp2U50vjHAJj7umXrVf52bsA=
+hash: Ulc3YoyyaWuA8XUEizcZKqEy12ZjA1yR1rUM1uQSmtc=
 ---
 ![Logo](../../../en/adapterref/iobroker.material/admin/material.png)
 
@@ -12,7 +12,7 @@ hash: Q8Y6m2vj9Mh9XVrXnfMsp2U50vjHAJj7umXrVf52bsA=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.material.svg)
 ![NPM](https://nodei.co/npm/iobroker.material.png?downloads=true)
 
-# IoBroker.material ===================
+# IoBroker.material
 Schnittstelle "React" und "Material UI".
 
 ![Screenshots](../../../en/adapterref/iobroker.material/img/screenshot1.png)

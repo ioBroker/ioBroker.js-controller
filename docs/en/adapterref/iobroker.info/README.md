@@ -134,6 +134,8 @@ Clicking on ![System Details Detail View](img/sysinfo_detail_button.png) display
 
 ### System information (detailed view)
 
+![System information](img/systeminfo_detail.png)
+
 Here a lot of information about the house system is displayed and stored as an object. These can then be used by you quite comfortably. Most of the data is only read and saved when the adapter is first charged, as these do not change so easily.
 
 Some data is also updated cyclically. How often this happens can be set in the configuration.
@@ -247,8 +249,10 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ## Changelog
 
-### 1.3.x (2019-04-01)
+### 1.3.0 (2019-03-29)
 * (ldittmar) better system information
+* (ldittmar) documentation in all languages
+* (ldittmar) some fixes
 
 ### 1.2.7 (2019-03-17)
 * (ldittmar) little fixes

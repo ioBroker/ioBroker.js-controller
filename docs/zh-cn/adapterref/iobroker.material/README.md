@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.material/README.md
 title: ioBroker.material
-hash: Q8Y6m2vj9Mh9XVrXnfMsp2U50vjHAJj7umXrVf52bsA=
+hash: Ulc3YoyyaWuA8XUEizcZKqEy12ZjA1yR1rUM1uQSmtc=
 ---
 ![商标](../../../en/adapterref/iobroker.material/admin/material.png)
 
@@ -12,7 +12,7 @@ hash: Q8Y6m2vj9Mh9XVrXnfMsp2U50vjHAJj7umXrVf52bsA=
 ![下载](https://img.shields.io/npm/dm/iobroker.material.svg)
 ![NPM](https://nodei.co/npm/iobroker.material.png?downloads=true)
 
-＃ioBroker.material =================
+＃ioBroker.material
 React和Material UI界面。
 
 ![截图](../../../en/adapterref/iobroker.material/img/screenshot1.png)

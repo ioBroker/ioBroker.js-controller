@@ -25,6 +25,10 @@ Planned: control functions (set temperatures, heating-curve, mode).
 
 ## Changelog
 
+### 0.0.4
+
+-   error - handling optimized
+
 ### 0.0.3
 
 -   Reads mode heating, water and heating-curve

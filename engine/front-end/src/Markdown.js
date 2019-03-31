@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {Converter} from 'react-showdown';
@@ -29,7 +29,7 @@ import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
 import Editor from './Pages/Editor';
-import Snackbar from "@material-ui/core/Snackbar";
+import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = theme => ({
     root: {
@@ -50,6 +50,9 @@ const styles = theme => ({
         },
         '& a': {
             color: 'inherit'
+        },
+        '& pre': {
+            background: '#e3e3e3',
         },
         '& code': {
             margin: '0 0.15em',

@@ -14,6 +14,14 @@ Content:
 |**engine**|dynamic webpage generation engine|
 |**media**|official files and logos|
 
+## How to build
+- Go to engine directory and write `npm i`.
+- Then write `gulp`. 
+- Go to engine/front-end directory and write `npm i`
+- Then write `npm run build`.
+- Go to engine directory and write `npm run start`
+- Open in the browser `http://localhost:5000`
+
 ## TODO
 - Download
 - sitemap

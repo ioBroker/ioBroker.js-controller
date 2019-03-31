@@ -3,8 +3,10 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.egigeozone/README.md
 title: ioBroker.egigeozone
-hash: RA1yeaAyhKiG1Wa1zx6oqvF/MTg5TbZcvvOx0RM6Dco=
+hash: IA23KzDw6EROO7W6F2yCZoJl4ZF8h64wdWY1KBMMS2Q=
 ---
+![商标](../../../en/adapterref/iobroker.egigeozone/admin/egigeozone.png)
+
 ![安装数量](http://iobroker.live/badges/egigeozone-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.egigeozone.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.egigeozone.svg)

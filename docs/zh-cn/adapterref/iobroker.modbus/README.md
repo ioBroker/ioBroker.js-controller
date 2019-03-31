@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: 7C8JiWKGGPkBIOH/OwE5jSPJtbtE9l8IuyAwz3khMYc=
+hash: TOU8dQgOXSQlCVGEXCnoA2Q/sLRNJ1N9pEhI7PIt2J8=
 ---
 ![商标](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -12,7 +12,7 @@ hash: 7C8JiWKGGPkBIOH/OwE5jSPJtbtE9l8IuyAwz3khMYc=
 ![下载](https://img.shields.io/npm/dm/iobroker.modbus.svg)
 ![NPM](https://nodei.co/npm/iobroker.modbus.png?downloads=true)
 
-＃iobroker.modbus =====================
+#iobroker.modbus
 为ioBroker实现ModBus Slave和Master。支持以下类型：
 
  -  Modbus RTU over serial（master）

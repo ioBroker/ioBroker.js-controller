@@ -3,10 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.egigeozone/README.md
 title: ioBroker.egigeozone
-hash: RA1yeaAyhKiG1Wa1zx6oqvF/MTg5TbZcvvOx0RM6Dco=
+hash: IA23KzDw6EROO7W6F2yCZoJl4ZF8h64wdWY1KBMMS2Q=
 ---
-# IoBroker.egigeozone
-# Beschreibung
+![Logo](../../../en/adapterref/iobroker.egigeozone/admin/egigeozone.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/egigeozone-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.egigeozone.svg)
@@ -16,10 +15,12 @@ hash: RA1yeaAyhKiG1Wa1zx6oqvF/MTg5TbZcvvOx0RM6Dco=
 ![Travis-CI](https://img.shields.io/travis/BasGo/ioBroker.egigeozone/master.svg)
 ![Build-Status](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
+# IoBroker.egigeozone
+# Beschreibung
 Dies ist ein ioBroker-Adapter für Android-Geofencing-App "EgiGeoZone" ([Webseite](https://egigeozone.de/)). Es ist in der Lage, Geofence-Ereignisse als HTTP-Anforderungen zu empfangen, wenn Sie ein definiertes Gebiet mit Ihrem mobilen Gerät betreten oder verlassen.
 
 # Sicherheitshinweise
-Es wird nicht empfohlen, diesen Adapter für das öffentliche Internet bereitzustellen (z. B. durch Öffnen des konfigurierten Ports in Ihrem Router). Dies bedeutet, dass alle Anforderungen an diesen Port an die IoBroker-Instanz weitergeleitet werden, auf der der Adapter ausgeführt wird. Es gibt mehrere Möglichkeiten, mehr Sicherheit für den Zugriff auf diesen Adapter zu erhalten:
+Es wird nicht empfohlen, diesen Adapter für das öffentliche Internet bereitzustellen (z. B. durch Öffnen des konfigurierten Ports in Ihrem Router). Dies bedeutet, dass alle Anforderungen an diesen Port an die ioBroker-Instanz weitergeleitet werden, auf der der Adapter ausgeführt wird. Es gibt mehrere Möglichkeiten, mehr Sicherheit für den Zugriff auf diesen Adapter zu erhalten:
 
 * Verwenden Sie immer eine VPN-Verbindung für Anfragen oder
 * Integrieren Sie einen Proxy-Server (z. B. nginx) zum Filtern eingehender Anforderungen.

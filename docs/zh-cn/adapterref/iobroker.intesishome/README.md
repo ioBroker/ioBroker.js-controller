@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.intesishome/README.md
 title: ioBroker.intesishome
-hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
+hash: HqHy5dcN2ue3HTmL9ZhlUaK1+XKDYYk2xuKprWeNFgo=
 ---
 ![商标](../../../en/adapterref/iobroker.intesishome/admin/intesishome.png)
 
@@ -12,7 +12,7 @@ hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
 ![下载](https://img.shields.io/npm/dm/iobroker.intesishome.svg)
 ![Github问题](http://githubbadges.herokuapp.com/maxtox/ioBroker.intesishome/issues.svg)
 
-＃ioBroker.intesishome =================
+＃ioBroker.intesishome
 支持intesishome云设备。
 
 [Deutsche Beschreibung](docs/de/index.md)

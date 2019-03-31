@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: 7C8JiWKGGPkBIOH/OwE5jSPJtbtE9l8IuyAwz3khMYc=
+hash: TOU8dQgOXSQlCVGEXCnoA2Q/sLRNJ1N9pEhI7PIt2J8=
 ---
 ![Logo](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -12,7 +12,7 @@ hash: 7C8JiWKGGPkBIOH/OwE5jSPJtbtE9l8IuyAwz3khMYc=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.modbus.svg)
 ![NPM](https://nodei.co/npm/iobroker.modbus.png?downloads=true)
 
-# Iobroker.modbus ======================
+# Iobroker.modbus
 Implementierung von ModBus Slave und Master für ioBroker. Folgende Typen werden unterstützt:
 
 - Modbus RTU über seriell (Master)
@@ -102,10 +102,10 @@ Die folgende Beschreibung wurde aus [Hier](http://www.chipkin.com/how-real-float
 
 Das Punkt-zu-Punkt-Modbus-Protokoll ist eine beliebte Wahl für die RTU-Kommunikation, wenn es aus keinem anderen Grund als dem grundlegenden Komfort dient. Das Protokoll selbst steuert die Interaktionen jedes Geräts in einem Modbus-Netzwerk, wie das Gerät eine bekannte Adresse ermittelt, wie jedes Gerät seine Nachrichten erkennt und wie grundlegende Informationen aus den Daten extrahiert werden. Im Wesentlichen ist das Protokoll die Grundlage des gesamten Modbus-Netzwerks.
 
-Diese Bequemlichkeit ist jedoch nicht unkompliziert, und das Modbus RTU Message-Protokoll bildet keine Ausnahme. Das Protokoll selbst wurde basierend auf Geräten mit einer 16-Bit-Registerlänge entworfen. Bei der Implementierung von 32-Bit-Datenelementen waren daher besondere Überlegungen erforderlich. Diese Implementierung entschied sich für die Verwendung von zwei aufeinanderfolgenden 16-Bit-Registern, um 32 Datenbits oder im Wesentlichen 4 Datenbytes darzustellen. Innerhalb dieser 4 Byte Daten können Gleitkommadaten mit einfacher Genauigkeit in eine Modbus RTU-Nachricht codiert werden.
+Diese Bequemlichkeit ist jedoch nicht unkompliziert, und das Modbus RTU Message-Protokoll bildet keine Ausnahme. Das Protokoll selbst wurde basierend auf Geräten mit einer 16-Bit-Registerlänge entworfen. Bei der Implementierung von 32-Bit-Datenelementen waren daher besondere Überlegungen erforderlich. Diese Implementierung entschied sich für die Verwendung von zwei aufeinanderfolgenden 16-Bit-Registern, um 32 Datenbit oder im Wesentlichen 4 Datenbytes darzustellen. Innerhalb dieser 4 Byte Daten können Gleitkommadaten mit einfacher Genauigkeit in eine Modbus RTU-Nachricht codiert werden.
 
 ### Die Bedeutung der Byte-Reihenfolge
-Modbus selbst definiert keinen Fließkomma-Datentyp, es wird jedoch allgemein akzeptiert, dass er 32-Bit-Fließkommadaten unter Verwendung des IEEE-754-Standards implementiert. Der IEEE-Standard hat jedoch keine klare Definition der Bytereihenfolge der Datennutzlast. Daher ist die wichtigste Überlegung beim Umgang mit 32-Bit-Daten, dass die Daten in der richtigen Reihenfolge adressiert werden.
+Modbus selbst definiert keinen Fließkomma-Datentyp, es wird jedoch allgemein akzeptiert, dass er 32-Bit-Fließkommadaten mit dem IEEE-754-Standard implementiert. Der IEEE-Standard hat jedoch keine klare Definition der Bytereihenfolge der Datennutzlast. Daher ist die wichtigste Überlegung beim Umgang mit 32-Bit-Daten, dass die Daten in der richtigen Reihenfolge adressiert werden.
 
 Die Nummer 123 / 456.00, wie sie im IEEE 754-Standard für 32-Bit-Gleitkommazahlen mit einfacher Genauigkeit definiert ist, sieht beispielsweise folgendermaßen aus:
 
@@ -132,9 +132,9 @@ Das Modbus-Protokoll selbst wird gemäß der Modbus Application Protocol-Spezifi
 
 Big-Endian ist das am häufigsten verwendete Format für Netzwerkprotokolle. Tatsächlich wird es auch als "Netzwerkreihenfolge" bezeichnet.
 
-Da das Modbus RTU-Nachrichtenprotokoll Big-Endian ist, muss ein 32-Bit-Datentyp über eine Modbus RTU-Nachricht erfolgreich ausgetauscht werden. Daher muss die Endianness sowohl des Masters als auch des Slaves berücksichtigt werden. Viele RTU-Master- und Slave-Geräte ermöglichen die gezielte Auswahl der Bytereihenfolge, insbesondere bei Software-simulierten Einheiten. Es muss lediglich sichergestellt werden, dass alle Einheiten auf dieselbe Byte-Reihenfolge eingestellt sind.
+Da das Modbus RTU-Nachrichtenprotokoll Big-Endian ist, muss ein 32-Bit-Datentyp über eine Modbus RTU-Nachricht erfolgreich ausgetauscht werden. Daher muss die Endianness von Master und Slave berücksichtigt werden. Viele RTU-Master- und Slave-Geräte ermöglichen die gezielte Auswahl der Bytereihenfolge, insbesondere bei Software-simulierten Einheiten. Es muss lediglich sichergestellt werden, dass alle Einheiten auf dieselbe Byte-Reihenfolge eingestellt sind.
 
-Als Faustregel gilt, dass die Familie des Mikroprozessors eines Geräts die Endianness bestimmt. Typischerweise wird der Big-Endian-Stil (das höherwertige Byte wird zuerst gespeichert, gefolgt vom niederwertigen Byte) im Allgemeinen bei CPUs gefunden, die mit einem Motorola-Prozessor entworfen wurden. Der Little-Endian-Stil (das niederwertige Byte wird zuerst gespeichert, gefolgt vom höherwertigen Byte) wird normalerweise bei CPUs mit Intel-Architektur gefunden. Es ist eine Frage der persönlichen Perspektive, welcher Stil als „rückwärts“ betrachtet wird.
+Als Faustregel gilt, dass die Familie des Mikroprozessors eines Geräts die Endianness bestimmt. Typischerweise wird der Big-Endian-Stil (das höherwertige Byte wird zuerst gespeichert, gefolgt vom niedrigsten Byte) im Allgemeinen bei CPUs gefunden, die mit einem Motorola-Prozessor entworfen wurden. Der Little-Endian-Stil (das niederwertige Byte wird zuerst gespeichert, gefolgt vom höherwertigen Byte) wird normalerweise bei CPUs mit Intel-Architektur gefunden. Es ist eine Frage der persönlichen Perspektive, welcher Stil als „rückwärts“ betrachtet wird.
 
 Wenn jedoch Byte-Reihenfolge und -Endianness keine konfigurierbare Option sind, müssen Sie festlegen, wie das Byte interpretiert werden soll. Dazu kann vom Slave ein bekannter Gleitkommawert angefordert werden. Wenn ein unmöglicher Wert zurückgegeben wird, d. H. Eine Zahl mit einem zweistelligen Exponenten oder einem solchen, muss die Reihenfolge der Bytes höchstwahrscheinlich geändert werden.
 
@@ -148,7 +148,7 @@ Die FieldServer Modbus RTU-Treiber bieten mehrere Funktionsbewegungen, die 32-Bi
 | 2.i16-1.i32-sb | Byte-Swap | [a b] [c d] | [b a d c] |
 | 2.i16-1.i32-sw | Wortwechsel | [a b] [c d] | [c d a b] |
 
-Die folgende Tabelle zeigt die FieldServer-Funktion, die zwei benachbarte 16-Bit-Register in einen 32-Bit-Gleitkommawert kopiert:
+In der folgenden Tabelle wird gezeigt, wie die FieldServer-Funktion zwei benachbarte 16-Bit-Register in einen 32-Bit-Gleitkommawert kopiert:
 
 | Funktionsschlüsselwort | Swap-Modus | Quellbytes | Zielbytes |
 |-------------------|--------------------|-----------------|--------------|
@@ -157,7 +157,7 @@ Die folgende Tabelle zeigt die FieldServer-Funktion, die zwei benachbarte 16-Bit
 | 2.i16-1.ifloat-sb | Byte-Swap | [a b] [c d] | [b a d c] |
 | 2.i16-1.ifloat-sw | Wortwechsel | [a b] [c d] | [c d a b] |
 
-Die folgende Tabelle zeigt die Verschiebungen der FieldServer-Funktion, die einen einzelnen 32-Bit-Fließkommawert in zwei benachbarte 16-Bit-Register kopieren:
+Die folgende Tabelle zeigt die FieldServer-Funktion, die einen einzelnen 32-Bit-Gleitkommawert in zwei benachbarte 16-Bit-Register kopiert:
 
 | Funktionsschlüsselwort | Swap-Modus | Quellbytes | Zielbytes |
 |------------------|-------------------|-----------------|----------------|
@@ -171,9 +171,9 @@ Aufgrund der verschiedenen FieldServer-Funktionsbewegungen hängt die korrekte H
 | 16-Bit-Werte | Funktion Bewegen | Ergebnis | Funktion Bewegen | Ergebnis |
 |---------------|-------------------|-----------|-------------------|---------------|
 | 0x2000 0x47F1 | 2.i16-1.float | 123456.00 | 1.Flat-2.i16 | 0x2000 0x47F1 |
-0xF147 0x0020 | 2.i16-1.float-s | 123456.00 | 1.Flat-2.i16-s | 0xF147 0X0020 |
-0x0020 0xF147 | 2.i16-1.float-sb | 123456.00 | 1.Flat-2.i16-sb | 0x0020 0xF147 |
-0x47F1 0x2000 | 2.i16-1.float-sw | 123456.00 | 1.Flat-2.i16-sw | 0x47F1 0x2000 |
+| 0xF147 0x0020 | 2.i16-1.float-s | 123456.00 | 1.Flat-2.i16-s | 0xF147 0X0020 |
+| 0x0020 0xF147 | 2.i16-1.float-sb | 123456.00 | 1.Flat-2.i16-sb | 0x0020 0xF147 |
+| 0x47F1 0x2000 | 2.i16-1.float-sw | 123456.00 | 1.Flat-2.i16-sw | 0x47F1 0x2000 |
 
 Beachten Sie, dass unterschiedliche Byte- und Wortreihenfolgen die Verwendung der entsprechenden FieldServer-Funktionsverschiebung erfordern. Sobald die richtige Funktionsverschiebung ausgewählt ist, können die Daten in beide Richtungen konvertiert werden.
 

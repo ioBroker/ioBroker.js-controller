@@ -3,12 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.oppoplayer/README.md
 title: ioBroker.oppoplayer
-hash: x8lY04A9YnzZIj59uw49UCSdW5ClWQvn639eZEkF+KE=
+hash: 3hueLeS5wLogBYdv89SmfIkH7DSsnuj4QOWL69zo1Nw=
 ---
 ![логотип](../../../en/adapterref/iobroker.oppoplayer/admin/oppoplayer.png)
 
-# IoBroker.oppoplayer =================
-Этот адаптер добавляет поддержку цифрового проигрывателя UHD (UDP-20x) в ioBroker.
+![Количество установок](http://iobroker.live/badges/oppoplayer-stable.svg)
+
+# IoBroker.oppoplayer
+Этот адаптер добавляет в ioBroker поддержку цифрового UHD-проигрывателя OPP (UDP-20x).
 Вы можете контролировать воспроизведение и запросить статус.
 
 ## Советы и хитрости

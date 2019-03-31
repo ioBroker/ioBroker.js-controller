@@ -35,6 +35,7 @@ Required node.js >= 0.12.
 *  (jey-cee) prepared for compact mode
 *  (jey-cee) new possible to change offset (if the device accept it)
 *  (jey-cee) new possible to change duration (if the device accept it)
+*  (jey-cee) get API key with credentials
 
 
 ### 0.4.0

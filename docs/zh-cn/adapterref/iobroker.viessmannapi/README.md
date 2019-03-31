@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: 7TwBm83Z4fHk+yMnvfkWck9bFA79Uckvq29ymA3N344=
+hash: aCRY0wLsVw0zfMJJdn+6vjJrhImfqImEc4PxWav+J/A=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
 ![建立状态](https://travis-ci.org/thovid/ioBroker.viessmannapi.svg?branch=master)
+![安装数量](http://iobroker.live/badges/viessmannapi-stable.svg)
 
-＃ioBroker.viessmannapi =================
+＃ioBroker.viessmannapi
 该适配器通过Viessmann API将您的ioBroker系统连接到您的Viessmann中央供暖系统。它需要您的加热系统通过Vitoconnect或类似设备连接到Viessmann服务器。 API提供的所有已启用信息都会定期轮询（每60秒）并写入状态。
 
 请注意，这是一个私人项目，因此使用风险自负。它不受菲斯曼的支持或认可！
@@ -44,15 +45,15 @@ sendTo('viessmannapi.0', 'action', {
 |专题|行动|领域|备注|
 |---------------------------------------------------|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | **heating.circuits.X.circulation.schedule** | | | |
-| | setSchedule | |设定电路'X'|循环的时间表
-| | | `newSchedule`（类型：时间表，见下文，模式：'开'，默认：'关'）|请参阅下面的计划类型说明
+| | setSchedule | |设定电路'X'|循环的时间表 |
+| | | `newSchedule`（类型：时间表，见下文，模式：'开'，默认：'关'）|请参阅下面的计划类型说明 |
 | **heating.circuits.X.heating.curve** | | | |
 | | | `slope`（数字，最小值：0.2，最大值：3.5，步进：0.1）| |
 | | | `shift`（编号，最小值：-13，最大值：40，步进：1）| |
 | | | `shift`（数字，最小值：-13，最大值：40，步进：1）| |
 | **heating.circuits.X.heating.schedule** | | | |
 | | | `newSchedule`（类型：时间表，见下文，模式：'正常'，默认：'减少'|参见下面的时间表类型的描述|
-| | | `newSchedule`（类型：Schedule，见下文，模式：'normal'，默认：'reduced'|参见下面的Schedule类型的描述
+| | | `newSchedule`（类型：Schedule，见下文，模式：'normal'，默认：'reduced'|参见下面的Schedule类型的描述 |
 | **heating.circuits.X.operating.modes.active** | | | |
 | | | `mode`（字符串，枚举：[“待机”，“dhw”，“dhwAndHeating”，“forcedReduced”，“forcedNormal”]）|要求|
 | | | `mode`（string，enum：[“standby”，“dhw”，“dhwAndHeating”，“forcedReduced”，“forcedNormal”]）|要求|
@@ -83,8 +84,8 @@ sendTo('viessmannapi.0', 'action', {
 | | | `temperature`（编号，最小值：10，最大值：60，步进：1）|要求|
 | | | `温度`（数字，最小值：10，最大值：60，步进：1）|要求|
 | **heating.dhw.schedule** | | | |
-| | | `newSchedule`（类型：时间表，见下文，模式：'开'，默认：'关'）|请参阅下面的计划类型说明
-| | | `newSchedule`（类型：Schedule，见下文，模式：'on'，默认：'off'）|请参阅下面的计划类型说明
+| | | `newSchedule`（类型：时间表，见下文，模式：'开'，默认：'关'）|请参阅下面的计划类型说明 |
+| | | `newSchedule`（类型：Schedule，见下文，模式：'on'，默认：'off'）|请参阅下面的计划类型说明 |
 
 ###日程表类型
 大多数操作使用简单的数据类型（数字，字符串）。某些操作允许设置计划。时间表如下所示：

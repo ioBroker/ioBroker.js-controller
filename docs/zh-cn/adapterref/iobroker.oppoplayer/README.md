@@ -3,11 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.oppoplayer/README.md
 title: ioBroker.oppoplayer
-hash: x8lY04A9YnzZIj59uw49UCSdW5ClWQvn639eZEkF+KE=
+hash: 3hueLeS5wLogBYdv89SmfIkH7DSsnuj4QOWL69zo1Nw=
 ---
 ![商标](../../../en/adapterref/iobroker.oppoplayer/admin/oppoplayer.png)
 
-＃ioBroker.oppoplayer =================
+![安装数量](http://iobroker.live/badges/oppoplayer-stable.svg)
+
+#ioBroker.oppoplayer
 该适配器增加了对opo数字UHD播放器（UDP-20x）到ioBroker的支持。
 您可以控制播放和查询状态。
 

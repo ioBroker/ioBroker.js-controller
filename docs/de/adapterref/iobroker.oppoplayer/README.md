@@ -3,11 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.oppoplayer/README.md
 title: ioBroker.oppoplayer
-hash: x8lY04A9YnzZIj59uw49UCSdW5ClWQvn639eZEkF+KE=
+hash: 3hueLeS5wLogBYdv89SmfIkH7DSsnuj4QOWL69zo1Nw=
 ---
 ![Logo](../../../en/adapterref/iobroker.oppoplayer/admin/oppoplayer.png)
 
-# IoBroker.oppoplayer ===================
+![Anzahl der Installationen](http://iobroker.live/badges/oppoplayer-stable.svg)
+
+# IoBroker.oppoplayer
 Dieser Adapter erweitert den ioBroker um Unterstützung für den oppo digitalen UHD-Player (UDP-20x).
 Sie können den Wiedergabe- und Abfragestatus steuern.
 

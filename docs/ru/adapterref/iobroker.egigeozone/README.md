@@ -3,10 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.egigeozone/README.md
 title: ioBroker.egigeozone
-hash: RA1yeaAyhKiG1Wa1zx6oqvF/MTg5TbZcvvOx0RM6Dco=
+hash: IA23KzDw6EROO7W6F2yCZoJl4ZF8h64wdWY1KBMMS2Q=
 ---
-# IoBroker.egigeozone
-# Описание
+![логотип](../../../en/adapterref/iobroker.egigeozone/admin/egigeozone.png)
 
 ![Количество установок](http://iobroker.live/badges/egigeozone-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.egigeozone.svg)
@@ -16,6 +15,8 @@ hash: RA1yeaAyhKiG1Wa1zx6oqvF/MTg5TbZcvvOx0RM6Dco=
 ![Трэвис-CI](https://img.shields.io/travis/BasGo/ioBroker.egigeozone/master.svg)
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
+# IoBroker.egigeozone
+# Описание
 Это адаптер ioBroker для приложения геозон для Android "EgiGeoZone" ([Веб-сайт](https://egigeozone.de/)). Он может получать события геозоны в виде HTTP-запросов при входе или выходе из определенной области с вашего мобильного устройства.
 
 # Совет по безопасности

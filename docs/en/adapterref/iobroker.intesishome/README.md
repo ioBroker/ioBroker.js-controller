@@ -1,6 +1,5 @@
 ![Logo](admin/intesishome.png)
 # ioBroker.intesishome
-=================
 
 [![Build Status](https://travis-ci.org/maxtox/ioBroker.intesishome.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.ical)
 [![NPM version](http://img.shields.io/npm/v/iobroker.intesishome.svg)](https://www.npmjs.com/package/iobroker.intesishome)

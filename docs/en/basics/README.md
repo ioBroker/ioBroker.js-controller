@@ -1,39 +1,42 @@
 ---
-lastChanged: 14.09.2018
+Title: ioBroker Grundlagen
+lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/basics/README.md
-title: Basics
-hash: 46Emgb6RhhtKOmznvzllM65gAhQS1y+ya+CTcZGe9ME=
+title: modularity
+hash: FytBmaiv4NpTHt2T+Wgnbozj+XBc5qr7hLloB/Elo9k=
 ---
-# Basics
-?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
+ioBroker is a pure software solution to connect different IoT systems to a complete system. Accordingly, a central office (gateway / interface) is also required for each system in order to be able to integrate its devices.
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Primarily, in this section of the documentation, the "WHAT it is", not "HOW
+In special cases, such a control panel can be simulated by software, or as hardware (USB stick or similar) infected to the ioBroker server.
 
-After reading the basics, the user should be able to rudimentarily understand and assign the various ioBroker-specific terms.
+# Modularity
+ioBroker has a modular structure. These modules are called ioBroker ***Adapter*** .
+There are [over 250 adapters](http://download.iobroker.net/list.html) for connecting various hardware or integration of various information such as weather, calendar, etc.
 
-Goal is short and crisp explain, 2-4 lines, if necessary, the whole is later rebuilt as a long-scroller page.
+Therefore, only the adapters that are needed for your individual needs need to be installed in an installation. This saves storage space and computing power.
 
-The basic articles should refer to the respective detailed descriptions.
-@@@
+For each adapter, so-called ***instances*** are created. These are the "working versions" of the adapters. Depending on the adapter, any number of instances can be created to differentiate different subsystems or different task areas from each other.
 
-## Definition of terms
-To make it easier to get started and to understand the further help, here are the most important terms that are explained in and around the ioBroker.
+The corresponding configuration takes place in these instances.
 
-* `Host`: the device on which ioBroker is installed
-* `Adapter`: a module or plug-in for the ioBroker, for example to communicate with hardware
-    - cant be started
-    - There can be only one adapter per host
-* `Instanz`: executable copy of an adapter
-    - Executes the code provided by the adapter
-    - can be started and stopped
-    - can have settings
-    - Adapter must be installed to have instances of the adapter
-* `Objekt`: Field in which data can be stored
-    - Most instances create a `channel`
-    - a `channel` is an object that acts as a folder
-* `Aufzählung`: contains for example a list of rooms
-* `Log`: Protocol of which errors have accumulated
-    - filterable by severity of the event, instance and more
-* `Ereignisse`: List of all changes to objects
+# Architecture
+## Server
+A special feature of ioBroker is that the tasks can also be distributed to multiple servers ** **. In such a case one speaks of a ***multi-host system*** . Reasons for the division may be spatial or power distribution.
+
+### Hardware requirements
+An ioBroker server can be installed on almost any hardware. The only condition is that there is a current version of [NodeJS](https://nodejs.org) for the corresponding operating system.
+
+For a larger installation, a RAM of at least 2GB is also recommended. For testing, a Raspberry Pi 2/3 with 1GB of RAM is sufficient, as a slave for individual adapters in a multi-host environment sometimes even smaller minicomputers are sufficient.
+
+## Software
+ioBroker manages the data in a database. Accordingly, the structure of the data is organized.
+
+Each adapter has a so-called namespace that contains all the data about an instance of the adapter. Accordingly, the name of the namespace is, for example: ***AdapterName.0***
+
+Within this range, ioBroker creates the devices, their channels and their data points with their values (states).
+
+![object structure](../../de/basics/../admin/media/ADMIN_Objekte_status_tree.png)
+
+This example is a self-created namespace for your own metrics

@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: 7TwBm83Z4fHk+yMnvfkWck9bFA79Uckvq29ymA3N344=
+hash: aCRY0wLsVw0zfMJJdn+6vjJrhImfqImEc4PxWav+J/A=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
 ![Build-Status](https://travis-ci.org/thovid/ioBroker.viessmannapi.svg?branch=master)
+![Anzahl der Installationen](http://iobroker.live/badges/viessmannapi-stable.svg)
 
-# IoBroker.viessmannapi ===================
+# IoBroker.viessmannapi
 Dieser Adapter verbindet Ihr ioBroker-System über die Viessmann API mit Ihrer Viessmann-Zentralheizung. Voraussetzung ist, dass Ihre Heizungsanlage über einen Vitoconnect oder ein ähnliches Gerät mit dem Viessmann Server verbunden ist. Alle aktivierten Informationen, die von der API bereitgestellt werden, werden regelmäßig (alle 60 Sekunden) abgefragt und in Status geschrieben.
 
 Beachten Sie, dass dies ein privates Projekt ist, verwenden Sie es daher auf eigenes Risiko. Es wird von Viessmann nicht unterstützt oder befürwortet!
 
 ## Installation
-Da sich dieser Adapter in einem frühen Entwicklungsstadium befindet, kann die Installation über das neueste Repository des ioBroker durchgeführt werden. Geben Sie in den Adaptereinstellungen den Benutzernamen und das Kennwort Ihres Viessmann-Kontos ein. Wenn alles gut geht, sollten Status unter `viessmannapi.X` angezeigt werden. Erste Werte sollten nach 60 Sekunden eintreffen.
+Da sich dieser Adapter in einem frühen Entwicklungsstadium befindet, kann die Installation über das neueste Repository des ioBroker durchgeführt werden. Geben Sie in den Adaptereinstellungen den Benutzernamen und das Kennwort Ihres Viessmann-Kontos ein. Wenn alles gut geht, sollten unter `viessmannapi.X` Zustände angezeigt werden. Erste Werte sollten nach 60 Sekunden eintreffen.
 
 ## Zustände
 Die spezifischen Zustände können von Ihrer Installation abhängen. Beispiele sind
@@ -39,20 +40,20 @@ sendTo('viessmannapi.0', 'action', {
 Bei Aufruf oben würde die Zieltemperatur für das Komfortprogramm auf 20 °C eingestellt.
 
 ### Unterstützte Aktionen
-Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, dass abhängig von Ihrer Heizungsinstallation einige Aktionen möglicherweise nicht verfügbar sind oder andere Aktionen verfügbar sind, die hier jedoch nicht dokumentiert sind).
+Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, dass abhängig von Ihrer Heizungsinstallation möglicherweise einige Aktionen nicht verfügbar sind oder andere Aktionen verfügbar sind, hier jedoch nicht dokumentiert).
 
 | Funktion | Aktion | Feld | Anmerkungen |
 |---------------------------------------------------|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | **Heizkreis.X.Zirkulationsplan** | | | |
-| | setSchedule | | Legt den Zeitplan für den Umlauf des Kreises 'X' fest
+| | setSchedule | | Legt den Zeitplan für den Umlauf des Kreises 'X' fest |
 | | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
 | **Heizkreise.X.Wärmekurve** | | | |
 | | | `slope` (Anzahl, min: 0,2, max: 3,5, Schritt: 0,1) | |
 | | | `shift` (Anzahl, min: -13, max ": 40, Schritt: 1) | |
 | | | "shift" (Anzahl, min: -13, max ": 40, Schritt: 1) | |
 | **Heizungsschaltungen.X.Hitzeplan** | | | |
-| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Schedule-Typs unten |
-| | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'Normal', Standard: 'Reduziert' | Siehe Beschreibung des Zeitplantyps unter |
+| | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Zeitplantyps unten |
+| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Normal', Standard: 'Reduziert' | Siehe Beschreibung des Schedule-Typs unten |
 | **Heizungsschaltungen.X.Betriebsarten.aktiv** | | | |
 | | | `mode` (string, enum: ["standby", "dhw", "dhwAndHeating", "forcedReduced", "forcedNormal"]) | erforderlich |
 | | | `mode` (string, enum: [" standby "," dhw "," dhwAndHeating "," forcedReduced "," forcedNormal "]) | erforderlich |
@@ -65,7 +66,7 @@ Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, das
 | | | `temperature` (Anzahl, min: 3, max: 37, Schritt: 1) | optional |
 | | | "Temperatur" (Anzahl, min: 3, max: 37, Schritt: 1) | optional |
 | | deaktivieren | | Keine Felder (leeres Objekt senden), deaktiviert den Eco-Modus |
-| **Heizungsschaltungen.X.Betriebsprogramme.** | | |
+| **Heizungsschaltungen.X.Betriebsprogramme.urlaub** | | | |
 | | | `start` (Zeichenfolge) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
 | | | `end` (Zeichenfolge) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
 | | | `end` (string) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
@@ -81,7 +82,7 @@ Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, das
 | | deaktivieren | | Keine Felder (leeres Objekt senden) Deaktiviert eine einmalige Ladung des Warmwasserspeichers. |
 | **heiztemperatortemperatur** | | | |
 | | | `temperature` (Anzahl, min: 10, max: 60, Schritt: 1) | erforderlich |
-| | | "Temperatur" (Anzahl, min: 10, max: 60, Schritt: 1) | erforderlich |
+| | | Temperatur (Anzahl, min: 10, max: 60, Schritt: 1) | erforderlich |
 | **heizung.dhw.plan** | | | |
 | | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
 | | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
@@ -118,7 +119,7 @@ Die meisten Aktionen verwenden einfache Datentypen (Zahlen, Zeichenfolgen). Bei 
 Für jeden Tag muss ein Array bereitgestellt werden, das die "Zeitpläne" für diesen Tag enthält. Ein einzelner Eintrag besteht aus Start- und Endzeit, dem geplanten "Modus" und der Position. Die unterstützten Modi hängen vom geplanten Zeitplan ab (siehe Tabelle der unterstützten Funktionen oben). Außerhalb der geplanten Elemente wird der Standardmodus verwendet, siehe obige Tabelle. Im obigen Beispiel soll am Montag zwischen 5:30 und 10:00 Uhr und zwischen 11:00 und 12:30 Uhr etwas eingeschaltet sein. Außerhalb dieser Zeitintervalle ist der Standardmodus ("Aus") geplant.
 
 ### Alle Funktionen abfragen
-Um eine Liste aller verfügbaren Funktionen mit allen verfügbaren Aktionen zu erhalten, senden Sie einfach die Nachricht `describe` an eine laufende Adapterinstanz. Das Ergebnis ist ein Array aller verfügbaren Features, das beispielsweise als JSON-String über `JSON.stringify()` gedruckt werden kann.
+Um eine Liste aller verfügbaren Funktionen mit allen verfügbaren Aktionen zu erhalten, senden Sie einfach die Nachricht `describe` an eine laufende Adapterinstanz. Das Ergebnis ist ein Array mit allen verfügbaren Features, die beispielsweise als JSON-String über `JSON.stringify()` gedruckt werden können.
 
 *Beispiel:*
 

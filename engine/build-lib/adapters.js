@@ -94,6 +94,7 @@ function prepareAdapterReadme(lang, repo, data) {
             header.published = repo.published;
         }
         header.version = repo.version;
+        header.latestVersion = repo.latestVersion;
 
         const result = fixImages(lang, repo.name, body);
 
@@ -484,8 +485,10 @@ function downloadRepo() {
             request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
                 const latest = JSON.parse(body);
                 // get stable versions
-                Object.keys(latest).forEach(adapter =>
-                    latest[adapter].version = stable[adapter] ? stable[adapter].version : '-.-.-');
+                Object.keys(latest).forEach(adapter => {
+                    latest[adapter].latestVersion = latest[adapter].version;
+                    latest[adapter].version = stable[adapter] ? stable[adapter].version : '-.-.-';
+                });
 
                 resolve(latest);
             });

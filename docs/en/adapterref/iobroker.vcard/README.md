@@ -1,7 +1,7 @@
 ![Logo](admin/vcard.png)
-#vCard Adapter for ioBroker
+# vCard Adapter for ioBroker
 
-##Description:
+## Description
 
 The main focus of vCard adapter is, to replace the phone numbers of ioBroker.fritzBox adapter's outputs.
 
@@ -23,21 +23,24 @@ h) if there are multiple results at one output, the different results are separa
 
 _Up to now, the adapter was tested with exports od "Mac contacts" and "Outlook" (vCard file version 3.0)._  
 
-###VCF Path:
+### VCF Path
 * Windows: c:/data/vcard.vcf  
 * Linux: /tmp/vcard.vcf  
 * http: http://192.168.1.1/data/vcard.vcf  
 * http (FritzBox Nas): http://192.168.1.1/nas/filelink.lua?id=164fe89123456789  
 
 
-###CSS Example (for fixed column width):
+### CSS Example (for fixed column width)
 **Style Header:**  
- `<style type="text/css">  
+
+ ```
+ <style type="text/css">  
  spanVcard1 {  
  display: inline-block;  
  width: 300px;  
  }  
- </style>`  
+ </style>
+ ```
  
 **Style Prefix:**  
  `<spanVcard1>`  
@@ -47,59 +50,56 @@ _Up to now, the adapter was tested with exports od "Mac contacts" and "Outlook" 
 
 **Note: Each channel needs its own tag (e.g. spanVcard1, spanVcard2, spanVcard3, spanVcard4, spanVcard5)!**
 
-##Prerequirements:
+## Prerequirements:
 - [ioBroker](http://www.ioBroker.net "ioBroker homepage")
 
 
 
-##Change log:
+## Changelog:
 
-###0.0.9 (2016-11-12)
+### 0.0.9 (2016-11-12)
 * Addapter category changed 
 
-###0.0.8 (2016-05-27)
+### 0.0.8 (2016-05-27)
 * Bugfixing new Channels  
 
-###0.0.7 (2016-05-21)
+### 0.0.7 (2016-05-21)
 * Typos  
 * Readme updated  
 
-###0.0.6 (2015-01-16)
+### 0.0.6 (2015-01-16)
 * Typos  
 * Readme updated  
 
-###0.0.5 (2015-11-15)
+### 0.0.5 (2015-11-15)
 * Reading contacts via http updated  
 * Multiple channels subscribed to one output fixed  
 * CSS Example updated
 
-###0.0.4 (2015-11-6)  
+### 0.0.4 (2015-11-6)  
 * Missing dependency  
 
-###0.0.3 (2015-10-25)
+### 0.0.3 (2015-10-25)
 * Three channels for replacing numbers
 * Channels can be connected to outputs of other adapters (no script needed)
 * Replaced names can be formated by CSS  
 * VCF files can be read via http
 
-
-###0.0.2 (2015-10-02)
+### 0.0.2 (2015-10-02)
 * Documentation updates
 * Missing icon
 * vcard-json issue with white spaces (inside Outlook files)
 
-###0.0.1 (2015-09-18)
+### 0.0.1 (2015-09-18)
 * Initial version
 
-##LOP:  
+## LOP
 * Reading contacts via CardDav
 
-
-
 ## License
-The MIT License (MIT)
+![Number of Installations](http://iobroker.live/badges/vcard-installed.svg) ![Number of Installations](http://iobroker.live/badges/vcard-stable.svg) The MIT License (MIT)
 
-Copyright (c) 2016 hometm 
+Copyright (c) 2016-2019 hometm 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

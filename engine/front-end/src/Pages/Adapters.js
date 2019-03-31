@@ -16,8 +16,16 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 import {MdExpandMore as IconExpandMore} from 'react-icons/md';
+import {MdReorder as IconList} from 'react-icons/md';
+import {MdViewModule as IconCards} from 'react-icons/md';
 
 import Loader from '../Components/Loader';
 import I18n from '../i18n';
@@ -133,7 +141,7 @@ class Adapters extends Component {
     constructor(props) {
         super(props);
 
-        let expanded = window.localStorage ? window.localStorage.getItem('Docs.aexpanded') : '[]';
+        let expanded = window.localStorage ? window.localStorage.getItem('Docs.AExpanden') : '[]';
         try {
             expanded = JSON.parse(expanded) || [];
         } catch (e) {
@@ -235,7 +243,7 @@ class Adapters extends Component {
         this.props.onNavigate(null, null, link);
     }
 
-    renderAdapter(type, adapter, obj) {
+    renderAdapterCard(type, adapter, obj) {
         this.words = this.words || {};
         this.words.authors = this.words.authors || I18n.t('Authors:');
         this.words.stable = this.words.stable || I18n.t('Stable:');
@@ -247,6 +255,44 @@ class Adapters extends Component {
             <CardActionArea onClick={() => this.onNavigate(obj.content)}>
                 <div className={this.props.classes.cardMedia}
                     style={{backgroundImage: 'url(' + this.props.language + '/' + obj.icon + ')'}}
+                />
+                <div  className={this.props.classes.cardTitle}>
+                    <h2>{adapter}</h2>
+                </div>
+                <CardContent className={this.props.classes.cardContent}>
+                    <h2>&nbsp;</h2>
+                    <p>
+                        {obj.titleFull ? obj.titleFull[this.props.language] || obj.titleFull.en || obj.titleFull : obj.title[this.props.language] || obj.title.en || obj.title}
+                    </p>
+                    <p>
+                        {obj.description ? obj.description[this.props.language] || obj.description.en : ''}
+                    </p>
+                    <div className={this.props.classes.cardInfo}>
+                        {obj.authors ? (<div><span className={this.props.classes.cardName}>{this.words.authors}</span><span className={this.props.classes.cardValue}>{obj.authors.map(item => item.name).join(', ')}</span></div>) : null}
+                        {obj.version ? (<div><span className={this.props.classes.cardName}>{this.words.stable}</span><span className={this.props.classes.cardValue}>{obj.version}</span></div>) : null}
+                        {this.state.statistics.adapters[adapter] ? (<div><span className={this.props.classes.cardName}>{this.words.installs}</span><span className={this.props.classes.cardValue}>{this.state.statistics.adapters[adapter]}</span></div>) : null}
+                    </div>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Button size="small" color="primary" onClick={() => this.onNavigate(obj.content)}>{this.words.read}</Button>
+                <Button size="small" color="primary" onClick={() => Utils.openLink(obj.github)}>{this.words.github}</Button>
+            </CardActions>
+        </Card>);
+    }
+
+    renderAdapterLine(type, adapter, obj) {
+        this.words = this.words || {};
+        this.words.authors = this.words.authors || I18n.t('Authors:');
+        this.words.stable = this.words.stable || I18n.t('Stable:');
+        this.words.installs = this.words.installs || I18n.t('Installs:');
+        this.words.read = this.words.read || I18n.t('Read');
+        this.words.github = this.words.github || I18n.t('Github');
+
+        return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
+            <CardActionArea onClick={() => this.onNavigate(obj.content)}>
+                <div className={this.props.classes.cardMedia}
+                     style={{backgroundImage: 'url(' + this.props.language + '/' + obj.icon + ')'}}
                 />
                 <div  className={this.props.classes.cardTitle}>
                     <h2>{adapter}</h2>
@@ -289,7 +335,7 @@ class Adapters extends Component {
     }
 
     saveExpanded(expanded) {
-        window.localStorage.setItem('Docs.aexpanded', JSON.stringify(expanded || this.state.expanded));
+        window.localStorage.setItem('Docs.AExpanden', JSON.stringify(expanded || this.state.expanded));
     }
 
     onExpandAll() {
@@ -402,11 +448,49 @@ class Adapters extends Component {
                 this.state.content.pages[type].title[this.props.language] || this.state.content.pages[type].title.en || type
             }</ExpansionPanelSummary>
             <ExpansionPanelDetails classes={{root: this.props.classes.details}} style={this.props.mobile ? {textAlign: 'center'} :  {}}>
-                {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter]) && this.renderAdapter(type, adapter, items.pages[adapter]))}
+                {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter]) && this.renderAdapterCard(type, adapter, items.pages[adapter]))}
             </ExpansionPanelDetails>
         </ExpansionPanel>);
     }
 
+    renderTable() {
+        const adapters = {};
+
+        this.state.content && Object.keys(this.state.content.pages).map(type => {
+            const types = this.state.content.pages[type];
+            Object.keys(types).forEach(a => adapters[a] = types[a]);
+        });
+
+        return (<Table key="table" className={this.props.classes.table}>
+            <TableHead>
+                <TableRow>
+                    <TableCell>{I18n.t('Name')}</TableCell>
+                    <TableCell>{I18n.t('Description')}</TableCell>
+                    <TableCell>{I18n.t('Type')}</TableCell>
+                    <TableCell>{I18n.t('Installed')}</TableCell>
+                    <TableCell>{I18n.t('License')}</TableCell>
+                    <TableCell>{I18n.t('Maintainer')}</TableCell>
+                    <TableCell>{I18n.t('Created')}</TableCell>
+                    <TableCell>{I18n.t('Versions')}</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {Object.keys(adapters).map(a => (
+                    <TableRow>
+                        <TableCell>{adapters[a].title}</TableCell>
+                        <TableCell>{I18n.t('Description')}</TableCell>
+                        <TableCell>{I18n.t('Type')}</TableCell>
+                        <TableCell>{I18n.t('Installed')}</TableCell>
+                        <TableCell>{I18n.t('License')}</TableCell>
+                        <TableCell>{I18n.t('Maintainer')}</TableCell>
+                        <TableCell>{I18n.t('Created')}</TableCell>
+                        <TableCell>{I18n.t('Versions')}</TableCell>
+                    </TableRow>))
+                }
+            </TableBody>
+
+        </Table>)
+    }
     render() {
         if (this.state.loadTimeout && !this.state.content) {
             return (<Loader theme={this.props.theme}/>);
@@ -416,6 +500,7 @@ class Adapters extends Component {
 
         return [
             this.renderHeader(),
+            this.state.tableView ? this.renderTable() :
             (<div key="body" className={this.props.classes.root} ref={this.contentRef}>
                 {this.state.content && Object.keys(this.state.content.pages).map(type => this.renderType(type))}
             </div>)

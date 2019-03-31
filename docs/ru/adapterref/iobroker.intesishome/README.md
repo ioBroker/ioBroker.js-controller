@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.intesishome/README.md
 title: ioBroker.intesishome
-hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
+hash: HqHy5dcN2ue3HTmL9ZhlUaK1+XKDYYk2xuKprWeNFgo=
 ---
 ![логотип](../../../en/adapterref/iobroker.intesishome/admin/intesishome.png)
 
@@ -12,7 +12,7 @@ hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.intesishome.svg)
 ![Github Issues](http://githubbadges.herokuapp.com/maxtox/ioBroker.intesishome/issues.svg)
 
-# IoBroker.intesishome =================
+# IoBroker.intesishome
 Поддержка intesishome облачных устройств.
 
 [Deutsche Beschreibung](docs/de/index.md)

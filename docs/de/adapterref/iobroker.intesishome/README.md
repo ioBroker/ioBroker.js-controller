@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.intesishome/README.md
 title: ioBroker.intesishome
-hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
+hash: HqHy5dcN2ue3HTmL9ZhlUaK1+XKDYYk2xuKprWeNFgo=
 ---
 ![Logo](../../../en/adapterref/iobroker.intesishome/admin/intesishome.png)
 
@@ -12,7 +12,7 @@ hash: 0G7BR/KHH9h0m7MZJgPBUn5vuhJrwtHsY2AObGFlf3E=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.intesishome.svg)
 ![Github-Probleme](http://githubbadges.herokuapp.com/maxtox/ioBroker.intesishome/issues.svg)
 
-# IoBroker.intesishome ==================
+# IoBroker.intesishome
 Unterstützung von Intesishome Cloud-Geräten.
 
 [Deutsche Beschreibung](docs/de/index.md)
