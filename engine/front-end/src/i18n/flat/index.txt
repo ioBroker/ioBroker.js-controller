@@ -5,9 +5,12 @@ Authors:
 Badges
 Blog
 Changelog
+Click to copy %s
 Cloud
 Collapse all
+Created
 Date
+Description
 Details
 Documentation
 Download
@@ -16,36 +19,52 @@ Expand all
 Filter
 Github
 Good luck
+Icon
 Imprint
 Info
 Information
+Installed
 Installs:
 Join now
 Last changed:
 License
 Linux
 List of adapters
+Maintainer
 New in last month:
 News, announcements and ideas about ioBroker
+Newsletter subscribe
+No results found
 Open repository
+Over %s connected services and systems!
 Platform
 Posts
 Privacy policy
 Read
+Search...
+Sort
 Stable:
 The page you are looking for
 Themes
+Title
 Total:
 Translated from %s
+Type
 Users
+Versions
 authors
 compact
+copied to clipboard
+copy to clipboard
 forum-text
+install on linux
+installed %s times
 instruction1
 instruction2
 instruction3
 instruction4
 ioBroker Blog
+ioBroker in The Press
 keywords
 materialize
 mode

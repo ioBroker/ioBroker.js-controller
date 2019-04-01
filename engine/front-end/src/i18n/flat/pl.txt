@@ -5,9 +5,12 @@ Autorski:
 Odznaki
 Blog
 Lista zmian
+Kliknij, aby skopiować %s
 Cloud
 Zwinąć wszystkie
+Stworzony
 Data
+Opis
 Detale
 Dokumentacja
 Ściągnij
@@ -16,36 +19,52 @@ Rozwiń wszystkie
 Filtr
 Github
 Powodzenia
+Ikona
 Odcisk
 Informacje
 Informacja
+zainstalowany
 Instaluje:
 Dołącz teraz
 Ostatnia zmiana:
 Licencja
 Linux
 Lista adapterów
+opiekun
 Nowość w zeszłym miesiącu:
 Wiadomości, ogłoszenia i pomysły na temat ioBroker
+Newsletter zapisz się
+Nie znaleziono wyników
 Otwórz repozytorium
+Powyżej %s połączonych usług i systemów!
 Platforma
 Posty
 Polityka prywatności
 Czytać
+Szukaj...
+Sortować
 Stabilny:
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
 Tematy
+Tytuł
 Całkowity:
 Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
+Rodzaj
 Użytkownicy
+wersje
 autorski
 kompaktowy
+skopiowane do schowka
+skopiuj do schowka
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
+Instalacja w systemie Linux
+zainstalowanych %s razy
 Potrzebne są obrazy tylko w przypadku problemów ze skryptami instalacyjnymi.
 Instalacja jest tak prosta, jak napisanie 1 lub 3 linii.
 Zainstaluj Node.js (nie jest wymagane, jeśli jest zainstalowany):
 Zainstaluj ioBroker:
 Blog ioBroker
+ioBroker w prasie
 słowa kluczowe
 zmaterializować
 tryb

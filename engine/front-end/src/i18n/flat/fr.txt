@@ -5,9 +5,12 @@ Auteurs:
 Insignes
 Blog
 Changelog
+Cliquez pour copier %s
 Cloud
 Réduire tout
+Créé
 Rendez-vous amoureux
+La description
 Détails
 Documentation
 Télécharger
@@ -16,36 +19,52 @@ Développer tout
 Filtre
 Github
 Bonne chance
+Icône
 Imprimer
 Info
 Information
+installée
 Installe:
 Adhérer
 Dernière modification:
 Licence
 Linux
 Liste des adaptateurs
+mainteneur
 Nouveau dans le mois dernier:
 Nouvelles, annonces et idées sur ioBroker
+Inscription newsletter
+Aucun résultat
 Référentiel ouvert
+Sur les services et les systèmes connectés de%!
 Plate-forme
 Des postes
 Politique de confidentialité
 Lis
+Chercher...
+Trier
 Stable:
 La page que vous recherchez a peut-être été supprimée, si son nom a été modifié ou si elle est temporairement indisponible.
 Des thèmes
+Titre
 Total:
 Cette page a été traduite automatiquement à partir de "%s". Aidez-nous à traduire cette page en anglais en cliquant sur Modifier ci-dessous.
+Type
 Utilisateurs
+versions
 auteurs
 compact
+copié dans le presse-papier
+copier dans le presse-papier
 Rejoignez maintenant la communauté en pleine croissance, posez des questions et obtenez des réponses!
+installer sur Linux
+Les temps de installé%
 Vous n'avez besoin des images que si vous rencontrez des problèmes d'installation de scripts.
 L'installation est aussi simple que d'écrire 1 ou 3 lignes.
 Installez Node.js (non requis si déjà installé):
 Installez ioBroker:
 Blog ioBroker
+ioBroker dans la presse
 mots clés
 se concrétiser
 mode

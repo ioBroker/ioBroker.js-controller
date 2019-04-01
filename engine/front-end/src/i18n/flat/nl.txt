@@ -5,9 +5,12 @@ auteurs:
 badges
 blog
 changelog
+Klik hier om te kopiëren %s
 Cloud
 Alles inklappen
+gemaakt
 Datum
+Omschrijving
 Details
 Documentatie
 Download
@@ -16,36 +19,52 @@ Alles uitvouwen
 Filter
 Github
 Succes
+Icoon
 afdruk
 info
 Informatie
+geïnstalleerd
 installeert:
 Meld je nu aan
 Laatste wijziging:
 Licentie
 Linux
 Lijst met adapters
+Beheerder
 Nieuw in vorige maand:
 Nieuws, aankondigingen en ideeën over ioBroker
+Nieuwsbrief abonnement
+geen resultaten gevonden
 Open repository
+Over %s verbonden diensten en systemen!
 Platform
 berichten
 Privacybeleid
 Lezen
+Zoeken...
+Soort
 Stal:
 De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.
 Thema's
+Titel
 Totaal:
 Deze pagina is automatisch vertaald uit "%s". Help ons deze pagina in het Engels te vertalen door hieronder op Bewerken te klikken.
+Type
 gebruikers
+versies
 auteurs
 compact
+gekopieerd naar het klembord
+Kopieer naar klembord
 Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!
+installeren op linux
+geïnstalleerd %s keer
 U hebt de afbeeldingen alleen nodig als u problemen ondervindt met installatiescripts.
 De installatie is zo eenvoudig als het schrijven van 1 of 3 regels.
 Installeer Node.js (niet vereist als het al is geïnstalleerd):
 Installeer ioBroker:
 ioBroker Blog
+ioBroker in The Press
 trefwoorden
 materialiseren
 mode

@@ -5,48 +5,67 @@ Autoren:
 Abzeichen
 Blog
 Änderungsprotokoll
+Klicken Sie auf %s kopieren
 Cloud
 Alles einklappen
+Erstellt
 Datum
+Beschreibung
 Einzelheiten
 Dokumentation
 Herunterladen
-Bearbeiten Sie auf Github
+Auf Github ändern
 Alle erweitern
 Filter
 Github
 Viel Glück
+Symbol
 Impressum
 Info
 Information
-Installiert:
+Eingerichtet
+Installationen:
 Jetzt beitreten
 Zuletzt geändert:
 Lizenz
 Linux
 Liste der Adapter
-Neu im letzten Monat:
+Maintainer
+Letzten Monat neu:
 Neuigkeiten, Ankündigungen und Ideen zu ioBroker
+Newsletter abonnieren
+keine Ergebnisse gefunden
 Repository öffnen
+Über %s verbunden Dienstleistungen und Systeme!
 Plattform
 Beiträge
 Datenschutz-Bestimmungen
 Lesen
-Stabil:
-Die von Ihnen gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
-Themes
+Suche...
+Sortieren
+Stable:
+Die gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
+Themen
+Titel
 Gesamt:
-Diese Seite wurde automatisch von "%s" übersetzt. Helfen Sie uns, diese Seite auf Deutsch zu übersetzen, indem Sie unten auf Bearbeiten klicken.
+Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten klicken, um diese Seite auf Deutsch zu übersetzen, Danke!
+Art
 Benutzer
+Versionen
 Autoren
 Kompaktmodus
-Trete jetzt der schnell wachsenden Community bei, stelle die Fragen und bekomme die Antworten von Profis!
-Sie benötigen die Images nur, wenn Sie Probleme mit Installationsskripten haben.
-Die Installation ist so einfach wie das Schreiben von 1 oder 3 Zeilen.
-Installieren Sie Node.js (nicht erforderlich, falls schon nicht installiert):
-Installieren Sie ioBroker:
+in die Zwischenablage kopiert
+in die Zwischenablage kopieren
+Trete jetzt der schnell wachsenden Community bei, stelle Fragen und bekomme Antworten von Profis!
+Installation auf Linux
+installiert %s mal
+Images werden nur benötigt, wenn Probleme mit Installationsskripten auftreten.
+Die Installation kann einfach mit 1 bis 3 Zeilen Code erfolgen.
+Erst Node.js installieren (wenn noch nicht vorhanden):
+Anschließend ioBroker installieren:
 ioBroker Blog
-Schlüsselwörter
+ioBroker in der Presse
+Schlüsselworte
 Admin3
 Modus
 Passwort

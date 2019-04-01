@@ -679,7 +679,7 @@ class Adapters extends Component {
         }}>
             <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnIcon} align="left" padding="dense">{(<img className={this.props.classes.tableLogo} alt="logo" src={this.props.language + '/' + obj.icon}/>)}</TableCell>
             <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnTitle} align="left" padding="dense">{name}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnDesc} padding="dense">{obj.description ? obj.description[this.props.language] || obj.description.en : ''}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnDesc} padding="dense">{typeof obj.description === 'object' ? obj.description[this.props.language] || obj.description.en : obj.description || ''}</TableCell>
             <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnType} align="right" padding="dense">{obj.type}</TableCell>
             <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnInstalled} align="right" padding="dense">{obj.installs}</TableCell>
             <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnLicense} align="right" padding="dense">{obj.license}</TableCell>
