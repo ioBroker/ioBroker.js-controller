@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
+hash: xvJAGdSNVXACS/GYrLjZH/Z64uh0aTAFSH4hPx8OV0g=
 ---
 ![Logo](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/onvif-stable.svg)
 
 # IoBroker.onvif
-# RU
-## Настройка
+## RU
+### Настройка
 1. Открыть Настройки драйвера
 2. Нажать кнопку сканирования (сверху справа)
-3. Ввести необходимые настройки или оставить по умолчанию: startRange - Seite 1 von 3
+3. Ввести необходимые настройки или оставить по умолчанию: startRange - начальный ip адрес диапазона сканирования,
 
 End-Range - Port-Übersicht - Port-Liste - Port-Liste - Port-Liste - Port-Liste - Portierung - Port-Liste - Port-Liste - Portierung
 
@@ -22,7 +22,7 @@ End-Range - Port-Übersicht - Port-Liste - Port-Liste - Port-Liste - Port-Liste 
 
 Если все сделано правильно, в основном окне настроек появятся найденые камеры и через несколько секунд должны будут подтянуться снапшоты
 
-## События
+### События
 Драйвер автоматически подписывается на события к настроенным камерам.
 События, которые генерирует камера, появятся в объектах вида:
 
@@ -31,12 +31,8 @@ onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
 onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 ```
 
-## Запрос снапшота
-Для этого используется команда:
-
-```
-sendTo('onvif.0', command, message, callback);
-```
+### Запрос снапшота
+Для этого используется команда: `sendTo('onvif.0', command, message, callback);`
 
 Пример скрипта для запроса снапшота и отправка в телеграм:
 
@@ -55,10 +51,8 @@ function getSnapshot(caption){
 * caption * - заголовок для картинки в телеграме.
 Вызывать можно как по событию, так и по кнопке / рассписанию
 
-=================
-
-# ENG
-## Anpassung
+## ENG
+### Anpassung
 1. Öffnen Sie die Treibereinstellungen
 2. Drücken Sie die Scantaste (oben rechts).
 3. Geben Sie die erforderlichen Einstellungen ein oder übernehmen Sie die Standardeinstellung:
@@ -69,7 +63,7 @@ startRange - die Start-IP-Adresse des Scanbereichs, End Range - die End-IP-Adres
 
 Wenn alles korrekt gemacht wurde, werden die gefundenen Kameras in einem primären Fenster mit Einstellungen angezeigt und in wenigen Sekunden müssen Schnappschüsse geschärft werden.
 
-## Veranstaltungen
+### Veranstaltungen
 Der Treiber abonniert automatisch Ereignisse für die konfigurierten Kameras.
 Die von der Kamera generierten Ereignisse werden in den folgenden Objekten angezeigt:
 
@@ -78,12 +72,8 @@ onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
 onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 ```
 
-## Schnappschussanfrage
-Verwenden Sie dazu den Befehl:
-
-```
-sendTo('onvif.0', command, message, callback);
-```
+### Schnappschussanfrage
+Verwenden Sie dazu den Befehl: `sendTo('onvif.0', command, message, callback);`
 
 Beispiel eines Skripts zum Anfordern des Snapshots und zum Senden an Telegramm:
 

@@ -70,9 +70,6 @@ There is also a branch for all devices:
 ***paw.0.[name_device].comm.display.toWake***
 > Wake up devices from sleep [boolean]
 
-***paw.0.[name_device].comm.display.turnOnOff***
-> Turn on screen [boolean]
-
 ***paw.0.[name_device].comm.display.timeOff***
 > Set backlight time [number] (sec)
 
@@ -120,8 +117,8 @@ sendTo("paw.0",'all',{
 // set the screen backlight time in seconds. '0' - do not quit the screen (does not work on all devices) 
 sendTo("paw.0",'dev1',{timeOff: '60'});
 
-// activate the screen on the device.
-sendTo("paw.0",'all',{turnOnOff:'true'});
+// wake up devices from sleep
+sendTo("paw.0",'all',{toWake: true});
 
 // backlight brightness level from 4-100
 sendTo("paw.0",'dev1',{brightness: '50'});
@@ -248,8 +245,6 @@ sendTo("paw.0",'dev2',{
 },function (res){
     log(JSON.stringify(res));
 });
-
-
 
 ```
 

@@ -169,6 +169,7 @@ const styles = theme => ({
     },
     tableColumnIcon: {
         width: 32,
+        borderRadius: 3,
     },
     tableColumnTitle: {
         width: 80,

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 БЕТА
-hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
+hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
 ---
 ![логотип](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -50,8 +50,6 @@ hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
 
 *** paw.0. [name_device] .comm.display.toWake ***> Пробуждение устройств из спящего режима [логическое значение]
 
-*** paw.0. [name_device] .comm.display.turnOnOff ***> Включить экран [логическое значение]
-
 *** paw.0. [name_device] .comm.display.timeOff ***> Установить время подсветки [число] (сек)
 
 *** paw.0. [name_device] .comm.other.home ***> Перейти на главный экран [логическое значение]
@@ -89,8 +87,8 @@ sendTo("paw.0",'all',{
 // set the screen backlight time in seconds. '0' - do not quit the screen (does not work on all devices)
 sendTo("paw.0",'dev1',{timeOff: '60'});
 
-// activate the screen on the device.
-sendTo("paw.0",'all',{turnOnOff:'true'});
+// wake up devices from sleep
+sendTo("paw.0",'all',{toWake: true});
 
 // backlight brightness level from 4-100
 sendTo("paw.0",'dev1',{brightness: '50'});
@@ -218,8 +216,6 @@ sendTo("paw.0",'dev2',{
     log(JSON.stringify(res));
 });
 
-
-
 ```
 
 ### 0.3.1
@@ -229,7 +225,7 @@ sendTo("paw.0",'dev2',{
 * (foxriver76) добавлена совместимость в компактном режиме
 
 #### 0.2.8
-* (bondrogeen) незначительное исправление предмета приложения, карта SDK> = 29 и измененное добавление устройства.
+* (bondrogeen) незначительное исправление элемента приложения, карта SDK> = 29 и измененное добавление устройства.
 
 #### 0.2.7
 * (bondrogeen) диалоговое окно исправлений, приложение noti SDK> = 26

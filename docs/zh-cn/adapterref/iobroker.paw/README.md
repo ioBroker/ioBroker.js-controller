@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
+hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
 ---
 ![商标](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -50,8 +50,6 @@ Tasker和Locale插件支持。
 
 *** paw.0。[name_device] .comm.display.toWake ***>从睡眠中唤醒设备[boolean]
 
-*** paw.0。[name_device] .comm.display.turnOnOff ***>打开屏幕[boolean]
-
 *** paw.0。[name_device] .comm.display.timeOff ***>设置背光时间[数字]（秒）
 
 *** paw.0。[name_device] .comm.other.home ***>转到主屏幕[布尔]
@@ -89,8 +87,8 @@ sendTo("paw.0",'all',{
 // set the screen backlight time in seconds. '0' - do not quit the screen (does not work on all devices)
 sendTo("paw.0",'dev1',{timeOff: '60'});
 
-// activate the screen on the device.
-sendTo("paw.0",'all',{turnOnOff:'true'});
+// wake up devices from sleep
+sendTo("paw.0",'all',{toWake: true});
 
 // backlight brightness level from 4-100
 sendTo("paw.0",'dev1',{brightness: '50'});
@@ -217,8 +215,6 @@ sendTo("paw.0",'dev2',{
 },function (res){
     log(JSON.stringify(res));
 });
-
-
 
 ```
 

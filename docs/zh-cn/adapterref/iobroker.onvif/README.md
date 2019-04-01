@@ -3,15 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
+hash: xvJAGdSNVXACS/GYrLjZH/Z64uh0aTAFSH4hPx8OV0g=
 ---
 ![商标](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
 ![安装数量](http://iobroker.live/badges/onvif-stable.svg)
 
 ＃ioBroker.onvif
-#RU
-## Настройка
+## RU
+### Настройка
 1.ОткрытьНастройкидрайвера
 2.Нажатькнопкусканирования（сверхусправа）
 3.Ввестинеобходимыенастройкиилиоставитьпоумолчанию：startRange  - начальныйipадресдиапазонасканирования，
@@ -22,7 +22,7 @@ hash: 6eL8ZP3AslLeIUN47FRNL18R4IyiQb0VluxzvOxJNJk=
 
 Если все сделано правильно, в основном окне настроек появятся найденые камеры и через несколько секунд должны будут подтянуться снапшоты
 
-## События
+### События
 Драйвер автоматически подписывается на события к настроенным камерам.
 События, которые генерирует камера, появятся в объектах вида:
 
@@ -31,12 +31,8 @@ onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
 onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 ```
 
-## Запрос снапшота
-Для этого используется команда:
-
-```
-sendTo('onvif.0', command, message, callback);
-```
+### Запрос снапшота
+Дляэтогоиспользуетсякоманда：`sendTo('onvif.0', command, message, callback);`
 
 Пример скрипта для запроса снапшота и отправка в телеграм:
 
@@ -55,10 +51,8 @@ function getSnapshot(caption){
 *标题*  - заголовокдлякартинкивтелеграме。
 更多信息，包括пособытию
 
-=================
-
-#ENG
-##定制
+## ENG
+###定制
 1.打开驱动程序设置
 2.按扫描按钮（右上角）
 3.输入必要的设置或保留默认值：
@@ -69,7 +63,7 @@ startRange  - 扫描范围的起始IP地址，结束范围 - 扫描范围的结�
 
 如果一切都正确，那么找到的摄像机将出现在设置的主窗口中，并且在几秒钟内必须收紧快照。
 
-##活动
+###活动
 驱动程序自动订阅已配置摄像机的事件。
 摄像机生成的事件将显示在以下对象中：
 
@@ -78,12 +72,8 @@ onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
 onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 ```
 
-##快照请求
-为此，请使用以下命令：
-
-```
-sendTo('onvif.0', command, message, callback);
-```
+###快照请求
+为此，请使用以下命令：`sendTo('onvif.0', command, message, callback);`
 
 请求快照并发送到Telegram的脚本示例：
 

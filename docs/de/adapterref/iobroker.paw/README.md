@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: nKYrj5A/bzAI2th1osxbRj0Ds552M9TpehrhgHk376Y=
+hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
 ---
 ![Logo](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -48,9 +48,7 @@ Es gibt auch einen Zweig für alle Geräte: ***paw.0.all_device.*** - Steuerbefe
 
 *** paw.0. [name_device] .comm.display.mode ***> Hintergrundbeleuchtungstyp automatisch oder manuell [boolean]
 
-*** paw.0. [name_device] .comm.display.toWake ***> Wakeup-Geräte aus dem Ruhezustand [boolean]
-
-*** paw.0. [name_device] .comm.display.turnOnOff ***> Bildschirm einschalten [boolean]
+*** paw.0. [name_device] .comm.display.toWake ***> Wecker aus dem Ruhezustand [boolean]
 
 *** paw.0. [name_device] .comm.display.timeOff ***> Zeit der Hintergrundbeleuchtung einstellen [Anzahl] (Sek)
 
@@ -89,8 +87,8 @@ sendTo("paw.0",'all',{
 // set the screen backlight time in seconds. '0' - do not quit the screen (does not work on all devices)
 sendTo("paw.0",'dev1',{timeOff: '60'});
 
-// activate the screen on the device.
-sendTo("paw.0",'all',{turnOnOff:'true'});
+// wake up devices from sleep
+sendTo("paw.0",'all',{toWake: true});
 
 // backlight brightness level from 4-100
 sendTo("paw.0",'dev1',{brightness: '50'});
@@ -217,8 +215,6 @@ sendTo("paw.0",'dev2',{
 },function (res){
     log(JSON.stringify(res));
 });
-
-
 
 ```
 

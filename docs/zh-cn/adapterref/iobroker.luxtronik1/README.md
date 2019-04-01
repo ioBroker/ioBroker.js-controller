@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: dtJxhyPKy8uUbDfthaxzW7LDafKlcLlV2d+sXBsDOc4=
+hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
 ---
 ![商标](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -25,9 +25,22 @@ hash: dtJxhyPKy8uUbDfthaxzW7LDafKlcLlV2d+sXBsDOc4=
 在luxtronik 1和AlphaInnotec热泵上测试
 
 读取热泵的不同值和统计数据（温度，误差，运行时间......）。
-计划：控制功能（设定温度，加热曲线，模式）。
+通过设置“控制” - 通道中的值来控制Luxtronik 1。控制以下值：
+
+ - 热水 - 温度设定
+ - 加热 -  modelo
+ -  Hotwater  -  modelo
+ - 加热 - 曲线（差异，终点，起点，夜间减少）。
 
 ## Changelog
+
+### 0.0.5
+
+-   controls hotwater-temperature, heating- & hotwater - mode and heating-curve setting.
+
+### 0.0.4
+
+-   error - handling optimized
 
 ### 0.0.3
 
