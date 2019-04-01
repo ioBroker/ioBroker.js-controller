@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import Snackbar from '@material-ui/core/Snackbar';
-
-import {FaMailBulk as IconEmail} from 'react-icons/fa';
-
 
 import I18n from '../i18n';
-import Utils from '../Utils';
 
 const styles = theme => ({
     mainDiv: {
@@ -67,7 +59,6 @@ class Adapters extends Component {
         this.state = {
             email: '',
             inputFocused: '',
-            tooltip: '',
             adapters: [],
             count: 250,
         };

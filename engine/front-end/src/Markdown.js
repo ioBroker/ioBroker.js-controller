@@ -515,6 +515,7 @@ class Markdown extends Router {
             {this.state.header.editLink ?
                 (<a className={this.props.classes.infoEdit}
                     href={this.state.header.editLink}
+                    rel="noopener noreferrer"
                     target="_blank"><IconGithub />{I18n.t('Edit on github')}
                     </a>) : null}
             {this.props.editEnabled && this.editText ?
@@ -573,6 +574,8 @@ class Markdown extends Router {
                                     {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
                                 </li>
                             );
+                        } else {
+                            return null;
                         }
                     }).filter(e => e)
                 }</ul>

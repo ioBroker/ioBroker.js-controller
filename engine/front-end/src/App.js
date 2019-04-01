@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -420,7 +420,7 @@ class App extends Router {
                       }}>
 
             {Object.keys(PAGES).map(tab => {
-                if (!PAGES[tab].tabIndex) return;
+                if (!PAGES[tab].tabIndex) return null;
 
                 if (PAGES[tab].menu) {
                     return [
@@ -443,7 +443,7 @@ class App extends Router {
             (<Drawer key="drawer" open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
                 <List>
                     {Object.keys(PAGES).map(tab => {
-                        if (!PAGES[tab].tabIndex) return;
+                        if (!PAGES[tab].tabIndex) return null;
 
                         if (PAGES[tab].menu) {
                             return [
@@ -514,18 +514,21 @@ class App extends Router {
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}
                         language={this.state.language}
+                        contentWidth={this.state.width}
                     /> : null}
                     {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].md ? (<MDPage
                         path={PAGES[this.state.selectedPage].md}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}
+                        contentWidth={this.state.width}
                         language={this.state.language} />) : null}
                     {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].content ? (<TreePage
                         contentPath={PAGES[this.state.selectedPage].content}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}
+                        contentWidth={this.state.width}
                         language={this.state.language} />) : null}
                 </div>
                 {this.renderError()}

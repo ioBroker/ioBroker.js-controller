@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -212,9 +211,9 @@ class Downloads extends Component {
                                 .filter(attr => IGONRED_ATTRS.indexOf(attr) === -1)
                                 .map(attr => {
                                     if (image[attr].match(/^https?:/)) {
-                                        this.renderLine(attr, (<a href={image[attr]} target="_blank">I18n.t('link')</a>));
+                                        return this.renderLine(attr, (<a href={image[attr]} target="_blank" rel="noopener noreferrer">I18n.t('link')</a>));
                                     } else {
-                                        this.renderLine(attr, image[attr]);
+                                        return this.renderLine(attr, image[attr]);
                                     }
                                 })}
 

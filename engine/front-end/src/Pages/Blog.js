@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
@@ -9,7 +9,7 @@ import Loader from '../Components/Loader';
 import I18n from '../i18n';
 import Utils from '../Utils';
 import Router from '../Router';
-import {Converter} from "react-showdown";
+import {Converter} from 'react-showdown';
 import {MdEdit as IconEdit} from "react-icons/md";
 
 const styles = theme => ({
@@ -261,7 +261,7 @@ class Blog extends Router {
 
             {header.editLink ?
                 (<div className={this.props.classes.info}>
-                    <a className={this.props.classes.infoEdit} href={header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>
+                    <a className={this.props.classes.infoEdit} rel="noopener noreferrer" href={header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>
                 </div>) : null}
         </Paper>);
     }

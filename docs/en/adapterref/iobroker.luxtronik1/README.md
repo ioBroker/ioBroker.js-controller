@@ -21,9 +21,18 @@ Set comfoair - IP-adress, port and polling - intervall
 Tested on luxtronik 1 and AlphaInnotec heatpump
 
 Reads different values and stats of your heatpump (temperatures, errors, running time,...).
-Planned: control functions (set temperatures, heating-curve, mode).
+Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the following values:
+
+-   Hotwater - temperature setting
+-   Heating - modelo
+-   Hotwater - modelo
+-   Heating - curve (difference, endpoint, startingpoint, nightly reduction).
 
 ## Changelog
+
+### 0.0.5
+
+-   controls hotwater-temperature, heating- & hotwater - mode and heating-curve setting.
 
 ### 0.0.4
 

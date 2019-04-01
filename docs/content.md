@@ -100,6 +100,7 @@
   * [Multi-Host](config/multihost)
   * [Data storage with Redis](config/redis)
   * [Backup](config/backup)
+  * [CLI](config/cli)
 
 * en:Troubleshooting;de:Fehlerbehebung;ru:Поиск и решение проблем
   * [Introduction](trouble/README)
@@ -122,8 +123,12 @@
 
 * en:Adapter development;de:Adapterentwicklung;ru:Разработка драйвера
   * [Introduction](dev/adapterdev)
-  * [IDEs](dev/ide)
+  * en:IDEs;de:Entwicklungsumgebung;ru:Среда разработки
+    * [WebStorm](dev/webstorm)
+    * [VS Code](dev/vscode)
   * [Adapter reference](dev/adapterref)
+  * [Object schema](dev/objectsschema)
+  * [State roles](dev/stateroles)
   * [Template](dev/adaptertemplate)
   * [Adapter tests](dev/adaptertesting)
   * [Adapter doc template](dev/adapterdoctemplate)

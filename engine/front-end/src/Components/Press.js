@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
 
 import ImageLinuxMagazin from '../assets/linux-magazine.png';
 import ImageCT from '../assets/ct.png';

@@ -1,13 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Fab from '@material-ui/core/Fab';
 
-import {MdGTranslate as IconNoCheck} from 'react-icons/md';
-import I18n from '../i18n';
-
-function isIdOfGlobalScript(id) {
-    return /^script\.js\.global\./.test(id);
-}
 let index = 0;
 
 const loadDynamicScript = (url, name, callback) => {

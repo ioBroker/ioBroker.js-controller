@@ -1,19 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import Table from '@material-ui/core/Table';
@@ -23,8 +18,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import ChartistGraph from 'react-chartist';
 
-import {MdExpandMore as IconExpandMore} from 'react-icons/md';
+import {MdClose as IconClose, MdExpandMore as IconExpandMore} from 'react-icons/md';
 import {MdReorder as IconList} from 'react-icons/md';
 import {MdViewModule as IconCards} from 'react-icons/md';
 import {MdUnfoldMore as IconExpandAll} from 'react-icons/md';
@@ -33,6 +29,9 @@ import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
 import Loader from '../Components/Loader';
 import I18n from '../i18n';
 import Utils from "../Utils";
+import Snackbar from '@material-ui/core/Snackbar';
+
+import 'chartist/dist/chartist.css';
 
 const MARGIN = 10;
 
@@ -82,22 +81,21 @@ const styles = theme => ({
     },
     pageHeader: {
         marginLeft: 20,
+        display: 'flex',
     },
     pageTitle: {
         fontSize: 32,
     },
     pageTitleNew: {
-        float: 'right',
         fontSize: 14,
         paddingRight: 10,
     },
     pageTitleTotal: {
-        float: 'right',
+        marginTop: 5,
         fontSize: 14,
         //paddingRight: 10,
         padding: '6px 8px',
         textTransform: 'uppercase',
-        marginTop: 2,
     },
     cardValue: {
 
@@ -126,17 +124,25 @@ const styles = theme => ({
         padding: '1px 3px 1px 3px',
         color: 'white'
     },
+    cardChart: {
+        width: '100%',
+        height: '100%',
+    },
 
+    headerGapButtons: {
+        display: 'inline-block',
+        flex: 1,
+    },
+    headerDivButtons: {
+        display: 'inline-block',
+        whiteSpace: 'nowrap',
+    },
+    headerButtonMode: {
+        marginRight: 10,
+        marginLeft: 10,
+    },
     headerButtons: {
-        '&:hover': {
-            backgroundColor: '#dbdbdb'
-        },
-        color: theme.palette.type === 'dark' ? '#ffffff' : '#111111',
-        cursor: 'pointer',
-        marginTop: 1,
-        marginRight: 2,
-        height: 22,
-        width: 22,
+
     },
     tableRoot: {
         height: 'calc(100% - 55px)',
@@ -200,7 +206,28 @@ const styles = theme => ({
         paddingRight: 3,
         width: 24,
         display: 'inline-block',
-    }
+    },
+    chartColor0: {fill: '#96e7ff'},
+    chartColor1: {fill: '#86ffb9'},
+    chartColor2: {fill: '#ffff77'},
+    chartColor3: {fill: '#ff6e00'},
+    chartColor4: {fill: '#ffadc7'},
+    chartColor5: {fill: '#d7c1ff'},
+    chartColor6: {fill: '#ff8ed2'},
+    chartColor7: {fill: '#f4fffd'},
+    chartColor8: {fill: '#418aff'},
+    chartColor9: {fill: '#5ffcff'},
+    chartColor10: {fill: '#47ff9a'},
+    chartColor11: {fill: '#bfff2b'},
+    chartColor12: {fill: '#ffb227'},
+    chartColor13: {fill: '#ff3c0a'},
+    chartColor14: {fill: '#ff0867'},
+    chartColor15: {fill: '#ff099a'},
+    chartColor16: {fill: '#dc1eff'},
+    chartColor17: {fill: '#771eff'},
+    chartColor18: {fill: '#3b15ff'},
+    chartColor19: {fill: '#1685ff'},
+    chartColor20: {fill: '#00fbff'},
 });
 
 function fetchLocal(url) {
@@ -235,6 +262,7 @@ class Adapters extends Component {
             content: '',
             adapters: {},
             expanded,
+            stats: '',
             showNew: false,
             filter,
             fastFilter: filter,
@@ -253,6 +281,30 @@ class Adapters extends Component {
         setTimeout(() => !this.state.content && this.setState({loadTimeout: true}), 300);
 
         this.contentRef = React.createRef();
+
+        this.colors = [
+            this.props.classes.chartColor0,
+            this.props.classes.chartColor1,
+            this.props.classes.chartColor2,
+            this.props.classes.chartColor3,
+            this.props.classes.chartColor4,
+            this.props.classes.chartColor5,
+            this.props.classes.chartColor6,
+            this.props.classes.chartColor7,
+            this.props.classes.chartColor8,
+            this.props.classes.chartColor9,
+            this.props.classes.chartColor10,
+            this.props.classes.chartColor11,
+            this.props.classes.chartColor12,
+            this.props.classes.chartColor13,
+            this.props.classes.chartColor14,
+            this.props.classes.chartColor15,
+            this.props.classes.chartColor16,
+            this.props.classes.chartColor17,
+            this.props.classes.chartColor18,
+            this.props.classes.chartColor19,
+            this.props.classes.chartColor20,
+        ];
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -331,20 +383,81 @@ class Adapters extends Component {
         this.props.onNavigate(null, null, link);
     }
 
-    renderAdapterCard(type, adapter, obj) {
-        this.words = this.words || {};
-        this.words.authors = this.words.authors || I18n.t('Authors:');
-        this.words.stable = this.words.stable || I18n.t('Stable:');
-        this.words.installs = this.words.installs || I18n.t('Installs:');
-        this.words.read = this.words.read || I18n.t('Read');
-        this.words.github = this.words.github || I18n.t('Github');
+    renderAdapterStatistics(adapter) {
+        const data = this.state.statistics.versions[adapter];
+        let labels = Object.keys(data).sort((a, b) => data[b] - data[a]);
+        let series = labels.map(l => data[l]);
+        let sum = 0;
+        series.forEach(v => sum += v || 0);
 
-        return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
-            <CardActionArea onClick={() => this.onNavigate(obj.content)}>
-                <div className={this.props.classes.cardMedia}
+        for (let k = 0; k < series.length; k++) {
+            if (series[k] / sum < 0.08) {
+                let others = 0;
+                for (let i = k; i < series.length; i++) {
+                    others += series[i];
+                }
+                labels.splice(k, labels.length - k);
+                series.splice(k, series.length - k);
+                labels.push(I18n.t('others'));
+                series.push(others);
+                const d = {};
+                labels.forEach((l, i) => d[l] = series[i]);
+                labels = Object.keys(d).sort((a, b) => d[b] - d[a]);
+                series = labels.map(l => d[l]);
+
+                break;
+            }
+        }
+        const ddd = labels.map((n, i) => {
+            return {
+                value: series[i],
+                name: n,
+                className: this.colors[i] || undefined,
+                meta: 'Meta One'
+            };
+        });
+
+        return [(
+            <CardContent key="stat" className={this.props.classes.cardContent}>
+                <ChartistGraph
+                    className={this.props.classes.cardChart}
+                    data={{series: ddd}}
+                    options={{
+                        labelInterpolationFnc: (value, index) => {
+                            console.log(value);
+                            return labels[index];// + ' - ' + (Math.round(value / sum * 1000) / 10) + '%';
+                        }
+                    }}
+                    responsiveOptions={[
+                        [
+                            'screen',
+                            {
+                                chartPadding: 10,
+                                labelOffset: 35,
+                                labelDirection: 'explode',
+                                labelInterpolationFnc: (value, index) => {
+                                    console.log(value);
+                                    return labels[index];
+                                }
+                            }
+                        ]
+                    ]}
+                    type={'Pie'}/>
+            </CardContent>),
+            (<CardActions key="actionsStat">
+                <Button size="small" color="primary" onClick={() => this.setState({stats: ''})}>{this.words.close}</Button>
+            </CardActions>)];
+
+    }
+
+    renderAdapterMain(adapter, obj) {
+        return [
+            (<CardActionArea key="main" onClick={() => this.onNavigate(obj.content)}>
+                <div
+                    className={this.props.classes.cardMedia}
                     style={{backgroundImage: 'url(' + this.props.language + '/' + obj.icon + ')'}}
                 />
-                <div  className={this.props.classes.cardTitle}><h2>{adapter}</h2></div>
+                <div className={this.props.classes.cardTitle}><h2>{adapter}</h2></div>
                 <CardContent className={this.props.classes.cardContent}>
                     <h2>&nbsp;</h2>
                     <p>
@@ -357,11 +470,26 @@ class Adapters extends Component {
                         {this.state.statistics.adapters[adapter] ? (<div><span className={this.props.classes.cardName}>{this.words.installs}</span><span className={this.props.classes.cardValue}>{this.state.statistics.adapters[adapter]}</span></div>) : null}
                     </div>
                 </CardContent>
-            </CardActionArea>
-            <CardActions>
+            </CardActionArea>),
+            (<CardActions key="actions">
                 <Button size="small" color="primary" onClick={() => this.onNavigate(obj.content)}>{this.words.read}</Button>
                 <Button size="small" color="primary" onClick={() => Utils.openLink(obj.github)}>{this.words.github}</Button>
-            </CardActions>
+                <Button size="small" color="primary" onClick={() => this.setState({stats: adapter})}>{this.words.stats}</Button>
+            </CardActions>)];
+
+    }
+    renderAdapterCard(type, adapter, obj) {
+        this.words = this.words || {};
+        this.words.authors = this.words.authors || I18n.t('Authors:');
+        this.words.stable = this.words.stable || I18n.t('Stable:');
+        this.words.installs = this.words.installs || I18n.t('Installs:');
+        this.words.read = this.words.read || I18n.t('Read');
+        this.words.github = this.words.github || I18n.t('Github');
+        this.words.stats = this.words.stats || I18n.t('Info');
+        this.words.close = this.words.close || I18n.t('Close');
+
+        return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
+            {this.state.stats !== adapter ? this.renderAdapterMain(adapter, obj) : this.renderAdapterStatistics(adapter, obj)}
         </Card>);
     }
 
@@ -427,7 +555,17 @@ class Adapters extends Component {
 
     renderHeader() {
         return (<div className={this.props.classes.pageHeader} key="header">
-            <span className={this.props.classes.pageTitle}>{I18n.t('List of adapters')}</span>
+            <span className={this.props.classes.pageTitle}>{this.props.mobile ? I18n.t('Adapters') : I18n.t('List of adapters')}</span>
+            {!this.props.mobile ? (<IconButton
+                className={this.props.classes.headerButtonMode}
+                title={this.state.tableView ? I18n.t('Switch to tile view') : I18n.t('Switch to table view')}
+                onClick={() => {
+                    window.localStorage && window.localStorage.setItem('Docs.aTableView', this.state.tableView ? 'false' : 'true');
+                    this.setState({tableView: !this.state.tableView});
+                }}
+            >{
+                this.state.tableView ? (<IconCards fontSize="small"/>) : (<IconList fontSize="small"/>)
+            }</IconButton>) : null}
             <Input placeholder={I18n.t('Filter')}
                    className={this.props.classes.cardFilter}
                    value={this.state.fastFilter}
@@ -441,17 +579,17 @@ class Adapters extends Component {
                        window.localStorage && window.localStorage.setItem('Docs.afilter', e.target.value);
                    }}
             />
-            <IconExpandAll key="expandAll" className={this.props.classes.headerButtons} title={I18n.t('Expand all')} onClick={() => this.onExpandAll()}/>
-            {this.state.expanded.length ? (<IconCollapseAll key="collapseAll" className={this.props.classes.headerButtons} title={I18n.t('Collapse all')} onClick={() => this.onCollapseAll()}/>) : null}
-            {<IconButton onClick={() => {
-                window.localStorage && window.localStorage.setItem('Docs.aTableView', this.state.tableView ? 'false' : 'true');
-                this.setState({tableView: !this.state.tableView});
-            }}>{this.state.tableView ? (<IconCards/>) : (<IconList/>)}</IconButton>}
-            {!this.state.tableView ? (<Button className={this.props.classes.pageTitleNew} color={this.state.showNew ? 'secondary' : ''} onClick={() => {
+            <div className={this.props.classes.headerGapButtons}/>
+            <div className={this.props.classes.headerDivButtons}>
+                {this.props.mobile || !this.state.tableView ? (<IconButton key="expandAll" className={this.props.classes.headerButtons} title={I18n.t('Expand all')} onClick={() => this.onExpandAll()}><IconExpandAll fontSize="small"/></IconButton>) : null}
+                {(this.props.mobile || !this.state.tableView) && this.state.expanded.length ? (<IconButton key="collapseAll" className={this.props.classes.headerButtons} title={I18n.t('Collapse all')} onClick={() => this.onCollapseAll()}><IconCollapseAll fontSize="small"/></IconButton>) : null}
+            </div>
+
+            {this.props.mobile || !this.state.tableView ? (<Button className={this.props.classes.pageTitleNew} color={this.state.showNew ? 'secondary' : ''} onClick={() => {
                 this.setState({showNew: !this.state.showNew});
                 window.localStorage && window.localStorage.setItem('Docs.anew', this.state.showNew ? 'false' : 'true');
-            }}>{I18n.t('New in last month:') + ' ' + this.state.newMonth}</Button>) : null}
-            <span className={this.props.classes.pageTitleTotal}>{I18n.t('Total:') + ' ' + this.state.total}{this.state.tableView ? '' : ', '}</span>
+            }}>{(this.props.mobile ? I18n.t('New:') : I18n.t('New in last month:')) + ' ' + this.state.newMonth}</Button>) : null}
+            <span className={this.props.classes.pageTitleTotal}>{I18n.t('Total:') + ' ' + this.state.total}{this.props.mobile || this.state.tableView ? '' : ', '}</span>
         </div>);
     }
 
@@ -593,6 +731,27 @@ class Adapters extends Component {
         }
     }
 
+    renderSnackbar() {
+        return (<Snackbar
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            open={!!this.state.tooltip}
+            autoHideDuration={6000}
+            onClose={() => this.setState({tooltip: '', errorTooltip: false})}
+            message={<span id="message-id">{this.state.tooltip}</span>}
+            classes={{root: this.state.errorTooltip ? this.props.classes.tooltipError: undefined}}
+            action={[
+                <IconButton
+                    key="close"
+                    color="inherit"
+                    className={this.props.classes.close}
+                    onClick={() => this.setState({tooltip: '', errorTooltip: false})}
+                >
+                    <IconClose />
+                </IconButton>,
+            ]}
+        />);
+    }
+
     renderTable() {
         const names = Object.keys(this.state.adapters);
         if (this.state.orderBy === 'Title') {
@@ -660,10 +819,11 @@ class Adapters extends Component {
 
         return [
             this.renderHeader(),
-            this.state.tableView ? this.renderTable() :
+            !this.props.mobile && this.state.tableView ? this.renderTable() :
             (<div key="body" className={this.props.classes.root} ref={this.contentRef}>
                 {this.state.content && Object.keys(this.state.content.pages).map(type => this.renderType(type))}
-            </div>)
+            </div>),
+            this.renderSnackbar(),
         ];
     }
 }
@@ -674,6 +834,7 @@ Adapters.propTypes = {
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
+    width: PropTypes.number,
 };
 
 export default withStyles(styles)(Adapters);

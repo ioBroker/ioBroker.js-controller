@@ -9,8 +9,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import {FaMailBulk as IconEmail} from 'react-icons/fa';
 
 import I18n from '../i18n';
-import Utils from '../Utils';
-import {MdClose as IconClose} from "react-icons/md";
+import {MdClose as IconClose} from 'react-icons/md';
 
 const styles = theme => ({
     mainDiv: {
@@ -50,7 +49,7 @@ const styles = theme => ({
     }
 });
 
-const regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 class Subscribe extends Component {
     constructor(props) {

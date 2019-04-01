@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import SplitterLayout from 'react-splitter-layout';
@@ -372,7 +372,7 @@ class TreePage extends Router {
             onMenuOpenClose={!this.state.resizing ? (opened, cb) => this.onMenuOpenClose(opened, cb) : null}
             onEditMode={this.onEditMode.bind(this)}
             editMode={this.state.editMode}
-            resizing={this.state.resizing }
+            resizing={this.state.resizing}
             contentWidth={this.state.menuSize}
             menuOpened={this.state.menuOpened}
             onNavigate={this.props.onNavigate}
@@ -418,7 +418,8 @@ TreePage.propTypes = {
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
-    contentPath: PropTypes.string
+    contentPath: PropTypes.string,
+    contentWidth: PropTypes.number,
 };
 
 export default withStyles(styles)(TreePage);
