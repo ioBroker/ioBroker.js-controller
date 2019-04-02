@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv-rs/README.md
-title: без названия
-hash: aU2EFF00up1mJbFDbOSomkMGg90c+SxURGk6KC5dX3o=
+title: ioBroker LG TV адаптер RS232
+hash: DKbZHmbQ+8tx4lVcCUf2im47pxpoZ+PKBjrPZJX3KLY=
 ---
-![логотип](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png) ioBroker LG TV RS232 адаптер =================
+![логотип](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)
 
 ![Количество установок](http://iobroker.live/badges/lgtv-rs-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)
@@ -13,7 +13,8 @@ hash: aU2EFF00up1mJbFDbOSomkMGg90c+SxURGk6KC5dX3o=
 ![тесты](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.lgtv-rs.png?downloads=true)
 
-IoBroker LG TV Адаптер RS232 используется для управления телевизором LG через RS232 в сочетании с шлюзом Etnernet.
+# IoBroker LG TV адаптер RS232
+ioBroker LG TV Адаптер RS232 используется для управления телевизором LG через RS232 в сочетании с шлюзом Etnernet.
 Список моделей и команд содержится в файле `admin/commands.json`.
 
 ## Аппаратное обеспечение
@@ -25,11 +26,12 @@ IoBroker LG TV Адаптер RS232 используется для управл
 ## Служба поддержки
 Поддерживаемые модели: LD750 будет ...
 
+## Changelog
 ### 0.0.4
-  (установщик) исправить ошибку
+  (instalator) fix error
 
 ### 0.0.3
-  (установщик) альфа
+  (instalator) alfa
 
 ### 0.0.1
-  (установщик) начальный
+  (instalator) initial

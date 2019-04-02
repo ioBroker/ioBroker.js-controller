@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.chromecast/README.md
 title: ioBroker.chromecast
-hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
+hash: Ae1OlCHGy/tIEHalqMKQSUTdoon2Kz4ylbi3rPoOpyM=
 ---
 ![商标](../../../en/adapterref/iobroker.chromecast/admin/home.png)
 
@@ -13,7 +13,7 @@ hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
 ![建立状态](https://travis-ci.org/angelnu/ioBroker.chromecast.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.chromecast.png?downloads=true)
 
-＃ioBroker.chromecast =======================
+＃ioBroker.chromecast
 ##适用于ioBroker的Google Home适配器
 此插件允许检测视频和/或音频Google Home设备。对于每个检测到的家庭设备，都会创建一个ioBroker设备。此设备显示设备的状态，并允许向其发送新的URL以进行强制转换。
 

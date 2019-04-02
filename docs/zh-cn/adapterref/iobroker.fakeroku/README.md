@@ -3,15 +3,17 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fakeroku/README.md
 title: ioBroker.fakeroku
-hash: PhCqlWB3YX4j4bvXMQXbutCelfuftGo/QGBDhbRX2Kg=
+hash: 0yNByMYzHfhlxji1IQCqHQARTI6yzOmsNGsP7+oxPao=
 ---
 ![商标](../../../en/adapterref/iobroker.fakeroku/admin/fakeroku.png)
 
 ![建立状态](https://travis-ci.org/Pmant/ioBroker.fakeroku.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/fakeroku-stable.svg)
 
-#ioBroker.fakeroku此ioBroker适配器模拟Roku，其唯一目的是将ioBroker连接到Logitech Harmony Hub。
+#ioBroker.fakeroku
+此ioBroker适配器模拟Roku，其唯一目的是将ioBroker连接到Logitech Harmony Hub。
 它也可以与其他可以控制Roku的设备一起使用。
+
 ##安装
 ioBroker管理中的Intall适配器
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
+hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -82,6 +82,7 @@ hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
  - 历史记录（如果没有找到SQL或InfluxDB）
  -  flot（在历史适配器存在时提供）
  -  JavaScript
+ - 信息
  - 移动
  - 可见
  - 网络
@@ -111,6 +112,7 @@ hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 ## Changelog
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
+* (ldittmar) info Adapter added
 
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made

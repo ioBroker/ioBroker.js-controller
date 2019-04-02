@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.chromecast/README.md
 title: ioBroker.chromecast
-hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
+hash: Ae1OlCHGy/tIEHalqMKQSUTdoon2Kz4ylbi3rPoOpyM=
 ---
 ![логотип](../../../en/adapterref/iobroker.chromecast/admin/home.png)
 
@@ -13,9 +13,9 @@ hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
 ![Статус сборки](https://travis-ci.org/angelnu/ioBroker.chromecast.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.chromecast.png?downloads=true)
 
-# IoBroker.chromecast =======================
+# IoBroker.chromecast
 ## Адаптер Google Home для ioBroker
-Этот плагин позволяет обнаруживать видео и / или аудио устройства Google Home. Для каждого обнаруженного домашнего устройства создается устройство ioBroker. Это устройство отображает статус устройства и позволяет отправить ему новый URL для приведения.
+Этот плагин позволяет обнаруживать видео и / или аудио устройства Google Home. Для каждого обнаруженного домашнего устройства создается устройство ioBroker. Это устройство отображает состояние устройства и позволяет отправить ему новый URL для преобразования.
 
 Построить поверх следующих проектов:
 

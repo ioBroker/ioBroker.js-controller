@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lgtv-rs/README.md
-title: 无题
-hash: aU2EFF00up1mJbFDbOSomkMGg90c+SxURGk6KC5dX3o=
+title: ioBroker LG电视RS232适配器
+hash: DKbZHmbQ+8tx4lVcCUf2im47pxpoZ+PKBjrPZJX3KLY=
 ---
-![商标](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)ioBrokerLG电视RS232适配器=================
+![商标](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)
 
 ![安装数量](http://iobroker.live/badges/lgtv-rs-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)
@@ -13,7 +13,8 @@ hash: aU2EFF00up1mJbFDbOSomkMGg90c+SxURGk6KC5dX3o=
 ![测试](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.lgtv-rs.png?downloads=true)
 
-IoBroker LG TV RS232适配器用于通过RS232与Etnernet网关一起控制LG电视。
+＃ioBroker LG TV RS232适配器
+ioBroker LG TV RS232适配器用于通过RS232与Etnernet网关一起控制LG电视。
 模型和命令列表包含在`admin/commands.json`文件中。
 
 ＃＃ 硬件
@@ -25,11 +26,12 @@ IoBroker LG TV RS232适配器用于通过RS232与Etnernet网关一起控制LG电
 ##支持
 支持型号：LD750待...
 
+## Changelog
 ### 0.0.4
-  （instalator）修复错误
+  (instalator) fix error
 
 ### 0.0.3
-  （instalator）阿尔法
+  (instalator) alfa
 
 ### 0.0.1
-  （instalator）最初
+  (instalator) initial

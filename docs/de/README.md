@@ -4,10 +4,9 @@ lastChanged: "29.03.2019"
 ---
 # Willkommen bei ioBroker
 !> **Hinweis für Einsteiger**
-    
-> Sollten beim Lesen dieser ersten Worte schon zu viele unbekannten Begriffe 
-verwendet worden sein, werden diese nochmals auf der [nächsten Seite](basics/README.md)
-ausführlich erklärt.
+    Sollten beim Lesen dieser ersten Worte schon zu viele unbekannten Begriffe 
+    verwendet worden sein, werden diese nochmals auf der [nächsten Seite](basics/README.md)
+    ausführlich erklärt.
 
 ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
 ioBroker Insellösungen bleiben würden in einem Gesamtsystem zu integrieren. 
@@ -41,7 +40,7 @@ plattformübergreifend. Der Parallelbetrieb mit bestehenden Lösungen
 ist jederzeit möglich. Es können Synergieeffekte genutzt und das 
 Beste aus allen Welten zusammengeführt werden. 
 
-ioBroker selbst IST auf fast allen Plattformen zu Hause. ioBoker kann unter 
+ioBroker selbst IST auf fast allen Plattformen zu Hause. ioBroker kann unter 
 Windows, Linux, OSX oder auch als Dockerimage installiert werden. 
 Vorkonfigurierte Installationsimages nehmen dabei dem Anwender die 
 Installationsarbeit ab.
@@ -111,7 +110,4 @@ zur freien Verfügung.
    auf eigene Haftung, ausgenommen dem Vorsatz einer mutwilligen Schädigung. 
    Es gibt keinen vertraglich festgelegten Support.
 
-[Forum]: https://forum.iobroker.net
-[GitHub]: https://github.com/iobroker/iobroker
 [im Forum]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
-[hier zu finden]: http://www.iobroker.net/docu/?lang=de

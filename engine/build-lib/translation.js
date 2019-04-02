@@ -153,7 +153,8 @@ function partsTake(text, addIds) {
             return;
         }
 
-        if (lineTrimmed.match(/^\[\d+]:/)) {
+        // detect [SomeLink]:(at the end of the document)
+        if (lineTrimmed.match(/^\[[^\]]+]:/)) {
             // link
             parts.push({type: 'decoration', lines: [lineTrimmed]});
             current = '';

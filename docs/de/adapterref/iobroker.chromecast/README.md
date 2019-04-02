@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.chromecast/README.md
 title: ioBroker.chromecast
-hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
+hash: Ae1OlCHGy/tIEHalqMKQSUTdoon2Kz4ylbi3rPoOpyM=
 ---
 ![Logo](../../../en/adapterref/iobroker.chromecast/admin/home.png)
 
@@ -13,7 +13,7 @@ hash: bEyywg702jpyZU1BHNzrRqv/+msbdSYzvk7zVvmq0/w=
 ![Build-Status](https://travis-ci.org/angelnu/ioBroker.chromecast.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.chromecast.png?downloads=true)
 
-# IoBroker.chromecast =========================
+# IoBroker.chromecast
 ## Ein Google Home-Adapter für ioBroker
 Mit diesem Plugin können Sie Video- und / oder Audiogeräte von Google Home-Geräten erkennen. Für jedes erkannte Home-Gerät wird ein ioBroker-Gerät erstellt. Dieses Gerät zeigt den Status des Geräts an und ermöglicht das Senden einer neuen URL für die Umwandlung.
 
@@ -49,7 +49,7 @@ Bauen Sie auf folgenden Projekten auf:
       * Vollständige Liste der Formate [hier] (https://developers.google.com/cast/docs/media).
     * Wenn die URL nicht mit http beginnt, gehen Sie davon aus, dass es sich um eine lokale Datei handelt
       * Exportdatei über den ioBroker-Webserver
-    * Es spielt nur Faustdateien von Wiedergabelistendateien wie .m3u ab
+    * Es spielt nur Faustdateien von Wiedergabelisten wie .m3u ab
 * Vis-Widget
   * HINWEIS: erfordert [gepatchten Vis-Adapter] (https://github.com/angelnu/ioBroker.vis).
 * Anfängliche Unterstützung für Chromecast-Audiogruppen

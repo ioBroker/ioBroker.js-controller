@@ -9,13 +9,13 @@ lastChanged: "13.09.2018"
 Widgets ('Gerät, Ding') sind in diesem Zusammenhang Anzeigeelemente, die auf verschiedene Weisen 
 Zahlen, Texte, Bilder oder Diagramme darstellen und Interaktionsmöglichkeiten bieten.
 
-## **ioBroker.vis Widgets**
+## ioBroker.vis Widgets
 
 Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 
 ### Die Grundeinstellungen von Widgets
  
-#### **Generell**
+#### Generell
 
 ![001_Widget_Generell](media/vis_widgets_001_Widget_Generell.jpg)  
 
@@ -28,7 +28,7 @@ Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 | Zeige in Views|Hier kann ausgewählt werden, ob dieses Widget nur im aktuellen View oder in mehreren erscheinen soll.
 | Inaktiv (locked)|:construction:
 
-#### **Sichtbarkeit**
+#### Sichtbarkeit
 
 Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig gemacht werden.  
 ![002_Widget_Sichtbarkeit](media/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)  
@@ -40,18 +40,17 @@ Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig
 | Bedingung|Das Widget wird sichtbar wenn die hier eingegebene Bedingung für den o.a. Datenpunkt...
 | Wert für die Bedingung|...dem hier eingebenen Wert entspricht.
 
-#### **Allgemein**
+#### Allgemein
 
 ![](media/vis_widgets_003_Widget_Allgemein.jpg)  
 Der Abschnitt 'Allgemein' ist für jedes Widget spezifisch 
 und wird bei den einzelnen Widgets näher beschrieben. 
 In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.  
 
-***
 Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten 
 und können den eigenen Wünschen angepasst werden:
 
-#### **CSS allgemein**
+#### CSS allgemein
 ![](media/vis_widgets_004_CSS_allgemein.jpg)  
 
 | Attribut|Beschreibung|
@@ -65,7 +64,7 @@ und können den eigenen Wünschen angepasst werden:
 | `overflow-y`|
 | `opacity`|Durchsichtigkeit  (0=undurchsichtig ->Bild unsichtbar .. 1=durchsichtig ->Bild sichtbar)
 
-#### **CSS Font & Text**
+#### CSS Font & Text
 
 ![005_CSS_Font_Text](media/vis_widgets_005_CSS_Font_Text.jpg)  
 
@@ -83,25 +82,25 @@ und können den eigenen Wünschen angepasst werden:
 | `letter-spacing`|Zeichenabstand
 | `word-spacing`|Wortabstand
 
-#### **CSS-Hintergrund**
+#### CSS-Hintergrund
 
 ![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)  
 
-| Attribut|Beschreibung|
-|-----|----| 
-| background|Hier können mehrere der folgenden Eigenschaften gemeinsam angegeben werden
-| `-color`|Farbe des Hintergrunds
-| `-image`|Hintergrundbild
-| `-repeat`|Legt fest, ob ein Hintergrund über die gesamte Breite oder/und Höhe eines Elements wiederholt wird.
-| `-attachement`|Legt fest, ob ein Hintergrundbild fest ist, oder beim Scrollen mitverschoben wird
-| `-position`|Ausrichtung des Hintergrundbildes (https://www.w3schools.com/cssref/pr_background-position.asp)
-| `-size`|Größe des Hintergrundbildes
-| `-clip`|Regelt die Überschneidung mit dem Rand
-| `-origin`|Koordinatensystemursprung für Bildkoordinaten
+| Attribut | Beschreibung |
+|-----|-----| 
+| `background` |Hier können mehrere der folgenden Eigenschaften gemeinsam angegeben werden
+| `-color` |Farbe des Hintergrunds
+| `-image` |Hintergrundbild
+| `-repeat` |Legt fest, ob ein Hintergrund über die gesamte Breite oder/und Höhe eines Elements wiederholt wird.
+| `-attachement` |Legt fest, ob ein Hintergrundbild fest ist, oder beim Scrollen mitverschoben wird
+| `-position` |Ausrichtung des Hintergrundbildes (https://www.w3schools.com/cssref/pr_background-position.asp)
+| `-size` |Größe des Hintergrundbildes
+| `-clip` |Regelt die Überschneidung mit dem Rand
+| `-origin` |Koordinatensystemursprung für Bildkoordinaten
 
 (siehe https://www.w3schools.com/cssref/css3_pr_background.asp)  
 
-#### **CSS Border**
+#### CSS Border
 
 ![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)  
 
@@ -112,7 +111,7 @@ und können den eigenen Wünschen angepasst werden:
 | `-color`|Farbe der Umrandung
 | `-radius`|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein
 
-#### **CSS Schatten und Abstand**
+#### CSS Schatten und Abstand
 
 ![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
 

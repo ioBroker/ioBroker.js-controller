@@ -77,6 +77,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - History (if no SQL or InfluxDB found)
 - flot (offered when a History-Adapter is present)
 - JavaScript
+- Info
 - Mobile
 - Vis
 - Web
@@ -106,6 +107,7 @@ Just now it can detect via ping, UPnP (serial planned).
 ## Changelog
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
+* (ldittmar) info Adapter added
 
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made

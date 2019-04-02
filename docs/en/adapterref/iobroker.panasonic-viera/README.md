@@ -1,7 +1,5 @@
-<h1>
-  <img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.panasonic-viera/master/admin/panasonic-viera.png" width="64"/>
-  ioBroker.panasonic-viera
-</h1>
+![logo](admin/panasonic-viera.png)
+# ioBroker.panasonic-viera
 
 ![Number of Installations](http://iobroker.live/badges/panasonic-viera-installed.svg) ![Number of Installations](http://iobroker.live/badges/panasonic-viera-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.panasonic-viera.svg)](https://www.npmjs.com/package/iobroker.panasonic-viera)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.panasonic-viera.svg)](https://www.npmjs.com/package/iobroker.panasonic-viera)

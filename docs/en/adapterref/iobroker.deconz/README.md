@@ -25,6 +25,10 @@ Required node.js >= 0.12.
 
 ## Changelog
 
+### 1.0.2
+* fix set bri for groups
+
+
 ### 1.0.1
 * small fixes
 

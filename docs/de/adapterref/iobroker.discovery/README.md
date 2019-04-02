@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
+hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -82,6 +82,7 @@ Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
 - Verlauf (wenn keine SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
 - JavaScript
+- Info
 - Handy, Mobiltelefon
 - Vis
 - Netz
@@ -111,6 +112,7 @@ Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
 ## Changelog
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
+* (ldittmar) info Adapter added
 
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made

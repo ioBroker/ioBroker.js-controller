@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
+hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -82,6 +82,7 @@ hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 - История (если не найден SQL или InfluxDB)
 - flot (предлагается при наличии адаптера истории)
 - JavaScript
+- Информация
 - мобильный
 - Vis
 - Интернет
@@ -111,6 +112,7 @@ hash: eMX91m7bjYz2QOdeleU7/zfucMqyuFWIb198ebp3poQ=
 ## Changelog
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
+* (ldittmar) info Adapter added
 
 ### 1.2.4 (2018-09-22)
 * (bluefox) Small GUI update was made

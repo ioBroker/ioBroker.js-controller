@@ -3,15 +3,17 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fakeroku/README.md
 title: ioBroker.fakeroku
-hash: PhCqlWB3YX4j4bvXMQXbutCelfuftGo/QGBDhbRX2Kg=
+hash: 0yNByMYzHfhlxji1IQCqHQARTI6yzOmsNGsP7+oxPao=
 ---
 ![логотип](../../../en/adapterref/iobroker.fakeroku/admin/fakeroku.png)
 
 ![Статус сборки](https://travis-ci.org/Pmant/ioBroker.fakeroku.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/fakeroku-stable.svg)
 
-# ioBroker.fakeroku Этот адаптер ioBroker эмулирует Roku, и его единственная цель - подключить ioBroker к концентраторам Logitech Harmony.
+# IoBroker.fakeroku
+Этот адаптер ioBroker эмулирует Roku, и его единственная цель - подключить ioBroker к концентраторам Logitech Harmony.
 Он также может работать с другими устройствами, которые могут управлять Roku.
+
 ## Монтаж
 Адаптер Intall в ioBroker Admin
 

@@ -2,9 +2,11 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.panasonic-viera/README.md
-title: kein Titel
-hash: GVCo/n7v1IUIfXugCMhb63trhPaj06CHTl+zP+GPYKo=
+title: ioBroker.panasonic-viera
+hash: G5hNKleLPHTXlncHi5VQBBRGFzLckfi/kwVrllbFCIY=
 ---
+![Logo](../../../en/adapterref/iobroker.panasonic-viera/admin/panasonic-viera.png)
+
 ![Anzahl der Installationen](http://iobroker.live/badges/panasonic-viera-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.panasonic-viera.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.panasonic-viera.svg)
@@ -15,8 +17,7 @@ hash: GVCo/n7v1IUIfXugCMhb63trhPaj06CHTl+zP+GPYKo=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.panasonic-viera?branch=master&svg=true)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.panasonic-viera.svg)
 
-<h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.panasonic-viera/master/admin/panasonic-viera.png" width="64"/> ioBroker.panasonic-viera </h1>
-
+# IoBroker.panasonic-viera
 ## Ein Panasonic Viera Smart-TV-Adapter für ioBroker
 Dies ist ein ioBroker-Adapter für Ihren Panasonic Viera Smart-TV. Getestet mit Panasonic TX-50DX780 und TX-50EXW.
 

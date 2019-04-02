@@ -4,12 +4,10 @@ lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/README.md
-hash: h1rTfgZMUSpBJmDGC3xUP5/XUHnrRYKnJ9nnHueUgQE=
+hash: PFfFSopqDMX1D9KYf2jqoKTYJChzcPMyEATrlgAC6Pg=
 ---
 ＃欢迎来到ioBroker
-！> **初学者注意事项**
-
->如果在阅读这些第一个单词时使用了太多未知术语，将在[下一页](basics/README.md)上再次详细解释它们。
+！> **初学者注意事项**如果使用了太多未知术语来阅读这些第一个单词，将在[下一页](basics/README.md)上再次详细解释它们。
 
 ioBroker是一个软件解决方案，用于集成各种智能家居系统，在整个系统中不使用ioBroker孤岛解决方案。
 
@@ -17,14 +15,14 @@ ioBroker是一个软件解决方案，用于集成各种智能家居系统，在
 
 ioBroker系统具有模块化结构。各种***适配器***允许与像Alexa到Z这样的200多个不同平台进行通信，就像时间跟踪一样。
 
-无论是来自几乎所有生活领域的商业产品的集成，还是自我创建解决方案的集成，ioBroker几乎可以实现一切。
+无论是几乎所有生活领域的商业产品的整合，还是自我创建解决方案的整合，ioBroker几乎都能实现所有可能。
 
 ！&gt;文档正在构建中，并且不断扩展。因此，链接可能无法正常工作或内容丢失。我们感谢您在创建新文章或改进方面提供的任何帮助。有关这方面的信息可以在[在论坛中](https://forum.iobroker.net)中找到。 <br><br> **在所有内容都被接管之前，旧文档仍然是[在这里找到](http://www.iobroker.net)。它将被新文档相继替换。**
 
 ##跨平台
 熟悉家庭自动化的人迟早会发现系统往往并不完美。每个系统都有自己的优点和缺点。因此ioBroker是跨平台的。可以随时使用现有解决方案进行并行操作。可以使用协同效应，并将所有世界中最好的结合在一起。
 
-ioBroker几乎在所有平台上都处于家中。 ioBoker可以安装在Windows，Linux，OSX或Dockerimage下。
+ioBroker几乎在所有平台上都处于家中。 ioBroker可以安装在Windows，Linux，OSX或Dockerimage下。
 预配置的安装映像将删除用户的安装工作。
 
 可选的基于云的访问允许用户或系统集成商远程管理本地安装的ioBroker 24/7系统。用户可以由用户和组自由配置访问控制。
@@ -55,4 +53,4 @@ ioBroker几乎在所有平台上都处于家中。 ioBoker可以安装在Windows
 ？> ioBroker不是：ioBroker不是商业软件。 ioBroker由志愿者开发和维护。因此，使用软件对自己负有责任，除非是故意伤害的意图。
 没有合同支持。
 
-[论坛]：https：//forum.iobroker.net [GitHub]：https：//github.com/iobroker/iobroker [在论坛中]：https：//forum.iobroker.net/viewtopic.php？f = 8＆t = 16933 [在这里找到]：http：//www.iobroker.net/docu/？lang = en
+[在论坛中]：https：//forum.iobroker.net/viewtopic.php？f = 8＆t = 16933

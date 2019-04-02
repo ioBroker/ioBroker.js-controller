@@ -4,12 +4,10 @@ lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/README.md
-hash: h1rTfgZMUSpBJmDGC3xUP5/XUHnrRYKnJ9nnHueUgQE=
+hash: PFfFSopqDMX1D9KYf2jqoKTYJChzcPMyEATrlgAC6Pg=
 ---
 # Welcome to ioBroker
-!> **Note for beginners**
-
-> If too many unknown terms have been used when reading these first words, they will be explained again in detail on [next page](basics/README.md).
+!> **Note for beginners** If too many unknown terms have been used to read these first words, they will be explained again in detail on [next page](basics/README.md).
 
 ioBroker is a software solution for integrating various smarthome systems that would remain without ioBroker island solutions in an overall system.
 
@@ -24,7 +22,7 @@ Be it the integration of commercial products from almost all areas of life or th
 ## Cross-platform
 Anyone familiar with home automation will sooner or later discover that systems are often not perfect. Each system has its strengths and weaknesses. ioBroker is therefore cross-platform. Parallel operation with existing solutions is possible at any time. Synergy effects can be used and the best of all worlds brought together.
 
-ioBroker itself is at home on almost all platforms. ioBoker can be installed under Windows, Linux, OSX or as Dockerimage.
+ioBroker itself is at home on almost all platforms. ioBroker can be installed under Windows, Linux, OSX or as Dockerimage.
 Preconfigured installation images remove the installation work from the user.
 
 An optional cloud-based access allows the user or system integrators to remotely manage to a locally installed ioBroker 24/7 system. The access control can be freely configured by users and groups by the user.
@@ -55,4 +53,4 @@ Since 2014, ioBroker has been widely supported by thousands of users and develop
 ?> What ioBroker is not: ioBroker is not commercial software. ioBroker is developed and maintained by volunteers. Therefore, the use of the software on their own liability, except the intent of willful harm.
 There is no contracted support.
 
-[Forum]: https://forum.iobroker.net [GitHub]: https://github.com/iobroker/iobroker [in the forum]: https://forum.iobroker.net/viewtopic.php?f=8&t = 16933 [to be found here]: http://www.iobroker.net/docu/?lang=en
+[im Forum]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933

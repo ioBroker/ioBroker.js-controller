@@ -40,12 +40,6 @@
 | `Speech to text`          | ![036](media/widget_images/basic/Prev_Speech2Text.png)||
 | `Full Screen`             | ![037](media/widget_images/basic/Prev_FullScreen.png)||
 | `Screen Resolution`       | ![038](media/widget_images/basic/Prev_ScreenResolution.png)||
-| `todo`                    | ![](media/widget_images/basic/Explanation/html.png) ||
-| `todo`                    | ![](media/widget_images/basic/Explanation/svg.gif) ||
-| `todo`                    | ![](media/widget_images/basic/Explanation/iframe.gif) ||
-| `todo`                    | ![](media/widget_images/basic/Explanation/image.gif) ||
-| `todo`                    | ![](media/widget_images/basic/Explanation/link.gif) ||
-| `todo`                    | ![](media/widget_images/basic/Explanation/border.gif) ||
 
 ### Html Frame  
 Dieses Widget stellt beliebigen HTML-Code dar. Es ist auch möglich, Javascript innerhalb des Widgets zu verwenden.  
@@ -57,7 +51,7 @@ Dieses Widget stellt beliebigen HTML-Code dar. Es ist auch möglich, Javascript 
 | Html anhängen|HTML-Code, der nach dem Objekt dargestellt werden soll|  
 
 **Beispiel:**  
-![039]  
+![](media/widget_images/basic/Explanation/html.png)  
 
 ### SVG Shape
 Dieses Widget stellt einfach eine geometrische Form da, wobei einige Formen vordefiniert sind.  
@@ -73,7 +67,7 @@ Dieses Widget stellt einfach eine geometrische Form da, wobei einige Formen vord
 | Höhenskala|Skaliert die Höhe zwischen 0 und 100%|  
 
 **Beispiel:**  
-![040]  
+![](media/widget_images/basic/Explanation/svg.gif)
 
 ### iFrame  
 Stellt einen iFrame dar  
@@ -91,7 +85,7 @@ Stellt einen iFrame dar
 | Kein Rahmen|:construction:|  
 
 **Beispiel:**  
-![041]  
+![](media/widget_images/basic/Explanation/iframe.gif) 
 
 ### Image
 Dieses Widget stellt ein Bild dar.  
@@ -107,7 +101,7 @@ Dieses Widget stellt ein Bild dar.
 | Allow useer interactions|:construction:|  
 
 **Beispiel:**  
-![042]  
+![](media/widget_images/basic/Explanation/image.gif)  
 
 ### Link
 Dieses Widget entspricht dem Widget "HTML Frame", ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Kann für die Navigation zwischen Views oder für externe Links genutzt werden.  
@@ -119,7 +113,7 @@ Dieses Widget entspricht dem Widget "HTML Frame", ist aber zusätzlich auf seine
 | `target`|Das Ziel des Links. Leer lassen um im gleichen Browser-Fenster zu bleiben; möchte man ein neues Fenster öffnen _blank eintragen.  Weitere Optionen: _self (gleicher Tab),  _parent (),  _top ()
 
 **Beispiel:**  
-![043]  
+![](media/widget_images/basic/Explanation/link.gif) 
 
 ### Border  
 Dieses Widget stellt einfach einen Rahmen dar - ohne weitere Funktion, nur Text und Farbe. Das kann zur Gruppierung von Widgets genutzt werden.  
@@ -136,7 +130,7 @@ Dieses Widget stellt einfach einen Rahmen dar - ohne weitere Funktion, nur Text 
 | Kopffarbe|Farbe des Balkens  
 
 **Beispiel:**  
-![044]  
+![](media/widget_images/basic/Explanation/border.gif) 
 
 ### View in widget 8
 Zeigt eine von 8 Views in Abhängigkeit von einem Zustand an.  

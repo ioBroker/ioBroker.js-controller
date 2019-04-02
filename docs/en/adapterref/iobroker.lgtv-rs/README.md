@@ -1,6 +1,6 @@
 ![Logo](admin/lg_admin.png)
-ioBroker LG TV RS232 adapter
-=================
+# ioBroker LG TV RS232 adapter
+
 ![Number of Installations](http://iobroker.live/badges/lgtv-rs-installed.svg) ![Number of Installations](http://iobroker.live/badges/lgtv-rs-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)](https://www.npmjs.com/package/iobroker.lgtv-rs)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.lgtv-rs.svg)](https://www.npmjs.com/package/iobroker.lgtv-rs)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)](https://travis-ci.org/instalator/ioBroker.lgtv-rs)
@@ -19,6 +19,7 @@ You will also need an Ethernet Shield W5100 or W5500 and an RS232 to TTL convert
 ## Support
 Supported models: LD750 to be...
 
+## Changelog
 ### 0.0.4
   (instalator) fix error
 

@@ -1,6 +1,5 @@
 ![Logo](admin/home.png)
 # ioBroker.chromecast
-=======================
 
 ![Number of Installations](http://iobroker.live/badges/chromecast-installed.svg) ![Number of Installations](http://iobroker.live/badges/chromecast-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.chromecast.svg)](https://www.npmjs.com/package/iobroker.chromecast)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.chromecast.svg)](https://www.npmjs.com/package/iobroker.chromecast)

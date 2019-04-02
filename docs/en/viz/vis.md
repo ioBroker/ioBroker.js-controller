@@ -1,43 +1,41 @@
 ---
-title: visualization
+title: Vis
 lastChanged: 13.09.2018
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/viz/vis.md
-hash: 7UR+f+46PDLExWz3xC4KvD2295kwXCfbQOHLN5BFcak=
+hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 ---
-# Visualizations with VIS {docsify-ignore-all}
+# Visualizations with VIS
 ?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
 
 ## As a general rule
-@@@ VIS is a powerful application that deserves detailed instructions and tutorials. The form and location of this manual is not yet defined.
-@@@
+> VIS is a powerful application that deserves detailed instructions and tutorials. The form and location of this manual is not yet defined.
 
-## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#konfiguration)
 ## Configuration
 A configuration of the adapter is not necessary. There can only be one VIS instance.
 
-* * *
+## Service
+[](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)
 
-## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)Operation
 The adapter is called via `<IPdesServers>:8082/vis/index.html` and the visualization is displayed.
 There are several views in a project.
 On each view, several widgets are again freely placeable, which serve for display or operation.
 To create and configure a visualization you have to load the **editor** The editor is called via `<IPdesServers>:8082/vis/edit.html` or via the hyperlink in the Instances tab of the admin adapter.
 After closing the editor via the Close-Window icon ((x) on the top right), the last edited view is displayed in the function view.
 This can be called up at any time with `<IPdesServers>:8082/vis/index.html#ViewName` The editor is divided into different areas.
-![](../../de/viz/../media/vis/vis_ioBroker_vis_Editor_002-300x165.jpg)
+![](../../de/viz/media/vis_ioBroker_vis_Editor_002-300x165.jpg)
 
 * * *
 
 ## The riders in the head area (1)
 ### Views
 If this tab is selected, you can select the view to be edited from the existing pull-down menu in the pull-down menu below.
-![iobroker_vis_Editor_Views_Header](../../de/viz/../media/vis/iobroker_vis_Editor_Views_Header.jpg) The four icons to the right are self-explanatory and refer to the views.
+![iobroker_vis_Editor_Views_Header](../../de/viz/media/iobroker_vis_Editor_Views_Header.jpg) The four icons to the right are self-explanatory and refer to the views.
 After clicking on the workspace, the view in the Properties sidebar on the right side changes to the Views tab and displays the settings for the view.
 
 ### Widgets
-If the tab Widgets is activated, the underlying toolbar changes. ![iobroker_vis_Editor_Widgets_Header](../../de/viz/../media/vis/iobroker_vis_Editor_Widgets_Header.jpg) The tools for editing widgets are displayed.
+If the tab Widgets is activated, the underlying toolbar changes. ![iobroker_vis_Editor_Widgets_Header](../../de/viz/media/iobroker_vis_Editor_Widgets_Header.jpg) The tools for editing widgets are displayed.
 
 #### Pulldown menu
 Here you can select a widget for editing, or the selected widget will be displayed here.
@@ -46,7 +44,7 @@ Here you can select a widget for editing, or the selected widget will be display
 The three icons for delete, copy and info become active when a widget is selected.
 
 #### Align widgets
-![](../../de/viz/../media/vis/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG) If one selects several widgets with pressed mouse button (or with Ctrl-click) one can then align with the help of these icons groups (left-justified, right-aligned, flush-topped, bottom flush, centered, center vertically aligned).
+![](../../de/viz/media/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG) If one selects several widgets with pressed mouse button (or with Ctrl-click) one can then align with the help of these icons groups (left-justified, right-aligned, flush-topped, bottom flush, centered, center vertically aligned).
 In addition, you can position multiple widgets with the same distance (horizontal and vertical), as well as adjust the size of several widgets with the last two icons.
 If you select a widget, the view in the Properties sidebar on the right side changes to the Widget tab and displays the settings for this widget.
 With the possibility of multiple selection you can change the properties of several widgets on the right sidebar at the same time.
@@ -63,7 +61,7 @@ Conversely, one can here for example Import widgets that are not in the scope of
 After clicking on a widget, the view in the Properties sidebar on the right side changes to the Widget tab and displays the settings for the selected widget.
 
 ### Tools
-If the Tools tab is activated, the underlying toolbar changes. ![](../media/vis/iobroker_vis_Editor_Tools_Header.JPG) The tools for facilitating the editing of [Views](http://www.iobroker.net/?page_id=1193&lang=de) are displayed
+If the Tools tab is activated, the underlying toolbar changes. ![](media/iobroker_vis_Editor_Tools_Header.JPG) The tools for facilitating the editing of [Views](http://www.iobroker.net/?page_id=1193&lang=de) are displayed
 
 #### Resolution
 Here are many preset screen resolutions displayed by mobile devices, but also a point "user-defined" offers the possibility to make your own settings.
@@ -92,7 +90,7 @@ Import ####
 After clicking an empty window opens. Here you can copy a text file obtained via the function _export_. Then enter a name for the view in the lower left corner and click on the button _importieren_. From there, the new view is available. This feature is useful for importing examples from the forum.
 
 ### Set up
-![](../../de/viz/../media/vis/iobroker_vis_Editor_Setup_Header.gif)
+![](../../de/viz/media/iobroker_vis_Editor_Setup_Header.gif)
 
 #### Theme
 Here is a color scheme for the editor to choose from.
@@ -107,7 +105,7 @@ The files of the project are in the ioBroker installation in the order `_ioBroke
 
 #### Project export / import
 Projects can be exported as a whole (for example, to share with other users): A zip file is created containing the images used, the vis-user.css stylesheet, and the actual vis-views.json definitions.
-In addition, there is the option to export the project anonymously. : construction: To import other projects, simply drag the zip file of an export described above onto the window and enter a name for the new project: ![](../../de/viz/../media/vis/iobroker_vis_Editor_Setup_Projekt_ImportHeader.gif)
+In addition, there is the option to export the project anonymously. : construction: To import other projects, simply drag the zip file of an export described above onto the window and enter a name for the new project: ![](../../de/viz/media/iobroker_vis_Editor_Setup_Projekt_ImportHeader.gif)
 
 #### New project...
 Here you can create a new project.
@@ -131,18 +129,24 @@ Linking via navigation widgets from one project to another is not possible.
 
 #### File Manager ... (6)
 After selecting this menu item, files can be easily copied or copied to the ioBroker file system without the need for additional programs.
-The file manager opens: ![align = "aligncenter" width = "799"](../media/vis/iobroker_vis_Editor_Setup_Dateimanager.JPG) [caption id = "attachment_6007" align = "aligncenter" width = "799"] [![] (Img / ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg) * The images are only the sample images and are copyrighted by respective companies. / caption]
+The file manager opens:
+
+![](../../de/viz/media/iobroker_vis_Editor_Setup_Dateimanager.JPG)
+
+![](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)
+
+* The images are just the sample images and are copyrighted by relevant companies. [/ Caption]
 
 The behavior is similar to any file manager.
 Use the blue button "arrow left" to maneuver a hierarchy level higher, by clicking on a folder in it.
 With the icon "Folder +" a new folder can be created.
 Once you have reached the desired directory, you select a file, you can download it with the blue arrow on the calculator, click on the green arrow, then opens the "Dropbox".
-![](../../de/viz/../media/vis/iobroker_vis_Editor_Setup_Dateimanager_Dropbox.JPG) Files can be simply dragged and dropped here and then loaded onto the ioBroker server by clicking on the _ **Upload** _ button.
+![](../../de/viz/media/iobroker_vis_Editor_Setup_Dateimanager_Dropbox.JPG) Files can be simply dragged and dropped here and then loaded onto the ioBroker server by clicking on the _ **Upload** _ button.
 Alternatively, you can also click somewhere in the area, then a file selection opens.
 The file list empties itself and if no further files are to be uploaded, one leaves the Dropbox over the button **_ close _**
 
 #### Settings ... (7)
-![](../../de/viz/../media/vis/iobroker_vis_Editor_Setup_Projekteinstellungen.JPG)
+![](../../de/viz/media/iobroker_vis_Editor_Setup_Projekteinstellungen.JPG)
 
 * _ **Reload if no connection is longer than:** _ The active view is reloaded completely,
 
@@ -164,7 +168,7 @@ When reloading the corresponding view, however, this takes longer.
 This option sets the time that unused views should be kept in RAM.
 
 #### Object Browser ... (8)
-![](../../de/viz/../media/vis/iobroker-vis_ioBroker_Adapter_Vis_Editor_Setup_objectbrowser.jpg) Here you can search for an object.
+![](../../de/viz/media/iobroker-vis_ioBroker_Adapter_Vis_Editor_Setup_objectbrowser.jpg) Here you can search for an object.
 This is put into the clipboard after clicking the button _ **Select** _.
 For faster retrieval, the filter fields above the column headers can be used.
 
@@ -179,7 +183,7 @@ With this button you can undo the last action (s) step by step.
 ## The Widget Sidebar (2)
 It is used to select widgets.
 The widgets are displayed as icons and can be dragged and dropped onto the desktop, or positioned with the button _Insert_ at position 0.0 of the desktop.
-![iobroker_vis_Editor_Widgets_sidebar](../../de/viz/../media/vis/vis_iobroker_vis_Editor_Widgets_sidebar.jpg) The field under the button _Insert_ is a filter field.
+![iobroker_vis_Editor_Widgets_sidebar](../../de/viz/media/vis_iobroker_vis_Editor_Widgets_sidebar.jpg) The field under the button _Insert_ is a filter field.
 Here you can enter a term to search the icons afterwards.
 All icons that contain this term are displayed.
 If you delete the last filter (or the \ *), you get a pulldown list with the possible search terms.

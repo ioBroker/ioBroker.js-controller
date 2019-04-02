@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.benq/README.md
-title: без названия
-hash: 2039cqFb9k988C4gt5gK+GzckJciWBfUOICU+P1JwsM=
+title: ioBroker BenQ Адаптер для проектора
+hash: 86x9KOVcP1tM+U/bS399V7esqx2WjTJfOCZrFHRCj9g=
 ---
-![логотип](../../../en/adapterref/iobroker.benq/admin/benq-logo.png) ioBroker BenQ Адаптер проектора =================
+![логотип](../../../en/adapterref/iobroker.benq/admin/benq-logo.png)
 
 ![Количество установок](http://iobroker.live/badges/benq-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.benq.svg)
@@ -13,7 +13,8 @@ hash: 2039cqFb9k988C4gt5gK+GzckJciWBfUOICU+P1JwsM=
 ![тесты](http://img.shields.io/travis/instalator/ioBroker.benq/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.benq.png?downloads=true)
 
-Адаптер IoBroker BenQ Projector используется для управления проектором BenQ через RS232 в сочетании с шлюзом Etnernet.
+# IoBroker BenQ Адаптер для проектора
+Адаптер ioBroker BenQ Projector используется для управления проектором BenQ через RS232 в сочетании с шлюзом Etnernet.
 Список моделей и команд содержится в файле `admin/commands.json`.
 
 ## Аппаратное обеспечение
@@ -24,3 +25,7 @@ hash: 2039cqFb9k988C4gt5gK+GzckJciWBfUOICU+P1JwsM=
 
 ## Служба поддержки
 Поддерживаемые модели: W1200, W1070, W1080, чтобы быть ...
+
+## Changelog
+
+## License
