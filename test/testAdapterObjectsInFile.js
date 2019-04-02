@@ -49,7 +49,7 @@ describe(textName + ' Test Objects', function() {
     after(textName + ' Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(function () {
-            done();
+            setTimeout(done, 2000);
         });
     });
 });
