@@ -1722,7 +1722,7 @@ function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, new Buffer(msg.message.data, 'base64'), msg.message.options, err =>
+            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, Buffer.from(msg.message.data, 'base64'), msg.message.options, err =>
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
 
             break;
@@ -1734,7 +1734,7 @@ function processMessage(msg) {
                     // If client supports file via link
                     if (msg.message.link) {
                         if (!err) {
-                            const buff = new Buffer(base64, 'base64');
+                            const buff = Buffer.from(base64, 'base64');
                             states.setBinaryState('system.host.' + hostname + '.zip.' + msg.message.link, buff, err => {
                                 if (err) {
                                     sendTo(msg.from, msg.command, {error: err}, msg.callback);
@@ -1758,7 +1758,7 @@ function processMessage(msg) {
 
         case 'writeObjectsAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, new Buffer(msg.message.data, 'base64'), msg.message.options, err =>
+            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, Buffer.from(msg.message.data, 'base64'), msg.message.options, err =>
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
             break;
 
@@ -2850,7 +2850,7 @@ function init() {
 
     // Get "states" object
     if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0')) {
-        States  = require('./lib/states/statesInMemServer');
+        States  = require('./lib/states/statesInMemServerRedis');
     } else {
         States  = require('./lib/states');
     }

@@ -326,7 +326,7 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
-            objects.writeFile(testId, 'myFile/abc2.txt', new Buffer('ABC'), err => {
+            objects.writeFile(testId, 'myFile/abc2.txt', Buffer.from('ABC'), err => {
                 expect(err).to.be.not.ok;
                 objects.readDir(testId, 'myFile/', (err, data) => {
                     expect(err).to.be.not.ok;
@@ -353,7 +353,7 @@ function register(it, expect, context) {
 
     it(textName + 'should rename file', done => {
         const objects = context.objects;
-        objects.writeFile(testId, 'myFile1/abcRename.txt', new Buffer('abcd'), err => {
+        objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             expect(err).to.be.not.ok;
             objects.rename(testId, 'myFile1/abcRename.txt', 'myFile/abc3.txt', err => {
                 expect(err).to.be.not.ok;
