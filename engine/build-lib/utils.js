@@ -76,7 +76,6 @@ function trim(text, char) {
     return text;
 }
 
-
 function getTitle(text) {
     let {body, header} = extractHeader(text);
     if (!header.title) {

@@ -12,9 +12,9 @@ const translate = new Translate({projectId: projectId,});
 const TRANSLATE_DELAY = 5000;
 
 /**
- * Choose the right tranalation API
+ * Choose the right translation API
  * @param {string} text The text to translate
- * @param {string} targetLang The target languate
+ * @param {string} targetLang The target language
  * @param {string} yandex api key
  * @returns {Promise<string>}
  */
@@ -29,7 +29,7 @@ async function _translateText(text, targetLang, yandex, sourceLang) {
 /**
  * Translates text with Yandex API
  * @param {string} text The text to translate
- * @param {string} targetLang The target languate
+ * @param {string} targetLang The target language
  * @param {string} yandex api key
  * @returns {Promise<string>}
  */
@@ -153,6 +153,11 @@ function partsTake(text, addIds) {
             return;
         }
 
+        if (lineTrimmed.match(/^\[\d+]:/)) {
+            // link
+            parts.push({type: 'decoration', lines: [lineTrimmed]});
+            current = '';
+        } else
         if (!lineTrimmed || lineTrimmed.startsWith('=====')) {
             parts.push({type: 'decoration', lines: [lineTrimmed]});
             current = '';

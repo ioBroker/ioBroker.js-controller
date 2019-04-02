@@ -651,7 +651,7 @@ class Markdown extends Router {
                             className={this.props.classes.mdLink + ' md-link'}
                             title={link}
                             onClick={() => this.onNavigate(null, link)}>
-                            {item.props.children[0]}
+                            {item.props.children ? item.props.children[0] : ''}
                         </div>);
                     }
                 }
@@ -765,7 +765,7 @@ class Markdown extends Router {
 
         return (<div className={this.props.classes.root} ref={this.contentRef}>
             {this.renderHeader()}
-            {this.state.title ? (<h1>{this.state.title}</h1>) : null}
+            {this.state.title && !this.state.header.adapter ? (<h1>{this.state.title}</h1>) : null}
             {reactElements}
             <hr/>
             {this.renderLicense()}

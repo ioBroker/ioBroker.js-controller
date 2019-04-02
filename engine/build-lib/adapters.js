@@ -53,7 +53,7 @@ function downloadImagesForReadme(lang, repo, data) {
                     request(relative + link, {encoding: null}, (err, status, body) => {
                         err && console.error('Cannot _download ' + relative + link + ': ' + err);
                         body && utils.writeSafe(localDirName + link, body);
-                        resolve1()
+                        resolve1();
                     });
                 } else {
                     resolve1();
@@ -143,10 +143,10 @@ function prepareAdapterReadme(lang, repo, data) {
         //let readme = repo.readme || repo.meta.replace('io-package.json', 'README.md');
         //readme = readme.replace('README.md', '');
 
-        const localDirName = consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + repo.name + '/';
+        //const localDirName = consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + repo.name + '/';
 
         // check that all images are exists
-        const promises = result.doDownload.map(link =>
+        /*const promises = result.doDownload.map(link =>
             new Promise(resolve1 => {
                 link = link.split('?')[0];
                 link = link.split(' ')[0];
@@ -170,11 +170,11 @@ function prepareAdapterReadme(lang, repo, data) {
                 } else {
                     resolve1();
                 }
-            }));
+            }));*/
 
-        Promise.all(promises).then(() => {
+        //Promise.all(promises).then(() => {
             resolve({body: utils.addHeader(lines.join('\n'), header), name: data.link ? data.link.replace(data.relative, '') : 'README.md'});
-        });
+        //});
     });
 }
 
@@ -316,6 +316,9 @@ function getReadme(lang, dirName, repo, adapter) {
                                 console.log('Ignore ' + lang + ' for ' + adapter + ' because locally exists in ' + isLocalExist);
                                 // ignore the whole info
                                 return resolve([]);
+                            } else {
+                                // download all images
+                                // for these files
                             }
                         }
 

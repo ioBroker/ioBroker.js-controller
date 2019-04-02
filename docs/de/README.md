@@ -9,7 +9,6 @@ lastChanged: "29.03.2019"
 verwendet worden sein, werden diese nochmals auf der [nächsten Seite](basics/README.md)
 ausführlich erklärt.
 
-
 ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
 ioBroker Insellösungen bleiben würden in einem Gesamtsystem zu integrieren. 
 

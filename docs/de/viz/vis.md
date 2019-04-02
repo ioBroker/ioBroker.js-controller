@@ -1,9 +1,8 @@
 ---
-title:       "Visualisierung"
+title:       "Vis"
 lastChanged: "13.09.2018"
 ---
-
-# Visualisierungen mit VIS {docsify-ignore-all}
+# Visualisierungen mit VIS
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>
@@ -12,20 +11,16 @@ lastChanged: "13.09.2018"
    damit die Änderungen einfacher übernommen werden können.
 
 ## Generell
-@@@  
-VIS ist eine mächtige Anwendung, die eine ausführliche Anleitung
-und Tutorials verdient. In welcher Form und an welcher Stelle
-diese Anleitung bereitgestellt wird, ist noch nicht definiert.  
-@@@
+> VIS ist eine mächtige Anwendung, die eine ausführliche Anleitung
+  und Tutorials verdient. In welcher Form und an welcher Stelle
+  diese Anleitung bereitgestellt wird, ist noch nicht definiert.
 
-## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#konfiguration)  
 ## Konfiguration
-
 Eine Konfiguration des Adapters ist nicht nötig. Es kann nur eine VIS Instanz geben.
 
-* * *
+## Bedienung
 
-## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)Bedienung
+[](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)
 
 Der Adapter wird über `<IPdesServers>:8082/vis/index.html` aufgerufen und damit die Visualisierung angezeigt. 
 In einem Projekt befinden sich mehrere Ansichten (Views). 
@@ -37,7 +32,7 @@ Nach Schließen des Editors über das Close-Window Icon ( (x) rechts oben) wird 
 in der Funktionsansicht dargestellt. 
 Dieser kann jederzeit aufgerufen werden mit `<IPdesServers>:8082/vis/index.html#ViewName` 
 Der Editor teilt sich in verschiedene Bereiche auf.  
-![](../media/vis/vis_ioBroker_vis_Editor_002-300x165.jpg)
+![](media/vis_ioBroker_vis_Editor_002-300x165.jpg)
 
 
 * * *
@@ -48,7 +43,7 @@ Der Editor teilt sich in verschiedene Bereiche auf.
 
 Ist dieser Reiter angewählt, kann man in dem darunterliegenden Pulldown-Menü den zu bearbeitenden View 
 aus den existierenden auswählen.  
-![iobroker_vis_Editor_Views_Header](../media/vis/iobroker_vis_Editor_Views_Header.jpg)  
+![iobroker_vis_Editor_Views_Header](media/iobroker_vis_Editor_Views_Header.jpg)
 Die vier Icons rechts daneben sind selbsterklärend und beziehen sich auf die Views. 
 Nach Anklicken der Arbeitsfläche wechselt die Ansicht in der Eigenschaften-Sidebar auf der rechten Seite 
 auf den Reiter Views und zeigt die Einstellungen für die View.
@@ -56,7 +51,7 @@ auf den Reiter Views und zeigt die Einstellungen für die View.
 ### Widgets
 
 Wird der Reiter Widgets aktiviert ändert sich die darunterliegende Werkzeugleiste 
-![iobroker_vis_Editor_Widgets_Header](../media/vis/iobroker_vis_Editor_Widgets_Header.jpg) 
+![iobroker_vis_Editor_Widgets_Header](media/iobroker_vis_Editor_Widgets_Header.jpg)
 Die Werkzeuge für die Bearbeitung von Widgets werden angezeigt.
 
 #### Pulldownmenü
@@ -66,7 +61,7 @@ Hier kann man ein Widget zur Bearbeitung auswählen, bzw. das ausgewählte Widge
 Die drei Icons für löschen, kopieren und Info werden aktiv, wenn ein Widget angewählt ist.
 
 #### Widgets ausrichten  
-![](../media/vis/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG)  
+![](media/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG)
 Wenn man mit gedrückter Maustaste mehrere Widgets auswählt (oder mit Ctrl-Klick) 
 kann man anschließend mit Hilfe dieser Icons Gruppen ausrichten 
 (linksbündig, rechtsbündig, oben bündig, unten bündig, zentriert, mittig vertikal ausgerichtet). 
@@ -95,7 +90,7 @@ auf den Reiter Widget und zeigt die Einstellungen für das ausgewählte Widget.
 ### Tools
 
 Wird der Reiter Tools aktiviert ändert sich die darunterliegende Werkzeugleiste 
-![](../media/vis/iobroker_vis_Editor_Tools_Header.JPG)
+![](media/iobroker_vis_Editor_Tools_Header.JPG)
  Die Werkzeuge für die Erleichterung der Bearbeitung von [Views](http://www.iobroker.net/?page_id=1193&lang=de) werden angezeigt
 
 #### Auflösung
@@ -140,7 +135,7 @@ hier kann man seinen View exportieren, um ihn z.B. in einer andren Installation 
 Nach dem Anklicken öffnet sich ein leeres Fenster. Hier kann man eine über die Funktion _exportieren_ erhaltene Textdatei hinein kopieren. Anschließend links unten einen Namen für den View eingeben und den Button _importieren_ anklicken. Ab da steht der neue View zur Verfügung. Diese Funktion eignet sich zum Importieren von Beispielen aus dem Forum.
 
 ### Setup
-![](../media/vis/iobroker_vis_Editor_Setup_Header.gif)
+![](media/iobroker_vis_Editor_Setup_Header.gif)
   
 #### Thema
 Hier steht ein Farbschema für den Editor zu Auswahl.
@@ -161,7 +156,7 @@ Es wird eine zip-Datei erstellt, die die verwendeten Bilder, das Stylesheet vis-
 Zusätzlich gibt es die Option, das Projekt anonymisiert zu exportieren. :construction:  
 Um andere Projekte zu importieren, zieht man die zip-Datei eines oben beschriebenen Export 
 einfach auf das Fenster und gibt einen Namen für das neue Projekt an:  
-![](../media/vis/iobroker_vis_Editor_Setup_Projekt_ImportHeader.gif)
+![](media/iobroker_vis_Editor_Setup_Projekt_ImportHeader.gif)
 
 #### neues Projekt...
 Hier kann ein neues Projekt angelegt werden. 
@@ -198,8 +193,11 @@ Das Verlinken über Navigationswidgets von einem Projekt zum anderen ist nicht m
 Nach Auswahl dieses Menüpunkts können auf bequeme Weise Dateien in das ioBroker Dateisystem hinein 
 oder herauskopiert werden, ohne dass weitere Zusatzprogramme benötigt werden. 
 Der Dateimanager öffnet sich:
-![align="aligncenter" width="799"](../media/vis/iobroker_vis_Editor_Setup_Dateimanager.JPG)
-[caption id="attachment_6007" align="aligncenter" width="799"][![](img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)](img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg) 
+
+![](media/iobroker_vis_Editor_Setup_Dateimanager.JPG)
+
+![](img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)
+
 *Die Bilder sind nur die Beispielbilder und sind von entsprechenden Firmen urheberrechtlich geschützt.[/caption]
 
 Das Verhalten ähnelt jedem Dateimanager. 
@@ -208,7 +206,7 @@ mit Klick auf einen Ordner in diesen hinein. 
 Mit dem Icon "Ordner+" kann ein neuer Ordner erzeugt werden. 
 Hat man das gewünschte Verzeichnis erreicht, wählt man eine Datei an, kann man sie mit dem blauen Pfeil 
 auf den Rechner herunterladen, klickt man den grünen Pfeil an, so öffnet sich die "Dropbox". 
-![](../media/vis/iobroker_vis_Editor_Setup_Dateimanager_Dropbox.JPG) 
+![](media/iobroker_vis_Editor_Setup_Dateimanager_Dropbox.JPG)
 Hier können Dateien einfach durch Drag & Drop abgelegt werden und anschließend durch Klick 
 auf den Button _**Upload**_ auf den ioBroker Server geladen werden. 
 Alternativ kann auch irgendwo in der Fläche geklickt werden, dann öffnet sich eine Dateiauswahl. 
@@ -217,7 +215,7 @@ verlässt man die Dropbox über den Button **_Schließen_**.
 
 #### Einstellungen... (7)
 
-![](../media/vis/iobroker_vis_Editor_Setup_Projekteinstellungen.JPG)
+![](media/iobroker_vis_Editor_Setup_Projekteinstellungen.JPG)
 
 *   _**Neuladen falls keine Verbindung länger als:**_ Der aktive View wird komplett neu geladen, 
 wenn die Verbindung zwischen Frontend (Tablet) zum Server länger als die Voreingestellte Zeit unterbrochen war. 
@@ -234,7 +232,7 @@ Mit dieser Option wird die Zeit eingestellt, die nicht benutzte Views im RAM geh
 
 #### Objekt-Browser... (8)
 
-![](../media/vis/iobroker-vis_ioBroker_Adapter_Vis_Editor_Setup_objectbrowser.jpg)  
+![](media/iobroker-vis_ioBroker_Adapter_Vis_Editor_Setup_objectbrowser.jpg)
 Hier kann nach einem Objekt gesucht werden. 
 Dieses wird nach Anklicken des Buttons _**Auswählen**_ in die Zwischenablage gelegt. 
 Zum schnelleren Auffinden können die Filterfelder über den Spaltenköpfen verwendet werden.
@@ -254,7 +252,7 @@ Mit diesem Button kann man die letzte(n) Aktion(en schrittweise) rückgängig ma
 Sie dient der Auswahl von Widgets. 
 Die Widgets werden als Icons dargestellt und können per drag und drop auf die Arbeitsfläche gezogen, 
 oder mit dem Button _Einfügen_ an Position 0,0 der Arbeitsfläche positioniert werden.  
-![iobroker_vis_Editor_Widgets_sidebar](../media/vis/vis_iobroker_vis_Editor_Widgets_sidebar.jpg)  
+![iobroker_vis_Editor_Widgets_sidebar](media/vis_iobroker_vis_Editor_Widgets_sidebar.jpg)
 Das Feld unter dem Button _Einfügen_ ist ein Filterfeld. 
 Hier kann man einen Begriff eingeben um die Icons danach zu durchsuchen. 
 Alle Icons, die diesen Begriff enthalten werden angezeigt. 

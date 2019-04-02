@@ -12,7 +12,9 @@ hash: tgBZRQnCISMUFyGJBWspfDEkAkS7mZLYgeW/cmKk/6U=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis.png?downloads=true)
 
-# Iobroker.vis =============
+# Iobroker.vis
+============
+
 WEB-Visualisierung für die Iobroker-Plattform.
 
 ## Installation & Dokumentation
@@ -22,7 +24,7 @@ WEB-Visualisierung für die Iobroker-Plattform.
 
 ## Bindungen von Objekten
 Normalerweise haben die meisten Widgets das ObjectID-Attribut. Dieses Attribut kann mit einem bestimmten Wert der Objekt-ID verknüpft werden.
-Es gibt aber noch eine weitere Möglichkeit, wie Sie *beliebige* Attribute eines Widgets an eine ObjectID binden können.
+Es gibt aber noch eine weitere Option, wie Sie *beliebige* Attribute eines Widgets an eine ObjectID binden können.
 
 Schreiben Sie einfach in das Attribut ```{object.id}``` und es wird an den Wert dieses Objekts gebunden (nicht im Bearbeitungsmodus).
 Wenn Sie ein spezielles Format verwenden, können Sie sogar einige einfache Operationen ausführen, z. Multiplizieren oder Formatieren.

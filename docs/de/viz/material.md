@@ -1,5 +1,5 @@
 ---
-title:       "Visualisierung"
+title:       "Material"
 lastChanged: "13.09.2018"
 ---
 

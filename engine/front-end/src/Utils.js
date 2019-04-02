@@ -185,7 +185,7 @@ class Utils {
                 title = cont.title;
             } else
             if (line.trim().startsWith('|')) {
-                if (parts[last].type !== 'table') {
+                if (!parts[last] || parts[last].type !== 'table') {
                     parts.push({type: 'table', lines: [line]});
                 } else {
                     parts[last].lines.push(line);
