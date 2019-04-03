@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/viz/basic.md
 title: основной
-hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
+hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 ---
 # Basic
 | Виджет | Изображение | описание
@@ -46,13 +46,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | `Speech to text` | ![036](../../de/viz/media/widget_images/basic/Prev_Speech2Text.png) ||
 | `Full Screen` | ![037](../../de/viz/media/widget_images/basic/Prev_FullScreen.png) ||
 | `Screen Resolution` | ![038](../../de/viz/media/widget_images/basic/Prev_ScreenResolution.png) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/html.png) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/svg.gif) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/iframe.gif) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/image.gif) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/link.gif) ||
-| `todo` | ![](../../de/viz/media/widget_images/basic/Explanation/border.gif) ||
-| `todo` | ! [] (media / widget_images / basic / Explanation / border.gif) ||
+| `Разрешение экрана` | ! [038] (СМИ / widget_images / основной / Prev_ScreenResolution.png) ||
 
 ### HTML кадр
 Этот виджет представляет собой произвольный HTML-код, также можно использовать Javascript внутри виджета.
@@ -63,7 +57,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | Префикс html | HTML-код для отображения перед объектом |
 | Добавить HTML | HTML-код для отображения после объекта |
 
-** Пример: **! [039]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/html.png)
 
 ### SVG Shape
 Этот виджет просто представляет геометрическую форму, с некоторыми предопределенными формами.
@@ -78,7 +72,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | Width scale | Масштабирует ширину от 0 до 100% |
 | Шкала высоты | Масштабирует высоту от 0 до 100% |
 
-** Пример: **! [040]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/svg.gif)
 
 ### Iframe
 Представляет iframe
@@ -95,7 +89,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | Свиток Y |: строительство: |
 | Без рамки |: конструкция: |
 
-** Пример: **! [041]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/iframe.gif)
 
 ### Image
 Этот виджет представляет собой изображение.
@@ -110,7 +104,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | Не добавлять в URL |: construction: |
 | Разрешить взаимодействия с пользователем |: construction: |
 
-** Пример: **! [042]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/image.gif)
 
 ### Ссылка
 Этот виджет соответствует виджету "HTML-фрейм", но также является интерактивной ссылкой по всей своей поверхности. Может использоваться для навигации между представлениями или для внешних ссылок.
@@ -121,7 +115,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | `html` | не требует пояснений;) ... вставьте сюда HTML-код для форматированного представления текста.
 | `link` | URL ссылки. Чтобы использовать ссылку на другое представление, просто введите имя представления, которому предшествует символ хеша (#) | `target` | Цель ссылки. Оставьте пустым, чтобы остаться в том же окне браузера; хотел бы открыть новое окно _blank. Другие параметры: _self (та же вкладка), _parent (), _top ()
 
-** Пример: **! [043]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/link.gif)
 
 ### Граница
 Этот виджет просто представляет фрейм - никаких дальнейших функций, только текст и цвет. Это может быть использовано для группировки виджетов.
@@ -131,7 +125,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 
 | Название | Объяснение | шрифт верхней метки | шрифт заголовка | Верхний цвет этикетки | Цвет заголовка | Фон заголовка | Цвет фона текста заголовка | Название До Расстояние | Расстояние от верхнего края | Title-Left-Distance | Расстояние заголовка от левого поля | Высота головы | Высота балки от верхнего края | Цвет головы | Цвет бара
 
-** Пример: **! [044]
+** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/border.gif)
 
 ### Посмотреть в виджете 8
 Отображает один из 8 видов в зависимости от состояния.

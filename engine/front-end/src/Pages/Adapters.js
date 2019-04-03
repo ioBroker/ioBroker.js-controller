@@ -18,6 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
 import ChartistGraph from 'react-chartist';
 
 import {MdClose as IconClose, MdExpandMore as IconExpandMore} from 'react-icons/md';
@@ -25,11 +26,13 @@ import {MdReorder as IconList} from 'react-icons/md';
 import {MdViewModule as IconCards} from 'react-icons/md';
 import {MdUnfoldMore as IconExpandAll} from 'react-icons/md';
 import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
+import {MdSearch as IconZoom} from 'react-icons/md';
 
 import Loader from '../Components/Loader';
 import I18n from '../i18n';
-import Utils from "../Utils";
-import Snackbar from '@material-ui/core/Snackbar';
+import Utils from '../Utils';
+import AdapterStatistics from '../Components/AdapterStatistics';
+import PieStats from '../Components/PieStats';
 
 import 'chartist/dist/chartist.css';
 
@@ -124,10 +127,7 @@ const styles = theme => ({
         padding: '1px 3px 1px 3px',
         color: 'white'
     },
-    cardChart: {
-        width: '100%',
-        height: '100%',
-    },
+
 
     headerGapButtons: {
         display: 'inline-block',
@@ -208,27 +208,12 @@ const styles = theme => ({
         width: 24,
         display: 'inline-block',
     },
-    chartColor0: {fill: '#96e7ff'},
-    chartColor1: {fill: '#86ffb9'},
-    chartColor2: {fill: '#ffff77'},
-    chartColor3: {fill: '#ff6e00'},
-    chartColor4: {fill: '#ffadc7'},
-    chartColor5: {fill: '#d7c1ff'},
-    chartColor6: {fill: '#ff8ed2'},
-    chartColor7: {fill: '#f4fffd'},
-    chartColor8: {fill: '#418aff'},
-    chartColor9: {fill: '#5ffcff'},
-    chartColor10: {fill: '#47ff9a'},
-    chartColor11: {fill: '#bfff2b'},
-    chartColor12: {fill: '#ffb227'},
-    chartColor13: {fill: '#ff3c0a'},
-    chartColor14: {fill: '#ff0867'},
-    chartColor15: {fill: '#ff099a'},
-    chartColor16: {fill: '#dc1eff'},
-    chartColor17: {fill: '#771eff'},
-    chartColor18: {fill: '#3b15ff'},
-    chartColor19: {fill: '#1685ff'},
-    chartColor20: {fill: '#00fbff'},
+    buttonZoom: {
+    },
+    buttonGap: {
+        flex: 2,
+        display: 'inline-block'
+    }
 });
 
 function fetchLocal(url) {
@@ -282,30 +267,6 @@ class Adapters extends Component {
         setTimeout(() => !this.state.content && this.setState({loadTimeout: true}), 300);
 
         this.contentRef = React.createRef();
-
-        this.colors = [
-            this.props.classes.chartColor0,
-            this.props.classes.chartColor1,
-            this.props.classes.chartColor2,
-            this.props.classes.chartColor3,
-            this.props.classes.chartColor4,
-            this.props.classes.chartColor5,
-            this.props.classes.chartColor6,
-            this.props.classes.chartColor7,
-            this.props.classes.chartColor8,
-            this.props.classes.chartColor9,
-            this.props.classes.chartColor10,
-            this.props.classes.chartColor11,
-            this.props.classes.chartColor12,
-            this.props.classes.chartColor13,
-            this.props.classes.chartColor14,
-            this.props.classes.chartColor15,
-            this.props.classes.chartColor16,
-            this.props.classes.chartColor17,
-            this.props.classes.chartColor18,
-            this.props.classes.chartColor19,
-            this.props.classes.chartColor20,
-        ];
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -385,70 +346,24 @@ class Adapters extends Component {
     }
 
     renderAdapterStatistics(adapter) {
-        const data = this.state.statistics.versions[adapter];
-        let labels = Object.keys(data).sort((a, b) => data[b] - data[a]);
-        let series = labels.map(l => data[l]);
-        let sum = 0;
-        series.forEach(v => sum += v || 0);
-
-        for (let k = 0; k < series.length; k++) {
-            if (series[k] / sum < 0.08) {
-                let others = 0;
-                for (let i = k; i < series.length; i++) {
-                    others += series[i];
-                }
-                labels.splice(k, labels.length - k);
-                series.splice(k, series.length - k);
-                labels.push(I18n.t('others'));
-                series.push(others);
-                const d = {};
-                labels.forEach((l, i) => d[l] = series[i]);
-                labels = Object.keys(d).sort((a, b) => d[b] - d[a]);
-                series = labels.map(l => d[l]);
-
-                break;
-            }
-        }
-        const ddd = labels.map((n, i) => {
-            return {
-                value: series[i],
-                name: n,
-                className: this.colors[i] || undefined,
-                meta: 'Meta One'
-            };
-        });
-
         return [(
             <CardContent key="stat" className={this.props.classes.cardContent}>
-                <ChartistGraph
-                    className={this.props.classes.cardChart}
-                    data={{series: ddd}}
-                    options={{
-                        labelInterpolationFnc: (value, index) => {
-                            console.log(value);
-                            return labels[index];// + ' - ' + (Math.round(value / sum * 1000) / 10) + '%';
-                        }
-                    }}
-                    responsiveOptions={[
-                        [
-                            'screen',
-                            {
-                                chartPadding: 10,
-                                labelOffset: 35,
-                                labelDirection: 'explode',
-                                labelInterpolationFnc: (value, index) => {
-                                    console.log(value);
-                                    return labels[index];
-                                }
-                            }
-                        ]
-                    ]}
-                    type={'Pie'}/>
+                <PieStats data={this.state.statistics.versions[adapter]} startFromPercent={8}/>
             </CardContent>),
             (<CardActions key="actionsStat">
                 <Button size="small" color="primary" onClick={() => this.setState({stats: ''})}>{this.words.close}</Button>
-            </CardActions>)];
-
+                <div className={this.props.classes.buttonGap}/>
+                <IconButton className={this.props.classes.buttonZoom} size="small" color="primary" onClick={() => this.setState({zoom: true})}><IconZoom/></IconButton>
+            </CardActions>),
+            this.state.zoom ? (<AdapterStatistics
+                onClose={() => this.setState({zoom: false})}
+                mobile={this.props.mobile}
+                theme={this.props.theme}
+                language={this.props.language}
+                adapter={this.state.stats}
+                statistics={this.state.statistics}
+            />) : null,
+        ];
     }
 
     renderAdapterMain(adapter, obj) {
@@ -723,15 +638,6 @@ class Adapters extends Component {
         </TableCell>);
     }
 
-    static compareStrings(a, b, invert) {
-        if (a === b) return 0;
-        if (a > b) {
-            return invert ? -1 : 1;
-        } else {
-            return invert ? 1 : -1;
-        }
-    }
-
     renderSnackbar() {
         return (<Snackbar
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -759,7 +665,7 @@ class Adapters extends Component {
             if (this.state.order === 'asc') {
                 names.sort();
             } else {
-                names.sort((a, b) => Adapters.compareStrings(a, b, true));
+                names.sort((a, b) => Utils.compareStrings(a, b, true));
             }
         } else if (this.state.orderBy === 'Installed') {
             const ad = this.state.adapters;
@@ -771,23 +677,23 @@ class Adapters extends Component {
         } else if (this.state.orderBy === 'License') {
             const ad = this.state.adapters;
             if (this.state.order === 'asc') {
-                names.sort((a, b) => ad[a].license === ad[b].license ? (Adapters.compareStrings(a, b)) : Adapters.compareStrings(ad[a].license, ad[b].license));
+                names.sort((a, b) => ad[a].license === ad[b].license ? (Utils.compareStrings(a, b)) : Utils.compareStrings(ad[a].license, ad[b].license));
             } else {
-                names.sort((a, b) => ad[a].license === ad[b].license ? (Adapters.compareStrings(a, b, true)) : Adapters.compareStrings(ad[a].license, ad[b].license, true));
+                names.sort((a, b) => ad[a].license === ad[b].license ? (Utils.compareStrings(a, b, true)) : Utils.compareStrings(ad[a].license, ad[b].license, true));
             }
         } else if (this.state.orderBy === 'Created') {
             const ad = this.state.adapters;
             if (this.state.order === 'asc') {
-                names.sort((a, b) => ad[a].date === ad[b].date ? (Adapters.compareStrings(a, b)) : Adapters.compareStrings(ad[a].date, ad[b].date));
+                names.sort((a, b) => ad[a].date === ad[b].date ? (Utils.compareStrings(a, b)) : Utils.compareStrings(ad[a].date, ad[b].date));
             } else {
-                names.sort((a, b) => ad[a].date === ad[b].date ? (Adapters.compareStrings(a, b, true)) : Adapters.compareStrings(ad[a].date, ad[b].date, true));
+                names.sort((a, b) => ad[a].date === ad[b].date ? (Utils.compareStrings(a, b, true)) : Utils.compareStrings(ad[a].date, ad[b].date, true));
             }
         } else if (this.state.orderBy === 'Type') {
             const ad = this.state.adapters;
             if (this.state.order === 'asc') {
-                names.sort((a, b) => ad[a].type === ad[b].type ? (Adapters.compareStrings(a, b)) : Adapters.compareStrings(ad[a].type, ad[b].type));
+                names.sort((a, b) => ad[a].type === ad[b].type ? (Utils.compareStrings(a, b)) : Utils.compareStrings(ad[a].type, ad[b].type));
             } else {
-                names.sort((a, b) => ad[a].type === ad[b].type ? (Adapters.compareStrings(a, b, true)) : Adapters.compareStrings(ad[a].type, ad[b].type, true));
+                names.sort((a, b) => ad[a].type === ad[b].type ? (Utils.compareStrings(a, b, true)) : Utils.compareStrings(ad[a].type, ad[b].type, true));
             }
         }
 

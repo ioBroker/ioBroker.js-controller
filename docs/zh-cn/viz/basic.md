@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/basic.md
 title: 基本
-hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
+hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 ---
 ＃基本
 |小工具|图片|描述
@@ -46,13 +46,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | `Speech to text`| ![036](../../de/viz/media/widget_images/basic/Prev_Speech2Text.png)||
 | `Full Screen`| ![037](../../de/viz/media/widget_images/basic/Prev_FullScreen.png)||
 | `Screen Resolution`| ![038](../../de/viz/media/widget_images/basic/Prev_ScreenResolution.png)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/html.png)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/svg.gif)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/iframe.gif)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/image.gif)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/link.gif)||
-| `todo`| ![](../../de/viz/media/widget_images/basic/Explanation/border.gif)||
-| `todo` | ！[]（media / widget_images / basic / Explanation / border.gif）||
+| `屏幕分辨率`| ！[038]（媒体/ widget_images /基本/ Prev_ScreenResolution.png）||
 
 ### Html框架
 这个小部件代表任意HTML代码。也可以在小部件中使用Javascript。
@@ -63,7 +57,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 |前缀html | HTML代码显示在对象前面 |
 |在对象|之后附加html | HTML代码以显示 |
 
-**例子：**！[039]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/html.png)
 
 ### SVG形状
 此小部件仅表示几何形状，其中预定义了一些形状。
@@ -78,7 +72,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 |宽度比例|将宽度缩放在0到100％|之间 |
 |高度比例|将高度缩放在0到100％|之间 |
 
-**例子：**！[040]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/svg.gif)
 
 ### Iframe
 表示iframe
@@ -95,7 +89,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 |滚动Y |：构造：|
 |没有框架|：建筑：|
 
-**例子：**！[041]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/iframe.gif)
 
 ###图片
 这个小部件代表一张图片。
@@ -110,7 +104,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 |不要添加到URL |：construction：|
 |允许用户交互|：构造：|
 
-**例子：**！[042]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/image.gif)
 
 ###链接
 此窗口小部件对应于窗口小部件“HTML框架”，但也是整个表面上的可单击链接。可用于视图之间或外部链接的导航。
@@ -121,7 +115,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | `html`|不言自明;）...在这里插入格式化文本表示的HTML代码。
 | `link`|链接URL。要使用指向另一个视图的链接，只需输入以哈希符号（＃）|开头的视图名称`target`|链接的目标。留空以保持在同一浏览器窗口中;想打开一个新窗口_blank。其他选项：_self（相同标签），_ parent（），_ top（）
 
-**例子：**！[043]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/link.gif)
 
 ###边境
 这个小部件只代表一个框架 - 没有其他功能，只有文本和颜色。这可以用于分组小部件。
@@ -131,7 +125,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 
 |标题|自我解释| upper label font |标题的字体|上标签颜色|标题颜色|标题背景|标题文本的背景颜色|标题向上距离|标题距离上边缘的距离|标题 - 左距离|标题距离左边距|头部高度|从顶部边缘的光束高度|头部颜色|条形图颜色
 
-**例子：**！[044]
+**示例：**![](../../de/viz/media/widget_images/basic/Explanation/border.gif)
 
 ###在小部件8中查看
 根据状态显示8个视图中的一个。
@@ -172,7 +166,7 @@ hash: HOmOiyBsxBE4nWody29rLQBv71iKYK3n2apUNfxPU48=
 | `html_append`|字符串后面显示的文本或HTML代码。
 
 ### String（未转义）
-此Widget表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。该变量也可能包含HTML代码，然后会显示。
+此Widget表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。变量也可能包含HTML代码，然后会显示。
 
 |属性|说明|
 |-----|----|

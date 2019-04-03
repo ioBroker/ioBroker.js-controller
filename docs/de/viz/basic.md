@@ -1,38 +1,39 @@
 # Basic  
 
-| Widget                  | Image | Beschreibung
-|-------------------------|-------|-------------|
-| [HTML](#Html-frame)     | ![001](media/widget_images/basic/Prev_HTML.png)|Dieses Widget stellt beliebigen HTML-Code dar.|
-| [Svg Shape](#svg-shape) | ![002](media/widget_images/basic/Prev_Shape.png)|Stellt eine Form dar|
-| [iFrame](#iframe)       | ![003](media/widget_images/basic/Prev_iFrame.png)|Dieses Widget bindet ein iFrame ein|
-| [Image](#image)         | ![004](media/widget_images/basic/Prev_Image.png)|Dieses Widget stellt ein Bild dar.|
-| [Link](#link)           | ![005](media/widget_images/basic/Prev_tplLink.png)|Dieses Widget entspricht dem Widget "static - HTML" ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Kann für die Navigation zwischen Views oder für externe Links genutzt werden.|
-| [Border](#border)       | ![006](media/widget_images/basic/Prev_tplFrame.png)||
-| [iFrame8](#iframe8)     | ![007](media/widget_images/basic/Prev_StatefulIFrame8.png)||
-| [View in widget](#view-in-widget)| ![008](media/widget_images/basic/Prev_ContainerView.png)|Dieses Widget kann Views innerhalb von Views darstellen.Sinnvoll z.B. für eine Navigation: Man baut eine View mit Navigations-Elementen auf und bindet diese dann in beliebig vielen anderen Views ein.|
-| [view in widget 8](#view-in-widget-8)]| ![009](media/widget_images/basic/Prev_StatefulContainerView8.png)|Zeigt eine von 8 Views in Abhängigkeit von einem Zustand an.|
-| `Image 8`                 | ![010](media/widget_images/basic/Prev_StatefulImage.png)|Zeigt eines von 8 Bildern in Abhängigkeit von einem Zustand an.|
-| `HTML navigation`         | ![011](media/widget_images/basic/Prev_HTMLnavigation.png)|Dieses Widget dient dazu eine Navigation zwischen den Views aufzubauen. Entspricht dem Widget "static - link", ist jedoch ausschließlich für die Navigation zwischen den Views nutzbar und bietet zusätzlich die Möglichkeit animierte Effekte beim Wechsel der Views zu verwenden.|
-| `filter - dropdown`       | ![012](media/widget_images/basic/Prev_FilterDropdown.png)||
-| `Number`                  | ![013](media/widget_images/basic/Prev_ValueFloat.png)|Dieses Widget stellt einen Zahlenwert dar|
-| `String `                 | ![014](media/widget_images/basic/Prev_ValueString.png)|Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar.|
-| `String (unescaped)`      | ![015](media/widget_images/basic/Prev_ValueStringRaw.png)|Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar. Im Unterschied zum Widget "hm_val - String" werden dabei keine Sonderzeichen "escaped" - d.h. die Variable kann auch HTML-Code enthalten und dieser wird dann dargestellt.|
-| `String img src`          | ![016](media/widget_images/basic/Prev_ValueStringImg.png)|Diesem Widget kann ein Variable vom Typ Zeichenkette zugeordnet werden, eine dort enthaltene URL wird dann als Bild dargestellt|
-| `Timestamp`               | ![017](media/widget_images/basic/Prev_ValueTimestamp.png)||
-| `Last change Timestamp`   | ![018](media/widget_images/basic/Prev_ValueLastchange.png)||
-| `ValueList Text`          | ![019](media/widget_images/basic/Prev_ValueList.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar.|
-| `ValueList HTML`          | ![020](media/widget_images/basic/Prev_ValueListHtml.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "hm_val - ValueList Text, allerdings wird nicht "escaped", d.h. in valuelist kann HTML-Code eingetragen werden.|
-| `ValueList HTML Style`    | ![021](media/widget_images/basic/Prev_ValueListHtml8.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "hm_val - ValueList HTML, bietet aber die Möglichkeit für 8 verschiedene Werte (0-7) auch 8 verschiedene CSS-Angaben zu verwenden.|
-| `Bool HTML`               | ![022](media/widget_images/basic/Prev_ValueBool.png)|Dieses Widget stellt Bool-Werte dar.|
-| `AckFlag HTML`            | ![023](media/widget_images/basic/Prev_AckBool.png)||
-| `Bool Checkbox`           | ![024](media/widget_images/basic/Prev_ValueBoolCheckbox.png)|Dieses Widget zeigt Bool-Werte als einfache Checkbox an und erlaubt außerdem den Wert zu umzuschalten.|
-| `Bool Select`             | ![025](media/widget_images/basic/Prev_ValueBoolSelect.png)|Dieses Widget stellt Bool-Werte als Dropdown dar und erlaubt außerdem den Wert umzuschalten.|
-| `Bool HTML`               | ![026](media/widget_images/basic/Prev_ValueBoolCtrl.png)|Dieses Widget stellt Bool-Werte dar und erlaubt außerdem den Wert auf Klick innerhalb der Widget-Fläche umzuschalten.|
-| `Bool SVG`                | ![027](media/widget_images/basic/Prev_ValueBoolCtrlSvg.png)|Dieses Widget setzt bei Klick innerhalb der Widget-Fläche einen Wert.|
-| `HTML State`              | ![028](media/widget_images/basic/Prev_BasicState.png)|Dieses Widget verschwindet wenn der Wert des zugeordneten Datenpunkts 0 bzw false ist. Geschickt z.B. für die Anzeige von Servicemeldungen|
-| `Red Number`              | ![029](media/widget_images/basic/Prev_RedNumber.png)|Anzeige eines numerischen Werts im Stil der iOS Benachrichtigungs-Symbole. Verschwindet beim Wert 0.|
-| `Bulb on/off`             | ![030](media/widget_images/basic/Prev_BulbOnOffCtrl.png)|Dieses Widget stellt einen Wert als ausgeschaltete oder leuchtende Glühbirne auf schwarzem Hintergrund dar. Ist für Bool und Float-Werte (Dimmer) einsetzbar.|
-| `Bar`                     | ![031](media/widget_images/basic/Prev_ValueFloatBar.png)|Dieses Widget stellt einen Wert von 0-100 als horizontalen Balken dar.|
+| Widget                                       | Image | Beschreibung
+|----------------------------------------------|-------|-------------|
+| [`HTML`](#html-frame)                        | ![001](media/widget_images/basic/Prev_HTML.png)|Dieses Widget stellt beliebigen HTML-Code dar.|
+| [`Svg Shape`](#svg-shape)                    | ![002](media/widget_images/basic/Prev_Shape.png)|Stellt eine Form dar|
+| [`iFrame`](#iframe)                          | ![003](media/widget_images/basic/Prev_iFrame.png)|Dieses Widget bindet ein iFrame ein|
+| [`Image`](#image)                            | ![004](media/widget_images/basic/Prev_Image.png)|Dieses Widget stellt ein Bild dar.|
+| [`Link`](#link)                              | ![005](media/widget_images/basic/Prev_tplLink.png)|Dieses Widget entspricht dem Widget "static - HTML" ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Kann für die Navigation zwischen Views oder für externe Links genutzt werden.|
+| [`Border`](#border)                          | ![006](media/widget_images/basic/Prev_tplFrame.png)||
+| [`iFrame8`](#iframe8)                        | ![007](media/widget_images/basic/Prev_StatefulIFrame8.png)||
+| [`View in widget`](#view-in-widget)          | ![008](media/widget_images/basic/Prev_ContainerView.png)|Dieses Widget kann Views innerhalb von Views darstellen.Sinnvoll z.B. für eine Navigation: Man baut eine View mit Navigations-Elementen auf und bindet diese dann in beliebig vielen anderen Views ein.|
+| [`view in widget 8`](#view-in-widget-8)]     | ![009](media/widget_images/basic/Prev_StatefulContainerView8.png)|Zeigt eine von 8 Views in Abhängigkeit von einem Zustand an.|
+| `Image 8`                                    | ![010](media/widget_images/basic/Prev_StatefulImage.png)|Zeigt eines von 8 Bildern in Abhängigkeit von einem Zustand an.|
+| [`HTML navigation`](#html-navigation)        | ![011](media/widget_images/basic/Prev_HTMLnavigation.png)|Dieses Widget dient dazu eine Navigation zwischen den Views aufzubauen. Entspricht dem Widget "static - link", ist jedoch ausschließlich für die Navigation zwischen den Views nutzbar und bietet zusätzlich die Möglichkeit animierte Effekte beim Wechsel der Views zu verwenden.|
+| [`filter - dropdown`](#filter-dropdown)      | ![012](media/widget_images/basic/Prev_FilterDropdown.png)||
+| [`Number`](#number)                          | ![013](media/widget_images/basic/Prev_ValueFloat.png)|Dieses Widget stellt einen Zahlenwert dar|
+| [`String`](#string)                          | ![014](media/widget_images/basic/Prev_ValueString.png)|Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar.|
+| [`String (unescaped)`](#string--unescpaped-) | ![015](media/widget_images/basic/Prev_ValueStringRaw.png)|Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar. Im Unterschied zum Widget "hm_val - String" werden dabei keine Sonderzeichen "escaped" - d.h. die Variable kann auch HTML-Code enthalten und dieser wird dann dargestellt.|
+| [`String img src`](#string-img-src)          | ![016](media/widget_images/basic/Prev_ValueStringImg.png)|Diesem Widget kann ein Variable vom Typ Zeichenkette zugeordnet werden, eine dort enthaltene URL wird dann als Bild dargestellt|
+| `Timestamp`                                  | ![017](media/widget_images/basic/Prev_ValueTimestamp.png)||
+| [`Last change Timestamp`](#last-change-timestamp)   | ![018](media/widget_images/basic/Prev_ValueLastchange.png)||
+| [`ValueList Text`](#valuelist-text)          | ![019](media/widget_images/basic/Prev_ValueList.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar.|
+| [`ValueList HTML`](#valuelist-html)          | ![020](media/widget_images/basic/Prev_ValueListHtml.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "hm_val - ValueList Text, allerdings wird nicht "escaped", d.h. in valuelist kann HTML-Code eingetragen werden.|
+| [`ValueList HTML Style`](#valuelist-html-8)  | ![021](media/widget_images/basic/Prev_ValueListHtml8.png)|Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "hm_val - ValueList HTML, bietet aber die Möglichkeit für 8 verschiedene Werte (0-7) auch 8 verschiedene CSS-Angaben zu verwenden.|
+| [`Bool HTML`](#bool-html)                    | ![022](media/widget_images/basic/Prev_ValueBool.png)|Dieses Widget stellt Bool-Werte dar.|
+| `AckFlag HTML`                               | ![023](media/widget_images/basic/Prev_AckBool.png)||
+| [`Bool Checkbox`](#bool-checkbox)            | ![024](media/widget_images/basic/Prev_ValueBoolCheckbox.png)|Dieses Widget zeigt Bool-Werte als einfache Checkbox an und erlaubt außerdem den Wert zu umzuschalten.|
+| [`Bool Select`](#bool-select)                | ![025](media/widget_images/basic/Prev_ValueBoolSelect.png)|Dieses Widget stellt Bool-Werte als Dropdown dar und erlaubt außerdem den Wert umzuschalten.|
+| [`Bool HTML Control`](#bool-html-control)    | ![026](media/widget_images/basic/Prev_ValueBoolCtrl.png)|Dieses Widget stellt Bool-Werte dar und erlaubt außerdem den Wert auf Klick innerhalb der Widget-Fläche umzuschalten.|
+| [`Bool SVG`](#bool-svg)                      | ![027](media/widget_images/basic/Prev_ValueBoolCtrlSvg.png)|Dieses Widget setzt bei Klick innerhalb der Widget-Fläche einen Wert.|
+| [`HTML State`](#html-state)                  | ![028](media/widget_images/basic/Prev_BasicState.png)|Dieses Widget verschwindet wenn der Wert des zugeordneten Datenpunkts 0 bzw false ist. Geschickt z.B. für die Anzeige von Servicemeldungen|
+| [`Red Number`](#hide-on-0-false)             | ![029](media/widget_images/basic/Prev_RedNumber.png)|Anzeige eines numerischen Werts im Stil der iOS Benachrichtigungs-Symbole. Verschwindet beim Wert 0.|
+| [`Bulb on/off`](#bulb-on-off)                | ![030](media/widget_images/basic/Prev_BulbOnOffCtrl.png)|Dieses Widget stellt einen Wert als ausgeschaltete oder leuchtende Glühbirne auf schwarzem Hintergrund dar. Ist für Bool und Float-Werte (Dimmer) einsetzbar.|
+| [`Bulb on/off control`](#bulb-on-off-control)| ![030](media/widget_images/basic/Prev_BulbOnOffCtrl.png)|Dieses Widget stellt einen Wert als ausgeschaltete oder leuchtende Glühbirne auf schwarzem Hintergrund dar. Ist für Bool und Float-Werte (Dimmer) einsetzbar.|
+| [`Bar`](#bar-horizontal)                     | ![031](media/widget_images/basic/Prev_ValueFloatBar.png)|Dieses Widget stellt einen Wert von 0-100 als horizontalen Balken dar.|
 | `Note`                    | ![032](media/widget_images/basic/Prev_Note.png)||
 | `json Table`              | ![033](media/widget_images/basic/Prev_TableBody.png)||
 | `HTML logout`             | ![034](media/widget_images/basic/Prev_HtmlLogout.png)||
@@ -249,7 +250,7 @@ Dieses Widget stellt Bool-Werte als Dropdown dar und erlaubt außerdem den Wert 
 | `text_true`|Text für den True-Fall
 | `text_false`|Text für den False-Fall
 	
-### Bool HTML
+### Bool HTML Control
 Dieses Widget stellt Bool-Werte dar und erlaubt außerdem den Wert auf Klick innerhalb der Widget-Fläche umzuschalten.
 
 | Attribut|Beschreibung|
@@ -259,9 +260,7 @@ Dieses Widget stellt Bool-Werte dar und erlaubt außerdem den Wert auf Klick inn
 | `text_true`|Text für den True-Fall
 | `text_false`|Text für den False-Fall
 
-### Bool HTML  
-
-### Bool SVG  
+### Bool SVG
 
 
 ### HTML State

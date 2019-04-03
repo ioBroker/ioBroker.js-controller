@@ -30,6 +30,7 @@ import LogoSmall from './assets/iobroker-logo-small.png';
 
 // Pages
 import Blog from './Pages/Blog';
+import Statistics from './Pages/Statistics';
 import Downloads from './Pages/Downloads';
 
 // pages
@@ -159,9 +160,7 @@ const PAGES = {
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
     'about':  {tabIndex: 5, name: 'About', menu: [
-            {link: 'https://iobroker.net', name: 'Free', target: 'this'},
-            {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
-            {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
+            {tab: 'statistics', name: 'Statistics', icon: null},
     ]},
     'cloud':    {tabIndex: 6, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
@@ -170,7 +169,8 @@ const PAGES = {
     ]},
     'intro':    {component: PageIntro, name: 'intro'},
     'imprint':  {name: 'imprint', md: 'imprint.md'},
-    'privacy':  {name: 'privacy', md: 'privacy.md'}
+    'privacy':  {name: 'privacy', md: 'privacy.md'},
+    'statistics': {component: Statistics},
 };
 
 const MOBILE_WIDTH = 650;
@@ -389,7 +389,13 @@ class App extends Router {
                 }}
             }>
                 {PAGES[name].menu.map(item =>
-                    <MenuItem key={item.name} onClick={() => Utils.openLink(item.link, item.target)}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
+                    <MenuItem key={item.name} onClick={() => {
+                        if (item.link) {
+                            Utils.openLink(item.link, item.target)
+                        } else if (item.tab) {
+                            this.onNavigate(null, item.tab);
+                        }
+                    }}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
                 )}
             </Menu>);
         }

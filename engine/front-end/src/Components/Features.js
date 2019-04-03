@@ -45,7 +45,7 @@ const styles = theme => ({
     }
 });
 
-const PRESS = [
+const Features = [
     {title: '2018.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/select/ct/2018/17/1534562336998502'},
     {title: '2018.08', alt: 'Smarthome DIY', image: ImageSmarthomeDIY, link: 'https://leanpub.com/smarthdiy'},
     {title: '2018.04', alt: 'Linux Magazin', image: ImageLinuxMagazin, link: 'http://www.linux-magazin.de/ausgaben/2018/04/io-broker/'},
@@ -54,13 +54,13 @@ const PRESS = [
     {title: '2017.03', alt: 'Home&Smart',    image: ImageHomeAndSmart, link: 'https://www.homeandsmart.de/iobroker-integrations-plattform-iot'},
 ];
 
-class Fetures extends Component {
+class Features extends Component {
     render() {
-        return (<div key="press" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
-            <div className={this.props.classes.title}>{I18n.t('ioBroker in The Fetures')}</div>
+        return (<div key="Features" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
+            <div className={this.props.classes.title}>{I18n.t('ioBroker in The Features')}</div>
             <div className={this.props.classes.preBox}>
                 <div className={this.props.classes.box}>
-                    {PRESS.map(p => (
+                    {Features.map(p => (
                         <div key={p.title + p.alt} className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
                             <img className={this.props.classes.cardLink} src={p.image} alt={p.alt}/>
                             <div className={this.props.classes.card}>{p.title}</div>
@@ -71,11 +71,11 @@ class Fetures extends Component {
     }
 }
 
-Fetures.propTypes = {
+Features.propTypes = {
     language: PropTypes.string,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
     backClass: PropTypes.string,
 };
 
-export default withStyles(styles)(Fetures);
+export default withStyles(styles)(Features);

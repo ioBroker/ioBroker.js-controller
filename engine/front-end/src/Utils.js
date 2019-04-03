@@ -117,6 +117,15 @@ class Utils {
         };
     }
 
+    static compareStrings(a, b, invert) {
+        if (a === b) return 0;
+        if (a > b) {
+            return invert ? -1 : 1;
+        } else {
+            return invert ? 1 : -1;
+        }
+    }
+
     static extractLicenseAndChangelog(text, ignoreHeaders) {
         const lines = (text || '').trim().split('\n');
         const changelog = [];

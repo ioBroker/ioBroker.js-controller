@@ -634,7 +634,7 @@ class Markdown extends Router {
 
     replaceHref(reactObj) {
         const parts = (this.props.path || '').split('/');
-        parts.pop();
+        const fileName = parts.pop();
         const prefix = parts.join('/') + '/';
 
         if (reactObj && reactObj.props && reactObj.props.children) {
@@ -642,17 +642,29 @@ class Markdown extends Router {
                 if (item && item.type === 'a') {
                     let link = item.props.href;
                     if (link) {
-                        if (!link.match(/^https?:\/\//)) {
-                            link = prefix + link;
+                        if (link.startsWith('#')) {
+                            link = Utils.text2link(link.substring(1));
+                            reactObj.props.children[i] = (<div
+                                key={'link' + i}
+                                className={this.props.classes.mdLink + ' md-link'}
+                                title={link}
+                                onClick={() => this.onNavigate(link)}>
+                                {item.props.children ? item.props.children[0] : ''}
+                            </div>);
+                        } else {
+                            if (!link.match(/^https?:\/\//)) {
+                                link = prefix + link;
+                            }
+
+                            reactObj.props.children[i] = (<div
+                                key={'link' + i}
+                                className={this.props.classes.mdLink + ' md-link'}
+                                title={link}
+                                onClick={() => this.onNavigate(null, link)}>
+                                {item.props.children ? item.props.children[0] : ''}
+                            </div>);
                         }
 
-                        reactObj.props.children[i] = (<div
-                            key={'link' + i}
-                            className={this.props.classes.mdLink + ' md-link'}
-                            title={link}
-                            onClick={() => this.onNavigate(null, link)}>
-                            {item.props.children ? item.props.children[0] : ''}
-                        </div>);
                     }
                 }
 
@@ -672,7 +684,9 @@ class Markdown extends Router {
 
             const cells = [];
             for (let j = 0; j < header.length; j++) {
-                cells.push((<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{converter.convert(parts[j] || '')}</TableCell>));
+                const crt = converter.convert(parts[j] || '');
+                this.replaceHref(crt);
+                cells.push((<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{crt}</TableCell>));
             }
 
             rows.push((<TableRow className={this.props.classes.tableRow} key={'row' + i}>{cells}</TableRow>));
