@@ -1,0 +1,6 @@
+# Ensure text files have LF line endings
+* text eol=lf
+
+# Denote all files that are truly binary and should never be modified.
+*.png binary
+*.jpg binary
