@@ -3,42 +3,43 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/viz/basic.md
 title: основной
-hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
+hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 ---
 # Basic
 | Виджет | Изображение | описание
 
-| [HTML](#Html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | Этот виджет представляет собой произвольный HTML-код. |
-| [Форма свг](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Представляет форму |
-| [плавающий фрейм](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | Этот виджет включает в себя iframe |
-| [изображение](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | Этот виджет отображает изображение. |
-| [ссылка](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | Этот виджет соответствует виджету «static - HTML», но также является интерактивной ссылкой на всей своей поверхности. Может использоваться для навигации между представлениями или для внешних ссылок. |
-| [бордюр](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
-| [iFrame8](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
-| [Посмотреть в виджете](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | Этот виджет может отображать виды в пределах видов. для навигации: вы создаете представление с элементами навигации, а затем интегрируете их в любое количество других представлений. |
-| [просмотреть в виджете 8](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Отображает один из 8 видов в зависимости от состояния. |
+| [`HTML`](#html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | Этот виджет представляет собой произвольный HTML-код. |
+| [`Свг форма`](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Представляет форму |
+| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | Этот виджет включает в себя iframe |
+| [`Image`](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | Этот виджет отображает изображение. |
+| [`Link`](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | Этот виджет соответствует виджету «static - HTML», но также является интерактивной ссылкой на всей своей поверхности. Может использоваться для навигации между представлениями или для внешних ссылок. |
+| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
+| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
+| [`Посмотреть в виджете`](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | Этот виджет может отображать виды в пределах видов. для навигации: вы создаете представление с элементами навигации, а затем интегрируете их в любое количество других представлений. |
+| [`просмотр в виджете 8`](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Отображает один из 8 видов в зависимости от состояния. |
 | `Image 8` | ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png) | Отображает одно из 8 изображений в зависимости от состояния. |
-| `HTML navigation` | ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png) | Этот виджет служит для создания навигации между представлениями. Соответствует виджету «статическая ссылка», но используется только для навигации между представлениями и дополнительно предлагает возможность использовать анимированные эффекты при смене видов. |
-| `filter - dropdown` | ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png) ||
-| `Number` | ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png) | Этот виджет представляет числовое значение |
-| `String ` | ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png) | Этот виджет представляет точку данных типа String. |
-| `String (unescaped)` | ![+015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png) | Этот виджет представляет точку данных типа string. В отличие от виджета «hm_val - String» никакие специальные символы не «экранированы» - i. переменная также может содержать HTML-код, и это будет отображаться. |
-| `String img src` | ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png) | Для этого виджета может быть назначена переменная типа string, а содержащийся в нем URL затем отображается как рисунок |
+| [`HTML навигация`](#html-navigation) | ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png) | Этот виджет служит для создания навигации между представлениями. Соответствует виджету «статическая ссылка», но используется только для навигации между представлениями и дополнительно предлагает возможность использовать анимированные эффекты при смене видов. |
+| [`фильтр - выпадающий`](#filter-dropdown) | ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png) ||
+| [`Number`](#number) | ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png) | Этот виджет представляет числовое значение |
+| [`String`](#string) | ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png) | Этот виджет представляет точку данных типа String. |
+| [`Строка (неэкранированная)`](#string--unescpaped-) | ![+015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png) | Этот виджет представляет точку данных типа string. В отличие от виджета «hm_val - String» никакие специальные символы не «экранированы» - i. переменная также может содержать HTML-код, и это будет отображаться. |
+| [`String img src`](#string-img-src) | ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png) | Для этого виджета может быть назначена переменная типа string, а содержащийся в нем URL затем отображается как рисунок |
 | `Timestamp` | ![+017](../../de/viz/media/widget_images/basic/Prev_ValueTimestamp.png) ||
-| `Last change Timestamp` | ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png) ||
-| `ValueList Text` | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | Этот виджет представляет собой переменную из списка типов значений. |
-| `ValueList HTML` | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | Этот виджет представляет собой переменную из списка значений типа. Соответствует виджету «hm_val - ValueList Text, но он не« экранирован », то есть HTML-код может быть введен в список значений. |
-| `ValueList HTML Style` | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | Этот виджет представляет собой переменную списка значений типа. Соответствует widm "hm_val - ValueList HTML, но предлагает возможность использовать 8 различных CSS-значений для 8 различных значений (0-7). |
-| `Bool HTML` | ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png) | Этот виджет представляет значения Bool. |
+| [`Загрузить метку времени`](#last-change-timestamp) | ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png) ||
+| [`ValueList Text`](#valuelist-text) | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | Этот виджет представляет собой переменную из списка типов значений. |
+| [`ValueList HTML`](#valuelist-html) | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | Этот виджет представляет собой переменную из списка значений типа. Соответствует виджету «hm_val - ValueList Text, но он не« экранирован », то есть HTML-код может быть введен в список значений. |
+| [`ValueList HTML Style`](#valuelist-html-8) | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | Этот виджет представляет собой переменную списка значений типа. Соответствует widm "hm_val - ValueList HTML, но предлагает возможность использовать 8 различных CSS-значений для 8 различных значений (0-7). |
+| [`Bool HTML`](#bool-html) | ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png) | Этот виджет представляет значения Bool. |
 | `AckFlag HTML` | ![023](../../de/viz/media/widget_images/basic/Prev_AckBool.png) ||
-| `Bool Checkbox` | ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png) | Этот виджет отображает значения Bool в виде простого флажка, а также позволяет переключать значение. |
-| `Bool Select` | ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png) | Этот виджет отображает значения Bool в виде раскрывающегося списка, а также позволяет переключать значение. |
-| `Bool HTML` | ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png) | Этот виджет отображает значения bool, а также позволяет переключать значение для щелчка в области виджета. |
-| `Bool SVG` | ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png) | Этот виджет устанавливает значение при щелчке внутри области виджета. |
-| `HTML State` | ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png) | Этот виджет исчезает, если значение связанной точки данных равно 0 или ложно. Квалифицированный, например для отображения служебных сообщений |
-| `Red Number` | ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png) | Отображение числового значения в стиле значков уведомлений iOS. Исчезает при значении 0. |
-| `Bulb on/off` | ![+030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | Этот виджет отображает значение в виде выключенной или светящейся лампочки на черном фоне. Может использоваться для значений Bool и Float (диммер). |
-| `Bar` | ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png) | Этот виджет отображает значение 0-100 в виде горизонтальной полосы. |
+| [`Bool Checkbox`](#bool-checkbox) | ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png) | Этот виджет отображает значения Bool в виде простого флажка, а также позволяет переключать значение. |
+| [`Bool Select`](#bool-select) | ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png) | Этот виджет отображает значения Bool в виде раскрывающегося списка, а также позволяет переключать значение. |
+| [`Bool HTML Control`](#bool-html-control) | ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png) | Этот виджет отображает значения bool, а также позволяет переключать значение для щелчка в области виджета. |
+| [`Bool SVG`](#bool-svg) | ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png) | Этот виджет устанавливает значение при щелчке внутри области виджета. |
+| [`HTML State`](#html-state) | ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png) | Этот виджет исчезает, если значение связанной точки данных равно 0 или ложно. Квалифицированный, например для отображения служебных сообщений |
+| [`Красный номер`](#hide-on-0-false) | ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png) | Отображение числового значения в стиле значков уведомлений iOS. Исчезает при значении 0. |
+| ["Лампа вкл / выкл"](#bulb-on-off) | ![+030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | Этот виджет отображает значение в виде выключенной или светящейся лампочки на черном фоне. Может использоваться для значений Bool и Float (диммер). |
+| [«Управление лампочкой вкл / выкл»](#bulb-on-off-control) | ![+030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | Этот виджет отображает значение в виде выключенной или светящейся лампочки на черном фоне. Может использоваться для значений Bool и Float (диммер). |
+| [`Bar`](#bar-horizontal) | ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png) | Этот виджет отображает значение 0-100 в виде горизонтальной полосы. |
 | `Note` | ![032](../../de/viz/media/widget_images/basic/Prev_Note.png) ||
 | `json Table` | ![033](../../de/viz/media/widget_images/basic/Prev_TableBody.png) ||
 | `HTML logout` | ![034](../../de/viz/media/widget_images/basic/Prev_HtmlLogout.png) ||
@@ -247,7 +248,7 @@ hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 | `html_append` | Текст или HTML-код, отображаемый за изображением.
 | `text_true` | Текст для истинного случая | `text_false` | Текст для ложного случая
 
-### Bool HTML
+### Bool HTML Control
 Этот виджет представляет логические значения, а также позволяет переключать значение для щелчка в области виджета.
 
 | Атрибут | Описание |
@@ -257,7 +258,6 @@ hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 | `html_append` | Текст или HTML-код, отображаемый за изображением.
 | `text_true` | Текст для истинного случая | `text_false` | Текст для ложного случая
 
-### Bool HTML
 ### Bool SVG
 ### HTML State
 Этот виджет устанавливает значение при щелчке внутри области виджета.

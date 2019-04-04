@@ -8,6 +8,7 @@ https://codepen.io/robinselmer/pen/vJjbOZ
 */
 
 import I18n from '../i18n';
+import Footer from '../Footer';
 
 const styles = theme => ({
     content: Object.assign({background: 'black', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}, theme.content),
@@ -99,7 +100,8 @@ class Page404 extends Component {
                         </div>
                     </div>
                 </div>
-            </div>)
+            </div>),
+            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
         ];
     }
 }

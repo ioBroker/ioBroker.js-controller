@@ -31,7 +31,8 @@ const styles = theme => ({
     },
     paperPie: {
         width: 400,
-        height: 400,
+        height: 380,
+        padding: 10,
     },
     paperTable: {
         height: 400,
@@ -171,7 +172,7 @@ class AdapterStatistics extends Component {
                 <DialogContent className={this.props.classes.dialogContent}>
                     <h2>{I18n.t('Total count: ')} {this.props.statistics.adapters[this.props.adapter]}</h2>
                     <Paper className={classes.paper + ' ' + classes.paperPie}>
-                        <PieStats data={this.props.statistics.versions[this.props.adapter]} startFromPercent={3}/>
+                        <PieStats data={this.props.statistics.versions[this.props.adapter]} size={'50%'} height={400} startFromPercent={3}/>
                     </Paper>
                     <Paper className={classes.paper + ' ' + classes.paperTable}>{this.renderTable()}</Paper>
                 </DialogContent>

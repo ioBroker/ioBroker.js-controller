@@ -216,18 +216,7 @@ const styles = theme => ({
     }
 });
 
-function fetchLocal(url) {
-    return new Promise((resolve, reject) => {
-        const oReq = new XMLHttpRequest();
-        oReq.onload = function () {resolve(this.responseText);};
-        oReq.open('get', url, true);
-        oReq.addEventListener('error', function (e) {reject(e)}, false);
-        oReq.send();
-    });
-}
-
 let adaptersLastScroll = 0;
-let adapterStatistics = null;
 let adapterList = null;
 
 class Adapters extends Component {
@@ -317,7 +306,8 @@ class Adapters extends Component {
     load(path, language) {
         const d = new Date();
         adapterList = adapterList || fetch(`adapters.json?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`).then(res => res.json());
-        adapterStatistics = adapterStatistics || fetchLocal(`http://iobroker.live/statistics.json?$t={d.getFullYear()}_${d.getMonth()}_${d.getDate()}`).then(data => JSON.parse(data));
+        const adapterStatistics = Utils.getStatistics();
+
         Promise.all([adapterList, adapterStatistics])
             .then(results => {
                 const stats = this.getCounters(results[0]);
@@ -348,7 +338,7 @@ class Adapters extends Component {
     renderAdapterStatistics(adapter) {
         return [(
             <CardContent key="stat" className={this.props.classes.cardContent}>
-                <PieStats data={this.state.statistics.versions[adapter]} startFromPercent={8}/>
+                <PieStats data={this.state.statistics.versions[adapter]} height={200} radius={'50%'} startFromPercent={8}/>
             </CardContent>),
             (<CardActions key="actionsStat">
                 <Button size="small" color="primary" onClick={() => this.setState({stats: ''})}>{this.words.close}</Button>

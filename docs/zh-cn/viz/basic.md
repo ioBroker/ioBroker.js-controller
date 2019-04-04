@@ -3,42 +3,43 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/basic.md
 title: 基本
-hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
+hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 ---
 ＃基本
 |小工具|图片|描述
 
-| [HTML](#Html-frame)| ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png)|此小部件代表任意HTML代码 |
-| [Svg形状](#svg-shape)| ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png)|表示形式|
-| [的iFrame](#iframe)| ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png)|这个小部件包含一个iframe |
-| [图片](#image)| ![004](../../de/viz/media/widget_images/basic/Prev_Image.png)|此小组件显示图片 |
-| [链接](#link)| ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png)|此小部件对应于小部件“static  -  HTML”，但也是整个表面上的可点击链接。可用于视图之间或外部链接的导航 |
-| [边界](#border)| ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png)||
-| [iFrame8](#iframe8)| ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png)||
-| [查看小部件](#view-in-widget)| ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png)|此小组件可以在视图中显示视图。导航：使用导航元素构建视图，然后将它们集成到任意数量的其他视图中 |
-| [查看小部件8](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png)|根据状态显示8个视图中的一个 |
+| [`HTML`](#html-frame)| ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png)|此小部件代表任意HTML代码 |
+| [`Svg形状`](#svg-shape)| ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png)|表示形式|
+| [`iFrame`](#iframe)| ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png)|这个小部件包含一个iframe |
+| [`Image`](#image)| ![004](../../de/viz/media/widget_images/basic/Prev_Image.png)|此小组件显示图片 |
+| [`Link`](#link)| ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png)|此小部件对应于小部件“static  -  HTML”，但也是整个表面上的可点击链接。可用于视图之间或外部链接的导航 |
+| [`Border`](#border)| ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png)||
+| [`iFrame8`](#iframe8)| ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png)||
+| [`在小部件中查看](#view-in-widget)| ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png)|此小组件可以在视图中显示视图。导航：使用导航元素构建视图，然后将它们集成到任意数量的其他视图中 |
+| [`在小部件8中查看](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png)|根据状态显示8个视图中的一个 |
 | `Image 8`| ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png)|根据条件显示8张图片中的一张 |
-| `HTML navigation`| ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png)|此小组件用于在视图之间构建导航。对应于小部件“静态 - 链接”，但仅可用于视图之间的导航，并且还提供在更改视图时使用动画效果的可能性。 |
-| `filter - dropdown`| ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png)||
-| `Number`| ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png)|此小组件表示数值|
-| `String `| ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png)|此小组件表示String类型的数据点 |
-| `String (unescaped)`| ![015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png)|此小部件表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。该变量也可能包含HTML代码，这将显示 |
-| `String img src`| ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png)|可以为此小部件分配一个类型字符串的变量，其中包含的URL随后显示为图片|
+| [`HTML导航`](#html-navigation)| ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png)|此小组件用于在视图之间构建导航。对应于小部件“静态 - 链接”，但仅可用于视图之间的导航，并且还提供在更改视图时使用动画效果的可能性。 |
+| [`filter  -  dropdown`](#filter-dropdown)| ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png)||
+| [`Number`](#number)| ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png)|此小组件表示数值|
+| [`String`](#string)| ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png)|此小组件表示String类型的数据点 |
+| [`String（未转义）`](#string--unescpaped-)| ![015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png)|此小部件表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。该变量也可能包含HTML代码，这将显示 |
+| [`String img src`](#string-img-src)| ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png)|可以为此小部件分配一个类型字符串的变量，其中包含的URL随后显示为图片|
 | `Timestamp`| ![017](../../de/viz/media/widget_images/basic/Prev_ValueTimestamp.png)||
-| `Last change Timestamp`| ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png)||
-| `ValueList Text`| ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png)|此小组件表示值类型列表的变量 |
-| `ValueList HTML`| ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png)|这个小部件代表一个类型值列表的变量。对应于小部件“hm_val  -  ValueList Text，但它不是”转义“，也就是说，可以在valuelist中输入HTML代码。 |
-| `ValueList HTML Style`| ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png)|这个小部件代表一个类型值列表的变量。对应于widm“hm_val  -  ValueList HTML，但是可以为8个不同的值（0-7）使用8个不同的CSS值。” |
-| `Bool HTML`| ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png)|此小组件代表Bool值 |
+| [`加载更改时间戳`](#last-change-timestamp)| ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png)||
+| [`ValueList Text`](#valuelist-text)| ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png)|此小组件表示值类型列表的变量 |
+| [`ValueList HTML`](#valuelist-html)| ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png)|这个小部件代表一个类型值列表的变量。对应于小部件“hm_val  -  ValueList Text，但它不是”转义“，也就是说，可以在valuelist中输入HTML代码。 |
+| [`ValueList HTML Style`](#valuelist-html-8)| ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png)|这个小部件代表一个类型值列表的变量。对应于widm“hm_val  -  ValueList HTML，但是可以为8个不同的值（0-7）使用8个不同的CSS值。” |
+| [`Bool HTML`](#bool-html)| ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png)|此小组件代表Bool值 |
 | `AckFlag HTML`| ![023](../../de/viz/media/widget_images/basic/Prev_AckBool.png)||
-| `Bool Checkbox`| ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png)|此小部件将Bool值显示为一个简单的复选框，并允许您切换值。 |
-| `Bool Select`| ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png)|此小组件将Bool值显示为下拉列表，并允许您切换值。 |
-| `Bool HTML`| ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png)|此小组件显示bool值，还允许您切换值以在小组件区域内单击。 |
-| `Bool SVG`| ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png)|此小组件在小组件区域中单击时设置值 |
-| `HTML State`| ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png)|如果关联数据点的值为0或false，则此窗口小部件将消失。技术熟练，例如用于显示服务消息|
-| `Red Number`| ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png)|以iOS通知图标的样式显示数值。消失在值0。|
-| `Bulb on/off`| ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png)|此小部件在黑色背景上显示一个值作为关闭或发光的灯泡。可用于Bool和Float值（调光器）。 |
-| `Bar`| ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png)|此小组件显示值0-100作为水平条 |
+| [`Bool Checkbox`](#bool-checkbox)| ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png)|此小部件将Bool值显示为一个简单的复选框，并允许您切换值。 |
+| [`Bool Select`](#bool-select)| ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png)|此小组件将Bool值显示为下拉列表，并允许您切换值。 |
+| [`Bool HTML控件`](#bool-html-control)| ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png)|此小组件显示bool值，还允许您切换值以在小组件区域内单击。 |
+| [`Bool SVG`](#bool-svg)| ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png)|此小组件在小组件区域中单击时设置值 |
+| [`HTML State`](#html-state)| ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png)|如果关联数据点的值为0或false，则此窗口小部件将消失。技术熟练，例如用于显示服务消息|
+| [`红色号码](#hide-on-0-false)| ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png)|以iOS通知图标的样式显示数值。消失在值0。|
+| [`灯泡开/关`](#bulb-on-off)| ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png)|此小部件在黑色背景上显示一个值作为关闭或发光的灯泡。可用于Bool和Float值（调光器）。 |
+| [`灯泡开/关控制](#bulb-on-off-control)| ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png)|此小部件在黑色背景上显示一个值作为关闭或发光的灯泡。可用于Bool和Float值（调光器）。 |
+| [`Bar`](#bar-horizontal)| ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png)|此小组件显示值0-100作为水平条 |
 | `Note`| ![032](../../de/viz/media/widget_images/basic/Prev_Note.png)||
 | `json Table`| ![033](../../de/viz/media/widget_images/basic/Prev_TableBody.png)||
 | `HTML logout`| ![034](../../de/viz/media/widget_images/basic/Prev_HtmlLogout.png)||
@@ -247,7 +248,7 @@ hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 | `html_append`|图像后面显示的文本或HTML代码。
 | `text_true`|真实案例的文本| `text_false`|虚假案例的文本
 
-### Bool HTML
+### Bool HTML控件
 此窗口小部件表示布尔值，还允许您在窗口小部件区域内切换值以单击。
 
 |属性|说明|
@@ -257,7 +258,6 @@ hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
 | `html_append`|图像后面显示的文本或HTML代码。
 | `text_true`|真实案例的文本| `text_false`|虚假案例的文本
 
-### Bool HTML
 ### Bool SVG
 ### HTML状态
 此窗口小部件在窗口小部件区域中单击时设置值。

@@ -3,42 +3,43 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/viz/basic.md
 title: basic
-hash: gB8ktCn/gT568jcCHvrOANTjVM37RqxBs3Q5NUc0SIg=
+hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 ---
 # Basic
 | Widget | Image | description
 
-| [HTML](#Html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | This widget represents arbitrary HTML code. |
-| [Svg shape](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Represents a form |
-| [iFrame](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | This widget includes an iframe |
-| [image](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | This widget displays a picture. |
-| [link](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | This widget corresponds to the widget "static - HTML" but is also a clickable link on its entire surface. Can be used for navigation between views or for external links. |
-| [Border](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
-| [iFrame8](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
-| [View in widget](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | This widget can display views within views. for a navigation: You build a view with navigation elements and then integrate them in any number of other views. |
-| [view in widget 8](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Displays one of 8 views depending on a state. |
+| [`HTML`](#html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | This widget represents arbitrary HTML code. |
+| [`Svg shape`](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Represents a form |
+| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | This widget includes an iframe |
+| [`Image`](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | This widget displays a picture. |
+| [`Link`](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | This widget corresponds to the widget "static - HTML" but is also a clickable link on its entire surface. Can be used for navigation between views or for external links. |
+| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
+| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
+| [`View in widget`](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | This widget can display views within views. for a navigation: You build a view with navigation elements and then integrate them in any number of other views. |
+| [`view in widget 8`](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Displays one of 8 views depending on a state. |
 | `Image 8` | ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png) | Displays one of 8 pictures depending on a condition. |
-| `HTML navigation` | ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png) | This widget serves to build a navigation between the views. Corresponds to the widget "static - link", but is only usable for the navigation between the views and additionally offers the possibility to use animated effects when changing the views. |
-| `filter - dropdown` | ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png) ||
-| `Number` | ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png) | This widget represents a numeric value |
-| `String ` | ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png) | This widget represents a data point of type String. |
-| `String (unescaped)` | ![015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png) | This widget represents a data point of the type string. In contrast to the widget "hm_val - String" no special characters are "escaped" - i. the variable may also contain HTML code and this will be displayed. |
-| `String img src` | ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png) | This widget can be assigned a variable of the type string, a URL contained there is then displayed as a picture |
+| [`HTML navigation`](#html-navigation) | ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png) | This widget serves to build a navigation between the views. Corresponds to the widget "static - link", but is only usable for the navigation between the views and additionally offers the possibility to use animated effects when changing the views. |
+| [`filter - dropdown`](#filter-dropdown) | ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png) ||
+| [`Number`](#number) | ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png) | This widget represents a numeric value |
+| [`String`](#string) | ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png) | This widget represents a data point of type String. |
+| [`String (unescaped)`](#string--unescpaped-) | ![015](../../de/viz/media/widget_images/basic/Prev_ValueStringRaw.png) | This widget represents a data point of the type string. In contrast to the widget "hm_val - String" no special characters are "escaped" - i. the variable may also contain HTML code and this will be displayed. |
+| [`String img src`](#string-img-src) | ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png) | This widget can be assigned a variable of the type string, a URL contained there is then displayed as a picture |
 | `Timestamp` | ![017](../../de/viz/media/widget_images/basic/Prev_ValueTimestamp.png) ||
-| `Last change Timestamp` | ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png) ||
-| `ValueList Text` | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | This widget represents a variable of the type list of values. |
-| `ValueList HTML` | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | This widget represents a variable of the type value list. Corresponds to the widget "hm_val - ValueList Text, but it is not" escaped ", that is, HTML code can be entered in valuelist. |
-| `ValueList HTML Style` | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | This widget represents a variable of the type list of values. Corresponds to the widm "hm_val - ValueList HTML, but offers the possibility to use 8 different CSS-values for 8 different values (0-7). |
-| `Bool HTML` | ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png) | This widget represents Bool values. |
+| [`Load change timestamp`](#last-change-timestamp) | ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png) ||
+| [`ValueList Text`](#valuelist-text) | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | This widget represents a variable of the type list of values. |
+| [`ValueList HTML`](#valuelist-html) | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | This widget represents a variable of the type value list. Corresponds to the widget "hm_val - ValueList Text, but it is not" escaped ", that is, HTML code can be entered in valuelist. |
+| [`ValueList HTML Style`](#valuelist-html-8) | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | This widget represents a variable of the type list of values. Corresponds to the widm "hm_val - ValueList HTML, but offers the possibility to use 8 different CSS-values for 8 different values (0-7). |
+| [`Bool HTML`](#bool-html) | ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png) | This widget represents Bool values. |
 | `AckFlag HTML` | ![023](../../de/viz/media/widget_images/basic/Prev_AckBool.png) ||
-| `Bool Checkbox` | ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png) | This widget displays Bool values as a simple checkbox and also allows you to toggle the value. |
-| `Bool Select` | ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png) | This widget displays Bool values as a dropdown and also allows you to toggle the value. |
-| `Bool HTML` | ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png) | This widget displays bool values and also allows you to toggle the value to click within the widget area. |
-| `Bool SVG` | ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png) | This widget sets a value when clicked within the widget area. |
-| `HTML State` | ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png) | This widget disappears if the value of the associated data point is 0 or false. Skilled, e.g. for displaying service messages |
-| `Red Number` | ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png) | Display a numerical value in the style of the iOS notification icons. Disappears at the value 0. |
-| `Bulb on/off` | ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | This Widget displays a value as a switched off or glowing light bulb on a black background. Can be used for Bool and Float values (dimmer). |
-| `Bar` | ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png) | This widget displays a value of 0-100 as a horizontal bar. |
+| [`Bool Checkbox`](#bool-checkbox) | ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png) | This widget displays Bool values as a simple checkbox and also allows you to toggle the value. |
+| [`Bool Select`](#bool-select) | ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png) | This widget displays Bool values as a dropdown and also allows you to toggle the value. |
+| [`Bool HTML Control`](#bool-html-control) | ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png) | This widget displays bool values and also allows you to toggle the value to click within the widget area. |
+| [`Bool SVG`](#bool-svg) | ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png) | This widget sets a value when clicked within the widget area. |
+| [`HTML State`](#html-state) | ![028](../../de/viz/media/widget_images/basic/Prev_BasicState.png) | This widget disappears if the value of the associated data point is 0 or false. Skilled, e.g. for displaying service messages |
+| [`Red Number`](#hide-on-0-false) | ![029](../../de/viz/media/widget_images/basic/Prev_RedNumber.png) | Display a numerical value in the style of the iOS notification icons. Disappears at the value 0. |
+| [`Bulb on / off`](#bulb-on-off) | ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | This Widget displays a value as a switched off or glowing light bulb on a black background. Can be used for Bool and Float values (dimmer). |
+| [`Bulb on / off control`](#bulb-on-off-control) | ![030](../../de/viz/media/widget_images/basic/Prev_BulbOnOffCtrl.png) | This Widget displays a value as a switched off or glowing light bulb on a black background. Can be used for Bool and Float values (dimmer). |
+| [`Bar`](#bar-horizontal) | ![031](../../de/viz/media/widget_images/basic/Prev_ValueFloatBar.png) | This widget displays a value of 0-100 as a horizontal bar. |
 | `Note` | ![032](../../de/viz/media/widget_images/basic/Prev_Note.png) ||
 | `json Table` | ![033](../../de/viz/media/widget_images/basic/Prev_TableBody.png) ||
 | `HTML logout` | ![034](../../de/viz/media/widget_images/basic/Prev_HtmlLogout.png) ||
@@ -247,7 +248,7 @@ This widget displays bool values as a drop-down and also allows you to toggle th
 | `html_append` | Text or HTML code displayed behind the image.
 | `text_true` | Text for the true case | `text_false` | Text for the false case
 
-### Bool HTML
+### Bool HTML Control
 This widget represents Boolean values and also allows you to toggle the value to click within the widget area.
 
 | Attribute | Description |
@@ -257,7 +258,6 @@ This widget represents Boolean values and also allows you to toggle the value to
 | `html_append` | Text or HTML code displayed behind the image.
 | `text_true` | Text for the true case | `text_false` | Text for the false case
 
-### Bool HTML
 ### Bool SVG
 ### HTML State
 This widget sets a value when clicked within the widget area.

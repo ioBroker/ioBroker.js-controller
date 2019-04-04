@@ -1,5 +1,24 @@
 
+let statistics;
+
 class Utils {
+    static getStatistics() {
+        const d = new Date();
+        statistics = statistics || Utils.fetchLocal(`http://iobroker.live/statistics.json?$t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`)
+            .then(data => JSON.parse(data));
+
+        return statistics;
+    }
+
+    static fetchLocal(url) {
+        return new Promise((resolve, reject) => {
+            const oReq = new XMLHttpRequest();
+            oReq.onload = function () {resolve(this.responseText);};
+            oReq.open('get', url, true);
+            oReq.addEventListener('error', function (e) {reject(e)}, false);
+            oReq.send();
+        });
+    }
 
     static extractHeader(text) {
         const attrs = {};
