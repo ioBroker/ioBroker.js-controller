@@ -812,21 +812,23 @@ class PieStats extends Component {
         let sum = 0;
         series.forEach(v => sum += v.value || 0);
 
-        for (let k = 0; k < series.length; k++) {
-            if (series[k].value / sum < this.props.startFromPercent / 100) {
-                let others = 0;
-                for (let i = k; i < series.length; i++) {
-                    others += series[i].value;
+        if (this.props.startFromPercent) {
+            for (let k = 0; k < series.length; k++) {
+                if (series[k].value / sum < this.props.startFromPercent / 100) {
+                    let others = 0;
+                    for (let i = k; i < series.length; i++) {
+                        others += series[i].value;
+                    }
+                    labels.splice(k, labels.length - k);
+                    series.splice(k, series.length - k);
+                    labels.push(I18n.t('others'));
+                    series.push({name: I18n.t('others'), value: others});
+                    const d = {};
+                    labels.forEach((l, i) => d[l] = series[i]);
+                    labels = Object.keys(d).sort((a, b) => d[b].value - d[a].value);
+                    series = labels.map(l => d[l]);
+                    break;
                 }
-                labels.splice(k, labels.length - k);
-                series.splice(k, series.length - k);
-                labels.push(I18n.t('others'));
-                series.push({name: I18n.t('others'), value: others});
-                const d = {};
-                labels.forEach((l, i) => d[l] = series[i]);
-                labels = Object.keys(d).sort((a, b) => d[b].value - d[a].value);
-                series = labels.map(l => d[l]);
-                break;
             }
         }
 
@@ -841,6 +843,7 @@ class PieStats extends Component {
                 right: 0,
                 top: 0,
                 bottom: 0,
+                formatter: this.props.hideNumbersInLegend ? undefined : v => v + ' - ' + this.props.data[v],
                 data: labels,
             },
             series : [
@@ -873,7 +876,7 @@ class PieStats extends Component {
         return (<ReactEcharts
             option={option}
             notMerge={true}
-            style={{height: this.props.height || '350px'}}
+            style={{height: this.props.height || '350px', width: '100%'}}
             lazyUpdate={true}
             //               opts={{renderer: 'svg'}}
             theme={"westeros"}
@@ -890,6 +893,7 @@ PieStats.propTypes = {
     series: PropTypes.string,
     height: PropTypes.string,
     radius: PropTypes.number,
+    hideNumbersInLegend: PropTypes.bool,
     startFromPercent: PropTypes.number,
 };
 

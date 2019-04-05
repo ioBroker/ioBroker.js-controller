@@ -67,7 +67,10 @@ class ForumInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: 18490
+            users: 18490,
+            topics: 23000,
+            posts: 250000,
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
         };
         this.load();
     }
@@ -87,10 +90,15 @@ class ForumInfo extends Component {
     }
 
     load() {
-        fetch(`https://forum.iobroker.net/api/users/`)
-            .then(res => res.json())
-            .then(users => {
-                this.setState({users: users.userCount});
+        Utils.fetchLocal(`http://iobroker.live/forum.json`)
+            .then(stats => {
+                try {
+                    stats = JSON.parse(stats);
+                    stats.date = new Date(stats.date).toLocaleDateString() + ' ' + new Date(stats.date).toLocaleTimeString();
+                    this.setState(stats);
+                } catch (e) {
+                    console.error('cannot parse answer: ' + e);
+                }
             });
     }
 
@@ -100,20 +108,20 @@ class ForumInfo extends Component {
             <span className={this.props.classes.forumTitle}>{I18n.t('forum-text')}</span><br/>
             <div className={this.props.classes.forumDivInfo}>
                 <div className={this.props.classes.forumDivInfoBox}>
-                    <div className={this.props.classes.forumDivInfoCard}>
+                    <div className={this.props.classes.forumDivInfoCard} title={this.state.date}>
                         <IconPosts className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Posts')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')} >245000+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')} >{this.state.posts}</span>
                     </div>
-                    <div className={this.props.classes.forumDivInfoCard}>
+                    <div className={this.props.classes.forumDivInfoCard} title={this.state.date}>
                         <IconUsers className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Users')}</span><br/>
                         <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>{this.state.users}</span>
                     </div>
-                    <div className={this.props.classes.forumDivInfoCard}>
+                    <div className={this.props.classes.forumDivInfoCard} title={this.state.date}>
                         <IconThemes className={this.props.classes.forumDivInfoIcon}/><br/>
                         <span className={this.props.classes.forumDivInfoText}>{I18n.t('Themes')}</span><br/>
-                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>21000+</span>
+                        <span className={this.props.classes.forumDivInfoValue + ' ' + (this.props.mobile ? this.props.classes.forumDivInfoValueMobile : '')}>{this.state.topics}</span>
                     </div>
                 </div>
             </div><br/>

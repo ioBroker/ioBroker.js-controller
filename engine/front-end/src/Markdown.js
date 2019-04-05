@@ -14,6 +14,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
@@ -29,7 +30,6 @@ import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
 import Editor from './Pages/Editor';
-import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = theme => ({
     root: {

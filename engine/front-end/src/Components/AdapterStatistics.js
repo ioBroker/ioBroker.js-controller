@@ -24,6 +24,9 @@ const styles = theme => ({
     dialogContent: {
         textAlign: 'center',
     },
+    dialogContentMobile: {
+        padding: 5
+    },
     paper: {
         display: 'inline-block',
         verticalAlign: 'top',
@@ -38,6 +41,11 @@ const styles = theme => ({
         height: 400,
         overflowY: 'auto',
         overflowX: 'hidden',
+    },
+    paperMobile: {
+        width: 'calc(100% - 40px) !important',
+        margin: '5px !important',
+        padding: '3px !important',
     },
     tableRoot: {
         height: 'calc(100% - 55px)',
@@ -73,6 +81,7 @@ const styles = theme => ({
 
     },
 });
+const MAX_MOBILE_WIDTH = 1000;
 
 class AdapterStatistics extends Component {
     constructor(props) {
@@ -80,7 +89,14 @@ class AdapterStatistics extends Component {
         this.state = {
             orderBy: window.localStorage ? window.localStorage.getItem('Docs.asOrderBy') || 'Count' : 'Count',
             order: window.localStorage ? window.localStorage.getItem('Docs.asOrder') || 'desc' : 'desc',
+            mobile: this.props.mobile || this.props.width < MAX_MOBILE_WIDTH,
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.mobile !== (nextProps.mobile || nextProps.width < MAX_MOBILE_WIDTH)) {
+            this.setState({mobile: (nextProps.mobile || nextProps.width < MAX_MOBILE_WIDTH)});
+        }
     }
 
     sortHandler(col) {
@@ -162,19 +178,26 @@ class AdapterStatistics extends Component {
         return (
             <Dialog
                 className={this.props.classes.dialog}
-                fullWidth={false}
+                fullWidth={this.state.mobile}
                 maxWidth="xl"
                 open={true}
                 onClose={() => this.props.onClose()}
                 aria-labelledby="max-width-dialog-title"
             >
                 <DialogTitle id="max-width-dialog-title">{I18n.t('Adapter %s statistics', this.props.adapter)}</DialogTitle>
-                <DialogContent className={this.props.classes.dialogContent}>
+                <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
                     <h2>{I18n.t('Total count: ')} {this.props.statistics.adapters[this.props.adapter]}</h2>
-                    <Paper className={classes.paper + ' ' + classes.paperPie}>
-                        <PieStats data={this.props.statistics.versions[this.props.adapter]} size={'50%'} height={400} startFromPercent={3}/>
+                    <Paper className={classes.paper + ' ' + classes.paperPie + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+                        <PieStats
+                            data={this.props.statistics.versions[this.props.adapter]}
+                            size={'45%'}
+                            height={400}
+                            hideNumbersInLegend={true}
+                            startFromPercent={3}
+                            series={I18n.t('Count')}
+                        />
                     </Paper>
-                    <Paper className={classes.paper + ' ' + classes.paperTable}>{this.renderTable()}</Paper>
+                    <Paper className={classes.paper + ' ' + classes.paperTable + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>{this.renderTable()}</Paper>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => this.props.onClose()} color="primary">{I18n.t('Close')}</Button>
@@ -188,6 +211,7 @@ AdapterStatistics.propTypes = {
     language: PropTypes.string,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
+    width: PropTypes.number,
     adapter: PropTypes.string,
     statistics: PropTypes.object,
     onClose: PropTypes.func,

@@ -335,25 +335,16 @@ class Adapters extends Component {
         this.props.onNavigate(null, null, link);
     }
 
-    renderAdapterStatistics(adapter) {
-        return [(
-            <CardContent key="stat" className={this.props.classes.cardContent}>
-                <PieStats data={this.state.statistics.versions[adapter]} height={200} radius={'50%'} startFromPercent={8}/>
-            </CardContent>),
-            (<CardActions key="actionsStat">
-                <Button size="small" color="primary" onClick={() => this.setState({stats: ''})}>{this.words.close}</Button>
-                <div className={this.props.classes.buttonGap}/>
-                <IconButton className={this.props.classes.buttonZoom} size="small" color="primary" onClick={() => this.setState({zoom: true})}><IconZoom/></IconButton>
-            </CardActions>),
-            this.state.zoom ? (<AdapterStatistics
-                onClose={() => this.setState({zoom: false})}
+    renderAdapterStatistics() {
+            return this.state.stats ? (<AdapterStatistics
+                onClose={() => this.setState({stats: ''})}
                 mobile={this.props.mobile}
                 theme={this.props.theme}
+                width={this.props.width}
                 language={this.props.language}
                 adapter={this.state.stats}
                 statistics={this.state.statistics}
-            />) : null,
-        ];
+            />) : null;
     }
 
     renderAdapterMain(adapter, obj) {
@@ -384,6 +375,7 @@ class Adapters extends Component {
             </CardActions>)];
 
     }
+
     renderAdapterCard(type, adapter, obj) {
         this.words = this.words || {};
         this.words.authors = this.words.authors || I18n.t('Authors:');
@@ -395,7 +387,7 @@ class Adapters extends Component {
         this.words.close = this.words.close || I18n.t('Close');
 
         return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
-            {this.state.stats !== adapter ? this.renderAdapterMain(adapter, obj) : this.renderAdapterStatistics(adapter, obj)}
+            {this.renderAdapterMain(adapter, obj)}
         </Card>);
     }
 
@@ -720,6 +712,7 @@ class Adapters extends Component {
             (<div key="body" className={this.props.classes.root} ref={this.contentRef}>
                 {this.state.content && Object.keys(this.state.content.pages).map(type => this.renderType(type))}
             </div>),
+            this.renderAdapterStatistics(),
             this.renderSnackbar(),
         ];
     }

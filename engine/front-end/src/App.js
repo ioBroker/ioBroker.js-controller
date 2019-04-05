@@ -58,9 +58,13 @@ const styles = theme => ({
         cursor: 'pointer'
     },
     tabs: Object.assign({display: 'flex'}, theme.tabs),
+    tabsNoTabs: {
+        paddingLeft: 0,
+    },
     tab:  {
         minWidth: 'inherit'
     },
+
     languageButton: {
         width: 32,
         height: 32,
@@ -159,10 +163,11 @@ const PAGES = {
     'download': {tabIndex: 2, component: Downloads, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
-    'about':  {tabIndex: 5, name: 'About', menu: [
+    'forum':  {tabIndex: 5, name: 'Forum', link: 'https://forum.iobroker.net', target: '_self'},
+    'about':  {tabIndex: 6, name: 'About', menu: [
             {tab: 'statistics', name: 'Statistics', icon: null},
     ]},
-    'cloud':    {tabIndex: 6, name: 'Cloud', menu: [
+    'cloud':    {tabIndex: 7, name: 'Cloud', menu: [
         {link: 'https://iobroker.net', name: 'Free', target: 'this'},
         {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
         {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
@@ -174,7 +179,7 @@ const PAGES = {
 };
 
 const MOBILE_WIDTH = 650;
-const TABS_WIDTH = 1150;
+const TABS_WIDTH = 1180;
 
 class App extends Router {
     constructor(props) {
@@ -443,9 +448,6 @@ class App extends Router {
 
     renderPagesMenu() {
         return [
-            (<IconButton key="menuButton" onClick={() => this.setState({showTabMenu: true})}>
-                <IconMenu />
-            </IconButton>),
             (<Drawer key="drawer" open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
                 <List>
                     {Object.keys(PAGES).map(tab => {
@@ -456,30 +458,45 @@ class App extends Router {
                                 (<ListItem button key={tab}
                                     onClick={e => {
                                         const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
-                                        if (menuOpened.indexOf(tab) === -1) {
+                                        const pos = menuOpened.indexOf(tab);
+                                        if (pos === -1) {
                                             menuOpened.push(tab);
+                                        } else {
+                                            menuOpened.splice(pos, 1);
                                         }
-                                        this.setState({menuOpened, anchorMenu: e.target})
+                                        this.setState({menuOpened});
                                     }}
                                 >
                                     {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
                                     <ListItemText primary={I18n.t(PAGES[tab].name)} />
                                 </ListItem>),
 
-                                (<List className={this.props.classes.subMenu}>
+                                this.state.menuOpened.indexOf(tab) !== -1 ? (<List className={this.props.classes.subMenu}>
                                     {PAGES[tab].menu.map(item =>
-                                        (<ListItem classes={{root: this.props.classes.subMenuItem}}button key={item}
-                                                   onClick={() => Utils.openLink(item.link, item.target)}>
+                                        (<ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
+                                                   onClick={() => {
+                                                       if (item.link) {
+                                                           Utils.openLink(item.link, item.target)
+                                                       } else if (item.tab) {
+                                                           this.onNavigate(null, item.tab);
+                                                       }
+                                                       this.setState({showTabMenu: false});
+                                                   }}>
                                             {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
                                             <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
                                         </ListItem>)
                                     )}
-                                </List>)
+                                </List>) : null
                             ];
                         } else {
                             return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
                                     this.setState({showTabMenu: false}, () => {
-                                        this.onNavigate(this.state.language, tab);
+                                        if (PAGES[tab].link) {
+                                            Utils.openLink(PAGES[tab].link, PAGES[tab].target)
+                                        } else {
+                                            this.onNavigate(null, tab);
+                                        }
+                                        this.setState({showTabMenu: false});
                                     });
                                 }}>
                                 {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
@@ -493,13 +510,17 @@ class App extends Router {
     }
 
     renderAppBar() {
+        const noTabs = this.state.width <= TABS_WIDTH;
         return (
-            <Toolbar position="static" variant="dense" className={this.props.classes.tabs} >
+            <Toolbar position="static" variant="dense" className={this.props.classes.tabs + ' ' + (noTabs ? this.props.classes.tabsNoTabs : '')}>
                 {this.renderLogo()}
                 {this.renderLanguage()}
                 {this.renderSearch()}
                 <div style={{flex: 1}}/>
-                {this.state.width > TABS_WIDTH ? this.renderTabs() : this.renderPagesMenu()}
+                {noTabs ? (<IconButton key="menuButton" onClick={() => this.setState({showTabMenu: true})}>
+                    <IconMenu />
+                </IconButton>) : null}
+                {noTabs ? this.renderPagesMenu() : this.renderTabs()}
             </Toolbar>
         );
     }

@@ -3,11 +3,11 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
 import ReactEcharts from 'echarts-for-react';
 
 import {MdFullscreen as IconZoom} from 'react-icons/md';
@@ -51,26 +51,25 @@ const styles = theme => ({
     },
     paperMap: {
         width: 'calc(100% - 40px)',
-        height: 'calc(100% - 40px)',
+        height: 'calc(100% - 140px)',
     },
     paperCounters: {
         width: 'calc(100% - 400px)',
         height: 400,
-        '& .ct-label.ct-horizontal': {
-            position: 'relative',
-            transform: 'rotate(-90deg)',
-            transformOrigin: 'left top',
-        }
+    },
+    paperMobile: {
+        width: 'calc(100% - 40px) !important',
     },
     paperPlatforms: {
-        width: '45%',
+        width: 'calc(50% - 40px)',
         height: 400,
     },
     paperLanguages: {
-        width: '45%',
+        width: 'calc(50% - 40px)',
         height: 400,
     },
     paperCountries: {
+        width: 320,
         height: 400,
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -109,17 +108,25 @@ const styles = theme => ({
 
     },
 });
-
+const MAX_MOBILE_WIDTH = 1000;
 class Statistics extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             statistics: null,
-            total: 40000
+            date: '',
+            total: 40000,
+            mobile: this.props.mobile || this.props.contentWidth < MAX_MOBILE_WIDTH
         };
 
-        setTimeout(() => Utils.getStatistics().then(statistics => this.setState({statistics})), 200);
+        setTimeout(() => Utils.getStatistics().then(statistics => this.setState({statistics, date: new Date(statistics.date).toLocaleDateString() + ' ' + new Date(statistics.date).toLocaleTimeString()})), 200);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.mobile !== (nextProps.mobile || nextProps.contentWidth < MAX_MOBILE_WIDTH)) {
+            this.setState({mobile: (nextProps.mobile || nextProps.contentWidth < MAX_MOBILE_WIDTH)});
+        }
     }
 
     renderMap() {
@@ -162,7 +169,7 @@ class Statistics extends Component {
     renderCountries() {
         if (!this.state.statistics) return null;
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCountries}>
+        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCountries + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             {this.renderCountriesTable()}
         </Paper>)
     }
@@ -170,8 +177,8 @@ class Statistics extends Component {
     renderPlatforms() {
         if (!this.state.statistics) return null;
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperPlatforms}>
-            <div className={this.props.classes.paperHeader}>{I18n.t('Platforms')}</div>
+        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperPlatforms + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+            <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Platforms')}</div>
             <PieStats
                 data={this.state.statistics.platforms}
                 height={'380px'}
@@ -184,8 +191,8 @@ class Statistics extends Component {
     renderLanguages() {
         if (!this.state.statistics) return null;
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperLanguages}>
-            <div className={this.props.classes.paperHeader}>{I18n.t('Languages')}</div>
+        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperLanguages + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+            <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Languages')}</div>
             <PieStats
                 data={this.state.statistics.languages}
                 startFromPercent={0}
@@ -255,8 +262,12 @@ class Statistics extends Component {
             }]
         };
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCounters}>
-            <div className={this.props.classes.paperHeader}>{I18n.t('Installations') + ' ' + counts[labels[labels.length - 1]] + ' - ' + labels[labels.length - 1]}</div>
+        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCounters + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+            <div
+                title={this.state.date}
+                className={this.props.classes.paperHeader}>
+                {I18n.t('Installations') + ' ' + counts[labels[labels.length - 1]] + ' - ' + labels[labels.length - 1]}
+            </div>
             <ReactEcharts
                 option={option}
                 style={{height: '350px'}}
@@ -286,7 +297,8 @@ Statistics.propTypes = {
     language: PropTypes.string,
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
-    mobile: PropTypes.bool
+    mobile: PropTypes.bool,
+    contentWidth: PropTypes.number,
 };
 
 export default withStyles(styles)(Statistics);

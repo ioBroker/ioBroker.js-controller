@@ -12,6 +12,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Select from '@material-ui/core/Select';
 import Loader from '../Components/Loader';
@@ -19,10 +20,9 @@ import I18n from '../i18n';
 import Footer from '../Footer';
 import Utils from '../Utils';
 import {MdContentCopy as IconCopy} from 'react-icons/md';
+import {MdClose as IconClose} from 'react-icons/md';
 
 const MARGIN = 10;
-
-
 const styles = theme => ({
     content: theme.content,
     formControl: {
@@ -34,7 +34,10 @@ const styles = theme => ({
     root: {
         width: 'calc(100% - 20px)',
         margin: 'auto',
-        minHeight: '100%'
+        minHeight: '100%',
+    },
+    rootMobile: {
+        textAlign: 'center',
     },
     card: {
         margin: MARGIN,
@@ -67,7 +70,8 @@ const styles = theme => ({
     },
     cardContent: {
         zIndex: 1,
-        paddingTop: 64
+        paddingTop: 64,
+        textAlign: 'left',
     },
     cardLine: {
         display: 'flex',
@@ -87,6 +91,7 @@ const styles = theme => ({
         marginTop: 5,
         minWidth: 100,
         padding: 20,
+        overflow: 'hidden',
         '&:before': {
             content: '"⚠"',
             color: '#ff5a5a',
@@ -121,7 +126,8 @@ class Downloads extends Component {
         this.state = {
             content: null,
             loadTimeout: false,
-            filter: 'all'
+            filter: 'all',
+            tooltip: '',
         };
         this.load();
         // Give 300ms to load the page. After that show the loading indicator.
@@ -169,9 +175,9 @@ class Downloads extends Component {
         info: 'http://www.iobroker.net/docu/?page_id=8955&lang=de'
     }*/
     renderLine(name, value) {
-        return (<div className={this.props.classes.cardLine}>
-            <span  className={this.props.classes.cardLineName}>{I18n.t(name)}:</span>
-            <span  className={this.props.classes.cardLineValue}>{value}</span>
+        return (<div key={name} className={this.props.classes.cardLine}>
+            <span className={this.props.classes.cardLineName}>{I18n.t(name)}:</span>
+            <span className={this.props.classes.cardLineValue}>{value}</span>
         </div>);
     }
 
@@ -186,7 +192,7 @@ class Downloads extends Component {
                 .replace(/<\/?\w+>/g, '')
                 .replace(/^ioBroker/, '')
         );
-        return (<div>{lines.map(line => [line, (<br/>)])}</div>);
+        return (<div>{lines.map(line => [line, (<br key="br"/>)])}</div>);
     }
 
     renderImage(image) {
@@ -203,7 +209,7 @@ class Downloads extends Component {
                 <CardContent className={this.props.classes.cardContent}>
                     <h2>&nbsp;</h2>
                     <div className={this.props.classes.cardInfo}>
-                        <p>
+                        <div>
                             {this.renderLine('Date', this.formatDate(image.date))}
                             {this.renderLine('Linux', image.linux)}
 
@@ -218,7 +224,7 @@ class Downloads extends Component {
                                 })}
 
                             {image.details && this.renderLine('Details', this.formatDetails(image.details))}
-                        </p>
+                        </div>
                     </div>
                 </CardContent>
             </CardActionArea>
@@ -227,6 +233,27 @@ class Downloads extends Component {
                 {image.info && (<Button size="small" color="primary" onClick={() => Utils.openLink(image.info)}>{I18n.t('Info')}</Button>)}
             </CardActions>
         </Card>);
+    }
+
+    renderSnackbar() {
+        return (<Snackbar
+            key="snackbar"
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            open={!!this.state.tooltip}
+            autoHideDuration={6000}
+            onClose={() => this.setState({tooltip: ''})}
+            message={<span id="message-id">{this.state.tooltip}</span>}
+            action={[
+                <IconButton
+                    key="close"
+                    color="inherit"
+                    className={this.props.classes.close}
+                    onClick={() => this.setState({tooltip: ''})}
+                >
+                    <IconClose />
+                </IconButton>,
+            ]}
+        />)
     }
 
     renderInfoAboutInstall() {
@@ -243,6 +270,7 @@ class Downloads extends Component {
                         title={I18n.t( 'copy to clipboard')}
                         onClick={e => {
                             Utils.onCopy(e, 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -\nsudo apt-get install -y nodejs');
+                            this.setState({tooltip: I18n.t('Copied')});
                         }}><IconCopy fontSize="small"/></IconButton>
                 </pre>
                 <b>2. </b>{I18n.t('instruction4')}
@@ -253,6 +281,7 @@ class Downloads extends Component {
                         title={I18n.t( 'copy to clipboard')}
                         onClick={e => {
                             Utils.onCopy(e, 'curl -sL https://iobroker.net/install.sh | bash -');
+                            this.setState({tooltip: I18n.t('Copied')});
                         }}><IconCopy fontSize="small"/></IconButton>
                 </pre>
             </Paper>
@@ -271,7 +300,7 @@ class Downloads extends Component {
                 input={<Input name="type" id="type-helper" />}
             >
                 <MenuItem value="all"><em>{I18n.t('All')}</em></MenuItem>
-                {types.map(type => (<MenuItem value={type}>{type}</MenuItem>))}
+                {types.map(type => (<MenuItem key={type} value={type}>{type}</MenuItem>))}
             </Select>
             <FormHelperText>{I18n.t('Platform')}</FormHelperText>
         </FormControl>)
@@ -285,10 +314,11 @@ class Downloads extends Component {
         return [
             this.renderInfoAboutInstall(),
             this.renderSelector(),
-            (<div key="table" className={this.props.classes.root}>
+            (<div key="table" className={this.props.classes.root + ' ' + (this.props.mobile ? this.props.classes.rootMobile : '')}>
                 {this.state.content && this.state.content.map(image => this.renderImage(image))}
             </div>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
+            this.renderSnackbar(),
         ];
     }
 }
