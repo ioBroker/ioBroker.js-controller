@@ -400,6 +400,12 @@ class App extends Router {
                         } else if (item.tab) {
                             this.onNavigate(null, item.tab);
                         }
+                        const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
+                        const pos = menuOpened.indexOf(name);
+                        if (pos !== -1) {
+                            menuOpened.splice(pos, 1);
+                            this.setState({menuOpened, anchorMenu: null});
+                        }
                     }}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
                 )}
             </Menu>);
