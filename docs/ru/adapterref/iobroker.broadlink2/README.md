@@ -2,19 +2,20 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.broadlink2/README.md
-title: ! [Logo] (./ admin / broadlink.png) Steuert BroadLink IR / RF-Remotes und Schaltsteckdosen
-hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
+title: ! [Logo] (./ admin / broadlink2.png) Управляет устройствами, совместимыми с BroadLink
+hash: WTYq/WXAyxAsoH6tiIsBCs4yCcfe2WO0lK+6ud+WRQg=
 ---
-# ![логотип](../../../en/adapterref/iobroker.broadlink2/./admin/broadlink.png) Steuert BroadLink IR / RF-Remotes und Schaltsteckdosen
+# ![логотип](../../../en/adapterref/iobroker.broadlink2/./admin/broadlink2.png) Управляет устройствами, совместимыми с BroadLink
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.broadlink2.svg)
+![установлены](http://iobroker.live/badges/broadlink2-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.broadlink2.svg)
-![Travis-CI Статус сборки](https://travis-ci.org/frankjoke/ioBroker.broadlink2.svg?branch=master)
-![AppVeyor Статус сборки](https://ci.appveyor.com/api/projects/status/d2wwp0f02t512wp8?svg=true)
-![NPM](https://nodei.co/npm/iobroker.broadlink2.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/frankjoke/ioBroker.broadlink2/master.svg)
 
-## Адаптер для расширенной работы Broadlink WLan-Geräte (RM ++, SP ++, A1)
-Это адаптер ioBroker для нескольких коммутаторов Broadlink, таких как RM2, SP1, SP2, SP3, Honeywell SP2, SPMini, SPMini2, SPMiniPlus и некоторых продуктов OEM от них.
+[Немецкое руководство - Deutsche Anleitung](README_DE.md)
+
+## Адаптер для различных WLan-устройств, совместимых с Broadlink (RM ++, SP ++, A1, Floureon, S1C)
+Это адаптер ioBroker для нескольких коммутаторов Broadlink, таких как RM2, RM3, RM Plus, SP1, SP2, SP3, Honeywell SP2, SPMini, SPMini2, SPMiniPlus и некоторых продуктов OEM от них.
 Также поддерживаются удаленные контроллеры, такие как RM2, RM Mini, RM Pro Phicomm, RM2 Home Plus, RM2 Home Plus GDT, RM2 Pro Plus, RM2 Pro Plus2 и RM2 Pro Plus BL. Несколько контроллеров будут генерировать свои собственные записи и должны быть обучены отдельно.
 Он сканирует сеть, чтобы найти совместимые устройства и устанавливает их (в настоящее время только коммутаторы типа SP?).
 
@@ -24,16 +25,14 @@ hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
 
 Адаптер имеет фиксированные состояния для отправки кодов с RM-устройств или для их изучения. Он также может отправлять отдельные сцены (действия на нескольких устройствах).
 
-Если устройства, настроенные на определенном IP-адресе, не найдены снова, они будут помечены как notReachable! Если они подключены снова, они будут использоваться в обычном режиме.
+Если устройства, настроенные для определенного IP-адреса, не найдены снова, они будут помечены как «недоступные»! Если они подключены снова, они будут использоваться в обычном режиме.
 
-Если устройство не отвечает 2 раза подряд, оно установлено как недоступное. ***Устройства notReachable*** будут выдавать предупреждающее сообщение журнала каждые 50 сканирований. После 10 сканирований адаптер попытается снова найти их по тому же IP, что и раньше. Если вы изменили IP, пожалуйста, сделайте повторное сканирование.
+Если устройство не отвечает в течение 5 минут подряд, оно установлено на недоступное. ***Устройства notReachable*** будут выдавать предупреждающее сообщение журнала при каждом x сканировании. После некоторых сканирований адаптер попытается снова найти их по тому же MAC-адресу.
 
-Пожалуйста, удалите устройства из admin.objects, если вы удалите их навсегда или переименуете их в своем роутере!
+Пожалуйста, удалите старые устройства из admin.objects, если вы удалите их навсегда или переименуете их в своем роутере!
 
 ### Заметка
 Устройства SP1 не могут быть опрошены.
-
-* Этот адаптер основан на оригинальном адаптере Broadlink v0.1.1, который находится здесь: <https://github.com/hieblmedia/ioBroker.broadlink>
 
 ## Конфигурация
 * Введите префикс сетевого адреса в конфигурации, который должен быть удален при создании имен устройств
@@ -43,113 +42,95 @@ hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
 * В объектах ioBroker вы можете найти "broadlink2. [Devicename] .Learn или LearnRF для устройств '+' типа".
 * Для устройств RM (x) + (Plus) вы также получаете специальную кнопку RS-Sweep-Lear, которая может выучить больше устройств, чем на обычных 433 МГц.
 * Установите для этого объекта значение true. (вы можете нажать на кнопку в представлении объекта)
-* Теперь нажмите кнопку на пульте дистанционного управления в течение 30 секунд.
+* Теперь нажмите кнопку на пульте дистанционного управления в течение 30 секунд. в обычном режиме кратковременно нажимайте их, пока не научитесь.
+* В RF-Sweep Learning необходимо сначала нажать кнопку на ~ 10 секунд, затем отпустить, а затем нажать еще раз на короткое время.
 * Новый объект должен теперь появиться внутри объекта "broadlink. [N]. [Devicename] .LearnedState" с именем ">>> Rename learn @ YYYYMMDDTHHmmSS"
 * Вы можете нажать на кнопку в представлении объекта, чтобы отправить код.
-* Чтобы переименовать элемент, нажмите на имя (начиная с `>>>`) и измените имя. Он не должен включать `,`, `.` или`; `
+* Чтобы переименовать элемент, нажмите на имя (начиная с `_Rename_learned_`) и измените имя. Он не должен включать `,`, `.` или`; `, а также некоторые другие символы, они будут заменены на '_';
 
 Также можно использовать коды из [RM-Bridge](http://rm-bridge.fun2code.de/).
-Просто создайте объект (состояние, кнопка типа) со значением, в котором вы добавляете «CODE_», или с собственной записью `code` без «CODE_».
+Просто создайте объект (состояние, кнопка типа) со значением, в котором вы добавляете «CODE_» или с собственной записью `code` без «CODE_».
 
 ## Используйте сцены
-* Szenen bestehen aus ID's oder Zahlen mit `,` aneinandergereiht. Нормальный werden sie einfach im Abstand von 100ms hintereinander ausgelöst. Wird eine Zahl gefunden wird dort so viele ms gewartet bis zum nächsten Auslösen. Также `, SP: доза1, RM: your.L.StereoEin, 1000, RM: your.L.TVEin` würde die Steckdose einschalten, dann den Fernseher 1100ms nachher die Stereoanlage. Man kann auch Werte bei anderen (auch fremde) Государства в полном порядке: `hm-rpc.0.MEQ1435726.1.STATE` würde diesen einschalten! Übrigens, Bei boolschen Stateskann kann beim Einschalten das '= 1 / = on / = true / = ein' weggelassen werden da true der default-Wert ist. Beim Ausschalten был ein '= 0 / = false / = aus / = off' undbedingt notwendig!
+* Сцены могут содержать идентификаторы или имена, а также числа, разделенные `,`. Обычно идентификаторы будут выполняться / отправляться с разницей во времени 100 мс, но если вам потребуется более длительная пауза между ними, вы можете записать число, которое отражает миллисекунды ожидания. Например, `SP: доза = 1, 1000, RM: your.L.StereoEin, 1000, RM: your.L.TVEin` включит беспроводной штекер с именем 'SP: доза', затем подождет одну секунду (фактически 1,1 секунды ), Включите стерео и через секунду телевизор. Вы также можете переключать устройства других адаптеров, например, `hm-rpc.0.MEQ1435726.1.STATE = true` включит это устройство Homematic! Состояния Boolsche можно переключать с помощью '= 1 / = on / = true / = ein', если вы оставите его без `=`, тогда он будет использовать true. Чтобы выключить устройство, вы заканчиваете его нажатием '= 0 / = false / = aus / = off', которое необходимо выключить!
 
 ## Использовать состояния
-* Sie können заявляет, что это означает, что Signale einder ausgeschaltet werden.
-* Damit geben sie den State-Namen and und die Signale (listem mit ',' getrennt) die das Gerät einschalten und auch solche die es ausschalten.
-* Государства Вирда вирда дер Вирт дер Государства Гетсета. Das ist von Vorteil wenn mehrere Tasten ein Gerät einschalten (oder Ausschalten)
-* Es kännen zum Ausschalten auch keine Signale gelistet werden dann werden die zum Einschalten verwendeten Werte in einer Liste
-* wird als Aus-Signal nur '+' angegeben werden die Werte im Ein-Bereich (hoffentlich 10 Signale) также Zehnertastatur verwendet die Wete bis zu 9999 senden kann. Wenn dann der State mit Wert 123 beschrieben wird wird dann '1', '2' und dann '3' mit jewelils nach 1/3 Sekunde Verzögerung gesendet!
-
-Die Liste muss mit dem 0-Befehl beginnen und mit dem 9-Befehl enden!
+* Вы также можете создавать состояния для ваших устройств, которые объединяют команды включения и выключения в одно состояние, которое можно переключать как любое другое устройство.
+* Вам нужно перечислить команды для включения и выключения состояния в отдельных столбцах, они могут быть несколькими, чтобы государство знало, когда ваше устройство включается / выключается любым из них.
+* Если вы установите состояние on on или off onlöy, первая команда on / off будет отправлена
+* Если присутствуют только команды, коммутатор отправит соответствующую команду с числовым значением -1, что означает, что он отправит первую команду, если получит `0`, вторую, если получит` 1`. Таким образом, вы можете моделировать несколько состояний в одном состоянии.
+* Если вы используете только «+» в качестве команды выключения, вам нужно указать 10 команд, разделенных «,», которые отражают цифры «0-9» на пульте дистанционного управления. Затем вы можете отправить состояние, затем число, например, `123` (макс. 9999), и оно будет отправлять` 1`, `2` и` 3` с задержкой в 1/3 секунды между ними! Таким образом, вы можете установить, например, канал на телевизоре на «33», просто записав «TVchannel = 33», если название штата - «TVchannel».
 
 ## Использовать отправку сообщений на адаптер
-Der Adapter versteht jetzt auch 'sendTo' Kommandos.
+Адаптер также понимает команды sendTo.
 
-* `debug`:` sendTo ('broadlink2.0', 'debug', 'on') `(es geht auch 0,1, on, off, ein, aus, true, false) würde debug einder ausschalten.
-* `get`:` sendTo ('broadlink2.0', 'get', 'RM2: RMPROPLUS.Temperau`` kann der state von Werten abgefragt werden, man bekommt zB `{val: 29.9, ack: true, ts: 1505839335870 , q: 0, от: 'system.adapter.broadlink2.0', lc: 1505839335870} `zurück
-* `switch`: schaltet Steckdose ein / aus je nach Текст:` sendTo ('broadlink2.0', 'switch', 'SP: идентификатор вашего устройства = on') `
+* `debug`:` sendTo ('broadlink2.0', 'debug', 'on') `(также 0,1, on, off, ein, aus, true, false) включит режим отладки.
+* `get`:` sendTo ('broadlink2.0', 'get', 'RM2: RMPROPLUS.Tempera'` может запрашивать данные с устройства, например `{val: 29.9, ack: true, ts: 1505839335870, q: 0, от: 'system.adapter.broadlink2.0', lc: 1505839335870} `zurück
+* `switch`: может включить или выключить плагин:` sendTo ('broadlink2.0', 'switch', 'SP: id вашего устройства = on') `
 * `switch_on` /` switch_off`: sendTo ('broadlink2.0', 'switch_on', 'SP: идентификатор вашего устройства') `
-* `send`:` sendTo («broadlink2.0», «send», «RM: yourdev.Learn») .yourid ') `würde den code (oder eine Scene) senden.
+* `send`:` sendTo ('broadlink2.0', 'send', 'RM: yourdev._Learn') `запустит обучение и` sendTo ('broadlink2.0', 'send', 'RM: yourdev.L .yourid ') `отправит код.
 * `send_scene`:` sendTo ('broadlink2.0', 'send_scene', 'scene xxx') `würde den als message angegebenen Текст als Szene ausführen
 * `send_code`:` sendTo ('broadlink2.0', 'send_code', 'RM: ваш remote.CODE_xxxxx') `würde den CODE_xxxx vom R: ваше имя senden.
+
+## Floureon или Beok313 Термостаты
+* Большинство данных может быть установлено, время может быть установлено путем записи чего-либо в `_setTime`; в этом случае время устройства будет установлено на системное время ioBroker. Это будет сделано автоматически также при запуске адператора.
+
+## Конфигурировать дополнительные устройства dnew
+* Вы можете добавить новые устройства, которые используют тот же протокол, добавив их с идентификатором устройства (в шестнадцатеричном или десятичном виде) и классом устройства (там перечислены (класс = A1, MP1, RM, RMP, S1C, SP1, SP2, SP3P, T1). Таким образом, вы можете добавить новый пульт, который адаптер обнаружит только как неизвестное устройство с шестнадцатеричным идентификатором 0x1234 в списке RM по 0x01234 = RMP.
+
+## Переименовать устройства
+* Устройства обычно получают имя своего сетевого хоста или комбинацию типа устройства, идентификатора и MAC-адреса в качестве имени с первыми 2 буквами типа с «:» впереди. Вы можете переименовать такое устройство с помощью `T1: BroadLink-OEM-T1-fa-83-7c = Beok313`, и в этом случае оригинальное имя не будет использоваться, но новое имя будет` Beok313`.
+
+## Режим отладки
+* Если вы добавите `!` В конец списка добавленных новых устройств (даже если оно пустое), вы можете установить адаптер в режим отладки, в котором будет записываться много дополнительной информации, даже если для него не установлено значение ' информационный режим в Admin.
 
 ## Известные вопросы
 * Если вы узнаете один и тот же сигнал несколько раз, код может отличаться каждый раз. Это не может быть изменено.
 * Иногда не находит устройства, если они не отвечают на поиск. Выполните повторное сканирование или перезапустите адаптер, чтобы перезапустить новый экземпляр.
 
 ## Важно / Wichtig
-* Требуется узел> = v4.2
+* Требуется узел> = V6
 
 ## Монтаж
-Mit ioBroker admin, npm install iobroker.broadlink2 oder von.
+с администратором ioBroker npm установите iobroker.broadlink2 или по адресу <https://github.com/frankjoke/ioBroker.broadlink2>
 
 ## Changelog
 
+### 2.0.0
+* Can handle Floureon/Beko thermostats (now with MQTT)
+* Can handle S1C security devices
+* Names device after their name or with their mac to reduce possibility of renaming
+* Can rename devices
+* Can add device Id's/Types for new devices
+* New communication routines to find & re-find devices
+* New communication protocoll with devices which do not allow that devices can get commands from 2 sources intermixed
+
+
 ### 1.9.1
+
 * added anothe RM Mini code
 
 ### 1.8.1
+
 * Changed util.js and tests and added new devices
 
 ### 1.7.0
 
 * Changed and corrected states which are created by A1-devices
 
-### 1.6.0
-
-* Added RF learning for RM-Plus devices
-* Changed Learn states to LearnRF and LearnIR to differentiate
-* a lot of code change to improve error handling and renaming
-
-### 1.5.3
-
-* Added ***notReachable*** states to devices which can return values (SP,RM,A1)
-* Added info when SP's are switched manually
-* devices which are disconnected will be stated as such and reconeccted automatically
-
-### 1.5.0
-
-* Added ***Scenes*** um mehrere Befehle hintereinander auszuführen. Diese können aud Adapter.config angelegtr werden.
-* Adapter verwendet kürzere Namen
-* Adapter kann codes oder Szenen direkt als Befehl senden
-* Adapter verwendet keine 'strings' mehr als button type
-
-### 1.1.1
-
-* Added ***NewDeviceScan***-Button um einen neuen scan zu veranlassen ohne den Adapter zu starten.
-* Adapter lest sofort die Werte der Devices ein
-* Problem solved which occured when multiple IP names were resolved by reverse-dns.
-
-### 1.1.0
-
-* Support for A1 devices added (thanks a lot to **blackrozes**)
-* bug fix for SP?
-* Receive and execute message from sendTo to broadlink2 implemented
-
-### 1.0.3
-
-* Renamed to ioBroker.broadlink2 on Git
-* Bug fix on 1.0.1
-
-### 1.0.0
-
-* Added learned state renaming, just rename the name and the ID will be renamed as well.
-* Added debugging with 'debug!' at beginning of IP suffix and you will see debug messages without setting Adapter to debug.
-
-### 0.2.0
-
-* Implemented SP2 switches and they are working to set them!
-* Currently ONLY SP1 && SP2 (SP3?) are working, please test!
-* Disabled RM? devices, no test available, ordered one for later re-implementation
-
 ### Todo for later revisions
+
+* config of devices and codes in separate config tool
 
 ## License
 
 The MIT License (MIT)
 
+<<<<<<< HEAD
 Copyright (c) 2014-2019, frankjoke <frankjoke@hotmail.com>
+=======
+Copyright (c) 2014-2019 Frank Joke <frankjoke@hotmail.com>
+>>>>>>> 7aa61304cbc5059e752952ce3a494629cd151962
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

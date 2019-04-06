@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
+hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
 ---
 ![商标](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -28,11 +28,15 @@ hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
 通过设置“控制” - 通道中的值来控制Luxtronik 1。控制以下值：
 
  - 热水 - 温度设定
- - 加热 -  modelo
- -  Hotwater  -  modelo
+ - 加热 - 模式
+ - 热水 - 模式
  - 加热 - 曲线（差异，终点，起点，夜间减少）。
 
 ## Changelog
+
+### 0.0.6
+
+-   diminished risk of multiple connection, small bugfixes
 
 ### 0.0.5
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
+hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
 ---
 ![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -28,11 +28,15 @@ hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
 Управляет Luxtronik 1, устанавливая значения в «control» - канале. Управляет следующими значениями:
 
 - Горячая вода - установка температуры
-- Отопление - модело
-- Горячая вода - Modelo
+- Отопление - режим
+- Горячая вода - режим
 - Кривая отопления (разница, конечная точка, начальная точка, ночное сокращение).
 
 ## Changelog
+
+### 0.0.6
+
+-   diminished risk of multiple connection, small bugfixes
 
 ### 0.0.5
 

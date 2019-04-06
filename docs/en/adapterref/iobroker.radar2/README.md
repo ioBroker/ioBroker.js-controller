@@ -3,11 +3,9 @@
 ![Logo](admin/radar2.png)
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.radar2.svg)](https://www.npmjs.com/package/iobroker.radar2)
+[![Installed](http://iobroker.live/badges/radar2-installed.svg)](http://iobroker.live/badges/radar2-installed.svg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.radar2.svg)](https://www.npmjs.com/package/iobroker.radar2)
-**Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)](https://travis-ci.org/frankjoke/ioBroker.radar2)
-
-[![NPM](https://nodei.co/npm/iobroker.radar2.png?downloads=true)](https://nodei.co/npm/iobroker.radar2/)
-
+[![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)](https://travis-ci.org/frankjoke/ioBroker.radar2)
 
 [German manual - Deutsche Anleitung](README_DE.md)
 

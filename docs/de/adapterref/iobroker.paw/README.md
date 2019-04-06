@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
+hash: XTbxmXTqiUOUyma2KG2GSpo7A/mT2SuoIxLOL1Ut0/o=
 ---
 ![Logo](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -48,7 +48,7 @@ Es gibt auch einen Zweig für alle Geräte: ***paw.0.all_device.*** - Steuerbefe
 
 *** paw.0. [name_device] .comm.display.mode ***> Hintergrundbeleuchtungstyp automatisch oder manuell [boolean]
 
-*** paw.0. [name_device] .comm.display.toWake ***> Wecker aus dem Ruhezustand [boolean]
+*** paw.0. [name_device] .comm.display.toWake ***> Wakeup-Geräte aus dem Ruhezustand [boolean]
 
 *** paw.0. [name_device] .comm.display.timeOff ***> Zeit der Hintergrundbeleuchtung einstellen [Anzahl] (Sek)
 
@@ -218,7 +218,10 @@ sendTo("paw.0",'dev2',{
 
 ```
 
-### 0.3.1
+0.3.2
+* (Bondrogeen) (Adapter) Kleinere Korrekturen. Die ToWake-Funktion wurde korrigiert. Kontrollversion des Adapters und der Anwendung hinzugefügt.
+
+#### 0.3.1
 * (Bondrogeen) (Adapter) Kleinere Korrekturen. (App) Widget- und erweiterte Elementfunktionalität hinzugefügt
 
 #### 0.3.0

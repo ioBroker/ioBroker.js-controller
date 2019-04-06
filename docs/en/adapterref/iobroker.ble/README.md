@@ -1,8 +1,7 @@
 <img src="admin/ble.png" height="48" /> ioBroker.ble
 =================
 
-**Tests:** Linux/Mac: [![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)](https://travis-ci.org/AlCalzone/ioBroker.ble) 
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AlCalzone/ioBroker.ble?branch=master&svg=true)](https://ci.appveyor.com/project/AlCalzone/ioBroker-ble/)
+**Tests:** [![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)](https://travis-ci.org/AlCalzone/ioBroker.ble) 
 
 ================
 
@@ -37,6 +36,9 @@ If you have any device transmitting specially encoded information via advertisem
 * `"ruuvi-tag"`: [Ruuvi Tag](https://tag.ruuvi.com/) multisensor with firmware versions v1 and v2. **Untested, please give feedback!** 
 
 ## Changelog
+
+### 0.7.2 (2019-04-05)
+* (AlCalzone) Add `58:2d:34` as an alternative mac prefix for MiTemperature
 
 ### 0.7.0 (2019-02-05)
 * (AlCalzone) Support MaterializeCSS (Admin v3)

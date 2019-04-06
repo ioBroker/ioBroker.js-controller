@@ -45,8 +45,17 @@ Actually only following attributes are supported:
 
 
 ## Changelog
+### 1.2.1 (2019-03-28)
+* (LausiD) Several fixes and changes
+
+### 1.2.0 (2019-02-16)
+* (LausiD) Sync readingsGroup, set states ioBroker from FHEM, add different sensors
+
+### 1.1.1 (2018-11-08)
+* (LausiD) add debug mode
+
 ### 1.1.0 (2018-10-22)
-* (LausiD) Big changes
+* (LausiD) Sync objects from ioBroker to FHEM is possible
 
 ### 1.0.0 (2018-10-15)
 * (LausiD) Min/max were defined as number

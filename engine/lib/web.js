@@ -1,10 +1,16 @@
 const config = require('../config');
 const http = !config.secure ? require('http') : require('https');
 const express = require('express');
+const bodyParser = require('body-parser');
 const logger  = new require('./logger')();
 const path = require('path');
 const fs = require('fs');
 const port = normalizePort(process.env.PORT || config.port || 443);
+const ExpressBrute = require('express-brute');
+
+
+
+const bruteforce = new ExpressBrute(new ExpressBrute.MemoryStore(), {freeRetries: 5});
 
 const app = {
     app: express(),
@@ -24,6 +30,31 @@ function init() {
     }
 
     app.app.use(express.static(path.join(__dirname, '..', config.public)));
+
+    app.app.use(bodyParser.json({limit: 50000000, type:'application/json'}));
+
+    app.app.post('/', bruteforce.prevent, (req, res) => {
+        if (!req.query.file) {
+            return res.status(501).json({error: 'no file name found'})
+        }
+        if (req.query.secret !== config.secret) {
+            console.error('invalid secret ' + req.query.secret);
+            return res.status(401).json({error: 'invalid secret'})
+        }
+        req.brute.reset(() => {
+            if (!fs.existsSync(path.join(config.public, 'data'))) {
+                fs.mkdirSync(path.join(config.public, 'data'));
+            }
+
+            console.log('upload ' + path.join(config.public, 'data', req.query.file.replace(/[^.\w]/g, '_')));
+            if (req.body.html) {
+                fs.writeFileSync(path.join(config.public, 'data', req.query.file.replace(/[^.\w]/g, '_')), req.body.html);
+            } else {
+                fs.writeFileSync(path.join(config.public, 'data', req.query.file.replace(/[^.\w]/g, '_')), typeof req.body === 'object' ? JSON.stringify(req.body) : req.body);
+            }
+            res.json({result: 'ok'});
+        });
+    });
 
     if (!config.secure) {
         app.app.use((req, res, next) => {

@@ -67,6 +67,19 @@ Um wichtige Meldungen bezüglich ioBroker, schnell an den User zu senden, wurde 
 
 Die Meldungen können mit einem Klick, rechts oben auf ![Meldung schließen](img/close_message.png) geschlossen werden, erscheienen aber wieder sobald der Info-Tab wieder neu geladen wird, solange das Problem noch besteht.
 
+Für die Nutzung der Meldungen mit andere Adaptern z.B Javascript, Telegramm, Alexa usw., werden diese schon gefiltert im Objekt "newsfeed_filtered", als ein Array von Objekten gespeichert.
+
+Beispiel:
+```javascript
+const messages = JSON.parse(getState('info.0.newsfeed_filtered').val);
+messages.forEach(message => {
+    const title = message.title;
+    const text = message.content;
+    const created = new Date(message.created);
+    console.log(created + " " + title + " " + text);
+});
+```
+
 ### Meldungen (VIS-Widget)
 
 <img height="100" align="left" src="img/vis.png">
@@ -248,6 +261,15 @@ Mit einem Klick auf ![Link](img/link.png), kommt man direkt zum Forum.
 Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder mit localhost:8081 zugreift. Nutz man aber ein Hostnamen wie meinhaus.de:8081, muss man sich eine kostenlose API-Key bei Feednami besorgen. Um sich dort zu registrieren, klicken Sie [hier](https://toolkit.sekando.com/docs/en/setup/hostnames) und folgen den Anweisungen.
 
 ## Changelog
+
+### 1.3.2 (2019-05-01)
+* (SchumyHao) Update Chinese translation
+* (ldittmar) create Github issues
+* (ldittmar) create new adapter requests
+
+### 1.3.1 (2019-04-03)
+* (ldittmar) charts for cpu and memory
+* (ldittmar) filtered news object added
 
 ### 1.3.0 (2019-03-29)
 * (ldittmar) better system information

@@ -3,20 +3,22 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bmw/README.md
 title: ! [Logo] (admin / bmw.png) Adapter für BMW ConnectedDrive-Daten
-hash: WSiMLJfkAv94JqYmfI+BWGrzXHhuFeMY0oKE5E4+CjU=
+hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
 ---
 # ![Logo](../../../en/adapterref/iobroker.bmw/admin/bmw.png) Adapter für BMW ConnectedDrive-Daten
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.bmw.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.bmw.svg)
+![Eingerichtet](http://iobroker.live/badges/bmw-installed.svg)
 ![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.bmw/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.bmw?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.bmw.png?downloads=true)
 
 ==============
 
-### Adapter zum Auslesen von BMW ConnectedDrive-Daten Der Adapter versucht die ConnectedDrive-Daten für die auf die angegebenen Benutzer registrierten Fahrzeuge.
+### Adapter zum Auslesen von BMW ConnectedDrive-Daten
+Der Adapter versucht die ConnectedDrive-Daten für die angegebenen Benutzer.
 Man kann filtern, welche Daten angezeigt werden
+
 * zu diesen Diensten (ich verwende nur: Effizienz, Dynamik, Navigation und Remote_Execution). Wenn man 'debuggt!' die Debug-Ausgaben einschalten und damit sieht man, welche Daten er abfragt und geliefert wird. Adapter muss im Admin auf 'info' stehen!
 * Zu löschende Einträge (Bei mir Daten WIE: *modeltype, Serien, Basictype, Marke, Nummernschild, hasNavi, Fahrzeugtyp, dcOnly, hasSunRoof, hasRex, Steuerung, Antriebsstrang, doorCount, vehicleTracking, isoCountryCode, auxPowerRegular, auxPowerEcoPro, auxPowerEcoProPlus, ccmMessages*
 * Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList | name | lastTrip, spezifikationen | key | value, service | name | leistungen, cdpFeatures | name | status, cbsMessages | text | datum, lifeTimeList | name | value | charakteristikList | Merkmal | Anzahl, Remote_History | EventId, StorePortfolio | OfferCode* . bestehen nur zwei einträge mit '|' der Name des Arrays ist der erste Name des Arrays und der zweite Name des Arrays.
@@ -24,7 +26,7 @@ Man kann filtern, welche Daten angezeigt werden
 Der Standard ist für den Rest der Welt, in anderen Regionen können auch <https://b2vapi.bmwgroup.cn:8592> für China, <https://b2vapi.bmwgroup .us> für USA und <https://b2vapi.bmwgroup.com> für Europa / Rest der Welt probieren. www.bmw-connecteddrive.com wird hoffentlich immer auf den richtigen weitergeleitet.
 * Man kann States umbenennen, wenn man im umbenennen ** originalName | neuerName ** verwendet. weder original noch der neue Name dürfen mehrmals vorkommen. '.' werden durch '_' ersetzt. Mehrere Einträge von ** x | y ** werden durch '**, **' getrennt. Damit kann man den Vin des Autos auf einigen '325i' umbenennen.
 * Der Adapter versteht jetzt auch 'sendTo' Kommandos. `sendTo ('bmw.0', 'send', '225xe.Versperren')` würde den Wagen auf 225xe umbenannt haben versperren, `sendTo ('bmw.0', 'send', '_ DatenNeuLaden')` würde ein Refresh ausführen und `sendTo ('bmw.0', 'debug', 'on')` (es geht auch 0,1, on, off, ein, aus, true, false) würde debug ein- oder ausschalten. Mit `sendTo ('bmw.0', 'get', '225xe.Versperren')` kann der Staat von Werten abgefragt werden `{val: 'Nicht gestartet', ack: true, ts: 1505839335870, q: 0, von: 'system.adapter.bmw.0', lc: 1505839335870}` zurück.
-* Im config kann man jetzt 2 Flags setzten: Alle Daten bei Adapter-Neustart löschen (Standard: ein) und alle Daten bei einem wiederholten Download nicht mehr runtergeladen werden. Damit kann man bei anderen Einstellungen die alten Zustände vergessen, aber wenn ein Kommunikationsfehler auftritt?
+* Im config kann man jetzt 2 Flags setzten: Alle Daten bei Adapter-Neustart löschen (Standard: ein) und alle Daten bei einem wiederholten Download nicht mehr runtergeladen werden löschen (Standard: aus). Damit kann man bei anderen Einstellungen die alten Zustände vergessen, wenn ein Kommunikationsfehler auftritt.
 
 Wenn der Adapter die Position vom Navigationssystem ablesen kann, wird diese mit Hilfe von Google auf eine Adresse und gibt diese unter navigation.formatted_address an.
 
@@ -34,7 +36,7 @@ Wenn das Fahrzeug aktive Remote-Services hat (** Service ** muss bei den Service
 
 Ab 1.2.0 werden im **debug!** - Modus **_ originalData** - Zustände generiert. Wenn ihr Probleme mit einigen Datenpunkten habt.
 
-<sub>ps: Ich möchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>und</sub> <https://github.com/edent/BMW-i-Remote> <sub>für die Beispiele danken mit dener Quellen</sub> </aub>
+<sub>ps: Ich möchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>und</sub> <https://github.com/edent/BMW-i-Remote> <sub>für die Beispiele danken mit dener Quellen</sub>
 
 ## Wichtig / Wichtig
 * Adapter erfordert Knoten> = v4.3. *!
@@ -43,13 +45,17 @@ Ab 1.2.0 werden im **debug!** - Modus **_ originalData** - Zustände generiert. 
 Installieren Sie über ioBroker.admin
 
 ## Aufbau
-Der Benutzername, das Passwort und die Datenfilter müssen im Adapter eingegeben werden.
+Der Benutzername, das Passwort und die Datenfilter müssen im Adapter config eingegeben werden.
 
 ### Todo für spätere Überarbeitungen
 ## Installation
 Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mit npm install ioBroker.bmw
 
 ## Changelog
+
+### 1.4.0
+* Update for Admin 3,0 and compact mode as well as config page
+
 ### 1.3.3
 * Just removed 'preserveSettings' and 'supportCustoms' not to show up in admin custom config
 
@@ -110,7 +116,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mi
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019, Frank Joke <frankjoke@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

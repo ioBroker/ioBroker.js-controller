@@ -71,6 +71,19 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 
 可以在 ![关闭消息](img/close_message.png) 的右上角单击关闭消息，但只要问题仍然存在，它们会在重新加载信息选项卡后再次出现。
 
+对于使用其他适配器（如Javascript，Telegram，Alexa等）的消息，它们已经在对象“newsfeed_filtered”中过滤，存储为对象数组。
+
+例:
+```javascript
+const messages = JSON.parse(getState('info.0.newsfeed_filtered').val);
+messages.forEach(message => {
+    const title = message.title;
+    const text = message.content;
+    const created = new Date(message.created);
+    console.log(created + " " + title + " " + text);
+});
+```
+
 ### 消息（VIS-Widget）
 
 <img height="100" align="left" src="img/vis.png">
@@ -258,6 +271,15 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 当通过IP或localhost：8081访问ioBroker时，论坛条目将显示没有问题。但是如果你使用像meinhaus.de:8081这样的主机名，你必须在Feednami获得一个免费的API密钥。 要注册，请单击 [此处](https://toolkit.sekando.com/docs/en/setup/hostnames) 并按照说明进行操作。
 
 ## Changelog
+
+### 1.3.2 (2019-05-01)
+* (SchumyHao) Update Chinese translation
+* (ldittmar) create Github issues
+* (ldittmar) create new adapter requests
+
+### 1.3.1 (2019-04-03)
+* (ldittmar) charts for cpu and memory
+* (ldittmar) filtered news object added
 
 ### 1.3.0 (2019-03-29)
 * (ldittmar) better system information

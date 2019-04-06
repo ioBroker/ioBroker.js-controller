@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 БЕТА
-hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
+hash: XTbxmXTqiUOUyma2KG2GSpo7A/mT2SuoIxLOL1Ut0/o=
 ---
 ![логотип](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -218,14 +218,17 @@ sendTo("paw.0",'dev2',{
 
 ```
 
-### 0.3.1
+### 0.3.2
+* (bondrogeen) (адаптер) Незначительные исправления. Исправлена функция toWake. Добавлена контрольная версия адаптера и приложения.
+
+#### 0.3.1
 * (bondrogeen) (адаптер) Незначительные исправления. (приложение) добавлен виджет и расширены функциональные возможности
 
 #### 0.3.0
 * (foxriver76) добавлена совместимость в компактном режиме
 
 #### 0.2.8
-* (bondrogeen) незначительное исправление элемента приложения, карта SDK> = 29 и измененное добавление устройства.
+* (bondrogeen) незначительное исправление предмета приложения, карта SDK> = 29 и измененное добавление устройства.
 
 #### 0.2.7
 * (bondrogeen) диалоговое окно исправлений, приложение noti SDK> = 26

@@ -4,7 +4,7 @@ let statistics;
 class Utils {
     static getStatistics() {
         const d = new Date();
-        statistics = statistics || Utils.fetchLocal(`http://iobroker.live/statistics.json?$t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`)
+        statistics = statistics || Utils.fetchLocal(`data/statistics.json?$t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`)
             .then(data => JSON.parse(data));
 
         return statistics;

@@ -2,9 +2,10 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.bmw.svg)](https://www.npmjs.com/package/iobroker.bmw)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.bmw.svg)](https://www.npmjs.com/package/iobroker.bmw)
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.bmw/master.svg)](https://travis-ci.org/frankjoke/ioBroker.bmw)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.bmw?branch=master&svg=true)](https://ci.appveyor.com/project/frankjoke/ioBroker-bmw/)
+[![installed](http://iobroker.live/badges/bmw-installed.svg)](http://iobroker.live/badges/bmw-installed.svg)
+[![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.bmw/master.svg)](https://travis-ci.org/frankjoke/ioBroker.bmw)
 [![NPM](https://nodei.co/npm/iobroker.bmw.png?downloads=true)](https://nodei.co/npm/iobroker.bmw/)
+
 ==============
 ### Adapter zum Auslesen von BMW ConnectedDrive-Daten
 Der Adapter versucht die ConnectedDrive-Daten für die auf die angegebenen Benutzer registrierten Fahrzeuge.
@@ -27,12 +28,16 @@ Wenn das Fahrzeug aktive remote-services hat (**service** muss bei den Services 
 
 Ab 1.2.0 werden im **debug!**-Mode **_originalData**-States generiert. Wenn ihr Probleme mit einigen Datenpunkten hab köönt ihr das verwenden um mir die Daten zu senden (ich habe nicht alle BMW's zum Testen!).
 
-<sub>p.s.: Ich möchte <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> und <https://github.com/edent/BMW-i-Remote> für die Beispiele danken mittels derer sources ich den Zugriff geschafft habe!</aub>
+<sub>p.s.: Ich möchte <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> und <https://github.com/edent/BMW-i-Remote> für die Beispiele danken mittels derer sources ich den Zugriff geschafft habe!</sub>
 
 ## Important/Wichtig
 * Adapter requires node >= v4.3.*!
 
 ## Changelog
+
+### 1.4.0
+* Update for Admin 3,0 and compact mode as well as config page
+
 ### 1.3.3
 * Just removed 'preserveSettings' and 'supportCustoms' not to show up in admin custom config
 
@@ -107,7 +112,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mi
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019, Frank Joke <frankjoke@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

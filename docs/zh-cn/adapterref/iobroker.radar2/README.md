@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.radar2/README.md
 title: 雷达2网络和bloutooth可用性
-hash: ZPO5lZiBWZohOqHyLS4zkGUT0h9oKRMHGqUES8MZ7OA=
+hash: UHTTgl9tRchN8g7vMjGu9OehjXyIgGILFhVFaZII5ss=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.radar2.svg)
+![安装](http://iobroker.live/badges/radar2-installed.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.radar2.svg)
 ![特拉维斯-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)
-![NPM](https://nodei.co/npm/iobroker.radar2.png?downloads=true)
 
 ＃radar2网络和bloutooth可用性
 ![商标](../../../en/adapterref/iobroker.radar2/admin/radar2.png)

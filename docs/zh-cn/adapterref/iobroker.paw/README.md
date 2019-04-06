@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.paw/README.md
 title: ioBroker.paw 2 BETA
-hash: /O5cEuqS/Mr58Ns/m31SgvyhPSEhxKSBrYE8/Yyjy+4=
+hash: XTbxmXTqiUOUyma2KG2GSpo7A/mT2SuoIxLOL1Ut0/o=
 ---
 ![商标](../../../en/adapterref/iobroker.paw/admin/paw.png)
 
@@ -218,7 +218,10 @@ sendTo("paw.0",'dev2',{
 
 ```
 
-### 0.3.1
+### 0.3.2
+*（bondrogeen）（适配器）次要修复。修复了toWake功能。添加了适配器和应用程序的控件版本。
+
+#### 0.3.1
 *（bondrogeen）（适配器）次要修复。 （app）添加了小部件和扩展项功能
 
 #### 0.3.0

@@ -6,6 +6,7 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.km200.svg)](https://www.npmjs.com/package/iobroker.km200)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.km200.svg)](https://www.npmjs.com/package/iobroker.km200)
+[![Number of Installations](http://iobroker.live/badges/km200-installed.svg)](http://iobroker.live/badges/km200-installed.svg)
 [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.km200/master.svg)](https://travis-ci.org/frankjoke/ioBroker.km200)
 [![NPM](https://nodei.co/npm/iobroker.km200.png?downloads=true)](https://nodei.co/npm/iobroker.km200/)
 
@@ -71,7 +72,13 @@ If you have entered the 64-character access-key you don't need the password, but
 
 * Additional language support and text translation
 
-## changelog
+## Changelog
+
+### 2.0.2
+
+* Adapter config update
+* Blacklist is working now for any combination
+* Added option not to delete unsused states
 
 ### 1.9.9
 
@@ -149,7 +156,7 @@ Cleaning of objects / states for current adapters instance which are not part of
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016 Frank Joke 
+Copyright (c) 2016-2019 Frank Joke <frankjoke@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

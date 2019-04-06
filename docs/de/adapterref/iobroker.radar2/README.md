@@ -3,15 +3,15 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.radar2/README.md
 title: radar2 netzwerk und bloutooth-verfügbarkeit
-hash: ZPO5lZiBWZohOqHyLS4zkGUT0h9oKRMHGqUES8MZ7OA=
+hash: UHTTgl9tRchN8g7vMjGu9OehjXyIgGILFhVFaZII5ss=
 ---
 # Radar2 netzwerk und bloutooth-verfügbarkeit
 ![Logo](../../../en/adapterref/iobroker.radar2/admin/radar2.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.radar2.svg)
+![Eingerichtet](http://iobroker.live/badges/radar2-installed.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.radar2.svg)
 ![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)
-![NPM](https://nodei.co/npm/iobroker.radar2.png?downloads=true)
 
 [Deutsche Anleitung - Deutsche Anleitung](README_DE.md)
 
@@ -32,9 +32,9 @@ Es funktioniert durch:
 
 Wenn Sie am Ende eines Namens einen `-` eingeben, wird das Gerät nicht in _notHere oder _isHere gezählt.
 
-Wenn die IP-Adresse mit 'http' beginnt, wird sie von radar2 als URL / Web-Adresse interpretiert und versucht, eine Seite vom Server zu lesen. Auf diese Weise kann die Verfügbarkeit von Webservern getestet werden (wie beispielsweise http://iobroker.net) ). Bei https kann es vorkommen, dass der Server nicht erreichbar ist, wenn er keine Sicherheitsschlüssel aktualisiert hat!
+Wenn die IP-Adresse mit 'http' beginnt, wird sie von radar2 als URL / Web-Adresse interpretiert und versucht, eine Seite vom Server zu lesen. Auf diese Weise kann die Verfügbarkeit von Webservern getestet werden (z. B. http://iobroker.net) ). Bei https kann es vorkommen, dass der Server nicht erreichbar ist, wenn er die Sicherheitsschlüssel nicht aktualisiert hat!
 
-Um UWZ verwenden zu können, müssen Sie Ihren Standort in ioBroker.Admin konfiguriert haben. Wenn der Wert von max messages> 0 ist, wird jede Warnung in einen separaten Status geschrieben, ansonsten werden sie kombiniert.
+Um UWZ verwenden zu können, müssen Sie Ihren Standort in ioBroker.Admin konfiguriert haben. Wenn der Wert von max messages> 0 ist, wird jede Warnung in einen separaten Status geschrieben, andernfalls werden sie kombiniert.
 Sie können auch festlegen, ob Sie einen langen Warntext verwenden möchten, aber alle Informationen sind auch in Kurzform verfügbar.
 
 Die Währungen der Europäischen Zentralbank sind hier zu sehen: `https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`
@@ -43,7 +43,7 @@ Die Währungen der Europäischen Zentralbank sind hier zu sehen: `https://www.ec
 Radar2 legt Geräte fest, die sofort sichtbar werden, wenn sie sichtbar werden, und zwar vor dem erneuten Starten des Scans für neue IPs.
 Radar2 verwendet nodejs-Libraries, um Bluetooth-Geräte zu finden, aber es kann jetzt auch im Benutzerbereich von iobroker ausgeführt werden und benötigt keinen Root-Zugriff (siehe unten, Installationsanforderungen).
 Sie können mehr als eine IP-Adresse (jetzt IPv4 UND IPv6) oder Hostadresse (keine URLs) in derselben Zeile konfigurieren, sodass Sie auf mehreren Wegen an Geräte pingen können.
-`arp-scan` wird für die Suche nach MAC-Adressen verwendet. Es wird (sofern in der Befehlszeile nicht anders angegeben) auf allen Netzwerkschnittstellen ausgeführt, die über externe IPv4 verfügen. Es werden also keine Geräte erkannt, die auf Mac-Adressen auf IPv6 basieren, aber es erkennt jetzt Geräte in drahtlosen und festen Netzwerken gleichzeitig!
+`arp-scan` wird für die Suche nach MAC-Adressen verwendet. Es wird (sofern in der Befehlszeile nicht anders angegeben) auf allen Netzwerkschnittstellen ausgeführt, die über externe IPv4 verfügen. Daher werden keine Geräte erkannt, die auf Mac-Adressen auf IPv6 basieren, jedoch auf IPv6 erkennt jetzt Geräte in drahtlosen und festen Netzwerken gleichzeitig!
 
 Die Verfügbarkeit von Geräten wird anders gehandhabt. Jedes Gerät erhält einen Status nach `_lasthere`, der mit dem aktuellen Datum und der aktuellen Uhrzeit aktualisiert wird, sobald es angezeigt wird. Am Ende jedes Scans prüft der Adapter alle letzten Einträge, ob sie älter als die aktuelle Uhrzeit sind - die konfigurierten Abwesenheitsminuten. Devecies, die noch nie hier waren, werden auch keinen `_lasthere`-Zustand haben!
 
@@ -75,7 +75,7 @@ Auf Osx kann auch Bluetooth überhaupt nicht funktionieren!
 Nach der Installation des Konfigurationsadapters können Sie die Demo-Zeilenelemente entfernen.
 
 ### Spezielle Informationen zum Arp-Scan:
-Es ist eine Standardbefehlszeile definiert (`-lgq --retry=5 --timeout=400`), die alle 254 Adressen auf allen IPv4-Schnittstellen scannt, wenn sie nicht innerhalb von 400 ms antwortet. Wenn Sie nur die spezifische Schnittstelle scannen möchten, können Sie beispielsweise ` --interface=br0` hinzufügen. Normalerweise werden Bridge-Schnittstellen jedoch jetzt ordnungsgemäß verwendet. In Docker-Umgebungen kann es jedoch nicht erforderlich sein. Die Wiederholung = 5 kann für 6 geändert werden bessere Erkennung, über 7 fand ich keine Verbesserung! Das gleiche ist mit dem Timeout, über 500 konnte ich keine Verbesserung feststellen.
+Es ist eine Standardbefehlszeile definiert (`-lgq --retry=5 --timeout=400`), die alle 254 Adressen auf allen IPv4-Schnittstellen scannt, wenn sie nicht innerhalb von 400 ms antwortet. Wenn Sie nur die spezifische Schnittstelle scannen möchten, können Sie beispielsweise ` --interface=br0` hinzufügen. Normalerweise werden Bridge-Schnittstellen jedoch jetzt ordnungsgemäß verwendet. In Docker-Umgebungen kann es jedoch nicht erforderlich sein. Die Wiederholung = 5 kann in 6 oder 7 geändert werden bessere Erkennung, über 7 fand ich keine Verbesserung! Das gleiche ist mit dem Timeout, über 500 konnte ich keine Verbesserung feststellen.
 
 ### Tipp für den Wechsel von Radar zu Radar2-Adapter oder von Maschine zu Maschine
 * Wenn Sie Radaradapter verschieben, können Sie ganz einfach die gesamte Geräteliste oder Einstellungen kopieren
@@ -84,7 +84,7 @@ Es ist eine Standardbefehlszeile definiert (`-lgq --retry=5 --timeout=400`), die
 * - Ganz rechts in dieser Zeile befindet sich eine Schaltfläche mit einem Bleistift. Klicken Sie darauf
 * - Im Fenster wird NATIVE angezeigt
 * - Sie sollten dann die Konfigurationsfelder sehen, den Inhalt des Feldes 'devices' auswählen und in die Zwischenablage kopieren
-* - mache dasselbe auf dem Zielcomputer, wähle "system.adapter.radar2.0" in Admin / objects aus und gehe hier auch zu NATIVE.
+* - mache dasselbe auf dem Zielcomputer, wähle "system.adapter.radar2.0" in Admin / objects und gehe hier auch zu NATIVE.
 * - Löschen Sie den Text im Feld "Geräte" und in der alten aus der Zwischenablage
 * - Speichern Sie die Änderungen
 

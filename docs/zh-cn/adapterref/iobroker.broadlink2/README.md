@@ -2,18 +2,19 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.broadlink2/README.md
-title: ！[Logo]（./ admin / broadlink.png）Steuert BroadLink IR / RF-Remotes和Schaltsteckdosen
-hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
+title: ！[Logo]（./ admin / broadlink2.png）控制BroadLink兼容设备
+hash: WTYq/WXAyxAsoH6tiIsBCs4yCcfe2WO0lK+6ud+WRQg=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.broadlink2.svg)
+![安装](http://iobroker.live/badges/broadlink2-installed.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.broadlink2.svg)
-![Travis-CI构建状态](https://travis-ci.org/frankjoke/ioBroker.broadlink2.svg?branch=master)
-![AppVeyor构建状态](https://ci.appveyor.com/api/projects/status/d2wwp0f02t512wp8?svg=true)
-![NPM](https://nodei.co/npm/iobroker.broadlink2.png?downloads=true)
+![特拉维斯-CI](http://img.shields.io/travis/frankjoke/ioBroker.broadlink2/master.svg)
 
-＃![商标](../../../en/adapterref/iobroker.broadlink2/./admin/broadlink.png)SteuertBroadLink IR / RF-Remotes和Schaltsteckdosen
-##AdaplerfürverschiedeneBroadlink WLan-Geräte（RM ++，SP ++，A1）
-这是适用于多个Broadlink交换机的ioBroker适配器，如RM2，SP1，SP2，SP3，Honeywell SP2，SPMini，SPMini2，SPMiniPlus以及来自它们的一些OEM产品。
+＃![商标](../../../en/adapterref/iobroker.broadlink2/./admin/broadlink2.png)控制BroadLink兼容设备
+[德语手册 -  Deutsche Anleitung](README_DE.md)
+
+##适用于不同Broadlink兼容的WLan设备（RM ++，SP ++，A1，Floureon，S1C）
+这是适用于多个Broadlink交换机的ioBroker适配器，如RM2，RM3，RM Plus，SP1，SP2，SP3，Honeywell SP2，SPMini，SPMini2，SPMiniPlus以及来自它们的一些OEM产品。
 还支持遥控器，如RM2，RM Mini，RM Pro Phicomm，RM2 Home Plus，RM2 Home Plus GDT，RM2 Pro Plus，RM2 Pro Plus2和RM2 Pro Plus BL。多个控制器将生成自己的条目，需要单独进行培训。
 它扫描网络以查找兼容设备并安装它们（目前只有交换机类型SP？）。
 
@@ -25,14 +26,12 @@ hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
 
 如果再次找不到在某个IP上配置的设备，则会标记为“notReachable”！如果它们再次连接，它们将正常使用。
 
-如果设备连续2次未应答，则设置为无法访问。 ***notReachable*** 设备每50次扫描会发出一条日志警告信息。在10次扫描之后，适配器将尝试在之前的同一IP上再次找到它们。如果您更改了IP，请进行重新扫描。
+如果设备连续5分钟未应答，则设置为无法访问。 ***notReachable*** 设备将每x次扫描发出一条日志警告消息。经过一些扫描后，适配器将尝试在之前的同一个mac地址上再次找到它们。
 
-如果您永久删除设备或在路由器中重命名设备，请从admin.objects中删除设备！
+请从admin.objects中删除旧设备，以防您永久删除它们或在路由器中重命名它们！
 
 ＃＃＃ 注意
 无法轮询SP1设备。
-
-*此适配器基于此处的原始Broadlink适配器v0.1.1：<https://github.com/hieblmedia/ioBroker.broadlink>
 
 ##配置
 *在配置中输入网络地址的前缀，生成设备名称时应将其删除
@@ -42,113 +41,95 @@ hash: ojXJVWaPDij5W3jYFX3qBu8GsySY/rPG3ElGnBuLIqE=
 *在ioBroker的对象中，您可以找到“broadlink2。[devicename] .Learn或LearnRF for”+“类型的设备”。
 *对于RM（x）+（Plus）设备，您还可以获得一个特殊的RS-sweep-lear按钮，它可以学习比正常433MHz更多的设备。
 *将此对象设置为true。 （您可以单击对象视图中的按钮）
-*现在在30秒内按遥控器上的某个按钮。
+*现在在30秒内按遥控器上的某个按钮。在正常模式下，他们很快会按下它们，直到学会了。
+*在射频扫描中学习你需要先按下按钮约10秒钟，然后释放它然后按下它会短时间。
 *一个新的对象现在应该出现在对象“broadlink。[n]。[devicename] .LearnedState”中，名称为“>>>重命名学习@YYYYMMDDTHHmmSS”
 *您可以单击对象视图中的按钮发送代码。
-*要重命名项目，请单击名称（以`>>>`开头）并更改名称。它不应该包括`，`，`.`或`;`
+*要重命名项目，请单击名称（以`_Rename_learned_`开头）并更改名称。它不应该包括`，`，`.`或`;`以及其他一些字符，它们将被'_'替换;
 
 也可以使用[RM-桥](http://rm-bridge.fun2code.de/)中的代码。
 只需创建一个对象（状态，类型按钮），其值为“CODE_”或本地条目`code`，不带任何“CODE_”。
 
 ##使用场景
-* Szenen bestehen aus ID's Zahlen mit`，`aneinandergereiht。正常的werden sie einfach im Abstand von 100mshintereinanderausgelöst。 Wird eine Zahl gefunden wird dort so viele ms gewartet biszumnächstenAuslösen。另外`，SP：dose1，RM：your.L.StereoEin，1000，RM：your.L.TVEin`würdedieSteckdose einschalten，dann den Fernseher 1100ms nachher die Stereoanlage。 Man kann auch Werte bei anderen（auch fremde）国家durch Angabe des kompletten id's schalten：`hm-rpc.0.MEQ1435726.1.STATE`würddeieseneinschalten！ Übrigens，Bei boolschen Stateskann kann beim Einschalten das'= 1 / = on / = true / = ein'weggelassen werden da true der default-Wert ist。 BeimAusschaltenwärein'= 0 / = false / = aus / = off'undbedingt notwendig！
+*场景可以包含ID或名称以及由`，`分隔的数字。通常，ID将以100ms的时差执行/发送，但如果您需要更长的暂停，则可以写入反映毫秒等待的数字。例如`SP：dose = 1,1000，RM：your.L.StereoEin，1000，RM：your.L.TVEin`将打开名为'SP：dose'的无线插头，然后等待一秒钟（实际上是1.1秒） ），打开stero，然后再打开电视。你也可以切换其他适配器的设备，比如`hm-rpc.0.MEQ1435726.1.STATE = true`会打开这个Homematic设备！ Boolsche状态可以用'= 1 / = on / = true / = ein'切换，如果你不使用`=`而不是使用true。要关闭设备，请使用'= 0 / = false / = aus / = off'结束设备，这是必须关闭的！
 
 ##使用状态
-*Siekönnen陈述anlegen welche mittels gelernten Signale ein-oder ausgeschaltet werden。
-* Damit geben sie den State-Namen an und die Signale（listem mit'，'getrennt）diedasGeräteinschaltenund auch solche die es ausschalten。
-* Bei boolschen States Wird nur der erste Wert gesendet aber beim Senden von allen Werten wird der State gesetzt。 Das ist von Vorteil wenn mehrere TasteneinGeräteinschalten（奥德沙尔滕）
-*EskännenzumAusschalten auch keine Signale gelistet werden dann werden die zum Einschalten verwendeten Werte in einer Liste
-* wird als Aus-Signal nur'+'angegeben werden die Werte im Ein-Bereich（hoffentlich 10 Signale）als Zehnertastatur verwendet die Wete bis zu 9999 senden kann。 Wenn dann der State mit Wert 123 beschrieben wird wird dann'1'，'2'和dann'3'mit jeweils nach 1/3SekundeVerzögerunggesendet！
-
-Die Liste muss mit dem 0-Befehl beginnen und mit dem 9-Befehl enden！
+*您可以为您的设备创建状态，它将On和Off命令组合到一个可以像任何其他设备一样切换的状态。
+*您需要在单独的列中列出用于打开和关闭状态的命令，这些命令可以是多个，因此状态知道您的设备何时被其中任何一个打开/关闭
+*如果您将状态设置为打开或关闭，则将发送第一个开/关命令
+*如果仅存在命令，则交换机将在数字值-1上发送相应的命令，意味着如果收到“0”则发送第一个命令，如果收到“1”，则发送第二个命令。通过这种方式，您可以在一个状态内模拟多个状态。
+*如果仅使用'+'作为关闭命令，则需要提供10个用'，'分隔的命令，它们反映遥控器上的数字“0-9”。你可以发送sstate然后一个数字，比如`123`（最大值是9999），它会发送`1`，`2`和`3`，它们之间有1/3秒的延迟！通过这种方式，如果状态名称为TVchannel，您可以通过只写“TVchannel = 33”将电视频道设置为“33”。
 
 ##使用发送消息到适配器
-Der Adapter versteht jetzt auch'sendTo'Kommandos。
+适配器也理解'sendTo'命令。
 
-*`debug`：`sendTo（'broadlink2.0'，'debug'，'on'）`（es geht auch 0,1，on，off，ein，aus，true，false）würdedebugein-oder ausschalten。
-*`get`：`sendTo（'broadlink2.0'，'get'，'RM2：RMPROPLUS.Temperature'`kann der state von Werten abgefragt werden，man bekommt zB` {val：29.9，ack：true，ts：1505839335870 ，q：0，from：'system.adapter.broadlink2.0'，lc：1505839335870}`zurück
-*`switch`：schaltet Steckdose ein / aus je nach文字：`sendTo（'broadlink2.0'，'switch'，'SP：你的设备id = on'）`
+*`debug`：`sendTo（'broadlink2.0'，'debug'，'on'）`（也是0,1，on，off，ein，aus，true，false）将打开调试模式。
+*`get`：`sendTo（'broadlink2.0'，'get'，'RM2：RMPROPLUS.Temperature'`可以从设备请求数据，如`{val：29.9，确认：真，ts：1505839335870，q：0，来自：'system.adapter.broadlink2.0'，lc：1505839335870}`zurück
+*`switch`：可以打开或关闭插头：`sendTo（'broadlink2.0'，'switch'，'SP：你的设备id = on'）`
 *`switch_on` /`switch_off`：sendTo（'broadlink2.0'，'switch_on'，'SP：你的设备ID'）`
-*`send`：`sendTo（'broadlink2.0'，'send'，'RM：yourdev.Learn'）`würdelernenstarten und`sendTo（'broadlink2.0'，'send'，'RM：yourdev.L .yourid'）`würdedencode（oder eine Scene）senden。
+*`send`：`sendTo（'broadlink2.0'，'send'，'RM：yourdev._Learn'）`将开始学习和`sendTo（'broadlink2.0'，'send'，'RM：yourdev.L .yourid'）`会发送代码。
 *`send_scene`：`sendTo（'broadlink2.0'，'send_scene'，'scene xxx'）`würdedenals message angegebenen Text alsSzeneausführen
 *`send_code`：`sendTo（'broadlink2.0'，'send_code'，'RM：your remote.CODE_xxxxx'）`würdedenCODE_xxxx vom R：你的名字森。
+
+## Floureon或Beok313恒温器
+*可以设置大多数数据，可以通过向`_setTime`写入任何内容来设置时间，在这种情况下，设备的时间将设置为ioBroker系统时间。这也将在adpter start上自动完成。
+
+##配置其他新设备
+*您可以添加使用相同协议的新设备，方法是添加设备ID（十六进制或十进制）和设备类（在那里使用）（类= A1，MP1，RM，RMP，S1C，SP1，SP2，SP3P， T1）。因此，你可以添加一个新的遥控器，适配器只能将其作为未知设备找到，其中十六进制ID为0x1234到RM列表中的0x01234 = RMP。
+
+##重命名设备
+*设备通常接收其网络主机名，或设备类型，ID和mac地址的组合作为其名称，前两个字母前面带有“：”。您可以使用`T1：BroadLink-OEM-T1-fa-83-7c = Beok313`重命名此类设备，在这种情况下，将不使用原始名称，但使用的新名称将为“Beok313”。
+
+＃＃ 调试模式
+*如果你在添加的新设备列表的末尾添加一个`！`（即使它是空的）你可以将适配器设置为调试模式，它会记录很多其他信息，即使它没有设置为'管理员中的信息模式。
 
 ＃＃ 已知的问题
 *如果您多次学习相同的信号，则代码可能每次都不同。这不能改变。
 *有时如果他们不回复搜索，则找不到设备。执行重新扫描或重新启动适配器以重新启动新实例。
 
 ##重要/ Wichtig
-*需要节点> = v4.2
+*需要节点> = V6
 
 ##安装
-Mit ioBroker admin，npm install iobroker.broadlink2 oder von <https://github.com/frankjoke/ioBroker.broadlink2>
+与ioBroker管理员，npm安装iobroker.broadlink2或从<https://github.com/frankjoke/ioBroker.broadlink2>
 
 ## Changelog
 
+### 2.0.0
+* Can handle Floureon/Beko thermostats (now with MQTT)
+* Can handle S1C security devices
+* Names device after their name or with their mac to reduce possibility of renaming
+* Can rename devices
+* Can add device Id's/Types for new devices
+* New communication routines to find & re-find devices
+* New communication protocoll with devices which do not allow that devices can get commands from 2 sources intermixed
+
+
 ### 1.9.1
+
 * added anothe RM Mini code
 
 ### 1.8.1
+
 * Changed util.js and tests and added new devices
 
 ### 1.7.0
 
 * Changed and corrected states which are created by A1-devices
 
-### 1.6.0
-
-* Added RF learning for RM-Plus devices
-* Changed Learn states to LearnRF and LearnIR to differentiate
-* a lot of code change to improve error handling and renaming
-
-### 1.5.3
-
-* Added ***notReachable*** states to devices which can return values (SP,RM,A1)
-* Added info when SP's are switched manually
-* devices which are disconnected will be stated as such and reconeccted automatically
-
-### 1.5.0
-
-* Added ***Scenes*** um mehrere Befehle hintereinander auszuführen. Diese können aud Adapter.config angelegtr werden.
-* Adapter verwendet kürzere Namen
-* Adapter kann codes oder Szenen direkt als Befehl senden
-* Adapter verwendet keine 'strings' mehr als button type
-
-### 1.1.1
-
-* Added ***NewDeviceScan***-Button um einen neuen scan zu veranlassen ohne den Adapter zu starten.
-* Adapter lest sofort die Werte der Devices ein
-* Problem solved which occured when multiple IP names were resolved by reverse-dns.
-
-### 1.1.0
-
-* Support for A1 devices added (thanks a lot to **blackrozes**)
-* bug fix for SP?
-* Receive and execute message from sendTo to broadlink2 implemented
-
-### 1.0.3
-
-* Renamed to ioBroker.broadlink2 on Git
-* Bug fix on 1.0.1
-
-### 1.0.0
-
-* Added learned state renaming, just rename the name and the ID will be renamed as well.
-* Added debugging with 'debug!' at beginning of IP suffix and you will see debug messages without setting Adapter to debug.
-
-### 0.2.0
-
-* Implemented SP2 switches and they are working to set them!
-* Currently ONLY SP1 && SP2 (SP3?) are working, please test!
-* Disabled RM? devices, no test available, ordered one for later re-implementation
-
 ### Todo for later revisions
+
+* config of devices and codes in separate config tool
 
 ## License
 
 The MIT License (MIT)
 
+<<<<<<< HEAD
 Copyright (c) 2014-2019, frankjoke <frankjoke@hotmail.com>
+=======
+Copyright (c) 2014-2019 Frank Joke <frankjoke@hotmail.com>
+>>>>>>> 7aa61304cbc5059e752952ce3a494629cd151962
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

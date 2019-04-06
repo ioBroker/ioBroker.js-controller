@@ -67,6 +67,19 @@ In order to quickly send important messages concerning ioBroker to the user, the
 
 The messages can be closed with one click, in the top right corner of ![Close message](img/close_message.png), but they appear again as soon as the info-tab is reloaded, as long as the problem persists.
 
+For the use of messages with other adapters such as Javascript, Telegram, Alexa, etc., they are already filtered in the object "newsfeed_filtered", stored as an array of objects.
+
+Example:
+```javascript
+const messages = JSON.parse(getState('info.0.newsfeed_filtered').val);
+messages.forEach(message => {
+    const title = message.title;
+    const text = message.content;
+    const created = new Date(message.created);
+    console.log(created + " " + title + " " + text);
+});
+```
+
 ### Messages (VIS-Widget)
 
 <img height="100" align="left" src="img/vis.png">
@@ -248,6 +261,15 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+
+### 1.3.2 (2019-05-01)
+* (SchumyHao) Update Chinese translation
+* (ldittmar) create Github issues
+* (ldittmar) create new adapter requests
+
+### 1.3.1 (2019-04-03)
+* (ldittmar) charts for cpu and memory
+* (ldittmar) filtered news object added
 
 ### 1.3.0 (2019-03-29)
 * (ldittmar) better system information

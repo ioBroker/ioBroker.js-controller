@@ -35,12 +35,18 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 
 ## Changelog
 
+### 0.10.x (2019-04-03)
+* (allofmex) security update
+* (allofmex) brightness fix 
+
 ### 0.10.3 (2019-03-27)
 * fixes
 * (kirovilya) Aqara Wireless Relay Controller, Smart LED Driver
 * (asgothian) eCozy Thermostat, Nue / 3A, Gledopto GL-C-006 GL-C-009, Philips SML002, OSRAM Outdoor Lantern W RGBW, TRADFRI motion sensor
 * (arteck) sensor_86sw2 new states
 * (allofmex) Improved device configuration and network map
+* (allofmex) security update
+* (allofmex) brightness fix 
 
 ### 0.10.2 (2019-03-15)
 * some fixes

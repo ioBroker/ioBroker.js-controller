@@ -40,7 +40,9 @@ const styles = theme => ({
         textAlign: 'left',
         padding: 10,
         margin: 'auto',
-        overflowWrap: 'break-word'
+        overflowWrap: 'break-word',
+        marginTop: 10,
+        marginBottom: 10,
     },
     pageLogoDiv:{
         width: '100%',

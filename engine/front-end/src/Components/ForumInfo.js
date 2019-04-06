@@ -90,7 +90,7 @@ class ForumInfo extends Component {
     }
 
     load() {
-        Utils.fetchLocal(`http://iobroker.live/forum.json`)
+        Utils.fetchLocal(`data/forum.json`)
             .then(stats => {
                 try {
                     stats = JSON.parse(stats);

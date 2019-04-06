@@ -67,6 +67,19 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 
 Сообщения могут быть закрыты одним кликом в правом верхнем углу ![Закрыть сообщение](img/close_message.png), но они появляются снова, как только информационная вкладка перезагружается, до тех пор, пока проблема сохраняется.
 
+Для использования сообщений с другими адаптерами, такими как Javascript, Telegram, Alexa и т. Д., Они уже фильтруются в объекте «newsfeed_filtered», хранящемся в виде массива объектов.
+
+пример:
+```javascript
+const messages = JSON.parse(getState('info.0.newsfeed_filtered').val);
+messages.forEach(message => {
+    const title = message.title;
+    const text = message.content;
+    const created = new Date(message.created);
+    console.log(created + " " + title + " " + text);
+});
+```
+
 ### Сообщения (VIS-Виджет)
 
 <img height="100" align="left" src="img/vis.png">
@@ -250,6 +263,15 @@ $ sudo apt-get install smartmontools
 Записи форума будут отображаться без проблем при доступе к ioBroker через IP или localhost:8081. Но если вы используете имя хоста, такое как meinhaus.de:8081, вы должны получить бесплатный ключ API в Feednami. Чтобы зарегистрироваться, нажмите [здесь](https://toolkit.sekando.com/docs/en/setup/hostnames) и следуйте инструкциям.
 
 ## Changelog
+
+### 1.3.2 (2019-05-01)
+* (SchumyHao) Update Chinese translation
+* (ldittmar) create Github issues
+* (ldittmar) create new adapter requests
+
+### 1.3.1 (2019-04-03)
+* (ldittmar) charts for cpu and memory
+* (ldittmar) filtered news object added
 
 ### 1.3.0 (2019-03-29)
 * (ldittmar) better system information

@@ -108,6 +108,10 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.3.3 (2019-04-05)
+* (foxriver76) added more systeminfo states when syncing duty cycle
+* (foxriver76) when setting ts, do it in ms
+
 ### 2.3.2 (2019-03-10)
 * (foxriver76) when ccu sysvar is nan, replace it by null
 

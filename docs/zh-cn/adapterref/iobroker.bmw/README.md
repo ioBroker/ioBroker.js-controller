@@ -3,19 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bmw/README.md
 title: ！[Logo]（admin / bmw.png）适用于BMW ConnectedDrive-Daten的适配器
-hash: WSiMLJfkAv94JqYmfI+BWGrzXHhuFeMY0oKE5E4+CjU=
+hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.bmw.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.bmw.svg)
+![安装](http://iobroker.live/badges/bmw-installed.svg)
 ![特拉维斯-CI](http://img.shields.io/travis/frankjoke/ioBroker.bmw/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.bmw?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.bmw.png?downloads=true)
 
 ＃![商标](../../../en/adapterref/iobroker.bmw/admin/bmw.png)适用于BMW ConnectedDrive-Daten的适配器
 ==============
 
-###适配器zum Auslesen von BMW ConnectedDrive-Daten Der Adapter versucht die ConnectedDrive-Datenfürdieauf die angegebenen Benutzer registrierten Fahrzeuge。
+###适配器zum Auslesen von BMW ConnectedDrive-Daten
+Der Adapter versucht die ConnectedDrive-Datenfürdieauf die angegebenen Benutzer registrierten Fahrzeuge。
 Man kann filtern welche Daten angezeigt werden indem man im Admin dieEinstellungenfür
+
 * zu verwendete服务（ich verwende nur：效率，动态，导航和远程执行）。文恩'调试！' am anfang schreibt wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Daten er abfragt und geliefert bekommt。适配器muss im admin auf'info'stihen！
 *zulöschendeEinträge（Bei mir Daten wie：* modelType，series，basicType，brand，licensePlate，hasNavi，bodyType，dcOnly，hasSunRoof，hasRex，steering，driveTrain，doorCount，vehicleTracking，isoCountryCode，auxPowerRegular，auxPowerEcoPro，auxPowerEcoProPlus，ccmMessages *）
 *Einträgedievon Arrays umgewandelt werden sollen（bei mir：* lastTripList | name | lastTrip，specs | key | value，service | name | services，cdpFeatures | name | status，cbsMessages | text | date，lifeTimeList | name | value，characteristicList |特征|数量，remote_history | eventId，storePortfolio | offerCode *）。 bestehen nurzweieinträgemit'|' getrennt dann ist der erste der name des arrays das umgewandelt wird und der zweite der Name des eintrags und es werden alle Sub-Elementeübernommen，wenn ein dritter wert vorhanden ist wird nur dieser alsWertübernommen。
@@ -33,7 +35,7 @@ Wenn das Fahrzeug aktive remote-services hat（** service ** muss bei den Servic
 
 Ab 1.2.0 werden im **debug！** - 模式** _ originalData** - 状态generiert。 Wenn ihr Probleme mit einigen Datenpunktenhabkööntihrdas verwenden um mir die Daten zu senden（ich habe nicht alle BMW's zum Testen！）。
 
-<sub>ps：Ichmöchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>UND</sub> <https://github.com/edent/BMW-i-Remote> <sub>fürdieBeispiele danken mittels derer来源ich den Zugriff geschafft habe！</sub> </aub>
+<sub>ps：Ichmöchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>UND</sub> <https://github.com/edent/BMW-i-Remote> <sub>fürdieBeispiele danken mittels derer来源ich den Zugriff geschafft habe！</sub>
 
 ##重要/ Wichtig
 *适配器需要节点> = v4.3。*！
@@ -49,6 +51,10 @@ Der Benutzername，das Passwort und dieDatenfiltermüssenimAdapter config eingeg
 Mit admin，ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mit npm install ioBroker.bmw
 
 ## Changelog
+
+### 1.4.0
+* Update for Admin 3,0 and compact mode as well as config page
+
 ### 1.3.3
 * Just removed 'preserveSettings' and 'supportCustoms' not to show up in admin custom config
 
@@ -109,7 +115,7 @@ Mit admin，ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder m
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2016, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019, Frank Joke <frankjoke@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

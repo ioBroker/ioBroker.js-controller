@@ -134,10 +134,10 @@ class Statistics extends Component {
             <IconButton
                 className={this.props.classes.iframeButton}
                 title={I18n.t('Open in new window')}
-                onClick={() => Utils.openLink('http://download.iobroker.net/map.html')}>
+                onClick={() => Utils.openLink('data/map.html')}>
                 <IconZoom/>
             </IconButton>
-            <iframe title="googleMaps" className={this.props.classes.iframe} src={'http://download.iobroker.net/map.html'}/>
+            <iframe title="googleMaps" className={this.props.classes.iframe} src={'data/map.html'}/>
         </Paper>);
     }
 

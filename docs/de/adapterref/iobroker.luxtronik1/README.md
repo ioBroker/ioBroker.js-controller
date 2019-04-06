@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: Po+chEZbghLY/Su1PBHqqVHf/YjON7BBpvj1jHK8iWI=
+hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
 ---
 ![Logo](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -17,7 +17,7 @@ Ein ioBroker-Adapter für Luxtronik 1 - Wärmepumpenregler (z. B. Alpha Innotec,
 
 Adapter installieren, Instanz erstellen.
 Installieren Sie die Hardware: RS232-zu-LAN-Adapter an die serielle Schnittstelle (RS232) des Hauptpumpen der Wärmepumpe.
-Technische Daten: Seriennummer: Verbindungs-PINs 2, 3 und 5 (wenn dies nicht funktioniert, Pin 2 und 3 ändern) RS232 in LAN-Konverter: USR TCP232 - 302
+Technische Daten: Seriennummer: Verbindungs-PINs 2, 3 und 5 (wenn dies nicht funktioniert, Pin 2 und 3 ändern) RS232-zu-LAN-Konverter: USR TCP232 - 302.
 Einstellungen serielle Schnittstelle: 57600/8 / N / 1, Modus: TCP-Server Reset Timeout: 0
 
 Setze comfoair - IP-Adresse, Port und Polling - Intervall
@@ -28,11 +28,15 @@ Liest verschiedene Werte und Werte Ihrer Wärmepumpe (Temperaturen, Fehler, Lauf
 Steuert Luxtronik 1 durch Setzen von Werten im 'Kontroll'-Kanal. Steuert die folgenden Werte:
 
 - Warmwassertemperatureinstellung
-- Heizung - modelo
-- Heißwasser - modelo
+- Heizungsmodus
+- Hotwater - Modus
 - Heizkurve (Differenz, Endpunkt, Startpunkt, nächtliche Reduktion).
 
 ## Changelog
+
+### 0.0.6
+
+-   diminished risk of multiple connection, small bugfixes
 
 ### 0.0.5
 

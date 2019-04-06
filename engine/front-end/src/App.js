@@ -302,7 +302,7 @@ class App extends Router {
 
     onSearch() {
         if (this.state.search || this.searchValue) {
-            window.fetch(`http://localhost:5000/search?ln=${this.state.language}&q=${encodeURIComponent(this.state.search || this.searchValue)}`)
+            window.fetch(`search?ln=${this.state.language}&q=${encodeURIComponent(this.state.search || this.searchValue)}`)
                 .then(data => data.json())
                 .then(searchResults => this.setState({searchResults}));
         } else {

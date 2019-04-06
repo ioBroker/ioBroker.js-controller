@@ -248,7 +248,11 @@ sendTo("paw.0",'dev2',{
 
 ```
 
-### 0.3.1
+
+### 0.3.2
+* (bondrogeen) (adapter) Minor fixes. Fixed the toWake function. Added control version of the adapter and application.
+
+#### 0.3.1
 * (bondrogeen) (adapter) Minor fixes. (app) added widget and expanded item functionality
 
 #### 0.3.0

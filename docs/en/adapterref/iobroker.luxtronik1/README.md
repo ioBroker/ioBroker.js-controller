@@ -24,11 +24,15 @@ Reads different values and stats of your heatpump (temperatures, errors, running
 Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the following values:
 
 -   Hotwater - temperature setting
--   Heating - modelo
--   Hotwater - modelo
+-   Heating - mode
+-   Hotwater - mode
 -   Heating - curve (difference, endpoint, startingpoint, nightly reduction).
 
 ## Changelog
+
+### 0.0.6
+
+-   diminished risk of multiple connection, small bugfixes
 
 ### 0.0.5
 

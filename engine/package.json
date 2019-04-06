@@ -5,6 +5,7 @@
   "dependencies": {
     "minisearch": "^1.2.0",
     "express": "^4.16.4",
+    "body-parser": "^1.18.3",
     "express-brute": "^1.0.1"
   },
   "devDependencies": {
