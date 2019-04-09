@@ -1,0 +1,263 @@
+[
+    {
+        "title": {
+            "en": "** ATTENTION ** defective versions of the Tankerkönig adapter cause massive problems on the server!",
+            "de": "** ACHTUNG ** Defekte Versionen des Tankerkönig-Adapters verursachen massive Probleme auf dem Server!",
+            "ru": "** ВНИМАНИЕ ** Дефектные версии адаптера Tankerkönig вызывают серьезные проблемы на сервере!",
+            "pt": "** ATENÇÃO ** versões defeituosas do adaptador Tankerkönig causam enormes problemas no servidor!",
+            "nl": "** LET OP ** Defecte versies van de Tankerkönig-adapter veroorzaken enorme problemen op de server!",
+            "fr": "** ATTENTION ** les versions défectueuses de l'adaptateur Tankerkönig causent de gros problèmes sur le serveur!",
+            "it": "** ATTENZIONE ** le versioni difettose dell'adattatore Tankerkönig causano enormi problemi sul server!",
+            "es": "** ATENCIÓN ** las versiones defectuosas del adaptador Tankerkönig causan problemas masivos en el servidor!",
+            "pl": "** UWAGA ** wadliwe wersje adaptera Tankerkönig powodują ogromne problemy na serwerze!",
+            "zh-cn": "**注意**Tankerkönig适配器的有缺陷版本会导致服务器出现大量问题！"
+        },
+        "content": {
+            "en": "We have been repeatedly reminded by the Tankerkönig-Team that users with one of the defective versions between 1.0.5 and 2.0.4, are blocking their servers.<br>Please install only versions before 1.0.5 or after 2.0.4.",
+            "de": "Wir wurden wiederholt vom Tankerkönig-Team daran erinnert, dass Benutzer mit einer der fehlerhaften Versionen zwischen 1.0.5 und 2.0.4 ihre Server blockieren.<br>Bitte installieren Sie nur Versionen vor 1.0.5 oder nach 2.0.4.",
+            "ru": "Команда Tankerkönig-Team неоднократно напоминала нам, что пользователи с одной из дефектных версий между 1.0.5 и 2.0.4 блокируют свои серверы. <br> Пожалуйста, устанавливайте только версии до 1.0.5 или после 2.0.4.",
+            "pt": "Temos sido repetidamente lembrados pelo Tankerkönig-Team que os usuários com uma das versões defeituosas entre 1.0.5 e 2.0.4, estão bloqueando seus servidores.<br>Por favor, instale apenas versões anteriores a 1.0.5 ou posteriores à 2.0.4.",
+            "nl": "We hebben het Tankerkönig-team herhaaldelijk herinnerd aan het feit dat gebruikers met een van de defecte versies tussen 1.0.5 en 2.0.4 hun servers blokkeren.<br>Installeer alstublieft alleen versies vóór 1.0.5 of na 2.0.4.",
+            "fr": "L'équipe Tankerkönig nous a rappelé à plusieurs reprises que les utilisateurs qui utilisent l'une des versions défectueuses entre 1.0.5 et 2.0.4 bloquent leurs serveurs.<br>Veuillez installer uniquement les versions antérieures à 1.0.5 ou ultérieure.",
+            "it": "Ci è stato ripetutamente ricordato dal Team Tankerkönig che gli utenti con una delle versioni difettose tra 1.0.5 e 2.0.4 stanno bloccando i loro server.<br>Si prega di installare solo versioni precedenti alla 1.0.5 o successive alla 2.0.4.",
+            "es": "El equipo de Tankerkönig nos ha recordado repetidamente que los usuarios con una de las versiones defectuosas entre 1.0.5 y 2.0.4 están bloqueando sus servidores.<br>Instale solo las versiones anteriores a 1.0.5 o posteriores a 2.0.4.",
+            "pl": "Zespół Tankerkönig wielokrotnie przypominał, że użytkownicy z jedną z wadliwych wersji między 1.0.5 a 2.0.4 blokują swoje serwery. <br> Zainstaluj tylko wersje przed 1.0.5 lub po 2.0.4.",
+            "zh-cn": "Tankerkönig-Team一再提醒我们，有一个1.0.5和2.0.4之间缺陷版本的用户正在阻止他们的服务器。<br>请仅安装1.0.5之前或2.0.4之后的版本。"
+        },
+        "id": "tanker",
+        "created": "2019-02-24T00:00:00.000Z",
+        "class": "danger",
+        "fa-icon": "bolt",
+        "conditions": {
+            "tankerkoenig": "smaller(2.0.5)"
+        }
+    },
+    {
+        "title": {
+            "en": "Maintenance work on the cloud server on 06.01.2019",
+            "de": "Wartungsarbeiten am Cloud-Server am 06.01.2019",
+            "ru": "Техническое обслуживание на облачном сервере 06.01.2019",
+            "pt": "Trabalho de manutenção no servidor de nuvem em 06.01.2019",
+            "nl": "Onderhoudswerkzaamheden aan de cloudserver op 06.01.2019",
+            "fr": "Travaux de maintenance sur le serveur cloud le 06.01.2019",
+            "it": "Lavori di manutenzione sul cloud server il 06.01.2019",
+            "es": "Trabajos de mantenimiento en el servidor en la nube el 06.01.2019",
+            "pl": "Prace konserwacyjne na serwerze chmury w dniu 06.01.2019",
+            "zh-cn": "在06.01.2019上对云服务器进行维护工作"
+        },
+        "content": {
+            "en": "On 06.01.2019, maintenance work will take place at 21:00 on the Free-Cloud. Duration approx. 1 hour.",
+            "de": "Am 06.01.2019 finden um 21:00 Uhr Wartungsarbeiten in der Free-Cloud statt. Dauer ca. 1 Stunde.",
+            "ru": "06.01.2019 г. в 21:00 на Free-Cloud начнутся работы по техническому обслуживанию. Продолжительность ок. 1 час.",
+            "pt": "Em 06/01/2019, o trabalho de manutenção será realizado às 21:00 horas no Free-Cloud. Duração aprox. 1 hora.",
+            "nl": "Op 06.01.2019 vinden onderhoudswerkzaamheden plaats om 21.00 uur op de Free-Cloud. Duur ca. 1 uur.",
+            "fr": "Le 06.01.2019, les travaux de maintenance auront lieu à 21h00 sur le Free-Cloud. Durée approx. 1 heure.",
+            "it": "Il 06.01.2019, i lavori di manutenzione si svolgeranno alle 21:00 su Free-Cloud. Durata ca. 1 ora.",
+            "es": "El 06.01.2019, el trabajo de mantenimiento se llevará a cabo a las 21:00 en el Free-Cloud. Duración aprox. 1 hora.",
+            "pl": "W dniu 06.01.2019 prace konserwacyjne będą miały miejsce o godzinie 21:00 w Free-Cloud. Czas trwania ok. 1 godzina.",
+            "zh-cn": "在2017年1月6日，Free-Cloud的维护工作将于21:00进行。持续时间约。 1小时。"
+        },
+        "id": "cloud",
+        "class": "warning",
+        "created": "2019-01-01T00:00:00.000Z",
+        "fa-icon": "info-circle",
+        "date-end": "2019-01-06T23:00:00.000Z",
+        "conditions": {
+            "cloud": "installed"
+        }
+    },
+    {
+        "title": {
+            "en": "Maintenance work on the cloud server on 06.01.2019",
+            "de": "Wartungsarbeiten am Cloud-Server am 06.01.2019",
+            "ru": "Техническое обслуживание на облачном сервере 06.01.2019",
+            "pt": "Trabalho de manutenção no servidor de nuvem em 06.01.2019",
+            "nl": "Onderhoudswerkzaamheden aan de cloudserver op 06.01.2019",
+            "fr": "Travaux de maintenance sur le serveur cloud le 06.01.2019",
+            "it": "Lavori di manutenzione sul cloud server il 06.01.2019",
+            "es": "Trabajos de mantenimiento en el servidor en la nube el 06.01.2019",
+            "pl": "Prace konserwacyjne na serwerze chmury w dniu 06.01.2019",
+            "zh-cn": "在06.01.2019上对云服务器进行维护工作"
+        },
+        "content": {
+            "en": "On 06.01.2019, maintenance work will take place at 21:00 on the Free-Cloud. Duration approx. 1 hour.",
+            "de": "Am 06.01.2019 finden um 21:00 Uhr Wartungsarbeiten in der Free-Cloud statt. Dauer ca. 1 Stunde.",
+            "ru": "06.01.2019 г. в 21:00 на Free-Cloud начнутся работы по техническому обслуживанию. Продолжительность ок. 1 час.",
+            "pt": "Em 06/01/2019, o trabalho de manutenção será realizado às 21:00 horas no Free-Cloud. Duração aprox. 1 hora.",
+            "nl": "Op 06.01.2019 vinden onderhoudswerkzaamheden plaats om 21.00 uur op de Free-Cloud. Duur ca. 1 uur.",
+            "fr": "Le 06.01.2019, les travaux de maintenance auront lieu à 21h00 sur le Free-Cloud. Durée approx. 1 heure.",
+            "it": "Il 06.01.2019, i lavori di manutenzione si svolgeranno alle 21:00 su Free-Cloud. Durata ca. 1 ora.",
+            "es": "El 06.01.2019, el trabajo de mantenimiento se llevará a cabo a las 21:00 en el Free-Cloud. Duración aprox. 1 hora.",
+            "pl": "W dniu 06.01.2019 prace konserwacyjne będą miały miejsce o godzinie 21:00 w Free-Cloud. Czas trwania ok. 1 godzina.",
+            "zh-cn": "在2017年1月6日，Free-Cloud的维护工作将于21:00进行。持续时间约。 1小时。"
+        },
+        "id": "cloud",
+        "class": "warning",
+        "created": "2019-01-01T00:00:00.000Z",
+        "fa-icon": "info-circle",
+        "date-end": "2019-01-06T23:00:00.000Z",
+        "conditions": {
+            "iot": "installed"
+        }
+    },
+    {
+        "title": {
+            "en": "Broadlink not maintained anymore",
+            "de": "Broadlink wird nicht mehr gepflegt",
+            "ru": "Broadlink больше не поддерживается",
+            "pt": "O Broadlink não é mais mantido",
+            "nl": "Broadlink niet meer onderhouden",
+            "fr": "Broadlink n'est plus maintenu",
+            "it": "Broadlink non mantenuto più",
+            "es": "Broadlink no se mantiene más",
+            "pl": "Broadlink nie jest już obsługiwany",
+            "zh-cn": "Broadlink不再维护了"
+        },
+        "content": {
+            "en": "This project is no longer maintained for personal reasons. Please use the ioBroker.broadlink2 instead.",
+            "de": "Dieses Projekt wird aus persönlichen Gründen nicht mehr gepflegt. Bitte verwenden Sie stattdessen den ioBroker.broadlink2.",
+            "ru": "Этот проект больше не поддерживается по личным причинам. Пожалуйста, используйте вместо этого ioBroker.broadlink2.",
+            "pt": "Este projeto não é mais mantido por motivos pessoais. Por favor, use o ioBroker.broadlink2 em seu lugar.",
+            "nl": "Dit project wordt om persoonlijke redenen niet langer onderhouden. Gebruik in plaats daarvan de ioBroker.broadlink2.",
+            "fr": "Ce projet n'est plus maintenu pour des raisons personnelles. Veuillez utiliser le ioBroker.broadlink2 à la place.",
+            "it": "Questo progetto non è più mantenuto per ragioni personali. Utilizzare invece ioBroker.broadlink2.",
+            "es": "Este proyecto ya no se mantiene por razones personales. Por favor use el ioBroker.broadlink2 en su lugar.",
+            "pl": "Ten projekt nie jest już utrzymywany z powodów osobistych. Zamiast tego użyj pliku ioBroker.broadlink2.",
+            "zh-cn": "由于个人原因，该项目不再维护。请改用ioBroker.broadlink2。"
+        },
+        "id": "broadlink",
+        "created": "2019-03-13T00:00:00.000Z",
+        "conditions": {
+            "broadlink": "installed",
+            "broadlink2": "!installed"
+        }
+    },
+    {
+        "title": {
+            "en": "Info Adapter Version 1.2.4 causes problems with the VIS Editor",
+            "de": "Info Adapter Version 1.2.4 verursacht Probleme beim VIS Editor",
+            "ru": "Info Adapter версии 1.2.4 вызывает проблемы с VIS Editor",
+            "pt": "Adaptador de Info Versão 1.2.4 causa problemas com o VIS Editor",
+            "nl": "Info Adapter Versie 1.2.4 veroorzaakt problemen met de VIS Editor",
+            "fr": "Info Adapter version 1.2.4 provoque des problèmes avec l'éditeur de vis",
+            "it": "Info Adapter Versione 1.2.4 causa problemi con l'editor VIS",
+            "es": "La versión 1.2.4 del adaptador de información causa problemas con el editor VIS",
+            "pl": "Info Adapter Version 1.2.4 powoduje problemy z edytorem VIS",
+            "zh-cn": "信息适配器版本1.2.4导致VIS编辑器出现问题"
+        },
+        "content": {
+            "en": "The problem with the VIS editor has been fixed since version 1.2.5. Please install the new version.",
+            "de": "Das Problem mit dem VIS-Editor wurde mit der Version 1.2.5 behoben. ",
+            "ru": "Проблема с редактором VIS была исправлена ​​с версии 1.2.5. ",
+            "pt": "O problema com o editor VIS foi corrigido desde a versão 1.2.5. ",
+            "nl": "Het probleem met de VIS-editor is verholpen sinds versie 1.2.5. ",
+            "fr": "Le problème avec l'éditeur VIS a été corrigé depuis la version 1.2.5. ",
+            "it": "Il problema con l'editor VIS è stato risolto dalla versione 1.2.5. ",
+            "es": "El problema con el editor VIS se ha solucionado desde la versión 1.2.5. ",
+            "pl": "Problem z edytorem VIS został naprawiony od wersji 1.2.5. ",
+            "zh-cn": "自版本1.2.5起，VIS编辑器的问题已得到修复。"
+        },
+        "id": "infoAdapter",
+        "created": "2019-03-15T00:00:00.000Z",
+        "conditions": {
+            "info": "equals(1.2.4)"
+        }
+    },
+    {
+        "title": {
+            "en": "Adapter 'Radar' will not be further developed!",
+            "de": "Radar wird nicht weiterentwickelt!",
+            "ru": "Адаптер 'Radar' больше не будет развиваться!",
+            "pt": "O Adaptador 'Radar' não será mais desenvolvido!",
+            "nl": "Adapter 'Radar' wordt niet verder ontwikkeld!",
+            "fr": "L'adaptateur 'Radar' ne sera plus développé!",
+            "it": "L'adattatore 'Radar' non sarà ulteriormente sviluppato!",
+            "es": "¡El adaptador 'Radar' no se desarrollará más!",
+            "pl": "Adapter 'Radar' nie będzie dalej rozwijany!",
+            "zh-cn": "适配器'Radar'将不再进一步开发！"
+        },
+        "content": {
+            "en": "Due to the development of the ioBroker.radar2 adapter, the further development of the ioBroker.radar adapter has been discontinued. Please install the new adapter to get more features.",
+            "de": "Aufgrund der Entwicklung des ioBroker.radar2 Adapters, wurde die Weiterentwicklung des ioBroker.radar-Adapters eingestellt. Bitte installieren Sie den neuen Adapter um weitere Funktionen zu bekommen.",
+            "ru": "В связи с разработкой адаптера ioBroker.radar2 дальнейшая разработка адаптера ioBroker.radar была прекращена. Пожалуйста, установите новый адаптер, чтобы получить больше возможностей.",
+            "pt": "Devido ao desenvolvimento do adaptador ioBroker.radar2, o desenvolvimento adicional do adaptador ioBroker.radar foi descontinuado. Por favor, instale o novo adaptador para obter mais recursos.",
+            "nl": "Vanwege de ontwikkeling van de ioBroker.radar2-adapter is de verdere ontwikkeling van de ioBroker.radar-adapter stopgezet. Installeer de nieuwe adapter om meer functies te krijgen.",
+            "fr": "En raison du développement de l'adaptateur ioBroker.radar2, le développement de l'adaptateur ioBroker.radar a été arrêté. Veuillez installer le nouvel adaptateur pour obtenir plus de fonctionnalités.",
+            "it": "A causa dello sviluppo dell'adattatore ioBroker.radar2, l'ulteriore sviluppo dell'adattatore ioBroker.radar è stato interrotto. Si prega di installare il nuovo adattatore per ottenere più funzionalità.",
+            "es": "Debido al desarrollo del adaptador ioBroker.radar2, el desarrollo adicional del adaptador ioBroker.radar se ha interrumpido. Instale el nuevo adaptador para obtener más características.",
+            "pl": "Dzięki rozwojowi adaptera ioBroker.radar2, dalszy rozwój adaptera ioBroker.radar został przerwany. Zainstaluj nowy adapter, aby uzyskać więcej funkcji.",
+            "zh-cn": "由于ioBroker.radar2适配器的开发，ioBroker.radar适配器的进一步开发已经停止。 请安装新适配器以获得更多功能。"
+        },
+        "id": "radar",
+        "created": "2019-03-22T00:00:00.000Z",
+        "conditions": {
+            "radar": "installed",
+            "radar2": "!installed"
+        }
+    },
+    {
+        "title": {
+            "en": "Please update ioBroker.weatherunderground",
+            "de": "Bitte updaten Sie ioBroker.weatherunderground",
+            "ru": "Пожалуйста, обновление ioBroker.weatherunderground",
+            "pt": "Por favor, atualize ioBroker.weatherunderground",
+            "nl": "Update ioBroker.weatherunderground",
+            "fr": "Veuillez mettre à jour ioBroker.weatherunderground",
+            "it": "Si prega di aggiornare ioBroker.weatherunderground",
+            "es": "Por favor, actualice ioBroker.weatherunderground",
+            "pl": "Proszę aktualizacja ioBroker.weatherunderground",
+            "zh-cn": "请更新的ioBroker。weatherunderground"
+        },
+        "content": {
+            "en": "Due to changes to the API, versions below 3.0.0 no longer work. Please update your version of ioBroker.weatherunderground.",
+            "de": "Wegen Änderungen der API, funktionieren Versionen unter 3.0.0 nicht mehr. Bitte aktualisieren Sie Ihre Version von ioBroker.weatherunderground.",
+            "ru": "Из-за изменений в API, версий ниже 3.0.0 больше не работают. Пожалуйста, обновите вашу версию ioBroker.weatherunderground.",
+            "pt": "Devido a alterações para a API, versões abaixo 3.0.0 não funcionam mais. Por favor, atualize sua versão do ioBroker.weatherunderground.",
+            "nl": "Door veranderingen aan de API versies hieronder 3.0.0 niet meer werken. Update uw versie van ioBroker.weatherunderground.",
+            "fr": "En raison des changements de l'API, les versions ci-dessous 3.0.0 ne fonctionnent plus. Veuillez mettre à jour votre version de ioBroker.weatherunderground.",
+            "it": "A causa di modifiche alle API, versioni di seguito 3.0.0 non funzionano più. Si prega di aggiornare la tua versione di ioBroker.weatherunderground.",
+            "es": "Debido a cambios en el API, las versiones a continuación 3.0.0 ya no funcionan. Por favor, actualice su versión de ioBroker.weatherunderground.",
+            "pl": "Ze względu na zmiany w API w wersji poniżej 3.0.0 już nie pracują. Proszę zaktualizować swoją wersję ioBroker.weatherunderground.",
+            "zh-cn": "由于变化的API，下文版本为3.0.0不再工作。 请更新版本的的ioBroker。weatherunderground的。"
+        },
+        "id": "weatherundergroundAdapter",
+        "fa-icon": "sun-o",
+        "created": "2019-03-24T00:00:00.000Z",
+        "conditions": {
+            "weatherunderground": "smaller(3.0.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "The development continues...",
+            "de": "Die Entwicklung geht weiter...",
+            "ru": "Развитие продолжается ...",
+            "pt": "O desenvolvimento continua ...",
+            "nl": "De ontwikkeling gaat door ...",
+            "fr": "Le développement continue ...",
+            "it": "Lo sviluppo continua ...",
+            "es": "El desarrollo continúa ...",
+            "pl": "Rozwój trwa ...",
+            "zh-cn": "发展继续......"
+        },
+        "content": {
+            "en": "It is currently being developed on version 1.3.3, so there may be inconsistencies with the adapter. Use this version at your own risk.",
+            "de": "Es wird gerade an der Version 1.3.3 entwickelt, deswegen kann es zu Inkonzistenzen beim Adapter kommen. Nutzung dieser Version auf eigene Gefahr.",
+            "ru": "В настоящее время он разрабатывается для версии 1.3.3, поэтому возможны несоответствия с адаптером. ",
+            "pt": "Atualmente está sendo desenvolvido na versão 1.3.3, portanto, pode haver inconsistências com o adaptador. ",
+            "nl": "Het wordt momenteel ontwikkeld op versie 1.3.3, dus er kunnen inconsistenties zijn met de adapter. ",
+            "fr": "Il est actuellement en cours de développement sur la version 1.3.3, il pourrait donc y avoir des incohérences avec l'adaptateur. ",
+            "it": "Attualmente è in fase di sviluppo sulla versione 1.3.3, quindi potrebbero esserci incongruenze con l'adattatore. ",
+            "es": "Actualmente se está desarrollando en la versión 1.3.3, por lo que puede haber inconsistencias con el adaptador. ",
+            "pl": "Obecnie jest rozwijany w wersji 1.3.3, więc mogą występować niezgodności z adapterem. ",
+            "zh-cn": "它目前正在1.3.3版本上开发，因此适配器可能存在不一致之处。"
+        },
+        "id": "infoAdapter",
+        "fa-icon": "line-chart",
+        "class": "warning",
+        "created": "2019-04-05T00:00:00.000Z",
+        "conditions": {
+            "info": "bigger(1.3.2)"
+        }
+    }
+]
