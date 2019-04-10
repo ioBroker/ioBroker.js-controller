@@ -155,7 +155,7 @@ const LANGUAGES = {
     'en': {full: 'English', short: 'En'},
     'de': {full: 'Deutsch', short: 'De'},
     'ru': {full: 'Русский', short: 'Ру'},
-    'zh-cn': {full: 'Chinese', short: 'zh-cn'},
+    'zh-cn': {full: '简体中文', short: 'zh-cn'},
 };
 
 const PAGES = {
