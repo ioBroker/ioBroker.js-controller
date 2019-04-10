@@ -163,15 +163,22 @@ const PAGES = {
     'download': {tabIndex: 2, component: Downloads, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
     'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
-    'forum':  {tabIndex: 5, name: 'Forum', link: 'https://forum.iobroker.net', target: '_self'},
+    'forum':  {tabIndex: 5, name: 'Forum',
+        links: {
+            en: 'https://forum.iobroker.net',
+            nl: 'https://forum.iobroker.net/category/40/nederlands',
+            de: 'https://forum.iobroker.net/category/4/deutsch',
+            ru: 'https://forum.iobroker.net/category/28/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9',
+            'zh-cn': 'https://bbs.iobroker.cn/'
+        }, target: '_self'},
     'about':  {tabIndex: 6, name: 'About', menu: [
             {tab: 'statistics', name: 'Statistics', icon: null},
-    ]},
+        ]},
     'cloud':    {tabIndex: 7, name: 'Cloud', menu: [
-        {link: 'https://iobroker.net', name: 'Free', target: 'this'},
-        {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
-        {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
-    ]},
+            {link: 'https://iobroker.net', name: 'Free', target: 'this'},
+            {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
+            {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
+        ]},
     'intro':    {component: PageIntro, name: 'intro'},
     'imprint':  {name: 'imprint', md: 'imprint.md'},
     'privacy':  {name: 'privacy', md: 'privacy.md'},
@@ -349,9 +356,9 @@ class App extends Router {
                          this.setState({searchResults: null});
                          this.onNavigate(null, tab, result.id)
                      }}>
-                <div className={this.props.classes.sRdivType}>{I18n.t(tab)}</div>
-                <div className={this.props.classes.sRdivText}>{type === '...' ? I18n.t('More %s results', result.title) : result.title}</div>
-            </div>);
+            <div className={this.props.classes.sRdivType}>{I18n.t(tab)}</div>
+            <div className={this.props.classes.sRdivText}>{type === '...' ? I18n.t('More %s results', result.title) : result.title}</div>
+        </div>);
     }
 
     renderSearchResults() {
@@ -371,8 +378,8 @@ class App extends Router {
                 },
             }}
             children={this.state.searchResults && this.state.searchResults.length ?
-                    (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map((link, i) => this.renderSearchResult(link, len - 1 === i))}</Paper>) :
-                    (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)}
+                (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map((link, i) => this.renderSearchResult(link, len - 1 === i))}</Paper>) :
+                (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)}
         />);
     }
 
@@ -423,6 +430,9 @@ class App extends Router {
                       variant="standard"
                       onChange={(e, value) => {
                           const selectedPage = Object.keys(PAGES)[value];
+                          if (PAGES[selectedPage].links) {
+                              Utils.openLink(PAGES[selectedPage].links[this.state.language] || PAGES[selectedPage].links.en, PAGES[selectedPage].target);
+                          } else
                           if (PAGES[selectedPage].link) {
                               Utils.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
                           } else if (PAGES[selectedPage].menu) {
@@ -462,16 +472,16 @@ class App extends Router {
                         if (PAGES[tab].menu) {
                             return [
                                 (<ListItem button key={tab}
-                                    onClick={e => {
-                                        const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
-                                        const pos = menuOpened.indexOf(tab);
-                                        if (pos === -1) {
-                                            menuOpened.push(tab);
-                                        } else {
-                                            menuOpened.splice(pos, 1);
-                                        }
-                                        this.setState({menuOpened});
-                                    }}
+                                           onClick={e => {
+                                               const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
+                                               const pos = menuOpened.indexOf(tab);
+                                               if (pos === -1) {
+                                                   menuOpened.push(tab);
+                                               } else {
+                                                   menuOpened.splice(pos, 1);
+                                               }
+                                               this.setState({menuOpened});
+                                           }}
                                 >
                                     {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
                                     <ListItemText primary={I18n.t(PAGES[tab].name)} />
@@ -481,6 +491,9 @@ class App extends Router {
                                     {PAGES[tab].menu.map(item =>
                                         (<ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
                                                    onClick={() => {
+                                                       if (item.links) {
+                                                           Utils.openLink(item.links[this.state.language] || item.links.en, item.target);
+                                                       } else
                                                        if (item.link) {
                                                            Utils.openLink(item.link, item.target)
                                                        } else if (item.tab) {
@@ -496,15 +509,17 @@ class App extends Router {
                             ];
                         } else {
                             return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
-                                    this.setState({showTabMenu: false}, () => {
-                                        if (PAGES[tab].link) {
-                                            Utils.openLink(PAGES[tab].link, PAGES[tab].target)
-                                        } else {
-                                            this.onNavigate(null, tab);
-                                        }
-                                        this.setState({showTabMenu: false});
-                                    });
-                                }}>
+                                this.setState({showTabMenu: false}, () => {
+                                    if (PAGES[tab].links) {
+                                        Utils.openLink(PAGES[tab].links[this.state.language] || PAGES[tab].links.en, PAGES[tab].target);
+                                    } else if (PAGES[tab].link) {
+                                        Utils.openLink(PAGES[tab].link, PAGES[tab].target)
+                                    } else {
+                                        this.onNavigate(null, tab);
+                                    }
+                                    this.setState({showTabMenu: false});
+                                });
+                            }}>
                                 {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
                                 <ListItemText primary={I18n.t(PAGES[tab].name)} />
                             </ListItem>);
