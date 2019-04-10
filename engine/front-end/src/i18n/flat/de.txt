@@ -56,7 +56,7 @@ Autoren
 Kompaktmodus
 in die Zwischenablage kopiert
 in die Zwischenablage kopieren
-Trete jetzt der schnell wachsenden Community bei, stelle Fragen und bekomme Antworten von Profis!
+Trete jetzt die schnell wachsende Community bei, stelle Fragen und bekomme Antworten von Profis!
 Installation auf Linux
 installiert %s mal
 Images werden nur benötigt, wenn Probleme mit Installationsskripten auftreten.
