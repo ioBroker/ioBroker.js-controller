@@ -1,0 +1,593 @@
+{
+    "docs": {
+        "de": {
+            "community": [
+                {
+                    "title": "Deutsches Support Forum",
+                    "link": "https://forum.iobroker.net/category/4"
+                },
+                {
+                    "title": "IoBroker SmartHome und IoT Facebook Gruppe",
+                    "link": "https://www.facebook.com/groups/440499112958264"
+                },
+                {
+                    "title": "Teamspeak für Smart Home Systeme (Facebook)",
+                    "link": "https://www.facebook.com/groups/331465920952236"
+                },   
+                {	
+                    "title": "CREATIONX - Smart Home Forum",
+                    "link": "https://forum.creationx.de/forum/index.php?board/19-iobroker/"
+                },
+                {
+                    "title": "SmartHome - SchimmerMediaHD Forum",
+                    "link": "http://smarthome.schimmer-media.de/forum/"
+                },
+                {
+                    "title": "Android Hilfe - ioBroker Forum",
+                    "link": "https://www.android-hilfe.de/forum/iobroker.3496/"
+                },
+                {
+                    "title": "ioBroker Meetup Karlsruhe Smart Home IoT",
+                    "link": "https://www.meetup.com/de-DE/ioBroker-Meetup-Karlsruhe-Smart-Home-IoT/?_locale=de-DE"
+                },
+                {
+                    "title": "SmartHome-Franken e.V",
+                    "link": "https://smarthome-franken.org/"
+                }
+            ],
+            "documentation": [
+                {
+                    "title": "ioBroker Homepage",
+                    "link": "http://www.iobroker.net/docu/?lang=de"
+                },
+                {
+                    "title": "smarthome-tricks.de - Tricks und Tipps rund um Dein Smarthome",
+                    "link": "https://www.smarthome-tricks.de/software-iobroker/"
+                },
+                {
+                    "title": "Smarthome Assistent - Anleitungen & Hilfestellungen: ioBroker",
+                    "link": "https://www.smarthomeassistent.de/anleitung/iobroker/"
+                },
+                {
+                    "title": "ioBroker-Tutorial-Reihe",
+                    "link": "https://haus-automatisierung.com/iobroker-tutorial-reihe/"
+                }
+            ],
+            "development": [
+            ],
+            "blog": [
+                {
+                    "title": "verdrahtet.info",
+                    "link": "https://www.verdrahtet.info/category/iobroker/"
+                },
+                {
+                    "title": "IoT Blog - Hier findest du Tutorials und Tricks rund um IoT und Smart Home, mit einem Fokus auf das System ioBroker.",
+                    "link": "https://iot-blog.net/"
+                },
+                {
+                    "title": "smarthome-tagebuch.de - Der Smarthome-Blog",
+                    "link": "https://smarthome-tagebuch.de/themen/software-systeme/iobroker/"
+                },
+                {
+                    "title": "Homematic-Guru.de",
+                    "link": "https://homematic-guru.de/category/iobroker"
+                },
+                {
+                    "title": "Sabrije und André Germann Blog",
+                    "link": "https://buanet.de/category/iobroker/"
+                }
+            ],
+            "news": [
+                {
+                    "title": "Alle Smarthome Systeme unter einen Hut – ioBroker vereint das Smart Home",
+                    "link": "https://www.techniktest-online.de/testberichte/smarthome/alle-smarthome-systeme-unter-einen-hut-iobroker-vereint-das-smart-home/",
+                    "date": "2019-02-25T00:00:00.000Z"
+                },
+                {
+                    "title": "Mit ioBroker per Drag&Drop zum Smart Home",
+                    "link": "https://ownsmarthome.de/2017/11/mit-iobroker-per-dragdrop-zum-smart-home/",
+                    "date": "2019-02-09T00:00:00.000Z"
+                },
+                {
+                    "title": "OctoPrint in ioBroker integrieren",
+                    "link": "https://technikkram.net/2019/01/octoprint-in-iobroker-integrieren",
+                    "date": "2019-01-27T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker – Erste Beta des Homematic IP Access Point Adapters – Installation",
+                    "link": "https://technikkram.net/2019/01/iobroker-erste-beta-des-homematic-ip-access-point-adapters-installation",
+                    "date": "2019-01-19T00:00:00.000Z"
+                },
+                {
+                    "title": "[DIY Smart Home] Teil 1: Die Vorbereitungen",
+                    "link": "https://appkosmos.de/hardware/smarthome/diy-smart-home-teil-1/",
+                    "date": "2018-09-13T00:00:00.000Z"
+                },
+                {
+                    "title": "Die wichtigsten Neuerungen der Smart-Home-Steuersoftware ioBroker",
+                    "link": "https://www.heise.de/select/ct/2018/17/1534562336998502",
+                    "date": "2018-08-03T00:00:00.000Z"
+                },   
+                {
+                    "title": "Fibaro & ioBroker Teil 1: Wie bekommt Ihr Geräte & Daten vom ioBroker in Euer Fibaro Home Center?",
+                    "link": "https://www.intelligentes-haus.de/tutorials/fibaro-tutorials/fibaro-iobroker-teil-1-wie-bekommt-ihr-gerate-daten-vom-iobroker-in-euer-fibaro-home-center/",
+                    "date": "2018-07-20T00:00:00.000Z"
+                },
+                {
+                    "title": "IO-Broker integriert diverse Smart-Home-Protokolle",
+                    "link": "http://www.linux-magazin.de/ausgaben/2018/04/io-broker/",
+                    "date": "2018-04-01T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker mit Amazon Alexa verbinden",
+                    "link": "https://www.homeandsmart.de/iobroker-mit-alexa-verbinden",
+                    "date": "2018-03-03T00:00:00.000Z"
+                },
+                {
+                    "title": "Homematic – Visualisierung über ioBroker Video-Anleitung",
+                    "link": "https://technikkram.net/2018/01/homematic-visualisierung-ueber-iobroker-video-anleitung",
+                    "date": "2018-01-19T00:00:00.000Z"
+                },
+                {
+                    "title": "Erste Schritte mit der Smart-Home-Steuersoftware ioBroker",
+                    "link": "https://www.heise.de/select/ct/2017/18/1503875643519180",
+                    "date": "2017-08-18T00:00:00.000Z"
+                },
+                {
+                    "title": "Das Projekt IO-Broker macht Smart-Home-Anwendungen kompatibel",
+                    "link": "http://www.linux-magazin.de/ausgaben/2017/07/io-broker/",
+                    "date": "2017-07-01T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker: Die Open Source Plattform ist nominiert für einen #smartaward17",
+                    "link": "https://www.ehome-news.de/iobroker-die-open-source-plattform-ist-nominiert-fuer-einen-smartaward17/",
+                    "date": "2017-05-16T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker: Integrationsplattform für das Internet der Dinge",
+                    "link": "https://www.homeandsmart.de/iobroker-integrations-plattform-iot",
+                    "date": "2017-03-14T00:00:00.000Z"
+                }
+            ],
+            "video": [
+                {
+                    "title": "ioBroker Schule (auf Deutsch)",
+                    "link": "https://www.youtube.com/playlist?list=PLhZP6yZlpKQ9MFV74PQe5JYNItbLLgfG4"
+                },
+                {
+                    "title": "Verdrahtet",
+                    "link": "https://www.youtube.com/playlist?list=PLXwTV9CYYswieFE27l0hc4zWAjuEfC_uG"
+                },
+                {
+                    "title": "Meister TR",
+                    "link": "https://www.youtube.com/channel/UCYb_rkrpyqOPXpvtlXvTvEQ/videos"
+                },
+                {
+                    "title": "haus-automatisierung.com",
+                    "link": "https://www.youtube.com/playlist?list=PLcXIjZgo0R3AWNbOypQ7F66qKmupMxWKx"
+                },
+                {
+                    "title": "SmarthomeAssistent",
+                    "link": "https://www.youtube.com/playlist?list=PL0nObA7djdaVbMn4jtSwLlNyB66hWQePa"
+                },
+                {
+                    "title": "Elzershark",
+                    "link": "https://www.youtube.com/user/MrElzershark/videos"
+                },
+                {
+                    "title": "IoT Blog",
+                    "link": "https://www.youtube.com/user/IR0Nmetin2/videos"
+                },
+                {
+                    "title": "SmartesHome",
+                    "link": "https://www.youtube.com/user/TheKonrad650/videos"
+                },
+                {
+                    "title": "[X] [IAO] [MI] Tech Report [GERMAN]",
+                    "link": "https://www.youtube.com/playlist?list=PLLmhoTi2es84dU2JYQsB1HOcXpC28U463"
+                },
+                {
+                    "title": "Sven Topp",
+                    "link": "https://www.youtube.com/channel/UCWNrpBBFbvrK8gAWLDX9QuQ"
+                },
+                {
+                    "title": "EddyD's SmartHome",
+                    "link": "https://www.youtube.com/channel/UCAqbw0Fw9C_hgiqJKqKpd-g/videos"
+                },
+                {
+                    "title": "SmartMediaRLP",
+                    "link": "https://www.youtube.com/channel/UC9DPatzHvGqLBGTzFxR7i5w/videos"
+                },
+                {
+                    "title": "Michael Mackedanz",
+                    "link": "https://www.youtube.com/channel/UCgBrBIIUrmIjJwJZ7sOLu4A"
+                }
+            ],
+            "other": [
+                {
+                    "title": "Wikipedia - ioBroker",
+                    "link": "https://de.wikipedia.org/wiki/IoBroker"
+                }
+            ]
+        },
+        "en": {
+            "community": [
+                {
+                    "title": "English support forum",
+                    "link": "https://forum.iobroker.net/category/16"
+                },
+                {
+                    "title": "ioBroker official tweeter",
+                    "link": "https://twitter.com/iobroker"
+                }
+            ],
+            "documentation": [
+                {
+                    "title": "ioBroker Homepage",
+                    "link": "http://www.iobroker.net/docu/?lang=en"
+                }
+            ],
+            "development": [
+                {
+                    "title": "Core Concept (Schema)",
+                    "link": "https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md"
+                },
+                {
+                    "title": "ioBroker adapter creator",
+                    "link": "https://github.com/ioBroker/create-adapter/blob/master/README.md"
+                },
+                {
+                    "title": "Adapter Development Documentation",
+                    "link": "https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation"
+                },
+                {
+                    "title": "ioBroker translator",
+                    "link": "http://www.iobroker.net:3000/"
+                },
+                {
+                    "title": "ioBroker on GitHub",
+                    "link": "https://github.com/ioBroker"
+                },
+                {
+                    "title": "Requirements for adapter to get added to the latest repository",
+                    "link": "https://github.com/ioBroker/ioBroker.repositories/blob/master/README.md"
+                },
+                {
+                    "title": "Who or what is 'ioBroker Community Adapters'?",
+                    "link": "https://github.com/iobroker-community-adapters/info/blob/master/ABOUT_US.md"
+                }
+            ],
+            "blog": [                
+            ],
+            "news": [
+                {
+                    "title": "ioBroker integrates different smart home protocols into a single easy interface",
+                    "link": "http://www.linux-magazine.com/Issues/2018/212/ioBroker",
+                    "date": "2018-07-01T00:00:00.000Z"
+                }
+            ],
+            "video": [
+                {
+                    "title": "ioBroker School (in English)",
+                    "link": "https://www.youtube.com/playlist?list=PLhZP6yZlpKQ-t9lvkpztuinxOzzGSXUYw"
+                }
+            ],
+            "other": [
+            ]
+        },
+        "ru": {
+            "community": [
+                {
+                    "title": "Обсуждения на русском языке",
+                    "link": "https://forum.iobroker.net/category/28"
+                }
+            ],
+            "documentation": [
+                {
+                    "title": "Домашняя страница ioBroker",
+                    "link": "http://www.iobroker.net/docu/?lang=ru"
+                },
+                {
+                    "title": "ioBroker - Визуализация",
+                    "link": "https://sprut.ai/client/article/278"
+                }
+            ],
+            "development": [
+            ],
+            "blog": [
+                {
+                    "title": "blog.instalator",
+                    "link": "https://blog.instalator.ru/archives/category/smart-house/iobroker"
+                }
+            ],
+            "news": [
+                {
+                    "title": "HomeKit и ioBroker Давайте дружить домами",
+                    "link": "https://habr.com/ru/company/iobroker/blog/433798/",
+                    "date": "2018-12-24T00:00:00.000Z"
+                },
+                {
+                    "title": "Беспроводные устройства Xiaomi в умном доме ioBroker",
+                    "link": "https://habr.com/ru/company/iobroker/blog/433340/",
+                    "date": "2018-12-16T00:00:00.000Z"
+                },    
+                {
+                    "title": "ioBroker — открытая система автоматизации (обзор)",
+                    "link": "https://habr.com/ru/company/iobroker/blog/374363/",
+                    "date": "2018-03-26T00:00:00.000Z"
+                },                              
+                {
+                    "title": "15 лучших рецептов для Умного Дома с ioBroker",
+                    "link": "https://habr.com/en/post/330332/",
+                    "date": "2017-06-06T00:00:00.000Z"
+                }, 
+                {
+                    "title": "ioBroker — домашняя автоматизация. Факты",
+                    "link": "https://habr.com/ru/post/402767/",
+                    "date": "2017-06-04T00:00:00.000Z"
+                },  
+                {
+                    "title": "Amazon Alexa Skill Smart Home c Open Source платформой для Домашней Автоматизации ioBroker",
+                    "link": "https://habr.com/ru/post/330026/",
+                    "date": "2017-06-01T00:00:00.000Z"
+                },
+                {
+                    "title": "Домашняя автоматизация с ioBroker",
+                    "link": "https://habr.com/en/post/394961/",
+                    "date": "2016-07-22T00:00:00.000Z"
+                },
+                {
+                    "title": "Никогда не «не делай» того, о чем пожалеешь или умный дом с CCU.IO",
+                    "link": "https://habr.com/en/post/227435/",
+                    "date": "2014-07-15T00:00:00.000Z"
+                }
+            ],
+            "video": [
+                {
+                    "title": "ioBroker ШКОЛА (на русском)",
+                    "link": "https://www.youtube.com/playlist?list=PLhZP6yZlpKQ9c_EukRSrgWs0A9adz36w6"
+                },
+                {
+                    "title": "Мастерская Владимира",
+                    "link": "https://www.youtube.com/playlist?list=PLA6TBm4tmPqKzrYniTBb1TVm_pNg3fOuY"
+                }
+            ],
+            "other": [
+            ]
+        },
+        "pt": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "nl": {
+            "community": [
+                {
+                    "title": "Nederlands support forum",
+                    "link": "https://forum.iobroker.net/category/40"
+                }
+            ],
+            "documentation": [
+                {
+                    "title": "[ioBroker] Automate your life! opensource platform",
+                    "link": "https://gathering.tweakers.net/forum/list_messages/1891809"
+                }
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "fr": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "it": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "es": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "pl": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [
+            ]
+        },
+        "zh-cn": {
+            "community": [
+                {
+                    "title": "ioBroker中国论坛",
+                    "link": "https://bbs.iobroker.cn/"
+                }
+            ],
+            "documentation": [
+                {
+                    "title": "中文文档",
+                    "link": "https://doc.iobroker.cn/#/_zh-cn/"
+                }
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+            ],
+            "other": [                
+            ]
+        },
+        "noLang": {
+            "community": [
+            ],
+            "documentation": [
+            ],
+            "development": [
+            ],
+            "blog": [
+            ],
+            "news": [
+            ],
+            "video": [
+                {
+                    "title": {
+                        "en": "ioBroker",
+                        "de": "ioBroker",
+                        "ru": "ioBroker",
+                        "pt": "ioBroker",
+                        "nl": "ioBroker",
+                        "fr": "ioBroker",
+                        "it": "ioBroker",
+                        "es": "ioBroker",
+                        "pl": "ioBroker",
+                        "zh-cn": "ioBroker"
+                    },
+                    "link": "https://www.youtube.com/playlist?list=PLhZP6yZlpKQ8bwaGwrVoQzyjmS0SbQoNr"
+                }
+            ],
+            "other": [
+                {
+                    "title": {
+                        "en": "ioBroker Adapter's List",
+                        "de": "Liste der ioBroker-Adapter",
+                        "ru": "Список адаптеров ioBroker",
+                        "pt": "Lista do Adaptador ioBroker",
+                        "nl": "ioBroker-adapterlijst",
+                        "fr": "Liste des adaptateurs ioBroker",
+                        "it": "Lista degli adattatori ioBroker",
+                        "es": "Lista de adaptadores ioBroker",
+                        "pl": "Karta adaptera ioBroker",
+                        "zh-cn": "ioBroker适配器列表"
+                    },
+                    "link": "http://download.iobroker.net/list.html"
+                },
+                {
+                    "title": {
+                        "en": "World map of distribution of ioBroker",
+                        "de": "Weltkarte der Verbreitung von ioBroker",
+                        "ru": "Карта мира распространения ioBroker",
+                        "pt": "Mapa mundial de distribuição do ioBroker",
+                        "nl": "Wereldkaart van distributie van ioBroker",
+                        "fr": "Carte du monde de la distribution d'ioBroker",
+                        "it": "Mappa mondiale della distribuzione di ioBroker",
+                        "es": "Mapa mundial de la distribución de ioBroker",
+                        "pl": "Mapa świata dystrybucji ioBroker",
+                        "zh-cn": "ioBroker的世界地图分布"
+                    },
+                    "link": "http://iobroker.live/map.html"
+                },
+                {
+                    "title": {
+                        "en": "ioBroker statistics",
+                        "de": "ioBroker-Statistiken",
+                        "ru": "Статистика ioBroker",
+                        "pt": "estatísticas do ioBroker",
+                        "nl": "ioBroker-statistieken",
+                        "fr": "Statistiques ioBroker",
+                        "it": "Statistiche di ioBroker",
+                        "es": "estadísticas ioBroker",
+                        "pl": "statystyki ioBroker",
+                        "zh-cn": "ioBroker统计数据"
+                    },
+                    "link": "http://download.iobroker.net/stat.html"
+                },
+                {
+                    "title": {
+                        "en": "Demonstration of the ioBroker administration page",
+                        "de": "Demonstration der ioBroker-Verwaltungsseite",
+                        "ru": "Демонстрация страницы администрирования ioBroker",
+                        "pt": "Demonstração da página de administração do ioBroker",
+                        "nl": "Demonstratie van de beheerpagina van ioBroker",
+                        "fr": "Démonstration de la page d'administration d'ioBroker",
+                        "it": "Dimostrazione della pagina di amministrazione ioBroker",
+                        "es": "Demostración de la página de administración de ioBroker",
+                        "pl": "Demonstracja strony administracyjnej ioBroker",
+                        "zh-cn": "演示ioBroker管理页面"
+                    },
+                    "link": "http://iobroker.click/"
+                },
+                {
+                    "title": {
+                        "en": "Examples of ioBroker.vis designs",
+                        "de": "Beispiele für ioBroker.vis-Designs",
+                        "ru": "Примеры дизайнов ioBroker.vis",
+                        "pt": "Exemplos de designs ioBroker.vis",
+                        "nl": "Voorbeelden van ontwerpen van ioBroker.vis",
+                        "fr": "Exemples de conceptions ioBroker.vis",
+                        "it": "Esempi di progetti ioBroker.vis",
+                        "es": "Ejemplos de diseños de ioBroker.vis",
+                        "pl": "Przykłady projektów ioBroker.vis",
+                        "zh-cn": "ioBroker.vis设计的示例"
+                    },
+                    "link": "https://iobroker.click/"
+                }
+            ]
+        }
+    }
+}
