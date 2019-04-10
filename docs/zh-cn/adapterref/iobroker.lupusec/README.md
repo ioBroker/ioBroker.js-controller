@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
+hash: 7oICvmGkK+sy1TNzx/L7lIcGgU4i0rroRZopxnWcPJ0=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -20,7 +20,7 @@ hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
 
 该适配器将Lupusec报警系统XT1 Plus，XT2，XT2 Plus和XT3与ioBroker连接起来。
 不支持XT1（不带Plus）。您可以读取Lupusec传感器的状态，如门，窗，水，烟雾传感器和报警系统的状态。
-您可以打开开关并布防/撤防警报系统。
+例如，您可以打开开关，控制快门并布防/撤防警报系统。
 
 您可以在此处找到详细信息：[狼疮](https://www.lupus-electronics.de/en)
 
@@ -33,30 +33,78 @@ hash: Gt5uZ5nX/rToGD0x5wmpugKiiDSWSHmNJr30gJbldwE=
 
 从Lupusec报警系统中选择IP地址或主机名。如果可能，请选择https（推荐）。
 要仅读取状态，请选择没有写访问权限的用户。如果要更改状态（例如，打开/关闭指示灯或布防/撤防警报），请选择具有写入权限的用户。
+![管理](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)
 
 默认情况下，所有Lupusec设备都将显示在ioBroker对象选项卡上。
 完全支持和单独调整是以下设备：
 
    - 门触点/窗口触点（类型4）
    - 水传感器（5型）
+   - 紧急按钮（7型）
    - 运动探测器/ 360度运动探测器（9型）
+   -  CO传感器（13型）
    - 烟雾探测器/热探测器（14型）
    - 状态指示灯/迷你室内警报器（22型）
    - 电源开关（24型）
+   - 带ZigBee中继器的1通道继电器（24型）
+   - 带ZigBee中继器的2通道继电器（24型）
    - 键盘（37型）
-   - 电源开关表（49型）
+   - 电源开关表（48型）
    - 房间传感器V1（54型）
+   - 热探测器（58型）
    - 调光器（66型）
+   - 灯开关V2（66型）
    - 顺化（74型）
    - 卷帘继电器V1（76型）
-   - 光传感器（78型）
    - 散热器温控器（79型）
+   - 散热器温控器V2（79型）
+   - 光传感器（78型）
+   - 场景交换机V2（类型81）
+   - 冲击传感器（93型）
 
 支持Apple Homekit适配器yahka的两个州apple_home_a1和lupusec.0.status.apple_home_a2。除了lupusec之外，您还可以打开和关闭区域1和2的警报系统。
 
 如果您拥有上面列表中未列出的设备，请通过Thorsten Stueben <thorsten@stueben.de>与我联系。
 
+##对象
+### Lupusec状态
+ioBroker为您提供与Lupusec应用程序相同的状态对象。
+![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_status.png)
+
+### Lupusec设备
+您可以在“设备”下找到所有受支持的Lupsec传感器和设备。如果缺少设备，请与我联系。
+![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png)传感器或设备的详细视图。在此示例中，您可以看到CO传感器。在CO报警时，状态'alarm_status_ex'变为true，'alarm_status'变为'CO'。
+![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
+
+##计划
+以下事项计划在未来：
+
+*支持更多传感器/设备
+*为每个传感器/设备编写文档
+
 ## Changelog
+
+### 1.1.3 (10.04.2019)
+* (Stübi) New Logo
+* (Stübi) Add device Panic Button
+* (Stübi) Add status indicator 
+* (Stübi) Add sensor Heat detector
+* (Stübi) Add shock sensor 
+* (Stübi) Add Light Switch V2
+ 
+### 1.1.2 (06.04.2019)
+* (Stübi) Add light sensor 
+* (Stübi) Add CO sensor
+* (Stübi) Add water sensor V2
+* (Stübi) Add Radiator thermostat V2
+* (Stübi) Add 1 channel relay with ZigBee repeater (Type 24)
+* (Stübi) Add 2 channel relay with ZigBee repeater (Type 24)
+* (Stübi) If you change the sensor name in the Lupusec App, it will be change in ioBroker too 
+* (Stübi) Bugfixing Radiator thermostat V1/V2
+* (Stübi) Bugfixing Dimmer
+* (Stübi) Bugfixing PD Status (Timer) for relay, power switch
+* (Stübi) Bugfixing status switch for rollter/shutter device
+
 ### 1.1.1 (27.03.2019)
 * (Stübi) Lupusec alarm online status added
 

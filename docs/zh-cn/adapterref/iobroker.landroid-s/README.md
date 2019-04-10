@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.landroid-s/README.md
 title: 无题
-hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
+hash: meFd4op3pA8F//QFAKwdSluaXOGwKOAelqM1Nzo84wc=
 ---
 ![商标](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -13,11 +13,15 @@ hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
 ![特拉维斯-CI](https://api.travis-ci.org/MeisterTR/ioBroker.landroid-s.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
-ioBroker.landroid -s =============
+ioBroker.landroid-S
+
+=============
 
 [Deutsche Beschreibung hier](README_de.md)
 
-该适配器将IoBroker与Landroid S型号或Landroid M连接，固件大于5.0.0且Mqtt支持温度，割草时间，电池电量和各种其他数据从割草机读出适配器可控制割草机，您可以更改配置像mowtimes一样的params。
+该适配器将ioBroker与Landroid S型号或Landroid M连接，固件大于5.0.0且Mqtt支持温度，割草时间，电池电量和各种其他数据从割草机读出适配器可控制割草机，您可以更改配置像mowtimes一样的params。
+
+<h1>版本低2.5.5不再支持！
 
 ##安装
 至少必须安装Node 4.X.X，此适配器不再支持Node 0.10和0.12。
@@ -29,6 +33,8 @@ ioBroker.landroid -s =============
  - 如果要集成两台割草机，则必须安装第二个实例，在Config割草机0和第二个割草机1中选择一个，依此类推。
 
 ## Changelog
+#### 2.5.5(08.04.2019)
+* (MeisterTR) Api change from v1 to v2
 #### 2.5.4 (09.08.2018)
 * (MeisterTR) support of Landroid M FW > 5.X.X add pause change connection 
 #### 2.1.2 (13.04.2018)

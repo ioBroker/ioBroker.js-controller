@@ -3,15 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome，空气净化器
-hash: v9/RyFymOAzQsuQLVQ998xAKpCe4/CXiSDSvgb6c/84=
+hash: aP5HbXr/jC25Q7hsEn7VDVtlmTeECXkZ9XzIXva5+dE=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
+![安装数量](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![建立状态](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
 
-＃ioBroker.mihome-airpurifier
-适用于ioBroker物联网平台的小米空气净化器适配器。
-
+＃ioBroker.mihome-airpurifier适用于ioBroker物联网平台的小米空气净化器适配器。
 ##如何获得令牌？
 您必须安装miio命令行工具`npm install -g miio`
 
@@ -54,7 +53,7 @@ Support: At least basic
 
 * Alexa，关闭空气净化器*
 
-如果您在云适配器中将“On Value”设置为“Last active value”，则设备始终以最新的acitve功率级别开始运行。
+如果您在云适配器中将“On Value”设置为“Last active value”，则设备始终以最新的有效功率级别开始运行。
 
 ##控制状态
 要控制空气净化器，可以编写以下对象：
@@ -65,7 +64,7 @@ Support: At least basic
 |汽车|激活设备的自动模式。 |
 |沉默|激活设备的静音模式。 |
 |手册|激活设备的手动模式。 |
-| manuallevel |控制手动模式的功率在0-100％的范围内。如果需要，这也将打开/关闭设备
+| manuallevel |控制手动模式的功率在0-100％的范围内。如有必要，这也将打开/关闭设备 |
 
 ##信息状态
 从您的空气净化器（只读状态）收集以下信息：
@@ -74,8 +73,8 @@ Support: At least basic
 |国家|说明|
 | :---        | :---        |
 |模式|实际设备模式，如果设备已开启，则有效。 |
-|温度|设备的温度以°C为单位。 |
-|湿度|杂乱的相对湿度，以％为单位。 |
+|温度|测量温度，单位为°C。 |
+|湿度|测量的相对湿度，以％为单位。 |
 | pm25 | PM2.5中的空气污染。 |
 
 ## Changelog
@@ -97,7 +96,7 @@ Support: At least basic
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Johannes Jaeger <johannesjaegeroffice@gmail.com>
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -106,13 +105,15 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com

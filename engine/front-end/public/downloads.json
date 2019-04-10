@@ -1,0 +1,150 @@
+[
+  {
+    "file": "win/iobroker-latest-windows-installer.exe",
+    "linux": "Windows",
+    "date": "20190402",
+    "device": "Windows x64",
+    "details": "Universal Installer",
+    "picture": "windows.png"
+  },
+  {
+    "file": "ioBroker_Image_OdroidC2_20190209_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20190128",
+    "device": "Odroid C2",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "c2_img.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "http://www.iobroker.net/docu/?page_id=8955&lang=de"
+  },
+  {
+    "file": "ioBroker_Image_OPiplus2e_20190210_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20190128",
+    "device": "OrangePi Plus2e",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "orangePlus2E.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "http://www.iobroker.net/docu/?page_id=8955&lang=de"
+  },
+  {
+    "file": "ioBroker_Image_Rock64_20190209_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20190128",
+    "device": "Rock64",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "rock64.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "http://www.iobroker.net/docu/?page_id=8879&lang=de"
+  },
+  {
+    "file": "ioBroker_Image_Tinker_20190208_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20190208",
+    "device": "Tinkerboard",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "tinkerboard.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "http://www.iobroker.net/docu/?page_id=8799&lang=de"
+  },
+  {
+    "file": "ioBroker_Image_RPi_2-3_20190128_stretch.zip",
+    "linux": "Raspbian light Stretch",
+    "date": "20190128",
+    "device": "Raspberry Pi 2-3",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "raspberry3.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "http://www.iobroker.net/docu/?page_id=8799&lang=de"
+  },
+  {
+    "file": "ioBroker_Image_RPi_2-3_20190104_stretch.zip",
+    "linux": "Raspbian light Stretch",
+    "date": "20190104",
+    "device": "Raspberry Pi 2-3",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.15.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "raspberry3.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "Experimental - kein Readme!<br/>Bitte Feedback im Forum"
+  },
+  {
+    "file": "ioBroker_Image_Tinker_20181216_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20181216",
+    "device": "Tinkerboard",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.14.0</li><li>npm 6.4.1</li></ul>",
+    "picture": "tinkerboard.png",
+    "user": "root",
+    "password": "1234",
+    "info": "noch kein Readme!<br/>Testing fÃ¼r neue Installationsroutine, bitte Feedback im Forum."
+  },
+  {
+    "file": "ioBroker_Image_Pine64_20181215_Ubuntu.zip",
+    "linux": "Armbian Xenial",
+    "date": "20181215",
+    "device": "Pine64",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 8.11.1</li><li>npm 6.4.1</li></ul>",
+    "picture": "Pine64.png",
+    "user": "root",
+    "password": "1234",
+    "info": "nand-sata-install funktioniert wieder<br/>jedoch nightly build!",
+    "readme": "http://www.iobroker.net/docu/?page_id=8071&lang=de"
+  },
+  {
+    "file": "ioBroker_all_in_one_Image_RPi_2-3_20180419_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20180419",
+    "device": "Raspberry Pi 2-3",
+    "details": "all in one",
+    "picture": "raspberry3.png",
+    "user": "",
+    "password": "",
+    "info": ""
+  },
+  {
+    "file": "ioBroker_Image_RPi_2-3_20180401_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20180401",
+    "device": "Raspberry Pi 2-3",
+    "details": "-",
+    "picture": "raspberry3.png"
+  },
+  {
+    "file": "ioBroker_Image_Rock64_20180419_stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20180419",
+    "device": "Rock64",
+    "details": "-",
+    "picture": "rock64.png"
+  },
+  {
+    "file": "ioBroker_Image_Cubietruck_20171212_Stretch.zip",
+    "linux": "Armbian Stretch",
+    "date": "20171212",
+    "device": "Cubietruck",
+    "details": "-",
+    "picture": "cubieboard.png"
+  },
+  {
+    "file": "ioBroker_Image_OPiplus2E_20171212_xenial_pivCCU.zip",
+    "linux": "Armbian Xenial",
+    "date": "20171212",
+    "device": "Tinkerboard",
+    "details": "pivCCU",
+    "picture": "tinkerboard.png"
+  },
+  {
+    "file": "ioBroker_Image_Tinker_20171214_xenial.zip",
+    "linux": "Armbian Xenial",
+    "date": "20171214",
+    "device": "Tinkerboard",
+    "details": "-",
+    "picture": "tinkerboard.png"
+  }
+]

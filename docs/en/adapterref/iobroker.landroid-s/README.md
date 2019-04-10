@@ -18,6 +18,8 @@ This adapter connects IoBroker with your Landroid S Model or Landroid M with fir
 Temperatures, mowing times, battery level and various other data are read out from the mower
 The adapter can control the mower and you can change config params like mowtimes.
 
+<h1>Version lower 2.5.5 are no more supported!!!
+
 ## installation
 At least Node 4.X.X must be installed, Node 0.10 and 0.12 are no longer supported by this adapter.
 
@@ -29,6 +31,8 @@ At least Node 4.X.X must be installed, Node 0.10 and 0.12 are no longer supporte
 -If two mowers are to be integrated, a second instance must be installed, one is selected in the Config mower 0 and in the second mower 1 and so on.
 
 ## Changelog
+#### 2.5.5(08.04.2019)
+* (MeisterTR) Api change from v1 to v2
 #### 2.5.4 (09.08.2018)
 * (MeisterTR) support of Landroid M FW > 5.X.X add pause change connection 
 #### 2.1.2 (13.04.2018)

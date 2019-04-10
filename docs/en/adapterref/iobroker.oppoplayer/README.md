@@ -14,6 +14,9 @@ You can control playback and query status.
 
 ## Changelog
 
+### 0.2.1 
+* (volkerrichert) fixed power removed detection
+
 ### 0.2.0 ("Compact mode" release)
 * (volkerrichert) add support for compact mode 
 
@@ -28,8 +31,6 @@ You can control playback and query status.
 
 ## License
 The MIT License (MIT)
-
-Copyright (c) 2018 Volker Richert <volker@richert.nrw>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -48,3 +49,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+Copyright (c) 2018-2019 Volker Richert volker@richert.nrw

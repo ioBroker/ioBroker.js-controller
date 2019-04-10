@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.landroid-s/README.md
 title: без названия
-hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
+hash: meFd4op3pA8F//QFAKwdSluaXOGwKOAelqM1Nzo84wc=
 ---
 ![логотип](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -13,11 +13,15 @@ hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
 ![Трэвис-CI](https://api.travis-ci.org/MeisterTR/ioBroker.landroid-s.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
-ioBroker.landroid-s =============
+ioBroker.landroid-ы
+
+=============
 
 [Deutsche Beschreibung hier](README_de.md)
 
-Этот адаптер соединяет IoBroker с вашей моделью Landroid S или Landroid M с прошивкой более 5.0.0 и поддержкой Mqtt. Температуры, время кошения, уровень заряда батареи и другие данные считываются с косилки. Адаптер может управлять косилкой, и вы можете изменить конфигурацию параметры как mowtimes.
+Этот адаптер соединяет ioBroker с вашей моделью Landroid S или Landroid M с прошивкой более 5.0.0 и поддержкой Mqtt. Температуры, время кошения, уровень заряда батареи и другие данные считываются с косилки. Адаптер может управлять косилкой, и вы можете изменить конфигурацию параметры как mowtimes.
+
+<h1> Версия ниже 2.5.5 больше не поддерживается !!!
 
 ## Монтаж
 Должен быть установлен как минимум Node 4.X.X, Node 0.10 и 0.12 больше не поддерживаются этим адаптером.
@@ -26,9 +30,11 @@ ioBroker.landroid-s =============
 - для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи WORX в конфигурации.
 
 ## Вторая косилка
--Если необходимо объединить две косилки, необходимо установить второй экземпляр, один из которых выбран в косилке Config 0, а во второй косилке 1 и т. Д.
+-Если необходимо интегрировать две косилки, необходимо установить второй экземпляр, один из которых выбран в косилке Config 0, а во второй косилке 1 и т. Д.
 
 ## Changelog
+#### 2.5.5(08.04.2019)
+* (MeisterTR) Api change from v1 to v2
 #### 2.5.4 (09.08.2018)
 * (MeisterTR) support of Landroid M FW > 5.X.X add pause change connection 
 #### 2.1.2 (13.04.2018)

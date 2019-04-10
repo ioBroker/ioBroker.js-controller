@@ -95,6 +95,10 @@ This methodology of moving settings is working also between systems but may not 
 
 ## Changelog
 
+### 1.0.7
+
+* check on linux the availability of BT-devices and if no devices are found do not run any BT scans to avoid SIGSEGV
+
 ### 1.0.3
 
 * Added possibility to add more than one BT mac address for a device

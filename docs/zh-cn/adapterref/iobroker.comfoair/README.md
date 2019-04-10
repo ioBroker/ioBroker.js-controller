@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.comfoair/README.md
 title: ioBroker.comfoair
-hash: S9K1a3yVexs78RmHnVbpTahxsJOEcYDrKK6FU83wulo=
+hash: WwFGEdPKJZodl8RRm4rHbyzrR+C/ekfr44qebS1n9MA=
 ---
 ![商标](../../../en/adapterref/iobroker.comfoair/admin/comfoair.png)
 
@@ -21,26 +21,39 @@ hash: S9K1a3yVexs78RmHnVbpTahxsJOEcYDrKK6FU83wulo=
 
 安装适配器，创建实例。
 
-## CCEase和RS232接口的使用
-comfoair知道5种不同的RS232模式：结束/不连接，仅限PC，仅限CCEase，PC主控，PC日志模式。默认值仅为CCEase。
-并行使用CCEase和RS232会导致错误！当您使用此适配器或切换到PC主模式时，强烈建议断开CCEase cotrol面板，这也会消除CCEase。
-基于硬件的数据流量解决方案 - 交换机正在评估中，欢迎支持。
-
 ##配置
 设置comfoair  -  IP地址，端口和轮询 -  intervall。
 
-### RS-232手动模式
-在这种模式下，你会在'control'和'state'中获得一个rs232mode对象 -  channel。在“控制” - 通道中，您可以设置RS232模式PCMaster和PCLogmode。在PCMaster模式下，您的CCEase显示将关闭，而comfoair和CCEase之间没有数据流量。
-要切换回仅限CCEase模式，您必须“硬复位”您的comfoair（关闭电源 - 打开电源）。
+## Adapter＆CC Ease
+通常，不建议在RS232串行通信中将数据从2个发送器发送到一个接收器。并行使用CCEase和适配器可能会导致错误，或者最坏的情况是导致您的comfoair控件损坏！因此，当您启动ComfoAir适配器时，您的CC Ease将被关闭。
+comfoair本身知道4种不同的rs232模式：CCEaseonly，PConly，PCMaster，PCLogmode。在PConly和PCMaster中，CC-Ease已关闭。
+适配器运行后，您可以选择以下（适配器 -  rs232）模式，切换control.rs232mode  -  object。
+
+### CC仅限易用
+CC Ease正在运行，但您的适配器将不会从comfoair获取数据，也不会发送命令！ （rs232mode是CCEaseonly）
+
+###仅限适配器
+CC Ease已关闭，您只能使用ioBroker控制您的comfoair。 （rs232mode ist PCMaster，默认为＆推荐）
+
+###并行模式
+CC Ease和适配器正在运行。 comfoiar rs232mode设置为'PCLogmode'。您可以使用ioBroker和CC Ease单元控制ComfoAir。测试显示无错误 - 并行运行较长时间。但是：你自己承担这种模式的风险。
 
 ##使用适配器
 您的comfoair的值应该在'status'和'temperature'频道中可见。
 
-通过设置/更改“控制” - 通道中的值，您可以控制comfoair通风。
+通过设置/更改“控制” - 通道中的值，您可以控制comfoair通风。 “控制” - 通道中的所有值都必须设置为wieth ACK = false，以便被识别为适配器的命令。
 
 在comfoair CA350上测试。
 
 ## Changelog
+
+### 0.2.1
+
+- smaller bugfixes.
+
+### 0.2.0
+
+-   New rs232 - Modes, reading enthalpie-values, handling connection-errors.
 
 ### 0.1.4
 

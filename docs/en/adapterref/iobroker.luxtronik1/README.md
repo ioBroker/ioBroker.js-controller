@@ -28,7 +28,13 @@ Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the 
 -   Hotwater - mode
 -   Heating - curve (difference, endpoint, startingpoint, nightly reduction).
 
+Values in the 'control' - channel have to be set with ack=false to trigger an action.
+
 ## Changelog
+
+### 0.0.7
+
+-   error-handling on connections added.
 
 ### 0.0.6
 

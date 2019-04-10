@@ -74,7 +74,7 @@ If you have entered the 64-character access-key you don't need the password, but
 
 ## Changelog
 
-### 2.0.2
+### 2.0.3
 
 * Adapter config update
 * Blacklist is working now for any combination

@@ -15,7 +15,7 @@
 This adapter connects the Lupusec alarm system XT1 Plus, XT2, XT2 Plus and XT3 with ioBroker.
 The XT1 (without Plus) will not be supported. You can read the status of the Lupusec sensors
 like door, windows, water, smoke sensors and the status of the alarm system.
-You can turn on switches and arm/disarm the alarm system.
+For example, you can turn on switches, control your shutter and arm/disarm the alarm system.
 
 You can find detailed information here: [Lupus](https://www.lupus-electronics.de/en)
 
@@ -26,34 +26,77 @@ The easiest way is to configure the lupusec.iobroker adapter via the discovery a
 2. Manually configuration of the adapter
 Choose the IP-Address or hostname from the Lupusec alarm system. Choose https (recommended) if possible.
 For only reading the status, select a user without write access. If you want to change the status
-(for example, turn on/off the light or arm/disarm the alarm) pick a user with write access.
-
+(for example, turn on/off the light or arm/disarm the alarm) pick a user with write access.      
+![admin](docs/en/img/lupusec_admin.png)
 
 By default all Lupusec devices will be on the ioBroker object tab  displayed.
 Fully supported and individually adapted are following devices:
 
   - Door contact / window contact (Type 4)
   - Water sensor (Type 5)
+  - Panic Button (Type 7)
   - Motion detector / 360 degree motion detector (Type 9)
+  - CO sensor (Type 13)
   - Smoke Detector / Heat Detector (Type 14)
   - Status Indicator / Mini Indoor Siren (Type 22)
   - Power Switch (Type 24)
+  - 1 channel relay with ZigBee repeater (Type 24)
+  - 2 channel relay with ZigBee repeater (Type 24)
   - Keypad (Type 37)
-  - Power Switch Meter (Type 49)
+  - Power Switch Meter (Type 48)
   - Room sensor V1 (Type 54)
+  - Heat detector (Type 58)
   - Dimmer (Type 66)
+  - Light Switch V2 (Type 66)
   - Hue (Type 74)
   - Roller shutter relay V1 (Type 76)
-  - Light sensor (Type 78)
   - Radiator thermostat (Type 79)
+  - Radiator thermostat V2 (Type 79)
+  - Light sensor (Type 78)
+  - Scenario Switch V2 (Type 81)
+  - Shock sensor (Type 93)
+
 
 The two states apple_home_a1 and lupusec.0.status.apple_home_a2 for the Apple Homekit adapter yahka supported. You can turn in addition to the lupusec states the alarm system for area 1 and 2 on and off.  
 
 If you own a device that is not listed in the list above, please contact me
 at Thorsten Stueben <thorsten@stueben.de>.
 
+## Objects
+### Lupusec Status
+ioBroker offers you the same status objects as in the Lupusec app does.
+![lupusec_obj_status](docs/en/img/lupusec_obj_status.png)
+
+
+### Lupusec Devices 
+You find all supported Lupsec sensors and devices under 'devices'. If a device is missing, please contact me.
+![lupusec_obj_status](docs/en/img/lupusec_obj_devices.png)
+Detailed view of a sensor or device. In this example you see the CO sensor. On CO alarm the state 'alarm_status_ex' change to true and 'alarm_status' change to 'CO'.
+![lupusec_obj_status](docs/en/img/lupusec_obj_devices_type09.png)
 
 ## Changelog
+
+### 1.1.3 (10.04.2019)
+* (Stübi) New Logo
+* (Stübi) Add device Panic Button
+* (Stübi) Add status indicator 
+* (Stübi) Add sensor Heat detector
+* (Stübi) Add shock sensor 
+* (Stübi) Add Light Switch V2
+ 
+### 1.1.2 (06.04.2019)
+* (Stübi) Add light sensor 
+* (Stübi) Add CO sensor
+* (Stübi) Add water sensor V2
+* (Stübi) Add Radiator thermostat V2
+* (Stübi) Add 1 channel relay with ZigBee repeater (Type 24)
+* (Stübi) Add 2 channel relay with ZigBee repeater (Type 24)
+* (Stübi) If you change the sensor name in the Lupusec App, it will be change in ioBroker too 
+* (Stübi) Bugfixing Radiator thermostat V1/V2
+* (Stübi) Bugfixing Dimmer
+* (Stübi) Bugfixing PD Status (Timer) for relay, power switch
+* (Stübi) Bugfixing status switch for rollter/shutter device
+
 ### 1.1.1 (27.03.2019)
 * (Stübi) Lupusec alarm online status added
 
@@ -80,6 +123,10 @@ at Thorsten Stueben <thorsten@stueben.de>.
 * (Stübi) Directory widged deleted
 * (Stübi) Port can be added
 
+## Planed
+Following things are planed in the future:
+* support more sensors / devices
+* writing a documentation for every sensor / device
 
 ## License
 The MIT License (MIT)

@@ -41,6 +41,10 @@ In order to see the info window in the Tab tab, you must first check it as Visib
     * **reverse order** - reverses the order of the results.
     * **New adapters closed at startup** - The panel with the unknown adapters is closed when starting the info window.
 
+* **GitHub personal access token** - To be able to create new issues or adapter requests on Github directly from ioBroker, you need a token that can be generated there. This requires a Github account.
+To get the token, log in to Github, click on the user icon in the top right corner, go to "Settings", then "Developer settings"> "Personal access tokens". There, click on "Generate new token", type any name under "Token description" and select as "Scope", "repo". Then you get a token and enter it in the ioBroker. You can find more detailed instructions in English [here](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
+![Creating token](img/gittoken.png) 
+
 * **Do not load current system data** - The current system data is not loaded cyclically.
     * **Load CPU data every x seconds** - The CPU data is cyclically loaded every 1 to 10 seconds. (0 is off - default 3)
     * **Load memory data every x seconds** - The memory data are loaded cyclically every 1 to 10 seconds. (0 is off - default 3)
@@ -59,6 +63,13 @@ The Info tab contains various information about your system and the ioBroker. Th
 
 <img height="50" align="left" src="img/clock.png">
 The clock has no special function (but I have made an effort) and can be turned off at any time in the configuration.
+
+## Github bar
+
+![Github bar](img/githubButtons.png)
+In order to see this bar, you first need a Github account and must specify a token in the configuration. For more information, see under [Configuration description](#Configuration) > "GitHub Personal Access Token".
+
+At the moment you have the possibility to see self-created issues and repositories that are either observed or marked with a star.
 
 ## Messages
 
@@ -215,6 +226,26 @@ If you click on the title of a wish, you land directly on the request of Github 
 
 The "Adapter requests" panel can be hidden in the configuration or displayed in the closed state when loading.
 
+### Create new adapter request
+
+To create a new request, you first need a Github account and must specify a token in the configuration. For more information, see under [Configuration description](#Configuration) > "GitHub Personal Access Token".
+
+<img height="200" align="left" src="img/githubAdapterRequest.png">
+If you click on ![Add issue](img/addAdapterRequest.png), a window appears where you have the possibility to create a title and a description of the adapter request.
+
+As a title, always select a clear and short term such as "Panasonic TV". Then describe your wishes as accurately as possible.
+If already known APIs exist for the product, you should also write this.
+Any information that might help the developer increases the likelihood that the corresponding adapter will be developed quickly. If possible, please write everything in English,
+because some developers come from abroad and probably they don't speek your language.
+
+By clicking on "Submit New Issue", an issue will be created on Github. Now you can click on the blue button on the left to go directly to the issue or just close the window.
+
+### Vote for adapter requests
+
+With a Github account, you can also vote directly for adapter requests by clicking ![Vote button](img/votes.png). If it works, the button turns green. Everyone can only vote one vote. The total number of voices is displayed in the object in front of the title.
+
+In the overview, adapter requests that you have voted for are displayed in green and requests younger than 1 month are blue.
+
 ## Issues and bugs
 
 <img height="200" align="left" src="img/issues_bugs.png">
@@ -226,6 +257,19 @@ If you click on the name of the adapter, you can go directly to the Issues list 
 If you click on the title of an issue, you end up directly with the message on Github and can optionally provide the developer more information, leave as a comment.
 
 The "Problems and errors" panel can be hidden in the configuration or displayed in the closed state when loading.
+
+### Report wishes or errors
+
+If you open up an adapter, you have the option to report a new error or make suggestions for improvements by clicking on ![Add new issue](img/addNewIssue.png). This requires a Github account and a token in the configuration. Further details can be found under [Configuration Description](#Configuration) > "GitHub Personal Access Token".
+
+<img height="100" align="left" src="img/addIssue1.png">
+When clicking you get the opportunity to make an improvement proposal (blue) or report a bug (red). Both options allow you to enter a title and a description.
+
+<img height="200" align="right" src="img/addIssue2.png">
+The title should give you a clear and concise description of the problem. When describing, you should not be frugal with information. Every detail can help the developer to implement the problem or desire faster. If possible, please write everything in English,
+because some developers come from abroad and probably they don't speak your language.
+
+By clicking on "Submit New Issue", an issue will be created on Github. Now you can click on the blue button on the left to go directly to the issue or just close the window.
 
 ## ioBroker adapter on Github
 
@@ -262,7 +306,14 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ## Changelog
 
-### 1.3.2 (2019-05-01)
+### 1.3.5 (2019-05-01)
+
+### 1.3.4 (2019-04-10)
+* (ldittmar) my issues and my repos
+* (ldittmar) change Github API V3 to API V4
+* (ldittmar) vote for adapter requests
+
+### 1.3.2 (2019-04-06)
 * (SchumyHao) Update Chinese translation
 * (ldittmar) create Github issues
 * (ldittmar) create new adapter requests

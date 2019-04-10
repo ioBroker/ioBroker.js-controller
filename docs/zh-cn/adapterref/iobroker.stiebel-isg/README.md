@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-ISG
-hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
+hash: lXdJlkV8IJ5DfqLggZqwn29A+sUXKi9YJHCVe6vafmQ=
 ---
 ![商标](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -28,9 +28,12 @@ hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
 2.从你的stiebel-isg。[x]  - 对象中获取值。
 
 ＃＃ 要求
-* stiebel-eltron / teclor互联网服务网关（ISG）
+* stiebel-eltron / tecalor互联网服务网关（ISG）
 
 ## Changelog
+### 1.4.2
+* Timeout of 10 seconds for pulling settings after multiple commands to reduce the load of the ISG
+
 ### 1.4.1
 * Core Files/Testing Update and introduce adapter-core
 

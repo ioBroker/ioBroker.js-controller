@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
+hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
 ---
 ![商标](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -32,7 +32,13 @@ hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
  - 热水 - 模式
  - 加热 - 曲线（差异，终点，起点，夜间减少）。
 
+'control' -  channel中的值必须使用ack = false设置才能触发操作。
+
 ## Changelog
+
+### 0.0.7
+
+-   error-handling on connections added.
 
 ### 0.0.6
 

@@ -41,6 +41,10 @@ Um das Info Fenster im Tab-Reiter zu sehen, müssen Sie nach der Installation es
     * **umgekehrter Reihenfolge** - Kehrt die Reihenfolge der Ergebnisse um.
     * **Neue Adapter beim Start geschlossen** - Das Panel mit den unbekannten Adapter, ist beim Start des Info Fensters geschlossen.
 
+* **GitHub persönliches Zugriffstoken** - Um direkt aus ioBroker neue Issues oder Adapteranfragen im Github anlegen zu können, benötigt man ein Token, der im Github jederzeit generiert werden kann. Dafür wird ein Github Account benötigt.
+Um den Token zu bekommen, melden Sie sich auf Github an, klicken oben rechts auf den Benutzer-Icon, gehen auf "Settings", dann auf "Developer settings" > "Personal access tokens". Dort klickt man auf "Generate new token", gibt ein beliebigen Namen unter "Token description" und wählt als "Scope", "repo" aus. Danach bekommt man ein Token und trägt diesen im ioBroker ein. Eine genauere Anleitung auf englisch findet ihr [hier](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
+![Creating token](img/gittoken.png) 
+
 * **Aktuelle Systemdaten nicht laden** - Die aktuellen Daten zum System werden nicht zyklisch geladen.
     * **CPU-Daten alle x Sekunden laden** - Die CPU Daten werden zyklisch alle 1 bis 10 Sekunden geladen. (0 ist aus - Standard 3)
     * **Speicherdaten alle x Sekunden laden** - Die Speicherdaten werden zyklisch alle 1 bis 10 Sekunden geladen. (0 ist aus - Standard 3)
@@ -59,6 +63,13 @@ Der Info Tab enthält verschiedene Informationen zu Ihrem System und zum ioBroke
 
 <img height="50" align="left" src="img/clock.png">
 Die Uhr hat keine besondere Funktion (ich habe mir aber Mühe gegeben) und kann jederzeit in der Konfiguration ausgeschaltete werden.
+
+## Github-Leiste
+
+![Github-Leiste](img/githubButtons.png)
+Um diese Leiste sehen zu können, braucht man erst ein Github Account und muss ein Token in der Konfiguration angeben. Weitere Informationen dazu, finden Sie in der [Konfigurationsberscheibung](#konfiguration), unter "GitHub persönliches Zugriffstoken".
+
+Zur Zeit hat man die Möglichkeit selbst erstellte Issues und Repositories die entweder beobachtet werden oder mit einem Stern markiert wurden zu sehen.
 
 ## Meldungen
 
@@ -215,6 +226,26 @@ Wenn man auf dem Titel eine Wunsches klickt, landet man direkt auf dem Wunsch be
 
 Das Panel "Adapteranfragen" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden.
 
+### Neue Adapteranfragen stellen
+
+Um eine neue Anfrage zu erstellen, braucht man erst ein Github Account und muss ein Token in der Konfiguration angeben. Weitere Informationen dazu, finden Sie in der [Konfigurationsberscheibung](#konfiguration), unter "GitHub persönliches Zugriffstoken".
+
+<img height="200" align="left" src="img/githubAdapterRequest.png">
+Wenn man auf ![Add issue](img/addAdapterRequest.png) klickt, erscheint ein Fenster wo man die Möglichkeit hat einem Titel und eine Beschreibung zum Adapterwunsch zu erstellen. 
+
+Wählen Sie als Titel stets ein klaren und kurzen Begriff wie zum Beispiel "Panasonic TV". Dann beschreiben Sie Ihre wünsche so genau wie möglich. 
+Sollten schon bekannten APIs zum Produkt existieren, schreiben Sie diese auch dazu. 
+Jede Information, die dem Entwickler hilfreich sein könnte, erhöht die Wahrscheinlichkeit, dass der entsprechende Adapter schnell entwickelt wird. Wenn möglich, bitte alles auf englisch zu schreiben, 
+denn einige Entwickler kommen aus dem Ausland und sind eure Landessprache wahrscheinlich nicht mächtig.
+
+Mit einem Klick auf "Neue Anfrage einreichen", wird ein Issue auf Github angelegt. Nun können Sie links auf dem blauen Button klicken, um direkt zum Issue zu gelangen oder das fenster einfach schließen.
+
+### Für Adapteranfragen abstimmen
+
+Mit einem Github Account kann man auch direkt für Adapteranfragen abstimmen, indem man auf ![vote button](img/votes.png) klickt. Wenn es funktioniert hat, wird der Button grün. Jeder kann nur eine Stimme abgeben. Die Gesamtanzahl der Stimmen wird im Objekt vor dem Titel dargestellt.
+
+In der Übersicht werden Adapteranfragen, für die Sie abgestimmt haben, grün dargestellt und Anfragen die jünger als 1 Monat sind blau.
+
 ## Probleme und Fehler
 
 <img height="200" align="left" src="img/issues_bugs.png">
@@ -226,6 +257,19 @@ Wenn man auf dem Namen des Adapters klickt, lanndet man direkt auf der Issues-Li
 Klickt man auf den Titel eines Issues, landet man direkt bei der Meldung auf Github und kann ggf. dem entwickler weitere Informationen dazu, als Kommentar hinterlegen.
 
 Das Panel "Probleme und Fehler" kann in der Konfiguration ausgeblendet werden oder beim Laden im zugeklappten Zustand angezeigt werden.
+
+### Wünsche oder Fehler melden
+
+Wenn man ein Adapter aufklappt, hat man die Möglichkeit mit einem Klick auf ![Add new issue](img/addNewIssue.png) einem neuen Fehler zu melden oder Verbesserungsvorschlag zu machen. Voraussetzung dafür ist ein Github Account und ein eigetragenen Token in der Konfiguration. Weitere Details diesbezüglich findet ihr unter [Konfigurationsbeschreibung](#Konfiguration) > "GitHub persönliches Zugriffstoken".
+
+<img height="100" align="left" src="img/addIssue1.png">
+Beim Klick bekommt man die Möglichkeit ein Verbesserungsvorschlag (blau) oder einem Fehler/Bug (rot) zu erstellen. Bei beide Möglichkeiten könnt ihr ein Titel und eine Beschreibung eingeben.
+
+<img height="200" align="right" src="img/addIssue2.png">
+Beim Titel solltet ihr eine klare und kurze Beschreibung des Problems geben. Bei der BEschreibung sollte ihr nicht mit Informationen sparsam sein. Jedes Detail kann dem Entwickler helfen das Problem oder Wunsch schneller umzusetzen. Wenn möglich, bitte alles auf englisch zu schreiben, 
+denn einige Entwickler kommen aus dem Ausland und sind eure Landessprache wahrscheinlich nicht mächtig.
+
+Mit einem Klick auf "Neue Anfrage einreichen", wird ein Issue auf Github angelegt. Nun können Sie links auf dem blauen Button klicken, um direkt zum Issue zu gelangen oder das fenster einfach schließen.
 
 ## ioBroker-Adapter auf Github
 
@@ -262,7 +306,14 @@ Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder 
 
 ## Changelog
 
-### 1.3.2 (2019-05-01)
+### 1.3.5 (2019-05-01)
+
+### 1.3.4 (2019-04-10)
+* (ldittmar) my issues and my repos
+* (ldittmar) change Github API V3 to API V4
+* (ldittmar) vote for adapter requests
+
+### 1.3.2 (2019-04-06)
 * (SchumyHao) Update Chinese translation
 * (ldittmar) create Github issues
 * (ldittmar) create new adapter requests

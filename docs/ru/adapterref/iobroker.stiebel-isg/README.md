@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-ISG
-hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
+hash: lXdJlkV8IJ5DfqLggZqwn29A+sUXKi9YJHCVe6vafmQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -16,7 +16,7 @@ hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
 # IoBroker.stiebel-isg
 =================
 
-Этот адаптер предназначен для чтения значений из шлюзов интернет-услуг stiebel-eltron / tecalor и управления устройством.
+Этот адаптер предназначен для считывания значений из шлюзов интернет-услуг stiebel-eltron / tecalor и управления устройством.
 
 ИСПОЛЬЗУЙТЕ НА СВОЙ РИСК!!! АБСОЛЮТНО НЕТ ГАРАНТИИ НА УЩЕРБ, ETC. !!!
 
@@ -28,9 +28,12 @@ hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
 2. Возьмите значения из вашего объекта. [X] -объект.
 
 ## Требования
-* Интернет-шлюз stiebel-eltron / teclor (ISG)
+* Интернет-шлюз stiebel-eltron / tecalor (ISG)
 
 ## Changelog
+### 1.4.2
+* Timeout of 10 seconds for pulling settings after multiple commands to reduce the load of the ISG
+
 ### 1.4.1
 * Core Files/Testing Update and introduce adapter-core
 

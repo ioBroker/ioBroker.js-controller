@@ -69,6 +69,9 @@ ATTENTION: inject service has to be installed on the device/server
 sudo apt-get install -y snips-injection
 
 ## Changelog
+### 1.1.3
+* (unltdnetworx) delete states after session ended
+
 ### 1.1.2
 * (unltdnetworx) create satellites manually
 

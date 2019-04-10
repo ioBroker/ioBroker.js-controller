@@ -22,9 +22,12 @@ Help or hints are welcome.
 2. Grab the values out of the your stiebel-isg.[x]-object.
 
 ## Requirements
-* stiebel-eltron/teclor internet service gateway (ISG)   
+* stiebel-eltron/tecalor internet service gateway (ISG)   
 
 ## Changelog
+### 1.4.2
+* Timeout of 10 seconds for pulling settings after multiple commands to reduce the load of the ISG
+
 ### 1.4.1
 * Core Files/Testing Update and introduce adapter-core
 

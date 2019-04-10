@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.landroid-s/README.md
 title: kein Titel
-hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
+hash: meFd4op3pA8F//QFAKwdSluaXOGwKOAelqM1Nzo84wc=
 ---
 ![Logo](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -13,11 +13,15 @@ hash: +23RyyHr1023Aw78FCdg1YCk5UYCUlbLr2l4koss3Dc=
 ![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.landroid-s.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
-ioBroker.landroid-s ===============
+ioBroker.landroid-s
+
+=============
 
 [Deutsche Beschreibung hier](README_de.md)
 
-Dieser Adapter verbindet den IoBroker mit Ihrem Landroid S-Modell oder Landroid M mit Firmware größer als 5.0.0 und Mqtt-Unterstützung. Temperaturen, Mähzeiten, Akkuladestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und die Konfiguration ändern Params wie Mähzeiten.
+Dieser Adapter verbindet ioBroker mit Ihrem Landroid S-Modell oder Landroid M mit Firmware größer als 5.0.0 und Mqtt-Unterstützung. Temperaturen, Mähzeiten, Akkuladestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und die Konfiguration ändern Params wie Mähzeiten.
+
+<h1> Version unter 2.5.5 wird nicht mehr unterstützt !!!
 
 ## Installation
 Es muss mindestens Knoten 4.X.X installiert sein, Knoten 0.10 und 0.12 werden von diesem Adapter nicht mehr unterstützt.
@@ -29,6 +33,8 @@ Es muss mindestens Knoten 4.X.X installiert sein, Knoten 0.10 und 0.12 werden vo
 -Wenn zwei Mäher integriert werden sollen, muss eine zweite Instanz installiert werden, einer wird im Config-Mäher 0 und im zweiten Mäher 1 usw. ausgewählt.
 
 ## Changelog
+#### 2.5.5(08.04.2019)
+* (MeisterTR) Api change from v1 to v2
 #### 2.5.4 (09.08.2018)
 * (MeisterTR) support of Landroid M FW > 5.X.X add pause change connection 
 #### 2.1.2 (13.04.2018)

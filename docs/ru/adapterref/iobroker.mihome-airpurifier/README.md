@@ -3,15 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-воздухоочиститель
-hash: v9/RyFymOAzQsuQLVQ998xAKpCe4/CXiSDSvgb6c/84=
+hash: aP5HbXr/jC25Q7hsEn7VDVtlmTeECXkZ9XzIXva5+dE=
 ---
 ![логотип](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
+![Количество установок](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![Статус сборки](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
 
-# IoBroker.mihome-airpurifier
-Адаптер Xiaomi для очистки воздуха для платформы IoBroker IoT.
-
+# IoBroker.mihome-airpurifier Адаптер Xiaomi для очистки воздуха для платформы ioB ioBroker.
 ## Как получить токен?
 Вы должны установить инструмент командной строки miio `npm install -g miio`
 
@@ -39,22 +38,22 @@ Support: At least basic
 
     `miio discover`
 
-    Вы должны получить тот же вывод, что и выше, и теперь можете настроить соединение с вашей сетью с помощью следующей команды:
+    Вы должны получить тот же вывод, что и выше, и теперь можете настроить соединение с вашей сетью, выполнив следующую команду:
 
     `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
     Теперь очиститель воздуха подключен к вашей сети.
 
 ## Облачное соединение
-Чтобы управлять очистителем воздуха с помощью облачного адаптера, просто добавьте состояние «manuallevel» в ваш облачный адаптер. После этого вы можете отправить е.э. следующие команды через Alexa:
+Для управления очистителем воздуха с помощью облачного адаптера просто добавьте состояние «manuallevel» в ваш облачный адаптер. После этого вы можете отправить е.э. следующие команды через Alexa:
 
 * Alexa, включи очиститель воздуха *,
 
 * Alexa, установите очиститель воздуха на 50% *,
 
-* Алекса, выключи очиститель воздуха *
+*Алекса, выключи очиститель воздуха*
 
-Если вы установите в облачном адаптере значение «Вкл. Значение» в значение «Последнее активное значение», устройство всегда будет работать с самым последним уровнем активной мощности.
+Если вы установите в облачном адаптере значение «Вкл. Значение» на «Последнее активное значение», устройство всегда начнет работать с самым последним активным уровнем мощности.
 
 ## Контрольные состояния
 Для управления очистителем воздуха можно написать следующие объекты:
@@ -65,7 +64,7 @@ Support: At least basic
 | авто | Активируйте автоматический режим устройства. |
 | тихий | Активируйте беззвучный режим устройства. |
 | руководство | Активируйте ручной режим устройства. |
-| ручной уровень | Управляйте мощностью ручного режима в диапазоне от 0 до 100%. Это также включит / выключит устройство, если необходимо |
+| ручной уровень | Управляйте мощностью ручного режима в диапазоне от 0 до 100%. Это также включит / выключит устройство при необходимости |
 
 ## Инфо Состояния
 Следующая информация собирается из вашего очистителя воздуха (только для чтения):
@@ -74,9 +73,9 @@ Support: At least basic
 | Государство | Описание |
 | :---        | :---        |
 | режим | Фактический режим устройства, только действительный, если устройство включено. |
-| температура | Перепутанная температура в °C устройства. |
-| влажность | Запутанная относительная влажность в% от устройства. |
-| вечера25 | Воздушное загрязнение в PM2.5. |
+| температура | Измеренная температура в ° С прибора. |
+| влажность | Измеренная относительная влажность в% от прибора. |
+| вечера25 | Загрязнение воздуха в PM2.5. |
 
 ## Changelog
 ### 0.0.5 (06.01.2019)
@@ -97,7 +96,7 @@ Support: At least basic
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Johannes Jaeger <johannesjaegeroffice@gmail.com>
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -106,13 +105,15 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com

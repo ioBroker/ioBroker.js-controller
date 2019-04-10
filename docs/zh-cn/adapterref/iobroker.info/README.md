@@ -43,6 +43,10 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
     * **逆序** - 反转结果的顺序。
     * **启动时关闭新适配器** - 启动信息窗口时，关闭具有未知适配器的面板。
 
+* **GitHub个人访问令牌** - 为了能够直接从ioBroker在Github上创建新问题或适配器请求，您需要一个可以在那里生成的令牌。 这需要一个Github帐户。
+要获取令牌，请登录Github，单击右上角的用户图标，转到“Settings”，然后转到“Developer setting”>“Personal access tokens”。 在那里，点击“Generate new token”，在“Token description”下键入任何名称，然后选择“Scope”，“repo”。 然后你得到一个令牌并在ioBroker中输入它。 您可以在英语 [这里](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) 中找到更详细的说明。
+![Creating token](img/gittoken.png)
+
 * **不加载当前系统数据** - 不会循环加载当前系统数据。
     * **每x秒加载CPU数据** -  CPU数据每1至10秒循环加载一次。 （0关 - 默认3）
     * **每x秒加载内存数据** - 内存数据每1至10秒循环加载一次。 （0关 - 默认3）
@@ -63,6 +67,13 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 时钟没有特殊功能（但我已经付出了努力），并且可以在配置中随时关闭。
 
 <br><br>
+
+## Github吧
+
+![Github酒吧](img/githubButtons.png)
+要查看此栏，您首先需要一个Github帐户，并且必须在配置中指定令牌。 有关更多信息，请参阅 [配置描述](#配置) > “GitHub个人访问令牌”。
+
+目前，您可以查看自行创建的问题和存储库，这些问题和存储库可以观察或标记为星形。
 
 ## 消息
 
@@ -223,6 +234,26 @@ $ sudo apt-get install smartmontools
 
 “适配器请求”面板可以隐藏在配置中，也可以在加载时以关闭状态显示。
 
+### 创建新的适配器请求
+
+要创建新请求，首先需要Github帐户，并且必须在配置中指定令牌。有关更多信息，请参阅 [配置描述](#配置) >“GitHub个人访问令牌”。
+
+<img height="200" align="left" src="img/githubAdapterRequest.png">
+如果单击 ![添加问题](img/addAdapterRequest.png) ，将出现一个窗口，您可以在其中创建适配器请求的标题和说明。
+
+作为标题，请始终选择明确的短期内容，例如“Panasonic TV”。然后尽可能准确地描述您的愿望。
+如果产品已存在已知的API，则还应编写此API。
+任何可能有助于开发人员的信息都会增加快速开发相应适配器的可能性。如果可能的话，请用英文写下所有内容，
+因为有些开发人员来自国外，可能他们不会说你的语言。
+
+通过单击“提交新请求”，将在Github上创建一个问题。现在，您可以单击左侧的蓝色按钮直接转到问题或关闭窗口。
+
+### 投票支持适配器请求
+
+使用Github帐户，您还可以通过单击直接投票以获取适配器请求 ![投票按钮](img/votes.png)。 如果有效，按钮变为绿色。 每个人只能投一票。 语音总数显示在标题前面的对象中。
+
+在概述中，您投票的适配器请求以绿色显示，而小于1个月的请求为蓝色。
+
 ## 问题和错误
 
 <img height="200" align="left" src="img/issues_bugs.png">
@@ -234,6 +265,19 @@ $ sudo apt-get install smartmontools
 如果您单击问题的标题，您最终会直接使用Github上的消息，并可以选择向开发人员提供更多信息，并留下评论。
 
 “问题和错误”面板可以隐藏在配置中，也可以在加载时以关闭状态显示。
+
+###报告愿望或错误
+
+如果打开适配器，您可以选择报告新错误或通过单击 ![添加新问题](img/addNewIssue.png) 提出改进建议。这需要Github帐户和配置中的令牌。更多详细信息，请参见[配置说明]（＃配置）>“GitHub个人访问令牌”。
+
+<img height="100" align="left" src="img/addIssue1.png">
+点击后你有机会提出改进建议（蓝色）或报告错误（红色）。这两个选项都允许您输入标题和说明。
+
+<img height="200" align="right" src="img/addIssue2.png">
+标题应该给你一个清晰简洁的问题描述。在描述时，你不应该节俭信息。每个细节都可以帮助开发人员更快地实现问题或渴望。如果可能的话，请用英文写下所有内容，
+因为有些开发人员来自国外，可能他们不会说你的语言。
+
+通过单击“提交新问题”，将在Github上创建一个问题。现在，您可以单击左侧的蓝色按钮直接转到问题或关闭窗口。
 
 ## ioBroker适配器Github上的
 
@@ -272,7 +316,14 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 
 ## Changelog
 
-### 1.3.2 (2019-05-01)
+### 1.3.5 (2019-05-01)
+
+### 1.3.4 (2019-04-10)
+* (ldittmar) my issues and my repos
+* (ldittmar) change Github API V3 to API V4
+* (ldittmar) vote for adapter requests
+
+### 1.3.2 (2019-04-06)
 * (SchumyHao) Update Chinese translation
 * (ldittmar) create Github issues
 * (ldittmar) create new adapter requests

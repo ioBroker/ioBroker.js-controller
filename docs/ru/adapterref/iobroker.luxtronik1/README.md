@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
+hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
 ---
 ![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -32,7 +32,13 @@ hash: bKY0e2rCH189s8Nh+AVWAUT4V09c95uhq1S4j+9kzFc=
 - Горячая вода - режим
 - Кривая отопления (разница, конечная точка, начальная точка, ночное сокращение).
 
+Значения в 'control' - канале должны быть установлены с помощью ack = false, чтобы инициировать действие.
+
 ## Changelog
+
+### 0.0.7
+
+-   error-handling on connections added.
 
 ### 0.0.6
 

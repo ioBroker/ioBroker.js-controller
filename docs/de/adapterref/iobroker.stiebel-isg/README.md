@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-isg
-hash: mensfg/nJ9WetjCgf2Ka6gO8k5XlY9qNxk9LunxJmWA=
+hash: lXdJlkV8IJ5DfqLggZqwn29A+sUXKi9YJHCVe6vafmQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/stiebel-isg-stable.svg)
-![Build-Status](https://api.travis-ci.org/unltdnetworx/ioBroker.stiebel-isg.svg?branch=master)
+![Build Status](https://api.travis-ci.org/unltdnetworx/ioBroker.stiebel-isg.svg?branch=master)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.stiebel-isg.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.stiebel-isg.svg)
 ![NPM](https://nodei.co/npm/iobroker.stiebel-isg.png?downloads=true)
@@ -28,9 +28,12 @@ Hilfe oder Hinweise sind willkommen.
 2. Holen Sie sich die Werte aus Ihrem stiebel-isg. [X] -Objekt.
 
 ## Bedarf
-* stiebel-eltron / teclor internet service gateway (ISG)
+* Internet-Gateway (ISG) von stiebel-eltron / tecalor
 
 ## Changelog
+### 1.4.2
+* Timeout of 10 seconds for pulling settings after multiple commands to reduce the load of the ISG
+
 ### 1.4.1
 * Core Files/Testing Update and introduce adapter-core
 

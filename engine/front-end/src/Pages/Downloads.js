@@ -139,28 +139,9 @@ class Downloads extends Component {
     load() {
         const d = new Date();
 
-        fetch(`http://iobroker.live/images/list.js?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
-            .then(res => res.text())
-            .then(content => {
-                const lines = content.split('\n');
-                lines[0] = '[';
-                lines[lines.length - 1] = ']';
-                lines.forEach((line, i) => {
-                    const m = line.match(/(\w+):\s?['"]+[^'"]*['"]+,?/);
-                    if (m) {
-                        lines[i] = line.replace(m[1], '"' + m[1] + '"');
-                    }
-                });
-                content = lines.join('\n').replace(/'/g, '"').replace();
-
-                try {
-                    content = JSON.parse(content);
-                    this.setState({content});
-                } catch (e) {
-                    console.error('Cannot parse: ' + e);
-                    console.error('Cannot parse: ' + content);
-                }
-            });
+        fetch(`downloads.json?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
+            .then(res => res.json())
+            .then(content => this.setState({content}));
     }
 
     /* {
@@ -201,7 +182,7 @@ class Downloads extends Component {
         return (<Card key={image.file} className={this.props.classes.card} style={{width: this.cardWidth}}>
             <CardActionArea>
                 <div className={this.props.classes.cardMedia}
-                     style={{backgroundImage: 'url(http://iobroker.live/images/img/' + image.picture + ')'}}
+                     style={{backgroundImage: 'url(img/' + image.picture + ')'}}
                 />
                 <div  className={this.props.classes.cardTitle}>
                     <h2>{image.device}</h2>
@@ -211,7 +192,7 @@ class Downloads extends Component {
                     <div className={this.props.classes.cardInfo}>
                         <div>
                             {this.renderLine('Date', this.formatDate(image.date))}
-                            {this.renderLine('Linux', image.linux)}
+                            {image.linux === 'Windows' ? this.renderLine('OS', image.linux) : this.renderLine('Linux', image.linux)}
 
                             {Object.keys(image)
                                 .filter(attr => IGONRED_ATTRS.indexOf(attr) === -1)

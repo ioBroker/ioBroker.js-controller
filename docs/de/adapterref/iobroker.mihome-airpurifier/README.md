@@ -3,15 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-airpurifier
-hash: v9/RyFymOAzQsuQLVQ998xAKpCe4/CXiSDSvgb6c/84=
+hash: aP5HbXr/jC25Q7hsEn7VDVtlmTeECXkZ9XzIXva5+dE=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
-![Build-Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
+![Anzahl der Installationen](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
+![Build Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
 
-# IoBroker.mihome-airpurifier
-Xiaomi Air Purifier-Adapter für die IoT-Plattform von IoBroker.
-
+# IoBroker.mihome-airpurifier Xiaomi Luftreinigeradapter für die ioBroker IoT-Plattform.
 ## Wie bekomme ich das Token?
 Sie müssen das miio-Befehlszeilentool installieren. `npm install -g miio`
 
@@ -39,22 +38,22 @@ Support: At least basic
 
     `miio discover`
 
-    Sie sollten die gleiche Ausgabe wie oben erhalten und können nun die Verbindung zu Ihrem Netzwerk mit folgendem Befehl konfigurieren:
+    Sie sollten dieselbe Ausgabe wie oben erhalten und können nun die Verbindung zu Ihrem Netzwerk mit folgendem Befehl konfigurieren:
 
     `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
     Nun ist der Luftreiniger an Ihr Netzwerk angeschlossen.
 
 ## Cloud-Verbindung
-Um den Luftreiniger mit dem Cloud-Adapter zu steuern, fügen Sie einfach den Status "Manuallevel" zu Ihrem Cloud-Adapter hinzu. Danach können Sie zB f.e. die folgenden Befehle über Alexa:
+Um den Luftreiniger mit dem Cloud-Adapter zu steuern, fügen Sie Ihrem Cloud-Adapter einfach den Status "manuallevel" hinzu. Danach können Sie zB f.e. die folgenden Befehle über Alexa:
 
 * Alexa, schalte den Luftreiniger ein *,
 
 * Alexa, setze den Luftreiniger auf 50% *,
 
-* Alexa, schalte den Luftreiniger aus *
+*Alexa, schalte den Luftreiniger aus*
 
-Wenn Sie im Cloud-Adapter "On Value" auf "Last active value" setzen, läuft das Gerät immer mit der neuesten aktiven Leistungsstufe.
+Wenn Sie im Cloud-Adapter den Wert "On Value" auf "Last active value" setzen, läuft das Gerät immer mit der neuesten aktiven Leistungsstufe.
 
 ## Kontrollstaaten
 Zur Steuerung Ihres Luftreinigers können die folgenden Objekte geschrieben werden:
@@ -64,16 +63,16 @@ Zur Steuerung Ihres Luftreinigers können die folgenden Objekte geschrieben werd
 | Macht | Gerät ein- / ausschalten |
 | auto | Aktivieren Sie den Auto-Modus des Geräts. |
 | stumm | Aktivieren Sie den Silent-Modus des Geräts. |
-| Handbuch | Aktivieren Sie den manuellen Modus des Geräts. |
-| Handlevel | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet
+| manuell | Aktivieren Sie den manuellen Modus des Geräts. |
+| Handlevel | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
 
 ## Info Staaten
-Die folgenden Informationen werden von Ihrem Luftreiniger gesammelt (Nur-Lesen-Status):
+Die folgenden Informationen werden von Ihrem Luftreiniger erfasst (Nur-Lesen-Status):
 
 ### Geräteinformationen
 | Zustand | Beschreibung |
 | :---        | :---        |
-| Modus | Der tatsächliche Gerätemodus, nur gültig, wenn das Gerät eingeschaltet ist. |
+| Modus | Der tatsächliche Gerätemodus ist nur gültig, wenn das Gerät eingeschaltet ist. |
 | Temperatur | Die gemessene Temperatur in °C des Geräts. |
 | Luftfeuchtigkeit | Die gemessene relative Luftfeuchtigkeit in% des Geräts. |
 | pm25 | Die Luftverschmutzung in PM2.5. |
@@ -97,7 +96,7 @@ Die folgenden Informationen werden von Ihrem Luftreiniger gesammelt (Nur-Lesen-S
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Johannes Jaeger <johannesjaegeroffice@gmail.com>
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -106,13 +105,15 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com

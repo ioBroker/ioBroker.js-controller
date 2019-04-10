@@ -99,11 +99,12 @@ The adapter understands also 'sendTo' commands.
 
 ## Changelog
 
-### 2.0.0
+### 2.0.1
 * Can handle Floureon/Beko thermostats (now with MQTT)
 * Can handle S1C security devices
 * Names device after their name or with their mac to reduce possibility of renaming
 * Can rename devices
+* Support compact mode
 * Can add device Id's/Types for new devices
 * New communication routines to find & re-find devices
 * New communication protocoll with devices which do not allow that devices can get commands from 2 sources intermixed

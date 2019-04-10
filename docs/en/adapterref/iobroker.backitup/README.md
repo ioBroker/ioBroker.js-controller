@@ -250,6 +250,11 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.1.4 (08.04.2019)
+* (simatec) Support for SMB3
+* (simatec) Backup for Zigbee Database
+* (simatec) Restore for Zigbee Database
+
 ### 1.1.3 (12.03.2019)
 * (simatec) Timeout for email sending
 * (simatec) Timeout for pushover sending
