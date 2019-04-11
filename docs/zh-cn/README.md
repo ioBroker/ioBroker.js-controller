@@ -4,7 +4,7 @@ lastChanged: 11.04.2019
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/README.md
 hash: PFfFSopqDMX1D9KYf2jqoKTYJChzcPMyEATrlgAC6Pg=
 ---
-＃欢迎来到ioBroker
+#欢迎来到ioBroker
 !> **新用户注意事项**：如果您发现本文有很多未知术语，请不要担心，这些术语将在[下一页](basics/README.md)中详细解释它们。
 
 ioBroker是一个软件解决方案，用于集成各种智能家居系统，智能家居设备。为不同的设备和系统提供统一的管理和控制核心服务，以此解决设备信息不互通的问题。
