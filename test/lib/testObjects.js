@@ -11,6 +11,7 @@ function register(it, expect, context) {
     const testId = namespace + '.test2';
 
     it(textName + 'should create and read object', done => {
+
         const objects = context.objects;
         objects.setObject(testId, {
             common: {

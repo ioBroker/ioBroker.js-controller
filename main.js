@@ -1952,7 +1952,7 @@ function initInstances() {
             const adapterDir = tools.getAdapterDir(name);
             if (!fs.existsSync(adapterDir)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version});
+                installQueue.push({id: id, disabled: true});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
             }
@@ -2199,7 +2199,7 @@ function startInstance(id, wakeUp) {
     const adapterDir_ = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
-        installQueue.push({id: id, version: instance.common.version, wakeUp: wakeUp});
+        installQueue.push({id: id, wakeUp: wakeUp});
         // start install queue if not started
         if (installQueue.length === 1) installAdapters();
         return;
@@ -2843,7 +2843,7 @@ function init() {
     // Get "objects" object
     // If "file" and on the local machine
     if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
-        Objects = require('./lib/objects/objectsInMemServer');
+        Objects = require('./lib/objects/objectsInMemServerRedis');
     } else {
         Objects = require('./lib/objects');
     }

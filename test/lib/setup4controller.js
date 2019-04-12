@@ -63,6 +63,7 @@ function startController(options, callback) {
                     }
                 });
             } else {
+                console.log('Objects ok');
                 isObjectConnected = true;
                 if (isStatesConnected) {
                     console.log('startController: started!');
@@ -75,9 +76,14 @@ function startController(options, callback) {
 
     let Objects;
 
-    if (options.objects && options.objects.type) {
-        if (options.objects.type === 'file') {
-            Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+    if (options.objects) {
+        if (!options.objects.type || options.objects.type === 'file') {
+            if (!options.objects.simulateFallback) {
+                Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+            }
+            else {
+                Objects = require(rootDir + 'lib/objects/objectsInMemServerSocketIo');
+            }
         } else if (options.objects.type === 'redis') {
             try {
                 Objects = require(rootDir + 'lib/objects/objectsInRedis');
@@ -93,11 +99,16 @@ function startController(options, callback) {
 
     let States;
     // Just open in memory DB itself
-    if (options.states && options.states.type) {
-        if (options.states.type === 'redis') {
-            States = require(rootDir + 'lib/states/statesInRedis');
+    if (options.states) {
+        if (!options.states.type || options.states.type === 'file') {
+            if (!options.states.simulateFallback) {
+                States = require(rootDir + 'lib/states/statesInMemServer');
+            }
+            else {
+                States = require(rootDir + 'lib/states/statesInMemServerSocketIo');
+            }
         } else {
-            States = require(rootDir + 'lib/states/statesInMemServer');
+            States = require(rootDir + 'lib/states/statesInRedis');
         }
     } else {
         States = require(rootDir + 'lib/states/statesInMemServer');
@@ -124,6 +135,7 @@ function startController(options, callback) {
             error: msg => console.error(msg)
         },
         connected: () => {
+            console.log('States ok');
             isStatesConnected = true;
             if (isObjectConnected) {
                 console.log('startController: started!');
