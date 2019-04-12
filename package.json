@@ -10,7 +10,6 @@
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
     "le-acme-core": "^2.1.4",
-    "redis": "^2.8.0",
     "winston-syslog": "^2.0.0"
   },
   "bin": {
@@ -41,7 +40,10 @@
     "tar": "^4.4.8",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.7.0",
-    "yargs": "^13.1.0"
+    "yargs": "^13.1.0",
+    "debug": "^4.1.1",
+    "redis": "^2.8.0",
+    "respjs": "^4.1.5"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
