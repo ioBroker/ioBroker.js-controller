@@ -1,112 +1,144 @@
 ---
-translatedFrom: de
-translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/vscode.md
-title: VS代码
+title: VS code
 hash: TXXU7i+WiRe1zmhlQuotwhVoN2pG5nBo/BtK1Ue6Jto=
 ---
-#VS代码
-使用基于ioBroker.template适配器的Microsoft Visual Studio代码（VSCode）进行ioBroker Adapter开发
 
-！>欢迎更正，添加和更改！
+# VS code
 
-创建纪录片时没有任何VSCode与node.js / ioBroker一起使用的经验。如果程序需要改进，我很感激任何提示。
+此文档将以iobroker.hass-mqtt适配器为例，介绍如何使用Microsoft Visual Studio Code（VSCode）进行ioBroker适配器开发。
 
-绊脚石：如果某人仍然“卡住”并需要更深入的信息，请打开一个问题，以便补充和完善纪录片。
+!> 欢迎对文档内容进行更正，添加和修改！
 
-示例中的适配器名称是** iobroker.template-master-mhe **。
+此文档希望能够指导没有任何使用VSCode进行node.js开发经验的用户部署适配器开发环境。如果文档中介绍的流程需要改进，欢迎提出您的建议。
 
-##模板
-ioBroker模板适配器：[https://github.com/ioBroker/ioBroker.template](https://github.com/ioBroker/ioBroker.template)
+遇到问题：如果您按照文档部署仍然遇到了问题，需要更多的帮助和更详细的信息，那么请您在Github上提交一个issue，这样将有助于补充和完善此文档。
 
-##在以下环境中测试
- -  ioBroker，在本地安装
- -  ioBroker.js-controller：1.0.0
- -  node.js：v6.10.2
- -  npm：3.10.10
- -  Windows 10教授
- -  VSCode 1.12.1
+此文档示例的适配器名是**iobroker.hass-mqtt**。
 
-##包含有关适配器开发的一般信息和VSCode的相关信息
- -  [ioBroker论坛：使用VSCode调试适配器]（http://forum.iobroker.net/viewtopic.php?f=20&t=4564&p=61310&hilit=visual+studio+code#p44156）
- -  [Github上的ioBroker适配器模板]（https://github.com/ioBroker/ioBroker.template#iobrokertemplate）
- - 关于德语适配器开发的一般信息：[Apoon77]的[ioBroker AdapterDev用户会议2017.pdf] [http://forum.iobroker.net/download/file.php?id=11259]（http：//forum.iobroker。净/ memberlist.php？模式=视图轮廓＆U = 378）。
- -  [ioBroker适配器开发文档]（https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation）
- -  [使用Webstrom IDE作为示例开始使用适配器开发]（https://github.com/ioBroker/ioBroker/wiki/Installation,-setup-and-first-steps-with-an-ioBroker-Development-Environment）
+## 开发环境
 
-##一般过程 - 为适配器使用模板
-### 1.下载模板
- -  [https://github.com/ioBroker/ioBroker.template#iobrokertemplate](https://github.com/ioBroker/ioBroker.template#iobrokertemplate）
-     - 有点1.）运行，例如：解压缩文件夹中的模板并保存
+- 在本机安装ioBroker
+- ioBroker.js-controller版本：1.4.2
+- node.js版本：v8.12.0
+- npm版本：6.8.0
+- MacOS
+- VSCode版本：1.33.0
 
-### 2.在文件夹中运行“npm install”
- - 在模板的副本中安装所需的npm mopdule
- - 在模板文件夹中新创建文件夹节点模块
- -  [https://github.com/ioBroker/ioBroker.template#iobrokertemplate](https://github.com/ioBroker/ioBroker.template#iobrokertemplate）
-     - 有点2.）运行
+## 相关链接
 
-### 3.执行grunt //更改现有项目中模板中的设置
- -  [https://github.com/ioBroker/ioBroker.template#iobrokertemplate](https://github.com/ioBroker/ioBroker.template#iobrokertemplate）
-     - 有点3.）运行
- - 如果grunt尚不存在，请全局安装
- - 在终端执行：
+通过以下链接，可以获得适配器开发所需要的基础知识和使用VSCode调试的基础知识。
 
+- [ioBroker论坛：使用VSCode调试适配器](http://forum.iobroker.net/viewtopic.php?f=20&t=4564&p=61310&hilit=visual+studio+code#p44156)
+- [Github上的ioBroker适配器模板](https://github.com/ioBroker/ioBroker.template#iobrokertemplate)
+- 适配器开发的基础知识（德语）：[ioBroker适配器开发会议纪要2017.pdf](http://forum.iobroker.net/download/file.php?id=11259)——作者[Apoon77](http://forum.iobroker.net/memberlist.php?mode=viewprofile&u=378)。
+- [ioBroker适配器开发文档](https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation)
+- [使用Webstrom IDE开发适配器](https://github.com/ioBroker/ioBroker/wiki/Installation,-setup-and-first-steps-with-an-ioBroker-Development-Environment)
+
+## 搭建开发环境的流程
+
+此小节使用ioBroker提供的适配器创建工具[create-adapter](https://github.com/ioBroker/create-adapter)创建适配器。
+
+### 1. 新建适配器文件夹
+
+- 在本地创建一个以适配器名称命名的文件夹，此教程以**iobroker.hass-mqtt**为例。
+
+### 2. 在文件夹中使用create-adapter创建适配器
+
+- 使用终端进入上一步创建的文件夹，并执行以下命令，交互式创建新的适配器。
+
+```bash
+npx @iobroker/create-adapter
+
+npx: installed 173 in 15.336s
+
+=====================================================
+   Welcome to the ioBroker adapter creator v1.11.0!
+=====================================================
+
+You can cancel at any point by pressing Ctrl+C.
+
+Let's get started with a few questions about your project!
+✔ Please enter the name of your project: · hass-mqtt #输入适配器名称，只需要输入iobroker后面的字段。
+✔ Which title should be shown in the admin UI? · hass-mqtt #输入在admin页面中显示的名称，可以与适配器名称不同
+✔ Please enter a short description: · This adapter can discover devices followed hass mqtt discover protocol #输入对当前适配器的简单描述
+✔ Enter some keywords (separated by commas) to describe your project: · mqtt,hass,homeassistant,discover #输入适配器的关键词
+
+Nice! Let's get technical...
+✔ Which features should your project contain? · adapter #选择adapter，创建一个新的adapter
+✔ Which additional features should be available in the admin? · No items were selected #额外的功能，此处没有勾选
+✔ Which category does your adapter fall into? · iot-systems #选择适配器的类型，此处选择iot-system
+✔ When should the adapter be started? · daemon #选择适配器启动方式，此处选择自动启动
+✔ Do you want to indicate the connection state? · yes #选择是否显示适配器连接状态，此处选择显示
+✔ Which language do you want to use to code the adapter? · TypeScript #选择适配器开发语言，此处选择TypeScript
+✔ Which of the following tools do you want to use? · TSLint #选择语法检查工具
+✔ Do you prefer tab or space indentation? · Space (4) #选择缩进方式
+✔ Do you prefer double or single quotes? · double #选择引号的风格
+✔ How should the main adapter file be structured? · yes
+
+Almost done! Just a few administrative details...
+✔ Please enter your name (or nickname): · SchumyHao #你的名字
+✔ What's your name/org on GitHub? · smarthomefans #github的名字或组织
+✔ What's your email address? · schumyhaojl@126.com #你的邮箱
+✔ Initialize the GitHub repo automatically? · yes #是否创建git repo
+✔ Which license should be used for your project? · MIT License #选择开源协议
+
+That's it. Please wait a minute while I get this working...
+[1/4] Generating files...
+[2/4] Installing dependencies...
+
+> fsevents@1.2.7 install /Users/schumy/git/iobroker.hass-mqtt/node_modules/fsevents
+> node install
+
+node-pre-gyp WARN Using needle for node-pre-gyp https download 
+[fsevents] Success: "/Users/schumy/git/iobroker.hass-mqtt/node_modules/fsevents/lib/binding/Release/node-v57-darwin-x64/fse.node" is installed via remote
+added 565 packages from 1148 contributors and audited 8963 packages in 15.001s
+found 0 vulnerabilities
+
+[3/4] Compiling TypeScript...
+[4/4] Initializing git repo...
+
+All done! Have fun programming! ♥
 ```
-grunt rename --name=template-master-mhe --email=iobroker@digheim.de --author="Michael Herwig"
-```
 
- -  Adaptername，作者和电子邮件地址将通过代码中必要位置的grunt进行更改
+### 3. 复制到ioBroker并调整路径和名称
 
-### 4.在VSCode中加载适配器文件夹
- - 自定义文件夹名称。在iobroker.template-master-mhe中的ioBroker.template-master示例中
- -  VSCode：打开文件/文件夹//或** CTRL + K，CTRL + O **
+- 将上述文件夹复制到ioBroker的**安装路径**中：以macOS为例，复制到`/usr/local/iobroker/node_modules`
 
-### 5.在VSCode中调整了模板的版本（从0.5.0到0.0.2）
- - 在io-package.json中由0.5.0更改为0.0.2 //由ioBroker使用
- - 在npm使用的package.json //中从0.5.0更改为0.0.2
+### 4. ioBroker/Admin->更新
 
-### 6.复制到ioBroker并调整路径/名称
- -  **路径：** ... / iobroker / node_modules
- -  **姓名：** ioBroker.template-master-mhe
- -  [https://github.com/ioBroker/ioBroker.template#iobrokertemplate](https://github.com/ioBroker/ioBroker.template#iobrokertemplate）
- - 有点5.）
+- 在管理员web界面点击“更新”按钮。您将看到刚刚新建的适配器。
 
-### 7.在VSCode中关闭文件夹
- -  VSCode：文件/文件夹关闭//或** CTRL + K F **
+![](./media/vscode_install_update_adapters.png)
 
-### 8. ioBroker / Admin  - >更新
- - 单击ioBroker Admin GUI中的“更新”
+### 5. 新建适配器实例
 
-### 9.适配器挑出并添加实例
- - 按下适配器上的plus上的ioBroker Admin GUI
+- 在管理员web界面点击“添加实例”按钮。
 
-![SCREENSHOT：您自己的适配器的实例](../../de/dev/media/Instanz-installieren.png)
+![](./media/vscode_install_add_adapter.png)
 
- - 安装并显示适配器的实例
+- 将新建的适配器实例停止。
 
-![SCREENSHOT：您自己的适配器的实例](../../de/dev/media/Adapterinstanz.png)
+![](./media/vscode_install_adapter_instance.png)
 
- - 停止调试已安装的适配器
+### 6. 在VSCode中打开ioBroker安装路径下的适配器
 
-### 10.在VSCode中打开ioBroker的已安装文件夹
- -  VSCode：打开文件/文件夹//或** CTRL + K，CTRL + O **
- - **.. / node_modules / iobroker.template-master-mhe** 择
- - 现在，您可以在此处开发和调试适配器
+- 使用VSCode打开复制到ioBroker的**安装路径**中的适配器文件夹。
+- 现在，您可以开始开发和调试适配器。
 
 ---
 
-##调试
-### 1.）VSCode launch.json自定义
-适用于所有适配器，设置
+## 调试
 
- - **SHIFT + CTRL + P** 然后输入：> debug launch.json
- - 或通过编辑器GUI：在甲虫上，然后在齿轮顶部
+### 1. VSCode中添加自定义launch.json
 
-![SCREENSHOT：launch.json的VSCode配置](../../de/dev/media/VSCode_launch.json.png)
+- 点击VSCode编辑器调试页面上的顶部的齿轮按钮。
 
-launch.json调试ioBroker适配器的设置：
+![](./media/vscode_launch.json.png)
 
-```javascript
+在launch.json增加被调试的适配器的设置：
+
+```json
 {
     // Use IntelliSense to learn about possible Node.js debug attributes.
     // Hover to view descriptions of existing attributes.
@@ -116,123 +148,74 @@ launch.json调试ioBroker适配器的设置：
         {
             "type": "node",
             "request": "launch",
-            "name": "Programm starten",             // Name, der im VSCode Auswahlmenü neben dem grünen Play angezeigt wird
-            "program": "${workspaceRoot}/main.js"
+            "name": "hass-mqtt", // 在debug界面显示的项目名称
+            "program": "${workspaceFolder}/build/main.js" // 使用TypeScript编译出来的main.js路径
         },
         {
             "type": "node",
             "request": "attach",
-            "name": "An den Prozess anfügen",       // Name, der im VSCode Auswahlmenü neben dem grünen Play angezeigt wird
-            "address": "127.0.0.1",                 // Adresse, an dem der node.js Prozess läuft (bei Remote Debug, der Remote-Rechner)
-            "port": 5858                            // Port, auf dem der node.js Debugger lauscht, der mit node --debug-brk ... gestartet wird
+            "name": "hass-mqtt-attach", // 在debug界面显示的项目名称
+            "address": "127.0.0.1",     // 本地调试IP
+            "port": 9229                // 本地调试端口
         }
     ]
 }
 ```
 
- -  **也可以在远程ioBroker上进行远程调试**。然后必须从127.0.0.1调整IP地址。
+- 如果需要**远程调试**，请将地址127.0.0.1调整为远程机器的IP地址。
 
 ### 2.）打开终端并启动调试器
- - ** CTRL +ö** //打开集成终端（组合键取决于操作系统和VSCode版本）
 
- - 停止终端中新安装的适配器
+- 打开VSCode集成终端
+- 在终端中停止新安装的适配器
 
-cd / opt / iobroker iobroker stop template-master-mhe
-
- - 在终端中启动调试器（因为必须首先通过SSH在终端中建立远程调试）：
-
-        node --debug  -  brk node_modules / iobroker.template  -  master  -  mhe / main.js --force  -  logs
-
-    其中** iobroker.template-master-mhe **是适配器的名称。
-
-在集成终端中显示（注意：也可以使用外部终端程序）：
-
-``` cmd
-PS C:\ioBroker> node --debug-brk node_modules/iobroker.template-master-mhe/main.js --force --logs
-Debugger listening on [::]:5858
+```bash
+cd /usr/local/iobroker
+iobroker stop hass-mqtt
 ```
 
-![SCREENSHOT：启动VSCode调试器](../../de/dev/media/VSCode_Debugger_starten.png)
+- 在终端中调试启动适配器，其中**iobroker.hass-mqtt**是适配器的名称。
 
-启动调试器后在终端中输出：
-
-``` cmd
-starting. Version 0.0.2 in C:/ioBroker/node_modules/iobroker.template-master-mhe, node: v6.10.2
-config test1: true
-config test1: 42
-stateChange template-master-mhe.0.testVariable {"val":true,"ack":false,"ts":1494753342714,"q":0,"from":"system.adapter.template-master-mhe.0","lc":1494753342714}
-ack is not set!
-stateChange template-master-mhe.0.testVariable {"val":true,"ack":true,"ts":1494753342715,"q":0,"from":"system.adapter.template-master-mhe.0","lc":1494753342714}
-stateChange template-master-mhe.0.testVariable {"val":true,"ack":true,"ts":1494753342715,"q":0,"from":"system.adapter.template-master-mhe.0","lc":1494753342714}
-check group user admin group admin: false
-check user admin pw ioboker: true
-stateChange template-master-mhe.0.testVariable {"val":null,"ack":true,"ts":1494753367809,"q":0,"from":"system.adapter.template-master-mhe.0","lc":1494753367809}
+```bash
+node --inspect-brk node_modules/iobroker.hass-mqtt/build/main.js --force --logs
 ```
 
- - 在终端中使用** CTRL + C **取消
+- 在集成终端中将显示如下信息：
 
-停止调试器后终端输出：
-
-``` cmd
-cleaned everything up...
-terminating
-cleaned everything up...
-PS C:\ioBroker>
+```bash
+Debugger listening on ws://127.0.0.1:9229/a984ba41-0721-4a1d-a40b-7f32d1067ab7
+For help see https://nodejs.org/en/docs/inspector
 ```
 
- - 转到VSCode中的Debug，在Debugging下选择“Append to process”并启动
- - 输出在集成终端的终端选项卡中执行
- - 在终端中使用CTRL + C取消
+- 转到VSCode中的Debug，在Debugging下选择“hass-mqtt-attach”并启动
+
+![](./media/vscode_debugger_start.png)
 
 ---
 
-##体验
- - 模板的适配器图标已调整（重命名）为Grunt，但未在ioBroker / Admin中显示
- - 适配器发布后将显示正确的图标
+## Todo
+
+- 将VSCode与Github一起使用
+- 单独适配器上的示例
+- 澄清：只能使用node.js> 6.x或4.x进行调试吗？
 
 ---
 
-### Todo
- - 将VSCode与Github一起使用
- - 单独适配器上的示例
- - 澄清：只能使用node.js> 6.x或4.x进行调试吗？
+## 其他文档
+
+### Visual Studio Code
+
+- [VSCode基础知识](https://www.microsoft.com/technet/know-how/visual-studio-code-01-the-basics.aspx)
+
+### Git＆Github
+
+- [Git Book - Git Free Basic Guide](https://git-scm.com/book/en/v1)
+- [Git for Windwos - 下载页面](https://git-scm.com/download/win)
 
 ---
 
-###网络中的文档
-####到Visual Studio代码
- -  [VSCode基础知识]（https://www.microsoft.com/technet/know-how/visual-studio-code-01-the-basics.aspx）
+## 一般提示和技巧
 
-####到node.js
-####到Git＆Github
- -  [Git Book  -  Git Free Basic Guide]（https://git-scm.com/book/en/v1）
- -  [Git for Windwos  - 下载页面]（https://git-scm.com/download/win）
-
----
-
-##一般提示和技巧
 ### SSH与Windows
- -  [Git for Windwos  - 下载页面]（https://git-scm.com/download/win）安装bash，你可以在openSSH的帮助下使用ssh。
 
----
-
-##杂项
- - 我在VSCode的settings.json中的设置：
-
-```
-// Platzieren Sie Ihre Einstellungen in dieser Datei, um die Standardeinstellungen zu überschreiben.
-{
-    "window.zoomLevel": 0,
-    "editor.minimap.enabled": true,                 // zeigt die kleine Codeübersichtskarte rechts neben dem Code an
-    "editor.dragAndDrop": true,                     // ermöglicht markierte Codeteile per Drag und Drop zu verschieben0
-    "workbench.editor.closeOnFileDelete": false,
-    "files.autoSave": "afterDelay",                 // Auotmatisches Speichern der Dateien einstellen
-    "files.autoSaveDelay": 1000,                    // Autosave nach 1000 ms
-    "[javascript]": {},                             // Einstellungen für die SPrache "Javascript"
-    "telemetry.enableCrashReporter": false,         //
-    "workbench.colorTheme": "Quiet Light",          // Farbschema des Editors
-    "telemetry.enableTelemetry": false,
-    "workbench.iconTheme": "vs-seti",               // Icons für bekannte Dateieendungen. Wenn ja, welches Icon-Set soll verwendet werden
-    "javascript.implicitProjectConfig.checkJs": true
-}
-```
+- [Git for Windwos  - 下载页面](https://git-scm.com/download/win)安装bash，你可以在openSSH的帮助下使用ssh。

@@ -1,11 +1,12 @@
 ---
-title: 欢迎
-lastChanged: 11.04.2019
+title: "欢迎"
+lastChanged: "2019.04.13"
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/README.md
 hash: PFfFSopqDMX1D9KYf2jqoKTYJChzcPMyEATrlgAC6Pg=
 ---
-#欢迎来到ioBroker
-!> **新用户注意事项**：如果您发现本文有很多未知术语，请不要担心，这些术语将在[下一页](basics/README.md)中详细解释它们。
+# 欢迎来到ioBroker
+!> **新用户注意事项**
+    如果您发现本文有很多未知术语，请不要担心，这些术语将在[下一页](basics/README.md)中详细解释它们。
 
 ioBroker是一个软件解决方案，用于集成各种智能家居系统，智能家居设备。为不同的设备和系统提供统一的管理和控制核心服务，以此解决设备信息不互通的问题。
 
@@ -15,9 +16,14 @@ ioBroker具有模块化结构。各种**适配器**实现与200多个不同平�
 
 无论是来自不同供应商的商业产品，还是整合diy的解决方案，几乎都可以接入ioBroker，一切皆有可能。
 
-!> 文档正在不断完善和扩展中。因此，有一些链接可能无法正常访问，或者有一些内容不存在。如果您能在创建文档或改进文档的方面提供任何帮助，我们将感谢。有关ioBroker的信息可以在[官方论坛](https://forum.iobroker.net)或[中文论坛](https://bbs.iobroker.cn/)中找到。 <br><br> **在所有内容全部完善之前，旧文档可在[这里](http://www.iobroker.net)访问。旧文档将被新文档相继替换。**
+!> 文档正在不断完善和扩展中。
+    因此，有一些链接可能无法正常访问，或者有一些内容不存在。如果您能在创建文档或改进文档的方面提供任何帮助，我们将感谢。有关ioBroker的信息可以在[官方论坛](https://forum.iobroker.net)或[中文论坛](https://bbs.iobroker.cn/)中找到。
+    <br><br>
+    **在所有内容全部完善之前，旧文档可在[这里](http://www.iobroker.net)访问。旧文档将被新文档相继替换。**
 
-##跨平台
+
+## 跨平台
+
 熟悉家庭自动化的人迟早会发现系统往往并不完美。每个系统都有自己的优点和缺点。因此ioBroker是跨平台的。可以与现有解决方案并行运行，共同工作，提供最好的解决方案。
 
 ioBroker几乎可以运行在所有平台的机器中。 ioBroker可以安装在Windows，Linux，OSX或Docker image中。
@@ -25,19 +31,22 @@ ioBroker几乎可以运行在所有平台的机器中。 ioBroker可以安装在
 
 可选的云端访问服务允许用户或系统集成商远程管理本地安装的ioBroker系统。用户可以根据用户和用户组自由配置访问控制的权限。
 
-##可扩展
+## 可扩展
+
 随着时间的推移，用户可能会不断地有连接其他智能家居系统的需求。ioBroker可以在系统保持运行的同时，通过安装新的适配器来满足用户需求。
 而且，ioBroker系统本身也是可扩展的。
 可以将多个ioBroker服务器连接到`Mutihost（多主机）`系统。
 甚至可以将不同的操作系统平台，SoC单板计算机与大型多核服务器混合使用。
 对于具有最高性能要求的系统，可以集成可选的Redis数据库（一种高性能数据库）。
 
-##可编程
+## 可编程
+
 可选的自动化系统和ioBroker系统都是使用JavaScript完成的，JavaScript是一种自1995年以来稳步发展的脚本语言。JavaScript很容易学习，因此可以快速实现新的要求。这使得每个人都可以为ioBroker做出贡献并实现个性化需求。
 
 对于不熟悉编程的用户，可以使用**图形化**自动化工具——Blockly，这样就可以在没有编程基础的情况下，通过拖拽连接可视化的“块”快速实现用户个性化需求。
 
-##可视化
+## 可视化
+
 通过`VIS`，ioBroker提供了一个用于创建可视化页面的强大工具。传感器的当前值可以通过图形方式显示，也可以通过历史图表方式显示。监控摄像机的实时视频流，报警系统的状态，供暖系统和空调的控制面板 - 几乎所有可以想象的东西，都可以实现。
 
 ![VIS](../de/media/vis2.png)*定制的VIS用户界面示例*
@@ -46,8 +55,11 @@ ioBroker几乎可以运行在所有平台的机器中。 ioBroker可以安装在
 
 使用material适配器或HabPanel适配器可以快速实现简单的预制用户界面。
 
-##社区
+## 社区
+
 自2014年以来，ioBroker因其众多优势而得到了成千上万名用户和开发人员的广泛支持。用户和开发人员在[论坛](https://forum.iobroker.net)和[中文论坛](https://bbs.iobroker.cn/)中进行交流他们的经验和建议。由于ioBroker是开源软件，因此所有源文本都可以在[GitHub](https://github.com/ioBroker)上免费获得。
 
-?> ioBroker不是商业软件。ioBroker由志愿者开发和维护。因此，使用软件的风险由自己承担，除非是软件作者有故意伤害的意图。ioBroker系统没有合同支持。
+?> 请注意：
+    ioBroker不是商业软件。ioBroker由志愿者开发和维护。因此，使用软件的风险由自己承担，除非是软件作者有故意伤害的意图。ioBroker系统没有合同支持。
+
 [在论坛中]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
