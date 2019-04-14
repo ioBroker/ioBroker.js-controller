@@ -233,17 +233,13 @@
                     "link": "https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md"
                 },
                 {
-                    "title": "ioBroker adapter creator",
+                    "title": "ioBroker adapter creator (CLI)",
                     "link": "https://github.com/ioBroker/create-adapter/blob/master/README.md"
                 },
                 {
-                    "title": "Adapter Development Documentation",
-                    "link": "https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation"
-                },
-                {
-                    "title": "ioBroker translator",
-                    "link": "http://www.iobroker.net:3000/"
-                },
+                    "title": "Guide for adapter developers",
+                    "link": "https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md"
+                },                
                 {
                     "title": "ioBroker on GitHub",
                     "link": "https://github.com/ioBroker"
@@ -489,6 +485,51 @@
             "documentation": [
             ],
             "development": [
+                {
+                    "title": {
+                        "en": "Adapter checker",
+                        "de": "Adapterprüfer",
+                        "ru": "Проверка адаптера",
+                        "pt": "Verificador de Adaptador",
+                        "nl": "Adapter checker",
+                        "fr": "Vérificateur d'adaptateur",
+                        "it": "Controllo dell'adattatore",
+                        "es": "Comprobador de adaptadores",
+                        "pl": "Sprawdzanie adaptera",
+                        "zh-cn": "适配器检查器"
+                    },
+                    "link": "https://adapter-check.iobroker.in/"
+                },
+                {
+                    "title": {
+                        "en": "Adapter creator (web)",
+                        "de": "Adapterersteller (Web)",
+                        "ru": "Создатель адаптера (веб)",
+                        "pt": "Criador do adaptador (web)",
+                        "nl": "Adapter maker (web)",
+                        "fr": "Adaptateur créateur (Web)",
+                        "it": "Adattatore creatore (web)",
+                        "es": "Creador de adaptadores (web)",
+                        "pl": "Twórca adaptera (web)",
+                        "zh-cn": "适配器创建者（网络）"
+                    },
+                    "link": "https://adapter-creator.iobroker.in/"
+                },
+                {
+                    "title": {
+                        "en": "ioBroker translator",
+                        "de": "ioBroker-Übersetzer",
+                        "ru": "ioBroker переводчик",
+                        "pt": "tradutor ioBroker",
+                        "nl": "ioBroker vertaler",
+                        "fr": "Traducteur ioBroker",
+                        "it": "traduttore ioBroker",
+                        "es": "traductor de ioBroker",
+                        "pl": "tłumacz ioBroker",
+                        "zh-cn": "ioBroker翻译"
+                    },
+                    "link": "http://www.iobroker.net:3000/"
+                }
             ],
             "blog": [
             ],
