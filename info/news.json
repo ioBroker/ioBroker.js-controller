@@ -241,23 +241,23 @@
             "zh-cn": "发展继续......"
         },
         "content": {
-            "en": "It is currently being developed on version 1.3.3, so there may be inconsistencies with the adapter. Use this version at your own risk.",
-            "de": "Es wird gerade an der Version 1.3.3 entwickelt, deswegen kann es zu Inkonzistenzen beim Adapter kommen. Nutzung dieser Version auf eigene Gefahr.",
-            "ru": "В настоящее время он разрабатывается для версии 1.3.3, поэтому возможны несоответствия с адаптером. ",
-            "pt": "Atualmente está sendo desenvolvido na versão 1.3.3, portanto, pode haver inconsistências com o adaptador. ",
-            "nl": "Het wordt momenteel ontwikkeld op versie 1.3.3, dus er kunnen inconsistenties zijn met de adapter. ",
-            "fr": "Il est actuellement en cours de développement sur la version 1.3.3, il pourrait donc y avoir des incohérences avec l'adaptateur. ",
-            "it": "Attualmente è in fase di sviluppo sulla versione 1.3.3, quindi potrebbero esserci incongruenze con l'adattatore. ",
-            "es": "Actualmente se está desarrollando en la versión 1.3.3, por lo que puede haber inconsistencias con el adaptador. ",
-            "pl": "Obecnie jest rozwijany w wersji 1.3.3, więc mogą występować niezgodności z adapterem. ",
-            "zh-cn": "它目前正在1.3.3版本上开发，因此适配器可能存在不一致之处。"
+            "en": "It is currently being developed on version 1.4.x, so there may be inconsistencies with the adapter. Use this version at your own risk.",
+            "de": "Es wird gerade an der Version 1.4.x entwickelt, deswegen kann es zu Inkonzistenzen beim Adapter kommen. Nutzung dieser Version auf eigene Gefahr.",
+            "ru": "В настоящее время он разрабатывается для версии 1.4.x, поэтому возможны несоответствия с адаптером. ",
+            "pt": "Atualmente está sendo desenvolvido na versão 1.4.x, portanto, pode haver inconsistências com o adaptador. ",
+            "nl": "Het wordt momenteel ontwikkeld op versie 1.4.x, dus er kunnen inconsistenties zijn met de adapter. ",
+            "fr": "Il est actuellement en cours de développement sur la version 1.4.x, il pourrait donc y avoir des incohérences avec l'adaptateur. ",
+            "it": "Attualmente è in fase di sviluppo sulla versione 1.4.x, quindi potrebbero esserci incongruenze con l'adattatore. ",
+            "es": "Actualmente se está desarrollando en la versión 1.4.x, por lo que puede haber inconsistencias con el adaptador. ",
+            "pl": "Obecnie jest rozwijany w wersji 1.4.x, więc mogą występować niezgodności z adapterem. ",
+            "zh-cn": "它目前正在1.4.x版本上开发，因此适配器可能存在不一致之处。"
         },
         "id": "infoAdapter",
         "fa-icon": "line-chart",
         "class": "warning",
-        "created": "2019-04-05T00:00:00.000Z",
+        "created": "2019-04-14T00:00:00.000Z",
         "conditions": {
-            "info": "bigger(1.3.2)"
+            "info": "bigger(1.3.9)"
         }
     }
 ]
