@@ -1,6 +1,5 @@
 ![Logo](admin/emby.png)
 # ioBroker.emby
-=================
 
 [![Build Status](https://travis-ci.org/thewhobox/ioBroker.emby.svg?branch=master)](https://travis-ci.org/thewhobox/ioBroker.emby)
 ![Number of Installations](http://iobroker.live/badges/emby-installed.svg) ![Number of Installations](http://iobroker.live/badges/emby-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.emby.svg)](https://www.npmjs.com/package/iobroker.emby)

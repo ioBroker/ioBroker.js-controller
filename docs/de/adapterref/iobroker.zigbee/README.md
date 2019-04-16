@@ -35,9 +35,12 @@ Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mi
 
 ## Changelog
 
-### 0.10.x (2019-04-03)
+### 0.10.x (2019-04-11)
 * (allofmex) security update
 * (allofmex) brightness fix 
+* (Asgothian)Osram Gardenpole Mini
+* (Asgothian)Innr Plugs (BY 265 C, BY 165 C, RB265 
+* (Asgothian)Fix for Ikea Tradfri repeater (image)
 
 ### 0.10.3 (2019-03-27)
 * fixes

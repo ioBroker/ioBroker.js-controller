@@ -1,3 +1,4 @@
+* partner link
 About
 Adapters
 All
@@ -16,6 +17,7 @@ Documentation
 Download
 Edit on github
 Expand all
+Explanation
 Filter
 Forum
 Github
@@ -28,6 +30,7 @@ Installed
 Installs:
 Join now
 Last changed:
+Last edit
 License
 Linux
 List of adapters
@@ -38,6 +41,7 @@ Newsletter subscribe
 No results found
 Open repository
 Over %s connected services and systems!
+Partner explanation
 Platform
 Posts
 Privacy policy
@@ -45,6 +49,7 @@ Read
 Search...
 Sort
 Stable:
+Subscribe
 The page you are looking for
 Themes
 Title
@@ -53,10 +58,13 @@ Translated from %s
 Type
 Users
 Versions
+Why this link is here?
+Your e-mail address
 authors
 compact
 copied to clipboard
 copy to clipboard
+edit local
 forum-text
 install on linux
 installed %s times
@@ -72,5 +80,6 @@ mode
 password
 posted on %s
 readme
+to Shop
 user
 version

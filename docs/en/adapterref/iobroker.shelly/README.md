@@ -30,15 +30,20 @@ You will find more and detailed information about the device here : [Shelly](htt
 * Shelly4Pro (SHSW-44, not verified and tested)
 * ShellyPlug (SHPLG-1, not verified and tested) 
 * ShellyRGBW (SHRGBWW-01, Verified)
+* ShellyBulb (SHBLB, Verified)
+* Shelly2LED (SH2LED, Verified)
+* ShellySense (SHSEN-1, Verified)
 * Shelly H&T (SHHT-1, verified)
 * Shelly Smoke (SHSM-01, verified)
+* Shelly 1 1PM (SHSW-PM, verified)  
+* Shelly 2.5 (SHSW-25, verified)  
 
-## More details needed to implement (Debug log)
-* ShellySense (SHSEN-1)
-* ShellyBulb (SHBLB-1d)
-* Shelly2LED (SH2LED-1)
+## More details needed to implement (Debug log
 
 ## Changelog
+
+### 2.2.0 (13.04.2019)
+* Add devices Shelly 2.5 and Shelly 1 PM 
 
 ### 2.1.9 (31.03.2019)
 * Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb

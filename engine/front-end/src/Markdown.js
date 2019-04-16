@@ -30,6 +30,7 @@ import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
 import Editor from './Pages/Editor';
+import Affiliate from './Components/Affiliate';
 
 const styles = theme => ({
     root: {
@@ -296,8 +297,7 @@ const styles = theme => ({
     },
     paragraph: {
 
-    },
-
+    }
 });
 
 const converter = new Converter();
@@ -320,6 +320,7 @@ class Markdown extends Router {
             tooltip: '',
             text: this.props.text || '',
             notFound: false,
+            affiliate: null,
             hideContent: window.localStorage ? window.localStorage.getItem('Docs.hideContent') === 'true' : false,
         };
 
@@ -413,7 +414,26 @@ class Markdown extends Router {
             _title = title;
             window.document.title = title;
         }
-        this.mounted && this.setState({notFound: false, parts, header, loadTimeout: false, content, license, changeLog, title: _title});
+        let affiliate = null;
+        if (header.affiliate) {
+            try {
+                affiliate = JSON.parse(header.affiliate);
+            } catch (e) {
+                console.error('Cannot parse affiliate: ' + header.affiliate);
+            }
+        }
+
+        this.mounted && this.setState({
+            affiliate,
+            notFound: false,
+            parts,
+            header,
+            loadTimeout: false,
+            content,
+            license,
+            changeLog,
+            title: _title
+        });
 
         setTimeout(() => this.onHashChange(), 200);
     }
@@ -538,6 +558,18 @@ class Markdown extends Router {
                 );
             }).filter(e => e)
         }</ul>);
+    }
+
+    renderAffiliates() {
+        if (!this.state.affiliate) return null;
+        return this.state.affiliate.map(a =>
+            (<Affiliate
+                key={a.text}
+                language={this.props.language}
+                mobile={this.props.mobile}
+                theme={this.props.theme}
+                data={a}
+            />));
     }
 
     onToggleContentButton() {
@@ -780,6 +812,7 @@ class Markdown extends Router {
         return (<div className={this.props.classes.root} ref={this.contentRef}>
             {this.renderHeader()}
             {this.state.title && !this.state.header.adapter ? (<h1>{this.state.title}</h1>) : null}
+            {this.renderAffiliates()}
             {reactElements}
             <hr/>
             {this.renderLicense()}

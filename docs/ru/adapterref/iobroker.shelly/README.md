@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
+hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -17,7 +17,7 @@ hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 # IoBroker.shelly
 Требуется node.js 6.0 или выше и Admin v3!
 
-Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP с прошивкой Shelly по умолчанию (прошивка не требуется!).
+Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP с прошивкой Shelly по умолчанию (прошивка не требуется!)
 Поскольку CoAP использует многоадресные UDP-пакеты, устройства Shelly должны находиться в той же подсети, что и ioBroker.
 Если вы используете ioBroker в контейнере Docker, он должен работать в режиме хоста или Macvlan.
 
@@ -25,7 +25,7 @@ hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 
 ## Монтаж
 1. Установите адаптер
-2. Конфигурация не требуется. Шелли устройства будут обнаружены и добавлены автоматически. Иногда вам нужно перезапустить устройство Шелли или управлять им один раз с помощью приложения, прежде чем оно появится изначально в ioBroker.
+2. Конфигурация не требуется. Шелли устройства будут обнаружены и добавлены автоматически. Иногда вам нужно перезапустить устройство Шелли или управлять им один раз с помощью приложения, прежде чем оно появится в ioBroker.
 
 ## Поддерживаемые устройства
 * Shelly1 (SHSW-1, проверено)
@@ -35,15 +35,20 @@ hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 * Shelly4Pro (SHSW-44, не проверено и не проверено)
 * ShellyPlug (SHPLG-1, не проверено и не проверено)
 * ShellyRGBW (SHRGBWW-01, проверено)
+* ShellyBulb (SHBLB, проверено)
+* Shelly2LED (SH2LED, проверено)
+* ShellySense (SHSEN-1, проверено)
 * Shelly H & T (SHHT-1, проверено)
 * Shelly Smoke (SHSM-01, проверено)
+* Shelly 1 1PM (SHSW-PM, проверено)
+* Shelly 2.5 (SHSW-25, проверено)
 
-## Для реализации требуется больше деталей (журнал отладки)
-* ShellySense (SHSEN-1)
-* ShellyBulb (SHBLB-1d)
-* Shelly2LED (SH2LED-1)
+## Для реализации требуется больше деталей (журнал отладки
 
 ## Changelog
+
+### 2.2.0 (13.04.2019)
+* Add devices Shelly 2.5 and Shelly 1 PM 
 
 ### 2.1.9 (31.03.2019)
 * Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb

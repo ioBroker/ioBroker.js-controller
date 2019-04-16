@@ -101,7 +101,7 @@ class Page404 extends Component {
                     </div>
                 </div>
             </div>),
-            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
+            //(<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
         ];
     }
 }

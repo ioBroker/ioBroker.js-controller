@@ -273,6 +273,7 @@ function sync2Languages(fromLang, toLang, testDir, cb, files) {
     }
 
     const file = files.shift();
+    console.log(`Sync ${fromLang} => ${toLang} - ${file}`);
     translateFile(file, fromLang, toLang).then(translated => {
         if (translated) {
             const parts = file.replace(/\\/g, '/').split('/');

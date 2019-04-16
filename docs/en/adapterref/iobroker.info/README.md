@@ -69,7 +69,9 @@ The clock has no special function (but I have made an effort) and can be turned 
 ![Github bar](img/githubButtons.png)
 In order to see this bar, you first need a Github account and must specify a token in the configuration. For more information, see under [Configuration description](#Configuration) > "GitHub Personal Access Token".
 
-At the moment you have the possibility to see self-created issues and repositories that are either observed or marked with a star.
+At the moment you have the possibility to see self-created issues, assigned issues and repositories that are either observed or marked with a star.
+
+By clicking on ![Show comments](img/showComments.png), all comments about the issue can be displayed. The button only appears if comments are available. The total number of comments is shown in the balloon before the title of the issue.
 
 ## Messages
 
@@ -246,7 +248,7 @@ With a Github account, you can also vote directly for adapter requests by clicki
 
 In the overview, adapter requests that you have voted for are displayed in green and requests younger than 1 month are blue.
 
-## Issues and bugs
+## My adapters
 
 <img height="200" align="left" src="img/issues_bugs.png">
 Of course, no adapters are error-free and some users may also have expansion ideas. Everything that is known about the installed adapters is collected here. You can also use this list to find out if a bug you just found is also known to the developer, because only known bugs can be fixed.
@@ -255,6 +257,7 @@ Click on ![Expand / Expand Blocks](img/expand.png), to the right of the adapter 
 
 If you click on the name of the adapter, you can go directly to the Issues list on Github and can possibly enter a new error or wish to expand.
 If you click on the title of an issue, you end up directly with the message on Github and can optionally provide the developer more information, leave as a comment.
+By clicking on ![Show comments](img/showComments.png), all comments about the issue can be displayed. The button only appears if comments are available. The total number of comments is shown in the balloon before the title of the issue.
 
 The "Problems and errors" panel can be hidden in the configuration or displayed in the closed state when loading.
 
@@ -270,6 +273,12 @@ The title should give you a clear and concise description of the problem. When d
 because some developers come from abroad and probably they don't speak your language.
 
 By clicking on "Submit New Issue", an issue will be created on Github. Now you can click on the blue button on the left to go directly to the issue or just close the window.
+
+### Mark adapter as favorite
+
+Developers sacrifice a lot of free time to develop adapters for you. Here's your chance, provided a Guthub Token has been entered, by clicking on ![Vote button](img/votes.png) to thank the developers for their work. Everyone can only vote one vote. The total number of votes will be shown in the object before the title.
+
+In the overview, adapters that have been favored by you are displayed in green.
 
 ## ioBroker adapter on Github
 
@@ -306,7 +315,9 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ## Changelog
 
-### 1.3.5 (2019-05-01)
+### 1.3.5 (2019-04-12)
+* (ldittmar) add likes for Adapters
+* (ldittmar) show comments for issues
 
 ### 1.3.4 (2019-04-10)
 * (ldittmar) my issues and my repos

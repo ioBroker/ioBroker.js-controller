@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.emby/README.md
 title: ioBroker.emby
-hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
+hash: s61YcNn5U2uccRdeMrSqE/NRr2cIAwEuwasYDW04BC4=
 ---
 ![логотип](../../../en/adapterref/iobroker.emby/admin/emby.png)
 
@@ -13,7 +13,7 @@ hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.emby.svg)
 ![NPM](https://nodei.co/npm/iobroker.emby.png?downloads=true)
 
-# IoBroker.emby =================
+# IoBroker.emby
 Этот адаптер позволит вам подключиться к вашему серверу Emby и управлять им.
 
 Пожалуйста, следуйте инструкциям, чтобы убедиться, что адаптер работает правильно, и вы можете видеть все устройства.
@@ -21,13 +21,13 @@ hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
 ## Шаги
 1. Установите адаптер от Github
 
-2. Отредактируйте настройки и введите IP, ApiKey и, возможно, некоторые идентификаторы устройств, которые вы хотите игнорировать.
+2. Отредактируйте Настройки и введите IP, ApiKey и, возможно, некоторые DeviceIds, которые вы хотите игнорировать
 
 ```IP **with** Port => 192.168.0.100:8096```
 
 3. Сохраните и перезапустите адаптер.
 
-4. Чтобы увидеть первые Предметы, вам нужно открыть Emby Client, чтобы получить некоторые Данные.
+4. Чтобы увидеть первые предметы, вам нужно открыть Emby Client, чтобы получить некоторые данные.
 
 ```The Adapter will not get Data if **no** client is open.```
 
@@ -46,7 +46,7 @@ hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
 | x.media.isMuted | Если СМИ отключены. | Не все устройства поддерживают это и будут ложными. |
 | x.media.state | Состояние СМИ. | играет, остановился, простаивает |
 | x.media.title | Название показанного файла. | |
-| x.media.type | Тип показанного файла. | Эпизод, Кино, Аудио, Ничего и т. Д. |
+| x.media.type | Тип показанного файла. | Эпизод, Кино, Аудио, Нет и т. Д. |
 | x.media.seasonName | Название сезона | Только если .media.type - это Эпизод, иначе он будет пустым. |
 | x.media.seriesName | Название серии | Только если .media.type - это Эпизод, иначе он будет пустым. |
 
@@ -54,13 +54,13 @@ hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
 | Команда | Описание | Информация |
 | ------------- | ------------- | ------------- |
 | x.command.dialog | Показать диалог на выбранном устройстве. | Например: Header \ | Некоторый текст (если заголовок не указан, ioBroker будет Header) |
-| x.command.goHome | Посылает команду выбранному устройству, которая вернется на главный экран | |
+| x.command.goHome | Посылает команду на выбранное устройство, которое возвращается на главный экран | |
 | x.command.message | Показать сообщение на выбранном устройстве в течение 5 секунд. | |
-| x.command.play | Играет медиа | Только если медиа приостановлено |
+| x.command.play | Играет медиа | Только если СМИ приостановлены |
 | x.command.pause | Пауза Медиа | Только если медиа играет |
 | x.command.toggleplay | Toggles Playstate | играть / пауза |
 | x.command.mute | Отключение устройства | |
-| x.command.unmute | Включает устройство | |
+| x.command.unmute | Включить звук устройства | |
 | x.command.togglemute | Отключение звука устройства | |
 | x.command.volume | Устанавливает громкость выбранного устройства. | Не работает на большинстве устройств, так как не контролирует громкость телевизора. |
 

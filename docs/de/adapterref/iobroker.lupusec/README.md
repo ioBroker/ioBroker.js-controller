@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: 7oICvmGkK+sy1TNzx/L7lIcGgU4i0rroRZopxnWcPJ0=
+hash: g7RKjgGXc3sJl6guz8xQBqY1Mi1cUE1tKbZvxg3JxRk=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -44,11 +44,14 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
   - Bewegungsmelder / 360-Grad-Bewegungsmelder (Typ 9)
   - CO-Sensor (Typ 13)
   - Rauchmelder / Wärmemelder (Typ 14)
+  - Sirene innen (Typ 21)
   - Statusanzeige / Mini-Innensirene (Typ 22)
   - Netzschalter (Typ 24)
   - 1 Kanal-Relais mit ZigBee-Repeater (Typ 24)
   - 2-Kanal-Relais mit ZigBee-Repeater (Typ 24)
   - Tastatur (Typ 37)
+  - Glassensor (Typ 39)
+  - Sirene draußen (Typ 48)
   - Leistungsschalterzähler (Typ 48)
   - Raumfühler V1 (Typ 54)
   - Wärmemelder (Typ 58)
@@ -83,6 +86,12 @@ Folgende Dinge sind in der Zukunft geplant:
 * Schreiben einer Dokumentation für jeden Sensor / Gerät
 
 ## Changelog
+
+### 1.1.4 (13.04.2019)
+* (Stübi) Add device outside alarm
+* (Stübi) Add device inside alarm
+* (Stübi) Add device PIR motions sensor V2
+* (Stübi) Add device glass sensor
 
 ### 1.1.3 (10.04.2019)
 * (Stübi) New Logo

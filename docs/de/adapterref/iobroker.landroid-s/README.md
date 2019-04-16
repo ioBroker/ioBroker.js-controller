@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.landroid-s/README.md
-title: kein Titel
-hash: meFd4op3pA8F//QFAKwdSluaXOGwKOAelqM1Nzo84wc=
+title: ioBroker.landroid-s
+hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
 ---
 ![Logo](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -13,67 +13,61 @@ hash: meFd4op3pA8F//QFAKwdSluaXOGwKOAelqM1Nzo84wc=
 ![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.landroid-s.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
-ioBroker.landroid-s
-
-=============
-
+# IoBroker.landroid-s
 [Deutsche Beschreibung hier](README_de.md)
 
 Dieser Adapter verbindet ioBroker mit Ihrem Landroid S-Modell oder Landroid M mit Firmware größer als 5.0.0 und Mqtt-Unterstützung. Temperaturen, Mähzeiten, Akkuladestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und die Konfiguration ändern Params wie Mähzeiten.
 
-<h1> Version unter 2.5.5 wird nicht mehr unterstützt !!!
-
-## Installation
-Es muss mindestens Knoten 4.X.X installiert sein, Knoten 0.10 und 0.12 werden von diesem Adapter nicht mehr unterstützt.
+<h4> Version unter 2.5.5 wird nicht mehr unterstützt !!! </h4>
 
 ## Die Einstellungen
-- Um eine Verbindung mit dem Mäher herzustellen, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
+- Um eine Verbindung zum Mäher herzustellen, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
 
 ## Zweiter Mäher
--Wenn zwei Mäher integriert werden sollen, muss eine zweite Instanz installiert werden, einer wird im Config-Mäher 0 und im zweiten Mäher 1 usw. ausgewählt.
+- Wenn zwei Mäher integriert werden sollen, muss eine zweite Instanz installiert werden, einer wird im Config-Mäher 0 und im zweiten Mäher 1 usw. ausgewählt.
 
 ## Changelog
-#### 2.5.5(08.04.2019)
+### 2.5.5(08.04.2019)
 * (MeisterTR) Api change from v1 to v2
-#### 2.5.4 (09.08.2018)
+### 2.5.4 (09.08.2018)
 * (MeisterTR) support of Landroid M FW > 5.X.X add pause change connection 
-#### 2.1.2 (13.04.2018)
+### 2.1.2 (13.04.2018)
 * (MeisterTR) add mower selection, clean up, remove CA
-#### 2.0.1 (31.01.2018)
+### 2.0.1 (31.01.2018)
 * (MeisterTR) connection problem with new mower fixed 
-#### 2.0.0 (31.01.2018)
+### 2.0.0 (31.01.2018)
 * (MeisterTR) admin3, del Polling
-#### 1.1.7 (09.10.2017)
+### 1.1.7 (09.10.2017)
 * (MeisterTR) hard coded guest-token
 * (MeisterTR) change cloud connection need no OpenSSL
 * (MeisterTR) Serverselction automatic form Worx Server
 * (MeisterTR) No Mac adress is needed
-#### 1.0.4 (18.09.2017)
+### 1.0.4 (18.09.2017)
 * (MeisterTR) Update dependencies, no more error Messages on install
-#### 1.0.3 (08.09.2017)
+### 1.0.3 (08.09.2017)
 * (MeisterTR) change Values from vis did not work (Fixed)
 * (MeisterTR) changeing path from OpenSSL.exe on Windows now in config
 * (MeisterTR) chatch errors on start if config is not set
 * (MeisterTR) some other changes
-#### 0.3.1 (12.08.2017)
+### 0.3.1 (12.08.2017)
 * (MeisterTR) bugfix cound not set bordercut to false
 * (MeisterTR) add checkbox for m and min.
 * (MeisterTR) add rawdata, chargecycle and actualArea
-#### 0.2.5
+### 0.2.5
 * (MeisterTR) now every parameter can be configure
-#### 0.2.3
+### 0.2.3
 * (MeisterTR) add areas, supporting change areas
-#### 0.2.2
+### 0.2.2
 * (MeisterTR) supported change of mowing times and error catching
-#### 0.1.2
+### 0.1.2
 * (MeisterTR) add mowing data
-#### 0.0.1
+### 0.0.1
 * (MeisterTR) initial release
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 MeisterTR <meistertr.smarthome@gmail.com>
+Copyright (c) 2017-2019 MeisterTR <meistertr.smarthome@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

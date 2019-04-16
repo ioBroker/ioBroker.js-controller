@@ -107,6 +107,9 @@ on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
 
 ## Changelog
 
+### 1.0.3 (12.04.2019)
+* (Stübi) Bugfixing, changing logo size
+
 ### 1.0.2 (12.03.2019)
 * (Stübi) Bugfixing, of changing sepaation of entries in riskindex_x from ',' to ', '
 * (Stübi) unnecessary states will be deleted

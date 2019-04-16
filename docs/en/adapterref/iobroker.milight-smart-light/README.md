@@ -2,6 +2,7 @@
 
 # ioBroker.milight-smart-light
 
+![Number of Installations](http://iobroker.live/badges/milight-smart-light-installed.svg) ![Number of Installations](http://iobroker.live/badges/milight-smart-light-stable.svg) 
 **Tests:** Linux/Mac:
 [![Travis-CI](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)](https://travis-ci.org/Steiger04/ioBroker.milight-smart-light)
 Windows:
@@ -34,6 +35,10 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
+### 0.2.7 (2019-04-15)
+- (steiger04): Additions to the Stable Repository
+### 0.2.6 (2019-04-11)
+- (steiger04): Updated the CI test and some MaterialiseCSS optimizations
 ### 0.2.5 (2019-03-07)
 - (steiger04): Core Files/Testing Update and introduce adapter-core
 

@@ -225,6 +225,9 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 
 
 ## Changelog
+### 0.4.3 (2019-04-14)
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+
 ### 0.4.2 (2019-03-10)
 * (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
 

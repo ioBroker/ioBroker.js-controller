@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: 7oICvmGkK+sy1TNzx/L7lIcGgU4i0rroRZopxnWcPJ0=
+hash: g7RKjgGXc3sJl6guz8xQBqY1Mi1cUE1tKbZvxg3JxRk=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -44,11 +44,14 @@ hash: 7oICvmGkK+sy1TNzx/L7lIcGgU4i0rroRZopxnWcPJ0=
    - 运动探测器/ 360度运动探测器（9型）
    -  CO传感器（13型）
    - 烟雾探测器/热探测器（14型）
+   - 里面的警笛（21型）
    - 状态指示灯/迷你室内警报器（22型）
    - 电源开关（24型）
    - 带ZigBee中继器的1通道继电器（24型）
    - 带ZigBee中继器的2通道继电器（24型）
    - 键盘（37型）
+   - 玻璃传感器（39型）
+   - 外面警报器（48型）
    - 电源开关表（48型）
    - 房间传感器V1（54型）
    - 热探测器（58型）
@@ -83,6 +86,12 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.1.4 (13.04.2019)
+* (Stübi) Add device outside alarm
+* (Stübi) Add device inside alarm
+* (Stübi) Add device PIR motions sensor V2
+* (Stübi) Add device glass sensor
 
 ### 1.1.3 (10.04.2019)
 * (Stübi) New Logo

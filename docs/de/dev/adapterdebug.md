@@ -1,5 +1,5 @@
 ---
-title:       "Entwicklung"
+title:       "Debugging"
 lastChanged: "14.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdebug.md"
 ---

@@ -1,3 +1,4 @@
+* enlace de socio
 Acerca de
 Adaptadores
 Todos
@@ -16,6 +17,7 @@ Documentación
 Descargar
 Editar en github
 Expandir todo
+Explicación
 Filtrar
 Foro
 Github
@@ -28,6 +30,7 @@ instalado
 Instala:
 Únete ahora
 Último cambio:
+Última edición
 Licencia
 Linux
 Lista de adaptadores
@@ -38,6 +41,7 @@ Subscripción de correspondencia
 No se han encontrado resultados
 Repositorio abierto
 Sobre los servicios y sistemas conectados %s!
+Afin de financer l'hébergement, nous relions les offres de produits des magasins partenaires affiliés via des liens dits d'affiliation. Celles-ci sont marquées d'un astérisque'*'. Si un utilisateur achète un produit dans l'une des boutiques partenaires via un tel lien d'affiliation, nous recevons une commission de vente du fournisseur, par exemple Amazon, GearBest et autres. Le prix reste inchangé pour l'utilisateur dans tous les cas.
 Plataforma
 Mensajes
 Política de privacidad
@@ -45,6 +49,7 @@ Leer
 Buscar...
 Ordenar
 Estable:
+Suscribir
 Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.
 Temas
 Título
@@ -53,10 +58,13 @@ Esta página ha sido traducida automáticamente de "%s". Ayúdenos a traducir es
 Tipo
 Usuarios
 versiones
+¿Por qué este enlace está aquí?
+Tu correo electrónico
 autores
 compacto
 Copiado al portapapeles
 copiar al portapapeles
+edición local
 ¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!
 instalar en Linux
 %s instalada veces
@@ -72,5 +80,6 @@ modo
 contraseña
 publicado en %s
 readme
+comprar
 usuario
 versión

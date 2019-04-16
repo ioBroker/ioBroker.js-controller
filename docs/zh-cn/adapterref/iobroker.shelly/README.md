@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
+hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -35,15 +35,20 @@ hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 * Shelly4Pro（SHSW-44，未经过验证和测试）
 * ShellyPlug（SHPLG-1，未经过验证和测试）
 * ShellyRGBW（SHRGBWW-01，已验证）
+* ShellyBulb（SHBLB，已验证）
+* Shelly2LED（SH2LED，已验证）
+* ShellySense（SHSEN-1，已验证）
 * Shelly H＆T（SHHT-1，已验证）
 * Shelly Smoke（SHSM-01，已验证）
+* Shelly 1 PM（SHSW-PM，已验证）
+* Shelly 2.5（SHSW-25，已验证）
 
-##需要实现的更多细节（调试日志）
-* ShellySense（SHSEN-1）
-* ShellyBulb（SHBLB-1d）
-* Shelly2LED（SH2LED-1）
+##需要实现的更多细节（调试日志
 
 ## Changelog
+
+### 2.2.0 (13.04.2019)
+* Add devices Shelly 2.5 and Shelly 1 PM 
 
 ### 2.1.9 (31.03.2019)
 * Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb

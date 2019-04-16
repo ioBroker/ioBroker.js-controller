@@ -75,6 +75,8 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 
 目前，您可以查看自行创建的问题和存储库，这些问题和存储库可以观察或标记为星形。
 
+点击 ![显示评论](img/showComments.png)，可以显示有关该问题的所有评论。仅当注释可用时才会显示该按钮。评论总数显示在问题标题之前的气球中。
+
 ## 消息
 
 <img height="200" align="left" src="img/messages.png">
@@ -254,7 +256,7 @@ $ sudo apt-get install smartmontools
 
 在概述中，您投票的适配器请求以绿色显示，而小于1个月的请求为蓝色。
 
-## 问题和错误
+## 我的适配器
 
 <img height="200" align="left" src="img/issues_bugs.png">
 当然，没有适配器没有错误，一些用户也可能有扩展的想法。 这里收集了有关已安装适配器的所有信息。 您还可以使用此列表来确定开发人员是否也知道您刚发现的错误，因为只能修复已知的错误。
@@ -263,6 +265,7 @@ $ sudo apt-get install smartmontools
 
 如果单击适配器的名称，则可以直接转到Github上的“问题”列表，并可能输入新错误或希望扩展。
 如果您单击问题的标题，您最终会直接使用Github上的消息，并可以选择向开发人员提供更多信息，并留下评论。
+点击 ![显示评论](img/showComments.png)，可以显示有关该问题的所有评论。仅当注释可用时才会显示该按钮。评论总数显示在问题标题之前的气球中。
 
 “问题和错误”面板可以隐藏在配置中，也可以在加载时以关闭状态显示。
 
@@ -278,6 +281,12 @@ $ sudo apt-get install smartmontools
 因为有些开发人员来自国外，可能他们不会说你的语言。
 
 通过单击“提交新问题”，将在Github上创建一个问题。现在，您可以单击左侧的蓝色按钮直接转到问题或关闭窗口。
+
+###将适配器标记为收藏夹
+
+开发人员牺牲了大量的空闲时间来为您开发适配器。 如果输入Guthub令牌，点击这里是你的机会 ![投票按钮](img/votes.png) 感谢开发人员的工作。 每个人只能投一票。 投票总数将显示在标题前的对象中。
+
+在概述中，您喜欢的适配器以绿色显示。
 
 ## ioBroker适配器Github上的
 
@@ -316,7 +325,9 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 
 ## Changelog
 
-### 1.3.5 (2019-05-01)
+### 1.3.5 (2019-04-12)
+* (ldittmar) add likes for Adapters
+* (ldittmar) show comments for issues
 
 ### 1.3.4 (2019-04-10)
 * (ldittmar) my issues and my repos

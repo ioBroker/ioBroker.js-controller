@@ -1,3 +1,4 @@
+* link partnerski
 O
 Adaptery
 Wszystko
@@ -16,6 +17,7 @@ Dokumentacja
 Ściągnij
 Edytuj na githubie
 Rozwiń wszystkie
+Wyjaśnienie
 Filtr
 Forum
 Github
@@ -28,6 +30,7 @@ zainstalowany
 Instaluje:
 Dołącz teraz
 Ostatnia zmiana:
+Ostatnia edycja
 Licencja
 Linux
 Lista adapterów
@@ -38,6 +41,7 @@ Newsletter zapisz się
 Nie znaleziono wyników
 Otwórz repozytorium
 Powyżej %s połączonych usług i systemów!
+Om de hosting te financieren, koppelen we productaanbiedingen van aangesloten partnershops via zogenaamde affiliate links. Deze zijn gemarkeerd met een sterretje '*'. Als een gebruiker een product koopt in een van de partnerwinkels via zo'n partnerlink, ontvangen wij een verkoopcommissie van de aanbieder, bijv. van Amazon, GearBest en anderen. De prijs blijft in ieder geval ongewijzigd voor de gebruiker.
 Platforma
 Posty
 Polityka prywatności
@@ -45,6 +49,7 @@ Czytać
 Szukaj...
 Sortować
 Stabilny:
+Subskrybować
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
 Tematy
 Tytuł
@@ -53,10 +58,13 @@ Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetł
 Rodzaj
 Użytkownicy
 wersje
+Dlaczego ten link jest tutaj?
+Twój adres email
 autorski
 kompaktowy
 skopiowane do schowka
 skopiuj do schowka
+edycja lokalna
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
 Instalacja w systemie Linux
 zainstalowanych %s razy
@@ -72,5 +80,6 @@ tryb
 hasło
 opublikowano na %s
 readme
+do sklepu
 użytkownik
 wersja

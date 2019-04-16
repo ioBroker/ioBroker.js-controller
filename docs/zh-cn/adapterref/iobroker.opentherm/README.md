@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.opentherm/README.md
 title: Opentherm集成ioBroker
-hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
+hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
 ---
 ![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -33,36 +33,40 @@ Opentherm是几种现代加热系统（如Remeha）使用的网关协议。
 *提供TCP / IP中继服务器以允许此实例的其他OpenTherm监控软件连接（当使用直接USB连接时）
 *哪里
 
+## Changelog
+### 0.2.0
+* Fix translations
+
 ### 0.1.9
-*通过USB实现直接连接
-*为适配器设置添加了配置选项
-*修正了错误记录的问题
+* Implemented direct connection by USB
+* added configuration options to adapter settings
+* Fixed issue for incorrect logging
 
 ### 0.1.8
-*修正了不正确的对象类型（布尔/数字/字符串）的问题
-*在逗号后实现舍入状态为1位数
+* Fixed issue for incorrect object type (boolean/number/string)
+* Implemented rounding states to 1 digit after comma
 
 ### 0.1.7
-*实现了开发人员模式（所有消息类型的所有状态都将在_Dev中创建
-*实施开发人员日志记录模式（如果未激活，则不会将任何信息写入日志！）
-*几个小的后端修复程序
+* implemented Developer mode (all states for all message types will be created in _Dev
+* Implemented Developer Logging mode (if not activated no information is written to log !)
+* Several small backend fixes
 
 ### 0.1.6
-*创建逻辑渠道
-*创建国家
-*减少日志记录，所有收到的消息仍然在测试期间用于数据收集的日志中
-*创建定义文件（请随时提供输入）
+* Creation of logical channels
+* creation of states
+* reduced logging, all received messages still in log during beta for data gathering
+* creation of definition file (please feel free to provide input)
 
 ### 0.1.0
-*通过TCP连接到日志文件的数据读取
+* Data reading by TCP connection to logfile 
 
 ### 0.0.1
-*（荷兰人）初步提交
+* (Dutchman) initial commit
 
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2019 DutchmanNL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

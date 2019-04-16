@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
+hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
-![Build-Status](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)
+![Build Status](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)
 ![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
 ![Anzahl der Installationen](http://iobroker.live/badges/shelly-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.shelly.svg)
@@ -17,15 +17,15 @@ hash: FKDu33DDV+Q4KXTu6vu5ZSh1AlIShOqkYANvaYOCoDE=
 # IoBroker.shelly
 Benötigt node.js 6.0 oder höher und Admin v3!
 
-Der Adapter kommuniziert mit Shelly-Geräten von REST api und dem CoAP-Protokoll mit der Standard-Shelly-Firmware (kein Flashen der Firmware erforderlich!).
+Der Adapter kommuniziert mit Shelly-Geräten von REST api und dem CoAP-Protokoll mit der standardmäßigen Shelly-Firmware (kein Firmware-Flash erforderlich!)
 Da CoAP Multicast-UDP-Pakete verwendet, müssen sich die Shelly-Geräte im selben Subnetz wie ioBroker befinden.
 Wenn Sie ioBroker in einem Docker-Container verwenden, muss der Container im Host- oder Macvlan-Modus ausgeführt werden.
 
-Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](https://shelly.cloud/)
+Weitere und ausführlichere Informationen zum Gerät finden Sie hier:
 
 ## Installation
 1. Installieren Sie den Adapter
-2. Keine Konfiguration erforderlich. Shelly-Geräte werden automatisch erkannt und hinzugefügt. Manchmal müssen Sie das shelly-Gerät neu starten oder es einmal über die App steuern, bevor es in ioBroker angezeigt wird.
+2. Keine Konfiguration erforderlich. Shelly-Geräte werden automatisch erkannt und hinzugefügt. Manchmal müssen Sie das shelly-Gerät neu starten oder es einmal über die App steuern, bevor es in ioBroker erscheint.
 
 ## Unterstützte Geräte
 * Shelly1 (SHSW-1, verifiziert)
@@ -35,15 +35,20 @@ Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](http
 * Shelly4Pro (SHSW-44, nicht verifiziert und getestet)
 * ShellyPlug (SHPLG-1, nicht verifiziert und getestet)
 * ShellyRGBW (SHRGBWW-01, Verified)
+* ShellyBulb (SHBLB, Verified)
+* Shelly2LED (SH2LED, verifiziert)
+* ShellySense (SHSEN-1, verifiziert)
 * Shelly H & T (SHHT-1, verifiziert)
 * Shelly Smoke (SHSM-01, verifiziert)
+* Shelly 1 1 PM (SHSW-PM, verifiziert)
+* Shelly 2.5 (SHSW-25, verifiziert)
 
-## Weitere Details zur Implementierung (Debug-Protokoll)
-* ShellySense (SHSEN-1)
-* ShellyBulb (SHBLB-1d)
-* Shelly2LED (SH2LED-1)
+## Weitere Details für die Implementierung (Debug-Protokoll)
 
 ## Changelog
+
+### 2.2.0 (13.04.2019)
+* Add devices Shelly 2.5 and Shelly 1 PM 
 
 ### 2.1.9 (31.03.2019)
 * Add status 'firmware update' for Shelly RGBW, RGBW2 and Bulb

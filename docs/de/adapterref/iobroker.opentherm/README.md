@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.opentherm/README.md
 title: Opentherm Integration ioBroker
-hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
+hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
 ---
 ![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -21,48 +21,52 @@ Weitere Informationen finden Sie unter http://otgw.tclcode.com/index.html#intro 
 
 ### Featured Funktionalität im Endzustand:
 * Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Monitorsoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
-* Passen Sie nach Möglichkeit die Werte in ioBroker an und senden Sie den Befehl an Opentherm
-* Fühlen Sie sich frei, Funktionswünsche hinzuzufügen
+* Passen Sie nach Möglichkeit Werte in ioBroker an und senden Sie den Befehl an Opentherm
+* Bitte zögern Sie nicht, Funktionsanfragen hinzuzufügen
 
 Derzeit implementiert
 * Stellen Sie über TCP / IP eine Verbindung zu OpenTherm Gateway her
-* Stellen Sie eine direkte Verbindung mit OpenTherm Gateway über eine USB-Verbindung her
+* Stellen Sie über eine USB-Verbindung eine direkte Verbindung zum OpenTherm Gateway her
 
 ## Machen
 * Verbinden Sie sich über eine USB-Verbindung direkt mit dem OpenTherm Gateway
 * Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Monitorsoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
 * Woher
 
-0.1.9
-* Direkte Verbindung per USB implementiert
-* Konfigurationsoptionen zu Adaptereinstellungen hinzugefügt
-* Problem mit falscher Protokollierung behoben
+## Changelog
+### 0.2.0
+* Fix translations
 
-0.1.8
-* Problem mit falschem Objekttyp behoben (boolean / number / string)
-* Rundungsstatus auf 1 Stelle nach Komma implementiert
+### 0.1.9
+* Implemented direct connection by USB
+* added configuration options to adapter settings
+* Fixed issue for incorrect logging
 
-0,1,1
-* Implementierter Entwicklermodus (alle Status für alle Nachrichtentypen werden in _Dev erstellt.)
-* Implementierter Entwicklerprotokollierungsmodus (wenn nicht aktiviert, werden keine Informationen in das Protokoll geschrieben!)
-* Einige kleine Backend-Korrekturen
+### 0.1.8
+* Fixed issue for incorrect object type (boolean/number/string)
+* Implemented rounding states to 1 digit after comma
 
-0,1,6
-* Erstellung von logischen Kanälen
-* Schaffung von Staaten
-* Reduzierte Protokollierung, alle empfangenen Nachrichten sind während der Betaversion zur Datenerfassung noch im Protokoll
-* Erstellung der Definitionsdatei (bitte geben Sie Ihre Eingabe ein)
+### 0.1.7
+* implemented Developer mode (all states for all message types will be created in _Dev
+* Implemented Developer Logging mode (if not activated no information is written to log !)
+* Several small backend fixes
 
-0,1,0
-* Lesen von Daten per TCP-Verbindung zur Protokolldatei
+### 0.1.6
+* Creation of logical channels
+* creation of states
+* reduced logging, all received messages still in log during beta for data gathering
+* creation of definition file (please feel free to provide input)
+
+### 0.1.0
+* Data reading by TCP connection to logfile 
 
 ### 0.0.1
-* (Holländer) erstes Commit
+* (Dutchman) initial commit
 
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2019 DutchmanNL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

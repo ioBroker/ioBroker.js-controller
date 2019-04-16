@@ -53,6 +53,9 @@ If any error occurs, please set the adapter loglevel to debug and send me the da
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+#### 2.1.0 (14-Apr-2019)
+- support for compact mode
+
 #### 2.0.1 (08-Jan-2019)
 - fixed "could not find ip" bug
 

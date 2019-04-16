@@ -2,7 +2,7 @@
 # ioBroker.snips
 =================
 
-[![Build Status](https://travis-ci.org/Bettman66/ioBroker.snips.svg?branch=master)](https://travis-ci.org/Bettman66/ioBroker.snips)
+[![Build Status](https://travis-ci.org/unltdnetworx/ioBroker.snips.svg?branch=master)](https://travis-ci.org/unltdnetworx/ioBroker.snips)
 ![Number of Installations](http://iobroker.live/badges/snips-installed.svg) ![Number of Installations](http://iobroker.live/badges/snips-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.snips.svg)](https://www.npmjs.com/package/iobroker.snips)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.snips.svg)](https://www.npmjs.com/package/iobroker.snips)
 
@@ -69,6 +69,12 @@ ATTENTION: inject service has to be installed on the device/server
 sudo apt-get install -y snips-injection
 
 ## Changelog
+### 1.1.5
+* (unltdnetworx) bugfixes for adapter-testing
+
+### 1.1.4
+* (unltdnetworx) control soundfeedback for every satellite
+
 ### 1.1.3
 * (unltdnetworx) delete states after session ended
 
@@ -138,7 +144,7 @@ sudo apt-get install -y snips-injection
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Walter Zengel <w.zengel@gmx.de>
+Copyright (c) 2019 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

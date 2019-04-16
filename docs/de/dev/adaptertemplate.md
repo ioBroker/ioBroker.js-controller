@@ -1,5 +1,5 @@
 ---
-title:       "Entwicklung - Adaptervorlage"
+title:       "Adaptervorlage"
 lastChanged: "28.03.2019"
 ---
 # Adapter Dokumentation Template

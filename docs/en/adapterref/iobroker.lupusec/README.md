@@ -38,11 +38,14 @@ Fully supported and individually adapted are following devices:
   - Motion detector / 360 degree motion detector (Type 9)
   - CO sensor (Type 13)
   - Smoke Detector / Heat Detector (Type 14)
+  - Siren inside (Type 21)
   - Status Indicator / Mini Indoor Siren (Type 22)
   - Power Switch (Type 24)
   - 1 channel relay with ZigBee repeater (Type 24)
   - 2 channel relay with ZigBee repeater (Type 24)
   - Keypad (Type 37)
+  - Glass sensor (Type 39)
+  - Siren outside (Type 48)
   - Power Switch Meter (Type 48)
   - Room sensor V1 (Type 54)
   - Heat detector (Type 58)
@@ -75,6 +78,12 @@ Detailed view of a sensor or device. In this example you see the CO sensor. On C
 ![lupusec_obj_status](docs/en/img/lupusec_obj_devices_type09.png)
 
 ## Changelog
+
+### 1.1.4 (13.04.2019)
+* (Stübi) Add device outside alarm
+* (Stübi) Add device inside alarm
+* (Stübi) Add device PIR motions sensor V2
+* (Stübi) Add device glass sensor
 
 ### 1.1.3 (10.04.2019)
 * (Stübi) New Logo

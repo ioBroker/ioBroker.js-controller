@@ -2,7 +2,7 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adaptervis.md
-title: So debuggen Sie VIS-Widgets
+title: VIS-Widget debuggen
 hash: KIzieMx/A0IHa34738atYrTR1bLyDI4IzfnpJXXujh8=
 ---
 # Debuggen von VIS-Widgets

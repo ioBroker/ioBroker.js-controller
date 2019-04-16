@@ -109,7 +109,7 @@ class Subscribe extends Component {
         return (<div key="subscribe" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
             <Input
                 error={!!error}
-                placeholder={(I18n.t('Newsletter subscribe'))}
+                placeholder={this.state.inputFocused ? I18n.t('Your e-mail address') : I18n.t('Newsletter subscribe')}
                 classes={{input: this.state.inputFocused || this.state.email ? this.props.classes.inputRootNotEmpty : this.props.classes.inputRoot }}
                 className={this.props.classes.input}
                 onKeyUp={e => e.keyCode === 13 && this.onSubscribe()}

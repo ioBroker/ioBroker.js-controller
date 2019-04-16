@@ -5,7 +5,14 @@ class Utils {
     static getStatistics() {
         const d = new Date();
         statistics = statistics || Utils.fetchLocal(`data/statistics.json?$t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`)
-            .then(data => JSON.parse(data));
+            .then(data => {
+                try {
+                    return JSON.parse(data)
+                } catch (e) {
+                    console.error('Cannot parse statistics');
+                    return {adapters: {}};
+                }
+            });
 
         return statistics;
     }

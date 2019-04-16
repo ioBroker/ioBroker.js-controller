@@ -18,18 +18,41 @@ This adapter controls devices which followed miIO protocol.
 
 ## Current supported device type
 
-- airfresh
-- airmonitor
-- airpurifier
-- fan
-- humidifier
-- kettle
-- light
-- plug
-- powerstrip
-- waterpuri
+|type|icon|model|Tested|
+---|---|---|---
+|airfresh|![](admin/icons/zhimi-airfresh-va2.png)|zhimi-airfresh-va2|❌
+|airmonitor|![]()||❌
+|airpurifier|![](admin/icons/zhimi.airpurifier.m1.png)|zhimi.airpurifier.m1|❌
+|airpurifier|![](admin/icons/zhimi.airpurifier.v1.png)|zhimi.airpurifier.v1|❌
+|airpurifier|![](admin/icons/zhimi.airpurifier.v2.png)|zhimi.airpurifier.v2|❌
+|airpurifier|![](admin/icons/zhimi.airpurifier.v3.png)|zhimi.airpurifier.v3|❌
+|airpurifier|![](admin/icons/zhimi.airpurifier.v6.png)|zhimi.airpurifier.v6|❌
+|fan|![]()||❌
+|humidifier|![](admin/icons/zhimi.humidifier.ca1.png)|zhimi.humidifier.ca1|❌
+|humidifier|![](admin/icons/zhimi.humidifier.v1.png)|zhimi.humidifier.v1|❌
+|kettle|![](admin/icons/yunmi.kettle.r1.png)|yunmi.kettle.r1|✅
+|light|![](admin/icons/philips.light.bulb.png)|philips.light.bulb|✅
+|light|![](admin/icons/philips.light.sread1.png)|philips.light.sread1|✅
+|light|![](admin/icons/yeelink.light.color1.png)|yeelink.light.color1|✅
+|light|![](admin/icons/yeelink.light.lamp1.png)|yeelink.light.lamp1|✅
+|light|![](admin/icons/yeelink.light.mono1.png)|yeelink.light.mono1|✅
+|light|![](admin/icons/yeelink.light.strip1.png)|yeelink.light.mono1|✅
+|plug|![](admin/icons/chuangmi.plug.m1.png)|chuangmi.plug.m1|❌
+|plug|![](admin/icons/chuangmi.plug.v1.png)|chuangmi.plug.v1|❌
+|plug|![](admin/icons/chuangmi.plug.v2.png)|chuangmi.plug.v2|❌
+|plug|![](admin/icons/chuangmi.plug.v3.png)|chuangmi.plug.v3|✅
+|powerstrip|![](admin/icons/qmi.powerstrip.v1.png)|qmi.powerstrip.v1|❌
+|powerstrip|![](admin/icons/zimi.powerstrip.v2.png)|zimi.powerstrip.v2|❌
+|waterpuri|![](admin/icons/yunmi.waterpuri.lx3.png)|yunmi.waterpuri.lx3|✅
+|waterpuri|![](admin/icons/yunmi.waterpuri.v2.png)|yunmi.waterpuri.v2|✅
+
+- If any device you have tested, please create a issue and tell me the result and the device model.
+
 
 ## Changelog
+### 0.0.6 (2019-04-13)
+* Add power load for chuangmi plug
+
 ### 0.0.5 (2019-04-04)
 * Fix URL mis-match issue
 

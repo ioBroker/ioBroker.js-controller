@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/stateroles.md
-title: Staatliche Rollen
+title: Rollen
 hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 ---
-# Staatsrollen
+# Rollen
 ## Verbreitet
 * state - sehr häufiger Zweck. Wenn Sie nicht wissen, welche Rolle der Staat hat, verwenden Sie diese.
 * text (common.type = Zeichenfolge)

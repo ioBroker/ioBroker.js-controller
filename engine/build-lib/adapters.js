@@ -93,6 +93,13 @@ function prepareAdapterReadme(lang, repo, data) {
         if (repo.published) {
             header.published = repo.published;
         }
+
+        const affiliateFile = `${consts.SRC_DOC_DIR}${lang}/adapterref/iobroker.${repo.name}/affiliate.json`;
+        if (fs.existsSync(affiliateFile)) {
+            const affiliate = fs.readFileSync(affiliateFile).toString('utf-8');
+            header.affiliate = JSON.stringify(JSON.parse(affiliate));
+        }
+
         header.version = repo.version;
         header.latestVersion = repo.latestVersion;
 
@@ -289,17 +296,21 @@ function getReadme(lang, dirName, repo, adapter) {
                                 local = true;
                                 // merge the whole data to this file
                                 const remoteHeader = utils.extractHeader(readmeDoc);
-                                const remoteLog = utils.extractLicenseAndChangelog(remoteHeader.body);
+                                if (remoteHeader) {
+                                    const remoteLog = utils.extractLicenseAndChangelog(remoteHeader.body);
 
-                                const localLog = utils.extractLicenseAndChangelog(localResult.body);
+                                    const localLog = utils.extractLicenseAndChangelog(localResult.body);
 
-                                // replace changelog and license with remote one
-                                localLog.body = utils.addChangelogAndLicense(localLog.body, remoteLog.changelog, remoteLog.license);
-                                results[0] = [{}];
+                                    // replace changelog and license with remote one
+                                    localLog.body = utils.addChangelogAndLicense(localLog.body, remoteLog.changelog, remoteLog.license);
+                                    results[0] = [{}];
 
-                                // merge headers
-                                results[0].body = utils.addHeader(localLog.body, Object.assign(remoteHeader.header, localResult.header));
-                                results[0].editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + lang + '/adapterref/iobroker.' + adapter + '/README.md';
+                                    // merge headers
+                                    results[0].body = utils.addHeader(localLog.body, Object.assign(remoteHeader.header, localResult.header));
+                                    results[0].editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + lang + '/adapterref/iobroker.' + adapter + '/README.md';
+                                } else {
+                                    console.warn(`Cannot parse ${lang} ${adapter}`);
+                                }
                             }
                         }
 
@@ -426,7 +437,6 @@ function processAdapterLang(adapter, repo, lang, content) {
                     if (!results || !results[0] || !results[0].body) {
                         return Promise.resolve();
                     }
-                    const {body} = utils.extractHeader(results[0].body);
 
                     // if data from remoteRepo/docs/LN
                     if (results.length > 1) {
@@ -450,17 +460,17 @@ function processAdapterLang(adapter, repo, lang, content) {
                     if (repo.keywords) {
                         content.pages[repo.type].pages[adapter].keywords = repo.keywords.join(', ');
                     }
-                    content.pages[repo.type].pages[adapter].authors     = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
-                    content.pages[repo.type].pages[adapter].license     = repo.license;
-                    content.pages[repo.type].pages[adapter].published   = repo.published;
-                    content.pages[repo.type].pages[adapter].version     = repo.version;
+                    content.pages[repo.type].pages[adapter].authors       = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
+                    content.pages[repo.type].pages[adapter].license       = repo.license;
+                    content.pages[repo.type].pages[adapter].published     = repo.published;
+                    content.pages[repo.type].pages[adapter].version       = repo.version;
                     content.pages[repo.type].pages[adapter].latestVersion = repo.latestVersion;
-                    content.pages[repo.type].pages[adapter].materialize = repo.materialize;
-                    content.pages[repo.type].pages[adapter].compact     = repo.compact;
-                    content.pages[repo.type].pages[adapter].description = repo.desc;
-                    content.pages[repo.type].pages[adapter].titleFull   = repo.titleLang || repo.title;
-                    content.pages[repo.type].pages[adapter].created     = repo.created;
-                    content.pages[repo.type].pages[adapter].github      = repo.readme.replace('/blob/master/README.md', '').replace('raw.githubusercontent.com', 'github.com');
+                    content.pages[repo.type].pages[adapter].materialize   = repo.materialize;
+                    content.pages[repo.type].pages[adapter].compact       = repo.compact;
+                    content.pages[repo.type].pages[adapter].description   = repo.desc;
+                    content.pages[repo.type].pages[adapter].titleFull     = repo.titleLang || repo.title;
+                    content.pages[repo.type].pages[adapter].created       = repo.created;
+                    content.pages[repo.type].pages[adapter].github        = repo.readme.replace('/blob/master/README.md', '').replace('raw.githubusercontent.com', 'github.com');
 
                     return Promise.all(results.map(result =>
                         downloadImagesForReadme(lang, repo, result)
@@ -484,9 +494,9 @@ function processAdapter(adapter, repo, content) {
 let repoPromise;
 function downloadRepo() {
     repoPromise = repoPromise || new Promise(resolve => {
-        request('http://iobroker.live/sources-dist.json', (err, state, body) => {
+        request('http://iobroker.live/repo/sources-dist.json', (err, state, body) => {
             const stable = JSON.parse(body);
-            request('http://iobroker.live/sources-dist-latest.json', (err, state, body) => {
+            request('http://iobroker.live/repo/sources-dist-latest.json', (err, state, body) => {
                 const latest = JSON.parse(body);
                 // get stable versions
                 Object.keys(latest).forEach(adapter => {
@@ -567,7 +577,8 @@ function copyAdapterToFrontEnd(lang, adapter) {
         .then(repo => {
             const dirName = consts.SRC_DOC_DIR + lang + '/adapterref/iobroker.' + adapter;
             if (fs.existsSync(dirName)) {
-                const files = utils.getAllFiles(dirName, false);
+                const files = utils.getAllFiles(dirName, false)
+                    .filter(f => !f.match(/affiliate\.json$/));
 
                 // first copy images
                 files.forEach(file => {

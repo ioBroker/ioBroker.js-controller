@@ -112,7 +112,7 @@ gulp.task('translate', async function () {
 gulp.task('translateAndUpdateWordsJS', gulp.series('translate'));
 
 gulp.task('downloadAndSyncOne', done => {
-    const ADAPTER_NAME = 'vis'; // <= edit this
+    const ADAPTER_NAME = 'landroid-s'; // <= edit this
 
     // delete all
     /*consts.LANGUAGES.forEach(lang => {

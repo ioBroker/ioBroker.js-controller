@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.opentherm/README.md
 title: Opentherm интеграция ioBroker
-hash: wikTXYrREugR2qKKXWiYccvaYJY6/WmEIE+cjCSqnzA=
+hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
 ---
 ![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
 
@@ -33,36 +33,40 @@ Opentherm - это протокол шлюза, используемый нес�
 * Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить подключение другого программного обеспечения монитора OpenTherm к этому экземпляру (при использовании прямого подключения USB)
 * Куда
 
+## Changelog
+### 0.2.0
+* Fix translations
+
 ### 0.1.9
-* Реализовано прямое подключение по USB
-* добавлены параметры конфигурации в настройки адаптера
-* Исправлена проблема неправильной регистрации
+* Implemented direct connection by USB
+* added configuration options to adapter settings
+* Fixed issue for incorrect logging
 
 ### 0.1.8
-* Исправлена проблема с неправильным типом объекта (логическое / число / строка)
-* Реализовано округление состояний до 1 цифры после запятой
+* Fixed issue for incorrect object type (boolean/number/string)
+* Implemented rounding states to 1 digit after comma
 
 ### 0.1.7
-* реализован режим разработчика (все состояния для всех типов сообщений будут создаваться в _Dev
-* Реализован режим ведения журнала разработчика (если не активирован, информация не записывается в журнал!)
-* Несколько небольших исправлений
+* implemented Developer mode (all states for all message types will be created in _Dev
+* Implemented Developer Logging mode (if not activated no information is written to log !)
+* Several small backend fixes
 
 ### 0.1.6
-* Создание логических каналов
-* создание штатов
-* уменьшено ведение журнала, все полученные сообщения все еще находятся в журнале во время бета-тестирования для сбора данных
-* создание файла определения (пожалуйста, не стесняйтесь предоставить вход)
+* Creation of logical channels
+* creation of states
+* reduced logging, all received messages still in log during beta for data gathering
+* creation of definition file (please feel free to provide input)
 
 ### 0.1.0
-* Чтение данных по TCP-соединению в лог-файл
+* Data reading by TCP connection to logfile 
 
 ### 0.0.1
-* (Голландец) первоначальный коммит
+* (Dutchman) initial commit
 
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2019 DutchmanNL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

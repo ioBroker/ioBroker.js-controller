@@ -1,3 +1,4 @@
+* partnerlink
 Wat betreft
 Adapters
 Allemaal
@@ -16,6 +17,7 @@ Documentatie
 Download
 Bewerken op github
 Alles uitvouwen
+Uitleg
 Filter
 Forum
 Github
@@ -28,6 +30,7 @@ geïnstalleerd
 installeert:
 Meld je nu aan
 Laatste wijziging:
+Laatste bewerking
 Licentie
 Linux
 Lijst met adapters
@@ -38,6 +41,7 @@ Nieuwsbrief abonnement
 geen resultaten gevonden
 Open repository
 Over %s verbonden diensten en systemen!
+Per finanziare l'hosting, colleghiamo le offerte di prodotti dei negozi partner affiliati tramite i cosiddetti link affiliati. Questi sono contrassegnati da un asterisco "*". Se un utente acquista un prodotto in uno dei negozi partner attraverso tale link di affiliazione, riceviamo una commissione di vendita dal fornitore, ad esempio da Amazon, GearBest e altri. Il prezzo rimane comunque invariato per l'utente.
 Platform
 berichten
 Privacybeleid
@@ -45,6 +49,7 @@ Lezen
 Zoeken...
 Soort
 Stal:
+Abonneren
 De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.
 Thema's
 Titel
@@ -53,10 +58,13 @@ Deze pagina is automatisch vertaald uit "%s". Help ons deze pagina in het Engels
 Type
 gebruikers
 versies
+Waarom deze link hier is?
+Jouw e-mailadres
 auteurs
 compact
 gekopieerd naar het klembord
 Kopieer naar klembord
+lokale bewerking
 Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!
 installeren op linux
 geïnstalleerd %s keer
@@ -72,5 +80,6 @@ mode
 wachtwoord
 gepost op %s
 Leesmij
+winkelen
 gebruiker
 versie

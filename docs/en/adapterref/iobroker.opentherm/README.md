@@ -26,6 +26,10 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 * Provide TCP/IP relay server to allow other OpenTherm monitor software connection by this instance (when direct USB connection is used)
 * Where 
 
+## Changelog
+### 0.2.0
+* Fix translations
+
 ### 0.1.9
 * Implemented direct connection by USB
 * added configuration options to adapter settings
@@ -55,7 +59,7 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2019 DutchmanNL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

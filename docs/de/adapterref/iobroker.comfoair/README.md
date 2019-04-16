@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.comfoair/README.md
 title: ioBroker.comfoair
-hash: WwFGEdPKJZodl8RRm4rHbyzrR+C/ekfr44qebS1n9MA=
+hash: G1IV30sMIv9dhiCRQd/TU2CqG9JhNIpBSkzaWsHybYc=
 ---
 ![Logo](../../../en/adapterref/iobroker.comfoair/admin/comfoair.png)
 
@@ -13,7 +13,7 @@ hash: WwFGEdPKJZodl8RRm4rHbyzrR+C/ekfr44qebS1n9MA=
 ![NPM](https://nodei.co/npm/iobroker.comfoair.png?downloads=true)
 
 # IoBroker.comfoair
-Ein ioBroker-Adapter für Zehnder Comfoair-CA-Ventilationen (d. H. ComfoAir CA350, NICHT ComfoAir Q350 ...)
+Ein ioBroker-Adapter für Zehnder Comfoair-CA-Ventilationen (z. B. ComfoAir CA350, NICHT ComfoAir Q350 ...)
 
 Um diesen Adapter verwenden zu können, benötigen Sie einen RS232-zu-LAN- oder WLAN-Konverter, um den ioBroker mit Ihrem Zehnder Comfoair zu verbinden.
 Installieren Sie Hardware für die TCP - Verbindung zu comfoair: d. H. Einen RS232 - zu - LAN - Adapter an die serielle Schnittstelle des comfoair. Verbinden Sie nur die Pins 2, 3 und 5 (sollte auch mit TX-, RX- und GND-Kontakten der cc-Ease-Verbindung funktionieren).
@@ -25,18 +25,18 @@ Adapter installieren, Instanz erstellen.
 Setze comfoair - IP-Adresse, Port und Polling - Intervall.
 
 ## Adapter & CC Ease
-Es wird generell nicht empfohlen, Datenform-2-Sender an einen Empfänger in serieller RS232-Kommunikation zu senden. Die parallele Verwendung von CCEase und Adapter kann zu Fehlern oder im schlimmsten Fall zu Schäden an Ihrer Comfoair-Steuerung führen! Wenn Sie den ComfoAir-Adapter starten, wird Ihr CC Ease daher heruntergefahren.
+Es wird generell nicht empfohlen, Datenform-2-Sender an einen Empfänger in serieller RS232-Kommunikation zu senden. Die parallele Verwendung von CCEase und Adapter kann zu Fehlern oder im schlimmsten Fall zu Schäden an Ihrer Comfoair-Steuerung führen! Wenn Sie den ComfoAir-Adapter starten, muss Ihr CC Ease daher getrennt werden oder heruntergefahren werden.
 Das comfoair selbst kennt 4 verschiedene rs232-Modi: CCEaseonly, PConly, PCMaster, PCLogmode. In PConly und PCMaster ist CC-Ease ausgeschaltet.
-Sobald Ihr Adapter ausgeführt wird, können Sie einen der folgenden Modi (Adapter - rs232) auswählen und das Objekt control.rs232mode wechseln.
-
-### CC Ease only
-CC Ease läuft, aber Ihr Adapter wird weder Daten vom comfoair abrufen noch Befehle senden! (rs232mode ist CCEaseonly)
+In der Instanzkonfiguration können Sie einen der folgenden Verbindungsmodi auswählen. Bitte nur eines davon ankreuzen! Sobald der Adapter nur im Adapter oder im Parallelmodus ausgeführt wird, können Sie den RS232-Modus des comfoair umstellen (was nicht empfohlen wird, da ein bestimmter Verbindungsmodus einen bestimmten RS232-Modus erfordert!).
 
 Nur Adapter
-CC Ease ist heruntergefahren, Sie können Ihren Comfoair nur mit ioBroker steuern. (rs232mode ist PCMaster, Standardeinstellung & wird empfohlen)
+CC Ease ist nicht verbunden oder wird beim Start des Adapters heruntergefahren. Sie können Ihren comfoair nur mit ioBroker steuern. (rs232mode ist PCMaster, wird standardmäßig verwendet und empfohlen).
+
+### Nur zuhören
+Der Adapter erfasst die vom comfoair oder vom CC Ease gesendeten Daten. CC Ease läuft, vom Adapter können keine Befehle gesendet werden. In diesem Modus erhalten Sie nur einen grundlegenden Wertesatz (Temperaturen, Lüftungszustände).
 
 ### Parallelmodus
-CC Ease und Adapter laufen. comfoiar rs232mode ist auf 'PCLogmode' gesetzt. Sie können Ihren ComfoAir mit ioBroker und mit der CC Ease-Einheit steuern. Tests haben sich als fehlerfrei erwiesen - sie laufen über einen längeren Zeitraum parallel. Aber: Sie führen diesen Modus auf eigenes Risiko aus.
+CC Ease und Adapter laufen. comfoiar rs232mode ist auf 'PCLogmode' gesetzt. Der Adapter überwacht Grundwerte und fragt andere ab (wählen Sie ein erweitertes Abrufintervall). Sie können Ihren ComfoAir mit ioBroker und mit der CC Ease-Einheit steuern. Bevor ein Befehl gesendet wird (einschließlich Abfrage), wird der RS232-Modus auf PC-Master umgestellt. Mit jedem gesendeten Befehl wird auch eine Abfrage durchgeführt. Tests haben sich als fehlerfrei erwiesen - sie laufen über einen längeren Zeitraum parallel. Aber: Sie führen diesen Modus auf eigenes Risiko aus.
 
 ## Verwendung des Adapters
 Die Werte Ihres Unternehmens sollten im "Status" - und "Temperatur" -Kanal sichtbar sein.
@@ -47,9 +47,13 @@ Getestet auf comfoair CA350.
 
 ## Changelog
 
+### 0.3.0
+
+-   new connection modes, i.e. 'listening only'-
+
 ### 0.2.1
 
-- smaller bugfixes.
+-   smaller bugfixes.
 
 ### 0.2.0
 

@@ -1,3 +1,4 @@
+* Partnerlink
 Über
 Adapter
 Alles
@@ -16,6 +17,7 @@ Dokumentation
 Herunterladen
 Auf Github ändern
 Alle erweitern
+Erklärung
 Filter
 Forum
 Github
@@ -28,6 +30,7 @@ Eingerichtet
 Installationen:
 Jetzt beitreten
 Zuletzt geändert:
+Stand
 Lizenz
 Linux
 Liste der Adapter
@@ -37,7 +40,8 @@ Neuigkeiten, Ankündigungen und Ideen zu ioBroker
 Newsletter abonnieren
 keine Ergebnisse gefunden
 Repository öffnen
-Über %s verbunden Dienstleistungen und Systeme!
+Über %s verbundene Dienste und Systeme!
+Um die Hosting zu finanzieren, verlinken wir Produktangebote von angeschlossenen Partnershops über sogenannte Affiliate Links. Diese sind mit einem Stern '*' gekennzeichnet. Wenn ein Benutzer über einen solchen Affiliate Link ein Produkt in einem der Partnershops erwirbt, erhalten wir eine Verkaufsprovision vom Anbieter, z.B. von Amazon, GearBest und andere. Der Preis bleibt hierbei für den Benutzer in jedem Fall unverändert.
 Plattform
 Beiträge
 Datenschutz-Bestimmungen
@@ -45,6 +49,7 @@ Lesen
 Suche...
 Sortieren
 Stable:
+Abonnieren
 Die gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
 Themen
 Titel
@@ -53,10 +58,13 @@ Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten kl
 Art
 Benutzer
 Versionen
+Warum ist dieser Link hier?
+Deine Emailadresse
 Autoren
 Kompaktmodus
 in die Zwischenablage kopiert
 in die Zwischenablage kopieren
+lokale Bearbeitung
 Trete jetzt die schnell wachsende Community bei, stelle Fragen und bekomme Antworten von Profis!
 Installation auf Linux
 installiert %s mal
@@ -72,5 +80,6 @@ Modus
 Passwort
 gepostet am %s
 Readme
+zum Shop
 Nutzer
 Version

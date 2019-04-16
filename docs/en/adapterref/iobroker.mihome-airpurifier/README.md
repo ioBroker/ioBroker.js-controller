@@ -73,6 +73,9 @@ The following information is collected from your air purifier (read-only states)
 | pm25        | The air pollution in PM2.5. |
 
 ## Changelog
+### 0.0.6 (09.04.2019)
+* (JoJ123) update miio to fork of Sineos
+
 ### 0.0.5 (06.01.2019)
 * (JoJ123) update natives
 

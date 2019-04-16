@@ -3,17 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.emby/README.md
 title: ioBroker.emby
-hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
+hash: s61YcNn5U2uccRdeMrSqE/NRr2cIAwEuwasYDW04BC4=
 ---
 ![Logo](../../../en/adapterref/iobroker.emby/admin/emby.png)
 
-![Build-Status](https://travis-ci.org/thewhobox/ioBroker.emby.svg?branch=master)
+![Build Status](https://travis-ci.org/thewhobox/ioBroker.emby.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/emby-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.emby.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.emby.svg)
 ![NPM](https://nodei.co/npm/iobroker.emby.png?downloads=true)
 
-# IoBroker.emby ===================
+# IoBroker.emby
 Mit diesem Adapter können Sie eine Verbindung zu Ihrem Emby Server herstellen und diesen steuern.
 
 Bitte befolgen Sie die Schritte, um sicherzustellen, dass der Adapter ordnungsgemäß funktioniert und Sie alle Geräte sehen können.
@@ -44,7 +44,7 @@ Bitte befolgen Sie die Schritte, um sicherzustellen, dass der Adapter ordnungsge
 | ------------- | ------------- | ------------- |
 | x.media.description | Beschreibung der angezeigten Datei. | |
 | x.media.isMuted | Wenn das Medium stummgeschaltet ist. | Nicht alle Geräte unterstützen dies und werden falsch sein. |
-| x.media.state | Zustand der Medien. | spielen, pausiert, im Leerlauf
+| x.media.state | Zustand der Medien. | spielen, pausiert, im Leerlauf |
 | x.media.title | Der Titel der angezeigten Datei. | |
 | x.media.type | Der Typ der angezeigten Datei. | Episode, Film, Audio, keine usw. |
 | x.media.seasonName | Der Name der Saison | Nur wenn .media.type Episode ist, wird es sonst leer sein. |
@@ -53,7 +53,7 @@ Bitte befolgen Sie die Schritte, um sicherzustellen, dass der Adapter ordnungsge
 ### Befehle
 | Befehl | Beschreibung | Info |
 | ------------- | ------------- | ------------- |
-| x.Befehl.dialog | Zeigt ein Dialogfeld auf dem ausgewählten Gerät an. | Zum Beispiel: Header \ | Ein Teil des Textes (wenn kein Header angegeben ist, ist IoBroker Header) |
+| x.Befehl.dialog | Zeigt ein Dialogfeld auf dem ausgewählten Gerät an. | Zum Beispiel: Header \ | Ein Teil des Textes (wenn kein Header angegeben ist, ist ioBroker Header) |
 | x.command.goHome | Sendet einen Befehl an das ausgewählte Gerät, das zum Homescreen | zurückkehrt |
 | x.Befehlsnachricht | Zeigt eine Nachricht für 5 Sekunden auf dem ausgewählten Gerät an. | |
 | x.command.play | Spielt Medien | Nur wenn Medien pausiert sind |

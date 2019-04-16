@@ -78,7 +78,7 @@ class Adapters extends Component {
                         Object.keys(pages).forEach(a => {
                             count++;
                             if (IGNORE.indexOf(type) === -1) {
-                                ads.push({name: a, type, installs: pages[a].installs, icon: this.props.language + '/' + pages[a].icon});
+                                ads.push({name: a, type, installs: pages[a].installs || 0, icon: this.props.language + '/' + pages[a].icon});
                             }
                         });
                     }
@@ -101,7 +101,8 @@ class Adapters extends Component {
                     <div className={this.props.classes.box}>
                         {this.state.adapters.map((a, i) => (
                             <div key={a + '_' + i} className={this.props.classes.adapter} title={a.name + ', ' + this.words.installed.replace('%s', a.installs)}>
-                                <img className={this.props.classes.icon} src={a.icon} alt={a.name} onClick={() => this.props.onNavigate(null, 'adapters', `adapterref/iobroker.${a.name}/README.md`)}/>
+                                <img className={this.props.classes.icon} src={a.icon} alt={a.name} onClick={() =>
+                                    this.props.onNavigate(null, 'adapters', `adapterref/iobroker.${a.name}/README.md`)}/>
                             </div>))}
                     </div>
                 </div>

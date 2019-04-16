@@ -7,7 +7,7 @@ import {MdArrowBack as IconMenuOpened} from 'react-icons/md';
 
 import Markdown from './Markdown';
 import Footer from './Footer';
-import Adapters from "./Pages/Adapters";
+import Adapters from './Pages/Adapters';
 
 const styles = theme => ({
     content: theme.content,

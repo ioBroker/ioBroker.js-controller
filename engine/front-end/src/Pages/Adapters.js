@@ -19,20 +19,17 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
-import ChartistGraph from 'react-chartist';
 
 import {MdClose as IconClose, MdExpandMore as IconExpandMore} from 'react-icons/md';
 import {MdReorder as IconList} from 'react-icons/md';
 import {MdViewModule as IconCards} from 'react-icons/md';
 import {MdUnfoldMore as IconExpandAll} from 'react-icons/md';
 import {MdUnfoldLess as IconCollapseAll} from 'react-icons/md';
-import {MdSearch as IconZoom} from 'react-icons/md';
 
 import Loader from '../Components/Loader';
 import I18n from '../i18n';
 import Utils from '../Utils';
 import AdapterStatistics from '../Components/AdapterStatistics';
-import PieStats from '../Components/PieStats';
 
 import 'chartist/dist/chartist.css';
 
@@ -373,7 +370,6 @@ class Adapters extends Component {
                 <Button size="small" color="primary" onClick={() => Utils.openLink(obj.github)}>{this.words.github}</Button>
                 <Button size="small" color="primary" onClick={() => this.setState({stats: adapter})}>{this.words.stats}</Button>
             </CardActions>)];
-
     }
 
     renderAdapterCard(type, adapter, obj) {

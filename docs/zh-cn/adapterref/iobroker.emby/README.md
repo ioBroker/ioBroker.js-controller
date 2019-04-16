@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.emby/README.md
 title: ioBroker.emby
-hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
+hash: s61YcNn5U2uccRdeMrSqE/NRr2cIAwEuwasYDW04BC4=
 ---
 ![商标](../../../en/adapterref/iobroker.emby/admin/emby.png)
 
@@ -13,7 +13,7 @@ hash: XYEHZRgXvaTUQdIdpHukiiA49d5+z0fo911hs7zTg8w=
 ![下载](https://img.shields.io/npm/dm/iobroker.emby.svg)
 ![NPM](https://nodei.co/npm/iobroker.emby.png?downloads=true)
 
-＃ioBroker.emby =================
+＃ioBroker.emby
 此适配器将允许您连接到您的Emby服务器并控制它。
 
 请按照步骤确保适配器正常工作，您可以看到所有设备。

@@ -21,21 +21,21 @@ Set comfoair - IP-adress, port and polling - intervall.
 
 ## Adapter & CC Ease
 
-In general it is not recommended to send data form 2 transmitters to one reciever in RS232 serial communication. The parallel use of CCEase and adapter can result in errors or, worst case, in damage to your comfoair-control! Therefore, when you start the ComfoAir - adapter your CC Ease will be shut down.
+In general it is not recommended to send data form 2 transmitters to one reciever in RS232 serial communication. The parallel use of CCEase and adapter can result in errors or, worst case, in damage to your comfoair-control! Therefore, when you start the ComfoAir - adapter your CC Ease shold be disconnected or will be shut down.
 The comfoair itself knows 4 different rs232-modes: CCEaseonly, PConly, PCMaster, PCLogmode. In PConly and PCMaster, CC-Ease is off.
-Once your adapter is running you can choose on of the following (adapter - rs232) modes, switching the control.rs232mode - object.
-
-### CC Ease only
-
-CC Ease is running, but your adapter will niether get data from the comfoair nor send commands! (rs232mode is CCEaseonly)
+In the instance - config you can choose one of the following connection - modes. Please tick only one of these! Once the adapter is running in the adapter only or the parallel mode, you're able to switch the rs232-mode of the comfoair (what is not recommended because a specific connection mode needs a specific rs232-mode!).
 
 ### Adapter only
 
-CC Ease is shut down, you can control your comfoair only with ioBroker. (rs232mode ist PCMaster, is default & recommended)
+CC Ease is disconnected or will be shut down when the adapter starts, you can control your comfoair only with ioBroker. (rs232mode ist PCMaster, is default & recommended).
+
+### Listening only
+
+The adapter catches the data sent from the comfoair or the CC Ease. CC Ease is running, no commands can be sent from the adapter. In this mode you get only a basic set of values (temperatures, ventilation states).
 
 ### Parallel Mode
 
-CC Ease and adapter are running. comfoiar rs232mode is set to 'PCLogmode'. You can control your ComfoAir with ioBroker and with the CC Ease unit. Tests have shown errorless - running in parallel for a longer period of time. But: You run this mode on your own risk.
+CC Ease and adapter are running. comfoiar rs232mode is set to 'PCLogmode'. The adapter is 'listening' for basic values and polling for others (choose an extended polling interval) You can control your ComfoAir with ioBroker and with the CC Ease unit. Before a command is sent (polling included) the rs232-mode is switched to PC Master. With every command sent, also a polling is done. Tests have shown errorless - running in parallel for a longer period of time. But: You run this mode on your own risk.
 
 ## Using the adapter
 
@@ -47,9 +47,13 @@ Tested on comfoair CA350.
 
 ## Changelog
 
+### 0.3.0
+
+-   new connection modes, i.e. 'listening only'-
+
 ### 0.2.1
 
-- smaller bugfixes.
+-   smaller bugfixes.
 
 ### 0.2.0
 
