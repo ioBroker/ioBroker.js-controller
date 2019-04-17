@@ -167,10 +167,9 @@ gulp.task('2.downloadAdapters', () => {
 gulp.task('3.syncDocs', done => documentation.syncDocs(done));
 
 // Build content.md file
-gulp.task('4.documentation', () => {
+gulp.task('4.documentation', () =>
     // build content
-    return documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md'));
-});
+    documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md')));
 
 // copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
 gulp.task('5.copyFiles', () => {

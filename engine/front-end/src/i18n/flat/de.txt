@@ -15,6 +15,7 @@ Beschreibung
 Einzelheiten
 Dokumentation
 Herunterladen
+lokale Bearbeitung
 Auf Github ändern
 Alle erweitern
 Erklärung
@@ -35,6 +36,7 @@ Lizenz
 Linux
 Liste der Adapter
 Maintainer
+Weitere Geräte
 Letzten Monat neu:
 Neuigkeiten, Ankündigungen und Ideen zu ioBroker
 Newsletter abonnieren
@@ -64,7 +66,6 @@ Autoren
 Kompaktmodus
 in die Zwischenablage kopiert
 in die Zwischenablage kopieren
-lokale Bearbeitung
 Trete jetzt die schnell wachsende Community bei, stelle Fragen und bekomme Antworten von Profis!
 Installation auf Linux
 installiert %s mal

@@ -16,6 +16,7 @@
   "Details": "Details",
   "Documentation": "Documentation",
   "Download": "Download",
+  "Edit local": "local edit",
   "Edit on github": "Edit on github",
   "Expand all": "Expand all",
   "Explanation": "Explanation",
@@ -65,7 +66,6 @@
   "compact": "Compact",
   "copied to clipboard": "copied to clipboard",
   "copy to clipboard": "copy to clipboard",
-  "edit local": "local edit",
   "forum-text": "Join now the rapidly growing community, ask questions and get answers from professionals and gurus!",
   "install on linux": "install on linux",
   "installed %s times": "installed %s times",
@@ -83,5 +83,6 @@
   "readme": "readme",
   "to Shop": "to Shop",
   "user": "user",
-  "version": "Version"
+  "version": "Version",
+  "More devices": "More devices"
 }

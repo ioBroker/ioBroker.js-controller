@@ -16,6 +16,7 @@
   "Details": "Detalhes",
   "Documentation": "Documentação",
   "Download": "Baixar",
+  "Edit local": "edição local",
   "Edit on github": "Editar no github",
   "Expand all": "Expandir todos",
   "Explanation": "Explicação",
@@ -65,7 +66,6 @@
   "compact": "compactar",
   "copied to clipboard": "Copiado para a área de transferência",
   "copy to clipboard": "copiar para área de transferência",
-  "edit local": "edição local",
   "forum-text": "Junte-se agora à comunidade em rápido crescimento, faça perguntas e obtenha respostas!",
   "install on linux": "instalar no linux",
   "installed %s times": "vezes instalado %s",
@@ -83,5 +83,6 @@
   "readme": "readme",
   "to Shop": "comprar",
   "user": "do utilizador",
-  "version": "versão"
+  "version": "versão",
+  "More devices": "Mais dispositivos"
 }

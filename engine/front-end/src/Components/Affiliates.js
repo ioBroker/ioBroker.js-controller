@@ -8,11 +8,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-import {MdHelpOutline as IconQuestion} from 'react-icons/md';
+import {MdExpandMore as IconExpandMore, MdHelpOutline as IconQuestion} from 'react-icons/md';
 
 import I18n from '../i18n';
 import Utils from '../Utils';
+import List from "../Markdown";
 
 const styles = theme => ({
     mainDiv: {
@@ -38,7 +42,8 @@ const styles = theme => ({
 
     },
     img: {
-        'mix-blend-mode': 'multiply',
+        mixBlendMode: 'multiply',
+        maxHeight: 128,
     },
     text: {
         flexGrow: 1,
@@ -66,14 +71,18 @@ const styles = theme => ({
         right: 2,
         opacity: 0.7,
         fontSize: 12,
+    },
+    moreDetails: {
+        display: 'block'
     }
 });
 
-class Affiliate extends Component {
+class Affiliates extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            explanation: false
+            explanation: false,
+            expanded: (window.localStorage && window.localStorage.getItem('Docs.affExpanded') === 'true') || false,
         };
     }
 
@@ -96,27 +105,44 @@ class Affiliate extends Component {
         </Dialog>)
     }
 
-    render() {
-        return (<div key="Affiliate" className={this.props.classes.mainDiv}>
-            {this.props.data.date ? (<div className={this.props.classes.date}>{I18n.t('Last edit')}: {this.props.data.date}</div>) : null}
-            {this.props.data.title ? (<div className={this.props.classes.title}>{this.props.data.title}</div>) : null}
-            {this.props.data.img ? (<div className={this.props.classes.imgDiv}><img  className={this.props.classes.img} src={this.props.data.img} alt="picture"/></div>) : null}
-            {this.props.data.text ? (<div className={this.props.classes.text}>{this.props.data.text}</div>) : null}
+    renderOne(one) {
+        return (<div key={one.text} className={this.props.classes.mainDiv}>
+            {one.date ? (<div className={this.props.classes.date}>{I18n.t('Last edit')}: {one.date}</div>) : null}
+            {one.title ? (<div className={this.props.classes.title}>{one.title}</div>) : null}
+            {one.img ? (<div className={this.props.classes.imgDiv}><img  className={this.props.classes.img} src={one.img} alt="picture"/></div>) : null}
+            {one.text ? (<div className={this.props.classes.text}>{one.text}</div>) : null}
             <div className={this.props.classes.buttonDiv}>
-                <Button className={this.props.classes.button} onClick={() => Utils.openLink(this.props.data.link)} color="secondary">{I18n.t('to Shop')} *</Button>
+                <Button className={this.props.classes.button} onClick={() => Utils.openLink(one.link)} color="secondary">{I18n.t('to Shop')} *</Button>
                 <div className={this.props.classes.partnerLink}>{I18n.t('* partner link')}</div>
             </div>
             <IconButton title={I18n.t('Explanation')} onClick={() => this.setState({explanation: true})} className={this.props.classes.question}><IconQuestion/></IconButton>
             {this.renderExplanation()}
         </div>);
     }
+
+    renderExpands() {
+        if (this.props.data.length > 1) {
+            return (<ExpansionPanel key="expansion" className={this.props.classes.morePanel}>
+                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.moreSummary}} expandIcon={<IconExpandMore />}>{I18n.t('More devices')}</ExpansionPanelSummary>
+                <ExpansionPanelDetails className={this.props.classes.moreDetails}>
+                    {this.props.data.filter((a, i) => i > 0).map(a => this.renderOne(a))}
+                </ExpansionPanelDetails>
+            </ExpansionPanel>)
+        } else {
+            return null;
+        }
+    }
+
+    render() {
+        return [this.renderOne(this.props.data[0]), this.renderExpands()];
+    }
 }
 
-Affiliate.propTypes = {
+Affiliates.propTypes = {
     language: PropTypes.string,
-    data: PropTypes.object,
+    data: PropTypes.array,
     theme: PropTypes.string,
     mobile: PropTypes.bool
 };
 
-export default withStyles(styles)(Affiliate);
+export default withStyles(styles)(Affiliates);

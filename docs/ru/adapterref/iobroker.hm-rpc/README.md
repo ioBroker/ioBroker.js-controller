@@ -135,6 +135,10 @@ CCU / Homematic поддерживает различные типы устро�
 ## FAQ
 
 ## Changelog
+### 1.9.10 (2019-04-12)
+* (foxriver76) fix meta
+* (foxriver76) added new meta data
+
 ### 1.9.9 (2019-03-17)
 * (foxriver76) window states are now role `value.window`
 

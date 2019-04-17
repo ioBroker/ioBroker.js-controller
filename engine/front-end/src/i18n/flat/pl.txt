@@ -15,6 +15,7 @@ Opis
 Detale
 Dokumentacja
 Ściągnij
+edycja lokalna
 Edytuj na githubie
 Rozwiń wszystkie
 Wyjaśnienie
@@ -35,6 +36,7 @@ Licencja
 Linux
 Lista adapterów
 opiekun
+Więcej urządzeń
 Nowość w zeszłym miesiącu:
 Wiadomości, ogłoszenia i pomysły na temat ioBroker
 Newsletter zapisz się
@@ -64,7 +66,6 @@ autorski
 kompaktowy
 skopiowane do schowka
 skopiuj do schowka
-edycja lokalna
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
 Instalacja w systemie Linux
 zainstalowanych %s razy

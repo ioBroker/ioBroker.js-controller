@@ -172,9 +172,25 @@ class AdapterStatistics extends Component {
         </Table>);
     }
 
-    render() {
+    renderContent() {
         const { classes } = this.props;
+        return [
+            (<h2>{I18n.t('Total count: ')} {this.props.statistics.adapters[this.props.adapter]}</h2>),
+            (<Paper className={classes.paper + ' ' + classes.paperPie + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+                <PieStats
+                    data={this.props.statistics.versions[this.props.adapter]}
+                    size={'45%'}
+                    height={400}
+                    hideNumbersInLegend={true}
+                    startFromPercent={3}
+                    series={I18n.t('Count')}
+                />
+            </Paper>),
+            (<Paper className={classes.paper + ' ' + classes.paperTable + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>{this.renderTable()}</Paper>)
+        ]
+    }
 
+    render() {
         return (
             <Dialog
                 className={this.props.classes.dialog}
@@ -186,18 +202,12 @@ class AdapterStatistics extends Component {
             >
                 <DialogTitle id="max-width-dialog-title">{I18n.t('Adapter %s statistics', this.props.adapter)}</DialogTitle>
                 <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
-                    <h2>{I18n.t('Total count: ')} {this.props.statistics.adapters[this.props.adapter]}</h2>
-                    <Paper className={classes.paper + ' ' + classes.paperPie + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
-                        <PieStats
-                            data={this.props.statistics.versions[this.props.adapter]}
-                            size={'45%'}
-                            height={400}
-                            hideNumbersInLegend={true}
-                            startFromPercent={3}
-                            series={I18n.t('Count')}
-                        />
-                    </Paper>
-                    <Paper className={classes.paper + ' ' + classes.paperTable + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>{this.renderTable()}</Paper>
+                    {
+                        !this.props.statistics ||
+                        !this.props.statistics.versions ||
+                        !this.props.statistics.versions[this.props.adapter] ? (<Paper>No info</Paper>) :
+                            this.renderContent()
+                    }
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => this.props.onClose()} color="primary">{I18n.t('Close')}</Button>

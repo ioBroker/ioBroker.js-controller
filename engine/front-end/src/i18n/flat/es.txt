@@ -15,6 +15,7 @@ Descripción
 Detalles
 Documentación
 Descargar
+edición local
 Editar en github
 Expandir todo
 Explicación
@@ -35,6 +36,7 @@ Licencia
 Linux
 Lista de adaptadores
 mantenedor
+Más dispositivos
 Nuevo en el mes pasado:
 Noticias, anuncios e ideas sobre ioBroker.
 Subscripción de correspondencia
@@ -64,7 +66,6 @@ autores
 compacto
 Copiado al portapapeles
 copiar al portapapeles
-edición local
 ¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!
 instalar en Linux
 %s instalada veces

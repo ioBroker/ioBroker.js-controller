@@ -16,6 +16,7 @@
   "Details": "详细信息",
   "Documentation": "文档",
   "Download": "下载",
+  "Edit local": "本地编辑",
   "Edit on github": "在github上编辑",
   "Expand all": "展开全部",
   "Explanation": "说明",
@@ -65,7 +66,6 @@
   "compact": "紧凑",
   "copied to clipboard": "复制到剪贴板",
   "copy to clipboard": "复制到剪贴板",
-  "edit local": "本地编辑",
   "forum-text": "社区正快速发展，欢迎现在加入，提出问题并获得答案！",
   "install on linux": "在Linux上安装",
   "installed %s times": "安装%s'的次数",
@@ -83,5 +83,6 @@
   "readme": "自述",
   "to Shop": "去商店",
   "user": "用户名",
-  "version": "版本"
+  "version": "版本",
+  "More devices": "更多设备"
 }

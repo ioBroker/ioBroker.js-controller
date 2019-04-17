@@ -15,6 +15,7 @@ Descrizione
 Dettagli
 Documentazione
 Scaricare
+modifica locale
 Modifica su github
 Espandi tutto
 Spiegazione
@@ -35,6 +36,7 @@ Licenza
 Linux
 Elenco di adattatori
 Manutentore
+Più dispositivi
 Novità del mese scorso:
 Notizie, annunci e idee su ioBroker
 Newsletter iscriviti
@@ -64,7 +66,6 @@ autori
 compatto
 copiato negli appunti
 copia negli appunti
-modifica locale
 Unisciti ora alla comunità in rapida crescita, fai domande e ottieni risposte!
 installare su linux
 %s installato volte

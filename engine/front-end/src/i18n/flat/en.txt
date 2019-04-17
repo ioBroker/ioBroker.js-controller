@@ -15,6 +15,7 @@ Description
 Details
 Documentation
 Download
+local edit
 Edit on github
 Expand all
 Explanation
@@ -35,6 +36,7 @@ License
 Linux
 List of adapters
 Maintainer
+More devices
 New in last month:
 News, announcements and ideas about ioBroker
 Newsletter subscribe
@@ -64,7 +66,6 @@ Authors
 Compact
 copied to clipboard
 copy to clipboard
-local edit
 Join now the rapidly growing community, ask questions and get answers from professionals and gurus!
 install on linux
 installed %s times

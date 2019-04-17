@@ -15,6 +15,7 @@ Omschrijving
 Details
 Documentatie
 Download
+lokale bewerking
 Bewerken op github
 Alles uitvouwen
 Uitleg
@@ -35,6 +36,7 @@ Licentie
 Linux
 Lijst met adapters
 Beheerder
+Meer apparaten
 Nieuw in vorige maand:
 Nieuws, aankondigingen en ideeën over ioBroker
 Nieuwsbrief abonnement
@@ -64,7 +66,6 @@ auteurs
 compact
 gekopieerd naar het klembord
 Kopieer naar klembord
-lokale bewerking
 Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!
 installeren op linux
 geïnstalleerd %s keer

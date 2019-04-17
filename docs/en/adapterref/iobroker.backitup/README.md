@@ -454,7 +454,7 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 The MIT License (MIT)
 
-Copyright (c) 2019 simatec <nais@gmx.net>
+Copyright (c) 2018 - 2019 simatec <nais@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

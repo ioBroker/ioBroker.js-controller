@@ -16,6 +16,7 @@
   "Details": "Details",
   "Documentation": "Documentatie",
   "Download": "Download",
+  "Edit local": "lokale bewerking",
   "Edit on github": "Bewerken op github",
   "Expand all": "Alles uitvouwen",
   "Explanation": "Uitleg",
@@ -65,7 +66,6 @@
   "compact": "compact",
   "copied to clipboard": "gekopieerd naar het klembord",
   "copy to clipboard": "Kopieer naar klembord",
-  "edit local": "lokale bewerking",
   "forum-text": "Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!",
   "install on linux": "installeren op linux",
   "installed %s times": "geïnstalleerd %s keer",
@@ -83,5 +83,6 @@
   "readme": "Leesmij",
   "to Shop": "winkelen",
   "user": "gebruiker",
-  "version": "versie"
+  "version": "versie",
+  "More devices": "Meer apparaten"
 }

@@ -30,7 +30,7 @@ import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
 import Editor from './Pages/Editor';
-import Affiliate from './Components/Affiliate';
+import Affiliates from './Components/Affiliates';
 
 const styles = theme => ({
     root: {
@@ -463,12 +463,12 @@ class Markdown extends Router {
             const m = a.trim().match(/<([-.\w\d_@]+)>$/);
             if (m) {
                 const email = m[1];
-                return (<span className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
+                return (<span key={a} className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
                     Utils.onCopy(e, email);
                     this.setState({tooltip: I18n.t('Copied')});
                 }}>{a.replace(m[0], '').trim()}</span>);
             } else {
-                return (<span className={this.props.classes.name}>{a}</span>);
+                return (<span key={a} className={this.props.classes.name}>{a}</span>);
             }
         });
     }
@@ -477,10 +477,10 @@ class Markdown extends Router {
         const data = [];
 
         if (this.state.header.translatedFrom) {
-            data.push((<div className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>));
+            data.push((<div key="translatedFrom" className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>));
         }
         if (this.state.header.adapter) {
-            data.push((<h1>{[
+            data.push((<h1 key="h1">{[
                 this.state.header.logo ? (<img key="logo" src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
                 (<div key="title" className={this.props.classes.titleText}>{this.state.header.title}</div>)
             ]}</h1>));
@@ -501,7 +501,7 @@ class Markdown extends Router {
                     ADAPTER_CARD
                         .filter(attr => this.state.header.hasOwnProperty(attr))
                         .map(attr => (
-                            <ListItem className={this.props.classes.adapterCardListItem}>
+                            <ListItem key={attr} className={this.props.classes.adapterCardListItem}>
                                 <div className={this.props.classes.adapterCardAttr}>{I18n.t(attr)}: </div>
                                 <span>{attr === 'authors' ? this.formatAuthors(this.state.header[attr]) : this.state.header[attr].toString()}</span>
                             </ListItem>))}
@@ -514,9 +514,9 @@ class Markdown extends Router {
                 <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails classes={{root: this.props.classes.badgesDetails}}>{
                     Object.keys(this.state.header).filter(attr => attr.startsWith('BADGE-'))
-                        .map(attr => [
-                                this.state.header[attr].indexOf('nodei.co') !== -1 ? (<br/>) : null,
-                                (<img src={this.state.header[attr]} alt={attr.substring(6)}/>)
+                        .map((attr, i) => [
+                                this.state.header[attr].indexOf('nodei.co') !== -1 ? (<br key={'br' + i}/>) : null,
+                                (<img key={'img' + i} src={this.state.header[attr]} alt={attr.substring(6)}/>)
                             ]
                         )}
                 </ExpansionPanelDetails>
@@ -562,14 +562,14 @@ class Markdown extends Router {
 
     renderAffiliates() {
         if (!this.state.affiliate) return null;
-        return this.state.affiliate.map(a =>
-            (<Affiliate
-                key={a.text}
-                language={this.props.language}
-                mobile={this.props.mobile}
-                theme={this.props.theme}
-                data={a}
-            />));
+
+        return (<Affiliates
+            key="affiliates"
+            language={this.props.language}
+            mobile={this.props.mobile}
+            theme={this.props.theme}
+            data={this.state.affiliate}
+        />);
     }
 
     onToggleContentButton() {
