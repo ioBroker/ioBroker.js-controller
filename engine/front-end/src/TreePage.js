@@ -155,8 +155,9 @@ class TreePage extends Router {
         fetch(`${contentPath}?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
             .then(res => res.json())
             .then(content => {
-                let path = this.state.path;
-                if (!this.state.path) {
+                const location = Router.getLocation();
+                let path = location.page;
+                if (!path) {
                     path = TreePage.findFirstPage(content);
                 }
 
@@ -166,6 +167,9 @@ class TreePage extends Router {
 
     onHashChange(location) {
         if (location.page !== this.state.path) {
+            if (!location.page) {
+                location.page = TreePage.findFirstPage(this.state.content);
+            }
             this.setState({path: location.page});
         }
     }

@@ -8,7 +8,7 @@ https://codepen.io/robinselmer/pen/vJjbOZ
 */
 
 import I18n from '../i18n';
-import Footer from '../Footer';
+// import Footer from '../Footer';
 
 const styles = theme => ({
     content: Object.assign({background: 'black', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}, theme.content),

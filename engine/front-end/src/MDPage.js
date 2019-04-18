@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from "@material-ui/core/styles";
+import {withStyles} from '@material-ui/core/styles';
 
 import {MdMenu as IconMenuClosed} from 'react-icons/md';
 import {MdArrowBack as IconMenuOpened} from 'react-icons/md';
@@ -56,6 +56,9 @@ class MDPage extends Component {
         if (this.props.mobile !== nextProps.mobile) {
             //setTimeout(() => this.forceUpdate(), 100);
         }
+        if (this.props.path !== nextProps.path) {
+            this.forceUpdate();
+        }
     }
 
     renderOpenCloseButton() {
@@ -93,7 +96,7 @@ class MDPage extends Component {
         return [
             this.renderOpenCloseButton(),
             (<div key="mdpage" className={this.props.classes.content + ' ' + (!this.props.mobile && !this.props.menuOpened ? this.props.classes.contentMenuClosed : '')} ref={this.contentRef}>
-                {this.props.path === 'adapters.md' ?
+                {this.props.path === 'adapters.md' || this.props.path === 'adapters' ?
                     (<Adapters path={this.props.path}
                          language={this.props.language}
                          theme={this.props.theme}

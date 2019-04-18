@@ -16,7 +16,6 @@ import {MdExpandMore as IconExpandMore, MdHelpOutline as IconQuestion} from 'rea
 
 import I18n from '../i18n';
 import Utils from '../Utils';
-import List from "../Markdown";
 
 const styles = theme => ({
     mainDiv: {
@@ -109,7 +108,7 @@ class Affiliates extends Component {
         return (<div key={one.text} className={this.props.classes.mainDiv}>
             {one.date ? (<div className={this.props.classes.date}>{I18n.t('Last edit')}: {one.date}</div>) : null}
             {one.title ? (<div className={this.props.classes.title}>{one.title}</div>) : null}
-            {one.img ? (<div className={this.props.classes.imgDiv}><img  className={this.props.classes.img} src={one.img} alt="picture"/></div>) : null}
+            {one.img ? (<div className={this.props.classes.imgDiv}><img className={this.props.classes.img} src={one.img} alt="product"/></div>) : null}
             {one.text ? (<div className={this.props.classes.text}>{one.text}</div>) : null}
             <div className={this.props.classes.buttonDiv}>
                 <Button className={this.props.classes.button} onClick={() => Utils.openLink(one.link)} color="secondary">{I18n.t('to Shop')} *</Button>

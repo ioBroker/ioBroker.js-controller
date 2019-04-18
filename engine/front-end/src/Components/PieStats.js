@@ -824,6 +824,7 @@ class PieStats extends Component {
                     labels.push(I18n.t('others'));
                     series.push({name: I18n.t('others'), value: others});
                     const d = {};
+                    // eslint-disable-next-line
                     labels.forEach((l, i) => d[l] = series[i]);
                     labels = Object.keys(d).sort((a, b) => d[b].value - d[a].value);
                     series = labels.map(l => d[l]);

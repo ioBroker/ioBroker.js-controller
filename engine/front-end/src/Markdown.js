@@ -666,7 +666,7 @@ class Markdown extends Router {
 
     replaceHref(reactObj) {
         const parts = (this.props.path || '').split('/');
-        const fileName = parts.pop();
+        // const fileName = parts.pop();
         const prefix = parts.join('/') + '/';
 
         if (reactObj && reactObj.props && reactObj.props.children) {
@@ -696,7 +696,6 @@ class Markdown extends Router {
                                 {item.props.children ? item.props.children[0] : ''}
                             </div>);
                         }
-
                     }
                 }
 
