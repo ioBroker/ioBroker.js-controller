@@ -1,8 +1,6 @@
 ---
-title:       "Visualisierung"
-lastChanged: "13.09.2018"
+local: true
 ---
-
 # Widgets
 
 
@@ -25,7 +23,7 @@ Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
  
 ## **Generell**
 
-![001_Widget_Generell](../media/vis/vis_widgets_001_Widget_Generell.jpg)  
+![001_Widget_Generell](media/vis_widgets_001_Widget_Generell.jpg)  
 
 Attribut|Beschreibung|
 ----|----|
@@ -39,7 +37,7 @@ Inaktiv (locked)|:construction:
 ## **Sichtbarkeit**
 
 Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig gemacht werden.  
-![002_Widget_Sichtbarkeit](../media/vis/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)  
+![002_Widget_Sichtbarkeit](media/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)  
 
 
 Attribut|Beschreibung|
@@ -50,7 +48,7 @@ Wert für die Bedingung|...dem hier eingebenen Wert entspricht.
 
 ## **Allgemein**
 
-![](../media/vis/vis_widgets_003_Widget_Allgemein.jpg)  
+![](media/vis_widgets_003_Widget_Allgemein.jpg)  
 Der Abschnitt 'Allgemein' ist für jedes Widget spezifisch 
 und wird bei den einzelnen Widgets näher beschrieben. 
 In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.  
@@ -60,7 +58,7 @@ Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten
 und können den eigenen Wünschen angepasst werden:
 
 ## **CSS allgemein**
-![](../media/vis/vis_widgets_004_CSS_allgemein.jpg)  
+![](media/vis_widgets_004_CSS_allgemein.jpg)  
 
 Attribut|Beschreibung|
 ----|----|
@@ -75,10 +73,10 @@ opacity|Durchsichtigkeit  (0=undurchsichtig ->Bild unsichtbar .. 1=durchsichtig 
 
 ## **CSS Font & Text**
 
-![005_CSS_Font_Text](../media/vis/vis_widgets_005_CSS_Font_Text.jpg)  
+![005_CSS_Font_Text](media/vis_widgets_005_CSS_Font_Text.jpg)  
 
 Attribut|Beschreibung|
-----|----|  
+----|----|
 color|Schriftfarbe  (über Auswahldialog oder per Farbcode)  
 text-align|Bündigkeit des Textes (links, rechts, zentriert)  
 text-shadow|Farbe des Textschattens  
@@ -93,28 +91,26 @@ word-spacing|Wortabstand
 
 ## **CSS-Hintergrund**
 
-![006_CSS_Hintergrund](../media/vis/vis_widgets_006_CSS_Hintergrund.jpg)  
+![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)  
 
 Attribut|Beschreibung|
-----|----|  
+----|----|
 background|Hier können mehrere der folgenden Eigenschaften gemeinsam angegeben werden  
 -color|Farbe des Hintergrunds  
 -image|Hintergrundbild  
 -repeat|Legt fest, ob ein Hintergrund über die gesamte Breite oder/und Höhe eines Elements wiederholt wird.  
 -attachement|Legt fest, ob ein Hintergrundbild fest ist, oder beim Scrollen mitverschoben wird  
--position|Ausrichtung des Hintergrundbildes (https://www.w3schools.com/cssref/pr_background-position.asp)  
+-position|[Ausrichtung des Hintergrundbildes]  
 -size|Größe des Hintergrundbildes  
 -clip|Regelt die Überschneidung mit dem Rand  
--origin|Koordinatensystemursprung für Bildkoordinaten  
-
-(siehe https://www.w3schools.com/cssref/css3_pr_background.asp)  
+-origin|Koordinatensystemursprung für Bildkoordinaten (siehe [w3schools background])  
 
 ## **CSS Border**
 
-![007_CSS_Border](../media/vis/vis_widgets_007_CSS_Border.jpg)  
+![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)  
 
 Attribut|Beschreibung|
-----|----|  
+----|----|
 -width|Dicke der Umrandung  
 -style|Linienart der Umrandung  
 -color|Farbe der Umrandung  
@@ -122,10 +118,10 @@ Attribut|Beschreibung|
 
 ## **CSS Schatten und Abstand**
 
-![008_CSS_Schatten_Abstand](../media/vis/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
+![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
 
-Attribut|Beschreibung|
-----|----|  
+Attribut|Beschreibung|  
+----|----|
 padding|Versatz vom Rand der Widget-Box  
 padding-left|Versatz auf der linken Seite  
 padding-top|Versatz auf der oberen Seite  
@@ -137,10 +133,5 @@ margin-right|Rechter Rand um das Widget
 margin-bottom|Unterer Rand um das Widget  
 margin-left|Linker Rand um das Widget
 
-
-
-
-
-[185]: ../media/vis/widget_images/swipe/Prev_Carousel.png
-[186]: ../media/vis/widget_images/swipe/Prev_Swipe.png
-
+[Ausrichtung des Hintergrundbildes]: https://www.w3schools.com/cssref/pr_background-position.asp
+[w3schools background]: https://www.w3schools.com/cssref/css3_pr_background.asp
