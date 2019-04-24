@@ -9,6 +9,7 @@ node_js:
   - '6'
   - '8'
   - '10'
+  - '12'
 before_install:
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
