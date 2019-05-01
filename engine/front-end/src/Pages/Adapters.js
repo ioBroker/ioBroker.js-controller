@@ -109,8 +109,17 @@ const styles = theme => ({
         paddingRight: 5,
         width: 100
     },
+    cardFilterDiv: {
+        position: 'relative',
+        marginTop: 5,
+    },
     cardFilter: {
         marginLeft: 10,
+    },
+    filterCloseButton: {
+        position: 'absolute',
+        top: 0,
+        right: -10,
     },
     cardVersionName: {
         background: 'gray',
@@ -137,6 +146,8 @@ const styles = theme => ({
     headerButtonMode: {
         marginRight: 10,
         marginLeft: 10,
+        height: 37,
+        marginTop: 6,
     },
     headerButtons: {
 
@@ -210,7 +221,7 @@ const styles = theme => ({
     buttonGap: {
         flex: 2,
         display: 'inline-block'
-    }
+    },
 });
 
 let adaptersLastScroll = 0;
@@ -288,7 +299,6 @@ class Adapters extends Component {
                                 return {name: item.trim(), email: ''};
                             }
                         });
-
                     }
                     obj.keywords = obj.keywords || '';
                     obj.keywords += obj.title;
@@ -447,6 +457,16 @@ class Adapters extends Component {
         }
     }
 
+    onFilter(value) {
+        this.filterTimeout && clearTimeout(this.filterTimeout);
+        this.filterTimeout = setTimeout(() => {
+            this.filterTimeout = null;
+            this.setState({filter: this.state.fastFilter});
+        }, 300);
+        this.setState({fastFilter: value});
+        window.localStorage && window.localStorage.setItem('Docs.afilter', value);
+    }
+
     renderHeader() {
         return (<div className={this.props.classes.pageHeader} key="header">
             <span className={this.props.classes.pageTitle}>{this.props.mobile ? I18n.t('Adapters') : I18n.t('List of adapters')}</span>
@@ -460,19 +480,17 @@ class Adapters extends Component {
             >{
                 this.state.tableView ? (<IconCards fontSize="small"/>) : (<IconList fontSize="small"/>)
             }</IconButton>) : null}
-            <Input placeholder={I18n.t('Filter')}
+            <div className={this.props.classes.cardFilterDiv}>
+                <Input placeholder={I18n.t('Filter')}
                    className={this.props.classes.cardFilter}
                    value={this.state.fastFilter}
-                   onChange={e => {
-                       this.filterTimeout && clearTimeout(this.filterTimeout);
-                       this.filterTimeout = setTimeout(() => {
-                           this.filterTimeout = null;
-                           this.setState({filter: this.state.fastFilter});
-                       }, 300);
-                       this.setState({fastFilter: e.target.value});
-                       window.localStorage && window.localStorage.setItem('Docs.afilter', e.target.value);
-                   }}
-            />
+                   onChange={e => this.onFilter(e.target.value)}
+            />{
+                this.state.fastFilter ?
+                    (<IconButton className={this.props.classes.filterCloseButton} onClick={() => this.onFilter('')}><IconClose  fontSize="small"/></IconButton>) :
+                    null
+            }
+            </div>
             <div className={this.props.classes.headerGapButtons}/>
             <div className={this.props.classes.headerDivButtons}>
                 {this.props.mobile || !this.state.tableView ? (<IconButton key="expandAll" className={this.props.classes.headerButtons} title={I18n.t('Expand all')} onClick={() => this.onExpandAll()}><IconExpandAll fontSize="small"/></IconButton>) : null}
