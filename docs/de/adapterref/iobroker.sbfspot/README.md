@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
+hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -15,15 +15,17 @@ hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
 
 # IoBroker.sbfspot
 Dieser Adapter liest Daten von SMA-Wechselrichtern mit sbfspot.
-Jetzt werden beide Datenbanktypen (mySQL und sqlite) unterstützt.
+Nun werden beide Datenbanktypen (mySQL und sqlite) unterstützt.
 Seit Version 0.2.3 steht ein eigenes vis-Widget zur Verfügung, um historische Daten anzuzeigen.
 
-Hinweise:
-
+## Hints
 * Verwenden Sie die neueste Version von sbfspot von https://github.com/SBFspot/SBFspot oder von https://github.com/rg-engineering/SBFspot
 * Adapter, sbfspot und Datenbanken (mySQL oder sqlite) müssen auf demselben System ausgeführt werden, z. Himbeer-PI
 * Das Installationshandbuch für sbfspot auf Raspberry Pi (oder ähnliches) finden Sie unter https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite oder https://www.rg-engineering.eu/index. php / produkte / software / plugin-fuer-iobroker-sbfspot
 * Für Raspberry Pi gibt es ein halbautomatisiertes Konfigurationstool, das unter https://github.com/SBFspot/sbfspot-config verfügbar ist
+
+## Bekannte Probleme
+* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler oder neue Funktionen entdecken
 
 ## Changelog
 

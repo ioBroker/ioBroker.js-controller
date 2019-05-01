@@ -42,7 +42,7 @@ In settings URL like http://api.daswetter.com/index.php?api_lang=de&localidad=xx
 Now we have implemented a "auto-repair" which changes to structure to documented shape.
 
 ## known issues
-see github issue list
+* please create issues at [github](https://github.com/rg-engineering/ioBroker.daswetter/issues) if you find bugs or whish new features
 
 ## Changelog
 

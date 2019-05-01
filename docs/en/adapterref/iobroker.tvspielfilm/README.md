@@ -2,7 +2,6 @@
 BADGE-Number of Installations: http://iobroker.live/badges/tvspielfilm-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.tvspielfilm.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.tvspielfilm.svg
-BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.tvspielfilm/issues.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.tvspielfilm.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.tvspielfilm/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tvspielfilm?branch=master&svg=true
@@ -140,6 +139,9 @@ For a nicer look the following CSS is suggested to be used to the VIS editor.
 * Wildcards for blacklist
 
 ## Changelog
+### 1.1.0 (2019-04-28)
+* (pix) String search added
+
 ### 1.0.4 (2017-10-17)
 * (apollon77) Fehlerkorrekturen io-package.json
 
@@ -170,7 +172,7 @@ For a nicer look the following CSS is suggested to be used to the VIS editor.
 
 ### 0.1.0 (2016-05-08)
 * (pix) Blacklist function fixed
- 
+
 ### 0.0.1 (2016-05-07)
 * (pix) Adapter created
 

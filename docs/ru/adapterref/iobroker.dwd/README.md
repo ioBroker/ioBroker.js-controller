@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.dwd/README.md
 title: ioBroker.dwd
-hash: gXJvjfgglI6y5oJqwdC50YR9P4YBeVesrrHZEV1tgHU=
+hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
 ---
 ![логотип](../../../en/adapterref/iobroker.dwd/admin/dwd.png)
 
@@ -13,12 +13,12 @@ hash: gXJvjfgglI6y5oJqwdC50YR9P4YBeVesrrHZEV1tgHU=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.dwd.png?downloads=true)
 
-# IoBroker.dwd =================
+# IoBroker.dwd
 Copyright Deutscher Wetterdienst
 
 Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON link.
 
-Этот адаптер загружает предупреждения о погоде от немецкой службы погоды по ссылке JSON.
+Этот адаптер загружает предупреждения о погоде из немецкой службы погоды по ссылке JSON.
 
 ## Сделать
 * Обработка тайм-аутов FTP
@@ -113,7 +113,7 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

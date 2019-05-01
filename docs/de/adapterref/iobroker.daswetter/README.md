@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter.
-hash: 44CyV5g3E0YiBrmL0XqYnV9wGegPocPi9FMLu641cH8=
+hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 ---
 ![Logo](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -50,7 +50,7 @@ In den Einstellungen muss eine URL wie http://api.daswetter.com/index.php?api_la
 Jetzt haben wir eine "Autoreparatur" implementiert, die ihre Struktur in eine dokumentierte Form ändert.
 
 ## Bekannte Probleme
-siehe github-problemliste
+* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.daswetter/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
 

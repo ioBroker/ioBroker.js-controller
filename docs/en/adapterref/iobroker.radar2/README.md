@@ -62,7 +62,11 @@ sudo apt-get install libcap2-bin arp-scan bluetooth bluez libbluetooth-dev libud
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp-scan`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which node`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hcitool`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hciconfig`)
 ```
+
+If you update node or some system tools the above should be executed again!
 
 On Windows (and maybe osx) there is no arp-scan which means that only ping will be used but no IP-mac addresses can be scanned!
 
@@ -94,6 +98,13 @@ This methodology of moving settings is working also between systems but may not 
 * Adapter may have problems with bluetooth on windows as well, also arp-scan is not available on windows, will use only ping then which cannot detect IP mac adresses!.
 
 ## Changelog
+
+### 1.2.0
+
+* You may use now hcitool as only BT scanner instead of noble on linux (standatd)
+* _LastHere will not be change on restart
+* Standard scan cycle set to 20 seconds
+* Removed the 'remove-end' field and replaced it with a debug flag
 
 ### 1.0.7
 

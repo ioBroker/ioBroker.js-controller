@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
+hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -16,7 +16,7 @@ hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
 # IoBroker.ebus
 Dieser Adapter liest
 
-- Daten von ebusd mittels html
+- Daten von ebusd mit html
 
 In diesem Fall muss ebusd laufen und Daten senden können, z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, lastup und from global section werden analysiert. Alle anderen werden im Moment ignoriert.
 
@@ -25,6 +25,9 @@ Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefr
 Eine weitere Funktion besteht darin, einen Befehl an ebusd zu senden und eine Antwort zu erhalten, um z. Skripte.
 
 aktuell unterstützte ebusd-Version: 3.3
+
+## Bekannte Probleme
+* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler oder neue Funktionen finden
 
 ## Changelog
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bmw/README.md
 title: ! [Logo] (admin / bmw.png) Adapter für BMW ConnectedDrive-Daten
-hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
+hash: bfM+hfzdvekiGB2u/C4RAqSTulexr6oKxlddYBP8tdQ=
 ---
 # ![Logo](../../../en/adapterref/iobroker.bmw/admin/bmw.png) Adapter für BMW ConnectedDrive-Daten
 
@@ -16,25 +16,26 @@ hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
 ==============
 
 ### Adapter zum Auslesen von BMW ConnectedDrive-Daten
-Der Adapter versucht die ConnectedDrive-Daten für die angegebenen Benutzer.
+Der Adapter versucht die ConnectedDrive-Daten für die auf den angegebenen Benutzer registrierten Fahrzeuge.
 Man kann filtern, welche Daten angezeigt werden
 
-* zu diesen Diensten (ich verwende nur: Effizienz, Dynamik, Navigation und Remote_Execution). Wenn man 'debuggt!' die Debug-Ausgaben einschalten und damit sieht man, welche Daten er abfragt und geliefert wird. Adapter muss im Admin auf 'info' stehen!
-* Zu löschende Einträge (Bei mir Daten WIE: *modeltype, Serien, Basictype, Marke, Nummernschild, hasNavi, Fahrzeugtyp, dcOnly, hasSunRoof, hasRex, Steuerung, Antriebsstrang, doorCount, vehicleTracking, isoCountryCode, auxPowerRegular, auxPowerEcoPro, auxPowerEcoProPlus, ccmMessages*
-* Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList | name | lastTrip, spezifikationen | key | value, service | name | leistungen, cdpFeatures | name | status, cbsMessages | text | datum, lifeTimeList | name | value | charakteristikList | Merkmal | Anzahl, Remote_History | EventId, StorePortfolio | OfferCode* . bestehen nur zwei einträge mit '|' der Name des Arrays ist der erste Name des Arrays und der zweite Name des Arrays.
-* Einträge die in ihrer Hirarchie nach oben wandern sollen (bei mir *attributesMap, FahrzeugNachrichten, CBSMeldungen, TwoTimeTimer, Merkmalsliste, Lebenszeitliste, LastTripListe, Update, StorePortfolio*
-Der Standard ist für den Rest der Welt, in anderen Regionen können auch <https://b2vapi.bmwgroup.cn:8592> für China, <https://b2vapi.bmwgroup .us> für USA und <https://b2vapi.bmwgroup.com> für Europa / Rest der Welt probieren. www.bmw-connecteddrive.com wird hoffentlich immer auf den richtigen weitergeleitet.
+* zu diesen Diensten (ich verwende nur: Effizienz, Dynamik, Navigation und Remote_Execution).
+* Wenn man 'debug' einschaltet, wird der Log-in die Debug-Ausgaben einschalten und damit sieht man die Daten abfragt und geliefert. Adapter muss im Admin mindestens auf 'info' stehen!
+* zu löschende Einträge (Bei mir Daten wie: * modelType, Serie, basicType, Marke, Lizenzplatte, hasNavi, bodyType, dcOnly, hasRoof, hasRex, Lenkung, driveTrain, doorCount, vehicleTracking, isoCountryCode, auxPowerRegular, auxPowerEcoPro, AuxAppartArcArrachArmArcArrachArcArcArcArrachArcArcArrachArcArcArrachArcArcArrachArcArrachArcArrachArcArrachArcArrachArcArrachArcArrachArcArrachArcArcArracho
+* Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList | name | lastTrip, spezifikationen | key | value, service | name | services | cdpFeatures | name | status, cbsMessages | text | date, lifeTimeList | name | value, characterList | charakteristik | menge, entfernte_historie | eventId, storePortfolio | offerCode* . bestehen nur zwei einträge mit '|' der Name des Arrays ist der Name des Arrays und des zweiten Namens des Arrays.
+* Einträge die in ihre Hirarchie nach oben wandern sollen
+Der Standard ist für den Rest der Welt; .us> für USA und <https://b2vapi.bmwgroup.com> für Europa / Rest der Welt probieren. www.bmw-connecteddrive.com wird hoffentlich immer auf den richtigen weitergeleitet.
 * Man kann States umbenennen, wenn man im umbenennen ** originalName | neuerName ** verwendet. weder original noch der neue Name dürfen mehrmals vorkommen. '.' werden durch '_' ersetzt. Mehrere Einträge von ** x | y ** werden durch '**, **' getrennt. Damit kann man den Vin des Autos auf einigen '325i' umbenennen.
 * Der Adapter versteht jetzt auch 'sendTo' Kommandos. `sendTo ('bmw.0', 'send', '225xe.Versperren')` würde den Wagen auf 225xe umbenannt haben versperren, `sendTo ('bmw.0', 'send', '_ DatenNeuLaden')` würde ein Refresh ausführen und `sendTo ('bmw.0', 'debug', 'on')` (es geht auch 0,1, on, off, ein, aus, true, false) würde debug ein- oder ausschalten. Mit `sendTo ('bmw.0', 'get', '225xe.Versperren')` kann der Staat von Werten abgefragt werden `{val: 'Nicht gestartet', ack: true, ts: 1505839335870, q: 0, von: 'system.adapter.bmw.0', lc: 1505839335870}` zurück.
 * Im config kann man jetzt 2 Flags setzten: Alle Daten bei Adapter-Neustart löschen (Standard: ein) und alle Daten bei einem wiederholten Download nicht mehr runtergeladen werden löschen (Standard: aus). Damit kann man bei anderen Einstellungen die alten Zustände vergessen, wenn ein Kommunikationsfehler auftritt.
 
 Wenn der Adapter die Position vom Navigationssystem ablesen kann, wird diese mit Hilfe von Google auf eine Adresse und gibt diese unter navigation.formatted_address an.
 
-Ein spezieller '_RefresData'-Zustand wird von dem Admin.-Objekt bestimmt.
+Ein spezieller '_RefresData'-Zustand wird an denjenigen angelegt, der sich im Admin.object befindet.
 
 Wenn das Fahrzeug aktive Remote-Services hat (** Service ** muss bei den Services eingeschaltet sein!) Sollten Button-States angelegt werden. Diese Aktion kann durchgeführt werden, wenn der Objectviewer nicht mit einem Wert und *ack = false* beschrieben wird. Der Status dieses Status wird überschrieben, z.B ** PENDING ** oder ** EXECUTED ** (oder deutsche übersetzungen).
 
-Ab 1.2.0 werden im **debug!** - Modus **_ originalData** - Zustände generiert. Wenn ihr Probleme mit einigen Datenpunkten habt.
+Ab 1.2.0 werden im **debug** - Modus **_ originalData** - Zustände generiert. Wenn ihr Probleme mit einigen Datenpunkten habt.
 
 <sub>ps: Ich möchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>und</sub> <https://github.com/edent/BMW-i-Remote> <sub>für die Beispiele danken mit dener Quellen</sub>
 
@@ -45,7 +46,7 @@ Ab 1.2.0 werden im **debug!** - Modus **_ originalData** - Zustände generiert. 
 Installieren Sie über ioBroker.admin
 
 ## Aufbau
-Der Benutzername, das Passwort und die Datenfilter müssen im Adapter config eingegeben werden.
+Der Benutzername, das Passwort und die Datenfilter müssen im Adapter eingegeben werden.
 
 ### Todo für spätere Überarbeitungen
 ## Installation
@@ -70,7 +71,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mi
 ### 1.2.4
 * added states for last successful donload and error to see how old data is
 * Improved error handling when services are not available
-* added _originalData object (wen in debug!) for root request for available cars on this account
+* added _originalData object (wenn in debug) for root request for available cars on this account
 
 ### 1.2.3
 * Removed bug for remote-control
@@ -80,7 +81,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder mi
 ### 1.2.1
 * Removed RCT from possible services for remote control
 * Crerate a **.google_maps_link** state for the navigation which can be used to open a web-page with google maps to show the location.
-* set same level of debug if adapter is in debug mode and **debug!** is set
+* set same level of debug if adapter is in debug mode and **debug** is set
 
 ### 1.2.0 Test
 * Remoteservice implemented, basic functions like lock/unlock door or flash lights can be executed  

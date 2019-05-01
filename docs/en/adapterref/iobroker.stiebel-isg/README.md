@@ -25,6 +25,13 @@ Help or hints are welcome.
 * stiebel-eltron/tecalor internet service gateway (ISG)   
 
 ## Changelog
+### 1.4.4
+* bugfix for error handling
+
+### 1.4.3
+* Timeout of 5 seconds for sending commands to gather multiple commands to reduce the load of the ISG
+* Timeout for pulling deleted
+
 ### 1.4.2
 * Timeout of 10 seconds for pulling settings after multiple commands to reduce the load of the ISG
 
@@ -63,25 +70,6 @@ Help or hints are welcome.
 
 ### 1.1.0
 * Energymanagment added (ISG plus required)
-
-### 1.0.3
-* bugfix in version number
-
-### 1.0.2
-* code cleanup
-
-### 1.0.1
-* added two new groups for controls, roomtemp 1 and 2
-
-### 1.0.0
-* confirmed stable release
-
-### 0.1.0
-* release candidate for stable
-* additional controles added
-
-### 0.0.1
-* initial release
 
 ## License
 The MIT License (MIT)

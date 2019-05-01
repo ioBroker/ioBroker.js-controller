@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
+hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ---
 ![логотип](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
 ![Количество установок](http://iobroker.live/badges/homepilot-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.homepilot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
-![Открытые вопросы](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
 ![Знак Кодаси](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![Трэвис-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
@@ -23,7 +22,7 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 
 : ru: [Документация](/docs/en/doc_homepilot_en.md)
 
-: portugal: [Documentação](/docs/en/doc_homepilot_en.md)
+: Португалия: [Documentação](/docs/en/doc_homepilot_en.md)
 
 : Нидерланды: [Documentatie](/docs/en/doc_homepilot_en.md)
 
@@ -36,10 +35,11 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 : польша: [Dokumentacja](/docs/en/doc_homepilot_en.md)
 
 ## Дорожная карта
-* 1.1.0. Материализация дизайна для окна настроек адаптера в админке.
 * 1.4.0 получить список всех установленных продуктов duofern в вашей сети в окне настроек
 * 1.5.0 переставить дерево объектов в "homepilot.0.device.channel.state"
 * 2.0.0 получить данные в реальном времени со станции Homepilot (zwave)
+
+Вклад приветствуется!
 
 ## Changelog
 ### 1.1.1 (2019-01-09)
@@ -135,7 +135,7 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 pix
+Copyright (c) 2019 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

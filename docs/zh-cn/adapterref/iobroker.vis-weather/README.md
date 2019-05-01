@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis天气
-hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
+hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -21,9 +21,19 @@ hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
 
 ## Notes / wiki
 ###定义预测小时数
-默认情况下，预测图显示40小时（DasWetter）或36小时（wunderground）。如果你愿意只显示例如预测10小时，只需在vis-edit中删除oid_groups下不必要的OID。
+默认情况下，预测图显示40小时（DasWetter）或36小时（wunderground）。如果你愿意只显示例如预测10小时，只需删除vis-edit中oid_groups下不必要的OID。
+
+###使用DasWetter时不会自动创建OID
+通常，当您选择实例或数据结构时，将自动创建OID。当你得到“没有OID可用”时，检查你是否在DasWetter中使用“NextDaysDetailed”。
+您可能需要启用“NextDaysDetailed”。
+
+＃＃ 已知的问题
+*请在[github]（https://github.com/rg-engineering/ioBroker.vis-weather/issues）创建问题，如果您发现错误或新功能
 
 ## Changelog
+
+### 2.3.0 (2019-03-25)
+* (René) markings added
 
 ### 2.2.2 (2018-12-30)
 * (René) bug fix: If oid_date is not set when using weatherunderground, an unnecessary error message was issued and the plot was not shown
@@ -88,7 +98,7 @@ hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2018>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

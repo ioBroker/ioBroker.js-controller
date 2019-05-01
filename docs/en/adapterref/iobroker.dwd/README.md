@@ -1,6 +1,5 @@
 ![Logo](admin/dwd.png)
 # ioBroker.dwd
-=================
 
 ![Number of Installations](http://iobroker.live/badges/dwd-installed.svg) ![Number of Installations](http://iobroker.live/badges/dwd-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
@@ -108,7 +107,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

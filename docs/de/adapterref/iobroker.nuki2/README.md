@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
+hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -12,25 +12,29 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.nuki2.svg)
 ![Travis CI](https://travis-ci.org/Zefau/ioBroker.nuki2.svg?branch=master)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nuki2.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.nuki2.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki2.png?downloads=true)
 
-# IoBroker.nuki2 Mit diesem ioBroker-Adapter können Sie die [Nuki Smart Lock] (https://nuki.io/de/) mithilfe der [Nuki Bridge API] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/ # Überschrift - Einführung) und die [Nuki Web API](https://developer.nuki.io/page/nuki-web-api-111/3/) steuern und überwachen.
+# IoBroker.nuki2 Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock] (https://nuki.io/de/) mithilfe der [Nuki Bridge-API (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge) -http-api-170/4 / # (Einführung) und die [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 **Inhaltsverzeichnis**
 
 1. [Installation] (# Installation)
    1. [API-Token abrufen] (# get-a-api-token)
    2. [Callback-Funktion] (# Callback-Funktion)
    3. [Staaten] (# Staaten)
-2. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
+2. [Smart Home / Alexa Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
+   1. [abschließende Tür um 22 Uhr abends] (# abschließende Tür um 22 Uhr abends)
+   2. [Lassen Sie sich von Alexa über Sperrungsänderungen informieren] (# let-alexa-inform-you-about-lock-changes)
+   3. [Lassen Sie sich von Telegram über Sperrungsänderungen informieren] (# let-telegram-inform-you-about-lock-changes)
 3. [Changelog] (# changelog)
 4. [Credits] (# credits)
 5. [Lizenz] (# Lizenz)
 
 ## Installation
 ### Holen Sie sich ein API-Token
-So erhalten Sie Ihre Brückenmarkierung:
+So erhalten Sie Ihr Brücken-Token:
 
-1. Rufen Sie von einem beliebigen Browser in Ihrem Netzwerk `` http:// <bridge_ip>: <bridge_port> / auth``` an
+1. Rufen Sie in einem beliebigen Browser in Ihrem Netzwerk `` http:// <bridge_ip>: <bridge_port> / auth``` auf
 2. Die Brücke leuchtet auf
 2. Drücken Sie innerhalb von 30 Sekunden die Taste der Brücke
 3. Das Ergebnis des Browseraufrufs sollte folgendermaßen aussehen: `` `
@@ -41,7 +45,7 @@ So erhalten Sie Ihre Brückenmarkierung:
 Wenn die Callback-Funktion verwendet wird, versucht der Adapter, den Callback auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Alle Nuki-Staaten werden von der Nuki-Brücke auf dem neuesten Stand gehalten, wenn der Rückruf aktiviert ist.
 Rückrufe können auch manuell mit den folgenden URLs in jedem Browser festgelegt und entfernt werden:
 
-* Rückruf einstellen: `` http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <hostport>% 2Fapi% 2Fnuki & token = <bridgeToken> `` `
+* Rückruf einstellen: `` http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken> `` `
 * Callback entfernen: `` http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken> ``
 * Alle Callbacks auflisten: `` http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken> `` `
 
@@ -53,7 +57,7 @@ Als Gerät wird eine Brücke mit dem Namensmuster ```bridge__<name of bridge>```
 
 | Kanal | Zustand | Beschreibung |
 |:------- |:----- |:----------- |
-| - | \ _connected | Flag, das angibt, ob die Bridge mit dem Nuki-Server verbunden ist oder nicht
+| - | \ _connected | Flag, das angibt, ob die Bridge mit dem Nuki-Server verbunden ist oder nicht |
 | - | bridgeId | ID der Brücke / des Servers |
 | - | bridgeIp | IP-Adresse der Brücke |
 | - | bridgePort | Hafen der Brücke |
@@ -65,19 +69,19 @@ Als Gerät wird eine Brücke mit dem Namensmuster ```bridge__<name of bridge>```
 | - | versWifi | Version der Firmware der WiFi-Module (nur Hardware-Bridge) |
 | - | versApp | Version der Bridge-App (nur Software-Bridge) |
 
-#### Sperren (mit Nuki Bridge API)
+#### Locks (mit Nuki Bridge API)
 Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` angelegt. Die folgenden Kanäle / Status werden in jeder Sperre erstellt (bei Verwendung der Nuki Bridge-API):
 
 | Kanal | Zustand | Beschreibung |
 |:------- |:----- |:----------- |
-| - | Aktion | Löst eine Aktion auf die Sperre aus
+| - | Aktion | Löst eine Aktion auf die Sperre aus |
 | - | Brücke | Brücke des Nuki |
 | - | id | ID des Nuki |
-| - | name | Name des Nuki |
+| - | Name | Name des Nuki |
 | Status | - | Aktueller Status der Sperre |
-| Status | batterieKritisch | Gibt den kritischen Batteriestand an
+| Status | batterieKritisch | Gibt den kritischen Batteriestand an |
 | Status | lockState | Aktueller Sperrzustand des Nuki |
-| Status | gesperrt | Anzeige wenn die Tür verriegelt ist |
+| Status | gesperrt | Anzeige, wenn die Tür verriegelt ist |
 | Status | aktualisiert | Zeitstempel der letzten Aktualisierung |
 
 #### Sperren (mit Nuki Web API)
@@ -85,26 +89,26 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 
 | Kanal | Zustand | Beschreibung (mögliche Werte) |
 |:------- |:----- |:----------------------------- |
-| - | Aktion | Löst eine Aktion auf die Sperre aus
+| - | Aktion | Löst eine Aktion auf die Sperre aus |
 | - | id | ID des Nuki |
-| - | name | Name des Nuki |
+| - | Name | Name des Nuki |
 | Status | - | Aktueller Status der Sperre |
-| Status | batterieKritisch | Gibt den kritischen Batteriestand an
+| Status | batterieKritisch | Gibt den kritischen Batteriestand an |
 | Status | geschlossen | Anzeige, ob die Tür geschlossen ist (boolean von doorState) |
 | Status | doorState | Aktueller Türzustand des Nuki |
 | Status | letzteAktion | Letzte ausgelöste Aktion |
 | Status | lockState | Aktueller Sperrzustand des Nuki |
-| Status | gesperrt | Anzeige wenn die Tür verriegelt ist |
+| Status | gesperrt | Anzeige, wenn die Tür verriegelt ist |
 | Status | Modus | Der Smartlock-Modus <br> `{"0": 'UNINITIALIZED', "1": 'PAIRING', "2": 'NORMAL', "3": 'UNKNOWN', "4": 'MAINTENANCE'}` |
 | Status | auslösen | Der Staatsauslöser <br> `{"0": 'SYSTEM', "1": 'MANUAL', "2": 'BUTTON', "3": 'AUTOMATIC', "4": 'WEB', "5": 'APP'}` |
-| Status | auslösen | Der Staatsauslöser <br> `{&quot; 0 &quot;:&quot; SYSTEM &quot;,&quot; 1 &quot;:&quot; MANUAL &quot;,&quot; 2 &quot;:&quot; KNOPF &quot;,&quot; 3 &quot;:&quot; AUTOMATIC &quot;,&quot; 4 &quot;:&quot; WEB &quot;,&quot; 5 &quot;:&quot; APP &quot;} `|
+| Status | auslösen | Der Staatsauslöser <br> `{&quot; 0 &quot;:&quot; SYSTEM &quot;,&quot; 1 &quot;:&quot; MANUAL &quot;,&quot; 2 &quot;:&quot; BUTTON &quot;,&quot; 3 &quot;:&quot; AUTOMATIC &quot;,&quot; 4 &quot;:&quot; WEB &quot;,&quot; 5 &quot;:&quot; APP &quot; `|
 | config | - | Konfiguration des Schlosses |
 | config | gpsLatitude | Latitude |
 | config | gpsLongitude | Längengrad |
-| config | autoUnlatch | Trifft zu, wenn die Tür beim Entriegeln (Knopf) entriegelt werden soll
-| config | pairingEnabled | True, wenn das Pairing über die Smartlock-Schaltfläche | erlaubt ist
-| config | buttonEnabled | True, wenn die Schaltfläche auf dem Smartlock aktiviert ist
-| config | ledEnabled | True, wenn die LED am Smartlock aktiviert ist
+| config | autoUnlatch | True, wenn die Tür beim Entriegeln (Knopf) entriegelt werden soll |
+| config | pairingEnabled | True, wenn das Pairing über die Smartlock-Schaltfläche | erlaubt ist |
+| config | buttonEnabled | True, wenn die Schaltfläche auf dem Smartlock aktiviert ist |
+| config | ledEnabled | True, wenn die LED am Smartlock aktiviert ist |
 | config | ledBrightness | Die Helligkeit der LED: 0 (aus) bis 5 (max) |
 | config | fobAction1 | Die Fob-Aktion, wenn die Taste einmal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction2 | Die Fob-Aktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
@@ -113,30 +117,30 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 | config | Werbemodus | Der Werbemodus (Batterie sparen) <br> `{"0": 'AUTOMATIC', "1": 'NORMAL', "2": 'SLOW', "3": 'SLOWEST'}` |
 | config | Werbemodus | Der Werbemodus (Batterie sparen) <br> `{&quot; 0 &quot;: &#39;AUTOMATIC&#39;,&quot; 1 &quot;: &#39;NORMAL&#39;,&quot; 2 &quot;: &#39;SLOW&#39;,&quot; 3 &quot;: &#39;SLOWEST&#39;}` |
 | config | homekitState | Der Heimatkit-Staat <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
-| config | homekitState | Der Heimatkit-Staat <br> `{&quot; 0 &quot;: &#39;UNAVAILABLE&#39;, &#39;1&#39;: &#39;DEAKTIVIERT&#39;, &#39;2&#39;: &#39;ENABLED&#39;, &#39;3&#39;: &#39;ENABLED &amp; PAIRED&#39;}` |
+| config | homekitState | Der Heimatkit-Staat <br> `{&quot; 0 &quot;:&quot; NICHT VERFÜGBAR &quot;,&quot; 1 &quot;:&quot; DEAKTIVIERT &quot;,&quot; 2 &quot;:&quot; ENABLED &quot;,&quot; 3 &quot;:&quot; ENABLED &amp; PAIRED &quot;}` |
 | config | timezoneId | Die Zeitzonen-ID |
 | config.advanced | - | Erweiterte Konfiguration der Sperre |
-| config.advanced | totalDegrees | Die absolute Gesamtposition in Grad, die während der Kalibrierung erreicht wurde
-| config.advanced | unlockedPositionOffsetDegrees | Offset, der die entriegelte Position verändert
-| config.advanced | lockedPositionOffsetDegrees | Offset, der die gesperrte Position verändert
-| config.advanced | singleLockedPositionOffsetDegrees | Offset, der die einzelne gesperrte Position verändert
-| config.advanced | unlockedToLockedTransitionOffsetDegrees | Offset, der die Position ändert, an der der Übergang von nicht gesperrt zu gesperrt erfolgt
+| config.advanced | totalDegrees | Die absolute Gesamtposition in Grad, die während der Kalibrierung erreicht wurde |
+| config.advanced | unlockedPositionOffsetDegrees | Offset, der die entriegelte Position verändert |
+| config.advanced | lockedPositionOffsetDegrees | Offset, der die gesperrte Position verändert |
+| config.advanced | singleLockedPositionOffsetDegrees | Offset, der die einzelne gesperrte Position ändert |
+| config.advanced | unlockedToLockedTransitionOffsetDegrees | Offset, der die Position ändert, an der der Übergang von nicht gesperrt zu gesperrt erfolgt |
 | config.advanced | singleButtonPressAction | Die gewünschte Aktion, wenn die Taste einmal gedrückt wird <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | config.advanced | doubleButtonPressAction | Die gewünschte Aktion, wenn die Taste zweimal gedrückt wird <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | config.advanced | doubleButtonPressAction | Die gewünschte Aktion, wenn die Taste zweimal gedrückt wird <br> `{&quot; 0 &quot;:&quot; NO_ACTION &quot;,&quot; 1 &quot;:&quot; INTELLIGENT &quot;,&quot; 2 &quot;:&quot; UNLOCK &quot;,&quot; 3 &quot;:&quot; LOCK &quot;,&quot; 4 &quot;:&quot; UNLATCH &quot;,&quot; 5 &quot;:&quot; LOCK_N_GO &quot;, &quot;6&quot;: &quot;SHOW_STATUS&quot;} `|
 | config.advanced | batteryType | Der Typ der im Smart Lock vorhandenen Batterien <br> `{"0": 'ALKALI', "1": 'ACCUMULATOR', "2": 'LITHIUM'}` |
 | config.advanced | batteryType | Der Typ der im Smart Lock vorhandenen Batterien <br> `{&quot; 0 &quot;: &#39;ALKALI&#39;, &#39;1&#39;: &#39;AKKUMULATOR&#39;, &#39;2&#39;: &#39;LITHIUM&#39;}` |
-| config.advanced | automaticBatteryTypeDetection | Flag, das anzeigt, ob die automatische Erkennung des Batterietyps aktiviert ist
-| config.advanced | UnlatchDuration | Dauer in Sekunden, um den Riegel in unverriegelter Position zu halten
-| config.advanced | autoLockTimeout | Sekunden, bis das Smart Lock sich nach dem Entsperren wieder öffnet. Kein automatisches Sperren, wenn der Wert 0 ist. |
+| config.advanced | automaticBatteryTypeDetection | Flag, das anzeigt, ob die automatische Erkennung des Batterietyps aktiviert ist |
+| config.advanced | UnlatchDuration | Dauer in Sekunden, um den Riegel in unverriegelter Position zu halten |
+| config.advanced | autoLockTimeout | Sekunden, bis sich das Smart Lock nach dem Entsperren wieder öffnet. Kein automatisches Sperren, wenn der Wert 0 ist. |
 | Benutzer | - | Benutzer der Sperre |
 | users._userName_ | - | Benutzer _userName_ |
 | users._userName_ | Typ | Die Art der Genehmigung <br> `{"0": 'APP', "1": 'BRIDGE', "2": 'FOB', "3": 'KEYPAD', "13": 'KEYPAD CODE', "14": 'Z-KEY', "15": 'VIRTUAL'}` |
-| users._userName_ | Typ | Die Art der Genehmigung <br> &quot;{&quot; 0 &quot;:&quot; APP &quot;,&quot; 1 &quot;:&quot; BRIDGE &quot;,&quot; 2 &quot;:&quot; FOB &quot;,&quot; 3 &quot;:&quot; KEYPAD &quot;,&quot; 13 &quot;:&quot; KEYPAD CODE &quot;,&quot; 14 &quot;:&quot; Z- KEY &#39;, &quot;15&quot;:&#39; VIRTUAL &#39;} `|
+| users._userName_ | Typ | Die Art der Genehmigung <br> `{&quot; 0 &quot;:&quot; APP &quot;,&quot; 1 &quot;:&quot; BRIDGE &quot;,&quot; 2 &quot;:&quot; FOB &quot;,&quot; 3 &quot;:&quot; KEYPAD &quot;,&quot; 13 &quot;:&quot; KEYPAD CODE &quot;,&quot; 14 &quot;:&quot; Z- KEY &#39;, &quot;15&quot;:&#39; VIRTUAL &#39;} `|
 | users._userName_ | id | Die eindeutige ID des Benutzers |
 | users._userName_ | authId | Die Smartlock-Berechtigungs-ID |
-| users._userName_ | aktiviert | True, wenn der Benutzer | aktiviert ist
-| users._userName_ | remoteAllowed | Wahr, wenn der auth Zugriff über Fernzugriff hat
+| users._userName_ | aktiviert | True, wenn der Benutzer | aktiviert ist |
+| users._userName_ | remoteAllowed | Wahr, wenn der auth Zugriff über Fernzugriff hat |
 | users._userName_ | lockCount | Die Sperrzählung |
 | users._userName_ | dateLastActive | Das letzte aktive Datum |
 | users._userName_ | dateCreated | Das Erstellungsdatum |
@@ -150,7 +154,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 ## Smart Home / Alexa-Integration mit ioBroker.javascript
 Einige Beispiele für eine mögliche Integration in Ihr Smart Home.
 
-### Tür um 22 Uhr abends abschließen
+Schließt die Tür um 22 Uhr abends
 ```javascript
 var states = {
     "0": "uncalibrated",
@@ -184,12 +188,185 @@ schedule('0 22 * * *', function()
 
 __Ersetzen Sie `nuki2.0.door__home_door.status.lockState` mit dem lockState Ihres Schlosses! __ Sie können die Nachricht auch über `msg` anpassen.
 
+### Lassen Sie sich von Alexa über Sperrungsänderungen informieren
+Dies erfordert den ioBroker-Adapter ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
+
+Um die Sprachausgabe von Alexa zu verwenden, definieren wir eine Funktion ```say```. Platzieren Sie die folgende Funktion in einem Skript im "globalen" Ordner von ioBroker.javascript. WICHTIG: Ersetzen Sie #YOUR ALEXA ID # (ersetzen Sie auch #) durch Ihre Alexa ID. Sie finden die Alexa-ID im Objektbaum von ioBroker ```alexa2.0.Echo-Devices```.
+
+```javascript
+/**
+ * Say something with Alexa.
+ *
+ * @param       {string}        message         Message to say
+ * @param       {string|array}  alexas          Alexa Device to say the voice message
+ * @return      void
+ *
+ */
+function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'] for default voice output from multiple devices (also replace #)
+{
+    alexas = typeof alexas === 'string' ? [alexas] : alexas;
+    alexas.forEach(function(alexa)
+    {
+        setState('alexa2.0.Echo-Devices.' + alexa + '.Commands.speak', message);
+    });
+}
+```
+
+Sie können diese Funktion in ioBroker.javascript verwenden, um einen Satz mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
+
+Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript und fügen Sie den folgenden Listener hinzu. WICHTIG: Ersetzen Sie #LOCK STATE ID # (ersetzen Sie auch #) durch den Status, der den Sperrstatus enthält (z. B. ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+### Lassen Sie sich von Telegram über Sperrenänderungen informieren
+Dies erfordert den ioBroker-Adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram).
+
+Um die Nachrichtenausgabe von Telegram zu verwenden, definieren wir eine Funktion §§JJJJJ0§§ und ```messenger```. Platzieren Sie die folgende Funktion in einem Skript im "globalen" Ordner von ioBroker.javascript:
+
+```javascript
+/**
+ * Send something via telegram.
+ *
+ * @param       {string}        message         Message to print
+ * @param       {string|array}  receiver        Users to send the message to
+ * @return      void
+ *
+ */
+function msg(message, receiver = 'ALL')
+{
+    if (receiver == 'ALL')
+        messenger(message);
+
+    else
+    {
+        receiver = typeof receiver == 'string' ? [receiver] : receiver;
+        receiver.forEach(function(user)
+        {
+            messenger(message, user);
+        });
+    }
+}
+```
+
+```javascript
+/**
+ * Sends a message / text.
+ *
+ * @param   {string}            content         Message to send
+ * @param   {string}            user            (optional) Specific user to send the message to (defaults to all registered users)
+ * @return  void
+ *
+ */
+function messenger(content, user = '')
+{
+    var config = {
+        text: content,
+        parse_mode: 'HTML',
+        reply_markup: {
+            resize_keyboard: true,
+            one_time_keyboard: false
+        }
+    };
+
+    sendTo('telegram', user ? Object.assign({user: user}, config) : config);
+}
+```
+
+Sie können diese Funktion in ioBroker.javascript verwenden, um alles über ```msg('Hello World')``` (an alle Benutzer) oder §§JJJJJ_1§ (an bestimmte Benutzer) an Telegram zu senden.
+
+Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript und fügen Sie den folgenden Listener hinzu. WICHTIG: Ersetzen Sie #LOCK STATE ID # (ersetzen Sie auch #) durch den Status, der den Sperrstatus enthält (z. B. ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+HINWEIS: Wenn Sie sowohl das Alexa- als auch das Telegrammskript verwenden, können Sie nur einen Listener für beide Aktionen definieren:
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+    {
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+    }
+});
+```
+
 ## Credits
 Danke an [@ Mik13] (https://github.com/Mik13) für die [Nuki Bridge API-Implementierung](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
 Die von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set] (https://www.flaticon.com/packs/essential-set-2)) und <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Doors](https://www.flaticon.com/packs/doors)) von <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com erstellten Icons</a> sind von <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons VON 3.0" target="_blank">CC 3.0 BY</a> lizenziert
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) added Web Adapter as dependency
+- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
+- (zefau) removed empty folders when Nuki Web API has not been setup 
+- (zefau) bump to stable release
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

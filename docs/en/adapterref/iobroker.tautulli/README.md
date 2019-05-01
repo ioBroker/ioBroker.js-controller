@@ -1,3 +1,7 @@
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) __This project is discontinued in the favor of [ioBroker.plex](https://github.com/Zefau/ioBroker.plex) (which comes with Tautulli integration)__ ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 
+
+___
+
 ![Logo](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
 # ioBroker.tautulli
 [Tautulli is a 3rd party application](https://tautulli.com/#about) that you can run alongside your Plex Media Server to monitor activity and track various statistics. Most importantly, these statistics include what has been watched, who watched it, when and where they watched it, and how it was watched. All statistics are presented in a nice and clean interface with many tables and graphs, which makes it easy to brag about your server to everyone else.

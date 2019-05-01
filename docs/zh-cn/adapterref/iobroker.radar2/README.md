@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.radar2/README.md
 title: 雷达2网络和bloutooth可用性
-hash: UHTTgl9tRchN8g7vMjGu9OehjXyIgGILFhVFaZII5ss=
+hash: 2Qp5IHqny/Wa4vK0k8yFmChUVnPiU4UR3CLIO9dIq/c=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.radar2.svg)
 ![安装](http://iobroker.live/badges/radar2-installed.svg)
@@ -22,7 +22,7 @@ hash: UHTTgl9tRchN8g7vMjGu9OehjXyIgGILFhVFaZII5ss=
 
 *使用arp-scan和ping通过IPv4和IPv6在网络上查找设备！
 *收听dhcp消息，宣告新设备进入网络。
-*它适用于多个接口，这意味着您的系统在不同网络上具有Wlan和LAN，它可以看到两个接口。
+*它适用于多个接口，这意味着您的系统在不同的网络上有Wlan和LAN，它可以看到两个lans。
 *支持普通蓝牙和蓝牙LE
 *惠普打印机墨水状态
 * Euero的欧洲央行货币兑换
@@ -40,9 +40,9 @@ hash: UHTTgl9tRchN8g7vMjGu9OehjXyIgGILFhVFaZII5ss=
 欧洲央行的货币可以在这里看到：`https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`
 
 ##与雷达适配器的区别
-Radar2设置的设备在它们变得可见时立即被看到，即使在再次开始扫描之前，新的ip也是如此。
+Radar2设置的设备在它们变得可见时立即可见，即使在再次开始扫描之前也可用于新的IP。
 Radar2使用nodejs-libraries来查找蓝牙设备，但它现在也可以在iobroker的用户空间中运行，并且不需要获得root访问权限（参见下面的安装要求）。
-您可以在同一行中配置多个IP（现在为IPv4和IPv6）地址或主机地址（而不是URL），这样您就可以通过多种方式ping设备。
+您可以在同一行中配置多个IP（现在为IPv4和IPv6）地址或主机地址（不是URL），这样您就可以通过多种方式ping设备。
 `arp-scan`用于查找mac地址，它将在具有外部IPv4的所有网络接口上运行（如果在命令行中没有另外指定），因此它不会检测基于IPv6的mac地址的设备，但它现在将同时检测无线和固定网络上的设备！
 
 设备的可用性处理方式不同。每当设备出现时，每个设备都会获得一个`_lasthere`状态，并更新当前日期和时间。在每次扫描结束时，适配器检查所有最后的条目，如果它们比当前时间更早 - 配置的缺勤分钟。从未在这里出现的匮乏也没有`_lasthere`状态！
@@ -66,7 +66,11 @@ sudo apt-get install libcap2-bin arp-scan bluetooth bluez libbluetooth-dev libud
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp-scan`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which node`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hcitool`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hciconfig`)
 ```
+
+如果您更新节点或某些系统工具，则应再次执行上述操作！
 
 在Windows（也许是osx）上没有arp-scan，这意味着只能使用ping，但不能扫描IP-mac地址！
 
@@ -96,6 +100,17 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink 
 *适配器也可能在Windows上出现蓝牙问题，而且Windows上也没有arp-scan，只能使用ping，然后才能检测到IP mac地址！
 
 ## Changelog
+
+### 1.2.0
+
+* You may use now hcitool as only BT scanner instead of noble on linux (standatd)
+* _LastHere will not be change on restart
+* Standard scan cycle set to 20 seconds
+* Removed the 'remove-end' field and replaced it with a debug flag
+
+### 1.0.7
+
+* check on linux the availability of BT-devices and if no devices are found do not run any BT scans to avoid SIGSEGV
 
 ### 1.0.3
 

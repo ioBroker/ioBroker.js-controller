@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
+hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ---
 ![Logo](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/homepilot-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.homepilot.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
-![Offene Punkte](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
 ![Codacy-Abzeichen](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![Travis-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
@@ -36,10 +35,11 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 : polen: [Dokumentacja](/docs/en/doc_homepilot_en.md)
 
 ## Roadmap
-* 1.1.0 Materialisierung des Adaptereinstellungsfensters in admin
-* 1.4.0 Eine Liste aller installierten Duofern-Produkte in Ihrem Netzwerk erhalten Sie im Einstellungsfenster
+* 1.4.0 zeigt eine Liste aller installierten Duofern-Produkte in Ihrem Netzwerk im Einstellungsfenster an
 * 1.5.0 Objektbaum in "homepilot.0.device.channel.state" umordnen
-* 2.0.0 erhalten Live-Daten von der Homepilot-Station (zwave)
+* 2.0.0 Live-Daten von der Homepilot-Station abrufen (zwave)
+
+Beiträge sind willkommen!
 
 ## Changelog
 ### 1.1.1 (2019-01-09)
@@ -135,7 +135,7 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 pix
+Copyright (c) 2019 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

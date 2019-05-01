@@ -31,6 +31,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.0.4 (17.04.2019)
+* (Stübi) Bugfixing for Ring Pro 
+
 ### 1.0.3 (09.03.2019)
 * (Stübi) Major change! I had to change the used ring.com API to an other API. The old one did not work anymore. For this reason, a lot has to be redesigned.  
 

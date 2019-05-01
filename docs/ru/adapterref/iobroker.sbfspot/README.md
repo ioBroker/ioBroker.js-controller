@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
+hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -18,12 +18,14 @@ hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
 Теперь поддерживаются оба типа базы данных (mySQL и sqlite).
 Начиная с версии 0.2.3, существует собственный виджет vis, основанный на flot, для отображения исторических данных.
 
-подсказки:
-
+## Подсказки
 * используйте последнюю версию из sbfspot с https://github.com/SBFspot/SBFspot или с https://github.com/rg-engineering/SBFspot
 * адаптер, sbfspot и базы данных (mySQL или sqlite) должны работать в одной системе, например Raspberry Pi
-* Руководство по установке sbfspot на Raspberry Pi (или аналогичное) можно найти по адресу https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite или https://www.rg-engineering.eu/index. PHP / Продукты / программное обеспечение / плагин-Fuer-iobroker-sbfspot
+* Руководство по установке sbfspot на Raspberry Pi (или аналогичном) можно найти по адресу https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite или https://www.rg-engineering.eu/index. PHP / Продукты / программное обеспечение / плагин-Fuer-iobroker-sbfspot
 * для Raspberry Pi есть полуавтоматический инструмент настройки, доступный по адресу https://github.com/SBFspot/sbfspot-config
+
+## Известные вопросы
+* пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
 

@@ -7,7 +7,7 @@ ioBroker.vis-justgage
 ![Screenshot](img/widgets.png)
 
 ## Changelog
-### 1.0.0 (2017-11-16)
+![Number of Installations](http://iobroker.live/badges/vis-justgage-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-justgage-stable.svg) ### 1.0.0 (2017-11-16)
 
 ### 0.7.1 (2016-12-14)
 - (Pmant) change max brightness to max brightness of initial color

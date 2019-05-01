@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tautulli/README.md
 title: ioBroker.tautulli
-hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
+hash: Q0WQWVcWeq+TZR4OE9XAqU+M5kNa8+TUODKvwAnAgoA=
 ---
-![Logo](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+![# f03c15] (https://placehold.it/15/f03c15/000000?text=+) __Dieses Projekt wird zugunsten von [ioBroker.plex] eingestellt (https://github.com/Zefau/ioBroker.plex) (was mit Tautulli-Integration geliefert wird) __! [# f03c15](https://placehold.it/15/f03c15/000000?text=+)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/tautulli-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.tautulli.svg)
@@ -13,8 +13,12 @@ hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tautulli.svg)
 ![NPM](https://nodei.co/npm/iobroker.tautulli.png?downloads=true)
 
-# IoBroker.tautulli [Tautulli ist eine Anwendung von Drittanbietern](https://tautulli.com/#about), die Sie neben Ihrem Plex Media Server ausführen können, um die Aktivität zu überwachen und verschiedene Statistiken zu verfolgen. Diese Statistiken enthalten vor allem das, was beobachtet wurde, wer es gesehen hat, wann und wo es gesehen wurde und wie es beobachtet wurde. Alle Statistiken werden in einer übersichtlichen und sauberen Benutzeroberfläche mit vielen Tabellen und Diagrammen dargestellt, sodass Sie Ihren Server mit allen anderen prahlen können.
-Dieser Adapter stellt eine Verbindung zu [Tautulli-API](https://github.com/Tautulli/Tautulli/blob/master/API.md) her und empfängt Webhook-Ereignisse sowohl von Tautulli als auch von Plex (letzteres erfordert Plex Pass).
+___
+
+![Logo](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+
+# IoBroker.tautulli [Tautulli ist eine Drittanbieteranwendung](https://tautulli.com/#about), die Sie neben Ihrem Plex Media Server ausführen können, um die Aktivität zu überwachen und verschiedene Statistiken zu verfolgen. Diese Statistiken enthalten vor allem das, was beobachtet wurde, wer es gesehen hat, wann und wo es gesehen wurde und wie es beobachtet wurde. Alle Statistiken werden in einer übersichtlichen und sauberen Benutzeroberfläche mit vielen Tabellen und Diagrammen dargestellt, sodass Sie Ihren Server mit allen anderen prahlen können.
+Dieser Adapter stellt eine Verbindung zu [Tautulli-API](https://github.com/Tautulli/Tautulli/blob/master/API.md) her und empfängt auch Webhook-Ereignisse von Tautulli und Plex (letzteres erfordert Plex Pass).
 
 **Inhaltsverzeichnis**
 
@@ -28,7 +32,7 @@ Dieser Adapter stellt eine Verbindung zu [Tautulli-API](https://github.com/Tautu
 Schauen Sie sich bei Interesse nach [Tautulli Preview] (https://tautulli.com/#preview) und [installieren Sie es auf Ihrem bevorzugten System](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) um.
 
 ### API-Einstellungen
-Öffnen Sie nach der Installation von Tautulli die Seite _Settings_ im Tautulli-Dashboard und navigieren Sie zu _Web Interface_. Blättern Sie nach unten zum Abschnitt _API_ und stellen Sie sicher, dass ```Enable API``` markiert ist. Kopieren Sie die ```API key``` und geben Sie sie in den Einstellungen von ioBroker.tautulli ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
+Öffnen Sie nach der Installation von Tautulli die Seite _Settings_ im Tautulli-Dashboard und navigieren Sie zu _Web Interface_. Blättern Sie nach unten zum Abschnitt _API_ und stellen Sie sicher, dass ```Enable API``` markiert ist. Kopieren Sie den ```API key``` und geben Sie ihn in den ioBroker.tautulli-Einstellungen ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
 
 ## Changelog
 

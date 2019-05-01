@@ -3,7 +3,6 @@
 
 ![Number of Installations](http://iobroker.live/badges/tankerkoenig-installed.svg) ![Number of Installations](http://iobroker.live/badges/tankerkoenig-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.tankerkoenig.svg)](https://www.npmjs.com/package/iobroker.tankerkoenig)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.tankerkoenig.svg)](https://www.npmjs.com/package/iobroker.tankerkoenig)
-[![Open Issues](http://githubbadges.herokuapp.com/Pix---/ioBroker.tankerkoenig/issues.svg)](http://github.com/Pix---/ioBroker.tankerkoenig/issues)
 
 [![NPM](https://nodei.co/npm/iobroker.tankerkoenig.png?downloads=true)](https://nodei.co/npm/iobroker.tankerkoenig/)
 
@@ -32,8 +31,11 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/
 
 
 ## Changelog
+### 2.0.6 (2019-04-17)
+* (Zwer2k) implementation of utils corrected
+* (Zwer2k) fixed error occured when all stations were closed
 
-### 2.0.5 (2019-02-221)
+### 2.0.5 (2019-02-22)
 * (jens-maus) fixes to prevent request() floodings
 
 ### 2.0.3 (2019-02-21)

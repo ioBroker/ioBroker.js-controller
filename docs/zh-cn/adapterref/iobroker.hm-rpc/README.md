@@ -135,6 +135,10 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.9.11 (2019-04-21)
+* (foxriver76) create OPERATING_VOLTAGE with unit V
+* (foxriver76) create RSSI_* with unit dBm
+
 ### 1.9.10 (2019-04-12)
 * (foxriver76) fix meta
 * (foxriver76) added new meta data

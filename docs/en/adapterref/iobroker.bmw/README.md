@@ -11,7 +11,8 @@
 Der Adapter versucht die ConnectedDrive-Daten für die auf die angegebenen Benutzer registrierten Fahrzeuge.
 Man kann filtern welche Daten angezeigt werden indem man im Admin die Einstellungen für
 
-* zu verwendete services (ich verwende nur: efficiency, dynamic, navigation und remote_execution). Wenn man 'debug!' am anfang schreibt wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Daten er abfragt und geliefert bekommt. Adapter muss im admin auf 'info' stehen!
+* zu verwendete services (ich verwende nur: efficiency, dynamic, navigation und remote_execution). 
+* Wenn man 'debug' einschaltet wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Daten er abfragt und geliefert bekommt. Adapter muss im admin zumindest auf auf 'info' stehen!
 * zu löschende Einträge (Bei mir Daten wie: *modelType, series, basicType, brand, licensePlate, hasNavi, bodyType, dcOnly, hasSunRoof, hasRex, steering, driveTrain, doorCount, vehicleTracking, isoCountryCode, auxPowerRegular, auxPowerEcoPro, auxPowerEcoProPlus, ccmMessages*)
 * Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList|name|lastTrip, specs|key|value, service|name|services, cdpFeatures|name|status, cbsMessages|text|date, lifeTimeList|name|value, characteristicList|characteristic|quantity, remote_history|eventId, storePortfolio|offerCode*). bestehen nur zwei einträge mit '|' getrennt dann ist der erste der name des arrays das umgewandelt wird und der zweite der Name des eintrags und es werden alle Sub-Elemente übernommen, wenn ein dritter wert vorhanden ist wird nur dieser als Wert übernommen.
 * Einträge die in ihrer Hirarchie nach oben wandern sollen (bei mir *attributesMap, vehicleMessages, cbsMessages, twoTimeTimer, characteristicList, lifeTimeList, lastTripList, update, storePortfolio*)
@@ -26,7 +27,7 @@ Ein spezieller '_RefresData'-State wird angelegt auf welchen man im admin.object
 
 Wenn das Fahrzeug aktive remote-services hat (**service** muss bei den Services eingeschaltet sein!) sollten Button-States angelegt werden. Diese können die Aktion durchführen wenn im Objectviewer drauf geclickt wird oder wenn sie mit einem wert und *ack=false* beschrieben werden. Der Wert dieses States wird mit dem Service-Status überschrieben, z.B **PENDING** oder **EXECUTED** (oder deutsche übersetzungen).
 
-Ab 1.2.0 werden im **debug!**-Mode **_originalData**-States generiert. Wenn ihr Probleme mit einigen Datenpunkten hab köönt ihr das verwenden um mir die Daten zu senden (ich habe nicht alle BMW's zum Testen!).
+Ab 1.2.0 werden im **debug**-Mode **_originalData**-States generiert. Wenn ihr Probleme mit einigen Datenpunkten hab könt ihr das verwenden um mir die Daten zu senden (ich habe nicht alle BMW's zum Testen!).
 
 <sub>p.s.: Ich möchte <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> und <https://github.com/edent/BMW-i-Remote> für die Beispiele danken mittels derer sources ich den Zugriff geschafft habe!</sub>
 
@@ -52,7 +53,7 @@ Ab 1.2.0 werden im **debug!**-Mode **_originalData**-States generiert. Wenn ihr 
 ### 1.2.4
 * added states for last successful donload and error to see how old data is
 * Improved error handling when services are not available
-* added _originalData object (wen in debug!) for root request for available cars on this account
+* added _originalData object (wenn in debug) for root request for available cars on this account
 
 ### 1.2.3
 * Removed bug for remote-control
@@ -62,7 +63,7 @@ Ab 1.2.0 werden im **debug!**-Mode **_originalData**-States generiert. Wenn ihr 
 ### 1.2.1
 * Removed RCT from possible services for remote control
 * Crerate a **.google_maps_link** state for the navigation which can be used to open a web-page with google maps to show the location.
-* set same level of debug if adapter is in debug mode and **debug!** is set
+* set same level of debug if adapter is in debug mode and **debug** is set
 
 ### 1.2.0 Test
 * Remoteservice implemented, basic functions like lock/unlock door or flash lights can be executed  

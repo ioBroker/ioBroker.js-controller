@@ -1,6 +1,6 @@
 ![Logo](admin/innogy-smarthome.png)
 # ioBroker.Innogy-SmartHome
-
+![Number of Installations](http://iobroker.live/badges/innogy-smarthome-installed.svg) ![Number of Installations](http://iobroker.live/badges/innogy-smarthome-stable.svg) 
 [![Build](https://travis-ci.org/PArns/ioBroker.innogy-smarthome.svg?branch=master)](https://travis-ci.org/PArns/ioBroker.innogy-smarthome)
 
 This adapter is used to connect the Innogy smarthome devices to ioBroker. You can read more about Innogy [here](https://www.innogy.com).
@@ -12,6 +12,13 @@ This adapter is used to connect the Innogy smarthome devices to ioBroker. You ca
 As this project is developed during my spare time, I*m actively looking for help to maintain and extend this lib! If you're willing to help, drop me a line!
 
 ## Changelog
+
+### 0.3.1
+    Added PowerControl
+    Added SHC 2.0 quota states
+
+### 0.3.0
+    Added support for SHC 2.0 (and API 1.1)
 
 ### 0.2.11
     Reverted changes from yesterday, as RW states are not correctly maintained by innogy

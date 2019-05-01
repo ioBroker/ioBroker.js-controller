@@ -1,7 +1,5 @@
-<h1>
-  <img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.landroid/master/admin/landroid.png" width="64"/>
-  ioBroker.landroid
-</h1>
+![Logo](admin/landroid.png)
+# ioBroker.landroid
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.landroid.svg)](https://www.npmjs.com/package/iobroker.landroid)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.landroid.svg)](https://www.npmjs.com/package/iobroker.landroid)
@@ -21,38 +19,38 @@ This is an ioBroker adapter for your Worx Landroid mowing machine. It have been 
 
 ## Changelog
 
-#### 1.0.3
+### 1.0.3
 * (ldittmar) compact mode compatibility added
 * (ldittmar) add chinese support
 
-#### 1.0.2
+### 1.0.2
 * (ldittmar) Support of admin3
 
-#### 1.0.0
+### 1.0.0
 * (ldittmar) Fixed little changes
 
-#### 0.1.1
+### 0.1.1
 * (ldittmar) Change PIN field to type password
 
-#### 0.1.0
+### 0.1.0
 * (ChrBender) Bug with start/stop button fixed
 
-#### 0.0.4
+### 0.0.4
 * (ldittmar) Bugfixes
 
-#### 0.0.3
+### 0.0.3
 * (ldittmar) Minor bug fixes / compatibility with the WG797E.1 mower
 
-#### 0.0.2
+### 0.0.2
 * (ldittmar) read all important informations (can't start or stop ist at this time)
 
-#### 0.0.1
+### 0.0.1
 * (ldittmar) initial commit
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2018-2019 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

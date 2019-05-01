@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
+hash: tcLLym+E6nf8ooit8z1BQLV5IDQVg7GmVeVMaBTZqi0=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -12,6 +12,7 @@ hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.roomba.svg)
 ![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.roomba.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
 # IoBroker.roomba Подключите iRobot Roomba к ioBroker.
@@ -24,7 +25,7 @@ hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 3. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - версии прошивки)
 4. [Каналы и состояния] (# каналы - состояния)
 5. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
-6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
+6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
 7. [Changelog] (# changelog)
 8. [Кредиты] (# кредитов)
 9. [Лицензия] (# лицензия)
@@ -32,7 +33,7 @@ hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ## Монтаж
 ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
 
-Тем не менее, вы, вероятно, должны установить пакетные зависимости canvas с помощью следующей команды:
+Тем не менее, вам, вероятно, придется установить зависимости пакета canvas с помощью следующей команды:
 
 ```
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
@@ -52,7 +53,7 @@ sudo npm install canvas --unsafe-perm=true
 
 1. Убедитесь, что адаптер ioBroker.roomba запущен.
 2. Убедитесь, что ваш робот находится на домашней базе и включен (зеленый свет включен).
-3. Затем нажмите и удерживайте кнопку HOME на своем роботе, пока он не воспроизведет серию тонов (около 2 секунд).
+3. Затем нажмите и удерживайте кнопку HOME на вашем роботе, пока он не воспроизведет серию тонов (около 2 секунд).
 4. Отпустите кнопку, и ваш робот начнет мигать светом WIFI.
 5. Затем вернитесь сюда и нажмите кнопку, чтобы получить IP и учетные данные.
 
@@ -79,8 +80,8 @@ sudo npm install canvas --unsafe-perm=true
 | Roomba® 9xx | 965, 981 | - | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | (скорее всего) |
 | Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan) [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
-| Roomba® e5 | е5 | v3.4.42 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unknown_ |
-| Roomba® e5 | е5 | v3.4.42 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unknown_ |
+| Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
+| Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15] (https://placehold.it/15/f03c15/000000? текст = +) НЕТ карта) |
 
 Пожалуйста, помогите мне относительно поддерживаемых устройств и позвольте мне [знать через проблему](https://github.com/Zefau/ioBroker.roomba/issues), поддерживается ли ваша модель Roomba!
 
@@ -100,7 +101,7 @@ sudo npm install canvas --unsafe-perm=true
 | уборка | последний | ошибка | Указывает на ошибку во время последней миссии |
 | уборка | график | - | Расписание информации |
 | уборка | график | цикл | Расписание цикла (с воскресенья по субботу) |
-| уборка | график | часов | Час для начала цикла (с воскресенья по субботу) |
+| уборка | график | часов | Час начала цикла (с воскресенья по субботу) |
 | уборка | график | минут | Минута до начала цикла (с воскресенья по субботу) |
 | уборка | - | док | Отправить робота на док-станцию |
 | уборка | - | пауза | Приостановить текущий процесс очистки |
@@ -118,10 +119,10 @@ sudo npm install canvas --unsafe-perm=true
 | устройство | сеть | днс2 | Вторичный DNS-адрес |
 | устройство | предпочтения | - | Установить предпочтения |
 | устройство | предпочтения | binPause | **НЕИЗВЕСТНО** |
-| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически повысит мощность вакуума до глубокой чистки ковров. |
+| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически повысит мощность вакуума для чистки глубоких ковров. |
 | устройство | предпочтения | carpetBoostHigh | Режим производительности: Roomba всегда будет увеличивать вакуум, чтобы максимально повысить эффективность очистки на всех поверхностях пола. |
 | устройство | предпочтения | ecoCharge | **НЕИЗВЕСТНО** |
-| устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все участки одним проходом очистки. |
+| устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все области одним проходом очистки. |
 | устройство | предпочтения | noPP | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | openOnly | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | schedHold | **НЕИЗВЕСТНО** |
@@ -143,7 +144,7 @@ sudo npm install canvas --unsafe-perm=true
 | устройство | - | тип | Тип робота |
 | Штаты | - | - | Информация о статусе |
 | Штаты | - | \ _connected | Состояние соединения |
-| Штаты | - | батарея | Уровень заряда батареи робота |
+| Штаты | - | аккумулятор | Уровень заряда батареи робота |
 | Штаты | - | binFull | Укажите, заполнен ли статус корзины |
 | Штаты | - | binInserted | Укажите, вставлен ли bin |
 | Штаты | - | состыкованный | Укажите, пристыкован ли робот |
@@ -200,7 +201,7 @@ sudo npm install canvas --unsafe-perm=true
 ### Отправить карту через Telegram после завершения миссии
 Для этого требуется установить адаптер ioBroker ioBroker.telegram (https://github.com/ioBroker/ioBroker.telegram).
 
-Создайте скрипт в «общей» папке ioBroker.javascript и добавьте в него следующий прослушиватель:
+Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующий прослушиватель:
 
 ```
 var _fs = require('fs');
@@ -257,7 +258,7 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 
 _2019-02-03 исправлена ошибка, при которой карта отправлялась в начале миссии_
 
-Вы можете редактировать переменную ```message``` для любого уведомления, которое вы хотели бы получить с картой. Вы можете использовать ```%name-of-state%``` для получения значения состояния в дереве объектов ioBroker.roomba.
+Вы можете редактировать переменную ```message``` для любого уведомления, которое вы хотели бы получить с картой. Вы можете использовать ```%name-of-state%```, чтобы получить значение состояния в дереве объектов ioBroker.roomba.
 
 ## Кредиты
 ### Неофициальный API
@@ -267,6 +268,15 @@ _2019-02-03 исправлена ошибка, при которой карта 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </div>
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- bump to stable release
+
+### 0.5.0 (2019-04-21)
+- (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
+- (zefau) Removed button to end mission manually ```missions.current._endMission```
+- (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
+- (zefau) added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
 - Refactored retrieval of preferences and added debug mode

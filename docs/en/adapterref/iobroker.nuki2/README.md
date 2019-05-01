@@ -1,12 +1,14 @@
 ![Logo](admin/nuki-logo.png)
 # ioBroker.nuki2
-This ioBroker adapter allows to control and monitor the [Nuki Smart Lock](https://nuki.io/de/) by using both the [Nuki Bridge API](https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) and the [Nuki Web API](https://developer.nuki.io/page/nuki-web-api-111/3/).
+This ioBroker adapter allows to control and monitor the [Nuki Smart Lock](https://nuki.io/de/) by using both the [Nuki Bridge API (v1.8.0,  06.03.2019)](https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) and the [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 
 ![Number of Installations](http://iobroker.live/badges/nuki2-installed.svg) ![Stable Version](http://iobroker.live/badges/nuki2-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.nuki2.svg)](https://www.npmjs.com/package/iobroker.nuki2)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.nuki2.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.nuki2)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nuki2.svg)](https://www.npmjs.com/package/iobroker.nuki2)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.nuki2.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.nuki2.png?downloads=true)](https://nodei.co/npm/iobroker.nuki2/)
+
 
 **Table of contents**
 1. [Installation](#installation)
@@ -14,6 +16,9 @@ This ioBroker adapter allows to control and monitor the [Nuki Smart Lock](https:
    2. [Callback function](#callback-function)
    3. [States](#states)
 2. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
+   1. [Lock door at 10pm in the evening](#lock-door-at-10pm-in-the-evening)
+   2. [Let Alexa inform you about lock changes](#let-alexa-inform-you-about-lock-changes)
+   3. [Let Telegram inform you about lock changes](#let-telegram-inform-you-about-lock-changes)
 3. [Changelog](#changelog)
 4. [Credits](#credits)
 5. [Licence](#license)
@@ -180,8 +185,179 @@ schedule('0 22 * * *', function()
 
 __Replace `nuki2.0.door__home_door.status.lockState` with the lockState of your lock!__ You may also customize the message via `msg`.
 
+### Let Alexa inform you about lock changes
+This requires the ioBroker adapter ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
+
+In order to use the voice output of Alexa we define a function ```say```. Place the following function in a script in the "global" folder of ioBroker.javascript. IMPORTANT: Replace #YOUR ALEXA ID# (also replace #) with your Alexa ID. You may find the Alexa ID in the Objects tree of ioBroker ```alexa2.0.Echo-Devices```.
+
+```javascript
+/**
+ * Say something with Alexa.
+ * 
+ * @param       {string}        message         Message to say
+ * @param       {string|array}  alexas          Alexa Device to say the voice message
+ * @return      void
+ * 
+ */
+function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'] for default voice output from multiple devices (also replace #)
+{
+    alexas = typeof alexas === 'string' ? [alexas] : alexas;
+    alexas.forEach(function(alexa)
+    {
+        setState('alexa2.0.Echo-Devices.' + alexa + '.Commands.speak', message);
+    });
+}
+```
+You can use this function within ioBroker.javascript to say a phrase using Alexa ```say('Hello World')``` or ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` for voice output from multiple devices.
+
+Create a script in the "common" folder of ioBroker.javascript and add the following listener to it. IMPORTANT: Replace #LOCK STATE ID# (also replace #) with the state holding the lock status (e.g. ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ * 
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+### Let Telegram inform you about lock changes
+This requires the ioBroker adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram).
+
+In order to use the message output of Telegram we define a function ```msg``` and ```messenger```. Place the following function in a script in the "global" folder of ioBroker.javascript:
+
+```javascript
+/**
+ * Send something via telegram.
+ * 
+ * @param       {string}        message         Message to print
+ * @param       {string|array}  receiver        Users to send the message to
+ * @return      void
+ * 
+ */
+function msg(message, receiver = 'ALL')
+{
+    if (receiver == 'ALL')
+        messenger(message);
+    
+    else
+    {
+        receiver = typeof receiver == 'string' ? [receiver] : receiver;
+        receiver.forEach(function(user)
+        {
+            messenger(message, user);
+        });
+    }
+}
+```
+
+```javascript
+/**
+ * Sends a message / text.
+ * 
+ * @param   {string}            content         Message to send
+ * @param   {string}            user            (optional) Specific user to send the message to (defaults to all registered users)
+ * @return  void
+ * 
+ */
+function messenger(content, user = '')
+{
+    var config = {
+        text: content,
+        parse_mode: 'HTML',
+        reply_markup: {
+            resize_keyboard: true,
+            one_time_keyboard: false
+        }
+    };
+    
+    sendTo('telegram', user ? Object.assign({user: user}, config) : config);
+}
+```
+You can use this function within ioBroker.javascript to send anything to Telegram via ```msg('Hello World')``` (to all users) or ```msg('Hello World', 'Zefau')``` (to specific users).
+
+Create a script in the "common" folder of ioBroker.javascript and add the following listener to it. IMPORTANT: Replace #LOCK STATE ID# (also replace #) with the state holding the lock status (e.g. ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ * 
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+NOTE: If you are using both the Alexa and the Telegram script, you may only define one listener for both actions:
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ * 
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+    {
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+    }
+});
+```
+
+
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) added Web Adapter as dependency
+- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
+- (zefau) removed empty folders when Nuki Web API has not been setup 
+- (zefau) bump to stable release
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`
@@ -207,7 +383,7 @@ __Replace `nuki2.0.door__home_door.status.lockState` with the lockState of your 
 ## Credits
 Thanks to [@Mik13](https://github.com/Mik13) for the [Nuki Bridge API implementation](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
-   Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set](https://www.flaticon.com/packs/essential-set-2)) and <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Doors](https://www.flaticon.com/packs/doors)) from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set](https://www.flaticon.com/packs/essential-set-2)) and <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Doors](https://www.flaticon.com/packs/doors)) from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 
 ## License

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bmw/README.md
 title: ! [Логотип] (admin / bmw.png) Адаптер для BMW ConnectedDrive-Daten
-hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
+hash: bfM+hfzdvekiGB2u/C4RAqSTulexr6oKxlddYBP8tdQ=
 ---
 # ![логотип](../../../en/adapterref/iobroker.bmw/admin/bmw.png) Адаптер для BMW ConnectedDrive-Daten
 
@@ -19,24 +19,25 @@ hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
 Универсальный адаптер для подключения к Интернету.
 Man kann filtern welche Daten angezeigt werden indem man im Admin die Einstellungen für
 
-* zu verwendete services (ich verwende nur: эффективность, динамичность, навигация и удаленное выполнение). Wenn человек "отладка!" Я вхожу в контакт с адаптером в журнале «Отладка» и «Освободитесь от смерти», а также от его имени. Адаптер muss im admin auf 'info' stehen!
-* zu löschende Einträge (Bei mir Daten wie: * modelType, series, basicType, торговая марка, licensePlate, hasNavi, bodyType, dcOnly, hasSunRoof, hasRex, рулевое управление, трансмиссия, doorCount, vehicleTracking, isoCountryCode, auxPowerExPowerPowerPowerExPeurePowerPowerExPeurePowerPeugePlus)
-* Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList | name | lastTrip, specs | key | value, service | name | services, cdpFeatures | name | status, cbsMessages | text | date, lifeTimeList | name | value, attributeList | характеристика | количество, удаленная_история | eventId, storePortfolio | offerCode* . bestehen nur zwei einträge mit '|' получить имя имени массива имени человека и его имени имя и фамилию субэлементных элементов, в том числе и таких, которые были бы более низкими.
-* Einträge die in ihrer Hirarchie nach oben wandern sollen (bei mir *атрибуты Карта, транспортное сообщение, сообщения cbs, twoTimeTimer, характеристический список, lifeTimeList, lastTripList, обновление, storePortfolio*
+* zu verwendete services (ich verwende nur: эффективность, динамичность, навигация и удаленное выполнение).
+* Wenn man 'debug' einschaltet wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Дата даты и времени выхода. Адаптер muss im admin zumindest auf auf 'info' stehen!
+* zu löschende Einträge (Bei mir Daten wie: * modelType, series, basicType, торговая марка, licensePlate, hasNavi, bodyType, dcOnly, hasSunRoof, hasRex, рулевое управление, трансмиссия, doorCount, vehicleTracking, isoCountryCode, auxExcoExcoPeurePowerPowerExPowerPowerExPowerExPeurePowerPowerExPeurePowerPower
+* Einträge die von Arrays umgewandelt werden sollen (bei mir: *lastTripList | name | lastTrip, specs | key | value, service | name | services, cdpFeatures | name | status, cbsMessages | text | date, lifeTimeList | name | value, характеристический список | характеристика | количество, удаленная_история | eventId, storePortfolio | offerCode* . bestehen nur zwei einträge mit '|' получить имя имя массива имя и имя пользователя имя и фамилию субэлементных элементов, в то время как дрейфует вихрем вихре из-за его смерти.
+* Einträge die in ihrer Hirarchie nach oben wandern sollen (bei mir *атрибуты, карта, сообщения о транспортных средствах, сообщения cbs, twoTimeTimer, характеристический список, lifeTimeList, lastTripList, обновление, storePortfolio*
 * der zu verwendete Datenserver kann auch angegeben werden, der По умолчанию ist für den Rest der Welt, wer in anderen Regionen wohnt kann auch <https://b2vapi.bmwgroup.cn:8592> в Китае, <https://bwvgm. .us> для США и <https://b2vapi.bmwgroup.com> для Европы и других стран. www.bmw-connecteddrive.com wird hoffentlich immer auf den richtigen weitergeleitet.
-* Man kann States umbenennen wenn man im переименовывают ** originalName | neuerName ** verwendet. weder Original noch der neue Название dürfen mehrmals vorkommen. '' Werden Durch '_' Ersetzt. Mehrere Einträge von ** x | y ** werden durch '**, **' getrennt. Damit kann man den Vin des Autos auf z.B. 325i Умбеннен.
-* Der Adapter versteht jetzt auch 'SendTo' Kommandos. `sendTo ('bmw.0', 'send', '225xe.Versperren')` würde den Wagen den sie auf 225xe umbenannt haben versperren, `sendTo ('bmw.0', 'send', '_ DatenNeuLaden')` würde einen Refresh ausführen und `sendTo ('bmw.0', 'debug', 'on')` (es geht auch 0,1, on, off, ein, aus, true, false) würde debug einder ausschalten. Mit `sendTo ('bmw.0', 'get', '225xe.Versperren')` kann der state von Werten abgefragt werden, man bekommt z.B. `{val: 'Nicht gestartet', ack: true, ts: 1505839335870, q: 0, из: 'system.adapter.bmw.0', lc: 1505839335870}` zurück.
-* Я настраиваюсь, чтобы установить 2 флага: Установить дату и время адаптера (по умолчанию: ein) и указать дату загрузки (nicht mehr runtergeladen werden löschen) (по умолчанию: aus). Damit kann man bei Адаптер-перезапуск с настройками и другими состояниями vergesen aber wenn ein Kommunikationsfehler wärend eines refresh entsteht die Daten vom letzten refresh sehen wenn der 2. Haken nicht gesetzt wird.
+* Man kann States umbenennen wenn man im переименовывают ** originalName | neuerName ** verwendet. weder Original noch der neue Название dürfen mehrmals vorkommen. '' Werden Durch '_' Ersetzt. Mehrere Einträge von ** x | y ** werden durch '**, **' getrennt. Damit kann man den Vin des Autos auf z.B. 325i Умбенненен.
+* Der Adapter versteht jetzt auch 'sendTo' Kommandos. `sendTo ('bmw.0', 'send', '225xe.Versperren')` würde den Wagen den sie auf 225xe umbenannt haben versperren, `sendTo ('bmw.0', 'send', '_ DatenNeuLaden')` würde einen Refresh ausführen und `sendTo ('bmw.0', 'debug', 'on')` (es geht auch 0,1, on, off, ein, aus, true, false) würde debug einder ausschalten. Mit `sendTo ('bmw.0', 'get', '225xe.Versperren')` kann der state von Werten abgefragt werden, man bekommt z.B. `{val: 'Nicht gestartet', ack: true, ts: 1505839335870, q: 0, из: 'system.adapter.bmw.0', lc: 1505839335870}` zurück.
+* Я настраиваюсь, чтобы установить 2 флага для установки: Все даты Адаптер-Neustart Löschen (по умолчанию: ein) и все Дата загрузки Скачать nicht mehr runtergeladen werden löschen (по умолчанию: aus). Damit kann man bei Адаптер-перезапуск с настройками и состояниями других пользователей vergesen aber wenn ein Kommunikationsfehler wärend eins refresh entsteht die Daten vom letzten refresh sehen wenn der 2. Haken nicht gesetzt wird.
 
 Wenn der Adapter die Position vom Navigationssystem auslesen kann übersetz er diese mit Hilfe on Google auf eine Adresse and gibt diese unter navigation.formatted_address an.
 
-Ein spezieller '_RefresData' - Государство странно и хорошо, что я администратор. Объект klicken kann oder welchen man über Vis / oder andere Программа ansteuern kann.
+Ein spezieller '_RefresData' - Государство странно и хорошо, что я им администратор.
 
-Wenn das Fahrzeug aktive remote-services hat (** service ** muss bei den Services eingeschaltet sein!) Sollten Button-States angelegt werden. Diese können die Aktion durchführen wenn im Objectviewer drauf geclickt wird oder wenn sie mit einem wert und *ack = false* beschrieben werden. Der Wert dieses States wird mit dem Service-Status überschrieben, z.B ** В ОЖИДАНИИ ** oder ** EXECUTED ** (oder deutsche übersetzungen).
+Wenn das Fahrzeug aktive remote-services hat (** service ** muss bei den Services eingeschaltet sein!) Sollten Button-States angelegt werden. Diese können die Acttion durchführen wenn im Objectviewer Der Wert dieses States wird mit dem Service-Status überschrieben, z.B ** В ОЖИДАНИИ ** oder ** EXECUTED ** (oder deutsche übersetzungen).
 
-Ab 1.2.0 werden im **debug!** - Режим **_ originalData** - Состояния обобщенные. Эта проблема решается с помощью Datenpunkten hab köönt ihr das verwenden um mir die Daten zu senden (ich habe nicht alle Zum Testen BMW!).
+Ab 1.2.0 werden im **debug** - Режим **_ originalData** - Состояния generiert. Эта проблема связана с тем, что у нее нет даты, и все у нее нет.
 
-<sub>ps: Ich möchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>унд</sub> <https://github.com/edent/BMW-i-Remote> <sub>для смерти Beispiele danken mittels более дорогие источники ich den Zugriff</sub>
+<sub>PS: Ich Möchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>унд</sub> <https://github.com/edent/BMW-i-Remote> <sub>для смерти Beispiele danken mittels более дорогие источники ich den Zugriff geschafft habe!</sub>
 
 ## Важно / Wichtig
 * Для адаптера требуется узел> = v4.3. *!
@@ -70,7 +71,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> или 
 ### 1.2.4
 * added states for last successful donload and error to see how old data is
 * Improved error handling when services are not available
-* added _originalData object (wen in debug!) for root request for available cars on this account
+* added _originalData object (wenn in debug) for root request for available cars on this account
 
 ### 1.2.3
 * Removed bug for remote-control
@@ -80,7 +81,7 @@ Mit admin, ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> или 
 ### 1.2.1
 * Removed RCT from possible services for remote control
 * Crerate a **.google_maps_link** state for the navigation which can be used to open a web-page with google maps to show the location.
-* set same level of debug if adapter is in debug mode and **debug!** is set
+* set same level of debug if adapter is in debug mode and **debug** is set
 
 ### 1.2.0 Test
 * Remoteservice implemented, basic functions like lock/unlock door or flash lights can be executed  

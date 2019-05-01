@@ -2,7 +2,6 @@
 BADGE-Number of Installations: http://iobroker.live/badges/epson_stylus_px830-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.epson_stylus_px830.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.epson_stylus_px830.svg
-BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.epson_stylus_px830/issues.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.epson_stylus_px830.png?downloads=true
 BADGE-Codacy Badge: https://api.codacy.com/project/badge/Grade/827f4b69c4654bd9be86eef485f13b8e
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.epson_stylus_px830/master.svg
@@ -89,7 +88,7 @@ Example set of widgets for VIS
 
 The MIT License (MIT)
 
-Copyright (c) 2018 pix
+Copyright (c) 2019 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

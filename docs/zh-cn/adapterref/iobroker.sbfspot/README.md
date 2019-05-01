@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
+hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -18,12 +18,14 @@ hash: qolVS84J624LluZQic5j5y11ebd6Q/iZPmPHFFia+rE=
 现在支持两种数据库类型（mySQL和sqlite）。
 从版本0.2.3开始，有一个基于flot的自己的vis小部件可用于显示历史数据。
 
-提示：
-
+##提示
 *使用来自https://github.com/SBFspot/SBFspot或https://github.com/rg-engineering/SBFspot的sbfspot的最新版本
 *适配器，sbfspot和数据库（mySQL或sqlite）必须在同一系统上运行，例如覆盆子PI
 *可以在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index下找到Raspberry Pi（或类似版本）上的sbfspot安装手册。 PHP / PRODUKTE /软件/插件，妇儿-iobroker-sbfspot
 *对于Raspberry Pi，有一个半自动配置工具，可在https://github.com/SBFspot/sbfspot-config下找到
+
+＃＃ 已知的问题
+*请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）创建问题，如果您发现错误或新功能
 
 ## Changelog
 

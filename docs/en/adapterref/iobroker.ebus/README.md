@@ -20,6 +20,8 @@ Another feature is to send any command to ebusd and receive answer to work with 
 
 current supported ebusd-version: 3.3
 
+## known issues
+* please create issues at [github](https://github.com/rg-engineering/ioBroker.ebus/issues) if you find bugs or whish new features
    
 ## Changelog
 

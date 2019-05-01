@@ -1,6 +1,6 @@
 ![Logo](admin/oppoplayer.png)
 # ioBroker.oppoplayer
-![Number of Installations](http://iobroker.live/badges/oppoplayer-installed.svg) ![Number of Installations](http://iobroker.live/badges/oppoplayer-stable.svg) =================
+![Number of Installations](http://iobroker.live/badges/oppoplayer-installed.svg) ![Number of Installations](http://iobroker.live/badges/oppoplayer-stable.svg)
 
 This adapter adds support for oppo digital UHD player (UDP-20x) to ioBroker. 
 You can control playback and query status.
@@ -13,6 +13,9 @@ You can control playback and query status.
 * volkerrichert
 
 ## Changelog
+
+### 0.2.2
+* (volkerrichert) "enable" compact mode
 
 ### 0.2.1 
 * (volkerrichert) fixed power removed detection

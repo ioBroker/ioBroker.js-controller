@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tautulli/README.md
 title: ioBroker.tautulli
-hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
+hash: Q0WQWVcWeq+TZR4OE9XAqU+M5kNa8+TUODKvwAnAgoA=
 ---
-![商标](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+![＃f03c15]（https://placehold.it/15/f03c15/000000?text=+)__这个项目已停止使用[ioBroker.plex]（https://github.com/Zefau/ioBroker.plex） （与Tautulli集成一起提供）__！[＃f03c15](https://placehold.it/15/f03c15/000000?text=+)
 
 ![安装数量](http://iobroker.live/badges/tautulli-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tautulli.svg)
@@ -13,8 +13,12 @@ hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
 ![下载](https://img.shields.io/npm/dm/iobroker.tautulli.svg)
 ![NPM](https://nodei.co/npm/iobroker.tautulli.png?downloads=true)
 
+___
+
+![商标](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+
 ＃ioBroker.tautulli[Tautulli是第三方应用程序](https://tautulli.com/#about)您可以与Plex Media Server一起运行以监控活动并跟踪各种统计信息。最重要的是，这些统计数据包括观看内容，观看内容，观看时间和地点以及观看方式。所有统计信息都显示在一个漂亮而干净的界面中，其中包含许多表格和图形，这使得您可以轻松地向其他人吹嘘您的服务器。
-此适配器连接到[Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md)，并且还接收来自Tautulli和Plex（后者需要Plex Pass）的webhook事件。
+此适配器连接到[Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md)，并且还从Tautulli和Plex接收webhook事件（后者需要Plex Pass）。
 
 **目录**
 

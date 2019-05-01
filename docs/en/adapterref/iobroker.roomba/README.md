@@ -7,6 +7,7 @@ Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 ![Number of Installations](http://iobroker.live/badges/roomba-installed.svg) ![Stable version](http://iobroker.live/badges/roomba-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.roomba)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)](https://nodei.co/npm/iobroker.roomba/)
 
@@ -76,7 +77,7 @@ For manual setup see https://github.com/koalazak/dorita980#how-to-get-your-usern
 | Roomba® 9xx | 965, 981 | - | [Release Notes](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | (most likely) |
 | Roomba® 9xx | [960](https://forum.iobroker.net/user/jb_sullivan), [966](https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Release Notes](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) **supported (incl. map)** |
 | Roomba® i | [i7 (7150)](https://forum.iobroker.net/post/240589), i7+ (7550) | v1.4 | [Release Notes](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) **supported (incl. map)** |
-| Roomba® e5 | e5 | v3.4.42 | [Release Notes](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | _unknown_ |
+| Roomba® e5 | [e5](https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Release Notes](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) **supported** (![#f03c15](https://placehold.it/15/f03c15/000000?text=+) NO map) |
 
 Please help me regarding the supported devices and let me [know via an issue](https://github.com/Zefau/ioBroker.roomba/issues), whether your Roomba model is supported!
 
@@ -260,6 +261,15 @@ You may edit the variable ```message``` to any notification you would like to re
 
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- bump to stable release
+
+### 0.5.0 (2019-04-21)
+- (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
+- (zefau) Removed button to end mission manually ```missions.current._endMission```
+- (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
+- (zefau) added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
 - Refactored retrieval of preferences and added debug mode

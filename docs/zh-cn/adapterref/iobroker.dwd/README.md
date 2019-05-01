@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.dwd/README.md
 title: ioBroker.dwd
-hash: gXJvjfgglI6y5oJqwdC50YR9P4YBeVesrrHZEV1tgHU=
+hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
 ---
 ![商标](../../../en/adapterref/iobroker.dwd/admin/dwd.png)
 
@@ -13,12 +13,12 @@ hash: gXJvjfgglI6y5oJqwdC50YR9P4YBeVesrrHZEV1tgHU=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.dwd.png?downloads=true)
 
-#ioBroker.dwd =================
+#ioBroker.dwd
 版权所有Deutscher Wetterdienst
 
 DieserAdapterlädtdieWetterwarnungen vom deutschenWetterdienstüberJSONlink。
 
-此适配器通过JSON链接加载德国气象服务的天气警告。
+此适配器通过JSON链接从德国气象服务加载天气警告。
 
 ＃＃ 去做
 *处理FTP超时
@@ -113,7 +113,7 @@ DieserAdapterlädtdieWetterwarnungen vom deutschenWetterdienstüberJSONlink。
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

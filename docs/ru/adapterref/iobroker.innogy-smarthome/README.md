@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.innogy-smarthome/README.md
 title: ioBroker.Innogy-SmartHome
-hash: uWwrmmMDctRDdFOmcIAv6Sr1W/CM4mVftqTDmPNsOTU=
+hash: 0MpE/iZh8Vs/Sks6ytcNYbivpUhBpF3IeUUfM60iCUQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.innogy-smarthome/admin/innogy-smarthome.png)
 
+![Количество установок](http://iobroker.live/badges/innogy-smarthome-stable.svg)
 ![строить](https://travis-ci.org/PArns/ioBroker.innogy-smarthome.svg?branch=master)
 
 # IoBroker.Innogy-SmartHome
@@ -17,6 +18,13 @@ hash: uWwrmmMDctRDdFOmcIAv6Sr1W/CM4mVftqTDmPNsOTU=
 Поскольку этот проект разрабатывается в свободное время, я * активно ищу помощь в поддержке и расширении этой библиотеки! Если вы готовы помочь, напишите мне!
 
 ## Changelog
+
+### 0.3.1
+    Added PowerControl
+    Added SHC 2.0 quota states
+
+### 0.3.0
+    Added support for SHC 2.0 (and API 1.1)
 
 ### 0.2.11
     Reverted changes from yesterday, as RW states are not correctly maintained by innogy

@@ -48,6 +48,9 @@ This adapter cannot be installed directly from github. Only from npm.
 
 ## Changelog
 
+### 0.3.5 (2019-04-15)
+* (yaming116) bugfix i18n
+
 ### 0.3.4 (2019-02-04)
 * (janfromberlin) button widget did not handle primitive boolean commands
 * (matthiasgasser) fix time series query start date, adapted end date

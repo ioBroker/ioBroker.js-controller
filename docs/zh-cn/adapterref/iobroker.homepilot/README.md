@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
+hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ---
 ![商标](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
 ![安装数量](http://iobroker.live/badges/homepilot-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.homepilot.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
-![开放式问题](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
 ![Codacy徽章](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![特拉维斯-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
@@ -36,10 +35,11 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 ：波兰：[Dokumentacja](/docs/en/doc_homepilot_en.md)
 
 ##路线图
-* 1.1.0在admin中实现适配器设置窗口的设计
 * 1.4.0在设置窗口中获取网络中所有已安装的duofern产品的列表
 * 1.5.0将对象树重新排列为“homepilot.0.device.channel.state”
 * 2.0.0从Homepilot站获取实时数据（zwave）
+
+欢迎捐款！
 
 ## Changelog
 ### 1.1.1 (2019-01-09)
@@ -135,7 +135,7 @@ hash: e7iAVd9rFBjVjsKXErFlK3qFmpFesr7BZARoJlb4IzE=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 pix
+Copyright (c) 2019 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

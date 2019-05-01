@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
+hash: tcLLym+E6nf8ooit8z1BQLV5IDQVg7GmVeVMaBTZqi0=
 ---
 ![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -12,6 +12,7 @@ hash: KE3kWY4yiNlB2WhUhMN293wfgjei8vEh+SvqAzweewk=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.roomba.svg)
 ![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
 ![下载](https://img.shields.io/npm/dm/iobroker.roomba.svg)
+![Greenkeeper徽章](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
 ＃ioBroker.roomba将您的iRobot Roomba连接到ioBroker。
@@ -79,8 +80,8 @@ sudo npm install canvas --unsafe-perm=true
 | Roomba®9xx| 965,981 | -  | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle)| （最有可能）|
 | Roomba®9xx| [960]（https://forum.iobroker.net/user/jb_sullivan），[966]（https://forum.iobroker.net/user/thomaslpz),980 | v2.4.6-3 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle)|支持![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**（包括地图）** |
 | Roomba®i| [i7（7150）]（https://forum.iobroker.net/post/240589），i7 +（7550）| v1.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle)|支持![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**（包括地图）** |
-| Roomba®e5| e5 | v3.4.42 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle)| _unknown_ |
-| Roomba®e5| e5 | v3.4.42 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle）| _unknown_ |
+| Roomba®e5| [e5]（https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158）| v3.4.42 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle)| ![＃c5f015]（https://placehold.it/15/c5f015/000000?text=+) **支持**（！[＃f03c15](https://placehold.it/15/f03c15/000000?text=+)NOmap）|
+| Roomba®e5| [e5]（https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158）| v3.4.42 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle）| ！[＃c5f015]（https://placehold.it/15/c5f015/000000?text=+) **支持**（！[＃f03c15]（https://placehold.it/15/f03c15/000000？ text = +）没有地图）|
 
 关于支持的设备，请帮助我，让我[通过一个问题知道](https://github.com/Zefau/ioBroker.roomba/issues)，无论您的Roomba模型是否受支持！
 
@@ -93,11 +94,11 @@ sudo npm install canvas --unsafe-perm=true
 |清洁|最后| -  |最后命令发送到机器人|
 |清洁|最后|命令|最后一个命令发送到机器人|
 |清洁|最后|时间戳|时间戳最后一个命令已发送|
-|清洁|最后| datetime |发送了DateTime最后一个命令
+|清洁|最后| datetime |发送了DateTime最后一个命令 |
 |清洁|最后|发起者|最后一个命令的启动器|
 |清洁|最后|循环|循环|
 |清洁|最后|阶段|阶段|
-|清洁|最后|错误|表示上次任务期间的错误
+|清洁|最后|错误|表示上次任务期间的错误 |
 |清洁|时间表| -  |安排信息|
 |清洁|时间表|循环|计划周期（周日至周六）|
 |清洁|时间表|小时|小时开始周期（周日至周六）|
@@ -144,8 +145,8 @@ sudo npm install canvas --unsafe-perm=true
 |国家| -  | -  |状态信息|
 |国家| -  | \ _连接|连接状态|
 |国家| -  |电池|机器人的电池电量|
-|国家| -  | binFull |说明bin状态是否已满？
-|国家| -  | binInserted |说明bin是否插入
+|国家| -  | binFull |说明bin状态是否已满|
+|国家| -  | binInserted |说明bin是否插入 |
 |国家| -  |停靠|说明机器人是否停靠|
 |国家| -  |信号|信号强度|
 |国家| -  |状态|机器人的当前状态|
@@ -267,6 +268,15 @@ _2019-02-03在任务开始时发送地图的固定错误_
 <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a>从<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>制作的图标由<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>许可</div>
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- bump to stable release
+
+### 0.5.0 (2019-04-21)
+- (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
+- (zefau) Removed button to end mission manually ```missions.current._endMission```
+- (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
+- (zefau) added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
 - Refactored retrieval of preferences and added debug mode

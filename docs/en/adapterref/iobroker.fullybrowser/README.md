@@ -2,7 +2,7 @@
 # ioBroker.fullybrowser
 =================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.fullybrowser.svg)](https://www.npmjs.com/package/iobroker.fullybrowser)
+![Number of Installations](http://iobroker.live/badges/fullybrowser-installed.svg) ![Number of Installations](http://iobroker.live/badges/fullybrowser-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fullybrowser.svg)](https://www.npmjs.com/package/iobroker.fullybrowser)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fullybrowser.svg)](https://www.npmjs.com/package/iobroker.fullybrowser)
 [![Tests](https://travis-ci.org/arteck/iobroker.fullybrowser.svg?branch=master)](https://travis-ci.org/arteck/iobroker.fullybrowser)
 

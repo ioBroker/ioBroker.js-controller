@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
+hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -25,6 +25,9 @@ hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
 另一个特征是向ebusd发送任何命令并接收答案以便与例如ebusd一起工作。脚本。
 
 目前支持的ebusd版本：3.3
+
+＃＃ 已知的问题
+*请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）创建问题，如果您发现错误或新功能
 
 ## Changelog
 

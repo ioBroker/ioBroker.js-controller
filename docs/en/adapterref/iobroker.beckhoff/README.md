@@ -4,7 +4,7 @@ BADGE-Build status: https://ci.appveyor.com/api/projects/status/laebb0pq4pd4d08x
 BADGE-npm: https://img.shields.io/npm/v/iobroker.beckhoff.svg
 BADGE-Number of Installations: http://iobroker.live/badges/beckhoff-installed.svg
 ---
-![Logo](docs/en/img/beckhoff.png)
+![Logo](img/beckhoff.png)
 
 # ioBroker.beckhoff
 This adapter for ioBroker can Communicate with a Beckhoff Automation System (Twincat 2 or 3) over the ADS Protocol.
@@ -65,6 +65,9 @@ This Project is not affilate to Beckhoff in any way
 3. Sync never meant the Dataexchange of the Symbols. Sync is the create or delete the States in ioBroker dependent on the GlobalVariableTable in the PLC.
 
 ## Changelog
+### 1.0.1 (2019-04-06)
+* (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
+
 ### 1.0.0 (2019-03-23)
 * (dkleber 89) Stable Release, Update Gulp, add new Translations
 
@@ -98,9 +101,6 @@ This Project is not affilate to Beckhoff in any way
 
 ### 0.0.2 (2018-10-20)
 * (dkleber89) Milestone Connection and Sync, no Release yet
-
-### 0.0.1 (2018-08-17)
-* (dkleber89) Development, no Release yet
 
 ## License
 The MIT License (MIT)

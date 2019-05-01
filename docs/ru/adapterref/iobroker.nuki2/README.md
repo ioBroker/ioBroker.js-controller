@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
+hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -12,16 +12,20 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.nuki2.svg)
 ![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.nuki2.svg?branch=master)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nuki2.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/Zefau/ioBroker.nuki2.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki2.png?downloads=true)
 
-# IoBroker.nuki2 Этот адаптер ioBroker позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/) с использованием [API-интерфейса Nuki Bridge] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/ # заголовок - введение) и [Nuki Web API](https://developer.nuki.io/page/nuki-web-api-111/3/).
+# IoBroker.nuki2 Этот адаптер ioBroker позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/) с использованием [Nuki Bridge API (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge -http-api-170/4 / # заголовок - введение) и [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 **Оглавление**
 
 1. [Установка] (# установка)
    1. [Получить токен API] (# get-a-api-token)
    2. [Функция обратного вызова] (# функция обратного вызова)
-   3. [Состояния] (# штатов)
-2. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
+   3. [Штаты] (# штаты)
+2. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
+   1. [Закрывайте дверь в 10 вечера вечером] (# запирайте дверь в 10 вечера вечером)
+   2. [Пусть Alexa сообщит вам об изменениях блокировки] (# let-alexa-inform-you-about-lock-changes)
+   3. [Пусть Telegram сообщит вам об изменениях блокировки] (# let-telegram-inform-you-about-about-lock-changes)
 3. [Журнал изменений] (# changelog)
 4. [Кредиты] (# кредитов)
 5. [Лицензия] (# лицензия)
@@ -39,11 +43,11 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 
 ### Функция обратного вызова
 Если используется функция обратного вызова, адаптер попытается автоматически установить обратный вызов на мосту Nuki при сохранении экземпляра. Все состояния Nuki будут обновляться мостом Nuki, пока активирован обратный вызов.
-Обратные вызовы также могут быть установлены и удалены вручную из любого браузера со следующими URL-адресами:
+Обратные вызовы также можно устанавливать и удалять вручную из любого браузера со следующими URL-адресами:
 
 * set Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken>` ` `
 * Remove Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>` ``
-* перечислить все обратные вызовы: `` `http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken>` ``
+* список всех обратных вызовов: `` `http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken>` ``
 
 ### Состояния
 Если вы успешно настроили ioBroker.nuki2, будут созданы следующие каналы и состояния:
@@ -65,7 +69,7 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 | - | versWifi | Версия прошивки модулей WiFi (только аппаратный мост) |
 | - | versApp | Версия приложения моста (только программный мост) |
 
-#### Замки (с Nuki Bridge API)
+#### Замки (с помощью API Nuki Bridge)
 Блокировка будет создана как устройство с шаблоном имени ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Bridge API):
 
 | Канал | Государство | Описание |
@@ -105,7 +109,7 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 | конфиг | pairingEnabled | True, если спаривание разрешено с помощью кнопки Smartlock |
 | конфиг | buttonEnabled | Истина, если кнопка на Smartlock включена |
 | конфиг | ledEnabled | Истина, если включен светодиод на смарт-блокировке |
-| конфиг | ledBrightness | Яркость светодиода: от 0 (выкл) до 5 (макс) |
+| конфиг | ledBrightness | Яркость светодиода: от 0 (выключен) до 5 (максимум) |
 | конфиг | fobAction1 | Действие брелка, если кнопка нажата один раз <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | конфиг | fobAction2 | Действие брелка, если кнопка нажата дважды <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | конфиг | fobAction3 | Действие брелка, если кнопка нажата 3 раза <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
@@ -114,10 +118,10 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 | конфиг | AdvertisingMode | Режим рекламы (экономия батареи) <br> `{&quot; 0 &quot;: &#39;AUTOMATIC&#39;,&quot; 1 &quot;: &#39;NORMAL&#39;,&quot; 2 &quot;: &#39;SLOW&#39;,&quot; 3 &quot;: &#39;SLOWEST&#39;}` |
 | конфиг | homekitState | Государство homekit <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
 | конфиг | homekitState | Государство homekit <br> `{&quot; 0 &quot;: &#39;НЕДОСТУПЕН&#39;,&quot; 1 &quot;:&quot; ОТКЛЮЧЕНО &quot;,&quot; 2 &quot;:&quot; ВКЛЮЧЕНО &quot;,&quot; 3 &quot;:&quot; ВКЛЮЧЕНО И СОЕДИНЕНО &quot;}` |
-| конфиг | timezoneId | Идентификатор часового пояса |
+| конфиг | timezoneId | ID часового пояса |
 | config.advanced | - | Расширенная настройка замка |
 | config.advanced | totalDegrees | Абсолютная общая позиция в градусах, которая была достигнута во время калибровки |
-| config.advanced | unlockedPositionOffsetDegrees | Смещение, изменяющее разблокированное положение |
+| config.advanced | unlockedPositionOffsetDegrees | Смещение, которое изменяет разблокированное положение |
 | config.advanced | lockedPositionOffsetDegrees | Смещение, изменяющее заблокированное положение |
 | config.advanced | singleLockedPositionOffsetDegrees | Смещение, изменяющее одиночную заблокированную позицию |
 | config.advanced | unlockedToLockedTransitionOffsetDegrees | Смещение, изменяющее положение, в котором происходит переход из разблокированного в заблокированный |
@@ -125,14 +129,14 @@ hash: XBXVY+wfWKABrFqeMRcKeCCcNX+aXq4Dyd1syG5eGmk=
 | config.advanced | doubleButtonPressAction | Желаемое действие, если кнопка нажата дважды <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | config.advanced | doubleButtonPressAction | Желаемое действие, если кнопка нажата дважды <br> `{&quot; 0 &quot;:&quot; NO_ACTION &quot;,&quot; 1 &quot;:&quot; INTELLIGENT &quot;,&quot; 2 &quot;:&quot; UNLOCK &quot;,&quot; 3 &quot;:&quot; LOCK &quot;,&quot; 4 &quot;:&quot; UNLATCH &quot;,&quot; 5 &quot;:&quot; LOCK_N_GO &quot;, &quot;6&quot;: &quot;SHOW_STATUS&quot;} `|
 | config.advanced | batteryType | Тип батарей, присутствующих в умном замке <br> `{"0": 'ALKALI', "1": 'ACCUMULATOR', "2": 'LITHIUM'}` |
-| config.advanced | batteryType | Тип батарей, присутствующих в умном замке <br> `{&quot; 0 &quot;: &#39;АЛКАЛИ&#39;,&quot; 1 &quot;:&quot; АККУМУЛЯТОР &quot;,&quot; 2 &quot;: &#39;ЛИТИЙ&#39;}` |
+| config.advanced | batteryType | Тип батарей, присутствующих в умном замке <br> `{&quot; 0 &quot;: &#39;ALKALI&#39;,&quot; 1 &quot;: &#39;ACCUMULATOR&#39;,&quot; 2 &quot;: &#39;LITHIUM&#39;}` |
 | config.advanced | automaticBatteryTypeDetection | Флаг, указывающий, включено ли автоматическое определение типа батареи |
 | config.advanced | unlatchDuration | Продолжительность в секундах для удержания защелки в открытом положении |
 | config.advanced | autoLockTimeout | Секунды, пока умная блокировка не разблокируется после того, как она была разблокирована. Нет автоматической блокировки, если значение равно 0. |
 | пользователи | - | Пользователи замка |
 | users._userName_ | - | Пользователь _userName_ |
 | users._userName_ | тип | Тип авторизации <br> `{"0": 'APP', "1": 'BRIDGE', "2": 'FOB', "3": 'KEYPAD', "13": 'KEYPAD CODE', "14": 'Z-KEY', "15": 'VIRTUAL'}` |
-| users._userName_ | тип | Тип авторизации <br> `{&quot; 0 &quot;: &#39;APP&#39;,&quot; 1 &quot;:&quot; МОСТ &quot;,&quot; 2 &quot;:&quot; FOB &quot;,&quot; 3 &quot;:&quot; KEYPAD &quot;,&quot; 13 &quot;:&quot; КОД КЛАВИАТУРЫ &quot;,&quot; 14 &quot;:&quot; Z- KEY &#39;, &quot;15&quot;:&#39; VIRTUAL &#39;} `|
+| users._userName_ | тип | Тип авторизации <br> `{&quot; 0 &quot;: &#39;APP&#39;,&quot; 1 &quot;:&quot; МОСТ &quot;,&quot; 2 &quot;:&quot; FOB &quot;,&quot; 3 &quot;:&quot; КЛАВИАТУРА &quot;,&quot; 13 &quot;:&quot; КОД КЛАВИАТУРЫ &quot;,&quot; 14 &quot;:&quot; Z- KEY &#39;, &quot;15&quot;:&#39; VIRTUAL &#39;} `|
 | users._userName_ | id | Уникальный идентификатор пользователя |
 | users._userName_ | authId | Идентификатор авторизации Smartlock |
 | users._userName_ | включен | True, если пользователь включен |
@@ -184,12 +188,185 @@ schedule('0 22 * * *', function()
 
 __Заменить `nuki2.0.door__home_door.status.lockState` на lockState вашей блокировки! __ Вы также можете настроить сообщение через `msg`.
 
+### Пусть Alexa сообщит вам об изменениях блокировки
+Для этого требуется адаптер ioBroker ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
+
+Чтобы использовать голосовой вывод Alexa, мы определяем функцию ```say```. Поместите следующую функцию в скрипт в «глобальную» папку ioBroker.javascript. ВАЖНО: замените #YOUR ALEXA ID # (также замените #) своим Alexa ID. Вы можете найти Alexa ID в дереве объектов ioBroker ```alexa2.0.Echo-Devices```.
+
+```javascript
+/**
+ * Say something with Alexa.
+ *
+ * @param       {string}        message         Message to say
+ * @param       {string|array}  alexas          Alexa Device to say the voice message
+ * @return      void
+ *
+ */
+function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'] for default voice output from multiple devices (also replace #)
+{
+    alexas = typeof alexas === 'string' ? [alexas] : alexas;
+    alexas.forEach(function(alexa)
+    {
+        setState('alexa2.0.Echo-Devices.' + alexa + '.Commands.speak', message);
+    });
+}
+```
+
+Вы можете использовать эту функцию в ioBroker.javascript для произнесения фразы, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
+
+Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+### Пусть Telegram сообщит вам об изменениях блокировки
+Для этого требуется адаптер ioBroker ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram).
+
+Чтобы использовать вывод сообщений Telegram, мы определяем функцию ```msg``` и ```messenger```. Поместите следующую функцию в скрипт в «глобальную» папку ioBroker.javascript:
+
+```javascript
+/**
+ * Send something via telegram.
+ *
+ * @param       {string}        message         Message to print
+ * @param       {string|array}  receiver        Users to send the message to
+ * @return      void
+ *
+ */
+function msg(message, receiver = 'ALL')
+{
+    if (receiver == 'ALL')
+        messenger(message);
+
+    else
+    {
+        receiver = typeof receiver == 'string' ? [receiver] : receiver;
+        receiver.forEach(function(user)
+        {
+            messenger(message, user);
+        });
+    }
+}
+```
+
+```javascript
+/**
+ * Sends a message / text.
+ *
+ * @param   {string}            content         Message to send
+ * @param   {string}            user            (optional) Specific user to send the message to (defaults to all registered users)
+ * @return  void
+ *
+ */
+function messenger(content, user = '')
+{
+    var config = {
+        text: content,
+        parse_mode: 'HTML',
+        reply_markup: {
+            resize_keyboard: true,
+            one_time_keyboard: false
+        }
+    };
+
+    sendTo('telegram', user ? Object.assign({user: user}, config) : config);
+}
+```
+
+Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (конкретным пользователям).
+
+Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+});
+```
+
+ПРИМЕЧАНИЕ. Если вы используете как скрипт Alexa, так и скрипт Telegram, вы можете определить только одного слушателя для обоих действий:
+
+```javascript
+const DOOR_STATES = {
+    "0": "uncalibrated",
+    "1": "locked",
+    "2": "unlocking",
+    "3": "unlocked",
+    "4": "locking",
+    "5": "unlatched",
+    "6": "unlocked (lock n go)",
+    "7": "unlatching",
+    "254": "motor blocked",
+    "255": "undefined"
+};
+
+/*
+ * LISTEN TO CHANGES TO LOCK STATE
+ *
+ */
+on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
+{
+    if (obj !== undefined && obj.state !== undefined)
+    {
+      say('Door is ' + DOOR_STATES[obj.state.val] + '!')
+      msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
+    }
+});
+```
+
 ## Кредиты
 Благодаря [@ Mik13] (https://github.com/Mik13) для [реализации API Nuki Bridge](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set] (https://www.flaticon.com/packs/essential-set-2)) и <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Двери](https://www.flaticon.com/packs/doors)) с <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 ## Changelog
+
+### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+- (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) added Web Adapter as dependency
+- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
+- (zefau) removed empty folders when Nuki Web API has not been setup 
+- (zefau) bump to stable release
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

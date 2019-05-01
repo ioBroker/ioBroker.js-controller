@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-weather
-hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
+hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,16 +14,26 @@ hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder WeatherUnterground. Sie benötigen DasWetter-Adpater oder einen WeatherUnterground-Adapter.
+Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder WeatherUnterground. Sie benötigen DasWetter-Adpater oder WeatherUnterground-Adapter.
 
 Bei wetterbedingtem Wetter müssen Sie die Vorhersage der nächsten 36 Stunden aktivieren.
 In DasWetter.com benötigen Sie eine von vier aktivierten Prognosedatenstrukturen. Sie können den auswählen, den Sie anzeigen möchten.
 
 ## Hinweise / Wiki
 ### Prognostundenstunden definieren
-Standardmäßig werden im Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (Wunderground) angezeigt. Wenn Sie es vorziehen, nur z. 10 Stunden Vorhersage, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
+Standardmäßig zeigt das Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (Wunderground). Wenn Sie es vorziehen, nur z. 10 Stunden Vorhersage, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
+
+### OIDs werden bei Verwendung von DasWetter nicht automatisch erstellt
+Normalerweise werden OIDs automatisch erstellt, wenn Sie die Instanz- oder Datenstruktur auswählen. Wenn Sie "keine OIDs verfügbar" erhalten, prüfen Sie, ob Sie in "DasWetter" "NextDaysDetailed" verwenden.
+Möglicherweise müssen Sie "NextDaysDetailed" aktivieren.
+
+## Bekannte Probleme
+* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
+
+### 2.3.0 (2019-03-25)
+* (René) markings added
 
 ### 2.2.2 (2018-12-30)
 * (René) bug fix: If oid_date is not set when using weatherunderground, an unnecessary error message was issued and the plot was not shown
@@ -88,7 +98,7 @@ Standardmäßig werden im Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunde
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2018>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

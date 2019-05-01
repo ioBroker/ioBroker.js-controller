@@ -74,6 +74,11 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 3.6.1 (2019-04-18)
+* (ldittmar) Better integration for ioBroker.info (1.3.7)
+* (ldittmar) Update Gulp to v4
+* (ldittmar) Update materialize-css to v 1.0.0
+
 ### 3.6.0 (2018-11-08)
 * (foxriver76) New update states added in info channel
 * (foxriver76) Take respect to async when creating info states

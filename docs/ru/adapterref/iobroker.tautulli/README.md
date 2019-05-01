@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tautulli/README.md
 title: ioBroker.tautulli
-hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
+hash: Q0WQWVcWeq+TZR4OE9XAqU+M5kNa8+TUODKvwAnAgoA=
 ---
-![логотип](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+![# f03c15] (https://placehold.it/15/f03c15/000000?text=+) __Этот проект прекращен в пользу [ioBroker.plex] (https://github.com/Zefau/ioBroker.plex) (поставляется с интеграцией Tautulli) __! [# f03c15](https://placehold.it/15/f03c15/000000?text=+)
 
 ![Количество установок](http://iobroker.live/badges/tautulli-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.tautulli.svg)
@@ -13,7 +13,11 @@ hash: dgxUGRa7DjpHaUslLIRWE/MNUZH4dY5z1fGAyOH2/XA=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.tautulli.svg)
 ![NPM](https://nodei.co/npm/iobroker.tautulli.png?downloads=true)
 
-# IoBroker.tautulli [Tautulli - стороннее приложение](https://tautulli.com/#about), который вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Самое главное, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где он смотрел, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным.
+___
+
+![логотип](https://raw.githubusercontent.com/Zefau/ioBroker.tautulli/master/admin/tautulli.jpeg)
+
+# IoBroker.tautulli [Tautulli - стороннее приложение](https://tautulli.com/#about), который вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Самое главное, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где они смотрели, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным.
 Этот адаптер подключается к [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md), а также получает события webhook от Tautulli и Plex (последний требует Plex Pass).
 
 **Оглавление**

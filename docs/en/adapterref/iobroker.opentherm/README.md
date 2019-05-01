@@ -27,7 +27,7 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 * Where 
 
 ## Changelog
-### 0.2.0
+### 0.2.1
 * Fix translations
 
 ### 0.1.9

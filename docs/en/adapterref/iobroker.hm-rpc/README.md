@@ -135,6 +135,10 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.9.11 (2019-04-21)
+* (foxriver76) create OPERATING_VOLTAGE with unit V
+* (foxriver76) create RSSI_* with unit dBm
+
 ### 1.9.10 (2019-04-12)
 * (foxriver76) fix meta
 * (foxriver76) added new meta data

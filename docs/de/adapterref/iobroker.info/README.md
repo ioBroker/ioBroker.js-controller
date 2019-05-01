@@ -315,6 +315,9 @@ Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder 
 
 ## Changelog
 
+### 1.3.7 (2019-04-17)
+* (ldittmar) better integration to admin adapter
+
 ### 1.3.5 (2019-04-12)
 * (ldittmar) add likes for Adapters
 * (ldittmar) show comments for issues

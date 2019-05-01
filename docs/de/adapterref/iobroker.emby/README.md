@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.emby/README.md
 title: ioBroker.emby
-hash: s61YcNn5U2uccRdeMrSqE/NRr2cIAwEuwasYDW04BC4=
+hash: MROTHJDTdk8ju4arLWJfWpDbjAxU+5KpcaEXIyXf0A4=
 ---
 ![Logo](../../../en/adapterref/iobroker.emby/admin/emby.png)
 
@@ -64,8 +64,6 @@ Bitte befolgen Sie die Schritte, um sicherzustellen, dass der Adapter ordnungsge
 | x.command.togglemute | Schaltet die Stummschaltung des Geräts um |
 | x.Befehl.Volumen | Legt die Lautstärke des ausgewählten Geräts fest. | Funktioniert auf den meisten Geräten nicht, da dies nicht die Lautstärke des Fernsehers beeinflusst. |
 
-### Andere Befehle werden bald kommen
-
 ## Changelog
 
 ### 0.1.2
@@ -90,3 +88,27 @@ Bitte befolgen Sie die Schritte, um sicherzustellen, dass der Adapter ordnungsge
 
 ### 0.0.1
 * Initial version
+
+## License
+
+MIT License
+
+Copyright (c) 2019 thewhobox
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

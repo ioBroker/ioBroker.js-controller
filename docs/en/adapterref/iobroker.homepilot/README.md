@@ -3,7 +3,6 @@
 
 ![Number of Installations](http://iobroker.live/badges/homepilot-installed.svg) ![Number of Installations](http://iobroker.live/badges/homepilot-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.homepilot.svg)](https://www.npmjs.com/package/iobroker.homepilot)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.homepilot.svg)](https://www.npmjs.com/package/iobroker.homepilot)
-[![Open Issues](http://githubbadges.herokuapp.com/Pix---/ioBroker.homepilot/issues.svg)](http://github.com/Pix---/ioBroker.homepilot/issues)
 
 [![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)](https://nodei.co/npm/iobroker.homepilot/)
 
@@ -121,16 +120,16 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/
 * (pix) adapter created
 
 ## Roadmap
-* 1.1.0 Materialize design for adapter settings window in admin
 * 1.4.0 get a list of all installed duofern products in your network within the settings window
 * 1.5.0 rearrange object tree to "homepilot.0.device.channel.state"
 * 2.0.0 get live data from Homepilot station (zwave)
+Contributions are welcome!
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2018 pix
+Copyright (c) 2019 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

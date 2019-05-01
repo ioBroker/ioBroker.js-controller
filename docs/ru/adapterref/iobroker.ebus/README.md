@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
+hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -25,6 +25,9 @@ hash: +glfxo8JhtjZ2bEms4bWeOoJPgDSbPZRpbsdo0hydak=
 Другая особенность - отправка любой команды в ebusd и получение ответа для работы, например, с. скрипты.
 
 текущая поддерживаемая ebusd-версия: 3.3
+
+## Известные вопросы
+* пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
 

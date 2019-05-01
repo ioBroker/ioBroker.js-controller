@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-погода
-hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
+hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,16 +14,26 @@ hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен DasWetter-Adpater или weatherunderground-Adapter
+Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен DasWetter-Adpater или weatherunderground-Adapter ...
 
 В Weatherunderground вам нужен прогноз на следующие 36 часов.
 В DasWetter.com вам нужна одна из четырех структур данных прогноза. Вы можете выбрать тот, который вы хотите отобразить.
 
 ## Notes / wiki
 ### Определить прогнозные часы
-По умолчанию на диаграмме прогноза отображается 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например, Прогноз на 10 часов, просто удалите ненужные OID под oid_groups в vis-edit.
+По умолчанию диаграмма прогноза показывает 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например, Прогноз на 10 часов, просто удалите ненужные OID под oid_groups в vis-edit.
+
+### OID не создаются автоматически при использовании DasWetter
+Обычно OID создаются автоматически при выборе экземпляра или структуры данных. Когда вы получите «OID недоступен», проверьте, используете ли вы «NextDaysDetailed» в DasWetter.
+Возможно, вам потребуется включить «NextDaysDetailed».
+
+## Известные вопросы
+* пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
+
+### 2.3.0 (2019-03-25)
+* (René) markings added
 
 ### 2.2.2 (2018-12-30)
 * (René) bug fix: If oid_date is not set when using weatherunderground, an unnecessary error message was issued and the plot was not shown
@@ -88,7 +98,7 @@ hash: v9U5MmBKLZn7eNYWoMMIyxF03vU4izz5HZhNy4FbkYc=
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2018>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

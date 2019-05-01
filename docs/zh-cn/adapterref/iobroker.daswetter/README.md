@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter。
-hash: 44CyV5g3E0YiBrmL0XqYnV9wGegPocPi9FMLu641cH8=
+hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 ---
 ![商标](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -50,7 +50,7 @@ NextHours_Day1中###“current”：
 现在我们已经实现了“自动修复”，它将结构更改为记录的形状。
 
 ＃＃ 已知的问题
-请参阅github问题列表
+*请在[github]（https://github.com/rg-engineering/ioBroker.daswetter/issues）创建问题，如果您发现错误或新功能
 
 ## Changelog
 

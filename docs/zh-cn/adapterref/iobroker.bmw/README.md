@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bmw/README.md
 title: ！[Logo]（admin / bmw.png）适用于BMW ConnectedDrive-Daten的适配器
-hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
+hash: bfM+hfzdvekiGB2u/C4RAqSTulexr6oKxlddYBP8tdQ=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.bmw.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.bmw.svg)
@@ -18,14 +18,15 @@ hash: XKyVIm465//CVoxHf/uz8FuatJE7/BCNjnfZ+5WQ+4M=
 Der Adapter versucht die ConnectedDrive-Datenfürdieauf die angegebenen Benutzer registrierten Fahrzeuge。
 Man kann filtern welche Daten angezeigt werden indem man im Admin dieEinstellungenfür
 
-* zu verwendete服务（ich verwende nur：效率，动态，导航和远程执行）。文恩'调试！' am anfang schreibt wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Daten er abfragt und geliefert bekommt。适配器muss im admin auf'info'stihen！
+* zu verwendete服务（ich verwende nur：效率，动态，导航和远程执行）。
+* Wenn man'debug'einschaltet wird der Adapter im Log die debug-Ausgaben einschalten und damit sieht man welche Daten er abfragt und geliefert bekommt。适配器muss im admin zumindest auf auf'info'Stehen！
 *zulöschendeEinträge（Bei mir Daten wie：* modelType，series，basicType，brand，licensePlate，hasNavi，bodyType，dcOnly，hasSunRoof，hasRex，steering，driveTrain，doorCount，vehicleTracking，isoCountryCode，auxPowerRegular，auxPowerEcoPro，auxPowerEcoProPlus，ccmMessages *）
 *Einträgedievon Arrays umgewandelt werden sollen（bei mir：* lastTripList | name | lastTrip，specs | key | value，service | name | services，cdpFeatures | name | status，cbsMessages | text | date，lifeTimeList | name | value，characteristicList |特征|数量，remote_history | eventId，storePortfolio | offerCode *）。 bestehen nurzweieinträgemit'|' getrennt dann ist der erste der name des arrays das umgewandelt wird und der zweite der Name des eintrags und es werden alle Sub-Elementeübernommen，wenn ein dritter wert vorhanden ist wird nur dieser alsWertübernommen。
 *Einträge死于ihrer Hirarchie nach oben wandern sollen（bei mir *attributesMap，vehicleMessages，cbsMessages，twoTimeTimer，characteristicList，lifeTimeList，lastTripList，update，storePortfolio*
 * der zu verwendete Datenserver kann auch angegeben werden，der DefaultistfürdenRest der Welt，wer in anderen Regionen wohnt kann auch <https://b2vapi.bmwgroup.cn:8592>fürChina，<https：//b2vapi.bmwgroup .us>fürUSAund <https://b2vapi.bmwgroup.com>fürEurope/其他的世界大家庭。 www.bmw-connecteddrive.com wird hoffentlich immer auf den richtigen weitergeleitet。
 * Man kann States umbenennen wenn man im rename ** originalName | neuerName ** verwendet。 weder Original noch der neue名字dürfenmehrmalsvorkommen。 '' werden durch'_'ersetzt。 MehrereEinträgevon** x | y ** werden durch'**，**'getrennt。 Damit kann man den Vin des Autos auf z.B. '325i'umbenennen。
 * Der Adapter versteht jetzt auch'sendTo'Kommandos。 `sendTo（'bmw.0'，'send'，'225xe.Versperren'）`würdedenWagen den sie auf 225xe umbenannt haben versperren，`sendTo（'bmw.0'，'send'，'_ DatenNeuLaden'）`würde einen刷新ausführen和`sendTo（'bmw.0'，'debug'，'on'）`（es geht auch 0,1，on，off，ein，aus，true，false）würdedebugein-oder ausschalten。 Mit`sendTo（'bmw.0'，'get'，'225xe.Versperren'）`kann der state von Werten abgefragt werden，man bekommt z.B. `{val：'Nicht gestartet'，ack：true，ts：1505839335870，q：0，from：'system.adapter.bmw.0'，lc：1505839335870}`zurück。
-* Im config kann man jetzt 2 flags setzten：Alle Daten bei Adapter-Neustartlöschen（默认值：ein）und alle Daten die bei einem wiederholten download nicht mehr runtergeladenwerdenlöschen（默认值：aus）。 Damit kann man bei Adapter-restart mit anderen设置die alten states vergessen aber wenn einKommunikationsfehlerwärendineseinstets entsteht die Daten vom letzten refresh sehen wenn der 2. Haken nicht gesetzt wird。
+* Im config kann man jetzt 2 flags setzten：Alle Daten bei Adapter-Neustartlöschen（默认：ein）und alle Daten die bei einem wiederholten download nicht mehr runtergeladenwerdenlöschen（默认值：aus）。 Damit kann man bei Adapter-Restart mit anderen设置die alten states vergessen aber wenn einKommunikationsfehlerwärendineseinstets entsteht die Daten vom letzten refresh sehen wenn der 2. Haken nicht gesetzt wird。
 
 Wenn der Adapter die Position vom Navigationssystem auslesenkannübersetzerdiese mit Hilfe von Google auf eine Adresse und gibt diese unter navigation.formatted_address an。
 
@@ -33,7 +34,7 @@ Ein spezieller'_RefresData'-State wird angelegt auf welchen man im admin.object 
 
 Wenn das Fahrzeug aktive remote-services hat（** service ** muss bei den Services eingeschaltet sein！）sollten Button-States angelegt werden。 DiesekönnendieAktiondurchführenwennim Objectviewer drauf geclickt wird oder wenn sie mit einem wert und *ack = false* beschrieben werden。 Der Wert死亡国家wird mit dem服务状态überschrieben，z.B ** PENDING ** oder ** EXECUTED **（oderdeutscheübersetzungen）。
 
-Ab 1.2.0 werden im **debug！** - 模式** _ originalData** - 状态generiert。 Wenn ihr Probleme mit einigen Datenpunktenhabkööntihrdas verwenden um mir die Daten zu senden（ich habe nicht alle BMW's zum Testen！）。
+Ab 1.2.0 werden im ** debug ** - 模式** _ originalData ** - 状态generiert。 Wenn ihr Probleme mit einigen Datenpunktenhabkönthrdas verwenden um mir die Daten zu senden（ich habe nicht alle BMW's zum Testen！）。
 
 <sub>ps：Ichmöchte</sub> <https://github.com/Lyve1981/BMW-ConnectedDrive-JSON-Wrapper> <sub>UND</sub> <https://github.com/edent/BMW-i-Remote> <sub>fürdieBeispiele danken mittels derer来源ich den Zugriff geschafft habe！</sub>
 
@@ -69,7 +70,7 @@ Mit admin，ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder m
 ### 1.2.4
 * added states for last successful donload and error to see how old data is
 * Improved error handling when services are not available
-* added _originalData object (wen in debug!) for root request for available cars on this account
+* added _originalData object (wenn in debug) for root request for available cars on this account
 
 ### 1.2.3
 * Removed bug for remote-control
@@ -79,7 +80,7 @@ Mit admin，ioBroker oder von <https://github.com/frankjoke/ioBroker.bmw> oder m
 ### 1.2.1
 * Removed RCT from possible services for remote control
 * Crerate a **.google_maps_link** state for the navigation which can be used to open a web-page with google maps to show the location.
-* set same level of debug if adapter is in debug mode and **debug!** is set
+* set same level of debug if adapter is in debug mode and **debug** is set
 
 ### 1.2.0 Test
 * Remoteservice implemented, basic functions like lock/unlock door or flash lights can be executed  

@@ -27,19 +27,24 @@ In the instance - config you can choose one of the following connection - modes.
 
 ### Adapter only
 
-CC Ease is disconnected or will be shut down when the adapter starts, you can control your comfoair only with ioBroker. (rs232mode ist PCMaster, is default & recommended).
+CC Ease is disconnected (recommended) or will be shut down when the adapter starts, you can control your comfoair only with ioBroker (rs232mode is PCMaster). This mode is
+ default & recommended.
 
 ### Listening only
 
-The adapter catches the data sent from the comfoair or the CC Ease. CC Ease is running, no commands can be sent from the adapter. In this mode you get only a basic set of values (temperatures, ventilation states).
+The adapter catches the data sent from the comfoair or the CC Ease. CC Ease is running, no commands can be sent from the adapter. In this mode you get only a basic set of values (temperatures, ventilation states). In this mode, there is also no risk for communication errors/damages, because there is no communication from the adapter to the comfoair.
 
 ### Parallel Mode
 
-CC Ease and adapter are running. comfoiar rs232mode is set to 'PCLogmode'. The adapter is 'listening' for basic values and polling for others (choose an extended polling interval) You can control your ComfoAir with ioBroker and with the CC Ease unit. Before a command is sent (polling included) the rs232-mode is switched to PC Master. With every command sent, also a polling is done. Tests have shown errorless - running in parallel for a longer period of time. But: You run this mode on your own risk.
+CC Ease and adapter are running. comfoiar rs232mode is set to 'PCLogmode'. The adapter is 'listening' for basic values (temperatures, ventilation levels) and polling for others (errors, filter timer). Set an extended polling interval to reduce the risk of communication errors. You can control your ComfoAir with ioBroker and with the CC Ease unit. Before a command is sent (polling included) the rs232-mode is switched to PC Master. With every command sent, also a polling is done. Tests have shown errorless - running in parallel for a longer period of time. But: You run this mode on your own risk.
+
+### Parallel Mode in constant PC-logmode
+
+Some users made positive experiences with running the comfoair constantly in PC-Logmode. This mode has the same functionalities as the Adapter only mode but with a running CC Ease. But: You run this mode on your own risk.
 
 ## Using the adapter
 
-Values of your comfoair should be visible in the 'status' and the 'temperatures' channel.
+Values of your comfoair should be visible in the 'status' and the 'temperatures' channel. Please refres the obects - view after changing the connection mode.
 
 By setting/changeing values in the 'control' - channel, you control your comfoair ventilation. All values in the 'control' - channel have to be set wieth ACK=false to be recognized as commands for the adapter.
 
@@ -47,9 +52,13 @@ Tested on comfoair CA350.
 
 ## Changelog
 
+### 0.3.1
+
+-   new connection mode: parelell in constant PC-Logmode.
+
 ### 0.3.0
 
--   new connection modes, i.e. 'listening only'-
+-   new connection modes, i.e. 'listening only', selftest-function and setting filter-timer added.
 
 ### 0.2.1
 

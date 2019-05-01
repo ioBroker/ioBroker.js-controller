@@ -65,6 +65,9 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
+### 1.0.1 (2019-04-06)
+* (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
+
 ### 1.0.0 (2019-03-23)
 * (dkleber 89) Stable Release, Update Gulp, add new Translations
 
@@ -98,9 +101,6 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 
 ### 0.0.2 (2018-10-20)
 * (dkleber89) Milestone Connection and Sync, no Release yet
-
-### 0.0.1 (2018-08-17)
-* (dkleber89) Development, no Release yet
 
 ## License
 The MIT License (MIT)
