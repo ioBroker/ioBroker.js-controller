@@ -53,6 +53,8 @@
   "Sort": "Сортировать",
   "Stable:": "Стабильная:",
   "Subscribe": "Подписаться",
+  "Switch to table view": "В виде таблицы",
+  "Switch to tile view": "В виде плиток",
   "The page you are looking for": "Возможно, страница, которую вы ищете, была удалена, изменилось ее имя или временно недоступна.",
   "Themes": "Тем",
   "Title": "заглавие",
@@ -85,6 +87,13 @@
   "to Shop": "в магазин",
   "user": "пользователь",
   "version": "Версия",
-  "Switch to table view": "В виде таблицы",
-  "Switch to tile view": "В виде плиток"
+  "Support us!": "Поддержать нас!",
+  "Donate with PayPal": "Пожертвовать через PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal - более безопасный и простой способ оплаты онлайн!",
+  "Donate with PayPal button": "Пожертвовать с помощью кнопки PayPal",
+  "Buy what you need at amazon": "Купите то, что вам нужно на Amazon",
+  "Amazon Affiliate Links": "Партнерские ссылки Amazon",
+  "Buy at Amazon": "Купить на Amazon",
+  "Amazon explanation": "Каждый раз, когда вы покупаете что-то по этой ссылке, ioBroker будет получать небольшой процент от вашего заказа. Цена для вас будет оставаться абсолютно такой же!",
+  "Close": "Закрыть"
 }

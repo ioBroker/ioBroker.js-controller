@@ -53,6 +53,8 @@
   "Sort": "Sort",
   "Stable:": "Stable:",
   "Subscribe": "Subscribe",
+  "Switch to table view": "Switch to table view",
+  "Switch to tile view": "Switch to tile view",
   "The page you are looking for": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
   "Themes": "Themes",
   "Title": "Title",
@@ -85,6 +87,13 @@
   "to Shop": "to Shop",
   "user": "user",
   "version": "Version",
-  "Switch to table view": "Switch to table view",
-  "Switch to tile view": "Switch to tile view"
+  "Support us!": "Support us!",
+  "Donate with PayPal": "Donate with PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal - The safer, easier way to pay online!",
+  "Donate with PayPal button": "Donate with PayPal button",
+  "Buy what you need at amazon": "Buy what you need at amazon",
+  "Amazon Affiliate Links": "Amazon Affiliate Links",
+  "Buy at Amazon": "Buy at Amazon",
+  "Amazon explanation": "Every time you buy something via this link the ioBroker will get a small percent from your order. The price for you will be absolute the same!",
+  "Close": "Close"
 }

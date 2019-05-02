@@ -2,11 +2,16 @@
 O
 Adaptery
 Wszystko
+Linki partnerskie Amazon
+Za każdym razem, gdy coś kupisz za pośrednictwem tego łącza, ioBroker otrzyma niewielki procent od Twojego zamówienia. Cena dla Ciebie będzie taka sama!
 Autorski:
 Odznaki
 Blog
+Kup w Amazon
+Kup to, czego potrzebujesz w Amazon
 Lista zmian
 Kliknij, aby skopiować %s
+Blisko
 Cloud
 Zwinąć wszystkie
 Stworzony
@@ -14,6 +19,8 @@ Data
 Opis
 Detale
 Dokumentacja
+Wpłać przez PayPal
+Przekaż darowiznę za pomocą przycisku PayPal
 Ściągnij
 edycja lokalna
 Edytuj na githubie
@@ -44,6 +51,7 @@ Nie znaleziono wyników
 Otwórz repozytorium
 Powyżej %s połączonych usług i systemów!
 Om de hosting te financieren, koppelen we productaanbiedingen van aangesloten partnershops via zogenaamde affiliate links. Deze zijn gemarkeerd met een sterretje '*'. Als een gebruiker een product koopt in een van de partnerwinkels via zo'n partnerlink, ontvangen wij een verkoopcommissie van de aanbieder, bijv. van Amazon, GearBest en anderen. De prijs blijft in ieder geval ongewijzigd voor de gebruiker.
+PayPal - bezpieczniejszy i łatwiejszy sposób płatności online!
 Platforma
 Posty
 Polityka prywatności
@@ -52,6 +60,7 @@ Szukaj...
 Sortować
 Stabilny:
 Subskrybować
+Wesprzyj nas!
 Przełącz na widok tabeli
 Przełącz na widok kafelków
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.

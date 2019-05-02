@@ -53,6 +53,8 @@
   "Sort": "分类",
   "Stable:": "稳定：",
   "Subscribe": "订阅",
+  "Switch to table view": "切换到表格视图",
+  "Switch to tile view": "切换到平铺视图",
   "The page you are looking for": "您要查找的页面可能已被删除，名称已更改或暂时不可用。",
   "Themes": "主题",
   "Title": "标题",
@@ -85,6 +87,13 @@
   "to Shop": "去商店",
   "user": "用户名",
   "version": "版本",
-  "Switch to table view": "切换到表格视图",
-  "Switch to tile view": "切换到平铺视图"
+  "Support us!": "支持我们！",
+  "Donate with PayPal": "捐赠PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal  - 更安全，更简单的在线支付方式！",
+  "Donate with PayPal button": "捐赠PayPal按钮",
+  "Buy what you need at amazon": "在亚马逊购买你需要的东西",
+  "Amazon Affiliate Links": "亚马逊联盟链接",
+  "Buy at Amazon": "在亚马逊购买",
+  "Amazon explanation": "每次通过此链接购买东西时，ioBroker都会从您的订单中获得一小部分。 你的价格绝对一样！",
+  "Close": "关"
 }

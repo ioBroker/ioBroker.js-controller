@@ -2,11 +2,16 @@
 Über
 Adapter
 Alles
+Amazon-Partnerlinks
+Jedes Mal, wenn Sie etwas über dieses Link kaufen, erhält der ioBroker einen kleinen Prozentsatz Ihrer Bestellung. Der Preis für Sie wird absolut gleich sein!
 Autoren:
 Abzeichen
 Blog
+Bei Amazon kaufen
+Kaufen Sie bei Amazon, was Sie brauchen
 Änderungsprotokoll
 Klicken Sie auf %s kopieren
+Schließen
 Cloud
 Alles einklappen
 Erstellt
@@ -14,6 +19,8 @@ Datum
 Beschreibung
 Einzelheiten
 Dokumentation
+Mit PayPal spenden
+Spenden Sie mit dem PayPal-Button
 Herunterladen
 lokale Bearbeitung
 Auf Github ändern
@@ -44,6 +51,7 @@ keine Ergebnisse gefunden
 Repository öffnen
 Über %s verbundene Dienste und Systeme!
 Um die Hosting zu finanzieren, verlinken wir Produktangebote von angeschlossenen Partnershops über sogenannte Affiliate Links. Diese sind mit einem Stern '*' gekennzeichnet. Wenn ein Benutzer über einen solchen Affiliate Link ein Produkt in einem der Partnershops erwirbt, erhalten wir eine Verkaufsprovision vom Anbieter, z.B. von Amazon, GearBest und andere. Der Preis bleibt hierbei für den Benutzer in jedem Fall unverändert.
+PayPal - Der sicherere und einfachere Weg, online zu bezahlen!
 Plattform
 Beiträge
 Datenschutz-Bestimmungen
@@ -52,6 +60,7 @@ Suche...
 Sortieren
 Stable:
 Abonnieren
+Unterstütze uns!
 Wechseln Sie zur Tabellenansicht
 Wechseln Sie zur Kachelansicht
 Die gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.

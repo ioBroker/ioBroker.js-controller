@@ -169,7 +169,7 @@ class Intro extends Component {
                     typedText="curl -sL https://iobroker.net/install.sh | bash -"
                 />) : null}
             </div>),
-            (<SupportUs key="forum" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<SupportUs key="supportus" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),

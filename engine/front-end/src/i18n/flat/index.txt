@@ -2,11 +2,16 @@
 About
 Adapters
 All
+Amazon Affiliate Links
+Amazon explanation
 Authors:
 Badges
 Blog
+Buy at Amazon
+Buy what you need at amazon
 Changelog
 Click to copy %s
+Close
 Cloud
 Collapse all
 Created
@@ -14,6 +19,8 @@ Date
 Description
 Details
 Documentation
+Donate with PayPal
+Donate with PayPal button
 Download
 Edit local
 Edit on github
@@ -44,6 +51,7 @@ No results found
 Open repository
 Over %s connected services and systems!
 Partner explanation
+PayPal - The safer, easier way to pay online!
 Platform
 Posts
 Privacy policy
@@ -52,6 +60,7 @@ Search...
 Sort
 Stable:
 Subscribe
+Support us!
 Switch to table view
 Switch to tile view
 The page you are looking for

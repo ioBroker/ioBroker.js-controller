@@ -61,6 +61,7 @@ const styles = theme => ({
         margin: 8,
         verticalAlign: 'top',
         textAlign: 'center',
+        minHeight: 312
     },
     media: {
         height: 100,
@@ -79,6 +80,8 @@ const styles = theme => ({
     },
 });
 
+const AMAZON_LINK = 'https://www.amazon.de/s?k=homematic&tag=httpwwwiobron-21';
+
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
@@ -91,12 +94,16 @@ class SupportUs extends Component {
         };
     }
 
+    onPaypal() {
+        window.document.getElementById('paypalFormSubmit').click();
+    }
+
     renderPaypal() {
         const {classes} = this.props;
 
         return (
-            <Card className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')}>
-                <CardActionArea>
+            <Card key="paypal" className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')}>
+                <CardActionArea onClick={() => this.onPaypal()}>
                     <CardMedia
                         className={classes.media}
                         image={PayPal}
@@ -107,8 +114,12 @@ class SupportUs extends Component {
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                             <input type="hidden" name="cmd" value="_s-xclick" />
                             <input type="hidden" name="hosted_button_id" value="ZET3WCD5KHJ9G" />
-                            <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-                            <img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
+                            <input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif"
+                                   name="submit" title={I18n.t('PayPal - The safer, easier way to pay online!')}
+                                   alt={I18n.t('Donate with PayPal button')}
+                                   id="paypalFormSubmit"
+                            />
+                            <img alt="" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
                         </form>
                     </CardContent>
                 </CardActionArea>
@@ -120,8 +131,8 @@ class SupportUs extends Component {
         const {classes} = this.props;
 
         return (
-            <Card className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')} key="dialog">
-                <CardActionArea>
+            <Card key="amazon" className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')}>
+                <CardActionArea onClick={() => Utils.openLink(AMAZON_LINK)}>
                     <CardMedia
                         className={classes.media}
                         image={Amazon}
@@ -129,7 +140,7 @@ class SupportUs extends Component {
                     />
                     <CardContent>
                         <h5>{I18n.t('Amazon Affiliate Links')}</h5>
-                        <Button className={classes.amazonButton} onClick={() => Utils.openLink('https://www.amazon.de/s?k=homematic&tag=httpwwwiobron-21')}>{I18n.t('Buy at Amazon')}</Button>
+                        <Button className={classes.amazonButton} onClick={() => Utils.openLink(AMAZON_LINK)}>{I18n.t('Buy at Amazon')}</Button>
                         <p style={{textAlign: 'left'}}>{I18n.t('Amazon explanation')}</p>
                     </CardContent>
                 </CardActionArea>
@@ -139,6 +150,7 @@ class SupportUs extends Component {
 
     renderDialog() {
         return (<Dialog
+            key="dialogSupport"
             open={this.state.opened}
             TransitionComponent={Transition}
             keepMounted

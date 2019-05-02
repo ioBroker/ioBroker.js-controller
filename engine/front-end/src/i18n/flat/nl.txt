@@ -2,11 +2,16 @@
 Wat betreft
 Adapters
 Allemaal
+Amazon Affiliate Links
+Telkens wanneer u iets via deze link koopt, ontvangt de ioBroker een klein percentage van uw bestelling. De prijs voor jou zal absoluut hetzelfde zijn!
 auteurs:
 badges
 blog
+Koop bij Amazon
+Koop wat je nodig hebt bij Amazon
 changelog
 Klik hier om te kopiëren %s
+Dichtbij
 Cloud
 Alles inklappen
 gemaakt
@@ -14,6 +19,8 @@ Datum
 Omschrijving
 Details
 Documentatie
+Doneer met PayPal
+Doneer met de PayPal-knop
 Download
 lokale bewerking
 Bewerken op github
@@ -44,6 +51,7 @@ geen resultaten gevonden
 Open repository
 Over %s verbonden diensten en systemen!
 Per finanziare l'hosting, colleghiamo le offerte di prodotti dei negozi partner affiliati tramite i cosiddetti link affiliati. Questi sono contrassegnati da un asterisco "*". Se un utente acquista un prodotto in uno dei negozi partner attraverso tale link di affiliazione, riceviamo una commissione di vendita dal fornitore, ad esempio da Amazon, GearBest e altri. Il prezzo rimane comunque invariato per l'utente.
+PayPal - De veiligere, gemakkelijkere manier om online te betalen!
 Platform
 berichten
 Privacybeleid
@@ -52,6 +60,7 @@ Zoeken...
 Soort
 Stal:
 Abonneren
+Steun ons!
 Schakel over naar tabelweergave
 Schakel over naar tegelweergave
 De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.

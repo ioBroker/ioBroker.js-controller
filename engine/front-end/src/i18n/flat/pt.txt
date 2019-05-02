@@ -2,11 +2,16 @@
 Sobre
 Adaptadores
 Todos
+Links de afiliados da Amazon
+Toda vez que você comprar algo através deste link, o ioBroker receberá uma pequena porcentagem do seu pedido. O preço para você será o mesmo!
 Autores:
 Distintivos
 Blog
+Compre na Amazon
+Compre o que você precisa na amazon
 Changelog
 Clique para copiar %s
+Perto
 Cloud
 Recolher todos
 Criado
@@ -14,6 +19,8 @@ Encontro
 Descrição
 Detalhes
 Documentação
+Doe com o PayPal
+Doe com o botão PayPal
 Baixar
 edição local
 Editar no github
@@ -44,6 +51,7 @@ Nenhum resultado encontrado
 Repositório Aberto
 Sobre serviços e sistemas conectados %s!
 Para financiar el alojamiento, enlazamos las ofertas de productos de las tiendas asociadas a través de los llamados enlaces de afiliados. Estos están marcados con un asterisco '*'. Si un usuario compra un producto en una de las tiendas asociadas a través de un enlace de afiliado, recibimos una comisión de ventas del proveedor, por ejemplo, de Amazon, GearBest y otros. El precio no cambia para el usuario en ningún caso.
+PayPal - A maneira mais fácil e segura de pagar on-line!
 Plataforma
 Postagens
 Política de Privacidade
@@ -52,6 +60,7 @@ Procurar...
 Ordenar
 Estável:
 Se inscrever
+Apoie-nos!
 Mudar para a vista de tabela
 Mudar para a vista da telha
 A página que você está procurando pode ter sido removida, teve seu nome alterado ou está temporariamente indisponível.

@@ -53,6 +53,8 @@
   "Sort": "Sortować",
   "Stable:": "Stabilny:",
   "Subscribe": "Subskrybować",
+  "Switch to table view": "Przełącz na widok tabeli",
+  "Switch to tile view": "Przełącz na widok kafelków",
   "The page you are looking for": "Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.",
   "Themes": "Tematy",
   "Title": "Tytuł",
@@ -85,6 +87,13 @@
   "to Shop": "do sklepu",
   "user": "użytkownik",
   "version": "wersja",
-  "Switch to table view": "Przełącz na widok tabeli",
-  "Switch to tile view": "Przełącz na widok kafelków"
+  "Support us!": "Wesprzyj nas!",
+  "Donate with PayPal": "Wpłać przez PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal - bezpieczniejszy i łatwiejszy sposób płatności online!",
+  "Donate with PayPal button": "Przekaż darowiznę za pomocą przycisku PayPal",
+  "Buy what you need at amazon": "Kup to, czego potrzebujesz w Amazon",
+  "Amazon Affiliate Links": "Linki partnerskie Amazon",
+  "Buy at Amazon": "Kup w Amazon",
+  "Amazon explanation": "Za każdym razem, gdy coś kupisz za pośrednictwem tego łącza, ioBroker otrzyma niewielki procent od Twojego zamówienia. Cena dla Ciebie będzie taka sama!",
+  "Close": "Blisko"
 }

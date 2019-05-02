@@ -2,11 +2,16 @@
 About
 Adapters
 All
+Amazon Affiliate Links
+Every time you buy something via this link the ioBroker will get a small percent from your order. The price for you will be absolute the same!
 Authors:
 Badges
 Blog
+Buy at Amazon
+Buy what you need at amazon
 Changelog
 Click to copy %s
+Close
 Cloud
 Collapse all
 Created
@@ -14,6 +19,8 @@ Date
 Description
 Details
 Documentation
+Donate with PayPal
+Donate with PayPal button
 Download
 local edit
 Edit on github
@@ -44,6 +51,7 @@ No results found
 Open repository
 Over %s connected services and systems!
 In order to finance the hosting, we link product offers from affiliated partner shops via so-called affiliate links. These are marked with an asterisk '*'. If a user purchases a product in one of the partner shops via such an affiliate link, we receive a sales commission from the provider, e.g. from Amazon, GearBest and others. The price remains unchanged for the user in any case.
+PayPal - The safer, easier way to pay online!
 Platform
 Posts
 Privacy policy
@@ -52,6 +60,7 @@ Search...
 Sort
 Stable:
 Subscribe
+Support us!
 Switch to table view
 Switch to tile view
 The page you are looking for might have been removed, had its name changed or is temporarily unavailable.

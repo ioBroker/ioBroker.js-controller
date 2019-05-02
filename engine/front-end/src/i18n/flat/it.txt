@@ -2,11 +2,16 @@
 Di
 Adattatori
 Tutti
+Link di affiliazione Amazon
+Ogni volta che acquisti qualcosa tramite questo link, ioBroker riceverà una piccola percentuale dal tuo ordine. Il prezzo per te sarà assoluto lo stesso!
 autori:
 badge
 blog
+Acquista su Amazon
+Compra ciò che ti serve ad Amazon
 changelog
 Clicca per copiare %s
+Vicino
 Cloud
 Comprimi tutto
 Creato
@@ -14,6 +19,8 @@ Data
 Descrizione
 Dettagli
 Documentazione
+Dona con PayPal
+Dona con il pulsante PayPal
 Scaricare
 modifica locale
 Modifica su github
@@ -44,6 +51,7 @@ nessun risultato trovato
 Apri repository
 Nel corso dei servizi e sistemi connessi %s!
 A fim de financiar a hospedagem, nós linkamos ofertas de produtos de lojas afiliadas através dos chamados links afiliados. Estes estão marcados com um asterisco "*". Se um usuário comprar um produto em uma das lojas parceiras através de um link de afiliado, nós recebemos uma comissão de vendas do provedor, por exemplo, da Amazon, GearBest e outros. O preço permanece inalterado para o usuário em qualquer caso.
+PayPal: il modo più sicuro e semplice per pagare online!
 piattaforma
 Messaggi
 Politica sulla riservatezza
@@ -52,6 +60,7 @@ Ricerca...
 Ordinare
 Stabile:
 Sottoscrivi
+Supportaci!
 Passa alla visualizzazione tabella
 Passa alla visualizzazione tessera
 La pagina che stai cercando potrebbe essere stata rimossa, il suo nome è cambiato o temporaneamente non disponibile.

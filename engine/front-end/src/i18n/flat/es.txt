@@ -2,11 +2,16 @@
 Acerca de
 Adaptadores
 Todos
+Enlaces de Afiliados de Amazon
+Cada vez que compre algo a través de este enlace, ioBroker obtendrá un pequeño porcentaje de su pedido. ¡El precio para ti será absolutamente el mismo!
 Autores:
 Insignias
 Blog
+Compra en Amazon
+Compra lo que necesites en amazon
 Registro de cambios
 Haga clic para copiar %s
+Cerrar
 Cloud
 Desplegar todo
 Creado
@@ -14,6 +19,8 @@ Fecha
 Descripción
 Detalles
 Documentación
+Dona con PayPal
+Dona con el botón de PayPal
 Descargar
 edición local
 Editar en github
@@ -44,6 +51,7 @@ No se han encontrado resultados
 Repositorio abierto
 Sobre los servicios y sistemas conectados %s!
 Afin de financer l'hébergement, nous relions les offres de produits des magasins partenaires affiliés via des liens dits d'affiliation. Celles-ci sont marquées d'un astérisque'*'. Si un utilisateur achète un produit dans l'une des boutiques partenaires via un tel lien d'affiliation, nous recevons une commission de vente du fournisseur, par exemple Amazon, GearBest et autres. Le prix reste inchangé pour l'utilisateur dans tous les cas.
+PayPal - ¡La forma más segura y fácil de pagar en línea!
 Plataforma
 Mensajes
 Política de privacidad
@@ -52,6 +60,7 @@ Buscar...
 Ordenar
 Estable:
 Suscribir
+¡Apoyanos!
 Cambiar a vista de tabla
 Cambiar a vista de mosaico
 Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.

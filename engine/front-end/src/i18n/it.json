@@ -53,6 +53,8 @@
   "Sort": "Ordinare",
   "Stable:": "Stabile:",
   "Subscribe": "Sottoscrivi",
+  "Switch to table view": "Passa alla visualizzazione tabella",
+  "Switch to tile view": "Passa alla visualizzazione tessera",
   "The page you are looking for": "La pagina che stai cercando potrebbe essere stata rimossa, il suo nome è cambiato o temporaneamente non disponibile.",
   "Themes": "Temi",
   "Title": "Titolo",
@@ -85,6 +87,13 @@
   "to Shop": "comprare",
   "user": "utente",
   "version": "versione",
-  "Switch to table view": "Passa alla visualizzazione tabella",
-  "Switch to tile view": "Passa alla visualizzazione tessera"
+  "Support us!": "Supportaci!",
+  "Donate with PayPal": "Dona con PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal: il modo più sicuro e semplice per pagare online!",
+  "Donate with PayPal button": "Dona con il pulsante PayPal",
+  "Buy what you need at amazon": "Compra ciò che ti serve ad Amazon",
+  "Amazon Affiliate Links": "Link di affiliazione Amazon",
+  "Buy at Amazon": "Acquista su Amazon",
+  "Amazon explanation": "Ogni volta che acquisti qualcosa tramite questo link, ioBroker riceverà una piccola percentuale dal tuo ordine. Il prezzo per te sarà assoluto lo stesso!",
+  "Close": "Vicino"
 }

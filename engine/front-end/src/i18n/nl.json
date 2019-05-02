@@ -53,6 +53,8 @@
   "Sort": "Soort",
   "Stable:": "Stal:",
   "Subscribe": "Abonneren",
+  "Switch to table view": "Schakel over naar tabelweergave",
+  "Switch to tile view": "Schakel over naar tegelweergave",
   "The page you are looking for": "De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.",
   "Themes": "Thema's",
   "Title": "Titel",
@@ -85,6 +87,13 @@
   "to Shop": "winkelen",
   "user": "gebruiker",
   "version": "versie",
-  "Switch to table view": "Schakel over naar tabelweergave",
-  "Switch to tile view": "Schakel over naar tegelweergave"
+  "Support us!": "Steun ons!",
+  "Donate with PayPal": "Doneer met PayPal",
+  "PayPal - The safer, easier way to pay online!": "PayPal - De veiligere, gemakkelijkere manier om online te betalen!",
+  "Donate with PayPal button": "Doneer met de PayPal-knop",
+  "Buy what you need at amazon": "Koop wat je nodig hebt bij Amazon",
+  "Amazon Affiliate Links": "Amazon Affiliate Links",
+  "Buy at Amazon": "Koop bij Amazon",
+  "Amazon explanation": "Telkens wanneer u iets via deze link koopt, ontvangt de ioBroker een klein percentage van uw bestelling. De prijs voor jou zal absoluut hetzelfde zijn!",
+  "Close": "Dichtbij"
 }
