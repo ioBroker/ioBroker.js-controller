@@ -52,6 +52,8 @@ Search...
 Sort
 Stable:
 Subscribe
+Switch to table view
+Switch to tile view
 The page you are looking for might have been removed, had its name changed or is temporarily unavailable.
 Themes
 Title

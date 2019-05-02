@@ -52,6 +52,8 @@ Chercher...
 Trier
 Stable:
 Souscrire
+Passer en vue tableau
+Passer en mode mosaïque
 La page que vous recherchez a peut-être été supprimée, si son nom a été modifié ou si elle est temporairement indisponible.
 Des thèmes
 Titre

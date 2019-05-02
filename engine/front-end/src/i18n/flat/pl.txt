@@ -52,6 +52,8 @@ Szukaj...
 Sortować
 Stabilny:
 Subskrybować
+Przełącz na widok tabeli
+Przełącz na widok kafelków
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
 Tematy
 Tytuł

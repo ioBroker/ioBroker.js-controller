@@ -37,6 +37,7 @@
   "Linux": "Linux",
   "List of adapters": "Список адаптеров",
   "Maintainer": "Сопровождающий",
+  "More devices": "Остальные устройства",
   "New in last month:": "Новых в прошлом месяце:",
   "News, announcements and ideas about ioBroker": "Новости, объявления и идеи о ioBroker",
   "Newsletter subscribe": "Newsletter подписаться",
@@ -84,5 +85,6 @@
   "to Shop": "в магазин",
   "user": "пользователь",
   "version": "Версия",
-  "More devices": "Остальные устройства"
+  "Switch to table view": "В виде таблицы",
+  "Switch to tile view": "В виде плиток"
 }

@@ -69,7 +69,7 @@ const styles = theme => ({
         top: 2,
         right: 2,
         opacity: 0.7,
-        fontSize: 12,
+        fontSize: 10,
     },
     moreDetails: {
         display: 'block'

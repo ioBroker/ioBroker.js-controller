@@ -37,6 +37,7 @@
   "Linux": "Linux",
   "List of adapters": "Lista de adaptadores",
   "Maintainer": "mantenedor",
+  "More devices": "Más dispositivos",
   "New in last month:": "Nuevo en el mes pasado:",
   "News, announcements and ideas about ioBroker": "Noticias, anuncios e ideas sobre ioBroker.",
   "Newsletter subscribe": "Subscripción de correspondencia",
@@ -84,5 +85,6 @@
   "to Shop": "comprar",
   "user": "usuario",
   "version": "versión",
-  "More devices": "Más dispositivos"
+  "Switch to table view": "Cambiar a vista de tabla",
+  "Switch to tile view": "Cambiar a vista de mosaico"
 }

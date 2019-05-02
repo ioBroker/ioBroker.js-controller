@@ -52,6 +52,8 @@ Buscar...
 Ordenar
 Estable:
 Suscribir
+Cambiar a vista de tabla
+Cambiar a vista de mosaico
 Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.
 Temas
 Título

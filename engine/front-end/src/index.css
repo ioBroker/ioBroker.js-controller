@@ -39,6 +39,25 @@ body {
     35%, 100% { background-position: 0 100vh; }
 }
 
+/* used for support us button */
+@keyframes hue-animation {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    50% {
+        filter: hue-rotate(100deg);
+    }
+
+    100% {
+        filter: hue-rotate(0deg);
+    }
+}
+
+.hue-animation {
+  animation: hue-animation 16s infinite;
+}
+
 /* latin-ext */
 @font-face {
   font-family: 'Audiowide';

@@ -52,6 +52,8 @@ Search...
 Sort
 Stable:
 Subscribe
+Switch to table view
+Switch to tile view
 The page you are looking for
 Themes
 Title

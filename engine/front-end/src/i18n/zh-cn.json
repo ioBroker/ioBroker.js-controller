@@ -37,6 +37,7 @@
   "Linux": "Linux发行版",
   "List of adapters": "适配器列表",
   "Maintainer": "维护者",
+  "More devices": "更多设备",
   "New in last month:": "上个月新增：",
   "News, announcements and ideas about ioBroker": "有关ioBroker的新闻，公告和想法",
   "Newsletter subscribe": "新闻订阅",
@@ -84,5 +85,6 @@
   "to Shop": "去商店",
   "user": "用户名",
   "version": "版本",
-  "More devices": "更多设备"
+  "Switch to table view": "切换到表格视图",
+  "Switch to tile view": "切换到平铺视图"
 }

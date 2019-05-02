@@ -52,6 +52,8 @@ Procurar...
 Ordenar
 Estável:
 Se inscrever
+Mudar para a vista de tabela
+Mudar para a vista da telha
 A página que você está procurando pode ter sido removida, teve seu nome alterado ou está temporariamente indisponível.
 Temas
 Título
