@@ -196,7 +196,7 @@ function logRedirect(isActive, id, reason) {
     }
 }
 
-function createStates() {
+function createStates(onConnect) {
     return new States({
         namespace: 'host.' + hostname,
         connection: config.states,
@@ -318,12 +318,13 @@ function createStates() {
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
             deleteAllZipPackages();
+            onConnect && onConnect();
         }
     });
 }
 
 // create "objects" object
-function createObjects() {
+function createObjects(onConnect) {
     return new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
@@ -365,6 +366,7 @@ function createObjects() {
                     }
                 }
             }
+            onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
             if (disconnectTimeout) clearTimeout(disconnectTimeout);
@@ -2919,52 +2921,52 @@ function init() {
     }
 
     // create states object
-    states = createStates();
+    states = createStates(() => {
+        // Subscribe for all logging objects
+        states.subscribe('*.logging');
 
-    // Subscribe for all logging objects
-    states.subscribe('*.logging');
+        // Subscribe for all logging objects
+        states.subscribe('system.adapter.*.alive');
 
-    // Subscribe for all logging objects
-    states.subscribe('system.adapter.*.alive');
+        // Read current state of all log subscribers
+        states.getKeys('*.logging', (err, keys) => {
+            if (keys && keys.length) {
+                const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
+                objects.getObjects(oKeys, (err, objs) => {
+                    const toDelete = keys.filter((id, i) => !objs[i]);
+                    keys = keys.filter((id, i) => objs[i]);
+
+                    states.getStates(keys, (err, obj) => {
+                        if (obj) {
+                            for (let i = 0; i < keys.length; i++) {
+                                // We can JSON.parse, but index is 16x faster
+                                if (obj[i]) {
+                                    if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                    } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    if (toDelete.length) {
+                        toDelete.forEach(id => {
+                            logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
+                            states.delState(id);
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     // Subscribe for connection state of all instances
     // Disabled in 1.5.x
     // states.subscribe('*.info.connection');
 
-    objects = createObjects();
-
-    objects.subscribe('system.adapter.*');
-
-    // Read current state of all log subscribers
-    states.getKeys('*.logging', (err, keys) => {
-        if (keys && keys.length) {
-            const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
-            objects.getObjects(oKeys, (err, objs) => {
-                const toDelete = keys.filter((id, i) => !objs[i]);
-                keys = keys.filter((id, i) => objs[i]);
-
-                states.getStates(keys, (err, obj) => {
-                    if (obj) {
-                        for (let i = 0; i < keys.length; i++) {
-                            // We can JSON.parse, but index is 16x faster
-                            if (obj[i]) {
-                                if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
-                                } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                                    logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
-                                }
-                            }
-                        }
-                    }
-                });
-                if (toDelete.length) {
-                    toDelete.forEach(id => {
-                        logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
-                        states.delState(id);
-                    });
-                }
-            });
-        }
+    objects = createObjects(() => {
+        objects.subscribe('system.adapter.*');
     });
 
     process.on('SIGINT', () => {
