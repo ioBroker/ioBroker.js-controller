@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/admin/plex.jpg)
+![Logo](admin/plex.jpg)
 # ioBroker.plex
 Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Furthermore, Tautulli integration.
 
@@ -33,7 +33,7 @@ If you are a Plex Pass user, you may [setup a webhook](https://support.plex.tv/a
 
 Navigate to your Plex Media Server and go to ```Settings``` and ```Webhook```. Created a new webhook by clicking ```Add Webhook``` and enter your ioBroker IP adress with the custom port specified in the ioBroker.plex settings and trailing ```/plex``` path, e.g. ```http://192.168.178.29:41891/plex```:
 
-![Plex Webhook](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/img/screenshot_plex-webhook.png)
+![Plex Webhook](img/screenshot_plex-webhook.png)
 
 #### 1.2.2.Tautulli
 [Tautulli is a 3rd party application](https://tautulli.com/#about) that you can run alongside your Plex Media Server to monitor activity and track various statistics. Most importantly, these statistics include what has been watched, who watched it, when and where they watched it, and how it was watched. All statistics are presented in a nice and clean interface with many tables and graphs, which makes it easy to brag about your server to everyone else. Check out [Tautulli Preview](https://tautulli.com/#preview) and [install it on your preferred system](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) if you are interested.
@@ -54,17 +54,17 @@ To setup a webook using Tautulli, following the instrucutions below and make sur
 ###### Description
 Once installed open the settings page from Tautulli dashboard and navigate to Notification Agents as seen below:
 
-![Tautulli Settings](/img/screenshot_tautulli-settings.png)
+![Tautulli Settings](img/screenshot_tautulli-settings.png)
 
 1. Click _Add a new notification agent_ and _Webhook_.
 2. Enter your ioBroker IP adress with the custom port specified in the ioBroker.plex settings and trailing ```/tautulli``` path, e.g. ```http://192.168.178.29:41891/tautulli```:
    
-   ![Tautulli Webhook](/img/screenshot_tautulli-webhook.png)
+   ![Tautulli Webhook](img/screenshot_tautulli-webhook.png)
    Furthermore, choose ```POST``` for the _Webhook Method_ and enter any description you like in _Description_.
 3. Next, go to the _Triggers_ tab, select your desired (or simply all) options
-4. Finally, __most important__ fill in the respective data payload in the _Data_ tab according to the [Notification configuration found here](https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md#notification-configuration). Copy the whole content into the first four notification agents (```Playback Start```, ```Playback Stop```, ```Playback Pause``` and ```Playback Resume```) as shown below for ```Playback Start```:
+4. Finally, __most important__ fill in the respective data payload in the _Data_ tab according to the [Notification configuration found here](README-tautulli.md#notification-configuration). Copy the whole content into the first four notification agents (```Playback Start```, ```Playback Stop```, ```Playback Pause``` and ```Playback Resume```) as shown below for ```Playback Start```:
    
-   ![Tautulli Notification](/img/screenshot_tautulli-notification.png)
+   ![Tautulli Notification](img/screenshot_tautulli-notification.png)
 
 
 ## 2. Channels & States

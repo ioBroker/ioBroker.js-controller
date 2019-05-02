@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
+hash: l6xyUvUj6ExFKf8tch/eSFY0XGrpGarqS5TzPHIQ/2I=
 ---
-![логотип](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/admin/plex.jpg)
+![логотип](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
 ![Количество установок](http://iobroker.live/badges/plex-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/plex-stable.svg)
@@ -33,11 +33,11 @@ hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
 
 ### 1.2. Расширенная настройка (Plex Pass или Tautulli)
 #### 1.2.1. Плекс Пасс
-Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в Настройках Plex, чтобы получить текущее событие / действие с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
+Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в настройках Plex для получения текущего события / действия с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
 
 Перейдите к своему Plex Media Server и перейдите к ```Settings``` и ```Webhook```. Создайте новый веб-крючок, нажав ```Add Webhook``` и введите свой IP-адрес ioBroker с настраиваемым портом, указанным в настройках ioBroker.plex и в конце пути ```/plex```, например ```http://192.168.178.29:41891/plex```:
 
-![Plex Webhook](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/img/screenshot_plex-webhook.png)
+![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 #### 1.2.2.Tautulli
 [Tautulli - это стороннее приложение] (https://tautulli.com/#about), которое вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Самое главное, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где они смотрели, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным. Проверьте [Предварительный просмотр Tautulli] (https://tautulli.com/#preview) и [установите его на предпочитаемую систему](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation), если вы заинтересованы.
@@ -67,7 +67,7 @@ hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Кроме того, выберите ```POST``` для метода _Webhook_ и введите любое понравившееся описание в _Description_.
 
 3. Затем перейдите на вкладку _Triggers_, выберите желаемые (или просто все) параметры
-4. И наконец, ___ наиболее важно ___ заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с [найденной здесь конфигурацией уведомлений] (https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md# уведомление о-конфигурация). Скопируйте весь контент в первые четыре агента уведомлений (`` `Playback Start```", `` `Playback Stop```,` `` Playback Pause``` и `` `Playback Resume```)), как показано ниже для `` `Playback Start```:
+4. И наконец, ___ наиболее важно __, заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с [найденной здесь конфигурацией уведомлений] (README-tautulli.md # Notification-configuration). Скопируйте весь контент в первые четыре агента уведомлений (`` `Playback Start```", `` `Playback Stop```,` `` Playback Pause``` и `` `Playback Resume```)), как показано ниже для `` `Playback Start```:
 
    ![Таутулли Уведомление](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 

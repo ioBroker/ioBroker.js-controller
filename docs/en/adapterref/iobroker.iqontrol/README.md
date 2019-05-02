@@ -52,6 +52,12 @@ Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visu
 
 
 ## Changelog
+### 0.0.12
+* (Sebastian Bormann) Check for unallowed chars in object names.
+* (Sebastian Bormann) Check for duplicates in view names.
+* (Sebastian Bormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
+* (Sebastian Bormann) Added Blinds (Homematic) - please test it, i don't have one to test.
+
 ### 0.0.11
 * (Sebastian Bormann) Added compatibility for edge and firefox. 
 * (Sebastian Bormann) Again Hue bugfixes.

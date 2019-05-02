@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
+hash: l6xyUvUj6ExFKf8tch/eSFY0XGrpGarqS5TzPHIQ/2I=
 ---
-![商标](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/admin/plex.jpg)
+![商标](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
 ![安装数量](http://iobroker.live/badges/plex-installed.svg)
 ![稳定的版本](http://iobroker.live/badges/plex-stable.svg)
@@ -37,7 +37,7 @@ hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
 
 导航到Plex Media Server并转到```Settings```和```Webhook```。单击```Add Webhook```创建一个新的webhook，并使用ioBroker.plex设置和尾随```/plex```路径中指定的自定义端口输入您的ioBroker IP地址，例如： ```http://192.168.178.29:41891/plex```：
 
-![Plex Webhook](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/img/screenshot_plex-webhook.png)
+![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 #### 1.2.2.Tautulli
 [Tautulli是第三方应用程序]（https://tautulli.com/#about），您可以与Plex Media Server一起运行以监控活动并跟踪各种统计信息。最重要的是，这些统计数据包括观看内容，观看内容，观看时间和地点以及观看方式。所有统计信息都显示在一个漂亮而干净的界面中，其中包含许多表格和图形，这使得您可以轻松地向其他人吹嘘您的服务器。查看[Tautulli预览]（https://tautulli.com/#preview）并[在您首选的系统上安装它]](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation)如果您有兴趣。
@@ -67,7 +67,7 @@ hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png)此外，为_Webhook Method_选择```POST```并在_Description_中输入您喜欢的任何描述。
 
 3.接下来，转到_Triggers_选项卡，选择所需的（或简称所有）选项
-4.最后，__最重要的是_根据[此处的通知配置]填写_Data_选项卡中的相应数据有效负载（https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md#通知构型）。将整个内容复制到前四个通知代理（```Playback Start```，```Playback Stop```，```Playback Pause```和```Playback Resume```，如下图所示对于```Playback Start```：
+4.最后，__ important important__根据[此处的通知配置]（README-tautulli.md＃notification-configuration）填写_Data_选项卡中的相应数据有效负载。将整个内容复制到前四个通知代理（```Playback Start```，```Playback Stop```，```Playback Pause```和```Playback Resume```，如下图所示对于```Playback Start```：
 
    ![Tautulli通知](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 

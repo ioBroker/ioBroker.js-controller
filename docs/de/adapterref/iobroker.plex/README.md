@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: 0CYPY9d7zzGnFhi8JCG9N4S4Grx5q9BTMi02cJq1NqY=
+hash: l6xyUvUj6ExFKf8tch/eSFY0XGrpGarqS5TzPHIQ/2I=
 ---
-![Logo](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/admin/plex.jpg)
+![Logo](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/plex-installed.svg)
 ![stabile Version](http://iobroker.live/badges/plex-stable.svg)
@@ -35,9 +35,9 @@ Für die Grundeinrichtung müssen Sie lediglich die IP-Adresse (und den Port) Ih
 #### 1.2.1. Plex Pass
 Wenn Sie ein Plex Pass-Benutzer sind, können Sie in den Plex-Einstellungen unter [einen Webhook einrichten](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) das aktuelle Ereignis / die aktuelle Aktion von Ihrem Plex Media Server abrufen (Wiedergabe, Pause, Fortsetzen, Beenden, Anzeigen und Bewerten).
 
-Navigieren Sie zu Ihrem Plex Media Server und gehen Sie zu ```Settings``` und ```Webhook```. Erstellen Sie einen neuen Webhook, indem Sie auf ```Add Webhook``` klicken, und geben Sie Ihre IP-Adresse des ioBroker mit dem benutzerdefinierten Port ein, der in den Einstellungen von ioBroker.plex angegeben ist, und dem folgenden Pfad, z. ```http://192.168.178.29:41891/plex```:
+Navigieren Sie zu Ihrem Plex Media Server und gehen Sie zu ```Settings``` und ```Webhook```. Erstellen Sie einen neuen Webhook, indem Sie auf ```Add Webhook``` klicken, und geben Sie Ihre IP-Adresse des ioBroker mit dem benutzerdefinierten Port ein, der in den Einstellungen von ioBroker.plex angegeben ist, und folgt dem Pfad nach ```/plex```, z. ```http://192.168.178.29:41891/plex```:
 
-![Plex Webhook](https://raw.githubusercontent.com/Zefau/ioBroker.plex/master/img/screenshot_plex-webhook.png)
+![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 #### 1.2.2.Tautulli
 [Tautulli ist eine Drittanbieteranwendung] (https://tautulli.com/#about), die Sie neben Ihrem Plex Media Server ausführen können, um die Aktivitäten zu überwachen und verschiedene Statistiken zu verfolgen. Diese Statistiken enthalten vor allem das, was beobachtet wurde, wer es gesehen hat, wann und wo es gesehen wurde und wie es beobachtet wurde. Alle Statistiken werden in einer übersichtlichen und sauberen Benutzeroberfläche mit vielen Tabellen und Diagrammen dargestellt, sodass Sie Ihren Server mit allen anderen prahlen können. Schauen Sie sich [Tautulli Preview] (https://tautulli.com/#preview) an und installieren Sie es auf Ihrem bevorzugten System](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) bei Interesse.
@@ -67,7 +67,7 @@ Nach der Installation öffnen Sie die Einstellungsseite im Tautulli-Dashboard un
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Wählen Sie für die _Webhook-Methode_ außerdem ```POST``` und geben Sie eine beliebige Beschreibung in _Description_ ein.
 
 3. Gehen Sie als Nächstes auf die Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Optionen aus
-4. Zum Schluss __wichtigste__ geben Sie die entsprechende Datennutzlast auf der Registerkarte _Data_ entsprechend der [Benachrichtigungskonfiguration hier] ein (https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md#). Benachrichtigungs-Konfiguration). Kopieren Sie den gesamten Inhalt in die ersten vier Benachrichtigungsagenten (`` `Playback Start``` ',` `Playback Stop```,` `` Playback Pause``` und `` Playback Resume```'), wie unten gezeigt für `` `Playback Start```:
+4. Füllen Sie schließlich __most important__ die entsprechende Datennutzlast auf der Registerkarte _Data_ entsprechend der [Benachrichtigungskonfiguration hier] (README-tautulli.md # notification-configuration) aus. Kopieren Sie den gesamten Inhalt in die ersten vier Benachrichtigungsagenten (`` `Playback Start``` ',` `Playback Stop```,` `` Playback Pause``` und `` Playback Resume```'), wie unten gezeigt für `` `Playback Start```:
 
    ![Tautulli-Benachrichtigung](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
@@ -86,7 +86,7 @@ Nach erfolgreicher Grundeinstellung werden folgende Kanäle und Zustände erstel
 | __settings__ | - | Plex-Einstellungen |
 
 2.2. Mit Advanced Setup
-Nach erfolgreicher fortgeschrittener Einrichtung werden die folgenden Kanäle und Zustände zusätzlich erstellt:
+Nach erfolgreicher fortgeschrittener Einrichtung werden die folgenden Kanäle und Zustände _additionally_ erstellt:
 
 | Kanal / Ordner | Zustand | Beschreibung | Bemerkung |
 | ------- | ----- | ----------- | ------ |
