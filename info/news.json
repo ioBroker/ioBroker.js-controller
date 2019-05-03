@@ -1,6 +1,37 @@
 [
     {
         "title": {
+            "en": "** ATTENTION ** Please do not install or update the Z-Wave adapter !",
+            "de": "** ACHTUNG ** Bitte installieren oder aktualisieren Sie den Z-Wave Adapter nicht!",
+            "ru": "** ВНИМАНИЕ ** Пожалуйста, не устанавливайте и не обновляйте адаптер Z-Wave!",
+            "pt": "** ATENÇÃO ** Por favor, não instale ou atualize o adaptador Z-Wave!",
+            "nl": "** LET OP ** Installeer of update de Z-Wave-adapter alstublieft niet!",
+            "fr": "** ATTENTION ** Veuillez ne pas installer ou mettre à jour l'adaptateur Z-Wave!",
+            "it": "** ATTENZIONE ** Si prega di non installare o aggiornare l'adattatore Z-Wave!",
+            "es": "** ATENCIÓN ** ¡No instale ni actualice el adaptador Z-Wave!",
+            "pl": "** UWAGA ** Nie instaluj ani nie aktualizuj adaptera Z-Wave!",
+            "zh-cn": "**注意**请不要安装或更新Z-Wave适配器！"
+        },
+        "content": {
+            "en": "The current version causes issues at compilation and by that installation or update will fail",
+            "de": "Die aktuelle Version verursacht Probleme beim Kompilieren, und die Installation oder das Update schlagen fehl",
+            "ru": "Текущая версия вызывает проблемы при компиляции, и при этой установке или обновлении произойдет сбой",
+            "pt": "A versão atual causa problemas na compilação e por essa instalação ou atualização falhará",
+            "nl": "De huidige versie veroorzaakt problemen bij de compilatie en daardoor mislukt installatie of update",
+            "fr": "La version actuelle cause des problèmes lors de la compilation et par cette installation ou mise à jour va échouer",
+            "it": "La versione corrente causa problemi durante la compilazione e l'installazione o l'aggiornamento falliranno",
+            "es": "La versión actual causa problemas en la compilación y la instalación o actualización fallará",
+            "pl": "Aktualna wersja powoduje problemy podczas kompilacji i instalacja lub aktualizacja nie powiedzie się",
+            "zh-cn": "当前版本会在编译时导致问题，并且安装或更新将失败"
+        },
+        "id": "Z-wave",
+        "created": "2019-05-03T01:00:00.000Z",
+        "class": "danger",
+        "fa-icon": "bolt",
+        "conditions": {
+        }
+    },        
+        "title": {
             "en": "** ATTENTION ** defective versions of the Tankerkönig adapter cause massive problems on the server!",
             "de": "** ACHTUNG ** Defekte Versionen des Tankerkönig-Adapters verursachen massive Probleme auf dem Server!",
             "ru": "** ВНИМАНИЕ ** Дефектные версии адаптера Tankerkönig вызывают серьезные проблемы на сервере!",
