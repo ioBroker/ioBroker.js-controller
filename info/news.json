@@ -30,7 +30,8 @@
         "fa-icon": "bolt",
         "conditions": {
         }
-    },        
+    },
+    {
         "title": {
             "en": "** ATTENTION ** defective versions of the Tankerkönig adapter cause massive problems on the server!",
             "de": "** ACHTUNG ** Defekte Versionen des Tankerkönig-Adapters verursachen massive Probleme auf dem Server!",
