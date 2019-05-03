@@ -176,13 +176,74 @@ gulp.task('5.copyFiles', () => {
     return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
 });
 
+function scanDir(folder, root, result) {
+    result  = result || [];
+    if (!root) {
+        root = folder;
+        folder = '/';
+    }
+    const newRoot = path.join(root, folder);
+    const files = fs.readdirSync(newRoot);
+    files.forEach(f => {
+        const stat = fs.statSync(path.join(newRoot, f));
+        if (stat.isDirectory()) {
+            scanDir(path.join(folder, f), root, result);
+        } else if (f.match(/\.md$/)) {
+            result.push(path.join(folder, f).replace(/\\/g, '/'));
+        }
+    });
+    return result;
+}
+
+gulp.task('6.createSitemap', done => {
+    const root = 'https://doc.iobroker.net/';
+    const links = [
+        '#{lang}/download',
+        '#{lang}/blog',
+        '#{lang}/documentation',
+        '#{lang}/adapters',
+        '#{lang}/statistics',
+        '#{lang}/imprint',
+        '#{lang}/privacy',
+    ];
+    // add blogs
+    consts.LANGUAGES.forEach(lang => {
+        const files = fs.readdirSync(consts.FRONT_END_DIR + lang + '/blog').filter(f => f.match(/\.md$/));
+        files.forEach(f => links.push('#' + lang.replace('{lang}', lang) + '/blog/' + f.replace(/\.md$/, '')));
+    });
+    // add documents
+    consts.LANGUAGES.forEach(lang => {
+        const files = scanDir(consts.FRONT_END_DIR + lang).filter(f => !f.startsWith('/adapterref') && !f.startsWith('/blog'));
+        files.forEach(f => links.push('#' + lang + '/documentation' + f));
+    });
+
+    // add adapters
+    consts.LANGUAGES.forEach(lang => {
+        const files = scanDir(consts.FRONT_END_DIR + lang + '/adapterref');
+        files.forEach(f => links.push('#' + lang + '/adapters/adapterref' + f));
+    });
+
+    // generate file
+    let lines = [];
+    links.forEach(l => {
+        if (l.indexOf('{lang}') !== -1) {
+            consts.LANGUAGES.forEach(lang => lines.push(root + l.replace('{lang}', lang)));
+        } else {
+            lines.push(root + l);
+        }
+    });
+    fs.writeFileSync(consts.FRONT_END_DIR + 'sitemap.txt', lines.join('\n'));
+    done();
+});
+
 gulp.task('default', gulp.series(
     '0.clean',            // clean dir
     '1.blog',             // translate and copy blogs
     '2.downloadAdapters', // download all adapters an create adapter.json
     '3.syncDocs',         // translate documents and adapters
     '4.documentation',    // create content for documentation
-    '5.copyFiles'         // copy all adapters and docs to public
+    '5.copyFiles',        // copy all adapters and docs to public
+    '6.createSitemap'     // create sitemap for google
 ));
 
 

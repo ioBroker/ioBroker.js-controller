@@ -8,14 +8,22 @@ hash: UR4t7ioYXdQ2Aho2lepa+qZkZZ0tbIKHz2bUNB8xay0=
 ---
 ＃印记
 ##根据§5TMG的信息：
-ioBroker GmbH Lorenzstr。 16 76135 Karlsruhe，德国HR编号：HRB 727797地方法院曼海姆增值税识别号码acc。部分27a UStG：DE 312299367
+ioBroker GmbH
+
+Lorenzstr。 16 76135 Karlsruhe，
+
+德国HR编号：HRB 727797
+
+地方法院曼海姆增值税识别号码acc。部分27a UStG：DE 312299367
 
 总经理：Khaeva Veronika
 
 联系方式：---电子邮箱：info@iobroker.net
 
 ##使用的图像和图形的来源：
-§§LLLL_0§§制作的图标由CC BY 3.0许可§§LLLL_1§§制作的图标由CC BY 3.0许可
+Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
+
+Icons made by [Victor Erixon](http://www.flaticon.com/authors/victor-erixon) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
 
 ##免责声明
 ###内容责任

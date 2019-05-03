@@ -109,6 +109,7 @@
   * [Error reporting](trouble/issue)
   * [Restore of configuration](trouble/restore)
   * [Forum](trouble/forum)
+  * [Performance](trouble/monitoring)
 
 * en:FAQ;de:FAQ;ru:ЧаВо;zh-cn:FAQ
   * [Basics](faq/basics)

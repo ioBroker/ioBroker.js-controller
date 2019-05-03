@@ -1,0 +1,12 @@
+User-agent: Google
+User-agent: Googlebot
+User-agent: bingbot
+User-agent: yandex
+User-agent: yandexbot
+Crawl-delay: 7
+Allow: /
+
+User-agent: *
+Disallow: /
+
+Sitemap: https://doc.iobroker.net/sitemap.txt

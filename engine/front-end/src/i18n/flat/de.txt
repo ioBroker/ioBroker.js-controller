@@ -1,10 +1,12 @@
 * Partnerlink
 Über
+Über ioBroker
 Adapter
 Alles
 Amazon-Partnerlinks
 Jedes Mal, wenn Sie etwas über dieses Link kaufen, erhält der ioBroker einen kleinen Prozentsatz Ihrer Bestellung. Der Preis für Sie wird absolut gleich sein!
 Autoren:
+Alles automatisieren
 Abzeichen
 Blog
 Bei Amazon kaufen
@@ -14,6 +16,7 @@ Klicken Sie auf %s kopieren
 Schließen
 Cloud
 Alles einklappen
+Umfassende Unterstützung für Smart Home
 Erstellt
 Datum
 Beschreibung
@@ -22,6 +25,7 @@ Dokumentation
 Mit PayPal spenden
 Spenden Sie mit dem PayPal-Button
 Herunterladen
+Dynamisch wachsende Community.
 lokale Bearbeitung
 Auf Github ändern
 Alle erweitern
@@ -36,10 +40,12 @@ Info
 Information
 Eingerichtet
 Installationen:
+Javascript ist die am weitesten verbreitete Sprache
 Jetzt beitreten
 Zuletzt geändert:
 Stand
 Lizenz
+Licht, Rolladen, Thermostat, Zeitplan, ...
 Linux
 Liste der Adapter
 Maintainer
@@ -56,22 +62,30 @@ Plattform
 Beiträge
 Datenschutz-Bestimmungen
 Lesen
+Läuft auf
 Suche...
+Community-Unterstützung
 Sortieren
 Stable:
 Abonnieren
 Unterstütze uns!
 Wechseln Sie zur Tabellenansicht
 Wechseln Sie zur Kachelansicht
+Die Fähigkeit, Ihr IoT-System als ein intelligentes, robustes Projekt zu verwalten.
 Die gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
 Themen
 Titel
 Gesamt:
 Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten klicken, um diese Seite auf Deutsch zu übersetzen, Danke!
 Art
+Einzigartige Grafiken und schöne Schnittstellen für Sie.
+Verwenden Sie eines der besten Open Source-Produkte für die Verwaltung Ihres Automatisierungssystems vor Ort.
 Benutzer
 Versionen
+Kein Spam. Versprochen!
 Warum ist dieser Link hier?
+Windows, Linux, OSX, Raspberry Pi, ARM oder PC
+Geschrieben mit Node.js
 Deine Emailadresse
 Autoren
 Kompaktmodus
@@ -86,6 +100,7 @@ Erst Node.js installieren (wenn noch nicht vorhanden):
 Anschließend ioBroker installieren:
 ioBroker Blog
 ioBroker in der Presse
+ioBroker ist eine IoT-Plattform (Fog-Computing).
 Schlüsselworte
 Admin3
 Modus

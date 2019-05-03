@@ -58,6 +58,14 @@ body {
   animation: hue-animation 16s infinite;
 }
 
+/* overwrite carousel classes */
+.carousel .thumb.selected, .carousel .thumb:hover {
+  border: 1px solid #39c !important;
+}
+.carousel .thumb {
+  border: 1px solid #fff !important;
+}
+
 /* latin-ext */
 @font-face {
   font-family: 'Audiowide';

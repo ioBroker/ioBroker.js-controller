@@ -14,6 +14,8 @@ import Subscribe from '../Components/Subscribe';
 import Press from '../Components/Press';
 import Adapters from '../Components/Adapters';
 import SupportUs from '../Components/SupportUs';
+import About from '../Components/About';
+import Screenshots from '../Components/Screenshots';
 
 import BackImage from '../assets/background.jpg';
 import LinusShell from '../Components/LinusShell';
@@ -108,30 +110,6 @@ class Intro extends Component {
         </div>);
     }
 
-    renderAbout() {
-        return (<div className={this.props.classes.aboutHeader}>
-            <div className={this.props.classes.aboutHeader}>{I18n.t('About ioBroker')}</div>
-            <div className={this.props.classes.aboutBody}>
-                <div className={this.props.classes.aboutPicture1} />
-                <div className={this.props.classes.aboutText1}>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('ioBroker is an IoT platform.')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('The ability to manage your IoT system as one intelligent, robust project.')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('Unique graphics and beautiful interfaces for you.')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('Use one of the best open source products for managing your automation system on premise.')}</span>
-                </div>
-            </div>
-            <div className={this.props.classes.aboutBody}>
-                <div className={this.props.classes.aboutText2}>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('Automate everything')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('JavaScript node.js')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('Windows, Linux, OSX, Raspberry Pi, ARM or PC')}</span>
-                    <span className={this.props.classes.aboutTextLine}>- {I18n.t('Dynamically growing community.')}</span>
-                </div>
-                <div className={this.props.classes.aboutPicture2} />
-            </div>
-        </div>);
-    }
-
     // What differs ioBroker from other open source automation platforms?
     //
     // - Comprehensive visualization
@@ -171,9 +149,11 @@ class Intro extends Component {
             </div>),
             (<SupportUs key="supportus" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
+            (<About key="about" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Adapters key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
+            (<Screenshots key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
         ];
     }

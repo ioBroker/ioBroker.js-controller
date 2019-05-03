@@ -7,6 +7,7 @@ import Input from '@material-ui/core/Input';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import {FaMailBulk as IconEmail} from 'react-icons/fa';
+import {FaEnvelopeOpen as IconSubscribe} from 'react-icons/fa';
 
 import I18n from '../i18n';
 import {MdClose as IconClose} from 'react-icons/md';
@@ -22,6 +23,10 @@ const styles = theme => ({
         display: 'inline-block',
         width: 200,
         marginBottom: 5,
+        marginLeft: 10,
+    },
+    inputIcon: {
+        color: '#737373'
     },
     inputRoot: {
         textAlign: 'center'
@@ -46,7 +51,16 @@ const styles = theme => ({
     },
     tooltipError: {
         color: '#881d0d !important'
-    }
+    },
+    promise: {
+        fontWeight: 'bold',
+        color: '#737373',
+        transition: 'opacity 1s',
+        transitionTimingFunction: 'ease-in'
+    },
+    promiseHide: {
+        opacity: 0,
+    },
 });
 
 const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -107,6 +121,7 @@ class Subscribe extends Component {
     render() {
         const error = this.state.email && !regEmail.test(this.state.email.toLowerCase());
         return (<div key="subscribe" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
+            <IconSubscribe className={this.props.classes.inputIcon}/>
             <Input
                 error={!!error}
                 placeholder={this.state.inputFocused ? I18n.t('Your e-mail address') : I18n.t('Newsletter subscribe')}
@@ -125,6 +140,7 @@ class Subscribe extends Component {
                 <IconEmail fontSize="small" style={{marginRight: 5}}/>
                 {this.state.inputFocused ? I18n.t('Subscribe') : ''}
             </Button>
+            <div className={this.props.classes.promise + ' ' + (this.state.inputFocused || this.state.email ? this.props.classes.promiseHide : '')}>{I18n.t('We will not spam you. Promise!')}</div>
             {this.renderSnackbar()}
         </div>);
     }

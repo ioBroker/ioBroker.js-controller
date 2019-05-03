@@ -143,6 +143,7 @@ class Statistics extends Component {
 
     renderCountriesTable() {
         const countries = this.state.statistics.countries;
+        if (!countries) return null;
         let sum = 0;
         const keys = Object.keys(countries);
         keys.forEach(c => sum += countries[c]);
@@ -176,6 +177,7 @@ class Statistics extends Component {
 
     renderPlatforms() {
         if (!this.state.statistics) return null;
+        if (!this.state.statistics.platforms) return null;
 
         return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperPlatforms + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Platforms')}</div>
@@ -190,6 +192,7 @@ class Statistics extends Component {
 
     renderLanguages() {
         if (!this.state.statistics) return null;
+        if (!this.state.statistics.languages) return null;
 
         return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperLanguages + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Languages')}</div>
@@ -205,6 +208,7 @@ class Statistics extends Component {
     renderCounters() {
         if (!this.state.statistics) return null;
         const counts = this.state.statistics.counts;
+        if (!counts) return null;
         const labels = Object.keys(counts);
         const data = [];
         let max = 0;

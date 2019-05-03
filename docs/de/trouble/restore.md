@@ -1,5 +1,5 @@
 ---
-title:       "Fehlerbehebung - Wiederherstellung"
+title:       "Wiederherstellung"
 lastChanged: "14.09.2018"
 ---
 

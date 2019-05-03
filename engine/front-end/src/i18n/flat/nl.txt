@@ -1,10 +1,12 @@
 * partnerlink
 Wat betreft
+Over ioBroker
 Adapters
 Allemaal
 Amazon Affiliate Links
 Telkens wanneer u iets via deze link koopt, ontvangt de ioBroker een klein percentage van uw bestelling. De prijs voor jou zal absoluut hetzelfde zijn!
 auteurs:
+Automatiseer alles
 badges
 blog
 Koop bij Amazon
@@ -14,6 +16,7 @@ Klik hier om te kopiëren %s
 Dichtbij
 Cloud
 Alles inklappen
+Uitgebreide slimme thuisondersteuning
 gemaakt
 Datum
 Omschrijving
@@ -22,6 +25,7 @@ Documentatie
 Doneer met PayPal
 Doneer met de PayPal-knop
 Download
+Dynamisch groeiende gemeenschap.
 lokale bewerking
 Bewerken op github
 Alles uitvouwen
@@ -36,10 +40,12 @@ info
 Informatie
 geïnstalleerd
 installeert:
+Javascript is de meest populaire taal
 Meld je nu aan
 Laatste wijziging:
 Laatste bewerking
 Licentie
+Licht, sluiter, thermostaat, schema, ...
 Linux
 Lijst met adapters
 Beheerder
@@ -56,22 +62,30 @@ Platform
 berichten
 Privacybeleid
 Lezen
+Draait op
 Zoeken...
+Sociale steun
 Soort
 Stal:
 Abonneren
 Steun ons!
 Schakel over naar tabelweergave
 Schakel over naar tegelweergave
+De mogelijkheid om uw IoT-systeem te beheren als een intelligent, robuust project.
 De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.
 Thema's
 Titel
 Totaal:
 Deze pagina is automatisch vertaald uit "%s". Help ons deze pagina in het Engels te vertalen door hieronder op Bewerken te klikken.
 Type
+Unieke grafische afbeeldingen en prachtige interfaces voor u.
+Gebruik een van de beste open source-producten om uw automatiseringssysteem on-premise te beheren.
 gebruikers
 versies
+We zullen u niet spammen. We beloven!
 Waarom deze link hier is?
+Windows, Linux, OSX, Raspberry Pi, ARM of pc
+Geschreven met Node.js
 Jouw e-mailadres
 auteurs
 compact
@@ -86,6 +100,7 @@ Installeer Node.js (niet vereist als het al is geïnstalleerd):
 Installeer ioBroker:
 ioBroker Blog
 ioBroker in The Press
+ioBroker is een IoT-platform (Fog computing).
 trefwoorden
 materialiseren
 mode

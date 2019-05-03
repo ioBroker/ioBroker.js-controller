@@ -2,26 +2,25 @@
 title:       "Impressum"
 lastChanged: "14.09.2018"
 ---
-
 # Impressum
 
 ## Angaben gemäß § 5 TMG:
+**Firma:** ioBroker GmbH
 
-ioBroker GmbH  
-Lorenzstr. 16  
-76135 Karlsruhe, Deutschland  
-HR-Nummer: HRB 727797  
-Amtsgericht Mannheim  
-Umsatzsteuer-Identifikationsnummer gem. § 27a UStG: DE 312299367
+**Addresse:** Lorenzstr. 16, 76135 Karlsruhe, Deutschland
 
-Vertretungsberechtiger Geschäftsführer: Khaeva Veronika
+**HR-Nummer:** HRB 727797 Amtsgericht Mannheim
 
-Kontakt:
----
-E-Mail: 	info@iobroker.net
+**Umsatzsteuer-Identifikationsnummer gem. § 27a UStG:** DE 312299367
+
+**Vertretungsberechtiger Geschäftsführer:** Khaeva Veronika
+
+## Kontakt
+**E-Mail:** 	info@iobroker.net
 
 ## Quellenangaben für die verwendeten Bilder und Grafiken:
-Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0  
+Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
+
 Icons made by [Victor Erixon](http://www.flaticon.com/authors/victor-erixon) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
 
 ## Haftungsausschluss (Disclaimer)

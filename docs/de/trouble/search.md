@@ -1,5 +1,5 @@
 ---
-title:       "Fehlerbehebung - Fehlersuche"
+title:       "Fehlersuche"
 lastChanged: "14.09.2018"
 ---
 

@@ -1,10 +1,12 @@
 * partner link
 About
+About ioBroker
 Adapters
 All
 Amazon Affiliate Links
 Amazon explanation
 Authors:
+Automate everything
 Badges
 Blog
 Buy at Amazon
@@ -14,6 +16,7 @@ Click to copy %s
 Close
 Cloud
 Collapse all
+Comprehensive smart home support
 Created
 Date
 Description
@@ -22,6 +25,7 @@ Documentation
 Donate with PayPal
 Donate with PayPal button
 Download
+Dynamically growing community.
 Edit local
 Edit on github
 Expand all
@@ -36,10 +40,12 @@ Info
 Information
 Installed
 Installs:
+Javascript is most popular language
 Join now
 Last changed:
 Last edit
 License
+Light, shutter, thermostat, schedule, ...
 Linux
 List of adapters
 Maintainer
@@ -56,22 +62,30 @@ Platform
 Posts
 Privacy policy
 Read
+Runs on
 Search...
+Social support
 Sort
 Stable:
 Subscribe
 Support us!
 Switch to table view
 Switch to tile view
+The ability to manage your IoT system as one intelligent, robust project.
 The page you are looking for
 Themes
 Title
 Total:
 Translated from %s
 Type
+Unique graphics and beautiful interfaces for you.
+Use one of the best open source products for managing your automation system on premise.
 Users
 Versions
+We will not spam you. Promise!
 Why this link is here?
+Windows, Linux, OSX, Raspberry Pi, ARM or PC
+Written with Node.js
 Your e-mail address
 authors
 compact
@@ -86,6 +100,7 @@ instruction3
 instruction4
 ioBroker Blog
 ioBroker in The Press
+ioBroker is an IoT platform (Fog computing).
 keywords
 materialize
 mode

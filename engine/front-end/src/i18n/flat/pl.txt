@@ -1,10 +1,12 @@
 * link partnerski
 O
+O ioBroker
 Adaptery
 Wszystko
 Linki partnerskie Amazon
 Za każdym razem, gdy coś kupisz za pośrednictwem tego łącza, ioBroker otrzyma niewielki procent od Twojego zamówienia. Cena dla Ciebie będzie taka sama!
 Autorski:
+Automatyzuj wszystko
 Odznaki
 Blog
 Kup w Amazon
@@ -14,6 +16,7 @@ Kliknij, aby skopiować %s
 Blisko
 Cloud
 Zwinąć wszystkie
+Kompleksowa obsługa inteligentnego domu
 Stworzony
 Data
 Opis
@@ -22,6 +25,7 @@ Dokumentacja
 Wpłać przez PayPal
 Przekaż darowiznę za pomocą przycisku PayPal
 Ściągnij
+Dynamicznie rozwijająca się społeczność.
 edycja lokalna
 Edytuj na githubie
 Rozwiń wszystkie
@@ -36,10 +40,12 @@ Informacje
 Informacja
 zainstalowany
 Instaluje:
+Javascript jest najpopularniejszym językiem
 Dołącz teraz
 Ostatnia zmiana:
 Ostatnia edycja
 Licencja
+Światło, migawka, termostat, harmonogram, ...
 Linux
 Lista adapterów
 opiekun
@@ -56,22 +62,30 @@ Platforma
 Posty
 Polityka prywatności
 Czytać
+Biegnie dalej
 Szukaj...
+Pomoc socjalna
 Sortować
 Stabilny:
 Subskrybować
 Wesprzyj nas!
 Przełącz na widok tabeli
 Przełącz na widok kafelków
+Możliwość zarządzania systemem IoT jako jeden inteligentny, solidny projekt.
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
 Tematy
 Tytuł
 Całkowity:
 Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
 Rodzaj
+Unikalna grafika i piękne interfejsy dla Ciebie.
+Użyj jednego z najlepszych produktów open source do zarządzania systemem automatyki na miejscu.
 Użytkownicy
 wersje
+Nie będziemy Cię spamować. Obiecujemy!
 Dlaczego ten link jest tutaj?
+Windows, Linux, OSX, Raspberry Pi, ARM lub PC
+Napisany za pomocą Node.js
 Twój adres email
 autorski
 kompaktowy
@@ -86,6 +100,7 @@ Zainstaluj Node.js (nie jest wymagane, jeśli jest zainstalowany):
 Zainstaluj ioBroker:
 Blog ioBroker
 ioBroker w prasie
+ioBroker to platforma IoT (obliczenia Fog).
 słowa kluczowe
 zmaterializować
 tryb

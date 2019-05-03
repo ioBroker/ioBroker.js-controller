@@ -1,10 +1,12 @@
 * link de parceiro
 Sobre
+Sobre o ioBroker
 Adaptadores
 Todos
 Links de afiliados da Amazon
 Toda vez que você comprar algo através deste link, o ioBroker receberá uma pequena porcentagem do seu pedido. O preço para você será o mesmo!
 Autores:
+Automatize tudo
 Distintivos
 Blog
 Compre na Amazon
@@ -14,6 +16,7 @@ Clique para copiar %s
 Perto
 Cloud
 Recolher todos
+Suporte abrangente para casa inteligente
 Criado
 Encontro
 Descrição
@@ -22,6 +25,7 @@ Documentação
 Doe com o PayPal
 Doe com o botão PayPal
 Baixar
+Comunidade dinamicamente crescente.
 edição local
 Editar no github
 Expandir todos
@@ -36,10 +40,12 @@ Info
 Em formação
 Instalado
 Instala:
+Javascript é a linguagem mais popular
 Entrar
 Última alteração:
 Última edição
 Licença
+Luz, obturador, termostato, agenda, ...
 Linux
 Lista de adaptadores
 mantenedor
@@ -56,22 +62,30 @@ Plataforma
 Postagens
 Política de Privacidade
 Ler
+Corre em
 Procurar...
+Suporte social
 Ordenar
 Estável:
 Se inscrever
 Apoie-nos!
 Mudar para a vista de tabela
 Mudar para a vista da telha
+A capacidade de gerenciar seu sistema IoT como um projeto inteligente e robusto.
 A página que você está procurando pode ter sido removida, teve seu nome alterado ou está temporariamente indisponível.
 Temas
 Título
 Total:
 Esta página foi traduzida automaticamente de "%s". Ajude-nos a traduzir esta página para o inglês clicando em Editar abaixo.
 Tipo
+Gráficos exclusivos e interfaces bonitas para você.
+Use um dos melhores produtos de código aberto para gerenciar seu sistema de automação no local.
 Comercial
 versões
+Nós não vamos spam você. Nós prometemos!
 Por que esse link está aqui?
+Windows, Linux, OSX, Raspberry Pi, ARM ou PC
+Escrito com o Node.js
 Seu endereço de email
 autores
 compactar
@@ -86,6 +100,7 @@ Instale o Node.js (não obrigatório se ainda estiver instalado):
 Instale o ioBroker:
 Blog do ioBroker
 ioBroker na Imprensa
+O ioBroker é uma plataforma IoT (computação de neblina).
 palavras-chave
 materializar
 modo

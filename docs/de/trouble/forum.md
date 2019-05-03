@@ -1,5 +1,5 @@
 ---
-title:       "Fehlerbehebung - Forum"
+title:       "Forum"
 lastChanged: "14.09.2018"
 ---
 

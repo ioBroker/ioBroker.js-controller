@@ -173,6 +173,7 @@ const PAGES = {
         }, target: '_self'},
     'about':  {tabIndex: 6, name: 'About', menu: [
             {tab: 'statistics', name: 'Statistics', icon: null},
+            {name: 'Imprint', tab: 'imprint', icon: null},
         ]},
     'cloud':    {tabIndex: 7, name: 'Cloud', menu: [
             {link: 'https://iobroker.net', name: 'Free', target: 'this'},
@@ -551,7 +552,8 @@ class App extends Router {
             return (<Loader theme={this.state.themeType}/>);
         }
 
-        const PageComponent = PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].component;
+        const selectedPage = this.state.selectedPage || 'intro';
+        const PageComponent = PAGES[selectedPage] && PAGES[selectedPage].component;
 
         return (
             <div className="App">
@@ -564,15 +566,15 @@ class App extends Router {
                         language={this.state.language}
                         contentWidth={this.state.width}
                     /> : null}
-                    {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].md ? (<MDPage
-                        path={PAGES[this.state.selectedPage].md}
+                    {PAGES[selectedPage] && PAGES[selectedPage].md ? (<MDPage
+                        path={PAGES[selectedPage].md}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}
                         contentWidth={this.state.width}
                         language={this.state.language} />) : null}
-                    {PAGES[this.state.selectedPage] && PAGES[this.state.selectedPage].content ? (<TreePage
-                        contentPath={PAGES[this.state.selectedPage].content}
+                    {PAGES[selectedPage] && PAGES[selectedPage].content ? (<TreePage
+                        contentPath={PAGES[selectedPage].content}
                         theme={this.state.themeType}
                         mobile={this.state.mobile}
                         onNavigate={this.onNavigate.bind(this)}

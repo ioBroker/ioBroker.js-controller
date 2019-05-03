@@ -1,10 +1,12 @@
 * enlace de socio
 Acerca de
+Acerca de ioBroker
 Adaptadores
 Todos
 Enlaces de Afiliados de Amazon
 Cada vez que compre algo a través de este enlace, ioBroker obtendrá un pequeño porcentaje de su pedido. ¡El precio para ti será absolutamente el mismo!
 Autores:
+Automatizar todo
 Insignias
 Blog
 Compra en Amazon
@@ -14,6 +16,7 @@ Haga clic para copiar %s
 Cerrar
 Cloud
 Desplegar todo
+Soporte integral inteligente para el hogar
 Creado
 Fecha
 Descripción
@@ -22,6 +25,7 @@ Documentación
 Dona con PayPal
 Dona con el botón de PayPal
 Descargar
+Comunidad dinámicamente creciente.
 edición local
 Editar en github
 Expandir todo
@@ -36,10 +40,12 @@ Información
 Información
 instalado
 Instala:
+Javascript es el idioma más popular
 Únete ahora
 Último cambio:
 Última edición
 Licencia
+Luz, persiana, termostato, horario, ...
 Linux
 Lista de adaptadores
 mantenedor
@@ -56,22 +62,30 @@ Plataforma
 Mensajes
 Política de privacidad
 Leer
+Se ejecuta en
 Buscar...
+Apoyo social
 Ordenar
 Estable:
 Suscribir
 ¡Apoyanos!
 Cambiar a vista de tabla
 Cambiar a vista de mosaico
+La capacidad de administrar su sistema de IoT como un proyecto inteligente y robusto.
 Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.
 Temas
 Título
 Total:
 Esta página ha sido traducida automáticamente de "%s". Ayúdenos a traducir esta página al inglés haciendo clic en Editar a continuación.
 Tipo
+Gráficos únicos y hermosas interfaces para ti.
+Utilice uno de los mejores productos de código abierto para administrar su sistema de automatización en las instalaciones.
 Usuarios
 versiones
+No te vamos a hacer spam. ¡Nosotros prometemos!
 ¿Por qué este enlace está aquí?
+Windows, Linux, OSX, Raspberry Pi, ARM o PC
+Escrito con Node.js
 Tu correo electrónico
 autores
 compacto
@@ -86,6 +100,7 @@ Instale Node.js (no es necesario si aún está instalado):
 Instalar ioBroker:
 ioBroker Blog
 ioBroker en la prensa
+ioBroker es una plataforma IoT (cloud computing).
 palabras clave
 materializar
 modo

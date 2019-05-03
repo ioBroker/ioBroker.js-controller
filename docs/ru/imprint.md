@@ -8,14 +8,20 @@ hash: UR4t7ioYXdQ2Aho2lepa+qZkZZ0tbIKHz2bUNB8xay0=
 ---
 # Выходные данные
 ## Информация в соответствии с § 5 TMG:
-ioBroker GmbH Lorenzstr. 16 76135 Карлсруэ, Германия Номер HR: HRB 727797 Районный суд Мангейма Идентификационный номер НДС в соотв. Раздел 27a USTG: DE 312299367
+ioBroker GmbH Lorenzstr. 16 76135 Карлсруэ,
+
+Германия Номер HR: HRB 727797 Районный суд Мангейма
+
+Идентификационный номер НДС в соотв. Раздел 27a USTG: DE 312299367
 
 Управляющий директор: Хаева Вероника
 
 Контакт: --- E-Mail: info@iobroker.net
 
 ## Источники используемых изображений и графики:
-Иконки, сделанные §§LLLL_0§§, лицензированы CC BY 3.0 Иконки, сделанные §§LLLL_1§§, лицензированы CC BY 3.0
+Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
+
+Icons made by [Victor Erixon](http://www.flaticon.com/authors/victor-erixon) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
 
 ## Отказ от ответственности
 ### Ответственность за содержание

@@ -31,8 +31,6 @@ import I18n from '../i18n';
 import Utils from '../Utils';
 import AdapterStatistics from '../Components/AdapterStatistics';
 
-import 'chartist/dist/chartist.css';
-
 const MARGIN = 10;
 
 const styles = theme => ({
@@ -248,7 +246,6 @@ class Adapters extends Component {
             stats: '',
             showNew: false,
             filter,
-            fastFilter: filter,
             total: '-',
             tableView: window.localStorage ? window.localStorage.getItem('Docs.aTableView') === 'true' : false,
             newMonth: window.localStorage ? window.localStorage.getItem('Docs.anew') === 'true' : false,
@@ -258,12 +255,22 @@ class Adapters extends Component {
             order: window.localStorage ? window.localStorage.getItem('Docs.aOrder') || 'asc' : 'asc',
         };
 
+        this.myFilterRef = React.createRef();
+
         this.load();
 
         // Give 300ms to load the page. After that show the loading indicator.
         setTimeout(() => !this.state.content && this.setState({loadTimeout: true}), 300);
 
         this.contentRef = React.createRef();
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            if (this.myFilterRef.current) {
+                this.myFilterRef.current.value = this.state.filter;
+            }
+        }, 1000);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -457,14 +464,14 @@ class Adapters extends Component {
         }
     }
 
-    onFilter(value) {
+    onFilter(value, immediate) {
+        this.filter = value;
         this.filterTimeout && clearTimeout(this.filterTimeout);
         this.filterTimeout = setTimeout(() => {
             this.filterTimeout = null;
-            this.setState({filter: this.state.fastFilter});
-        }, 300);
-        this.setState({fastFilter: value});
-        window.localStorage && window.localStorage.setItem('Docs.afilter', value);
+            this.setState({filter: this.filter});
+            window.localStorage && window.localStorage.setItem('Docs.afilter', this.filter);
+        }, immediate ? 0 : 300);
     }
 
     renderHeader() {
@@ -482,12 +489,12 @@ class Adapters extends Component {
             }</IconButton>) : null}
             <div className={this.props.classes.cardFilterDiv}>
                 <Input placeholder={I18n.t('Filter')}
+                   inputRef={this.myFilterRef}
                    className={this.props.classes.cardFilter}
-                   value={this.state.fastFilter}
                    onChange={e => this.onFilter(e.target.value)}
             />{
-                this.state.fastFilter ?
-                    (<IconButton className={this.props.classes.filterCloseButton} onClick={() => this.onFilter('')}><IconClose  fontSize="small"/></IconButton>) :
+                this.state.filter ?
+                    (<IconButton className={this.props.classes.filterCloseButton} onClick={() => this.onFilter('', true)}><IconClose  fontSize="small"/></IconButton>) :
                     null
             }
             </div>
@@ -505,14 +512,14 @@ class Adapters extends Component {
         </div>);
     }
 
-    isAdapterVisible(obj) {
+    isAdapterVisible(obj, adapter, filter) {
         if (this.state.showNew) {
             if (!obj.published || this.forMonth >= obj.published) {
                 return false;
             }
         }
         if (this.state.filter) {
-            if (obj.keywords.indexOf(this.state.filter.toLowerCase()) === -1) {
+            if (obj.keywords.indexOf(filter) === -1 && adapter.indexOf(filter) === -1) {
                 return false;
             }
         }
@@ -523,9 +530,10 @@ class Adapters extends Component {
         if (!this.state.filter && !this.state.showNew) {
             return true;
         } else {
+            const filter = this.state.filter.toLowerCase();
             const items = this.state.content.pages[type];
             return Object.keys(items.pages).find(adapter =>
-                this.isAdapterVisible(items.pages[adapter]));
+                this.isAdapterVisible(items.pages[adapter], adapter, filter));
         }
     }
 
@@ -540,6 +548,7 @@ class Adapters extends Component {
         if (!isSomeVisible) {
             return null;
         }
+        const filter = this.state.filter.toLowerCase();
 
         return (<ExpansionPanel key={type} expanded={isExpanded} onChange={e => this.onToggle(type, e)}>
             <ExpansionPanelSummary
@@ -550,7 +559,7 @@ class Adapters extends Component {
                 this.state.content.pages[type].title[this.props.language] || this.state.content.pages[type].title.en || type
             }</ExpansionPanelSummary>
             <ExpansionPanelDetails classes={{root: this.props.classes.details}} style={this.props.mobile ? {textAlign: 'center'} :  {}}>
-                {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter]) && this.renderAdapterCard(type, adapter, items.pages[adapter]))}
+                {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter], adapter, filter) && this.renderAdapterCard(type, adapter, items.pages[adapter]))}
             </ExpansionPanelDetails>
         </ExpansionPanel>);
     }
@@ -656,7 +665,12 @@ class Adapters extends Component {
     }
 
     renderTable() {
-        const names = Object.keys(this.state.adapters);
+        let names = Object.keys(this.state.adapters);
+        if (this.state.filter) {
+            const filter = this.state.filter.toLowerCase();
+            names = names.filter(adapter =>
+                this.state.adapters[adapter].keywords.indexOf(filter) !== -1 || adapter.indexOf(filter) !== -1);
+        }
         if (this.state.orderBy === 'Title') {
             if (this.state.order === 'asc') {
                 names.sort();

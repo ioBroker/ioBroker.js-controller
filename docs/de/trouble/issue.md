@@ -1,5 +1,5 @@
 ---
-title:       "Fehlerbehebung - Fehler melden"
+title:       "Fehler melden"
 lastChanged: "14.09.2018"
 ---
 

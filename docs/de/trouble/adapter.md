@@ -1,5 +1,5 @@
 ---
-title:       "Fehlerbehebung - Adapterfehler"
+title:       "Adapterfehler"
 lastChanged: "14.09.2018"
 ---
 

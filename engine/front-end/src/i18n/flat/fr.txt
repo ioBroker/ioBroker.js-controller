@@ -1,10 +1,12 @@
 * lien partenaire
 Sur
+À propos d'ioBroker
 Adaptateurs
 Tout
 Liens affiliés Amazon
 Chaque fois que vous achetez quelque chose via ce lien, ioBroker recevra un petit pourcentage de votre commande. Le prix pour vous sera le même!
 Auteurs:
+Tout automatiser
 Insignes
 Blog
 Acheter sur Amazon
@@ -14,6 +16,7 @@ Cliquez pour copier %s
 Fermer
 Cloud
 Réduire tout
+Soutien complet à la maison intelligente
 Créé
 Rendez-vous amoureux
 La description
@@ -22,6 +25,7 @@ Documentation
 Donner avec PayPal
 Faire un don avec le bouton PayPal
 Télécharger
+Communauté en croissance dynamique.
 édition locale
 Éditer sur github
 Développer tout
@@ -36,10 +40,12 @@ Info
 Information
 installée
 Installe:
+Javascript est la langue la plus populaire
 Adhérer
 Dernière modification:
 Dernière édition
 Licence
+Lumière, obturateur, thermostat, horaire, ...
 Linux
 Liste des adaptateurs
 mainteneur
@@ -56,22 +62,30 @@ Plate-forme
 Des postes
 Politique de confidentialité
 Lis
+Fonctionne sur
 Chercher...
+Aide sociale
 Trier
 Stable:
 Souscrire
 Soutiens nous!
 Passer en vue tableau
 Passer en mode mosaïque
+La possibilité de gérer votre système IoT en tant que projet intelligent et robuste.
 La page que vous recherchez a peut-être été supprimée, si son nom a été modifié ou si elle est temporairement indisponible.
 Des thèmes
 Titre
 Total:
 Cette page a été traduite automatiquement à partir de "%s". Aidez-nous à traduire cette page en anglais en cliquant sur Modifier ci-dessous.
 Type
+Graphismes uniques et belles interfaces pour vous.
+Utilisez l'un des meilleurs produits open source pour gérer votre système d'automatisation sur site.
 Utilisateurs
 versions
+Nous ne vous spammerons pas. On promet!
 Pourquoi ce lien est ici?
+Windows, Linux, OSX, Raspberry Pi, ARM ou PC
+Écrit avec Node.js
 Votre adresse email
 auteurs
 compact
@@ -86,6 +100,7 @@ Installez Node.js (non requis si déjà installé):
 Installez ioBroker:
 Blog ioBroker
 ioBroker dans la presse
+ioBroker est une plate-forme IoT (Fog computing).
 mots clés
 se concrétiser
 mode

@@ -1,10 +1,12 @@
 * collegamento partner
 Di
+Informazioni su ioBroker
 Adattatori
 Tutti
 Link di affiliazione Amazon
 Ogni volta che acquisti qualcosa tramite questo link, ioBroker riceverà una piccola percentuale dal tuo ordine. Il prezzo per te sarà assoluto lo stesso!
 autori:
+Automatizza tutto
 badge
 blog
 Acquista su Amazon
@@ -14,6 +16,7 @@ Clicca per copiare %s
 Vicino
 Cloud
 Comprimi tutto
+Supporto completo per casa intelligente
 Creato
 Data
 Descrizione
@@ -22,6 +25,7 @@ Documentazione
 Dona con PayPal
 Dona con il pulsante PayPal
 Scaricare
+Comunità in crescita dinamica.
 modifica locale
 Modifica su github
 Espandi tutto
@@ -36,10 +40,12 @@ Informazioni
 Informazione
 installato
 Installa:
+Javascript è la lingua più popolare
 Iscriviti adesso
 Ultima modifica:
 Ultima modifica
 Licenza
+Luce, otturatore, termostato, programma, ...
 Linux
 Elenco di adattatori
 Manutentore
@@ -56,22 +62,30 @@ piattaforma
 Messaggi
 Politica sulla riservatezza
 Leggere
+Gira su
 Ricerca...
+Supporto sociale
 Ordinare
 Stabile:
 Sottoscrivi
 Supportaci!
 Passa alla visualizzazione tabella
 Passa alla visualizzazione tessera
+La capacità di gestire il tuo sistema IoT come un progetto intelligente e solido.
 La pagina che stai cercando potrebbe essere stata rimossa, il suo nome è cambiato o temporaneamente non disponibile.
 Temi
 Titolo
 Totale:
 Questa pagina è stata tradotta automaticamente da "%s". Aiutaci a tradurre questa pagina in inglese facendo clic su Modifica sotto.
 genere
+Grafica unica e bellissime interfacce per te.
+Utilizzare uno dei migliori prodotti open source per la gestione del sistema di automazione in loco.
 utenti
 versioni
+Non ti invieremo spam. Promettiamo!
 Perché questo link è qui?
+Windows, Linux, OSX, Raspberry Pi, ARM o PC
+Scritto con Node.js
 Il tuo indirizzo di posta elettronica
 autori
 compatto
@@ -86,6 +100,7 @@ Installa Node.js (non richiesto se è ancora installato):
 Installa ioBroker:
 Blog di ioBroker
 ioBroker nella stampa
+ioBroker è una piattaforma IoT (Fog computing).
 parole chiave
 materializzarsi
 modalità
