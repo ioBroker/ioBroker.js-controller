@@ -47,6 +47,7 @@ const styles = theme => ({
         textOverflow: 'ellipsis',
         wordBreak: 'break-word',
         display: 'inline-block',
+        cursor: 'pointer',
     },
     buttonOk: {
         lineHeight: 'normal',
