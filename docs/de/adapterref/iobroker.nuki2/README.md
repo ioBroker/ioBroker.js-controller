@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -15,17 +15,17 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.nuki2.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki2.png?downloads=true)
 
-# IoBroker.nuki2 Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock] (https://nuki.io/de/) mithilfe der [Nuki Bridge-API (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge) -http-api-170/4 / # (Einführung) und die [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
+# IoBroker.nuki2 Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock] (https://nuki.io/de/) mithilfe der [Nuki Bridge API (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge) -http-api-170/4 / # (Einführung) und die [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 **Inhaltsverzeichnis**
 
 1. [Installation] (# Installation)
    1. [API-Token abrufen] (# get-a-api-token)
    2. [Callback-Funktion] (# Callback-Funktion)
    3. [Staaten] (# Staaten)
-2. [Smart Home / Alexa Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
+2. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
    1. [abschließende Tür um 22 Uhr abends] (# abschließende Tür um 22 Uhr abends)
    2. [Lassen Sie sich von Alexa über Sperrungsänderungen informieren] (# let-alexa-inform-you-about-lock-changes)
-   3. [Lassen Sie sich von Telegram über Sperrungsänderungen informieren] (# let-telegram-inform-you-about-lock-changes)
+   3. [Lassen Sie sich von Telegram über Sperrungsänderungen informieren]
 3. [Changelog] (# changelog)
 4. [Credits] (# credits)
 5. [Lizenz] (# Lizenz)
@@ -42,10 +42,10 @@ So erhalten Sie Ihr Brücken-Token:
 {"token": "token123", "success": true} `` `
 
 ### Rückruffunktion
-Wenn die Callback-Funktion verwendet wird, versucht der Adapter, den Callback auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Alle Nuki-Staaten werden von der Nuki-Brücke auf dem neuesten Stand gehalten, wenn der Rückruf aktiviert ist.
+Wenn die Callback-Funktion verwendet wird, versucht der Adapter, den Callback auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Die jeweiligen Nuki-Zustände ([siehe unten](#locks-with-nuki-bridge-api)) werden von der Nuki-Bridge auf dem neuesten Stand gehalten, wenn der Rückruf aktiviert ist.
 Rückrufe können auch manuell mit den folgenden URLs in jedem Browser festgelegt und entfernt werden:
 
-* Rückruf einstellen: `` http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken> `` `
+* Rückruf einstellen: `` http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <hostport>% 2Fnuki-api-bridge & token = <bridgeToken> `` `
 * Callback entfernen: `` http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken> ``
 * Alle Callbacks auflisten: `` http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken> `` `
 
@@ -79,10 +79,12 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 | - | id | ID des Nuki |
 | - | Name | Name des Nuki |
 | Status | - | Aktueller Status der Sperre |
-| Status | batterieKritisch | Gibt den kritischen Batteriestand an |
-| Status | lockState | Aktueller Sperrzustand des Nuki |
-| Status | gesperrt | Anzeige, wenn die Tür verriegelt ist |
-| Status | aktualisiert | Zeitstempel der letzten Aktualisierung |
+| Status | batterieKritisch ** | Gibt den kritischen Batteriestand an |
+| Status | lockState ** | Aktueller Sperrzustand des Nuki |
+| Status | gesperrt ** | Anzeige, wenn die Tür verriegelt ist |
+| Status | aktualisiert ** | Zeitstempel der letzten Aktualisierung |
+
+_ ** markierte Zustände werden bei einer Nuki-Aktion aktualisiert, wenn der Rückruf gesetzt ist_
 
 #### Sperren (mit Nuki Web API)
 Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` angelegt. Die folgenden Kanäle / Status werden in jeder Sperre erstellt (bei Verwendung der Nuki Web API):
@@ -101,7 +103,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 | Status | gesperrt | Anzeige, wenn die Tür verriegelt ist |
 | Status | Modus | Der Smartlock-Modus <br> `{"0": 'UNINITIALIZED', "1": 'PAIRING', "2": 'NORMAL', "3": 'UNKNOWN', "4": 'MAINTENANCE'}` |
 | Status | auslösen | Der Staatsauslöser <br> `{"0": 'SYSTEM', "1": 'MANUAL', "2": 'BUTTON', "3": 'AUTOMATIC', "4": 'WEB', "5": 'APP'}` |
-| Status | auslösen | Der Staatsauslöser <br> `{&quot; 0 &quot;:&quot; SYSTEM &quot;,&quot; 1 &quot;:&quot; MANUAL &quot;,&quot; 2 &quot;:&quot; BUTTON &quot;,&quot; 3 &quot;:&quot; AUTOMATIC &quot;,&quot; 4 &quot;:&quot; WEB &quot;,&quot; 5 &quot;:&quot; APP &quot; `|
+| Status | auslösen | Der Staatsauslöser <br> `{&quot; 0 &quot;:&quot; SYSTEM &quot;,&quot; 1 &quot;:&quot; MANUAL &quot;,&quot; 2 &quot;:&quot; BUTTON &quot;,&quot; 3 &quot;:&quot; AUTOMATIC &quot;,&quot; 4 &quot;:&quot; WEB &quot;,&quot; 5 &quot;:&quot; APP &quot;} `|
 | config | - | Konfiguration des Schlosses |
 | config | gpsLatitude | Latitude |
 | config | gpsLongitude | Längengrad |
@@ -117,7 +119,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` ange
 | config | Werbemodus | Der Werbemodus (Batterie sparen) <br> `{"0": 'AUTOMATIC', "1": 'NORMAL', "2": 'SLOW', "3": 'SLOWEST'}` |
 | config | Werbemodus | Der Werbemodus (Batterie sparen) <br> `{&quot; 0 &quot;: &#39;AUTOMATIC&#39;,&quot; 1 &quot;: &#39;NORMAL&#39;,&quot; 2 &quot;: &#39;SLOW&#39;,&quot; 3 &quot;: &#39;SLOWEST&#39;}` |
 | config | homekitState | Der Heimatkit-Staat <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
-| config | homekitState | Der Heimatkit-Staat <br> `{&quot; 0 &quot;:&quot; NICHT VERFÜGBAR &quot;,&quot; 1 &quot;:&quot; DEAKTIVIERT &quot;,&quot; 2 &quot;:&quot; ENABLED &quot;,&quot; 3 &quot;:&quot; ENABLED &amp; PAIRED &quot;}` |
+| config | homekitState | Der Heimatkit-Staat <br> `{&quot; 0 &quot;:&quot; NICHT VERFÜGBAR &quot;,&quot; 1 &quot;:&quot; DEAKTIVIERT &quot;,&quot; 2 &quot;:&quot; ENABLED &quot;,&quot; 3 &quot;:&quot; ENABLED &amp; PAIRED &quot;} |
 | config | timezoneId | Die Zeitzonen-ID |
 | config.advanced | - | Erweiterte Konfiguration der Sperre |
 | config.advanced | totalDegrees | Die absolute Gesamtposition in Grad, die während der Kalibrierung erreicht wurde |
@@ -363,10 +365,13 @@ Die von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons"
 
 ### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
 - (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) bump to stable release
+
+### 0.9.6 (2019-05-03)
 - (zefau) added Web Adapter as dependency
 - (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
 - (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) bump to stable release
+- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

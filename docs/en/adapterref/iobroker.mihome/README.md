@@ -134,6 +134,9 @@ Under *Objects* the gateway and its learned devices are now displayed:
 The manual was created to the best of my knowledge and belief.
 
 ## Changelog
+### 1.2.6 (2019-03-04)
+- (Diginix) Improved calculation for sensor's battery percentage
+
 ### 1.2.5 (2019-01-24)
 - (Vanwards) Added long click for Aquara wall switch
 

@@ -806,6 +806,10 @@ control (see [example above](http://www.iobroker.net/?page_id=6435&lang=en#Appli
 Congratulations! Now you can control the system ioBroker and receive data via a cloud service!
 
 ## Changelog
+### 2.1.0 (2019-05-02)
+* (Zefau) Add option to send message using messagebox
+* (Zefau) Fix error with logging on pubrec
+
 ### 2.0.6 (2019-01-16)
 * (SchumyHao) Add Chinese support
 

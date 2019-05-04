@@ -25,6 +25,12 @@ Required node.js >= 0.12.
 
 ## Changelog
 
+### 1.1.0
+*  added objects for "tiltangle", "vibration", "vibrationstrength" and "orientation"
+*  (asgothian) added object "buttonpressd"
+*  some fixes
+
+
 ### 1.0.2
 * fix set bri for groups
 
@@ -118,11 +124,9 @@ Required node.js >= 0.12.
 * (Jey-Cee) first release
 
 ## License
+Apache-2.0
 
-Apache 2.0
+Copyright (c) 2017-2019 Jey Cee jey-cee@live.com
 
-Copyright (c) 2017 Jey Cee <jey-cee@live.com>
-Copyright (c) 2017 Bluefox <dogafox@gmail.com>
-Copyright (c) 2014-2016 hobbyquaker
 
 

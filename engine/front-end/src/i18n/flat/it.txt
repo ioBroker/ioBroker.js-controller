@@ -34,6 +34,7 @@ Filtro
 Forum
 Github
 In bocca al lup
+Fatto!
 Icona
 Impronta
 Informazioni
@@ -63,6 +64,7 @@ Messaggi
 Politica sulla riservatezza
 Leggere
 Gira su
+Screenshots
 Ricerca...
 Supporto sociale
 Ordinare
@@ -89,6 +91,7 @@ Scritto con Node.js
 Il tuo indirizzo di posta elettronica
 autori
 compatto
+Serviamo cookie su questo sito per analizzare il traffico, ricordare le tue preferenze e ottimizzare la tua esperienza.
 copiato negli appunti
 copia negli appunti
 Unisciti ora alla comunità in rapida crescita, fai domande e ottieni risposte!

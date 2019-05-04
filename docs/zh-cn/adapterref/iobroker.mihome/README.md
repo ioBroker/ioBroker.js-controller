@@ -134,6 +134,9 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 该手册是根据我的知识和信念创建的。
 
 ## Changelog
+### 1.2.6 (2019-03-04)
+- (Diginix) Improved calculation for sensor's battery percentage
+
 ### 1.2.5 (2019-01-24)
 - (Vanwards) Added long click for Aquara wall switch
 

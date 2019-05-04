@@ -34,6 +34,7 @@ Filtr
 Forum
 Github
 Powodzenia
+Rozumiem!
 Ikona
 Odcisk
 Informacje
@@ -63,6 +64,7 @@ Posty
 Polityka prywatności
 Czytać
 Biegnie dalej
+Zrzuty ekranu
 Szukaj...
 Pomoc socjalna
 Sortować
@@ -89,6 +91,7 @@ Napisany za pomocą Node.js
 Twój adres email
 autorski
 kompaktowy
+Na tej stronie udostępniamy pliki cookie, aby analizować ruch, zapamiętywać Twoje preferencje i optymalizować Twoje wrażenia.
 skopiowane do schowka
 skopiuj do schowka
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!

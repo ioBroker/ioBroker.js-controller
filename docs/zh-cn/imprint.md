@@ -4,30 +4,31 @@ lastChanged: 14.09.2018
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/imprint.md
-hash: UR4t7ioYXdQ2Aho2lepa+qZkZZ0tbIKHz2bUNB8xay0=
+hash: Nhm1XB3fE8q/xfakmGUn3n4/yIRHc/wxWbbZo90BaYE=
 ---
 ＃印记
 ##根据§5TMG的信息：
-ioBroker GmbH
+**公司：** ioBroker GmbH
 
-Lorenzstr。 16 76135 Karlsruhe，
+**地址：** Lorenzstr。 16,76135德国卡尔斯鲁厄
 
-德国HR编号：HRB 727797
+**人数：** HRB 727797 Amtsgericht Mannheim
 
-地方法院曼海姆增值税识别号码acc。部分27a UStG：DE 312299367
+**增值税识别号码第27a节UStG：** DE 312299367
 
-总经理：Khaeva Veronika
+**代表董事总经理：** Khaeva Veronika
 
-联系方式：---电子邮箱：info@iobroker.net
+##联系
+**电子邮件：** info@iobroker.net
 
 ##使用的图像和图形的来源：
-Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
+[来自[www.flaticon.com]的Freepik]（http://www.freepik.com/）](www.flaticon.com)制作的图标由CC BY 3.0许可
 
-Icons made by [Victor Erixon](http://www.flaticon.com/authors/victor-erixon) from [www.flaticon.com](www.flaticon.com) is licensed by CC BY 3.0
+[Victor Erixon]（http://www.flaticon.com/authors/victor-erixon）来自[www.flaticon.com]](www.flaticon.com)制作的图标由CC BY 3.0许可
 
 ##免责声明
 ###内容责任
-作为服务提供商，我们根据§7Abs.1 TMG根据一般法律对这些方面的内容负责。但是，根据TMG§§8至10，我们作为服务提供商没有义务监控传输或存储的第三方信息或调查表明非法活动的情况。根据一般法律删除或阻止使用信息的义务不受影响。但是，这方面的责任只有在了解特定侵权的那一刻才有可能。在收到相应违规通知后，我们会立即删除此内容。
+作为服务提供商，我们根据§7Abs.1 TMG根据一般法律对这些方面的内容负责。但是，根据TMG§§8至10，我们作为服务提供商没有义务监控传输或存储的外部信息或调查表明非法活动的情况。根据一般法律删除或阻止使用信息的义务不受影响。但是，这方面的责任只有在了解特定侵权的那一刻才有可能。在收到相应违规通知后，我们会立即删除此内容。
 
 ###链接责任
 我们的优惠包含指向第三方外部网站的链接，我们对其内容没有任何影响。因此，我们不对这些外部内容承担任何责任。链接页面的内容始终由页面的相应提供者或操作者负责。在链接时检查链接页面是否存在可能的违法行为。链接时无法识别非法内容。但是，如果没有具体的违法证据，对链接页面的永久内容控制是不合理的。收到违规通知后，我们会立即删除此类链接。

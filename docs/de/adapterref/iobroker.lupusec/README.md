@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: g7RKjgGXc3sJl6guz8xQBqY1Mi1cUE1tKbZvxg3JxRk=
+hash: wcsGy6XDRhmGyqrU3R51xx3VuQsHaBK02KQhHA7V9t4=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -33,7 +33,8 @@ Der einfachste Weg ist, den lupusec.iobroker-Adapter über den Discovery-Adapter
 
 Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie möglichst https (empfohlen).
 Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren), wählen Sie einen Benutzer mit Schreibzugriff aus.
-![Administrator](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie an Ihr Lupusec-Alarmsystem Überwachungskameras angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Cams selbst. Sie müssen eine Adresse (Ihre ioBroker-IP-Adresse oder 0.0.0.0) und einen Port eingeben, um sich später mit den Cams zu verbinden.
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte des ioBroker-Objekts angezeigt.
 Vollständig unterstützt und individuell angepasst sind folgende Geräte:
@@ -79,6 +80,9 @@ Alle unterstützten Lupsec-Sensoren und -Geräte finden Sie unter "Geräte". Sol
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png) Detailansicht eines Sensors oder Geräts. In diesem Beispiel sehen Sie den CO-Sensor. Bei CO-Alarm wechselt der Status 'alarm_status_ex' auf wahr und 'alarm_status' wechselt zu 'CO'.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
+Lupusec-Webcams
+Sie finden alle angeschlossenen Überwachungskameras unter 'Webcams'. Sie können den im Status 'Bild' und 'Stream' bereitgestellten Link zum Öffnen in Ihren Webbrowser kopieren. Wenn Sie den ioBroker-Webadapter verwenden, können Sie die Nockenbilder (nicht Streams) mit folgendem Link öffnen: http:// <ip-of-web-adapter-instanz>: <port-of-web-adapter-instanz> / lupusec.X / image / camY.jpg. Zum Beispiel http://192.168.1.2:8083/lupusec.0/image/cam1.jpg ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
+
 ## Geplant
 Folgende Dinge sind in der Zukunft geplant:
 
@@ -86,6 +90,17 @@ Folgende Dinge sind in der Zukunft geplant:
 * Schreiben einer Dokumentation für jeden Sensor / Gerät
 
 ## Changelog
+
+### 1.1.6 (01.05.2019)
+* (Stübi) New feature: you can change the buttons for keypad
+* (Stübi) New feature: add push notifications to sensors
+* (Stübi) New feature: change switch from switch to push button 
+* (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
+* (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
+
+
+### 1.1.5 (24.04.2019)
+* (Stübi) Add buttons for Scenario Switch V2 and Bugfixing
 
 ### 1.1.4 (13.04.2019)
 * (Stübi) Add device outside alarm

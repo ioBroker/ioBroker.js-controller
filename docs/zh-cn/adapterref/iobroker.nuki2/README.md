@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -42,10 +42,10 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 {“token”：“token123”，“success”：true}```
 
 ###回调函数
-如果正在使用回调函数，则适配器将尝试在保存实例时自动在Nuki桥上设置回调。当回调被激活时，所有Nuki州将由Nuki桥保持最新状态。
+如果正在使用回调函数，则适配器将尝试在保存实例时自动在Nuki桥上设置回调。在回调激活时，Nuki桥将保持最新的Nuki状态（[见下文](#locks-with-nuki-bridge-api)）。
 也可以从具有以下URL的任何浏览器手动设置和删除回调：
 
-* set Callback：```http：// <bridge_ip>：<bridge_port> / callback / add？url = http％3A％2F％2F <host_ip>％3A <host_port>％2Fapi％2Fnuki＆token = <bridgeToken>`` `
+* set Callback：```http：// <bridge_ip>：<bridge_port> / callback / add？url = http％3A％2F％2F <host_ip>％3A <host_port>％2Fnuki-api-bridge＆token = <bridgeToken> ```
 * remove callback：```http：// <bridge_ip>：<bridge_port> / callback / remove？id = <callback_id>＆token = <bridgeToken>```
 *列出所有回调：```http：// <bridge_ip>：<bridge_port> / callback / list？token = <bridgeToken>```
 
@@ -79,10 +79,12 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 | -  | id | Nuki的ID |
 | -  |名字| Nuki的名字|
 |状态| -  |锁的当前状态|
-|状态| batteryCritical |国家关键电池水平|
-|状态| lockState |目前Nuki的锁定状态 |
-|状态|锁定|指示门是否锁定|
-|状态|刷新|上次更新的时间戳|
+|状态| batteryCritical ** |国家关键电池水平|
+|状态| lockState ** |目前Nuki的锁定状态 |
+|状态|锁定** |指示门是否锁定|
+|状态|刷新** |上次更新的时间戳|
+
+如果设置了回调，_ **标记的状态将在Nuki动作上更新
 
 #### Locks（使用Nuki Web API）
 锁将创建为名为pattern```door__<name of door>```的设备。将在每个锁中创建以下通道/状态（使用Nuki Web API时）：
@@ -363,10 +365,13 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
 - (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) bump to stable release
+
+### 0.9.6 (2019-05-03)
 - (zefau) added Web Adapter as dependency
 - (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
 - (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) bump to stable release
+- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

@@ -95,7 +95,7 @@ class Adapters extends Component {
         this.words.installed = I18n.t('installed %s times');
 
         return (
-            <div key="adapters" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '')}>
+            <div key="adaptersAll" className={this.props.classes.mainDiv + ' '  + (this.props.backClass || '') + ' '  + (this.props.mobile ? this.props.classes.mainDivMobile : '')}>
                 <div className={this.props.classes.title}>{I18n.t('Over %s connected services and systems!', this.state.count)}</div>
                 <div className={this.props.classes.boxDiv}>
                     <div className={this.props.classes.box}>

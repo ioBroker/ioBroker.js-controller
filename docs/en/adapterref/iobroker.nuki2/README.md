@@ -38,10 +38,10 @@ How to get your bridges token:
     }```
 
 ### Callback function
-If the callback function is being used, the adapter will try to automatically set the callback on the Nuki bridge when the instance is being saved. All Nuki states will be kept up-to-date by the Nuki bridge while callback is activated.
+If the callback function is being used, the adapter will try to automatically set the callback on the Nuki bridge when the instance is being saved. Respective Nuki states ([see below](#locks-with-nuki-bridge-api)) will be kept up-to-date by the Nuki bridge while callback is activated.
 Callbacks can also be set and removed manually from any browser with following URLs:
 
-* set Callback: ```http://<bridge_ip>:<bridge_port>/callback/add?url=http%3A%2F%2F<host_ip>%3A<host_port>%2Fapi%2Fnuki&token=<bridgeToken>```
+* set Callback: ```http://<bridge_ip>:<bridge_port>/callback/add?url=http%3A%2F%2F<host_ip>%3A<host_port>%2Fnuki-api-bridge&token=<bridgeToken>```
 * remove Callback: ```http://<bridge_ip>:<bridge_port>/callback/remove?id=<callback_id>&token=<bridgeToken>```
 * list all Callbacks: ```http://<bridge_ip>:<bridge_port>/callback/list?token=<bridgeToken>```
 
@@ -75,10 +75,12 @@ A lock will be created as device with the name pattern ```door__<name of door>``
 | - | id | ID of the Nuki |
 | - | name | Name of the Nuki |
 | status | - | Current status of the lock |
-| status | batteryCritical | States critical battery level |
-| status | lockState | Current lock-state of the Nuki |
-| status | locked | Indication if door is locked |
-| status | refreshed | Timestamp of last update |
+| status | batteryCritical** | States critical battery level |
+| status | lockState** | Current lock-state of the Nuki |
+| status | locked** | Indication if door is locked |
+| status | refreshed** | Timestamp of last update |
+
+_** marked states will be updated on a Nuki action if callback is set_
 
 #### Locks (with Nuki Web API)
 A lock will be created as device with the name pattern ```door__<name of door>```. The following channels / states will be created in each lock (when using the Nuki Web API):
@@ -354,10 +356,13 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
 - (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) bump to stable release
+
+### 0.9.6 (2019-05-03)
 - (zefau) added Web Adapter as dependency
 - (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
 - (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) bump to stable release
+- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

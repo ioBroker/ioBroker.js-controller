@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: 无题
-hash: xijUS6BbpAAnc+2Vym97gcsN4+HERo6RkUFHbVMvJRg=
+hash: GX5U+u71bUmrbs+sfRoBBFaqH7sJTMuQ+GN4NxG0S8I=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
@@ -23,6 +23,10 @@ hash: xijUS6BbpAAnc+2Vym97gcsN4+HERo6RkUFHbVMvJRg=
 在任何浏览器中运行。
 您可以将其保存为iOS-Homescreen上的Web应用程序，它看起来和感觉就像一个nativ应用程序。
 它完全可定制。
+
+＃＃ 你需要...
+* Nodejs 8或更高版本
+*必须在Web适配器中启用socketIO
 
 ＃＃ 如何使用
 *开始创建视图。
@@ -60,6 +64,30 @@ Toolbar-Entrys是视图的链接。
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## Changelog
+
+### 0.0.15
+* (Sebastian Bormann) Improved check for value type of states.
+* (Sebastian Bormann) Improved slider-tooltip to lower font-size at large numbers.
+
+### 0.0 14
+* (Sebastian Bormann) If role of state is not further specified, then check for role of parent object.
+
+### 0.0.13
+* (Sebastian Bormann) Doors and Windows now force true/false to be translated to opened/closed.
+* (Sebastian Bormann) Double Entrys on WelcomeScreen/Overview removed.
+* (Sebastian Bormann) States are now set with the correct value type.
+* (Sebastian Bormann) Changed recognition of state types. I hope there are no new bugs now!
+
+### 0.0.12
+* (Sebastian Bormann) Check for unallowed chars in object names.
+* (Sebastian Bormann) Check for duplicates in view names.
+* (Sebastian Bormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
+* (Sebastian Bormann) Added Blinds (Homematic) - please test it, i don't have one to test.
+
+### 0.0.11
+* (Sebastian Bormann) Added compatibility for edge and firefox. 
+* (Sebastian Bormann) Again Hue bugfixes.
+* (Sebastian Bormann) Removed Tooltip from Toolbar.
 
 ### 0.0.10
 * (Sebastian Bormann) Added ColorTemperature. Hoepfully HUE works now? Can't test ist, because i do not own any hue lamp :)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: g7RKjgGXc3sJl6guz8xQBqY1Mi1cUE1tKbZvxg3JxRk=
+hash: wcsGy6XDRhmGyqrU3R51xx3VuQsHaBK02KQhHA7V9t4=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -33,7 +33,8 @@ hash: g7RKjgGXc3sJl6guz8xQBqY1Mi1cUE1tKbZvxg3JxRk=
 
 从Lupusec报警系统中选择IP地址或主机名。如果可能，请选择https（推荐）。
 要仅读取状态，请选择没有写访问权限的用户。如果要更改状态（例如，打开/关闭指示灯或布防/撤防警报），请选择具有写入权限的用户。
-![管理](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您的Lupusec报警系统连接了监控凸轮，您可以在ioBroker中提供它们。 Lupusec适配器通过它自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到摄像头。
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)
 
 默认情况下，所有Lupusec设备都将显示在ioBroker对象选项卡上。
 完全支持和单独调整是以下设备：
@@ -79,6 +80,9 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png)传感器或设备的详细视图。在此示例中，您可以看到CO传感器。在CO报警时，状态'alarm_status_ex'变为true，'alarm_status'变为'CO'。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
+### Lupusec网络摄像头
+您可以在“网络摄像头”下找到所有连接的监控凸轮。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以进行打开。如果您使用ioBroker Web适配器，则可以使用以下链接打开凸轮图像（而不是流）：http：// <ip-of-web-adapter-instanz>：<port-of-web-adapter-instanz> / lupusec.X /图像/ camY.jpg。例如http://192.168.1.2:8083/lupusec.0/image/cam1.jpg![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
+
 ##计划
 以下事项计划在未来：
 
@@ -86,6 +90,17 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.1.6 (01.05.2019)
+* (Stübi) New feature: you can change the buttons for keypad
+* (Stübi) New feature: add push notifications to sensors
+* (Stübi) New feature: change switch from switch to push button 
+* (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
+* (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
+
+
+### 1.1.5 (24.04.2019)
+* (Stübi) Add buttons for Scenario Switch V2 and Bugfixing
 
 ### 1.1.4 (13.04.2019)
 * (Stübi) Add device outside alarm

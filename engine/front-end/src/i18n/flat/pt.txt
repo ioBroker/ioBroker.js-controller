@@ -34,6 +34,7 @@ Filtro
 Fórum
 Github
 Boa sorte
+Consegui!
 Ícone
 Imprimir
 Info
@@ -63,6 +64,7 @@ Postagens
 Política de Privacidade
 Ler
 Corre em
+Screenshots
 Procurar...
 Suporte social
 Ordenar
@@ -89,6 +91,7 @@ Escrito com o Node.js
 Seu endereço de email
 autores
 compactar
+Nós servimos cookies neste site para analisar o tráfego, lembrar de suas preferências e otimizar sua experiência.
 Copiado para a área de transferência
 copiar para área de transferência
 Junte-se agora à comunidade em rápido crescimento, faça perguntas e obtenha respostas!

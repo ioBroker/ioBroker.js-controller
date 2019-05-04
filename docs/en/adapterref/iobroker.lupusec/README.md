@@ -27,7 +27,9 @@ The easiest way is to configure the lupusec.iobroker adapter via the discovery a
 Choose the IP-Address or hostname from the Lupusec alarm system. Choose https (recommended) if possible.
 For only reading the status, select a user without write access. If you want to change the status
 (for example, turn on/off the light or arm/disarm the alarm) pick a user with write access.      
-![admin](docs/en/img/lupusec_admin.png)
+![admin_main](docs/en/img/lupusec_admin.png)
+If you have surveillance cams connected to your Lupusec alarm system you can provide them in ioBroker. The Lupusec adapter finds all Lupusec cams by it own. You have to enter a address (your ioBroker IP addrss or 0.0.0.0) and a port for later connecting to the cams.
+![admin_webcam](docs/en/img/lupusec_admin_webcam.png)
 
 By default all Lupusec devices will be on the ioBroker object tab  displayed.
 Fully supported and individually adapted are following devices:
@@ -77,6 +79,11 @@ You find all supported Lupsec sensors and devices under 'devices'. If a device i
 Detailed view of a sensor or device. In this example you see the CO sensor. On CO alarm the state 'alarm_status_ex' change to true and 'alarm_status' change to 'CO'.
 ![lupusec_obj_status](docs/en/img/lupusec_obj_devices_type09.png)
 
+### Lupusec Webcams
+You find all connected surveillance cams under 'webcams'. You can copy the link provided in the 'image' and 'stream' state to your web browser for opening. If you use the ioBroker web adapter, you can open the cam images (not streams) with following link: 
+http://<ip-of-web-adapter-instanz>:<port-of-web-adapter-instanz>/lupusec.X/image/camY.jpg. For example http://192.168.1.2:8083/lupusec.0/image/cam1.jpg  
+![lupusec_obj_webcam](docs/en/img/lupusec_obj_webcam.png)
+
 ## Changelog
 
 ### 1.1.6 (01.05.2019)
@@ -84,6 +91,8 @@ Detailed view of a sensor or device. In this example you see the CO sensor. On C
 * (Stübi) New feature: add push notifications to sensors
 * (Stübi) New feature: change switch from switch to push button 
 * (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
+* (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
+
 
 ### 1.1.5 (24.04.2019)
 * (Stübi) Add buttons for Scenario Switch V2 and Bugfixing

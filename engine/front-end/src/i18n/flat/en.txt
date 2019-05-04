@@ -34,6 +34,7 @@ Filter
 Forum
 Github
 Good luck
+Got it!
 Icon
 Imprint
 Info
@@ -63,6 +64,7 @@ Posts
 Privacy policy
 Read
 Runs on
+Screenshots
 Search...
 Social support
 Sort
@@ -89,6 +91,7 @@ Written with Node.js
 Your e-mail address
 Authors
 Compact
+We serve cookies on this site to analyse traffic, remember your preferences, and optimise your experience.
 copied to clipboard
 copy to clipboard
 Join now the rapidly growing community, ask questions and get answers from professionals and gurus!

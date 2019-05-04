@@ -24,6 +24,7 @@ import MDPage from './MDPage';
 import TreePage from './TreePage';
 import Router from './Router';
 import Utils from './Utils';
+import Cookies from './Components/Cookies';
 
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
@@ -583,6 +584,11 @@ class App extends Router {
                 </div>
                 {this.renderError()}
                 {this.renderSearchResults()}
+                <Cookies theme={this.state.themeType}
+                         mobile={this.state.mobile}
+                         onNavigate={this.onNavigate.bind(this)}
+                         language={this.state.language}
+                         contentWidth={this.state.width} />
             </div>
         );
     }

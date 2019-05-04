@@ -124,6 +124,9 @@ Unter *Objekte* wird nun das Gateway und seine angelernten Geräte angezeigt:
 Die Anleitung wurde nach besten Wissen und Gewissen erstellt.
 
 ## Changelog
+### 1.2.6 (2019-03-04)
+- (Diginix) Improved calculation for sensor's battery percentage
+
 ### 1.2.5 (2019-01-24)
 - (Vanwards) Added long click for Aquara wall switch
 

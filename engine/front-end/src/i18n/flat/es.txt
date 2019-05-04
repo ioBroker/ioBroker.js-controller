@@ -34,6 +34,7 @@ Filtrar
 Foro
 Github
 Buena suerte
+¡Lo tengo!
 Icono
 Imprimir
 Información
@@ -63,6 +64,7 @@ Mensajes
 Política de privacidad
 Leer
 Se ejecuta en
+Capturas de pantalla
 Buscar...
 Apoyo social
 Ordenar
@@ -89,6 +91,7 @@ Escrito con Node.js
 Tu correo electrónico
 autores
 compacto
+Servimos cookies en este sitio para analizar el tráfico, recordar sus preferencias y optimizar su experiencia.
 Copiado al portapapeles
 copiar al portapapeles
 ¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -42,12 +42,12 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 {"token": "token123", "success": true} `` `
 
 ### Функция обратного вызова
-Если используется функция обратного вызова, адаптер попытается автоматически установить обратный вызов на мосту Nuki при сохранении экземпляра. Все состояния Nuki будут обновляться мостом Nuki, пока активирован обратный вызов.
+Если используется функция обратного вызова, адаптер попытается автоматически установить обратный вызов на мосту Nuki при сохранении экземпляра. Соответствующие состояния Nuki ([увидеть ниже](#locks-with-nuki-bridge-api)) будут обновляться мостом Nuki, пока активирован обратный вызов.
 Обратные вызовы также можно устанавливать и удалять вручную из любого браузера со следующими URL-адресами:
 
-* set Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken>` ` `
+* установить обратный вызов: `` `http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fnuki-api-bridge & token = <bridgeToken> `` `
 * Remove Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>` ``
-* список всех обратных вызовов: `` `http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken>` ``
+* перечислить все обратные вызовы: `` `http:// <bridge_ip>: <bridge_port> / callback / list? token = <bridgeToken>` ``
 
 ### Состояния
 Если вы успешно настроили ioBroker.nuki2, будут созданы следующие каналы и состояния:
@@ -79,10 +79,12 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 | - | id | ID Нуки |
 | - | имя | Имя Нуки |
 | статус | - | Текущее состояние блокировки |
-| статус | BatteryCritical | Состояния критического уровня заряда батареи |
-| статус | lockState | Текущее состояние блокировки Nuki |
-| статус | заблокирован | Индикация, если дверь заперта |
-| статус | обновленный | Отметка времени последнего обновления |
+| статус | BatteryCritical ** | Состояния критического уровня заряда батареи |
+| статус | lockState ** | Текущее состояние блокировки Nuki |
+| статус | заблокирован ** | Индикация, если дверь заперта |
+| статус | обновился ** | Отметка времени последнего обновления |
+
+_ ** отмеченные состояния будут обновлены в действии Nuki, если обратный вызов установлен_
 
 #### Блокировки (с помощью Nuki Web API)
 Блокировка будет создана как устройство с шаблоном имени ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Web API):
@@ -147,7 +149,7 @@ hash: iBD9a/svjQTZ/a4B6eO3MPhJxtZAPwnscD/AcWHJhAY=
 | users._userName_ | dateUpdated | Дата обновления |
 | users._userName_ | allowFromDate | Разрешено с даты |
 | users._userName_ | allowWeekDays | Разрешенные будни <br> `{64: 'Monday', 32: 'Tuesday', 16: 'Wednesday', 8: 'Thursday', 4: 'Friday', 2: 'Saturday', 1: 'Sunday'}` |
-| users._userName_ | allowWeekDays | Разрешенные будни <br> `{64:« Понедельник », 32:« Вторник », 16:« Среда », 8:« Четверг », 4:« Пятница », 2:« Суббота », 1:« Воскресенье »}` |
+| users._userName_ | allowWeekDays | Разрешенные будни <br> `{64:« понедельник », 32:« вторник », 16:« среда », 8:« четверг », 4:« пятница », 2:« суббота », 1:« воскресенье »}` |
 | users._userName_ | allowFromTime | Разрешенное время (в минутах с полуночи) |
 | users._userName_ | allowUntilTime | Разрешено до времени (в минутах от полуночи) |
 
@@ -212,7 +214,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript для произнесения фразы, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
+Вы можете использовать эту функцию в ioBroker.javascript, чтобы произнести фразу, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
 
@@ -363,10 +365,13 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
 - (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (zefau) bump to stable release
+
+### 0.9.6 (2019-05-03)
 - (zefau) added Web Adapter as dependency
 - (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
 - (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) bump to stable release
+- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
 * (zefau) Useless versions to fix incorrect configuration in `io-package.json`

@@ -16,9 +16,11 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 **Note:** If in select ID dialog of the ioBroker node you cannot find some variable, restart node-red instance. By restarting the new list of objects will be created.
 
 ## Changelog
+### 1.8.0 (2019-05-02)
+* (nobodyMO) Used newer version of node-red 0.20.5
 
 ### 1.7.2 (2019-01-16)
-- (SchumyHao) Add Chinese support
+* (SchumyHao) Add Chinese support
 
 ### 1.7.1 (2017-09-24)
 * (bluefox) use newer version of node-red 0.19.4

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: без названия
-hash: xijUS6BbpAAnc+2Vym97gcsN4+HERo6RkUFHbVMvJRg=
+hash: GX5U+u71bUmrbs+sfRoBBFaqH7sJTMuQ+GN4NxG0S8I=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
@@ -23,6 +23,10 @@ hash: xijUS6BbpAAnc+2Vym97gcsN4+HERo6RkUFHbVMvJRg=
 Работает в любом браузере.
 Вы можете сохранить его как веб-приложение на домашнем экране iOS, и оно будет выглядеть как нативное приложение.
 Это полностью настраиваемый.
+
+## Тебе нужно...
+* Nodejs 8 или выше
+* socketIO должен быть включен в веб-адаптере
 
 ## Как пользоваться
 * Начните создавать представления.
@@ -60,6 +64,30 @@ hash: xijUS6BbpAAnc+2Vym97gcsN4+HERo6RkUFHbVMvJRg=
 Посетите [форум iobroker](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
 ## Changelog
+
+### 0.0.15
+* (Sebastian Bormann) Improved check for value type of states.
+* (Sebastian Bormann) Improved slider-tooltip to lower font-size at large numbers.
+
+### 0.0 14
+* (Sebastian Bormann) If role of state is not further specified, then check for role of parent object.
+
+### 0.0.13
+* (Sebastian Bormann) Doors and Windows now force true/false to be translated to opened/closed.
+* (Sebastian Bormann) Double Entrys on WelcomeScreen/Overview removed.
+* (Sebastian Bormann) States are now set with the correct value type.
+* (Sebastian Bormann) Changed recognition of state types. I hope there are no new bugs now!
+
+### 0.0.12
+* (Sebastian Bormann) Check for unallowed chars in object names.
+* (Sebastian Bormann) Check for duplicates in view names.
+* (Sebastian Bormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
+* (Sebastian Bormann) Added Blinds (Homematic) - please test it, i don't have one to test.
+
+### 0.0.11
+* (Sebastian Bormann) Added compatibility for edge and firefox. 
+* (Sebastian Bormann) Again Hue bugfixes.
+* (Sebastian Bormann) Removed Tooltip from Toolbar.
 
 ### 0.0.10
 * (Sebastian Bormann) Added ColorTemperature. Hoepfully HUE works now? Can't test ist, because i do not own any hue lamp :)

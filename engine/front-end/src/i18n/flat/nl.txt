@@ -34,6 +34,7 @@ Filter
 Forum
 Github
 Succes
+Begrepen!
 Icoon
 afdruk
 info
@@ -63,6 +64,7 @@ berichten
 Privacybeleid
 Lezen
 Draait op
+Screenshots
 Zoeken...
 Sociale steun
 Soort
@@ -89,6 +91,7 @@ Geschreven met Node.js
 Jouw e-mailadres
 auteurs
 compact
+Wij serveren cookies op deze site om verkeer te analyseren, uw voorkeuren te onthouden en uw ervaring te optimaliseren.
 gekopieerd naar het klembord
 Kopieer naar klembord
 Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!

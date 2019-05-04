@@ -15,12 +15,13 @@ import I18n from '../i18n';
 const styles = theme => ({
     mainDiv: {
         background: '#FFFFFF',
-        width: 'calc(100% - 60px)',
+        width: 'calc(100% - 40px)',
         textAlign: 'center',
         paddingTop: 5,
         paddingBottom: 5,
         paddingLeft: 20,
         paddingRight: 20,
+        overflow: 'hidden'
     },
     title: {
         fontSize: 32,

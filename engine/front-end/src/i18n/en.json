@@ -1,5 +1,4 @@
 {
-  "We will not spam you. Promise!": "We will not spam you. Promise!",
   "* partner link": "* partner link",
   "About": "About",
   "About ioBroker": "About ioBroker",
@@ -84,12 +83,14 @@
   "Use one of the best open source products for managing your automation system on premise.": "Use one of the best open source products for managing your automation system on premise.",
   "Users": "Users",
   "Versions": "Versions",
+  "We will not spam you. Promise!": "We will not spam you. Promise!",
   "Why this link is here?": "Why this link is here?",
   "Windows, Linux, OSX, Raspberry Pi, ARM or PC": "Windows, Linux, OSX, Raspberry Pi, ARM or PC",
   "Written with Node.js": "Written with Node.js",
   "Your e-mail address": "Your e-mail address",
   "authors": "Authors",
   "compact": "Compact",
+  "cookies_text": "We serve cookies on this site to analyse traffic, remember your preferences, and optimise your experience.",
   "copied to clipboard": "copied to clipboard",
   "copy to clipboard": "copy to clipboard",
   "forum-text": "Join now the rapidly growing community, ask questions and get answers from professionals and gurus!",
@@ -110,5 +111,7 @@
   "readme": "readme",
   "to Shop": "to Shop",
   "user": "user",
-  "version": "Version"
+  "version": "Version",
+  "Screenshots": "Screenshots",
+  "Got it!": "Got it!"
 }

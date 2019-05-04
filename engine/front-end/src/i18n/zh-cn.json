@@ -1,5 +1,4 @@
 {
-  "We will not spam you. Promise!": "我们不会垃圾邮件给你。我们承诺！",
   "* partner link": "*合作伙伴链接",
   "About": "关于",
   "About ioBroker": "关于ioBroker",
@@ -84,12 +83,14 @@
   "Use one of the best open source products for managing your automation system on premise.": "使用最好的开源产品之一来管理您的自动化系统。",
   "Users": "用户",
   "Versions": "版本",
+  "We will not spam you. Promise!": "我们不会垃圾邮件给你。我们承诺！",
   "Why this link is here?": "为什么这个链接在这里？",
   "Windows, Linux, OSX, Raspberry Pi, ARM or PC": "Windows，Linux，OSX，Raspberry Pi，ARM或PC",
   "Written with Node.js": "用Node.js编写",
   "Your e-mail address": "您的电子邮件地址",
   "authors": "作者",
   "compact": "紧凑",
+  "cookies_text": "我们在此网站上提供Cookie以分析流量，记住您的偏好并优化您的体验。",
   "copied to clipboard": "复制到剪贴板",
   "copy to clipboard": "复制到剪贴板",
   "forum-text": "社区正快速发展，欢迎现在加入，提出问题并获得答案！",
@@ -110,5 +111,7 @@
   "readme": "自述",
   "to Shop": "去商店",
   "user": "用户名",
-  "version": "版本"
+  "version": "版本",
+  "Screenshots": "截图",
+  "Got it!": "得到它了！"
 }

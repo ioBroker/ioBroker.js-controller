@@ -142,6 +142,7 @@ https://doc.iobroker.net/#de/documentation/showcases/README.md
 https://doc.iobroker.net/#de/documentation/trouble/adapter.md
 https://doc.iobroker.net/#de/documentation/trouble/forum.md
 https://doc.iobroker.net/#de/documentation/trouble/issue.md
+https://doc.iobroker.net/#de/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#de/documentation/trouble/README.md
 https://doc.iobroker.net/#de/documentation/trouble/restore.md
 https://doc.iobroker.net/#de/documentation/trouble/search.md
@@ -259,6 +260,7 @@ https://doc.iobroker.net/#en/documentation/showcases/README.md
 https://doc.iobroker.net/#en/documentation/trouble/adapter.md
 https://doc.iobroker.net/#en/documentation/trouble/forum.md
 https://doc.iobroker.net/#en/documentation/trouble/issue.md
+https://doc.iobroker.net/#en/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#en/documentation/trouble/README.md
 https://doc.iobroker.net/#en/documentation/trouble/restore.md
 https://doc.iobroker.net/#en/documentation/trouble/search.md
@@ -376,6 +378,7 @@ https://doc.iobroker.net/#ru/documentation/showcases/README.md
 https://doc.iobroker.net/#ru/documentation/trouble/adapter.md
 https://doc.iobroker.net/#ru/documentation/trouble/forum.md
 https://doc.iobroker.net/#ru/documentation/trouble/issue.md
+https://doc.iobroker.net/#ru/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#ru/documentation/trouble/README.md
 https://doc.iobroker.net/#ru/documentation/trouble/restore.md
 https://doc.iobroker.net/#ru/documentation/trouble/search.md
@@ -487,11 +490,13 @@ https://doc.iobroker.net/#zh-cn/documentation/logic/javascript.md
 https://doc.iobroker.net/#zh-cn/documentation/logic/nodered.md
 https://doc.iobroker.net/#zh-cn/documentation/logic/README.md
 https://doc.iobroker.net/#zh-cn/documentation/logic/typescript.md
+https://doc.iobroker.net/#zh-cn/documentation/privacy.md
 https://doc.iobroker.net/#zh-cn/documentation/README.md
 https://doc.iobroker.net/#zh-cn/documentation/showcases/README.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/adapter.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/forum.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/issue.md
+https://doc.iobroker.net/#zh-cn/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/README.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/restore.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/search.md
