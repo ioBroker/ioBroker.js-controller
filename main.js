@@ -331,7 +331,7 @@ function createObjects(onConnect) {
         controller: true,
         logger:     logger,
         hostname:   hostname,
-        connected:  type => {
+        connected:  handler => {
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -339,13 +339,13 @@ function createObjects(onConnect) {
             }
 
             if (!connected) {
-                logger.info('host.' + hostname + ' ' + type + ' connected');
+                logger.info('host.' + hostname + ' ' + JSON.stringify(handler.getStatus()) + ' connected');
 
                 if (connected === null) {
                     connected = true;
                     if (!isStopping) {
                         // Do not start if we still stopping the instances
-                        checkHost(type, () => {
+                        checkHost(handler.getStatus().type, () => {
                             startMultihost(config);
                             setMeta();
                             started = true;
