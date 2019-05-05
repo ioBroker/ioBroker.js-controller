@@ -79,20 +79,20 @@ function startController(options, callback) {
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
             if (!options.objects.simulateFallback) {
-                Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+                Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
             }
             else {
-                Objects = require(rootDir + 'lib/objects/objectsInMemServerSocketIo');
+                Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerSocketIo'));
             }
         } else if (options.objects.type === 'redis') {
             try {
-                Objects = require(rootDir + 'lib/objects/objectsInRedis');
+                Objects = require(path.join(rootDir, 'lib/objects/objectsInRedis'));
             } catch (e) {
                 Objects = require('iobroker.objects-redis');
             }
         }
     } else {
-        Objects = require(rootDir + 'lib/objects/objectsInMemServer');
+        Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
     }
 
     objects = new Objects(settingsObjects);
@@ -102,16 +102,16 @@ function startController(options, callback) {
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
             if (!options.states.simulateFallback) {
-                States = require(rootDir + 'lib/states/statesInMemServer');
+                States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
             }
             else {
-                States = require(rootDir + 'lib/states/statesInMemServerSocketIo');
+                States = require(path.join(rootDir, 'lib/states/statesInMemServerSocketIo'));
             }
         } else {
-            States = require(rootDir + 'lib/states/statesInRedis');
+            States = require(path.join(rootDir, 'lib/states/statesInRedis'));
         }
     } else {
-        States = require(rootDir + 'lib/states/statesInMemServer');
+        States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
     }
 
     const settingsStates = {
