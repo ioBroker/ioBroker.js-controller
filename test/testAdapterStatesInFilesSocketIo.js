@@ -17,7 +17,8 @@ const statesConfig = {
     port:           19000,
     user:           '',
     pass:           '',
-    dataDir:        dataDir
+    dataDir:        dataDir,
+    simulateFallback: true
 };
 
 const objectsConfig = {
@@ -28,7 +29,8 @@ const objectsConfig = {
     user:           '',
     pass:           '',
     noFileCache:    true,
-    connectTimeout: 2000
+    connectTimeout: 2000,
+    simulateFallback: true
 };
 // states in files, objects in files
 testAdapter({

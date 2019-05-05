@@ -2845,7 +2845,7 @@ function init() {
     // Get "objects" object
     // If "file" and on the local machine
     if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0')) {
-        Objects = require('./lib/objects/objectsInMemServer');
+        Objects = require('./lib/objects/objectsInMemServerRedis');
     } else {
         Objects = require('./lib/objects');
     }

@@ -10,7 +10,7 @@ let   objects  = null;
 let   states   = null;
 const textName = 'File';
 const tests    = require('./lib/testObjects');
-const context  = {
+const   context  = {
     objects: null,
     name: textName
 };
@@ -21,12 +21,14 @@ describe(textName + ' Test Objects', function() {
 
         setup.startController({
             objects: {
+                simulateFallback: true,
                 dataDir: __dirname + '/../tmp/data',
                 onChange: function (id, _obj) {
                     console.log('object changed. ' + id);
                 }
             },
             states: {
+                simulateFallback: true,
                 dataDir: __dirname + '/../tmp/data',
                 onChange: function (id, _state) {
                     console.log('state changed. ' + id);
