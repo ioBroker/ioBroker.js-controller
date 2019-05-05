@@ -155,6 +155,7 @@ https://doc.iobroker.net/#de/documentation/tutorial/README.md
 https://doc.iobroker.net/#de/documentation/tutorial/setup.md
 https://doc.iobroker.net/#de/documentation/tutorial/updates.md
 https://doc.iobroker.net/#de/documentation/tutorial/viz.md
+https://doc.iobroker.net/#de/documentation/viz/app.md
 https://doc.iobroker.net/#de/documentation/viz/basic.md
 https://doc.iobroker.net/#de/documentation/viz/material.md
 https://doc.iobroker.net/#de/documentation/viz/README.md
@@ -273,6 +274,7 @@ https://doc.iobroker.net/#en/documentation/tutorial/README.md
 https://doc.iobroker.net/#en/documentation/tutorial/setup.md
 https://doc.iobroker.net/#en/documentation/tutorial/updates.md
 https://doc.iobroker.net/#en/documentation/tutorial/viz.md
+https://doc.iobroker.net/#en/documentation/viz/app.md
 https://doc.iobroker.net/#en/documentation/viz/basic.md
 https://doc.iobroker.net/#en/documentation/viz/material.md
 https://doc.iobroker.net/#en/documentation/viz/README.md
@@ -391,6 +393,7 @@ https://doc.iobroker.net/#ru/documentation/tutorial/README.md
 https://doc.iobroker.net/#ru/documentation/tutorial/setup.md
 https://doc.iobroker.net/#ru/documentation/tutorial/updates.md
 https://doc.iobroker.net/#ru/documentation/tutorial/viz.md
+https://doc.iobroker.net/#ru/documentation/viz/app.md
 https://doc.iobroker.net/#ru/documentation/viz/basic.md
 https://doc.iobroker.net/#ru/documentation/viz/material.md
 https://doc.iobroker.net/#ru/documentation/viz/README.md
@@ -509,6 +512,7 @@ https://doc.iobroker.net/#zh-cn/documentation/tutorial/README.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/setup.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/updates.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/viz.md
+https://doc.iobroker.net/#zh-cn/documentation/viz/app.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/basic.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/material.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/README.md

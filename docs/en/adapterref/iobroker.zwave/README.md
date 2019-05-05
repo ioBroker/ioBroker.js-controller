@@ -258,7 +258,7 @@ Following global Actions are current supported:
 
 ## License
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
 
 SOFTWARE NOTICE AND LICENSE
 

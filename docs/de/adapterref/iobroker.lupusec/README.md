@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: wcsGy6XDRhmGyqrU3R51xx3VuQsHaBK02KQhHA7V9t4=
+hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -81,7 +81,8 @@ Alle unterstützten Lupsec-Sensoren und -Geräte finden Sie unter "Geräte". Sol
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
 Lupusec-Webcams
-Sie finden alle angeschlossenen Überwachungskameras unter 'Webcams'. Sie können den im Status 'Bild' und 'Stream' bereitgestellten Link zum Öffnen in Ihren Webbrowser kopieren. Wenn Sie den ioBroker-Webadapter verwenden, können Sie die Nockenbilder (nicht Streams) mit folgendem Link öffnen: http:// <ip-of-web-adapter-instanz>: <port-of-web-adapter-instanz> / lupusec.X / image / camY.jpg. Zum Beispiel http://192.168.1.2:8083/lupusec.0/image/cam1.jpg ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
+Sie finden alle angeschlossenen Überwachungskameras unter 'Webcams'. Sie können den im Status 'Bild' und 'Stream' bereitgestellten Link zum Öffnen in Ihren Webbrowser kopieren.
+![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
 ## Geplant
 Folgende Dinge sind in der Zukunft geplant:
@@ -97,10 +98,14 @@ Folgende Dinge sind in der Zukunft geplant:
 * (Stübi) New feature: change switch from switch to push button 
 * (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
 * (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
-
+* (Stübi) New feature: you can edit the on/off timer for shutters 
+* (Stübi) New feature: Discription of states are now in English or German available
+* (Stübi) Bugfixing: HUE and saturation of HUE devices fixed 
+* (Stübi) Bugfixing: Add role to button 4 of scenario switch.  
 
 ### 1.1.5 (24.04.2019)
-* (Stübi) Add buttons for Scenario Switch V2 and Bugfixing
+* (Stübi) New feature: Add buttons for Scenario Switch V2
+* (Stübi) Bugfixing: Various improvements
 
 ### 1.1.4 (13.04.2019)
 * (Stübi) Add device outside alarm

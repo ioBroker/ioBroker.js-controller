@@ -80,8 +80,7 @@ Detailed view of a sensor or device. In this example you see the CO sensor. On C
 ![lupusec_obj_status](docs/en/img/lupusec_obj_devices_type09.png)
 
 ### Lupusec Webcams
-You find all connected surveillance cams under 'webcams'. You can copy the link provided in the 'image' and 'stream' state to your web browser for opening. If you use the ioBroker web adapter, you can open the cam images (not streams) with following link: 
-http://<ip-of-web-adapter-instanz>:<port-of-web-adapter-instanz>/lupusec.X/image/camY.jpg. For example http://192.168.1.2:8083/lupusec.0/image/cam1.jpg  
+You find all connected surveillance cams under 'webcams'. You can copy the link provided in the 'image' and 'stream' state to your web browser for opening. 
 ![lupusec_obj_webcam](docs/en/img/lupusec_obj_webcam.png)
 
 ## Changelog
@@ -92,10 +91,14 @@ http://<ip-of-web-adapter-instanz>:<port-of-web-adapter-instanz>/lupusec.X/image
 * (Stübi) New feature: change switch from switch to push button 
 * (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
 * (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
-
+* (Stübi) New feature: you can edit the on/off timer for shutters 
+* (Stübi) New feature: Discription of states are now in English or German available
+* (Stübi) Bugfixing: HUE and saturation of HUE devices fixed 
+* (Stübi) Bugfixing: Add role to button 4 of scenario switch.  
 
 ### 1.1.5 (24.04.2019)
-* (Stübi) Add buttons for Scenario Switch V2 and Bugfixing
+* (Stübi) New feature: Add buttons for Scenario Switch V2
+* (Stübi) Bugfixing: Various improvements
 
 ### 1.1.4 (13.04.2019)
 * (Stübi) Add device outside alarm

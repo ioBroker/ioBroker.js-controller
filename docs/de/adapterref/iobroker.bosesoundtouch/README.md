@@ -3,10 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bosesoundtouch/README.md
 title: ioBroker.bosesoundtouch! [Logo] (admin / bosesoundtouch.png)
-hash: mbAV8qA2RDeNq6P2wPmscDyJNJgDnB6E4jRBgMEUAMA=
+hash: WhdHbVWqidSidG4Ci6z6jRClTlkIEjuPY0PUi2kND70=
 ---
 # IoBroker.bosesoundtouch ![Logo](../../../en/adapterref/iobroker.bosesoundtouch/admin/bosesoundtouch.png)
-Bose SoundTouch-Adapter für die IoT-Plattform von IoBroker
+
+![Anzahl der Installationen](http://iobroker.live/badges/bosesoundtouch-stable.svg)
+
+Bose SoundTouch-Adapter für die IoT-Plattform von ioBroker
 
 ## Kontrollstaaten
 Zur Steuerung Ihres Sprechers können folgende Objekte geschrieben werden:
@@ -14,20 +17,20 @@ Zur Steuerung Ihres Sprechers können folgende Objekte geschrieben werden:
 | Zustand | Beschreibung |
 | :---           | :---        |
 | Schlüssel | Einer der folgenden Schlüssel zum Senden: <br><br> ABSPIELEN <br> PAUSE <br> HALT <br> PREV_TRACK <br> NÄCHSTER TITEL <br> DAUMEN HOCH <br> DAUMEN RUNTER <br> LESEZEICHEN <br> LEISTUNG <br> STUMM <br> VOLUME_UP <br> LAUTSTÄRKE RUNTER <br> PRESET_1 <br> PRESET_2 <br> PRESET_3 <br> PRESET_4 <br> PRESET_5 <br> PRESET_6 <br> AUX_INPUT <br> SHUFFLE_OFF <br> SHUFFLE_ON <br> REPEAT_OFF <br> REPEAT_ONE <br> WIEDERHOLE ALLES <br> SPIELPAUSE <br> FAVORIT HINZUFÜGEN <br> REMOVE_FAVORITE <br> INVALID_KEY |
-| stummgeschaltet | Das Gerät stummschalten oder die Stummschaltung aufheben. |
+| stumm geschaltet | Das Gerät stummschalten oder die Stummschaltung aufheben. |
 | auf | Schalten Sie das Gerät ein oder aus. |
-| playEverywhere | Definieren Sie den Lautsprecher als Zonenmaster und spielen Sie dessen Inhalt auf allen anderen Lautsprechern ab. |
+| playEverywhere | Definieren Sie den Lautsprecher als Zonenmaster und spielen Sie den Inhalt auf allen anderen Lautsprechern. |
 | Volumen | Ändern Sie die Lautstärke des Geräts zwischen 0 und 100. |
 
 ## Info Staaten
-Die folgenden Informationen werden von Ihrem Sprecher gesammelt (schreibgeschützte Status):
+Die folgenden Informationen werden von Ihrem Lautsprecher erfasst (schreibgeschützte Status):
 
 ### Geräteinformationen
 | Zustand | Beschreibung |
 | :---       | :---        |
 | ipAddress | Die IP-Adresse des Geräts ist normalerweise dieselbe, die Sie in den Adaptereinstellungen konfiguriert haben. |
 | macAddress | Die MAC-Adresse des Geräts |
-| name | Der Name, den Sie mit Ihrer SoundTouch App konfiguriert haben. |
+| Name | Der Name, den Sie mit Ihrer SoundTouch App konfiguriert haben. |
 | Typ | Der Gerätetyp (z. B. SoundTouch 300). |
 
 ### Läuft gerade
@@ -37,17 +40,17 @@ Die folgenden Informationen werden von Ihrem Sprecher gesammelt (schreibgeschüt
 | Kunst | Die URL der Quellgrafik. |
 | Künstler | Der momentan spielende Künstler. |
 | Genre | Das Genre des aktuell gespielten Titels. |
-| Quelle | Art oder Name des spielenden Dienstes Um festzustellen, ob sich das Produkt im Standby-Modus befindet, prüfen Sie, ob source == STANDBY ist. |
+| Quelle | Art oder Name des spielenden Dienstes Um festzustellen, ob sich das Produkt im Standby-Modus befindet, prüfen Sie, ob source == STANDBY. |
 | Station | Der Name des Senders oder der Wiedergabeliste. |
 | track | Der aktuell abgespielte Titel. |
 
 ### Presets
-Für jedes der 6 verfügbaren Voreinstellungen sind folgende Zustände vorhanden:
+Für jedes der 6 verfügbaren Presets sind folgende Zustände vorhanden:
 
 | Zustand | Beschreibung |
 | :---       | :---        |
 | iconUrl | Die URL der Quellgrafik. |
-| name | Der Name des Albums, des Senders, der Wiedergabeliste, des Songs, des Telefons usw. hängt von der Quelle ab. |
+| Name | Der Name des Albums, des Senders, der Wiedergabeliste, des Songs, des Telefons usw. hängt von der Quelle ab. |
 | Quelle | Der Typ oder Name des Dienstes. |
 
 ### Zonen
@@ -61,6 +64,9 @@ Die folgende Beschreibung hilft Ihnen beim Erstellen von Gruppen mit Ihrem Multi
 
 ## Changelog
 
+### 0.2.4 (05.05.2019)
+* Core Files/Testing Update and introduce adapter-core
+ 
 ### 0.2.3 (11.11.2018)
 * fixed issue #24 "does not start"
  

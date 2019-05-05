@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: tcLLym+E6nf8ooit8z1BQLV5IDQVg7GmVeVMaBTZqi0=
+hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
 ---
 ![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -145,7 +145,7 @@ sudo npm install canvas --unsafe-perm=true
 |国家| -  | -  |状态信息|
 |国家| -  | \ _连接|连接状态|
 |国家| -  |电池|机器人的电池电量|
-|国家| -  | binFull |说明bin状态是否已满|
+|国家| -  | binFull |说明bin状态是否已满？ |
 |国家| -  | binInserted |说明bin是否插入 |
 |国家| -  |停靠|说明机器人是否停靠|
 |国家| -  |信号|信号强度|
@@ -215,7 +215,7 @@ var message = "%device.name% finished at %missions.current.endedDateTime% cleani
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
-    if (!obj.val) return;
+    if (!obj.state || !obj.state.val) return;
 
     // replace variables with state values
     var pos, variable, state, value;
@@ -256,7 +256,7 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 });
 ```
 
-_2019-02-03在任务开始时发送地图的固定错误_
+_2019-05-04修复了阻止发送map_的错误
 
 您可以将变量```message```编辑为您希望通过地图接收的任何通知。您可以使用```%name-of-state%```来检索ioBroker.roomba对象树中的状态值。
 
@@ -269,17 +269,17 @@ _2019-02-03在任务开始时发送地图的固定错误_
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- bump to stable release
+### 1.0.0 (2019-05-04)
+- (zefau) No changes, only bump to stable release
 
 ### 0.5.0 (2019-04-21)
 - (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
 - (zefau) Removed button to end mission manually ```missions.current._endMission```
 - (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
-- (zefau) added Web Adapter as dependency
+- (zefau) Added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
-- Refactored retrieval of preferences and added debug mode
+- Zefau) Refactored retrieval of preferences and added debug mode
 
 ### 0.4.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#8](https://github.com/Zefau/ioBroker.roomba/pull/8))

@@ -214,7 +214,7 @@ var message = "%device.name% finished at %missions.current.endedDateTime% cleani
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
-    if (!obj.val) return;
+    if (!obj.state || !obj.state.val) return;
     
     // replace variables with state values
     var pos, variable, state, value;
@@ -255,24 +255,24 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 });
 ```
 
-_2019-02-03 fixed error that sends map at the beginning of a mission_ 
+_2019-05-04 fixed error that prevented sending the map_ 
 
 You may edit the variable ```message``` to any notification you would like to receive with the map. You may use ```%name-of-state%``` to retrieve the value of a state within the ioBroker.roomba object tree.
 
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- bump to stable release
+### 1.0.0 (2019-05-04)
+- (zefau) No changes, only bump to stable release
 
 ### 0.5.0 (2019-04-21)
 - (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
 - (zefau) Removed button to end mission manually ```missions.current._endMission```
 - (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
-- (zefau) added Web Adapter as dependency
+- (zefau) Added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
-- Refactored retrieval of preferences and added debug mode
+- Zefau) Refactored retrieval of preferences and added debug mode
 
 ### 0.4.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#8](https://github.com/Zefau/ioBroker.roomba/pull/8))

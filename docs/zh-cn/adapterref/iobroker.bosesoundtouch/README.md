@@ -3,8 +3,10 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bosesoundtouch/README.md
 title: ioBroker.bosesoundtouch！[Logo]（admin / bosesoundtouch.png）
-hash: mbAV8qA2RDeNq6P2wPmscDyJNJgDnB6E4jRBgMEUAMA=
+hash: WhdHbVWqidSidG4Ci6z6jRClTlkIEjuPY0PUi2kND70=
 ---
+![安装数量](http://iobroker.live/badges/bosesoundtouch-stable.svg)
+
 ＃ioBroker.bosesoundtouch![商标](../../../en/adapterref/iobroker.bosesoundtouch/admin/bosesoundtouch.png)
 用于ioBroker IoT平台的Bose SoundTouch适配器
 
@@ -17,7 +19,7 @@ hash: mbAV8qA2RDeNq6P2wPmscDyJNJgDnB6E4jRBgMEUAMA=
 |静音|将设备静音或取消静音。 |
 |在|打开或关闭设备电源。 |
 | playEverywhere |将扬声器定义为区域主控并在所有其他扬声器上播放其内容。 |
-|音量|将设备容量更改为0到100之间
+|音量|将设备容量更改为0到100之间 |
 
 ##信息状态
 从您的发言人那里收集以下信息（只读状态）：
@@ -61,6 +63,9 @@ hash: mbAV8qA2RDeNq6P2wPmscDyJNJgDnB6E4jRBgMEUAMA=
 
 ## Changelog
 
+### 0.2.4 (05.05.2019)
+* Core Files/Testing Update and introduce adapter-core
+ 
 ### 0.2.3 (11.11.2018)
 * fixed issue #24 "does not start"
  

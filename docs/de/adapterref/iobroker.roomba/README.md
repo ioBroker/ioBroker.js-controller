@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: tcLLym+E6nf8ooit8z1BQLV5IDQVg7GmVeVMaBTZqi0=
+hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
 ---
 ![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -215,7 +215,7 @@ var message = "%device.name% finished at %missions.current.endedDateTime% cleani
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
-    if (!obj.val) return;
+    if (!obj.state || !obj.state.val) return;
 
     // replace variables with state values
     var pos, variable, state, value;
@@ -256,9 +256,9 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 });
 ```
 
-_2019-02-03 Fehler behoben, der die Karte am Anfang einer Mission sendet_
+_2019-05-04 Fehler behoben, der das Senden der Map verhinderte
 
-Sie können die Variable ```message``` zu jeder Benachrichtigung bearbeiten, die Sie mit der Karte erhalten möchten. Sie können ```%name-of-state%``` verwenden, um den Wert eines Zustands im Objektbaum von ioBroker.roomba abzurufen.
+Sie können die Variable ```message``` zu jeder Benachrichtigung bearbeiten, die Sie mit der Karte erhalten möchten. Sie können ```%name-of-state%``` verwenden, um den Wert eines Zustands innerhalb des ioBroker.roomba-Objektbaums abzurufen.
 
 ## Credits
 ### Inoffizielle API
@@ -269,17 +269,17 @@ Die von <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Ico
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- bump to stable release
+### 1.0.0 (2019-05-04)
+- (zefau) No changes, only bump to stable release
 
 ### 0.5.0 (2019-04-21)
 - (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
 - (zefau) Removed button to end mission manually ```missions.current._endMission```
 - (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
-- (zefau) added Web Adapter as dependency
+- (zefau) Added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
-- Refactored retrieval of preferences and added debug mode
+- Zefau) Refactored retrieval of preferences and added debug mode
 
 ### 0.4.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#8](https://github.com/Zefau/ioBroker.roomba/pull/8))

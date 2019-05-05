@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: tcLLym+E6nf8ooit8z1BQLV5IDQVg7GmVeVMaBTZqi0=
+hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -78,7 +78,7 @@ sudo npm install canvas --unsafe-perm=true
 | Roomba® 8xx | 880, 886, 891, 896 | - | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | (скорее всего) |
 | Roomba® 8xx | [895] ((https://forum.iobroker.net/post/245274)) | v3.2.10 / 40/69 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/541#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
 | Roomba® 9xx | 965, 981 | - | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | (скорее всего) |
-| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan) [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
+| Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan), [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
 | Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15] (https://placehold.it/15/f03c15/000000? текст = +) НЕТ карта) |
@@ -167,7 +167,7 @@ sudo npm install canvas --unsafe-perm=true
 | - | - | refreshedTimestamp | Отметка времени последнего обновления |
 
 ## Описание настроек _ (не полностью) _
-Следующая полезная информация будет получена при вызове ```getPreferences()``` (см. Https://github.com/koalazak/dorita980#getpreferences):
+Следующая полезная нагрузка будет получена при вызове ```getPreferences()``` (см. Https://github.com/koalazak/dorita980#getpreferences):
 
 | Объект | Индекс | Тип | Описание | ioBroker State |
 | ------ | ----- | ---- | ----------- | -------------- |
@@ -215,7 +215,7 @@ var message = "%device.name% finished at %missions.current.endedDateTime% cleani
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
-    if (!obj.val) return;
+    if (!obj.state || !obj.state.val) return;
 
     // replace variables with state values
     var pos, variable, state, value;
@@ -256,7 +256,7 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 });
 ```
 
-_2019-02-03 исправлена ошибка, при которой карта отправлялась в начале миссии_
+_2019-05-04 исправлена ошибка, препятствовавшая отправке карты_
 
 Вы можете редактировать переменную ```message``` для любого уведомления, которое вы хотели бы получить с картой. Вы можете использовать ```%name-of-state%```, чтобы получить значение состояния в дереве объектов ioBroker.roomba.
 
@@ -269,17 +269,17 @@ _2019-02-03 исправлена ошибка, при которой карта 
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- bump to stable release
+### 1.0.0 (2019-05-04)
+- (zefau) No changes, only bump to stable release
 
 ### 0.5.0 (2019-04-21)
 - (zefau) Added command buttons to map page / web interface ([#17](https://github.com/Zefau/ioBroker.roomba/issues/17))
 - (zefau) Removed button to end mission manually ```missions.current._endMission```
 - (zefau) Run ```stop``` command in the background when ```dock``` command is received ([#14](https://github.com/Zefau/ioBroker.roomba/issues/14))
-- (zefau) added Web Adapter as dependency
+- (zefau) Added Web Adapter as dependency
 
 ### 0.4.5 (2019-03-20)
-- Refactored retrieval of preferences and added debug mode
+- Zefau) Refactored retrieval of preferences and added debug mode
 
 ### 0.4.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#8](https://github.com/Zefau/ioBroker.roomba/pull/8))

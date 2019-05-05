@@ -354,13 +354,25 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
+### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
 - (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
 - (zefau) bump to stable release
 
+### 0.9.9 (2019-05-05)
+- (zefau) updated dependency of `nuki-bridge-api` to v1.4.0
+
+### 0.9.8 (2019-05-05)
+Thanks to [@systemofapwne](https://github.com/systemofapwne) for testing and identifying quite a few bugs.
+
+- (zefau) added delay between requests / actions applied on the Nuki Bridge (to prevent overload, see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+- (zefau) fixed an issue causing the adapter to crash when polling was enabled, but Web API is not used (see [#10](https://github.com/Zefau/ioBroker.nuki2/issues/10))
+
+### 0.9.7 (2019-05-05)
+- (zefau) added verification if callback URL is already added on Nuki Bridge (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+
 ### 0.9.6 (2019-05-03)
 - (zefau) added Web Adapter as dependency
-- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
+- (zefau) add warning when opening web / log view but Nuki Web API has not been setup
 - (zefau) removed empty folders when Nuki Web API has not been setup 
 - (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 

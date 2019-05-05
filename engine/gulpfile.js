@@ -14,8 +14,10 @@ const consts = require('./build-lib/consts');
 const utils = require('./build-lib/utils');
 const path = require('path');
 const fs = require('fs');
+const request = require('request');
 
 const dir = __dirname + '/front-end/src/i18n/';
+
 gulp.task('i18n=>flat', done => {
     const files = fs.readdirSync(dir).filter(name => name.match(/\.json$/));
     const index = {};
@@ -83,7 +85,6 @@ gulp.task('flat=>i18n', done => {
     });
     done();
 });
-
 
 gulp.task('translate', async function () {
     let yandex;
@@ -163,16 +164,29 @@ gulp.task('2.downloadAdapters', () => {
         });
 });
 
+gulp.task('3.downloadVisCordova', done => {
+    request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {
+        fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'en/viz/app.md'), body.replace('[по русски](README.ru.md)', '').replace('[auf Deutsch](README.de.md)', ''));
+        request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.ru.md', (err, state, body) => {
+            fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'ru/viz/app.md'), body);
+            request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.de.md', (err, state, body) => {
+                fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'de/viz/app.md'), body);
+                done && done();
+            });
+        });
+    });
+});
+
 // translate all documents: adapters and docu
-gulp.task('3.syncDocs', done => documentation.syncDocs(done));
+gulp.task('4.syncDocs', done => documentation.syncDocs(done));
 
 // Build content.md file
-gulp.task('4.documentation', () =>
+gulp.task('5.documentation', () =>
     // build content
     documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md')));
 
 // copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
-gulp.task('5.copyFiles', () => {
+gulp.task('6.copyFiles', () => {
     return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
 });
 
@@ -195,7 +209,7 @@ function scanDir(folder, root, result) {
     return result;
 }
 
-gulp.task('6.createSitemap', done => {
+gulp.task('7.createSitemap', done => {
     const root = 'https://doc.iobroker.net/';
     const links = [
         '#{lang}/download',
@@ -237,13 +251,14 @@ gulp.task('6.createSitemap', done => {
 });
 
 gulp.task('default', gulp.series(
-    '0.clean',            // clean dir
-    '1.blog',             // translate and copy blogs
-    '2.downloadAdapters', // download all adapters an create adapter.json
-    '3.syncDocs',         // translate documents and adapters
-    '4.documentation',    // create content for documentation
-    '5.copyFiles',        // copy all adapters and docs to public
-    '6.createSitemap'     // create sitemap for google
+    '0.clean',              // clean dir
+    '1.blog',               // translate and copy blogs
+    '2.downloadAdapters',   // download all adapters an create adapter.json
+    '3.downloadVisCordova', // download app documentation
+    '4.syncDocs',           // translate documents and adapters
+    '5.documentation',      // create content for documentation
+    '6.copyFiles',          // copy all adapters and docs to public
+    '7.createSitemap'       // create sitemap for google
 ));
 
 

@@ -70,6 +70,7 @@
         * [Metro](viz/metro)
         * [Rgraph](viz/rgraph)
       * [Widgets Help old](viz/widgethelp_old)
+  * [App](viz/app)
 
 * en:Logic & Automation;de:Logik & Automatisierung;ru:Автоматизация;zh-cn:自动化设计
   * [Introduction](logic/README)

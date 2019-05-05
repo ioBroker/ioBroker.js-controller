@@ -1,5 +1,5 @@
 # ioBroker.bosesoundtouch ![Logo](admin/bosesoundtouch.png) 
-
+![Number of Installations](http://iobroker.live/badges/bosesoundtouch-installed.svg) ![Number of Installations](http://iobroker.live/badges/bosesoundtouch-stable.svg) 
 Bose SoundTouch adapter for ioBroker IoT platform
 
 ## Control States
@@ -60,6 +60,9 @@ The following description will help you to create groups with you multiroom syst
 
 ## Changelog
 
+### 0.2.4 (05.05.2019)
+* Core Files/Testing Update and introduce adapter-core
+ 
 ### 0.2.3 (11.11.2018)
 * fixed issue #24 "does not start"
  

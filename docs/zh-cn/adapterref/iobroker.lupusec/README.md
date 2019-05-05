@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: wcsGy6XDRhmGyqrU3R51xx3VuQsHaBK02KQhHA7V9t4=
+hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -81,7 +81,8 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
 ### Lupusec网络摄像头
-您可以在“网络摄像头”下找到所有连接的监控凸轮。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以进行打开。如果您使用ioBroker Web适配器，则可以使用以下链接打开凸轮图像（而不是流）：http：// <ip-of-web-adapter-instanz>：<port-of-web-adapter-instanz> / lupusec.X /图像/ camY.jpg。例如http://192.168.1.2:8083/lupusec.0/image/cam1.jpg![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
+您可以在“网络摄像头”下找到所有连接的监控凸轮。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以进行打开。
+![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
 ##计划
 以下事项计划在未来：
@@ -97,10 +98,14 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 * (Stübi) New feature: change switch from switch to push button 
 * (Stübi) New feature: now you can change status for tamper, bypass and reporting for sensors
 * (Stübi) New feature: Webcam support. You can get the link of Lupusec provided webcams.
-
+* (Stübi) New feature: you can edit the on/off timer for shutters 
+* (Stübi) New feature: Discription of states are now in English or German available
+* (Stübi) Bugfixing: HUE and saturation of HUE devices fixed 
+* (Stübi) Bugfixing: Add role to button 4 of scenario switch.  
 
 ### 1.1.5 (24.04.2019)
-* (Stübi) Add buttons for Scenario Switch V2 and Bugfixing
+* (Stübi) New feature: Add buttons for Scenario Switch V2
+* (Stübi) Bugfixing: Various improvements
 
 ### 1.1.4 (13.04.2019)
 * (Stübi) Add device outside alarm
