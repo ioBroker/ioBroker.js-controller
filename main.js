@@ -345,7 +345,7 @@ function createObjects(onConnect) {
                     connected = true;
                     if (!isStopping) {
                         // Do not start if we still stopping the instances
-                        checkHost(handler.getStatus().type, () => {
+                        checkHost(() => {
                             startMultihost(config);
                             setMeta();
                             started = true;
@@ -656,7 +656,7 @@ function delObjects(objs, callback) {
  *
  * @return none
  */
-function checkHost(type, callback) {
+function checkHost(callback) {
     objects.getObjectView('system', 'host', {}, (_err, doc) => {
         if (!_err && doc && doc.rows &&
             doc.rows.length === 1 &&
