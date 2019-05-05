@@ -1,5 +1,5 @@
 ![Logo](img/icon_small.png)
-# ioBroker.vis.cordova
+# vis App
 
 
 
@@ -228,7 +228,7 @@ With command in javascript adapter you can activate text to speech engine of And
 - enable automatically load of project files from ioBroker server (e.g. for home use)
 
 ## Changelog
-### 1.2.0 (2019-05-04)
+### 1.2.2 (2019-05-05)
 * versions of adapters were updated
 
 ### 1.0.5 (2017-09-26)

@@ -166,11 +166,13 @@ gulp.task('2.downloadAdapters', () => {
 
 gulp.task('3.downloadVisCordova', done => {
     request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {
-        fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'en/viz/app.md'), body.replace('[по русски](README.ru.md)', '').replace('[auf Deutsch](README.de.md)', ''));
+        fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'en/viz/app.md'),
+            body.replace('[по русски](README.ru.md)', '').replace('[auf Deutsch](README.de.md)', '').replace('[auf Deutsch](README.de.md)', '').replace('# ioBroker.vis.cordova', '# vis App')
+        );
         request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.ru.md', (err, state, body) => {
-            fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'ru/viz/app.md'), body);
+            fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'ru/viz/app.md'), body.replace('# ioBroker.vis.cordova', '# vis App'));
             request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.de.md', (err, state, body) => {
-                fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'de/viz/app.md'), body);
+                fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'de/viz/app.md'), body.replace('# ioBroker.vis.cordova', '# vis App'));
                 done && done();
             });
         });
