@@ -27,7 +27,7 @@ function cleanDbs() {
     }
 }
 
-describe('States: Test states', function() {
+describe('States: Test states in File-SocketIo', function() {
     before('States: Start js-controller', function (_done) {
         this.timeout(2000);
         cleanDbs();

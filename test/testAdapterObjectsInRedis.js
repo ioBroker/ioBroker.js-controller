@@ -41,7 +41,7 @@ const objectsConfig = {
     }
 };
 
-describe(textName + 'Test Objects', function () {
+describe(textName + 'Test Objects Redis', function () {
     before(textName + 'Start js-controller', function (_done) {
         this.timeout(2000);
 

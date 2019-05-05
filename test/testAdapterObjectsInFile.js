@@ -15,7 +15,7 @@ const context  = {
     name: textName
 };
 
-describe(textName + ' Test Objects', function() {
+describe(textName + ' Test Objects File-Redis', function() {
     before(textName + ' Start js-controller', function (_done) {
         this.timeout(2000);
 

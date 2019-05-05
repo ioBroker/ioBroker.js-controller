@@ -34,5 +34,5 @@ const objectsConfig = {
 testAdapter({
     statesConfig:  statesConfig,
     objectsConfig: objectsConfig,
-    name: 'Tests FILE'
+    name: 'Tests FILE Redis'
 });
