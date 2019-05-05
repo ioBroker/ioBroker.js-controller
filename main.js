@@ -657,46 +657,42 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(type, callback) {
-    if (type === 'InMemoryDB') {
-        objects.getObjectView('system', 'host', {}, (_err, doc) => {
-            if (!_err && doc && doc.rows &&
-                doc.rows.length === 1 &&
-                doc.rows[0].value.common.name !== hostname)
-            {
-                const oldHostname = doc.rows[0].value.common.name;
-                const oldId  = doc.rows[0].value._id;
+    objects.getObjectView('system', 'host', {}, (_err, doc) => {
+        if (!_err && doc && doc.rows &&
+            doc.rows.length === 1 &&
+            doc.rows[0].value.common.name !== hostname)
+        {
+            const oldHostname = doc.rows[0].value.common.name;
+            const oldId  = doc.rows[0].value._id;
 
-                // find out all instances and rewrite it to actual hostname
-                objects.getObjectView('system', 'instance', {}, (err, doc) => {
-                    if (err && err.status_code === 404) {
-                        if (typeof callback === 'function') callback();
-                    } else if (doc.rows.length === 0) {
-                        logger.info('host.' + hostname + ' no instances found');
-                        // no instances found
-                        if (typeof callback === 'function') callback();
-                    } else {
-                        // reassign all instances
-                        changeHost(doc.rows, oldHostname, hostname, () => {
-                            logger.info('host.' + hostname + ' Delete host ' + oldId);
+            // find out all instances and rewrite it to actual hostname
+            objects.getObjectView('system', 'instance', {}, (err, doc) => {
+                if (err && err.status_code === 404) {
+                    if (typeof callback === 'function') callback();
+                } else if (doc.rows.length === 0) {
+                    logger.info('host.' + hostname + ' no instances found');
+                    // no instances found
+                    if (typeof callback === 'function') callback();
+                } else {
+                    // reassign all instances
+                    changeHost(doc.rows, oldHostname, hostname, () => {
+                        logger.info('host.' + hostname + ' Delete host ' + oldId);
 
-                            // delete host object
-                            objects.delObject(oldId, () => {
+                        // delete host object
+                        objects.delObject(oldId, () => {
 
-                                // delete all hosts states
-                                objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
-                                    delObjects(doc.rows, () => callback && callback());
-                                });
+                            // delete all hosts states
+                            objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
+                                delObjects(doc.rows, () => callback && callback());
                             });
                         });
-                    }
-                });
-            } else if (typeof callback === 'function') {
-                callback();
-            }
-        });
-    } else if (typeof callback === 'function') {
-        callback();
-    }
+                    });
+                }
+            });
+        } else if (typeof callback === 'function') {
+            callback();
+        }
+    });
 }
 
 // collect short diag information
