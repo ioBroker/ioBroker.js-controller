@@ -52,12 +52,13 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: () => {
+        connected: (objectsInst) => {
+            objects = objectsInst;
             // clear all states
             if (settingsObjects.connection.type === 'redis') {
                 objects.destroyDB(() => {
                     isObjectConnected = true;
-                    if (isStatesConnected) {
+                    if (isStatesConnected && states) {
                         console.log('startController: started!');
                         callback && callback(objects, states);
                     }
@@ -65,7 +66,7 @@ function startController(options, callback) {
             } else {
                 console.log('Objects ok');
                 isObjectConnected = true;
-                if (isStatesConnected) {
+                if (isStatesConnected && states) {
                     console.log('startController: started!');
                     callback && callback(objects, states);
                 }
@@ -79,38 +80,47 @@ function startController(options, callback) {
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
             if (!options.objects.simulateFallback) {
+                console.log('Used class for Objects: objectsInMemServer');
                 Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
             }
             else {
+                console.log('Used class for Objects: objectsInMemServerSocketIo');
                 Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerSocketIo'));
             }
         } else if (options.objects.type === 'redis') {
             try {
+                console.log('Used class for Objects: objectsInRedis');
                 Objects = require(path.join(rootDir, 'lib/objects/objectsInRedis'));
             } catch (e) {
+                console.log('Used class for Objects: iobroker.objects-redis');
                 Objects = require('iobroker.objects-redis');
             }
         }
     } else {
+        console.log('Used class for Objects: objectsInMemServer');
         Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
     }
 
-    objects = new Objects(settingsObjects);
+    const _objectsInst = new Objects(settingsObjects);
 
     let States;
     // Just open in memory DB itself
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
             if (!options.states.simulateFallback) {
+                console.log('Used class for States: statesInMemServer');
                 States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
             }
             else {
+                console.log('Used class for States: statesInMemServerSocketIo');
                 States = require(path.join(rootDir, 'lib/states/statesInMemServerSocketIo'));
             }
         } else {
+            console.log('Used class for States: statesInRedis');
             States = require(path.join(rootDir, 'lib/states/statesInRedis'));
         }
     } else {
+        console.log('Used class for States: statesInMemServer');
         States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
     }
 
@@ -134,10 +144,11 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: () => {
+        connected: (statesInst) => {
+            states = statesInst;
             console.log('States ok');
             isStatesConnected = true;
-            if (isObjectConnected) {
+            if (isObjectConnected && objects) {
                 console.log('startController: started!');
                 callback && callback(objects, states);
             }
@@ -145,7 +156,7 @@ function startController(options, callback) {
         change: options.states.onChange || null
     };
 
-    states = new States(settingsStates);
+    const _statesInst = new States(settingsStates);
 }
 
 function stopController(cb) {
