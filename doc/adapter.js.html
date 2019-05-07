@@ -722,7 +722,7 @@ function Adapter(options) {
                 that.connected = false;
             },
             change: function (id, obj) {
-                if (obj === 'null') obj = null;
+                if (obj === 'null' || obj === '') obj = null;
                 if (!id) {
                     logger.error(that.namespace + ' change ID is empty:  ' + JSON.stringify(obj));
                     return;
@@ -2829,7 +2829,7 @@ function Adapter(options) {
             },
             logger: logger,
             change: function (id, state) {
-                if (state === 'null') state = null;
+                if (state === 'null' || state === '') state = null;
 
                 if (!id || typeof id !== 'string') {
                     console.log('Something is wrong! ' + JSON.stringify(id));

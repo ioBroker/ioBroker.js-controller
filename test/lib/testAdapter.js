@@ -78,7 +78,8 @@ function testAdapter(options) {
             },
             ready: () => {
                 if (callback) callback();
-            }
+            },
+            compact: true
         });
     }
 
@@ -333,7 +334,8 @@ function testAdapter(options) {
                 if (objectsConfig.type === 'file') {
                     setTimeout(() => {
                         expect(context.adapter.connected).to.be.false;
-                        done();
+                        context.adapter.stop();
+                        context.adapter.on('exit', done)
                     }, 500);
                 } else {
                     done();

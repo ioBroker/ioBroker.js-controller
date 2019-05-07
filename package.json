@@ -19,8 +19,10 @@
     "bluebird": "^3.5.3",
     "chokidar": "^2.1.1",
     "daemonize2": "^0.4.2",
+    "debug": "^4.1.1",
     "event-stream": "^4.0.1",
-    "iobroker.objects-redis": "^0.3.6",
+    "iobroker.objects-redis": "^0.4.0",
+    "ioredis": "^4.9.0",
     "jsonwebtoken": "^8.4.0",
     "jszip": "^3.1.5",
     "loadavg-windows": "^1.0.2",
@@ -33,6 +35,7 @@
     "prompt": "^1.0.0",
     "pyconf": "^1.1.6",
     "request": "^2.88.0",
+    "respjs": "^4.1.5",
     "safe-replace": "^1.1.0",
     "semver": "^5.6.0",
     "socket.io": "2.1.1",
@@ -40,10 +43,7 @@
     "tar": "^4.4.8",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.7.0",
-    "yargs": "^13.1.0",
-    "debug": "^4.1.1",
-    "redis": "^2.8.0",
-    "respjs": "^4.1.5"
+    "yargs": "^13.1.0"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
