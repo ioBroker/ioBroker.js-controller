@@ -335,9 +335,9 @@ function testAdapter(options) {
                     setTimeout(() => {
                         expect(context.adapter.connected).to.be.false;
                         context.adapter.stop();
-                        context.adapter.on('exit', () {
+                        context.adapter.on('exit', () => {
                             setTimeout(done, 2000);
-                        })
+                        });
                     }, 500);
                 } else {
                     setTimeout(done, 2000);
