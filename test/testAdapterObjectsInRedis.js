@@ -80,7 +80,7 @@ describe(textName + 'Test Objects Redis', function () {
         }
         this.timeout(5000);
         setup.stopController(function () {
-            done();
+            setTimeout(done, 2000);
         });
     });
 });

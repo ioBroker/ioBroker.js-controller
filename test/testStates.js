@@ -88,7 +88,7 @@ describe('States: Test states in File-Redis', function() {
     after('States: Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(function () {
-            done();
+            setTimeout(done, 2000);
         });
     });
 });
