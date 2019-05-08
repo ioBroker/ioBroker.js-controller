@@ -630,6 +630,18 @@ function register(it, expect, context) {
         });
     });
 
+    // get foreign system state
+    it(testName + 'Get System State', function (done) {
+        this.timeout(3000);
+
+        context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
+            expect(err).to.be.null;
+            expect(state).to.be.ok;
+            expect(state.val).to.be.ok;
+            done();
+        });
+    });
+
     // subscribeForeignStates
     it(testName + 'Test subscribe foreign states', function (done) {
         this.timeout(1000);
@@ -672,13 +684,13 @@ function register(it, expect, context) {
 
     // unsubscribeForeignStates
     it(testName + 'Test unsubscribe foreign states', function (done) {
-        this.timeout(1000);
+        this.timeout(4000);
         const sGid = context.adapterShortName + '2.0.' + gid + '6';
 
         context.onAdapterStateChanged = function (id, state) {
             if (id === sGid) {
                 expect(state).to.be.ok;
-                expect(state.val).to.equal(9);
+                expect(state.val).to.be.not.equal(10);
             }
         };
 
@@ -688,11 +700,11 @@ function register(it, expect, context) {
             context.adapter.unsubscribeForeignStates(context.adapterShortName + '2.0.*', function () {
                 context.states.setState(sGid, 10, function (err) {
                     expect(err).to.be.not.ok;
+                    setTimeout(function () {
+                        context.onAdapterStateChanged = null;
+                        done();
+                    }, 2000);
                 });
-                setTimeout(function () {
-                    context.onAdapterStateChanged = null;
-                    done();
-                }, 300);
             });
         });
     });

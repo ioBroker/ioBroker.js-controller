@@ -669,6 +669,21 @@ function register(it, expect, context) {
         });
     });
 
+    /*
+    // unsubscribeForeignObjects
+    it(testName + 'Try to access system configuration', function (done) {
+        this.timeout(3000);
+
+        context.adapter.getForeignObject('system.config', (err, obj) => {
+            expect(err).to.be.null;
+            expect(obj).to.be.ok;
+            setTimeout(function () {
+                done();
+            }, 2000);
+        });
+    });
+    */
+
     // getObject with acls
     it(testName + 'Check getObjects with ACLs', function (done) {
         this.timeout(1000);
