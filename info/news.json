@@ -1,6 +1,38 @@
 [
     {
         "title": {
+            "en": "** ATTENTION ** Please do not install or update the Z-Wave adapter !",
+            "de": "** ACHTUNG ** Bitte installieren oder aktualisieren Sie den Z-Wave Adapter nicht!",
+            "ru": "** ВНИМАНИЕ ** Пожалуйста, не устанавливайте и не обновляйте адаптер Z-Wave!",
+            "pt": "** ATENÇÃO ** Por favor, não instale ou atualize o adaptador Z-Wave!",
+            "nl": "** LET OP ** Installeer of update de Z-Wave-adapter alstublieft niet!",
+            "fr": "** ATTENTION ** Veuillez ne pas installer ou mettre à jour l'adaptateur Z-Wave!",
+            "it": "** ATTENZIONE ** Si prega di non installare o aggiornare l'adattatore Z-Wave!",
+            "es": "** ATENCIÓN ** ¡No instale ni actualice el adaptador Z-Wave!",
+            "pl": "** UWAGA ** Nie instaluj ani nie aktualizuj adaptera Z-Wave!",
+            "zh-cn": "**注意**请不要安装或更新Z-Wave适配器！"
+        },
+        "content": {
+            "en": "Compilation on Linux works but fails on Windows. When running the adapter, it may crash under certain circumstances. Here we are looking forward receiving feedback for troubleshooting, but may be that the testers then have to do without Z-Wave 1-2 days. Please do only install if you are willing to contribute in troubleshooting !",
+            "de": "Die Kompilierung unter Linux funktioniert, schlägt jedoch unter Windows fehl. Wenn der Adapter ausgeführt wird, kann er unter bestimmten Umständen abstürzen. Hier freuen wir uns auf Feedback zur Fehlerbehebung. Möglicherweise müssen die Tester dann auf Z-Wave 1-2 Tage verzichten. Bitte nur installieren, wenn Sie zur Fehlerbehebung beitragen möchten!",
+            "ru": "Компиляция в Linux работает, но не работает в Windows. При запуске адаптера он может произойти сбой при определенных обстоятельствах. Здесь мы с нетерпением ждем отзывов об устранении неисправностей, но, возможно, тестерам придется обходиться без Z-Wave 1-2 дня. Пожалуйста, устанавливайте только если вы готовы внести свой вклад в устранение неполадок!",
+            "pt": "A compilação no Linux funciona, mas falha no Windows. Ao executar o adaptador, ele pode falhar em determinadas circunstâncias. Aqui estamos ansiosos por receber feedback para solução de problemas, mas pode ser que os testadores tenham que passar sem o Z-Wave 1-2 dias. Por favor, instale apenas se você estiver disposto a contribuir na solução de problemas!",
+            "nl": "Compilatie op Linux werkt, maar mislukt op Windows. Wanneer u de adapter gebruikt, kan deze onder bepaalde omstandigheden vastlopen. Hier kijken we ernaar uit om feedback te ontvangen voor het oplossen van problemen, maar het kan zijn dat de testers het dan 1-2 dagen moeten doen zonder Z-Wave. Installeer alleen als je bereid bent om bij te dragen in het oplossen van problemen!",
+            "fr": "La compilation sous Linux fonctionne mais échoue sous Windows. Lors de l'exécution de l'adaptateur, il peut tomber en panne dans certaines circonstances. Nous attendons ici avec intérêt les commentaires pour le dépannage, mais il se peut que les testeurs doivent alors se passer de Z-Wave 1-2 jours. Veuillez ne l'installer que si vous êtes prêt à contribuer au dépannage!",
+            "it": "La compilazione su Linux funziona ma non funziona su Windows. Quando si esegue l'adattatore, potrebbe bloccarsi in determinate circostanze. Qui non vediamo l'ora di ricevere feedback per la risoluzione dei problemi, ma potrebbe essere che i tester debbano fare a meno di Z-Wave 1-2 giorni. Si prega di installare solo se si è disposti a contribuire alla risoluzione dei problemi!",
+            "es": "La compilación en Linux funciona pero falla en Windows. Cuando se ejecuta el adaptador, puede bloquearse bajo ciertas circunstancias. Aquí estamos esperando recibir comentarios para la solución de problemas, pero es posible que los evaluadores tengan que prescindir de Z-Wave 1-2 días. ¡Solo instálalo si estás dispuesto a contribuir en la resolución de problemas!",
+            "pl": "Kompilacja w systemie Linux działa, ale nie działa w systemie Windows. Podczas uruchamiania adaptera może ulec awarii w pewnych okolicznościach. Tutaj czekamy na informacje zwrotne dotyczące rozwiązywania problemów, ale może być tak, że testerzy będą musieli się obejść bez Z-Wave 1-2 dni. Instaluj tylko, jeśli chcesz przyczynić się do rozwiązania problemu!",
+            "zh-cn": "Linux上的编译工作但在Windows上失败。运行适配器时，它可能会在某些情况下崩溃。在这里，我们期待收到有关故障排除的反馈，但可能是测试人员必须在没有Z-Wave的情况下进行1-2天。如果您愿意参与故障排除，请仅安装！"
+        },
+        "id": "Z-wave",
+        "created": "2019-05-03T01:00:00.000Z",
+        "class": "danger",
+        "fa-icon": "bolt",
+        "conditions": {
+        }
+    },
+    {
+        "title": {
             "en": "** ATTENTION ** defective versions of the Tankerkönig adapter cause massive problems on the server!",
             "de": "** ACHTUNG ** Defekte Versionen des Tankerkönig-Adapters verursachen massive Probleme auf dem Server!",
             "ru": "** ВНИМАНИЕ ** Дефектные версии адаптера Tankerkönig вызывают серьезные проблемы на сервере!",
