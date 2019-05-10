@@ -670,7 +670,7 @@ function register(it, expect, context) {
     });
 
     /*
-    // unsubscribeForeignObjects
+    // Try to access system configuration
     it(testName + 'Try to access system configuration', function (done) {
         this.timeout(3000);
 
