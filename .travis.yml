@@ -30,10 +30,10 @@ after_success:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm audit; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm ls; fi'
 env:
-  - CXX=g++-4.9
+  - CXX=g++-6
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-4.9
+      - g++-6
