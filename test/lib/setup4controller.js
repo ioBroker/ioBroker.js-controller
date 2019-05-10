@@ -72,7 +72,8 @@ function startController(options, callback) {
                 }
             }
         },
-        change: options.objects.onChange || null
+        change: options.objects.onChange || null,
+        enhancedLogging: true
     };
 
     let Objects;
@@ -153,7 +154,8 @@ function startController(options, callback) {
                 callback && callback(objects, states);
             }
         },
-        change: options.states.onChange || null
+        change: options.states.onChange || null,
+        enhancedLogging: true
     };
 
     const _statesInst = new States(settingsStates);
