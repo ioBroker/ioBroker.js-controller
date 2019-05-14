@@ -108,7 +108,7 @@ Usage:
 Note: you can call ```iobroker start all``` to start all disabled instances, e.g. after restore.
 
 
-##iobroker stop adapterName.instance
+## iobroker stop adapterName.instance
 You can stop the specified adapter from console. It will disabled and stopped. It will not be restarted automatically later.
 
 You can control in "admin" that adapter instance is now disabled.
@@ -182,7 +182,7 @@ Usage:
 ```iobroker del dwd``` - deletes all instances and code of adapter dwd from ioBroker.
 
 ## iobroker del adapterName.instance
-Removes only specified instance of this adapter from ioBroker and **not** deletes it form the disk.
+Removes only specified instance of this adapter from ioBroker and **not** deletes it from the disk.
 
 You cannot restore settings of the adapter instance after deletion.
 
@@ -478,7 +478,7 @@ With the "list instances" you can use additional filters:
 - ip        - list all instacnes, that can be binded to some IP
 - ssl       - list all instances, where SSL can be enabled
 
-Using: ```iobroker list instacnes --enabled``` to list all enabled instances
+Using: ```iobroker list instances --enabled``` to list all enabled instances
 
 or ```iobroker l i --port``` to list used ports.
 
