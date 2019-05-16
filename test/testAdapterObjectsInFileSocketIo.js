@@ -42,16 +42,14 @@ describe(textName + ' Test Objects File-SocketIo', function() {
             expect(objects).to.be.ok;
             expect(states).to.be.ok;
             _done();
-        }
-        );
+        });
     });
 
     tests.register(it, expect, context);
 
     after(textName + ' Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(function () {
-            setTimeout(done, 2000);
-        });
+        setup.stopController(() =>
+            setTimeout(done, 2000));
     });
 });

@@ -34,7 +34,7 @@ function register(it, expect, context) {
                 done();
             });
         });
-    });
+    }).timeout(2000);
 
     it(textName + 'should create object async', done => {
         const objects = context.objects;

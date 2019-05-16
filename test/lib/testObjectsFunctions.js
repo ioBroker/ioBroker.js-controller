@@ -669,7 +669,7 @@ function register(it, expect, context) {
         });
     });
 
-    /*
+
     // Try to access system configuration
     it(testName + 'Try to access system configuration', function (done) {
         this.timeout(3000);
@@ -682,7 +682,7 @@ function register(it, expect, context) {
             }, 2000);
         });
     });
-    */
+
 
     // getObject with acls
     it(testName + 'Check getObjects with ACLs', function (done) {

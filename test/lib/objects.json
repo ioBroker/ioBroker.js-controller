@@ -14,7 +14,7 @@
     "acl": {
       "owner": "system.user.admin",
       "ownerGroup": "system.group.administrator",
-      "permissions": 1536
+      "object": 1536
     }
   },
   "system.repositories": {
@@ -46,7 +46,7 @@
     "acl": {
       "owner": "system.user.admin",
       "ownerGroup": "system.group.administrator",
-      "permissions": 1604
+      "object": 1604
     }
   },
   "system.config": {
@@ -67,7 +67,7 @@
     "acl": {
       "owner": "system.user.admin",
       "ownerGroup": "system.group.administrator",
-      "permissions": 1604
+      "object": 1604
     }
   },
   "enum.rooms": {
@@ -86,7 +86,7 @@
     "acl": {
       "owner": "system.user.admin",
       "ownerGroup": "system.group.administrator",
-      "permissions": 1911
+      "object": 1911
     }
   },
   "system.group.user": {
