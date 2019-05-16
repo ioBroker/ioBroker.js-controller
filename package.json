@@ -1,12 +1,12 @@
 {
   "name": "iobroker.js-controller",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "engines": {
     "node": ">=4.8.7"
   },
   "optionalDependencies": {
     "redis": "^2.8.0",
-    "greenlock": "^2.2.7",
+    "greenlock": "2.7.1",
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
     "le-acme-core": "^2.1.4",

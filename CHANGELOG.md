@@ -1,8 +1,8 @@
-## 1.5.8 (2019-04-12) Evolution release (Ann)
+## 1.5.9 (2019-05-16) Evolution release (Ann)
 * (bluefox) Read cache of repository before download the whole file
 * (AlCalzone) if npm returns code 1 it is OK
 * (AlCalzone) fix instances enumeration
- 
+* revert greenlock version to 2.7.1
 
 ## 1.5.7 (2019-02-14) Evolution release (Ann)
 Required versions of adapters (only if used) for normal functionality: javascript >= 3.6.5, dasWetter >= 2.7.1, upnp >= 1.0.0

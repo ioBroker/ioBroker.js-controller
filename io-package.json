@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.8",
+        "version": "1.5.9",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "1.5.8": {
+            "1.5.9": {
                 "en": "Handle optional npm errors correctly on installs\nMake sure to only iterate over correct adapters when names start the same\nInstall correct adapter version when moving or reinstalling\nOnly download repository if changed",
                 "de": "Behandeln Sie optionale npm-Fehler bei Installationen korrekt\nnVergewissern Sie sich, dass die korrekten Adapter nur dann durchlaufen werden, wenn die Namen die gleichen Adapter starten",
                 "ru": "Правильно обрабатывать необязательные ошибки npm при установке\nnУбедитесь в том, что перебираете правильные адаптеры только при одинаковых именах имен",
