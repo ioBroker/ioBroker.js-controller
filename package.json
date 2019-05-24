@@ -21,7 +21,7 @@
     "daemonize2": "^0.4.2",
     "debug": "^4.1.1",
     "event-stream": "^4.0.1",
-    "iobroker.objects-redis": "^0.4.4",
+    "iobroker.objects-redis": "^1.0.1",
     "ioredis": "^4.9.3",
     "jsonwebtoken": "^8.4.0",
     "jszip": "^3.1.5",
