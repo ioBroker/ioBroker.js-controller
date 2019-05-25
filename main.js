@@ -2585,10 +2585,15 @@ function stopInstance(id, callback) {
     if (!instance || !instance.common || !instance.common.mode) {
         if (procs[id].process) {
             procs[id].stopping = true;
-            try {
-                procs[id].process.kill();  // call stop directly in adapter.js or call kill of process
-            } catch (e) {
-                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+            if (!procs[id].startedInCompactMode) {
+                try {
+                    procs[id].process.kill();  // call stop directly in adapter.js or call kill of process
+                } catch (e) {
+                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                }
+            }
+            else {
+                states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
             }
             delete procs[id].process;
         }
@@ -2639,12 +2644,16 @@ function stopInstance(id, callback) {
                         logger.info('host.' + hostname + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id].process) {
                             procs[id].stopping = true;
-                            try {
-                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
-                            } catch (e) {
-                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            if (!procs[id].startedInCompactMode) {
+                                try {
+                                    procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                                } catch (e) {
+                                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                                }
                             }
-
+                            else {
+                                states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
+                            }
                             delete procs[id].process;
                         }
 
@@ -2661,10 +2670,15 @@ function stopInstance(id, callback) {
                         if (procs[id].process) {
                             logger.info('host.' + hostname + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
-                            try {
-                                procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
-                            } catch (e) {
-                                logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                            if (!procs[id].startedInCompactMode) {
+                                try {
+                                    procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                                } catch (e) {
+                                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                                }
+                            }
+                            else {
+                                states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                             }
                             delete procs[id].process;
                         }
@@ -2676,10 +2690,15 @@ function stopInstance(id, callback) {
                 } else {
                     logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     procs[id].stopping = true;
-                    try {
-                        procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
-                    } catch (e) {
-                        logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                    if (!procs[id].startedInCompactMode) {
+                        try {
+                            procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                        } catch (e) {
+                            logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                        }
+                    }
+                    else {
+                        states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                     }
                     delete procs[id].process;
                     if (typeof callback === 'function') {
@@ -2728,10 +2747,15 @@ function stopInstance(id, callback) {
             } else {
                 logger.info('host.' + hostname + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
-                try {
-                    procs[id].process.kill(); // call stop directly in adapter.js
-                } catch (e) {
-                    logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                if (!procs[id].startedInCompactMode) {
+                    try {
+                        procs[id].process.kill(); // call stop directly in adapter.js
+                    } catch (e) {
+                        logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                    }
+                }
+                else {
+                    states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                 }
                 delete procs[id].process;
                 if (typeof callback === 'function') {
