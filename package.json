@@ -41,8 +41,9 @@
     "socket.io": "2.1.1",
     "socket.io-client": "2.1.1",
     "tar": "^4.4.8",
+    "vm2": "^3.8.1",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^3.7.0",
+    "winston-daily-rotate^-file": "^3.7.0",
     "yargs": "^13.1.0"
   },
   "devDependencies": {
