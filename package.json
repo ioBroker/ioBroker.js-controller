@@ -22,7 +22,7 @@
     "debug": "^4.1.1",
     "event-stream": "^4.0.1",
     "iobroker.objects-redis": "^1.0.1",
-    "ioredis": "^4.9.3",
+    "ioredis": "^4.9.5",
     "jsonwebtoken": "^8.4.0",
     "jszip": "^3.1.5",
     "loadavg-windows": "^1.0.2",
