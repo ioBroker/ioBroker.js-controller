@@ -1,3 +1,6 @@
+## 1.5.10 (2019-05-26) Evolution release (Ann)
+* (Apollon77) Allow to install specific versions/fix installing specific versions
+
 ## 1.5.9 (2019-05-16) Evolution release (Ann)
 * (bluefox) Read cache of repository before download the whole file
 * (AlCalzone) if npm returns code 1 it is OK
