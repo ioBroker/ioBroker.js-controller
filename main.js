@@ -2591,8 +2591,7 @@ function stopInstance(id, callback) {
                 } catch (e) {
                     logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                 }
-            }
-            else {
+            } else {
                 states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
             }
             delete procs[id].process;
@@ -2650,8 +2649,7 @@ function stopInstance(id, callback) {
                                 } catch (e) {
                                     logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                                 }
-                            }
-                            else {
+                            } else {
                                 states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                             }
                             delete procs[id].process;
@@ -2676,8 +2674,7 @@ function stopInstance(id, callback) {
                                 } catch (e) {
                                     logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                                 }
-                            }
-                            else {
+                            } else {
                                 states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                             }
                             delete procs[id].process;
@@ -2696,8 +2693,7 @@ function stopInstance(id, callback) {
                         } catch (e) {
                             logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                         }
-                    }
-                    else {
+                    } else {
                         states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                     }
                     delete procs[id].process;
@@ -2753,8 +2749,7 @@ function stopInstance(id, callback) {
                     } catch (e) {
                         logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                     }
-                }
-                else {
+                } else {
                     states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                 }
                 delete procs[id].process;
