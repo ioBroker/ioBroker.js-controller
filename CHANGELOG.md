@@ -890,12 +890,10 @@ for objects (line 11)  and for states (line 21).
 * (hobbyquaker) setup.js fixes
 * (hobbyquaker) setup.js create multiple system objects
 
-
 ## 0.0.11
 * (hobbyquaker) admin ui: instances
 
 ## 0.0.10
-
 * (hobbyquaker) refactoring controller.js and setup.js
 * (hobbyquaker) iobroker.js command line options
 * (hobbyquaker) iobroker with shebang (needs chmod +x)
@@ -903,26 +901,20 @@ for objects (line 11)  and for states (line 21).
 * (hobbyquaker) fixes and other stuff...
 
 ## 0.0.9
-
 * (hobbyquaker) Javascript Script Engine
 * (bluefox) Gruntfile.js
 * (bluefox) SCHEMA.md
 
-
 ## 0.0.8
-
 * (hobbyquaker) ctrl: instance mode schedule
 * (hobbyquaker) iobroker.js add: set instanceObjects (new attribute in io-package.json)
 * (hobbyquaker) added meta attribute to sources.json
 * (hobbyquaker) added adapter yr to sources.json
 
 ## 0.0.7
-
 * (hobbyquaker) fix Admin UI - handle IDs with spaces
 
-
 ## 0.0.6
-
 * (hobbyquaker) download adapters via ```iobroker.js add <adapter-name>``` (has to be defined in conf/sources.json)
 * (hobbyquaker) automatically install node dependencies on ```iobroker.js add```
 * (hobbyquaker) restructuring
@@ -931,30 +923,23 @@ for objects (line 11)  and for states (line 21).
 * (hobbyquaker) renamed adapter legacy to web (this adapter should provide a ccu.io-like webserver for easy porting of dashui, scriptgui, yahui, ...)
 * (hobbyquaker) renamed adapter dummy to example
 
-
-
 ## 0.0.5
-
 * (hobbyquaker) hm-rpc Adapter checks Datapoint-Type and warns if readonly
 * (hobbyquaker) Admin-UI - gridStates update on stateChange
 
 ## 0.0.4
-
 * (hobbyquaker) hm-rega Adapter
 * (hobbyquaker) ctrl restarts crashed adapters automatically
 
 ## 0.0.3
-
 * (hobbyquaker) Adapter web
 * (hobbyquaker) Admin UI
 
 ## 0.0.2
-
 * (hobbyquaker) Installation/instancing of adapters via ```iobroker.js add```
 * (hobbyquaker) Adapter command line param instead of IPC
 * (hobbyquaker) Config-file iobroker.json
 
 ## 0.0.1
-
 * (hobbyquaker) first release
 
