@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.9",
+        "version": "1.5.11",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "1.5.11": {
+                "en": "Allow to install specific versions/fix installing specific versions\nRead cache of repository before download the whole file\nif npm returns code 1 it is OK\nfix instances enumeration\nrevert greenlock version to 2.7.1",
+                "de": "Erlaube die Installation bestimmter Versionen / behebe die Installation bestimmter Versionen\nLesen Sie den Cache des Repositorys, bevor Sie die gesamte Datei herunterladen\nWenn npm den Code 1 zurückgibt, ist es OK\nInstanzen-Aufzählung korrigieren\nGreenlock-Version auf 2.7.1 zurücksetzen",
+                "ru": "Разрешить установку определенных версий / исправить установку определенных версий\nПрочитайте кеш репозитория перед загрузкой всего файла\nесли npm возвращает код 1, все в порядке\nисправить перечисление экземпляров\nвернуть версию greenlock на 2.7.1",
+                "pt": "Permitir a instalação de versões específicas / corrigir a instalação de versões específicas\nLeia o cache do repositório antes de baixar o arquivo inteiro\nse npm retornar o código 1, tudo bem\ncorrigir enumeração de instâncias\nreverter a versão greenlock para 2.7.1",
+                "nl": "Sta toe om specifieke versies te installeren / repareer de installatie van specifieke versies\nLees de cache van de repository voordat je het hele bestand downloadt\nals npm code 1 retourneert, is het OK\nfix instanties opsomming\nzet greenlock-versie terug naar 2.7.1",
+                "fr": "Autoriser l'installation de versions spécifiques / corriger l'installation de versions spécifiques\nLire le cache du référentiel avant de télécharger le fichier entier\nsi npm retourne le code 1 c'est ok\ncorrection des énumérations d'instances\nrevenir à la version 2.7 de greenlock",
+                "it": "Consentire l'installazione di versioni specifiche / correggere l'installazione di versioni specifiche\nLeggi la cache del repository prima di scaricare l'intero file\nse npm restituisce il codice 1, è OK\ncorregge l'enumerazione delle istanze\nripristinare la versione di Greenlock alla 2.7.1",
+                "es": "Permitir instalar versiones específicas / corregir instalar versiones específicas\nLea la memoria caché del repositorio antes de descargar el archivo completo\nSi npm devuelve el código 1, está bien.\narreglar instancias enumeración\nrevertir la versión de Greenlock a 2.7.1",
+                "pl": "Pozwól zainstalować określone wersje / fix instalując określone wersje\nPrzeczytaj cache repozytorium przed pobraniem całego pliku\njeśli npm zwróci kod 1, jest OK\npoprawiono wyliczanie instancji\nprzywróć wersję Greenlock do wersji 2.7.1",
+                "zh-cn": "允许安装特定版本/修复安装特定版本\n在下载整个文件之前读取存储库的缓存\n如果npm返回代码1就可以了\n修复实例枚举\n将greenlock版本恢复为2.7.1"
+            },
             "1.5.9": {
                 "en": "Handle optional npm errors correctly on installs\nMake sure to only iterate over correct adapters when names start the same\nInstall correct adapter version when moving or reinstalling\nOnly download repository if changed",
                 "de": "Behandeln Sie optionale npm-Fehler bei Installationen korrekt\nnVergewissern Sie sich, dass die korrekten Adapter nur dann durchlaufen werden, wenn die Namen die gleichen Adapter starten",
@@ -65,28 +77,6 @@
                 "pl": "zobacz CHANGELOG.md"
             },
             "1.4.0": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md"
-            },
-            "1.3.0": {
-                "en": "socket.io Version was downgraded because of bug\nBetter npm5 support",
-                "de": "socket.io Die Version wurde aufgrund eines Fehlers heruntergestuft\nBessere npm5-Unterstützung",
-                "ru": "Версия socket.io была понижена из-за ошибки\nЛучшая поддержка npm5",
-                "pt": "A versão socket.io foi rebaixada por causa do erro\nMelhor suporte npm5",
-                "nl": "socket.io De versie is gedowngraded vanwege een bug\nBetere npm5-ondersteuning",
-                "fr": "La version de socket.io a été déclassée à cause d'un bug\nMeilleur support npm5",
-                "it": "socket.io La versione è stata declassata a causa di un bug\nMigliore supporto per npm5",
-                "es": "La versión de socket.io se ha degradado debido a errores\nMejor soporte npm5",
-                "pl": "Wersja socket.io została obniżona z powodu błędu\nLepsza obsługa npm5"
-            },
-            "1.2.7": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",

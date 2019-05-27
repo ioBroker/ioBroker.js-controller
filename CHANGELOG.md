@@ -1,4 +1,4 @@
-## 1.5.10 (2019-05-26) Evolution release (Ann)
+## 1.5.11 (2019-05-26) Evolution release (Ann)
 * (Apollon77) Allow to install specific versions/fix installing specific versions
 
 ## 1.5.9 (2019-05-16) Evolution release (Ann)
