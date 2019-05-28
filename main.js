@@ -197,7 +197,7 @@ function logRedirect(isActive, id, reason) {
 }
 
 function createStates(onConnect) {
-    return new States({
+    const _inst = new States({
         namespace: 'host.' + hostname,
         connection: config.states,
         logger: logger,
@@ -314,24 +314,27 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: () => {
+        connected: (handler) => {
+            states = handler;
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
             deleteAllZipPackages();
             onConnect && onConnect();
         }
     });
+    return true;
 }
 
 // create "objects" object
 function createObjects(onConnect) {
-    return new Objects({
+    const _inst = new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
         controller: true,
         logger:     logger,
         hostname:   hostname,
         connected:  handler => {
+            objects = handler;
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -440,6 +443,7 @@ function createObjects(onConnect) {
             }
         }
     });
+    return true;
 }
 
 function startAliveInterval() {
@@ -2917,7 +2921,7 @@ function init() {
     }
 
     // create states object
-    states = createStates(() => {
+    createStates(() => {
         // Subscribe for all logging objects
         states.subscribe('*.logging');
 
@@ -2961,7 +2965,7 @@ function init() {
     // Disabled in 1.5.x
     // states.subscribe('*.info.connection');
 
-    objects = createObjects(() => {
+    createObjects(() => {
         objects.subscribe('system.adapter.*');
     });
 
@@ -2982,7 +2986,7 @@ function init() {
             objects.destroy();
             objects = null;
             // Give time to close the objects
-            setTimeout(() => objects = createObjects(), 3000);
+            setTimeout(() => createObjects(), 3000);
             return;
         }
 
