@@ -199,7 +199,7 @@ function logRedirect(isActive, id, reason) {
 }
 
 function createStates(onConnect) {
-    return new States({
+    const _inst = new States({
         namespace: 'host.' + hostname,
         connection: config.states,
         logger: logger,
@@ -316,24 +316,27 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: () => {
+        connected: (handler) => {
+            states = handler;
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
             deleteAllZipPackages();
             onConnect && onConnect();
         }
     });
+    return true;
 }
 
 // create "objects" object
 function createObjects(onConnect) {
-    return new Objects({
+    const _inst = new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
         controller: true,
         logger:     logger,
         hostname:   hostname,
         connected:  handler => {
+            objects = handler;
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -442,6 +445,7 @@ function createObjects(onConnect) {
             }
         }
     });
+    return true;
 }
 
 function startAliveInterval() {
@@ -2952,53 +2956,53 @@ function init() {
         }
     }
 
-    // create states object
-    states = createStates(() => {
-        // Subscribe for all logging objects
-        states.subscribe('*.logging');
+    createObjects(() => {
+        objects.subscribe('system.adapter.*');
 
-        // Subscribe for all logging objects
-        states.subscribe('system.adapter.*.alive');
+        // create states object
+        createStates(() => {
+            // Subscribe for connection state of all instances
+            // Disabled in 1.5.x
+            // states.subscribe('*.info.connection');
 
-        // Read current state of all log subscribers
-        states.getKeys('*.logging', (err, keys) => {
-            if (keys && keys.length) {
-                const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
-                objects.getObjects(oKeys, (err, objs) => {
-                    const toDelete = keys.filter((id, i) => !objs[i]);
-                    keys = keys.filter((id, i) => objs[i]);
+            // Subscribe for all logging objects
+            states.subscribe('*.logging');
 
-                    states.getStates(keys, (err, obj) => {
-                        if (obj) {
-                            for (let i = 0; i < keys.length; i++) {
-                                // We can JSON.parse, but index is 16x faster
-                                if (obj[i]) {
-                                    if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
-                                    } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+            // Subscribe for all logging objects
+            states.subscribe('system.adapter.*.alive');
+
+            // Read current state of all log subscribers
+            states.getKeys('*.logging', (err, keys) => {
+                if (keys && keys.length) {
+                    const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
+                    objects.getObjects(oKeys, (err, objs) => {
+                        const toDelete = keys.filter((id, i) => !objs[i]);
+                        keys = keys.filter((id, i) => objs[i]);
+
+                        states.getStates(keys, (err, obj) => {
+                            if (obj) {
+                                for (let i = 0; i < keys.length; i++) {
+                                    // We can JSON.parse, but index is 16x faster
+                                    if (obj[i]) {
+                                        if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                        } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                        }
                                     }
                                 }
                             }
+                        });
+                        if (toDelete.length) {
+                            toDelete.forEach(id => {
+                                logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
+                                states.delState(id);
+                            });
                         }
                     });
-                    if (toDelete.length) {
-                        toDelete.forEach(id => {
-                            logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
-                            states.delState(id);
-                        });
-                    }
-                });
-            }
+                }
+            });
         });
-    });
-
-    // Subscribe for connection state of all instances
-    // Disabled in 1.5.x
-    // states.subscribe('*.info.connection');
-
-    objects = createObjects(() => {
-        objects.subscribe('system.adapter.*');
     });
 
     process.on('SIGINT', () => {
@@ -3018,7 +3022,7 @@ function init() {
             objects.destroy();
             objects = null;
             // Give time to close the objects
-            setTimeout(() => objects = createObjects(), 3000);
+            setTimeout(() => createObjects(), 3000);
             return;
         }
 
