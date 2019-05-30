@@ -18,7 +18,7 @@ You need an api key to access the data. The api key you can get for free after r
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

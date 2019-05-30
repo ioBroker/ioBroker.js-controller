@@ -65,6 +65,9 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
+### 1.0.2 (2019-05-18)
+* (Appollon77) Update testing for Node.js v12 in Appveyor und Travis
+
 ### 1.0.1 (2019-04-06)
 * (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
 
@@ -98,9 +101,6 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 
 ### 0.1.0 (2018-11-01)
 * (dkleber89) First Beta Release
-
-### 0.0.2 (2018-10-20)
-* (dkleber89) Milestone Connection and Sync, no Release yet
 
 ## License
 The MIT License (MIT)

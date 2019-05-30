@@ -31,59 +31,41 @@ MoMa needs at least nodejs version 8 / ES6.
 
 ## Changelog
 
-### 0.1.2 (2019-05-03)
-* (AWhiteKnight) Beautifying of moma admin-Tab. Some bugfixes.
+### 1.1.1 (2019-05-23)
+* (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
 
-### 0.1.1 (2019-04-26)
-* (AWhiteKnight) First implementation of moma admin-tab. Be careful, the table line buttons are always active!!
+### 1.1.0 (2019-05-20)
+* (AWhiteKnight) Performance optimization. Fix of issue #24. Check internet latency.
+
+### 1.0.0 (2019-05-11)
+* (AWhiteKnight) First release for adapter list 'stable'.
 
 ### 0.1.0 (2019-04-18)
-* (AWhiteKnight) First release for adapter list.
-
-### 0.0.10 (2019-04-18)
-* (AWhiteKnight) Reduction of footprint. Restructuring.
-
-### 0.0.9 (2019-04-08)
-* (AWhiteKnight) Systeminfolib upgraded to 4.1.1 and added some calls/variables. Testing (re)enabled. Merging to new adapter creation template part 2.
-
-### 0.0.8 (2019-03-10)
-* (AWhiteKnight) Started merging to new development method. Maintaining meta states.
-
-### 0.0.7 (2018-10-29)
-* (AWhiteKnight) Travis testing activated; Minor enhancements in meta data
-
-### 0.0.6 (2018-10-27)
-* (AWhiteKnight) UI text and translations; changed meta-path from moma.x to moma.meta
-
-### 0.0.5 (2018-10-26)
-* (AWhiteKnight) Checking for updates in interval 4
-
-### 0.0.4 (2018-10-14)
-* (AWhiteKnight) New intervals: 0 with high frequency, 4 daily. Extended configuration
-
-### 0.0.3 (2018-10-02)
-* (AWhiteKnight) Basic functions of 'systeminformation' implemented, some documentation
-
-### 0.0.2 (2018-09-30)
-* (AWhiteKnight) Library 'systeminformation' integrated. First set of calls implemented
+* (AWhiteKnight) First release for adapter list 'latest'.
 
 ### 0.0.1
 * (AWhiteKnight) initial version
 
 ## Installation
 
-Use "Adapter - Install from URL" with https://github.com/AWhiteKnight/ioBroker.moma
+Available in ioBroker repository 'latest'
 
-alternative
+alternative:
 
 npm install iobroker.moma
 
 Works also in multihost environments - ensure that the correct instance is selected before installation.
 
+**Attention:** Currently you need to install an instance of Admin-Adapter on every slave as workaround. 
+The Admin-Adapter does not need to be active!
+
 ## Core Concept
 
 still under construction - ideas, proposals, hints, ... are welcome!
 
+Forum: https://forum.iobroker.net/topic/22026/neuer-adapter-iobroker-moma
+
+GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
 Basic idea is to have 
 + a tree for each instance (moma.\<instance-id\>) containing all the informations of the machine the instance is running on. 
@@ -122,20 +104,22 @@ Following functions of library systeminformation are called in interval 2 (defau
 * users - Current user sessions
 * fsSize - Information about computers file system
 * blockDevices - Connected block devices
-* fsStats - File access statistics
-* disksIO - IO statistics of block devices
+* fsStats - File access statistics - not supported with Windows
+* disksIO - IO statistics of block devices - not supported with Windows
 
 
 Following functions of library systeminformation are called in interval 3 (default every hour):
 * networkInterfaceDefault - Default network interface
 * networkInterfaces - Avilable network interfaces
 * graphics - Information about computers graphics cards and connected monitors
+* inetLatency - Check internet latency against 8.8.8.8
+* dockerContainers - List of all docker Containers - needs an "adduser iobroker docker" on the machine before it will work properly
 
 
 Following functions of library systeminformation are called in interval 4 (default every day):
 * osInfo - Information about computers operating system
 * uuid - UUID's of installation
-* shell - Default system shell
+* shell - Default system shell - not supported with Windows
 * versions - Versions of installed software packages
 
 

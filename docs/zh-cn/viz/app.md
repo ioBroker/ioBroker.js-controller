@@ -2,11 +2,12 @@
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/app.md
-title: 没有标题
-hash: QnfG7VJ3YvcTPa1VizKf9UY3p8M5wgD82qkgA1csajk=
+title: 对应用程序
+hash: GAY1mVQIW05t9MFRBhzg6bTaSwML0Fx2/BzdLWvf9+M=
 ---
 ![徽标](../../de/viz/img/icon_small.png)
 
+#vis App
 作为Android应用程序的ioBroker平台的WEB可视化。
 
 此应用程序专为智能手机和平板电脑。 vis项目和所有图像都存储在智能手机上以减少移动流量。

@@ -443,23 +443,27 @@ Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smash
 
 ## Changelog
 
+### 2.0.5 (2019-05-15)
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#25](https://github.com/Zefau/ioBroker.nello/pull/25))
+- (Zefau) updated dependencies
+
 ### 2.0.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#17](https://github.com/Zefau/ioBroker.nello/pull/17)) and Update CI testing ([#19](https://github.com/Zefau/ioBroker.nello/pull/19))
 
 ### 2.0.3 (2019-03-03)
-- (zefau) added folder `.events.latest` with states `action`, `twName`, `userId` and `userName` reflecting the information of the latest event
+- (Zefau) added folder `.events.latest` with states `action`, `twName`, `userId` and `userName` reflecting the information of the latest event
 
 ### 2.0.2 (2019-02-09)
-- (zefau) fixed error incorrectly stating a missing token
+- (Zefau) fixed error incorrectly stating a missing token
 
 ### 2.0.1 (2019-02-01)
-- (zefau) added error stack trace in log debug output
+- (Zefau) added error stack trace in log debug output
 - ([@ldittmar81](https://github.com/ldittmar81)) added support for gulp
 
 ### 2.0.0 (2019-01-27)
-- (zefau) added visual timeline of nello events
-- (zefau) support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
-- (zefau) updated API dependency
+- (Zefau) added visual timeline of nello events
+- (Zefau) support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
+- (Zefau) updated API dependency
 
 ### 1.x.x
 For earlier release, [please see Github branch for v1](https://github.com/Zefau/ioBroker.nello/tree/v1#changelog).

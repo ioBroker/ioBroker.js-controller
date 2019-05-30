@@ -65,6 +65,9 @@ This Project is not affilate to Beckhoff in any way
 3. Sync never meant the Dataexchange of the Symbols. Sync is the create or delete the States in ioBroker dependent on the GlobalVariableTable in the PLC.
 
 ## Changelog
+### 1.0.2 (2019-05-18)
+* (Appollon77) Update testing for Node.js v12 in Appveyor und Travis
+
 ### 1.0.1 (2019-04-06)
 * (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
 
@@ -98,9 +101,6 @@ This Project is not affilate to Beckhoff in any way
 
 ### 0.1.0 (2018-11-01)
 * (dkleber89) First Beta Release
-
-### 0.0.2 (2018-10-20)
-* (dkleber89) Milestone Connection and Sync, no Release yet
 
 ## License
 The MIT License (MIT)

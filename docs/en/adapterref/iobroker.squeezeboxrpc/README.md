@@ -1,0 +1,227 @@
+![Logo](admin/squeezeboxrpc.png)
+
+# ioBroker Logitech Squeezebox Adapter over JSON/RPC-Protocol
+
+[![Number of Installations](http://iobroker.live/badges/squeezeboxrpc-installed.svg)](https://github.com/oweitman/ioBroker.squeezeboxrpc)
+[![NPM version](http://img.shields.io/npm/v/iobroker.squeezeboxrpc.svg)](https://www.npmjs.com/package/iobroker.squeezeboxrpc)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.squeezeboxrpc.svg)](https://www.npmjs.com/package/iobroker.squeezeboxrpc)
+[![Travis](https://img.shields.io/travis/oweitman/ioBroker.squeezeboxrpc.svg)](https://travis-ci.org/oweitman/ioBroker.squeezeboxrpc/)
+[![AppVeyor Build Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-squeezeboxrpc.svg)](https://ci.appveyor.com/project/oweitman/iobroker-squeezeboxrpc)
+[![GitHub issues](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)](https://github.com/oweitman/ioBroker.squeezeboxrpc/issues)
+
+This is an alternative Adapter that uses the JSON/RPC-Protokoll to get data and send commands to the Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server))
+for controlling connected devices like 
+* native [squeezebox](https://de.wikipedia.org/wiki/Squeezebox), 
+* raspberry pi with additional audio module and small linux based firmwares like [picoreplayer](https://picoreplayer.org/) or [max2play](https://www.max2play.com).
+* with plugins chromecast, airplay or UPnP/DLNA-Devices
+
+The LMS-Server can manage/provide very big music collections on harddrives or NAS, connect to different streaming providers like Spotify, Deezer, Soundcloud, shoutcast, tunein, napster, pandora, tidal and more
+
+Why another squeezebox adapter?
+
+The existing adapter use telnet to access the LMS. The telnet has some disadvantages.
+The actual main web interface of the LMS also uses the rpc/json-protocol to get all needed informations or send commands to the server/players.
+
+## Features
+
+- most of data that the LMS-Service provides is available in the adapter
+- detailed information about the player status, song title, artist, album, artwork, playlist
+- many control features to play, pause, stop, forward, rewind, repeat, shuffle, play favorite, jump to time (absolute and relative) , jump to playlist index (absolute and relative), power on/off and preset buttons
+- all favorites and all sub levels from server
+
+## Installation
+
+- Install the package
+- Create an instance
+- Configure the Instance with the IP of the logitech media server and the port (normaly 9000)
+- start/restart the instance
+
+## Provided states
+
+### Server
+
+| state             | Description                    |
+| ----------------- | ------------------------------ |
+| LastScan          | timestamp of last music scan   |
+| PlayerCount       | Number of known players        |
+| PlayerCountOther  | Number of known other Players  |
+| PlayerCountSN     | Number of known SN Players     |
+| TotalAlbums       | Number of all known Albums     |
+| TotalArtists      | Number of all known Artists    |
+| TotalDuration     | Sum  playtime of all songs     |
+| TotalGenres       | Number of all known Genres     |
+| TotalSongs        | Number of all known songs      |
+| Version           | Version of LMS                 |
+| mac               | MAC-ID of the server           |
+| uuid              | uuid of the LMS-instance       |
+
+additional a defined button to refresh the favorites
+
+button            | Description
+----------------- | ---------------------------------------------
+getFavorites      | request all favorites from server
+
+
+### Favorites
+
+For each favorite
+All attributes are read only
+
+state             | Description
+----------------- | ------------------------------
+Name              | Name of the favorite
+hasitems          | indicates if this is a dir
+id                | id of the favorite
+image             | image/icon for favorite if available
+isaudio           | isaudio
+type              | Example types: link, text, audio, playlist
+url               | url of the track
+
+ All sub levels (subdirectories) of favorite are available.
+
+### Players
+
+for each player
+The mode shows if you can change the value. the taken action is described at the attribute
+
+state                |mode | Description
+-------------------- |---- | -----------------------------------------------------
+Album                |R/-  | Name of the current album
+Artist               |R/-  | Name of Artist
+ArtworkUrl           |R/-  | url to the Artwork
+Bitrate              |R/-  | Bitrate of the track
+Connected            |R/-  | connectionstate of player (0/1)
+Duration             |R/-  | Duration of the track
+Genre                |R/-  | genre of the track
+IP                   |R/-  | IP of the player
+Mode                 |R/-  | play / pause / stop
+Playername           |R/-  | Name of the Player
+PlayerID             |R/-  | Player ID
+Playlist             |R/-  | The actual Playlist as JSON
+PlaylistCurrentIndex |R/W  | go to a absolut position by specifying the trackindex or go relative with a + or - at the beginning. Example 10,-3,+2
+PlaylistRepeat       |R/W  | Repeat song(1)/playlist(2)/dont repeat(0)
+PlaylistShuffle      |R/W  | shuffle playlist(1)/shuffle album(2)/dont shuffle(0)
+Power                |R/W  | get/set Powerstate of player off(0)/on(1)
+RadioName            |R/-  | Name of Radiostation
+Rate                 |R/-  | Rating of the song
+Remote               |R/-  | If remote stream (1)
+SyncMaster           |R/-  | ID/MAC of Syncmaster
+SyncSlaves           |R/-  | ID/Mac of Players in Syncgroup
+Time                 |R/-  | elapsed song time
+Title                |R/-  | song title
+Type                 |R/-  | type of media (eg MP3 Radio)
+Url                  |R/-  | Url of track / stream
+Volume               |R/W  | get/set Volume of the player (0-100)
+state                |R/W  | get/set play state: pause(0),play(1),stop(2)
+
+The playlist provide actual the following attributes if available in LMS.
+Somme attributes depends of the type of songs (stream/file/...)
+All attributes are read only
+
+attribute         | Description
+----------------- | -----------------------------------------------------
+Album             | Name of the current album
+Artist            | Name of Artist
+ArtworkUrl        | url to the Artwork
+Bitrate           | Bitrate of the track
+Duration          | Duration of the track
+RadioName         | Name of Radiostation
+Rate              | Rating of the song
+title             | song title
+Type              | type of media (eg MP3 Radio)
+url               | Url of track / stream
+index             | index of the song in the playlist
+id                | id of the song
+
+additional defined buttons:
+
+button            | Description
+----------------- | ---------------------------------------------
+btnForward        | Next song
+btnRewind         | Previous song
+btnPreset_*       | 1-6 buttons to define in player or server
+cmdPlayFavorite   | to play a favorite set the id of the favorite
+cmdGoTime         | jump to a absolut position by specifying a number of seconds or jump relative with a + or - at the beginning of the seconds. Example 100,-50,+50
+
+For more information visit the CLI-documentation:
+
+https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
+
+## Todo
+
+* more testing/fixing
+* add telnet communication to get push events from the server to optimize the polling
+* add id to splayer states
+* reduce dependencys to other packages (squeezenode)
+* implement a command state to place user individual commands (via json) for server and player
+* more configuration to optionaly turn features on/off to improve memory and performance 
+* ~~implement more control features (select playlist pos to play,ffwd,frew,jump to a time position in song,repeat song,random song)~~
+* ~~add the playlist to playerdata as json array~~
+* ~~add artwork (station-logo/playlist-cover) for favorites~~
+* ~~implement more levels (subdirectories) of favorites~~
+* ~~autodiscover logitech media server~~
+
+## Changelog
+### 0.8.10 (2019-05-15)
+* another try to fix the EADDRINUSE error of the server discovery
+### 0.8.9 (2019-05-15)
+* try to fix the EADDRINUSE error of the server discovery
+### 0.8.8 (2019-05-14)
+* make discover configurable
+### 0.8.7 (2019-05-11)
+* more control features (select playlist pos to play,ffwd,frew,jump to a time position in song,repeat song,random song)
+### 0.8.6 (2019-05-10)
+* move some configuration options into seperate tabs
+### 0.8.5 (2019-05-08)
+* change serverdiscovery interval method, remove some double cmd lines, additional minor changes advised from eslint
+### 0.8.4
+* move some files to lib directory
+### 0.8.3
+* close port for discovery on unload
+### 0.8.2
+* sync version with npm
+### 0.8.1
+* set compact mode flag
+### 0.8.0
+* implementation of compact mode, change version to represent a realistic feature completness
+### 0.0.9
+* debug options are now configurable
+### 0.0.8
+* More playlist attributes + remove trailing and leading spaces from source
+### 0.0.7
+* Add the playlist to each player as json
+### 0.0.6
+* More config options
+### 0.0.5
+* All levels/subdirectories of favorites are now available in iobroker
+### 0.0.4
+* added the cmdPlayFavorite for each player
+### 0.0.3
+* repair the no-data symbols for buttons in vis
+### 0.0.2
+* added autodiscovery
+### 0.0.1
+* initial release
+
+## License
+MIT License
+
+Copyright (c) 2019 oweitman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

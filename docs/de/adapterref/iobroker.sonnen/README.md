@@ -110,6 +110,14 @@ der Tastenkombination "STRG + F".
 
    *Nur lesbarer Zeitstempel, der bei jeder Aktualisierung der Daten, aktualisiert wird.*
    
+* info.configuration
+
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Nur lesbarer JSON String, mit Konfigurationsinformationen der sonnenBatterie.*
+   
 #### Channel: status
    
 * status.consumption
@@ -295,6 +303,10 @@ der Tastenkombination "STRG + F".
     ```
 
 ## Changelog
+
+### 1.3.0
+* (foxriver76) introducing new state with configuration information (supported on :8080 API)
+
 ### 1.2.0
 * (foxriver76) support of another sonnen api
 

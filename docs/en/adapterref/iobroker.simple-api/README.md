@@ -1,6 +1,6 @@
 ![Logo](admin/simple-api.png)
-ioBroker simple-api adapter
-=================
+# Simple-api
+
 ![Number of Installations](http://iobroker.live/badges/simple-api-installed.svg) ![Number of Installations](http://iobroker.live/badges/simple-api-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.simple-api.svg)](https://www.npmjs.com/package/iobroker.simple-api)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.simple-api.svg)](https://www.npmjs.com/package/iobroker.simple-api)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.simple-api.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.simple-api)

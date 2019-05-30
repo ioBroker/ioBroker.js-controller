@@ -27,7 +27,7 @@ This adapter controls devices which followed miIO protocol.
 |airpurifier|![](admin/icons/zhimi.airpurifier.v2.png)|zhimi.airpurifier.v2|❌
 |airpurifier|![](admin/icons/zhimi.airpurifier.v3.png)|zhimi.airpurifier.v3|❌
 |airpurifier|![](admin/icons/zhimi.airpurifier.v6.png)|zhimi.airpurifier.v6|❌
-|fan|![]()||❌
+|fan|![](admin/icons/zhimi.fan.v2.png)|zhimi.fan.v2|✅
 |humidifier|![](admin/icons/zhimi.humidifier.ca1.png)|zhimi.humidifier.ca1|❌
 |humidifier|![](admin/icons/zhimi.humidifier.v1.png)|zhimi.humidifier.v1|❌
 |kettle|![](admin/icons/yunmi.kettle.r1.png)|yunmi.kettle.r1|✅
@@ -50,6 +50,9 @@ This adapter controls devices which followed miIO protocol.
 
 
 ## Changelog
+### 0.0.7 (2019-05-17)
+* Add zhimi fan support
+
 ### 0.0.6 (2019-04-13)
 * Add power load for chuangmi plug
 

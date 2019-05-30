@@ -352,6 +352,9 @@ der Tastenkombination "STRG + F".
 
 ## Changelog
 
+### 0.5.7
+* (foxriver76) fix gamertag not set if no state on the object exists yet
+
 ### 0.5.6
 * (foxriver76) if still logged in dont log warning/set auth false anymore
 * (foxriver76) on logout only set auth to false, but keep gamertag

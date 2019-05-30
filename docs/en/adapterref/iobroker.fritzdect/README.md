@@ -71,12 +71,14 @@ objects in *italic* are not part of all fritz.box configurations
 |DECT200.lock|boolean|-|UI/API lock|
 |DECT200.devicelock|boolean|-|Button lock|
 |*DECT200.temp*|value|-|actual temperature in °C|
+|*DECT200.temp_offset*|value|-|offset temperature in °C|
 |*DECT200.voltage*|value|-|actual voltage in V|
 
 ### thermostat eg. COMET/DECT300/ Heater group
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
-|COMET.temp|value|-|actual temperature in °C including offset|
+|COMET.temp|value|-|actual temperature in °C w/o offset|
+|COMET.temp_offset|value|-|offset temperature in °C |
 |COMET.actualtemp|value|x|actual temperature in °C|
 |COMET.targettemp|value|x|target temperature in °C|
 |COMET.comfytemp|value|-|comfort temperature in °C|
@@ -102,7 +104,7 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |Contact.state|boolean|-|true/false -> ON/OFF|
 
-### button
+### button (HAN-FUN, DECT400)
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
 |Button.lastclick|number|-|timestamp|
@@ -121,6 +123,11 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 0.2.2
+* added FritzDECT400 incl. testing
+* removed offset in temp value
+* new datapoint offset
+
 ### 0.2.1
 * gulp added
 * correction for DECT100 without temperature (caused a stop in creation of objects)

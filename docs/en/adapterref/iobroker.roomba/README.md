@@ -4,7 +4,9 @@ Connect your iRobot Roomba to ioBroker.
 
 Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 
-![Number of Installations](http://iobroker.live/badges/roomba-installed.svg) ![Stable version](http://iobroker.live/badges/roomba-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
+[![Number of Installations](http://iobroker.live/badges/roomba-installed.svg)](http://iobroker.live/badges/roomba-installed.svg)
+[![Stable version](http://iobroker.live/badges/roomba-stable.svg)](http://iobroker.live/badges/roomba-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.roomba)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)](https://greenkeeper.io/)
@@ -12,15 +14,29 @@ Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 [![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)](https://nodei.co/npm/iobroker.roomba/)
 
 **Table of contents**
-1. [Installation](#installation)
-2. [Setup instructions](#setup-instructions)
-3. [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions)
-4. [Channels & States](#channels--states)
-5. [Description of Preferences (incomplete)](#description-of-preferences-incomplete)
-6. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
-7. [Changelog](#changelog)
-8. [Credits](#credits)
-9. [Licence](#license)
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Setup instructions](#setup-instructions)
+4. [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions)
+5. [Channels & States](#channels--states)
+6. [Description of Preferences (incomplete)](#description-of-preferences-incomplete)
+7. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
+8. [Changelog](#changelog)
+9. [Credits](#credits)
+10. [Licence](#license)
+
+
+## Features
+The following features come with this adapter:
+- __Send commands__ (start, stop, resume, pause, dock) to your Roomba
+- Retrieve __device states__, such as battery, docked, full / inserted bin (see [Channels & States](#channels--states) for full list)
+- Retrieve __device configuration__, such as preferences, network or schedule settings (see [Channels & States](#channels--states) for full list)
+- Retrieve __device statistics__, such as total missions, hours on docking station, etc. (see [Channels & States](#channels--states) for full list)
+- Retrieve information about __current mission__ (when your Roomba is cleaning), such as start and end time, total runtime, sqm cleaned, etc. (only on supported Roomba\'s see [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions))
+- __Draw map based on the mission data__ received (only on supported Roomba\'s)
+- __Web Interface__ that shows the status and map of the current as well as previous / archived missions: 
+
+![Roomba Interface](img/roomba.interface.png)
 
 
 ## Installation
@@ -202,15 +218,16 @@ This requires the ioBroker adapter ioBroker.telegram to be installed (https://gi
 
 Create a script in the "common" folder of ioBroker.javascript and add the following listener to it:
 
-```
+```javascript
 var _fs = require('fs');
 
 /*
  * MISSION END: Send map
  * 
  */
-var ns = 'roomba.0';
 var message = "%device.name% finished at %missions.current.endedDateTime% cleaning %missions.current.sqm% sqm in %missions.current.runtime% seconds (%missions.current.error% errors).";
+var ns = 'roomba.0';
+var imagePath = 'tmp/';
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
@@ -240,16 +257,16 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
     log(message);
     
     // get image
-    var img = getState('roomba.0.missions.current.mapImage').val;
+    var img = getState(ns + '.missions.current.mapImage').val;
 
     if (img !== null && img.indexOf('data:image/png;base64,') > -1)
     {
-        _fs.writeFile('/tmp/image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
+        _fs.writeFile(imagePath + 'image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
         {
             if (err !== null)
                 log(err.message, 'warn');
             else
-                sendTo('telegram', {text: '/tmp/image.png', message: message});
+                sendTo('telegram', {text: imagePath + 'image.png', message: message});
         });
     }
 });
@@ -261,6 +278,11 @@ You may edit the variable ```message``` to any notification you would like to re
 
 
 ## Changelog
+
+### 1.0.1 (2019-05-15)
+- (Zefau) fixed display error in Chrome ([#19](https://github.com/Zefau/ioBroker.roomba/issues/19#issuecomment-492963244))
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#18](https://github.com/Zefau/ioBroker.roomba/pull/18))
+- (Zefau) updated dependencies
 
 ### 1.0.0 (2019-05-04)
 - (zefau) No changes, only bump to stable release

@@ -21,6 +21,9 @@ A small excerpt just of the command options:
 <b>NodeJs >> 6.x.x </b>
 
 ## Changelog
+### 1.0.0 (2019-05-22)
+* (arteck) stable
+
 ### 0.0.17 (2019-05-01)
 * (arteck) add queue
 

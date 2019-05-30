@@ -4,12 +4,13 @@ BADGE-Build status: https://ci.appveyor.com/api/projects/status/9c3a9qlw4ut32hbu
 BADGE-Number of Installations: http://iobroker.live/badges/sonnen-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.sonnen.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.sonnen.svg
+BADGE-Greenkeeper badge: https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.sonnen.png?downloads=true
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonnen/README.md
 title: 太阳适配器
-hash: lxJCrd7DQbd7wr05NwFGschEwXwRlMxnxcLgswKIwDg=
+hash: cRAG41z6WHo/8QW3c2dIJI3YbUgkBUJZhnQipGRKYaE=
 ---
 ![徽标](../../../de/adapterref/iobroker.sonnen/media/sonnen.png)
 
@@ -36,14 +37,14 @@ sonnen适配器允许在ioBroker中集成sonnenBatterie。
 
 |领域|说明|
 |:-------------|:-------------|
-| IP地址|这里，应指定所需太阳能电池的IP地址
+| IP地址|这里，应指定所需太阳能电池的IP地址 |
 
 ###“高级设置”窗口
 ![高级设置](../../../de/adapterref/iobroker.sonnen/media/advancedSettings.png "高级设置")
 
 |领域|说明|
 |:-------------|:-------------|
-|查询间隔|此处可以设置替代值（以毫秒为单位）。在此间隔中，更新太阳能电池的状态
+|查询间隔|此处可以设置替代值（以毫秒为单位）。在此间隔中，更新太阳能电池的状态 |
 
 完成配置后，将使用`SPEICHERN UND SCHLIEßEN`退出配置对话框。
 这将导致随后重新启动适配器。
@@ -79,6 +80,14 @@ sonnen适配器允许在ioBroker中集成sonnenBatterie。
     |时间戳| R |
 
    *只读时间戳，每次更新数据时都会更新。*
+
+* info.configuration
+
+    |数据类型|授权|
+    |:---:|:---:|
+    |字符串| R |
+
+   *只读JSON字符串，带有太阳能电池配置信息。*
 
 ####频道：状态
 * status.consumption
@@ -261,6 +270,10 @@ setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1
 ```
 
 ## Changelog
+
+### 1.3.0
+* (foxriver76) introducing new state with configuration information (supported on :8080 API)
+
 ### 1.2.0
 * (foxriver76) support of another sonnen api
 

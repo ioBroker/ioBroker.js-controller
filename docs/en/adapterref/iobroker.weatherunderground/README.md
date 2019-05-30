@@ -69,6 +69,9 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
+### 3.0.10 (2019-05-27)
+* (Apollon77) Adopt logic to WU changes
+ 
 ### 3.0.8 (2019-03-23)
 * (Apollon77) Add additional guidance when location is not found by WU
  

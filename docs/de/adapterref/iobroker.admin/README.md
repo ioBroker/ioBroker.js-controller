@@ -123,6 +123,12 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+### 3.6.3 (2019-05-25)
+* (bluefox) Added deleteFile internal function (required for lovelace)
+
+### 3.6.2 (2019-05-05)
+* (bluefox) Added onSave handler for custom dialogs
+
 ### 3.6.1 (2019-04-18)
 * (ldittmar) Better integration for ioBroker.info (1.3.7)
 * (ldittmar) Update Gulp to v4

@@ -22,6 +22,17 @@ Connects your Vallox Air Ventilation system into your ioBroker home automation.
 * Read and write states as usual
 
 ## Changelog
+### 1.0.0
+* Fixed empty states
+* Canged bool states to switches
+
+### 0.1.3
+* added expert settings (@williandalton, @hliebscher)
+  * A_CYC_RH_BASIC_LEVEL
+  * A_CYC_CO2_THRESHOLD
+  * A_CYC_RH_LEVEL_MODE
+  * A_CYC_SUPPLY_HEATING_ADJUST_MODE
+  * A_CYC_OPT_TEMP_SENSOR_MODE
 
 ### 0.1.2
 * add State 'NORMAL' to A_CYC_MODE (@williandalton)

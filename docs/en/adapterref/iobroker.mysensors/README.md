@@ -24,6 +24,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.2 (2018-09-17)
 * (Haba1234) Added new objects (library 2.3.x)
 * (Haba1234) Added support for sleeping nodes

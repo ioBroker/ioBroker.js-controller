@@ -186,6 +186,9 @@ There are some programs in folder *test' to test the TCP communication:
 - mod_RSsim.exe is slave simulator. It can be that you need [Microsoft Visual C++ 2008 SP1 Redistributable Package](https://www.microsoft.com/en-us/download/details.aspx?id=5582) to start it (because of SideBySide error).
 
 ## Changelog
+# 3.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 # 2.0.9 (2018-10-11)
 * (Bjoern3003) Write registers was corrected
 

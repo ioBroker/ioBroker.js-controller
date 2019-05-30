@@ -55,6 +55,9 @@ If you receive SIA messages you see them in the states tree
 
 ## Changelog
 
+### 1.0.2 (16.05.2019)
+* (Stübi) Support of UDP. Same port listening as TCP 
+
 ### 1.0.1 (05.03.2019)
 * (Stübi) Saving password encrypted. 
 * (Stübi) ACK and NAC calculation extended.
@@ -95,7 +98,7 @@ If you receive SIA messages you see them in the states tree
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten <thorsten@stueben.de>
+Copyright (c) 2018-2019 Thorsten <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

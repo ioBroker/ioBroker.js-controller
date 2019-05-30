@@ -65,8 +65,10 @@ sendTo('iogo', {
 ```
 
 ## Changelog
-### 0.3.0
+
+### 0.3.x
 * (nisio) added support of compact mode
+* (nisio) added support node 12
 
 ### 0.2.x
 * (nisio) added pro features
@@ -77,7 +79,7 @@ sendTo('iogo', {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Nis Nagel <support@nisnagel.de>
+Copyright (c) 2018 - 2019 Nis Nagel <support@nisnagel.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

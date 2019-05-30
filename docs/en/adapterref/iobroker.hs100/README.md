@@ -18,9 +18,9 @@ Switch TP-Link Plug and Bulb
 <b>NodeJs >> 6.x.x </b>
 
 ## Changelog
-### 1.0.9 (2019-02-09)
+### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
-*
+
 ### 1.0.8 (2018-12-01)
 * (arteck) LB100 added <br>
 ### 1.0.6 (2018-11-02)

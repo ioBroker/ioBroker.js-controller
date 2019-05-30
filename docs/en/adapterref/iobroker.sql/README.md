@@ -315,6 +315,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Changelog
 
+## 1.9.5 (2019-05-15)
+* (Apollon77) Add support for nodejs 12
+
 ## 1.9.4 (2019-02-24)
 * (Apollon77) Fix several smaller issues and topics
 * (Apollon77) Optimize Texts (for Admin v3 UI)

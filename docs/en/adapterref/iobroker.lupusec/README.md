@@ -85,6 +85,9 @@ You find all connected surveillance cams under 'webcams'. You can copy the link 
 
 ## Changelog
 
+### 1.1.7 (06.05.2019)
+* (Stübi) Enhancement: optimizing webcam support
+
 ### 1.1.6 (01.05.2019)
 * (Stübi) New feature: you can change the buttons for keypad
 * (Stübi) New feature: add push notifications to sensors

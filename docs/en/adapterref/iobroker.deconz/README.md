@@ -25,6 +25,10 @@ Required node.js >= 0.12.
 
 ## Changelog
 
+### 1.1.2
+* fix button objects
+*  changed buttonpressed from boolean to number
+
 ### 1.1.0
 *  added objects for "tiltangle", "vibration", "vibrationstrength" and "orientation"
 *  (asgothian) added object "buttonpressd"

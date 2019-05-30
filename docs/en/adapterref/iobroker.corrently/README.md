@@ -3,7 +3,7 @@
     ioBroker.corrently
 </h1>
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.corrently.svg)](https://www.npmjs.com/package/iobroker.corrently)
+![Number of Installations](http://iobroker.live/badges/corrently-installed.svg) ![Stable Version](http://iobroker.live/badges/corrently-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.corrently.svg)](https://www.npmjs.com/package/iobroker.corrently)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.corrently.svg)](https://www.npmjs.com/package/iobroker.corrently)
 [![Dependency Status](https://img.shields.io/david/GermanBluefox/iobroker.corrently.svg)](https://david-dm.org/GermanBluefox/iobroker.corrently)
 [![Known Vulnerabilities](https://snyk.io/test/github/GermanBluefox/ioBroker.corrently/badge.svg)](https://snyk.io/test/github/GermanBluefox/ioBroker.corrently)

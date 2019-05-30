@@ -191,6 +191,10 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.9.12 (2019-05-27)
+* (foxriver76) fix maintenance channel of HM-Dis-EP-WM55
+* (foxriver76) meta data added
+
 ### 1.9.11 (2019-04-21)
 * (foxriver76) create OPERATING_VOLTAGE with unit V
 * (foxriver76) create RSSI_* with unit dBm

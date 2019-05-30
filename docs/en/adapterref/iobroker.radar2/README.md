@@ -34,6 +34,26 @@ You can also set if you want to use long warning text but all info is available 
 
 European Central Bank currencies can be seen here: `https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml` 
 
+### Bluetooth usage
+
+There are two different types of BT devices: BT-LE (V 4.x+) and normal BT (V<=3.x). The adapter has two different scan functions for each of the different device types.
+
+ 1) for BT-LE: Noble (Nodejs modile) and 'hcitool lescan' command
+ 2) for normal BT: BT scan (Nodejs module) and 'l2ping' command
+
+Each BT device can use only one of the two methods of the same time.
+
+Noble and BT scan are modules which are compiled on adapter installation with npm and the should work on linux and also most windows setups. 
+Hcitool and l2ping are installed with the bluetooth tools in the setup script and available only for linux..
+
+In the Adapter-config BT-LE macs schould be identified with a '!' before the mac-address to avoid scanning them with normal BT scans like l2ping.
+Usually Noble is a bit better than hcitool lescan identifying devices but it generates also more errors and might not install on all systems.
+Likewise l2ping is better finding normal BT devices but is not available on other platforms than linux.
+Therefore you can configure the usage separately in adapter config.
+
+If you use multiple BT devices you can specify the device number in config, the defailt is '-1' which uses the first available. A list of all available devices can be seen on linux with `lescan dev`.
+In de same adapter you can use only one device, if you want to scan multiple devices you need to use differennt adapter(s or instances).
+
 ## Differences to radar-Adapter
 
 Radar2 sets devices which are seen immediately when they become visible, for new ip's even before the scan starts again.
@@ -64,6 +84,7 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink 
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hcitool`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hciconfig`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which l2ping`)
 ```
 
 If you update node or some system tools the above should be executed again!

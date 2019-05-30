@@ -1,6 +1,5 @@
 ![Logo](admin/scenes.png)
 # ioBroker scenes adapter
-=================
 
 ![Number of Installations](http://iobroker.live/badges/scenes-installed.svg) ![Number of Installations](http://iobroker.live/badges/scenes-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.scenes.svg)](https://www.npmjs.com/package/iobroker.scenes)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.scenes.svg)](https://www.npmjs.com/package/iobroker.scenes)
@@ -92,7 +91,25 @@ Delays can be used in the **group** too, but the states with delay are not parti
 **Virtual groups** are like virtual channels and like groups, but can have any kind of values: numbers, strings and so on. 
 You can create virtual group to control all shutters in living room. By writing 40% into virtual group all shutters will be set to 40%. 
 
+## Save actual states as scene
+To save actual states in some scene you can send a message to the adapter:
+```
+sendTo(
+    'scenes.0', 
+    'save', 
+    {sceneId: 
+        'scene.0.SCENE_ID', // scene ID 
+        isForTrue: true     // true if actual values must be saved for `true` state and `false` if for false 
+    }, 
+    result => result.err && console.error(result.error) // optional
+);
+```
+The adapter will read all actual values for IDs defined in this scene and save it as configured ones.
+
 ## Changelog
+### 1.1.1 (2019-05-26)
+* (bluefox)Added storing of actual values in scene via message
+
 ### 1.1.0 (2018-04-24)
 * (bluefox) Works now with Admin3
 
@@ -152,7 +169,3 @@ You can create virtual group to control all shutters in living room. By writing 
 
 ### 0.0.1 (2015-07-29)
 * (bluefox) initial commit
-
-## Install
-
-```iobroker add scenes```

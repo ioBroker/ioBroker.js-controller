@@ -170,6 +170,12 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.6.3 (2019-05-25)
+* (bluefox) Added deleteFile internal function (required for lovelace)
+
+### 3.6.2 (2019-05-05)
+* (bluefox) Added onSave handler for custom dialogs
+
 ### 3.6.1 (2019-04-18)
 * (ldittmar) Better integration for ioBroker.info (1.3.7)
 * (ldittmar) Update Gulp to v4

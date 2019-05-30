@@ -1,7 +1,7 @@
 ![Logo](admin/hilink.png)   
  
 # ioBroker.hilink   
-=================
+![Number of Installations](http://iobroker.live/badges/hilink-installed.svg) ![Number of Installations](http://iobroker.live/badges/hilink-stable.svg) =================
 
 ## Description
 

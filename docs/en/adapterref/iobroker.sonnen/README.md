@@ -64,6 +64,15 @@ Note, that there are two different sonnen API's so if you are missing states, th
 
    *Read-only timestamp w. r. t. the last successful synchronization time.*
    
+* info.configuration
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Read-only JSON string, which contains configuration information of your battery.*
+   
+
 #### Channel: status
    
 * status.consumption
@@ -239,6 +248,10 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```
 
 ## Changelog
+
+### 1.3.0
+* (foxriver76) introducing new state with configuration information (supported on :8080 API)
+
 ### 1.2.0
 * (foxriver76) support of another sonnen api
 

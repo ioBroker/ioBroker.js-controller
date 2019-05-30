@@ -1,7 +1,7 @@
 ![Logo](admin/landroid.png)
 # ioBroker.landroid
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.landroid.svg)](https://www.npmjs.com/package/iobroker.landroid)
+![Number of Installations](http://iobroker.live/badges/landroid-installed.svg) ![Number of Installations](http://iobroker.live/badges/landroid-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.landroid.svg)](https://www.npmjs.com/package/iobroker.landroid)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.landroid.svg)](https://www.npmjs.com/package/iobroker.landroid)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.landroid.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.landroid)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.landroid/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.landroid)

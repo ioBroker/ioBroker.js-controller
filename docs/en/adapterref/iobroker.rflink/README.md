@@ -47,6 +47,10 @@ The user has the possibility to send raw commands to device. Just write you comm
 E.g: ```10;AB400D;00004d;1;OFF;```. Please read documentation to understand the commands.
 
 ## Changelog
+
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
 
