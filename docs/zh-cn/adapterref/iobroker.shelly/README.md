@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
+hash: iHKYNFAzLU1k+oLLXj5UuarauihwDx++jGkxZ3HPs/c=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -15,37 +15,42 @@ hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
 ![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
 ＃ioBroker.shelly
-需要node.js 6.0或更高版本以及Admin v3！
+需要node.js 8.0或更高版本以及Admin v3！
 
-适配器通过REST api与Shelly设备通信，使用默认Shelly固件与CoAP协议通信（不需要刷新固件！）。
-由于CoAP使用多播UDP包，因此Shelly设备必须与ioBroker位于同一子网中。
-如果在docker容器中使用ioBroker，则容器必须以host或macvlan modus运行。
-
-您可以在此处找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
+通过默认的Shelly固件（不需要闪存固件！）。您可以在此处找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
 
 ##安装
-1.安装适配器
-2.无需配置。 Shelly设备将被自动检测和添加。有时您必须重新启动shelly设备或在最初出现在ioBroker之前使用应用程序控制它。
+您可以在此处找到详细的安装文档：[安装文档](./docs/EN/INSTALL.md)
 
 ##支持的设备
-* Shelly1（SHSW-1，已验证）
-* Shelly2（SHSW-21 / SHSW-22，已验证）
-* ShellyRGBW（SHRGBWW-01，已验证）
-* ShellyRGBW2（SHRGBW2-01，未经过验证和测试）
-* Shelly4Pro（SHSW-44，未经过验证和测试）
-* ShellyPlug（SHPLG-1，未经过验证和测试）
-* ShellyRGBW（SHRGBWW-01，已验证）
-* ShellyBulb（SHBLB，已验证）
-* Shelly2LED（SH2LED，已验证）
-* ShellySense（SHSEN-1，已验证）
-* Shelly H＆T（SHHT-1，已验证）
-* Shelly Smoke（SHSM-01，已验证）
-* Shelly 1 PM（SHSW-PM，已验证）
-* Shelly 2.5（SHSW-25，已验证）
-
-##需要实现的更多细节（调试日志
+| Shelly Device |默认（CoAP）| MQTT |
+|-------------|--------------|----|
+| Shelly1（SHSW-1）|已验证|已确认|
+| Shelly2（SHSW-21 / SHSW-22）|已验证|已确认|
+| ShellyBulb（SHBLB）|已验证|已验证|
+| Shelly H＆T（SHHT-1）|已验证|已确认|
+| Shelly Smoke（SHSM-01）|已验证|已确认|
+| Shelly 1 PM（SHSW-PM）|已验证|已确认|
+| Shelly 2.5（SHSW-25）|已验证|已确认|
+| ShellyRGBW（SHRGBWW-01）|已验证|已验证|
+| ShellyRGBW2（SHRGBW2）|已验证|已验证|
+| Shelly2LED（SH2LED）|已验证|已验证|
+| ShellyPlug（SHPLG-1）|已验证|已验证|
+| ShellyPlug S（SHPLG-1）|已验证|未经过验证|
+| ShellySense（SHSEN-1）|已验证|未经验证|
+| Shelly4Pro（SHSW-44）|已验证|未经验证|
 
 ## Changelog
+
+### 3.0.2 (29.05.2019)
+* (Stübi) - Support of MQTT QoS 1 and 2 
+
+### 3.0.2 (25.05.2019)
+* (Stübi) - Bugfixing and longpush and input states for Shelly 1, 2, 1pm, 2.5 and Shelly RGBWW2 added. Add state temperature to Shelly 1pm, 2.5 and Plug S.  
+
+### 3.0.1 (21.05.2019)
+* (Stübi) - Redesign of the adapter. You can choose now between CoAP and MQTT protocol. The Shellys use this protocolls to send there state changes to ioBroker in realtime. Out of the Box the Shelly works with the CoAP protocol. You do not have to configure anything. The Shelly will be found by the Shelly Adapter itself. If you want to use MQTT, you have configure all your Shelly devices. You find a detailed installing documentation here: [Installation Documentation](./docs/EN/INSTALL.md). If you have problems with the version 3.0.1 please change back to 2.2.0 and leave an Issue (bug report) here: [GitHub Issues](https://github.com/schmupu/ioBroker.shelly/issues). 
 
 ### 2.2.0 (13.04.2019)
 * Add devices Shelly 2.5 and Shelly 1 PM 
@@ -92,49 +97,7 @@ hash: K0i54vjy9snuTidgEKQRMOYWIems/k/XBqgfsHBcmZY=
 * Support of js-controller compact mode and performance optimizing. Relay status changes will be shown much faster in ioBroker for Shelly 1, 2 and 4Pro
 
 ### 2.0.3 (02.01.2018)
-* Shows RSSI Status for Shelly 1 & 2. You need Firmware 1.4.4 
-
-### 2.0.2 (22.12.2018)
-* Add Shelly H&T. 
-
-### 2.0.1 (22.12.2018)
-* Major update because of problems with CoAP messages. 
-
-### 1.0.2 (17.12.2018)
-* Work around for showing states in shutter/roller modus
-
-### 1.0.1 (07.12.2018)
-* Add shutter/roller position
-
-### 1.0.0 (10.11.2018)
-* Optimizations and Online status fixed
-
-### 0.2.6 (31.10.2018)
-* Two new datapoints (AutoTimerOn and AutoTimerOn) for Shelly 1/2
-
-### 0.2.5 (13.10.2018)
-* Hostname instead of ip address will be shown
-
-### 0.2.4 (10.10.2018)
-* Channel name can be overwrite with own name
-
-### 0.2.3 (01.10.2018)
-* Bugfixing, shutter status display
-
-### 0.2.2 (30.09.2018)
-* Bugfixing, on start default value of timer and duration of relay and shutter will be 0 sec
-
-### 0.2.1 (28.09.2018)
-* Username/Password supported
-
-### 0.2.0 (28.09.2018)
-* Roller / Shutter for Shelly2 supported
-
-### 0.1.1 (21.09.2018)
-* Bugfixing
-
-### 0.1.0 (20.09.2018)
-* First Version. Supports all Shelly switches like Shelly 1, Shelly 2, Shelly 4 and the power sockets.
+* Shows RSSI Status for Shelly 1 & 2. You need Firmware 1.4.4
 
 ## License
 The MIT License (MIT)

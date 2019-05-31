@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.scenes/README.md
 title: ioBroker场景适配器
-hash: dy3j69BC0SGdZMOc6aZJ0WtlL7xCC25Cn972P9cAxEs=
+hash: G1E4YTsd0Q1l6+A7mv99P5sg5zK8+foyWJ0BN3JhoI4=
 ---
 ![商标](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -12,7 +12,7 @@ hash: dy3j69BC0SGdZMOc6aZJ0WtlL7xCC25Cn972P9cAxEs=
 ![下载](https://img.shields.io/npm/dm/iobroker.scenes.svg)
 ![NPM](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
 
-#ioBroker场景适配器=================
+#ioBroker场景适配器
 _scenes Adapter_可以在ioBroker环境中创建场景并执行它们。
 
 此适配器可以创建三种类型的场景：
@@ -46,7 +46,7 @@ _scene.allLightInBath_的值也是** true **。如果我们手动切换顶灯，
   |- hm-rpc.0.FAN.STATE          - false (delay 60000ms)
 ```
 
-在这种情况下，风扇将在**现场**的激活时接通，并在一分钟内关闭。
+在这种情况下，风扇将在**场景**的激活时接通，并在一分钟内关闭。
 关闭风扇后，_scene.allLightInBath_的值将变为** false **，因为并非所有状态都等于所需的值。
 有延迟的国家不参与计算。
 
@@ -99,10 +99,27 @@ _scene.allLightInBath_的值也是** true **。如果我们手动切换顶灯，
 **虚拟组**类似于虚拟通道和类似组，但可以具有任何类型的值：数字，字符串等。
 您可以创建虚拟组来控制起居室中的所有快门。通过将40％写入虚拟组，所有快门将设置为40％。
 
-##安装
-```iobroker add scenes```
+##将实际状态保存为场景
+要保存某些场景中的实际状态，您可以向适配器发送消息：
+
+```
+sendTo(
+    'scenes.0',
+    'save',
+    {sceneId:
+        'scene.0.SCENE_ID', // scene ID
+        isForTrue: true     // true if actual values must be saved for `true` state and `false` if for false
+    },
+    result => result.err && console.error(result.error) // optional
+);
+```
+
+适配器将读取此场景中定义的ID的所有实际值，并将其保存为已配置的ID。
 
 ## Changelog
+### 1.1.1 (2019-05-26)
+* (bluefox)Added storing of actual values in scene via message
+
 ### 1.1.0 (2018-04-24)
 * (bluefox) Works now with Admin3
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
+hash: fJWbc2AUfUlvEbHQ8lUvLCgs5r8wt6RytzZfd4WRDjQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -20,15 +20,29 @@ hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
 
 **Оглавление**
 
-1. [Установка] (# установка)
-2. [Инструкции по настройке] (# инструкции по настройке)
-3. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - версии прошивки)
-4. [Каналы и состояния] (# каналы - состояния)
-5. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
-6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
-7. [Changelog] (# changelog)
-8. [Кредиты] (# кредитов)
-9. [Лицензия] (# лицензия)
+1. [Особенности] (# функции)
+2. [Установка] (# установка)
+3. [Инструкции по настройке] (# инструкции по настройке)
+4. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - firmware-version)
+5. [Каналы и состояния] (# каналы - состояния)
+6. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
+7. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
+8. [Changelog] (# changelog)
+9. [Кредиты] (# кредитов)
+10. [Лицензия] (# лицензия)
+
+## Характеристики
+Следующие функции поставляются с этим адаптером:
+
+- __Отправить команды__ (запуск, остановка, возобновление, пауза, стыковка) на вашу Roomba
+- Получить __device состояния__, такие как батарея, закрепленный, полный / вставленный лоток (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
+- Получить __device configuration__, например, настройки, настройки сети или расписания (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
+- Получить статистику __device__, такую как общее количество миссий, количество часов на док-станции и т. Д. (Полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
+- Получить информацию о __current mission__ (когда уборка Roomba), например время начала и окончания, общее время выполнения, очищенный sqm и т. Д. (Только для поддерживаемых Roomba см. [Поддерживаемые версии Roomba / Прошивки] (# support-roombas --firmware-версия))
+- __Draw карта на основе полученных данных миссии__ (только на поддерживаемых Roomba's)
+- __Web Interface__, который показывает статус и карту текущих, а также предыдущих / архивных миссий:
+
+![Roomba Интерфейс](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
 
 ## Монтаж
 ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
@@ -203,15 +217,16 @@ sudo npm install canvas --unsafe-perm=true
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующий прослушиватель:
 
-```
+```javascript
 var _fs = require('fs');
 
 /*
  * MISSION END: Send map
  *
  */
-var ns = 'roomba.0';
 var message = "%device.name% finished at %missions.current.endedDateTime% cleaning %missions.current.sqm% sqm in %missions.current.runtime% seconds (%missions.current.error% errors).";
+var ns = 'roomba.0';
+var imagePath = 'tmp/';
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
@@ -241,16 +256,16 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
     log(message);
 
     // get image
-    var img = getState('roomba.0.missions.current.mapImage').val;
+    var img = getState(ns + '.missions.current.mapImage').val;
 
     if (img !== null && img.indexOf('data:image/png;base64,') > -1)
     {
-        _fs.writeFile('/tmp/image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
+        _fs.writeFile(imagePath + 'image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
         {
             if (err !== null)
                 log(err.message, 'warn');
             else
-                sendTo('telegram', {text: '/tmp/image.png', message: message});
+                sendTo('telegram', {text: imagePath + 'image.png', message: message});
         });
     }
 });
@@ -268,6 +283,11 @@ _2019-05-04 исправлена ошибка, препятствовавшая 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </div>
 
 ## Changelog
+
+### 1.0.1 (2019-05-15)
+- (Zefau) fixed display error in Chrome ([#19](https://github.com/Zefau/ioBroker.roomba/issues/19#issuecomment-492963244))
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#18](https://github.com/Zefau/ioBroker.roomba/pull/18))
+- (Zefau) updated dependencies
 
 ### 1.0.0 (2019-05-04)
 - (zefau) No changes, only bump to stable release

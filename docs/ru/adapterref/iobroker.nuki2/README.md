@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
+hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -15,7 +15,7 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ![Значок Greenkeeper](https://badges.greenkeeper.io/Zefau/ioBroker.nuki2.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki2.png?downloads=true)
 
-# IoBroker.nuki2 Этот адаптер ioBroker позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/) с использованием [Nuki Bridge API (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge -http-api-170/4 / # заголовок - введение) и [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
+# IoBroker.nuki2 Этот адаптер ioBroker позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/) с использованием [API-интерфейса Nuki Bridge (v1.8.0, 06.03.2019)] (https://developer.nuki.io/page/nuki-bridge -http-api-170/4 / # заголовок - введение) и [Nuki Web API (v1.1.1, 30.08.2018)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 **Оглавление**
 
 1. [Установка] (# установка)
@@ -57,6 +57,11 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 
 | Канал | Государство | Описание |
 |:------- |:----- |:----------- |
+| обратные вызовы | - | Обратные вызовы моста |
+| обратные вызовы | список | Список обратных вызовов (в формате JSON) |
+| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | - | Обратный звонок |
+| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | \ _delete | Действие для удаления обратного вызова из Bridge |
+| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | URL | URL обратного вызова |
 | - | \ _connected | Флаг, указывающий, подключен ли мост к серверу Nuki |
 | - | bridgeId | ID моста / сервера |
 | - | bridgeIp | IP-адрес моста |
@@ -149,7 +154,7 @@ _ ** отмеченные состояния будут обновлены в д
 | users._userName_ | dateUpdated | Дата обновления |
 | users._userName_ | allowFromDate | Разрешено с даты |
 | users._userName_ | allowWeekDays | Разрешенные будни <br> `{64: 'Monday', 32: 'Tuesday', 16: 'Wednesday', 8: 'Thursday', 4: 'Friday', 2: 'Saturday', 1: 'Sunday'}` |
-| users._userName_ | allowWeekDays | Разрешенные будни <br> `{64:« понедельник », 32:« вторник », 16:« среда », 8:« четверг », 4:« пятница », 2:« суббота », 1:« воскресенье »}` |
+| users._userName_ | allowWeekDays | Разрешенные будни <br> `{64:« Понедельник », 32:« Вторник », 16:« Среда », 8:« Четверг », 4:« Пятница », 2:« Суббота », 1:« Воскресенье »}` |
 | users._userName_ | allowFromTime | Разрешенное время (в минутах с полуночи) |
 | users._userName_ | allowUntilTime | Разрешено до времени (в минутах от полуночи) |
 
@@ -363,35 +368,57 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
-- (zefau) bump to stable release
+### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
+- (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (Zefau) bump to stable release
+
+### 0.9.12 (2019-05-16)
+- (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))
+
+### 0.9.11 (2019-05-13)
+- (Zefau) added info-message when setting refresh rate to less than 10 seconds
+
+### 0.9.10 (2019-05-10)
+- (Zefau) added states to reflect current callbacks set on the Nuki Bridge as well as action to delete the callbacks
+- (Zefau) updated dependency of `nuki-bridge-api` to v1.5.0
+
+### 0.9.9 (2019-05-05)
+- (Zefau) updated dependency of `nuki-bridge-api` to v1.4.0
+
+### 0.9.8 (2019-05-05)
+Thanks to [@systemofapwne](https://github.com/systemofapwne) for testing and identifying quite a few bugs.
+
+- (Zefau) added delay between requests / actions applied on the Nuki Bridge (to prevent overload, see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+- (Zefau) fixed an issue causing the adapter to crash when polling was enabled, but Web API is not used (see [#10](https://github.com/Zefau/ioBroker.nuki2/issues/10))
+
+### 0.9.7 (2019-05-05)
+- (Zefau) added verification if callback URL is already added on Nuki Bridge (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.6 (2019-05-03)
-- (zefau) added Web Adapter as dependency
-- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
-- (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+- (Zefau) added Web Adapter as dependency
+- (Zefau) add warning when opening web / log view but Nuki Web API has not been setup
+- (Zefau) removed empty folders when Nuki Web API has not been setup 
+- (Zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
-* (zefau) Useless versions to fix incorrect configuration in `io-package.json`
+- (Zefau) Useless versions to fix incorrect configuration in `io-package.json`
 
 ### 0.9.3 (2019-03-22)
-* (zefau) Limited log retrieval to 1000 entries
+- (Zefau) Limited log retrieval to 1000 entries
 
 ### 0.9.2 (2019-02-11)
-* (zefau) Updated dependency
+- (Zefau) Updated dependency
 
 ### 0.9.1 (2019-02-10)
-* (zefau) Added Web Interface to view logs
+- (Zefau) Added Web Interface to view logs
 
 ### 0.9.0 (2019-02-09)
-* (zefau) Using both Bridge API and Web API
-* (zefau) Support for multiple bridges
-* (zefau) Support for discovery within admin panel
-* (zefau) Additional states for bridges and better separation between software / hardware bridge
-  * retrieve the basic and advanced configuration from your lock
-  * retrieve all users having access to your lock
+- (Zefau) Using both Bridge API and Web API
+- (Zefau) Support for multiple bridges
+- (Zefau) Support for discovery within admin panel
+- (Zefau) Additional states for bridges and better separation between software / hardware bridge
+  - retrieve the basic and advanced configuration from your lock
+  - retrieve all users having access to your lock
 
 ## License
 The MIT License (MIT)

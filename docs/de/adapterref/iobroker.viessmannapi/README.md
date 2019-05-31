@@ -3,31 +3,33 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: aCRY0wLsVw0zfMJJdn+6vjJrhImfqImEc4PxWav+J/A=
+hash: E+E7xqiJjqeHgW33UbeLs5yc7G6Tp7c9OqAghBPYONY=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
-![Build-Status](https://travis-ci.org/thovid/ioBroker.viessmannapi.svg?branch=master)
-![Anzahl der Installationen](http://iobroker.live/badges/viessmannapi-stable.svg)
+![Build Status](https://travis-ci.org/thovid/ioBroker.viessmannapi.svg?branch=master)
+![Anzahl der Installationen](http://iobroker.live/badges/viessmannapi-installed.svg)
 
 # IoBroker.viessmannapi
-Dieser Adapter verbindet Ihr ioBroker-System über die Viessmann API mit Ihrer Viessmann-Zentralheizung. Voraussetzung ist, dass Ihre Heizungsanlage über einen Vitoconnect oder ein ähnliches Gerät mit dem Viessmann Server verbunden ist. Alle aktivierten Informationen, die von der API bereitgestellt werden, werden regelmäßig (alle 60 Sekunden) abgefragt und in Status geschrieben.
+=================
 
-Beachten Sie, dass dies ein privates Projekt ist, verwenden Sie es daher auf eigenes Risiko. Es wird von Viessmann nicht unterstützt oder befürwortet!
+Dieser Adapter verbindet Ihr ioBroker-System über die Viessmann-API mit Ihrer Viessmann-Zentralheizung. Voraussetzung ist, dass Ihre Heizungsanlage über einen Vitoconnect oder ein ähnliches Gerät mit dem Viessmann Server verbunden ist. Alle von der API bereitgestellten aktivierten Informationen werden regelmäßig (alle 60 Sekunden) abgefragt und in Status geschrieben.
+
+Beachten Sie, dass dies ein privates Projekt ist. Die Verwendung erfolgt auf eigenes Risiko. Es wird von Viessmann weder unterstützt noch unterstützt!
 
 ## Installation
-Da sich dieser Adapter in einem frühen Entwicklungsstadium befindet, kann die Installation über das neueste Repository des ioBroker durchgeführt werden. Geben Sie in den Adaptereinstellungen den Benutzernamen und das Kennwort Ihres Viessmann-Kontos ein. Wenn alles gut geht, sollten unter `viessmannapi.X` Zustände angezeigt werden. Erste Werte sollten nach 60 Sekunden eintreffen.
+Da sich dieser Adapter in einem frühen Entwicklungsstadium befindet, kann die Installation über das 'neueste' Repository von ioBroker erfolgen. Geben Sie in den Adaptereinstellungen den Benutzernamen und das Passwort Ihres Viessmann-Kontos ein. Wenn alles gut geht, sollten unter `viessmannapi.X` Zustände angezeigt werden. Erste Werte sollten nach 60 Sekunden eintreffen.
 
 ## Zustände
 Die spezifischen Zustände können von Ihrer Installation abhängen. Beispiele sind
 
-- viessmannapi.0.wärmeversorgung.kessel.sensoren.Temperatur.Hauptwert - Kesseltemperatur
-- "viessmannapi.0.wärmekreise.0.wärmekurve.shift" und "Steigung" - Verschiebung und Neigung bestimmen die Heizkurve
-- viessmannapi.0.wärmeversorgung.0.betriebsarten.aktiver.wert - aktueller Betriebsmodus; "Brauchwasser" bedeutet beispielsweise nur heißes Wasser, "Brauchwasserheizung" bedeutet heißes Wasser und Heizung
-- `viessmannapi.0.wärmungssensoren.temperatur.außer.wert— - vom externen Sensor gemessene Außentemperatur
+- `viessmannapi.0.heating.boiler.sensors.temperature.main.value` - Kesseltemperatur
+- `viessmannapi.0.heating.circuits.0.heating.curve.shift` und` slope` - Shift und Slope bestimmen die Heizkurve
+- `viessmannapi.0.heating.circuits.0.operating.modes.active.value` - aktueller Betriebsmodus; Beispielsweise bedeutet "Brauchwasser" nur heißes Wasser, "Brauchwasser und Heizen" bedeutet heißes Wasser und Heizen
+- `viessmannapi.0.heating.sensors.temperature.outside.value` - vom externen Fühler gemessene Außentemperatur
 
 ## Aktionen
-Einige Funktionen bieten *Aktionen* zum Ändern einiger Eigenschaften. Eine Aktion kann über die Methode `sendTo` aufgerufen werden. Die Syntax sieht so aus:
+Einige Funktionen bieten *Aktionen* zum Ändern einiger Eigenschaften. Eine Aktion kann über die Methode `sendTo` aufgerufen werden. Die Syntax sieht folgendermaßen aus:
 
 ```javascript
 sendTo('viessmannapi.0', 'action', {
@@ -37,58 +39,58 @@ sendTo('viessmannapi.0', 'action', {
 });
 ```
 
-Bei Aufruf oben würde die Zieltemperatur für das Komfortprogramm auf 20 °C eingestellt.
+Der obige Aufruf würde die Zieltemperatur für das Komfortprogramm auf 20 °C einstellen.
 
 ### Unterstützte Aktionen
-Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, dass abhängig von Ihrer Heizungsinstallation möglicherweise einige Aktionen nicht verfügbar sind oder andere Aktionen verfügbar sind, hier jedoch nicht dokumentiert).
+Im Folgenden finden Sie eine Liste der unterstützten Aktionen (Beachten Sie, dass abhängig von Ihrer Heizungsinstallation einige Aktionen möglicherweise nicht verfügbar sind oder andere Aktionen verfügbar, aber hier nicht dokumentiert sind).
 
 | Funktion | Aktion | Feld | Anmerkungen |
 |---------------------------------------------------|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| **Heizkreis.X.Zirkulationsplan** | | | |
-| | setSchedule | | Legt den Zeitplan für den Umlauf des Kreises 'X' fest |
-| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
-| **Heizkreise.X.Wärmekurve** | | | |
-| | | `slope` (Anzahl, min: 0,2, max: 3,5, Schritt: 0,1) | |
-| | | `shift` (Anzahl, min: -13, max ": 40, Schritt: 1) | |
-| | | "shift" (Anzahl, min: -13, max ": 40, Schritt: 1) | |
-| **Heizungsschaltungen.X.Hitzeplan** | | | |
+| **Heizkreise.X.Zirkulationsplan** | | | |
+| | setSchedule | | Legt den Zeitplan für den Umlauf des Stromkreises 'X' | fest |
+| | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'Ein', Standard: 'Aus') | siehe Beschreibung des Zeitplantyps unten |
+| **Heizkreise.X.Heizkurve** | | | |
+| | | `slope` (Anzahl, min: 0,2, max: 3,5, Schrittweite: 0,1) | |
+| | | `shift` (Anzahl, min: -13, max ": 40, Schrittweite: 1) | |
+| | | `shift` (Zahl, min: -13, max": 40, Schrittweite: 1) | |
+| **Heizkreise.X.Heizungsplan** | | | |
 | | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Zeitplantyps unten |
-| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Normal', Standard: 'Reduziert' | Siehe Beschreibung des Schedule-Typs unten |
-| **Heizungsschaltungen.X.Betriebsarten.aktiv** | | | |
-| | | `mode` (string, enum: ["standby", "dhw", "dhwAndHeating", "forcedReduced", "forcedNormal"]) | erforderlich |
+| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Schedule-Typs unten |
+| **Heizkreise.X.Betriebsarten.aktiv** | | | |
+| | | `mode` (Zeichenfolge, Aufzählung: ["Standby", "Brauchwasser", "BrauchwasserundHeizung", "Zwangsreduziert", "Zwangsnormal"]) | erforderlich |
 | | | `mode` (string, enum: [" standby "," dhw "," dhwAndHeating "," forcedReduced "," forcedNormal "]) | erforderlich |
-| **Heizungsschaltungen.X.Betriebsprogramme.defür** | | | |
-| | | `targetTemperature` (Anzahl, min: 4, max: 37, Schritt: 1) | erforderlich |
-| | | `targetTemperature` (Anzahl, min: 4, max: 37, Schritt: 1) | erforderlich |
-| | aktiviere | | Keine Felder (leeres Objekt senden), aktiviert den Komfortmodus |
-| | deaktivieren | | Keine Felder (leeres Objekt senden), deaktiviert den Komfortmodus |
-| **Heizungsschaltungen.X.Betriebsprogramme.co** | | | |
-| | | `temperature` (Anzahl, min: 3, max: 37, Schritt: 1) | optional |
-| | | "Temperatur" (Anzahl, min: 3, max: 37, Schritt: 1) | optional |
+| **Heizkreise.X.Betriebsprogramme** | | | |
+| | | `targetTemperature` (Anzahl, min: 4, max: 37, Schrittweite: 1) | erforderlich |
+| | | `targetTemperature` (Zahl, min: 4, max: 37, Schrittweite: 1) | erforderlich |
+| | aktivieren | | Keine Felder (leeres Objekt senden), aktiviert den Komfortmodus |
+| | deaktivieren | | Keine Felder (leeres Objekt senden), Komfortmodus deaktivieren |
+| ** Heizkreise.X.Betriebsprogramme | | |
+| | | `temperature` (Anzahl, min: 3, max: 37, Schrittweite: 1) | optional |
+| | | `Temperatur` (Zahl, min: 3, max: 37, Schrittweite: 1) | optional |
 | | deaktivieren | | Keine Felder (leeres Objekt senden), deaktiviert den Eco-Modus |
-| **Heizungsschaltungen.X.Betriebsprogramme.urlaub** | | | |
+| **Heizkreise.X.Betriebsprogramme.Urlaub** | | | |
 | | | `start` (Zeichenfolge) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
 | | | `end` (Zeichenfolge) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
 | | | `end` (string) | Erforderliches, unbekanntes Format (wahrscheinlich irgendeine Form von Datumszeichenfolge?) |
-| | außerplanmäßig | | Keine Felder (leeres Objekt senden), deaktiviert Ferienprogramm |
-| **Heizungsschaltungen.X.Betriebsprogrammenormal** | | | |
-| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schritt: 1) | erforderlich |
-| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schritt: 1) | erforderlich |
-| **Heizungsschaltungen.X.Betriebsprogramme reduziert** | | | |
-| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schritt: 1) | erforderlich |
-| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schritt: 1) | erforderlich |
-| **heizung.dhw.oneTimeCharge** | | | |
-| | aktiviere | | Keine Felder (leeres Objekt senden) Aktiviert eine einmalige Ladung des Warmwasserspeichers. |
-| | deaktivieren | | Keine Felder (leeres Objekt senden) Deaktiviert eine einmalige Ladung des Warmwasserspeichers. |
-| **heiztemperatortemperatur** | | | |
-| | | `temperature` (Anzahl, min: 10, max: 60, Schritt: 1) | erforderlich |
-| | | Temperatur (Anzahl, min: 10, max: 60, Schritt: 1) | erforderlich |
-| **heizung.dhw.plan** | | | |
-| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
-| | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplans unter |
+| | ungeplant | | Keine Felder (leeres Objekt senden), deaktiviert Ferienprogramm |
+| **Heizkreise.X.Betriebsprogramme.normal** | | | |
+| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schrittweite: 1) | erforderlich |
+| | | `targetTemperature` (Zahl, min: 3, max: 37, Schrittweite: 1) | erforderlich |
+| **Heizkreise.X.Betriebsprogramme.reduziert** | | | |
+| | | `targetTemperature` (Anzahl, min: 3, max: 37, Schrittweite: 1) | erforderlich |
+| | | `targetTemperature` (Zahl, min: 3, max: 37, Schrittweite: 1) | erforderlich |
+| **heizen.dhw.oneTimeCharge** | | | |
+| | aktivieren | | Keine Felder (leeres Objekt senden). Aktiviert die einmalige Aufladung des Warmwasserspeichers. |
+| | deaktivieren | | Keine Felder (leeres Objekt senden). Deaktiviert die einmalige Aufladung des Warmwasserspeichers. |
+| **heizung.dhw.temperatur** | | | |
+| | | `temperature` (Anzahl, min: 10, max: 60, Schrittweite: 1) | erforderlich |
+| | | `Temperatur` (Zahl, min: 10, max: 60, Schrittweite: 1) | erforderlich |
+| **heizung.dhw.zeitplan** | | | |
+| | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'Ein', Standard: 'Aus') | Siehe Beschreibung des Zeitplantyps unten |
+| | | `newSchedule` (Typ: Schedule, siehe unten, Modi: 'on', Standard: 'off') | Siehe Beschreibung des Zeitplantyps unten |
 
 ### Zeitplantyp
-Die meisten Aktionen verwenden einfache Datentypen (Zahlen, Zeichenfolgen). Bei einigen Aktionen können Zeitpläne festgelegt werden. Ein Zeitplan sieht so aus:
+Die meisten Aktionen verwenden einfache Datentypen (Zahlen, Zeichenfolgen). Einige Aktionen ermöglichen das Festlegen von Zeitplänen. Ein Zeitplan sieht folgendermaßen aus:
 
 ```javascript
 {
@@ -116,10 +118,10 @@ Die meisten Aktionen verwenden einfache Datentypen (Zahlen, Zeichenfolgen). Bei 
 }
 ```
 
-Für jeden Tag muss ein Array bereitgestellt werden, das die "Zeitpläne" für diesen Tag enthält. Ein einzelner Eintrag besteht aus Start- und Endzeit, dem geplanten "Modus" und der Position. Die unterstützten Modi hängen vom geplanten Zeitplan ab (siehe Tabelle der unterstützten Funktionen oben). Außerhalb der geplanten Elemente wird der Standardmodus verwendet, siehe obige Tabelle. Im obigen Beispiel soll am Montag zwischen 5:30 und 10:00 Uhr und zwischen 11:00 und 12:30 Uhr etwas eingeschaltet sein. Außerhalb dieser Zeitintervalle ist der Standardmodus ("Aus") geplant.
+Für jeden Tag muss ein Array bereitgestellt werden, das die "Zeitpläne" für diesen Tag enthält. Ein einzelner Eintrag besteht aus der Start- und Endzeit, dem geplanten "Modus" und der Position. Welche Modi unterstützt werden, hängt von der Planung ab (siehe Tabelle der unterstützten Funktionen oben). Außerhalb der geplanten Elemente wird der Standardmodus verwendet (siehe Tabelle oben). Im obigen Beispiel soll etwas am Montag zwischen 5:30 und 10:00 Uhr und zwischen 11:00 und 12:30 Uhr "an" sein. Außerhalb dieser Zeitintervalle ist der Standardmodus ("Aus") geplant.
 
-### Alle Funktionen abfragen
-Um eine Liste aller verfügbaren Funktionen mit allen verfügbaren Aktionen zu erhalten, senden Sie einfach die Nachricht `describe` an eine laufende Adapterinstanz. Das Ergebnis ist ein Array mit allen verfügbaren Features, die beispielsweise als JSON-String über `JSON.stringify()` gedruckt werden können.
+### Abfrage aller Funktionen
+Um eine Liste aller verfügbaren Funktionen mit allen verfügbaren Aktionen zu erhalten, senden Sie einfach die Nachricht `describe` an eine aktive Adapterinstanz. Das Ergebnis ist ein Array aller verfügbaren Funktionen, die beispielsweise über `JSON.stringify()` als JSON-String ausgedruckt werden können.
 
 *Beispiel:*
 
@@ -133,14 +135,14 @@ sendTo('viessmannapi.0', 'describe', {}, (result) => {
 Dieses Skript fragt alle verfügbaren Funktionen ab und druckt sie in das Protokoll.
 
 ## Anmerkungen
-- Dieser Adpater befindet sich in einer frühen Entwicklung! Erwarten Sie Fehler, und melden Sie Fehler auf github (https://github.com/thovid/ioBroker.viessmannapi/issues ").
+- Dieser Adpater ist in der frühen Entwicklung! Erwarten Sie Bugs und melden Sie Bugs hier auf github (https://github.com/thovid/ioBroker.viessmannapi/issues ").
 
 ## Legal
 - Viessmann und Vitoconnect sind eingetragene Marken der Viessmann Werke GmbH & Co. KG.
 
-- Dieses Projekt ist ein privates Projekt und wird * * von der Viessmann Werke GmbH & Co. KG nicht offiziell unterstützt oder befürwortet. Die Verwendung erfolgt auf eigenes Risiko.
+- Dieses Projekt ist ein privates Projekt und wird von der Viessmann Werke GmbH & Co. KG *nicht* offiziell unterstützt oder unterstützt. Die Verwendung erfolgt auf eigenes Risiko.
 
-- Bei Fragen kontaktieren Sie mich bitte über Github!
+- Falls Sie Fragen haben, kontaktieren Sie mich bitte per Github!
 
 ## Changelog
 ### 1.3.2 (2019/02/10)

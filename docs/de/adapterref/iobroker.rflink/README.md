@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
+hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
 ---
 ![Logo](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -13,13 +13,15 @@ hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.rflink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
-# IoBroker.rflink ===================
-Dieser Adapter kommuniziert mit [rflink](http://www.nemcon.nl/blog2/), die auf Arduino Mega- und RFC 433MHz / 866MHz / 2,6Gz-Kommunikation aufbauen.
-Dient zum Empfangen der Daten von Wettersensoren und drahtlosen Leistungsschaltern.
+# IoBroker.rflink
+=================
+
+Dieser Adapter kommuniziert mit [rflink](http://www.nemcon.nl/blog2/), die auf Arduino-Mega- und RFC-Kommunikation mit 433 MHz / 866 MHz / 2,6 Gz aufbauen.
+Wird zum Empfangen der Daten von Wettersensoren und Funknetzschaltern verwendet.
 
 ## Voraussetzungen
-Um die serielle Schnittstelle unter Windows verwenden zu können, muss VS die Binärdatei erstellen.
-Um die serielle Schnittstelle unter Linux verwenden zu können, ist der Build-Essential erforderlich. Um es zu installieren, schreiben Sie einfach:
+Um die serielle Schnittstelle unter Windows zu verwenden, muss VS die Binärdatei erstellen.
+Um die serielle Schnittstelle unter Linux nutzen zu können, ist ein Build erforderlich. Um es zu installieren, schreiben Sie einfach:
 
 ```
 sudo apt-get update
@@ -27,32 +29,36 @@ sudo apt-get install build-essential -y
 ```
 
 ## Verwendungszweck
-Um das Lernen von Sensoren zu ermöglichen, müssen Sie "Inclusion Mode" aktivieren. Der Einschlussmodus ist standardmäßig für 5 Minuten (300000 ms) aktiviert und wird nach 5 Minuten automatisch deaktiviert.
+Um das Lernen von Sensoren zu ermöglichen, müssen Sie den "Einschlussmodus" aktivieren. Der Einschlussmodus wird standardmäßig für 5 Minuten (300000 ms) aktiviert und nach 5 Minuten automatisch deaktiviert.
 
-Um den Einschlussmodus für immer zu aktivieren, setzen Sie "Einschluss-Timeout" einfach auf 0.
+Um den Einschlussmodus für immer zu aktivieren, setzen Sie einfach "Einschlusszeitlimit" auf 0.
 
 ## Paar
-Die Geräte erhalten die neue Adresse bei jedem Batteriewechsel.
+Die Geräte erhalten bei jedem Batteriewechsel die neue Adresse.
 
 Nach dem Batteriewechsel muss also neu gelernt werden.
 
-Drücken Sie dazu vor dem Einlegen der Batterie die Pair-Taste und das Gerät wird mit der neuen Adresse eingelernt.
+Drücken Sie dazu die Pair-Taste kurz vor dem Einlegen des Akkus und das Gerät wird mit neuer Adresse eingelernt.
 
-## Automatisches Pairing
-Wenn Sie nicht so viele Sensoren in der Nähe haben, können Sie die automatische erneute Kopplung aktivieren.
+## Auto Pairing
+Wenn Sie nicht so viele Sensoren in der Nähe haben, können Sie die automatische Neukoppelung aktivieren.
 
-Dies ist nur möglich, wenn das Gerät eindeutig identifiziert werden kann.
+Es ist nur möglich, wenn das Gerät eindeutig identifiziert werden kann.
 
-Das bedeutet, dass nur ein Gerät mit dieser Marke und diesem Typ vorhanden ist. (ZB nur ein Temperatursensor einer Marke)
+Das bedeutet, dass nur ein Gerät mit dieser Marke und diesem Typ vorhanden ist. (Zum Beispiel nur ein Temperatursensor von einer Marke)
 
-Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, wird der automatische Kopplungsmodus automatisch deaktiviert und problematische Sensoren werden mit Blitzlicht angezeigt.
+Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, deaktiviert es automatisch den Auto-Re-Pairing-Modus und zeigt problematische Sensoren mit Blitz an.
 
-## Rohbefehle senden
-Der Benutzer hat die Möglichkeit, rohe Befehle an das Gerät zu senden. Schreiben Sie einfach Ihren Befehl in das in [Hier](http://www.nemcon.nl/blog2/protref) beschriebene Formular.
+## Raw-Befehle senden
+Der Benutzer hat die Möglichkeit, unformatierte Befehle an das Gerät zu senden. Schreiben Sie einfach Ihren Befehl in der beschriebenen Form [Hier](http://www.nemcon.nl/blog2/protref).
 
-E.g: ```10;AB400D;00004d;1;OFF;```. Bitte lesen Sie die Dokumentation, um die Befehle zu verstehen.
+Zum Beispiel: ```10;AB400D;00004d;1;OFF;```. Bitte lesen Sie die Dokumentation, um die Befehle zu verstehen.
 
 ## Changelog
+
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
 

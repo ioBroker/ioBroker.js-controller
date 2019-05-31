@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
+hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,20 +16,20 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 # IoBroker Discover Adapter
 ** Geräte mit allen bekannten Methoden erkennen. **
 
-Dies sind spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.
-Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
+Hierbei handelt es sich um spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.
+Gerade jetzt kann es per Ping, UPnP (seriell geplant) erkennen.
 
-## Eigentlich unterstützt
-### Automatisch erkannt
+## Wird aktuell unterstützt
+Automatisch erkannt
 - Bose Soundtouch
 - Broadlink
 - Chromecast
-- Daikin-Klimatisierung
+- Daikin-Klimasteuerung
 - deConz
 - Denon / Marantz
 - DoorBird
 - ebus
-- ekey
+- Schlüssel
 - Energiemanager (E.ON / Solarwatt)
 - Epson Stylus PX830
 - Fakeroku
@@ -38,30 +38,31 @@ Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
 - Fronius
 - G-Homa-Stecker
 - Harmonie
-- Home Assistant
+- Heimassistent
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
+- Plex
 - InfluxDB
 - KLF-200
 - KNX
 - Landroid
 - LGTV
-- Lightify
+- Erleuchte
 - Loxone
 - Lupusec
 - MAX! Würfel
 - MegaD
 - Miele
-- Mi Zuhause Smarthome
-- MiLight-Brücke (v6)
+- Mi Home Smarthome
+- MiLight Brücke (v6)
 - Musiksendung
-- Mysensors USB / Seriell (9600, 38400, 57600, 115200)
+- Mysensors USB / Serial (9600, 38400, 57600, 115200)
 - Nuss
 - OpenHAB
 - Ping
 - Proxmox
-- RFLink (Seriell 57600 Baud)
+- RFLink (seriell 57600 Baud)
 - SamsungTV
 - Sonnen
 - Sonos
@@ -74,12 +75,12 @@ Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
 - UPnP
 - Wifilight
 - Yamaha
-- Yeelight
+- Ja, Licht
 - Z-Wave USB (getestet mit Aeon Labs)
 
-### Als zusätzliche Adapter angeboten
+### Wird als zusätzlicher Adapter angeboten
 - Wolke
-- Verlauf (wenn keine SQL oder InfluxDB gefunden wurde)
+- Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
 - JavaScript
 - Info
@@ -92,24 +93,31 @@ Jetzt kann es per Ping UPnP (seriell geplant) erkennen.
 - B-Control-Em? (Blauer Fuchs)
 - cul / maxcul (Bluefox)
 - Foobar200 (Installateur)
-- fritzbox (ruhr70)
-- km200 (Frankjoke)
-- kodi (instalator)
+- Fritzbox (Ruhr70)
+- km200 (frankjoke)
+- kodi (Installateur)
 - megaesp (ausHaus)
 - Modbus (Bluefox)
 - mpd (instalator)
 - mqtt / mqtt-client (Bluefox)
-- onkyo (Bluefox)
-- owfs (Bluefox)
-- rpi2 (wenn ioBroker auf Himbeere läuft)
+- Onkyo (Bluefox)
+- Eulen (Bluefox)
+- rpi2 (wenn ioBroker auf Raspberry läuft)
 - rwe-smarthome (PArns)
 - s7 (Bluefox)
 - Smartmeter (Apollon77)
 - unifi (jens-maus)
-- Wolf
+- Wolf (lächelnder Bube)
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (thewhobox) Code refactoring
+* (thewhobox) add emby detection
+* (frankjoke) boradlink => broadlink2
+* (bluefox) Small fixes
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
 * (ldittmar) info Adapter added

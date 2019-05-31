@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
+hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
 ---
 ![Logo](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -14,15 +14,15 @@ hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
 ![NPM](https://nodei.co/npm/iobroker.mysensors.png?downloads=true)
 
 # IoBroker.mysensors
-Dieser Adapter kommuniziert mit [Mysensoren](http://www.mysensors.org) Seriell- oder Ethernet-Gateway (TCP oder UDP).
-Das in diesem Fall ausgewählte Ethernet-Gateway ioBroker ist ein Server, der Verbindungen erwartet.
+Dieser Adapter kommuniziert mit dem seriellen oder Ethernet-Gateway (TCP oder UDP).
+Das in diesem Fall ausgewählte Ethernet-Gateway ist ein Server, der Verbindungen erwartet.
 
 ## TCP Client
-Diese Option funktioniert nur in Verbindung mit TCP -> serielle Bridge wie [esp-link](https://github.com/jeelabs/esp-link).
+Diese Option funktioniert nur zusammen mit TCP & lt; = & gt; Serielle Brücke wie [esp-link](https://github.com/jeelabs/esp-link).
 
 ## Voraussetzungen
-Um die serielle Schnittstelle unter Windows verwenden zu können, muss VS die Binärdatei erstellen.
-Um die serielle Schnittstelle unter Linux verwenden zu können, ist Python2.7 erforderlich. Um sie zu installieren, schreibe einfach:
+Um die serielle Schnittstelle unter Windows zu verwenden, muss VS die Binärdatei erstellen.
+Um die serielle Schnittstelle unter Linux nutzen zu können, ist ein python2.7 unbedingt erforderlich. Um sie zu installieren, schreiben Sie einfach:
 
 ```
 sudo apt-get update
@@ -31,6 +31,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.2 (2018-09-17)
 * (Haba1234) Added new objects (library 2.3.x)
 * (Haba1234) Added support for sleeping nodes

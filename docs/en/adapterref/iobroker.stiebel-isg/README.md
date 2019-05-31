@@ -25,6 +25,9 @@ Help or hints are welcome.
 * stiebel-eltron/tecalor internet service gateway (ISG)   
 
 ## Changelog
+### 1.4.5
+* bugfix for false state for boolean-values
+
 ### 1.4.4
 * bugfix for error handling
 

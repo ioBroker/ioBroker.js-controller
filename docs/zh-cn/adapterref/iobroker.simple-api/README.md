@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
-title: 无题
-hash: 4U8lJIIGxhn3k259eO/5z8wWg2VNx2dMx9JD1xBOJr0=
+title: 简单的API
+hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
 ---
-![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)ioBrokersimple-api适配器=================
+![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
 ![安装数量](http://iobroker.live/badges/simple-api-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.simple-api.svg)
@@ -13,6 +13,7 @@ hash: 4U8lJIIGxhn3k259eO/5z8wWg2VNx2dMx9JD1xBOJr0=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.simple-api.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.simple-api.png?downloads=true)
 
+#Simple-api
 这是RESTFul接口，用于从ioBroker读取对象和状态，以及通过HTTP Get / Post请求写入/控制状态。
 
 ##用法
@@ -86,7 +87,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    获取具有一个请求的许多状态，作为具有ID作为键的对象返回，并且将val / ts作为子对象返回
+    获取具有一个请求的许多状态，作为具有ID作为键的对象返回，并且作为子对象返回val / ts
 
 ### Set
 打电话：

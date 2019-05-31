@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
-title: iobroker.vis
-hash: tgBZRQnCISMUFyGJBWspfDEkAkS7mZLYgeW/cmKk/6U=
+title: 可视化
+hash: 60JCUhzZFQHPMJigoPKkQ04ND1cv/I2ed0xjXZyjePQ=
 ---
 ![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -12,13 +12,13 @@ hash: tgBZRQnCISMUFyGJBWspfDEkAkS7mZLYgeW/cmKk/6U=
 ![下载](https://img.shields.io/npm/dm/iobroker.vis.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis.png?downloads=true)
 
-＃iobroker.vis ============
-iobroker平台的WEB可视化。
+＃可视化
+ioBroker平台的WEB可视化。
 
 ##安装和文档
-![演示界面](https://github.com/GermanBluefox/DashUI/raw/master/images/user0.png)![演示界面](https://github.com/GermanBluefox/DashUI/raw/master/images/user7.png)
+![演示界面](img/user0.png)![演示界面](../../../en/adapterref/iobroker.vis/img/user7.png)
 
-[在线演示](https://iobroker.net:8080)
+[在线演示](https://iobroker.click/)
 
 ##对象的绑定
 通常，大多数小部件都具有ObjectID属性。并且此属性可以与对象ID的某个值绑定。
@@ -34,29 +34,29 @@ Patten有以下格式：
 
 支持以下操作：
 
- -  \ *  - 乘以。参数必须在括号中，如“*（4）”。在此示例中，我们将值乘以4。
- -  \ +  - 添加。参数必须在括号中，例如“+（4.5）”。在此示例中，我们添加到值4.5。
-- \- - 减去。参数必须在括号中，例如“ - （ -  674.5）”。在此示例中，我们从值-674.5中减去。
- -  /  - 分开。参数必须在括号中，例如“/(0.5)”。在此示例中，我们将值除以0.5。
- - ％ -  modulo。参数必须在括号中，例如“％（5）”。在这个例子中，我们采用5的模数。
- - 围绕价值。
- -  round（N） - 在点之后用N个位置舍入值，例如34.678; round（1）=> 34.7
- - 十六进制 - 将值转换为十六进制值。所有字母都是较低的。
- -  hex2  - 将值转换为十六进制值。所有字母都是较低的。如果值小于16，那么将添加前导零。
- - 十六进制 - 与十六进制相同，但是上部套管。
- -  HEX2  - 与hex2相同，但是上部套管。
- - 日期 - 根据给定格式格式化日期。格式与[iobroker.javascript]中的格式相同（https://github.com/iobroker/iobroker.javascript/blob/master/README.md#formatdate）
- -  min（N） - 如果值小于N，则取N，否则值
- -  max（M） - 如果值大于M，则取M，否则值
- -  sqrt  - 平方根
- -  pow（n） -  N的力量。
- - 战俘 -  2的力量。
- - 楼层 -  Math.floor
- -  ceil  -  Math.ceil
- -  random（R） -  Math.random（）* R，如果没有参数，则只是Math.random（）
- -  formatValue（decimals） - 根据系统设置格式化值并使用小数
- - 日期（格式） - 格式值作为日期。格式如下：“YYYY-MM-DD hh：mm：ss.sss”
- -  array（element1，element2 [，element3，element4]） - 返回索引的元素。例如：{id.ack; array（ack为false，ack为true）}
+ - `\ *` - 乘法。参数必须在括号中，如“*（4）”。在此示例中，我们将值乘以4。
+ - `\ +` - 添加。参数必须在括号中，例如“+（4.5）”。在此示例中，我们添加到值4.5。
+ - `\ -`  - 减去。参数必须在括号中，例如“ - （ -  674.5）”。在此示例中，我们从值-674.5中减去。
+ - `/` - 分裂。参数必须在括号中，例如“/(0.5)”。在此示例中，我们将值除以0.5。
+ - `％` -  modulo。参数必须在括号中，例如“％（5）”。在这个例子中，我们采用5的模数。
+ - 'round`  - 围绕值。
+ - `round（N）` - 在点之后用N个位置舍入值，例如34.678; round（1）=> 34.7
+ - `hex`  - 将值转换为十六进制值。所有字母都是较低的。
+ - `hex2`  - 将值转换为十六进制值。所有字母都是较低的。如果值小于16，那么将添加前导零。
+ - `HEX`  - 与十六进制相同，但是上部套管。
+ - `HEX2`  - 与hex2相同，但是上部套管。
+ - `date`  - 根据给定格式的格式日期。格式与[iobroker.javascript]中的格式相同（https://github.com/iobroker/iobroker.javascript/blob/master/README.md#formatdate）
+ - `min（N）` - 如果value小于N，取N，elsewise值
+ - `max（M）` - 如果值大于M，取M，elsewise值
+ - `sqrt`  - 平方根
+ - `pow（n）` -  N的力量。
+ - `pow`  -  2的力量。
+ - `floor`  -  Math.floor
+ - `ceil`  -  Math.ceil
+ - `random（R）` -  Math.random（）* R，如果没有参数，则只是Math.random（）
+ - `formatValue（decimals）` - 根据系统设置格式化值并使用小数
+ - `date（format）` - 格式值作为日期。格式如下：“YYYY-MM-DD hh：mm：ss.sss”
+ - `array（element1，element2 [，element3，element4]）` - 返回索引的元素。例如：`{id.ack; array（ack is false，ack is true）}`
 
 您可以在任何文本中使用此模式，例如
 
@@ -70,7 +70,7 @@ My calculations with {objectID1;operation1;operation2;...} are {objectID2;operat
 #{objectRed;/(100);*(255);HEX2}{objectGreen;HEX2}{objectBlue;HEX2}
 ```
 
-要在对象id结尾处显示对象的时间戳“.ts”或“.lc”（对于最后一次更改），例如：
+要在对象id结尾处显示对象写入时间戳`.ts`或`.lc`（对于最后一次更改），例如：
 
 ```
 Last change: {objectRed.lc;date(hh:mm)}
@@ -82,116 +82,122 @@ Last change: {objectRed.lc;date(hh:mm)}
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
 ```
 
-```{h:height;w:width;h*w}``` will be interpreted as function:
+`{h:height;w:width;h*w}`将被解释为函数：
 
 ```
-
-value =（function（）{var h =“10”; var w =“20”;返回Math.max（20，Math.sqrt（h *h + w* w））;}）（）;
-
+value = (function () {
+    var h = "10";
+    var w = "20";
+    return Math.max(20, Math.sqrt(h*h + w*w));
+})();
 ```
 
-You can use *any* javascript functions. Arguments must be defined with ':', if not, it will be interpreted as formula.
+您可以使用* any * javascript函数。必须使用'：'定义参数，否则，它将被解释为公式。
 
-Take care about types. All of them defined as strings. To be sure, that value will be treated as number use parseFloat function.
-
-```
-
-{height}和{width} = {h：height; w：width; Math.max（20，Math.sqrt（Math.pow（parseFloat（h），2）+ Math.pow（parseFloat（w））的斜边， 2）））}
+注意类型。所有这些都定义为字符串。可以肯定的是，该值将被视为数字使用parseFloat函数。
 
 ```
-
-### Special bindings
-There are a number different internal bindings to provide additional information in views:
-* username - shows logged in user
-* view - name of actual view
-* wname - widget name
-* widget - is an object with all data of widget. Can be used only in JS part, like {a:a;widget.data.name}
-* wid - name of actual widget
-* language - can be "de", "en" or "ru".
-* instance - browser instance
-* login - if login required or not (e.g. to show/hide logout button)
-
-Note: to use ":" in calculations (e.g. in string formula) use "::" instead.
-
-**Remember**, that style definitions will be interpreted as bindings, so use ```{{style: value}}``` or just
-
+Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Math.pow(parseFloat(h), 2) + Math.pow(parseFloat(w), 2)))}
 ```
 
-{style：value}
+###特殊绑定
+有许多不同的内部绑定可在视图中提供其他信息：
+
+*`username`  - 显示登录用户
+*`view`  - 实际视图的名称
+*`wname`  - 小部件名称
+*`widget`  - 是一个包含widget的所有数据的对象。只能在JS部分中使用，例如`{a：a; widget.data.name}`
+*`wid`  - 实际小部件的名称
+*`language`  - 可以是`de`，`en`或`ru`。
+*`instance`  - 浏览器实例
+*`login`  - 如果需要登录（例如显示/隐藏登出按钮）
+
+注意：在计算中使用“：”（例如在字符串公式中）使用“::”代替。
+
+**请记住**，样式定义将被解释为绑定，因此请使用`{{style: value}}`或仅使用
 
 ```
+{
+	style: value
+}
+```
 
-for that.**
+为了那个原因。
 
-## Filters
-To visualise on the one view thw whole number of widgets you can use filters to reduce the amount of widgets simultaneously shown on the view.
+##过滤器
+要在整个窗口小部件的一个视图上可视化，您可以使用过滤器来减少视图上同时显示的窗口小部件的数量。
 
-Every widget has a field "filter". If you set it to some value, e.g. "light", so you can use other widget (bars - filters, filter - dropdown) to control which filter is actually active.
+每个小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`来控制哪个过滤器实际处于活动状态。
 
-## Control interface
-Vis creates 3 variables:
+##控制界面
+Vis创建3个变量：
 
-- control.instance - Here the browser instance should be written or FFFFFFFF if every browser must be controlled.
-- control.data     - Parameter for command. See specific command description.
-- control.command  - Command name. Write this variable triggers the command. That means before command will be written the "instance" and "data" must be prepared with data.
+ - `control.instance`  - 如果必须控制每个浏览器，那么应该写入浏览器实例或FFFFFFFF。
+ - `control.data`  - 命令的参数。请参阅特定命令说明。
+ - `control.command`  - 命令名。写这个变量会触发命令。这意味着在编写命令之前，必须用数据准备“实例”和“数据”。
 
-Commands:
+命令：
 
-* alert - show alert window in vis. "control.data" has following format "message;title;jquery-icon". Title and jquery-icon are optional. Icon names can be found [here](http://jqueryui.com/themeroller/). To show icon "ui-icon-info" write ```Message;;info```.
-* changeView - switch to desired view. "control.data" must have name of view. You can specify project name too as "project/view". Default project is "main".
-* refresh - reload vis, for instance after project is changed to reload on all browsers.
-* reload - same as refresh.
-* dialog - Show dialog window. Dialog must exist on view. One of:
+*`alert`  - 显示vis中的警报窗口。 “control.data”具有以下格式“message; title; jquery-icon”。 Title和jquery-icon是可选的。图标名称可以在[这里]找到（http://jqueryui.com/themeroller/）。要显示图标“ui-icon-info”，请写“``Message ;; info```。
+*`changeView`  - 切换到所需的视图。 “control.data”必须具有视图名称。您也可以将项目名称指定为“项目/视图”。默认项目是“主要”。
+*`refresh`  - 重新加载vis，例如在将项目更改为在所有浏览器上重新加载之后。
+*`reload`  - 与刷新相同。
+*`dialog`  - 显示对话框窗口。对话框必须存在于视图中。之一：
 
-    - "static    - HTML    - Dialog",
-    - "static    - Icon    - Dialog",
-    - "container - HTML    - view in jqui Dialog",
-    - "container - ext cmd - view in jqui Dialog",
-    - "container - Icon    - view in jqui Dialog",
-    - "container - Button  - view in jqui Dialog".
+     - `static  -  HTML  -  Dialog`，
+     - `static  -  Icon  -  Dialog`，
+     - `容器 -  HTML  - 在jqui Dialog`中查看，
+     - `container  -  ext cmd  -  jqui Dialog`中的视图，
+     - `容器 - 图标 - 在jqui Dialog`中查看，
+     - `容器 - 按钮 - 在jqui Dialog`中查看。
 
-    "control.data" must have id of dialog widget, e.g. "w00056".
-* dialogClose
-* popup - opens a new browser window. Link must be specified in "control.data", e.g. http://google.com
-* playSound - play sound file. The link to file is specified in "control.data", e.g. http://www.modular-planet.de/fx/marsians/Marsiansrev.mp3.
-  You can upload your own file in vis and let it play as for instance "/vis.0/main/img/myFile.mp3".
+    `control.data`必须具有对话框小部件的id，例如`w00056`。
 
-If user changes the view or at start the variables will be filled by vis with
+*`dialogClose`
+*`popup`  - 打开一个新的浏览器窗口。链接必须在`control.data`中指定，例如http://google.com
+*`playSound`  - 播放声音文件。文件的链接在`control.data`中指定，例如http://www.modular-planet.de/fx/marsians/Marsiansrev.mp3。
 
-- "control.instance": browser instance and ack=true
-- "control.data": project and view name in form "project/view", e.g. "main/view" (and ack=true)
-- "control.command": "changedView" and ack=true
+  您可以上传自己的文件并让它播放，例如`/vis.0/main/img/myFile.mp3`。
 
-You can write the JSON-string or Object into control.command as ```{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}```. In this case the instance and data will be taken from JSON object.
+如果用户更改视图或在开始时变量将由vis填充
 
-## Default view
-You can define for every view the desired resolution (Menu=>Tools=>Resolution). This is only the visual border in edit mode to show you the screen size on some specific device. In real time mode it will not be visible and all widgets outside of border will be visible.
+ - `control.instance`：浏览器实例和`ack = true`
+ - `control.data`：表单`project / view`中的项目和视图名称，例如`main / view`（和`ack = true`）
+ - `control.command`：`changedView`和`ack = true`
 
-Additionally you can define if this view must be used as default for this resolution.
+您可以将JSON-string或Object编写为control.command，如`{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}`。在这种情况下，实例和数据将从JSON对象中获取。
 
-So every time the **index.html** (without #viewName) is called, the best suitable for this resolution view will be opened.
-If only one view has *"Default"* flag, so this view will be opened independent from screen resolution or orientation.
+＃＃ 默认视图
+您可以为每个视图定义所需的分辨率（Menu => Tools => Resolution）。这只是编辑模式下的可视边框，用于显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
 
-E.g. you can create two views "Landscape-Mobile" and "Portrait-Mobile" and these two views will be switched automatically when you change the orientation or screen size.
+此外，您可以定义此视图是否必须用作此分辨率的默认视图。
 
-There is a helper widget "basic - Screen Resolution" that shows actual screen resolution and best suitable default view for this resolution.
+因此，每次调用`index.html`（无`#viewName`）时，将打开最适合此分辨率视图的视图。
+如果只有一个视图具有*“Default”*标志，则此视图将独立于屏幕分辨率或方向打开。
 
-## Settings
-### Reload if sleep longer than
-There is a rule, that after some disconnection period the whole VIS page will be reloaded to synchronise the project.
-You can configure it in menu "Settings...". If you set interval to "never" so the page will be never reloaded.
+例如。您可以创建两个视图“Landscape-Mobile”和“Portrait-Mobile”，当您更改方向或屏幕大小时，这两个视图将自动切换。
 
-### Reconnect interval
-Set the interval between the connection attempts if disconnected. If you will set 2 seconds, it will try to establish the connection every 2 seconds.
+有一个辅助窗口小部件“基本 - 屏幕分辨率”，显示实际屏幕分辨率和此分辨率的最佳合适默认视图。
 
-### Dark reconnect screen
-Sometimes (in the night) it is required to have dark loading screen. With this option you can set it.
+##设置
+###如果睡眠时间超过，请重新加载
+有一条规则，在一些断开期后，将重新加载整个VIS页面以同步项目。
+您可以在“设置...”菜单中对其进行配置。如果将interval设置为“never”，则永远不会重新加载页面。
 
-Notice that this settings is valid only for reconnection and not for the first connect.
+###重新连接间隔
+如果断开连接，请设置连接尝试之间的间隔。如果您将设置2秒，它将尝试每2秒建立一次连接。
 
-![Dark](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
+###黑暗重新连接屏幕
+有时（在夜晚）需要有暗加载屏幕。使用此选项，您可以设置它。
+
+请注意，此设置仅对重新连接有效，而对第一次连接无效。
+
+![暗](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
 ## Changelog
+### 1.2.0 (2019-05-07)
+* (bluefox) add translations
+
 ### 1.1.11 (2019-02-07)
 * (bluefox) improve Bool HTML
 
@@ -414,9 +420,9 @@ Notice that this settings is valid only for reconnection and not for the first c
 * (bluefox) change security settings
 
 ## License
- Copyright (c) 2013-2019 bluefox https://github.com/GermanBluefox <dogafox@gmail.com>,
+ Copyright (c) 2013-2019 bluefox, https://github.com/GermanBluefox <dogafox@gmail.com>,
  
- Copyright (c) 2013-2014 hobbyquaker https://github.com/hobbyquaker
+ Copyright (c) 2013-2014 hobbyquaker, https://github.com/hobbyquaker <hobbyquaker@gmail.com>,
  
  Creative Common Attribution-NonCommercial (CC BY-NC)
 

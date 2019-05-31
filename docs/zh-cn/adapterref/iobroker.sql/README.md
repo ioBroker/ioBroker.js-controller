@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: l2c8zbQEwlmW/cuzqi1sw27P9+p69YL1lwhBHDwjSAM=
+hash: sDjWoPBWbFNcjfaereDv7PV96w2+vmUMczc8BokyRRY=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -12,6 +12,7 @@ hash: l2c8zbQEwlmW/cuzqi1sw27P9+p69YL1lwhBHDwjSAM=
 ![下载](https://img.shields.io/npm/dm/iobroker.sql.svg)
 ![测试](https://travis-ci.org/ioBroker/ioBroker.sql.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sql.png?downloads=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
 
 #ioBroker.sql
 ==================================
@@ -62,7 +63,7 @@ GRANT ALL PRIVILEGES ON * . * TO 'iobroker'@'%';
 FLUSH PRIVILEGES;
 ```
 
-如果需要编辑* / etc / mysql / my.cnf *来设置绑定到IP-Address进行远程连接。
+如果需要编辑* / etc / mysql / my.cnf *来设置绑定到IP地址进行远程连接。
 
 **警告**：iobroker用户是“admin”。如果需要，为iobroker用户提供有限的权利。
 
@@ -120,11 +121,11 @@ FLUSH PRIVILEGES;
 
 |领域|输入|说明|
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | “Datapoints”表中的状态ID
-| ts | BIGINT / INTEGER |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间
+| id | INTEGER | “Datapoints”表中的状态ID |
+| ts | BIGINT / INTEGER |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间 |
 | val |真实|价值|
 |确认| BIT / BOOLEAN |被承认：0  - 不是ack，1  -  ack |
-| _from | INTEGER |来自“来源”表格的来源ID
+| _from | INTEGER |来自“来源”表格的来源ID |
 | q | INTEGER |质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
 *注意：* MS-SQL使用BIT，其他人使用BOOLEAN。 SQLite用于ts INTEGER和所有其他BIGINT。
@@ -143,11 +144,11 @@ FLUSH PRIVILEGES;
 
 |领域|输入|说明|
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | “Datapoints”表中的状态ID
-| ts | BIGINT |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间
+| id | INTEGER | “Datapoints”表中的状态ID |
+| ts | BIGINT |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间 |
 | val | TEXT |价值|
 |确认| BIT / BOOLEAN |被承认：0  - 不是ack，1  -  ack |
-| _from | INTEGER |来自“来源”表格的来源ID
+| _from | INTEGER |来自“来源”表格的来源ID |
 | q | INTEGER |质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
 *注意：* MS-SQL使用BIT，其他人使用BOOLEAN。 SQLite用于ts INTEGER和所有其他BIGINT。
@@ -166,11 +167,11 @@ FLUSH PRIVILEGES;
 
 |领域|输入|说明|
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | “Datapoints”表中的状态ID
-| ts | BIGINT |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间
+| id | INTEGER | “Datapoints”表中的状态ID |
+| ts | BIGINT |时间以毫秒为单位。可以使用“new Date（ts）”|转换为时间 |
 | val | BIT / BOOLEAN |价值|
 |确认| BIT / BOOLEAN |被承认：0  - 不是ack，1  -  ack |
-| _from | INTEGER |来自“来源”表格的来源ID
+| _from | INTEGER |来自“来源”表格的来源ID |
 | q | INTEGER |质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
 *注意：* MS-SQL使用BIT，其他人使用BOOLEAN。 SQLite用于ts INTEGER和所有其他BIGINT。
@@ -317,9 +318,12 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ＃＃ 默认设置
  -  **反弹间隔**：不要经常存储超过此间隔的值。
- -  **记录未更改的值**：每隔X秒另外写入值。
+ -  **记录未更改的值**：每隔X秒额外写入值。
  -  **与上一个值相对于log的最小差异**：两个值之间的最小间隔。
  -  **存储保留**：值存储在DB中的时间。
+
+## 1.9.5（2019-05-15）
+*（Apollon77）添加对nodejs 12的支持
 
 ## 1.9.4（2019-02-24）
 *（Apollon77）修复了几个较小的问题和主题

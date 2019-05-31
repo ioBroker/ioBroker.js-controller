@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
+hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
 ---
 ![商标](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -31,6 +31,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.2 (2018-09-17)
 * (Haba1234) Added new objects (library 2.3.x)
 * (Haba1234) Added support for sleeping nodes

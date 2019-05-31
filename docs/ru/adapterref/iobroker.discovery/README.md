@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
+hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -17,7 +17,7 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 ** Обнаружение устройств всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.
-Просто теперь он может обнаружить с помощью ping, UPnP (последовательный план).
+Просто теперь он может обнаруживать с помощью ping, UPnP (последовательный план).
 
 ## На самом деле поддерживается
 ### Обнаружено автоматически
@@ -29,7 +29,7 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 - Денон / Маранц
 - DoorBird
 - Ebus
-- эки
+- Эки
 - энергетический менеджер (E.ON / Solarwatt)
 - Epson Stylus PX830
 - Факероку
@@ -42,6 +42,7 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 - Homematic CCU (hm-rpc, hm-rega)
 - Домашний пилот
 - Philips HUE
+- Плекс
 - InfluxDB
 - KLF-200
 - KNX
@@ -75,7 +76,7 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 - Wifilight
 - Yamaha
 - Yeelight
-- Z-wave USB (протестировано в Aeon Labs)
+- Z-wave USB (протестировано Aeon Labs)
 
 ### Предлагается в качестве дополнительных адаптеров
 - Облако
@@ -110,6 +111,13 @@ hash: 5qtPepHUCothQAwl8EMjz/QoKY96eI6kxi01+i7qpr4=
 - xs1 (франкжук)
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (thewhobox) Code refactoring
+* (thewhobox) add emby detection
+* (frankjoke) boradlink => broadlink2
+* (bluefox) Small fixes
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.3.0 (2019-01-04)
 * (bluefox) Support of compact mode
 * (ldittmar) info Adapter added

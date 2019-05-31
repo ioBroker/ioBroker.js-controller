@@ -3,23 +3,23 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/cli.md
 title: Консольные команды для ioBroker
-hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
+hash: dhaADQZqpsslTjSaOFoQ5HJ8AK5tBBSCGOimap1w4jM=
 ---
 # Консольные команды для ioBroker
 Существует возможность выполнять некоторые операции, такие как запуск, остановка или обновление через консоль (windows и linux). Вот их описание.
 
-Примечание: все команды, начинающиеся с ```iobroker```, можно вызывать из любого каталога, где доступна команда iobroker. Команда ```npm install``` должна вызываться из корневого каталога ioBroker.
+Примечание: все команды, начинающиеся с ```iobroker```, могут вызываться из любого каталога, в котором доступна команда iobroker. Команда ```npm install``` должна вызываться из корневого каталога ioBroker.
 
 Возможны следующие команды:
 
 - [npm install iobroker.adapterName] (# npm-install-iobrokeradaptername)
-- [Иоброкер старт] (# iobroker-старт)
+- [iobroker start] (# iobroker-start)
 - [iobroker stop] (# iobroker-stop)
 - [iobroker restart] (# iobroker-restart)
 - [iobroker isrun] (# iobroker-isrun)
 - [iobroker start имя-адаптера.instance] (# iobroker-start-adapternameinstance)
-- [iobroker stop adaptorame_instance] (# iobroker-stop-adapternameinstance)
-- [iobroker перезапустить имя_адаптера.instance] (# iobroker-restart-adapternameinstance)
+- [iobroker stop stop adapterName.instance] (# iobroker-stop-adapternameinstance)
+- [iobroker restart adapName.instance] (# iobroker-restart-adapternameinstance)
 - [iobroker добавить имя адаптера \ [- включено \] \ [- хост \ <хост \> \] \ [- порт \ <порт \> \]] (# iobroker-add-adaptername)
 - [iobroker установить имя-адаптера] (# iobroker-install-adaptername)
 - [iobroker загрузить имя адаптера] (# iobroker-upload-adaptername)
@@ -41,9 +41,9 @@ hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
 - [iobroker State Set ObjectId newValue] (# iobroker-state-set)
 - [iobroker state del objectId] (# iobroker-state-del)
 - [Сообщение iobroker \ <адаптер \> \ [. instanceid \] \ <команда \> \ [\ message \]] (# сообщение iobroker)
-- [настройка iobroker] (# iobroker-state-setplain)
+- [Настройка iobroker] (# iobroker-state-setplain)
 - [iobroker clean] (# iobroker-clean)
-- [Резервное копирование iobroker] (# iobroker-backup)
+- [резервное копирование iobroker] (# iobroker-backup)
 - [iobroker host] (# iobroker-host)
 - [iobroker host set] (# iobroker-host-set)
 - [iobroker host remove] (# iobroker-host-remove)
@@ -69,7 +69,7 @@ hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
 
 Примеры использования:
 
-- `` `npm install iobroker.admin``` - обновить или установить" admin "адаптер
+- `` `npm install iobroker.admin``` - обновить или установить адаптер" admin "
 - `` `npm install iobroker.js-controller``` - обновить или установить сам js-контроллер
 - `` `npm install https:// github.com / husky-koglhof / ioBroker.hmm / tarball / master /` `` - установите адаптер напрямую из github или из другого места. Это должен быть пакет ZIP или GZ и содержимое файла package.json.
 
@@ -84,7 +84,7 @@ hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
 
 ```ioBroker controller daemon already running. PID: xx```
 
-*** Примечание для Windows: *** обычно ioBroker под Windows запускается как служба. Эта команда запустит второй экземпляр ioBroker, что приведет к конфликту. Используйте ```serviceIoBroker.bat start``` из каталога ioBroker вместо команды ```iobroker start```. У вас должны быть права администратора для запуска сервиса.
+*** Примечание для Windows: *** обычно ioBroker под Windows запускается как служба. Эта команда запустит второй экземпляр ioBroker, и это приведет к конфликту. Используйте ```serviceIoBroker.bat start``` из каталога ioBroker вместо команды ```iobroker start```. Для запуска службы у вас должны быть права администратора.
 
 ## Иоброкер стоп
 Останавливает iobroker, если он работает как демон. Если ioBroker не запущен, вы получите предупреждение:
@@ -112,9 +112,9 @@ hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
 
 - `` `iobroker start email.0``` - включает и запускает экземпляр адаптера ioBroker.email.0
 
-Примечание. Вы можете вызвать ```iobroker start all```, чтобы запустить все отключенные экземпляры, например, после восстановления.
+Примечание: вы можете вызвать ```iobroker start all```, чтобы запустить все отключенные экземпляры, например, после восстановления.
 
-## Iobroker stop stopName.instance
+## Остановка iobroker adapterName.instance
 Вы можете остановить указанный адаптер из консоли. Он будет отключен и остановлен. Это не будет перезапущено автоматически позже.
 
 В «admin» вы можете контролировать, что экземпляр адаптера теперь отключен.
@@ -141,18 +141,18 @@ hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
 Использование:
 
 - `` `iobroker add dwd``` - Установить и создать экземпляр адаптера dwd.
-- `` `iobroker add admin --enabled --port 80``` - создать второй (обычно) экземпляр адаптера администратора на порту 80 и включить его.
+- `` `iobroker add admin --enabled --port 80``` - Создайте второй (обычно) экземпляр адаптера администратора на порту 80 и включите его.
 
-Если эта команда не работает, вы всегда можете использовать команду ```npm install iobroker.adapterName``` для принудительного обновления или установки. Экземпляр не будет создан, вам следует вызвать команду ```iobroker add iobroker.adapterName``` еще раз.
+Если эта команда не работает, вы всегда можете использовать команду ```npm install iobroker.adapterName``` для принудительного обновления или установки. Экземпляр не будет создан, вы должны вызвать команду ```iobroker add iobroker.adapterName``` еще раз.
 
-## Iobroker установить имя адаптера
-Устанавливает адаптер только в ioBroker и не создает экземпляр. Если адаптер еще не установлен, вы получите следующее предупреждение:
+## Iobroker установить адаптерName
+Устанавливает только адаптер в ioBroker и не создает экземпляр. Если адаптер еще не установлен, вы получите следующее предупреждение:
 
 ```adapter "admin" yet installed. Use "upgrade" to install newer version.```
 
 ## Iobroker загрузить имя адаптера
 Загрузите веб-страницы из папок "www" и "admin" в адаптере в хранилище файлов ioBroker. Обычно используется разработчиками для просмотра изменений, внесенных на страницах конфигурации или на страницах "www".
-Вы не можете изменить файлы непосредственно в «iobroker / iobroker-data / adapter / file». Для разработчиков в файле конфигурации (* iobroker-data / iobroker.json *) есть объект для .noFileCache, чтобы отключить кеш файла. Если для этого флага установлено значение true (разумеется, новый запуск требуется после изменения файла конфигурации), изменения в каталоге iobroker-data будут видны в Интернете без команды ```iobroker upload adapterName```.
+Вы не можете изменить файлы непосредственно в «iobroker / iobroker-data / adapter / file». Для разработчиков в файле конфигурации (* iobroker-data / iobroker.json *) установлен объект objects.noFileCache, чтобы отключить кэш файла. Если для этого флага установлено значение true (разумеется, новый запуск необходим после изменения файла конфигурации), изменения в каталоге iobroker-data будут видны в Интернете без команды ```iobroker upload adapterName```.
 
 Примечание. Вы можете позвонить ```iobroker upload all```, чтобы загрузить все адаптеры, например, после восстановления.
 
@@ -190,7 +190,7 @@ Usage:
 ```iobroker del dwd``` - deletes all instances and code of adapter dwd from ioBroker.
 
 ## iobroker del adapterName.instance
-Removes only specified instance of this adapter from ioBroker and **not** deletes it form the disk.
+Removes only specified instance of this adapter from ioBroker and **not** deletes it from the disk.
 
 You cannot restore settings of the adapter instance after deletion.
 
@@ -272,8 +272,8 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 
 ** Примечание: ** Если указанный или настроенный репозиторий имеет более низкую версию, он будет понижен до этой версии.
 
-- `` `iobroker upgrade self``` - обновить js-контроллер до версии в настроенном репозитории.
-- `` `iobroker самостоятельно обновить https:// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json``` - обновить js-контроллер до версии из онлайн-хранилища.
+- `` `iobroker upgrade self``` - обновить js-контроллер до версии в настроенном хранилище.
+- `` `iobroker обновить себя https:// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json``` - обновить js-контроллер до версии из онлайн-хранилища.
 
 ## Iobroker обновить имя адаптера
 Полный синтаксис: ```iobroker upgrade adapterName \[repository url\]```
@@ -283,7 +283,7 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 ** Примечание: ** Если указанный или настроенный репозиторий имеет более низкую версию, он будет понижен до этой версии.
 
 - `` `iobroker upgrade email``` - обновить адаптер ioBroker.email до версии в настроенном хранилище.
-- `` `iobroker обновляет электронную почту https:// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json``` - обновите адаптер ioBroker.email до версии из онлайн-хранилища ,
+- `` `iobroker обновляет электронную почту https:// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json``` - обновить адаптер ioBroker.email до версии из онлайн-хранилища ,
 
 ## Iobroker объект get
 Полный синтаксис: ```iobroker get objectId```
@@ -300,7 +300,7 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 }
 ```
 
-** Примечание: ** Обычно вывод не форматируется, но вы можете использовать флаг "--pretty" для их форматирования.
+** Примечание: ** Обычно выходные данные не форматируются, но вы можете использовать флаг "--pretty" для их форматирования.
 
 ## Iobroker объект chmod
 Формат: ```iobroker object chmod <object-mode> [state-mode] <id>```
@@ -333,7 +333,7 @@ rw-r--r--                    admin  administrator system.adapter.admin.0
 
 Идентификатор может быть шаблоном с '\ *'. '\ *' может быть только в конце шаблона.
 
-## Набор iobroker
+## Iobroker set
 Полный синтаксис: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--ssl true|false] [—-ttl value]``` Используется для изменения настроек экземпляра из консоли. Следующие настройки могут быть изменены:
 
 - порт - изменить порт, к которому привязан экземпляр
@@ -419,7 +419,7 @@ Restarting ioBroker...
 ```
 
 ## Резервное копирование iobroker
-Резервное копирование настроек ioBroker в zip-файле. Файлы резервных копий будут созданы в каталоге _backups_ и будут иметь имена:
+Резервное копирование настроек ioBroker в zip-файл. Файлы резервных копий будут созданы в каталоге _backups_ и будут иметь имена:
 
 ```2015_02_10-17_49_45_backupIoBroker.tar.gz``` with current date and time.
 
@@ -450,7 +450,7 @@ Please specify one of the backup names:
 ## Хост iobroker
 Изменить имя хоста в объектах.
 
-Иногда, перемещая данные iobroker из одной системы в другую, необходимо изменить имя хоста. С помощью этой команды она может быть выполнена.
+Иногда при перемещении данных iobroker из одной системы в другую необходимо изменить имя хоста. С помощью этой команды она может быть выполнена.
 
 Вы должны остановить ioBroker до этого.
 
@@ -459,7 +459,7 @@ Please specify one of the backup names:
 Чтобы изменить любое имя хоста (должна быть только одна хост-система, а не для нескольких хостов), напишите ```iobroker host this```.
 
 ## Хост хост iobroker
-Вы можете изменить имя хоста на какое-то конкретное (не имя компьютера). Для этого вы должны написать: ```iobroker host set newHostName``` для переименования с фактического имени компьютера или ранее указанного имени хоста.
+Вы можете изменить имя хоста на какое-то конкретное (не имя компьютера). Для этого вы должны написать: ```iobroker host set newHostName```, чтобы переименовать с фактического имени компьютера или ранее указанного имени хоста.
 
 ## Хост iobroker удалить
 Чтобы удалить хост, просто напишите ```iobroker host remove hostNameToRemove```. Будьте осторожны, пожалуйста.
@@ -498,7 +498,7 @@ Please specify one of the backup names:
 - ip - перечислить все инстакны, которые можно привязать к какому-либо IP
 - ssl - перечислить все экземпляры, где можно включить SSL
 
-Использование: ```iobroker list instacnes --enabled``` для отображения всех включенных экземпляров
+Использование: ```iobroker list instances --enabled``` для отображения всех включенных экземпляров
 
 или ```iobroker l i --port``` для отображения списка используемых портов.
 

@@ -3,19 +3,19 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hilink/README.md
 title: ioBroker.hilink
-hash: c8Z7B22ZNqfY7z8dvtxyeVIQJn/kjjQf1lezOM3pR0Q=
+hash: zbN8N2aPAc+ULr/C6cpbWjv2a1jhhd9OK0iBvHByapI=
 ---
 ![логотип](../../../en/adapterref/iobroker.hilink/admin/hilink.png)
 
-# IoBroker.hilink
-=================
+![Количество установок](http://iobroker.live/badges/hilink-stable.svg)
 
+# IoBroker.hilink
 ## Описание
 Это адаптер для USB-модемов Huawei с прошивкой Hilink.
 
 [Русский](https://github.com/bondrogeen/iobroker.hilink/blob/master/docs/ru/README.md)
 
-Протестировано на модемах: E3372h-153_Update_22.323.01.00.143_M_AT_05.10 E3372s Update_22.286.53.01.161_S_ADB_TLN_03 E3272s 22.491.09.00.00 17.100.08.00.03-Mod1.2
+Проверено на модемах: E3372h-153_Update_22.323.01.00.143_M_AT_05.10 E3372s Update_22.286.53.01.161_S_ADB_TLN_03 E3272s 22.491.09.00.00 17.100.08.00.03-Mod1.2
 
 Прошивки и другую информацию можно найти здесь - http://4pda.ru/forum/index.php?showtopic=582284&
 

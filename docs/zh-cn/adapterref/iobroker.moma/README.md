@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.moma/README.md
 title: 无题
-hash: 1+r5JGoGDjiFF8V8ugMr56Y2eJP7SQxhYzdYAXdoZts=
+hash: f0yaX2SAB2/xWX3pkB0mun9LVzit2kAWJMlB/IWkXLs=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -29,16 +29,23 @@ MoMa使用平台独立库'systeminformation'（https://github.com/sebhildebrandt
 MoMa至少需要nodejs版本8 / ES6。
 
 ##安装
-使用“适配器 - 从URL安装”与https://github.com/AWhiteKnight/ioBroker.moma
+在ioBroker存储库'最新'中可用
 
-替代
+替代方案：
 
 npm install iobroker.moma
 
 也适用于多主机环境 - 确保在安装之前选择了正确的实例。
 
+**注意：**目前，您需要在每个从站上安装Admin-Adapter实例作为解决方法。
+Admin-Adapter不需要处于活动状态！
+
 ##核心概念
 仍在建设中 - 欢迎提出想法，建议，提示......
+
+论坛：https：//forum.iobroker.net/topic/22026/neuer-adapter-iobroker-moma
+
+GitHub：https：//github.com/AWhiteKnight/ioBroker.moma
 
 基本思想是为每个实例（moma。\ <instance-id \>）添加一个树，其中包含运行实例的机器的所有信息。
 +一个公共树（moma.meta），每个实例在其下创建一个device \ <hostname \>，其中包含对实例的引用和一些监视信息。
@@ -76,20 +83,22 @@ npm install iobroker.moma
 * users  - 当前用户会话
 * fsSize  - 有关计算机文件系统的信息
 * blockDevices  - 连接的块设备
-* fsStats  - 文件访问统计信息
-* disksIO  - 块设备的IO统计信息
+* fsStats  - 文件访问统计信息 -  Windows不支持
+* disksIO  - 块设备的IO统计信息 -  Windows不支持
 
 在区间3中调用以下函数库系统信息（默认每小时）：
 
 * networkInterfaceDefault  - 默认网络接口
 * networkInterfaces  - 可用的网络接口
 * graphics  - 有关计算机图形卡和连接的监视器的信息
+* inetLatency  - 检查互联网延迟8.8.8.8
+* dockerContainers  - 所有docker容器的列表 - 在机器正常工作之前需要一台“adduser iobroker docker”
 
 在区间4（每天默认）中调用以下函数库系统信息：
 
 * osInfo  - 有关计算机操作系统的信息
 * uuid  -  UUID的安装
-* shell  - 默认系统shell
+* shell  - 默认系统shell  -  Windows不支持
 *版本 - 已安装软件包的版本
 
 以下函数** MoMa **在区间4中调用（默认每天）：
@@ -99,38 +108,17 @@ npm install iobroker.moma
 
 ## Changelog
 
-### 0.1.1 (2019-04-26)
-* (AWhiteKnight) First implementation of moma admin-tab. Be careful, the table line buttons are always active!!
+### 1.1.1 (2019-05-23)
+* (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
+
+### 1.1.0 (2019-05-20)
+* (AWhiteKnight) Performance optimization. Fix of issue #24. Check internet latency.
+
+### 1.0.0 (2019-05-11)
+* (AWhiteKnight) First release for adapter list 'stable'.
 
 ### 0.1.0 (2019-04-18)
-* (AWhiteKnight) First release for adapter list.
-
-### 0.0.10 (2019-04-18)
-* (AWhiteKnight) Reduction of footprint. Restructuring.
-
-### 0.0.9 (2019-04-08)
-* (AWhiteKnight) Systeminfolib upgraded to 4.1.1 and added some calls/variables. Testing (re)enabled. Merging to new adapter creation template part 2.
-
-### 0.0.8 (2019-03-10)
-* (AWhiteKnight) Started merging to new development method. Maintaining meta states.
-
-### 0.0.7 (2018-10-29)
-* (AWhiteKnight) Travis testing activated; Minor enhancements in meta data
-
-### 0.0.6 (2018-10-27)
-* (AWhiteKnight) UI text and translations; changed meta-path from moma.x to moma.meta
-
-### 0.0.5 (2018-10-26)
-* (AWhiteKnight) Checking for updates in interval 4
-
-### 0.0.4 (2018-10-14)
-* (AWhiteKnight) New intervals: 0 with high frequency, 4 daily. Extended configuration
-
-### 0.0.3 (2018-10-02)
-* (AWhiteKnight) Basic functions of 'systeminformation' implemented, some documentation
-
-### 0.0.2 (2018-09-30)
-* (AWhiteKnight) Library 'systeminformation' integrated. First set of calls implemented
+* (AWhiteKnight) First release for adapter list 'latest'.
 
 ### 0.0.1
 * (AWhiteKnight) initial version

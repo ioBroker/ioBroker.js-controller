@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: l2c8zbQEwlmW/cuzqi1sw27P9+p69YL1lwhBHDwjSAM=
+hash: sDjWoPBWbFNcjfaereDv7PV96w2+vmUMczc8BokyRRY=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -12,21 +12,22 @@ hash: l2c8zbQEwlmW/cuzqi1sw27P9+p69YL1lwhBHDwjSAM=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sql.svg)
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.sql.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sql.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
 
 # IoBroker.sql
 ==================================
 
-Dieser Adapter speichert den Statusverlauf in SQL DB.
+Dieser Adapter speichert den Statusverlauf in der SQL-Datenbank.
 
 Unterstützt PostgreSQL, MySQL, Microsoft SQL Server und SQLite.
-Sie können Port 0 belassen, wenn ein Standardport gewünscht wird.
+Sie können Port 0 belassen, wenn der Standardport gewünscht wird.
 
 ### MS-SQL:
-Verwenden Sie ```localhost\instance``` für den Host und prüfen Sie, ob die TCP / IP-Verbindungen aktiviert sind.
-https://msdn.microsoft.com/de-de/library/bb909712(v=vs.90).aspx
+Verwenden Sie ```localhost\instance``` für den Host und überprüfen Sie, ob die TCP / IP-Verbindungen aktiviert sind.
+https://msdn.microsoft.com/en-us/library/bb909712(v=vs.90).aspx
 
 ### SQLite:
-ist "Datei" -DB und kann nicht zu viele Ereignisse verwalten. Wenn Sie über große Datenmengen verfügen, verwenden Sie eine echte Datenbank, wie PostgreSQL und Co.
+ist "file" -DB und kann nicht zu viele Ereignisse verwalten. Wenn Sie eine große Datenmenge haben, verwenden Sie echte Datenbanken wie PostgreSQL und Co.
 
 SQLite DB darf nicht extra installiert werden. Es ist nur eine Datei auf der Festplatte, aber um sie zu installieren, benötigen Sie Build-Tools auf Ihrem System. Für Linux schreiben Sie einfach:
 
@@ -40,7 +41,7 @@ Für Windows:
 c:\>npm install --global --production windows-build-tools
 ```
 
-Und dann den Adapter erneut installieren, z.
+Installieren Sie dann den Adapter neu, z.
 
 ```
 cd /opt/iobroker
@@ -62,14 +63,14 @@ GRANT ALL PRIVILEGES ON * . * TO 'iobroker'@'%';
 FLUSH PRIVILEGES;
 ```
 
-Bearbeiten Sie ggf. */ etc / mysql / my.cnf* um die Bindung an die IP-Adresse für die Remote-Verbindung festzulegen.
+Bearbeiten Sie bei Bedarf */ etc / mysql / my.cnf* um die Bindung für die Remoteverbindung auf die IP-Adresse festzulegen.
 
-** Warnung **: Der iobroker-Benutzer ist "admin". Falls erforderlich, geben Sie dem Iobroker-Benutzer eingeschränkte Rechte.
+** Warnung **: iobroker-Benutzer ist "admin". Geben Sie dem iobroker-Benutzer bei Bedarf eingeschränkte Rechte.
 
 ## Struktur der DBs
-Der Standard-Datenbankname ist "iobroker", er kann jedoch in der Konfiguration geändert werden.
+Der Standardname der Datenbank ist "iobroker", er kann jedoch in der Konfiguration geändert werden.
 
-Quellen Diese Tabelle ist eine Liste der Instanzen des Adapters, die die Einträge geschrieben haben. (Bundesland)
+### Quellen Diese Tabelle ist eine Liste der Adapterinstanzen, die die Einträge geschrieben haben. (state.from)
 | DB | Name in Abfrage |
 |------------|----------------------|
 | MS-SQL | iobroker.dbo.sources |
@@ -81,8 +82,8 @@ Struktur:
 
 | Feld | Typ | Beschreibung |
 |-------|--------------------------------------------|-------------------------------------------|
-| id | INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1) | eindeutige ID |
-| name | varchar (255) / TEXT | Instanz des Adapters, der den Eintrag | geschrieben hat
+| id | INTEGER NICHT NULL PRIMARY KEY IDENTITY (1,1) | eindeutige ID |
+| name | varchar (255) / TEXT | Instanz des Adapters, der den Eintrag geschrieben hat |
 
 * Hinweis: * MS-SQL verwendet varchar (255) und andere verwenden TEXT
 
@@ -100,14 +101,14 @@ Struktur:
 
 | Feld | Typ | Beschreibung |
 |-------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER NOT NULL PRIMARY KEY IDENTITY (1,1) | eindeutige ID |
-| name | varchar (255) / TEXT | ID der Variablen, z. hm-rpc.0.JEQ283747.1.STATE |
-| Typ | INTEGER | 0 - Nummer, 1 - String, 2 - boolean |
+| id | INTEGER NICHT NULL PRIMARY KEY IDENTITY (1,1) | eindeutige ID |
+| name | varchar (255) / TEXT | ID der Variablen, z.B. hm-rpc.0.JEQ283747.1.STATE |
+| Typ | INTEGER | 0 - Zahl, 1 - String, 2 - Boolescher Wert |
 
 * Hinweis: * MS-SQL verwendet varchar (255) und andere verwenden TEXT
 
-### Nummern
-Werte für Zustände mit Typ "Nummer". **ts** bedeutet "Zeitreihe".
+### Zahlen
+Werte für Zustände vom Typ "number". **ts** bedeutet "Zeitreihe".
 
 | DB | Name in Abfrage |
 |------------|-------------------------|
@@ -120,17 +121,17 @@ Struktur:
 
 | Feld | Typ | Beschreibung |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Status-ID aus der Tabelle "Datenpunkte"
-| ts | BIGINT / INTEGER | Zeit in ms bis zur Epoche. Kann mit "new Date (ts)" | in Zeit umgewandelt werden
+| id | INTEGER | ID des Status aus der Tabelle "Datenpunkte" |
+| ts | BIGINT / INTEGER | Zeit in ms bis Epoche. Kann mit "new Date (ts)" auf Zeit umgerechnet werden |
 | val | REAL | Wert |
-| ack | BIT / BOOLEAN | Wird bestätigt: 0 - nicht bestätigen, 1 - bestätigen |
-| _von | INTEGER | ID der Quelle aus der "Quellen" -Tabelle |
-| q | INTEGER | Qualität als Nummer. Die Beschreibung finden Sie unter [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| ack | BIT / BOOLEAN | Wird quittiert: 0 - nicht quittieren, 1 - quittieren |
+| _von | INTEGER | ID der Quelle aus der Tabelle "Quellen" |
+| q | INTEGER | Qualität als Nummer. Sie finden die Beschreibung [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Hinweis: * MS-SQL verwendet BIT und andere verwenden BOOLEAN. SQLite verwendet für ts INTEGER und alle anderen BIGINT.
 
-Zeichenketten
-Werte für Zustände mit dem Typ "String".
+### Strings
+Werte für Zustände vom Typ "string".
 
 | DB | Name in Abfrage |
 |------------|-------------------------|
@@ -143,17 +144,17 @@ Struktur:
 
 | Feld | Typ | Beschreibung |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Status-ID aus der Tabelle "Datenpunkte"
-| ts | BIGINT | Zeit in ms bis zur Epoche. Kann mit "new Date (ts)" | in Zeit umgewandelt werden
+| id | INTEGER | ID des Status aus der Tabelle "Datenpunkte" |
+| ts | BIGINT | Zeit in ms bis Epoche. Kann mit "new Date (ts)" auf Zeit umgerechnet werden |
 | val | TEXT | Wert |
-| ack | BIT / BOOLEAN | Wird bestätigt: 0 - nicht bestätigen, 1 - bestätigen |
-| _von | INTEGER | ID der Quelle aus der "Quellen" -Tabelle |
-| q | INTEGER | Qualität als Nummer. Die Beschreibung finden Sie unter [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| ack | BIT / BOOLEAN | Wird quittiert: 0 - nicht quittieren, 1 - quittieren |
+| _von | INTEGER | ID der Quelle aus der Tabelle "Quellen" |
+| q | INTEGER | Qualität als Nummer. Sie finden die Beschreibung [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Hinweis: * MS-SQL verwendet BIT und andere verwenden BOOLEAN. SQLite verwendet für ts INTEGER und alle anderen BIGINT.
 
-### Booleans
-Werte für Zustände mit Typ "boolean".
+### Boolesche Werte
+Werte für Zustände vom Typ "boolean".
 
 | DB | Name in Abfrage |
 |------------|-------------------------|
@@ -166,17 +167,17 @@ Struktur:
 
 | Feld | Typ | Beschreibung |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Status-ID aus der Tabelle "Datenpunkte"
-| ts | BIGINT | Zeit in ms bis zur Epoche. Kann mit "new Date (ts)" | in Zeit umgewandelt werden
+| id | INTEGER | ID des Status aus der Tabelle "Datenpunkte" |
+| ts | BIGINT | Zeit in ms bis Epoche. Kann mit "new Date (ts)" auf Zeit umgerechnet werden |
 | val | BIT / BOOLEAN | Wert |
-| ack | BIT / BOOLEAN | Wird bestätigt: 0 - nicht bestätigen, 1 - bestätigen |
-| _von | INTEGER | ID der Quelle aus der "Quellen" -Tabelle |
-| q | INTEGER | Qualität als Nummer. Die Beschreibung finden Sie unter [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| ack | BIT / BOOLEAN | Wird quittiert: 0 - nicht quittieren, 1 - quittieren |
+| _von | INTEGER | ID der Quelle aus der Tabelle "Quellen" |
+| q | INTEGER | Qualität als Nummer. Sie finden die Beschreibung [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Hinweis: * MS-SQL verwendet BIT und andere verwenden BOOLEAN. SQLite verwendet für ts INTEGER und alle anderen BIGINT.
 
 ## Benutzerdefinierte Abfragen
-Der Benutzer kann über Javascript-Adapter benutzerdefinierte Abfragen für Tabellen ausführen:
+Der Benutzer kann benutzerdefinierte Abfragen für Tabellen über den Javascript-Adapter ausführen:
 
 ```
 sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
@@ -189,7 +190,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-Oder holen Sie sich Einträge für die letzte Stunde für ID = system.adapter.admin.0.memRss
+Oder rufen Sie Einträge für die letzte Stunde für ID = system.adapter.admin.0.memRss ab
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -209,17 +210,17 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 ## StoreState
 Wenn Sie andere Daten in die InfluxDB schreiben möchten, können Sie die eingebaute Systemfunktion **storeState** verwenden.
-Diese Funktion kann auch zum Konvertieren von Daten von anderen History-Adaptern wie History oder SQL verwendet werden.
+Diese Funktion kann auch zum Konvertieren von Daten aus anderen Verlaufsadaptern wie Verlauf oder SQL verwendet werden.
 
-Die angegebenen IDs werden nicht gegen die ioBroker-Datenbank geprüft und müssen dort nicht eingerichtet werden, sondern können nur direkt aufgerufen werden.
+Die angegebenen IDs werden nicht mit der ioBroker-Datenbank abgeglichen und müssen dort nicht eingerichtet werden, sondern sind nur direkt zugänglich.
 
 Die Nachricht kann eines der folgenden drei Formate haben:
 
-* eine ID und ein Zustandsobjekt
-* eine ID und ein Array von Statusobjekten
-* Array mit mehreren IDs mit Statusobjekten
+* eine ID und ein Statusobjekt
+* Eine ID und ein Array von Statusobjekten
+* Array von mehreren IDs mit Statusobjekten
 
-## Holen Sie sich die Geschichte
+## Geschichte abrufen
 Zusätzlich zu benutzerdefinierten Abfragen können Sie die eingebaute Systemfunktion **getHistory** verwenden:
 
 ```
@@ -239,10 +240,10 @@ sendTo('sql.0', 'getHistory', {
 ```
 
 ## History Logging Management über Javascript
-Der Adapter unterstützt das Aktivieren und Deaktivieren der Protokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
+Der Adapter unterstützt das Aktivieren und Deaktivieren der Verlaufsprotokollierung über JavaScript sowie das Abrufen der Liste aktivierter Datenpunkte mit ihren Einstellungen.
 
 ### Aktivieren
-Für die Nachricht muss die "id" des Datenpunkts vorhanden sein. Zusätzliche optionale "Optionen" zum Definieren der datenpunktspezifischen Einstellungen:
+Für die Nachricht muss die "ID" des Datenpunkts angegeben werden. Zusätzliche optionale "Optionen" zum Definieren der Datenpunkt-spezifischen Einstellungen:
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -266,7 +267,7 @@ sendTo('sql.0', 'enableHistory', {
 ```
 
 ### Deaktivieren
-Die Nachricht muss die "ID" des Datenpunkts haben.
+Für die Nachricht muss die "ID" des Datenpunkts angegeben werden.
 
 ```
 sendTo('sql.0', 'disableHistory', {
@@ -281,7 +282,7 @@ sendTo('sql.0', 'disableHistory', {
 });
 ```
 
-### Liste abrufen
+### Liste holen
 Die Nachricht hat keine Parameter.
 
 ```
@@ -304,192 +305,195 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ```
 
 ## Verbindungseinstellungen
-- **DB-Typ** Typ der SQL-Datenbank: MySQL, PostgreSQL, MS-SQL oder SQLite3
+- **DB-Typ** Typ der SQL-DB: MySQL, PostgreSQL, MS-SQL oder SQLite3
 - **Host** IP-Adresse oder Hostname mit SQL Server
-- **Port** Port von SQL Server (leer lassen, wenn Sie sich nicht sicher sind)
-- **Datenbankname** Datenbankname. Standard-Iobroker
+- **Port** Port von SQL Server (leer lassen, wenn nicht sicher)
+- **Datenbankname** Datenbankname. Standard iobroker
 - **Benutzer** Benutzername für SQL. Muss in der DB vorhanden sein.
 - **Passwort** Passwort für SQL.
 - **Passwort bestätigen** Passwort hier einfach wiederholen.
-- **Verschlüsseln** Einige Datenbanken unterstützen die Verschlüsselung.
-- **Runde real bis** Anzahl der Stellen nach Komma.
-- **Parallele Anforderungen zulassen** Erlaube gleichzeitige SQL-Anforderungen an die DB.
+- **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
+- **Runden Sie den Real auf** Anzahl der Nachkommastellen.
+- **Erlaube parallele Anfragen** Erlaube gleichzeitige SQL-Anfragen an DB.
 
 ## Standardeinstellungen
-- **De-Bounce-Intervall** Speichern Sie Werte nicht öfter als dieses Intervall.
-- **Unveränderte Werte protokollieren beliebig** Alle X Sekunden zusätzlich schreiben.
-- **Mindestabstand vom letzten Wert zum Protokoll** Mindestabstand zwischen zwei Werten.
-- **Speicheraufbewahrung** wie lange die Werte in der DB gespeichert werden.
+- **Entprellintervall** Speichern Sie Werte nicht oft als dieses Intervall.
+- **Unveränderte Werte protokollieren alle** Schreiben Sie zusätzlich alle X Sekunden die Werte.
+- **Mindestdifferenz vom letzten Wert zum Protokoll** Mindestintervall zwischen zwei Werten.
+- **Aufbewahrung** Wie lange werden die Werte im DB gespeichert?
+
+## 1.9.5 (15.05.2019)
+* (Apollon77) Unterstützung für NodeJS 12 hinzufügen
 
 ## 1.9.4 (2019-02-24)
-* (Apollon77) Behebt einige kleinere Probleme und Themen
-* (Apollon77) Texte optimieren (für Admin v3-Benutzeroberfläche)
+* (Apollon77) Behebung mehrerer kleinerer Probleme und Themen
+* (Apollon77) Texte optimieren (für Admin v3 UI)
 
 ## 1.9.0 (2018-06-19)
-* (Apollon77) Option hinzufügen, um Datenpunkte als andere ID (Alias) zu protokollieren, um die Migration von Geräten und dergleichen zu erleichtern
+* (Apollon77) Option hinzufügen, um Datenpunkte als andere ID (Alias) zu protokollieren, um die Migration von Geräten und dergleichen zu vereinfachen
 
 ## 1.8.0 (2018-04-29)
-* (Apollon77) Update sqlite3, nodejs 10 kompatibel
-* (BuZZy1337) Admin-Korrektur
+* (Apollon77) Update von sqlite3, NodeJS 10 kompatibel
+* (BuZZy1337) Admin-Fix
 
 ## 1.7.4 (2018-04-15)
-* (Apollon77) Fixiert getHistory
+* (Apollon77) Fix getHistory
 
 ## 1.7.3 (2018-03-28)
-* (Apollon77) Respektieren Sie die Einstellung 'Keep forever' für die Aufbewahrung von der Datenpunktkonfiguration
+* (Apollon77) Respektieren Sie die Einstellung "Für immer behalten", um die Datenpunktkonfiguration beizubehalten
 
 ## 1.7.2 (2018-03-24)
-* (Apollon77) Deaktivieren Sie das Schreiben von NULL-Werten für SQLite
+* (Apollon77) Deaktiviert das Schreiben von NULL-Werten für SQLite
 
 ## 1.7.1 (2018-02-10)
-* (Apollon77) Option zum Schreiben von NULL-Werten an Start- / Stop-Grenzen konfigurierbar
+* (Apollon77) Option zum Schreiben von NULL-Werten an Start / Stopp-Grenzen konfigurierbar machen
 
 ## 1.6.9 (2018-02-07)
-* (bondrogeen) Admin3 Korrekturen
-* (Apollon77) optimiert die Relog-Funktion und andere Dinge
+* (bondrogeen) Admin3-Korrekturen
+* (Apollon77) optimieren Relog-Funktion und andere Dinge
 
 ## 1.6.7 (2018-01-31)
-* (Bluefox) Admin3 Korrekturen
-* (Apollon77) Fehlerbehebungen in Relog und NULL
+* (Bluefox) Admin3-Korrekturen
+* (Apollon77) Korrekturen für Relog und Null-Log
 
-## 1.6.2 (2018-01-30)
-* (Apollon77) Admin3 Korrekturen
+## 1.6.2 (30.01.2018)
+* (Apollon77) Admin3-Korrekturen
 
 ## 1.6.0 (2018-01-14)
 * (bluefox) Bereit für Admin3
 
 ## 1.5.8 (2017-10-05)
-* (Apollon77) korrigiert die relog-Wertefunktion
+* (Apollon77) Funktion zum Fixieren von Relog-Werten
 
 ## 1.5.7 (2017-08-10)
 * (bluefox) Option "letzten Wert speichern" hinzufügen
 
 ## 1.5.6 (2017-08-02)
-* (Apollon77) Verhalten des Protokollintervalls korrigieren, um immer den aktuellen Wert zu protokollieren
+* (Apollon77) Behobenes Verhalten des Protokollintervalls, um immer den aktuellen Wert zu protokollieren
 
 ## 1.5.4 (2017-06-12)
-* (Apollon77) behebt die Abhängigkeit zu anderen Bibliotheken
+* (Apollon77) Fix Abhängigkeit zu anderen Bibliotheken
 
 ## 1.5.3 (2017-04-07)
-* (Apollon77) Korrektur bei Datentypkonvertierungen
+* (Apollon77) Fix bei Datentypkonvertierungen
 
 ### 1.5.0 (2017-03-02)
-* (Apollon77) Add-Option zum Definieren des Speicherdatentyps pro Datenpunkt, einschließlich des erforderlichen Werts
+* (Apollon77) Option zum Definieren des Speicherdatentyps pro Datenpunkt, einschließlich der Konvertierung des Werts, falls erforderlich
 
-### 1.4.6 (2017-02-25)
-* (Apollon77) Tippfehler mit PostgrSQL behoben
+### 1.4.6 (25.02.2017)
+* (Apollon77) Tippfehler mit PostgrSQL beheben
 
 ### 1.4.5 (2017-02-18)
-* (Apollon77) Erneut kleine Korrektur für ältere Konfigurationen
-* (Apollon77) Korrektur für die DBConverter Analyze-Funktion
+* (Apollon77) Kleine Korrektur für ältere Konfigurationen
+* (Apollon77) Fehlerbehebung für die DBConverter-Analysefunktion
 
 ### 1.4.3 (2017-02-11)
-* (Apollon77) Kleine Korrektur für ältere Konfigurationen
+* (Apollon77) Kleiner Fix für ältere Konfigurationen
 
 ### 1.4.2 (2017-01-16)
-* (bluefox) Die Handhabung von Float-Werten in der Adapter-Konfiguration und der Datenpunkt-Konfiguration wurde korrigiert.
+* (bluefox) Fehlerbehebung beim Umgang mit Float-Werten in der Adapterkonfiguration und in der Datenpunktkonfiguration.
 
 ### 1.4.1
-* (Apollon77) Rollback auf SQL-Client 0.7, um die Abhängigkeit von mmagic zu beseitigen, die Probleme auf älteren Systemen verursacht
+* (Apollon77) Rollback auf SQL-Client 0.7, um die MMAGIC-Abhängigkeit zu beseitigen, die Probleme auf älteren Systemen mit sich bringt
 
 ### 1.4.0 (2016-12-02)
 * (Apollon77) Nachrichten hinzufügen enableHistory / disableHistory
-* (Apollon77) Unterstützung für Protokollierungsänderungen nur hinzufügen, wenn der Wert für die Zahlen einen Mindestwert aufweist
+* (Apollon77) Unterstützung für das Protokollieren von Änderungen nur dann hinzufügen, wenn der Wert von einem Mindestwert für Zahlen abweicht
 
 ### 1.3.4 (2016-11)
 * (Apollon77) Erlaube Datenbanknamen mit '-' für MySQL
 
 ### 1.3.3 (2016-11)
-* (Apollon77) Update-Abhängigkeiten
+* (Apollon77) Abhängigkeiten aktualisieren
 
-### 1.3.2 (2016-11-21)
-* (bluefox) Fixiere Einfügung des Strings mit '
+### 1.3.2 (21.11.2016)
+* (bluefox) String einfügen mit '
 
-### 1.3.0 (2016-10-29)
-* (Apollon77) Add-Option, um unveränderte Werte neu zu protokollieren, um die Visualisierung zu erleichtern
+### 1.3.0 (29.10.2016)
+* (Apollon77) Option hinzufügen, um unveränderte Werte neu zu protokollieren, um die Visualisierung zu vereinfachen
 
-### 1.2.1 (2016-08-30)
-* (bluefox) Auswahl für SQL-Objekte korrigiert
+### 1.2.1 (30.08.2016)
+* (bluefox) Fix Selector für SQL Objekte
 
-### 1.2.0 (2016-08-30)
-* (bluefox) ist nur mit dem neuen Administrator kompatibel
+### 1.2.0 (30.08.2016)
+* (Bluefox) Kompatibel nur mit neuen Admin
 
-### 1.0.10 (2016-08-27)
-* (bluefox) den Namen des Objekts von "history" in "custom" ändern
+### 1.0.10 (27.08.2016)
+* (bluefox) benenne das Objekt von "history" in "custom"
 
-### 1.0.10 (2016-07-31)
-* (bluefox) behebt mehrere Anfragen bei sqlite
+### 1.0.10 (31.07.2016)
+* (bluefox) behebe Mehrfachanfragen wenn sqlite
 
 ### 1.0.9 (2016-06-14)
 * (bluefox) erlaubt Einstellungen für parallele Anfragen
 
 ### 1.0.7 (2016-05-31)
-* (bluefox) Zeichne Linie bis zum Ende, wenn Null ignoriert wird
+* (bluefox) Zeichne eine Linie bis zum Ende, wenn du null ignorierst
 
-### 1.0.6 (2016-05-30)
-* (bluefox) erlaubt den Setup-DB-Namen für mysql und mssql
+### 1.0.6 (30.05.2016)
+* (bluefox) erlaubt den Namen der Setup-Datenbank für mysql und mssql
 
-### 1.0.5 (2016-05-29)
+### 1.0.5 (29.05.2016)
 * (bluefox) wechselt zwischen max und min
 
-### 1.0.4 (2016-05-29)
-* (bluefox) Datenaufbewahrung prüfen, wenn "nie" gesetzt ist
+### 1.0.4 (29.05.2016)
+* (bluefox) Datenaufbewahrung prüfen, wenn "nie" eingestellt ist
 
-### 1.0.3 (2016-05-28)
-* (bluefox) versuchen, alte Zeitstempel zu berechnen
+### 1.0.3 (28.05.2016)
+* (bluefox) versuche alte Zeitstempel zu berechnen
 
-### 1.0.2 (2016-05-24)
-* (bluefox) behebt einen fehler mit dem io-package
+### 1.0.2 (24.05.2016)
+* (bluefox) Fehler mit io-package beheben
 
-### 1.0.1 (2016-05-24)
+### 1.0.1 (24.05.2016)
 * (bluefox) Fehler mit SQLite beheben
 
 ### 1.0.0 (2016-05-20)
-* (bluefox) Standard-Aggregationsname ändern
+* (bluefox) Ändert den Standardnamen der Aggregation
 
 ### 0.3.3 (2016-05-18)
-* (bluefox) fixieren postgres
+* (Bluefox) fix postgres
 
 ### 0.3.2 (2016-05-13)
-* (bluefox) Warteschlange auswählen, ob IDs und FROMs für sqlite abfragen
+* (bluefox) queue wähle wenn IDs und FROMs nach sqlite fragen
 
 ### 0.3.1 (2016-05-12)
-* (bluefox) Warteschlange löscht auch Abfragen für sqlite
+* (bluefox) queue löscht auch abfragen für sqlite
 
-### 0.3.0 (2016-05-08)
-* (bluefox) Unterstützung von benutzerdefinierten Abfragen
-* (bluefox) nur eine Anfrage gleichzeitig für sqlite
-* (bluefox) add tests (primitiv und nur sql)
+### 0.3.0 (08.05.2016)
+* (Bluefox) Unterstützung von benutzerdefinierten Abfragen
+* (bluefox) nur eine anfrage gleichzeitig für sqlite
+* (bluefox) teste hinzufügen (primitiv und nur sql)
 
-### 0.2.0 (2016-04-30)
-* (bluefox) Unterstützung von Millisekunden
-* (Bluefox) fixiert sqlite
+### 0.2.0 (30.04.2016)
+* (Bluefox) Unterstützung von Millisekunden
+* (bluefox) fix sqlite
 
-### 0.1.4 (2016-04-25)
-* (bluefox) Löschung alter Einträge korrigiert
+### 0.1.4 (25.04.2016)
+* (bluefox) Löschung alter Einträge korrigieren
 
-### 0.1.3 (2016-03-08)
-* (bluefox) druckt Fehler nicht zweimal
+### 0.1.3 (08.03.2016)
+* (Bluefox) Fehler nicht zweimal ausdrucken
 
 ### 0.1.2 (2015-12-22)
 * (bluefox) MS-SQL-Porteinstellungen korrigieren
 
-### 0.1.1 (2015-12-19)
-* (bluefox) behebt Fehler bei doppelten Einträgen
+### 0.1.1 (19.12.2015)
+* (bluefox) Fehler mit doppelten Einträgen beheben
 
-### 0.1.0 (2015-12-14)
+### 0.1.0 (14.12.2015)
 * (Bluefox) Unterstützung von Strings
 
-### 0.0.3 (2015-12-06)
-* (smiling_Jack) Demodaten hinzufügen (todo: schneller Einfügen in db)
-* (smiling_Jack) Aggregation ändern (jetzt identisch mit Verlaufsadapter)
-* (bluefox) Fehlerbehebung
+### 0.0.3 (06.12.2015)
+* (smiling_Jack) Demo-Daten hinzufügen (todo: schnelleres Einfügen in die Datenbank)
+* (smiling_Jack) Aggregation ändern (jetzt wie History Adapter)
+* (Bluefox) Fehlerbehebung
 
-### 0.0.2 (2015-12-06)
-* (bluefox) erlaubt nur einen Client für SQLite
+### 0.0.2 (06.12.2015)
+* (bluefox) erlaubt nur 1 Client für SQLite
 
-### 0.0.1 (2015-11-19)
-* (bluefox) anfängliches Commit
+### 0.0.1 (19.11.2015)
+* (Bluefox) Initial Commit
 
 ## Changelog
 

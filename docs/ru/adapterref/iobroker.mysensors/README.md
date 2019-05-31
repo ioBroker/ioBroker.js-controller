@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
+hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
 ---
 ![логотип](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -18,11 +18,11 @@ hash: EywJwAPEKsvKp4fc7zYpDZXLvF9GNwuIiW5dPbvJhwE=
 В этом случае выбран Ethernet-шлюз, ioBroker является сервером, который ожидает соединения.
 
 ## TCP-клиент
-Этот параметр работает только вместе с последовательным мостом TCP & lt; =>, например, [особ-ссылка](https://github.com/jeelabs/esp-link).
+Этот параметр работает только вместе с последовательным мостом TCP & lt; = & gt; например, [особ-ссылка](https://github.com/jeelabs/esp-link).
 
 ## Предварительные требования
-Чтобы использовать последовательный порт в Windows, необходимо создать двоичный файл.
-Для использования последовательного порта в linux необходим сборочный пакет python2.7. Чтобы установить их просто напишите:
+Для использования последовательного порта в Windows требуется сборка двоичного кода.
+Для использования последовательного порта в linux необходим сборочный python2.7. Чтобы установить их просто напишите:
 
 ```
 sudo apt-get update
@@ -31,6 +31,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.2 (2018-09-17)
 * (Haba1234) Added new objects (library 2.3.x)
 * (Haba1234) Added support for sleeping nodes

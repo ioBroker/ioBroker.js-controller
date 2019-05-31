@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.radar2/README.md
 title: 雷达2网络和bloutooth可用性
-hash: 2Qp5IHqny/Wa4vK0k8yFmChUVnPiU4UR3CLIO9dIq/c=
+hash: xCqWNj9vQWZax9Xyl78PAO+bOqwlo9yMuYN/ZyxBBM8=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.radar2.svg)
 ![安装](http://iobroker.live/badges/radar2-installed.svg)
@@ -39,6 +39,24 @@ hash: 2Qp5IHqny/Wa4vK0k8yFmChUVnPiU4UR3CLIO9dIq/c=
 
 欧洲央行的货币可以在这里看到：`https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`
 
+###蓝牙使用
+有两种不同类型的BT设备：BT-LE（V 4.x +）和普通BT（V <= 3.x）。适配器为每种不同的设备类型提供两种不同的扫描功能。
+
+1）对于BT-LE：Noble（Nodejs modile）和'hcitool lescan'命令2）用于正常BT：BT扫描（Nodejs模块）和'l2ping'命令
+
+每个BT设备只能同时使用两种方法中的一种。
+
+Noble和BT扫描是使用npm在适配器安装上编译的模块，它应该适用于Linux以及大多数Windows设置。
+Hcitool和l2ping与安装脚本中的蓝牙工具一起安装，仅适用于Linux ..
+
+在Adapter-config中，BT-LE macs用'！'标识在mac-address之前，要避免像正常的BT扫描一样扫描它们，如l2ping。
+通常Noble比hcitool lescan识别设备要好一些，但它也会产生更多错误，并且可能无法在所有系统上安装。
+同样地，l2ping可以更好地找到普通的BT设备，但是在Linux之外的其他平台上是不可用的。
+因此，您可以在适配器配置中单独配置用法。
+
+如果您使用多个BT设备，您可以在config中指定设备编号，defailt为'-1'，它使用第一个可用的设备。可以在linux上看到所有可用设备的列表，其中包含`lescan dev`。
+在同一个适配器中，您只能使用一个设备，如果要扫描多个设备，则需要使用不同的适配器（s或实例）。
+
 ##与雷达适配器的区别
 Radar2设置的设备在它们变得可见时立即可见，即使在再次开始扫描之前也可用于新的IP。
 Radar2使用nodejs-libraries来查找蓝牙设备，但它现在也可以在iobroker的用户空间中运行，并且不需要获得root访问权限（参见下面的安装要求）。
@@ -68,6 +86,7 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink 
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hcitool`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hciconfig`)
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which l2ping`)
 ```
 
 如果您更新节点或某些系统工具，则应再次执行上述操作！

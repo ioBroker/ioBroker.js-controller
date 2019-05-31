@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.scenes/README.md
-title: ioBroker-Szenenadapter
-hash: dy3j69BC0SGdZMOc6aZJ0WtlL7xCC25Cn972P9cAxEs=
+title: ioBroker Szenenadapter
+hash: G1E4YTsd0Q1l6+A7mv99P5sg5zK8+foyWJ0BN3JhoI4=
 ---
 ![Logo](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -12,19 +12,19 @@ hash: dy3j69BC0SGdZMOc6aZJ0WtlL7xCC25Cn972P9cAxEs=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.scenes.svg)
 ![NPM](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
 
-# IoBroker-Szenenadapter ==================
+# IoBroker Szenenadapter
 _scenes Adapter_ kann Szenen erstellen und in der ioBroker-Umgebung ausführen.
 
 Dieser Adapter kann drei Arten von Szenen erstellen:
 
-- **szenen**
+- **Szenen**
 - **Gruppen**
 - **virtuelle Gruppen**
 
 ## Szenen
-** Szenen ** werden erstellt, wenn die Einstellung "False setzen" nicht verwendet wird.
-Jede Szene kann individuell konfiguriert werden, so dass Sie ** Szenen ** und ** Gruppen ** in einer einzigen Instanz des Adapters haben können.
-Die ** Szene ** ist nur eine Liste von Status-IDs und Werten, die diese Status durch Aktivierung der Szene haben müssen. Z.B. Wir haben in Szene "_scene.allLightInBath_" erstellt:
+** Szenen ** werden erstellt, wenn die Einstellung "auf falsch gesetzt" nicht verwendet wird.
+Jede Szene kann einzeln konfiguriert werden, sodass Sie in einer Instanz des Adapters ** Szenen ** und ** Gruppen ** haben können.
+Die ** Szene ** ist nur eine Liste von Status-IDs und Werten, die diese Status bei Aktivierung der Szene haben müssen. Z.B. Wir haben in der Szene "_scene.allLightInBath_" erstellt:
 
 ```
   scene.allLightInBath
@@ -32,10 +32,10 @@ Die ** Szene ** ist nur eine Liste von Status-IDs und Werten, die diese Status d
   +- hm-rpc.0.TOP_LIGHT.STATE     - true
 ```
 
-Um die Szene zu aktivieren, müssen Sie "_scene.allLightInBath_" auf "true" setzen (z. B. über Skript oder vis). Dann werden beide Zustände auf die gewünschten Werte gesetzt und auf **true** gesetzt.
-Der Wert von _scene.allLightInBath_ ist ebenfalls **true** Wenn wir das obere Licht manuell ausschalten, geht der Wert von _scene.allLightInBath_ auf **false** Und wieder auf **true** wenn wir das Licht manuell einschalten.
+Um die Szene zu aktivieren, müssen wir "_scene.allLightInBath_" auf "true" setzen (z. B. über Skript oder vis). Dann werden beide Zustände auf die gewünschten Werte gesetzt, auf **true** Der Wert von _scene.allLightInBath_ ist ebenfalls **true** Wenn wir das obere Licht manuell ausschalten, wird der Wert von _scene.allLightInBath_ auf **false** gesetzt.
+Und wieder auf **true** wenn wir das Licht manuell einschalten wollen.
 
-Fügen wir der Szene ** den Fan hinzu:
+Fügen wir der **Szene** den Fan hinzu:
 
 ```
   scene.allLightInBath
@@ -45,12 +45,12 @@ Fügen wir der Szene ** den Fan hinzu:
   |- hm-rpc.0.FAN.STATE          - false (delay 60000ms)
 ```
 
-In diesem Fall wird der Lüfter durch Aktivieren der **Szene** eingeschaltet und in einer Minute ausgeschaltet.
-Nach dem Abschalten des Lüfters geht der Wert von _scene.allLightInBath_ auf **false** da nicht alle Zustände den gewünschten Werten entsprechen.
-Staaten mit Verspätung nehmen nicht an Berechnungen teil.
+In diesem Fall wird der Lüfter bei Aktivierung der **Szene** eingeschaltet und in einer Minute ausgeschaltet.
+Nach dem Ausschalten des Lüfters wird der Wert von _scene.allLightInBath_ auf **false** gesetzt, da nicht alle Zustände den gewünschten Werten entsprechen.
+Zustände mit Verspätung nehmen nicht an Berechnungen teil.
 
-Sie können die Szene mit einer "Play" -Taste testen.
-Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verknüpfen. Wenn Sie beispielsweise einen Sensor an der Tür haben, können Sie ihn als Auslöser auswählen:
+Sie können die Szene mit einem "Play" -Button testen.
+Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verknüpfen. Wenn Sie beispielsweise einen Sensor an der Tür haben, können Sie diesen als Auslöser auswählen:
 
 ```
   trigger
@@ -59,11 +59,11 @@ Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verkn
     value:     true
 ```
 
-Und jedes Mal, wenn Sie die Tür in der Badewanne öffnen, werden alle Lichter mit Lüfter eingeschaltet.
+Und jedes Mal, wenn Sie die Tür im Bad öffnen, werden alle Lichter mit Ventilator eingeschaltet.
 
 ## Gruppen
-** Gruppen ** sind wie virtuelle Kanäle. Sie können mit Hilfe von ** Gruppen ** virtuelle Geräte aus mehreren Aktuatoren erstellen und diese wie ein Gerät gemeinsam steuern.
-Lassen Sie uns unsere Probe mit Badleuchten modifizieren.
+** Gruppen ** sind wie virtuelle Kanäle. Sie können mit Hilfe von ** Gruppen ** virtuelle Geräte aus mehreren Aktoren erstellen und diese wie ein Gerät gemeinsam steuern.
+Lassen Sie uns unsere Probe mit Badlichtern modifizieren.
 
 ```
   scene.allLightInBath             "set on true"    "set on false"
@@ -71,7 +71,7 @@ Lassen Sie uns unsere Probe mit Badleuchten modifizieren.
   +- hm-rpc.0.TOP_LIGHT.STATE     - true             false
 ```
 
-Wenn Sie diese **Gruppe** mit dem Türsensor verbinden, wie folgt:
+Wenn Sie diese **Gruppe** mit dem Türsensor wie folgt verknüpfen:
 
 ```
   trigger on true
@@ -85,22 +85,40 @@ Wenn Sie diese **Gruppe** mit dem Türsensor verbinden, wie folgt:
     value:     false
 ```
 
-Jedes Mal, wenn Sie die Tür öffnen, werden alle Lichter in einer Badewanne eingeschaltet. Der Wert von _scene.allLightInBath_ geht auf **true** Wenn Sie die Tür schließen, wird das Licht ausgeschaltet. Der Wert von _scene.allLightInBath_ wird auf **false** gesetzt.
+Jedes Mal, wenn Sie die Tür öffnen, werden alle Lichter in einer Badewanne eingeschaltet. Der Wert von _scene.allLightInBath_ wird auf **true** gesetzt.
+Wenn Sie die Tür schließen, werden die Lichter ausgeschaltet. Und der Wert von _scene.allLightInBath_ wird auf **false** gesetzt.
 
-Es ist nutzlos, aber es ist gut als Beispiel.
+Es ist nutzlos, aber es ist ein gutes Beispiel.
 
 Wenn Sie ein Licht manuell einschalten, wird der Wert von _scene.allLightInBath_ auf **unsicher** gesetzt.
 
-Verzögerungen können auch in der **Gruppe** verwendet werden, die Zustände mit Verzögerung sind jedoch nicht an den Berechnungen des aktuellen Werts von **Gruppe** beteiligt.
+Verzögerungen können auch in der **Gruppe** verwendet werden, aber die Zustände mit Verzögerung nehmen nicht an Berechnungen des aktuellen Werts der **Gruppe** teil.
 
 ## Virtuelle Gruppen
-** Virtuelle Gruppen ** sind wie virtuelle Kanäle und Gruppen, sie können jedoch beliebige Werte haben: Zahlen, Zeichenfolgen usw.
-Sie können eine virtuelle Gruppe erstellen, um alle Fensterläden im Wohnzimmer zu steuern. Wenn Sie 40% in eine virtuelle Gruppe schreiben, werden alle Fensterläden auf 40% gesetzt.
+** Virtuelle Gruppen ** sind wie virtuelle Kanäle und wie Gruppen, können jedoch beliebige Werte annehmen: Zahlen, Zeichenfolgen usw.
+Sie können eine virtuelle Gruppe erstellen, um alle Fensterläden im Wohnzimmer zu steuern. Wenn Sie 40% in die virtuelle Gruppe schreiben, werden alle Fensterläden auf 40% gesetzt.
 
-## Installieren
-```iobroker add scenes```
+## Aktuelle Zustände als Szene speichern
+Um aktuelle Zustände in einer Szene zu speichern, können Sie eine Nachricht an den Adapter senden:
+
+```
+sendTo(
+    'scenes.0',
+    'save',
+    {sceneId:
+        'scene.0.SCENE_ID', // scene ID
+        isForTrue: true     // true if actual values must be saved for `true` state and `false` if for false
+    },
+    result => result.err && console.error(result.error) // optional
+);
+```
+
+Der Adapter liest alle tatsächlichen Werte für die in dieser Szene definierten IDs und speichert sie als konfigurierte.
 
 ## Changelog
+### 1.1.1 (2019-05-26)
+* (bluefox)Added storing of actual values in scene via message
+
 ### 1.1.0 (2018-04-24)
 * (bluefox) Works now with Admin3
 

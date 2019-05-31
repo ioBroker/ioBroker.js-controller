@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
+hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
 ---
 ![логотип](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -13,13 +13,15 @@ hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.rflink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
-# IoBroker.rflink =================
+# IoBroker.rflink
+=================
+
 Этот адаптер взаимодействует с [rflink](http://www.nemcon.nl/blog2/) на базе Arduino Mega и RFC 433MHz / 866MHz / 2.6Gz.
 Используется для получения данных от датчиков погоды и беспроводных выключателей питания.
 
 ## Предварительные требования
-Чтобы использовать последовательный порт в Windows, необходимо создать двоичный файл.
-Чтобы использовать последовательный порт в Linux, это необходимо для сборки. Чтобы установить его просто напишите:
+Для использования последовательного порта в Windows требуется сборка двоичного кода.
+Чтобы использовать последовательный порт в Linux, требуется сборка. Чтобы установить его просто напишите:
 
 ```
 sudo apt-get update
@@ -36,12 +38,12 @@ sudo apt-get install build-essential -y
 
 Так что после замены батареи ее нужно заново изучать.
 
-Для этого нажмите кнопку сопряжения непосредственно перед тем, как вставить батарею, и устройство будет изучено с новым адресом.
+Для этого нажмите кнопку сопряжения непосредственно перед установкой аккумулятора, и устройство будет изучено с новым адресом.
 
 ## Автоматическое сопряжение
 Если у вас не так много датчиков, вы можете активировать автоматическое повторное сопряжение.
 
-Это возможно, только если устройство может быть точно идентифицировано.
+Это возможно только в том случае, если устройство может быть однозначно идентифицировано.
 
 Это означает, что присутствует только одно устройство этой марки и типа. (Например, только один датчик температуры от одной марки)
 
@@ -53,6 +55,10 @@ sudo apt-get install build-essential -y
 Например: ```10;AB400D;00004d;1;OFF;```. Пожалуйста, прочитайте документацию, чтобы понять команды.
 
 ## Changelog
+
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
 

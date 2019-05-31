@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
+hash: fJWbc2AUfUlvEbHQ8lUvLCgs5r8wt6RytzZfd4WRDjQ=
 ---
 ![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -20,15 +20,29 @@ hash: lF1aUh9M9wFroTndrkuwU/wP+AdpwPX8525/DEVnGkk=
 
 **目录**
 
-1. [安装]（＃装置）
-2. [设置说明]（＃setup-instructions）
-3. [支持的Roomba /固件版本]（＃supported-roombas  -  firmware-versions）
-4. [频道与州]（＃频道 - 州）
-5. [偏好描述（不完整）]（＃描述偏好不完整）
-6. [智能家居/ Alexa使用ioBroker.javascript集成]（＃smart-home  -  alexa-integration-using-iobrokerjavascript）
-7. [更改日志]（#changelog）
-8. [学分]（＃学分）
-9. [许可证]（＃许可证）
+1. [特点]（＃个特写）
+2. [安装]（＃装置）
+3. [设置说明]（＃setup-instructions）
+4. [支持的Roomba /固件版本]（＃supported-roombas  -  firmware-versions）
+5. [频道与州]（＃频道 - 州）
+6. [偏好描述（不完整）]（＃description-of-preferences-incomplete）
+7. [Smart Home / Alexa使用ioBroker.javascript集成]（＃smart-home  -  alexa-integration-using-iobrokerjavascript）
+8. [更改日志]（#changelog）
+9. [学分]（＃学分）
+10. [许可证]（#licence）
+
+＃＃ 特征
+此适配器附带以下功能：
+
+ -  __发送命令___（开始，停止，恢复，暂停，停靠）到您的Roomba
+ - 检索__device states__，例如电池，停靠，完整/插入的bin（参见[Channels＆States]（＃channels  -  states）以获取完整列表）
+ - 检索__device配置___，例如首选项，网络或计划设置（有关完整列表，请参阅[通道和状态]（＃channels  -  states））
+ - 检索__device statistics__，例如总任务，对接站的小时数等（参见[频道和状态]（＃频道 - 状态）以获取完整列表）
+ - 检索有关__current mission__的信息（当您的Roomba正在清理时），例如开始和结束时间，总运行时间，平方米清理等等（仅在支持的Roomba上看到[支持的Roomba /固件版本]（＃supported-roombas） --firmware版本））
+ - 基于收到的任务数据___Draw地图（仅限支持的Roomba \）
+ -  __Web Interface__显示当前以及之前/已存档任务的状态和地图：
+
+![Roomba界面](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
 
 ##安装
 ioBroker.roomba需要[帆布](https://www.npmjs.com/package/canvas)才能绘制Roomba任务的地图。 ioBroker将尝试使用ioBroker.roomba安装来安装此依赖项。
@@ -203,15 +217,16 @@ sudo npm install canvas --unsafe-perm=true
 
 在ioBroker.javascript的“common”文件夹中创建一个脚本，并向其添加以下侦听器：
 
-```
+```javascript
 var _fs = require('fs');
 
 /*
  * MISSION END: Send map
  *
  */
-var ns = 'roomba.0';
 var message = "%device.name% finished at %missions.current.endedDateTime% cleaning %missions.current.sqm% sqm in %missions.current.runtime% seconds (%missions.current.error% errors).";
+var ns = 'roomba.0';
+var imagePath = 'tmp/';
 
 on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
 {
@@ -241,16 +256,16 @@ on({id: ns + '.missions.current.ended', change: 'any'}, function(obj)
     log(message);
 
     // get image
-    var img = getState('roomba.0.missions.current.mapImage').val;
+    var img = getState(ns + '.missions.current.mapImage').val;
 
     if (img !== null && img.indexOf('data:image/png;base64,') > -1)
     {
-        _fs.writeFile('/tmp/image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
+        _fs.writeFile(imagePath + 'image.png', img.replace(/^data:image\/png;base64,/, ''), 'base64', function(err)
         {
             if (err !== null)
                 log(err.message, 'warn');
             else
-                sendTo('telegram', {text: '/tmp/image.png', message: message});
+                sendTo('telegram', {text: imagePath + 'image.png', message: message});
         });
     }
 });
@@ -268,6 +283,11 @@ _2019-05-04修复了阻止发送map_的错误
 <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a>从<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>制作的图标由<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>许可</div>
 
 ## Changelog
+
+### 1.0.1 (2019-05-15)
+- (Zefau) fixed display error in Chrome ([#19](https://github.com/Zefau/ioBroker.roomba/issues/19#issuecomment-492963244))
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#18](https://github.com/Zefau/ioBroker.roomba/pull/18))
+- (Zefau) updated dependencies
 
 ### 1.0.0 (2019-05-04)
 - (zefau) No changes, only bump to stable release

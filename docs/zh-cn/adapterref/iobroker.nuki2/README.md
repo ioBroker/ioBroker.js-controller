@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
+hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -57,6 +57,11 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 
 |频道|国家|说明|
 |:------- |:----- |:----------- |
+|回调| -  |桥的回调|
+|回调|列表|回调列表（采用JSON格式）|
+|回调._ \ <UniqueIdOfCallback \> _ | -  |回调|
+|回调._ \ <UniqueIdOfCallback \> _ | \ _delete |从Bridge中删除回调的操作 |
+|回调._ \ <UniqueIdOfCallback \> _ |网址|回调的URL |
 | -  | \ _连接|指示桥是否连接到Nuki服务器的标志 |
 | -  | bridgeId |网桥/服务器的ID |
 | -  | bridgeIp |桥的IP地址|
@@ -363,35 +368,57 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
-### 1.0.0 (2019-04-xx) [IN DEVELOPMENT]
-- (zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
-- (zefau) bump to stable release
+### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
+- (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
+- (Zefau) bump to stable release
+
+### 0.9.12 (2019-05-16)
+- (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))
+
+### 0.9.11 (2019-05-13)
+- (Zefau) added info-message when setting refresh rate to less than 10 seconds
+
+### 0.9.10 (2019-05-10)
+- (Zefau) added states to reflect current callbacks set on the Nuki Bridge as well as action to delete the callbacks
+- (Zefau) updated dependency of `nuki-bridge-api` to v1.5.0
+
+### 0.9.9 (2019-05-05)
+- (Zefau) updated dependency of `nuki-bridge-api` to v1.4.0
+
+### 0.9.8 (2019-05-05)
+Thanks to [@systemofapwne](https://github.com/systemofapwne) for testing and identifying quite a few bugs.
+
+- (Zefau) added delay between requests / actions applied on the Nuki Bridge (to prevent overload, see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+- (Zefau) fixed an issue causing the adapter to crash when polling was enabled, but Web API is not used (see [#10](https://github.com/Zefau/ioBroker.nuki2/issues/10))
+
+### 0.9.7 (2019-05-05)
+- (Zefau) added verification if callback URL is already added on Nuki Bridge (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.6 (2019-05-03)
-- (zefau) added Web Adapter as dependency
-- (zefau) add Warning when opening web / log view but Nuki Web API has not been setup
-- (zefau) removed empty folders when Nuki Web API has not been setup 
-- (zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
+- (Zefau) added Web Adapter as dependency
+- (Zefau) add warning when opening web / log view but Nuki Web API has not been setup
+- (Zefau) removed empty folders when Nuki Web API has not been setup 
+- (Zefau) fixed an issue with Webhook when time for refreshing all settings was set ([#9](https://github.com/Zefau/ioBroker.nuki2/issues/9))
 
 ### 0.9.4 / 0.9.5 (2019-03-22)
-* (zefau) Useless versions to fix incorrect configuration in `io-package.json`
+- (Zefau) Useless versions to fix incorrect configuration in `io-package.json`
 
 ### 0.9.3 (2019-03-22)
-* (zefau) Limited log retrieval to 1000 entries
+- (Zefau) Limited log retrieval to 1000 entries
 
 ### 0.9.2 (2019-02-11)
-* (zefau) Updated dependency
+- (Zefau) Updated dependency
 
 ### 0.9.1 (2019-02-10)
-* (zefau) Added Web Interface to view logs
+- (Zefau) Added Web Interface to view logs
 
 ### 0.9.0 (2019-02-09)
-* (zefau) Using both Bridge API and Web API
-* (zefau) Support for multiple bridges
-* (zefau) Support for discovery within admin panel
-* (zefau) Additional states for bridges and better separation between software / hardware bridge
-  * retrieve the basic and advanced configuration from your lock
-  * retrieve all users having access to your lock
+- (Zefau) Using both Bridge API and Web API
+- (Zefau) Support for multiple bridges
+- (Zefau) Support for discovery within admin panel
+- (Zefau) Additional states for bridges and better separation between software / hardware bridge
+  - retrieve the basic and advanced configuration from your lock
+  - retrieve all users having access to your lock
 
 ## License
 The MIT License (MIT)

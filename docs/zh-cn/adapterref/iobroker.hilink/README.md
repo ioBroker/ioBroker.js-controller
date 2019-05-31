@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hilink/README.md
 title: ioBroker.hilink
-hash: c8Z7B22ZNqfY7z8dvtxyeVIQJn/kjjQf1lezOM3pR0Q=
+hash: zbN8N2aPAc+ULr/C6cpbWjv2a1jhhd9OK0iBvHByapI=
 ---
 ![商标](../../../en/adapterref/iobroker.hilink/admin/hilink.png)
 
-#ioBroker.hilink
-=================
+![安装数量](http://iobroker.live/badges/hilink-stable.svg)
 
+#ioBroker.hilink
 ##说明
 它是带有Hilink固件的华为USB调制解调器的适配器。
 

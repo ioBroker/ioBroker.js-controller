@@ -595,6 +595,9 @@ function copyAdapterToFrontEnd(lang, adapter) {
                         link = consts.GITHUB_EDIT_ROOT.replace('/edit/', '/').replace('github.com', 'raw.githubusercontent.com') +
                             'docs/' + lang + '/adapterref/iobroker.' + adapter + file.replace(dirName, '');
                     } else {
+                        if (!repo[adapter]) {
+                            console.error(`Invalid adapter entry for ${adapter}. Please fix it!!!!`);
+                        } else
                         if (!repo[adapter].readme) {
                             console.error(`Adapter ${adapter} has no readme. Please fix it!!!!`);
                         } else {

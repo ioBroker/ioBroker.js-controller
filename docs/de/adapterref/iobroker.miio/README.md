@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.miio/README.md
 title: kein Titel
-hash: XDMqwMWlFhKnECYCDK10wcbFmf9uJWhK5gUOJXXehi4=
+hash: mh5P9HkuCteKU8XLCVPrstYQBrgub3tdolnCCqePQDs=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/miio-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.miio.svg)
@@ -15,17 +15,20 @@ hash: XDMqwMWlFhKnECYCDK10wcbFmf9uJWhK5gUOJXXehi4=
 
 <h1><img src="admin/miio.png" width="64"/> ioBroker.miio </h1>
 
-## Miio adapter für ioBroker
+## Miio Adapter für ioBroker
 Dieser Adapter steuert Geräte, die dem miIO-Protokoll folgen.
 
-## Derzeit unterstützter Gerätetyp
-| type | icon | model | Getestet |
+## Aktueller unterstützter Gerätetyp
+| Typ | Symbol | Modell | Getestet |
 
---- | --- | --- | --- | airfresh | ![](admin/icons/zhimi-airfresh-va2.png) | zhimi-airfresh-va2 | ❌ | airmonitor |! [] () || | Luftreiniger | ![](admin/icons/zhimi.airpurifier.m1.png) | zhimi.airpurifier.m1 | ❌ | Luftreiniger | ![](admin/icons/zhimi.airpurifier.v1.png) | zhimi.airpurifier.v1 | ❌ | Luftreiniger | ![](admin/icons/zhimi.airpurifier.v2.png) | zhimi.airpurifier.v2 | ❌ | Luftreiniger | ![](admin/icons/zhimi.airpurifier.v3.png) | zhimi .luftreiniger.v3 | ❌ | luftreiniger | ![](admin/icons/zhimi.airpurifier.v6.png) | zhimi.airpurifier.v6 | ❌ | fan |! [] () || ❌ | luftbefeuchter | ![](admin/icons/zhimi.humidifier.ca1.png) | zhimi.humidifier.ca1 | ❌ | Luftbefeuchter | ![](admin/icons/zhimi.humidifier.v1.png) | zhimi.humidifier.v1 | ❌ | Wasserkocher | ![](admin/icons/yunmi.kettle.r1.png) | yunmi.kettle.r1 | light | Licht | ![](admin/icons/philips.light.bulb.png) | philips.light.bulb | ✅ | Licht | | ![](admin/icons/philips.light.sread1.png) | philips.light.sread1 | ✅ | light | ![](admin/icons/yeelink.light.color1.png) | yeelink.light.color1 | ✅ | light | ![](admin/icons/yeelink.light.lamp1.png) | yeelink.light.lamp1 | ✅ | light | §§ Yeelink.light.mono1 | light | light | §§IIIII_14§ | yeelink.light.mono1 | ✅ | plug | ![](admin/icons/chuangmi.plug.m1.png) | chuangmi.plug.m1 | ❌ | plug | §§IIIII_16§ § | chuangmi.plug.v1 | ❌ | plug | ![](admin/icons/chuangmi.plug.v2.png) | chuangmi.plug.v2 | ❌ | plug | ![](admin/icons/chuangmi.plug.v3.png) | chuangmi.plug.v3 | ✅ | powerstrip | §IIIII_19§§ | qmi.powerstrip.v1 | ❌ | powerstrip | ![](../../../en/adapterref/iobroker.miio/admin/icons/zimi.powerstrip.v2.png) | zimi.powerstrip.v2 | water | waterpuri | §§IIIII_21§ | yunmi.waterpuri.lx3 | ✅ | waterpuri | §§IIIII_22 §§ | yunmi.waterpuri.v2 | ✅
+--- | --- | --- | --- | luftreiniger | ![](admin/icons/zhimi-airfresh-va2.png) | zhimi-luftreiniger-va2 | ❌ | luftreiniger |! [] () || ❌ | luftreiniger | ![](admin/icons/zhimi.airpurifier.m1.png) | zhimi.airpurifier.m1 | ❌ | airpurifier | ![](admin/icons/zhimi.airpurifier.v1.png) | zhimi.airpurifier.v1 | ❌ | airpurifier | ![](admin/icons/zhimi.airpurifier.v2.png) | zhimi.airpurifier.v2 | ❌ | airpurifier | §§IIIII_4§ | zhimi .luftreiniger.v3 | ❌ | luftreiniger | ![](admin/icons/zhimi.airpurifier.v6.png) | zhimi.luftreiniger.v6 | ❌ | ventilator | ![](admin/icons/zhimi.fan.v2.png) | zhimi.fan.v2 | ✅ | luftbefeuchter | ![](admin/icons/zhimi.humidifier.ca1.png) | zhimi.luftbefeuchter .ca1 | ❌ | Luftbefeuchter | ![](admin/icons/zhimi.humidifier.v1.png) | zhimi.humidifier.v1 | ❌ | Wasserkocher | §§IIIII_9§ | yunmi.kettle.r1 | ✅ | light | ![](admin/icons/philips.light.bulb.png) | philips.light.bulb | ✅ | Licht | ![](admin/icons/philips.light.sread1.png) | philips.light.sread1 | ✅ | Licht | ![](admin/icons/yeelink.light.color1.png) | yeelink.light.color1 | ✅ | Licht | ![](admin/icons/yeelink.light.lamp1.png) | yeelink.light.lamp1 | ✅ | light | ![](admin/icons/yeelink.light.mono1.png) | yeelink.light.mono1 | ✅ | light | ![](admin/icons/yeelink.light.strip1.png) | yeelink.light.mono1 | ✅ | plug | ![](admin/icons/chuangmi.plug.m1.png) | chuangmi.plug.m1 | ❌ | plug | ![](admin/icons/chuangmi.plug.v1.png) | chuangmi.plug.v1 | ❌ | Stecker | ![](admin/icons/chuangmi.plug.v2.png) | chuangmi.plug.v2 | ❌ | Stecker | ![](admin/icons/chuangmi.plug.v3.png) | chuangmi.pl ug.v3 | ✅ | powerstrip | ![](admin/icons/qmi.powerstrip.v1.png) | qmi.powerstrip.v1 | ❌ | powerstrip | ![](admin/icons/zimi.powerstrip.v2.png) | zimi.powerstrip.v2 | ❌ | waterpuri | ![](admin/icons/yunmi.waterpuri.lx3.png) | yunmi.waterpuri. lx3 | ✅ | waterpuri | ![](../../../en/adapterref/iobroker.miio/admin/icons/yunmi.waterpuri.v2.png) | yunmi.waterpuri.v2 | ✅
 
-- Wenn Sie ein Gerät getestet haben, erstellen Sie ein Problem und teilen Sie mir das Ergebnis und das Gerätemodell mit.
+- Wenn Sie ein Gerät getestet haben, erstellen Sie bitte ein Problem und teilen Sie mir das Ergebnis und das Gerätemodell mit.
 
 ## Changelog
+### 0.0.7 (2019-05-17)
+* Add zhimi fan support
+
 ### 0.0.6 (2019-04-13)
 * Add power load for chuangmi plug
 

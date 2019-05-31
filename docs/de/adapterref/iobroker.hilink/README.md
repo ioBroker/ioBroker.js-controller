@@ -3,29 +3,29 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hilink/README.md
 title: ioBroker.hilink
-hash: c8Z7B22ZNqfY7z8dvtxyeVIQJn/kjjQf1lezOM3pR0Q=
+hash: zbN8N2aPAc+ULr/C6cpbWjv2a1jhhd9OK0iBvHByapI=
 ---
 ![Logo](../../../en/adapterref/iobroker.hilink/admin/hilink.png)
 
-# IoBroker.hilink
-=================
+![Anzahl der Installationen](http://iobroker.live/badges/hilink-stable.svg)
 
+# IoBroker.hilink
 ## Beschreibung
 Es ist ein Adapter für Huawei USB-Modems mit Hilink-Firmware.
 
 [Русский](https://github.com/bondrogeen/iobroker.hilink/blob/master/docs/ru/README.md)
 
-Getestet an Modems: E3372h-153_Update_22.323.01.00.143_M_AT_05.10 E3372s Update_22.286.53.01.161_S_ADB_TLN_03 E3272s 22.491.0.00 17.100.08.00.03-Mod1.2
+Getestet auf Modems: E3372h-153_Update_22.323.01.00.143_M_AT_05.10 E3372s Update_22.286.53.01.161_S_ADB_TLN_03 E3272s 22.491.09.00.00 17.100.08.00.03-Mod1.2
 
 Firmware und andere Informationen finden Sie hier - http://4pda.ru/forum/index.php?showtopic=582284&
 
-Kompatibilität E3372 (МТС 827F / 829F, МегаФон M150-2, Билайн E3372 / E3370, TELE2 E3372р-153, МТС 824F, Мегафон M100-4, Билайн E3272).
+Kompatibilität E3372 (МТС 827F / 829F, МегаФон M150-2, Билайн E3372 / E3370, TELE2 E3372р-153, МТС 824F, Мегафон M100-4, Билайн E3272)
 
-- Verbindung, Trennen vom Netzwerk und Neustarten des Modems
-- eingehende und ausgehende Nachrichten lesen.
+- Verbindung, Trennung vom Netzwerk und Neustart des Modems
+- Lesen Sie eingehende und ausgehende Nachrichten.
 - Nachrichten senden.
 - Senden von ussd-Anfragen.
-- Erhalten grundlegender Parameter des Modems, Informationen über den Verkehr.
+- Ermitteln der Grundparameter des Modems, Informationen zum Datenverkehr.
 
 ```javascript
 

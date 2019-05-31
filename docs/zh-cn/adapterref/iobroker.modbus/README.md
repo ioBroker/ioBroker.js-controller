@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: TOU8dQgOXSQlCVGEXCnoA2Q/sLRNJ1N9pEhI7PIt2J8=
+hash: itzO8wIFEAtTCTZRzPCF2V+sF4/bpTLt/pzwT0lEKs4=
 ---
 ![商标](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -24,7 +24,7 @@ hash: TOU8dQgOXSQlCVGEXCnoA2Q/sLRNJ1N9pEhI7PIt2J8=
 modbus合作伙伴的IP地址。
 
 ＃＃＃ 港口
-TCP端口的modbus伙伴如果配置为主（客户端）或自身端口（如果配置为从属（服务器））。
+TCP端口的modbus伙伴如果配置为主（客户端）或自己的端口（如果配置为从属（服务器））。
 
 ＃＃＃ 设备编号
 Modbus设备ID。如果使用TCP / Modbus桥，则很重要。
@@ -186,9 +186,12 @@ FieldServer Modbus RTU驱动程序提供多种功能移动，可处理32位整�
 ##测试
 文件夹* test'中有一些程序用于测试TCP通信：
 
- -  Ananas32 / 64是从模拟器（仅保持寄存器和输入，无线圈和数字输入）
+ -  Ananas32 / 64是从模拟器（仅保存寄存器和输入，无线圈和数字输入）
  -  RMMS是主模拟器
  -  mod_RSsim.exe是从模拟器。您可能需要[Microsoft Visual C ++ 2008 SP1可再发行组件包]（https://www.microsoft.com/en-us/download/details.aspx?id=5582）来启动它（因为SideBySide错误）。
+
+＃3.0.0（2019-05-15）
+*（Apollon77）添加了对nodejs 12的支持，不再支持nodejs 4！
 
 ＃2.0.9（2018-10-11）
 *（Bjoern3003）写入寄存器已更正

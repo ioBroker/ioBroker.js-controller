@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/config/cli.md
 title: ioBroker的控制台命令
-hash: gDKI5WnwytmXb2zTPcSnSvUtOHvPTTmbUWOS+IrqjJU=
+hash: dhaADQZqpsslTjSaOFoQ5HJ8AK5tBBSCGOimap1w4jM=
 ---
 #ioBroker的控制台命令
-有可能通过控制台（Windows和Linux）执行启动，停止或更新等操作。这是对它们的描述。
+有可能通过控制台（windows和linux）进行启动，停止或更新等操作。这是对它们的描述。
 
-注意：所有以```iobroker```开头的命令都可以从任何iobroker命令可用的目录中调用。必须从ioBroker根目录调用```npm install```命令。
+注意：所有以```iobroker```开头的命令都可以从iobroker命令可用的任何目录中调用。必须从ioBroker根目录调用```npm install```命令。
 
 以下命令是可能的：
 
@@ -190,7 +190,7 @@ Usage:
 ```iobroker del dwd``` - deletes all instances and code of adapter dwd from ioBroker.
 
 ## iobroker del adapterName.instance
-Removes only specified instance of this adapter from ioBroker and **not** deletes it form the disk.
+Removes only specified instance of this adapter from ioBroker and **not** deletes it from the disk.
 
 You cannot restore settings of the adapter instance after deletion.
 
@@ -498,7 +498,7 @@ Please specify one of the backup names:
  -  ip  - 列出所有可以绑定到某些IP的instacnes
  -  ssl  - 列出可以启用SSL的所有实例
 
-使用：```iobroker list instacnes --enabled```列出所有已启用的实例
+使用：```iobroker list instances --enabled```列出所有已启用的实例
 
 或```iobroker l i --port```列出使用过的端口。
 

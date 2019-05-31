@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.simple-api/README.md
-title: без названия
-hash: 4U8lJIIGxhn3k259eO/5z8wWg2VNx2dMx9JD1xBOJr0=
+title: Простой апи
+hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
 ---
-![логотип](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png) ioBroker simple-api адаптер =================
+![логотип](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
 ![Количество установок](http://iobroker.live/badges/simple-api-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.simple-api.svg)
@@ -13,6 +13,7 @@ hash: 4U8lJIIGxhn3k259eO/5z8wWg2VNx2dMx9JD1xBOJr0=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.simple-api.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.simple-api.png?downloads=true)
 
+# Simple-api
 Это интерфейс RESTFul для чтения объектов и состояний из ioBroker и для записи / управления состояниями по HTTP-запросам Get / Post.
 
 ## Использование
@@ -86,7 +87,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    получить много состояний одним запросом, возвращенным как объект с ID в качестве ключа и val / ts как подобъект
+    получить много состояний одним запросом, возвращенным как объект с идентификатором в качестве ключа и val / ts как подобъект
 
 ### Задавать
 Позвоните, например:
@@ -149,7 +150,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 Если аутентификация включена, два других поля являются обязательными: <pre> ? Пользователь = администратора и передать = iobroker </pre>
 
 ### GetPlainValue
-Считайте значение состояния как текст. Вы можете указать больше идентификаторов, разделенных точкой с запятой
+Прочитайте значение состояния как текст. Вы можете указать больше идентификаторов, разделенных точкой с запятой
 
 <pre> http:// IP: 8087 / getPlainValue / admin.0.memHeapTotal </pre>
 
@@ -176,7 +177,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 <pre> {&quot;admin.0.memHeapTotal&quot;: {&quot;val&quot;: 31.19, &quot;ts&quot;: 1423154754}, &quot;admin.0.memHeapUsed&quot;: {&quot;val&quot;: 15.6, &quot;ts&quot;: 1423154754}} </pre>
 
 ### Задавать
-Напишите состояния с указанными идентификаторами. Вы можете указать опцию *wait* в миллисекундах, чтобы ждать ответа от водителя.
+Напишите состояния с указанными идентификаторами. Вы можете указать опцию *wait* в миллисекундах, чтобы дождаться ответа от водителя.
 
 <pre> http:// IP: 8087 / набор / гм-rpc.0.IEQ12345.LEVEL значение = 1 &amp; prettyPrint </pre><pre> {&quot;id&quot;: &quot;hm-rpc.0.IEQ12345.LEVEL&quot;, &quot;value&quot;: 1} </pre>
 
@@ -187,12 +188,12 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 ### SetBulk
 - написать большую часть идентификаторов в одном запросе.
 
-<pre> http:// IP: 8087 / setBulk гм-rpc.0.FEQ1234567: 1.LEVEL = 0,7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: datapoint \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Вы можете отправить этот запрос как POST тоже.
+<pre> http:// IP: 8087 / setBulk гм-rpc.0.FEQ1234567: 1.LEVEL = 0,7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: datapoint \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Вы также можете отправить этот запрос как POST.
 
 ### Объекты
 Получить список всех объектов для шаблона. Если шаблон не указан, будут возвращены все объекты в виде массива JSON.
 
-<pre> http:// IP: 8087 / объекты prettyPrint? </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident установить размер &quot;,&quot; тип &quot;:&quot; число &quot;,&quot; роль &quot;:&quot; индикатор. состояние &quot;,&quot; единица измерения &quot;:&quot; МБ &quot;,&quot; история &quot;: {&quot; включено &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot;debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
+<pre> http:// IP: 8087 / объекты prettyPrint? </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident установить размер &quot;,&quot; тип &quot;:&quot; число &quot;,&quot; роль &quot;:&quot; индикатор.стейт &quot;,&quot; единица измерения &quot;:&quot; МБ &quot;,&quot; история &quot;: {&quot; включено &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot;debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
 </pre>
 
 Получить все объекты управления адаптера system.adapter.admin.0: <pre> http:// IP: 8087 / объекты шаблон = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}}, ...

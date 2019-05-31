@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
+hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
 ---
 ![商标](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -13,7 +13,9 @@ hash: fOLV3hxnf3yiy6S2DVszj9dhcNECmsFlSXR8tJTeMu4=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.rflink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
-＃ioBroker.rflink =================
+#ioBroker.rflink
+=================
+
 此适配器与基于arduino mega和RFC 433MHz / 866MHz / 2.6Gz通信的[rflink](http://www.nemcon.nl/blog2/)进行通信。
 用于接收天气传感器和无线电源开关的数据。
 
@@ -53,6 +55,10 @@ sudo apt-get install build-essential -y
 例如：```10;AB400D;00004d;1;OFF;```。请阅读文档以了解命令。
 
 ## Changelog
+
+### 2.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 1.2.0 (2018-01-23)
 * (Apollon77) Upgrade Serialport Library
 

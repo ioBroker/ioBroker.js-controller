@@ -3,14 +3,16 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: aCRY0wLsVw0zfMJJdn+6vjJrhImfqImEc4PxWav+J/A=
+hash: E+E7xqiJjqeHgW33UbeLs5yc7G6Tp7c9OqAghBPYONY=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
 ![建立状态](https://travis-ci.org/thovid/ioBroker.viessmannapi.svg?branch=master)
-![安装数量](http://iobroker.live/badges/viessmannapi-stable.svg)
+![安装数量](http://iobroker.live/badges/viessmannapi-installed.svg)
 
 ＃ioBroker.viessmannapi
+=================
+
 该适配器通过Viessmann API将您的ioBroker系统连接到您的Viessmann中央供暖系统。它需要您的加热系统通过Vitoconnect或类似设备连接到Viessmann服务器。 API提供的所有已启用信息都会定期轮询（每60秒）并写入状态。
 
 请注意，这是一个私人项目，因此使用风险自负。它不受菲斯曼的支持或认可！
@@ -23,7 +25,7 @@ hash: aCRY0wLsVw0zfMJJdn+6vjJrhImfqImEc4PxWav+J/A=
 
  - `viessmannapi.0.heating.boiler.sensors.temperature.main.value`  - 锅炉温度
  - `viessmannapi.0.heating.circuits.0.heating.curve.shift`和`slope`  - 移位和斜率确定加热曲线
- - `viessmannapi.0.heating.circuits.0.operating.modes.active.value`  - 当前的操作模式;例如，“dhw”仅表示热水，“dhwAndHeating”表示热水和加热
+ - `viessmannapi.0.heating.circuits.0.operating.modes.active.value`  - 当前的操作模式;例如，“dhw”仅指热水，“dhwAndHeating”表示热水和加热
  - `viessmannapi.0.heating.sensors.temperature.outside.value`  - 外部传感器测量的外部温度
 
 ##行动
