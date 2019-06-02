@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "1.5.11",
+        "version": "1.5.12",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "1.5.12": {
+                "en": "Install instance of info adapter too on first setup of controller",
+                "de": "Installiere eine Instanz des info Adapters beim ersten Setup des Controllers",
+                "ru": "установить экземпляр информационного адаптера тоже при первой настройке контроллера",
+                "pt": "instale a instância do adaptador de informações também na primeira configuração do controlador",
+                "nl": "installeer ook een instantie van de info-adapter bij de eerste configuratie van de controller",
+                "fr": "Installez également l'instance de l'info-adaptateur lors de la première configuration du contrôleur.",
+                "it": "Installa anche l'istanza dell'adattatore di informazioni sulla prima configurazione del controller",
+                "es": "Instale la instancia del adaptador de información también en la primera configuración del controlador",
+                "pl": "zainstaluj również instancję adaptera informacyjnego przy pierwszej konfiguracji kontrolera",
+                "zh-cn": "在首次设置控制器时也安装info适配器的实例"
+            },
             "1.5.11": {
                 "en": "Allow to install specific versions/fix installing specific versions\nRead cache of repository before download the whole file\nif npm returns code 1 it is OK\nfix instances enumeration\nrevert greenlock version to 2.7.1",
                 "de": "Erlaube die Installation bestimmter Versionen / behebe die Installation bestimmter Versionen\nLesen Sie den Cache des Repositorys, bevor Sie die gesamte Datei herunterladen\nWenn npm den Code 1 zurückgibt, ist es OK\nInstanzen-Aufzählung korrigieren\nGreenlock-Version auf 2.7.1 zurücksetzen",
