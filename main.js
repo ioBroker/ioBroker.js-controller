@@ -19,6 +19,8 @@ const tools      = require('./lib/tools');
 const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
 const EXIT_CODES = require('./lib/exitCodes');
+const {NodeVM}   = require('vm2');
+
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 
@@ -197,7 +199,7 @@ function logRedirect(isActive, id, reason) {
 }
 
 function createStates(onConnect) {
-    return new States({
+    const _inst = new States({
         namespace: 'host.' + hostname,
         connection: config.states,
         logger: logger,
@@ -314,24 +316,27 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: () => {
+        connected: (handler) => {
+            states = handler;
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
             deleteAllZipPackages();
             onConnect && onConnect();
         }
     });
+    return true;
 }
 
 // create "objects" object
 function createObjects(onConnect) {
-    return new Objects({
+    const _inst = new Objects({
         namespace:  'host.' + hostname,
         connection: config.objects,
         controller: true,
         logger:     logger,
         hostname:   hostname,
         connected:  handler => {
+            objects = handler;
             // stop disconnect timeout
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
@@ -440,6 +445,7 @@ function createObjects(onConnect) {
             }
         }
     });
+    return true;
 }
 
 function startAliveInterval() {
@@ -2288,55 +2294,8 @@ function startInstance(id, wakeUp) {
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 logger.debug('host.' + hostname + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1]);
-                if (config.system.compact && instance.common.compact) {
-                    if (!adapterModules[name] && fileNameFull) {
-                        try {
-                            adapterModules[name] = require(fileNameFull);
-                        } catch (e) {
-                            logger.error(`host.${hostname} error with ${fileNameFull}: ${JSON.stringify(e)}`);
-                        }
-                    }
-                    if (!adapterModules[name]) {
-                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
-                    } else {
-                        const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
-                        const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
-                        try {
-                            procs[id].process = adapterModules[name]({logLevel, compactInstance: _instance, compact: true});
-                            procs[id].startedInCompactMode = true;
-                        } catch (e) {
-                            logger.error(`host.${hostname} Cannot start ${name}.${_instance}: ${JSON.stringify(e)}`);
-                        }
-                    }
-                } else {
-                    procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
-                }
 
-                if (!procs[id].startedInCompactMode && procs[id].process) {
-                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
-                }
-
-                // catch error output
-                if (!procs[id].startedInCompactMode && procs[id].process && procs[id].process.stderr) {
-                    procs[id].process.stderr.on('data', data => {
-                        if (!data || !procs[id] || typeof procs[id] !== 'object') return;
-                        const text = data.toString();
-                        // show for debug
-                        console.error(text);
-                        procs[id].errors = procs[id].errors || [];
-                        const now = Date.now();
-                        procs[id].errors.push({ts: now, text: text});
-                        // limit output to 300 messages
-                        if (procs[id].errors > 300) {
-                            procs[id].errors.splice(procs[id].errors.length - 300);
-                        }
-                        cleanErrors(id, now);
-                    });
-                }
-
-                storePids(); // Store all pids to make possible kill them all
-
-                procs[id].process && procs[id].process.on('exit', (code, signal) => {
+                const exitHandler = (code, signal) => {
                     outputCount += 2;
                     states.setState(id + '.alive',     {val: false, ack: true, from: 'system.host.' + hostname});
                     states.setState(id + '.connected', {val: false, ack: true, from: 'system.host.' + hostname});
@@ -2390,7 +2349,13 @@ function startInstance(id, wakeUp) {
                             if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX /* -100 */ && procs[id].config.common.restartSchedule) {
                                 logger.info('host.' + hostname + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
                             } else {
-                                logger.error('host.' + hostname + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                code = parseInt(code, 10);
+                                const text = `host.${hostname} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
+                                if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
+                                    logger.info(text);
+                                } else {
+                                    logger.error(text);
+                                }
                             }
                         }
                     }
@@ -2429,7 +2394,83 @@ function startInstance(id, wakeUp) {
                         }
                     }
                     storePids(); // Store all pids to make possible kill them all
-                });
+                };
+                if (config.system.compact && instance.common.compact) {
+                    const vm = new NodeVM({
+                        console: 'inherit',
+                        sandbox: {},
+                        require: {
+                            external: true,
+                            builtin: ['*']
+                        },
+                        nesting: true
+                    });
+
+                    if (!adapterModules[name] && fileNameFull) {
+                        try {
+                            //adapterModules[name] = require(fileNameFull);
+                            adapterModules[name] = vm;
+                        } catch (e) {
+                            logger.error(`host.${hostname} error with ${fileNameFull}: ${JSON.stringify(e)}`);
+                        }
+                    }
+                    if (!adapterModules[name]) {
+                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
+                    } else {
+                        const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
+                        const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
+                        try {
+                            //procs[id].process = adapterModules[name]({logLevel, compactInstance: _instance, compact: true});
+                            const starterScript =
+                                'module.exports = function (callback) {' +
+                                'const adapter = require("' + fileNameFull + '")(' + JSON.stringify({logLevel, compactInstance: _instance, compact: true}) + ');' +
+                                'adapter.on("exit", (code, signal) => {' +
+                                'callback(code, signal);' +
+                                '});' +
+                                'return true' +
+                                '};';
+                            logger.silly(starterScript);
+                            procs[id].process = adapterModules[name].run(starterScript)(exitHandler);
+                            procs[id].startedInCompactMode = true;
+                        } catch (e) {
+                            console.log(e.message);
+                            console.log(e.stackTrace);
+                            logger.error(`host.${hostname} Cannot start ${name}.${_instance}: ${JSON.stringify(e)}`);
+                        }
+                    }
+                    if (procs[id].process && !procs[id].process.kill) {
+                        procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
+                    }
+                } else {
+                    procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
+                }
+
+                if (!procs[id].startedInCompactMode && procs[id].process) {
+                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: 'system.host.' + hostname});
+                }
+
+                // catch error output
+                if (!procs[id].startedInCompactMode && procs[id].process && procs[id].process.stderr) {
+                    procs[id].process.stderr.on('data', data => {
+                        if (!data || !procs[id] || typeof procs[id] !== 'object') return;
+                        const text = data.toString();
+                        // show for debug
+                        console.error(text);
+                        procs[id].errors = procs[id].errors || [];
+                        const now = Date.now();
+                        procs[id].errors.push({ts: now, text: text});
+                        // limit output to 300 messages
+                        if (procs[id].errors > 300) {
+                            procs[id].errors.splice(procs[id].errors.length - 300);
+                        }
+                        cleanErrors(id, now);
+                    });
+                }
+
+                storePids(); // Store all pids to make possible kill them all
+
+                !procs[id].startedInCompactMode && procs[id].process && procs[id].process.on('exit', exitHandler);
+
                 if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
                     if (procs[id].startedInCompactMode) {
                         logger.info(`host.${hostname} instance ${instance._id} started in COMPACT mode`);
@@ -2481,7 +2522,7 @@ function startInstance(id, wakeUp) {
                         } else {
                             code = parseInt(code, 10);
                             const text = `host.${hostname} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                            if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                            if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
                                 logger.info(text);
                             } else {
                                 logger.error(text);
@@ -2516,7 +2557,7 @@ function startInstance(id, wakeUp) {
                     } else {
                         code = parseInt(code, 10);
                         const text = `host.${hostname} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                        if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                        if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
                             logger.info(text);
                         } else {
                             logger.error(text);
@@ -2610,7 +2651,6 @@ function stopInstance(id, callback) {
                             } catch (e) {
                                 logger.error(`host.${hostname} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-
                             delete procs[id].process;
                         }
 
@@ -2916,53 +2956,53 @@ function init() {
         }
     }
 
-    // create states object
-    states = createStates(() => {
-        // Subscribe for all logging objects
-        states.subscribe('*.logging');
+    createObjects(() => {
+        objects.subscribe('system.adapter.*');
 
-        // Subscribe for all logging objects
-        states.subscribe('system.adapter.*.alive');
+        // create states object
+        createStates(() => {
+            // Subscribe for connection state of all instances
+            // Disabled in 1.5.x
+            // states.subscribe('*.info.connection');
 
-        // Read current state of all log subscribers
-        states.getKeys('*.logging', (err, keys) => {
-            if (keys && keys.length) {
-                const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
-                objects.getObjects(oKeys, (err, objs) => {
-                    const toDelete = keys.filter((id, i) => !objs[i]);
-                    keys = keys.filter((id, i) => objs[i]);
+            // Subscribe for all logging objects
+            states.subscribe('*.logging');
 
-                    states.getStates(keys, (err, obj) => {
-                        if (obj) {
-                            for (let i = 0; i < keys.length; i++) {
-                                // We can JSON.parse, but index is 16x faster
-                                if (obj[i]) {
-                                    if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
-                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
-                                    } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
-                                        logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+            // Subscribe for all logging objects
+            states.subscribe('system.adapter.*.alive');
+
+            // Read current state of all log subscribers
+            states.getKeys('*.logging', (err, keys) => {
+                if (keys && keys.length) {
+                    const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
+                    objects.getObjects(oKeys, (err, objs) => {
+                        const toDelete = keys.filter((id, i) => !objs[i]);
+                        keys = keys.filter((id, i) => objs[i]);
+
+                        states.getStates(keys, (err, obj) => {
+                            if (obj) {
+                                for (let i = 0; i < keys.length; i++) {
+                                    // We can JSON.parse, but index is 16x faster
+                                    if (obj[i]) {
+                                        if (typeof obj[i] === 'string' && (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)) {
+                                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                        } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
+                                            logRedirect(true, keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''), 'starting');
+                                        }
                                     }
                                 }
                             }
+                        });
+                        if (toDelete.length) {
+                            toDelete.forEach(id => {
+                                logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
+                                states.delState(id);
+                            });
                         }
                     });
-                    if (toDelete.length) {
-                        toDelete.forEach(id => {
-                            logger.warn('host.' + hostname + ' logger ' + id + ' was deleted');
-                            states.delState(id);
-                        });
-                    }
-                });
-            }
+                }
+            });
         });
-    });
-
-    // Subscribe for connection state of all instances
-    // Disabled in 1.5.x
-    // states.subscribe('*.info.connection');
-
-    objects = createObjects(() => {
-        objects.subscribe('system.adapter.*');
     });
 
     process.on('SIGINT', () => {
@@ -2982,7 +3022,7 @@ function init() {
             objects.destroy();
             objects = null;
             // Give time to close the objects
-            setTimeout(() => objects = createObjects(), 3000);
+            setTimeout(() => createObjects(), 3000);
             return;
         }
 

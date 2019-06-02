@@ -13,6 +13,15 @@
 * (Moritz Heusinger) adding possibility to validate backup files
 * (bluefox) verify the version of node.js by start of the instance
 
+## 1.5.11 (2019-05-26) Evolution release (Ann)
+* (Apollon77) Allow to install specific versions/fix installing specific versions
+
+## 1.5.9 (2019-05-16) Evolution release (Ann)
+* (bluefox) Read cache of repository before download the whole file
+* (AlCalzone) if npm returns code 1 it is OK
+* (AlCalzone) fix instances enumeration
+* revert greenlock version to 2.7.1
+
 ## 1.5.7 (2019-02-12) Fixes for Evolution release (Ann)
 * Required version for normal functionality: javascript 3.6.5, dasWetter: 2.7.1, upnp: 1.0.0
 * (bluefox) Fix let's encrypt
