@@ -409,6 +409,7 @@
                 "diag": "extended",
                 "tabs": [
                     "tab-intro",
+                    "tab-info",
                     "tab-adapters",
                     "tab-instances",
                     "tab-objects",
