@@ -1,3 +1,6 @@
+## 1.5.13 (2019-06-3) Evolution release (Ann)
+* (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install
+
 ## 1.5.12 (2019-06-01) Evolution release (Ann)
 * (Apollon77) Install instance of info adapter too on first setup of controller 
 
