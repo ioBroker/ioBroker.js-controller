@@ -1,10 +1,17 @@
 ## 2.0.0 (2019-xx-xx) Release Bea
-* Code refactoring
+* Code refactoring, fixes and optimizations
+* (AlCalzone) Don't chmod 777 after controller upgrade
+* (Apollon77) CHange InMem-DB (State&Object) to TCP (redis style) protocol and deprecate socket.io version; will be removed approx. in v2.1 
+* (Apollon77) add monitoring for event-Loop-Lag as host objects
+* (Apollon77) Further compact mode optimizations
+* 
+* (foxriver76) add possibility to validate backup files
+* (Apollon77) upgrade all dependencies 
 * (bluefox) support of compact mode
 * (alcalzone) refactoring of many CLI commands
 * (bluefox) add possibility to return zip file as a link and not as base64
 * (alcalzone) Enable ESLint and fix most issues
-* (bluefox) add error codes
+* (bluefox) standardize error codes
 * (alcalzone) Root should always npm install with --unsafe-perm
 * (bluefox) enable gzip for read repositories
 * (bluefox) Add some information to user-agent, like chrome, IE and Firefox do by update checks - the information is absolutely anonymous
