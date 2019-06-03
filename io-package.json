@@ -29,6 +29,18 @@
               "es": "ver CHANGELOG.md",
               "pl": "zobacz CHANGELOG.md"
             },
+            "1.5.13": {
+                "en": "Make sure Info Adapter Tab is displayed automatically on install",
+                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird",
+                "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке",
+                "pt": "Verifique se a guia Adaptador de Informações é exibida automaticamente na instalação",
+                "nl": "Zorg ervoor dat het tabblad Info Adapter automatisch wordt weergegeven tijdens de installatie",
+                "fr": "Assurez-vous que l'onglet Info Adapter est affiché automatiquement lors de l'installation",
+                "it": "Assicurarsi che la scheda Scheda informazioni sia visualizzata automaticamente al momento dell'installazione",
+                "es": "Asegúrese de que la pestaña del adaptador de información se muestra automáticamente en la instalación",
+                "pl": "Upewnij się, że zakładka Info Adapter jest wyświetlana automatycznie podczas instalacji",
+                "zh-cn": "确保在安装时自动显示Info Adapter选项卡"
+            },
             "1.5.12": {
                 "en": "Install instance of info adapter too on first setup of controller",
                 "de": "Installiere eine Instanz des info Adapters beim ersten Setup des Controllers",
