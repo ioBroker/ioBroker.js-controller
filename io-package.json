@@ -19,7 +19,7 @@
         },
         "news": {
             "1.5.13": {
-                "en": "Install instance of info adapter too on first setup of controller",
+                "en": "Make sure Info Adapter Tab is displayed automatically on install",
                 "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird",
                 "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке",
                 "pt": "Verifique se a guia Adaptador de Informações é exibida automaticamente na instalação",
