@@ -29,6 +29,42 @@
               "es": "ver CHANGELOG.md",
               "pl": "zobacz CHANGELOG.md"
             },
+            "1.5.12": {
+                "en": "Install instance of info adapter too on first setup of controller",
+                "de": "Installiere eine Instanz des info Adapters beim ersten Setup des Controllers",
+                "ru": "установить экземпляр информационного адаптера тоже при первой настройке контроллера",
+                "pt": "instale a instância do adaptador de informações também na primeira configuração do controlador",
+                "nl": "installeer ook een instantie van de info-adapter bij de eerste configuratie van de controller",
+                "fr": "Installez également l'instance de l'info-adaptateur lors de la première configuration du contrôleur.",
+                "it": "Installa anche l'istanza dell'adattatore di informazioni sulla prima configurazione del controller",
+                "es": "Instale la instancia del adaptador de información también en la primera configuración del controlador",
+                "pl": "zainstaluj również instancję adaptera informacyjnego przy pierwszej konfiguracji kontrolera",
+                "zh-cn": "在首次设置控制器时也安装info适配器的实例"
+            },
+            "1.5.11": {
+                "en": "Allow to install specific versions/fix installing specific versions\nRead cache of repository before download the whole file\nif npm returns code 1 it is OK\nfix instances enumeration\nrevert greenlock version to 2.7.1",
+                "de": "Erlaube die Installation bestimmter Versionen / behebe die Installation bestimmter Versionen\nLesen Sie den Cache des Repositorys, bevor Sie die gesamte Datei herunterladen\nWenn npm den Code 1 zurückgibt, ist es OK\nInstanzen-Aufzählung korrigieren\nGreenlock-Version auf 2.7.1 zurücksetzen",
+                "ru": "Разрешить установку определенных версий / исправить установку определенных версий\nПрочитайте кеш репозитория перед загрузкой всего файла\nесли npm возвращает код 1, все в порядке\nисправить перечисление экземпляров\nвернуть версию greenlock на 2.7.1",
+                "pt": "Permitir a instalação de versões específicas / corrigir a instalação de versões específicas\nLeia o cache do repositório antes de baixar o arquivo inteiro\nse npm retornar o código 1, tudo bem\ncorrigir enumeração de instâncias\nreverter a versão greenlock para 2.7.1",
+                "nl": "Sta toe om specifieke versies te installeren / repareer de installatie van specifieke versies\nLees de cache van de repository voordat je het hele bestand downloadt\nals npm code 1 retourneert, is het OK\nfix instanties opsomming\nzet greenlock-versie terug naar 2.7.1",
+                "fr": "Autoriser l'installation de versions spécifiques / corriger l'installation de versions spécifiques\nLire le cache du référentiel avant de télécharger le fichier entier\nsi npm retourne le code 1 c'est ok\ncorrection des énumérations d'instances\nrevenir à la version 2.7 de greenlock",
+                "it": "Consentire l'installazione di versioni specifiche / correggere l'installazione di versioni specifiche\nLeggi la cache del repository prima di scaricare l'intero file\nse npm restituisce il codice 1, è OK\ncorregge l'enumerazione delle istanze\nripristinare la versione di Greenlock alla 2.7.1",
+                "es": "Permitir instalar versiones específicas / corregir instalar versiones específicas\nLea la memoria caché del repositorio antes de descargar el archivo completo\nSi npm devuelve el código 1, está bien.\narreglar instancias enumeración\nrevertir la versión de Greenlock a 2.7.1",
+                "pl": "Pozwól zainstalować określone wersje / fix instalując określone wersje\nPrzeczytaj cache repozytorium przed pobraniem całego pliku\njeśli npm zwróci kod 1, jest OK\npoprawiono wyliczanie instancji\nprzywróć wersję Greenlock do wersji 2.7.1",
+                "zh-cn": "允许安装特定版本/修复安装特定版本\n在下载整个文件之前读取存储库的缓存\n如果npm返回代码1就可以了\n修复实例枚举\n将greenlock版本恢复为2.7.1"
+            },
+            "1.5.9": {
+                "en": "Handle optional npm errors correctly on installs\nMake sure to only iterate over correct adapters when names start the same\nInstall correct adapter version when moving or reinstalling\nOnly download repository if changed",
+                "de": "Behandeln Sie optionale npm-Fehler bei Installationen korrekt\nnVergewissern Sie sich, dass die korrekten Adapter nur dann durchlaufen werden, wenn die Namen die gleichen Adapter starten",
+                "ru": "Правильно обрабатывать необязательные ошибки npm при установке\nnУбедитесь в том, что перебираете правильные адаптеры только при одинаковых именах имен",
+                "pt": "Manipule erros opcionais do npm corretamente em instalações\nnCertifique-se de somente iterar sobre adaptadores corretos quando os nomes iniciarem o mesmo\nnInstalar a versão correta do adaptador ao mover ou reinstalar\nnApenas o repositório de download se tiver sido alterado",
+                "nl": "Beheer optionele npm-fouten correct bij installaties\nnControleer zeker alleen correcte adapters als identiteiten hetzelfde beginnen\nnSteek de juiste adapterversie bij het verplaatsen of opnieuw installeren\nnGebruik alleen de repository als deze is gewijzigd",
+                "fr": "Gestion des erreurs npm facultatives correctement lors de l’installation\nnAssurez-vous de n’itérer que sur les bons adaptateurs lorsque les noms commencent par la même version de l’adaptateur correct lors du déplacement ou de la réinstallation du\nnSi-modifié le référentiel de téléchargement.",
+                "it": "Gestisci correttamente gli errori npm opzionali\nnAccertati di eseguire iterazioni solo sugli adattatori corretti quando i nomi iniziano lo stesso\nnInstallare la versione corretta dell'adattatore durante lo spostamento o la reinstallazione\nnSpoglia il repository di download se modificato",
+                "es": "Maneje los errores npm opcionales correctamente en las instalaciones\nnAsegúrese de iterar solo sobre los adaptadores correctos cuando los nombres inicien la misma\nnInstale la versión correcta del adaptador al mover o reinstalar\nnSólo descargue el repositorio si se cambió",
+                "pl": "Prawidłowe obchodzenie się z opcjonalnymi błędami npm w instalacjach n Upewnij się, że iteracja tylko przez prawidłowe karty, gdy nazwy zaczynają się tak samo Zainstaluj poprawną wersję adaptera podczas przenoszenia lub ponownej instalacji Tylko pobranie repozytorium w przypadku zmiany",
+                "zh-cn": "在安装时正确处理可选的npm错误\nn确保仅在名称开始时迭代正确的适配器\nn在移动或重新安装时安装正确的适配器版本\nn仅在下载存储库时更改"
+            },
             "1.5.7": {
                 "en": "let's encrypt was fixed\nFix iob script\nAlways install the version from repository and not the latest from npm\nRoot should always npm install with --unsafe-perm\niobroker stop was fixed",
                 "de": "Lass uns verschlüsseln wurde behoben\nIob -Skript korrigieren\nInstallieren Sie die Version immer aus dem Repository und nicht die neueste aus npm\nRoot sollte npm immer mit --unsafe-perm installieren\nIobroker-Stopp wurde behoben",
@@ -409,6 +445,7 @@
                 "diag": "extended",
                 "tabs": [
                     "tab-intro",
+                    "tab-info",
                     "tab-adapters",
                     "tab-instances",
                     "tab-objects",

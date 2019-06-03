@@ -13,6 +13,9 @@
 * (Moritz Heusinger) adding possibility to validate backup files
 * (bluefox) verify the version of node.js by start of the instance
 
+## 1.5.12 (2019-06-01) Evolution release (Ann)
+* (Apollon77) Install instance of info adapter too on first setup of controller 
+
 ## 1.5.11 (2019-05-26) Evolution release (Ann)
 * (Apollon77) Allow to install specific versions/fix installing specific versions
 
