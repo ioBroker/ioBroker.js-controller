@@ -662,6 +662,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.loxone/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.luftdaten/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lupusec/README.md
@@ -715,6 +716,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.panasonic-viera/README
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.paw/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.phantomjs/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.pi-hole/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.piface/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.pimatic/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ping/README.md
@@ -969,6 +971,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.loxone/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.luftdaten/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lupusec/README.md
@@ -1022,6 +1025,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.panasonic-viera/README
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.paw/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.phantomjs/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.pi-hole/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.piface/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.pimatic/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ping/README.md
@@ -1276,6 +1280,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.loxone/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.luftdaten/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lupusec/README.md
@@ -1329,6 +1334,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.panasonic-viera/README
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.paw/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.phantomjs/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.pi-hole/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.piface/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.pimatic/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ping/README.md
@@ -1583,6 +1589,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.loxone/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.luftdaten/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lupusec/README.md
@@ -1636,6 +1643,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.panasonic-viera/REA
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.paw/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.phantomjs/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.pi-hole/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.piface/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.pimatic/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ping/README.md

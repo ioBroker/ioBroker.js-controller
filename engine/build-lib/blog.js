@@ -226,9 +226,47 @@ function buildAll() {
 
                     fs.writeFileSync(consts.FRONT_END_DIR + 'blog.json', JSON.stringify(contents[0], null, 2));
 
-                    resolve(content);
+                    buildRSS().then(() => resolve(content));
                 });
             });
+    });
+}
+
+function buildRSS() {
+    return new Promise(resolve => {
+        const blog = JSON.parse(fs.readFileSync(consts.FRONT_END_DIR + 'blog.json').toString('utf-8'));
+
+        consts.LANGUAGES.forEach(lang => {
+            let rss =
+                '<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">\n';
+            rss += `    <channel>\n`;
+            rss += `        <title><![CDATA[ ioBroker Blog ]]></title>\n`;
+            rss += `        <description><![CDATA[${consts.BLOG_TITLE[lang]}]]></description>\n`;
+            rss += `        <link>https://www.iobroker.net/#${lang}/blog</link>\n`;
+            rss += `        <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n`;
+            rss += `        <ttl>1440</ttl>\n`;
+
+            Object.keys(blog.pages).forEach(date => {
+                const item = blog.pages[date];
+                const dateObj = new Date(date.replace(/_/g, '-') + 'T06:00:00.000Z');
+                rss += `        <item>\n`;
+                rss += `            <title><![CDATA[${item.title[lang]}]]></title>\n`;
+                rss += `            <description><![CDATA[\n`;
+                rss += `                <p>${item.desc[lang].replace(/\n/g, '<br />').replace(/>/g, '=&gt;').replace(/<>/g, '=&lt;')}</p>\n`;
+                rss += `            ]]></description>\n`;
+                rss += `            <link>https://www.iobroker.net/#${lang}/blog/` + date + `</link>\n`;
+                rss += `            <guid isPermaLink="true">https://www.iobroker.net/#${lang}/blog/` + date + `</guid>\n`;
+                rss += `            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>\n`;
+                rss += `            <pubDate>${dateObj.toUTCString()}</pubDate>\n`;
+                rss += `        </item>\n`
+            });
+            rss += `    </channel>\n`;
+            rss += `</rss>\n`;
+
+            fs.writeFileSync(consts.FRONT_END_DIR + `blog_${lang}.xml`, rss);
+        });
+
+        resolve();
     });
 }
 
@@ -236,6 +274,7 @@ if (!module.parent) {
     buildAll().then(() => console.log('Done'));
 } else {
     module.exports = {
-        build: buildAll
+        build: buildAll,
+        buildRSS: buildRSS,
     };
 }

@@ -27,7 +27,7 @@ function loadDocuments(lang, dir, root, docs) {
                 let {header, body} = utils.extractHeader(text);
                 let result = utils.extractLicenseAndChangelog(body);
 
-                console.log('Indexed: ' + name);
+                // console.log('Indexed: ' + name);
                 const id = name.replace(/\\/g, '/').replace(root + '/', '');
                 const title = header.title || utils.getTitle(result.body);
                 if (title.indexOf('object') !== -1) {

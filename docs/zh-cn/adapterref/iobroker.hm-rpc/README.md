@@ -135,6 +135,9 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.9.13 (2019-06-03)
+* (foxriver76) fixed bug where some meta values where stored in the wrong index
+
 ### 1.9.12 (2019-05-27)
 * (foxriver76) fix maintenance channel of HM-Dis-EP-WM55
 * (foxriver76) meta data added

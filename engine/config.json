@@ -8,5 +8,11 @@
     "cert": "",
     "chain": ""
   },
-  "LANGUAGES": ["de", "en", "ru", "zh-cn"]
+  "LANGUAGES": ["de", "en", "ru", "zh-cn"],
+  "sites": [
+    {
+      "route": "/docu/",
+      "path": "/opt/doc/front-end/docu/"
+    }
+  ]
 }

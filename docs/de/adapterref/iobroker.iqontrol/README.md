@@ -2,9 +2,11 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
-title: kein Titel
-hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
+title: ioBroker.iqontrol
+hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
 ---
+![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
+
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -13,7 +15,10 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 ![Travis-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
-<h1><img src="admin/iqontrol.png" width="64"/> ioBroker.iqontrol </h1>
+# IoBroker.iqontrol
+Wenn es dir gefällt, erwäge bitte eine Spende.
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ## Iqontrol Adapter für ioBroker
 Schnelle Web-App zur Visualisierung.
@@ -81,7 +86,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 * boolean - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
 * Zahl - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
 * string - ein anzuzeigender Text
-* Werteliste - der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt. Technisch gesehen ist eine Werteliste eine Zahl mit einer entsprechenden Übersetzungsliste, die in der Eigenschaft 'native.states' definiert ist.
+* Werteliste - der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt. Technisch gesehen ist eine Werteliste eine Zahl mit einer entsprechenden Übersetzungsliste, die in der Eigenschaft 'native.states' oder 'common.states' definiert ist.
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
@@ -101,6 +106,7 @@ Jedes Licht kann einen oder beide der folgenden Zustände haben:
 Optional können Sie folgende Zustände definieren:
 
 * HUE: Nummer - Farbe des Lichts
+* SÄTTIGUNG: Anzahl - Sättigung des Lichts (von Weiß zu reiner Farbe)
 * CT: Zahl - Farbtemperatur des Lichts
 * POWER: Zahl - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird - aber nur, wenn CT nicht angegeben ist (ansonsten wird CT angezeigt und POWER wird ignoriert)
 
@@ -187,6 +193,14 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * Siehe [Funktionsweise des Frontends] (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
 ## Changelog
+
+### 0.0.30
+* (Sebastian Bormann) fixed io-package.json
+
+### 0.0.29
+* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

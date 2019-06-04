@@ -2,9 +2,11 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
-title: 无题
-hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
+title: ioBroker.iqontrol
+hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
 ---
+![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
+
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![依赖状态](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -13,7 +15,10 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 ![特拉维斯-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
-<h1><img src="admin/iqontrol.png" width="64"/> ioBroker.iqontrol </h1>
+＃ioBroker.iqontrol
+如果您喜欢，请考虑捐款。
+
+[![贝宝（https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 适用于ioBroker的## iqontrol适配器
 用于可视化的快速Web应用程序。
@@ -81,7 +86,7 @@ Toolbar-Entrys是视图的链接。
 * boolean  - 如果可能的话，它将被翻译成一个有意义的文本，如'开/关'，'打开/关闭'或类似。如果单击图块的图标，它会尝试切换布尔值（例如打开或关闭灯光）。如果它不是只读的，它将在对话框中生成一个翻转开关。
 * number  - 将与相应的单位一起显示，并在对话框中生成滑块。
 * string  - 要显示的文本
-* value-list  - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。从技术上讲，值列表是一个带有相应翻译列表的数字，在“native.states”属性中定义。
+* value-list  - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。从技术上讲，值列表是一个带有相应翻译列表的数字，在“native.states”或“common.states”属性中定义。
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -101,6 +106,7 @@ Toolbar-Entrys是视图的链接。
 可选您可以定义以下状态：
 
 * HUE：数字 - 灯光的颜色
+*饱和度：数量 - 光线饱和度（从白色到纯色）
 * CT：数字 - 灯的色温
 * POWER：数字 - 功耗将在右上角显示为小 - 但仅限于CT（如果未指定CT）（否则显示CT并忽略POWER）
 
@@ -187,6 +193,14 @@ Toolbar-Entrys是视图的链接。
 *看看[前端的工作原理]（运营％20Principle％20of％20Frontend.md）
 
 ## Changelog
+
+### 0.0.30
+* (Sebastian Bormann) fixed io-package.json
+
+### 0.0.29
+* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

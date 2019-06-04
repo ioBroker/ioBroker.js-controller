@@ -1,7 +1,5 @@
-<h1>
-	<img src="admin/iqontrol.png" width="64"/>
-	ioBroker.iqontrol
-</h1>
+![Logo](admin/iqontrol.png)
+# ioBroker.iqontrol
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.iqontrol.svg)](https://www.npmjs.com/package/iobroker.iqontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)](https://www.npmjs.com/package/iobroker.iqontrol)
@@ -12,6 +10,11 @@
 
 **Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)](https://travis-ci.org/sbormann/ioBroker.iqontrol)
 <!-- Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)](https://ci.appveyor.com/project/sbormann/ioBroker-iqontrol/) -->
+
+If you like it, please consider a donation.  
+  
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+
 
 ## iqontrol adapter for ioBroker
 
@@ -78,7 +81,7 @@ Almost all roles have a STATE- and/or a LEVEL-state. In most cases this represen
 * boolean - if possible, it will be translated to a senseful text like 'on/off', 'opened/closed' or similar. If you click on the icon of a tile it tries to toggle the boolean (for example to turn a light on or off). If it is not read-only it will generate a flip-switch in the dialog.
 * number - will be displayed with its corresponding unit and generate a slider in the dialog.
 * string - a text to be displayed
-* value-list - the selected value will be displayed. If it is not write-protected it will generate a drop-down-menu in dialog. Technically an value-list is a number with a corresponding translation-list, defined in the 'native.states' property.
+* value-list - the selected value will be displayed. If it is not write-protected it will generate a drop-down-menu in dialog. Technically an value-list is a number with a corresponding translation-list, defined in the 'native.states' or 'common.states' property.
 
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
@@ -96,6 +99,7 @@ Every light may have one or both of the following states:
 
 Optional you can define the following states:
 * HUE: number - color of the light
+* SATURATION: number - saturation of the light (from white to pure color)
 * CT: number - color-temperature of the light
 * POWER: number - power-consumption that will be displayed in small in the upper right corner - but only, if CT is not specified (otherwise CT is displayed and POWER is ignored)
 
@@ -185,6 +189,14 @@ In addition to normal thermostat you can define:
 
 
 ## Changelog
+
+### 0.0.30
+* (Sebastian Bormann) fixed io-package.json
+
+### 0.0.29
+* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

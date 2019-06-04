@@ -1,0 +1,49 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[ ioBroker Blog ]]></title>
+        <description><![CDATA[Neuigkeiten, Ankündigungen und Ideen zu ioBroker]]></description>
+        <link>https://www.iobroker.net/#de/blog</link>
+        <lastBuildDate>Tue, 04 Jun 2019 20:15:26 GMT</lastBuildDate>
+        <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[ioBroker Newsletter Februar 2019]]></title>
+            <description><![CDATA[
+                <p>Heute gibt es wieder einige ioBroker-News:\nDie Forum-Umstellung ist erfolgt und das neue Forum ist online. Der neue js-controller 1.5.7 ist jetzt für erweitere Tests im Latest Repository verfügbar und auch der Installations-Fixer wurde veröffentlicht um bestehende Installationen auf den gleichen Stand wie neue zu bringen. Wichtige Informationen zum Tankerkönig-Adapter und einigen neuen Adaptern haben wir natürlich auch.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2019_02_27</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_02_27</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 27 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[js-controller 1.5.7 im Latest Repository verfügbar]]></title>
+            <description><![CDATA[
+                <p>Nach einiger Verzögerung und vielen intensiven Tests mit großer Unterstützung aus der Community und hier im Forum freuen wir uns die nächste Version des js-controllers zu offiziellen weiteren Tests für alle interessierten User freizugeben.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2019_02_25</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_02_25</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Mon, 25 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[ioBroker Installation "Fixer" Beta verfügbar]]></title>
+            <description><![CDATA[
+                <p>Ende 2018 und vor allem im Januar 2019 hat @AlCalzone den ioBroker Installer komplett überarbeitet und damit gehören in den inzwischen aktuellen Version von Anfang Februar 2019 auch alle Rechteprobleme der Vergangenheit. ioBroker läuft damit nicht mehr als "root" sondern unter einem eigenen User der alles darf was er für die aktuellen ioBroker Adapter können muss.\nFür alle neuen Installation ist also alles bestens.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2019_02_22</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_02_22</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Fri, 22 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Cloud-Adapter-Version]]></title>
+            <description><![CDATA[
+                <p>Es wurde die neue Cloud-Adapter-Version vorbereitet.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2018_03_17</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2018_03_17</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Sat, 17 Mar 2018 06:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

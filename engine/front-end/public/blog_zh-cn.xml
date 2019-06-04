@@ -1,0 +1,49 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[ ioBroker Blog ]]></title>
+        <description><![CDATA[有关ioBroker的新闻，公告和想法]]></description>
+        <link>https://www.iobroker.net/#zh-cn/blog</link>
+        <lastBuildDate>Tue, 04 Jun 2019 20:15:26 GMT</lastBuildDate>
+        <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[ioBroker时事通讯2019年2月]]></title>
+            <description><![CDATA[
+                <p>今天还有一些ioBroker新闻：论坛转换已经发生，新论坛在线。新的js-controller 1.5.7现在可用于最新存储库中的高级测试，并且已发布安装程序修复程序以将现有安装与新安装相同。当然，我们也有关于Tanker King适配器和一些新适配器的重要信息。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2019_02_27</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2019_02_27</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 27 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[最新存储库中提供了js-controller 1.5.7]]></title>
+            <description><![CDATA[
+                <p>经过一些延迟和许多密集测试以及社区和论坛的大力支持，我们很高兴发布下一版本的js-controller，供所有感兴趣的用户进行官方进一步测试。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2019_02_25</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2019_02_25</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Mon, 25 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[ioBroker安装“Fixer”测试版可用]]></title>
+            <description><![CDATA[
+                <p>在2018年底，尤其是2019年1月，@ AlCalzone彻底改造了ioBroker安装程序，这意味着在2019年2月初的最新版本中，所有权利问题都已成为过去。 ioBroker不再以“root”身份运行，而是以其自己的用户身份运行，他们可以为当前的ioBroker适配器做任何他需要的事情。\n所有新装置都可以。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2019_02_22</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2019_02_22</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Fri, 22 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[云适配器版本]]></title>
+            <description><![CDATA[
+                <p>已准备好新的云适配器版本。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2018_03_17</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2018_03_17</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Sat, 17 Mar 2018 06:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

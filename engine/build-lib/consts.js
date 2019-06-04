@@ -67,5 +67,17 @@ module.exports = {
         "es": "Si desea editar este documento, elimine el campo \"traducido de\", de lo contrario, este documento se traducirá automáticamente de nuevo",
         "pl": "Jeśli chcesz edytować ten dokument, usuń pole „translatedFrom”, w przeciwnym razie ten dokument zostanie ponownie przetłumaczony automatycznie",
         "zh-cn": "如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译"
+    },
+    BLOG_TITLE: {
+        "en": "News, announcements and ideas about ioBroker",
+        "ru": "Новости, объявления и идеи о ioBroker",
+        "de": "Neuigkeiten, Ankündigungen und Ideen zu ioBroker",
+        "fr": "Nouvelles, annonces et idées sur ioBroker",
+        "pt": "Notícias, anúncios e ideias sobre o ioBroker",
+        "pl": "Wiadomości, ogłoszenia i pomysły na temat ioBroker",
+        "nl": "Nieuws, aankondigingen en ideeën over ioBroker",
+        "it": "Notizie, annunci e idee su ioBroker",
+        "es": "Noticias, anuncios e ideas sobre ioBroker.",
+        "zh-cn": "有关ioBroker的新闻，公告和想法"
     }
 };

@@ -170,8 +170,14 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
-### 3.6.3 (2019-05-25)
+### 3.6.4 (2019-06-03)
+* (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
+
+### 3.6.3 (2019-06-02)
 * (bluefox) Added deleteFile internal function (required for lovelace)
+* (bluefox) Added yaml editor (required for lovelace)
+* (bluefox) try to fix auto-fill option
+* (dobis) Update italian translations
 
 ### 3.6.2 (2019-05-05)
 * (bluefox) Added onSave handler for custom dialogs

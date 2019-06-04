@@ -2,9 +2,11 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
-title: без названия
-hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
+title: ioBroker.iqontrol
+hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
 ---
+![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
+
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Статус зависимости](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -13,7 +15,10 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 ![Трэвис-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
-<h1><img src="admin/iqontrol.png" width="64"/> ioBroker.iqontrol </h1>
+# IoBroker.iqontrol
+Если вам это нравится, пожалуйста, рассмотрите пожертвование.
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ## Адаптер iqontrol для ioBroker
 Быстрое веб-приложение для визуализации.
@@ -81,7 +86,7 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 * boolean - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
 * число - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * строка - текст для отображения
-* список значений - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню. Технически, список значений - это число с соответствующим списком переводов, определенным в свойстве native.states.
+* список значений - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню. Технически список значений - это число с соответствующим списком переводов, определенным в свойстве native.states или common.states.
 
 Однако не каждый тип имеет смысл для каждой роли. Так, например, СОСТОЯНИЕ переключателя будет в большинстве случаев булевым, чтобы его можно было переключать между включением и выключением. Строка может отображаться, но переключатель не будет работать.
 
@@ -101,6 +106,7 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 По желанию вы можете определить следующие состояния:
 
 * HUE: число - цвет света
+* НАСЫЩЕННОСТЬ: число - насыщенность света (от белого до чистого цвета)
 * CT: число - цветовая температура света
 * POWER: число - энергопотребление, которое будет отображаться маленьким в верхнем правом углу - но только, если CT не указан (в противном случае CT отображается и POWER игнорируется)
 
@@ -187,6 +193,14 @@ hash: 7pR92s+CFBEhp650wrHpmMzulu2u6AostexQBUBBzOw=
 * Взгляните на [Принцип работы внешнего интерфейса] (Операция% 20Principle% 20of% 20Frontend.md)
 
 ## Changelog
+
+### 0.0.30
+* (Sebastian Bormann) fixed io-package.json
+
+### 0.0.29
+* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

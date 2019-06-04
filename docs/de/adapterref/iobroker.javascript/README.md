@@ -64,6 +64,14 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.1.13 (2019-06-02) 
+* (bluefox) fixed Monaco Loading
+* (bluefox) added missing blockly element
+* (AlCalzone) Improved the warning message when assigning a variable of wrong type to a state
+* (thewhobox) Added selector blockly, language strings, regexp
+* (thewhobox) Fixed Blockly bug
+* (paul53) fixed for suncalc.getTimes between middle night and nadir
+
 ### 4.1.12 (2019-03-07)
 * (bluefox) Schedule was corrected
 

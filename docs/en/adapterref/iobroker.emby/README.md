@@ -67,6 +67,12 @@ Please follow the Steps to ensure the Adapter will work correctly and you can se
 
 ## Changelog
 
+### 1.0.0
+* First stable public release
+* Added support for Https and Http
+* Added Url to Posters
+* Added Datapoint for Endtime (hh:mm)
+
 ### 0.1.2
 * Added more commands
 

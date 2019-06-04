@@ -10,7 +10,9 @@ import I18n from '../i18n';
 import Utils from '../Utils';
 import Router from '../Router';
 import {Converter} from 'react-showdown';
-import {MdEdit as IconEdit} from "react-icons/md";
+
+import {MdEdit as IconEdit} from 'react-icons/md';
+import {MdRssFeed as IconRss} from 'react-icons/md';
 
 const styles = theme => ({
     root: {
@@ -22,6 +24,10 @@ const styles = theme => ({
         paddingTop: 10,
         paddingBottom: 30,
         paddingLeft: '10%'
+    },
+    rssIcon: {
+        fontSize: 22,
+        color: '#ffa30c'
     },
     headerTitle: {
         color: '#FFFFFF',
@@ -137,7 +143,6 @@ class Blog extends Router {
             } else {
                 this.setState({text: ''});
             }
-
         }
     }
 
@@ -170,7 +175,9 @@ class Blog extends Router {
 
     renderHeader() {
         return (<div key={"header"}  style={this.page ? {cursor: 'pointer'} : {}} onClick={() => this.onNavigate(null, null, '')} className={this.props.classes.header}>
-            <h1 key="title" className={this.props.classes.headerTitle}>{I18n.t('ioBroker Blog')}</h1>
+            <h1 key="title" className={this.props.classes.headerTitle}>{I18n.t('ioBroker Blog')}
+                <a href={'./blog_' + this.props.language + '.xml'} target="_blank" title={I18n.t('RSS Feed')}><IconRss className={this.props.classes.rssIcon}/></a>
+            </h1>
             <div key="notice"  className={this.props.classes.headerNotice}>{I18n.t('News, announcements and ideas about ioBroker')}</div>
         </div>);
     }

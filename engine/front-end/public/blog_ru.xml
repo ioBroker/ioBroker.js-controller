@@ -1,0 +1,49 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[ ioBroker Blog ]]></title>
+        <description><![CDATA[Новости, объявления и идеи о ioBroker]]></description>
+        <link>https://www.iobroker.net/#ru/blog</link>
+        <lastBuildDate>Tue, 04 Jun 2019 20:15:26 GMT</lastBuildDate>
+        <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[Информационный бюллетень ioBroker, февраль 2019 г.]]></title>
+            <description><![CDATA[
+                <p>Сегодня снова новости от ioBroker:\nПреобразование форума завершено, и новый форум находится в сети. Новый js-контроллер 1.5.7 теперь доступен для расширенного тестирования в Последнем репозитории, а также был выпущен установщик исправлений, чтобы привести существующие установки на тот же уровень, что и новые. Конечно, у нас также есть важная информация об адаптере Tanker King и некоторых новых адаптерах.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2019_02_27</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_02_27</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 27 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[JS-контроллер 1.5.7 доступен в последнем репозитории]]></title>
+            <description><![CDATA[
+                <p>После некоторой задержки и многочисленных интенсивных тестов при большой поддержке сообщества и здесь, на форуме, мы рады выпустить следующую версию js-controller для официальных дальнейших тестов для всех заинтересованных пользователей.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2019_02_25</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_02_25</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Mon, 25 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Доступна бета-версия установки ioBroker "Fixer]]></title>
+            <description><![CDATA[
+                <p>В конце 2018 года и особенно в январе 2019 года @AlCalzone полностью пересмотрела программу установки ioBroker, что означает, что в самой последней версии с начала февраля 2019 года все проблемы с правами остались в прошлом. ioBroker больше не работает как «root», а под своим собственным пользователем, который может делать все, что ему нужно для текущих адаптеров ioBroker.\nВсе хорошо для всех новых установок.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2019_02_22</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_02_22</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Fri, 22 Feb 2019 06:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Облако адаптер Версия]]></title>
+            <description><![CDATA[
+                <p>Новая версия облачного адаптера подготовлена.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2018_03_17</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2018_03_17</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Sat, 17 Mar 2018 06:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

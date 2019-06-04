@@ -29,6 +29,24 @@ function init() {
         };
     }
 
+    if (config.sites) {
+        config.sites.forEach(site => {
+            console.log(`Install path ${site.route} => ${site.path}`);
+            app.app.use(site.route, (req, res, next) => {
+                console.log(' 1 ' + req.url);
+                if (req.url.endsWith('.html')) {
+                    req.url = req.url.replace(/\.html$/, '.htm');
+                } else {
+                    if (req.url.endsWith('/')) {
+                        req.url += 'index.htm';
+                    }
+                }
+                console.log(' 1 ' + req.url);
+                express.static(site.path)(req, res, next);
+            });
+        });
+    }
+
     app.app.use(express.static(path.join(__dirname, '..', config.public)));
 
     app.app.use(bodyParser.json({limit: 50000000, type:'application/json'}));

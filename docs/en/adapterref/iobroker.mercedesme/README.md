@@ -17,32 +17,40 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.8
+
+-   decrease reconnect for all sockets
+
+### 0.0.7
+
+-   improve door open functionality add detailed state for door status
+
 ### 0.0.6
 
-- fix issue with door data
+-   fix issue with door data
 
 ### 0.0.5
 
-- fix issue no data after 1h
+-   fix issue no data after 1h
 
 ### 0.0.4
 
-- relogin every hour, field to enter vin manually
-- Relogin jede Stunde, Feld zum manuellen eintragen der FIN
+-   relogin every hour, field to enter vin manually
+-   Relogin jede Stunde, Feld zum manuellen eintragen der FIN
 
 ### 0.0.3
 
-- fix no values after 1h bug, add realtime values like preconditioning
-- Keine Daten nach 1h Bug gefixt. Echtzeitwerte hinzugefügt wie Vorklimatisierung
+-   fix no values after 1h bug, add realtime values like preconditioning
+-   Keine Daten nach 1h Bug gefixt. Echtzeitwerte hinzugefügt wie Vorklimatisierung
 
 ### 0.0.2
 
-- add remote control for Door lock, Window lock and preconditioning
-- Tür und Fenster öffnen und Vorklimatisierung hinzugefügt.
+-   add remote control for Door lock, Window lock and preconditioning
+-   Tür und Fenster öffnen und Vorklimatisierung hinzugefügt.
 
 ### 0.0.1
 
-- (tombox) initial release
+-   (tombox) initial release
 
 ## License
 
