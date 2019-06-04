@@ -321,6 +321,8 @@ function createStates(onConnect) {
             if (states.clearAllLogs)     states.clearAllLogs();
             if (states.clearAllMessages) states.clearAllMessages();
             deleteAllZipPackages();
+            initMessageQueue();
+            startAliveInterval();
             onConnect && onConnect();
         }
     });
@@ -355,8 +357,7 @@ function createObjects(onConnect) {
                             setMeta();
                             started = true;
                             getInstances();
-                            startAliveInterval();
-                            initMessageQueue();
+
                         });
                     }
                 } else {
@@ -366,8 +367,6 @@ function createObjects(onConnect) {
                     // Do not start if we still stopping the instances
                     if (!isStopping) {
                         getInstances();
-                        startAliveInterval();
-                        initMessageQueue();
                     }
                 }
             }
@@ -458,6 +457,7 @@ function startAliveInterval() {
 }
 
 function reportStatus() {
+    if (!states) return;
     const id = 'system.host.' + hostname;
     outputCount += 10;
     states.setState(id + '.alive', {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
