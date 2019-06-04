@@ -10,7 +10,6 @@
     "le-challenge-fs": "^2.0.8",
     "le-sni-auto": "^2.1.5",
     "le-acme-core": "^2.1.4",
-    "winston-syslog": "^1.2.6",
     "diskusage": "^0.2.4"
   },
   "bin": {
