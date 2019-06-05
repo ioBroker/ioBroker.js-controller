@@ -152,6 +152,7 @@ Die Installation erfolgt in 4 Schritten:
 Zum Abschluss kommt dann noch die Meldung
 
 ``ioBroker was installed successfully``
+
 ``Open http://localhost:8081 in a browser and start configuring!``
 
 ---
