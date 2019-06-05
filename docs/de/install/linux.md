@@ -141,9 +141,9 @@ An der Konsole ausführen:
 
 Die Installation erfolgt in 4 Schritten:
 
-``Creating ioBroker directory (1/4)``
+``Installing prerequisites (1/4)``
 
-``Downloading installation files (2/4)``
+``Creating ioBroker user and directory (2/4)``
 
 ``Installing ioBroker (3/4)``
 
@@ -152,7 +152,6 @@ Die Installation erfolgt in 4 Schritten:
 Zum Abschluss kommt dann noch die Meldung
 
 ``ioBroker was installed successfully``
-
 ``Open http://localhost:8081 in a browser and start configuring!``
 
 ---
