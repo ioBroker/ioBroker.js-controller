@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "cycle": "~1.0.3",
     "daemonize2": "^0.4.2",
+    "glossy": "0.x.x",
     "iobroker.admin": ">=2.0.9",
     "jsonwebtoken": "^8.2.1",
     "jszip": "^3.1.5",
