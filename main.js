@@ -1345,7 +1345,7 @@ function processMessage(msg) {
             if (config.system && config.system.allowShellCommands) {
                 const { exec } = require('child_process');
                 logger.info('host.' + hostname + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
-                exec(msg.message, (err, stdout, stderr) => {
+                exec(msg.message, {windowsHide: true}, (err, stdout, stderr) => {
                     if (err) {
                         return logger.error(`error: ${err}`);
                     }
@@ -1371,7 +1371,7 @@ function processMessage(msg) {
                 }
                 logger.info('host.' + hostname + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
 
-                const child = spawn('node', args);
+                const child = spawn('node', args, {windowsHide: true});
                 if (child.stdout) {
                     child.stdout.on('data', data => {
                         data = data.toString().replace(/\n/g, '');
@@ -1605,7 +1605,7 @@ function processMessage(msg) {
                     const _spawn = require('child_process').spawn;
                     const _args = ['/dev'];
                     logger.info('host.' + hostname + ' ls /dev');
-                    const _child = _spawn('ls', _args);
+                    const _child = _spawn('ls', _args, {windowsHide: true});
                     let result = '';
                     if (_child.stdout) {
                         _child.stdout.on('data', data => result += data.toString());
@@ -2083,7 +2083,7 @@ function installAdapters() {
         logger.info('host.' + hostname + ' ' + tools.appName + ' install ' + name);
 
         try {
-            const child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name]);
+            const child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name], {windowsHide: true});
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
@@ -2415,7 +2415,7 @@ function startInstance(id, wakeUp) {
                         }
                     }
                     if (!adapterModules[name]) {
-                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
+                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
                     } else {
                         const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
                         const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
@@ -2442,7 +2442,7 @@ function startInstance(id, wakeUp) {
                         procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: 'system.host.' + hostname});
                     }
                 } else {
-                    procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc']});
+                    procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
                 }
 
                 if (!procs[id].startedInCompactMode && procs[id].process) {
@@ -2508,7 +2508,7 @@ function startInstance(id, wakeUp) {
                 procs[id].lastStart = Date.now();
                 if (!procs[id].process) {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                    procs[id].process = cp.fork(fileNameFull, args);
+                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                     storePids(); // Store all pids to make possible kill them all
                     logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
@@ -2541,7 +2541,7 @@ function startInstance(id, wakeUp) {
             // Start one time adapter by start or if configuration changed
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
-                procs[id].process = cp.fork(fileNameFull, args);
+                procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                 storePids(); // Store all pids to make possible kill them all
                 logger.info('host.' + hostname + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
 
