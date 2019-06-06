@@ -1,3 +1,8 @@
+---
+title:       "ioBroker läuft nicht mehr"
+lastChanged: "06.06.2019"
+---
+
 
 # ioBroker läuft nicht mehr
 
