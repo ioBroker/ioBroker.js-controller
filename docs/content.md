@@ -105,7 +105,7 @@
 
 * en:Troubleshooting;de:Fehlerbehebung;ru:Поиск и решение проблем;zh-cn:故障排除手册
   * [Introduction](trouble/README)
-  * [Runs no more](troule/RunsNoMore)
+  * [Runs no more](trouble/RunsNoMore)
   * [Error search](trouble/search)
   * [Errors in adapter](trouble/adapter)
   * [Error reporting](trouble/issue)
