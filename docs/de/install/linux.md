@@ -123,7 +123,7 @@ Versionsnummer zurückgeben.
     ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` an der Konsole ausführen.
 
     Sind die Versionen unterschiedlich, bitte nochmals den Abschnitt 
-[Installation Node.js](install/linux.md#installation-nodejs) abarbeiten
+[Installation Node.js](#installation-nodejs) abarbeiten
 
     Als letzte Überprüfung bitte noch die Version von npm mittels ``npm -v`` überprüfen.
 
