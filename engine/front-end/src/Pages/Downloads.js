@@ -210,7 +210,7 @@ class Downloads extends Component {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary" onClick={() => Utils.openLink('http://iobroker.live/images/' + image.file)}>{I18n.t('Download')}</Button>
+                <Button size="small" color="primary" onClick={() => Utils.openLink(image.file.startsWith('http') ? image.file : 'http://iobroker.live/images/' + image.file)}>{I18n.t('Download')}</Button>
                 {image.info && (<Button size="small" color="primary" onClick={() => Utils.openLink(image.info)}>{I18n.t('Info')}</Button>)}
             </CardActions>
         </Card>);

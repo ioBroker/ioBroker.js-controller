@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "minisearch": "^1.2.0",
-    "express": "^4.16.4",
     "body-parser": "^1.18.3",
-    "express-brute": "^1.0.1"
+    "express": "^4.16.4",
+    "express-brute": "^1.0.1",
+    "minisearch": "^1.2.0",
+    "x509": "^0.3.4"
   },
   "devDependencies": {
     "@google-cloud/translate": "^2.1.4",

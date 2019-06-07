@@ -8,6 +8,15 @@
     "picture": "windows.png"
   },
   {
+    "file": "https://hub.docker.com/r/buanet/iobroker/",
+    "linux": "Docker",
+    "date": "20190607",
+    "device": "Docker",
+    "details": "Docker image",
+    "picture": "docker.png",
+    "info": "https://buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/"
+  },
+  {
     "file": "ioBroker_Image_OdroidC2_20190209_stretch.zip",
     "linux": "Armbian Stretch",
     "date": "20190128",
