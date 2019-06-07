@@ -3044,6 +3044,7 @@ function init() {
             }
         } else {
             logger.error('host.' + hostname + ' uncaught exception: ' + err);
+            logger.error('host.' + hostname + ' ' + err.stack);
         }
         stop();
         // Restart itself
