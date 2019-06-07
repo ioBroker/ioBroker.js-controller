@@ -1,7 +1,5 @@
 import {Component} from 'react';
 
-
-
 class Router extends Component {
     constructor(props) {
         super(props);

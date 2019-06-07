@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -109,7 +111,6 @@ function createDir(dir) {
         dirs.push(part);
         !fs.existsSync(dirs.join('/')) && fs.mkdirSync(dirs.join('/'));
     });
-
 }
 
 function writeSafe(fileName, data) {

@@ -1,6 +1,8 @@
+'use strict';
 const utils = require('./utils');
 const consts = require('./consts');
 const translation = require('./translation');
+const faq = require('./faq');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,7 +12,7 @@ const IGNORE = ['/adapterref'];
 // [en:Bascis;de:Einleitung;ru:Основы](basics/README)
 // de:Grundlagen;en:Fundamentals
 // Title
-async function translateTitle(title) {
+async function translateTitle(title, inFolder) {
     const words = {};
     title = title.trim();
     if (title.startsWith('[')) {
@@ -44,7 +46,7 @@ async function translateTitle(title) {
     // read title from file
     if (words.link) {
         consts.LANGUAGES.forEach(lang => {
-            const name = path.join(consts.SRC_DOC_DIR, lang, words.link);
+            const name = path.join(inFolder || consts.SRC_DOC_DIR, lang, words.link);
             if (fs.existsSync(name)) {
                 const data = fs.readFileSync(name).toString('utf-8');
                 const title = utils.getTitle(data);
@@ -81,7 +83,29 @@ async function processContent(filePath) {
                 levels[level].pages = levels[level].pages || {};
                 levels[level].pages[words.en] = obj;
                 levels[level + 1] = obj;
+                if (words.en === 'FAQ') {
+                    obj.pages = obj.pages || {};
+                    const files = fs.readdirSync(path.join(consts.SRC_DOC_DIR, 'de', 'faq')).filter(name => name.match(/^_\d/)).sort();
+                    return Promise.all(files.map(async file => {
+                        if (fs.existsSync(path.join(consts.SRC_DOC_DIR, 'de', 'faq', file, 'README.md'))) {
+                            const words = await translateTitle('[' + file + '](faq/' + file.replace(/\.md$/, '') + ')', consts.FRONT_END_DIR);
+                            const link = words.link;
+                            if (link) {
+                                delete words.link;
+                            }
+                            const _obj = {
+                                title: words
+                            };
+                            if (link) {
+                                _obj.content = link;
+                            }
+                            obj.pages[words.en] = _obj;
+                        }
+                        return file;
+                    }));
+                }
             }
+            return line;
         })).then(result => {
             const name = filePath.replace(/\\/g, '/').split('/').pop().replace(/\.md$/, '.json');
             fs.writeFileSync(consts.FRONT_END_DIR + name, JSON.stringify(content, null, 2));
@@ -348,6 +372,9 @@ if (!module.parent) {
             return processFiles(consts.SRC_DOC_DIR);
         });
     });*/
+    processContent(path.join(consts.SRC_DOC_DIR, 'content.md')).then(content => {
+        console.log(JSON.stringify(content));
+    });
 
     /*translateFile('C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.harmony/README.md', 'de', 'ru')
         .then(() => {
@@ -356,7 +383,7 @@ if (!module.parent) {
     //console.log(replaceImages(fs.readFileSync('C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md').toString(), 'C:/pWork/ioBroker.docs/docs/de/adapterref/iobroker.fritzbox/README.md', 'C:/pWork/ioBroker.docs/docs/ru/adapterref/iobroker.fritzbox/README.md'));
     //sync2Languages('de', 'en', () => console.log('done1'), ['C:/pWork/ioBroker.docs/docs/de/README.md'])
     //syncDocs(() => console.log('DONE'));
-    processFiles(consts.SRC_DOC_DIR).then(() => console.log('done'));
+    // processFiles(consts.SRC_DOC_DIR).then(() => console.log('done'));
 } else {
     module.exports = {
         processContent,

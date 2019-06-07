@@ -1,3 +1,5 @@
+'use strict';
+
 const config = require('../config');
 const http = !config.secure ? require('http') : require('https');
 const express = require('express');
@@ -7,8 +9,6 @@ const path = require('path');
 const fs = require('fs');
 const port = normalizePort(process.env.PORT || config.port || 443);
 const ExpressBrute = require('express-brute');
-
-
 
 const bruteforce = new ExpressBrute(new ExpressBrute.MemoryStore(), {freeRetries: 5});
 

@@ -8,6 +8,7 @@
 
 const gulp = require('gulp');
 const documentation = require('./build-lib/documentaion');
+const faq = require('./build-lib/faq');
 const adapters = require('./build-lib/adapters');
 const blog = require('./build-lib/blog');
 const consts = require('./build-lib/consts');
@@ -95,6 +96,8 @@ gulp.task('translate', async function () {
     if (fs.existsSync('./front-end/src/i18n/en/en.json')) {
         let enTranslations = require('./front-end/src/i18n/en.json');
         for (let l in languages) {
+            if (!languages.hasOwnProperty(l)) continue;
+
             console.log('Translate Text: ' + l);
             let existing = {};
             if (fs.existsSync('./front-end/src/i18n/' + l + '.json')) {
@@ -182,13 +185,16 @@ gulp.task('3.downloadVisCordova', done => {
 // translate all documents: adapters and docu
 gulp.task('4.syncDocs', done => documentation.syncDocs(done));
 
+// combine
+gulp.task('5.faq', done => faq.processFiles(consts.SRC_DOC_DIR).then(() => done()));
+
 // Build content.md file
-gulp.task('5.documentation', () =>
+gulp.task('6.documentation', () =>
     // build content
     documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md')));
 
 // copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
-gulp.task('6.copyFiles', () => {
+gulp.task('7.copyFiles', () => {
     return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
 });
 
@@ -211,7 +217,7 @@ function scanDir(folder, root, result) {
     return result;
 }
 
-gulp.task('7.createSitemap', done => {
+gulp.task('8.createSitemap', done => {
     const root = 'https://doc.iobroker.net/';
     const links = [
         '#{lang}/download',
@@ -258,9 +264,10 @@ gulp.task('default', gulp.series(
     '2.downloadAdapters',   // download all adapters an create adapter.json
     '3.downloadVisCordova', // download app documentation
     '4.syncDocs',           // translate documents and adapters
-    '5.documentation',      // create content for documentation
-    '6.copyFiles',          // copy all adapters and docs to public
-    '7.createSitemap'       // create sitemap for google
+    '5.faq',                // combine FAQ together
+    '6.documentation',      // create content for documentation
+    '7.copyFiles',          // copy all adapters and docs to public
+    '8.createSitemap'       // create sitemap for google
 ));
 
 

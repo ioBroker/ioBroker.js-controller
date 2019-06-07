@@ -1,3 +1,5 @@
+'use strict';
+
 // 1. Collect all possible adapters in docs/LN/adapterreff and do not collect yet local files marked as "local: true"
 // 2. Cross translate adapters in master/front-end/public/LN/adapterreff. start from english
 

@@ -385,14 +385,27 @@ class Markdown extends Router {
                 el.scrollIntoView(true);
             }
         } else if (link) {
-            if (link.indexOf('..')) {
-                // intro/../../download
-                const parts = link.split('/');
-
-
+            // if relative path
+            if (link.indexOf('..') !== -1 || link.startsWith('.') || link.indexOf('/./') !== -1) {
+                // ../../download
+                const ppp = link.replace(this.props.path + '/', '').split('#');
+                const _link = ppp[1];
+                const parts = ppp[0].split('/');
+                const location = Router.getLocation();
+                const locParts = location.page.split('/');
+                locParts.pop();
+                parts.forEach(part => {
+                    if (part === '.') return;
+                    if (part === '..') {
+                        locParts.pop();
+                        return;
+                    }
+                    locParts.push(part);
+                });
+                this.props.onNavigate(null, location.tab, locParts.join('/'), _link);
+            } else {
+                this.props.onNavigate(null, null, link);
             }
-
-            this.props.onNavigate(null, null, link);
         }
     }
 
