@@ -63,10 +63,16 @@ to be done in admin
 
 
 ## Changelog:
+### 0.1.1
+* delete buffer function to be compatible with nodejs10
+* enhanced automatic testing
+
 ### 0.1.0
 * compact mode
+
 ### 0.0.7
-* new level sensor (fhem) 
+* new level sensor (fhem)
+
 ### 0.0.6
 * last version of serialport
 * new sensor TXH29DTH-IT

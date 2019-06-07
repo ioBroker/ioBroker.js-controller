@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
+hash: wl3ULr3iTK4Cv0VSaLNuLhfbR/3B3B5xa9wOxMUxWl0=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -26,7 +26,7 @@ hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
 ![例](img/screenshot1.jpg)![例](../../../en/adapterref/iobroker.iqontrol/img/screenshot2.jpg)
 
 在任何浏览器中运行。
-您可以将其保存为iOS-Homescreen上的Web应用程序，它看起来和感觉就像一个nativ应用程序。
+您可以将其保存为iOS-Homescreen上的Web-App，它看起来和感觉就像一个原生应用程序。
 它完全可定制。
 
 ＃＃ 你需要...
@@ -45,7 +45,7 @@ hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
 如果选择“链接到其他视图”作为角色，则可以创建指向其他视图的链接。我建议将链接映射到具有相同背景的其他视图，链接视图具有。
 您还可以尝试使用Autocreate-Function从iobroker-object-tree中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
 
-*之后您可以创建一个工具栏，它显示为页脚。
+*之后您可以创建一个工具栏，显示为页脚。
 
 Toolbar-Entrys是视图的链接。
 第一个工具栏条目将是您的“主视图”，将在开始时加载。
@@ -55,7 +55,7 @@ Toolbar-Entrys是视图的链接。
 您可以将图像用作视图或设备的背景图像。
 免费的内置演示壁纸来自www.pexels.com。
 
-##知道问题
+＃＃ 已知的问题
 这是第一个alpha-Release，因此可能存在很多错误。但对我来说它完全稳定。
 但是有一些限制：
 
@@ -71,136 +71,174 @@ Toolbar-Entrys是视图的链接。
 ##角色和相关状态的描述
 每个设备都有一个角色，它定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
 如果使用auto-create-function，则可以从io-broker-object树中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
-这仅适用于已知设备。对于未知设备，并为设备提供高级功能，您可以通过（+） - 按钮手动添加设备或编辑由自动创建创建的设备。
+这仅适用于已知设备。对于未知设备，并为设备提供高级功能，您可以通过（+） - 按钮手动添加它们或编辑由自动创建创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
 ###一般状态：
 每个角色都有以下三种状态：
 
-* BATTERY：boolean  - 当为true时，将显示一个小电池空图标
-*错误：布尔值 - 如果为true，将显示一个小的感叹号图标
-* UNREACH：boolean  - 当为true时，将显示一个小的无线图标
+* **BATTERY** *boolean* - 如果为true，将显示一个小电池空图标
+* **ERROR** *boolean* - 如果为true，将显示一个小的感叹号图标
+* **UNREACH** *boolean* - 如果为true，将显示一个小的无线图标
 
 几乎所有角色都具有STATE和/或LEVEL状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-states：
 
-* boolean  - 如果可能的话，它将被翻译成一个有意义的文本，如'开/关'，'打开/关闭'或类似。如果单击图块的图标，它会尝试切换布尔值（例如打开或关闭灯光）。如果它不是只读的，它将在对话框中生成一个翻转开关。
-* number  - 将与相应的单位一起显示，并在对话框中生成滑块。
-* string  - 要显示的文本
-* value-list  - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。从技术上讲，值列表是一个带有相应翻译列表的数字，在“native.states”或“common.states”属性中定义。
+* *布尔*  - 如果可能，它将被翻译成有意义的文本，如'开/关'，'打开/关闭'或类似。如果单击图块的图标，它会尝试切换布尔值（例如打开或关闭灯光）。如果它不是只读的，它将在对话框中生成一个翻转开关。
+* *number* - 将与相应的单位一起显示，并在对话框中生成滑块。
+* *string* - 要显示的文本
+* *value-list* - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。
+    *从技术上讲，* value-list *是一个带有相应翻译列表的值，在数据点的'native.states'或'common.states'对象中定义：
+
+````
+"native": {
+    "states": {"true": "Text for true", "false": "Text for false"},
+    ...
+}
+````
+
+    *您可以通过将states-object添加到数据点的`````native“：{}```部分来创建自己的值列表。这只能由iQontrol读取，对其他脚本没有影响。
+    *`````common`：{}```部分内的状态对象也将被iQontrol识别，但优先级较低。如果你在这里改变它，它可能会影响其他scipts。更多可能被创建数据点的适配器覆盖。
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
 ###链接到其他视图：
-*没有其他状态，但它会尊重链接视图属性
+*没有其他州，但它会尊重**链接视图属性**
 
 ### <img src="img/icons/switch_on.png" width="32">开关， <img src="img/icons/fan_on.png" width="32">风扇：
-* STATE：boolean  - 显示和设置开/关状态
-* POWER：数字 - 功耗将在右上角显示为小功率
+* **STATE** *boolean* - 显示和设置开/关状态
+* **POWER** *数字* - 功耗将在右上角显示为小功率
 
 ### <img src="img/icons/light_on.png" width="32">光：
 每个灯都可能具有以下一种或两种状态：
 
-* STATE：boolean  - 显示和设置开/关状态
-* LEVEL：数字 - 显示设定灯光的水平
+* **STATE** *boolean* - 显示和设置开/关状态
+* **LEVEL** *number* - 显示和设置灯光的级别
 
 可选您可以定义以下状态：
 
-* HUE：数字 - 灯光的颜色
-*饱和度：数量 - 光线饱和度（从白色到纯色）
-* CT：数字 - 灯的色温
-* POWER：数字 - 功耗将在右上角显示为小 - 但仅限于CT（如果未指定CT）（否则显示CT并忽略POWER）
+*对于彩色LED（HSB颜色空间）：
+ ***HUE*** 字* - 0-360°光线的颜色（色调格式）
+    * **饱和度**：*数量*  - 光线饱和度（从白色到纯色）
+ ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（仅当灯具有彩色和白色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
+*对于白光LED：
+ ***CT*** 字* - 光的色温，如果它有两种白色阴影
+ ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（仅当灯具有白色和彩色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
+*替代色彩空间**尚未实施**：
+  * **HUE_MILIGHT** * number * - Milight在色调颜色cirlce中使用另一个起始点：
+
+````
+tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
+on modulo(n, m){
+n ((n % m) + m) %m;
+
+````
+
+  * **RGB_HUEONLY** * string * - 您可以使用RGB_HUEONLY格式（十六进制）代替使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色
+  * **RGB** * string * - 您可以使用RGB格式（十六进制）而不是使用HUE，SATURATION和COLOR_BRIGHTNESS
+  * **RGBW** * string * - 您可以使用RGBW格式（十六进制）而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS
+  * **RGBWWCW** * string * - 而不是HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS你可以使用RGBWWCW格式（十六进制）
+* **POWER** *数字* - 功耗将在右上角显示为小功率
 
 ### <img src="img/icons/radiator.png" width="32">温控器：
-* SET_TEMPERATURE：数字 - 目标温度
-*温度：数字 - 实际温度在右上角显示为小
-*湿度：数字 - 实际湿度在右上角显示为小
-* CONTROL_MODE：value-list  - 显示和设置恒温器的模式
-* VALVE_STATES：名称和数字的数组 - 显示与恒温器相关的阀门百分比的开度
+* **SET_TEMPERATURE** *数字* - 目标温度
+* **温度**：*数字*  - 实际温度在右上角显示为小
+* **湿度**：*数字*  - 实际湿度在右上角显示为小
+* **CONTROL_MODE** *value-list* - 显示并设置恒温器的模式
+* **VALVE_STATES** 名称和数字数组 - 显示与恒温器相关的阀门开度
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic，温控器：
 除了普通恒温器，您还可以定义：
 
-* PARTY_TEMPERATURE：string  - 特殊格式的字符串，用于定义家庭恒温器的派对假日模式
-* BOOST_STATE：number  - 显示homematic恒温器的剩余提升时间
+* **PARTY_TEMPERATURE** *string* - 特殊格式的字符串，用于定义家庭恒温器的派对或假日模式
+* **BOOST_STATE** *number* - 显示homematic恒温器的剩余提升时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
-*状态：数字 - 将显示在设备下部的温度或湿度
-*温度：数字 - 温度将在右上角显示为小
-*湿度：数字 - 湿度将在右上角显示为小
-*尊重链接视图属性
+* **状态**：*数字*  - 将显示在设备下部的温度或湿度
+* **温度**：*数字*  - 温度将在右上角显示为小
+* **湿度**：*数字*  - 湿度将在右上角显示为小
+*尊重**链接视图属性**
 
-### <img src="img/icons/brightness_light.png" width="32"> Brigthness-传感器：
-* STATE：number  - 亮度，将显示在设备的下半部分
-* BRIGHTNESS：数字 - 亮度将在右上角显示为小亮度
-*尊重链接视图属性
+### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
+* **状态**：*数字*  - 亮度将显示在设备的下半部分
+* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
+*尊重**链接视图属性**
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
-* STATE：boolean  - 显示是否检测到运动
-*尊重链接视图属性
+* **STATE** *boolean* - 显示是否检测到运动
+*尊重**链接视图属性**
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
-* STATE：boolean  - 显示门或窗是打开还是关闭。
-    * Alternativeley你可以指定一个值列表，以显示其他状态，如'倾斜'。
-    *您还可以指定一个字符串来显示任何文本，如“3个窗口打开”或“全部关闭”。
-*尊重linked-view-property
+* **STATE** *boolean* - 显示门或窗是打开还是关闭。
+    *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
+    *您还可以指定*字符串*来显示任何文本，例如“3个窗口打开”或“全部关闭”。
+*尊重** linked-view-property **
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
-* STATE：boolean  - 显示门是打开还是关闭。
-* LOCK_STATE：布尔值 - 显示门是锁定还是解锁
-* LOCK_STATE_UNCERTAIN：boolean  -  STATE将以斜体显示，如果为true则表示锁的确切位置未知
-* LOCK_OPEN：boolean  - 如果设置为true，门将完全打开
+* **STATE** *boolean* - 显示门是打开还是关闭。
+* **LOCK_STATE** *boolean* - 显示门是锁定还是解锁
+* **LOCK_STATE_UNCERTAIN** *boolean* - STATE将以斜体显示，如果为true则表示锁的确切位置未知
+* **LOCK_OPEN** *boolean* - 如果设置为true，门将完全打开
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
-* LEVEL：数字 - 盲人的高度百分比
-* DIRECTION：value-list  - 可以是Stop，Up和Down
-* STOP：布尔值 - 如果设置为true，盲人将停止
+* **等级**：*数字*  - 盲人的高度百分比
+* **DIRECTION** *value-list* - 可以是Stop，Up和Down
+* **STOP** *boolean* - 如果设置为true，盲人将停止
 
 ### <img src="img/icons/fire_on.png" width="32">消防传感器：
-* STATE：boolean  - 如果为true，传感器将显示为已触发
-    * Alternativeley你可以指定一个值列表，以显示“篡改”等其他状态。
-    *您还可以指定一个字符串来显示任何文本，如“在楼上火”。
-*尊重链接视图属性
+* **STATE** *boolean* - 如果为true，传感器将显示为已触发
+    *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
+    *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
+*尊重**链接视图属性**
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
-* STATE：boolean  - 如果为true，传感器将显示为已触发
-    * Alternativeley你可以指定一个值列表，以显示“篡改”等其他状态。
-    *您还可以指定一个字符串来显示任何文本，如“在楼上火”。
+* **STATE** *boolean* - 如果为true，传感器将显示为已触发
+    *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
+    *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
 
 ### <img src="img/icons/value_on.png" width="32">值：
-*状态：要显示的任何有效状态（查看一般状态 - 部分）
-* LEVEL：数字 - 将在对话框中生成一个滑块
+* **STATE** *any* - 要显示的任何有效状态（查看一般状态 - 部分）
+* **LEVEL** *number* - 将在对话框中生成滑块
 
 ### <img src="img/icons/play_on.png" width="32">程序：
-* STATE：boolean  - 如果设置为true，程序将启动
+* **STATE** *boolean* - 如果设置为true，程序将启动
 
 ### <img src="img/icons/play.png" width="32">现场：
-* STATE：boolean  - 如果场景处于活动状态，则显示。如果设置为true，则将启动场景
+* **STATE** *boolean* - 显示场景是否有效。如果设置为true，则将启动场景
 
 ### <img src="img/icons/button.png" width="32">按钮：
-*状态：任何 - 任何所需类型的州
-* SET_VALUE：CONSTANT string  - 这是一个常量（不是链接的io-broker-state！），如果按下putton，它将被分配给STATE
+* **状态**：*任何*  - 任何所需类型的状态
+* **SET_VALUE** CONSTANT *string* - 这是一个常量（不是链接的io-broker-state！），如果按下按钮，它将被分配给STATE
 
 ### <img src="img/icons/popup.png" width="32">弹出：
-* STATE：any  - 可用于显示更多信息
-* URL：CONSTANT string  - 此url将在弹出窗口中以iframe方式打开
-* HTML：CONSTANT字符串 - 如果未指定URL，此标记将显示在弹出窗口内
+* **状态**：*任何*  - 可用于显示更多信息
+* **URL** CONSTANT *string* - 此url将在弹出窗口中以iframe方式打开
+* **HTML** CONSTANT *string* - 如果未指定URL，此标记将显示在弹出窗口内
 
 ### <img src="img/icons/link.png" width="32">外部链接：
-* STATE：any  - 可用于显示更多信息
-* URL：CONSTANT字符串 - 此URL将被打开
+* **状态**：*任何*  - 可用于显示更多信息
+* **URL** CONSTANT *string* - 此网址将被打开
 
 ##开发
 *看看[前端的工作原理]（运营％20Principle％20of％20Frontend.md）
 
+****
+
 ## Changelog
 
+### 0.0.31
+* (Sebastian Bormann) Fixed some typos.
+* (Sebastian Bormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
+* (Sebastian Bormann) Rewritten rendering of view as praparation for further enhancements.
+* (Sebastian Bormann) Rewritten rendering of dialog as praparation for further enhancements.
+* (Sebastian Bormann) Added option to colorize Device-Texts.
+
 ### 0.0.30
-* (Sebastian Bormann) fixed io-package.json
+* (Sebastian Bormann) Fixed io-package.json
 
 ### 0.0.29
 * (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
 * (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
-* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

@@ -4,14 +4,14 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: rToAGckz5g8DJcVj8aOpJNCl6cMnwuRP6khgB4EIOa0=
+hash: YGObybjn4xdpbNxHs8k434M7lghnY5rbzRHKF5pOAhI=
 ---
 Linux下的＃ioBroker安装
 ！>本手册不适用于网站的完成图像！
 
 ioBroker的安装例程已经彻底检修，并修复了一些安装问题（安装程序，启动程序等）。
 
-现在通过脚本完成安装，该脚本在运行时会执行所需的安装步骤和软件包。充电。在安装过程中，会创建一个新用户“iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
+现在通过脚本完成安装，该脚本在运行时会执行所需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“iobroker”，以及一个相关的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
 
 如果重新加载脚本太危险，脚本可以事先在[这个链接](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下进行检查。
 
@@ -29,7 +29,7 @@ ioBroker的安装例程已经彻底检修，并修复了一些安装问题（安
 
 我们建议不要使用Pi 1作为主人。这还不够强大（500 MB RAM等）。由于硬件不同，本手册无论如何都不适合Pi 1。
 
-即使是Pi 2或Pi 3也只有最大值。 1 GB RAM。它应该足够15个适配器实例，但除此之外它可能是稀缺的。每个适配器实例需要大约40 MB（有时200 MB或更多）的RAM。因此，在启用更多适配器实例之前，应始终关注RAM的使用情况 - 最终可以使用1 GB的RAM。
+即使是Pi 2或Pi 3也只有最大值。 1 GB RAM。对于15个适配器实例来说，这应该足够了，但除此之外，它可能很少。每个适配器实例需要大约40 MB（有时200 MB或更多）的RAM。因此，在启用更多适配器实例之前，应始终关注RAM的使用情况 - 最终可以使用1 GB的RAM。
 
 ###电源
 拥有良好的电力供应非常重要。在电力供应不足的情况下，可以预期稳定性问题
@@ -90,7 +90,7 @@ SSH的root访问权限将被解锁。
 
     ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
 
-``sudo apt-get install -y build-essential libavahi-compat-libdnssd-dev libudev-dev libpam0g-dev nodejs``
+    ``sudo apt install -y nodejs``
 
     ``sudo reboot``
 
@@ -100,7 +100,7 @@ SSH的root访问权限将被解锁。
 
     在控制台上执行``sudo ln -s /usr/local/bin/nodejs /usr/bin/node``。
 
-如果版本不同，请重新执行[安装Node.js](install/linux.md#installation-nodejs)部分
+如果版本不同，请重新执行[安装Node.js](#installation-nodejs)部分
 
     作为最后一项检查，请使用``npm -v``检查npm的版本。
 
@@ -117,9 +117,9 @@ SSH的root访问权限将被解锁。
 
 安装分4个步骤完成：
 
-``Creating ioBroker directory (1/4)``
+``Installing prerequisites (1/4)``
 
-``Downloading installation files (2/4)``
+``Creating ioBroker user and directory (2/4)``
 
 ``Installing ioBroker (3/4)``
 

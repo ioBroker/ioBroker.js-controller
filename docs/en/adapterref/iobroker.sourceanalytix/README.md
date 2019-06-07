@@ -69,6 +69,9 @@ https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Changelog
 
+### 0.2.3
+* (Xoroles & Dutchman) fix watt calculation, thank you @Xoroles !
+
 ### 0.2.29
 * (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 

@@ -67,6 +67,10 @@ If you receive SIA messages you see them in the states tree
 * (Stübi) Timeout for ACK (0 = disable, 1 - n sec)
 * (Stübi) Set ioBroker States of message on ACK not on NACK
 
+
+### 1.0.3 (07.06.2019)
+* (Stübi) Bugfixing
+
 ### 1.0.0 (05.01.2018)
 * (Stübi) Support js-controller compact mode 
 

@@ -4,14 +4,14 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: rToAGckz5g8DJcVj8aOpJNCl6cMnwuRP6khgB4EIOa0=
+hash: YGObybjn4xdpbNxHs8k434M7lghnY5rbzRHKF5pOAhI=
 ---
 # IoBroker installation under Linux
 !> This manual is NOT valid for finished images of the website !!!
 
 The installation routine for ioBroker has been completely overhauled and some installation issues (which installer, startup, etc.) have been fixed.
 
-The installation is now done via a script, which at runtime the required installation steps and software packages. recharges. During the installation, a new user "iobroker" is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
+The installation is now done via a script, which at runtime the required installation steps and software packages. recharges. During the installation, a new user "iobroker" will be created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
 
 If the reloading of a script is too dangerous, the script can check beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
 
@@ -29,7 +29,7 @@ or any other hardware with a common Linux (Debian, Ubuntu, etc.), or even a Mac.
 
 We advise against using a Pi 1 as master. This is just not powerful enough (500 MB RAM, etc.). Due to the different hardware this manual does not fit for a Pi 1 anyway.
 
-Even a Pi 2 or Pi 3 has only max. 1 GB RAM. It should be enough for 15 adapter instances, but beyond that it can be scarce. Each adapter instance needs about 40 MB (and sometimes 200 MB or more) of RAM. Therefore, one should always keep an eye on RAM usage before enabling more adapter instances - 1 GB of RAM is finally available.
+Even a Pi 2 or Pi 3 has only max. 1 GB RAM. This should be enough for 15 adapter instances, but beyond that it can be scarce. Each adapter instance needs about 40 MB (and sometimes 200 MB or more) of RAM. Therefore, one should always keep an eye on RAM usage before enabling more adapter instances - 1 GB of RAM is finally available.
 
 ### Power adapter
 It is important to have a good power supply. With a weak power supply stability problems are to be expected
@@ -90,7 +90,7 @@ only if **ALL** these commands do not produce a result (ie no longer display a v
 
     ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
 
-`` sudo apt-get install -y build-essential libavahi-compat-libdnssd-dev libudev-dev libpam0g-dev nodejs``
+    ``sudo apt install -y nodejs``
 
     ``sudo reboot``
 
@@ -100,7 +100,7 @@ After installation, the commands "node -v" and "nodejs -v" must return the same 
 
     Do ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` on the console.
 
-If the versions are different, please re-execute section [Installation Node.js](install/linux.md#installation-nodejs)
+If the versions are different, please re-execute section [Installation Node.js](#installation-nodejs)
 
     As a last check please check the version of npm with ``npm -v``.
 
@@ -117,9 +117,9 @@ Run at the console:
 
 The installation is done in 4 steps:
 
-``Creating ioBroker directory (1/4)``
+``Installing prerequisites (1/4)``
 
-``Downloading installation files (2/4)``
+``Creating ioBroker user and directory (2/4)``
 
 ``Installing ioBroker (3/4)``
 

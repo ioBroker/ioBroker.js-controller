@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Rp1BRm9IaFT/7EuG2oQGMS32PZeMn/j//xDIKuFdB/g=
+hash: wl3ULr3iTK4Cv0VSaLNuLhfbR/3B3B5xa9wOxMUxWl0=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -36,14 +36,14 @@ Es ist vollständig anpassbar.
 ## Wie benutzt man
 * Starten Sie die Erstellung von Ansichten.
 
-Sie können Ansichten als Seiten betrachten.
+Sie können Ansichten als eine Art Seite betrachten.
 
 * Erstellen Sie dann Geräte in diesen Ansichten.
 
-Geräte haben eine Rolle, die die Funktion des Geräts festlegt, welche Symbole verwendet werden und so weiter.
+Geräte haben eine Rolle, die die Funktion des Geräts bestimmt, welche Symbole verwendet werden usw.
 Abhängig von dieser Rolle können Sie mehrere Status mit dem Gerät verknüpfen. Dadurch erhält das Gerät seine Funktionalität.
 Wenn Sie als Rolle "Mit anderer Ansicht verknüpfen" auswählen, können Sie Verknüpfungen zu anderen Ansichten erstellen. Ich schlage vor, Verknüpfungen zu anderen Ansichten mit demselben Hintergrund wie die verknüpfte Ansicht zu erstellen.
-Sie können auch versuchen, die Autocreate-Funktion zu verwenden, um ein vorhandenes Gerät aus dem iobroker-Objektbaum auszuwählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
+Sie können auch versuchen, mit der Autocreate-Funktion ein vorhandenes Gerät aus dem iobroker-Objektbaum auszuwählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
 
 * Anschließend können Sie eine Symbolleiste erstellen, die als Fußzeile angezeigt wird.
 
@@ -70,137 +70,175 @@ Besuchen Sie [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapt
 
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden io-Broker-Status verknüpft werden können.
-Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem io-Broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Bei unbekannten Geräten können Sie Geräte manuell über die (+) - Taste hinzufügen oder die von Autocreate erstellten Geräte bearbeiten, um erweiterte Funktionen zu erhalten.
+Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem io-broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräte mit erweiterten Funktionen auszustatten, können Sie diese manuell über die (+) - Taste hinzufügen oder die von Autocreate erstellten Geräte bearbeiten.
 Um die Rolle und den Status eines Geräts zu bearbeiten, klicken Sie auf den Stift hinter dem Gerät. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Allgemeine Zustände:
 Jede Rolle hat die folgenden drei Zustände:
 
-* BATTERY: Boolean - Wenn true, wird ein kleines Batterie-Leer-Symbol angezeigt
-* ERROR: boolean - wenn true, wird ein kleines Ausrufezeichen angezeigt
-* UNREACH: Boolean - Wenn true, wird ein kleines WLAN-Symbol angezeigt
+* **BATTERY** *Boolean* - Wenn dies zutrifft, wird ein kleines Batterie-Leersymbol angezeigt
+* **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
+* **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen ist dies die Hauptfunktion des Geräts. Sie können ihm io-Broker-Status der folgenden Typen zuweisen:
 
-* boolean - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
-* Zahl - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
-* string - ein anzuzeigender Text
-* Werteliste - der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt. Technisch gesehen ist eine Werteliste eine Zahl mit einer entsprechenden Übersetzungsliste, die in der Eigenschaft 'native.states' oder 'common.states' definiert ist.
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
+* *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
+* *string* - ein anzuzeigender Text
+* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt.
+  * Technisch gesehen ist eine *Werteliste* ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'native.states' oder 'common.states' des Datenpunkts definiert ist:
+
+````
+"native": {
+    "states": {"true": "Text for true", "false": "Text for false"},
+    ...
+}
+````
+
+    * Sie können Ihre eigene Werteliste erstellen, indem Sie das States-Objekt zum `` `" native ": {}` `` `Teil des Datenpunkts hinzufügen. Dies wird nur von iQontrol gelesen und hat keinen Einfluss auf andere Skripte.
+    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripte. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 ### Link zu anderer Ansicht:
-* Hat keine weiteren Zustände, berücksichtigt aber die Eigenschaft der verknüpften Ansicht
+* Hat keine weiteren Zustände, respektiert aber die Eigenschaft **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/switch_on.png" width="32"> Schalter, <img src="img/icons/fan_on.png" width="32"> Ventilator:
-* STATE: Boolean - Anzeigen und Ein- / Ausschalten
-* POWER: number - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
+* **STATE** *Boolean* - Anzeigen und Ein- / Ausschalten
+* **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/light_on.png" width="32"> Licht:
 Jedes Licht kann einen oder beide der folgenden Zustände haben:
 
-* STATE: Boolean - Anzeigen und Ein- / Ausschalten
-* LEVEL: number - Zeigt die eingestellte Lichtstärke an
+* **STATE** *Boolean* - Anzeigen und Ein- / Ausschalten
+* **LEVEL** *number* - Anzeige und Einstellung der Lichtstärke
 
 Optional können Sie folgende Zustände definieren:
 
-* HUE: Nummer - Farbe des Lichts
-* SÄTTIGUNG: Anzahl - Sättigung des Lichts (von Weiß zu reiner Farbe)
-* CT: Zahl - Farbtemperatur des Lichts
-* POWER: Zahl - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird - aber nur, wenn CT nicht angegeben ist (ansonsten wird CT angezeigt und POWER wird ignoriert)
+* Für farbige LEDs (HSB-Farbraum):
+  * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
+  * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (dies wird nur beachtet, wenn das Licht sowohl farbige als auch weiße LEDs hat. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
+* Für weiße LEDs:
+  * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
+  * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (dies wird nur beachtet, wenn das Licht sowohl weiße als auch farbige LEDs enthält. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
+* Alternative Farbräume **noch nicht implementiert**
+  * **HUE_MILIGHT** * number * - Milight verwendet einen anderen Blickpunkt im Farbton-Farbkreis:
+
+````
+tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
+on modulo(n, m){
+n ((n % m) + m) %m;
+
+````
+
+  * **RGB_HUEONLY** * string * - anstelle von HUE kann das RGB_HUEONLY-Format (hex) verwendet werden. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
+  * **RGB** * string * - anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden
+  * **RGBW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden
+  * **RGBWWCW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS kann das RGBWWCW-Format (hex) verwendet werden
+* **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
-* SET_TEMPERATURE: Zahl - Zieltemperatur
-* TEMPERATUR: Zahl - Die tatsächliche Temperatur, die in der oberen rechten Ecke angezeigt werden soll
-* FEUCHTIGKEIT: Zahl - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
-* CONTROL_MODE: Werteliste - Anzeige und Einstellung des Thermostatmodus
-* VALVE_STATES: Array mit Namen und Nummern - Zeigt die Öffnung in Prozent der dem Thermostat zugeordneten Ventile an
+* **SET_TEMPERATURE** *Nummer* - Zieltemperatur
+* **TEMPERATUR** *Zahl* - Die aktuelle Temperatur wird in der oberen rechten Ecke klein angezeigt
+* **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
+* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
+* **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der dem Thermostat zugeordneten Ventile an
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic-Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
-* PARTY_TEMPERATURE: string - speziell formatierter String zur Definition des Party- oder Urlaubsmodus von Homematic-Thermostaten
-* BOOST_STATE: number - zeigt die verbleibende Boost-Zeit von Homematic-Thermostaten an
+* **PARTY_TEMPERATURE** *string* - speziell formatierter String zur Definition des Party- oder Urlaubsmodus von Homematic-Thermostaten
+* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematic-Thermostate an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchte-Sensor:
-* STATE: number - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
-* TEMPERATUR: Zahl - Temperatur, die in der oberen rechten Ecke klein angezeigt wird
-* FEUCHTIGKEIT: Zahl - Luftfeuchtigkeit, die in der oberen rechten Ecke klein angezeigt wird
-* Respektiert die Eigenschaft "Verknüpfte Ansicht"
+* **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
+* **TEMPERATURE** *number* - Temperatur, die in der oberen rechten Ecke klein angezeigt wird
+* **FEUCHTIGKEIT** *Zahl* - Luftfeuchtigkeit, die in der oberen rechten Ecke klein angezeigt wird
+* Respektiert die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/brightness_light.png" width="32"> Helligkeitssensor:
-* STATE: number - Helligkeit, die im unteren Teil des Geräts angezeigt wird
-* HELLIGKEIT: Zahl - Helligkeit, die in der oberen rechten Ecke klein angezeigt wird
-* Respektiert die Eigenschaft "Verknüpfte Ansicht"
+* **STATE** *number* - Helligkeit, die im unteren Teil des Geräts angezeigt wird
+* **HELLIGKEIT** *Zahl* - Helligkeit, die in der oberen rechten Ecke klein angezeigt wird
+* Respektiert die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/motion_on.png" width="32"> Bewegungssensor:
-* STATE: Boolean - Zeigt an, ob eine Bewegung erkannt wurde oder nicht
-* Respektiert die Eigenschaft "Verknüpfte Ansicht"
+* **STATE** *Boolean* - Zeigt an, ob eine Bewegung erkannt wurde oder nicht
+* Respektiert die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
-* STATE: Boolean - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
-    * Alternativ können Sie eine Werteliste vergeben, um zusätzliche Zustände wie 'Tilted' anzuzeigen.
-    * Sie können auch eine Zeichenfolge zuweisen, um einen beliebigen Text wie "3 Fenster geöffnet" oder "Alle geschlossen" anzuzeigen.
-* Respektiere die Eigenschaft der verknüpften Ansicht
+* **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
+  * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
+  * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Fenster offen" oder "Alle geschlossen" anzuzeigen.
+* Respektiere die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
-* STATE: Boolean - Anzeige, ob die Tür geöffnet oder geschlossen ist.
-* LOCK_STATE: Boolean - Zeigt an, ob die Tür verriegelt oder entriegelt ist
-* LOCK_STATE_UNCERTAIN: boolean - der STATE wird in Kursivschrift angezeigt, wenn true, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
-* LOCK_OPEN: Boolean - Wenn der Wert auf true gesetzt ist, wird die Tür vollständig geöffnet
+* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
+* **LOCK_STATE** *Boolean* - Zeigt an, ob die Tür verriegelt oder entriegelt ist
+* **LOCK_STATE_UNCERTAIN** *boolean* - Der Status wird in Kursivschrift angezeigt, wenn true, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
+* **LOCK_OPEN** *boolean* - wenn auf true gesetzt, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
-* LEVEL: number - Höhe des Blinds in Prozent
-* RICHTUNG: Werteliste - kann Stop, Up und Down sein
-* STOP: Boolescher Wert - Wenn der Wert auf true gesetzt ist, stoppt der Blind
+* **LEVEL** *number* - Höhe des Blinds in Prozent
+* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
+* **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
-* STATE: Boolean - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine Werteliste zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
-    * Sie können auch eine Zeichenfolge zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
-* Respektiert die Eigenschaft "Verknüpfte Ansicht"
+* **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
+  * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
+  * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
+* Respektiert die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
-* STATE: Boolean - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine Werteliste zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
-    * Sie können auch eine Zeichenfolge zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
+* **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
+  * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
+  * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
 
 ### <img src="img/icons/value_on.png" width="32"> Wert:
-* STATE: jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
-* LEVEL: number - Erzeugt einen Schieberegler im Dialog
+* **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
+* **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
 ### <img src="img/icons/play_on.png" width="32"> Programm:
-* STATE: boolean - wenn auf true gesetzt, wird das Programm gestartet
+* **STATE** *boolean* - wenn auf true gesetzt, wird das Programm gestartet
 
 ### <img src="img/icons/play.png" width="32"> Szene:
-* STATE: Boolean - Zeigt an, ob die Szene aktiv ist. Bei true wird die Szene gestartet
+* **STATE** *Boolean* - Zeigt an, ob die Szene aktiv ist. Bei true wird die Szene gestartet
 
 ### <img src="img/icons/button.png" width="32"> Taste:
-* STATE: any - jede gewünschte Art von Staat
-* SET_VALUE: CONSTANT string - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Schalter gedrückt wird
+* **STATE** *any* - jeder gewünschte Zustandstyp
+* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Button gedrückt wird
 
 ### <img src="img/icons/popup.png" width="32"> Pop-up:
-* STATE: any - kann zur Anzeige weiterer Informationen verwendet werden
-* URL: CONSTANT string - Diese URL wird als iframe in Popup geöffnet
-* HTML: CONSTANT string - Dieses Markup wird im Popup angezeigt, wenn keine URL angegeben ist
+* **STATE** *any* - kann zur Anzeige weiterer Informationen verwendet werden
+* **URL** CONSTANT *string* - Diese URL wird als iframe in Popup geöffnet
+* **HTML** CONSTANT *string* - Dieses Markup wird im Popup angezeigt, wenn keine URL angegeben ist
 
 ### <img src="img/icons/link.png" width="32"> Externer Link:
-* STATE: any - kann zur Anzeige weiterer Informationen verwendet werden
-* URL: CONSTANT string - Diese URL wird geöffnet
+* **STATE** *any* - kann zur Anzeige weiterer Informationen verwendet werden
+* **URL** CONSTANT *string* - Diese URL wird geöffnet
 
 ## Entwickeln
 * Siehe [Funktionsweise des Frontends] (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
+****
+
 ## Changelog
 
+### 0.0.31
+* (Sebastian Bormann) Fixed some typos.
+* (Sebastian Bormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
+* (Sebastian Bormann) Rewritten rendering of view as praparation for further enhancements.
+* (Sebastian Bormann) Rewritten rendering of dialog as praparation for further enhancements.
+* (Sebastian Bormann) Added option to colorize Device-Texts.
+
 ### 0.0.30
-* (Sebastian Bormann) fixed io-package.json
+* (Sebastian Bormann) Fixed io-package.json
 
 ### 0.0.29
 * (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
 * (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
-* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
 
 ### 0.0.28
 * (Sebastian Bormann) Added datapoint POWER to switch, fan and light.

@@ -121,6 +121,11 @@ For every shopping list a channel with the following states will be created:
     This can be used e. g. for voice output via smart assistants.*
 
 ## Changelog
+
+### 1.4.0 (2019-06-07)
+* (foxriver76) use textFit to fit text to one line in widget
+* (foxriver76) internal reworks on widget
+
 ### 1.3.4
 * (foxriver76) add possibility to use this widget multiple times on same page
 
