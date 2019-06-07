@@ -111,7 +111,7 @@ gewünschten entspricht folgendes vorher ausführen:
     
     ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
     
-    ``sudo apt-get install -y build-essential libavahi-compat-libdnssd-dev libudev-dev libpam0g-dev nodejs``
+    ``sudo apt install -y nodejs``
 
     ``sudo reboot``
 
