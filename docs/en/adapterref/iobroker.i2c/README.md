@@ -23,6 +23,18 @@ After you have enabled and configured I2C, you can install this adapter via ioBr
 4. Configure all found devices in their respective tabs.
 5. Save the configuration (this will restart the adapter)
 
+### Access Right Issue
+
+Depending on the age of your ioBroker installation, the `iobroker` user (or under whatever user ioBroker is running) might not have the proper rights to access I2C.
+
+If you have connected a device and it is not showing up in the configuration screen, please make sure the user is added to the `i2c` group:
+
+```sh
+sudo usermod -G i2c iobroker
+```
+
+Note: if don't have a standard installation, replace `iobroker` in the above command with the user running your ioBroker installation (check with `ps`).
+
 ## Configuration
 
 ### Bus Number

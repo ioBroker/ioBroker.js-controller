@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
+hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -54,7 +54,10 @@ hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
    - 玻璃传感器（39型）
    - 外面警报器（48型）
    - 电源开关表（48型）
+   - 电表（50型）
    - 房间传感器V1（54型）
+   -  LCD温度传感器（54型）
+   - 迷你温度（54型）
    - 热探测器（58型）
    - 调光器（66型）
    - 灯开关V2（66型）
@@ -91,6 +94,15 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.1.8 (10.06.2019)
+* (Stübi) Add device: 360 PIR motion sensor
+* (Stübi) Add device: electric meter
+* (Stübi) Add device: LCD temperature sensor
+* (Stübi) Add device: mini temperature sensor
+
+### 1.1.7 (06.05.2019)
+* (Stübi) Enhancement: optimizing webcam support
 
 ### 1.1.6 (01.05.2019)
 * (Stübi) New feature: you can change the buttons for keypad

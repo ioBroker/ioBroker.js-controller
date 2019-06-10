@@ -71,6 +71,8 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 * added FritzDECT400 incl. testing
 * removed offset in temp value
 * new datapoint offset
+* added template for switches
+* added template testing
 
 ### 0.2.1
 * gulp added

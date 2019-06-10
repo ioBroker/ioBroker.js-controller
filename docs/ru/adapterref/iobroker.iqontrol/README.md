@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: wl3ULr3iTK4Cv0VSaLNuLhfbR/3B3B5xa9wOxMUxWl0=
+hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -195,6 +195,10 @@ n ((n % m) + m) %m;
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
 
+### <img src="img/icons/battery_full.png" width="32"> Батарея:
+* **STATE** *число* - уровень заряда батареи в процентах
+* **CHARGING** *boolean* - если true, отображается значок зарядки
+
 ### <img src="img/icons/value_on.png" width="32"> Значение:
 * **СОСТОЯНИЕ** *любое* - любое допустимое состояние, которое будет отображаться (посмотрите раздел общих состояний)
 * **LEVEL** *number* - создаст слайдер в диалоге
@@ -224,6 +228,12 @@ n ((n % m) + m) %m;
 ****
 
 ## Changelog
+
+### 0.0.32
+* (Sebastian Bormann) Added Battery
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
+* (Sebastian Bormann) Added check for existance of common.role before rendering view
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

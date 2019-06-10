@@ -619,6 +619,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.harmony/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hass-mqtt/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.heytech/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hid/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hilink/README.md
@@ -825,6 +826,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wifilight/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wolf/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.worx/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.xbox/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.xs1/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.yahka/README.md
@@ -929,6 +931,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.harmony/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hass-mqtt/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.heytech/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hid/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hilink/README.md
@@ -1135,6 +1138,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wifilight/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wolf/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.worx/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.xbox/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.xs1/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.yahka/README.md
@@ -1239,6 +1243,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.harmony/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hass-mqtt/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.heytech/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hid/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hilink/README.md
@@ -1445,6 +1450,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wifilight/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wolf/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.worx/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.xbox/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.xs1/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.yahka/README.md
@@ -1549,6 +1555,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.harmony/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hass-mqtt/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.heytech/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hid/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hilink/README.md
@@ -1755,6 +1762,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wifilight/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wolf/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.worx/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.xbox/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.xs1/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.yahka/README.md

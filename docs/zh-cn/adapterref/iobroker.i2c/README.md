@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.i2c/README.md
 title: 适用于I2C的ioBroker适配器
-hash: YdEHFEtQsNwxTXO34qNX/YQqFan3tm6eR2KEMuVdOBA=
+hash: ocC9nqbL123YC+GBR5buH+n/3DyLEAD504/VHnXn6B4=
 ---
 ![I2C徽标](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
@@ -32,7 +32,18 @@ hash: YdEHFEtQsNwxTXO34qNX/YQqFan3tm6eR2KEMuVdOBA=
 2.打开实例配置对话框
 3.按“搜索设备”按钮以发现所有连接的I2C设备 - 这需要一些时间，请耐心等待！
 4.在各自的选项卡中配置所有找到的设备。
-5.保存配置（这将重启适配器）
+5.保存配置（这将重新启动适配器）
+
+###访问权限问题
+根据您的ioBroker安装的年龄，`iobroker`用户（或在运行的任何用户ioBroker下）可能没有访问I2C的适当权限。
+
+如果您已连接设备且未在配置屏幕中显示，请确保将用户添加到`i2c`组：
+
+```sh
+sudo usermod -G i2c iobroker
+```
+
+注意：如果没有标准安装，请将上述命令中的`iobroker`替换为运行ioBroker安装的用户（请参阅`ps`）。
 
 ##配置
 ###公交车号码
@@ -90,7 +101,7 @@ MIT许可证
 
 上述版权声明和本许可声明应包含在本软件的所有副本或实质部分中。
 
-本软件按“原样”提供，不提供任何明示或暗示的保证，包括但不限于适销性，特定用途的适用性和不侵权的保证。在任何情况下，作者或版权所有者均不对任何索赔，损害或其他责任承担任何责任，无论是在合同，侵权行为还是其他方面，由本软件引起或与之相关，或者与本软件的使用或其他交易有关。软件。
+本软件按“原样”提供，不提供任何明示或暗示的保证，包括但不限于适销性，特定用途的适用性和不侵权的保证。在任何情况下，作者或版权所有者均不对任何索赔，损害或其他责任承担任何责任，无论是在合同，侵权行为还是其他方面的行为，由本软件引起或与之相关，或与本软件的使用或其他交易有关。软件。
 
 ### ADS1x15
 ADS1x15代码基于https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
@@ -105,7 +116,7 @@ node-ads1x15本身基于https://github.com/adafruit/Adafruit_Python_ADS1x15
 
 上述版权声明和本许可声明应包含在本软件的所有副本或实质部分中。
 
-本软件按“原样”提供，不提供任何明示或暗示的保证，包括但不限于适销性，特定用途的适用性和不侵权的保证。在任何情况下，作者或版权所有者均不对任何索赔，损害或其他责任承担任何责任，无论是在合同，侵权行为还是其他方面，由本软件引起或与之相关，或者与本软件的使用或其他交易有关。软件。
+本软件按“原样”提供，不提供任何明示或暗示的保证，包括但不限于适销性，特定用途的适用性和不侵权的保证。在任何情况下，作者或版权所有者均不对任何索赔，损害或其他责任承担任何责任，无论是在合同，侵权行为还是其他方面的行为，由本软件引起或与之相关，或与本软件的使用或其他交易有关。软件。
 
 ## Changelog
 

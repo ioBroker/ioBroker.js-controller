@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: wl3ULr3iTK4Cv0VSaLNuLhfbR/3B3B5xa9wOxMUxWl0=
+hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -176,7 +176,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
 * **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
 * **LOCK_STATE** *Boolean* - Zeigt an, ob die Tür verriegelt oder entriegelt ist
-* **LOCK_STATE_UNCERTAIN** *boolean* - Der Status wird in Kursivschrift angezeigt, wenn true, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
+* **LOCK_STATE_UNCERTAIN** *boolean* - der STATE wird in Kursivschrift angezeigt, wenn true, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - wenn auf true gesetzt, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
@@ -195,8 +195,12 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
   * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
 
+### <img src="img/icons/battery_full.png" width="32"> Batterie:
+* **STATE** *number* - Batteriestand in Prozent
+* **CHARGING** *boolean* - wenn wahr, wird ein Ladesymbol angezeigt
+
 ### <img src="img/icons/value_on.png" width="32"> Wert:
-* **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
+* **STATE** *any* - jeder gültige Status, der angezeigt werden soll (siehe Abschnitt "Allgemeine Status")
 * **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
 ### <img src="img/icons/play_on.png" width="32"> Programm:
@@ -224,6 +228,12 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.0.32
+* (Sebastian Bormann) Added Battery
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
+* (Sebastian Bormann) Added check for existance of common.role before rendering view
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

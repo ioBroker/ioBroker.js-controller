@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
+hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
 ---
 ![логотип](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -54,7 +54,10 @@ XT1 (без плюса) не будет поддерживаться. Вы мо�
   - Датчик стекла (Тип 39)
   - Сирена снаружи (Тип 48)
   - Метр выключателя питания (тип 48)
+  - Электрический счетчик (тип 50)
   - комнатный датчик V1 (тип 54)
+  - ЖК-датчик температуры (тип 54)
+  - Мини температура (Тип 54)
   - Детектор тепла (Тип 58)
   - диммер (тип 66)
   - выключатель света V2 (тип 66)
@@ -91,6 +94,15 @@ ioBroker предлагает вам те же объекты статуса, ч
 * написание документации для каждого датчика / устройства
 
 ## Changelog
+
+### 1.1.8 (10.06.2019)
+* (Stübi) Add device: 360 PIR motion sensor
+* (Stübi) Add device: electric meter
+* (Stübi) Add device: LCD temperature sensor
+* (Stübi) Add device: mini temperature sensor
+
+### 1.1.7 (06.05.2019)
+* (Stübi) Enhancement: optimizing webcam support
 
 ### 1.1.6 (01.05.2019)
 * (Stübi) New feature: you can change the buttons for keypad

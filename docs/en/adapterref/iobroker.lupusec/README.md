@@ -49,7 +49,10 @@ Fully supported and individually adapted are following devices:
   - Glass sensor (Type 39)
   - Siren outside (Type 48)
   - Power Switch Meter (Type 48)
+  - Electric Meter (Type 50)
   - Room sensor V1 (Type 54)
+  - LCD temperature sensor (Type 54)  
+  - Mini temperature (Type 54)
   - Heat detector (Type 58)
   - Dimmer (Type 66)
   - Light Switch V2 (Type 66)
@@ -84,6 +87,12 @@ You find all connected surveillance cams under 'webcams'. You can copy the link 
 ![lupusec_obj_webcam](docs/en/img/lupusec_obj_webcam.png)
 
 ## Changelog
+
+### 1.1.8 (10.06.2019)
+* (Stübi) Add device: 360 PIR motion sensor
+* (Stübi) Add device: electric meter
+* (Stübi) Add device: LCD temperature sensor
+* (Stübi) Add device: mini temperature sensor
 
 ### 1.1.7 (06.05.2019)
 * (Stübi) Enhancement: optimizing webcam support

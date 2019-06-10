@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
+hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -18,22 +18,22 @@ hash: YZ+icl0T2EZTaSfFvPHe98I/vVQ5TmCHpyQyklglaJg=
 # IoBroker.lupusec
 ** Erfordert node.js 8.0 oder höher und Admin v3! **
 
-Dieser Adapter verbindet das Lupusec-Alarmsystem XT1 Plus, XT2, XT2 Plus und XT3 mit dem ioBroker.
-Der XT1 (ohne Plus) wird nicht unterstützt. Sie können den Status der Lupusec-Sensoren wie Türen, Fenster, Wasser- und Rauchsensoren sowie den Status der Alarmanlage ablesen.
-Sie können zum Beispiel Schalter einschalten, den Verschluss steuern und das Alarmsystem aktivieren / deaktivieren.
+Dieser Adapter verbindet das Lupusec Alarmsystem XT1 Plus, XT2, XT2 Plus und XT3 mit ioBroker.
+Der XT1 (ohne Plus) wird nicht unterstützt. Sie können den Status der Lupusec-Sensoren wie Türen, Fenster, Wasser, Rauchmelder und den Status der Alarmanlage ablesen.
+Sie können beispielsweise Schalter einschalten, den Verschluss steuern und das Alarmsystem aktivieren / deaktivieren.
 
 Detaillierte Informationen finden Sie hier: [Lupus](https://www.lupus-electronics.de/en)
 
 ## Installation
 1. Installieren Sie den Adapter
 
-Der einfachste Weg ist, den lupusec.iobroker-Adapter über den Discovery-Adapter in ioBroker zu konfigurieren. Der Erkennungsadapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Der andere Weg ist es, es manuell zu konfigurieren
+Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter in ioBroker zu konfigurieren. Der Erkennungsadapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Die andere Möglichkeit besteht darin, es manuell zu konfigurieren
 
 2. Manuelle Konfiguration des Adapters
 
-Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie möglichst https (empfohlen).
-Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren), wählen Sie einen Benutzer mit Schreibzugriff aus.
-![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie an Ihr Lupusec-Alarmsystem Überwachungskameras angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Cams selbst. Sie müssen eine Adresse (Ihre ioBroker-IP-Adresse oder 0.0.0.0) und einen Port eingeben, um sich später mit den Cams zu verbinden.
+Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie nach Möglichkeit https (empfohlen).
+Wenn Sie nur den Status lesen möchten, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren), wählen Sie einen Benutzer mit Schreibzugriff aus.
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie Überwachungskameras an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Cams selbst. Sie müssen eine Adresse (Ihre ioBroker IP-Adresse oder 0.0.0.0) und einen Port für die spätere Verbindung mit den Kameras eingeben.
 ![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte des ioBroker-Objekts angezeigt.
@@ -41,20 +41,23 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
 
   - Türkontakt / Fensterkontakt (Typ 4)
   - Wassersensor (Typ 5)
-  - Panik-Taste (Typ 7)
+  - Paniktaste (Typ 7)
   - Bewegungsmelder / 360-Grad-Bewegungsmelder (Typ 9)
   - CO-Sensor (Typ 13)
   - Rauchmelder / Wärmemelder (Typ 14)
   - Sirene innen (Typ 21)
   - Statusanzeige / Mini-Innensirene (Typ 22)
   - Netzschalter (Typ 24)
-  - 1 Kanal-Relais mit ZigBee-Repeater (Typ 24)
-  - 2-Kanal-Relais mit ZigBee-Repeater (Typ 24)
+  - 1 Kanal Relais mit ZigBee Repeater (Typ 24)
+  - 2 Kanal Relais mit ZigBee Repeater (Typ 24)
   - Tastatur (Typ 37)
   - Glassensor (Typ 39)
-  - Sirene draußen (Typ 48)
-  - Leistungsschalterzähler (Typ 48)
+  - Sirene außen (Typ 48)
+  - Leistungsschalter-Messgerät (Typ 48)
+  - Stromzähler (Typ 50)
   - Raumfühler V1 (Typ 54)
+  - LCD-Temperatursensor (Typ 54)
+  - Minitemperatur (Typ 54)
   - Wärmemelder (Typ 58)
   - Dimmer (Typ 66)
   - Lichtschalter V2 (Typ 66)
@@ -68,29 +71,38 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
 
 Die beiden Zustände apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen die Alarmanlage für Bereich 1 und 2 ein- und ausschalten.
 
-Wenn Sie ein Gerät besitzen, das nicht in der obigen Liste aufgeführt ist, wenden Sie sich bitte an Thorsten Stueben <thorsten@stueben.de>.
+Wenn Sie ein Gerät besitzen, das nicht in der obigen Liste aufgeführt ist, kontaktieren Sie mich bitte unter Thorsten Stueben <thorsten@stueben.de>.
 
 ## Objekte
-Lupusec-Status
-ioBroker bietet Ihnen die gleichen Statusobjekte wie in der Lupusec-App.
+### Lupusec Status
+ioBroker bietet Ihnen die gleichen Statusobjekte wie in der Lupusec App.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_status.png)
 
-### Lupusec-Geräte
-Alle unterstützten Lupsec-Sensoren und -Geräte finden Sie unter "Geräte". Sollte ein Gerät fehlen, kontaktieren Sie mich bitte.
-![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png) Detailansicht eines Sensors oder Geräts. In diesem Beispiel sehen Sie den CO-Sensor. Bei CO-Alarm wechselt der Status 'alarm_status_ex' auf wahr und 'alarm_status' wechselt zu 'CO'.
+### Lupusec Geräte
+Sie finden alle unterstützten Lupsec-Sensoren und -Geräte unter "Geräte". Sollte ein Gerät fehlen, kontaktieren Sie mich bitte.
+![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png) Detailansicht eines Sensors oder Gerätes. In diesem Beispiel sehen Sie den CO-Sensor. Bei einem CO-Alarm wird der Status 'alarm_status_ex' auf true und der Status 'alarm_status' auf 'CO' geändert.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
-Lupusec-Webcams
-Sie finden alle angeschlossenen Überwachungskameras unter 'Webcams'. Sie können den im Status 'Bild' und 'Stream' bereitgestellten Link zum Öffnen in Ihren Webbrowser kopieren.
+### Lupusec Webcams
+Alle angeschlossenen Überwachungskameras finden Sie unter 'Webcams'. Sie können den im Status "Bild" und "Stream" bereitgestellten Link zum Öffnen in Ihren Webbrowser kopieren.
 ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
 ## Geplant
 Folgende Dinge sind in der Zukunft geplant:
 
-* unterstützung mehr sensoren / geräte
-* Schreiben einer Dokumentation für jeden Sensor / Gerät
+* Unterstützung für mehr Sensoren / Geräte
+* Verfassen einer Dokumentation für jeden Sensor / jedes Gerät
 
 ## Changelog
+
+### 1.1.8 (10.06.2019)
+* (Stübi) Add device: 360 PIR motion sensor
+* (Stübi) Add device: electric meter
+* (Stübi) Add device: LCD temperature sensor
+* (Stübi) Add device: mini temperature sensor
+
+### 1.1.7 (06.05.2019)
+* (Stübi) Enhancement: optimizing webcam support
 
 ### 1.1.6 (01.05.2019)
 * (Stübi) New feature: you can change the buttons for keypad

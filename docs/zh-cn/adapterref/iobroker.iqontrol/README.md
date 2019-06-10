@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: wl3ULr3iTK4Cv0VSaLNuLhfbR/3B3B5xa9wOxMUxWl0=
+hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -160,7 +160,7 @@ n ((n % m) + m) %m;
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
+* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
 *尊重**链接视图属性**
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
@@ -195,6 +195,10 @@ n ((n % m) + m) %m;
     *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
     *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
 
+### <img src="img/icons/battery_full.png" width="32">电池：
+* **状态**：*数字*  - 电池电量百分比
+* **CHARGING** *boolean* - 如果为true，则显示充电图标
+
 ### <img src="img/icons/value_on.png" width="32">值：
 * **STATE** *any* - 要显示的任何有效状态（查看一般状态 - 部分）
 * **LEVEL** *number* - 将在对话框中生成滑块
@@ -224,6 +228,12 @@ n ((n % m) + m) %m;
 ****
 
 ## Changelog
+
+### 0.0.32
+* (Sebastian Bormann) Added Battery
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
+* (Sebastian Bormann) Added check for existance of common.role before rendering view
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

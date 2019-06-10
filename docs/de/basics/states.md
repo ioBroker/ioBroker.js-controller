@@ -9,11 +9,14 @@ Ein **Datenpunkt** besteht aus einem statischen Objekt vom Typ "state" und aus e
 Eigenschaften eines Zustands sind
  * val - aktueller Wert
  * ack - Flag, das die Bestätigung des Wertes durch das Zielsystem anzeigt
- * ts  - Unix Zeitstempel der letzten Aktualisierung des Zustands
- * lc  - Unix Zeitstempel der letzten Wertänderung
- * from - Quelle(Adapter Instanz) der letzten Aktualisierung
- * q - Qualität
- 
+ * ts  - Unix Zeitstempel der letzten Aktualisierung des Zustands (in Millisekunden)
+ * lc  - Unix Zeitstempel der letzten Wertänderung  (in Millisekunden)
+ * q - [Qualität](../dev/objectsschema#states) 
+ * from - (optional) Quelle(Adapter Instanz) der letzten Aktualisierung
+ * user - (optional) Anwendername, wer als letzter den Wert geschrieben hat.
+ * c - (optional) Kommentar
+ * expire - (optional) Zeit in Sekunden, wann der Wert auf `null` resetet wird.
+  
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

@@ -1,14 +1,14 @@
 ---
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objetctsschema.md
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心概念
-hash: +IiUhViJwTVu/ux3jUbrAkvLZtYImrDNIKJFW4Cv1zA=
+hash: jha7YMVNEossd7+0ivGgBanPHzFZtsTb5bLProYjHXs=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的**状态**（`states`）和**对象**。
 
-对象代表很少变化和更大的数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关可用的对象类型以及特定类型的对象需要哪些必需属性的更多信息，请参见下文。适配器模块为您提供了setObject，getObject，...等函数。
+对象代表很少变化和更大的数据，如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关可用的对象类型以及特定类型的对象需要哪些必需属性的更多信息，请参见下文。适配器模块为您提供了setObject，getObject，...等函数。
 
 状态代表经常更改系统中的数据，例如f.e.如果灯打开或关闭，如果运动检测器检测到某些运动，客厅的温度或按下遥控器的按钮。与对象相反，状态可用于触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个函数，如setState，getState等。
 
@@ -116,7 +116,7 @@ ID有不同的级别。每个级别由点确定。示例：`system.adapter.admin
 };
 ```
 
-＃＃ 状态
+## <a href="#states">国家</a>
 getState方法和stateChange事件传递一个除了expire之外的所有属性的对象
 
 对于`setState`方法，除了`val`之外的所有内容都是可选的，`from`由`setState`方法自动设置。 `ack`默认为false，`ts`和`lc`按预期设置
@@ -125,11 +125,12 @@ getState / stateChange / setState对象的属性：
 
 *`val`  - 实际值 - 可以是任何类型的JSON-“可编码”
 *`ack`  - 一个布尔标志，指示目标系统是否已确认该值
-*`ts`  - 指示上次状态更新的unix时间戳
-*`lc`  - 一个unix时间戳，指示状态实际值的最后一次更改
+*`ts`  - 指示状态的最后更新的unix时间戳（以毫秒为单位）
+*`lc`  - 一个unix时间戳，指示状态实际值的最后一次更改（以毫秒为单位）
 *`from`  - 执行`setState`的适配器实例
 *`user`  - 用户名，用于设置值
-*`expire`  - 一个整数值，可用于设置在给定秒数后过期的状态。可以在`setValue`中使用。值过期后，它将从redisDB中消失。
+*`expire`  - 一个整数值，可用于设置在给定秒数后过期的状态。可以与`setValue`一起使用。值过期后，它将从redisDB中消失。
+*`c`  - 对这种状态变化的评论。
 *`q`  - 质量。具有以下状态的数字：
 
 ```
@@ -482,7 +483,7 @@ id *system.adapter。＆lt; adapter.name＆gt;*
 
 *`common.name`  -  **强制**没有“ioBroker”的适配器名称。
 *`common.title`  - （不建议使用）更长的适配器名称，以显示在admin中
-*`common.titleLang`  -  **强制**在所有支持的语言中使用更长的适配器名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
+*`common.titleLang`  -  **强制**在所有支持的语言中使用较长的适配器名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
 *`common.mode`  -  **强制**可能的值见下文
 *`common.version`  -  **强制**可用版本
 *`common.installedVersion`  -  **强制**安装版

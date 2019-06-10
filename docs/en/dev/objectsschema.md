@@ -117,7 +117,7 @@ Or other example `hm-rpc.1.ABC110022.2.VALUE`:
 ```
 
 
-## States
+## <a href="#states">States</a>
 
 getState method and stateChange event delivers an object with all attributes except expire
 
@@ -127,11 +127,12 @@ attributes for getState/stateChange/setState object:
 
 * `val`    - the actual value - can be any type that is JSON-"encodable"
 * `ack`    - a boolean flag indicating if the target system has acknowledged the value
-* `ts`     - a unix timestamp indicating the last update of the state
-* `lc`     - a unix timestamp indicating the last change of the state's actual value
+* `ts`     - a unix timestamp indicating the last update of the state (in milliseconds)
+* `lc`     - a unix timestamp indicating the last change of the state's actual value (in milliseconds)
 * `from`   - adapter instance that did the `setState`
 * `user`   - user name, that set the value
 * `expire` - a integer value that can be used to set states that expire after a given number of seconds. Can be used ony with `setValue`. After the value expires, it disappears from redisDB.
+* `c`      - comment for this state change. 
 * `q`      - quality. Number with following states:
 
 ```
@@ -154,6 +155,7 @@ attributes for getState/stateChange/setState object:
   0x44 - 01000100 - device reports error
   0x84 - 10000100 - sensor reports error
 ```
+
 Every *state* has to be represented by an object of the type state containing Meta-Data for the state. See below.
 
 ## Objects

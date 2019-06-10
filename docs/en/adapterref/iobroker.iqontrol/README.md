@@ -183,6 +183,10 @@ In addition to normal thermostat you can define:
     * Alternatively you can assign a *value-list*, to display additional states like 'tampered'.
     * You can also assign a *string* to display any text like "fire in upper floor".
 
+### <img src="img/icons/battery_full.png" width="32"> Battery:
+* **STATE**: *number* - battery level in percentage
+* **CHARGING**: *boolean* - if true, a charging-icon is displayed
+
 ### <img src="img/icons/value_on.png" width="32"> Value:
 * **STATE**: *any* - any valid state to be displayed (have a look at general states-section)
 * **LEVEL**: *number* - will produce a slider in dialog
@@ -215,6 +219,12 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.0.32
+* (Sebastian Bormann) Added Battery
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
+* (Sebastian Bormann) Added check for existance of common.role before rendering view
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

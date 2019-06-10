@@ -127,6 +127,8 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 * added FritzDECT400 incl. testing
 * removed offset in temp value
 * new datapoint offset
+* added template for switches
+* added template testing
 
 ### 0.2.1
 * gulp added
