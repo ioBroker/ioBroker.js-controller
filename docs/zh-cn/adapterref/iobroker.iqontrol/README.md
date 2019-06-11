@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
+hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -144,6 +144,7 @@ n ((n % m) + m) %m;
 * **温度**：*数字*  - 实际温度在右上角显示为小
 * **湿度**：*数字*  - 实际湿度在右上角显示为小
 * **CONTROL_MODE** *value-list* - 显示并设置恒温器的模式
+* **WINDOW_OPENING_REPORTING** *boolean* - 如果为true，则会显示一个小窗口
 * **VALVE_STATES** 名称和数字数组 - 显示与恒温器相关的阀门开度
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic，温控器：
@@ -228,6 +229,10 @@ n ((n % m) + m) %m;
 ****
 
 ## Changelog
+
+### 0.0.33
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
+* (Sebastian Bormann) Fixed marquee not always starting correctly
 
 ### 0.0.32
 * (Sebastian Bormann) Added Battery

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
+hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -144,6 +144,7 @@ n ((n % m) + m) %m;
 * **TEMPERATUR** *Zahl* - Die aktuelle Temperatur wird in der oberen rechten Ecke klein angezeigt
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
 * **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
+* **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
 * **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der dem Thermostat zugeordneten Ventile an
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic-Thermostat:
@@ -228,6 +229,10 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.0.33
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
+* (Sebastian Bormann) Fixed marquee not always starting correctly
 
 ### 0.0.32
 * (Sebastian Bormann) Added Battery

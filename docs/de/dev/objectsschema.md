@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: jha7YMVNEossd7+0ivGgBanPHzFZtsTb5bLProYjHXs=
+hash: /HOc3pEJtQcbZnuy2qQyMe+zzrik2dmUI4v4BcHU+F4=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -25,35 +25,35 @@ Es wird nicht empfohlen, auch `^$()/` zu verwenden.
 
 Die ID hat verschiedene Ebenen. Jede Ebene wird durch einen Punkt bestimmt. Beispiel: `system.adapter.admin.0`
 
-- **system** - ist der Namespace für Systemobjekte
-- **Adapter** - Namespace für Adapter-Konfigurationen
-- **admin** - Adaptername
-- **0** - Adapterinstanz
+- `system` - ist der Namespace für Systemobjekte
+- `adapter` - Namespace für Adapterkonfigurationen
+- `admin` - Adaptername
+- `0` - Adapterinstanz
 
 Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 
-- **hm-rpc** - ist der Name des Adapters
-- **1** - Adapterinstanz
-- **ABC110022** - Geräteadresse
-- **2** - Kanalname
-- **VALUE** - Name des Status
+- `hm-rpc` - ist der Name des Adapters
+- `1` - Adapterinstanz
+- `ABC110022` - Geräteadresse
+- `2` - Kanalname
+- `VALUE` - Name des Zustands
 
 ## Namespaces
-* System. - Systemobjekte und -zustände
-* system.host. - Steuerungsprozesse
-* system.config. - Systemeinstellungen, wie Standardsprache
-* system.meta. - System-Metadaten
-* system.user. - Benutzer
-* system.group. - Gruppen
-* system.adapter. & lt; Adaptername & gt; - Standardkonfiguration eines Adapters
-* & lt; Adaptername & gt; - Objekthalte-Anhänge, auf die über http:// & lt; couch & gt;: 5984 / iobroker / & lt; adapter-name & gt; / path zugegriffen werden kann
-* & lt; Adaptername & gt; .meta. - Gemeinsame Metadaten, die von allen Instanzen dieses Adapters verwendet werden
-* & lt; Adaptername & gt;. & lt; Instanznummer & gt ;. - Ein Adapterinstanz-Namespace
-* enum. - Aufzählungen
-* Geschichte. - Verlaufsdaten
-* Skripte. - Script Engine Skripte
-* scripts.js. - Javascript Script Engine Skripte
-* scripts.py. - Python Script Engine Skripte (zukünftig)
+* `system.` - Systemobjekte und -zustände
+* `system.host.` - Steuerungsprozesse
+* `system.config.` - Systemeinstellungen wie Standardsprache
+* `system.meta.` - System-Metadaten
+* `system.user.` - Benutzer
+* `system.group.` - Gruppen
+* `system.adapter. <Adaptername>` - Standardkonfiguration eines Adapters
+* `<Adaptername> .` - Objekte für einen bestimmten Adapter.
+* `<Adaptername> .meta.` - Gemeinsame Metadaten, die von allen Instanzen dieses Adapters verwendet werden
+* `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namespace
+* `enum.` - Aufzählungen
+* `history.` - Verlaufsdaten
+* `scripts.` - Script Engine Scripts
+* `scripts.js.` - Javascript Script Engine Scripts
+* `scripts.py.` - Skripte der Python Script Engine (zukünftig)
 
 ### Namespace system.config.
 ```
@@ -75,7 +75,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 }
 ```
 
-### Namespace system.host. & Lt; Hostname & gt;
+### Namespace system.host. & Lt; Hostname &gt;
 ```
 {
     _id:   id,
@@ -210,8 +210,8 @@ Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen
 Eine Liste der Transporte finden Sie in der README-Datei des Verlaufsadapters
 
 * `common.history` (optional)
-* `common.history.HISTORY-INSTANCE.changesOnly` (optional, boolean, wenn true, werden nur Wertänderungen protokolliert)
-* `common.history.HISTORY-INSTANCE.enabled` (boolean)
+* `common.history. <HISTORY-INSTANCE> .changesOnly` (optional, boolean, wenn true, werden nur Wertänderungen protokolliert)
+* `common.history. <HISTORY-INSTANCE> .enabled` (Boolean)
 
 ##### Bundesland `common.role`
 * `common.role` (gibt an, wie dieser Status in Benutzeroberflächen dargestellt werden soll)
@@ -472,12 +472,12 @@ mögliche Werte:
 #### Meta
 Ich würde
 
- ** & lt; Adaptername & gt;. & lt; Instanznummer & gt; .meta & lt; Metaname & gt;*
- ** & lt; Adaptername & gt; .meta & lt; Metaname & gt;*
- *system. * meta. & lt; metaname & gt;*
+ ** &lt; Adaptername &gt;. & lt; Instanznummer & gt; .meta & lt; Metaname & gt;*
+ ** &lt; Adaptername &gt; .meta & lt; Metaname & gt;*
+ *system. * meta. &lt; metaname &gt;*
 
 #### Adapter
-id *system.adapter. & lt; adapter.name & gt;*
+id `system.adapter.<adapter.name>`
 
 * Hinweis: * Alle Flaggen sind optional, außer als **obligatorisch** gekennzeichnet.
 
@@ -491,7 +491,7 @@ id *system.adapter. & lt; adapter.name & gt;*
 * `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
 * `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
-* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. & Lt; adapter.name & gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
+* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. & Lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
 * `common.subscribe` - Name der Variablen, die automatisch abonniert wird
 * `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Aktualisierungen zu ermöglichen
 * `common.wakeup` -
@@ -544,39 +544,39 @@ id *system.adapter. & lt; adapter.name & gt;*
 * `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
 
 #### Instanz
-id *system.adapter. & lt; adapter.name & gt;. & lt; instanznummer & gt;*
+id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
 
-* common.host - (obligatorischer) Host, auf dem der Adapter gestartet werden soll - object *system.host. & lt; host & gt;* muss vorhanden sein
-* common.enabled - (obligatorisch)
-* common.mode - (obligatorische) mögliche Werte siehe unten
+* `common.host` - (obligatorischer) Host, auf dem der Adapter gestartet werden soll - object *system.host. &lt; host &gt;* muss vorhanden sein
+* `common.enabled` - (obligatorisch)
+* `common.mode` - (obligatorische) mögliche Werte siehe unten
 
 ##### Adapter / Instanz common.mode
-* **keine** - Dieser Adapter startet keinen Prozess
-* **Daemon** - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
-* **subscribe** - wird gestartet, wenn der Status *system.adapter. & lt; adaptername & gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
-* **Zeitplan** - wird durch einen Zeitplan gestartet, der in *system.adapter. & lt; Adaptername & gt;. & lt; Instanznummer & gt; .schedule zu finden ist.* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
-* **einmal** - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
+* `none` - dieser Adapter startet keinen Prozess
+* `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
+* `subscribe` - wird gestartet, wenn der Status * system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive auf * true * geändert wird. Wird beendet, wenn * .alive * auf * false * wechselt und * .alive * auf * false * setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
+* `Zeitplan` - wird durch einen Zeitplan gestartet, der in * system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist
+* `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 #### Host
-id *system.host. & lt; host & gt;*
+id `system.host.<host>`
 
-* `common.name` - f.e. "system.host.banana"
+* `common.name` - f.e. `system.host.banana`
 * `common.process`
 * `common.version`
 * `common.platform`
 * `common.cmd`
-* `common.hostname` - f.e. "Banane"
+* `common.hostname` - f.e. `Banane`
 * `common.address` - Array von IP-Adresszeichenfolgen
 
 #### Config
 #### Skript
-* `common.platform` - (obligatorisch) mögliche Werte 'Javascript / Node.js' (weitere folgen)
+* `common.platform` - (obligatorisch) mögliche Werte` Javascript / Node.js` (weitere folgen)
 * `common.enabled` - (obligatorisch) ist das aktivierte Skript oder nicht
 * `common.source` - (obligatorisch) die Skriptquelle
-* `common.engine` - (optional) *scriptengine* Instanz, die dieses Skript ausführen soll (zB 'javascript.0') - wenn die Engine weggelassen wird, wird sie automatisch ausgewählt
+* `common.engine` - (optional) *Skript-Engine* Instanz, die dieses Skript ausführen soll (zB 'javascript.0') - wenn die Engine weggelassen wird, wird sie automatisch ausgewählt
 
 #### Nutzer
-* `common.name` - (obligatorisch) Name des Benutzers (@HQ: Groß- und Kleinschreibung beachten? @Bluefox Ihrer Wahl, ich denke, Groß- und Kleinschreibung ist auch in Ordnung)
+* `common.name` - (obligatorisch) Name des Benutzers (Groß- und Kleinschreibung beachten)
 * `common.password` - (obligatorisch) MD5 Hash des Passworts
 
 #### Gruppe

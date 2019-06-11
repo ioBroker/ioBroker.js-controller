@@ -24,34 +24,34 @@ Following characters are prohibited to use in IDs: `[]*,;'"&#96;<>\\?`.
 It is not suggested to use `^$()/` too.
 
 The ID has different levels. Each level is determined by dot. Example: `system.adapter.admin.0`
-- **system** - is namespace for system objects
-- **adapter** - namespace for adapter configs
-- **admin** - adapter name
-- **0** - adapter instance
+- `system` - is namespace for system objects
+- `adapter` - namespace for adapter configs
+- `admin` - adapter name
+- `0` - adapter instance
 
 Or other example `hm-rpc.1.ABC110022.2.VALUE`:
-- **hm-rpc** - is name of adapter
-- **1** - adapter instance
-- **ABC110022** - device address
-- **2** - channel name
-- **VALUE** - state name
+- `hm-rpc` - is name of adapter
+- `1` - adapter instance
+- `ABC110022` - device address
+- `2` - channel name
+- `VALUE` - state name
 
 ## Namespaces
-* system.             - System objects and states
-* system.host.        - Controller processes
-* system.config.      - System settings, like default language
-* system.meta.        - System meta data
-* system.user.        - Users
-* system.group.       - Groups
-* system.adapter.&lt;adapter-name&gt; - default config of an adapter
-* &lt;adapter-name&gt; - object holding attachments that are accessible via http://&lt;couch&gt;:5984/iobroker/&lt;adapter-name&gt;/path
-* &lt;adapter-name&gt;.meta. - common meta-data used by all instances of this adapter
-* &lt;adapter-name&gt;.&lt;instance-number&gt;. - An adapters instance namespace
-* enum.               - Enumerations
-* history.            - History Data
-* scripts.            - Script Engine Scripts
-* scripts.js.         - javascript Script Engine Scripts
-* scripts.py.         - python Script Engine Scripts (future)
+* `system.`             - System objects and states
+* `system.host.`        - Controller processes
+* `system.config.`      - System settings, like default language
+* `system.meta.`        - System meta data
+* `system.user.`        - Users
+* `system.group.`       - Groups
+* `system.adapter.<adapter-name>` - default config of an adapter
+* `<adapter-name>.`     - objects for specific adapter.
+* `<adapter-name>.meta.` - common meta-data used by all instances of this adapter
+* `<adapter-name>.<instance-number>.` - An adapters instance namespace
+* `enum.`               - Enumerations
+* `history.`            - History Data
+* `scripts.`            - Script Engine Scripts
+* `scripts.js.`         - javascript Script Engine Scripts
+* `scripts.py.`         - python Script Engine Scripts (future)
 
 ### Namespace system.config.
 
@@ -222,8 +222,8 @@ fifo length is reduced to min when max is hit. set to null or leave undefined to
 for a list of transports see history adapter README
 
 * `common.history` (optional)
-* `common.history.HISTORY-INSTANCE.changesOnly` (optional, boolean, if true only value changes are logged)
-* `common.history.HISTORY-INSTANCE.enabled` (boolean)
+* `common.history.<HISTORY-INSTANCE>.changesOnly` (optional, boolean, if true only value changes are logged)
+* `common.history.<HISTORY-INSTANCE>.enabled` (boolean)
 
 
 ##### State `common.role`
@@ -497,7 +497,7 @@ id
  * system.*meta.&lt;meta-name&gt;*
 
 #### Adapter
-id *system.adapter.&lt;adapter.name&gt;*
+id `system.adapter.<adapter.name>`
 
 *Notice:* all flags are optional except special marked as **mandatory**.
 
@@ -566,38 +566,38 @@ id *system.adapter.&lt;adapter.name&gt;*
 #### instance
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-* common.host       - (mandatory) host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
-* common.enabled    - (mandatory)
-* common.mode       - (mandatory) possible values see below
+* `common.host`       - (mandatory) host where the adapter should be started at - object *system.host.&lt;host&gt;* must exist
+* `common.enabled`    - (mandatory)
+* `common.mode`       - (mandatory) possible values see below
 
 ##### adapter/instance common.mode
-* **none**        - this adapter doesn't start a process
-* **daemon**      - always running process (will be restarted if process exits)
-* **subscribe**   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
-* **schedule**    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
-* **once**        - this adapter will be started every time the system.adapter.yyy.x object changed. It will not be restarted after termination.
+* `none`        - this adapter doesn't start a process
+* `daemon`      - always running process (will be restarted if process exits)
+* `subscribe`   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
+* `schedule`    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
+* `once`        - this adapter will be started every time the system.adapter.yyy.x object changed. It will not be restarted after termination.
 
 #### host
-id *system.host.&lt;host&gt;*
+id `system.host.<host>`
 
-* `common.name`       - f.e. "system.host.banana"
+* `common.name`       - f.e. `system.host.banana`
 * `common.process`
 * `common.version`
 * `common.platform`
 * `common.cmd`
-* `common.hostname`   - f.e. "banana"
+* `common.hostname`   - f.e. `banana`
 * `common.address`    - array of ip address strings
 
 #### config
 
 #### script
-* `common.platform`   - (mandatory) possible Values 'Javascript/Node.js' (more to come)
+* `common.platform`   - (mandatory) possible Values `Javascript/Node.js` (more to come)
 * `common.enabled`    - (mandatory) is script activated or not
 * `common.source`     - (mandatory) the script source
-* `common.engine`     - (optional) *scriptengine* instance that should run this script (f.e. 'javascript.0') - if omitted engine is automatically selected
+* `common.engine`     - (optional) *script engine* instance that should run this script (f.e. 'javascript.0') - if omitted engine is automatically selected
 
 #### user
-* `common.name`       - (mandatory) Name of user (@HQ: Case insensitive ? @Bluefox your choice, i think case sensitive is ok too)
+* `common.name`       - (mandatory) Name of user (Case sensitive)
 * `common.password`   - (mandatory) MD5 Hash of password
 
 #### group

@@ -381,6 +381,9 @@ Security must be taken from current user and not from default_user
 6. Start `gulp rename` task.
 ## Changelog
 
+### 0.1.1 (2019-06-10)
+* (bluefox) Fixed control of states
+
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
 * (bluefox) Lovelace compiled extra for ioBroker 

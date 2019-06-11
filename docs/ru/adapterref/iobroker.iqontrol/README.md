@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: E2hQlNk+nUkVgIKLMXuPMOz3KRhS177oYcLLF1Uy+ko=
+hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -144,6 +144,7 @@ n ((n % m) + m) %m;
 * **ТЕМПЕРАТУРА** *число* - фактическая температура, отображаемая маленьким шрифтом в верхнем правом углу
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
+* **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
 * **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
@@ -228,6 +229,10 @@ n ((n % m) + m) %m;
 ****
 
 ## Changelog
+
+### 0.0.33
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
+* (Sebastian Bormann) Fixed marquee not always starting correctly
 
 ### 0.0.32
 * (Sebastian Bormann) Added Battery

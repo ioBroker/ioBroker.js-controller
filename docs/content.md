@@ -114,7 +114,7 @@
   * [Performance](trouble/monitoring)
 
 * en:FAQ;de:FAQ;ru:ЧаВо;zh-cn:FAQ
-  * [Basics](faq/basics)
+  * [Basics](faq/basic)
 
 * en:Support;de:Unterstützung;ru:Поддержка;zh-cn:加入社区
   * [Introduction](community/README)

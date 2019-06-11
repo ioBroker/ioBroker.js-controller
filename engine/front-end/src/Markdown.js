@@ -697,6 +697,7 @@ class Markdown extends Router {
                                 {item.props.children ? item.props.children[0] : ''}
                             </div>);
                         } else {
+                            const oldLink = link;
                             if (!link.match(/^https?:\/\//)) {
                                 link = prefix + link;
                             }
@@ -704,7 +705,7 @@ class Markdown extends Router {
                             reactObj.props.children[i] = (<div
                                 key={'link' + i}
                                 className={this.props.classes.mdLink + ' md-link'}
-                                title={link}
+                                title={oldLink}
                                 onClick={() => this.onNavigate(null, link)}>
                                 {item.props.children ? item.props.children[0] : ''}
                             </div>);

@@ -133,6 +133,7 @@ Optional you can define the following states:
 * **TEMPERATURE**: *number* - actual temperature to be displayed in small in the upper right corner
 * **HUMIDITY**: *number* - actual humidity to be displayed in small in the upper right corner
 * **CONTROL_MODE**: *value-list* - display and set the mode of the thermostat
+* **WINDOW_OPENING_REPORTING**: *boolean* - if true, a little opened window is displayed
 * **VALVE_STATES**: array of names and numbers - displays the opening of the valves that are associated with the thermostat
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic-Thermostat:
@@ -219,6 +220,10 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.0.33
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
+* (Sebastian Bormann) Fixed marquee not always starting correctly
 
 ### 0.0.32
 * (Sebastian Bormann) Added Battery

@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/basics/states.md
 title: 国家和数据点
-hash: x/QuY94TT/pzS/xmrB0cz48nq3lzLiiE8agZlTlcnfo=
+hash: LckQ97BkDH4EmltlDIAD72KvCp6AJTRf+cc7ykp+fjE=
 ---
 ＃状态和数据点
 **数据点**由“状态”类型和动态状态的静态对象组成。
@@ -15,7 +15,7 @@ hash: x/QuY94TT/pzS/xmrB0cz48nq3lzLiiE8agZlTlcnfo=
  * ack  - 表示目标系统确认值的标志
  * ts  - 上次状态更新的Unix时间戳（以毫秒为单位）
  * lc  - 最后一次值更改的Unix时间戳（以毫秒为单位）
- * q  -  [质量]（../ dev / objectsschema＃states）
+ * q  -  [质量]（../ dev / objectsschema.md＃states）
  * from  - （可选）上次更新的源（适配器实例）
  * user  - （可选）用户名，最后写入的值。
  * c  - （可选）评论

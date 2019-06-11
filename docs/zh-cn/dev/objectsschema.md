@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心概念
-hash: jha7YMVNEossd7+0ivGgBanPHzFZtsTb5bLProYjHXs=
+hash: /HOc3pEJtQcbZnuy2qQyMe+zzrik2dmUI4v4BcHU+F4=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的**状态**（`states`）和**对象**。
@@ -25,35 +25,35 @@ ID是一个字符串，最大长度为240字节，层次结构，级别由点分
 
 ID有不同的级别。每个级别由点确定。示例：`system.adapter.admin.0`
 
- - **system** - 是系统对象的命名空间
- - **adapter** - 适配器配置的命名空间
- - **admin** - 适配器名称
- - **0** - 适配器实例
+ - `system`  - 是系统对象的命名空间
+ - `adapter`  - 适配器配置的命名空间
+ - `admin`  - 适配器名称
+ - `0`  - 适配器实例
 
 或者其他示例`hm-rpc.1.ABC110022.2.VALUE`：
 
- - **hm-rpc** - 是适配器的名称
- - **1** - 适配器实例
- - **ABC110022** - 设备地址
- - **2** - 频道名称
- - **VALUE** - 州名
+ - `hm-rpc`  - 是适配器的名称
+ - `1`  - 适配器实例
+ - `ABC110022`  - 设备地址
+ - `2`  - 频道名称
+ - `VALUE`  - 州名
 
 ##命名空间
-*系统。 - 系统对象和状态
-* system.host。 - 控制器进程
-* system.config。 - 系统设置，如默认语言
-* system.meta。 - 系统元数据
-* system.user。 - 用户
-* system.group。 - 团体
-* system.adapter。＆lt; adapter-name＆gt; - 适配器的默认配置
-*＆lt; adapter-name＆gt; - 对象保存可通过http：//＆lt; couch＆gt;访问的附件：5984 / iobroker /＆lt; adapter-name＆gt; / path
-*＆lt; adapter-name＆gt; .meta。 - 此适配器的所有实例使用的常见元数据
-*＆lt; adapter-name＆gt;。＆lt; instance-number＆gt;。 - 适配器实例名称空间
-*枚举。 - 枚举
-*历史。 - 历史数据
-*脚本。 - 脚本引擎脚本
-* scripts.js。 -  javascript脚本引擎脚本
-* scripts.py。 -  python脚本引擎脚本（未来）
+*`system。 - 系统对象和状态
+*`system.host。 - 控制器进程
+*`system.config。 - 系统设置，如默认语言
+*`system.meta。 - 系统元数据
+*`system.user。 - 用户
+*`system.group。 - 组
+*`system.adapter。<adapter-name>` - 适配器的默认配置
+*`<adapter-name> .`  - 特定适配器的对象。
+*`<adapter-name> .meta。 - 此适配器的所有实例使用的公共元数据
+*`<adapter-name>。<instance-number> .`  - 适配器实例名称空间
+*`enum。 - 枚举
+*`历史。 - 历史数据
+*`scripts。 - 脚本引擎脚本
+*`scripts.js。 -  javascript脚本引擎脚本
+*`scripts.py。 -  python脚本引擎脚本（未来）
 
 ### Namespace system.config。
 ```
@@ -210,8 +210,8 @@ getState / stateChange / setState对象的属性：
 有关传输列表，请参阅历史记录适配器README
 
 *`common.history`（可选）
-*`common.history.HISTORY-INSTANCE.changesOnly`（可选，布尔值，如果只记录了真值，则记录）
-*`common.history.HISTORY-INSTANCE.enabled`（boolean）
+*`common.history。<HISTORY-INSTANCE> .changesOnly`（可选，布尔值，如果只记录了真值，则记录）
+*`common.history。<HISTORY-INSTANCE> .enabled`（boolean）
 
 #####State`common.role`
 *`common.role`（表示如何在用户界面中表示此状态）
@@ -477,7 +477,7 @@ ID
  *system。* meta。＆lt; meta-name＆gt;*
 
 ####适配器
-id *system.adapter。＆lt; adapter.name＆gt;*
+id`system.adapter.<adapter.name>`
 
 *注意：*所有标志都是可选的，除非特殊标记为**强制**。
 
@@ -546,37 +546,37 @@ id *system.adapter。＆lt; adapter.name＆gt;*
 #### Instance
 id *system.adapter。＆lt; adapter.name＆gt;。＆lt; instance-number＆gt;*
 
-* common.host - （必需）主机应在哪里启动适配器 - object *system.host。＆lt; host＆gt;* 须存在
-* common.enabled  - （强制性）
-* common.mode  - （强制）可能的值见下文
+*`common.host` - （必需）主机应在哪里启动适配器 - object *system.host。＆lt; host＆gt;* 须存在
+*`common.enabled`  - （必填）
+*`common.mode`  - （强制）可能的值见下文
 
 ##### Adapter / instance common.mode
-* **none** - 此适配器无法启动进程
-* **守护进程**  - 始终运行进程（如果进程退出，将重新启动）
-* **subscribe** - 在state * system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *更改为* true *时启动。当* .alive *更改为* false *时被杀死，并且如果进程退出则将* .alive *设置为* false *（当进程退出时**将不会重新启动）
-* **schedule** - 按* system.adapter中的时间表启动。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *- 通过重新安排新状态对* .schedule* 更改作出反应
-* **一次**  - 每次更改system.adapter.yyy.x对象时都会启动此适配器。终止后不会重新启动。
+*`none`  - 此适配器无法启动进程
+*`daemon`  - 始终运行进程（如果进程退出，将重新启动）
+*`subscribe`  - 在state * system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *时被杀死，并且如果进程退出则将* .alive *设置为* false *（当进程退出时**将不会重新启动）
+*`schedule` - 由* system.adapter中的时间表启动。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *- 通过重新安排新状态对* .schedule* 更改作出反应
+*`once`  - 每次更改system.adapter.yyy.x对象时都会启动此适配器。终止后不会重新启动。
 
 #### Host
-id *system.host。＆lt; host＆gt;*
+id`system.host.<host>`
 
-*`common.name`  -  f.e. “system.host.banana”
+*`common.name`  -  f.e. `system.host.banana`
 *`common.process`
 *`common.version`
 *`common.platform`
 *`common.cmd`
-*`common.hostname`  -  f.e. “香蕉”
+*`common.hostname`  -  f.e. `banana`
 *`common.address`  -  ip地址字符串数组
 
 #### Config
 ####脚本
-*`common.platform`  - （强制）可能的值'Javascript / Node.js'（更多内容）
+*`common.platform`  - （强制）可能的值`Javascript / Node.js`（更多内容）
 *`common.enabled`  - （强制）是脚本激活与否
 *`common.source`  - （必填）脚本源
-*`common.engine`  - （可选）* scriptengine *实例应运行此脚本（f.e.'javascript.0'） - 如果省略引擎则自动选中
+*`common.engine`  - （可选）*应该运行此脚本的脚本引擎*实例（f.e.'javascript.0'） - 如果省略引擎则自动选中
 
 #### User
-*`common.name`  - （强制）用户名（@HQ：不区分大小写？@Bluefox你的选择，我认为区分大小写也可以）
+*`common.name`  - （必填）用户名（区分大小写）
 *`common.password`  - （强制）MD5哈希密码
 
 #### Group
