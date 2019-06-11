@@ -20,8 +20,10 @@
 * (Moritz Heusinger) adding possibility to validate backup files
 * (bluefox) verify the version of node.js by start of the instance
 
-## 1.5.13 (2019-06-03) Evolution release (Ann)
-* (Apollon77) Make sure Info Adapter Tab is displayed automatically on install
+## 1.5.13 (2019-06-12) Evolution release (Ann)
+* (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install
+* (Stabilostick) Add CLI host commands to CLI usage help
+* (Stabilostick) Replace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker (not needed in 2.0.0)
 
 ## 1.5.12 (2019-06-01) Evolution release (Ann)
 * (Apollon77) Install instance of info adapter too on first setup of controller 
