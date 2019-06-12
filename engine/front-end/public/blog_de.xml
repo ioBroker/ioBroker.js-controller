@@ -3,12 +3,22 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Neuigkeiten, Ankündigungen und Ideen zu ioBroker]]></description>
         <link>https://www.iobroker.net/#de/blog</link>
-        <lastBuildDate>Wed, 12 Jun 2019 14:35:09 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 12 Jun 2019 19:11:50 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[Windows-Installer]]></title>
+            <description><![CDATA[
+                <p>Heute haben wir Informationen zu ioBroker auf Windows-Rechnern und ein Update zur TeamSpeak-Community. \nWeiterhin geben wir Euch einen Überblick über neue Visualisierungs-Adapter. Seid gespannt.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2019_06_12</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_06_12</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 12 Jun 2019 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Neue ioBroker-Webseite]]></title>
             <description><![CDATA[
-                <p>Liebe ioBroker-Nutzer,</p>
+                <p>Heute haben wir Neuigkeiten zur ioBroker-Webseite, dem neuen **js-controller** 1.5.12 und zu Verbesserungen im Admin- und Info-Adapter.\nAuch ein paar neue Adapter dürfen natürlich nicht fehlen.</p>
             ]]></description>
             <link>https://www.iobroker.net/#de/blog/2019_06_11</link>
             <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_06_11</guid>

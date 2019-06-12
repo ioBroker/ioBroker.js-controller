@@ -3,12 +3,22 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Новости, объявления и идеи о ioBroker]]></description>
         <link>https://www.iobroker.net/#ru/blog</link>
-        <lastBuildDate>Wed, 12 Jun 2019 14:35:09 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 12 Jun 2019 19:11:50 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[Установщик Windows]]></title>
+            <description><![CDATA[
+                <p>Сегодня у нас есть информация о ioBroker на машинах Windows и обновленная информация о сообществе TeamSpeak.\nКроме того, мы даем вам обзор новых адаптеров визуализации. Будь любопытным.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2019_06_12</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_06_12</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 12 Jun 2019 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Новый сайт ioBroker]]></title>
             <description><![CDATA[
-                <p>Уважаемые пользователи ioBroker!</p>
+                <p>Сегодня у нас есть новости о сайте ioBroker, новом **js-controller** 1.5.12 и улучшениях в админке и информационном адаптере.\nТакже не должно быть несколько новых адаптеров.</p>
             ]]></description>
             <link>https://www.iobroker.net/#ru/blog/2019_06_11</link>
             <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_06_11</guid>

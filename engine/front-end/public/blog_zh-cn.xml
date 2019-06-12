@@ -3,12 +3,22 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[有关ioBroker的新闻，公告和想法]]></description>
         <link>https://www.iobroker.net/#zh-cn/blog</link>
-        <lastBuildDate>Wed, 12 Jun 2019 14:35:09 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 12 Jun 2019 19:11:50 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[Windows安装程序]]></title>
+            <description><![CDATA[
+                <p>今天我们在Windows机器上有关于ioBroker的信息，以及TeamSpeak社区的更新。\n此外，我们还概述了新的可视化适配器。好奇。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2019_06_12</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2019_06_12</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Wed, 12 Jun 2019 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[新的ioBroker网站]]></title>
             <description><![CDATA[
-                <p>亲爱的ioBroker用户，</p>
+                <p>今天我们有关于ioBroker网站的新闻，新的** js-controller ** 1.5.12以及管理和信息适配器的改进。\n也不应该缺少一些新的适配器。</p>
             ]]></description>
             <link>https://www.iobroker.net/#zh-cn/blog/2019_06_11</link>
             <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2019_06_11</guid>
