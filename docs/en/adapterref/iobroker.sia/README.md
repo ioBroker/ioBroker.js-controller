@@ -58,6 +58,7 @@ If you receive SIA messages you see them in the states tree
 
 ### 1.0.3 (07.06.2019)
 * (Stübi) Small improvements to the SIA protocol
+* (Stübi) Changed bug in encrypting. Delete appending 8 * 0x10 
 
 ### 1.0.2 (16.05.2019)
 * (Stübi) Support of UDP. Same port listening as TCP 
