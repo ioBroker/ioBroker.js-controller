@@ -14,7 +14,7 @@ Was ist aber wenn jemand ioBroker früher installiert hat? Er noch als root läu
 
 Mittels einem Kommando wird eine bestehende Installation in /opt/iobroker auf den gleichen Stand gebracht wie eine aktuelle neue Installation. Das Skript kann auch in Zukunft immer wieder genutzt werden um die Installation diesbezüglich zu Aktualisieren. 
 Wichtig: Diese Skript aktualisiert weder nodejs, npm noch js-controller oder irgend einen Adapter. Nur die Systemrechte u.a. werden bearbeitet.
-Versucht es und gebt Feedback im Diskussionsthread unter https://forum.iobroker.net/topic/20212/diskussion-zum-neuen-installation-fixer
+Versucht es und gebt Feedback im [Diskussionsthread](https://forum.iobroker.net/topic/20212/diskussion-zum-neuen-installation-fixer)
 
 !> [Bitte beachten]**:  Anwendung unter Docker sollte, weil eh alles als root läuft, nicht nötig sein und wir raten aktuell mangels klarer Erfahrungen und Feedback von einer Anwendung ab. Falls es doch jemand versuchen will und Feedback geben will: Anwendung komplett auf eigene Gefahr. Unbedingt vorher ein Backup machen und wissen was man tut!
 
@@ -35,8 +35,8 @@ Wir empfehlen die Installation zu aktualisieren und daher den Fixer zu nutzen. D
 **Wo kann ich sehen was der Fixer alles macht?**
 Wir versuchen den Installer und Fixer immer aktuell zu halten.
 Beide haben auch ein Changelog.
-Installer: https://github.com/ioBroker/ioBroker/blob/master/CHANGELOG_INSTALLER_LINUX.md
-Fixer: https://github.com/ioBroker/ioBroker/blob/master/CHANGELOG_FIXER_LINUX.md
+[Installer](https://github.com/ioBroker/ioBroker/blob/master/CHANGELOG_INSTALLER_LINUX.md)
+[Fixer](https://github.com/ioBroker/ioBroker/blob/master/CHANGELOG_FIXER_LINUX.md)
 Ansonsten das Skript direkt ansehen wenn Ihr etwas von Shell-Programmierung versteht :-)
 
 
