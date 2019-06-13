@@ -4,17 +4,24 @@
 
 ![Number of Installations](http://iobroker.live/badges/viessmann-installed.svg) ![Number of Installations](http://iobroker.live/badges/viessmann-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.viessmann.svg)](https://www.npmjs.com/package/iobroker.viessmann)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.viessmann.svg)](https://www.npmjs.com/package/iobroker.viessmann)
-[![Tests](https://travis-ci.org/misanorot/ioBroker.viessmann.svg?branch=master)](https://travis-ci.org/misanorot/ioBroker.viessmann)
+
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)](https://travis-ci.org/misanorot/ioBroker.viessmann)
+<!-- Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)](https://ci.appveyor.com/project/misanorot/ioBroker-viessmann/) -->
+
 
 [![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)](https://nodei.co/npm/iobroker.viessmann/)
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+
+**[English description](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
+
 Mit diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung
 die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert,
-in Objekten zu speichern. 
+in Objekten zu speichern.
 Ebenso ist das Setzen von Werten, die man in seiner Vito.xml konfiguriert hat möglich.
 
-#### (selber Host) 
-Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen, 
+#### (selber Host)
+Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen,
 so ist unter Linux eigentlich keine weitere Veränderung in der Adminkonfiguration nötig um die .xml Dateien einzulesen.
 *(Vorausgesetzt, sie liegt in dem Standard Pfad: /etc/vcontrold/vito.xml)*
 
@@ -23,8 +30,8 @@ Ist Vcontrold auf einem anderen Host installiert, kann man per SSH Zugang die .x
 Hierfür die nötigen Informationen in dem SSH Tab eingeben.
 *(Eine funktionierende SSH Verbindung wird vorausgesetzt.)*
 
-Nach dem Neustart der Instanz, wird diese dann automatisch eingelesen, 
-man kann nun in der Konfiguration der Instanz die Werte einstellen. 
+Nach dem Neustart der Instanz, wird diese dann automatisch eingelesen,
+man kann nun in der Konfiguration der Instanz die Werte einstellen.
 
 
 
@@ -49,7 +56,7 @@ man kann nun in der Konfiguration der Instanz die Werte einstellen.
 				</command>
 			</commands>
 		</vito>```
-		
+
 Eine Sortierung der Befehle, ist durch klicken auf den Tabellenkopf möglich.
 
 
@@ -58,13 +65,13 @@ Eine Sortierung der Befehle, ist durch klicken auf den Tabellenkopf möglich.
 
 
 Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
- 
+
 
 *die benutzten Bilder stammen von www.viessmann.com.*
 
 ## ToDo
 	- Anderung der Vito.xml ohne Verlust der Einstellungen
-	- Implementierung Unit on/off 
+	- Implementierung Unit on/off
 
 
 ### Changelog
@@ -78,10 +85,10 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 
 #### 0.9.0 (11.12.2018)
 * (misanorot) create types from vcontrold.xml to states (require a new config)
-* (misanorot) add sort tables	
+* (misanorot) add sort tables
 
 #### 0.8.0 (11.11.2018)
-* (misanorot) create units from vcontrold.xml (require a new config)	
+* (misanorot) create units from vcontrold.xml (require a new config)
 
 #### 0.7.0 (01.11.2018)
 * (Bjoern3003) added lastPoll state

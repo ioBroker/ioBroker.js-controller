@@ -260,8 +260,11 @@ Following custom cards could be tested successfully:
 - simple-thermostat: https://github.com/nervetattoo/simple-thermostat/releases (take the latest release)
 - thermostat: https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card (both files .js and .lib.js are required)
 
-
 I found this link https://github.com/jimz011/homeassistant as an interesting resource for custom cards.
+
+Often the custom cards are stored on github as sources and must be compiled before use.
+You should check the `Releases` menu on github and try to find compiled files there.
+Like this one: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Look for the file `mini-graph-card-bundle.js`)
 
 ## Own images
 The custom images (e.g. for background) could be loaded via the same configuration dialog like the custom cards. And use it like this:

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.landroid-s/README.md
 title: ioBroker.landroid-s
-hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
+hash: 4DPXnZi5+sR3C6qyTG5aYoIobZAssW3VkOOR8TTPsIs=
 ---
 ![Logo](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -14,17 +14,19 @@ hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
 # IoBroker.landroid-s
+# DIESER ADAPTER IST ABGESCHLOSSEN, BITTE BENUTZEN SIE DEN NEUEN
+## [iobroker.worx](https://github.com/MeisterTR/ioBroker.worx)
 [Deutsche Beschreibung hier](README_de.md)
 
-Dieser Adapter verbindet ioBroker mit Ihrem Landroid S-Modell oder Landroid M mit Firmware größer als 5.0.0 und Mqtt-Unterstützung. Temperaturen, Mähzeiten, Akkuladestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und die Konfiguration ändern Params wie Mähzeiten.
+Dieser Adapter verbindet ioBroker mit Ihrem Landroid S-Modell oder Landroid M mit Firmware größer als 5.0.0 und Mqtt-Unterstützung. Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und Sie können die Konfiguration ändern params wie mowtimes.
 
-<h4> Version unter 2.5.5 wird nicht mehr unterstützt !!! </h4>
+<h4> Versionen unter 2.5.5 werden nicht mehr unterstützt !!! </h4>
 
 ## Die Einstellungen
-- Um eine Verbindung zum Mäher herzustellen, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
+- Um sich mit dem Mäher zu verbinden, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
 
 ## Zweiter Mäher
-- Wenn zwei Mäher integriert werden sollen, muss eine zweite Instanz installiert werden, einer wird im Config-Mäher 0 und im zweiten Mäher 1 usw. ausgewählt.
+- Wenn zwei Mäher integriert werden sollen, muss eine zweite Instanz installiert werden, eine wird in der Konfiguration Mäher 0 und im zweiten Mäher 1 ausgewählt und so weiter.
 
 ## Changelog
 ### 2.5.5(08.04.2019)

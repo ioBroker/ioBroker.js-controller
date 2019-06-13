@@ -10,6 +10,9 @@
 Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)](https://ci.appveyor.com/project/MeisterTR/ioBroker-landroid-s/)
 
 
+# THIS ADAPTER IS CLOSED DOWN PLEASE USE THE NEW ONE
+## [iobroker.worx](https://github.com/MeisterTR/ioBroker.worx)
+
 [Deutsche Beschreibung hier](README_de.md)
 
 This adapter connects IoBroker with your Landroid S Model or Landroid M with firmware bigger than 5.0.0 and Mqtt support

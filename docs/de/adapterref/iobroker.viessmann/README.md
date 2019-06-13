@@ -3,32 +3,39 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: O1sazlL8W2C/vnr4VUGlE+5CarHjYEqJPn9Aue3S36w=
+hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/viessmann-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.viessmann.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.viessmann.svg)
-![Tests](https://travis-ci.org/misanorot/ioBroker.viessmann.svg?branch=master)
+![Travis-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
+![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
 
-# IoBroker.viessmann ===================
-Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung zu erreichen.
-Außerdem ist das Setzen von Werten möglich.
+# IoBroker.viessmann
+=================
+
+[![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+
+**[Englische Beschreibung](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
+
+Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, in Objekten zu speichern.
+Ebenso ist das Setzen von Werten, das man in seiner Vito.xml konfiguriert hat möglich.
 
 #### (selber Host)
-Sollte es auch zu den gleichen Hosts wie IOBroker gehen, ist dies unter Linux eigentlich eine weitere Veränderung in der Adminkonfiguration nötig, um die .xml-Dateien einzulesen.
-* (Vorausgesetzt, sie liegt im Standard Pfad: /etc/vcontrold/vito.xml)*
+Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen, so ist unter Linux eigentlich keine weitere Veränderung in der Adminkonfiguration nötig um die .xml Dateien einzulesen.
+* (Vorausgesetzt, sie liegt in dem Standardpfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
 Ist Vcontrold auf einem anderen Host installiert, kann man per SSH Zugang die .xml Dateien einlesen.
-Hierfür die nötigen Informationen in der SSH Tab.
+Hierfür die notwendigen Informationen in das SSH Tab eingeben.
 * (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
 
-Nach dem Neustart der Instanz, wird diese automatisch eingelesen werden.
+Nach dem Neustart der Instanz, wird dieser Vorgang automatisch gestartet, man kann nun in der Konfiguration der Instanz die Werte einstellen.
 
-#### Die Struktur der vito.xml muss in der folgenden Form aufgebaugt sein:
+#### Die Struktur der vito.xml muss in der folgenden Form aufgebaugt werden:
 		```<vito>
 			<devices>
 				<device ID="2094" name="V200KW1" protocol="KW2"/>
@@ -49,14 +56,14 @@ Nach dem Neustart der Instanz, wird diese automatisch eingelesen werden.
 			</commands>
 		</vito>```
 
-Eine Sortierung der Befehle ist möglich.
+A sortierung der befehle, is through click on the tables head possible.
 
 ## Wichtig !:
-- Bei jedem neuen der Vito Daten, werden ggf. die "alten" Einstellungen gelöscht.
+- Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen gelöscht.
 
 Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
 
-* die benutzten Bilder stammen von www.viessmann.com. *
+*die benutzten Bilder stammen von www.viessmann.com.*
 
 ## Machen
 - Anderung der Vito.xml ohne Verlust der Einstellungen
@@ -73,10 +80,10 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 
 #### 0.9.0 (11.12.2018)
 * (misanorot) create types from vcontrold.xml to states (require a new config)
-* (misanorot) add sort tables	
+* (misanorot) add sort tables
 
 #### 0.8.0 (11.11.2018)
-* (misanorot) create units from vcontrold.xml (require a new config)	
+* (misanorot) create units from vcontrold.xml (require a new config)
 
 #### 0.7.0 (01.11.2018)
 * (Bjoern3003) added lastPoll state

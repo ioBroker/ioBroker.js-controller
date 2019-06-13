@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: FER/KJSWNYCJLI1arFxrmi4FpapCnNssjQL6ACu7bio=
+hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -77,7 +77,7 @@ oder du benutzt einfach `lovelace.X.control.alarm (entity_id = alarm_control_pan
 
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
-Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` und optional `step` hinzugefügt.
+Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` sowie die optionalen Werte für `step` hinzugefügt.
 Wenn Sie die Auf- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
 
 ```
@@ -271,6 +271,10 @@ Folgende benutzerdefinierte Karten konnten erfolgreich getestet werden:
 
 Ich fand diesen Link https://github.com/jimz011/homeassistant als interessante Ressource für benutzerdefinierte Karten.
 
+Häufig werden die benutzerdefinierten Karten als Quellen auf github gespeichert und müssen vor der Verwendung kompiliert werden.
+Sie sollten das Menü `Releases` auf github überprüfen und versuchen, dort kompilierte Dateien zu finden.
+So wie dieser: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Suchen Sie nach der Datei `mini-graph-card-bundle.js`)
+
 ## Eigene Bilder
 Die benutzerdefinierten Bilder (z. B. für den Hintergrund) können über denselben Konfigurationsdialog wie die benutzerdefinierten Karten geladen werden. Und benutze es so:
 
@@ -390,6 +394,13 @@ Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übern
 6. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
+
+### 0.1.1 (2019-06-10)
+* (bluefox) Fixed control of states
+
+### 0.1.0 (2019-06-06)
+* (bluefox) Authentication could be disabled
+* (bluefox) Lovelace compiled extra for ioBroker 
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release

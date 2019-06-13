@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sia/README.md
 title: ioBroker.sia
-hash: il7/UPEyrU92BmFdqvOBWwW0PIp9WsgXNkxmwPVIO84=
+hash: y50JxbFsgGv1AxFIuIST3nlf5Dy5ocKQXVxRIuqU8ME=
 ---
 ![商标](../../../en/adapterref/iobroker.sia/admin/sia.png)
 
@@ -48,15 +48,23 @@ Einstellungen  - >联系人ID：ip：// subcriber @ ip-address-iobroker：port /
 
     *其他报警系统：
 
-适配器适用于所有报警系统，支持SIA DC-09协议
+适配器适用于所有支持SIA DC-09协议的报警系统
 
 4.新航对象/国家
 
-如果您收到SIA消息，您会在状态树中看到它们
+如果您收到SIA消息，则会在状态树中看到它们
 
 ![sia_adapter3](../../../en/adapterref/iobroker.sia/admin/sia_adapter3.png)
 
 ## Changelog
+
+
+### 1.0.3 (07.06.2019)
+* (Stübi) Small improvements to the SIA protocol
+* (Stübi) Changed bug in encrypting. Delete appending 8 * 0x10 
+
+### 1.0.2 (16.05.2019)
+* (Stübi) Support of UDP. Same port listening as TCP 
 
 ### 1.0.1 (05.03.2019)
 * (Stübi) Saving password encrypted. 
@@ -97,7 +105,7 @@ Einstellungen  - >联系人ID：ip：// subcriber @ ip-address-iobroker：port /
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten <thorsten@stueben.de>
+Copyright (c) 2018-2019 Thorsten <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

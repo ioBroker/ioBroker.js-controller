@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sia/README.md
 title: ioBroker.sia
-hash: il7/UPEyrU92BmFdqvOBWwW0PIp9WsgXNkxmwPVIO84=
+hash: y50JxbFsgGv1AxFIuIST3nlf5Dy5ocKQXVxRIuqU8ME=
 ---
 ![логотип](../../../en/adapterref/iobroker.sia/admin/sia.png)
 
@@ -21,7 +21,7 @@ hash: il7/UPEyrU92BmFdqvOBWwW0PIp9WsgXNkxmwPVIO84=
 
 Протокол SIA DC-09 используется системами сигнализации для связи с центральными станциями.
 
-Этот адаптер является сервером SIA. Когда срабатывает аварийное событие, система сигнализации отправляет по IP-адресу сообщение на центральную станцию.
+Этот адаптер является сервером SIA. Когда срабатывает тревожное событие, система сигнализации отправляет через IP сообщение на центральную станцию.
 Вы можете использовать ioBroker с этим адаптером в качестве центральной станции. Например. Вы можете послать для тревоги по телеграмме SIA.
 
 [Протокол SIA DC-09](https://www.yumpu.com/en/document/view/47594214/dc-09-preparing-for-ansi-public-review-security-industry-)
@@ -42,13 +42,13 @@ hash: il7/UPEyrU92BmFdqvOBWwW0PIp9WsgXNkxmwPVIO84=
 
     * Lupusec XT1 + / XT2 / XT2 + / XT3:
 
-Einstellungen -> ID контакта: ip: // подписчик @ ip-адрес-iobroker: порт / SIA Пример: ip: //test@192.168.20.1: 50001 / SIA
+Einstellungen -> ID контакта: ip: // subcriber @ ip-address-iobroker: порт / SIA Пример: ip: //test@192.168.20.1: 50001 / SIA
 
       ![sia_lupusec1](../../../en/adapterref/iobroker.sia/admin/sia_lupusec1.png)
 
     * Другие системы сигнализации:
 
-Адаптер будет работать со всеми системами сигнализации, которые поддерживает SIA DC-09 proctocol
+Адаптер будет работать со всеми системами сигнализации, поддерживающими протокол SIA DC-09.
 
 4. Объекты SIA / Государства
 
@@ -57,6 +57,14 @@ Einstellungen -> ID контакта: ip: // подписчик @ ip-адрес-
 ![sia_adapter3](../../../en/adapterref/iobroker.sia/admin/sia_adapter3.png)
 
 ## Changelog
+
+
+### 1.0.3 (07.06.2019)
+* (Stübi) Small improvements to the SIA protocol
+* (Stübi) Changed bug in encrypting. Delete appending 8 * 0x10 
+
+### 1.0.2 (16.05.2019)
+* (Stübi) Support of UDP. Same port listening as TCP 
 
 ### 1.0.1 (05.03.2019)
 * (Stübi) Saving password encrypted. 
@@ -97,7 +105,7 @@ Einstellungen -> ID контакта: ip: // подписчик @ ip-адрес-
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten <thorsten@stueben.de>
+Copyright (c) 2018-2019 Thorsten <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

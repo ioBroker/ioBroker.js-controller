@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: FER/KJSWNYCJLI1arFxrmi4FpapCnNssjQL6ACu7bio=
+hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -271,6 +271,10 @@ createState('location.latitude', 39.5681295, false, {
 
 我发现这个链接https://github.com/jimz011/homeassistant是一个有趣的自定义卡资源。
 
+通常，自定义卡作为源存储在github上，必须在使用前进行编译。
+您应该检查github上的`Releases`菜单并尝试在那里查找编译文件。
+像这样：[https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases)（寻找文件`mini-graph-card-bundle.js`）
+
 ##自己的图像
 可以通过与定制卡相同的配置对话框加载自定义图像（例如，用于背景）。并像这样使用它：
 
@@ -390,6 +394,13 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 6.启动`gulp rename`任务。
 
 ## Changelog
+
+### 0.1.1 (2019-06-10)
+* (bluefox) Fixed control of states
+
+### 0.1.0 (2019-06-06)
+* (bluefox) Authentication could be disabled
+* (bluefox) Lovelace compiled extra for ioBroker 
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release

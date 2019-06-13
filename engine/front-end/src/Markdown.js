@@ -301,7 +301,14 @@ const styles = theme => ({
     }
 });
 
-const converter = new Converter();
+const converter = new Converter({
+    emoji: true,
+    underline: true,
+    strikethrough: true,
+    simplifiedAutoLink: true,
+    parseImgDimensions: true,
+    splitAdjacentBlockquotes: true
+});
 let title;
 
 const ADAPTER_CARD = ['version', 'authors', 'keywords', 'mode', 'materialize', 'compact'];
@@ -741,6 +748,13 @@ class Markdown extends Router {
         }
     }
 
+    makeHeadersAsLink(reactObj) {
+        if (reactObj && reactObj.props && reactObj.props.children) {
+            reactObj.props.children.forEach((item, i) => {
+            });
+        }
+    }
+
     renderTable(lines) {
         const header = lines[0].replace(/^\||\|$/g, '').split('|').map(h => h.trim());
 
@@ -828,6 +842,7 @@ class Markdown extends Router {
                 const rct = converter.convert(line);
 
                 this.replaceHref(rct);
+                this.makeHeadersAsLink(rct);
 
                 if (part.type === 'warn') {
                     return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: FER/KJSWNYCJLI1arFxrmi4FpapCnNssjQL6ACu7bio=
+hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -26,7 +26,7 @@ hash: FER/KJSWNYCJLI1arFxrmi4FpapCnNssjQL6ACu7bio=
 - руководство
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
@@ -271,6 +271,10 @@ createState('location.latitude', 39.5681295, false, {
 
 Я нашел эту ссылку https://github.com/jimz011/homeassistant как интересный ресурс для пользовательских карт.
 
+Часто пользовательские карты хранятся на github как источники и должны быть скомпилированы перед использованием.
+Вы должны проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
+Как этот: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Найдите файл `mini-graph-card-bundle.js`)
+
 ## Собственные изображения
 Пользовательские изображения (например, для фона) могут быть загружены через тот же диалог конфигурации, что и пользовательские карты. И используйте это так:
 
@@ -390,6 +394,13 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 6. Запустите задачу `gulp rename`.
 
 ## Changelog
+
+### 0.1.1 (2019-06-10)
+* (bluefox) Fixed control of states
+
+### 0.1.0 (2019-06-06)
+* (bluefox) Authentication could be disabled
+* (bluefox) Lovelace compiled extra for ioBroker 
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release

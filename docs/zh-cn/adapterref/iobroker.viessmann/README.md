@@ -3,17 +3,24 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: O1sazlL8W2C/vnr4VUGlE+5CarHjYEqJPn9Aue3S36w=
+hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
 ![安装数量](http://iobroker.live/badges/viessmann-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.viessmann.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.viessmann.svg)
-![测试](https://travis-ci.org/misanorot/ioBroker.viessmann.svg?branch=master)
+![特拉维斯-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
+![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
 
-＃ioBroker.viessmann =================
+＃ioBroker.viessmann
+=================
+
+[![贝宝（https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+
+**[英文说明](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
+
 Mit diesem Adapter istesmöglich，Werte aus einer Viessmann Steuerung die mit demProgramm[Vcontrold](https://github.com/openv/vcontrold)kommuniziert，in Objekten zu speichern。
 Ebenso ist das Setzen von Werten，死于围网的人Vito.xml konfigurierthatmöglich。
 
@@ -73,10 +80,10 @@ Es ist empfehlenswert，bei relativ unwichtigen Abfragewerten，einmöglichstgro
 
 #### 0.9.0 (11.12.2018)
 * (misanorot) create types from vcontrold.xml to states (require a new config)
-* (misanorot) add sort tables	
+* (misanorot) add sort tables
 
 #### 0.8.0 (11.11.2018)
-* (misanorot) create units from vcontrold.xml (require a new config)	
+* (misanorot) create units from vcontrold.xml (require a new config)
 
 #### 0.7.0 (01.11.2018)
 * (Bjoern3003) added lastPoll state

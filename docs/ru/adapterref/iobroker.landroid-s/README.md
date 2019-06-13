@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.landroid-s/README.md
 title: ioBroker.landroid-ы
-hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
+hash: 4DPXnZi5+sR3C6qyTG5aYoIobZAssW3VkOOR8TTPsIs=
 ---
 ![логотип](../../../en/adapterref/iobroker.landroid-s/admin/landroid-s2.png)
 
@@ -14,6 +14,8 @@ hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.landroid-s?branch=master&svg=true)
 
 # IoBroker.landroid-s
+# Этот адаптер закрыт, пожалуйста, используйте новый
+## [iobroker.worx](https://github.com/MeisterTR/ioBroker.worx)
 [Deutsche Beschreibung hier](README_de.md)
 
 Этот адаптер соединяет ioBroker с вашей моделью Landroid S или Landroid M с прошивкой более 5.0.0 и поддержкой Mqtt. Температуры, время кошения, уровень заряда батареи и другие данные считываются с косилки. Адаптер может управлять косилкой, и вы можете изменить конфигурацию параметры как mowtimes.
@@ -24,7 +26,7 @@ hash: Y4UhyWAqdg68nJeG69xh7ZhW87+LyvffoUQfYv6y2w4=
 - для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи WORX в конфигурации.
 
 ## Вторая косилка
-- Если необходимо объединить две косилки, необходимо установить второй экземпляр, один из которых выбран в косилке Config 0 и во второй косилке 1 и т.
+- Если необходимо объединить две газонокосилки, необходимо установить второй экземпляр, один из которых выбран в косилке Config 0, а во второй косилке 1 и т. Д.
 
 ## Changelog
 ### 2.5.5(08.04.2019)

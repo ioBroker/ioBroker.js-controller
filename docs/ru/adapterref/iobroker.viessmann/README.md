@@ -3,30 +3,37 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: O1sazlL8W2C/vnr4VUGlE+5CarHjYEqJPn9Aue3S36w=
+hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
 ---
 ![логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
 ![Количество установок](http://iobroker.live/badges/viessmann-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.viessmann.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.viessmann.svg)
-![тесты](https://travis-ci.org/misanorot/ioBroker.viessmann.svg?branch=master)
+![Трэвис-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
+![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
 
-# IoBroker.viessmann =================
-Mit Diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
-Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу меглиха.
+# IoBroker.viessmann
+=================
 
-#### (хост Host)
-Sollte Vcontrold auf dem gleichen Принимающая сторона с IOBroker laufen, так и под Linux.
+[![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+
+**[Английское описание](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
+
+Mit Diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
+Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу мёглиха.
+
+#### (продавец Host)
+Sollte Vcontrold auf dem gleichen Хост с IOBroker laufen, а также под Linux eigentlich keine weitere Veränderung в расширенной конфигурации.
 * (Vorausgesetzt, sie liegt in dem Standard Pfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
-Ist Vcontrold auf einem andderen Принимающая компания, работающая в SSH Zugang die .xml Dateien einlesen.
-Hierfür die nötigen Informationen в демо SSH Tab eingeben.
+Ist Vcontrold auf einem andderen Принимающая компания, работающая по SSH Zugang die .xml Dateien einlesen.
+Hierfür die nötigen Informationen in dem SSH Tab eingeben.
 * (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
 
-Nach dem Neustart der Instanz, странный человек и человек, мужчина и женщина в мире искусств.
+Nach dem Neustart der Instanz, странный человек, известный как человек, любящий человека в мире, или его мир.
 
 #### Die Struktur der vito.xml muss in der folgenden Форма aufgebaugt sein:
 		```<vito>
@@ -49,14 +56,14 @@ Nach dem Neustart der Instanz, странный человек и человек
 			</commands>
 		</vito>```
 
-Eine Sortierung der Befehle, в котором можно поужинать в отеле Tabellenkopf Möglich.
+Eine Sortierung der Befehle, является самым популярным отелем.
 
 ## Wichtig !:
 - Бей Джедем Нойен Эйнлезен дер Вито Датен, Верден Г.Г.Ф. умереть "alten" Einstellungen gelöscht.
 
-Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
+Es ist empfehlenswert, bei reltiv unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen
 
-* die benutzten Bilder Stammen von www.viessmann.com. *
+*die benutzten Bilder Stammen von www.viessmann.com.*
 
 ## Сделать
 - Anderung der Vito.xml ohne Verlust der Einstellungen
@@ -73,10 +80,10 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 
 #### 0.9.0 (11.12.2018)
 * (misanorot) create types from vcontrold.xml to states (require a new config)
-* (misanorot) add sort tables	
+* (misanorot) add sort tables
 
 #### 0.8.0 (11.11.2018)
-* (misanorot) create units from vcontrold.xml (require a new config)	
+* (misanorot) create units from vcontrold.xml (require a new config)
 
 #### 0.7.0 (01.11.2018)
 * (Bjoern3003) added lastPoll state
