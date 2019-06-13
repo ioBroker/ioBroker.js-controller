@@ -16,7 +16,7 @@ Mittels einem Kommando wird eine bestehende Installation in /opt/iobroker auf de
 Wichtig: Diese Skript aktualisiert weder nodejs, npm noch js-controller oder irgend einen Adapter. Nur die Systemrechte u.a. werden bearbeitet.
 Versucht es und gebt Feedback im Diskussionsthread unter https://forum.iobroker.net/topic/20212/diskussion-zum-neuen-installation-fixer
 
-**%(#ff0000)[Bitte beachten]**:  Anwendung unter Docker sollte, weil eh alles als root läuft, nicht nötig sein und wir raten aktuell mangels klarer Erfahrungen und Feedback von einer Anwendung ab. Falls es doch jemand versuchen will und Feedback geben will: Anwendung komplett auf eigene Gefahr. Unbedingt vorher ein Backup machen und wissen was man tut!
+!> [Bitte beachten]**:  Anwendung unter Docker sollte, weil eh alles als root läuft, nicht nötig sein und wir raten aktuell mangels klarer Erfahrungen und Feedback von einer Anwendung ab. Falls es doch jemand versuchen will und Feedback geben will: Anwendung komplett auf eigene Gefahr. Unbedingt vorher ein Backup machen und wissen was man tut!
 
 Bitte beachtet den FAQ Post in diesem Thread!
 
