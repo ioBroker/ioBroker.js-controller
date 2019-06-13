@@ -181,6 +181,20 @@ const styles = theme => ({
             //marginLeft: 5
         }
     },
+    mdHeaderLink: {
+        textDecoration: 'none',
+        '&:after': {
+            content: '"🔗"',
+            width: 16,
+            height: 16,
+            opacity: 0,
+            fontSize: 14,
+            //marginLeft: 5
+        },
+        '&:hover:after': {
+            opacity: 0.7,
+        }
+    },
     info: {
         paddingTop: 10,
         paddingBottom: 10,
@@ -748,10 +762,12 @@ class Markdown extends Router {
         }
     }
 
-    makeHeadersAsLink(reactObj) {
-        if (reactObj && reactObj.props && reactObj.props.children) {
-            reactObj.props.children.forEach((item, i) => {
-            });
+    makeHeadersAsLink(reactObj, prefix) {
+        if (reactObj && (reactObj.type === 'h1' || reactObj.type === 'h2' || reactObj.type === 'h3' || reactObj.type === 'h3')) {
+            reactObj.props.children[0] = (<span>{reactObj.props.children[0]}<a
+                href={prefix + '?' + reactObj.props.id}
+                className={this.props.classes.mdHeaderLink + ' md-h-link'}>
+            </a></span>);
         }
     }
 
@@ -824,6 +840,8 @@ class Markdown extends Router {
             return (<Loader theme={this.props.theme}/>);
         }
 
+        const prefix = window.location.hash.split('?')[0];
+
         const reactElements = this.state.parts.map((part, i) => {
             if (part.type === 'table') {
                 return this.renderTable(part.lines);
@@ -842,7 +860,7 @@ class Markdown extends Router {
                 const rct = converter.convert(line);
 
                 this.replaceHref(rct);
-                this.makeHeadersAsLink(rct);
+                this.makeHeadersAsLink(rct, prefix);
 
                 if (part.type === 'warn') {
                     return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);

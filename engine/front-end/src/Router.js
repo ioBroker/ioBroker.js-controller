@@ -71,6 +71,13 @@ class Router extends Component {
                     result.chapter = result.page.substring(pos + 1);
                     result.page = result.page.substring(0, pos);
                 }
+            } else {
+                pos = result.tab.indexOf('?');
+
+                if (pos !== -1) {
+                    result.chapter = result.tab.substring(pos + 1);
+                    result.tab = result.tab.substring(0, pos);
+                }
             }
         } else {
             pos = hash.indexOf('?');
