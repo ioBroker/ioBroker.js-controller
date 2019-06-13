@@ -206,15 +206,13 @@ function addChangelogAndLicense(body, changelog, license) {
 
 function getAllFiles(root, onlyMd, _result) {
     _result = _result || [];
-    fs.readdirSync(root).filter(name => !name.startsWith('_')).forEach(name => {
+    fs.readdirSync(root).forEach(name => {
         const fileName = path.join(root, name).replace(/\\/g, '/');
         const stat = fs.statSync(fileName);
         if (stat.isDirectory()) {
             getAllFiles(fileName, onlyMd, _result);
-        } else {
-            if (!onlyMd || name.match(/\.md$/i)) {
-                _result.push(fileName);
-            }
+        } else if (!name.startsWith('_') && (!onlyMd || name.match(/\.md$/i))) {
+            _result.push(fileName);
         }
     });
     return _result;

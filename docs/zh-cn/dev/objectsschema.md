@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心概念
-hash: /HOc3pEJtQcbZnuy2qQyMe+zzrik2dmUI4v4BcHU+F4=
+hash: /+zjF1sxTW9nTd9/4ssdJVC89TA4xSYZjT8bNVA6QHo=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的**状态**（`states`）和**对象**。
@@ -116,7 +116,9 @@ ID有不同的级别。每个级别由点确定。示例：`system.adapter.admin
 };
 ```
 
-## <a href="#states">国家</a>
+<a id="states"></a>
+
+＃＃ 状态
 getState方法和stateChange事件传递一个除了expire之外的所有属性的对象
 
 对于`setState`方法，除了`val`之外的所有内容都是可选的，`from`由`setState`方法自动设置。 `ack`默认为false，`ts`和`lc`按预期设置

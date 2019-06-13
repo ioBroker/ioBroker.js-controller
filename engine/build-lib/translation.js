@@ -638,9 +638,13 @@ function translateText(fromLang, text, toLang) {
             text = text.replace('° C', '°C');
             text = text.replace('° F', '°F');
             text = text.replace('& lt;', '&lt;');
+            text = text.replace('& Lt;', '&lt;');
             text = text.replace('& lt ;', '&lt;');
+            text = text.replace('& Lt ;', '&lt;');
             text = text.replace('& gt;', '&gt;');
+            text = text.replace('& Gt;', '&gt;');
             text = text.replace('& gt ;', '&gt;');
+            text = text.replace('& Gt ;', '&gt;');
             text = text.replace('& amp;', '&amp;');
             text = text.replace('% s', ' %s ');
             text = text.replace(/HTTP:\s\/\//i, 'http://');

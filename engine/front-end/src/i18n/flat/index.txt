@@ -33,6 +33,7 @@ Explanation
 Filter
 Forum
 Github
+Go to original
 Good luck
 Got it!
 Icon
@@ -90,11 +91,14 @@ Windows, Linux, OSX, Raspberry Pi, ARM or PC
 Written with Node.js
 Your e-mail address
 authors
+chinese (simplified)
 compact
 cookies_text
 copied to clipboard
 copy to clipboard
+english
 forum-text
+german
 install on linux
 installed %s times
 instruction1
@@ -110,6 +114,7 @@ mode
 password
 posted on %s
 readme
+russian
 to Shop
 user
 version

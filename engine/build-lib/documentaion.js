@@ -302,8 +302,10 @@ function sync2Languages(fromLang, toLang, testDir, cb, files) {
         if (translated) {
             const parts = file.replace(/\\/g, '/').split('/');
             parts.pop();
+
+            // Copy media files
             const fls = utils.getAllFiles(parts.join('/'), false).sort();
-            fls.filter(f => !f.match(/\.md$/))
+            fls.filter(f => !f.match(/\.md$/) && !f.match(/affiliate\.json$/))
                 .forEach(file =>
                     utils.writeSafe(file.replace('/' + fromLang + '/', '/' + toLang + '/'), fs.readFileSync(file)));
         }

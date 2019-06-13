@@ -33,6 +33,7 @@ Wyjaśnienie
 Filtr
 Forum
 Github
+Idź do oryginału
 Powodzenia
 Rozumiem!
 Ikona
@@ -90,11 +91,14 @@ Windows, Linux, OSX, Raspberry Pi, ARM lub PC
 Napisany za pomocą Node.js
 Twój adres email
 autorski
+uproszczony chiński
 kompaktowy
 Na tej stronie udostępniamy pliki cookie, aby analizować ruch, zapamiętywać Twoje preferencje i optymalizować Twoje wrażenia.
 skopiowane do schowka
 skopiuj do schowka
+język angielski
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
+Niemiecki
 Instalacja w systemie Linux
 zainstalowanych %s razy
 Potrzebne są obrazy tylko w przypadku problemów ze skryptami instalacyjnymi.
@@ -110,6 +114,7 @@ tryb
 hasło
 opublikowano na %s
 readme
+Rosyjski
 do sklepu
 użytkownik
 wersja

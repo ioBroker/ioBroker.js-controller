@@ -112,6 +112,7 @@
   * [Restore of configuration](trouble/restore)
   * [Forum](trouble/forum)
   * [Performance](trouble/monitoring)
+  * [Installation Fixer](trouble/install_fixer)
 
 * en:FAQ;de:FAQ;ru:ЧаВо;zh-cn:FAQ
   * [Basics](faq/basic)

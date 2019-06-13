@@ -116,8 +116,8 @@ Or other example `hm-rpc.1.ABC110022.2.VALUE`:
 };
 ```
 
-
-## <a href="#states">States</a>
+<a id="states"></a>
+## States
 
 getState method and stateChange event delivers an object with all attributes except expire
 

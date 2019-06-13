@@ -33,6 +33,7 @@ Explication
 Filtre
 Forum
 Github
+Aller à l'original
 Bonne chance
 Je l'ai!
 Icône
@@ -90,11 +91,14 @@ Windows, Linux, OSX, Raspberry Pi, ARM ou PC
 Écrit avec Node.js
 Votre adresse email
 auteurs
+chinois simplifié
 compact
 Nous utilisons des cookies sur ce site pour analyser le trafic, mémoriser vos préférences et optimiser votre expérience.
 copié dans le presse-papier
 copier dans le presse-papier
+Anglais
 Rejoignez maintenant la communauté en pleine croissance, posez des questions et obtenez des réponses!
+allemand
 installer sur Linux
 Les temps de installé%
 Vous n'avez besoin des images que si vous rencontrez des problèmes d'installation de scripts.
@@ -110,6 +114,7 @@ mode
 mot de passe
 posté sur %s
 readme
+russe
 Faire des courses
 utilisateur
 version

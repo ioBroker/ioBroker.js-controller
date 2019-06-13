@@ -33,6 +33,7 @@ Explicación
 Filtrar
 Foro
 Github
+Ir al original
 Buena suerte
 ¡Lo tengo!
 Icono
@@ -90,11 +91,14 @@ Windows, Linux, OSX, Raspberry Pi, ARM o PC
 Escrito con Node.js
 Tu correo electrónico
 autores
+chino simplificado
 compacto
 Servimos cookies en este sitio para analizar el tráfico, recordar sus preferencias y optimizar su experiencia.
 Copiado al portapapeles
 copiar al portapapeles
+Inglés
 ¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!
+alemán
 instalar en Linux
 %s instalada veces
 Solo necesita las imágenes si tiene problemas con los scripts de instalación.
@@ -110,6 +114,7 @@ modo
 contraseña
 publicado en %s
 readme
+ruso
 comprar
 usuario
 versión

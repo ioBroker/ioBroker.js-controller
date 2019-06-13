@@ -33,6 +33,7 @@ Uitleg
 Filter
 Forum
 Github
+Ga naar origineel
 Succes
 Begrepen!
 Icoon
@@ -90,11 +91,14 @@ Windows, Linux, OSX, Raspberry Pi, ARM of pc
 Geschreven met Node.js
 Jouw e-mailadres
 auteurs
+versimpeld Chinees
 compact
 Wij serveren cookies op deze site om verkeer te analyseren, uw voorkeuren te onthouden en uw ervaring te optimaliseren.
 gekopieerd naar het klembord
 Kopieer naar klembord
+Engels
 Word nu lid van de snelgroeiende community, stel vragen en krijg antwoorden!
+Duitse
 installeren op linux
 geïnstalleerd %s keer
 U hebt de afbeeldingen alleen nodig als u problemen ondervindt met installatiescripts.
@@ -110,6 +114,7 @@ mode
 wachtwoord
 gepost op %s
 Leesmij
+Russisch
 winkelen
 gebruiker
 versie

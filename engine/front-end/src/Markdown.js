@@ -153,6 +153,7 @@ const styles = theme => ({
         marginBottom: 5,
         borderStyle: 'solid',
         background: '#bdded5',
+        cursor: 'pointer',
         '&:before': {
             content: 'url(' + IconGlobe + ')',
             marginRight: 10,
@@ -305,6 +306,13 @@ let title;
 
 const ADAPTER_CARD = ['version', 'authors', 'keywords', 'mode', 'materialize', 'compact'];
 
+const EXPAND_LANGUAGE = {
+    en: 'english',
+    de: 'german',
+    ru: 'russian',
+    'zh-cn': 'chinese (simplified)'
+};
+
 class Markdown extends Router {
     constructor(props) {
         super(props);
@@ -386,23 +394,32 @@ class Markdown extends Router {
             }
         } else if (link) {
             // if relative path
-            if (link.indexOf('..') !== -1 || link.startsWith('.') || link.indexOf('/./') !== -1) {
+            if (!link.startsWith('#')) {
                 // ../../download
                 const ppp = link.replace(this.props.path + '/', '').split('#');
-                const _link = ppp[1];
-                const parts = ppp[0].split('/');
+                let _link = ppp[1];
+                let _path = ppp[0].replace(/\.MD$/, '.md');
+                if (!_path.endsWith('.md')) {
+                    _path += '.md';
+                }
                 const location = Router.getLocation();
-                const locParts = location.page.split('/');
-                locParts.pop();
-                parts.forEach(part => {
-                    if (part === '.') return;
-                    if (part === '..') {
-                        locParts.pop();
-                        return;
-                    }
-                    locParts.push(part);
-                });
-                this.props.onNavigate(null, location.tab, locParts.join('/'), _link);
+
+                if (_path.startsWith('.')) {
+                    const parts = _path.split('/');
+                    const locParts = location.page.split('/');
+                    locParts.pop();
+                    parts.forEach(part => {
+                        if (part === '.') return;
+                        if (part === '..') {
+                            locParts.pop();
+                            return;
+                        }
+                        locParts.push(part);
+                    });
+                    _path = locParts.join('/')
+                }
+
+                this.props.onNavigate(null, location.tab, _path, _link);
             } else {
                 this.props.onNavigate(null, null, link);
             }
@@ -490,7 +507,11 @@ class Markdown extends Router {
         const data = [];
 
         if (this.state.header.translatedFrom) {
-            data.push((<div key="translatedFrom" className={this.props.classes.headerTranslated}>{I18n.t('Translated from %s', this.state.header.translatedFrom)}</div>));
+            let translatedFrom = EXPAND_LANGUAGE[this.state.header.translatedFrom] || this.state.header.translatedFrom;
+            // Translate language from english to actual language
+            translatedFrom = I18n.t(translatedFrom);
+
+            data.push((<div key="translatedFrom" className={this.props.classes.headerTranslated} onClick={() => this.props.onNavigate(this.state.header.translatedFrom)} title={I18n.t('Go to original')}>{I18n.t('Translated from %s', translatedFrom)}</div>));
         }
         if (this.state.header.adapter) {
             data.push((<h1 key="h1">{[
@@ -542,7 +563,7 @@ class Markdown extends Router {
     renderInfo() {
         return (<div className={this.props.classes.info}>
             {this.state.header.lastChanged ? [
-                (<span key="lastChangedTitle" className={this.props.classes.infoTitle}>{I18n.t('Last changed: ')}</span>),
+                (<span key="lastChangedTitle" className={this.props.classes.infoTitle}>{I18n.t('Last changed:')} </span>),
                 (<span key="lastChangedValue" className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
                 ] : null}
             {this.state.header.editLink ?
@@ -612,16 +633,16 @@ class Markdown extends Router {
                 {this.renderContentCloseButton()}
                 <ul>{
                     links.map(item => {
-                        if (this.state.content[item].level === 0) {
-                            const link = this.state.content[item].external && this.state.content[item].link;
-                            return (
-                                <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
-                                    {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
-                                </li>
-                            );
-                        } else {
-                            return null;
-                        }
+                        const link = this.state.content[item].external && this.state.content[item].link;
+                        const level = this.state.content[item].level;
+                        let title = this.state.content[item].title.replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&');
+
+                        return (
+                            <li style={{fontSize: 16 - level * 2, paddingLeft: level * 8, fontWeight: !level ? 'bold' : 'normal'}}>
+                                <span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{title}</span>
+                                {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
+                            </li>
+                        );
                     }).filter(e => e)
                 }</ul>
             </Paper>);

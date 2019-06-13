@@ -176,7 +176,7 @@ class Blog extends Router {
     renderHeader() {
         return (<div key={"header"}  style={this.page ? {cursor: 'pointer'} : {}} onClick={() => this.onNavigate(null, null, '')} className={this.props.classes.header}>
             <h1 key="title" className={this.props.classes.headerTitle}>{I18n.t('ioBroker Blog')}
-                <a href={'./blog_' + this.props.language + '.xml'} target="_blank" title={I18n.t('RSS Feed')}><IconRss className={this.props.classes.rssIcon}/></a>
+                <a href={'./blog_' + this.props.language + '.xml'} rel="noopener noreferrer" target="_blank" title={I18n.t('RSS Feed')}><IconRss className={this.props.classes.rssIcon}/></a>
             </h1>
             <div key="notice"  className={this.props.classes.headerNotice}>{I18n.t('News, announcements and ideas about ioBroker')}</div>
         </div>);

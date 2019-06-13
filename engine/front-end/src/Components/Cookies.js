@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
 import I18n from '../i18n';
-import Utils from '../Utils';
 
 const styles = theme => ({
     mainDiv: {

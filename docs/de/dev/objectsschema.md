@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: /HOc3pEJtQcbZnuy2qQyMe+zzrik2dmUI4v4BcHU+F4=
+hash: /+zjF1sxTW9nTd9/4ssdJVC89TA4xSYZjT8bNVA6QHo=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -75,7 +75,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 }
 ```
 
-### Namespace system.host. & Lt; Hostname &gt;
+### Namespace system.host. &lt; Hostname &gt;
 ```
 {
     _id:   id,
@@ -116,7 +116,9 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 };
 ```
 
-## <a href="#states">Staaten</a>
+<a id="states"></a>
+
+## Zustände
 Die Methode getState und das Ereignis stateChange liefern ein Objekt mit allen Attributen außer expire
 
 für die `setState`-Methode ist alles außer `val` optional, `from` wird automatisch durch die `setState`-Methode festgelegt. `ack` sind standardmäßig false, `ts` und `lc` sind wie erwartet eingestellt
@@ -194,18 +196,18 @@ Attribute:
 * `common.max` (optional)
 * `common.unit` (optional)
 * `common.def` (optional - der Standardwert)
-* `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
+* `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, string)
 * `common.read` (Boolescher Wert, obligatorisch) - true, wenn der Status lesbar ist
 * `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status beschreibbar ist
 * `common.role` (string, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
-* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
+* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände
 * `common.workingID` (string, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
 
 ##### Bundesland `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
 
-Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um Standardeinstellungen zu verwenden
+Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
 
 Eine Liste der Transporte finden Sie in der README-Datei des Verlaufsadapters
 
@@ -233,7 +235,7 @@ mögliche Werte:
 * `media.tv` - TV
 * `media.tts` - Text zur Rede
 
-* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit usw.
+* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit und so weiter
 * `thermo.heat`
 * `thermo.cool`
 
@@ -489,9 +491,9 @@ id `system.adapter.<adapter.name>`
 * `common.installedVersion` - **obligatorisch** installierte Version
 * `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
 * `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
-* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
+* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem WWW-Ordner des Adapters bereitstellen sollen
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
-* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. & Lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
+* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
 * `common.subscribe` - Name der Variablen, die automatisch abonniert wird
 * `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Aktualisierungen zu ermöglichen
 * `common.wakeup` -
@@ -553,7 +555,7 @@ id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
 ##### Adapter / Instanz common.mode
 * `none` - dieser Adapter startet keinen Prozess
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
-* `subscribe` - wird gestartet, wenn der Status * system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive auf * true * geändert wird. Wird beendet, wenn * .alive * auf * false * wechselt und * .alive * auf * false * setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
+* `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
 * `Zeitplan` - wird durch einen Zeitplan gestartet, der in * system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist
 * `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
 

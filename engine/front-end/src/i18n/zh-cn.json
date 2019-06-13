@@ -91,11 +91,14 @@
   "Written with Node.js": "用Node.js编写",
   "Your e-mail address": "您的电子邮件地址",
   "authors": "作者",
+  "chinese (simplified)": "简体中文",
   "compact": "紧凑",
   "cookies_text": "我们在此网站使用Cookie分析流量，学习您的偏好，优化您的体验。",
   "copied to clipboard": "复制到剪贴板",
   "copy to clipboard": "复制到剪贴板",
+  "english": "英语",
   "forum-text": "社区正快速发展，欢迎现在加入，提出问题并获得答案！",
+  "german": "德语",
   "install on linux": "在Linux上安装",
   "installed %s times": "安装%s次",
   "instruction1": "只有在安装脚本出现问题时，才需要使用镜像安装。",
@@ -111,7 +114,9 @@
   "password": "密码",
   "posted on %s": "张贴在%s上",
   "readme": "自述",
+  "russian": "俄语",
   "to Shop": "去商店",
   "user": "用户名",
-  "version": "版本"
+  "version": "版本",
+  "Go to original": "去原创"
 }

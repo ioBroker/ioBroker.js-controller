@@ -229,8 +229,8 @@ class Utils {
             if (line.match(/^##+ /)) {
                 parts.push({lines: [line], type: 'chapter'});
                 last++;
-                let level = line.split('#') - 3;
-                const cont = Utils.findTitle(line, 0, path);
+                let level = line.split('#').length - 3;
+                const cont = Utils.findTitle(line, level, path);
                 content[cont.href] = cont;
                 current[level] = cont;
                 level++;

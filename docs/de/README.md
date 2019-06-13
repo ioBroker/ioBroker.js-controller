@@ -5,7 +5,7 @@ lastChanged: "29.03.2019"
 # Willkommen bei ioBroker
 !> **Hinweis für Einsteiger**
     Sollten beim Lesen dieser ersten Worte schon zu viele unbekannten Begriffe 
-    verwendet worden sein, werden diese nochmals auf der [nächsten Seite](basics/README.md)
+    verwendet worden sein, werden diese nochmals auf der [nächsten Seite](./basics/README.md)
     ausführlich erklärt.
 
 ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
@@ -28,7 +28,7 @@ alles möglich.
    es [im Forum](https://forum.iobroker.net).
    <br><br>
    **Bis alle Inhalte übernommen wurden, ist die alte Dokumentation noch
-   [hier zu finden](http://www.iobroker.net). Sie wird sukzessive durch die neue Dokumentation 
+   [hier zu finden](https://www.iobroker.net/docu/). Sie wird sukzessive durch die neue Dokumentation
    ersetzt.**
 
 
