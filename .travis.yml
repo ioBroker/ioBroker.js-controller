@@ -22,8 +22,9 @@ before_script:
   - 'if [[ $NPMVERSION == 5 ]]; then npm install -g npm@5; fi'
   - npm -v
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-socket/setup-socket.sh; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-sentinel/*.sh; fi'
 script:
-  - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
+  - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; test/redis-sentinel/test-sentinel.sh; fi'
 after_success:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install -g npm@latest; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install --package-lock-only --production; fi'
