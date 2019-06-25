@@ -323,10 +323,39 @@ function createStates(onConnect) {
             deleteAllZipPackages();
             initMessageQueue();
             startAliveInterval();
+
+            initializeController();
             onConnect && onConnect();
         }
     });
     return true;
+}
+
+function initializeController() {
+    if (!states || !objects || connected) return;
+
+    logger.info('host.' + hostname + ' connected to Objects and States');
+
+    if (connected === null) {
+        connected = true;
+        if (!isStopping) {
+            // Do not start if we still stopping the instances
+            checkHost(() => {
+                startMultihost(config);
+                setMeta();
+                started = true;
+                getInstances();
+            });
+        }
+    } else {
+        connected = true;
+        started   = true;
+
+        // Do not start if we still stopping the instances
+        if (!isStopping) {
+            getInstances();
+        }
+    }
 }
 
 // create "objects" object
@@ -345,31 +374,7 @@ function createObjects(onConnect) {
                 disconnectTimeout = null;
             }
 
-            if (!connected) {
-                logger.info('host.' + hostname + ' ' + JSON.stringify(handler.getStatus()) + ' connected');
-
-                if (connected === null) {
-                    connected = true;
-                    if (!isStopping) {
-                        // Do not start if we still stopping the instances
-                        checkHost(() => {
-                            startMultihost(config);
-                            setMeta();
-                            started = true;
-                            getInstances();
-
-                        });
-                    }
-                } else {
-                    connected = true;
-                    started   = true;
-
-                    // Do not start if we still stopping the instances
-                    if (!isStopping) {
-                        getInstances();
-                    }
-                }
-            }
+            initializeController();
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
@@ -3017,6 +3022,7 @@ function init() {
 
     process.on('uncaughtException', err => {
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
+            // TODO Remove as soon as socketio is no longer used
             logger.error('host.' + hostname + ' fragmentedOperation: restart objects');
             // restart objects
             objects.destroy();
