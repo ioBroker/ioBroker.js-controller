@@ -19,16 +19,17 @@
         },
         "news": {
             "1.5.13": {
-                "en": "Make sure Info Adapter Tab is displayed automatically on install",
-                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird",
-                "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке",
-                "pt": "Verifique se a guia Adaptador de Informações é exibida automaticamente na instalação",
-                "nl": "Zorg ervoor dat het tabblad Info Adapter automatisch wordt weergegeven tijdens de installatie",
-                "fr": "Assurez-vous que l'onglet Info Adapter est affiché automatiquement lors de l'installation",
-                "it": "Assicurarsi che la scheda Scheda informazioni sia visualizzata automaticamente al momento dell'installazione",
-                "es": "Asegúrese de que la pestaña del adaptador de información se muestra automáticamente en la instalación",
-                "pl": "Upewnij się, że zakładka Info Adapter jest wyświetlana automatycznie podczas instalacji",
-                "zh-cn": "确保在安装时自动显示Info Adapter选项卡"
+
+                "en": "Make sure Info Adapter Tab is displayed automatically on install\nOptimize messages for CLI host commands\nReplace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker",
+                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird\nBessere Ausgaben für den CLI host-Befehl\nErsetzen der winston-syslog-Abhängigkeit, um Buildfehler unter node.js 10+ bei der Installation oder Aktualisierung von ioBroker zu vermeiden",
+                "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке\nОптимизируйте сообщения для команд хоста CLI\nЗамените зависимость winston-syslog, чтобы предотвратить ошибки сборки на node.js 10+ при установке или обновлении iobroker",
+                "pt": "Verifique se a guia Adaptador de Informações é exibida automaticamente na instalação\nOtimizar mensagens para comandos do host da CLI\nSubstitua a dependência do winston-syslog para evitar erros de compilação no node.js 10+ ao instalar ou atualizar o iobroker",
+                "nl": "Zorg ervoor dat het tabblad Info Adapter automatisch wordt weergegeven tijdens de installatie\nOptimaliseer berichten voor CLI-hostopdrachten\nVervang de winston-syslog-afhankelijkheid om build-fouten te voorkomen op node.js 10+ bij het installeren of bijwerken van iobroker",
+                "fr": "Assurez-vous que l'onglet Info Adapter est affiché automatiquement lors de l'installation\nOptimiser les messages pour les commandes d'hôte CLI\nRemplacez la dépendance winston-syslog pour éviter les erreurs de construction sur node.js 10+ lors de l'installation ou de la mise à jour d'iobroker.",
+                "it": "Assicurarsi che la scheda Scheda informazioni sia visualizzata automaticamente al momento dell'installazione\nOttimizza i messaggi per i comandi host CLI\nSostituire la dipendenza winston-syslog per prevenire errori di generazione su node.js 10+ durante l'installazione o l'aggiornamento di iobroker",
+                "es": "Asegúrese de que la pestaña del adaptador de información se muestra automáticamente en la instalación\nOptimizar los mensajes para los comandos del host CLI\nReemplace la dependencia de winston-syslog para evitar errores de compilación en node.js 10+ al instalar o actualizar iobroker",
+                "pl": "Upewnij się, że zakładka Info Adapter jest wyświetlana automatycznie podczas instalacji\nOptymalizuj komunikaty dla poleceń hosta CLI\nZastąp zależność winston-syslog, aby zapobiec błędom kompilacji na node.js 10+ podczas instalacji lub aktualizacji iobrokera",
+                "zh-cn": "确保在安装时自动显示Info Adapter选项卡\n优化CLI主机命令的消息\n在安装或更新iobroker时，替换winston-syslog依赖项以防止node.js 10+上的构建错误"
             },
             "1.5.12": {
                 "en": "Install instance of info adapter too on first setup of controller",
