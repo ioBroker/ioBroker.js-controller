@@ -28,6 +28,7 @@ The actual main web interface of the LMS also uses the rpc/json-protocol to get 
 - detailed information about the player status, song title, artist, album, artwork, playlist
 - many control features to play, pause, stop, forward, rewind, repeat, shuffle, play favorite, jump to time (absolute and relative) , jump to playlist index (absolute and relative), power on/off and preset buttons
 - all favorites and all sub levels from server
+- many widgets for the iobroker-vis component are included to create own control user interfaces (select player,select favorites, manage syncgroups, buttons for play/pause,fwd,rew, repeat mode and shuffle mode selection)
 
 ## Installation
 
@@ -51,6 +52,7 @@ The actual main web interface of the LMS also uses the rpc/json-protocol to get 
 | TotalDuration     | Sum  playtime of all songs     |
 | TotalGenres       | Number of all known Genres     |
 | TotalSongs        | Number of all known songs      |
+| SyncGroups        | Existing Syncgroups            |
 | Version           | Version of LMS                 |
 | mac               | MAC-ID of the server           |
 | uuid              | uuid of the LMS-instance       |
@@ -140,6 +142,7 @@ button            | Description
 btnForward        | Next song
 btnRewind         | Previous song
 btnPreset_*       | 1-6 buttons to define in player or server
+cmdGeneral        | a general command field to send commands to the player. every field must enclosed by quotation marks. parameters musst be seperated by comma. Example: "play","1"
 cmdPlayFavorite   | to play a favorite set the id of the favorite
 cmdGoTime         | jump to a absolut position by specifying a number of seconds or jump relative with a + or - at the beginning of the seconds. Example 100,-50,+50
 
@@ -162,6 +165,22 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.18 (2019-06-27)
+* last minute changes.
+### 0.8.17 (2019-06-26)
+* add more widges: playtime bar, string, number, datetime, image. add button margin to player and favorite widget, improve editing of viewindex. do some refactoring.
+### 0.8.16 (2019-06-24)
+* resolve a cross browser issue for firefox. the style.font attribute is empty and you have to construct the font string by yourself
+### 0.8.15 (2019-06-19)
+* minor issue with not ready states
+### 0.8.14 (2019-06-19)
+* add syncgroups as new server-datapoint,add syncgroup widget, change some jquery event logic
+### 0.8.13 (2019-06-16)
+* rename widgetset from squeezeboxrpcwidgets to squeezeboxrpc
+### 0.8.12 (2019-06-16)
+* sync version with npm
+### 0.8.11 (2019-06-15)
+* try to integrate the widgets into the main adapter
 ### 0.8.10 (2019-05-15)
 * another try to fix the EADDRINUSE error of the server discovery
 ### 0.8.9 (2019-05-15)

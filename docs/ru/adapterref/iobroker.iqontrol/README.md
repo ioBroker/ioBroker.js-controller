@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
+hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -16,9 +16,16 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
 # IoBroker.iqontrol
-Если вам это нравится, пожалуйста, рассмотрите пожертвование.
+** Тесты: **
+
+| Linux / Mac / Windows: | Кросс-браузерная проверка: |
+| --- | --- |
+
+\ **Если вам это нравится, рассмотрите пожертвование:**
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+
+****
 
 ## Адаптер iqontrol для ioBroker
 Быстрое веб-приложение для визуализации.
@@ -59,14 +66,22 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 Это первый альфа-релиз, поэтому может быть много ошибок. Но для меня это работает абсолютно стабильно.
 Однако есть несколько ограничений:
 
-- Загрузка изображений (в качестве фоновых изображений или для кнопок устройств оформления) работает, но переименование и удаление не работает
-- Создание и удаление подкаталогов также не работает.
-
-Вы можете сделать эти операции вручную через ftp в iobroker / iobroker-data / files / iqontrol / userimages
+- Загруженные изображения (в качестве фоновых изображений или для кнопок устройства оформления) не включаются в файл резервной копии, созданный iobroker.
 
 Пожалуйста, не стесняйтесь комментировать и дайте мне знать, как исправить эти проблемы!
 
 Посетите [форум iobroker](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
+
+## URL-параметры
+* Интерфейс вызывается через `` http [s]: // <url или ip iobroker>: <порт веб-адаптера> / iqontrol / index.html``
+    * `` <порт веб-адаптера> `` обычно 8082
+* Чтобы открыть указанный экземпляр, вы можете добавить `` namespace = iqontrol. <Номер-экземпляра> `` в качестве URL-параметра
+* Чтобы открыть указанный вид в качестве домашней страницы, вы можете добавить `` home = <viewID> `` в качестве URL-параметра
+
+**Пример:**
+
+* `` https://192.168.1.1: 8082 / iqontrol / index.html? namespace = iqontrol.1 & home = iqontrol.1.Views.Living-Room``
+    * Обратите внимание на верхний и нижний регистр
 
 ## Описание ролей и связанных состояний
 Каждое устройство имеет роль, которая определяет функцию устройства. Каждая роль генерирует набор состояний, которые могут быть связаны с соответствующим состоянием io-брокера.
@@ -83,7 +98,7 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 
 Почти все роли имеют состояние STATE и / или LEVEL. В большинстве случаев это представляет собой основную функцию устройства. Вы можете назначить ему состояния io-broker следующих типов:
 
-* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
+* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или подобный Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
@@ -102,7 +117,8 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 Однако не каждый тип имеет смысл для каждой роли. Так, например, СОСТОЯНИЕ переключателя будет в большинстве случаев булевым, чтобы его можно было переключать между включением и выключением. Строка может отображаться, но переключатель не будет работать.
 
 ### Ссылка на другой вид:
-* Больше не имеет состояний, но будет уважать **свойство связанный вид**
+* Не имеет больше состояний
+* **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/switch_on.png" width="32"> Switch, <img src="img/icons/fan_on.png" width="32"> Поклонник:
 * **STATE** *boolean* - отображать и устанавливать вкл / выкл
@@ -124,13 +140,11 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
   * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (это учитывается только в том случае, если свет имеет как белый, так и цветной светодиоды. Если у вас есть только один вид светодиодов, яркость контролируется УРОВНЕМ- Государственный)
 * Альтернативные цветовые пространства **еще не реализованы**
-  * **HUE_MILIGHT** * число * - Милайт использует другую начальную точку в оттенке цвета:
+  * **HUE_MILIGHT** * число * - Милайт использует другую отправную точку в оттенке цвета:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
-on modulo(n, m){
-n ((n % m) + m) %m;
-
+on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
   * **RGB_HUEONLY** * string * - вместо использования HUE вы можете использовать формат RGB_HUEONLY (шестнадцатеричный). В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается
@@ -145,28 +159,28 @@ n ((n % m) + m) %m;
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
 * **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
-* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
+* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, которые связаны с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
 В дополнение к обычному термостату вы можете определить:
 
 * **PARTY_TEMPERATURE** *string* - строка в специальном формате для определения режима homematic-термостатов для вечеринки или праздника
-* **BOOST_STATE** *число* - отображает оставшееся время ускорения термостатов homematic.
+* **BOOST_STATE** *число* - отображает оставшееся время ускорения термостатов homematic
 
 ### <img src="img/icons/temperature.png" width="32"> Датчик температуры, <img src="img/icons/humidity.png" width="32"> Датчик влажности:
 * **СОСТОЯНИЕ** *число* - температура или влажность, которые будут отображаться в нижней части устройства
 * **ТЕМПЕРАТУРА** *число* - температура, которая будет отображаться маленьким в верхнем правом углу
 * **ВЛАЖНОСТЬ** *число* - влажность, которая будет отображаться маленьким в верхнем правом углу
-* Уважает **свойство связанных просмотров**
+* **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/brightness_light.png" width="32"> Яркость-Sensor:
 * **STATE** *число* - яркость, которая будет отображаться в нижней части устройства
 * **BRIGHTNESS** *number* - яркость, которая будет отображаться маленьким в верхнем правом углу
-* Уважает **свойство связанных просмотров**
+* **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/motion_on.png" width="32"> Датчик движения:
 * **STATE** *логическое* - отображать, обнаружено движение или нет
-* Уважает **свойство связанных просмотров**
+* **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
 * **STATE** *boolean* - отображать, открыта или закрыта дверь или окно.
@@ -189,7 +203,7 @@ n ((n % m) + m) %m;
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
-* Уважает **свойство связанных просмотров**
+* **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/alarm_on.png" width="32"> Тревога:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
@@ -230,15 +244,45 @@ n ((n % m) + m) %m;
 
 ## Changelog
 
+### 0.0.040
+* (Sebastian Bormann) Appended missing conn.js in admin-folder.
+
+### 0.0.39
+* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (Sebastian Bormann) Added Image-Popup in admin.
+* (Sebastian Bormann) Renamed demo-images.
+
+### 0.0.38
+* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
+
+### 0.0.37
+* (Sebastian Bormann) Some more little changes to forced touch.
+* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
+
+### 0.0.36
+* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
+* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
+
+### 0.0.35
+* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
+* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
+
+### 0.0.34
+* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
+
 ### 0.0.33
-* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
-* (Sebastian Bormann) Fixed marquee not always starting correctly
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (Sebastian Bormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Sebastian Bormann) Added Battery
-* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
-* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
-* (Sebastian Bormann) Added check for existance of common.role before rendering view
+* (Sebastian Bormann) Added Battery.
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (Sebastian Bormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

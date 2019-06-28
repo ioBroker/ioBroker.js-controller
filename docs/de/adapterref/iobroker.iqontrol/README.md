@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
+hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -16,9 +16,16 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
 # IoBroker.iqontrol
-Wenn es dir gefällt, erwäge bitte eine Spende.
+** Tests: **
+
+| Linux / Mac / Windows: | Cross-Browser-Prüfung: |
+| --- | --- |
+
+\ **Wenn es dir gefällt, erwäge bitte eine Spende:**
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+
+****
 
 ## Iqontrol Adapter für ioBroker
 Schnelle Web-App zur Visualisierung.
@@ -50,7 +57,7 @@ Sie können auch versuchen, mit der Autocreate-Funktion ein vorhandenes Gerät a
 Toolbar-Einträge sind Links zu Views.
 Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 
-* Um allem einen ausgefallenen Stil zu verleihen, können Sie Ihre eigenen Bilder hochladen.
+* Um allem einen ausgefallenen Stil zu verleihen, können Sie eigene Bilder hochladen.
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
@@ -59,14 +66,22 @@ Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
 Dies ist das erste Alpha-Release, daher kann es zu vielen Fehlern kommen. Aber für mich läuft es völlig stabil.
 Es gibt jedoch einige Einschränkungen:
 
-- Das Hochladen von Bildern (als Hintergrundbild oder zum Skinnen von Gerätetasten) funktioniert, aber das Umbenennen und Löschen funktioniert nicht
-- Das Erstellen und Löschen von Unterverzeichnissen funktioniert ebenfalls nicht.
-
-Sie können diese Operationen manuell über ftp unter iobroker / iobroker-data / files / iqontrol / userimages ausführen
+- Hochgeladene Bilder (als Hintergrundbilder oder zum Skinnen von Gerätetasten) sind in der von iobroker erstellten Sicherungsdatei nicht enthalten
 
 Bitte zögern Sie nicht zu kommentieren und lassen Sie mich wissen, wie Sie diese Probleme beheben können!
 
 Besuchen Sie [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
+
+## URL-Parameter
+* Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
+    * `` <Port des Webadapters> `` ist normalerweise 8082
+* Um eine bestimmte Instanz zu öffnen, können Sie als URL-Parameter `` namespace = iqontrol. <Instanznummer> `` hinzufügen
+* Um eine bestimmte Ansicht als Homepage zu öffnen, können Sie als URL-Parameter `` home = <viewID> `` hinzufügen
+
+**Beispiel:**
+
+* `` https://192.168.1.1: 8082 / iqontrol / index.html? namespace = iqontrol.1 & home = iqontrol.1.Views.Living-Room``
+    * Groß- und Kleinschreibung beachten
 
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden io-Broker-Status verknüpft werden können.
@@ -97,12 +112,13 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 ````
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie das States-Objekt zum `` `" native ": {}` `` `Teil des Datenpunkts hinzufügen. Dies wird nur von iQontrol gelesen und hat keinen Einfluss auf andere Skripte.
-    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripte. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
+    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripts. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 ### Link zu anderer Ansicht:
-* Hat keine weiteren Zustände, respektiert aber die Eigenschaft **Linked-View-Eigenschaft**
+* Hat keine weiteren Zustände
+* Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/switch_on.png" width="32"> Schalter, <img src="img/icons/fan_on.png" width="32"> Ventilator:
 * **STATE** *Boolean* - Anzeigen und Ein- / Ausschalten
@@ -124,13 +140,11 @@ Optional können Sie folgende Zustände definieren:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (dies wird nur beachtet, wenn das Licht sowohl weiße als auch farbige LEDs enthält. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
 * Alternative Farbräume **noch nicht implementiert**
-  * **HUE_MILIGHT** * number * - Milight verwendet einen anderen Blickpunkt im Farbton-Farbkreis:
+  * **HUE_MILIGHT** * number * - Milight verwendet einen anderen Startpunkt im Farbton-Farbkreis:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
-on modulo(n, m){
-n ((n % m) + m) %m;
-
+on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
   * **RGB_HUEONLY** * string * - anstelle von HUE kann das RGB_HUEONLY-Format (hex) verwendet werden. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
@@ -157,16 +171,16 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
 * **TEMPERATURE** *number* - Temperatur, die in der oberen rechten Ecke klein angezeigt wird
 * **FEUCHTIGKEIT** *Zahl* - Luftfeuchtigkeit, die in der oberen rechten Ecke klein angezeigt wird
-* Respektiert die **Linked-View-Eigenschaft**
+* Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/brightness_light.png" width="32"> Helligkeitssensor:
 * **STATE** *number* - Helligkeit, die im unteren Teil des Geräts angezeigt wird
 * **HELLIGKEIT** *Zahl* - Helligkeit, die in der oberen rechten Ecke klein angezeigt wird
-* Respektiert die **Linked-View-Eigenschaft**
+* Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/motion_on.png" width="32"> Bewegungssensor:
 * **STATE** *Boolean* - Zeigt an, ob eine Bewegung erkannt wurde oder nicht
-* Respektiert die **Linked-View-Eigenschaft**
+* Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
@@ -189,7 +203,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
   * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
-* Respektiert die **Linked-View-Eigenschaft**
+* Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -201,7 +215,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **CHARGING** *boolean* - wenn wahr, wird ein Ladesymbol angezeigt
 
 ### <img src="img/icons/value_on.png" width="32"> Wert:
-* **STATE** *any* - jeder gültige Status, der angezeigt werden soll (siehe Abschnitt "Allgemeine Status")
+* **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
 * **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
 ### <img src="img/icons/play_on.png" width="32"> Programm:
@@ -230,15 +244,45 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ## Changelog
 
+### 0.0.040
+* (Sebastian Bormann) Appended missing conn.js in admin-folder.
+
+### 0.0.39
+* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (Sebastian Bormann) Added Image-Popup in admin.
+* (Sebastian Bormann) Renamed demo-images.
+
+### 0.0.38
+* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
+
+### 0.0.37
+* (Sebastian Bormann) Some more little changes to forced touch.
+* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
+
+### 0.0.36
+* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
+* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
+
+### 0.0.35
+* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
+* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
+
+### 0.0.34
+* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
+
 ### 0.0.33
-* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
-* (Sebastian Bormann) Fixed marquee not always starting correctly
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (Sebastian Bormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Sebastian Bormann) Added Battery
-* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
-* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
-* (Sebastian Bormann) Added check for existance of common.role before rendering view
+* (Sebastian Bormann) Added Battery.
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (Sebastian Bormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

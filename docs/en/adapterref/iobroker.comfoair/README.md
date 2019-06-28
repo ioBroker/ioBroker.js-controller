@@ -52,6 +52,10 @@ Tested on comfoair CA350.
 
 ## Changelog
 
+### 0.3.2
+
+-   Bypass - error bug fixed.
+
 ### 0.3.1
 
 -   new connection mode: parelell in constant PC-Logmode.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
+hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -16,9 +16,16 @@ hash: lxRAJU3hHfpyBkYWoa9BKOv1WHWviSdlWIZTa/tgim0=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
 ＃ioBroker.iqontrol
-如果您喜欢，请考虑捐款。
+**测试：**
+
+| Linux / Mac / Windows：|跨浏览器检查：|
+| --- | --- |
+
+\ **如果您喜欢，请考虑捐款：**
 
 [![贝宝（https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+
+****
 
 适用于ioBroker的## iqontrol适配器
 用于可视化的快速Web应用程序。
@@ -59,14 +66,22 @@ Toolbar-Entrys是视图的链接。
 这是第一个alpha-Release，因此可能存在很多错误。但对我来说它完全稳定。
 但是有一些限制：
 
- - 上传图像（作为背景图像或用于蒙皮设备按钮）有效，但重命名和删除不起作用
- - 创建和删除子目录也不起作用。
-
-您可以在iobroker / iobroker-data / files / iqontrol / userimages下通过ftp手动执行这些操作
+ -  iobroker创建的备份文件中不包含上传的图像（如背景图像或剥皮设备按钮）
 
 请随时发表评论，让我知道，如何解决这些问题！
 
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
+
+## URL-Parameters
+*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
+    *``<web of port adapter>``通常是8082
+*要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
+*要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
+
+**例：**
+
+*``https：//192.168.1.1：8082 / iqontrol / index.html？namespace = iqontrol.1＆home = iqontrol.1.Views.Living-Room``
+    *注意大小写
 
 ##角色和相关状态的描述
 每个设备都有一个角色，它定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
@@ -102,7 +117,8 @@ Toolbar-Entrys是视图的链接。
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
 ###链接到其他视图：
-*没有其他州，但它会尊重**链接视图属性**
+*没有其他州
+* **linked-view-property** 接打开
 
 ### <img src="img/icons/switch_on.png" width="32">开关， <img src="img/icons/fan_on.png" width="32">风扇：
 * **STATE** *boolean* - 显示和设置开/关状态
@@ -124,13 +140,11 @@ Toolbar-Entrys是视图的链接。
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（仅当灯具有白色和彩色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
 *替代色彩空间**尚未实施**：
-  * **HUE_MILIGHT** * number * - Milight在色调颜色cirlce中使用另一个起始点：
+  * **HUE_MILIGHT** * number * - Milight使用色调color-cirlce中的另一个起始点：
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
-on modulo(n, m){
-n ((n % m) + m) %m;
-
+on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
   * **RGB_HUEONLY** * string * - 您可以使用RGB_HUEONLY格式（十六进制）代替使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色
@@ -157,16 +171,16 @@ n ((n % m) + m) %m;
 * **状态**：*数字*  - 将显示在设备下部的温度或湿度
 * **温度**：*数字*  - 温度将在右上角显示为小
 * **湿度**：*数字*  - 湿度将在右上角显示为小
-*尊重**链接视图属性**
+* **linked-view-property** 接打开
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
-*尊重**链接视图属性**
+* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
+* **linked-view-property** 接打开
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
 * **STATE** *boolean* - 显示是否检测到运动
-*尊重**链接视图属性**
+* **linked-view-property** 接打开
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *boolean* - 显示门或窗是打开还是关闭。
@@ -189,7 +203,7 @@ n ((n % m) + m) %m;
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
     *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
     *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
-*尊重**链接视图属性**
+* **linked-view-property** 接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
@@ -230,15 +244,45 @@ n ((n % m) + m) %m;
 
 ## Changelog
 
+### 0.0.040
+* (Sebastian Bormann) Appended missing conn.js in admin-folder.
+
+### 0.0.39
+* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (Sebastian Bormann) Added Image-Popup in admin.
+* (Sebastian Bormann) Renamed demo-images.
+
+### 0.0.38
+* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
+
+### 0.0.37
+* (Sebastian Bormann) Some more little changes to forced touch.
+* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
+
+### 0.0.36
+* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
+* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
+
+### 0.0.35
+* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
+* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
+
+### 0.0.34
+* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
+
 ### 0.0.33
-* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
-* (Sebastian Bormann) Fixed marquee not always starting correctly
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (Sebastian Bormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Sebastian Bormann) Added Battery
-* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
-* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
-* (Sebastian Bormann) Added check for existance of common.role before rendering view
+* (Sebastian Bormann) Added Battery.
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (Sebastian Bormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

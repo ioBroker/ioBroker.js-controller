@@ -134,6 +134,9 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 该手册是根据我的知识和信念创建的。
 
 ## Changelog
+### 1.2.7 (2019-06-25)
+* (SchumyHao) Add several devices support for protocol 2.0.x
+
 ### 1.2.6 (2019-03-04)
 - (Diginix) Improved calculation for sensor's battery percentage
 

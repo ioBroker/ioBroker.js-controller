@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.statistics/README.md
 title: ioBroker.statistics
-hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
+hash: adIa0874RzAX7ME3y5k56uOLZbThzREl8C1ROlIdnd4=
 ---
 ![Logo](../../../en/adapterref/iobroker.statistics/admin/statistics.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/statistics-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.statistics.svg)
-![Build-Status](https://travis-ci.org/foxthefox/ioBroker.statistics.svg?branch=master)
+![Build Status](https://travis-ci.org/foxthefox/ioBroker.statistics.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.statistics.png?downloads=true)
 
 # IoBroker.statistics
@@ -18,32 +19,42 @@ Dieser Adapter erleichtert die Konfiguration von Statistiken.
 
 `The adapter only reacts on state changes (state.ack=true), not on commands!`
 
-Wählen Sie aus den folgenden Einstellungen:
+Wählen Sie aus folgenden Einstellungen:
 
-* Zählimpulse oder Ein / Aus-Änderungen (nur für binäre Werte und positive Flanke)
-* Kosten aus den gezählten Werten berechnen (nur für binäre Werte)
-* wie lange war der Status true / ON und wie lange false / OFF (nur für binäre Werte)
-* Delta zwischen protokollierten Analogwerten (nur für Analogwerte)
-* Max, Min und Durchschnitt des Tages (nicht für Delta-Berechnungen)
-* zählt innerhalb von 5 min und täglich max, min und Durchschnitt (nicht für Delta-Berechnungen)
-* Zusammenfassung der gruppierten Werte
+* Impulse zählen oder Ein- / Ausschalten (nur bei Binärwerten und positiver Flanke)
+* Kosten aus den Zählwerten berechnen (Nur für Binärwerte)
+* wie lange war der Status wahr / AN und wie lange falsch / AUS (nur für Binärwerte)
+* Delta zwischen aufgezeichneten Analogwerten (nur für Analogwerte)
+* Tägliches Maximum, Minimum und Durchschnitt (nicht für Delta-Berechnungen)
+* min / max über das Jahr
+* zählt innerhalb von 5 min und täglich max, min und Durchschnitt davon (nicht für Delta-Berechnungen)
+* Summe der gruppierten Werte
 
-Der Adapter abonniert die konfigurierten Objekte und erstellt seine eigenen Zustände im Statistikbaum.
+Der Adapter abonniert die konfigurierten Objekte und erstellt seine eigenen Status in der Statistikstruktur.
 
 Es werden 2 separate Bäume erstellt:
 
 * statistics.0.save -> Endwerte des Zeitrahmens
-* statistics.0.temp -> temporäre Werte bis zum Zeitpunkt der Übertragung zum Speichern, danach beginnt die Temperatur von neuem
+* statistics.0.temp -> temporäre Werte bis zum Zeitpunkt der Übertragung zum Speichern, dann beginnt die Zeit erneut
 
 Die Struktur des Staates ist: `statistics.0.{save|temp}.{kind of stat}.{original observed state}.{state of statistical value}`
 
-Ein deutsches HowTo-Dokument ist hier verfügbar: [howto_de](./doc/howto_de.md)
+Ein deutsches HowTo-Dokument finden Sie hier: [howto_de](./doc/howto_de.md)
 
 ## Die Einstellungen
-* Geben Sie die relevanten Gruppen auf der Instanzkonfigurationsseite an (admin => Instanzen => Statistikkonfiguration).
-* spezifizieren Sie die Konfiguration in den Einstellungen des Zustands (admin => Objekte)
+* Geben Sie die relevanten Gruppen auf der Instanzkonfigurationsseite an (admin => instance => statistics config).
+* geben Sie die Konfiguration in den Einstellungen des Status an (admin => objects)
 
 ## Changelog
+
+### 0.2.1 [2019-06-15]
+* (foxthefox) correction, timecount value was milliseconds instead seconds
+* (foxthefox) other calculations with 2 decimal places after comma
+* (foxthefox) min/max for day/week/month/quarter/year
+* (foxthefox) set of daily min/max starting point from actual value
+* (foxthefox) fixing the PR with dayMin 0 at 00:00
+* (foxthefox) improvement for timecount when receiving status updates and no real status change
+
 ### 0.2.0 [2019-01-08]
 * (foxthefox) compact mode
 
@@ -75,5 +86,5 @@ Ein deutsches HowTo-Dokument ist hier verfügbar: [howto_de](./doc/howto_de.md)
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>,
+Copyright (c) 2018 - 2019 foxthefox <foxthefox@wysiwis.net>,
                    bluefox <dogafox@gmail.com>

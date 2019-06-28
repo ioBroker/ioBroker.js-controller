@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
+hash: rI/AFONJ0pKDcc0t0qfbXtqNzqQnfUx5gFpp9i7mUns=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,19 +17,19 @@ hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
 # IoBroker.viessmann
 =================
 
-[![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Englische Beschreibung](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, in Objekten zu speichern.
+Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung mit dem Programm zu speichern.
 Ebenso ist das Setzen von Werten, das man in seiner Vito.xml konfiguriert hat möglich.
 
 #### (selber Host)
-Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen, so ist unter Linux eigentlich keine weitere Veränderung in der Adminkonfiguration nötig um die .xml Dateien einzulesen.
+Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen, so ist unter Linux eigentlich keine weitere Veränderung der Adminkonfiguration nötig um die .xml Dateien einzulesen.
 * (Vorausgesetzt, sie liegt in dem Standardpfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
-Ist Vcontrold auf einem anderen Host installiert, kann man per SSH Zugang die .xml Dateien einlesen.
+Ist Vcontrold auf einem anderen Host installiert, kann man per SSH auf die .xml Dateien zugreifen.
 Hierfür die notwendigen Informationen in das SSH Tab eingeben.
 * (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
 
@@ -72,7 +72,10 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 ## Changelog
 #### Versions from 0.5.0. needs node > 4.x and admin V3
 
-#### 0.9.5 (13.01.2018)
+#### 1.0.0 (16.06.2019)
+* (misanorot) fixes little issues in compact modus
+
+#### 0.9.5 (13.01.2019)
 * (misanorot) Compact modus added
 
 #### 0.9.2 (13.01.2018)

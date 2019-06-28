@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: 0+k6sw+oV2Ep1ZCTnomHN4tH6cjNb5PtjbqjoLiKKdY=
+hash: q+ng2GBTpnlxb2ssirYc3z7tBpC33gefZ1G13TGbfeY=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -18,10 +18,10 @@ hash: 0+k6sw+oV2Ep1ZCTnomHN4tH6cjNb5PtjbqjoLiKKdY=
 Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Daten abzurufen und Befehle an den Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)) zu senden, um angeschlossene Geräte wie z
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
-* Himbeer-Pi mit zusätzlichem Audiomodul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
+* Himbeer-Pi mit zusätzlichem Audio-Modul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
 * mit Plugins für Chromecast, Airplay oder UPnP / DLNA-Geräte
 
-Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen, sich mit verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und mehr verbinden
+Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen und eine Verbindung zu verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und mehr herstellen
 
 Warum noch ein Squeezebox Adapter?
 
@@ -33,6 +33,7 @@ Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protoko
 - Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Bildmaterial und die Wiedergabeliste
 - Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Wiedergabelistenindex (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
 - Alle Favoriten und alle Unterebenen vom Server
+- Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Benutzeroberflächen für die Steuerung zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungs- und Zufallsmodus auswählen).
 
 ## Installation
 - Installieren Sie das Paket
@@ -53,6 +54,7 @@ Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protoko
 | Gesamtdauer | Gesamtspielzeit aller Songs |
 | TotalGenres | Anzahl aller bekannten Genres |
 | TotalSongs | Anzahl aller bekannten Songs |
+| SyncGroups | Bestehende Syncgroups |
 | Version | Version von LMS |
 | mac | MAC-ID des Servers |
 | uuid | uuid der LMS-Instanz |
@@ -80,7 +82,7 @@ Attribut | Beschreibung ----------------- | ------------------------------------
 
 zusätzliche definierte Buttons:
 
-taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen, die im Player oder Server definiert werden sollen cmdPlayFavorite | um einen Favoriten abzuspielen, setzen Sie die ID des Favoriten cmdGoTime | Zu einer absoluten Position springen, indem eine Anzahl von Sekunden angegeben wird, oder mit einem + oder - am Anfang der Sekunden relativ springen. Beispiel 100, -50, + 50
+taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen, die im Player oder Server definiert werden sollen Ein allgemeines Befehlsfeld zum Senden von Befehlen an den Player. Jedes Feld muss in Anführungszeichen gesetzt werden. Parameter müssen durch Komma getrennt werden. Beispiel: "play", "1" cmdPlayFavorite | um einen Favoriten abzuspielen, setzen Sie die ID des Favoriten cmdGoTime | Zu einer absoluten Position springen, indem Sie eine Anzahl von Sekunden angeben oder mit einem + oder - am Anfang der Sekunden relativ springen. Beispiel 100, -50, + 50
 
 Weitere Informationen finden Sie in der CLI-Dokumentation:
 
@@ -93,13 +95,29 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
 * Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
-* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, zufälliger Song) ~~
+* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
 * ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~
 * ~~ Implementiere mehr Ebenen (Unterverzeichnisse) von Favoriten ~~
 * ~~ autodiscover logitech media server ~~
 
 ## Changelog
+### 0.8.18 (2019-06-27)
+* last minute changes.
+### 0.8.17 (2019-06-26)
+* add more widges: playtime bar, string, number, datetime, image. add button margin to player and favorite widget, improve editing of viewindex. do some refactoring.
+### 0.8.16 (2019-06-24)
+* resolve a cross browser issue for firefox. the style.font attribute is empty and you have to construct the font string by yourself
+### 0.8.15 (2019-06-19)
+* minor issue with not ready states
+### 0.8.14 (2019-06-19)
+* add syncgroups as new server-datapoint,add syncgroup widget, change some jquery event logic
+### 0.8.13 (2019-06-16)
+* rename widgetset from squeezeboxrpcwidgets to squeezeboxrpc
+### 0.8.12 (2019-06-16)
+* sync version with npm
+### 0.8.11 (2019-06-15)
+* try to integrate the widgets into the main adapter
 ### 0.8.10 (2019-05-15)
 * another try to fix the EADDRINUSE error of the server discovery
 ### 0.8.9 (2019-05-15)

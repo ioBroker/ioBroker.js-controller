@@ -1,6 +1,6 @@
 ![Logo](admin/foobar2000.png)
 # Foobar2000 adapter for iobroker
-[![NPM version](https://img.shields.io/npm/v/iobroker.foobar2000.svg)](https://www.npmjs.com/package/iobroker.foobar2000)
+![Number of Installations](http://iobroker.live/badges/foobar2000-installed.svg) ![Number of Installations](http://iobroker.live/badges/foobar2000-stable.svg) [![NPM version](https://img.shields.io/npm/v/iobroker.foobar2000.svg)](https://www.npmjs.com/package/iobroker.foobar2000)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.foobar2000.svg)](https://www.npmjs.com/package/iobroker.foobar2000)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.foobar2000/master.svg)](https://travis-ci.org/instalator/ioBroker.foobar2000)
 

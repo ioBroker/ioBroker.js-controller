@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: i2NPZSlWkdJ7vYze/ua0fXPQV1wB44Q2tnGuI1v7gn4=
+hash: FQuOKSYg/ch0EXF2hAJZgh2YQAhojPsALwQ+gbC/vgI=
 ---
 ![商标](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
@@ -16,7 +16,7 @@ hash: i2NPZSlWkdJ7vYze/ua0fXPQV1wB44Q2tnGuI1v7gn4=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 ＃ioBroker.tuya
-ioBroker适配器连接到几个小而便宜的Wifi设备，这些设备与Tuya Cloud相连，主要使用Smartlife App / Alexa-Skill。适配器支持在与相应的移动电话应用程序同步后读取实时状态更新和控制这些设备。
+ioBroker适配器连接到几个小而廉价的Wifi设备，这些设备与Tuya Cloud相连，主要使用Smartlife App / Alexa-Skill。适配器支持在与相应的移动电话应用程序同步后读取实时状态更新和控制这些设备。
 
 图雅设备是来自深圳氙气灯的ESP8266MOD WiFi智能设备。
 
@@ -28,14 +28,18 @@ ioBroker适配器连接到几个小而便宜的Wifi设备，这些设备与Tuya 
 
 ##适配器的工作原理
 ###基本功能
-适配器监视本地网络以查找Tuya设备的UDP数据包。需要将运行适配器的ioBroker主机放置在与设备相同的网段中，并且路由器需要支持UDP多播！
+适配器监视本地网络以获取Tuya（旧固件，仅限未加密）设备的UDP数据包。需要将运行适配器的ioBroker主机放置在与设备相同的网段中，并且路由器需要支持UDP多播！
 
 所有检测到的设备都将添加到适配器中，并且作为基本功能，适配器在定义的轮询间隔中请求数据。如果没有与相应的移动应用程序同步（见下文），则无法进行实时更新或控制等其他功能。
 
+在您进行设备同步之前，新的加密设备不会显示（请参阅下一页...）
+
 ###设备同步后的高级功能
-要获得适配器的完整功能，适配器需要知道加密密钥。
+要获得适配器的全部功能并支持具有新加密固件的设备，适配器需要知道加密密钥。
 
 接收此加密密钥的最简单方法是从使用过的移动应用程序中获取它们。为此，适配器提供代理以捕获应用程序与tuya服务器的通信并获取所需信息。
+
+** iOS用户的重要说明：**此处描述的代理方法不再有效。只要您拥有Smart Life App 3.10或更高版本，代理就不再可以看到来自App的通信。但它仍适用于所有Android应用程序版本，因此最好的方法是安德鲁斯模拟器，如https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- GER％C3％A4te / 19
 
 首先，您需要在移动设备上添加自定义Root证书。
 当您在适配器实例配置中单击“启动代理”时，将为您的系统创建证书，并向下载位置显示QR码。理想情况下，使用移动设备扫描QR码，然后按照流程添加并信任此根证书。
@@ -54,8 +58,12 @@ ioBroker适配器连接到几个小而便宜的Wifi设备，这些设备与Tuya 
 
 某些移动操作系统的某些图像可以在[代理页](PROXY.md)中找到。
 
+##不适用于电池供电的设备
+此适配器通常不支持电池供电的设备！原因是他们不是一直在线以节省电力。每当他们收到信号时，他们就会上线，将更新发送到Tuya云服务器并再次离线。它们不会发出任何UDP包或在线时间足够长，以便适配器可以连接到它们。
+一旦有人找到直接从Tuya云获取数据的方法，这可能会发生变化。
+
 ##学分
-如果没有@codetheweb和@ NorthernMan54（https://github.com/codetheweb/tuyapi）和https://github.com/clach04/python-tuya以及更多的工作，那么适配器的工作是不可能的。 。
+如果没有@codetheweb，@ kueblc和@ NorthernMan54（https://github.com/codetheweb/tuyapi）和https://github.com/clach04/python-tuya的出色工作，适配器的工作是不可能实现的。还有很多。
 
 ＃＃ 去做
 *增强测试：状态检查和setState
@@ -63,7 +71,13 @@ ioBroker适配器连接到几个小而便宜的Wifi设备，这些设备与Tuya 
 
 ## Changelog
 
-### 1.0.8 (2019-03-08)
+### 2.0.2 (2019-06-27)
+* (Apollon77) New schemas added
+* (Apollon77) Update all Dependencies
+* (Apollon77) Nodejs 6.x no longer supported!
+* (Apollon77) Support encrypted devices
+
+### 1.0.8 (2019-03-08) [Unreleased]
 * (Apollon77) New schemas added
 
 ### 1.0.7 (2018-11-23)

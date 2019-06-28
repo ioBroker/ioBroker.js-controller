@@ -50,6 +50,9 @@ features:
 
 ## Changelog
 
+### 0.0.4 (2019-mm-dd)
+* (René) debugging
+
 ### 0.0.3 (2019-06-02)
 * (René) ready to publish
 

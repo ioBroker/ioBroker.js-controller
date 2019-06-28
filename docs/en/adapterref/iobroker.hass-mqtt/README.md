@@ -87,6 +87,9 @@ Confinguration like this
 ![](doc/img/zh-cn/broker_mqtt.png)
 
 ## Changelog
+### 0.0.7 (2019-06-16)
+* Fix multi map issue
+
 ### 0.0.6 (2019-06-13)
 * fix event storm issue
 

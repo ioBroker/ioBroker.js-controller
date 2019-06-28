@@ -2,23 +2,21 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.snips/README.md
-title: ioBroker.snips
-hash: GwiKNGZb+RqS8FxuI7LgbvEMNXHAc4yM8IBhetYQbHE=
+title: ioBroker.snips！[Logo]（admin / snips.png）
+hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
 ---
-![商标](../../../en/adapterref/iobroker.snips/admin/snips.png)
-
-![建立状态](https://travis-ci.org/Bettman66/ioBroker.snips.svg?branch=master)
+![建立状态](https://travis-ci.org/unltdnetworx/ioBroker.snips.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/snips-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.snips.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.snips.svg)
 ![NPM](https://nodei.co/npm/iobroker.snips.png?downloads=true)
 
-#ioBroker.snips =================
+＃ioBroker.snips![商标](../../../en/adapterref/iobroker.snips/admin/snips.png)
 需要node.js 6.0或更高版本以及Admin v3！
 
 适配器通过MQTT与Snips硬件通信。执行命令需要text2command适配器。
 
-Snips网址：https：//makers.snips.ai/
+Snips Url：<https://makers.snips.ai/>
 
 ##安装剪辑
 对于Debian Stretch（x86）下的Snips，Raspbian / Armbian Stretch（RPI3，Odroid）请安装以下软件包：
@@ -27,12 +25,12 @@ lsb-release apt-transport-https ca-certificates systemd systemd-sysv libttspico-
 
 您可能已经安装了软件包，具体取决于您的硬件和Linux发行版。
 
-Raspian / Armbian的安装说明和配置：https：//snips.gitbook.io/documentation/installing-snips/on-a-raspberry-pi
+Raspian / Armbian的安装说明和配置：<https://snips.gitbook.io/documentation/installing-snips/on-a-raspberry-pi>
 
-Debian的安装说明和配置：sudo nano /etc/apt/sources.list在每一行中附加“non-free”，否则无法安装软件包“libttspico-utils”。
-https://snips.gitbook.io/documentation/advanced-configuration/advanced-solutions
+Debian的安装说明和配置：sudo nano /etc/apt/sources.list在每一行中附加“non-free”，否则你无法安装软件包“libttspico-utils”。
+<https://snips.gitbook.io/documentation/advanced-configuration/advanced-solutions>
 
-登录https://console.snips.ai并添加新向导。
+登录<https://console.snips.ai>并添加新向导。
 在复选标记“仅显示带有操作的应用程序”上方添加应用程序，然后搜索iobroker![ioBroker snips-app标志](https://console.snips.ai/images/bundles/bundle-home.svg)并选择。
 完成后，按Deploy Assistant下载ZIP文件。
 zip文件在“/ usr / share / snips”下的剪辑机上解压缩，然后重新启动。
@@ -50,70 +48,124 @@ Url：Snips-MQTT-Servers端口的地址：Snips-MQTT-Servers的端口Instanz：T
 注意：必须在设备/服务器sudo apt-get install -y snips-injection上安装注入服务
 
 ## Changelog
+
+### 1.2.1
+
+* (unltdnetworx) bugfix for multiple devices in stellite's room
+
+### 1.2.0
+
+* (unltdnetworx) possibility to enforce the room for a satellite
+
+### 1.1.7
+
+* (unltdnetworx) security update because of vulnerability in pulled by mqtt-dependency mqtt-package
+
+### 1.1.6
+
+* (unltdnetworx) activation/deactivation of hotword recognition for each satellite (mute)
+
+### 1.1.5
+
+* (unltdnetworx) bugfixes for adapter-testing
+
+### 1.1.4
+
+* (unltdnetworx) control soundfeedback for every satellite
+
+### 1.1.3
+
+* (unltdnetworx) delete states after session ended
+
+### 1.1.2
+
+* (unltdnetworx) create satellites manually
+
 ### 1.1.1
+
 * (apollon77) Update CI testing
 
 ### 1.1.0
+
 * (unltdnetworx) support for satellites
 
 ### 1.0.1
+
 * (wal) bugfix memoryleak
 
 ### 1.0.0
+
 * (wal) stable version
 
 ### 0.3.1
+
 * (unltdnetworx) bugfix for not recognized slots
 
 ### 0.3.0
+
 * (unltdnetworx) slots reduced to two
 
 ### 0.2.2
+
 * (unltdnetworx) slot setBoolean changed to setDevice
 
 ### 0.2.1
+
 * (unltdnetworx) slot-type names converted to singular
 
 ### 0.2.0
+
 * (unltdnetworx) support for compact-mode added
 
 ### 0.1.1
+
 * (unltdnetworx) 2 new slots added incl. injection
 
 ### 0.1.0
+
 * (wal) add soundfeedback
 
 ### 0.0.9
+
 * (unltdnetworx) testadapter and slots added
 
 ### 0.0.8
+
 * (wal) adaptation for new snips version
 
 ### 0.0.7
+
 * (wal) file corrupt
 
 ### 0.0.6
+
 * (wal) add receive.text
 
 ### 0.0.5
+
 * (wal) bugfix injection
 
 ### 0.0.4
+
 * (wal) add hotword recognize
 
 ### 0.0.3
+
 * (wal) add filter and text2command_Instanz
 
 ### 0.0.2
+
 * (wal) first working adapter
 
 ### 0.0.1
+
 * (wal) initial release
 
 ## License
+
 The MIT License (MIT)
 
-Copyright (c) 2018 Walter Zengel <w.zengel@gmx.de>
+Copyright (c) 2019 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

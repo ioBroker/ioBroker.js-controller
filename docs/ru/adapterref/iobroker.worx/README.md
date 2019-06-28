@@ -3,11 +3,12 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: 8Md3hx6S+gqfyPSXckcy5BlyIzlXWMG1ktmMI3nFP40=
+hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
 ---
 ![логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
-![Количество установок](http://iobroker.live/badges/worx-stable.svg)
+![Количество установок](http://iobroker.live/badges/worx-installed.svg)
+![Стабильная версия](http://iobroker.live/badges/worx-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.worx.svg)
 ![Известные уязвимости](https://snyk.io/test/github/MeisterTR/ioBroker.worx/badge.svg)
@@ -30,8 +31,9 @@ hash: 8Md3hx6S+gqfyPSXckcy5BlyIzlXWMG1ktmMI3nFP40=
 - Задержка срезания кромки: если срезание кромки начинается по кривой или изгибу, газонокосилка может потерять провод и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой начинают вращаться лопасти.
 
 ## Changelog
-### 0.3.0 (06.06.2019)
+### 0.3.1 (12.06.2019)
 * (MeisterTR) add delay for edgecut in config
+* (MeisterTR) fix mowtime error
 
 ### 0.2.0 (01.06.2019)
 * (MeisterTR) add border

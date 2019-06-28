@@ -1,6 +1,6 @@
 ![Logo](admin/mpd.png)
 # ioBroker.mpd adapter
-
+![Number of Installations](http://iobroker.live/badges/mpd-installed.svg) ![Number of Installations](http://iobroker.live/badges/mpd-stable.svg) 
 [![NPM version](https://img.shields.io/npm/v/iobroker.mpd.svg)](https://www.npmjs.com/package/iobroker.mpd)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mpd.svg)](https://www.npmjs.com/package/iobroker.mpd)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)](https://travis-ci.org/instalator/ioBroker.mpd)

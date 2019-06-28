@@ -281,11 +281,36 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 2.2.0 (2019-01-xx)
+
+### 2.4.4 (2019-06-26)
+* (Apollon77) new devices added
+
+### 2.4.3 (2019-06-25)
+* (Apollon77) enhance error handling for Amazon Push Infos
+
+### 2.4.1/2 (2019-06-23)
+* (Apollon77) Allow to specify an external docker container IP to override Proxy-IP
+* (Apollon77) Add more Devices from GitHub
+* (Apollon77) try to work around an Image URL bug from Amazon
+* (Apollon77) optimize Admin display of Status/Link
+* (Apollon77) add Link to https://alexa.amazon.com to Admin instance overview
+* (Apollon77) Remove Admin2 support
+* (Apollon77) Optimize Handling from DNS errors (hopefully) to prevent stopped Adapters on Internet/DNS problems 
+
+### 2.3.3 (2019-06-21/22)
+* (Apollon77) adjust to current Amazon changes
+* (Apollon77) fix volume handling
+* (Apollon77) Add some more devices
+* (Apollon77) Logging reduced
+* (Apollon77) unknown devices get commands activated automatically
+* (Apollon77) remove Email/Password fields and add info about login to Admin screen (still needs to be polished, only Admin v3)
+* (Apollon77) detect App-Devices and remove them from the list because they are not usable in any way
+
+### 2.2.0 (2019-01-xx) [unpublished]
 * (Apollon77) add new sequenceCommands "calendarNext", "calendarToday", "calendarTomorrow"
 * (Apollon77) fix wake word handling and history sanitizing
 
-### 2.1.0 (2019-01-13)
+### 2.1.0 (2019-01-13) [unpublished]
 * (Apollon77) cookie handling completely rewritten, no email/password anymore, only Proxy (still only from log)
 * (Apollon77) fixes routine triggering that triggered on wrong device sometimes
 * (Apollon77) added new commands "deviceStop", "announcement", "notification", and "ssml" (see documentation above) 

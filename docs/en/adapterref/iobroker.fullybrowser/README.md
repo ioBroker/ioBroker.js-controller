@@ -21,6 +21,9 @@ A small excerpt just of the command options:
 <b>NodeJs >> 6.x.x </b>
 
 ## Changelog
+### 1.0.1 (2019-06-20)
+* (arteck) encodeURL
+
 ### 1.0.0 (2019-05-22)
 * (arteck) stable
 

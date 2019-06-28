@@ -154,6 +154,7 @@ https://doc.iobroker.net/#de/documentation/README.md
 https://doc.iobroker.net/#de/documentation/showcases/README.md
 https://doc.iobroker.net/#de/documentation/trouble/adapter.md
 https://doc.iobroker.net/#de/documentation/trouble/forum.md
+https://doc.iobroker.net/#de/documentation/trouble/install_fixer.md
 https://doc.iobroker.net/#de/documentation/trouble/issue.md
 https://doc.iobroker.net/#de/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#de/documentation/trouble/README.md
@@ -279,6 +280,7 @@ https://doc.iobroker.net/#en/documentation/README.md
 https://doc.iobroker.net/#en/documentation/showcases/README.md
 https://doc.iobroker.net/#en/documentation/trouble/adapter.md
 https://doc.iobroker.net/#en/documentation/trouble/forum.md
+https://doc.iobroker.net/#en/documentation/trouble/install_fixer.md
 https://doc.iobroker.net/#en/documentation/trouble/issue.md
 https://doc.iobroker.net/#en/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#en/documentation/trouble/README.md
@@ -404,6 +406,7 @@ https://doc.iobroker.net/#ru/documentation/README.md
 https://doc.iobroker.net/#ru/documentation/showcases/README.md
 https://doc.iobroker.net/#ru/documentation/trouble/adapter.md
 https://doc.iobroker.net/#ru/documentation/trouble/forum.md
+https://doc.iobroker.net/#ru/documentation/trouble/install_fixer.md
 https://doc.iobroker.net/#ru/documentation/trouble/issue.md
 https://doc.iobroker.net/#ru/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#ru/documentation/trouble/README.md
@@ -529,6 +532,7 @@ https://doc.iobroker.net/#zh-cn/documentation/README.md
 https://doc.iobroker.net/#zh-cn/documentation/showcases/README.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/adapter.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/forum.md
+https://doc.iobroker.net/#zh-cn/documentation/trouble/install_fixer.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/issue.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/monitoring.md
 https://doc.iobroker.net/#zh-cn/documentation/trouble/README.md
@@ -654,6 +658,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hm-rega/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hm-rpc/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hmip/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hombot/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.homeconnect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.homee/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hp-ilo/README.md
@@ -690,7 +695,6 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.knx/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.kodi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.kress/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.landroid/README.md
-https://doc.iobroker.net/#de/adapters/adapterref/iobroker.landroid-s/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lgtv-rs/README.md
@@ -781,6 +785,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.schoolfree/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.shelly/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sia/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.siegenia/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.simple-api/README.md
@@ -966,6 +971,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hm-rega/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hm-rpc/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hmip/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hombot/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.homeconnect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.homee/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hp-ilo/README.md
@@ -1002,7 +1008,6 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.knx/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.kodi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.kress/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.landroid/README.md
-https://doc.iobroker.net/#en/adapters/adapterref/iobroker.landroid-s/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lgtv-rs/README.md
@@ -1093,6 +1098,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.schoolfree/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.shelly/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sia/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.siegenia/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.simple-api/README.md
@@ -1278,6 +1284,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hm-rega/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hm-rpc/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hmip/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hombot/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.homeconnect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.homee/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hp-ilo/README.md
@@ -1314,7 +1321,6 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.knx/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.kodi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.kress/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.landroid/README.md
-https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.landroid-s/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lgtv-rs/README.md
@@ -1405,6 +1411,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.schoolfree/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.shelly/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sia/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.siegenia/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.simple-api/README.md
@@ -1590,6 +1597,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hm-rega/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hm-rpc/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hmip/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hombot/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.homeconnect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.homee/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hp-ilo/README.md
@@ -1626,7 +1634,6 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.knx/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.kodi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.kress/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.landroid/README.md
-https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.landroid-s/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lgtv-rs/README.md
@@ -1717,6 +1724,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.schoolfree/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.shelly/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sia/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.siegenia/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.simple-api/README.md

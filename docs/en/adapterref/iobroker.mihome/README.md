@@ -134,6 +134,9 @@ Under *Objects* the gateway and its learned devices are now displayed:
 The manual was created to the best of my knowledge and belief.
 
 ## Changelog
+### 1.2.7 (2019-06-25)
+* (SchumyHao) Add several devices support for protocol 2.0.x
+
 ### 1.2.6 (2019-03-04)
 - (Diginix) Improved calculation for sensor's battery percentage
 

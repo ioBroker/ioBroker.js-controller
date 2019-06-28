@@ -1,6 +1,5 @@
 ![Logo](admin/phantomjs.png)
 # ioBroker.phantomjs
-====================
 
 ![Number of Installations](http://iobroker.live/badges/phantomjs-installed.svg) ![Number of Installations](http://iobroker.live/badges/phantomjs-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.phantomjs.svg)](https://www.npmjs.com/package/iobroker.phantomjs)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.phantomjs.svg)](https://www.npmjs.com/package/iobroker.phantomjs)
@@ -31,7 +30,7 @@ By creation of the instance for states will be created:
 - **height** - height of the picture. Default value 600px.
 - **paging** - Format of the PDF page. File name must end with ".pdf"
 - **renderTime** - Interval in ms to wait till the page will be rendered.
-- **online** - If requested URL picture must be uploaded to internal web server. It could be accessed then via http://ip:8082/state/phantomjs.0.filename_png
+- **online** - If requested URL picture must be uploaded to internal web server. It could be accessed then via http://ip:8082/state/phantomjs.0.pictures.filename_png
 - **clipTop** - top position of the clip rectangle. Default value 0px.
 - **clipLeft** - left position of the clip rectangle. Default value 0px.
 - **clipWidth** - width of the clip rectangle. Default value is equal with width. Attention this value will be overwritten every time by the width change.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
+hash: rI/AFONJ0pKDcc0t0qfbXtqNzqQnfUx5gFpp9i7mUns=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,7 +17,7 @@ hash: 6F6AS8IgEpoxZ8NB9KppaBkvILY5BDkFdX1B2E/vo4s=
 ＃ioBroker.viessmann
 =================
 
-[![贝宝（https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+[![贝宝（https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
@@ -72,7 +72,10 @@ Es ist empfehlenswert，bei relativ unwichtigen Abfragewerten，einmöglichstgro
 ## Changelog
 #### Versions from 0.5.0. needs node > 4.x and admin V3
 
-#### 0.9.5 (13.01.2018)
+#### 1.0.0 (16.06.2019)
+* (misanorot) fixes little issues in compact modus
+
+#### 0.9.5 (13.01.2019)
 * (misanorot) Compact modus added
 
 #### 0.9.2 (13.01.2018)

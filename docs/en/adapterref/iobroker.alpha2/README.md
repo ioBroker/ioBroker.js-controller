@@ -62,6 +62,10 @@ You can check the object VACATION.STATE to check the status. If the status showi
 
 ## Changelog
 
+### 1.0.0
+- (Eisbaeeer)
+Fixed issue #6 (HEATAREA_NAME)
+
 ### 0.0.4
 - (Eisbaeeer)   
 Added refresh of states after setting states
@@ -79,3 +83,4 @@ fixed issues #1
 
 ## License
 The MIT License (MIT)
+Copyright (c) 2019 Eisbaeeer <eisbaeeer@gmail.com> 

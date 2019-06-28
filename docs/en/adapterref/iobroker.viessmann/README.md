@@ -11,7 +11,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)](https://nodei.co/npm/iobroker.viessmann/)
 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M6HVU7FQ96GWW&source=url)
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[English description](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
@@ -77,7 +77,10 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 ### Changelog
 #### Versions from 0.5.0. needs node > 4.x and admin V3
 
-#### 0.9.5 (13.01.2018)
+#### 1.0.0 (16.06.2019)
+* (misanorot) fixes little issues in compact modus
+
+#### 0.9.5 (13.01.2019)
 * (misanorot) Compact modus added
 
 #### 0.9.2 (13.01.2018)

@@ -3,11 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: 8Md3hx6S+gqfyPSXckcy5BlyIzlXWMG1ktmMI3nFP40=
+hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
 ---
 ![Logo](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/worx-stable.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/worx-installed.svg)
+![stabile Version](http://iobroker.live/badges/worx-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.worx.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/MeisterTR/ioBroker.worx/badge.svg)
@@ -27,11 +28,12 @@ Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom
 
 ## Die Einstellungen
 - Um sich mit dem Mäher zu verbinden, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
-- Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Kurve beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem die Messer zu drehen beginnen.
+- Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Kurve beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem sich die Schaufeln zu drehen beginnen.
 
 ## Changelog
-### 0.3.0 (06.06.2019)
+### 0.3.1 (12.06.2019)
 * (MeisterTR) add delay for edgecut in config
+* (MeisterTR) fix mowtime error
 
 ### 0.2.0 (01.06.2019)
 * (MeisterTR) add border

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.phantomjs/README.md
 title: ioBroker.phantomjs
-hash: w6UxlDY+5VfvYk44dGnqfn7YCQusj9p25QbIPkwoteA=
+hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
 ---
 ![商标](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
 
@@ -13,7 +13,7 @@ hash: w6UxlDY+5VfvYk44dGnqfn7YCQusj9p25QbIPkwoteA=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
 
-＃ioBroker.phantomjs ====================
+＃ioBroker.phantomjs
 此适配器允许您创建网页的屏幕截图（例如flot）并将其保存为png文件或通过内部WEB服务器共享。
 
 用户以后可以通过电子邮件或电报或其他方式发送此文件。
@@ -39,7 +39,7 @@ sudo apt-get install libfontconfig
  -  **高度**  - 图片的高度。默认值600px。
  - **paging** - PDF页面的格式。文件名必须以“.pdf”结尾
  - **renderTime** - 等待直到页面呈现的ms的间隔。
- -  **在线**  - 如果请求的URL图片必须上传到内部Web服务器。然后可以通过http：// ip：8082 / state / phantomjs.0.filename_png访问它
+ -  **在线**  - 如果请求的URL图片必须上传到内部Web服务器。然后可以通过http：// ip：8082 / state / phantomjs.0.pictures.filename_png访问它
  - **clipTop** - 剪辑矩形的顶部位置。默认值0px。
  - **clipLeft** - 剪辑矩形的左侧位置。默认值0px。
  - **clipWidth** - 剪辑矩形的宽度。默认值与宽度相等。注意每次宽度变化都会覆盖此值。

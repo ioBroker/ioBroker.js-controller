@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox适配器通过JSON / RPC协议
-hash: 0+k6sw+oV2Ep1ZCTnomHN4tH6cjNb5PtjbqjoLiKKdY=
+hash: q+ng2GBTpnlxb2ssirYc3z7tBpC33gefZ1G13TGbfeY=
 ---
 ![商标](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -33,6 +33,7 @@ LMS的实际主Web界面还使用rpc / json-protocol获取所有需要的信息�
  - 有关播放器状态，歌曲标题，艺术家，专辑，艺术作品，播放列表的详细信息
  - 许多控制功能，播放，暂停，停止，前进，后退，重复，随机播放，播放收藏，跳转到时间（绝对和相对），跳转到播放列表索引（绝对和相对），电源开/关和预设按钮
  - 所有收藏夹和服务器的所有子级别
+ - 包含iobroker-vis组件的许多小部件，用于创建自己的控制用户界面（选择播放器，选择收藏夹，管理同步组，播放/暂停按钮，前进，重拨，重复模式和随机播放模式选择）
 
 ##安装
  - 安装包
@@ -53,6 +54,7 @@ LMS的实际主Web界面还使用rpc / json-protocol获取所有需要的信息�
 | TotalDuration |所有歌曲的总和播放时间|
 | TotalGenres |所有已知类型的数量|
 | TotalSongs |所有已知歌曲的数量|
+| SyncGroups |现有的Syncgroups |
 |版本| LMS的版本|
 | mac |服务器的MAC-ID |
 | uuid | LMS-instance的uuid |
@@ -80,7 +82,7 @@ Somme属性取决于歌曲的类型（流/文件/ ...）所有属性都是只读
 
 其他定义的按钮：
 
-按钮|说明----------------- | --------------------------------------------- btnForward |下一首歌btnRewind |上一首歌btnPreset_ * | 1-6个按钮，用于在播放器或服务器中定义cmdPlayFavorite |播放收藏夹设置收藏的cmdGoTime |的ID通过指定秒数或在秒的开头用+或 - 相对跳跃来跳转到绝对位置。实施例100，-50，+ 50
+按钮|说明----------------- | --------------------------------------------- btnForward |下一首歌btnRewind |上一首歌btnPreset_ * |在播放器或服务器中定义的1-6个按钮cmdGeneral |用于向播放器发送命令的通用命令字段。每个字段必须用引号括起来。参数musst由逗号分隔。示例：“play”，“1”cmdPlayFavorite |播放收藏夹设置收藏的cmdGoTime |的ID通过指定秒数或在秒的开头用+或 - 相对跳跃来跳转到绝对位置。实施例100，-50，+ 50
 
 有关更多信息，请访问CLI文档：
 
@@ -100,6 +102,22 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~自动发现罗技媒体服务器~~
 
 ## Changelog
+### 0.8.18 (2019-06-27)
+* last minute changes.
+### 0.8.17 (2019-06-26)
+* add more widges: playtime bar, string, number, datetime, image. add button margin to player and favorite widget, improve editing of viewindex. do some refactoring.
+### 0.8.16 (2019-06-24)
+* resolve a cross browser issue for firefox. the style.font attribute is empty and you have to construct the font string by yourself
+### 0.8.15 (2019-06-19)
+* minor issue with not ready states
+### 0.8.14 (2019-06-19)
+* add syncgroups as new server-datapoint,add syncgroup widget, change some jquery event logic
+### 0.8.13 (2019-06-16)
+* rename widgetset from squeezeboxrpcwidgets to squeezeboxrpc
+### 0.8.12 (2019-06-16)
+* sync version with npm
+### 0.8.11 (2019-06-15)
+* try to integrate the widgets into the main adapter
 ### 0.8.10 (2019-05-15)
 * another try to fix the EADDRINUSE error of the server discovery
 ### 0.8.9 (2019-05-15)

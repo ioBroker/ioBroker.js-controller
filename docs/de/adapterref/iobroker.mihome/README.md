@@ -124,6 +124,9 @@ Unter *Objekte* wird nun das Gateway und seine angelernten Geräte angezeigt:
 Die Anleitung wurde nach besten Wissen und Gewissen erstellt.
 
 ## Changelog
+### 1.2.7 (2019-06-25)
+* (SchumyHao) Add several devices support for protocol 2.0.x
+
 ### 1.2.6 (2019-03-04)
 - (Diginix) Improved calculation for sensor's battery percentage
 

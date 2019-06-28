@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mpd/README.md
 title: ioBroker.mpd适配器
-hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
+hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
 ---
 ![商标](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
+![安装数量](http://iobroker.live/badges/mpd-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mpd.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.mpd.svg)
 ![测试](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)

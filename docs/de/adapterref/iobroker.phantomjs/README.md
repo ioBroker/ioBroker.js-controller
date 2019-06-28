@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.phantomjs/README.md
 title: ioBroker.phantomjs
-hash: w6UxlDY+5VfvYk44dGnqfn7YCQusj9p25QbIPkwoteA=
+hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
 ---
 ![Logo](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
 
@@ -13,43 +13,43 @@ hash: w6UxlDY+5VfvYk44dGnqfn7YCQusj9p25QbIPkwoteA=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
 
-# IoBroker.phantomjs ======================
-Mit diesem Adapter können Sie Screenshots von Webseiten erstellen (z. B. Flot) und als PNG-Datei speichern oder über den internen WEB-Server freigeben.
+# IoBroker.phantomjs
+Mit diesem Adapter können Sie Screenshots von Webseiten (z. B. Flot) erstellen und als PNG-Datei speichern oder über den internen WEB-Server freigeben.
 
-Der Benutzer kann diese Datei später per E-Mail oder per Telegramm oder was auch immer senden.
+Benutzer können diese Datei später per E-Mail oder per Telegramm oder was auch immer senden.
 
 Langsame Web-Clients können die Diagramme anzeigen, wenn die Diagramme alle x Minuten automatisch generiert werden.
 
-## Vorraussetzung
-Es wird vorgefertigtes Paket von Phantomjs verwendet. Wenn für Ihr System kein Voraufbau vorhanden ist, können Sie diesen Adapter nicht verwenden.
-Auf einigen Linux-Systemen ist die zusätzliche Bibliothek "libfontconfig" erforderlich. Es kann wie folgt installiert werden:
+## Voraussetzen
+Es wird ein vorgefertigtes Paket von Phantomen verwendet. Wenn für Ihr System die Vorkonstruktion nicht vorhanden ist, können Sie diesen Adapter nicht verwenden.
+Auf einigen Linux-Systemen wird die zusätzliche Bibliothek "libfontconfig" benötigt. Es kann wie folgt installiert werden:
 
 ```
 sudo apt-get install libfontconfig
 ```
 
 ## Verwendungszweck
-Es gibt zwei Möglichkeiten, Bilder zu erstellen.
+Es gibt zwei Möglichkeiten, um Bilder zu erstellen.
 
 ### Über Staaten
-Durch die Erstellung der Instanz werden Zustände erstellt:
+Durch das Anlegen der Instanz werden Zustände erzeugt:
 
-- **Dateiname** - Dateiname, unter dem das Bild gespeichert wird. Wenn Pfad nicht absolut ist, ist er relativ zu `` `... / iobroker / node_modules / iobroker.phantomjs```.
+- **Dateiname** - Dateiname, in dem das Bild gespeichert wird. Wenn der Pfad nicht absolut ist, ist er relativ zu `` `... / iobroker / node_modules / iobroker.phantomjs````.
 - **width** - Breite des Bildes. Standardwert 800px.
-- **height** - Höhe des Bildes. Standardwert 600px.
-- **paging** - Format der PDF-Seite. Dateiname muss mit ".pdf" enden
-- **renderTime** - Wartezeit in ms bis die Seite gerendert wird.
-- **online** - Falls gewünscht, muss das Bild auf den internen Webserver hochgeladen werden. Es könnte dann über http:// ip: 8082 / state / phantomjs.0.filename_png zugegriffen werden
-- **clipTop** - obere Position des Cliprechtecks. Standardwert 0px.
-- **clipLeft** - linke Position des Cliprechtecks. Standardwert 0px.
-- **clipWidth** - Breite des Cliprechtecks. Der Standardwert ist gleich der Breite. Achtung, dieser Wert wird jedes Mal durch die Breitenänderung überschrieben.
-- **clipHeight** - Höhenposition des Cliprechtecks. Der Standardwert ist gleich der Höhe. Achtung, dieser Wert wird jedes Mal durch die Höhenänderung überschrieben.
-- **scrollTop** - Nach oben scrollen. Standardwert 0px.
-- **scrollLeft** - Nach links scrollen. Standardwert 0px.
+- **Höhe** - Höhe des Bildes. Standardwert 600px.
+- **Paging** - Format der PDF-Seite. Dateiname muss mit ".pdf" enden
+- **renderTime** - Wartezeit in ms, bis die Seite gerendert wird.
+- **online** - Auf Wunsch muss das URL-Bild auf den internen Webserver hochgeladen werden. Sie können dann über http:// ip: 8082 / state / phantomjs.0.pictures.filename_png darauf zugreifen
+- **clipTop** - obere Position des Clip-Rechtecks. Standardwert 0px.
+- **clipLeft** - Linke Position des Clip-Rechtecks. Standardwert 0px.
+- **clipWidth** - Breite des Clip-Rechtecks. Der Standardwert entspricht der Breite. Achtung, dieser Wert wird bei jeder Breitenänderung überschrieben.
+- **clipHeight** - Höhenposition des Clip-Rechtecks. Der Standardwert entspricht der Höhe. Achtung, dieser Wert wird bei jeder Höhenänderung überschrieben.
+- **scrollTop** - Scrolle nach oben. Standardwert 0px.
+- **scrollLeft** - Bildlauf nach links. Standardwert 0px.
 
-Nachdem der URL-Status geschrieben wurde, versucht der Adapter, das Bild zu erstellen, und das Ack-Flag von ** URL-Status wird beim Erstellen in true geändert.
+Nachdem der URL-Status geschrieben wurde, versucht der Adapter, das Bild zu erstellen, und ändert dabei das Bestätigungs-Flag des URL-Status in true.
 
-Über Mitteilungen
+### Über Nachrichten
 Mit dem Skriptcode wie folgt:
 
 ```
@@ -83,7 +83,7 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-Sie können einen Screenshot einer URL erstellen. Nur das Feld **url** ist obligatorisch. Alle anderen sind optional und werden mit den aktuellen Einstellungen gefüllt.
+Sie können einen Screenshot einer URL erstellen. Nur das **url** -Feld ist obligatorisch, alle anderen Felder sind optional und werden mit den aktuellen Einstellungen ausgefüllt.
 
 ### PDF-Generierung
 ```
@@ -121,7 +121,7 @@ sendTo('phantomjs.0', 'send', {
 
 Unterstützte Maßeinheiten sind: 'mm', 'cm', 'in', 'px'. Keine Einheit bedeutet "px".
 
-Sie können mehr über phantomJS nach [Hier](http://phantomjs.org/api/webpage/property/paper-size.html) lesen.
+Sie können mehr über phantomJS [Hier](http://phantomjs.org/api/webpage/property/paper-size.html) lesen.
 
 ## Changelog
 ### 1.0.1 (2018-05-04)

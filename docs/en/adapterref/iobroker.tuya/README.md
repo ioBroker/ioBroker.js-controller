@@ -25,15 +25,19 @@ One adapter instance can handle all devices in one network that routes UDP packa
 
 ### Basic functionality
 
-The adapter monitors the local network for UDP packets of Tuya devices. It is needed that the ioBroker host where the adapter runs on is placed in the same network segment as the devices and UDP multicasting needs to be supported by the router!
+The adapter monitors the local network for UDP packets of Tuya (old firmware, so unencrypted only) devices. It is needed that the ioBroker host where the adapter runs on is placed in the same network segment as the devices and UDP multicasting needs to be supported by the router!
 
 All detected devices are added to the adapter and as basis functionality the adapter requests data in the defined polling interval. Without a sync with the respective mobile app (see below) NO further functionality like real time updates or controlling is possible.
 
+Newer encrypted devices will NOT show up before you do a device sync (see next ...)
+
 ### Advanced functionality after device sync
 
-To get the full functionality of the adapter  an encryption key needs to be known by the adapter.
+To get the full functionality of the adapter and also support devices with the new encrypted Firmware an encryption key needs to be known by the adapter.
 
 The easiest way to receive this encryption key is to get them from the used mobile app. To do this the adapter provides a proxy to catch the communication of the app with the tuya servers and grab the needed information.
+
+**Important Note for iOS Users:** The Proxy approach described here is not working anymore. As soon as you have Smart Life App version 3.10 or higher the communication from App is no longer visible to the proxy. But it still works with all Android App versions, so the best approach is an Androis Emulator as roughly described at https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte-ger%C3%A4te/19
 
 To do this first of all you need to add a custom Root-Certificate on your mobile device.
 When you click "Start Proxy" in the adapter instance configuration the certificate is created for your system and shows a QR-Code to the download location. Ideally scan the QR Code with your mobile device and follow the process to add and trust this Root-Certificate.
@@ -52,8 +56,13 @@ The sync is only needed initially or after you added new devices to your App.
 
 Some images for some mobile OS can be found at the [Proxy-Page](PROXY.md).
 
+## Not for Battery powered devices
+Battery powered devices are normally NOT supported by this adapter! The reason is that they are not online all the time to save power. Whenever they get a signal, thay go online, send the update to the the Tuya cloud servers and go offline again. They do not emit any UDP packages or are online long enough so that the adapter could connect to them. 
+A soon as someone finds a way to directly fetch data from the Tuya cloud this may change.
+
+
 ## Credits
-The work of the adapter would not had been possible without the great work of @codetheweb and @NorthernMan54 (https://github.com/codetheweb/tuyapi) and https://github.com/clach04/python-tuya and many more.
+The work of the adapter would not had been possible without the great work of @codetheweb, @kueblc and @NorthernMan54 (https://github.com/codetheweb/tuyapi) and https://github.com/clach04/python-tuya and many more.
 
 ## Todo
 * enhance testing: state checks and setState's
@@ -61,7 +70,13 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
-### 1.0.8 (2019-03-08)
+### 2.0.2 (2019-06-27)
+* (Apollon77) New schemas added
+* (Apollon77) Update all Dependencies
+* (Apollon77) Nodejs 6.x no longer supported!
+* (Apollon77) Support encrypted devices
+
+### 1.0.8 (2019-03-08) [Unreleased]
 * (Apollon77) New schemas added
 
 ### 1.0.7 (2018-11-23)

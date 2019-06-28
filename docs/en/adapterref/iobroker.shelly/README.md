@@ -39,6 +39,10 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.0.5 (16.06.2019)
+* (Stübi) - Bugfixing 
+* (Stübi) - Add Blacklist
+
 ### 3.0.4 (04.06.2019)
 * (Stübi) - Bugfixing (Issue #60) 
 

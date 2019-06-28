@@ -73,6 +73,9 @@ function downloadImagesForReadme(lang, repo, data) {
 function prepareAdapterReadme(lang, repo, data) {
     return new Promise(resolve => {
         let text = data.body;
+        if (!repo) {
+            console.log('Prepare Readme for ' + data.editLink);
+        }
 
         if (!text) {
             console.error('No data found for ' + repo.name + ': ' + data.link);

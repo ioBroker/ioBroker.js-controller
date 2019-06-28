@@ -8,13 +8,21 @@
 
 [![NPM](https://nodei.co/npm/iobroker.iqontrol.png?downloads=true)](https://nodei.co/npm/iobroker.iqontrol/)
 
-**Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)](https://travis-ci.org/sbormann/ioBroker.iqontrol)
+**Tests:**
+
+| Linux/Mac/Windows: | Cross-Browser-Checking: |
+| --- | --- |
+| [![Travis-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)](https://travis-ci.org/sbormann/ioBroker.iqontrol) | [![Browserstack](img/browserstack.png)](https://www.browserstack.com) |
+
 <!-- Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)](https://ci.appveyor.com/project/sbormann/ioBroker-iqontrol/) -->
 
-If you like it, please consider a donation.  
+\
+**If you like it, please consider a donation:**
   
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
+
+****
 
 ## iqontrol adapter for ioBroker
 
@@ -55,15 +63,21 @@ It's fully customizable.
 ## Known issues
 This is the first alpha-Release, so there may be a lot of bugs. But for me it runs completely stable.
 However there are a few limitations:
-- Uploading images (as background-images or for skinning device-buttons) works, but renaming and deleting does not work
-- Creating and deleting sub-directories is also not working.
-You can do these operations manually via ftp under iobroker/iobroker-data/files/iqontrol/userimages
+- Uploaded images (as background-images or for skinning device-buttons) are not included in the backup-file created by iobroker
 
 Please feel free to comment and let me know, how to fix these issues!
 
 Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol). 
 
+## URL-Parameters
+* The frontend is called via ``http[s]://<url or ip of iobroker>:<port of web adapter>/iqontrol/index.html``
+    * ``<port of web adapter>`` is usually 8082
+* To open a specified instance you can add ``namespace=iqontrol.<instance-number>`` as URL-parameter
+* To open a specified view as homepage you can add ``home=<viewID>`` as URL-parameter
 
+**Example:**
+* ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
+    * Note upper and lower case
 
 ## Description of roles and associated states
 Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding io-broker state.
@@ -95,7 +109,8 @@ Almost all roles have a STATE- and/or a LEVEL-state. In most cases this represen
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
 ### Link to other view:
-* Has no further states, but it will respect the **linked-view-property**
+* Has no further states
+* The **linked-view-property** is opened directly
 
 ### <img src="img/icons/switch_on.png" width="32"> Switch, <img src="img/icons/fan_on.png" width="32"> Fan:
 * **STATE**: *boolean* - display and set on/off-state
@@ -115,12 +130,10 @@ Optional you can define the following states:
     * **CT**: *number* - color-temperature of the light, if it has two shades of white
     * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (this is only respected, if the light has both, white and coloured LEDs. If you have only one kind of LEDs the brightness is controlled by the LEVEL-State)
 * Alternative color-spaces **not yet implemented**:
-    * **HUE_MILIGHT**: *number* - Milight uses another staring-point in the hue color-cirlce: 
+    * **HUE_MILIGHT**: *number* - Milight uses another starting-point in the hue color-cirlce: 
         ````
 		MilightHue = modulo(66 - (hue / 3.60), 100) * 2.55; 
-		function modulo(n, m){ 
-			return ((n % m) + m) %m;
-		}
+		function modulo(n, m){ return ((n % m) + m) %m; }
         ````
     * **RGB_HUEONLY**: *string* - instead of using HUE you can use the RGB_HUEONLY-Format (hex). In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed
     * **RGB**: *string* - instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex)
@@ -145,16 +158,16 @@ In addition to normal thermostat you can define:
 * **STATE**: *number* - temperature or humidity that will be displayed in the lower part of the device
 * **TEMPERATURE**: *number* - temperature that will be displayed in small in the upper right corner
 * **HUMIDITY**: *number* - humidity that will be displayed in small in the upper right corner
-* Respects the **linked-view-property**
+* The **linked-view-property** is opened directly
 
 ### <img src="img/icons/brightness_light.png" width="32"> Brightness-Sensor:
 * **STATE**: *number* - brightness that will be displayed in the lower part of the device
 * **BRIGHTNESS**: *number* - brightness that will be displayed in small in the upper right corner
-* Respects the **linked-view-property**
+* The **linked-view-property** is opened directly
 
 ### <img src="img/icons/motion_on.png" width="32"> Motion-Sensor:
 * **STATE**: *boolean* - display if motion is detected or not
-* Respects the **linked-view-property**
+* The **linked-view-property** is opened directly
 
 ### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
 * **STATE**: *boolean* - display if the door or window is opened or closed. 
@@ -177,7 +190,7 @@ In addition to normal thermostat you can define:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
     * Alternatively you can assign a *value-list*, to display additional states like 'tampered'.
     * You can also assign a *string* to display any text like "fire in upper floor".
-* Respects the **linked-view-property**
+* The **linked-view-property** is opened directly
 
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
@@ -221,15 +234,45 @@ In addition to normal thermostat you can define:
 
 # Changelog
 
+### 0.0.040
+* (Sebastian Bormann) Appended missing conn.js in admin-folder.
+
+### 0.0.39
+* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (Sebastian Bormann) Added Image-Popup in admin.
+* (Sebastian Bormann) Renamed demo-images.
+
+### 0.0.38
+* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
+
+### 0.0.37
+* (Sebastian Bormann) Some more little changes to forced touch.
+* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
+
+### 0.0.36
+* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
+* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
+
+### 0.0.35
+* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
+* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
+
+### 0.0.34
+* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
+
 ### 0.0.33
-* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat
-* (Sebastian Bormann) Fixed marquee not always starting correctly
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (Sebastian Bormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Sebastian Bormann) Added Battery
-* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum
-* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup
-* (Sebastian Bormann) Added check for existance of common.role before rendering view
+* (Sebastian Bormann) Added Battery.
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (Sebastian Bormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
 * (Sebastian Bormann) Fixed some typos.

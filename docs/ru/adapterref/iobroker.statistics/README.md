@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.statistics/README.md
 title: ioBroker.statistics
-hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
+hash: adIa0874RzAX7ME3y5k56uOLZbThzREl8C1ROlIdnd4=
 ---
 ![логотип](../../../en/adapterref/iobroker.statistics/admin/statistics.png)
 
+![Количество установок](http://iobroker.live/badges/statistics-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.statistics.svg)
 ![Статус сборки](https://travis-ci.org/foxthefox/ioBroker.statistics.svg?branch=master)
@@ -25,6 +26,7 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 * как долго был статус true / ON и как долго false / OFF (только для двоичных значений)
 * дельта между зарегистрированными аналоговыми значениями (только для аналоговых значений)
 * дневной максимум, минимум и среднее (не для дельта-расчетов)
+* мин / макс за год
 * рассчитывает в течение 5 минут и максимальный дневной, минимальный и средний значения (не для дельта-расчетов)
 * суммирование сгруппированных значений
 
@@ -44,6 +46,15 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 * указать конфигурацию в настройках состояния (admin => объекты)
 
 ## Changelog
+
+### 0.2.1 [2019-06-15]
+* (foxthefox) correction, timecount value was milliseconds instead seconds
+* (foxthefox) other calculations with 2 decimal places after comma
+* (foxthefox) min/max for day/week/month/quarter/year
+* (foxthefox) set of daily min/max starting point from actual value
+* (foxthefox) fixing the PR with dayMin 0 at 00:00
+* (foxthefox) improvement for timecount when receiving status updates and no real status change
+
 ### 0.2.0 [2019-01-08]
 * (foxthefox) compact mode
 
@@ -75,5 +86,5 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>,
+Copyright (c) 2018 - 2019 foxthefox <foxthefox@wysiwis.net>,
                    bluefox <dogafox@gmail.com>

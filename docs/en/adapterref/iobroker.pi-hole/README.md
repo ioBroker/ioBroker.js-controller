@@ -1,5 +1,5 @@
-![Logo](admin/pi-hole.png)
-# ioBroker.pi-hole
+# ioBroker.pi-hole ![Logo](admin/pi-hole.png)
+
 ![Number of Installations](http://iobroker.live/badges/pi-hole-installed.svg) ![Number of Installations](http://iobroker.live/badges/pi-hole-stable.svg)
 
 =================
@@ -16,7 +16,8 @@ USE AT YOUR OWN RISK!!! ABSOLUTELY NO WARRANTY FOR DAMAGES, ETC.!!!
 
 Help or hints are welcome.
 
-## Steps 
+## Steps
+
 1. Install the adpater
 
 2. Fill in the fields of the adapter-admin. The ip-adress of the pi-hole device, the API-Token, which you can get from the admin web-interface of the pi-hole device (Settings/API/Get token), and obligatory the intervall to renew the values of the pi-hole (renew statistic in iobroker))
@@ -26,25 +27,45 @@ Help or hints are welcome.
 4. Activate the filter by clicking the button "activate pi-hole", deactivate the filter by changing the value of "dactivate pi-hole" (0 for permanently, number for amount of seconds)
 
 ## Requirements
-* running pi-hole device   
+
+* running pi-hole device
 
 ## Changelog
+
+### 1.2.0
+
+* (unltdnetworx) datapoint for available update
+
+### 1.1.0
+
+* (unltdnetworx) support for ssl-connection
+
+### 1.0.1
+
+* (unltdnetworx) bugfixes
+
 ### 1.0.0
+
 * (unltdnetworx) rise of version-number - stable version
 
 ### 0.2.1
+
 * (unltdnetworx) small bugfix for storage
 
 ### 0.2.0
+
 * (unltdnetworx) cleanup and bugfix for restart and storage
 
 ### 0.1.0
+
 * (unltdnetworx) fully working release for LTE_API
 
 ### 0.0.1
+
 * (unltdnetworx) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2019 Michael Schuster

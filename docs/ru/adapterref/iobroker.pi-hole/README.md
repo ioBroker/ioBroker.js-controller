@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pi-hole/README.md
-title: ioBroker.pi-луночное
-hash: PRUrCjRB53ENQJEa4SJXIK4I7Uawlcq0KJxWWWjYM9k=
+title: ioBroker.pi-hole! [Логотип] (admin / pi-hole.png)
+hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 ---
-![логотип](../../../en/adapterref/iobroker.pi-hole/admin/pi-hole.png)
+# IoBroker.pi-hole ![логотип](../../../en/adapterref/iobroker.pi-hole/admin/pi-hole.png)
 
 ![Количество установок](http://iobroker.live/badges/pi-hole-stable.svg)
 ![Статус сборки](https://api.travis-ci.org/unltdnetworx/ioBroker.pi-hole.svg?branch=master)
@@ -13,7 +13,6 @@ hash: PRUrCjRB53ENQJEa4SJXIK4I7Uawlcq0KJxWWWjYM9k=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.pi-hole.svg)
 ![NPM](https://nodei.co/npm/iobroker.pi-hole.png?downloads=true)
 
-# IoBroker.pi-hole
 =================
 
 Этот адаптер предназначен для чтения значений из работающей точки и управления устройством (запуск / останов).
@@ -29,25 +28,47 @@ hash: PRUrCjRB53ENQJEa4SJXIK4I7Uawlcq0KJxWWWjYM9k=
 
 3. Некоторые из объектов являются json-таблицами, которые вы можете использовать внутри vis.
 
-4. Активируйте фильтр, нажав кнопку «активировать пи-дыру», деактивируйте фильтр, изменив значение «деактивировать пи-дыру» (0 для постоянного, число для количества секунд)
+4. Активируйте фильтр, нажав кнопку «активировать пи-дыру», деактивируйте фильтр, изменив значение «деактивировать пи-дыру» (0 - навсегда, число - количество секунд).
 
 ## Требования
 * работает пи-дырка
 
 ## Changelog
+
+### 1.2.0
+
+* (unltdnetworx) datapoint for available update
+
+### 1.1.0
+
+* (unltdnetworx) support for ssl-connection
+
+### 1.0.1
+
+* (unltdnetworx) bugfixes
+
+### 1.0.0
+
+* (unltdnetworx) rise of version-number - stable version
+
 ### 0.2.1
+
 * (unltdnetworx) small bugfix for storage
 
 ### 0.2.0
+
 * (unltdnetworx) cleanup and bugfix for restart and storage
 
 ### 0.1.0
+
 * (unltdnetworx) fully working release for LTE_API
 
 ### 0.0.1
+
 * (unltdnetworx) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2019 Michael Schuster

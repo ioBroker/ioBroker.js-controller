@@ -50,6 +50,12 @@ This adapter controls devices which followed miIO protocol.
 
 
 ## Changelog
+### 0.0.9 (2019-06-27)
+* Fix delete device and discover devices issue
+
+### 0.0.8 (2019-06-26)
+* NEED UPLOAD MANUALLY！ use TS instead nodejs. Sync device ip based on token 
+
 ### 0.0.7 (2019-05-17)
 * Add zhimi fan support
 

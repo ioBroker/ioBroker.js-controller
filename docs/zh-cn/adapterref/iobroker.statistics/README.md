@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.statistics/README.md
 title: ioBroker.statistics
-hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
+hash: adIa0874RzAX7ME3y5k56uOLZbThzREl8C1ROlIdnd4=
 ---
 ![商标](../../../en/adapterref/iobroker.statistics/admin/statistics.png)
 
+![安装数量](http://iobroker.live/badges/statistics-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.statistics.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.statistics.svg)
 ![建立状态](https://travis-ci.org/foxthefox/ioBroker.statistics.svg?branch=master)
@@ -25,6 +26,7 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 *状态为真/开多长时间以及假/关多长时间（仅限二进制值）
 *记录的模拟值之间的差值（仅适用于模拟值）
 *每日最大值，最小值和平均值（不用于增量计算）
+*一年中最小/最大
 *计数在5分钟内，每日最大值，最小值和平均值（不用于增量计算）
 *分组值的总和
 
@@ -44,6 +46,15 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 *在状态设置中指定配置（admin => objects）
 
 ## Changelog
+
+### 0.2.1 [2019-06-15]
+* (foxthefox) correction, timecount value was milliseconds instead seconds
+* (foxthefox) other calculations with 2 decimal places after comma
+* (foxthefox) min/max for day/week/month/quarter/year
+* (foxthefox) set of daily min/max starting point from actual value
+* (foxthefox) fixing the PR with dayMin 0 at 00:00
+* (foxthefox) improvement for timecount when receiving status updates and no real status change
+
 ### 0.2.0 [2019-01-08]
 * (foxthefox) compact mode
 
@@ -75,5 +86,5 @@ hash: 2MeHd4l9oZh38uXGd/qfbyA/wmfX2B4yvi9N/vaTpfk=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>,
+Copyright (c) 2018 - 2019 foxthefox <foxthefox@wysiwis.net>,
                    bluefox <dogafox@gmail.com>

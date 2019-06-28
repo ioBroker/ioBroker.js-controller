@@ -29,6 +29,9 @@ If authentication is enabled and the user enters 5 times invalid password during
 After 15th wrong attempt the user must wait 1 hour.
 
 ## Changelog
+### 2.4.4 (2019-06-27)
+* (bluefox) Fixed issue with socket.io.js not found
+
 ### 2.4.3 (2019-01-14)
 * (SchumyHao) Add Chinese support
 

@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mpd/README.md
 title: адаптер ioBroker.mpd
-hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
+hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
 ---
 ![логотип](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
+![Количество установок](http://iobroker.live/badges/mpd-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mpd.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mpd.svg)
 ![тесты](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
