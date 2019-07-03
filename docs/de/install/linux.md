@@ -75,7 +75,10 @@ reicht es aus, den Befehl sudo zu verwenden und dem jeweiligen Befehl voran zu s
 
 Die folgende Anleitung ist auch bei einem Downgrade zu verwenden.
 
-Die momentan empfohlene Version ist node 8.x; mit js-controller 1.5.7 auch node 10.x, dann in Schritt 4.1. die “8.x” gegen 10.x” austauschen.
+Die momentan empfohlene Version ist node 10.x; mit js-controller 1.5.7 auch node 8.x, dann in Schritt 4.1. die “10.x” gegen 8.x” austauschen.
+
+!> Debian Buster erfordert node.js v10.x!!
+
 
 <span style="color:red"> ungerade nodejs-Versionen sind grundsätzlich nicht empfohlen, da es sich um Entwicklerversionen handelt. </span>
 
