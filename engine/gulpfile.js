@@ -258,6 +258,21 @@ gulp.task('8.createSitemap', done => {
     done();
 });
 
+gulp.task('9.build', done => {
+    const { exec } = require('child_process');
+
+    if (!fs.existsSync(__dirname + '/front-end/node_modules')) {
+        const child = exec('npm install', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
+        child.on('exit', (code, signal) => {
+            const child_ = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
+            child_.on('exit', (code, signal) => done());
+        });
+    } else {
+        const child = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
+        child.on('exit', (code, signal) => done());
+    }
+});
+
 gulp.task('default', gulp.series(
     '0.clean',              // clean dir
     '1.blog',               // translate and copy blogs
@@ -267,7 +282,8 @@ gulp.task('default', gulp.series(
     '5.faq',                // combine FAQ together
     '6.documentation',      // create content for documentation
     '7.copyFiles',          // copy all adapters and docs to public
-    '8.createSitemap'       // create sitemap for google
+    '8.createSitemap',      // create sitemap for google
+    '9.build'               // build react site
 ));
 
 
