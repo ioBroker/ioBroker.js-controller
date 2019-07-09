@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.node-red/README.md
-title: ioBroker-Knoten-roter Adapter
-hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
+title: ioBroker knotenroter Adapter
+hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 ---
 ![Logo](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -15,11 +15,11 @@ hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
 
 # IoBroker knotenroter Adapter
 ## Startet die knotenrote Instanz und kommuniziert mit ihr.
-*** Dieser Adapter benötigt mindestens nodejs 4.x, um zu funktionieren ***
+*** Dieser Adapter benötigt mindestens nodejs 4.x um zu funktionieren ***
 
-Dieser Adapter verwendet den Node-Red-Server von https://github.com/node-red/node-red
+Dieser Adapter verwendet den knotenroten Server von https://github.com/node-red/node-red
 
-** Hinweis: ** Wenn Sie im Auswahl-ID-Dialog des ioBroker-Knotens keine Variablen finden, starten Sie die knotenrote Instanz neu. Durch einen Neustart wird die neue Liste der Objekte erstellt.
+** Hinweis: ** Wenn Sie im Dialogfeld "ID auswählen" des ioBroker-Knotens keine Variable finden können, starten Sie die knotenrote Instanz neu. Durch einen Neustart wird die neue Objektliste erstellt.
 
 ## Installieren
 ```node iobroker.js add node-red```
@@ -27,9 +27,14 @@ Dieser Adapter verwendet den Node-Red-Server von https://github.com/node-red/nod
 ## Aufbau
 
 ## Changelog
+### 1.9.0 (2019-07-08)
+* (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
+
+### 1.8.0 (2019-05-02)
+* (nobodyMO) Used newer version of node-red 0.20.5
 
 ### 1.7.2 (2019-01-16)
-- (SchumyHao) Add Chinese support
+* (SchumyHao) Add Chinese support
 
 ### 1.7.1 (2017-09-24)
 * (bluefox) use newer version of node-red 0.19.4

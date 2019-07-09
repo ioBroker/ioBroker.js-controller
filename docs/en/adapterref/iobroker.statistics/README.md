@@ -39,6 +39,9 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 
 ## Changelog
 
+### 0.2.2 [2019-06-29]
+* (foxthefox) adapter logs a warning when invalid values arrive and cancels further processing
+
 ### 0.2.1 [2019-06-15]
 * (foxthefox) correction, timecount value was milliseconds instead seconds
 * (foxthefox) other calculations with 2 decimal places after comma

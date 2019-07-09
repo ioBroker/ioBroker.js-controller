@@ -7,70 +7,39 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.backitup/README.md
 title: 没有标题
-hash: TLC0vtNil1nGmmBsoKFHBHe0rwOlsNBfag6GkVIl9Xs=
+hash: +f3yzK1qpuMDXN4bgJLfLZCzqLJMy6jKartpMjEaN04=
 ---
-Backitup是一种备份解决方案，可以对IoBroker安装以及Homematic CCU进行循环备份。
+Backitup是一种备份解决方案，可以对ioBroker安装以及Homematic CCU进行循环备份。
 
 该适配器适用于多平台，除了Windows和Mac安装上的Linux安装外，还可以使用该适配器。
 
 CIFS安装必须安装cifs-utils。
 
-     -  sudo apt-get install cifs-utils
+     - `sudo apt-get install cifs-utils`
 
 NFS安装必须安装nfs-common。
 
-     -  sudo apt-get install nfs-common
+     - `sudo apt-get install nfs-common`
 
-##目录：
-1.备份类型
-    -  1.1最小备份（标准IoBroker备份）
-    -  1.2完整备份
-    -  1.3 CCU备份（CCU-Original / pivCCU / Raspberrymatic）
-    -  1.4可选的Mysql备份（Localhost）
-    -  1.5可选的Redis备份
-
-2.准备
-
-3. Ftp，CIFS，NFS，Copy和Dropbox
-
-4.使用
-    -  4.1创建的数据点
-    -  4.3使用CCS格式化历史记录
-    -  4.4在OneClick按钮中显示备份状态
-    -  4.5成功备份后通知
-5.还原备份
-    -  5.1恢复最小备份
-    -  5.2恢复完整备份
-    -  5.3恢复Raspberrymatic / CCU备份
-6.故障排除
-    -  6.1激活日志记录
-    -  6.2启用调试
-7.遇到错误/解决方案
-    -  7.1恢复后无法访问Web界面
-    -  7.2 JS数据点不可写
-    -  7.3错误信息：“未找到命令”
-    -  7.4完全备份挂起
-    -  7.5不接受Dp中的更改值
-
-## 1.备份类型：
+## 1.备份类型
 Backitup提供了循环或按下按钮执行不同备份类型的三种类型（可选择DB备份）的选项。默认情况下，每个备份都放在/ opt / iobroker / backups /目录中。可选地，可以设置FTP上载，或者可以使用CIFS安装。
 
 1.标准备份
-    - 此备份对应于IoBroker中包含的备份，该备份可通过“./iobroker backup”调用在控制台中启动。但是，它是通过适配器配置或OneClick备份窗口小部件中的指定设置完成的，无需使用控制台。
+    - 此备份对应于ioBroker中包含的备份，可通过调用“./iobroker backup”在控制台中启动备份。但是，它是通过适配器配置或OneClick备份窗口小部件中的指定设置完成的，无需使用控制台。
 2.完成备份
-    - 此备份可保护整个IoBroker文件夹，包括所有子文件夹及其文件，包括文件权限。这里，不应忽略文件大小，因为这样的备份通常有几百MB。
+    - 此备份可保护整个ioBroker文件夹，包括所有子文件夹及其文件，包括文件权限。这里，不应忽略文件大小，因为这样的备份通常有几百MB。
 
-要确保必须在配置中备份所有最新状态，必须设置IoBroker停止/启动时的复选标记。
+要确保必须在ioBroker Stop / Start的挂钩配置中备份所有最新状态，请设置。
 
 3. CCU备份（Homematic）
-    - 此备份提供了保存3种不同版本的家庭装置（CCU original / pivCCU / Raspberrymatic）的可能性。也可以通过适配器配置或OneClick备份小组件中指定的设置来执行此备份。
+    - 此备份提供了保存3种不同版本的家庭装置（CCU original / pivCCU / Raspberrymatic）的可能性。也可以通过适配器配置或OneClick备份小组件中的指定设置来执行此备份。
 4. mysql备份（localhost）
-    - 如果激活，将为每个备份创建此单独可调备份，无论是“最小”还是“完成”，并将在指定的保留时间到期后删除。除非为其他IoBroker备份类型设置，否则FTP或CIFS对此备份也有效。
+    - 如果激活，将为每个备份创建此单独可调备份，无论是“最小”还是“完成”，并将在指定的保留时间到期后删除。除非为其他ioBroker备份类型设置，否则FTP或CIFS对此备份也有效。
 5. Redis备份
-    - 如果激活，将为每个备份创建此单独可调备份，无论是“最小”还是“完成”，并将在指定的保留时间到期后删除。除非为其他IoBroker备份类型设置，否则FTP或CIFS对此备份也有效。
+    - 如果激活，将为每个备份创建此单独可调备份，无论是“最小”还是“完成”，并将在指定的保留时间到期后删除。除非为其他ioBroker备份类型设置，否则FTP或CIFS对此备份也有效。
 
-## 2.准备工作：
-应使用以下步骤来使用适配器（如果使用v1 / v2 / v3备份脚本，请先删除所有内容（禁用/删除数据点/ enum.functions / shell脚本和javascript！）
+## 2.准备
+应该执行以下步骤来使用适配器（如果使用v1 / v2 / v3备份脚本，首先删除所有内容（禁用/删除数据点/ enum.functions / shell脚本和JavaScript！）
 
 ## 3.使用Ftp，CIFS，NFS，Copy或Dropbox在Nas上进行可选备份？
    -  CIFS：
@@ -99,8 +68,12 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
      - 第4步：提供“为您的应用命名”
      - 步骤5：按“生成的访问令牌”按钮（在Backitup的设置中输入令牌）
      - 在Dropbox中，现在有一个名为“Apps”的新文件夹
+   -  Google云端硬盘：
+     - 要在Google云端硬盘中使用备份，必须提取访问令牌。您可以在配置页面上执行此操作
+     -  ioBroker仅攻击定义的区域。可以查看oAuth的代码[here]（https://github.com/simatec/ioBroker.backitup/blob/master/docs/oAuthService.js）。
+     - 没有令牌或用户数据存储在云中。
 
-## 4.用法：
+## 4.使用
 1.适配器创建7个数据点以供Vis使用
  -  oneClick.ccu  - >用作CCU备份的触发器触发器（可以通过按钮在Vis中设置为true）
  -  oneClick.minimal  - >用作标准备份的触发器触发器（可以通过按钮在Vis中设置为true）
@@ -177,7 +150,7 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
 
 那些喜欢手动恢复备份的人应该执行以下操作：
 
-1.恢复最小/正常IoBroker备份：
+1.恢复最小/正常ioBroker备份：
      - 备份必须像往常一样位于“opt / iobroker / backups /”目录中
      - 可以使用以下命令通过控制台恢复：“iobroker restore（列表中的备份数量）”。
      - 恢复后，需要“iobroker upload all”
@@ -196,15 +169,15 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
      - 在Raspberrymatic上执行命令：“reboot”以重新启动PI
      - 或者，备份当然也可以像往常一样通过Web界面恢复。
 4.恢复Redis：
-     - 在恢复期间必须将Redis数据库解压缩到相应的文件夹中（例如：/ var / lib / redis）
+     -  Redis数据库必须在相应文件夹中的恢复期间解压缩（例如：/ var / lib / redis）
 
-## 6.故障排除：
-1.要记录错误，必须在IoBroker rider实例下将Backitup设置为“debug”
+## 6.故障排除
+    1.要记录错误，必须在ioBroker rider实例下将Backitup设置为“debug”。
 
 ## 7.遇到的错误/解决方案：
 以下列出了目前遇到的问题及其解决方案（如果有）。
 
-1. Olifall（来自论坛）的问题是，在恢复之后，IoBrokers的Web界面不再可用，通过控制台的以下步骤，他可以解决这个问题：
+1. Olifall（来自论坛）的问题是，在恢复之后，ioBrokers的Web界面不再可用，通过控制台上的以下步骤，他可以解决这个问题：
      -  sudo iobroker状态
      - 消息=“没有连接到状态127.0.0.0:6379[redis”
      -  sudo apt-get install redis-server
@@ -237,7 +210,7 @@ Backitup提供了循环或按下按钮执行不同备份类型的三种类型（
 
     不幸的是，这也适用于backitup，因为backitup使用一些与系统相关的命令。
 
-为了解决缺少权限的问题，现在修复了iobroker的安装程序脚本。
+为了解决缺少权限的问题，现在修复了iobroker安装程序脚本。
 请在控制台中的Iobroker环境中运行以下命令：
 
 ```
@@ -257,6 +230,15 @@ sudo reboot
     如果您尚未使用安装程序脚本设置Iobroker安装，并且您的用户具有不同的名称，请在命令“iobroker”中将其替换为您的用户。
 
 ## Changelog
+
+### 1.2.0 (02.07.2019)
+* (bluefox) Google Drive was added
+* (simatec) Support for node 6 ended
+
+### 1.1.4 (08.04.2019)
+* (simatec) Support for SMB3
+* (simatec) Backup for Zigbee Database
+* (simatec) Restore for Zigbee Database
 
 ### 1.1.3 (12.03.2019)
 * (simatec) Timeout for email sending
@@ -457,7 +439,7 @@ sudo reboot
 
 The MIT License (MIT)
 
-Copyright (c) 2019 simatec <nais@gmx.net>
+Copyright (c) 2018 - 2019 simatec <nais@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

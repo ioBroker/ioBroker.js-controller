@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: bmzrYdb/zdkpUaqs2c3p4GW4k/FIMZ3dbB/a2H4KFvY=
+hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
 ---
 ![логотип](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -17,8 +17,6 @@ hash: bmzrYdb/zdkpUaqs2c3p4GW4k/FIMZ3dbB/a2H4KFvY=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)
 
 # IoBroker.shuttercontrol
-*************************************************************************************************************************************
-
 ## Адаптер shuttercontrol для ioBroker
 автоматизированный Rollladensteuerung
 
@@ -32,7 +30,17 @@ hash: bmzrYdb/zdkpUaqs2c3p4GW4k/FIMZ3dbB/a2H4KFvY=
 
 ## Changelog
 
-### 0.2.14 (27.06.2019)
+### 0.3.2 (09.07.2019)
+* (simatec) Added state check for all shutter
+* (simatec) Bugfix sunprotect
+* (simatec) Bugfix trigger
+* (simatec) Bugfix time settings
+* (Homoran) Added German Docu
+
+### 0.3.1 (02.07.2019)
+* (simatec) Fix sunprotect for shelly user
+
+### 0.3.0 (01.07.2019)
 * (simatec) Fix shutter up for Sunprotect
 * (simatec) Fix input for elevation
 * (simatec) Fix input for Inside temperature
@@ -42,7 +50,13 @@ hash: bmzrYdb/zdkpUaqs2c3p4GW4k/FIMZ3dbB/a2H4KFvY=
 * (simatec) Added hysteresis for Lightsensor
 * (simatec) Added hysteresis for Inside temperature
 * (simatec) Added hysteresis for Outside temperature
-
+* (simatec) Added State check after running
+* (simatec) Fix autodrive
+* (simatec) Added check shutter up for sunprotect
+* (simatec) Added Translations
+* (simatec) sunprotect changed to switch
+* (Homoran/simatec) Added German Docu
+* (simatec) Added English Docu
 
 ### 0.2.13 (21.06.2019)
 * (simatec) small Bugfix

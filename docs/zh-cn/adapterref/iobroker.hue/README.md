@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
 title: 已移至https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
+hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ---
 ![安装数量](http://iobroker.live/badges/hue-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hue.svg)
@@ -13,7 +13,9 @@ hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
 ＃已移至https://github.com/iobroker-community-adapters/ioBroker.hue
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
-＃ioBroker Philips Hue Bridge Adapter ==============
+#ioBroker飞利浦Hue Bridge适配器
+==============
+
 ##英文：gb：
 通过飞利浦Hue Bridges将飞利浦Hue LED灯泡，Hue LED灯和条纹之友以及其他支持SmartLink的设备（LivingWhites，一些LivingColors）连接到ioBroker。
 
@@ -31,6 +33,9 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein用户名konfigurier
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
+### 1.2.3 (2019.03.11//2019.07.07)
+* (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
+
 ### 1.1.2 (2019.01.25)
 * (BasGo) Added compact mode
 

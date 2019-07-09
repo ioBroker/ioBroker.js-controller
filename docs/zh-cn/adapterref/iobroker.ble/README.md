@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ble/README.md
 title: 无题
-hash: 4vQHd3G4dwAlUJciwxQ+mp2OoH9lKg2AqKIfOU4E+zY=
+hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
 ---
 ![建立状态](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AlCalzone/ioBroker.ble?branch=master&svg=true)
-![安装数量](http://iobroker.live/badges/ble-stable.svg)
+![安装数量](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
-<img src="admin/ble.png" height="48" /> ioBroker.ble =================
+<img src="admin/ble.png" height="48" /> ioBroker.ble
+
+=================
 
 ================
 
@@ -18,6 +19,7 @@ hash: 4vQHd3G4dwAlUJciwxQ+mp2OoH9lKg2AqKIfOU4E+zY=
 未来版本将支持连接和读/写服务特性。
 
 ##安装
+此适配器需要额外的库来编译。有关详细说明，请参阅https://github.com/sandeepmistry/noble#prerequisites。
 在Raspberry Pi和类似的，这应该这样做：`sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
 如果适配器启动但无法连接到蓝牙硬件，请检查ioBroker中的`info.driverState`状态。如果是`unauthorized`，则需要提供`node`附加权限。对于Linux，这很简单
@@ -45,6 +47,16 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 *`“ruuvi-tag”`：[Ruuvi Tag]（https://tag.ruuvi.com/）多传感器，固件版本为v1和v2。 **未经测试，请提供反馈！**
 
 ## Changelog
+
+### 0.7.4 (2019-07-03)
+* (AlCalzone) Removed dependency to admin instance on slaves
+* (AlCalzone) Several dependency updates
+
+### 0.7.3 (2019-04-05)
+* (AlCalzone) Add MiTemperature watch with E-Ink display
+
+### 0.7.2 (2019-04-05)
+* (AlCalzone) Add `58:2d:34` as an alternative mac prefix for MiTemperature
 
 ### 0.7.0 (2019-02-05)
 * (AlCalzone) Support MaterializeCSS (Admin v3)
@@ -123,7 +135,7 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

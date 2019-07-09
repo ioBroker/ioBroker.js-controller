@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
+hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -57,19 +57,12 @@ Sie können auch versuchen, mit der Autocreate-Funktion ein vorhandenes Gerät a
 Toolbar-Einträge sind Links zu Views.
 Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 
-* Um allem einen ausgefallenen Stil zu verleihen, können Sie eigene Bilder hochladen.
+* Um allem einen ausgefallenen Stil zu verleihen, können Sie Ihre eigenen Bilder hochladen.
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
 
-## Bekannte Probleme
-Dies ist das erste Alpha-Release, daher kann es zu vielen Fehlern kommen. Aber für mich läuft es völlig stabil.
-Es gibt jedoch einige Einschränkungen:
-
-- Hochgeladene Bilder (als Hintergrundbilder oder zum Skinnen von Gerätetasten) sind in der von iobroker erstellten Sicherungsdatei nicht enthalten
-
-Bitte zögern Sie nicht zu kommentieren und lassen Sie mich wissen, wie Sie diese Probleme beheben können!
-
+## Forum
 Besuchen Sie [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
 ## URL-Parameter
@@ -98,7 +91,7 @@ Jede Rolle hat die folgenden drei Zustände:
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen ist dies die Hauptfunktion des Geräts. Sie können ihm io-Broker-Status der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (um beispielsweise ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
 * *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
 * *string* - ein anzuzeigender Text
 * *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt.
@@ -112,7 +105,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 ````
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie das States-Objekt zum `` `" native ": {}` `` `Teil des Datenpunkts hinzufügen. Dies wird nur von iQontrol gelesen und hat keinen Einfluss auf andere Skripte.
-    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripts. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
+    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripte. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
@@ -151,6 +144,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
   * **RGB** * string * - anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden
   * **RGBW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden
   * **RGBWWCW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS kann das RGBWWCW-Format (hex) verwendet werden
+* Effekt-Modus:
+  * **EFFECT** * Werteliste * - der abzuspielende Effekt
+* **EFFECT_NEXT** *boolean* - wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen)
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - wenn auf true gesetzt, wird der Effekt beschleunigt / verringert
 * **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
@@ -198,6 +195,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
 * **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
+* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, wird der Blind nach oben / unten verschoben (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden).
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -244,7 +242,18 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ## Changelog
 
-### 0.0.040
+### 0.0.42
+* (Sebastian Bormann) Adjusted pathes of demo-files.
+
+### 0.0.41
+* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (Ansgar Schulte) Added Up and Down Buttons to Blinds.
+* (Sebastian Bormann) When creating a directory it will be entered.
+* (Sebastian Bormann) Added Effect-Section to Light
+* (Sebastian Bormann) If a state is not set yet, a standard value will be used
+
+### 0.0.40
 * (Sebastian Bormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39

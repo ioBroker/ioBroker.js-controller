@@ -50,6 +50,12 @@ This adapter controls devices which followed miIO protocol.
 
 
 ## Changelog
+### 0.0.11 (2019-07-04)
+* Remove unused function
+
+### 0.0.10 (2019-07-02)
+* Fix can not controll device issue
+
 ### 0.0.9 (2019-06-27)
 * Fix delete device and discover devices issue
 

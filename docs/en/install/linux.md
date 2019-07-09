@@ -4,7 +4,7 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: YGObybjn4xdpbNxHs8k434M7lghnY5rbzRHKF5pOAhI=
+hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
 ---
 # IoBroker installation under Linux
 !> This manual is NOT valid for finished images of the website !!!
@@ -58,7 +58,9 @@ We advise against the well-known security aspects of it. For the installation of
 ### Installation Node.js
 The following instructions are also to be used during a downgrade.
 
-The currently recommended version is node 8.x; with js-controller 1.5.7 also node 10.x, then in step 4.1. replace the "8.x" against 10.x ".
+The currently recommended version is node 10.x; with js-controller 1.5.7 also node 8.x, then in step 4.1. replace the "10.x" with 8.x ".
+
+!> Debian Buster requires node.js v10.x !!
 
 <span style="color:red">odd nodejs versions are not recommended as they are development versions.</span>
 

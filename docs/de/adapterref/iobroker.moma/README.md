@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.moma/README.md
 title: kein Titel
-hash: f0yaX2SAB2/xWX3pkB0mun9LVzit2kAWJMlB/IWkXLs=
+hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/moma-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
@@ -19,7 +20,7 @@ hash: f0yaX2SAB2/xWX3pkB0mun9LVzit2kAWJMlB/IWkXLs=
 ** MoMa **ist ein Adapter für die Überwachung und Wartung einer auf ioBroker basierenden Hausautomationsinstallation.
 ** MoMa** zielt auf Heiminstallationen (Automatisierungsinstallationen) ab, die etwas komplexer sind als eine einzelne Maschine, die auf einer oder einer kleinen Anzahl von Maschinen läuft und einen grundlegenden Lastenausgleich in einem Netzwerk durchführt.
 
-Es ist nicht als Ersatz für Administrations-Tools wie **Puppet** **Chef** **Salt** oder **Ansible** gedacht.
+Es ist nicht als Ersatz für Verwaltungstools wie **Puppet** **Chef** **Salt** oder **Ansible** gedacht.
 Diese sind für große Umgebungen mit vielen Computern gedacht und können Pakete remote installieren. **MoMa** kann nur vorhandene Installationen remote aktualisieren, keine Remote-Installation und keine Remote-Konfiguration.
 
 Ich verwende es, um meine IT-Infrastruktur zu Hause (einschließlich der Heimautomation) zu überwachen und auf dem neuesten Stand zu halten.
@@ -47,7 +48,7 @@ Forum: https://forum.iobroker.net/topic/22026/neuer-adapter-iobroker-moma
 
 GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
-Grundlegende Idee ist, für jede Instanz (moma. \ <Instanz-ID \>) einen Baum zu haben, der alle Informationen der Maschine enthält, auf der die Instanz ausgeführt wird.
+Grundlegende Idee ist, für jede Instanz (moma. \ <Instanz-ID \>) einen Baum zu haben, der alle Informationen zu der Maschine enthält, auf der die Instanz ausgeführt wird.
 + ein allgemeiner Baum (moma.meta), unter dem jede Instanz ein Gerät \ <Hostname \> erstellt, das einen Verweis auf die Instanz und einige Überwachungsinformationen enthält.
 
 ## Referenz
@@ -92,6 +93,7 @@ Folgende Funktionen der Bibliothekssysteminformation werden in Intervall 3 aufge
 * networkInterfaces - Verfügbare Netzwerkschnittstellen
 * graphics - Informationen zu Computer-Grafikkarten und angeschlossenen Monitoren
 * inetLatency - Überprüfen Sie die Internet-Latenz gegenüber 8.8.8.8
+* dockerInfo - Allgemeine Informationen zu docker - benötigt einen "adduser iobroker docker" auf dem Computer, damit es ordnungsgemäß funktioniert
 * dockerContainers - Liste aller Docker-Container - benötigt einen "adduser iobroker docker" auf dem Computer, damit er ordnungsgemäß funktioniert
 
 Folgende Funktionen der Bibliothekssysteminformation werden in Intervall 4 aufgerufen (Standard jeden Tag):
@@ -107,6 +109,12 @@ Folgende Funktionen von **MoMa** werden in Intervall 4 aufgerufen (Standard jede
 * checkBatteries - Überprüft Batteriezustandsvariablen (aktuell implementierte Zustandsnamen: LOWBAT, LOW_BAT)
 
 ## Changelog
+
+### 1.1.3 (2019-07-03)
+* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
+
+### 1.1.2 (2019-06-05)
+* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
 
 ### 1.1.1 (2019-05-23)
 * (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1

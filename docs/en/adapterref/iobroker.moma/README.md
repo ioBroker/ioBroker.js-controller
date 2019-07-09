@@ -5,6 +5,7 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.moma.svg)](https://www.npmjs.com/package/iobroker.moma)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)](https://www.npmjs.com/package/iobroker.moma)
+![Number of Installations](http://iobroker.live/badges/moma-installed.svg) ![Number of Installations](http://iobroker.live/badges/moma-stable.svg)
 [![Dependency Status](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)](https://david-dm.org/AWhiteKnight/iobroker.moma)
 [![Known Vulnerabilities](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma)
 
@@ -31,8 +32,8 @@ MoMa needs at least nodejs version 8 / ES6.
 
 ## Changelog
 
-### 1.1.3 (2019-0?-??)
-* (AWhiteKnight) 
+### 1.1.3 (2019-07-03)
+* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
 
 ### 1.1.2 (2019-06-05)
 * (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
@@ -119,6 +120,7 @@ Following functions of library systeminformation are called in interval 3 (defau
 * networkInterfaces - Avilable network interfaces
 * graphics - Information about computers graphics cards and connected monitors
 * inetLatency - Check internet latency against 8.8.8.8
+* dockerInfo - General information on docker - needs an "adduser iobroker docker" on the machine before it will work properly
 * dockerContainers - List of all docker Containers - needs an "adduser iobroker docker" on the machine before it will work properly
 
 

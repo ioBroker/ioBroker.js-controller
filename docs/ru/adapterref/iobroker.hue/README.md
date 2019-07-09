@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hue/README.md
 title: Перемещено на https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
+hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ---
 # Перемещено на https://github.com/iobroker-community-adapters/ioBroker.hue
 ![логотип](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
@@ -13,9 +13,11 @@ hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.hue.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)
 
-# IoBroker Адаптер Philips Hue Bridge ==============
+# IoBroker Адаптер Philips Hue Bridge
+==============
+
 ## Английский: gb:
-Подключает светодиодные лампы Philips Hue, светодиодные лампы и полосы Friends of Hue и другие устройства с поддержкой SmartLink (LivingWhites, некоторые LivingColors) через мосты Philips Hue через ioBroker.
+Подключает светодиодные лампы Philips Hue, светодиодные лампы и полосы Friends of Hue и другие устройства с поддержкой SmartLink (LivingWhites, некоторые LivingColors) через мосты Philips Hue Bridges к ioBroker.
 
 Сначала вы должны связать свой мост HUE с ioBroker.
 
@@ -24,13 +26,16 @@ hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
-В настройках адаптера необходимо указать IP-адрес Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf создать пользователя drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben.
+В настройках адаптера необходимо указать IP-адрес Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf создать пользователя drücken und dann innerhalb von 30 Sekunden den Button and der Hue bridge drücken. Dann wird automatisch der User übergeben.
 
 ## Дорожная карта / Todo
 * Автоматическое обнаружение моста
 * Автоматическая настройка пользователя с помощью кнопки моста
 
 ## Changelog
+### 1.2.3 (2019.03.11//2019.07.07)
+* (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
+
 ### 1.1.2 (2019.01.25)
 * (BasGo) Added compact mode
 

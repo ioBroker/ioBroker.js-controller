@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.node-red/README.md
 title: ioBroker节点红色适配器
-hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
+hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 ---
 ![商标](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -27,9 +27,14 @@ hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
 ##配置
 
 ## Changelog
+### 1.9.0 (2019-07-08)
+* (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
+
+### 1.8.0 (2019-05-02)
+* (nobodyMO) Used newer version of node-red 0.20.5
 
 ### 1.7.2 (2019-01-16)
-- (SchumyHao) Add Chinese support
+* (SchumyHao) Add Chinese support
 
 ### 1.7.1 (2017-09-24)
 * (bluefox) use newer version of node-red 0.19.4

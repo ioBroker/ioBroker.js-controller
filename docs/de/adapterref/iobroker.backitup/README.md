@@ -9,47 +9,12 @@ Backitup ist eine Backuplösung, mit der das zyklische Sichern einer IoBroker-In
 Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installationen auch auf Windows und Mac Installationen verwendet werden.
 
 Für den CIFS Mount muss zwingend cifs-utils installiert sein.
-
-    - sudo apt-get install cifs-utils
+    - `sudo apt-get install cifs-utils`
 
 Für den NFS Mount muss zwingend nfs-common installiert sein.
+    - `sudo apt-get install nfs-common`
 
-    - sudo apt-get install nfs-common
-
-## Inhaltsverzeichnis:
-1. Backup Type
-   - 1.1 Minimales Backup (Standard IoBroker Backup)
-   - 1.2 Komplettes Backup
-   - 1.3 CCU Backup (CCU-Original / pivCCU / Raspberrymatic)
-   - 1.4 Optionales Mysql-Backup (Localhost)
-   - 1.5 Optionales Redis-Backup
-
-2. Vorbereitung
-
-3. Ftp, CIFS, NFS, Copy und Dropbox
-
-4. Verwendung
-   - 4.1 Erstellte Datenpunkte
-   - 4.3 History-Log mit CCS formatieren
-   - 4.4 Backupstatus im OneClick-Button darstellen
-   - 4.5 Benachrichtigen nach erfolgreichen Backups
-5. Restore eines Backups
-   - 5.1 Minimal Backup wiederherstellen
-   - 5.2 Komplett Backup wiederherstellen
-   - 5.3 Raspberrymatic/CCU Backup wiederherstellen
-6. Fehlersuche
-   - 6.1 Logging aktivieren
-   - 6.2 Debugging aktivieren
-7. Aufgetretene Fehler / Lösungen
-   - 7.1 Webinterface nach Restore nicht erreichbar
-   - 7.2 JS-Datenbunkt nicht beschreibbar
-   - 7.3 Fehlermeldung: "Komando nicht gefunden"
-   - 7.4 Komplett-Backup bleibt hängen
-   - 7.5 Geänderte Werte in Dp werden nicht übernommen
-
-
-## 1. Backuptypen:
-
+## 1. Backuptypen
 Backitup bietet die Möglichkeit drei (optional mit DB-Backup) verschiedene Backuptypen zyklisch oder auf Knopfdruck durch zu führen. Jedes Backup wird standardmäßig im Verzeichnis /opt/iobroker/backups/ abgelegt. Optional kann ein FTP-Upload eingerichtet oder alternativ ein CIFS-Mount genutzt werden.
 
 1. Standard Backup
@@ -64,13 +29,11 @@ Um sicher zu gehen dass alle aktuellsten States gesichert werden muss hier in de
 5. Redis-Backup
    - Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup egal ob „minimal“ oder „komplett“ erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.
 
-## 2. Vorbereitung:
-
+## 2. Vorbereitung
 Folgende Schritte sollten durchgeführt werden um den Adapter verwenden zu können (wenn das Backup-Script v1/v2/v3 verwendet wurde, zuerst Alles löschen (Datenpunkte/Enum.functions/Shell-Script und JavaScript deaktivieren oder löschen!)
 
 
 ## 3. Ftp, CIFS, NFS, Copy oder Dropbox für das optionale weitersichern auf einen Nas nutzen?
-
   - CIFS:
     -	CIFS-Mount ist unter Linux kein Problem.
     -   Es sollte beachtet werden, dass cifs-utils installiert ist
@@ -97,11 +60,12 @@ Folgende Schritte sollten durchgeführt werden um den Adapter verwenden zu könn
     -   Schritt 4: "Name your app" vergeben
     -   Schritt 5: "Generated access token" Button drücken (Der Token wird in den Einstellungen von Backitup eingetragen)
     -   In deiner Dropbox gibt es nun einen neuen Ordner mit dem Namen "Apps"
+  - Google Drive:
+    -	Um die Sicherung in der Google Drive zu nutzen, muss ein Access Token holen. Das kann man auf der Konfigurationsseite machen
+    -   ioBroker greift nur auf die definierte Bereiche an. Das Code für oAuth kann man [hier](https://github.com/simatec/ioBroker.backitup/blob/master/docs/oAuthService.js) ansehen.
+    -   Keine Tokens oder Anwenderdaten werden in der Cloud gespeichert.
 
-
-
-## 4. Verwendung:
-
+## 4. Verwendung
 1.	Der Adapter erstellt 7 Datenpunkte zur Verwendung in Vis
 	- oneClick.ccu -> dient als Auslösetrigger für ein CCU-Backup (Kann in Vis durch einen Button auf true gesetzt werden)
 	- oneClick.minimal -> dient als Auslösetrigger für ein Standard-Backup (Kann in Vis durch einen Button auf true gesetzt werden)
@@ -151,10 +115,12 @@ Syntax: {BackitupInstanz.history.html}
    ```
 4. OneClick-Button mit Status-Text
    - Wenn ein OneClick-Datenpunkt auf true gesetzt wird startet das entsprechende Backup und nach einer vordefinierten Zeit wird dieser Datenpunkt wieder auf false gesetzt somit ist es möglich einen Button mit Status zu erstellen, hierzu folgende Zeile anpassen und in Vis als Knopftext eintragen:
+
 ```
 {wert: backitup.0.oneClick.minimal; wert === "true" || wert === true ? "Minimal Backup </br> wird erstellt" : "Minimal Backup </br> starten"}
 
 ```
+
 Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || wert === true ? "Text während der Backuperstellung" : "Standard-Text"}
 
 5. Backitup unterstützt für die Benachrichtigung nach einem erfolgreichen Backup folgende Messenger.
@@ -197,12 +163,10 @@ Wer seine Backups lieber manuell wiederherstellen möchte, sollte folgende Punkt
 
 
 
-## 6. Fehlersuche:
-
-1. Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden 
+## 6. Fehlersuche
+    1. Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden.
 
 ## 7. Aufgetretene Fehler / Lösungen:
-
 Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vorhanden.
 
 1.	Olifall (aus dem Forum) hatte das Problem dass nach dem Restore das Webinterface des IoBrokers nicht mehr erreichbar war, durch folgende Schritte über die Konsole konnte er dies beheben:
@@ -252,6 +216,10 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     Wenn ihr nicht mit dem Installerscript eure Iobroker Installation aufgesetzt habt und euer User einen anderen Namen hat, bitte in dem Befehl "iobroker" durch euren User ersetzen.
 
 ## Changelog
+
+### 1.2.0 (02.07.2019)
+* (bluefox) Google Drive was added
+* (simatec) Support for node 6 ended
 
 ### 1.1.4 (08.04.2019)
 * (simatec) Support for SMB3

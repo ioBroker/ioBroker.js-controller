@@ -4,7 +4,7 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: YGObybjn4xdpbNxHs8k434M7lghnY5rbzRHKF5pOAhI=
+hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
 ---
 Linux下的＃ioBroker安装
 ！>本手册不适用于网站的完成图像！
@@ -58,7 +58,9 @@ SSH的root访问权限将被解锁。
 ###安装Node.js
 降级期间还将使用以下说明。
 
-目前推荐的版本是node 8.x; js-controller 1.5.7也是节点10.x，然后是步骤4.1。将“8.x”替换为10.x“。
+目前推荐的版本是节点10.x;用js-controller 1.5.7也节点8.x，然后在步骤4.1。用8.x“替换”10.x“。
+
+！> Debian Buster需要node.js v10.x !!
 
 <span style="color:red">不建议使用奇数nodejs版本，因为它们是开发版本。</span>
 

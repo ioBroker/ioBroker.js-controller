@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.moma/README.md
 title: 无题
-hash: f0yaX2SAB2/xWX3pkB0mun9LVzit2kAWJMlB/IWkXLs=
+hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.moma.svg)
+![安装数量](http://iobroker.live/badges/moma-stable.svg)
 ![依赖状态](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)
 ![已知的漏洞](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
@@ -92,6 +93,7 @@ GitHub：https：//github.com/AWhiteKnight/ioBroker.moma
 * networkInterfaces  - 可用的网络接口
 * graphics  - 有关计算机图形卡和连接的监视器的信息
 * inetLatency  - 检查互联网延迟8.8.8.8
+* dockerInfo  - 有关docker的一般信息 - 在机器正常工作之前需要一台“adduser iobroker docker”
 * dockerContainers  - 所有docker容器的列表 - 在机器正常工作之前需要一台“adduser iobroker docker”
 
 在区间4（每天默认）中调用以下函数库系统信息：
@@ -107,6 +109,12 @@ GitHub：https：//github.com/AWhiteKnight/ioBroker.moma
 * checkBatteries  - 检查电池状态变量（当前实现的状态名称：LOWBAT，LOW_BAT）
 
 ## Changelog
+
+### 1.1.3 (2019-07-03)
+* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
+
+### 1.1.2 (2019-06-05)
+* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
 
 ### 1.1.1 (2019-05-23)
 * (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1

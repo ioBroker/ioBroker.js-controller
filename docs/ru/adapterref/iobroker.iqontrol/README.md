@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
+hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -62,14 +62,7 @@ hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
 Вы можете использовать свои изображения в качестве фоновых изображений для представлений или для устройств.
 Бесплатные встроенные демо-обои от www.pexels.com.
 
-## Известные вопросы
-Это первый альфа-релиз, поэтому может быть много ошибок. Но для меня это работает абсолютно стабильно.
-Однако есть несколько ограничений:
-
-- Загруженные изображения (в качестве фоновых изображений или для кнопок устройства оформления) не включаются в файл резервной копии, созданный iobroker.
-
-Пожалуйста, не стесняйтесь комментировать и дайте мне знать, как исправить эти проблемы!
-
+## Форум
 Посетите [форум iobroker](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
 ## URL-параметры
@@ -98,7 +91,7 @@ hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
 
 Почти все роли имеют состояние STATE и / или LEVEL. В большинстве случаев это представляет собой основную функцию устройства. Вы можете назначить ему состояния io-broker следующих типов:
 
-* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или подобный Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
+* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
@@ -140,7 +133,7 @@ hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
   * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (это учитывается только в том случае, если свет имеет как белый, так и цветной светодиоды. Если у вас есть только один вид светодиодов, яркость контролируется УРОВНЕМ- Государственный)
 * Альтернативные цветовые пространства **еще не реализованы**
-  * **HUE_MILIGHT** * число * - Милайт использует другую отправную точку в оттенке цвета:
+  * **HUE_MILIGHT** * число * - Милайт использует другую отправную точку в оттенке цвета cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -151,6 +144,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
   * **RGB** * string * - вместо использования HUE, SATURATION и COLOR_BRIGHTNESS вы можете использовать RGB-формат (шестнадцатеричный)
   * **RGBW** * string * - вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный)
   * **RGBWWCW** * string * - вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW (шестнадцатеричный)
+* Эффект-режим:
+  * **EFFECT** * value-list * - эффект для воспроизведения
+* **EFFECT_NEXT** *boolean* - если установлено значение true, будет воспроизводиться следующий эффект (в качестве альтернативы для устройств, которые не поддерживают список значений EFFECT)
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - если установлено значение true, эффект будет ускоряться вверх / вниз
 * **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
 ### <img src="img/icons/radiator.png" width="32"> Термостат:
@@ -159,7 +156,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
 * **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
-* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, которые связаны с термостатом
+* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
 В дополнение к обычному термостату вы можете определить:
@@ -198,6 +195,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **УРОВЕНЬ** *число* - высота блайндов в процентах
 * **DIRECTION** *список значений* - может быть Stop, Up и Down
 * **STOP** *логическое* - если установлено значение true, слепой остановится
+* **UP** / **DOWN** *boolean* - при значении true блайнд будет идти вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо LEVEL)
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
@@ -244,7 +242,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 0.0.040
+### 0.0.42
+* (Sebastian Bormann) Adjusted pathes of demo-files.
+
+### 0.0.41
+* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (Ansgar Schulte) Added Up and Down Buttons to Blinds.
+* (Sebastian Bormann) When creating a directory it will be entered.
+* (Sebastian Bormann) Added Effect-Section to Light
+* (Sebastian Bormann) If a state is not set yet, a standard value will be used
+
+### 0.0.40
 * (Sebastian Bormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39

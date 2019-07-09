@@ -108,6 +108,9 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.4.0 (2019-07-03)
+* (foxriver76) added possibility to synchronize hidden variables
+
 ### 2.3.3 (2019-04-05)
 * (foxriver76) added more systeminfo states when syncing duty cycle
 * (foxriver76) when setting ts, do it in ms

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
 title: 简单的API
-hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
+hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
 ---
 ![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -30,6 +30,11 @@ hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
   "objects": "http://ipaddress:8087/objects?pattern=system.adapter.admin.0*&prettyPrint",
   "objects": "http://ipaddress:8087/objects?pattern=system.adapter.admin.0*&type=adapter&prettyPrint",
   "states": "http://ipaddress:8087/states?pattern=system.adapter.admin.0*&prettyPrint"
+  "search": "http://192.168.0.24:8087/search?pattern=system.adapter.admin.0*&prettyPrint",
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?noHistory=true&prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?dateFrom=2019-06-06T12:00:00.000Z&d&prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?dateFrom=2019-06-06T12:00:00.000Z&dateTo=2019-06-06T12:00:00.000Z&prettyPrint"
 }
 ```
 
@@ -87,7 +92,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    获取具有一个请求的许多状态，作为具有ID作为键的对象返回，并且作为子对象返回val / ts
+    获取具有一个请求的许多状态，按请求中的列表顺序返回为对象数组，并将id / val / ts作为子对象返回
 
 ### Set
 打电话：
@@ -134,6 +139,15 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 ###对象
 ＃＃＃ 状态
+###搜索
+是否设置了配置中的数据源（History，SQL），然后仅列出数据源已知的数据点。
+如果已激活“列出所有数据点”选项或未指定数据源，则将列出所有数据点。
+Grafana JSON / SimpleJSON插件需要此命令。
+
+###查询
+如果指定了数据源（历史记录，SQL），则会在指定的时间段内读取指定数据点的数据，否则仅读取当前值。
+Grafana JSON / SimpleJSON插件需要此命令。
+
 ＃＃＃ 救命
 给出[这个](#usage)输出
 
@@ -211,7 +225,31 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 <pre> HTTP：// IP：8087 /状态模式= system.adapter.admin.0 * prettyPrint </pre><pre> {“system.adapter.admin.0.uptime”：{“val”：32161，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0”，“lc”： 1423156149}，“system.adapter.admin.0.memRss”：{“val”：41.14，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0”，“lc “：1423156119}，”system.adapter.admin.0.memHeapTotal“：{”val“：31.19，”ack“：true，”ts“：1423156149，”from“：”system.adapter.admin.0“， “lc”：1423155084}，“system.adapter.admin.0.memHeapUsed”：{“val”：19.07，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0 “，”lc“：1423156149}，”system.adapter.admin.0.connected“：{”val“：true，”ack“：true，”ts“：1423156149，”from“：”system.adapter.admin .0“，”lc“：1423128324，”expire“：28100}，”system.adapter.admin.0.alive“：{”val“：true，”ack“：true，”ts“：1423156149，”来自“：”system.adapter.admin.0“，”lc“：1423128324，”expire“：28115}} </pre>
 
+###搜索
+是否设置了配置中的数据源（History，SQL），然后仅列出数据源已知的数据点。
+如果已激活“列出所有数据点”选项或未指定数据源，则将列出所有数据点。
+
+<pre> HTTP：// IP：8087 /搜索模式= system.adapter.admin.0 * prettyPrint </pre><pre> {“system.adapter.admin.0.outputCount”，“system.adapter.admin.0.inputCount”，“system.adapter.admin.0.uptime”，“system.adapter.admin.0.memRss”，“ system.adapter.admin.0.memHeapTotal“，”system.adapter.admin.0.memHeapUsed“，”system.adapter.admin.0.cputime“，”system.adapter.admin.0.cpu“，”system。 adapter.admin.0.connected“，”system.adapter.admin.0.alive“} </pre>
+
+###查询
+如果指定了数据源（历史记录，SQL），则会在指定的时间段内读取指定数据点中的数据。
+
+<pre> HTTP：// IP：8087 /查询/ system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed / prettyPrint＆dateFrom = 2019-06-08T01：00：00.000Z＆dateTo = 2019-06-08T01： 00：10.000Z </pre><pre> [{“target”：“system.host.iobroker-dev.load”，“datapoints”：[[0.12,1559955600000]，[0.46,1559955601975]，[0.44,1559955610000]]}，{“target”：“system .host.iobroker-dev.memHeapUsed“，”datapoints“：[[23.01,1559955600000]，[22.66,1559955601975]，[22.69,1559955610000]]}] </pre>
+
+如果未指定数据源或传递noHistory参数，则仅读取数据点的当前值。
+
+<pre> HTTP：// IP：8087 /查询/ system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed / prettyPrint＆noHistory =真的吗？ </pre><pre> [{“target”：“system.host.iobroker-dev.load”，“datapoints”：[[0.58,1559970500342]]}，{“target”：“system.host.iobroker-dev.memHeapUsed”，“datapoints “：[[21.53,1559970500342]]}] </pre>
+
 ## Changelog
+
+### 2.1.0 (2019-07-05)
+* (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana
+
+### 2.0.5 (2019-06-26)
+* (Apollon77) remove logging
+
+### 2.0.4 (2019-06-23)
+* (Apollon77) fix usage as web extension
 
 ### 2.0.2 (2018-12-17)
 * (Apollon77) fix decoding for state Ids with # in it
@@ -280,3 +318,26 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 ### 0.0.1 (2015-02-06)
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2015-2019 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

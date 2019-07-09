@@ -52,6 +52,16 @@ For this to work you need to provide the location of the systems global node-mod
 
 ## Changelog
 
+### 1.1.2 (2019-07-08)
+* (Apollon77) Allow more then 149 accessories in wrapper mode
+
+### 1.1.1 (2019-07-05)
+* (Apollon77) Add option to update NPM modules in Admin. Reinstall will happen after saving settings
+* (Apollon77) Enhance NPM installation handling
+* (Apollon77) Allow to specify special version of homebridge NPM packages using name@version
+* (Apollon77) Allow to specify homebridge command line options. They will be added to the command line arguments (Some plugins need that or special features are only available with it)
+* (Apollon77) Add "Local" mode that installs an own homebridge and run it as bridge
+
 ### 1.0.1 (2019-01-16)
 * (SchumyHao) Add Chinese support
 
@@ -105,7 +115,7 @@ For this to work you need to provide the location of the systems global node-mod
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

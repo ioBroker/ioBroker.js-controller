@@ -27,6 +27,12 @@ If more devices work (or also not) please report them by opening a GitHub issue.
 
 ## Changelog
 
+### 1.1.0 (2019.07.05)
+* (Apollon77) Add msg100 with Garage Door Reed contact
+* (Apollon77) Add reconnection handling
+* (Apollon77) Add light support (e.g. MSL120 RGB bulb)
+* (Apollon77) Add units and roles for electricity
+
 ### 1.0.0 (2018.12.16)
 * (Apollon77) finalize and move to 1.0.0
 
@@ -42,7 +48,7 @@ If more devices work (or also not) please report them by opening a GitHub issue.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

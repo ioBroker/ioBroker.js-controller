@@ -3,48 +3,60 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ble/README.md
 title: kein Titel
-hash: 4vQHd3G4dwAlUJciwxQ+mp2OoH9lKg2AqKIfOU4E+zY=
+hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
 ---
-![Build-Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AlCalzone/ioBroker.ble?branch=master&svg=true)
-![Anzahl der Installationen](http://iobroker.live/badges/ble-stable.svg)
+![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
+![Anzahl der Installationen](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
-<img src="admin/ble.png" height="48" /> ioBroker.ble ===================
+<img src="admin/ble.png" height="48" /> ioBroker.ble
+
+=================
 
 ================
 
-Überwachen Sie Bluetooth Low Energy (BLE) -Baken und zeichnen Sie deren Informationen auf.
-Derzeit werden nur die mit dem *beworbenen* Servicedaten aufgezeichnet. Sie können überwachen, welche Dienste angekündigt werden, indem Sie die nRF Connect-App (Dienstdaten-UUIDs) verwenden.
-Das Verbinden und Lesen / Schreiben von Dienstmerkmalen wird in einer zukünftigen Version unterstützt.
+Überwachen Sie BLE-Beacons (Bluetooth Low Energy) und zeichnen Sie deren Informationen auf.
+Derzeit wird nur die Aufzeichnung von *beworbenen* Dienstdaten unterstützt. Sie können mithilfe der nRF Connect-App (Dienstdaten-UUIDs) überwachen, welche Dienste angekündigt werden.
+Merkmale des Verbindungs- und Lese- / Schreibdienstes werden in einer zukünftigen Version unterstützt.
 
 ## Installation
-Auf Raspberry Pi und ähnlichem sollte dies Folgendes tun: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
+Dieser Adapter benötigt zusätzliche Bibliotheken zum Kompilieren. Ausführliche Anweisungen finden Sie unter https://github.com/sandeepmistry/noble#prerequisites.
+Auf Raspberry Pi und ähnlichem sollte dies so aussehen: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
-Wenn der Adapter startet, aber keine Verbindung zu Ihrer Bluetooth-Hardware hergestellt wird, überprüfen Sie bitte den `info.driverState` -Status in ioBroker. Wenn es sich um `unauthorized` handelt, müssen Sie `node` zusätzliche Berechtigungen geben. Für Linux ist dies so einfach wie
+Wenn der Adapter startet, sich aber nicht mit Ihrer Bluetooth-Hardware verbindet, überprüfen Sie bitte den Status von `info.driverState` in ioBroker. Wenn es sich um §§SSSSS_1§ handelt, müssen Sie `node` zusätzliche Berechtigungen erteilen. Für Linux ist dies so einfach wie
 
 ```bash
 sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ```
 
-was erfordert, dass `libcap2-bin` installiert ist.
+Hierfür muss `libcap2-bin` installiert sein.
 
 ## Aufbau
-Wenn Sie mehrere Bluetooth-Geräte in Ihrem System haben, wählen Sie das zu verwendende Gerät aus der Dropdown-Liste aus.
-Geben Sie im Textfeld unten alle UUIDs der angekündigten Dienste ein, die Sie aufzeichnen möchten (wie in der nRF Connect-App zu finden).
+Wenn Sie mehrere Bluetooth-Geräte in Ihrem System haben, wählen Sie das zu verwendende aus der Dropdown-Liste aus.
+Geben Sie in das Textfeld unten alle UUIDs der angekündigten Dienste ein, die Sie aufzeichnen möchten (wie in der nRF Connect-App angegeben).
 
 ## Plugin-System
-Der Adapter unterstützt die Erweiterung über Plugins. Diese definieren, welche beworbenen Dienste gehört werden sollen und wie die Daten zu übersetzen sind. Die Pluginstruktur ist in https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts definiert. Ein Beispiel für ein funktionierendes Plugin ist hier https://github.com/AlCalzone definiert /ioBroker.ble/blob/master/src/plugins/_default.ts
+Der Adapter unterstützt die Erweiterung über Plugins. Diese definieren, welche beworbenen Dienste abgehört werden sollen und wie die Daten übersetzt werden sollen. Die Plugin-Struktur ist in https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts definiert. Ein Beispiel für ein funktionierendes Plugin finden Sie hier https://github.com/AlCalzone /ioBroker.ble/blob/master/src/plugins/_default.ts
 
-Wenn Sie über ein Gerät verfügen, das speziell verschlüsselte Informationen über Werbung überträgt, können Sie ein PR mit einem neuen Plugin dafür erstellen.
+Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung überträgt, können Sie eine PR mit einem neuen Plug-In für diese erstellen.
 
 ### Unterstützte Plugins
-* `"xiaomi"`: Alle xiaomi Bluetooth-Sensoren, einschließlich
-  * [Flower Care-Pflanzensensor](https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
-  * [Mijia Temperatur- und Feuchtigkeitssensor](https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse=USA)
-* `"mi-flora"`: Ursprüngliches Plugin für den Blumenpflegeanlagen-Sensor, jetzt alias auf `"xiaomi"`
-* `"ruuvi-tag"`: [Ruuvi-Tag](https://tag.ruuvi.com/) Multisensor mit Firmware-Versionen v1 und v2. **Nicht getestet, bitte geben Sie Rückmeldung!**
+* "xiaomi": Alle xiaomi Bluetooth-Sensoren, einschließlich
+  * [Flower Care Pflanzensensor] (https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
+  * [Mijia-Temperatur- und Feuchtigkeitssensor] = USA)
+* "mi-flora": Original Plugin für den Flower Care Plant Sensor, jetzt mit dem Alias "xiaomi"
+* `` "ruuvi-tag" `: [Ruuvi Tag] (https://tag.ruuvi.com/) Multisensor mit Firmware-Versionen v1 und v2. **Ungetestet, bitte Feedback geben!**
 
 ## Changelog
+
+### 0.7.4 (2019-07-03)
+* (AlCalzone) Removed dependency to admin instance on slaves
+* (AlCalzone) Several dependency updates
+
+### 0.7.3 (2019-04-05)
+* (AlCalzone) Add MiTemperature watch with E-Ink display
+
+### 0.7.2 (2019-04-05)
+* (AlCalzone) Add `58:2d:34` as an alternative mac prefix for MiTemperature
 
 ### 0.7.0 (2019-02-05)
 * (AlCalzone) Support MaterializeCSS (Admin v3)
@@ -123,7 +135,7 @@ Wenn Sie über ein Gerät verfügen, das speziell verschlüsselte Informationen 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

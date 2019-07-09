@@ -67,6 +67,9 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 0.2.3
+* skip updating values, when device not present
+
 ### 0.2.2
 * added FritzDECT400 incl. testing
 * removed offset in temp value

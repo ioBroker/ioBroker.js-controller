@@ -3,24 +3,26 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ble/README.md
 title: без названия
-hash: 4vQHd3G4dwAlUJciwxQ+mp2OoH9lKg2AqKIfOU4E+zY=
+hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
 ---
 ![Статус сборки](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AlCalzone/ioBroker.ble?branch=master&svg=true)
-![Количество установок](http://iobroker.live/badges/ble-stable.svg)
+![Количество установок](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
-<img src="admin/ble.png" height="48" /> ioBroker.ble =================
+<img src="admin/ble.png" height="48" /> ioBroker.ble
+
+=================
 
 ================
 
 Мониторинг маяков Bluetooth с низким энергопотреблением (BLE) и запись их информации.
-В настоящее время поддерживается только запись *рекламируемых* данных сервиса. Вы можете отслеживать, какие услуги рекламируются с помощью приложения nRF Connect (UUID данных службы).
+В настоящее время поддерживается только запись *рекламируемых* данных сервиса. Вы можете отслеживать, какие сервисы рекламируются с помощью приложения nRF Connect (UUID данных сервисов).
 Подключение и чтение / запись сервисных характеристик будут поддерживаться в следующей версии.
 
 ## Монтаж
-На Raspberry Pi и аналогичных программах это должно быть сделано: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
+Этот адаптер требует дополнительных библиотек для компиляции. См. Https://github.com/sandeepmistry/noble#prerequisites для получения подробных инструкций.
+На Raspberry Pi и аналогичных, это должно сделать это: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
-Если адаптер запускается, но не подключается к вашему оборудованию Bluetooth, проверьте состояние `info.driverState` в ioBroker. Если это `unauthorized`, вам необходимо предоставить `node` дополнительные разрешения. Для Linux это так же просто, как
+Если адаптер запускается, но не подключается к вашему оборудованию Bluetooth, проверьте состояние `info.driverState` в ioBroker. Если это `unauthorized`, вам необходимо предоставить `node` дополнительные разрешения. Для Linux это так просто, как
 
 ```bash
 sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
@@ -45,6 +47,16 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 * `" ruuvi-tag "`: [мультисенсор Ruuvi] (https://tag.ruuvi.com/) с версиями прошивки v1 и v2. **Не проверено, пожалуйста, оставьте отзыв!**
 
 ## Changelog
+
+### 0.7.4 (2019-07-03)
+* (AlCalzone) Removed dependency to admin instance on slaves
+* (AlCalzone) Several dependency updates
+
+### 0.7.3 (2019-04-05)
+* (AlCalzone) Add MiTemperature watch with E-Ink display
+
+### 0.7.2 (2019-04-05)
+* (AlCalzone) Add `58:2d:34` as an alternative mac prefix for MiTemperature
 
 ### 0.7.0 (2019-02-05)
 * (AlCalzone) Support MaterializeCSS (Admin v3)
@@ -123,7 +135,7 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

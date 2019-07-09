@@ -37,7 +37,7 @@ You can read more about context [here](https://www.npmjs.com/package/http-proxy-
 Additionally the user can define the route path for proxy requests.
 
 ## Changelog
-### 1.1.0 (2019-06-27)
+### 1.1.1 (2019-07-02)
 * (bluefox) Implemented simple proxy to eliminate socket.io problem
 
 ### 1.0.3 (2018-07-14)

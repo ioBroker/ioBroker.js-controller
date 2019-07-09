@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 8sOwELDFwEtJ5zrrhMTsjJsS97JcJqG1b0GLxEJD8eU=
+hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -62,14 +62,7 @@ Toolbar-Entrys是视图的链接。
 您可以将图像用作视图或设备的背景图像。
 免费的内置演示壁纸来自www.pexels.com。
 
-＃＃ 已知的问题
-这是第一个alpha-Release，因此可能存在很多错误。但对我来说它完全稳定。
-但是有一些限制：
-
- -  iobroker创建的备份文件中不包含上传的图像（如背景图像或剥皮设备按钮）
-
-请随时发表评论，让我知道，如何解决这些问题！
-
+##论坛
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## URL-Parameters
@@ -151,6 +144,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
   * **RGB** * string * - 您可以使用RGB格式（十六进制）而不是使用HUE，SATURATION和COLOR_BRIGHTNESS
   * **RGBW** * string * - 您可以使用RGBW格式（十六进制）而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS
   * **RGBWWCW** * string * - 而不是HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS你可以使用RGBWWCW格式（十六进制）
+*效果模式：
+    * **效果**：*值列表*  - 播放的效果
+* **EFFECT_NEXT** *boolean* - 如果设置为true，将播放下一个效果（作为不支持EFFECT值列表的设备的替代方案）
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *布尔值* - 如果设置为true，效果会加快/减小
 * **POWER** *数字* - 功耗将在右上角显示为小功率
 
 ### <img src="img/icons/radiator.png" width="32">温控器：
@@ -198,6 +195,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **等级**：*数字*  - 盲人的高度百分比
 * **DIRECTION** *value-list* - 可以是Stop，Up和Down
 * **STOP** *boolean* - 如果设置为true，盲人将停止
+* **UP** / **DOWN** *boolean* - 如果设置为true，盲人将上/下（对于设备，使用UP和DOWN数据点而不是LEVEL）
 
 ### <img src="img/icons/fire_on.png" width="32">消防传感器：
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
@@ -244,7 +242,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 0.0.040
+### 0.0.42
+* (Sebastian Bormann) Adjusted pathes of demo-files.
+
+### 0.0.41
+* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (Ansgar Schulte) Added Up and Down Buttons to Blinds.
+* (Sebastian Bormann) When creating a directory it will be entered.
+* (Sebastian Bormann) Added Effect-Section to Light
+* (Sebastian Bormann) If a state is not set yet, a standard value will be used
+
+### 0.0.40
 * (Sebastian Bormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39

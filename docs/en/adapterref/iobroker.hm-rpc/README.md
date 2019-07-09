@@ -135,6 +135,14 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.9.15 (2019-07-01)
+* (foxriver76) added meta and icon for HB-UNI-Sen-CAP-MOIST
+* (foxriver76) fix type of EPAPER_TONE to string
+
+### 1.9.14 (2019-06-29)
+* (foxriver76) small bug fix for HM-Dis-EP-WM55
+* (foxriver76) catch async errors on bin-rpc connection
+
 ### 1.9.13 (2019-06-03)
 * (foxriver76) fixed bug where some meta values where stored in the wrong index
 

@@ -12,6 +12,12 @@ Read more about it here https://www.npmjs.com/package/homebridge-platform-wemo
 
 ## Changelog
 
+### 1.0.1 (2019.07.05)
+* (Apollon77) homebridge version updated
+
+### 1.0.0
+* (Apollon77) Optimizations
+
 ### 0.2.2 (2018-06-23)
 * (bluefox) Small config fix
 
@@ -24,7 +30,7 @@ Read more about it here https://www.npmjs.com/package/homebridge-platform-wemo
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

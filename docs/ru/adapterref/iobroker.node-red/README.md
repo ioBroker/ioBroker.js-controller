@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.node-red/README.md
 title: ioBroker - красный адаптер для узла
-hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
+hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 ---
 ![логотип](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -27,9 +27,14 @@ hash: 0bbD+jRi8zHLWWQwhQ/YAJT3GmzVrTML8jHwcxRTdmY=
 ## Конфигурация
 
 ## Changelog
+### 1.9.0 (2019-07-08)
+* (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
+
+### 1.8.0 (2019-05-02)
+* (nobodyMO) Used newer version of node-red 0.20.5
 
 ### 1.7.2 (2019-01-16)
-- (SchumyHao) Add Chinese support
+* (SchumyHao) Add Chinese support
 
 ### 1.7.1 (2017-09-24)
 * (bluefox) use newer version of node-red 0.19.4

@@ -35,6 +35,13 @@ Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mi
 
 ## Changelog
 
+### 0.11.2 (2019-06-29)
+* (allofmex) Hue sml sensitivity, Hue motion sensitivity
+* (arteck) Innr RB 250 C, Gledopto GL-D-003Z, GL-G-001Z, GL-FL-004TZ, Philips LPT001
+* (kirovilya) OSRAM CLA60 RGBW Z3, Xiaomi curtain ZNCLDJ11LM
+* (kirovilya) Implement a time response for some xiaomi devices
+* (arteck) Heiman smoke sensor, TRADFRI bulb E14 WS opal 600lm, Innr RB265
+
 ### 0.11.1 (2019-06-15)
 * fix wrong initial extPanID. Sorry that need to repairing all devices again.
 * fix code for aqara cube

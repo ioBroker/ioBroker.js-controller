@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: HJLyKTLvHU9Jewi/UeGxqaT9xWe3MUNwRuX1sBrSi3o=
+hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -18,15 +18,15 @@ hash: HJLyKTLvHU9Jewi/UeGxqaT9xWe3MUNwRuX1sBrSi3o=
 
 特征：
 
-*在特定时间设定设定温度
-*可调节不同设定点温度的每日部分数量
-*支持各种家庭恒温器
+*按时间表控制所有恒温器的设定温度水平
+*为每天和晚上配置多个加热时段
+*支持各种homematic和max！cube恒温器
 *支持多个配置文件（待办事项）
 *如果恒温器和执行器之间没有直接连接，执行器可以直接从适配器中切换出来
-*目前，当达到设定点温度时，执行器会立即关闭。低于设定点温度时，执行器再次打开。之后，这里将实施更好的监管。
+*目前，当达到设定点温度时，执行器会立即关闭。一旦设定点温度低于实际温度，执行器就会打开。 （要做：实施改进的控制）
 *最多支持两个执行器
 *每个房间自动检测恒温器和执行器。该功能（例如“加热”）用于此。
-*如果房间有恒温器但不应控制，可以在管理员中停用房间
+*如果房间包含恒温器但不应控制，则可以在管理界面中排除房间
 *稍后将提供可视化示例
 
 ##设置
@@ -47,13 +47,19 @@ hash: HJLyKTLvHU9Jewi/UeGxqaT9xWe3MUNwRuX1sBrSi3o=
 ＃＃＃ 设备
 *所有带恒温器和执行器的房间列表。你可以在这里禁用一个房间。您不应更改恒温器或执行器的设置，因为这将在您下次启动管理员时被覆盖
 
-##注意事项
-*版本高于8的节点是必要的！
+＃＃ 要求
+*需要节点版本8或更高版本
 
-＃＃ 已知的问题
-*请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues）创建问题，如果您发现错误或新功能
+##问题和功能请求
+*如果您遇到任何错误或有此适配器的功能请求，请在[github]的适配器的GitHub问题部分中创建一个问题（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。任何反馈都表示赞赏，并将有助于改进此适配器。
 
 ## Changelog
+
+### 0.0.5 (2019-07-08)
+* (René) support for max!cube thermostats
+
+### 0.0.4 (2019-06-23)
+* (René) debugging
 
 ### 0.0.3 (2019-06-02)
 * (René) ready to publish

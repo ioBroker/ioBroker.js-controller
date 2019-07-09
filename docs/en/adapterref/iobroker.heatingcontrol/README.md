@@ -10,17 +10,17 @@
 
 Adapter for controlling thermostats.
 
-features:
-* Setting the set temperature at specific times
-* Number of daily sections with different setpoint temperatures adjustable
-* Supports various homematic thermostats
+Features:
+* Control the setpoint temperature levels of all thermostats per schedules
+* Configure multiple heating periods for each day and night 
+* Supports various homematic and max!cube thermostats
 * supports multiple profiles (to do)
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
-* Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is undershot, the actuator is switched on again. Later, a better regulation will be implemented here.
+* Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
 * up to two actuators are supported
 * Thermostat and actuator are automatically detected per room. The function (eg "heating") is used for this.
-* Rooms can be deactivated in the admin if a room has a thermostat but should not be controlled
-* A visualization example will be available here later
+* Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
+* A visualization example will be provided later
 
 
 ## Settings
@@ -41,16 +41,19 @@ features:
 ### devices
 * a list of all rooms with thermostats and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
 
-## Notes
-* node with version higher then 8 is necessary!
+## Requirements
+* Node version 8 or higher is required
 
-## known issues
-* please create issues at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) if you find bugs or whish new features
+## Issues and Feature Requests
+* If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
 
 ## Changelog
 
-### 0.0.4 (2019-mm-dd)
+### 0.0.5 (2019-07-08)
+* (René) support for max!cube thermostats
+
+### 0.0.4 (2019-06-23)
 * (René) debugging
 
 ### 0.0.3 (2019-06-02)

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
+hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ---
-# Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
+# Nach https://github.com/iobroker-community-adapters/ioBroker.hue verschoben
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hue-stable.svg)
@@ -13,24 +13,29 @@ hash: m83a+nzBh8badhfDiWEG6Fwf++rjPjLQbvzQP8bOTk0=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hue.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)
 
-# IoBroker Philips Hue Bridge-Adapter ================
-## Englisch: gb:
-Verbindet Philips Hue-LED-Lampen, Freunde von Hue-LED-Lampen und -Streifen sowie andere SmartLink-fähige Geräte (LivingWhites, einige LivingColors) über Philips Hue Bridges mit ioBroker.
+# IoBroker Philips Hue Bridge Adapter
+==============
 
-Sie müssen Ihre HUE-Bridge zuerst mit ioBroker verknüpfen.
+## English: gb:
+Verbindet Philips Hue LED-Lampen, Friends of Hue LED-Lampen und Stripes und andere SmartLink-fähige Geräte (LivingWhites, einige LivingColors) über Philips Hue Bridges mit ioBroker.
 
-1. Suchen Sie dazu zunächst die IP-Adresse, indem Sie auf die Schaltfläche "Find Bridge" klicken. Sie ist nur aktiviert, wenn keine IP-Adresse eingegeben wurde.
-2. Nachdem die IP-Adresse gefunden wurde, muss der USER erstellt werden. Klicken Sie dazu auf die Schaltfläche "Create User" und dann auf die Schaltfläche "Link" auf der HUE-Brücke. Die Schaltfläche "Benutzer erstellen" ist nur aktiviert, wenn kein USER eingegeben wurde
+Sie müssen zuerst Ihre HUE-Bridge mit ioBroker verknüpfen.
+
+1. Suchen Sie dazu zuerst die IP-Adresse, indem Sie auf die Schaltfläche "Find Bridge" klicken. Es ist nur aktiviert, wenn keine IP-Adresse eingegeben wurde.
+2. Nachdem die IP-Adresse gefunden wurde, muss der USER erstellt werden. Klicken Sie dazu auf die Schaltfläche "Create User" und anschließend auf die Schaltfläche "Link" auf der HUE Bridge. Die Schaltfläche "Benutzer erstellen" ist nur aktiviert, wenn kein Benutzer eingegeben wurde
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
-In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen Benutzer zu aktivieren, muss der Benutzer an die Hue-Brücke drücken. Dann wird automatisch der User übergeben.
+In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername konfiguriert werden. Um einen User zu aktivieren, drücken Sie auf den Button an der Hue bridge. Dann wird automatisch der User übergeben.
 
 ## Roadmap / Todo
 * Automatische Brückenerkennung
-* Automatisches Benutzer-Setup über Bridge-Link-Button
+* Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
+### 1.2.3 (2019.03.11//2019.07.07)
+* (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
+
 ### 1.1.2 (2019.01.25)
 * (BasGo) Added compact mode
 

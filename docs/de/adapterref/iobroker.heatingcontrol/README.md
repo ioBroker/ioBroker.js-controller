@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: HJLyKTLvHU9Jewi/UeGxqaT9xWe3MUNwRuX1sBrSi3o=
+hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -18,16 +18,16 @@ Adapter zur Steuerung von Thermostaten.
 
 Eigenschaften:
 
-* Einstellen der eingestellten Temperatur zu bestimmten Zeiten
-* Anzahl der Tagesstrecken mit unterschiedlichen Solltemperaturen einstellbar
-* Unterstützt verschiedene Homematic Thermostate
+* Kontrollieren Sie die Solltemperatur aller Thermostate nach Zeitplan
+* Konfigurieren Sie mehrere Heizperioden für jeden Tag und jede Nacht
+* Unterstützt verschiedene Homematic- und Max! Cube-Thermostate
 * unterstützt mehrere Profile (zu tun)
 * Wenn keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht, kann der Stellantrieb direkt aus dem Adapter geschaltet werden
-* Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unterschritten wird, wird der Antrieb wieder eingeschaltet. Später wird hier eine bessere Rechtsetzung umgesetzt.
+* Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
 * Es werden bis zu zwei Aktoren unterstützt
 * Thermostat und Stellantrieb werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
-* Räume können im Admin deaktiviert werden, wenn ein Raum einen Thermostat hat, aber nicht gesteuert werden soll
-* Ein Visualisierungsbeispiel wird später hier verfügbar sein
+* Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
+* Ein Visualisierungsbeispiel wird später bereitgestellt
 
 ## Die Einstellungen
 ### Main
@@ -47,13 +47,19 @@ Eigenschaften:
 ### Geräte
 * eine Liste aller Räume mit Thermostaten und Antrieben. Hier können Sie einen Raum deaktivieren. Sie sollten die Einstellungen für Thermostate oder Stellantriebe nicht ändern, da diese beim nächsten Start von admin überschrieben werden
 
-## Anmerkungen
-* Knoten mit einer Version höher als 8 ist erforderlich!
+## Bedarf
+* Node Version 8 oder höher ist erforderlich
 
-## Bekannte Probleme
-* Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+## Probleme und Funktionswünsche
+* Wenn Sie auf Fehler stoßen oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ## Changelog
+
+### 0.0.5 (2019-07-08)
+* (René) support for max!cube thermostats
+
+### 0.0.4 (2019-06-23)
+* (René) debugging
 
 ### 0.0.3 (2019-06-02)
 * (René) ready to publish

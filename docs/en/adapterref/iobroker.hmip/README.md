@@ -44,6 +44,9 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 0.0.11
+* (jogibear9988) multiple fixes
+
 ### 0.0.10
 * (jogibear9988) added ping/pong, enable setBoots, more units, more hardware
 

@@ -24,6 +24,9 @@ Normaly you can leave the "Auto detect" function on. If this does not work you c
 
 ## Changelog
 
+### 0.1.5
+* telnet connection will automaticly reconnect on refresh intervall to check weather and shutter status
+
 ### 0.1.4
 * update lux calculation (Thanks to stefan)
 

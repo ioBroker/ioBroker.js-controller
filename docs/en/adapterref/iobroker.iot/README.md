@@ -225,6 +225,9 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 
 
 ## Changelog
+### 0.5.0 (2019-06-29)
+* (bluefox) tried to add yandex Alisa 
+
 ### 0.4.3 (2019-04-14)
 * (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
 
@@ -259,7 +262,7 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2109 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

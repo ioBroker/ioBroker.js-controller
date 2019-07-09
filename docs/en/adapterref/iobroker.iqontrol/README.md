@@ -35,13 +35,9 @@ Runs in any Browser.
 You can save it as Web-App on iOS-Homescreen and it looks and feels like a native app.
 It's fully customizable.
 
-
-
 ## You need...
 * Nodejs 8 or higher
 * socketIO has to be enabled in web-adapter
-
-
 
 ## How to use
 * Start creating views.
@@ -58,15 +54,7 @@ It's fully customizable.
 	You can use your images as background-images for views, or for devices.
 	The free builtin demo-wallpapers are from www.pexels.com.
 
-
-
-## Known issues
-This is the first alpha-Release, so there may be a lot of bugs. But for me it runs completely stable.
-However there are a few limitations:
-- Uploaded images (as background-images or for skinning device-buttons) are not included in the backup-file created by iobroker
-
-Please feel free to comment and let me know, how to fix these issues!
-
+## Forum
 Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol). 
 
 ## URL-Parameters
@@ -139,6 +127,10 @@ Optional you can define the following states:
     * **RGB**: *string* - instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex)
     * **RGBW**: *string* - instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex)
     * **RGBWWCW**: *string* - instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW-Format (hex)
+* Effect-Mode:
+    * **EFFECT**: *value-list* - the effect to play
+	* **EFFECT_NEXT**: *boolean* - if set to true, the next effect will play (as an alternative for devices that dont support EFFECT-value list)
+	* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN**: *boolean* - if set to true, the effect will speed up/down
 * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
@@ -185,6 +177,7 @@ In addition to normal thermostat you can define:
 * **LEVEL**: *number* - height of the blind in percentage
 * **DIRECTION**: *value-list* - can be Stop, Up and Down
 * **STOP**: *boolean* - if set to true, the blind will stop
+* **UP** / **DOWN**: *boolean* - if set to true, the blind will go up/down (for devices, that use UP and DOWN datapoints instead of LEVEL)
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
@@ -224,17 +217,25 @@ In addition to normal thermostat you can define:
 * **STATE**: *any* - can be used to display further informations
 * **URL**: CONSTANT *string* - this url will be opened
 
-
-
 ## Developing
 * Have a look at [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md)
-
 
 ****
 
 # Changelog
 
-### 0.0.040
+### 0.0.42
+* (Sebastian Bormann) Adjusted pathes of demo-files.
+
+### 0.0.41
+* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (Ansgar Schulte) Added Up and Down Buttons to Blinds.
+* (Sebastian Bormann) When creating a directory it will be entered.
+* (Sebastian Bormann) Added Effect-Section to Light
+* (Sebastian Bormann) If a state is not set yet, a standard value will be used
+
+### 0.0.40
 * (Sebastian Bormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39

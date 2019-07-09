@@ -739,6 +739,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nanoleaf-lightpanels/R
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nibeuplink/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nightscout/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.node-red/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nuki2/README.md
@@ -1052,6 +1053,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nanoleaf-lightpanels/R
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nibeuplink/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nightscout/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.node-red/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nuki2/README.md
@@ -1365,6 +1367,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nanoleaf-lightpanels/R
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nibeuplink/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nightscout/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.node-red/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nuki2/README.md
@@ -1678,6 +1681,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nanoleaf-lightpanel
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nibeuplink/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nightscout/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.node-red/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nuki2/README.md

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.simple-api/README.md
 title: Простой апи
-hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
+hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
 ---
 ![логотип](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -30,11 +30,16 @@ hash: +UvlKC+TP4oxOMqddd9G1ktB61MlJqtF/FvBlf5CkV4=
   "objects": "http://ipaddress:8087/objects?pattern=system.adapter.admin.0*&prettyPrint",
   "objects": "http://ipaddress:8087/objects?pattern=system.adapter.admin.0*&type=adapter&prettyPrint",
   "states": "http://ipaddress:8087/states?pattern=system.adapter.admin.0*&prettyPrint"
+  "search": "http://192.168.0.24:8087/search?pattern=system.adapter.admin.0*&prettyPrint",
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?noHistory=true&prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?dateFrom=2019-06-06T12:00:00.000Z&d&prettyPrint"
+  "query": "http://192.168.0.24:8087/query/stateID1,stateID2/?dateFrom=2019-06-06T12:00:00.000Z&dateTo=2019-06-06T12:00:00.000Z&prettyPrint"
 }
 ```
 
 ### GetPlainValue
-Позвоните, например:
+Звоните, например:
 
 ```
 http://ipaddress:8087/getPlainValue/system.adapter.admin.0.alive
@@ -47,7 +52,7 @@ true
 ```
 
 ### Получить
-Позвоните, например:
+Звоните, например:
 
 ```
 http://ipaddress:8087/get/system.adapter.admin.0.alive
@@ -87,10 +92,10 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    получить много состояний одним запросом, возвращенным как объект с идентификатором в качестве ключа и val / ts как подобъект
+    получить много состояний одним запросом, возвращенным как массив объектов в порядке списка в запросе и id / val / ts как подобъект
 
 ### Задавать
-Позвоните, например:
+Звоните, например:
 
 ```
 http://ipaddress:8087/set/javascript.0.test?value=1
@@ -134,6 +139,15 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 ### Объекты
 ### Состояния
+### Поиск
+Если в конфигурации задан источник данных (History, SQL), то будут перечислены только точки данных, известные источнику данных.
+Если активирована опция «Список всех точек данных» или не указан источник данных, будут перечислены все точки данных.
+Эта команда необходима для подключаемого модуля Grafana JSON / SimpleJSON.
+
+### Запрос
+Если был указан источник данных (History, SQL), данные из указанных точек данных считываются за указанный период, в противном случае считывается только текущее значение.
+Эта команда необходима для подключаемого модуля Grafana JSON / SimpleJSON.
+
 ### Помогите
 Возвращает [этот](#usage) обратно
 
@@ -210,7 +224,31 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 <pre> http:// IP: 8087 / состояния шаблон = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32161, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156149}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41.14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, &quot;system.adapter.admin.0.memHeapUsed&quot;: {&quot;val&quot;: 19.07, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423156149},&quot; system.adapter.admin.0.connected &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin .0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28100},&quot; system.adapter.admin.0.alive &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28115}} </pre>
 
+### Поиск
+Если в конфигурации задан источник данных (History, SQL), то будут перечислены только точки данных, известные источнику данных.
+Если активирована опция «Список всех точек данных» или не указан источник данных, будут перечислены все точки данных.
+
+<pre> http:// IP: 8087 / шаблон поиска = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.outputCount&quot;, &quot;system.adapter.admin.0.inputCount&quot;, &quot;system.adapter.admin.0.uptime&quot;, &quot;system.adapter.admin.0.memRss&quot;, &quot; system.adapter.admin.0. adapter.admin.0.connected &quot;,&quot; system.adapter.admin.0.alive &quot;} </pre>
+
+### Запрос
+Если был указан источник данных (History, SQL), данные из указанных точек данных считываются за указанный период.
+
+<pre> http:// IP: 8087 / запрос / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed / prettyPrint &amp; dateFrom = 2019-06-08T01: 00: 00.000Z &amp; dateTo = 2019-06-08T01: 00: 10.000Z </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.12, 1559955600000], [0.46, 1559955601975], [0.44, 1559955610000]]}, {&quot;target&quot;: &quot;system .host.iobroker-dev.memHeapUsed &quot;,&quot; datapoints &quot;: [[23.01, 1559955600000], [22.66, 1559955601975], [22.69, 1559955610000]]}] </pre>
+
+Если источник данных не указан или передан параметр noHistory, то будет считано только текущее значение точки данных.
+
+<pre> http:// IP: 8087 / запрос / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed / prettyPrint &amp; noHistory = верно? </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints &quot;: [[21.53, 1559970500342]]}] </pre>
+
 ## Changelog
+
+### 2.1.0 (2019-07-05)
+* (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana
+
+### 2.0.5 (2019-06-26)
+* (Apollon77) remove logging
+
+### 2.0.4 (2019-06-23)
+* (Apollon77) fix usage as web extension
 
 ### 2.0.2 (2018-12-17)
 * (Apollon77) fix decoding for state Ids with # in it
@@ -279,3 +317,26 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 ### 0.0.1 (2015-02-06)
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2015-2019 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

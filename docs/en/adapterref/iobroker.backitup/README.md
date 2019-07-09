@@ -9,47 +9,12 @@ Backitup is a backup solution that enables the cyclical backup of an IoBroker in
 The adapter is suitable for multiplatforms and can be used in addition to Linux installations on Windows and Mac installations.
 
 The CIFS mount must have cifs-utils installed.
-
-    - apt-get install cifs-utils
+    - `apt-get install cifs-utils`
 
 NFS-mount must be installed for the NFS mount.
+	- `sudo apt-get install nfs-common`
 
-	- sudo apt-get install nfs-common
-
-## Table of Contents:
-1. Backup Type
-    - 1.1 Minimal Backup (Standard IoBroker Backup)
-    - 1.2 Complete backup
-    - 1.3 CCU Backup (CCU-Original / pivCCU / Raspberrymatic)
-    - 1.4 Optional Mysql backup (Localhost)
-    - 1.5 Optional Redis backup
-
-2. Preparation
-
-3. Ftp, CIFS, NFS, Copy and Dropbox
-
-4. Use
-    - 4.1 created data points
-    - 4.3 Format History Log with CCS
-    - 4.4 Display backup status in the OneClick button
-    - 4.5 Notify after successful backups
-5. Restore a backup
-    - 5.1 Restore minimal backup
-    - 5.2 Restore completely backup
-    - 5.3 Restore Raspberrymatic / CCU Backup
-6. Troubleshooting
-    - Activate 6.1 Logging
-    - 6.2 Enable debugging
-7. Errors / Solutions encountered
-    - 7.1 Web interface not accessible after Restore
-    - 7.2 JS datapoint not writable
-    - 7.3 Error message: "Command not found"
-    - 7.4 Full Backup Hangs
-    - 7.5 Changed values in Dp are not accepted
-
-
-## 1. Backup types:
-
+## 1. Backup types
 Backitup offers the possibility to carry out three types (optionally with DB backup) of different backup types cyclically or at the push of a button. Each backup is placed in the / opt / iobroker / backups / directory by default. Optionally, an FTP upload can be set up or alternatively a CIFS mount can be used.
 
 1. Standard Backup
@@ -64,12 +29,10 @@ To make sure that all the latest states have to be backed up, you have to set th
 5. Redis backup
     - This separately adjustable backup, if activated, will be created for every backup whether "minimal" or "complete" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
 
-## 2. Preparation:
-
+## 2. Preparation
 The following steps should be used to use the adapter (if the v1 / v2 / v3 backup script was used, first delete everything (disable / delete data points / enum.functions / shell script and javascript!)
 
 ## 3. Use Ftp, CIFS, NFS, Copy or Dropbox for the optional backup on a Nas?
-
 - CIFS:
     - CIFS mount is not a problem on Linux.
     - It should be noted that cifs-utils is installed
@@ -96,10 +59,12 @@ The following steps should be used to use the adapter (if the v1 / v2 / v3 backu
     - Step 4: Give "Name your app"
     - Step 5: Press "Generated access token" button (The token is entered in the settings of Backitup)
     - In your Dropbox there is now a new folder with the name "Apps"
+  - Google Drive:
+    - To use the backup in Google Drive, an access token must fetch. You can do that on the configuration page.
+    - ioBroker only accesses the defined areas. The code for oAuth can be viewed [here](https://github.com/simatec/ioBroker.backitup/blob/master/docs/oAuthService.js).
+    - No tokens or user data are stored in the cloud.
 
-
-## 4. Usage:
-
+## 4. Usage
 1. The adapter creates 7 data points for use in Vis
     - oneClick.ccu -> serves as trigger trigger for a CCU backup (can be set to true in Vis by a button)
     - oneClick.minimal -> serves as trigger trigger for a standard backup (Can be set to true in Vis by a button)
@@ -249,6 +214,10 @@ Here is a list of problems encountered so far and their solutions, if any.
     If you have not set up your Iobroker installation with the installer script and your user has a different name, please replace it with your user in the command "iobroker".
 
 ## Changelog
+
+### 1.2.0 (02.07.2019)
+* (bluefox) Google Drive was added
+* (simatec) Support for node 6 ended
 
 ### 1.1.4 (08.04.2019)
 * (simatec) Support for SMB3

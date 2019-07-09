@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.moma/README.md
 title: без названия
-hash: f0yaX2SAB2/xWX3pkB0mun9LVzit2kAWJMlB/IWkXLs=
+hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.moma.svg)
+![Количество установок](http://iobroker.live/badges/moma-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)
 ![Известные уязвимости](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
@@ -91,6 +92,7 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 * networkInterfaces - доступные сетевые интерфейсы
 * графика - информация о компьютерах, видеокартах и подключенных мониторах
 * inetLatency - проверка интернет-задержки на 8.8.8.8
+* dockerInfo - Общая информация о Docker - для правильной работы требуется «adduser iobroker docker» на компьютере.
 * dockerContainers - список всех контейнеров Docker - для правильной работы требуется «докер adobser iobroker» на компьютере.
 
 Следующие функции системной информации библиотеки вызываются в интервале 4 (по умолчанию каждый день):
@@ -106,6 +108,12 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 * checkBatteries - проверяет переменные состояния батареи (текущие реализованные имена состояний: LOWBAT, LOW_BAT)
 
 ## Changelog
+
+### 1.1.3 (2019-07-03)
+* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
+
+### 1.1.2 (2019-06-05)
+* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
 
 ### 1.1.1 (2019-05-23)
 * (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
