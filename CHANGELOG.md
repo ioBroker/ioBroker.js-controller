@@ -2,6 +2,8 @@
 * (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install
 * (Stabilostick) Optimize messages for some CLI host commands
 * (Stabilostick) Replace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker
+* (Stabilostick) Replace default self signed SSL certificate to prevent errors in Node.Js 10.16+
+* (Apollon77) Also replace default certificate used for all Web and Admin instances if the old cerfificate was used, so restart will use the new certificate
 
 ## 1.5.12 (2019-06-01) Evolution release (Ann)
 * (Apollon77) Install instance of info adapter too on first setup of controller 
