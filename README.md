@@ -2,9 +2,9 @@
 
 # ioBroker.docs - ioBroker new website project & documentation
 
-Try prototype at [http://www.iobroker.net/react/](http://www.iobroker.net/react/)
+See live documentation at [https://www.iobroker.net/#de/documentation](https://www.iobroker.net/#de/documentation) in different languages.
 
-Content:
+Project content:
 
 | Folder | Description |
 |---|---|
