@@ -1,14 +1,11 @@
 ---
-title:       "Installation"
-lastChanged: "13.09.2018"
+title:       "Update eines Adapters"
+lastChanged: "16.07.2019"
 ---
 
 # Updaten von Adaptern
+Das Vorgehen beim Upgrade eines Adapters ist im Tutorial zur Adapterverwaltung beschrieben:
+https://www.iobroker.net/#de/documentation/tutorial/adapter.md?upgradeeinesadapters
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können.
-
-@@@ Link auf die Detailbescheibung, wie ein Adapter up-/downgrade wird. @@@
+Das Downgrade auf eine bestimmte Version eines Adapters ebenfalls:
+https://www.iobroker.net/#de/documentation/tutorial/adapter.md?downgradeeinesadapters
