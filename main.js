@@ -2426,16 +2426,19 @@ function startInstance(id, wakeUp) {
                         const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
                         try {
                             //procs[id].process = adapterModules[name]({logLevel, compactInstance: _instance, compact: true});
+
+                            // fix problem on windows
+                            if (process.platform === 'win32') {
+                                fileNameFull = fileNameFull.replace(/\//g, '\\\\');
+                            }
                             const starterScript =
-                                'module.exports = function (callback) {' +
-                                'const adapter = require("' + fileNameFull + '")(' + JSON.stringify({logLevel, compactInstance: _instance, compact: true}) + ');' +
-                                'adapter.on("exit", (code, signal) => {' +
-                                'callback(code, signal);' +
-                                '});' +
-                                'return true' +
-                                '};';
+                                'module.exports = function (callback) {\n' +
+                                '   const adapter = require("' + fileNameFull + '")(' + JSON.stringify({logLevel, compactInstance: _instance, compact: true}) + ');\n' +
+                                '   adapter.on("exit", (code, signal) => callback(code, signal));\n' +
+                                '   return adapter;\n' +
+                                '};\n';
                             logger.silly(starterScript);
-                            procs[id].process = adapterModules[name].run(starterScript)(exitHandler);
+                            procs[id].process = adapterModules[name].run(starterScript, name + '.js')(exitHandler);
                             procs[id].startedInCompactMode = true;
                         } catch (e) {
                             console.log(e.message);
