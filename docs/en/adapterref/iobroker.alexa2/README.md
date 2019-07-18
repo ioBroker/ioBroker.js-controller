@@ -283,7 +283,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ### 2.5.0 (2019-07-07)
-* (INgoRah) Support custom mode
+* (INgoRah) Support compact mode
 * (Apollon77) enhance error handling for broken authentications
 
 ### 2.4.6 (2019-07-05)

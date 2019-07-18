@@ -3,23 +3,29 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.link/README.md
 title: ioBroker.link
-hash: scWM+/Fvm5d++HzN0qDbh2RN057qbkuEZOC38RdQxt8=
+hash: q185Nop/RawGSrD3XFF+GfEb+G0K/ygJeIRLOltDEw8=
 ---
 ![логотип](../../../en/adapterref/iobroker.link/admin/link.png)
 
-![Количество установок](http://iobroker.live/badges/link-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.link.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.link.svg)
 ![NPM](https://nodei.co/npm/iobroker.link.png?downloads=true)
 
-# IoBroker.link ===================
-Этот адаптер обеспечивает безопасное соединение через облако iobroker.link.
+# IoBroker.link
+Этот адаптер обеспечивает безопасное соединение через облако [ioBroker.link](https://iobroker.link/).
 
 ## Настройки адаптера
 ## Прокси
 Прокси-сервер может быть определен как URI: *http:// proxy: 8080* или через **HTTPS_PROXY** переменную среды.
 
 ## Changelog
+### 0.4.4 (2019-07-16)
+* (gh-got) closing tunnels in case server considers an agent as offline
+* (gh-got) fixed timeout to query active connection status
+
+### 0.4.2 (2019-03-28)
+* (gh-got) agents will report own version by registration
+
 ### 0.4.0 (2019-03-10)
 * (bluefox) Made this adapter to be compatible with the new server
 
@@ -39,9 +45,9 @@ hash: scWM+/Fvm5d++HzN0qDbh2RN057qbkuEZOC38RdQxt8=
 * (bluefox) Initial commit
 
 ## License
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
-
 Creative Common Attribution-NonCommercial (CC BY-NC)
+
+Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
 
 http://creativecommons.org/licenses/by-nc/4.0/
 

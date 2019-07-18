@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
+hash: 7gPwo1chlg/xVoXHDXToynvTfmNDtFrjg1UxXF/bTxI=
 ---
 ![安装数量](http://iobroker.live/badges/primelab-stable.svg)
 
@@ -31,6 +31,9 @@ PrimeLab适配器可以在https://primelab.cloud页面上自动检索存储在�
      -  421-氯 - 总量
      -  428-无氯
      -  429-pH-PoolLab
+
+##链接
+[Primelab](https://www.primelab.org/de/der-primelab.html)
 
 ## Changelog
 ### 1.0.2

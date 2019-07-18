@@ -1,10 +1,10 @@
 ---
 title: installation
 lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/virtualbox.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: VtWRmeZY9+xDVaMHS6K3m18WcJwcGA1SWlbtQ6lCYKw=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/virtualbox.md
+hash: I9fBqGuBbdh3aWQsRBtlCo0jrgRu8pfhoF5A11pGlBw=
 ---
 # Setting up and installing ioBroker in VirtualBox
 ?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
@@ -77,7 +77,7 @@ Partitioning the Hard Disk 1: We Select GUIDED - USE FULL DISK RECORD109.jpg
 
 Partitioning hard disk 2: We select our hard disk Recording110.jpg
 
-Disk Partitioning 3: We select ALL FILES ON A PARTITION, RECOMMENDED FOR BEGINNERS RECORDING 111.jpg
+Partition Disk 3: We select ALL FILES ON A PARTITION, RECOMMENDED FOR BEGINNERS RECORDING 111.jpg
 
 Partitioning Hard Disk 4: We select PARTITIONING EXIT AND TAKE CHANGES Recording112.jpg
 
@@ -179,18 +179,36 @@ sudo nano /etc/init.d/StartVM &amp; sudo chmod + x /etc/init.d/StartVM &amp; sud
 
 File contents:
 
-~~~ bash
-
-#! / Bin / sh
+```
+#! /bin/sh
 # Start VirtualBox @boot
 # /etc/init.d/StartVM
 #
+
 #Edit these variables!
-VMUSER = user VMNAME = VM1 VMNAME2 = test
+VMUSER=user
+VMNAME=VM1
+VMNAME2=Test
 
-case "$ 1" in start) echo "Starting VirtualBox VM ..." sudo -u $ VMUSER VBoxHeadless --startvm $ VMNAME &amp; sudo -u $ VMUSER VBoxHeadless --startvm $ VMNAME2 &amp; ;; stop) echo "Saving state of Virtualbox VM ..." sudo -u $ VMUSER VBoxManage controlvm $ VMNAME savestate sudo -u $ VMUSER VBoxManage controlvm $ VMNAME2 savestate ;; *) echo "Usage: /etc/init.d/StartVM {start | stop}" exit 1 ;; esac
+case "$1" in
+  start)
+    echo "Starting VirtualBox VM ..."
+    sudo -u $VMUSER VBoxHeadless --startvm $VMNAME &amp;
+    sudo -u $VMUSER VBoxHeadless --startvm $VMNAME2 &amp;
+    ;;
+  stop)
+    echo "Saving state of Virtualbox VM ..."
+    sudo -u $VMUSER VBoxManage controlvm $VMNAME savestate
+    sudo -u $VMUSER VBoxManage controlvm $VMNAME2 savestate
+    ;;
+  *)
+    echo "Usage: /etc/init.d/StartVM {start|stop}"
+    exit 1
+    ;;
+esac
 
-exit 0 ~~~
+exit 0
+```
 
 Adjust the 3 variables! (if necessary comment out the third variable or add more, depending on the VM instances)
 
@@ -207,12 +225,14 @@ Memory usage: a dynamic 10GB VM and Ubuntu 16.10 Full + iobroker occupies approx
 My whole personal area incl. The VirtualBOX VM directory I copy every night with the program "Back in Time" automatically on a second hard drive. There several versions are held and automatically deleted after certain times.
 Screenshot of 2016-04-26 22-55-23.png This is VirtualBox.
 
-~~~ bash sudo apt-get install virtualbox virtualbox-qt virtualbox-dkms ~~~
+```
+sudo apt-get install virtualbox virtualbox-qt virtualbox-dkms
+```
 
-You can also install an extension pack, it supports, for example, the connection of USB 2.0 or 3.0 devices from the host on the client, webcam transmission from the host to client and AES encryption. You can download it here [URL: https: //www.virtualbox.org/wiki/Downloads] here - the 2nd point (Extension Pack) [/ url] Download this file and open it either as admin or open and installs it via VirtualBOX / Global Settings / Additional Packages (but start VirtualBOX as Admin).
+You can also install an extension pack, it supports, for example, the connection of USB 2.0 or 3.0 devices from the host on the client, webcam transmission from the host to client and AES encryption. You can download it here [URL: https://www.virtualbox.org/wiki/Downloads] here - the 2nd item (Extension Pack) [/ url] Download this file and open it either as admin or open and installs it via VirtualBOX / Global Settings / Additional Packages (but start VirtualBOX as Admin).
 
 The minimum hardware requirements are very low. You have to figure out for yourself how it fits. Theoretically enough 512 RAM and an old Intel processor. For example, it should run smoothly on all Intel NUC generations.
-For continuous operation, it is of course important to have a low-power host. You can easily build powerful sub-10-watt computers today. There are various 10-watt PC instructions on the Internet. It is important that one does without a (own) graphics card and has an efficient power supply in the low load range, and does not use a high-end motherboard, because the more functions it has, the more chips are sucking on the stream.
+For continuous operation, it is of course important to have a low-power host. You can easily build powerful sub-10-watt computers today. There are various 10-watt PC instructions on the Internet. It is important that one does without a (own) graphics card and has an efficient power supply in the lower load range, and does not use a high-end motherboard, because the more functions it has, the more chips are sucking on the stream.
 I can really recommend the Intel NUC series for Windows or Ubuntu. Let me quote my signature: iobroker in an Ubuntu VM with VirtualBOX on an Intel NUC Nuc6i3SYH (i3 Skylake), M.2 SSD, 8 GB RAM, Ubuntu 16.10. 6-8 W idling.
 
 In Virtualbox, I have the network card of Vm set to "Bridged", so that the VM hangs on the LAN router, so to speak, as a separate computer.
@@ -222,12 +242,26 @@ This can work like this with Debian:
 
 Terminal:
 
-~~~ bash sudo nano / etc / network / interfaces ~~~
+```
+sudo nano /etc/network/interfaces
+```
 
-There could be something like this: ~~~ auto eth0 allow-hotplug eth0 iface eth0 inet dhcp ~~~
+There could be something like that:
+
+```
+  auto eth0
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+```
 
 You change that to (Attention, adjust the numbers to your own environment)
 
-~~~ auto eth0 iface eth0 inet static address 192.168.1.7 netmask 255.255.255.0 gateway 192.168.1.1 ~~~
+```
+ auto eth0
+    iface eth0 inet static
+        address 192.168.1.7
+        netmask 255.255.255.0
+        gateway 192.168.1.1
+```
 
 Where eth0 is the name of your own LAN device, it's likely to be different in a VM, so when you make the change, you'll have to replace the two eth0 words with the right names.

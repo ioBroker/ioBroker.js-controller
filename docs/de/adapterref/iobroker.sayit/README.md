@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sayit/README.md
-title: ioBroker sayit adapter
-hash: YGa+7pXYvlsP3g77L7+oVvhRap1ISB9PKQfchOw2rQw=
+title: ioBroker sagt es Adapter
+hash: UvTKjN3AR/eILEkm2F3ks0+HQsavlk46z4PNwGkZ5gs=
 ---
 ![Logo](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -13,54 +13,54 @@ hash: YGa+7pXYvlsP3g77L7+oVvhRap1ISB9PKQfchOw2rQw=
 ![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)
 
 # IoBroker sayit adapter
-SayIt Adapter kann Text in Sprache konvertieren und auf einem Gerät abspielen.
+SayIt Adapter kann Text in Sprache umwandeln und auf einigen Geräten wiedergeben.
 
 ## Aufbau
-Folgende Ausgaben werden unterstützt:
+Aktuell werden folgende Ausgaben unterstützt:
 
-- *Browser* - Der Text wird vom Browser mit geöffneter iobroker.vis-Seite abgespielt. Es wird fast von jedem Desktop-Browser und von wenigen mobily Browsern unterstützt.
+- *Browser* - Der Text wird vom Browser mit geöffneter iobroker.vis Seite abgespielt. Es wird fast von jedem Desktop-Browser und von wenigen mobilen Browsern unterstützt.
 
-- *[Home24- MediaPlayer] (http://www.home-24.net/index.php?app=media)* - Der Text wird gesendet und auf dem Android-Gerät abgespielt, wenn der Home24-MediaPlayer installiert ist. Dafür wird in Android eine Text-to-Speech-Engine eingebaut. Der Port kann nicht geändert und auf 50000 eingestellt werden.
+- *[Home24-MediaPlayer] (http://www.home-24.net/index.php?app=media)* - Der Text wird gesendet und auf dem Android-Gerät abgespielt, wenn Home24-MediaPlayer installiert ist. Hierzu wird eine in Android eingebaute Text-to-Speech-Engine verwendet. Der Port kann nicht geändert und auf 50000 eingestellt werden.
 
-- *Home24 - MediaPlayer und [FTP-Server] (https://play.google.com/store/apps/details?id=lutey.FTPServer)* - Der Text wird auf dem Android-Gerät mit Home24 - MediaPlayer gesendet und wiedergegeben Eingerichtet. Dafür wird die Google Text to Speech Engine verwendet. Die erzeugte MP3-Datei wird über FTP auf ein Android-Gerät kopiert und mit dem Home24 - MediaPlayer abgespielt.
+- *Home24 - MediaPlayer und [FTP-Server] (https://play.google.com/store/apps/details?id=lutey.FTPServer)* - Der Text wird mit Home24 - MediaPlayer auf dem Android-Gerät gesendet und abgespielt Eingerichtet. Hierfür wird die Google Text to Speech Engine verwendet. Die erzeugte MP3-Datei wird über FTP auf das Android-Gerät kopiert und mit dem Home24-MediaPlayer abgespielt.
 
-    Beide Apps müssen dieselben Basisverzeichnisse haben. (Z. B. Stammverzeichnis der "SD-Karte").
+    Beide Apps müssen dieselben Home-Verzeichnisse haben. (Zum Beispiel Stammverzeichnis der "SD-Karte").
 
 - *System* - Der Text wird vom Betriebssystem abgespielt, auf dem der ioBroker-Adapter ausgeführt wird. Folgende Betriebssysteme werden unterstützt: Windows, Linux, Mac OSx.
 
-- *Windows-Engine* - Der Text wird von Fenstern abgespielt, auf denen der sayIt-Adapter ausgeführt wird. Hierfür wird Windows Text to Speech Engine verwendet, die vom Benutzer vorkonfiguriert werden sollte. Sie können [hier] (http://windows.microsoft.com/de-de/windows/setting-speech-options#1TC=windows-7) nachlesen, wie Sie es einrichten.
+- *Windows Engine* - Der Text wird von Windows abgespielt, in dem der sayIt-Adapter ausgeführt wird. Hierfür wird Windows Text to Speech Engine verwendet, die vom Benutzer vorkonfiguriert werden sollte. Sie können [hier] überprüfen (http://windows.microsoft.com/en-us/windows/setting-speech-options#1TC=windows-7), wie es eingerichtet wird.
 
-- *Sonos* - Text auf dem Sonosgerät abspielen. Stellen Sie sicher, dass der Web Adapter aktiviert ist. Es ist erforderlich, damit SONOS die erzeugten MP3-Dateien lesen kann.
+- *Sonos* - Text auf dem Sonos-Gerät abspielen. Stellen Sie sicher, dass der Webadapter aktiviert ist. Es ist erforderlich, dass SONOS die generierten MP3-Dateien lesen kann.
 
-- *Chromecast* - Wiedergabe von Text auf einem Chromecast-Gerät.
+- *Chromecast* - Text auf dem Chromecast-Gerät abspielen.
 
-- *MPD* - Text auf dem Music Player Daemon abspielen. Verwenden Sie nur **http** für den Webadapter, verwenden Sie kein https.
+- *MPD* - Text auf dem Music Player Daemon abspielen. Verwenden Sie für den Webadapter nur **http** und nicht https.
 
-Um den Text auf RaspberryPI oder einem Linux-System zu sprechen, rufen Sie einmal den Befehl ```sudo apt-get -y install mpg321``` auf, um mpg321 zu installieren.
+Rufen Sie den Befehl ```sudo apt-get -y install mpg321``` einmal auf, um die Sprachausgabe unter RaspberryPI oder Linux zu aktivieren und mpg321 zu installieren.
 
-Die mp3 / wav-Dateien können abgespielt werden, indem der Name in das Objekt geschrieben wird. (z. B. "/vis.0/main/img/door-bell.mp3")
+Die MP3 / WAV-Dateien können abgespielt werden, indem der Name in das Objekt geschrieben wird. (z. B. "/vis.0/main/img/door-bell.mp3")
 
 Die Datei muss zuerst geladen werden.
 
-### TTS-Motoren
+### TTS Motoren
 online:
 
 - Google: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch
 - Yandex: Russisch
 
-Um Yandex-Stimmen verwenden zu können, müssen Sie den API-Schlüssel hier anfordern: [https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/). [Dieser Dienst wird am 1. Januar 2019 deaktiviert und durch Yandex.cloud ersetzt.] Um Yandex.cloud zu verwenden, sollten Sie sich hier registrieren: [https://cloud.yandex.ru/], SpeechKIT-API in der Cloud installieren und Auth-Token anfordern und Ordner-ID wie in den API-Anweisungen beschrieben.
+Um Yandex-Stimmen zu verwenden, müssen Sie den API-Schlüssel hier anfordern: [https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/). [Dieser Dienst wird am 1. Januar 2019 deaktiviert und durch Yandex.cloud ersetzt.] Um Yandex.cloud zu verwenden, müssen Sie sich hier registrieren: [https://cloud.yandex.ru/] Installieren Sie die SpeechKIT-API in der Cloud und erhalten Sie das Authentifizierungstoken und Ordner-ID wie in den API-Anweisungen beschrieben.
 
-- Ivona: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch, Dansk, Walisisch, Isländisch, Niederländisch, Polnisch, Portugiesisch, Rumänisch, Schwedisch, Türkisch
+- Ivona: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch, Dänisch, Walisisch, Isländisch, Niederländisch, Polnisch, Portugiesisch, Rumänisch, Schwedisch, Türkisch
 
-        Um Amazon (Ivona) -Stimmen verwenden zu können, benötigen Sie einen Zugangsschlüssel und einen geheimen Schlüssel (§§LLLLL0).
+        Um Amazon (Ivona) -Stimmen zu verwenden, benötigen Sie den Zugangsschlüssel und den geheimen Schlüssel [Hier](http://www.ivona.com/us/for-business/speech-cloud/).
 
 - Wolke:
 
-        Um Cloud-Voices verwenden zu können, benötigen Sie einen konfigurierten Cloud-Adapter. (Kann deaktiviert werden, muss aber konfiguriert sein). Dieser Dienst verwendet AWS Polly und kann direkt verwendet werden.
+        Um Cloud-Stimmen verwenden zu können, benötigen Sie einen konfigurierten Cloud-Adapter. (Kann deaktiviert werden, muss aber konfiguriert werden). Dieser Service verwendet AWS Polly und kann direkt verwendet werden.
 
 - Amazon Web Services Polly:
 
-        Um AWS Polly-Stimmen verwenden zu können, müssen Sie einen Zugriffsschlüssel und einen geheimen Schlüssel erstellen ([hier] (https://console.aws.amazon.com/iam/home). Die Amazon-Dokumentation finden Sie [hier](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)).
+        Um AWS Polly-Stimmen zu verwenden, müssen Sie einen Zugangsschlüssel und einen geheimen Schlüssel [hier] (https://console.aws.amazon.com/iam/home). Die Amazon-Dokumentation finden Sie [hier](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) erstellen.
 
 offline:
 
@@ -69,24 +69,24 @@ offline:
 Für PicoTTS müssen die folgenden Pakete installiert werden: libttspico-utils und lame.
 Installationsbefehl: 'sudo apt-get install libttspico-utils lame'
 
-### Cloud- und Amazon Web Services-Textformatierung
-Sie können Ihren Text mit [Sprachsynthese-Auszeichnungssprache](http://docs.aws.amazon.com/polly/latest/dg/ssml.html) formatieren.
+### Polly-Textformatierung für Cloud- und Amazon Web Services
+Sie können Ihren Text mit [Auszeichnungssprache für die Sprachsynthese](http://docs.aws.amazon.com/polly/latest/dg/ssml.html) formatieren.
 
-Nützliche Funktionen:
+Die nützlichsten Funktionen:
 
-- `` `<break time =" 3s "/>` `- Machen Sie eine Pause für x Sekunden (max. 10 Sekunden).
-- `` <Hervorhebungen> groß </ emphasis> `` `- Betonen Sie ein Wort.
-- `` `<prosody volume =" + 6dB "rate =" 90% "> Ich spreche hier </ prosody>` `` - Parameter für Geschwindigkeit und Lautstärke.
-- `` `<say-as interpret-as =" digits "> 12345 </ say-as>` `` - Sagen Sie jede Ziffer einzeln.
+- `` `<break time =" 3s "/>` `` - mache eine Pause für x Sekunden (maximal 10 Sekunden).
+- `` `<emphasis> big </ emphasis>` `` - betonen Sie ein Wort.
+- `` `<prosody volume =" + 6dB "rate =" 90% "> Ich spreche dies </ prosody>` `` - Geschwindigkeits- und Lautstärke-Parameter steuern.
+- `` `<say-as interpret-as =" digits "> 12345 </ say-as>` `` - sagen Sie jede Ziffer einzeln.
 
-Mehr [Info](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference).
+Weitere [Info](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference).
 
 ### Systembefehl
 Wenn Sie ein Programm haben, das Audiodateien lokal oder anderswo abspielen kann, können Sie diesen Befehl hier schreiben. Z.B.
 
 ```myCustomPlayer --option```
 
-Wenn die Ausgabe von **System** ausgewählt ist, führt der sayit-Adapter den folgenden Befehl auf dem lokalen System aus:
+Wenn die Ausgabe **System** ausgewählt ist, führt der sayit-Adapter den folgenden Befehl auf dem lokalen System aus:
 
 ```myCustomPlayer --option /opt/iobroker/node_modules/iobroker.sayit/say.mp3```
 
@@ -94,94 +94,94 @@ Wenn der Dateiname irgendwo in der Mitte bleiben muss, können Sie mit *%s* ange
 
 ```myCustomPlayer --option "%s" > /dev/null```
 
-sayIt wird daraus ```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null``` machen.
+sayIt macht ```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null``` daraus.
 
 ## Verwendungszweck
-Der SayIt-Adapter kann nicht alleine verwendet werden. Es muss vom Javascript-Adapter oder von "vis" mit einem bestimmten Widget gesteuert werden.
-Nach der Erstellung der Adapterinstanz kann folgende Objekte gefunden werden:
+Der SayIt-Adapter kann nicht alleine verwendet werden. Es muss über den Javascript-Adapter oder über "vis" mit einem bestimmten Widget gesteuert werden.
+Nach dem Anlegen der Adapterinstanz werden folgende Objekte gefunden:
 
 - sayit.N.tts.text: Phrase, die gesprochen werden soll.
-- sayit.N.tts.volume: Volume, das beim Abspielen der Phrase verwendet wird.
-- sayit.N.tts.playing: true, wenn der Text gerade abgespielt wird, und false, wenn nicht. Wird nur für den Wiedergabemodus "Windows" und "System" unterstützt.
-- sayit.N.tts.cachetext: Die Phrase muss zwischengespeichert werden und kann dann ohne Internet verwendet werden.
+- sayit.N.tts.volume: Lautstärke, die beim Spielen der Phrase verwendet wird.
+- sayit.N.tts.playing: true, wenn gerade Text abgespielt wird, andernfalls false. Wird nur für den Wiedergabemodus "Windows" und "System" unterstützt.
+- sayit.N.tts.cachetext: Ausdruck, der zwischengespeichert werden soll und dann ohne Internet verwendet werden kann.
 
-   Z.B. Sie können hier manuell "Kein Internet" eingeben. Wenn Ping an google.com negativ ist, schreiben Sie "Kein Internet" in "Tts.text" und es wird ausgesprochen. Natürlich muss der Cache aktiviert sein.
+   Z.B. Sie können hier manuell "Kein Internet" eingeben. Wenn der Ping zu google.com negativ ist, geben Sie "Kein Internet" in "tts.text" ein und es wird ausgesprochen. Natürlich muss der Cache aktiviert sein.
 
-Der Status **tts.text** unterstützt eine erweiterte Syntax, sodass Sprache / Engine und Volume zusammen mit Text definiert werden können. Es wird verwendet, um mehrsprachige text2speech-Engines zu aktivieren.
-Z.B. Wenn der Adapter über die Engine "Google-english" verfügt, ist es mit dem Satz ```de:Sag es``` möglich, die Google-Deustch-Sprach-Engine zu verwenden.
+State **tts.text** unterstützt erweiterte Syntax, sodass Sprache / Engine und Volume zusammen mit Text definiert werden können. Es wird verwendet, um mehrsprachige Text2Speech-Engines zu aktivieren.
+Z.B. Wenn der Adapter die Engine "Google-English" hat, kann mit der Angabe ```de:Sag es``` die Verwendung der Google-Deustch-Sprach-Engine erzwungen werden.
 
-Mit ```ru;75;Погода хорошая``` können wir zwingen, russische Sprache und Volumen zu 75% zu verwenden.
+Mit ```ru;75;Погода хорошая``` können wir die Verwendung der russischen Sprache und der Lautstärke auf 75% erzwingen.
 
-Sie können die Lautstärke der Ansage in Prozent von der aktuellen oder angegebenen Lautstärke (nicht von maximal) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` ist und "Ansage volume" 50% ist, wird die Ansage mit einer Lautstärke von 38% von 100% möglich gespielt.
+Sie können die Lautstärke der Ansage in Prozent von der aktuellen oder angegebenen Lautstärke (nicht von der maximalen) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` lautet und "Ansagelautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% abgespielt.
 
-Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie das Feld leer lassen, werden die Standardeinstellungen verwendet: Windows - cmdmp3.exe, OSX - / usr / bin / afplay, Linux - mpg321 oder omxplayer (empfohlen).
+Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie dieses Feld leer lassen, werden die Standardeinstellungen verwendet: Windows - cmdmp3.exe, OSX - / usr / bin / afplay, Linux - mpg321 oder Omxplayer (empfohlen).
 
-Um omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
+Um Omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
 
-** Hinweis: ** Die Standardauswahl für Ankündigungen ist erst nach dem Start der Instanz möglich.
+** Hinweis: ** Die Standardauswahl für Ansagen ist erst nach dem Start der Instanz möglich.
 
 ### Prioritäten
-Um den Text trotz der eingereihten Texte sofort auszusprechen, haben Sie zwei Möglichkeiten:
+Um den Text trotz der anstehenden Texte sofort auszusprechen, haben Sie 2 Möglichkeiten:
 
-- Platz "!" als erstes Zeichen im Text, so wird dieser Text sofort nach dem aktuellen ausgesprochen.
-- Schreiben Sie true in den Status "tts.clearQueue", und die Warteschlange wird gelöscht. Danach können Sie einen neuen Text in "tts.text" schreiben, aber alle in der Warteschlange befindlichen Texte werden verworfen.
+- Platz "!" Als erstes Zeichen im Text wird dieser Text unmittelbar nach dem aktuellen ausgesprochen.
+- Schreibe true in den Zustand "tts.clearQueue" und die Warteschlange wird gelöscht. Danach können Sie einen neuen Text in "tts.text" schreiben, aber alle anstehenden Texte werden weggeworfen.
 
 ### Motoren
 Folgende Werte für Motoren sind möglich:
 
 #### Google
-- **de** - Englisch
+- **en** - Englisch
 - **de** - Deutsch
 - **pl** - Polski
 - **ru** - Русский
 - **uk** - український
-- **it** - Italiano
+- **es** - Italiano
 - **es** - Espaniol
 - **fr** - Français
 
 #### Yandex
 - **ru_YA: Yandex** - Русский
-- **ru_YA_CLOUD: Yandex Cloud** - Русский [Die Yandex.Cloud-API generiert Dateien im OGG-Format. Um ogg-Dateien auf Linux abzuspielen, muss mplayer als System-Player installiert und ausgewählt sein.]
+- **ru_YA_CLOUD: Yandex Cloud** - Русский [Die Yandex.Cloud-API generiert Dateien im OGG-Format. Um ogg-Dateien auf Linux abzuspielen, muss mplayer installiert und als Systemplayer ausgewählt sein.]
 
-#### Amazon polly via Cloud
+#### Amazon polly über Cloud
 - **ru-RU_CLOUD_Female** - Русский - Татьяна
 - **ru-RU_CLOUD_Male** - Русский - Максим
-- **de-DE_CLOUD_Female** - English - Marlene
+- **de_CLOUD_Female** - Deutsch - Marlene
 - **de-DE_CLOUD_Male** - Deutsch - Hans
-- **de-US_CLOUD_Female** - de-US - Weiblich - Salli
-- **de-US_CLOUD_Male** - de-US - Männlich - Joey
+- **en-US_CLOUD_Female** - en-US - Weiblich - Salli
+- **en-US_CLOUD_Male** - en-US - Männlich - Joey
 - **da-DK_CLOUD_Female** - da-DK - Weiblich - Naja
-- **da-DK_CLOUD_Male** - da-DK - männlich - Mads
-- **en-AU_CLOUD_Female** - de-AU - weiblich - Nicole
-- **de-AU_CLOUD_Male** - de-AU - Männlich - Russell
-- **de-GB_CLOUD_Female_Amy** - de-DE - Weiblich - Amy
-- **de-GB_CLOUD_Male** - de-DE - Männlich - Brian
-- **de-GB_CLOUD_Female_Emma** - de-DE - Weiblich - Emma
-- **en-GB-WLS_CLOUD_Female** - de-GB-WLS - Weiblich - Gwyneth
-- **de-DE-WLS_CLOUD_Male** - de-DE-WLS - Männlich - Geraint
+- **da-DK_CLOUD_Male** - da-DK - Männlich - Mads
+- **en-AU_CLOUD_Female** - en-AU - Weiblich - Nicole
+- **en-AU_CLOUD_Male** - en-AU - Männlich - Russell
+- **en-GB_CLOUD_Female_Amy** - en-GB - Weiblich - Amy
+- **en-GB_CLOUD_Male** - en-GB - Männlich - Brian
+- **en-GB_CLOUD_Female_Emma** - en-GB - Weiblich - Emma
+- **en-GB-WLS_CLOUD_Female** - en-GB-WLS - Weiblich - Gwyneth
+- **en-GB-WLS_CLOUD_Male** - en-GB-WLS - Männlich - Geraint
 - **cy-GB_CLOUD_Female** - cy-GB - Weiblich - Gwyneth
 - **cy-GB_CLOUD_Male** - cy-GB - Männlich - Geraint
-- **de-IN_CLOUD_Female** - de-IN - Weiblich - Raveena
-- **de-US_CLOUD_Male_Chipmunk** - de-DE - Männlich - Chipmunk
-- **de-US_CLOUD_Male_Eric** - de-US - Männlich - Eric
-- **de-US_CLOUD_Female_Ivy** - de-US - Weiblich - Efeu
-- **de-US_CLOUD_Female_Jennifer** - de-US - Weiblich - Jennifer
-- **de-US_CLOUD_Male_Justin** - de-US - Männlich - Justin
-- **de-US_CLOUD_Female_Kendra** - de-US - Weiblich - Kendra
-- **de-US_CLOUD_Female_Kimberly** - de-US - Weiblich - Kimberly
+- **en-IN_CLOUD_Female** - en-IN - Weiblich - Raveena
+- **en-US_CLOUD_Male_Chipmunk** - en-US - Männlich - Chipmunk
+- **en-US_CLOUD_Male_Eric** - en-US - Männlich - Eric
+- **en-US_CLOUD_Female_Ivy** - en-US - Weiblich - Ivy
+- **en-US_CLOUD_Female_Jennifer** - en-US - Weiblich - Jennifer
+- **en-US_CLOUD_Male_Justin** - en-US - Männlich - Justin
+- **en-US_CLOUD_Female_Kendra** - en-US - Weiblich - Kendra
+- **en-US_CLOUD_Female_Kimberly** - en-US - Weiblich - Kimberly
 - **es-ES_CLOUD_Female** - es-ES - Weiblich - Conchita
 - **es-ES_CLOUD_Male** - es-ES - Männlich - Enrique
-- **es-US_CLOUD_Female** - es-US - weiblich - Penelope
+- **es-US_CLOUD_Female** - es-US - Weiblich - Penelope
 - **es-US_CLOUD_Male** - es-US - Männlich - Miguel
-- **fr-CA_CLOUD_Female** - fr-CA - weiblich - Chantal
+- **fr-CA_CLOUD_Female** - fr-CA - Weiblich - Chantal
 - **fr-FR_CLOUD_Female** - fr-FR - Weiblich - Celine
 - **fr-FR_CLOUD_Male** - fr-FR - Männlich - Mathieu
-- **is-IS_CLOUD_Female** - is-IS - weiblich - Dora
-- **is-IS_CLOUD_Male** - is-IS - männlich - Karl
-- **it-IT_CLOUD_Female** - it-IT - weiblich - Carla
-- **it-IT_CLOUD_Male** - it-IT - männlich - Giorgio
-- **nb-NO_CLOUD_Female** - nb-NO - weiblich - Liv
-- **nl-NL_CLOUD_Female** - nl-NL - weiblich - Lotte
+- **is-IS_CLOUD_Female** - is-IS - Weiblich - Dora
+- **is-IS_CLOUD_Male** - is-IS - Männlich - Karl
+- **it-IT_CLOUD_Female** - it-IT - Weiblich - Carla
+- **it-IT_CLOUD_Male** - it-IT - Männlich - Giorgio
+- **nb-NO_CLOUD_Female** - nb-NO - Weiblich - Liv
+- **nl-NL_CLOUD_Female** - nl-NL - Weiblich - Lotte
 - **nl-NL_CLOUD_Male** - nl-NL - Männlich - Ruben
 - **pl-PL_CLOUD_Female_Agnieszka** - pl-PL - Weiblich - Agnieszka
 - **pl-PL_CLOUD_Male_Jacek** - pl-PL - Männlich - Jacek
@@ -191,10 +191,10 @@ Folgende Werte für Motoren sind möglich:
 - **pt-BR_CLOUD_Female** - pt-BR - Weiblich - Vitoria
 - **pt-BR_CLOUD_Male** - pt-BR - Männlich - Ricardo
 - **pt-PT_CLOUD_Male** - pt-PT - Männlich - Cristiano
-- **pt-PT_CLOUD_Female** - pt-PT - weiblich - Ines
-- **ro-RO_CLOUD_Female** - ro-RO - weiblich - Carmen
-- **sv-SE_CLOUD_Female** - sv-SE - weiblich - Astrid
-- **tr-TR_CLOUD_Female** - tr-TR - weiblich - Filiz
+- **pt-PT_CLOUD_Female** - pt-PT - Weiblich - Ines
+- **ro-RO_CLOUD_Female** - ro-RO - Weiblich - Carmen
+- **sv-SE_CLOUD_Female** - sv-SE - Weiblich - Astrid
+- **tr-TR_CLOUD_Female** - tr-TR - Weiblich - Filiz
 
 #### Pico TTS
 - **en-US** - Englisch US
@@ -204,61 +204,67 @@ Folgende Werte für Motoren sind möglich:
 - **es-ES** - Espaniol
 - **fr-FR** - Français
 
-#### Amazon polly direkt
+#### Amazon polly direct
 - **(ru-RU_AP_Female)** - Русский - Татьяна
 - **(ru-RU_AP_Male)** - Русский - Максим
 - **(de-DE_AP_Female)** - Deutsch - Marlene
 - **(de-DE_AP_Female_Vicki)** - Deutsch - Vicki
 - **(de-DE_AP_Male)** - Deutsch - Hans
-- **(de-US_AP_Female)** - de-US - Weiblich - Salli
-- **(de-US_AP_Male)** - en-US - Männlich - Joey
-- **(da-DK_AP_Female)** - da-DK - weiblich - Naja
-- **(da-DK_AP_Male)** - da-DK - männlich - Mads
-- **(de-AU_AP_Female)** - de-AU - weiblich - Nicole
-- **(de-AU_AP_Male)** - de-AU - männlich - Russell
-- **(de-GB_AP_Female_Amy)** - de-DE - Weiblich - Amy
-- **(de-GB_AP_Male)** - de-DE - Männlich - Brian
-- **(de-GB_AP_Female_Emma)** - de-DE - Weiblich - Emma
-- **(de-GB-WLS_AP_Female)** - de-GB-WLS - Weiblich - Gwyneth
-- **(de-GB-WLS_AP_Male)** - de-GB-WLS - Männlich - Geraint
-- **(cy-GB_AP_Female)** - cy-GB - weiblich - Gwyneth
-- **(cy-GB_AP_Male)** - cy-GB - männlich - Geraint
-- **(de-IN_AP_Female)** - de-IN - Weiblich - Raveena
-- **(de-US_AP_Male_Chipmunk)** - en-US - Männlich - Chipmunk
-- **(de-US_AP_Male_Eric)** - en-US - Männlich - Eric
-- **(de-US_AP_Female_Ivy)** - de-US - Weiblich - Ivy
-- **(de-US_AP_Female_Jennifer)** - en-US - Weiblich - Jennifer
-- **(de-US_AP_Male_Justin)** - en-US - Männlich - Justin
-- **(de-US_AP_Female_Kendra)** - en-US - Weiblich - Kendra
-- **(de-US_AP_Female_Kimberly)** - en-US - Weiblich - Kimberly
+- **(en-US_AP_Female)** - en-US - Weiblich - Salli
+- **(en-US_AP_Male)** - en-US - Männlich - Joey
+- **(da-DK_AP_Female)** - da-DK - Weiblich - Naja
+- **(da-DK_AP_Male)** - da-DK - Männlich - Mads
+- **(en-AU_AP_Female)** - en-AU - Weiblich - Nicole
+- **(en-AU_AP_Male)** - en-AU - Männlich - Russell
+- **(en-GB_AP_Female_Amy)** - en-GB - Weiblich - Amy
+- **(en-GB_AP_Male)** - en-GB - Männlich - Brian
+- **(de-DE_AP_Female_Emma)** - de-DE - Weiblich - Emma
+- **(de-DE-WLS_AP_Female)** - de-DE-WLS - Weiblich - Gwyneth
+- **(de-DE-WLS_AP_Male)** - de-DE-WLS - Männlich - Geraint
+- **(cy-GB_AP_Female)** - cy-GB - Weiblich - Gwyneth
+- **(cy-GB_AP_Male)** - cy-GB - Männlich - Geraint
+- **(en-IN_AP_Female)** - en-IN - Weiblich - Raveena
+- **(en-US_AP_Male_Chipmunk)** - en-US - Männlich - Chipmunk
+- **(en-US_AP_Male_Eric)** - en-US - Männlich - Eric
+- **(en-US_AP_Female_Ivy)** - en-US - Weiblich - Efeu
+- **(en-US_AP_Female_Jennifer)** - en-US - Weiblich - Jennifer
+- **(en-US_AP_Male_Justin)** - en-US - Männlich - Justin
+- **(en-US_AP_Female_Kendra)** - en-US - Weiblich - Kendra
+- **(en-US_AP_Female_Kimberly)** - en-US - Weiblich - Kimberly
 - **(es-ES_AP_Female)** - es-ES - Weiblich - Conchita
 - **(es-ES_AP_Male)** - es-ES - Männlich - Enrique
-- **(es-US_AP_Female)** - es-US - weiblich - Penelope
+- **(es-US_AP_Female)** - es-US - Weiblich - Penelope
 - **(es-US_AP_Male)** - es-US - Männlich - Miguel
-- **(fr-CA_AP_Female)** - fr-CA - weiblich - Chantal
-- **(fr-FR_AP_Female)** - fr-FR - weiblich - Celine
-- **(fr-FR_AP_Male)** - fr-FR - männlich - Mathieu
-- **(is-IS_AP_Female)** - is-IS - weiblich - Dora
-- **(is-IS_AP_Male)** - is-IS - männlich - Karl
-- **(it-IT_AP_Female)** - it-IT - weiblich - Carla
-- **(it-IT_AP_Male)** - it-IT - männlich - Giorgio
-- **(nb-NO_AP_Female)** - nb-NO - weiblich - Liv
-- **(nl-NL_AP_Female)** - nl-NL - weiblich - Lotte
-- **(nl-NL_AP_Male)** - nl-NL - männlich - Ruben
+- **(fr-CA_AP_Female)** - fr-CA - Weiblich - Chantal
+- **(fr-FR_AP_Female)** - fr-FR - Weiblich - Celine
+- **(fr-FR_AP_Male)** - fr-FR - Männlich - Mathieu
+- **(is-IS_AP_Female)** - is-IS - Weiblich - Dora
+- **(is-IS_AP_Male)** - is-IS - Männlich - Karl
+- **(it-IT_AP_Female)** - it-IT - Weiblich - Carla
+- **(it-IT_AP_Male)** - it-IT - Männlich - Giorgio
+- **(nb-NO_AP_Female)** - nb-NO - Weiblich - Liv
+- **(nl-NL_AP_Female)** - nl-NL - Weiblich - Lotte
+- **(nl-NL_AP_Male)** - nl-NL - Männlich - Ruben
 - **(pl-PL_AP_Female_Agnieszka)** - pl-PL - Weiblich - Agnieszka
 - **(pl-PL_AP_Male_Jacek)** - pl-PL - Männlich - Jacek
 - **(pl-PL_AP_Female_Ewa)** - pl-PL - Weiblich - Ewa
-- **(pl-PL_AP_Male_Jan)** - pl-PL - männlich - Jan
+- **(pl-PL_AP_Male_Jan)** - pl-PL - Männlich - Jan
 - **(pl-PL_AP_Female)** - pl-PL - Weiblich - Maja
-- **(pt-BR_AP_Female)** - pt-BR - weiblich - Vitoria
-- **(pt-BR_AP_Male)** - pt-BR - männlich - Ricardo
-- **(pt-PT_AP_Male)** - pt-PT - männlich - Cristiano
-- **(pt-PT_AP_Female)** - pt-PT - weiblich - Ines
-- **(ro-RO_AP_Female)** - ro-RO - weiblich - Carmen
-- **(sv-SE_AP_Female)** - sv-SE - weiblich - Astrid
-- **(tr-TR_AP_Female)** - tr-TR - weiblich - Filiz
+- **(pt-BR_AP_Female)** - pt-BR - Weiblich - Vitoria
+- **(pt-BR_AP_Male)** - pt-BR - Männlich - Ricardo
+- **(pt-PT_AP_Male)** - pt-PT - Männlich - Cristiano
+- **(pt-PT_AP_Female)** - pt-PT - Weiblich - Ines
+- **(ro-RO_AP_Female)** - ro-RO - Weiblich - Carmen
+- **(sv-SE_AP_Female)** - sv-SE - Weiblich - Astrid
+- **(tr-TR_AP_Female)** - tr-TR - Weiblich - Filiz
 
 ## Changelog
+### 1.8.2 (2019-07-11)
+* (bluefox) Web server URL will be updated if web server was updated
+
+### 1.8.1
+* Add Ukrainian Google Language
+
 ### 1.8.0 (2018-12-04)
 * (bluefox) Priority for the text was added
 

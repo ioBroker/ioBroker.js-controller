@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: dtnn5xoPUYoLNK6queIPVZSoYkbgUvMbauhfOqSTi+A=
+hash: SvLxJ27B2YAyqHKMejjyRanFjD+2LVt6woSOELM7nHs=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -12,7 +12,7 @@ hash: dtnn5xoPUYoLNK6queIPVZSoYkbgUvMbauhfOqSTi+A=
 ![下载](https://img.shields.io/npm/dm/iobroker.iot.svg)
 ![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)
 
-＃ioBroker物联网适配器=================
+＃ioBroker物联网适配器
 此适配器仅用于与Amazon Alexa通信。
 它不适用于远程访问您的ioBroker实例。使用ioBroker.cloud适配器。
 
@@ -41,7 +41,7 @@ hash: dtnn5xoPUYoLNK6queIPVZSoYkbgUvMbauhfOqSTi+A=
 如果命令为“设置为30％”且* OFF级别为“30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
 
 此外，如果命令为“OFF”，那么如果实际值大于或等于“30％”，则适配器将记住当前的调光器级别。
-稍后当新的“ON”命令到来时，适配器将调光器切换到100％但不是内存级别。
+稍后当新的“ON”命令到来时，适配器将把调光器切换到100％而不是内存级别。
 
 例：
 
@@ -240,6 +240,15 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ```
 
 ## Changelog
+### 1.0.0 (2019-07-14)
+* (TA2k) Google Home list was added 
+
+### 0.5.0 (2019-06-29)
+* (bluefox) tried to add yandex Alisa 
+
+### 0.4.3 (2019-04-14)
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+
 ### 0.4.2 (2019-03-10)
 * (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
 
@@ -271,7 +280,7 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2109 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

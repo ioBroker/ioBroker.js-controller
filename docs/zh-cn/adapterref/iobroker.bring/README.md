@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
+hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 ---
 ![商标](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
@@ -124,7 +124,29 @@ NoHead Html表格没有表格标题。*
 *只读字符串，其中包含可说形式的购物清单项目的枚举。
 这可以使用e。 G。通过智能助手进行语音输出。*
 
+* *list* .translation
+
+    |数据类型|权限|
+    |:---:|:---:|
+    |字符串| R |
+
+    *只读json字符串，其中包含一个字典，用于将瑞士项目名称转换为列表语言。*
+
 ## Changelog
+### 1.6.1 (2019-07-13)
+* (foxriver76) fixed bug, that prevent html states and other from being set
+
+### 1.6.0 (2019-07-12)
+* (foxriver76) get translations according to list language
+* (foxriver76) translations will be stored in datapoint
+* (foxriver76) use bring-node-api at least 1.2.1
+* (foxriver76) widget now uses configured language
+* (foxriver76) bugfixes and optimizations in front- and backend
+
+### 1.4.0 (2019-06-07)
+* (foxriver76) use textFit to fit text to one line in widget
+* (foxriver76) internal reworks on widget
+
 ### 1.3.4
 * (foxriver76) add possibility to use this widget multiple times on same page
 

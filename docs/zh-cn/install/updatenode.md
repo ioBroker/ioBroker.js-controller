@@ -4,7 +4,7 @@ lastChanged: 30.05.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/updatenode.md
-hash: lkNH9PFYmWYnJeXGn0uvhkDDfDRHF3lxZdmNpctIxSg=
+hash: MPmZUM6TWpDMUxNDz1o1kaEj1vxig35ozaoOi5UeK+M=
 ---
 ＃为ioBroker更新NodeJS
 每年都会发布一个新的Node.js版本，标记为LTS（长期支持），版本号为直版，并将保留数年。
@@ -57,9 +57,9 @@ hash: lkNH9PFYmWYnJeXGn0uvhkDDfDRHF3lxZdmNpctIxSg=
 3. **节点模块重置**
 
 另一个需要更长时间的变体是简单地删除所有ode-JS模块，手动安装js-controller然后启动ioBroker并自动安装缺少的适配器的方法。
-为此，请删除ioBroker目录中的整个node_modules目录。然后在相关版本中安装控制器（此处为1.5.11，当前处于稳定状态）：
+为此，请删除ioBroker目录中的整个node_modules目录。然后在相关版本中安装控制器（例如1.5.12，当前处于稳定状态）：
 
-```npm install iobroker.js-controller@1.5.11 --production```
+```npm install iobroker.js-controller@1.5.12 --production  --no-optional --logevel=error```
 
 然后你启动ioBroker。重要的是iobroker-data目录不会更改。
 然后ioBroker启动并依次发现它想要启动的适配器没有安装并安装它们。根据系统的不同，这可能需要一些时间 - 有时长达几个小时（或在慢速SD卡上整夜）。

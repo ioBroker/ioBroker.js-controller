@@ -68,9 +68,9 @@ korrigiert werden damit es tut.
 Eine weitere Variante, die aber etwas länger dauert, ist der Ansatz einfach alle ode-JS Module zu löschen, 
 den js-controller manuell zu installieren und dann ioBroker zu starten und die fehlenden Adapter automatisch installieren zu lassen.
 Dazu löscht man das gesamte node_modules Verzeichnis im ioBroker-Verzeichnis. Danach installiert man 
-den Controller in der relevanten version (hier zB 1.5.11 der aktuell im Stable ist):
+den Controller in der relevanten version (hier zB 1.5.12 der aktuell im Stable ist):
 
-```npm install iobroker.js-controller@1.5.11 --production```
+```npm install iobroker.js-controller@1.5.12 --production  --no-optional --logevel=error```
 
 Danach startet man ioBroker. Wichtig ist das das iobroker-data Verzeichnis nicht verändert wird.
 Dann startet ioBroker und wird nacheinander feststellen das die Adapter die er starten will 

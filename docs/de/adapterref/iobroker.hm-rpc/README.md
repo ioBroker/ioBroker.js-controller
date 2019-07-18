@@ -191,6 +191,10 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.9.16 (2019-07-18)
+* (foxriver76) no longer use adapter.objects if not necessary
+* (foxriver76) added meta data
+
 ### 1.9.15 (2019-07-01)
 * (foxriver76) added meta and icon for HB-UNI-Sen-CAP-MOIST
 * (foxriver76) fix type of EPAPER_TONE to string

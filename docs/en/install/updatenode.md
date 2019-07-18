@@ -4,7 +4,7 @@ lastChanged: 30.05.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/updatenode.md
-hash: lkNH9PFYmWYnJeXGn0uvhkDDfDRHF3lxZdmNpctIxSg=
+hash: MPmZUM6TWpDMUxNDz1o1kaEj1vxig35ozaoOi5UeK+M=
 ---
 # Update NodeJS for ioBroker
 Every year a new Node.js version is released which is marked as LTS (Long Term Support) with a straight version number and will be maintained for several years.
@@ -57,9 +57,9 @@ The reinstall.sh-script which was included in the js-controller 1.4 has a format
 3. **node-modules reset**
 
 Another variant, which takes a bit longer, is the approach to simply delete all ode-JS modules, manually install the js-controller and then start ioBroker and have the missing adapters installed automatically.
-To do this, delete the entire node_modules directory in the ioBroker directory. Then you install the controller in the relevant version (here eg 1.5.11 which is currently in stable):
+To do this, delete the entire node_modules directory in the ioBroker directory. Then you install the controller in the relevant version (here eg 1.5.12 which is currently in stable):
 
-```npm install iobroker.js-controller@1.5.11 --production```
+```npm install iobroker.js-controller@1.5.12 --production  --no-optional --logevel=error```
 
 Then you start ioBroker. It is important that the iobroker-data directory is not changed.
 Then ioBroker starts and will find out in turn that the adapters it wants to start are not installed and install them. Depending on the system, this can take time - sometimes up to a few hours (or all night on slow SD cards).

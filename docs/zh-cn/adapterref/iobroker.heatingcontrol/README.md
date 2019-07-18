@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
+hash: /FBuVliMgA9N2xeblOfpuQ6pvARLncAIy1/qWvxhb0s=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -20,7 +20,7 @@ hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 
 *按时间表控制所有恒温器的设定温度水平
 *为每天和晚上配置多个加热时段
-*支持各种homematic和max！cube恒温器
+*支持各种homematic和max！温控器
 *支持多个配置文件（待办事项）
 *如果恒温器和执行器之间没有直接连接，执行器可以直接从适配器中切换出来
 *目前，当达到设定点温度时，执行器会立即关闭。一旦设定点温度低于实际温度，执行器就会打开。 （要做：实施改进的控制）
@@ -56,7 +56,7 @@ hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 ## Changelog
 
 ### 0.0.5 (2019-07-08)
-* (René) support for max!cube thermostats
+* (René) support for max! thermostats
 
 ### 0.0.4 (2019-06-23)
 * (René) debugging

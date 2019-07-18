@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heytech/README.md
 title: 无题
-hash: Oe1/h7P45En99ZaaXwhQGSGH09zt/GkPAIFjQ9Eeo9c=
+hash: kWMW8SJcOlPqPm10uyn7M99FbZkMx7i1pdGy2W4S3d0=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.heytech.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.heytech.svg)
@@ -22,7 +22,13 @@ hash: Oe1/h7P45En99ZaaXwhQGSGH09zt/GkPAIFjQ9Eeo9c=
 输入IP，端口，如果设置了PIN。
 通常，您可以启用“自动检测”功能。如果这不起作用，您可以选择硬件手册。
 
+##链接
+[HEYTech](https://rolladensteuerung.de/index.htm)
+
 ## Changelog
+
+### 0.1.5
+* telnet connection will automaticly reconnect on refresh intervall to check weather and shutter status
 
 ### 0.1.4
 * update lux calculation (Thanks to stefan)

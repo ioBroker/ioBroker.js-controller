@@ -779,7 +779,7 @@ EVENTS:
 
 ## How to create instance
 Before published to npm: copy into ioBroker/node_modules, go to "admin" and add instance
-After published at npm: go to ioBroker/ and write "npm install iobroker.xxx --production", go to "admin" and add instance
+After published at npm: go to ioBroker/ and write "npm install iobroker.xxx --production --no-optional --logevel=error", go to "admin" and add instance
 
 ## How to debug
 - Start ioBroker

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
+hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 ---
 ![Logo](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
@@ -21,110 +21,132 @@ hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
 ## Zustände
 Eine Beschreibung der erstellten Zustände finden Sie unten.
 
-### Channel: info
-* info.verbindung
+### Kanal: info
+* info.connection
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | boolean | R |
 
-   *Schreibgeschützter boolescher Indikator. Wenn Ihr Broker beim Bringen angemeldet ist, lautet der Status true, andernfalls false.*
+   *Nur-Lese-Boolean-Indikator. Wenn Ihr Broker bei bring angemeldet ist, ist der Status true, andernfalls false.*
 
 * info.user
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R |
 
    *Nur lesbare Zeichenfolge. Enthält den Namen des angemeldeten Benutzers.*
 
 ### Einkaufslisten
-Für jede Einkaufsliste wird ein Kanal mit den folgenden Status erstellt:
+Für jede Einkaufsliste wird ein Kanal mit folgenden Status erstellt:
 
 * *list* .content / *list* .contentHtml / NoHead
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R |
 
-*Nur lesbare json / html-Zeichenfolge, die als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die sich aktuell auf Ihrer Einkaufsliste befinden.
-Die NoHead-Html-Tabellen haben keine Tabellenköpfe.*
+*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die sich aktuell auf Ihrer Einkaufsliste befinden.
+Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
 
 * *list* .recentContent / *list* .recentContentHtml / NoHead
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R |
 
-*Nur lesbare json / html-Zeichenfolge, die als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die sich kürzlich auf Ihrer Einkaufsliste befanden.
-Die NoHead-Html-Tabellen haben keine Tabellenköpfe.*
+*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die kürzlich auf Ihrer Einkaufsliste standen.
+Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
 
-* *liste* .removeItem
+* *list* .removeItem
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R / W |
 
-*Wählen Sie einen Artikel aus, der aus der Einkaufsliste und der Liste der letzten Inhalte entfernt werden soll.
-Der Zustand wird bestätigt, wenn der Befehl von Bring! Bestätigt wird. API.*
+*Wählen Sie einen Artikel aus, der aus der Einkaufsliste und der Liste der zuletzt verwendeten Inhalte entfernt werden soll.
+Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
 
-* *liste* .moveToRecentContent
+* *list* .moveToRecentContent
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R / W |
 
-*Wählen Sie ein Element aus, das verschoben oder zur Liste der letzten Inhalte hinzugefügt werden soll.
-Der Zustand wird bestätigt, wenn der Befehl von Bring! Bestätigt wird. API.*
+*Wählen Sie ein Element aus, das verschoben oder zur Liste der zuletzt verwendeten Inhalte hinzugefügt werden soll.
+Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
 
-* *liste* .saveItem
+* *Liste* .saveItem
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R / W |
 
-*Wählen Sie einen Artikel aus, der zur Einkaufsliste hinzugefügt werden soll. Sie können auch zusätzliche Informationen zum Element angeben, indem Sie den Status anhand des folgenden Schemas festlegen:*
+*Wählen Sie einen Artikel aus, der zur Einkaufsliste hinzugefügt werden soll. Sie können auch zusätzliche Informationen zu dem Element angeben, indem Sie den Status anhand des folgenden Schemas festlegen:*
 
 ```Apple, 2.50 $, the green ones```
 
 *Beachten Sie, dass alles hinter dem Komma die Spezifikation beschreibt.
-Der Zustand wird bestätigt, wenn der Befehl von Bring! Bestätigt wird. API.*
+Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
 
-* *Liste* .users / *Liste* .usersHtml / NoHead
+* *list* .users / *list* .usersHtml / NoHead
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R |
 
-*Nur lesbare json / html-Zeichenfolge, die als Liste oder HTML-Tabelle formatiert ist. Enthält die Benutzer, die Teil der Einkaufsliste sind, sowie ihre E-Mail-Adresse.
-Die NoHead-Html-Tabellen haben keine Tabellenköpfe.*
+*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Benutzer, die Teil der Einkaufsliste sind, sowie ihre E-Mail-Adresse.
+Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
 
-* *liste* .count
+* *Liste* .count
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
-    | Nummer | R |
+    | number | R |
 
-   *Nur-Lese-Nummer, die die Anzahl der enthaltenen Elemente der Liste darstellt.*
+   *Schreibgeschützte Nummer, die die Anzahl der enthaltenen Elemente der Liste darstellt.*
 
 * *list* .messageTrigger
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
-|     Taste | R / W |
+    | Taste | R / W |
 
-*Wenn Sie diese Taste drücken, wird die Einkaufsliste an die konfigurierten Instanzen gesendet, z. G. Pushover, Telegramm oder / und E-Mail.*
+*Wenn Sie diese Schaltfläche drücken, wird die Einkaufsliste an die konfigurierten Instanzen gesendet, z. G. Pushover, Telegramm oder / und E-Mail.*
 
-* *liste* .enumSentence
+* *list* .enumSentence
 
-|     Datentyp | Berechtigung |
+    | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R |
 
-*Nur-Lese-String, der eine Aufzählung der Einkaufslistenelemente in einer sprechbaren Form enthält.
-Dies kann verwendet werden e. G. für die Sprachausgabe über intelligente Assistenten.*
+*Read only string, der eine Aufzählung der Artikel der Einkaufsliste in sprechbarer Form enthält.
+Dies kann z. G. für die Sprachausgabe über intelligente Assistenten.*
+
+* *Liste* Übersetzung
+
+    | Datentyp | Berechtigung |
+    |:---:|:---:|
+    | string | R |
+
+    *Read only json string, der ein Wörterbuch enthält, um die Schweizer Artikelnamen in die Listensprache zu übersetzen.*
 
 ## Changelog
+### 1.6.1 (2019-07-13)
+* (foxriver76) fixed bug, that prevent html states and other from being set
+
+### 1.6.0 (2019-07-12)
+* (foxriver76) get translations according to list language
+* (foxriver76) translations will be stored in datapoint
+* (foxriver76) use bring-node-api at least 1.2.1
+* (foxriver76) widget now uses configured language
+* (foxriver76) bugfixes and optimizations in front- and backend
+
+### 1.4.0 (2019-06-07)
+* (foxriver76) use textFit to fit text to one line in widget
+* (foxriver76) internal reworks on widget
+
 ### 1.3.4
 * (foxriver76) add possibility to use this widget multiple times on same page
 

@@ -1,6 +1,6 @@
 ---
 title:       "Installation"
-lastChanged: "13.09.2018"
+lastChanged: "18.07.2019"
 ---
 
 # Installation von ioBroker auf Windows
@@ -27,9 +27,9 @@ bitte mit dem Abschnitt [Update]() fortfahren.
 Um zu erkennen, ob Node.js installiert ist, wird mit der Tastenkombination
 <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> der `Ausführen`-Dialog geöffnet und
 dann dort der Befehl
-~~~
+```
 cmd.exe /C node -v & pause
-~~~
+```
 eingegeben. Nach dem Bestätigen des Befehls erscheint ein Fenster.
 
 ![Node.js-Version](media/w02nodecheck.png)  
@@ -56,14 +56,14 @@ Einsteiger sollten der [detaillierten Anleitung](#nodeinst) folgen.
 * Node.js 8.x LTS-Version [herunterladen und installieren](install/nodejs).
 * Kommandozeile `cmd.exe` als Administrator öffnen und die folgenden Kommandos der Reihe nach
   ausführen:
-  ~~~cmd
+  ```
   npm install --global windows-build-tools
   md C:\iobroker
   cd /d C:\iobroker
   npm install iobroker
-  npm install --production
+  npm install --production --no-optional --logevel=error
   iobroker status  
-  ~~~
+  ```
 
 
 <div id="nodeinst"></div>
@@ -85,9 +85,9 @@ Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/node
 1. Ein Kommandozeilenfenster als Administrator öffnen. Dazu mit der Tastenkombination
    <kbd>&#x229e; Windows</kbd> + <kbd>r</kbd> den `Ausführen`-Dialog öffnen und dort
    den Befehl
-   ~~~cmd
+   ```
    cmd
-   ~~~
+   ```
    eingeben.
 
    Da das Kommandozeilenfenster als Administrator geöffnet werden muss, bitte die
@@ -104,30 +104,30 @@ Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/node
    sind [hier zu finden](https://github.com/felixrieseberg/windows-build-tools).
 
 1. Die `windows-build-tools` werden mit dem folgenden Kommando installiert:
-   ~~~cmd
+   ```
    npm install --global windows-build-tools
-   ~~~
+   ```
 
 1. Dann im Kommandozeilenfenster den Befehl zum Anlegen des Installationsordners
    ausführen:
-   ~~~cmd
+   ```
    md C:\iobroker
-   ~~~
+   ```
 
 1. Jetzt kann das eigentliche ioBroker-Installationspaket installiert werden:
-   ~~~cmd
+   ```
    cd /d C:\iobroker
    npm install iobroker
-   ~~~
+   ```
 
    Das Ergebnis sollte so aussehen:
-   ~~~
+   ```
    [...]
    ╭───────────────────────────────────────────────────────╮
    │ The iobroker files have been downloaded successfully. │
    │ To complete the installation, you need to run         │
    │                                                       │
-   │                  npm i --production                   │
+   │   npm i --production --no-optional --logevel=error    │
    │                                                       │
    ╰───────────────────────────────────────────────────────╯
 
@@ -141,23 +141,23 @@ Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/node
    + iobroker@1.3.0
    added 51 packages from 28 contributors and audited 83 packages in 6.937s
    found 0 vulnerabilities
-   ~~~
+   ```
 
 1. Die ioBroker Installation wird mit den folgenden Befehlen abgeschlossen:
-   ~~~cmd
+   ```
    cd /d C:\iobroker
-   npm install --production
-   ~~~
+   npm install --production --no-optional --logevel=error
+   ```
    Der Installationsvorgang kann etwas dauern. Es können bei der Ausführung
    von npm einge rote Fehlermeldungen (gyp !ERR) im Zusammenhang mit
    dem Modul `unix-dgram` erscheinen. Diese Fehlermeldungen können
    ignoriert werden.
 
    Die letzten Zeilen der Installation sollten in etwa wie folgt enden:
-   ~~~
+   ```
    [...]
    Write "iobroker start" to start the ioBroker
-   npm install node-windows@0.1.14 --production --save --prefix "C:/iobroker"
+   npm install node-windows@0.1.14 --production --no-optional --logevel=error --save --prefix "C:/iobroker"
    ioBroker service installed. Write "serviceIoBroker start" to start the service and go to http://localhost:8081 to open the admin UI.
    To see the outputs do not start the service, but write "node node_modules/iobroker.js-controller/controller"
    npm WARN optional SKIPPING OPTIONAL DEPENDENCY: unix-dgram@0.2.3 (node_modules\unix-dgram):
@@ -167,41 +167,41 @@ Die Installation von Node.js erfolgt entspechend [dieser Anleitung](install/node
    added 514 packages from 300 contributors and audited 1808 packages in 61.874s
    found 23 vulnerabilities (17 low, 6 high)
    run `npm audit fix` to fix them, or `npm audit` for details
-   ~~~
+   ```
 
 1. Anschließend kann mit dem Befehl
-   ~~~cmd
+   ```
    iobroker status
-   ~~~
+   ```
    geprüft werden, ob ioBroker als Windows Dienst automatisch gestartet wurde.
    Die Antwort sollte entweder
-   ~~~
+   ```
    iobroker is running
-   ~~~
+   ```
    oder
-   ~~~
+   ```
    iobroker is not running
-   ~~~   
+   ```   
    lauten.
 
    Wenn ioBroker nicht automatisch gestartet wurde, bitte die folgenden Befehle eingeben:
-   ~~~cmd
+   ```
    net start iobroker.exe
    iobroker status
-   ~~~   
+   ```   
    Die Antwort sollte jetzt
-   ~~~
+   ```
    iobroker is running
-   ~~~
+   ```
    lauten. 
 
  ?> Zukünftig wird ioBroker bei jedem Systemneustart im Hintergrund automatisch
    gestartet.
 
 1. Abschließend kann das Kommandozeilenfenster durch das Ausführen des Befehls
-   ~~~
+   ```
    exit
-   ~~~
+   ```
    geschlossen werden.
 
 ?> Die weitere Konfiguration erfolgt mit Hilfe des `Admin`-Adapters. Er wird mit einem

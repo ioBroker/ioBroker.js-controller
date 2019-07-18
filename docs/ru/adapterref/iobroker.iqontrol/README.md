@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
+hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -30,7 +30,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 ## Адаптер iqontrol для ioBroker
 Быстрое веб-приложение для визуализации.
 
-![пример](img/screenshot1.jpg) ![пример](../../../en/adapterref/iobroker.iqontrol/img/screenshot2.jpg)
+![пример](img/screenshot4.jpg) ![пример](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Работает в любом браузере.
 Вы можете сохранить его как веб-приложение на домашнем экране iOS, и оно будет выглядеть как родное приложение.
@@ -38,7 +38,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 
 ## Тебе нужно...
 * Nodejs 8 или выше
-* socketIO должен быть включен в веб-адаптере
+* socket.IO должен быть установлен на «встроенный» и «Force Web-Sockets» должен быть отключен в веб-адаптере
 
 ## Как пользоваться
 * Начните создавать представления.
@@ -82,9 +82,20 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 Это будет работать только для известных устройств. Для неизвестных устройств, а также для предоставления устройствам расширенных функций, вы можете добавить их вручную с помощью кнопки (+) - или отредактировать устройства, созданные с помощью автоматического создания.
 Чтобы отредактировать роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
 
+### Изменение конфигурации Datapoint
+Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных на вкладке объектов iobroker. Здесь вы можете:
+
+* Установить флажок только для чтения
+* Установить Invert-Flat (планируется, пока не работает)
+* Установить собственный блок
+* Установить или изменить список значений
+
+![CustomDialog Call](img/custom_call.png) ![Пример CustomDialog](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
 ### Общие положения:
 Каждая роль имеет следующие три состояния:
 
+* **ADDITIONAL_INFO** *массив* - массив точек данных, которые будут отображаться в нижней части информационного диалога
 * **BATTERY** *boolean* - при значении true будет отображаться маленький значок батареи
 * **ОШИБКА** *логическое* - при значении true будет отображаться маленький значок с восклицательным знаком
 * **UNREACH** *логический* - при значении true будет отображаться маленький значок беспроводной сети
@@ -95,7 +106,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
-  * Технически *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'native.states' или 'common.states' точки данных:
+  * Технически, *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' в точке данных. :
 
 ````
 "native": {
@@ -104,8 +115,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 }
 ````
 
-    * Вы можете создать свой собственный список значений, добавив объект states в `` `` "native": {} `` `` часть datapoint. Это будет прочитано только iQontrol и не будет влиять на другие скрипты.
-    * Объект состояния внутри части `` `` "common": {} `` `` также будет распознаваться iQontrol, но с более низким приоритетом. Если вы измените его здесь, это может повлиять на другие сценарии. Более того, он может быть перезаписан адаптером, который создал точку данных.
+    * Вы можете создать свой собственный список значений, изменив точку данных (значок гаечного ключа за точкой данных на вкладке объектов iobroker, см. Выше)
 
 Однако не каждый тип имеет смысл для каждой роли. Так, например, СОСТОЯНИЕ переключателя будет в большинстве случаев булевым, чтобы его можно было переключать между включением и выключением. Строка может отображаться, но переключатель не будет работать.
 
@@ -162,7 +172,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 В дополнение к обычному термостату вы можете определить:
 
 * **PARTY_TEMPERATURE** *string* - строка в специальном формате для определения режима homematic-термостатов для вечеринки или праздника
-* **BOOST_STATE** *число* - отображает оставшееся время ускорения термостатов homematic
+* **BOOST_STATE** *число* - отображает оставшееся время ускорения термостатов homematic.
 
 ### <img src="img/icons/temperature.png" width="32"> Датчик температуры, <img src="img/icons/humidity.png" width="32"> Датчик влажности:
 * **СОСТОЯНИЕ** *число* - температура или влажность, которые будут отображаться в нижней части устройства
@@ -241,6 +251,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.0.45 (2019-07-15)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+
+### 0.0.44
+* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
+* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
+
+### 0.0.43
+* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (Sebastian Bormann) Fixed value list type conflict.
 
 ### 0.0.42
 * (Sebastian Bormann) Adjusted pathes of demo-files.

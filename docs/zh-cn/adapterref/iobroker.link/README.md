@@ -3,23 +3,29 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.link/README.md
 title: ioBroker.link
-hash: scWM+/Fvm5d++HzN0qDbh2RN057qbkuEZOC38RdQxt8=
+hash: q185Nop/RawGSrD3XFF+GfEb+G0K/ygJeIRLOltDEw8=
 ---
 ![商标](../../../en/adapterref/iobroker.link/admin/link.png)
 
-![安装数量](http://iobroker.live/badges/link-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.link.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.link.svg)
 ![NPM](https://nodei.co/npm/iobroker.link.png?downloads=true)
 
-＃ioBroker.link ===================
-此适配器允许通过iobroker.link云进行安全连接。
+#ioBroker.link
+此适配器允许通过[ioBroker.link](https://iobroker.link/)云进行安全连接。
 
 ##适配器设置
 ＃＃ 代理
 代理可以定义为URI：* http：// proxy：8080 *或通过** HTTPS_PROXY **环境变量。
 
 ## Changelog
+### 0.4.4 (2019-07-16)
+* (gh-got) closing tunnels in case server considers an agent as offline
+* (gh-got) fixed timeout to query active connection status
+
+### 0.4.2 (2019-03-28)
+* (gh-got) agents will report own version by registration
+
 ### 0.4.0 (2019-03-10)
 * (bluefox) Made this adapter to be compatible with the new server
 
@@ -39,9 +45,9 @@ hash: scWM+/Fvm5d++HzN0qDbh2RN057qbkuEZOC38RdQxt8=
 * (bluefox) Initial commit
 
 ## License
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
-
 Creative Common Attribution-NonCommercial (CC BY-NC)
+
+Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
 
 http://creativecommons.org/licenses/by-nc/4.0/
 

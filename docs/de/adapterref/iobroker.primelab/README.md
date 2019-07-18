@@ -3,34 +3,37 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
+hash: 7gPwo1chlg/xVoXHDXToynvTfmNDtFrjg1UxXF/bTxI=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/primelab-stable.svg)
 
---- zuletzt geändert: 2019.03.27 --- ![Logo](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
+--- lastChanged: 2019.03.27 --- ![Logo](https://primelab.org/de/assets/website/img/logo-primelab.jpg)
 
 # IoBroker.primelab
 ### Deutsche:
 Dieser Adapter wurde von Jey Cee im Auftrag von Jan Peters entwickelt. Spenden sind Willkommen.
-Der PrimeLab-Adapter ermöglicht das automatische Abrufen von Messwerten, die auf der Seite https://primelab.cloud im Benutzerkonto hinterlegt sind.
+The PrimeLab Adapter ermöglicht das automatische Abrufen von Messwerten, die auf der Seite https://primelab.cloud im Benutzerkonto hinterlegt sind.
 
 Messwerte:
 
-    431-Cyanursäure
-    - 421-Chlor-Gesamt
+    - 431-Cyanursäure
+    - 421-Chlor-Total
     - 428-chlorfrei
     - 429-pH-PoolLab
 
 ### Englisch:
 Dieser Adapter wurde von Jey Cee im Auftrag von Jan Peters entwickelt. Spenden sind willkommen.
-Der PrimeLab-Adapter ermöglicht das automatische Abrufen von Messwerten, die im Benutzerkonto auf der Seite https://primelab.cloud gespeichert sind.
+Der PrimeLab-Adapter ermöglicht den automatischen Abruf von Messwerten, die im Benutzerkonto auf der Seite https://primelab.cloud gespeichert sind.
 
 Lesungen:
 
-    431-Cyanursäure
-    - 421-Chlor-Gesamt
+    - 431-Cyanursäure
+    - 421-Chlor-Total
     - 428-chlorfrei
     - 429-pH-PoolLab
+
+## Links
+[Primelab](https://www.primelab.org/de/der-primelab.html)
 
 ## Changelog
 ### 1.0.2

@@ -1,223 +1,320 @@
 ---
-title: развитие
+title: Документация Шаблон
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adapterdoctemplate.md
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-hash: rrrjyCfMyLCz6GbkLq/cltXrIL8D5wQPGBmpWRj2Bsk=
+hash: idNqdPEU1+HSIqD5A/xdiBqc4Rurmp0Kmsx3GQqqHnY=
 ---
 # Шаблон для создания документации по адаптеру
-?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть легко приняты.
+?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть приняты легче.
 
-~~~ markdown --- title: "{page title}" lastChanged: "{дата изменения статьи}" editLink: "{ссылка на этот файл на GitHub}" ---
+```
+---
+title:       "{Seitentitel}"
+lastChanged: "{Änderungsdatum des Artikels}"
+editLink:    "{Link auf diese Datei auf GitHub}"
+---
 
-!> Внимание! Этот шаблон далеко не окончательный! Примером реализации является [гармония адаптер](adapterref/docs/iobroker.harmony/de/README).
 
-# <img src="media/{Adaptericon}" width=150 hight=150/> {Имя} Адаптер Адаптер
-В этом разделе представлена сводная информация о предполагаемом использовании адаптера пользователем. Это резюме должно быть коротким (максимум 1-3 маленьких абзаца). Он должен содержать столько информации, чтобы заинтересовать пользователя, и он мог решить, подходит ли ему адаптер.
+!>Achtung!
+Dieses Template ist bei weitem noch nicht final!
+Beispielimplementierung ist der [harmony-Adapter](adapterref/docs/iobroker.harmony/de/README).
 
-Техническая справочная информация об адаптере и любых устройствах доступна в разделе «Обзор».
+# <img src="media/{Adaptericon}" width=150 hight=150/>&emsp;{Adaptername}-Adapter
+In diesem Abschnitt wird eine endanwenderfreundliche Zusammenfassung des
+Anwendungszwecks des Adapters gegeben. Diese Zusammenfassung soll kurz
+ gehalten sein (maximal 1-3 kleine Absätze). Sie soll gerade so viele
+ Informationen enthalten, dass das Interesse des Anwenders geweckt wird
+ und er entscheiden kann, ob der Adapter für ihn relevant ist.
 
-<!-- Einführungsbild--> ![{имя старой картинки}](../../de/dev/media/{Bild} "{Изображение Описание") <span style="color:grey">* {описание изображения} *</span>
+Technische Hintergrundinformationen zum Adapter und ggf. Geräten stehen
+im Abschnitt "Überblick".
 
-<details open><summary> содержание </summary><p>
 
-| Навигация
-| 1 §§LLLL_0§§ |
-| 2 §§LLLL_0§§ |
-| 3 §§LLLL_0§§ |
-| 4 §§LLLL_0§§ |
-| 5 §§LLLL_0§§ |
-| 6 §§LLLL_0§§ |
-| 7 §§LLLL_0§§ |
-| 8 §§LLLL_0§§ |
-| 9 §§LLLL_0§§ |
-| 10 §§LLLL_0§§ |
-| 11 §§LLLL_0§§ |
-| 12 §§LLLL_0§§ |
-| 12 [История] (# история) |
+<!-- Einführungsbild-->
+![{alt BildName}](../../de/dev/media/{Bild} "{Bildbeschreibung") <span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-</ P> </ Детали>
+
+
+<details open><summary>Inhaltsverzeichnis</summary><p>
+
+| Navigation                          |
+|-------------------------------------|
+| 1  [Steckbrief](#steckbrief)        |
+| 2  [Überblick](#überblick)          |
+| 3  [Installation](#installation)    |
+| 4  [Konfiguration](#konfiguration)  |
+| 5  [Instanz](#instanz)              |
+| 6  [Objekte](#objekte)              |
+| 7  [Besonderheiten](#besonderheiten)|
+| 8  [FAQ](#faq)                      |
+| 9  [Beispiele](#beispiele)          |
+| 10 [Deinstallation](#deinstallation)|
+| 11 [Links](#links)                  |
+| 12 [Historie](#historie)            |
+</p></details>
+
+
 
 <a name="steckbrief"/>
 
-## Характеристики
-> Внимание! Следующая таблица является только примером. Он генерируется динамически генератором документов и вставляется в этот момент.
-В зависимости от выбранных полей источниками данных являются, например, `frontmatter`, `io-package.json` и `package.json` соответствующего адаптера.
+## Steckbrief
+> Achtung! Die folgende Tabelle dient nur als Beispiel. Sie wird vom
+  Dokumentengenerator dynamisch erzeugt und an dieser Stelle eingefügt.
+  Je nach den ausgewählten Feldern sind die Datenquellen z.B. `frontmatter`,
+  `io-package.json` und `package.json` des jeweilgen Adapters.
 
 |                         |                              |
 |-------------------------|:----------------------------:|
-| Статус документального фильма | {дата:} |
-| текущая версия стабильная | ! [стабильный] [логотип] |
-| текущая версия последняя | ! [последний] [логотип] |
-| ОС | поддерживаемая ОС |
-| версия узла | поддерживаемые версии узлов |
-| Разработчик | Имя / псевдоним разработчика |
-| Github | ССЫЛКА |
-| Лицензия | С |
-| Ключевые слова | `Suchworte` |
-| Зависимости | `dependencies` |
-| Зависимости | `зависимости` |
+| Stand der Doku          | {date:}                      |
+| aktuelle Version stable | ![stable][logo]              |
+| aktuelle Version latest | ![latest][logo]              |
+| OS                      | unterstützte OS              |
+| node-Version            | unterstützte node-Versionen  |
+| Entwickler              | Name/Alias des Entwicklers   |
+| Github                  | LINK                         |
+| Lizenz                  | MIT                          |
+| Kategorie               | gemäß Adapterliste           |
+| Keywords                | `Suchworte`                  |
+| Abhängigkeiten          | `dependencies`               |
+
+
 
 <a name="überblick"/>
 
-## Обзор
-### {Tailored System}
-В этом разделе объясняются основы любой подключенной системы или процедуры. Для чего это хорошо? Что вы можете сделать с этим? Как осуществляется связь? Какова структура системы? Какие рамочные условия существуют?
+## Überblick
 
-### {имя адаптера} адаптер
-Вот справочная информация об адаптере. Это может быть информация об устройстве в контексте адаптера устройства или, в случае адаптера для протокола связи, основы для протокола.
-Тем не менее, этот текст должен быть универсально понятен для начинающих.
+### {Angebundenes System}
+In diesem Abschnitt wird Grundlegendes zu einem eventuell angebundenen System
+oder Verfahren gesagt. Wofür ist es gut? Was kann man damit machen? Wie erfolgt
+die Kommunikation? Wie ist der Systemaufbau? Welche Rahmenbedingungen gibt es?
+
+### {Adaptername}-Adapter
+Hier werden Hintergrundinformationen zum Adapter gegeben. Dies kann im Rahmen
+eines Geräteadapters Information zu dem Gerät sein, oder bei einem Adapter für
+ein Kommunikationsprotokoll Grundlagen zu dem Protokoll.
+Trotzdem sollte dieser Text allgemeinverständlich auch für Einsteiger sein.
+
+
 
 <a name="voraussetzungen"/>
 
-## Предварительные условия перед установкой
-Пользователь получает информацию здесь, какие шаги, если необходимо, перед установкой адаптера u.a. на внешних системах. К ним относятся, например, регистрация ключей API или настройка подключенной системы в соответствии с документацией производителя.
+## Voraussetzungen vor der Installation
+Der Anwender erhält hier Informationen, welche Schritte ggf. vor der Installation
+des Adapters u.a. auf externen Systemen auszuführen sind. Dazu gehören z.B. die
+Registrierung von API-Keys oder die Konfiguration von angebundenen System
+nach Herstellerdokumentation.
+
+
 
 <a name="installation"/>
 
-## Установка
-Здесь описаны специальные функции для установки, которые выходят за рамки **здесь** документированной стандартной установки. Это может, например,
-ручная установка программного обеспечения перед фактической установкой адаптера или активацией портов на сервере.
+## Installation
+Hier werden Besonderheiten zur Installation beschrieben, die den Umfang der
+**hier** dokumentierten Standardinstallation überschreiten. Das kann z.B.
+die manuelle Installation von Software vor der eigentlichen Adapterinstallation
+oder die Freischaltung von Ports auf dem Server sein.
 
-> Экземпляр адаптера устанавливается через интерфейс администратора ioBroker.
-Подробные инструкции для необходимых шагов установки описаны **здесь**
+> Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert.
+  Die ausführliche Anleitung für die dazu notwendigen Installatonschritte ist
+  **hier** beschrieben.
+
+
 
 <a name="konfiguration"/>
 
-## Конфигурация
-Краткое введение в конфигурацию. Для каждого окна администратора предусмотрена отдельная секция.
+##  Konfiguration
+Kurzer Einleitungssatz zur Konfiguration. Für jedes Admin-Fenster ist ein separter
+Abschnitt vorzusehen.
+
 
 <a name="{Eindeutiger Fensterbezeichner}"/>
 
-### Окно "{Заголовок окна}"
-![{Alt-имя}](../../de/dev/media/{Formularfelderbild} "{Изображение} Описание") <span style="color:grey">* {описание изображения} *</span>
+### Fenster "{Fenstertitel}"
+![{alt-Name}](../../de/dev/media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-| Поле | Описание |
+| Feld               | Beschreibung |
 |:-------------------|:-------------|
-| **{Поле формы 1}** | {Описание} |
-| **{Поле формы 2}** | {Описание} |
-| **{поле формы}** | {описание} |
+|**{Formularfeld 1}**|{Beschreibung}|
+|**{Formularfeld 2}**|{Beschreibung}|
+|**{Formularfeld n}**|{Beschreibung}|
 
-Пространство для специальных заметок.
+Platz für besondere Hinweise.
+
 
 <a name="{Eindeutiger Fensterbezeichner}"/>
 
-### Окно "{Заголовок окна}"
-![{Alt-имя}](../../de/dev/media/{Formularfelderbild} "{Изображение} Описание") <span style="color:grey">* {описание изображения} *</span>
+### Fenster "{Fenstertitel}"
+![{alt-Name}](../../de/dev/media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-| Поле | Описание |
+| Feld               | Beschreibung |
 |:-------------------|:-------------|
-| **{Поле формы 1}** | {Описание} |
-| **{Поле формы 2}** | {Описание} |
-| **{поле формы}** | {описание} |
+|**{Formularfeld 1}**|{Beschreibung}|
+|**{Formularfeld 2}**|{Beschreibung}|
+|**{Formularfeld n}**|{Beschreibung}|
 
-Пространство для специальных заметок.
+Platz für besondere Hinweise.
 
-Окончательный текст для конфигурации
+Abschließender Text zur Konfiguration
 
-> После завершения настройки диалоговое окно конфигурации закрывается с `SPEICHERN UND SCHLIEßEN`. Это приведет к последующему перезапуску адаптера.
+> Nach Abschluß der Konfiguration wird der Konfigurationsdialog mit
+  `SPEICHERN UND SCHLIEßEN` verlassen. Dadurch efolgt im Anschluß ein
+  Neustart des Adapters.
+
+
 
 <a name="instanz"/>
 
-## Экземпляры
-> При установке адаптера был создан активный экземпляр адаптера {имя адаптера} в разделе `Objekte`.
+##  Instanzen
+> Die Installation des Adapters hat im Bereich `Objekte` eine aktive Instanz des
+  {Adaptername}-Adapters angelegt.
 
-![пример](../../de/dev/media/a_harmony_instanz.png "пример") <span style="color:grey">* Первая инстанция *</span>
+![Instanz](../../de/dev/media/a_harmony_instanz.png "Instanz")<span style="color:grey">
+*Erste Instanz*</span>
 
-Место для получения дополнительной информации о экземплярах адаптера. Так, например, могут ли несколько экземпляров быть установлены на сервере или как экземпляры ведут себя в системах с несколькими хостами.
+Platz für weitere Hinweise zu Instanzen des Adapters. Z.B. ob mehrere Instanzen
+auf einen Server installierbar sind oder wie sich Instanzen auf
+Multihost-Systemen verhalten.
 
-> Включен ли адаптер или подключен ли он к {устройству}, указывает цвет поля состояния экземпляра. Если указатель мыши указывает на символ, отображается дополнительная подробная информация.
+> Ob der Adapter aktiviert oder mit dem {Gerät}  verbunden ist,
+  wird mit der Farbe des Status-Feldes der Instanz verdeutlicht. Zeigt der
+  Mauszeiger auf das Symbol, werden weitere Detailinformationen dargestellt.
+
+
 
 <a name="objekte"/>
 
-## Объекты адаптера
-> В разделе `Objekte` все устройства и действия, обнаруженные адаптером в концентраторе, перечислены в древовидной структуре. Кроме того, предоставляется также информация о том, происходит ли связь с концентратором гладко.
+## Objekte des Adapters
 
-![старые объекты Имя](../../de/dev/media/{Bildname} "«{Изображение} Описание") <span style="color:grey">* {описание изображения} *</span>
+> Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im Hub
+  erkannten Geräte und Aktivitäten aufgelistet. Zusätzlich wird auch noch
+  darüber informiert, ob die Kommunikation mit dem Hub reibungslos erfolgt.
 
-> Созданные объекты и их значения определяются следующим образом:
+![alt-Objektename](../../de/dev/media/{Bildname} ""{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-Объект | Доступ | Описание: ------------------------- |: -------: |: ----------- **{instance}** | R | Имя первого *экземпляра* адаптера &emsp; **{подобъект}** | R | Имя *{...}* список, значение ...
-&emsp; **** {подобъект}** | R | Имя *{...}* список, значение ...
-&emsp; &emsp; ***{Datapoint}*** | R / W | Описание точки данных с функцией &emsp; & nbsp; ***{точка данных}*** | R / W | Описание точки данных с функцией
+> Die angelegten Objekte und ihre Bedeutungen sind wie folgt definiert:
 
-Таблица пытается упростить представление дерева объектов и проиллюстрировать значение и применение отдельных объектов для пользователя. Он предоставляет справочную документацию для пользователя, например, для доступ к иерархии объектов с использованием JavaScript.
+Objekt                    | Zugriff | Bescheibung
+:-------------------------|:-------:|:-----------
+**{Instanz}**                 |  R  | Name der ersten *Instanz* des Adapters
+&emsp;**{Sub-Objekt}**        |  R  | Name des *{...}*, Liste, Bedeutung ...
+&emsp;&emsp;**{Sub-Objekt}**  |  R  | Name des *{...}*, Liste, Bedeutung ...
+&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion
+&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion
 
-### {Более подробное объяснение группирования объектов}
-Здесь выдержки из дерева объектов можно выделить и специально рассмотреть.
+Mit der Tabelle wird versucht, den Objektbaum vereinfacht darzustellen
+und dem Anwender die Bedeutung und Anwendung der einzelnen Objekte zu
+veranschaulichen. Sie stellt die Referenzdokumentaion für den Anwender für
+z.B. den Zugriffe mit JavaScript auf die Objekthierarchie dar.
 
-#### {Для более подробного объяснения отдельных объектов или функций}
-Поскольку места для описаний в таблице объектов здесь обычно недостаточно, например, отдельные точки данных документированы более подробно.
+### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
+Hier könne Ausschnitte des Objektbaums hervorgehoben und besonders betrachtet
+werden.
 
-Пример доступных для записи точек данных:
+#### {Weitere tiefergehende Erläuterungen zu einzelnen Objekten oder Funktionen}
+Da der Platz für Beschreibungen in der Objekttabelle in der Regel nicht ausreichen
+müssen hier z.B. einzelne Datenpunkte ausführlicher dokumentiert werden.
 
-#### Начало действия Действия начинаются, когда вы вводите число больше 0 для действия `{Instanz}.{Hub Name}.activities.{Aktivität}`.
-Во время выполнения операции это значение сначала изменяется на 1 (= начало), а затем на 2 (= активно).
-### {Более подробное объяснение группирования объектов}
-В соответствии со структурой дерева объектов и функцией адаптера здесь приведены индивидуальные варианты дизайна.
+Beispiel für beschreibbare Datenpunkte:
+#### Starten einer Aktivität
+Aktivitäten werden gestartet, wenn man bei einer Aktivität
+`{Instanz}.{Hub Name}.activities.{Aktivität}` eine Zahl größer als 0 einträgt.
+Während der Ausführung der Aktivität ändert sich dieser Wert zuerst
+nach 1 (=startend) und dann nach 2 (=aktiv).
 
-Пример описания отдельных точек данных:
+### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
+Entsprechend dem Aufbau des Objektbaums und der Funktion des Adapters
+hier individuelle Gestaltungsmöglichkeiten gegeben.
 
-#### Значения статуса `{Instanz}.{Hub Name}.activities.currentActivity` возвращает текущее действие в виде строки.
-`{Instanz}.{Hub Name}.activities.currentStatus` указывает на статус Центра Гармонии. Значения означают
+Beispiel für die Beschreibung einzelner Datenpunkte:
+#### Statuswerte
+`{Instanz}.{Hub Name}.activities.currentActivity` liefert die aktuell ausgeführte
+Aktivität als Zeichenfolge.
 
-- 0 = неактивно
-- 1 = старт
-- 2 = активный
+`{Instanz}.{Hub Name}.activities.currentStatus` zeigt den Status des Harmony Hubs
+an. Dabei bedeuten die Werte
+- 0 = inaktiv
+- 1 = startend
+- 2 = aktiv
 
-## Деинсталляция
-Если экземпляр нужно удалить снова, он будет удален с помощью назначенного значка корзины в столбце Экземпляры
+
+
+
+
+
+## Deinstallation
+sollte die Instanz wieder entfernt werden sollen wird diese über das zugeordnete Mülleimer-Icon
+in der Rubrik Instanzen entfernt
 
 <img src="media/adapter_AdapterName_delete_01.png">
 
-Появится запрос подтверждения, который должен быть подтвержден с помощью ***OK***
+Es erscheint eine Sicherheitsabfrage, die mit ***OK*** bestätigt werden muss
 
 <img src="media/adapter_AdapterName_delete_02.png">
 
-Затем снова появится окно, показывающее обработку команд удаления
+Anschließend erscheint wieder ein Fenster, dass die Abarbeitung der Deinstallationsbefehle zeigt
 
 <img src="media/adapter_AdapterName_delete_03.png">
 
-Эта деинсталляция полностью удаляет все объекты, принадлежащие экземпляру.
+Bei dieser Deinstallation werden alle zu der Instanz gehörenden Objekte vollständig entfernt.
 
-Если установочные файлы полностью удалены с хоста, это необходимо сделать с помощью значка корзины на плитке адаптера AdapterName в разделе «Адаптеры».
+Sollten die Installationsdateien vollständig von dem Host gelöscht werden, muss dies über das Mülleimer-Icon
+in der Kachel des AdapterName-Adapters in der Rubrik Adapter geschehen.
 
-## Examples / demo
-Lorem Ipsum
 
-## Скидки
-Резервное копирование Multihost History Performance
 
-## Известные проблемы
-* что угодно
 
-  решение:
 
-* и очень плохая ошибка
+## Beispiele/Demo
+Lorem ipsum
 
-  решение:
 
-* дьявол знает
+## Besonderheiten
+Backup
+Multihost
+History
+Performance
 
-  решение:
 
-## Интеграция государств
-### Блэкли
-Lorem Ipsum
+## Bekannte Probleme
+
+* was auch immer
+  Lösung:
+
+* und noch ein ganz böser Bug
+  Lösung:
+
+* weiß der Teufel
+  Lösung:
+
+
+
+## Einbinden der States
+
+### Blockly
+Lorem ipsum
 
 ### Node-Red
-Lorem Ipsum
+Lorem ipsum
 
-### Vis
-Lorem Ipsum
+### vis
+Lorem ipsum
 
-### История
-Lorem Ipsum
+### History
+Lorem ipsum
 
-## Ссылки
-Есть также ссылки на GitHub (зона для разработчиков?) И внешние ресурсы? Но, пожалуйста, не в начале документального фильма, а в конце.
-Сначала легкая еда.
 
-## Зона разработчика
-~~~
+## Links
+Irgendwo kommen auch noch Links zu GitHub (Entwicklerbereich?) und
+externen Ressourcen? Aber bitte nicht gleich am Doku-Anfang, eher am Ende.
+Zuerst die leichte Kost.
+
+
+
+## Entwicklerbereich
+```

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.primelab/README.md
 title: ioBroker.primelab
-hash: nn5IvWJN2VQ9RnrW+zX+0RwBsBH6VswBVM+iUKuzMdM=
+hash: 7gPwo1chlg/xVoXHDXToynvTfmNDtFrjg1UxXF/bTxI=
 ---
 ![Количество установок](http://iobroker.live/badges/primelab-stable.svg)
 
@@ -31,6 +31,9 @@ Messwerte:
     - 421-Хлор-Всего
     - 428 без хлора
     - 429-pH-PoolLab
+
+## Ссылки
+[Primelab](https://www.primelab.org/de/der-primelab.html)
 
 ## Changelog
 ### 1.0.2

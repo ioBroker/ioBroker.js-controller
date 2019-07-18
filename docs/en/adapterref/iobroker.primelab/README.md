@@ -25,6 +25,9 @@ Readings:
     -  421-Chlorine-Total
     -  428-Chlorine-Free
     -  429-pH-PoolLab
+    
+## Links
+[Primelab](https://www.primelab.org/de/der-primelab.html)
 
 ## Changelog
 ### 1.0.2

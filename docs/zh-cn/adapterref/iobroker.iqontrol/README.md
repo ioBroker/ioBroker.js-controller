@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
+hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -30,7 +30,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 适用于ioBroker的## iqontrol适配器
 用于可视化的快速Web应用程序。
 
-![例](img/screenshot1.jpg)![例](../../../en/adapterref/iobroker.iqontrol/img/screenshot2.jpg)
+![例](img/screenshot4.jpg)![例](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 在任何浏览器中运行。
 您可以将其保存为iOS-Homescreen上的Web-App，它看起来和感觉就像一个原生应用程序。
@@ -38,7 +38,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 
 ＃＃ 你需要...
 * Nodejs 8或更高版本
-*必须在Web适配器中启用socketIO
+* socket.IO必须设置为“集成”，并且必须在Web适配器中禁用“强制Web套接字”
 
 ＃＃ 如何使用
 *开始创建视图。
@@ -82,9 +82,20 @@ Toolbar-Entrys是视图的链接。
 这仅适用于已知设备。对于未知设备，并为设备提供高级功能，您可以通过（+） - 按钮手动添加它们或编辑由自动创建创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
+###修改数据点配置
+您可以通过iobroker的objects-tab中数据点后面的扳手图标修改数据点的配置。在这里你可以：
+
+*设置Readonly-Flag
+*设置反转（计划，尚未起作用）
+*设置自己的单位
+*设置或修改值列表
+
+![CustomDialog调用](img/custom_call.png)![CustomDialog示例](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
 ###一般状态：
 每个角色都有以下三种状态：
 
+* **ADDITIONAL_INFO** *array* - 数据点数组，将显示在信息对话框的底部
 * **BATTERY** *boolean* - 如果为true，将显示一个小电池空图标
 * **ERROR** *boolean* - 如果为true，将显示一个小的感叹号图标
 * **UNREACH** *boolean* - 如果为true，将显示一个小的无线图标
@@ -95,7 +106,7 @@ Toolbar-Entrys是视图的链接。
 * *number* - 将与相应的单位一起显示，并在对话框中生成滑块。
 * *string* - 要显示的文本
 * *value-list* - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。
-    *从技术上讲，* value-list *是一个带有相应翻译列表的值，在数据点的'native.states'或'common.states'对象中定义：
+    *技术上，* value-list *是一个带有相应翻译列表的值，在数据点的'common.custom.iqontrol。<instance> .states'，'native.states'或'common.states'对象中定义：
 
 ````
 "native": {
@@ -104,8 +115,7 @@ Toolbar-Entrys是视图的链接。
 }
 ````
 
-    *您可以通过将states-object添加到数据点的`````native“：{}```部分来创建自己的值列表。这只能由iQontrol读取，对其他脚本没有影响。
-    *`````common`：{}```部分内的状态对象也将被iQontrol识别，但优先级较低。如果你在这里改变它，它可能会影响其他scipts。更多可能被创建数据点的适配器覆盖。
+    *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，见上文）
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -241,6 +251,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.0.45 (2019-07-15)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+
+### 0.0.44
+* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
+* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
+
+### 0.0.43
+* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (Sebastian Bormann) Fixed value list type conflict.
 
 ### 0.0.42
 * (Sebastian Bormann) Adjusted pathes of demo-files.

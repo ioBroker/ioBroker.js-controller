@@ -1,12 +1,12 @@
 ---
-title: установка
-lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/install/updateadapter.md
+title: Обновить адаптер
+lastChanged: 16.07.2019
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-hash: 6FnZ5fXbcIKBSc5ffi+1uFB4hJpRxJTCKZ0Dfugv43Y=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/install/updateadapter.md
+hash: wncP50SmaTw3k7T7o7Qgtxw/vHr0TMXN0Rg1QSu7BvQ=
 ---
 # Обновление адаптеров
-?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть легко приняты.
+Процедура обновления адаптера описана в руководстве по управлению адаптерами [описано](../tutorial/adapter.md#upgradeeinesadapters).
 
-@@@ Ссылка на подробное описание того, как адаптер будет обновляться / понижаться. @@@
+Переход на конкретную версию адаптера [также](../tutorial/adapter.md#downgradeeinesadapters)

@@ -69,6 +69,21 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
+### 3.1.1 (2019-07-14)
+* (Apollon77) add windDirection as string calculated based on degrees
+ 
+### 3.1.0 (2019-07-12)
+* (Apollon77) remove option for legacy API because disabled by WU
+ 
+### 3.0.14 (2019-07-11)
+* (Apollon77) optimize checking of pws station id
+ 
+### 3.0.13 (2019-07-10)
+* (Apollon77) Fix error in image url handling
+ 
+### 3.0.11/12 (2019-07-09)
+* (Apollon77) Re-Fetch PWS station key on Error 401
+ 
 ### 3.0.10 (2019-05-27)
 * (Apollon77) Adopt logic to WU changes
  

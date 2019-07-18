@@ -1,6 +1,5 @@
 ![Logo](admin/iot.png)
 # ioBroker IoT Adapter
-=================
 
 ![Number of Installations](http://iobroker.live/badges/iot-installed.svg) ![Number of Installations](http://iobroker.live/badges/iot-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.iot.svg)](https://www.npmjs.com/package/iobroker.iot)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.iot.svg)](https://www.npmjs.com/package/iobroker.iot)
@@ -225,6 +224,9 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 
 
 ## Changelog
+### 1.0.0 (2019-07-14)
+* (TA2k) Google Home list was added 
+
 ### 0.5.0 (2019-06-29)
 * (bluefox) tried to add yandex Alisa 
 

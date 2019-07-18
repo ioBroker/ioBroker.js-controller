@@ -41,9 +41,9 @@ Installationshinweise der
 
 Fertige Node.js- und npm-Pakete stehen im Community Repository zur Verfügung.
 
-~~~bash
+```
 pacman -S nodejs npm
-~~~
+```
 
 <h2 id="debian">Debian und Ubuntu basierte Linux Distributionen</h2>
 
@@ -59,25 +59,25 @@ Hilfe und Skripte für das Reposity, sind auf GitHub unter
 wird empfohlen, den Artikel zum Einsatz von [Node.js >= 6.x auf älteren Distributionen](https://github.com/nodesource/distributions/blob/master/OLDER_DISTROS.md)
 zu lesen.
 
-~~~bash
+```
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
-~~~
+```
 
 Für Node.js 10 den folgenden Befehl verwenden:
 
-~~~bash
+```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
-~~~
+```
 
 ***Optional:*** Installation der Build-Werkzeuge
 
 Zum Kompilieren und Installation nativer Erweiterungen mit npm sollten auch die
 Build-Werkzeuge installiert werden.
-~~~bash
+```
 sudo apt-get install -y build-essential
-~~~
+```
 
 **Verfügbare Architekturen:**
 
@@ -133,27 +133,27 @@ Note that the Node.js packages for EL 5 (RHEL5 and CentOS 5) depend on the EPEL 
 
 On RHEL, CentOS or Fedora, for Node.js v8 LTS:
 
-~~~bash
+```
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
-~~~
+```
 Alternatively for Node.js 10:
 
-~~~bash
+```
 curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -
-~~~
+```
 Then install:
 
-~~~bash
+```
 sudo yum -y install nodejs
-~~~
+```
 Optional: install build tools
 
 To compile and install native addons from npm you may also need to install build tools:
 
-~~~bash
+```
 sudo yum install gcc-c++ make
 # or: sudo yum groupinstall 'Development Tools'
-~~~
+```
 Available architectures:
 
 * **i386** (32-bit, not available for EL7)
@@ -189,17 +189,17 @@ Other distributions known to be supported:
 Alternatives
 
 Official Fedora Node.js and npm packages are available in Fedora 18 and later. Install with:
-~~~bash
+```
 sudo dnf install nodejs
-~~~
+```
 In a hurry for the latest updates? Grab them from updates-testing.
 
 Enterprise Linux (RHEL and CentOS) users may use the Node.js and npm packages from the EPEL repository.
 
 Install the appropriate epel-release RPM for your version (found on the EPEL repository homepage), then run:
-~~~bash
+```
 sudo yum install nodejs npm --enablerepo=epel
-~~~
+```
 In a hurry for the latest updates? Grab them from epel-testing.
 
 Available architectures:
@@ -229,55 +229,55 @@ FreeBSD
 The most recent release of Node.js is available via the www/node port.
 
 Install a binary package via pkg:
-~~~bash
+```
 pkg install node
-~~~
+```
 Or compile it on your own using ports:
-~~~bash
+```
 cd /usr/ports/www/node && make install
-~~~
+```
 Gentoo
 
 Node.js is available in the portage tree.
-~~~bash
+```
 emerge nodejs
-~~~
+```
 NetBSD
 
 Node.js is available in the pkgsrc tree:
-~~~bash
+```
 cd /usr/pkgsrc/lang/nodejs && make install
-~~~
+```
 Or install a binary package (if available for your platform) using pkgin:
-~~~bash
+```
 pkgin -y install nodejs
-~~~
+```
 nvm
 
 Node Version Manager is a bash script used to manage multiple released Node.js versions. It allows you to perform operations like install, uninstall, switch version, etc. To install nvm, use this install script.
 
 On Unix / OS X systems Node.js built from source can be installed using nvm by installing into the location that nvm expects:
-~~~bash
+```
 $ env VERSION=`python tools/getnodeversion.py` make install DESTDIR=`nvm_version_path v$VERSION` PREFIX=""
-~~~
+```
 After this you can use nvm to switch between released versions and versions built from source. For example, if the version of Node.js is v8.0.0-pre:
-~~~bash
+```
 $ nvm use 8
-~~~
+```
 Once the official release is out you will want to uninstall the version built from source:
-~~~bash
+```
 $ nvm uninstall 8
-~~~
+```
 OpenBSD
 
 Node.js is available through the ports system.
-~~~bash
+```
 /usr/ports/lang/node
-~~~
+```
 Using pkg_add on OpenBSD:
-~~~bash
+```
 pkg_add node
-~~~
+```
 openSUSE and SLE
 
 Node.js is available in the main repositories under the following packages:
@@ -289,17 +289,17 @@ Node.js is available in the main repositories under the following packages:
     (The "Web and Scripting Module" must be added before installing.)
 
 For example, to install Node.js 4.x on openSUSE Leap 42.2, run the following as root:
-~~~bash
+```
 zypper install nodejs4
-~~~
+```
 macOS
 
 Simply download the macOS Installer direct from the nodejs.org web site.
 
 If you want to download the package with bash:
-~~~bash
+```
 curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
-~~~
+```
 Alternatives
 
 Using Homebrew:
@@ -307,45 +307,45 @@ Using Homebrew:
 brew install node
 
 Using MacPorts:
-~~~bash
+```
 port install nodejs<major version>
-~~~
+```
 # Example
 port install nodejs7
 
 Using pkgsrc:
 
 Install the binary package:
-~~~bash
+```
 pkgin -y install nodejs
-~~~
+```
 Or build manually from pkgsrc:
-~~~bash
+```
 cd pkgsrc/lang/nodejs && bmake install
-~~~
+```
 SmartOS and illumos
 
 SmartOS images come with pkgsrc pre-installed. On other illumos distributions, first install pkgsrc, then you may install the binary package as normal:
-~~~bash
+```
 pkgin -y install nodejs
-~~~
+```
 Or build manually from pkgsrc:
-~~~bash
+```
 cd pkgsrc/lang/nodejs && bmake install
-~~~
+```
 Void Linux
 
 Void Linux ships node.js stable in the main repository.
-~~~bash
+```
 xbps-install -Sy nodejs
-~~~
+```
 Solus
 
 Solus provides node.js in its main repository.
 
-~~~bash
+```
 sudo eopkg install nodejs
-~~~
+```
 
 
 <h2 id="windows">Windows</h2>

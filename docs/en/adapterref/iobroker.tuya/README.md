@@ -70,6 +70,10 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
+### 2.0.3 (2019-07-11)
+* (Apollon77) New schemas added
+* (Apollon77) removed a check so that also devices that use other message formats can be read
+
 ### 2.0.2 (2019-06-27)
 * (Apollon77) New schemas added
 * (Apollon77) Update all Dependencies

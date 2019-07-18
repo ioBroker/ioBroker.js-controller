@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
+hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -17,21 +17,38 @@ ioBroker deConz dresden-elektronik Adapter
 
 ==============
 
-Deutsch -------------------- Verbindet sich mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
+Englisch -------------------- Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee-Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee-USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
-Sie müssen zuerst auf deConz verlinken.
+Sie müssen zuerst einen Link zu deConz erstellen.
 
 1. a) Geben Sie die IP-Adresse für deConz ein
 
-    b) Geben Sie port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
+    b) Geben Sie den Port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
 
-2. Nachdem Sie die IP-Adresse und den Port eingegeben und gespeichert haben, klicken Sie auf die Schaltfläche "Create API Key". Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
+2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
+
+## Links
+[deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST-Plugin](https://github.com/dresden-elektronik/deconz-rest-plugin) [Gateways (Hardware)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Beachten
-### Kein Support für Beta-Versionen von deConz
-Erforderliche node.js> = 0,12.
+### Keine Unterstützung für Beta-Versionen von deConz
+Erforderlich node.js> = 0.12.
 
 ## Changelog
+
+### 1.1.2
+* fix button objects
+*  changed buttonpressed from boolean to number
+
+### 1.1.0
+*  added objects for "tiltangle", "vibration", "vibrationstrength" and "orientation"
+*  (asgothian) added object "buttonpressd"
+*  some fixes
+
+
+### 1.0.2
+* fix set bri for groups
+
 
 ### 1.0.1
 * small fixes
@@ -122,9 +139,6 @@ Erforderliche node.js> = 0,12.
 * (Jey-Cee) first release
 
 ## License
+Apache-2.0
 
-Apache 2.0
-
-Copyright (c) 2017 Jey Cee <jey-cee@live.com>
-Copyright (c) 2017 Bluefox <dogafox@gmail.com>
-Copyright (c) 2014-2016 hobbyquaker
+Copyright (c) 2017-2019 Jey Cee jey-cee@live.com

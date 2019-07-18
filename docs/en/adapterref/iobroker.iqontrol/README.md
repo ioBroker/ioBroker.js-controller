@@ -28,8 +28,8 @@
 
 Fast Web-App for Visualization.
 
-![Example](img/screenshot1.jpg)
-![Example](img/screenshot2.jpg)
+![Example](img/screenshot4.jpg)
+![Example](img/screenshot3.jpg)
 
 Runs in any Browser.
 You can save it as Web-App on iOS-Homescreen and it looks and feels like a native app.
@@ -37,7 +37,7 @@ It's fully customizable.
 
 ## You need...
 * Nodejs 8 or higher
-* socketIO has to be enabled in web-adapter
+* socket.IO has to be set to 'integrated' and 'Force Web-Sockets' has to be disabled in web-adapter
 
 ## How to use
 * Start creating views.
@@ -73,8 +73,19 @@ If you use the auto-create-function, you can choose an existing device from the 
 This will only work for known devices. For unknown devices, and to give devices advanced features, you can add them manually via the (+)-Button or edit the devices that were created by autocreate.
 To edit the role and the states of a device, click on the pencil behind the device. You will find a short description of the roles and the used states below:
 
+### Modifying Datapoint Configuration
+You can modify the configuration of datapoints via the wrench-icon behind a datapoint in the objects-tab of iobroker. Here you can:
+* Set Readonly-Flag
+* Set Invert-Flat (planned, not yet functional)
+* Set own Unit
+* Set or modify a Value-List
+  
+![CustomDialog Call](img/custom_call.png)
+![CustomDialog Example](img/custom_dialog.png)
+  
 ### General states:
 Every role has the following three states:
+* **ADDITIONAL_INFO**: *array* - an array of datapoints, that will be displayed at the bottom of the info-dialog
 * **BATTERY**: *boolean* - when true, a little battery-empty-icon will be displayed
 * **ERROR**: *boolean* - when true, a little exclamation-mark-icon will be displayed
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
@@ -84,15 +95,14 @@ Almost all roles have a STATE- and/or a LEVEL-state. In most cases this represen
 * *number* - will be displayed with its corresponding unit and generate a slider in the dialog.
 * *string* - a text to be displayed
 * *value-list* - the selected value will be displayed. If it is not write-protected it will generate a drop-down-menu in dialog. 
-    * Technically a *value-list* is a value with a corresponding translation-list, defined in the 'native.states' or 'common.states' object of the datapoint:
+    * Technically a *value-list* is a value with a corresponding translation-list, defined in the 'common.custom.iqontrol.<instance>.states', 'native.states' or 'common.states' object of the datapoint:
         ````
         "native": {
             "states": {"true": "Text for true", "false": "Text for false"},
             ...
         }
         ````
-    * You can create your own value list by adding the states-object to the ```` "native":{}```` part of the datapoint. This will only be read by iQontrol and has no influence to other scripts. 
-    * A state-object inside of the ````"common":{}```` part will also be recognized by iQontrol, but with lower priority. If you change it here, it may have influence to other scipts. Even more it may be overwritten by the adapter that created the datapoint.
+    * You can create your own value list by modifying the datapoint (wrench-icon behind the datapoint in the objects-tab of iobroker, see above) 
 
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
@@ -223,6 +233,18 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.0.45 (2019-07-15)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+
+### 0.0.44
+* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
+* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
+
+### 0.0.43
+* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (Sebastian Bormann) Fixed value list type conflict.
 
 ### 0.0.42
 * (Sebastian Bormann) Adjusted pathes of demo-files.

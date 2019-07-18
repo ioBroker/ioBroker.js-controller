@@ -1331,6 +1331,9 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.1.14 (2019-07-14) 
+* (bluefox) Fixed locale settings
+
 ### 4.1.13 (2019-06-02) 
 * (bluefox) fixed Monaco Loading
 * (bluefox) added missing blockly element

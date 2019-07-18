@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
+hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -27,11 +27,28 @@ English --------------------连接到dresden-elektronik开发的deConz软件。�
 
 2.输入IP地址和端口并保存后点击“创建API密钥”按钮。现在您可以输入deConz的凭据或转到Phoscon APP并将ioBroker注册为第三方APP。
 
+##链接
+[deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/)[REST插件](https://github.com/dresden-elektronik/deconz-rest-plugin)[网关（硬件）](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
+
 ＃＃ 注意
 ###不支持deConz的Beta版本
 必需的node.js> = 0.12。
 
 ## Changelog
+
+### 1.1.2
+* fix button objects
+*  changed buttonpressed from boolean to number
+
+### 1.1.0
+*  added objects for "tiltangle", "vibration", "vibrationstrength" and "orientation"
+*  (asgothian) added object "buttonpressd"
+*  some fixes
+
+
+### 1.0.2
+* fix set bri for groups
+
 
 ### 1.0.1
 * small fixes
@@ -122,9 +139,6 @@ English --------------------连接到dresden-elektronik开发的deConz软件。�
 * (Jey-Cee) first release
 
 ## License
+Apache-2.0
 
-Apache 2.0
-
-Copyright (c) 2017 Jey Cee <jey-cee@live.com>
-Copyright (c) 2017 Bluefox <dogafox@gmail.com>
-Copyright (c) 2014-2016 hobbyquaker
+Copyright (c) 2017-2019 Jey Cee jey-cee@live.com

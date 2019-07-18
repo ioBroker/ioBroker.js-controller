@@ -175,7 +175,8 @@ Adapterentwicklern vor.
 
 <span style="color:red"> **Eine Installation von GitHub sollte nur nach Rücksprache mit dem Entwickler durchgeführt werden.** </span>
 
-### Die Installation von Github (<span style="color:red"> nur für Experten! </span>)
+### Die Installation von Github
+(<span style="color: red">nur für Experten!</span>)
 
 Die Installation von Github sollte nur von Experten durchgeführt werden. Hier befinden sich nur 
 Beta-Versionen, oder was noch schlimmer ist, unfertige Versionen. <span style="color:red"> 

@@ -3,7 +3,6 @@
 
 ![Number of Installations](http://iobroker.live/badges/sayit-installed.svg) ![Number of Installations](http://iobroker.live/badges/sayit-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sayit.svg)](https://www.npmjs.com/package/iobroker.sayit)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sayit.svg)](https://www.npmjs.com/package/iobroker.sayit)
-
 [![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)](https://nodei.co/npm/iobroker.sayit/)
 
 
@@ -14,19 +13,14 @@ Actual following outputs are supported:
 
 - *Browser* - the text will be played by browser with opened iobroker.vis page. It is supported almost by every desktop browser and by few mobily Browsers.
 
-
 - *[Home24- MediaPlayer](http://www.home-24.net/index.php?app=media)* - the text will be sent and played to the Android device with Home24 - MediaPlayer installed. For this will be used build in Android text to speech engine. The port cannot be changed and set to 50000.
-
 
 - *Home24 - MediaPlayer and [FTP Server](https://play.google.com/store/apps/details?id=lutey.FTPServer)* - the text will be sent and played on the Android device with Home24 - MediaPlayer installed. For this will be used the Google text to speech engine. Generated mp3 file will be copied over FTP to android device and played with Home24 - MediaPlayer.
     Both apps have to have same home directories. (E.g. root directory of \"sd card\").
 
-
 - *System* - the text will be played by OS, where the ioBroker adapter runs. Following OS are supported: Windows, linux, Mac OSx.
 
-
 - *Windows engine* - the text will be played by windows, where the sayIt adapter runs. For this will be used windows text to speech engine, that should be preconfigured by user. You can check [here](http://windows.microsoft.com/en-us/windows/setting-speech-options#1TC=windows-7) how to setup it.
-
 
 - *Sonos* - play text on sonos device. Be sure the Web Adapter is enabled. It is required to enable SONOS to read the generated mp3 files.
 
@@ -244,6 +238,12 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.8.2 (2019-07-11)
+* (bluefox) Web server URL will be updated if web server was updated
+
+### 1.8.1
+* Add Ukrainian Google Language
+
 ### 1.8.0 (2018-12-04)
 * (bluefox) Priority for the text was added
 

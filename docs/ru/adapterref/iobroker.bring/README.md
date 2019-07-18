@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
+hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 ---
 ![логотип](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
@@ -47,7 +47,7 @@ hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые в настоящее время находятся в вашем списке покупок.
+*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые в настоящее время находятся в вашем списке покупок.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *list* .recentContent / *list* .recentContentHtml / NoHead
@@ -56,7 +56,7 @@ hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые недавно были в вашем списке покупок.
+*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые недавно были в вашем списке покупок.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *список* .removeItem
@@ -96,7 +96,7 @@ hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит пользователей, которые являются частью списка покупок, а также их адрес электронной почты.
+*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит пользователей, которые являются частью списка покупок, а также их адрес электронной почты.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *список* .count
@@ -121,10 +121,32 @@ hash: Siwxy0iLL6L68AHsen7tmdUxUYZm4SW9VC2YMdq3l44=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строка, которая содержит перечисление элементов списка покупок в удобной для восприятия форме.
+*Только для чтения строка, которая содержит перечисление пунктов списка покупок в удобной для восприятия форме.
 Это может быть использовано e. г. для вывода голоса через умных помощников.*
 
+* *список* перевод
+
+    | Тип данных | Разрешение |
+    |:---:|:---:|
+    | Строка | R |
+
+    *Только для чтения строка json, которая содержит словарь для перевода имен швейцарских предметов на язык списка.*
+
 ## Changelog
+### 1.6.1 (2019-07-13)
+* (foxriver76) fixed bug, that prevent html states and other from being set
+
+### 1.6.0 (2019-07-12)
+* (foxriver76) get translations according to list language
+* (foxriver76) translations will be stored in datapoint
+* (foxriver76) use bring-node-api at least 1.2.1
+* (foxriver76) widget now uses configured language
+* (foxriver76) bugfixes and optimizations in front- and backend
+
+### 1.4.0 (2019-06-07)
+* (foxriver76) use textFit to fit text to one line in widget
+* (foxriver76) internal reworks on widget
+
 ### 1.3.4
 * (foxriver76) add possibility to use this widget multiple times on same page
 

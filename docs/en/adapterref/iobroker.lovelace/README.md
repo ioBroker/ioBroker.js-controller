@@ -383,6 +383,8 @@ Security must be taken from current user and not from default_user
 5. Format index.html
 6. Start `gulp rename` task.
 ## Changelog
+### 0.1.2 (2019-07-14)
+* (SchumyHao) Translate Chinese words to pinyin
 
 ### 0.1.1 (2019-06-10)
 * (bluefox) Fixed control of states

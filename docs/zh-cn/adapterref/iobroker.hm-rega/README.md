@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
+### 2.4.1 (2019-07-13)
+* (foxriver76) also poll invisible vars if configured
+
 ### 2.4.0 (2019-07-03)
 * (foxriver76) added possibility to synchronize hidden variables
 

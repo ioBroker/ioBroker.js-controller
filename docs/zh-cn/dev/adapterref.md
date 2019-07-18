@@ -1,10 +1,10 @@
 ---
-title: 发展
+title: Adapterrefenz
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapterref.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: IYmWNcjsLct6SUeJOBiD2aQbb8kscc212HcdRDWFGOU=
+hash: KcgRtQ6Bo8BtjAcGVTpKRfxKSrE1pBlIrkhgjrvtXfM=
 ---
 #Adinler reflex
 ？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
@@ -60,13 +60,13 @@ ioBroker中的适配器是一个独立的进程，可以在中央数据存储中
 
 对于每个实例，可以在“system.adapter.adapterName.X”ID下的数据存储中找到配置对象，其中X是适配器实例编号。它包含适配器的此实例的设置。通常它由“常见”和“原生”设置组成。常见设置是：
 
-* enabled：true / false;
-* host：此实例必须运行的主机名;
-* mode：none，daemon，subscribe，schedule，once;
+*`enabled`：true / false;
+*`host`：此实例必须运行的主机名;
+*`mode`：none，daemon，subscribe，schedule，once;
 
 描述可以在[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance)中找到。
 
-设备的IP地址，设备设置等。
+`Native`设置包含此适配器的特定配置，例如：设备的IP地址，设备设置等。
 
 注意：实例可以在不同的主机（在多主机系统中）和适配器上运行。
 
@@ -76,19 +76,19 @@ ioBroker中的适配器是一个独立的进程，可以在中央数据存储中
 
 对于每个适配器，将自动创建以下对象：
 
-* system.adapter.adapterName：适配器的描述（如名称，版本号，......）
-* adapterName：包含来自适配器“www”目录的HTML / JS / CSS文件的对象。仅当在适配器包中找到“www”目录时，才会创建此对象。
-* adapterName.admin：包含来自适配器包的“admin”目录的HTML / JS / CSS文件的对象。
+*`system.adapter.adapterName`：适配器的描述（如名称，版本号，......）
+*`adapterName`：包含来自适配器“www”目录的HTML / JS / CSS文件的对象。仅当在适配器包中找到“www”目录时，才会创建此对象。
+*`adapterName.admin`：包含来自适配器包的“admin”目录的HTML / JS / CSS文件的对象。
 
 对于每个适配器实例'X'，将自动创建以下内容：
 
-* system.adapter.adapterName.X：适配器实例的配置
-* system.adapter.adapterName.X.alive：指示实例是否存活（每30秒发送一次消息）
-* system.adapter.adapterName.X.connected：指示实例是否连接到数据存储，因为它无法连接，但因为死锁无法发送活动消息。
-* system.adapter.adapterName.X.memHeapTotal：内存使用情况
-* system.adapter.adapterName.X.memHeapUsed：内存使用情况
-* system.adapter.adapterName.X.memRss：内存使用情况
-* system.adapter.adapterName.X.uptime：适配器运行多少秒。
+*`system.adapter.adapterName.X`：适配器实例的配置
+*`system.adapter.adapterName.X.alive`：指示实例是否存活（每30秒发送一次消息）
+*`system.adapter.adapterName.X.connected`：指示实例是否连接到数据存储，因为它无法连接，但由于死锁无法发送活动消息。
+*`system.adapter.adapterName.X.memHeapTotal`：内存使用情况
+*`system.adapter.adapterName.X.memHeapUsed`：内存使用情况
+*`system.adapter.adapterName.X.memRss`：内存使用情况
+*`system.adapter.adapterName.X.uptime`：适配器运行多少秒。
 
 可以找到内存的解释[这里](http://stackoverflow.com/questions/12023359/what-do-the-return-values-of-node-js-process-memoryusage-stand-for)。
 
@@ -107,7 +107,7 @@ ioBroker中的适配器是一个独立的进程，可以在中央数据存储中
 * io-package.json  - 必填
 * main.js  - 必填（可以是adapterName.js）
 
-注意：lib / utils.js是所有适配器的公共文件，用于检测js控制器的位置以及相应的iobroker.js-controller / lib / adapter.js路径。大多数实际的utils.js都可以在这里下载。请勿更改此文件。
+注意：lib / utils.js是所有适配器的公共文件，用于检测js-controller的位置以及相应的iobroker.js-controller / lib / adapter.js路径。大多数实际的utils.js都可以在这里下载。请勿更改此文件。
 
 ##文件命名
 适配器必须遵循某些命名约定，以便由ioBroker控制器接受和启动。
@@ -131,7 +131,13 @@ io-package.json希望被“admin”读取以找出适配器的在线版本。
 *标题：强制性。适配器的简称，如“适配器名称”
 * desc：强制性。适配器的描述。它可能是一个字符串，如“此适配器执行此操作”
 
-~~~ json {“en”：“此适配器执行此操作”，“de”：“此aadpter执行此操作”，“ru”：“Этотдрайверделаеттоиэто”} ~~~
+```
+{
+   "en": "This adapter does this and that",
+   "de": "Dieser Aadpter macht dies und jenes",
+   "ru": "Этот драйвер делает то и это"
+}
+```
 
 如果当前语言不存在条目，则将显示英语说明。
 
@@ -160,17 +166,46 @@ io-package.json希望被“admin”读取以找出适配器的在线版本。
 
 此外，可以定义新视图。在SQL中，它们被称为“存储过程”，在couchDB中也称为视图。
 
-注意：不要与“vis”视图混在一起。
+注意：不要与“vis”视图混合使用。
 
 对于视图定义，使用javascript语言。这是样本：
 
-~~~ json {“_ id”：“_ design / hm-rpc”，“language”：“javascript”，“views”：{“listDevices”：{“map”：“function（doc）{\ n if（doc ._id.match（/ ^ HM-RPC \\。[0-9] + \\。\\ *？[A-ZA-Z0-9 _-] +（\\。[0-9] +）？$ /））{\ n emit（doc.id，{ADDRESS：（doc.native？doc.native.ADDRESS：''），VERSION：（doc.native？doc.native.VERSION：''）}）; \ n} \ n}“}，”paramsetDescription“：{”map“：”function（doc）{\ n if（doc._id.match（/ ^ hm-rpc \\。meta /）&& doc.meta.type ==='paramsetDescription'）{\ n emit（doc._id，doc）; \ n} \ n}“}}} ~~~
+```
+{
+	"_id": "_design/hm-rpc",
+	"language": "javascript",
+	"views": {
+		"listDevices": {
+			"map": "function(doc) {\n  if (doc._id.match(/^hm-rpc\\.[0-9]+\\.\\*?[A-Za-z0-9_-]+(\\.[0-9]+)?$/)) {\n   emit(doc._id, {ADDRESS:(doc.native?doc.native.ADDRESS:''),VERSION:(doc.native?doc.native.VERSION:'')});\n  }\n}"
+		},
+		"paramsetDescription": {
+			"map": "function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === 'paramsetDescription') {\n   emit(doc._id, doc);\n  }\n}"
+		}
+	}
+}
+```
 
 以下是为hm-rpc适配器定义的两个视图：“listDevices”和“paramsetDescription”。它们从数据存储中返回由视图条件对象过滤的集合。它可以有效（如果使用CouchDB）请求指定的对象列表。
 
 要使用视图：
 
-~~~ javascript adapter.objects.getObjectView（'hm-rpc'，'listDevices'，{startkey：'hm-rpc。'+ adapter.instance +'。'，endkey：'hm-rpc。'+ adapter.instance +'。\ u9999'}，function（err，doc）{if（doc && doc.rows）{for（var i = 0; i <doc.rows.length; i ++）{var id = doc.rows [i ] .id; var obj = doc.rows [i] .value; console.log（'Found'+ id +'：'+ JSON.stringify（obj））;} if（！doc.rows.length）console。 log（'找不到对象。'）;} else {console.log（'找不到对象：'+ err）;}}）; ~~~
+```
+adapter.objects.getObjectView('hm-rpc', 'listDevices',
+    {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'},
+    function (err, doc) {
+	    if (doc && doc.rows) {
+		    for (var i = 0; i < doc.rows.length; i++) {
+			    var id  = doc.rows[i].id;
+			    var obj = doc.rows[i].value;
+			    console.log('Found ' + id + ': ' + JSON.stringify(obj));
+		    }
+            if (!doc.rows.length) console.log('No objects found.');
+	    } else {
+		    console.log('No objects found: ' + err);
+	    }
+    }
+);
+```
 
 startkey和endkey的使用也可以在同一页面上找到。
 
@@ -183,15 +218,32 @@ startkey和endkey的使用也可以在同一页面上找到。
 
 例如，适配器hm-rpc为每个实例创建“更新”状态，以便向其他适配器发出信号，这些信号必须由hm-rega处理。
 
-~~~ json“instanceObjects”：[{“_ id”：“updated”，“type”：“state”，“common”：{“name”：“添加了一些新设备”，“type”：“bool”， “read”：true，“write”：true}}] ~~~
+```
+"instanceObjects": [
+	{
+		"_id": "updated",
+		"type": "state",
+		"common": {
+			"name": "Some new devices added",
+			"type": "bool",
+			"read":  true,
+			"write": true
+		}
+	}
+]
+```
 
 没有必要提供对象的完整路径，因为适配器实例未知，所以无法完成。您可以在common.name中使用特殊单词“％INSTANCE％”在对象名称中显示它。例如：
 
-~~~ javascript“name”：“在hm-rpc％INSTANCE％中添加了一些新设备”，~~~
+```
+"name": "Some new devices added in hm-rpc.%INSTANCE%",
+```
 
 将扩大到
 
-~~~ javascript“name”：“在hm-rpc.0中添加了一些新设备，~~~
+```
+"name": "Some new devices added in hm-rpc.0,
+```
 
 通过创建第一个实例。
 
@@ -200,20 +252,58 @@ package.json是npm包标准描述文件，可以在https://docs.npmjs.com/files/
 
 package.json的简短结构：
 
-~~~ json {“name”：“iobroker.adapterName”，“version”：“0.0.1”，“description”：“Adapter XXX”，“author”：“myName <myemail@mail.com>”“主页“：”https：//github.com/yourgit/ioBroker.adapterName“，”readme“：”https：//github.com/yourgit/ioBroker.adapterName/blob/master/README.md“，”keywords“： [“ioBroker”，“adapterName”]，“repository”：{“type”：“git”，“url”：“https://github.com/yourgit/ioBroker.adapterName”}，“dependencies”：{“ myPacket1“：”~0.3.1“，”myPacket2“：”~2.1.0“}，”devDependencies“：{”grunt“：”~0.4.4“，”grunt-replace“：”~0.7.6“ ，“grunt-contrib-jshint”：“~0.10.0”，“grunt-jscs”：“~0.6.1”，“grunt-http”：“~1.4.1”，“grunt-contrib-clean”： “~0.5.0”，“grunt-contrib-compress”：“~0.8.0”，“grunt-contrib-copy”：“~0.5.0”，“grunt-exec”：“~~ 0.4.5”} ，“bug”：{“url”：“https：//github.com/yourgit/ioBroker.adapterName/issues”}，“main”：“main.js”，“license”：“WITH”} ~~~
+```
+{
+  "name": "iobroker.adapterName",
+  "version": "0.0.1",
+  "description": "Adapter XXX",
+  "author": "myName<myemail@mail.com>"
+  "homepage": "https://github.com/yourgit/ioBroker.adapterName",
+  "readme": "https://github.com/yourgit/ioBroker.adapterName/blob/master/README.md",
+  "keywords": ["ioBroker", "adapterName"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourgit/ioBroker.adapterName"
+  },
+  "dependencies": {
+    "myPacket1": "~0.3.1",
+    "myPacket2": "~2.1.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-replace": "~0.7.6",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jscs": "~0.6.1",
+    "grunt-http": "~1.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "~0.8.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-exec": "~0.4.5"
+  },
+  "bugs": {
+    "url": "https://github.com/yourgit/ioBroker.adapterName/issues"
+  },
+  "main": "main.js",
+  "license": "MIT"
+}
+```
 
 ！>所有字段都是必填项。 devDependencies应该能够完成grunt任务。
 
 ###部署
 建议在github上使用代码。安装适配器后跟随您：
 
-~~~ npm install https://github.com/yourName/iobroker.adapterName/tarball/master/ ~~~
+```
+npm install https://github.com/yourName/iobroker.adapterName/tarball/master/
+```
 
 如果一切正常并且您收到了用户的积极反馈，您可以在npm上发布适配器。如果你想在github上创建realease会很好。
 
 可以使用以下命令完成发布：
 
-~~~ npm发表~~~
+```
+npm publish
+```
 
 在适配器目录中调用它。确保删除了除必需之外的所有其他文件（例如.idea）或将其添加到“.gitignore”文件中。
 
@@ -229,7 +319,9 @@ package.json的简短结构：
 如果要使用窗口小部件创建窗口小部件或适配器，请检查[ioBroker.vis-template] https://github.com/ioBroker/ioBroker.vis-template）以获取您自己的适配器的模板。
 
 ### Main.js的结构
-~~~ javascript var utils = require（__ dirname +'/ lib / utils'）; //获取通用适配器工具 - 必须~~~
+```
+var utils = require(__dirname + '/lib/utils'); // Get common adapter utils - mandatory
+```
 
 该行加载模块lib / utils.js。所有适配器函数都有共同点，可以找到iobroker.js控制器的根目录。因为适配器可以安装在三个不同的路径中：
 
@@ -239,13 +331,17 @@ package.json的简短结构：
 
 utils.js什么都不做，除了查找iobroker.js-controller / lib / adapter.js文件并加载它。
 
-~~~ javascript var adapter = utils.adapter（'adapterName'）; //  - 强制~~~
+```
+var adapter = utils.adapter('adapterName'); // - mandatory
+```
 
 该行创建名为“adapterName”的对象“Adapter”。它加载adapterName.X的所有配置，其中X是适配器的实例号。
 
 js-controller使用两个参数启动适配器作为自己进程的fork：实例和日志级别;这样的：
 
-~~~ javascript child_process.fork（'pathToAdapter / main.js'，'0 info'）; ~~~
+```
+child_process.fork('pathToAdapter/main.js', '0 info');
+```
 
 它将全部在adapter.js中处理，适配器必须不关心它。
 
@@ -262,15 +358,34 @@ var myPacket1 = require（'myPacket1'）; //添加自己的模块
 
 您可以使用名称创建适配器对象，例如utils.adapter（'adapterName'）或其他参数，例如：
 
-~~~ javascript var adapter = utils.adapter（{name：'adapterName'，//必需 - 适配器名称dirname：''，//可选 - 适配器路径（仅限专家）systemConfig：false，//可选 - 如果系统全局配置必须包含在对象中//（iobroker-data / iobroker.json的内容）config：null，//可选 - 适配器的备用全局配置（仅限专家）实例：null，//可选 - 适配器的实例useFormatDate：false，//可选 - 如果适配器根据全局设置需要格式文件。
-//如果为true（某些libs必须预加载），适配器可以使用“formatDate”函数。
-logTransporter：false，//可选 - 如果适配器从所有适配器收集日志（仅限专家）
+```
+var adapter = utils.adapter({
+    name: 'adapterName',    // mandatory - name of adapter
+    dirname: '',            // optional - path to adapter (experts only)
+    systemConfig: false,    // optional - if system global config must be included in object
+                            // (content of iobroker-data/iobroker.json)
+        config: null,       // optional - alternate global configuration for adapter (experts only)
+    instance: null,         // optional - instance of the adapter
+    useFormatDate: false,   // optional - if adapter wants format date according to global settings.
+                            // if true (some libs must be preloaded) adapter can use "formatDate" function.
+    logTransporter: false,  // optional - if adapter collects logs from all adapters (experts only)
 
-objectChange：null，//可选 - 订阅对象的处理程序更改消息：null，//可选 - 此适配器的消息处理程序stateChange：null，//可选 - 订阅状态的处理程序更改就绪：null，//可选 - 将是在初始化适配器时调用unload：null，//可选 - 将由适配器终止调用noNamespace：false //可选 - 如果为true，将调用stateChange，其id不具有命名空间。而不是“adapter.0.state”=>“state”}）; ~~~
+    objectChange: null,     // optional - handler for subscribed objects changes
+    message: null,          // optional - handler for messages for this adapter
+    stateChange: null,      // optional - handler for subscribed states changes
+    ready: null,            // optional - will be called when adapter is initialized
+    unload: null,           // optional - will be called by adapter termination
+    noNamespace: false      // optional - if true, stateChange will be called with id that has no namespace. Instead "adapter.0.state" => "state"
+});
+```
 
 所有处理程序都可以通过事件进行模拟（见下文），如：
 
-~~~ javascript adapter.on（'ready'，function（）{main（）;}）; ~~~
+```
+adapter.on('ready', function () {
+    main();
+});
+```
 
 ###适配器对象的属性
 在您创建“Adapter”对象时
@@ -296,37 +411,46 @@ var adapter = utils.adapter（'adapterName'）;
 * connected  - 如果适配器连接到主机
 
 ####最重要的事件
-~~~ javascript adapter.on（'objectChange'，function（id，obj）{adapter.log.info（'objectChange'+ id +''+ JSON.stringify（obj））;}）; ~~~
-
-~~~ javascript adapter.on（'stateChange'，function（id，state）{
-
-* adapter.log.info（'stateChange'+ id +''+ JSON.stringify（state））;
-
-* //您可以使用ack标志来检测状态是命令（false）还是状态（true）
-* if（！state.ack）{
-* * adapter.log.info（'ack未设置！'）;
-* }
-
+```
+adapter.on('objectChange', function (id, obj) {
+    adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
-~~~
+```
+
+```
+adapter.on('stateChange', function (id, state) {
+* adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
+
+* // you can use the ack flag to detect if state is command(false) or status(true)
+* if (!state.ack) {
+* * adapter.log.info('ack is not set!');
+* }
+});
+```
 
 ！> *入口点*。在main中进行所有初始化，因为在“ready”之前没有配置。
 
-~~~ javascript adapter.on（'ready'，function（）{
-
-* main（）;
-
+```
+adapter.on('ready', function () {
+* main();
 });
-~~~
+```
 
 ####记录
 能够审核事件以进行调试和控制是非常重要的。以下函数可用于记录事件：
 
-~~~ javascript adapter.log.debug（“debug message”）; //带有调试级别的日志消息adapter.log.info（“info message”）; //使用info level adapter.log.warn（“warning”）的日志消息; //使用info warn adapter.log.error（“error”）的日志消息; //记录消息，信息错误~~~
+```
+adapter.log.debug("debug message"); // log message with debug level
+adapter.log.info("info message");   // log message with info level (enabled by default for all adapters)
+adapter.log.warn("warning");        // log message with info warn
+adapter.log.error("error");         // log message with info error
+```
 
 无需指明消息的来源或时间。这些属性将自动添加，例如：
 
-~~~ admin-0 2015-07-10 17:35:52从xx.yy.17.17 ~~~成功连接socket.io
+```
+admin-0 2015-07-10 17:35:52 info successful connection to socket.io from xx.yy.17.17
+```
 
 当然也可以使用console.log，console.debug或console.error，但只有在控制台或编程IDE中手动启动适配器时，这些消息才会可见。
 
@@ -417,13 +541,13 @@ adapter.getState（'myState'，function（err，state）{*
 要读取其他适配器的状态，您应该使用adapter.getForeignState函数。不支持通配符。
 
 ####命令和状态
-当我们谈论国家时，我们应该区分命令和状态。 “Command”的标志为false，将由用户（通过vis，javascript adapter，admin）发送以控制设备或特定适配器。通常，适配器（例如，homematic）订阅他们自己的所有更改，并且某些状态更改为ack = false。
+当我们谈论国家时，我们应该区分命令和状态。 “Command”的标志为false，将由用户（通过vis，javascript adapter，admin）发送以控制设备或特定适配器。通常，适配器（例如，homematic）订阅它们自己的所有改变，并且如果某些状态改变为ack = false，则它们试图执行该命令（例如，点亮）。
 
 “Status”将“ack”标志设置为true，表示它来自设备或服务。例如如果天气适配器获得新的天气预报，它将以ack = true发布，或者如果家用温度计测量新的温度，它也将以ack = true发布。即使用户想要打开灯，新的状态也将以ack = true发布。
 
 Ack = false希望在设备响应后被执行覆盖。
 
-例如如果“vis”中的用户按下按钮并发送命令“hm-rpc.0.kitchen.light”= ON。套接字适配器想要使用“kitchen.light”= {val：1，ack：false}向hm-rpc.0实例发送新状态。
+例如如果“vis”中的用户按下按钮并发送命令“hm-rpc.0.kitchen.light”= ON。 Socketio适配器想要使用“kitchen.light”= {val：1，ack：false}向hm-rpc.0实例发送新状态。
 
 Homematic适配器订阅了hm-rpc.0的所有状态，如果想要通过ack = false接收新状态，它会将新值发送到物理交换机。
 
@@ -455,7 +579,7 @@ State是一个具有以下属性的javascript对象：
 * ts：时间戳记为1970年1月1日午夜到指定日期之间的毫秒数。 Javascript对象Date的方法getTime（）的结果。默认值：实际时间。
 * lc：最后更改时间戳。格式与ts相同，但值的时间戳会发生变化。它可能会更新，但值将保持不变。在这种情况下，lc将不会更改。
 * from：适配器实例的名称，用于设置值，例如： “system.adapter.web.0”（如果是vis）
-*过期:(可选）有可能以秒为单位设置过期超时。在这段时间之后，变量想要设置为零。它想要使用，例如通过适配器实例的“活动”状态。如果适配器实例在30秒内未触发“活动”状态，则将其标记为关闭。要使用expiration设置状态，请使用以下代码setState（'variable'，{val：true，expire：30}）
+*过期:(可选）有可能以秒为单位设置过期超时。在这段时间之后，变量想要设置为“零”。它想要使用，例如通过适配器实例的“活动”状态。如果适配器实例在30秒内未触发“活动”状态，则将其标记为关闭。要使用expiration设置状态，请使用以下代码setState（'variable'，{val：true，expire：30}）
 * q :(可选）质量。请参阅此处的说明
 
 适配器的运行模式
@@ -465,7 +589,7 @@ State是一个具有以下属性的javascript对象：
 * none  - 此适配器不会启动。
 *守护进程 - 始终运行进程（如果进程退出，将重新启动）
 * subscribe  - 当状态system.adapter ... alive变为true时启动。当.alive更改为false时被杀死，如果进程退出则将.alive设置为false（当进程退出时不会重新启动）
-* schedule  - 由system.adapter中找到的时间表启动... common.schedule  - 通过重新安排新状态对.schedule的更改做出反应
+* schedule  - 由system.adapter中找到的计划启动... common.schedule  - 通过重新安排新状态对.schedule的更改做出反应
 *一次 - 每次更改system.adapter ..对象时都会启动此适配器。终止后不会重新启动。
 
 通常，适配器应使用模式守护程序。
@@ -617,14 +741,14 @@ rename = function rename（adapter，oldName，newName，callback）
 *卸载
 
 ###如何创建实例
-在发布到npm之前：复制到ioBroker / node_modules，转到“admin”并添加实例在npm发布后：转到ioBroker /并写入“npm install iobroker.xxx --production”，转到“admin”并添加实例调试
+在发布到npm之前：复制到ioBroker / node_modules，转到“admin”并添加实例在npm发布后：转到ioBroker /并编写`npm install iobroker.xxx --production --no-optional --logevel=error`，转到`admin`并添加实例如何调试
 
 *启动ioBroker
 *添加适配器的实例
 *禁用适配器实例
 *启动WebStorm
 *使用node.js创建Debug的配置
-*应用程序的标志： -  force，instance，log level（你可以启动适配器为“node xxx.js 1 debug --force”，1是实例索引（默认为0，debug是日志级别， -  force表示忽略“enabled：false”设置）
+*应用程序的标志：` -  force，instance，log level`（你可以启动适配器为`node xxx.js 1 debug --force`，1是实例索引（默认为0，debug是日志级别和` - -force`表示忽略“enabled：false”设置）
 
 ## Admin.html
 * function showMessage（消息，标题，图标）

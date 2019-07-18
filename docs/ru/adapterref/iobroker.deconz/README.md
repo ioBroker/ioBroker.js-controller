@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
 title: без названия
-hash: MfQtqmQ2oXdZnoWQhc5zvx66ljCeCc/+ZlIomQ1TD4U=
+hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
 ---
 ![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -17,7 +17,7 @@ ioBroker deConz Дрезден-Электроник Адаптер
 
 ==============
 
-Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение является универсальным решением ZigBee Gateway, использующим оборудование от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуль для Raspberry Pi.
+Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением ZigBee Gateway с использованием аппаратного обеспечения от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуля для Raspberry Pi.
 
 Вы должны сначала связаться с deConz.
 
@@ -27,11 +27,28 @@ ioBroker deConz Дрезден-Электроник Адаптер
 
 2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или перейти к приложению Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
 
+## Ссылки
+[deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST плагин](https://github.com/dresden-elektronik/deconz-rest-plugin) [Шлюзы (Оборудование)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
+
 ## Уведомление
 ### Нет поддержки бета-версий deConz
 Обязательный node.js> = 0.12.
 
 ## Changelog
+
+### 1.1.2
+* fix button objects
+*  changed buttonpressed from boolean to number
+
+### 1.1.0
+*  added objects for "tiltangle", "vibration", "vibrationstrength" and "orientation"
+*  (asgothian) added object "buttonpressd"
+*  some fixes
+
+
+### 1.0.2
+* fix set bri for groups
+
 
 ### 1.0.1
 * small fixes
@@ -122,9 +139,6 @@ ioBroker deConz Дрезден-Электроник Адаптер
 * (Jey-Cee) first release
 
 ## License
+Apache-2.0
 
-Apache 2.0
-
-Copyright (c) 2017 Jey Cee <jey-cee@live.com>
-Copyright (c) 2017 Bluefox <dogafox@gmail.com>
-Copyright (c) 2014-2016 hobbyquaker
+Copyright (c) 2017-2019 Jey Cee jey-cee@live.com

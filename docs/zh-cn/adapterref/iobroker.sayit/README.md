@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sayit/README.md
 title: ioBroker说适配器
-hash: YGa+7pXYvlsP3g77L7+oVvhRap1ISB9PKQfchOw2rQw=
+hash: UvTKjN3AR/eILEkm2F3ks0+HQsavlk46z4PNwGkZ5gs=
 ---
 ![商标](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -18,9 +18,9 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 ##配置
 支持以下实际输出：
 
- -  *浏览器*  - 文本将由浏览器在打开的iobroker.vis页面上播放。它几乎被每个桌面浏览器和少数动态浏览器支持。
+ -  *浏览器*  - 文本将由浏览器在打开的iobroker.vis页面上播放。它几乎被每个桌面浏览器和少数mobily浏览器支持。
 
- -  * [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*  - 文本将被发送并播放到安装了Home24  -  MediaPlayer的Android设备。为此将用于构建Android文本到语音引擎。端口无法更改并设置为50000。
+ -  * [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*  - 文本将通过安装Home24  -  MediaPlayer发送并播放到Android设备。为此将用于构建Android文本到语音引擎。端口无法更改并设置为50000。
 
  -  * Home24  -  MediaPlayer和[FTP服务器]（https://play.google.com/store/apps/details?id=lutey.FTPServer）*  - 将使用Home24在Android设备上发送和播放文本 -  MediaPlayer安装。对于这将使用谷歌文本到语音引擎。生成的mp3文件将通过FTP复制到Android设备并与Home24  -  MediaPlayer一起播放。
 
@@ -36,7 +36,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
  - *MPD* - 在音乐播放器守护程序上播放文本。仅使用** http **作为Web适配器，不要使用https。
 
-要在RaspberryPI或Linux系统上启用文本到语音，请按照命令```sudo apt-get -y install mpg321```进行一次调用以安装mpg321。
+要在RaspberryPI或Linux系统上启用文本到语音，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
 
 可以通过将其名称写入对象来播放mp3 / wav文件。 （例如“/vis.0/main/img/door-bell.mp3”）
 
@@ -259,6 +259,12 @@ State **tts.text** 持扩展语法，因此langugage / engine和volume可以与�
  -  **（tr-TR_AP_Female）**  -  tr-TR  - 女性 - 菲利兹
 
 ## Changelog
+### 1.8.2 (2019-07-11)
+* (bluefox) Web server URL will be updated if web server was updated
+
+### 1.8.1
+* Add Ukrainian Google Language
+
 ### 1.8.0 (2018-12-04)
 * (bluefox) Priority for the text was added
 

@@ -12,7 +12,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
    Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
    damit die Änderungen einfacher übernommen werden können.
 
-~~~markdown
+```
 ---
 title:       "{Seitentitel}"
 lastChanged: "{Änderungsdatum des Artikels}"
@@ -320,4 +320,4 @@ Zuerst die leichte Kost.
 
 
 ## Entwicklerbereich
-~~~
+```

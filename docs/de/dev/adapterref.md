@@ -65,13 +65,13 @@ It is used to build the coordination of device, channels and states in hierarchy
 
 For each instance the configuration object can be found in the data storage under "system.adapter.adapterName.X" ID, where X is the adapter instance number. It contains the settings for this instance of the adapter. Normally it consist of "common" and "native" settings. Common settings are:
 
-* enabled: true/false;
-* host: host name where this instance must run;
-* mode: none, daemon, subscribe, schedule, once;
+* `enabled`: true/false;
+* `host`: host name where this instance must run;
+* `mode`: none, daemon, subscribe, schedule, once;
 
 Description can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance).
 
-"Native" settings consist of specific configurations for this adapter, e.g.: IP address of device, device settings and so on.
+`Native` settings consist of specific configurations for this adapter, e.g.: IP address of device, device settings and so on.
 
 ?> Note: Instances can run on different hosts (in multi-hosts systems) and the adapters can have different version on different hosts.
 
@@ -81,19 +81,19 @@ Objects have different types for different purposes.
 
 For every adapter (not the instance) the following objects will be created automatically:
 
-* system.adapter.adapterName: Description of adapter (like name, version number, ...)
-* adapterName: Object that consists of HTML/JS/CSS files from "www" directory of adapter. This object will be created only if "www" directory is found in adapter package.
-* adapterName.admin: Object that consists of HTML/JS/CSS files from "admin" directory of adapter package.
+* `system.adapter.adapterName`: Description of adapter (like name, version number, ...)
+* `adapterName`: Object that consists of HTML/JS/CSS files from "www" directory of adapter. This object will be created only if "www" directory is found in adapter package.
+* `adapterName.admin`: Object that consists of HTML/JS/CSS files from "admin" directory of adapter package.
 
 For every adapter instance 'X', the following objects will be created automatically:
 
-* system.adapter.adapterName.X: configuration of adapter instance
-* system.adapter.adapterName.X.alive: indication if instance alive (send messages every 30 seconds)
-* system.adapter.adapterName.X.connected: indication if instance is connected to data storage, because it can be connected, but because of deadlock can not send alive messages.
-* system.adapter.adapterName.X.memHeapTotal: memory usage
-* system.adapter.adapterName.X.memHeapUsed: memory usage
-* system.adapter.adapterName.X.memRss: memory usage
-* system.adapter.adapterName.X.uptime: How many seconds adapter runs.
+* `system.adapter.adapterName.X`: configuration of adapter instance
+* `system.adapter.adapterName.X.alive`: indication if instance alive (send messages every 30 seconds)
+* `system.adapter.adapterName.X.connected`: indication if instance is connected to data storage, because it can be connected, but because of deadlock can not send alive messages.
+* `system.adapter.adapterName.X.memHeapTotal`: memory usage
+* `system.adapter.adapterName.X.memHeapUsed`: memory usage
+* `system.adapter.adapterName.X.memRss`: memory usage
+* `system.adapter.adapterName.X.uptime`: How many seconds adapter runs.
 
 Explanation of memory states can be found [here](http://stackoverflow.com/questions/12023359/what-do-the-return-values-of-node-js-process-memoryusage-stand-for).
 
@@ -138,13 +138,13 @@ Most important fields in common are:
 * title: mandatory. Short name of adapter, like "Adapter name"
 * desc: mandatory. Description of adapter. It can be a string like, "This adapter does this and that" or can be an object like:
 
-~~~json
+```
 {
    "en": "This adapter does this and that",
    "de": "Dieser Aadpter macht dies und jenes",
    "ru": "Этот драйвер делает то и это"
 }
-~~~
+```
 
 If no entry exists for the current language, the description in english will be shown.
 
@@ -177,7 +177,7 @@ Note: do not mix with "vis" views.
 
 For view definitions the javascript language is used. Here is the sample:
 
-~~~json
+```
 {
 	"_id": "_design/hm-rpc",
 	"language": "javascript",
@@ -190,13 +190,13 @@ For view definitions the javascript language is used. Here is the sample:
 		}
 	}
 }
-~~~
+```
 
 Here are two views defined for hm-rpc adapter: "listDevices" and "paramsetDescription". They returns the set of filtered by view condition objects from data store. It can effective (if CouchDB used) request the specified list of objects.
 
 To use view:
 
-~~~javascript
+```
 adapter.objects.getObjectView('hm-rpc', 'listDevices',
     {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'},
     function (err, doc) {
@@ -212,7 +212,7 @@ adapter.objects.getObjectView('hm-rpc', 'listDevices',
 	    }
     }
 );
-~~~
+```
 
 Usage of startkey and endkey can be found on the same page too.
 
@@ -226,7 +226,7 @@ For every created instance all entries from instanceObjects field will be create
 
 For instance adapter hm-rpc creates state "updated" for every instance to give a signal to other adapter, that some new devices are appeared in the data store and that they must be processed by hm-rega.
 
-~~~json
+```
 "instanceObjects": [
 	{
 		"_id": "updated",
@@ -239,19 +239,19 @@ For instance adapter hm-rpc creates state "updated" for every instance to give a
 		}
 	}
 ]
-~~~
+```
 
 There is no need to give the full path of object and it cannot be done, because adapter instance is unknown. You can use special word "%INSTANCE%" in common.name to show the it in the name of object. For instance:
 
-~~~javascript
+```
 "name": "Some new devices added in hm-rpc.%INSTANCE%",
-~~~
+```
 
 Will be expanded to
 
-~~~javascript
+```
 "name": "Some new devices added in hm-rpc.0,
-~~~
+```
 
 by creation of first instance.
 
@@ -261,7 +261,7 @@ package.json is the npm packet standart description file and the full descriptio
 
 Short structure of package.json:
 
-~~~json
+```
 {
   "name": "iobroker.adapterName",
   "version": "0.0.1",
@@ -295,7 +295,7 @@ Short structure of package.json:
   "main": "main.js",
   "license": "MIT"
 }
-~~~
+```
 
 !> All fields are mandatory. devDependencies should be inside too to enable the grunt tasks.
 
@@ -303,17 +303,17 @@ Short structure of package.json:
 
 It is suggested to have the code on github. After the code is stable and lets to install adapter you can share you adapter to other user by asking them to install adapter as follow:
 
-~~~
+```
 npm install https://github.com/yourName/iobroker.adapterName/tarball/master/
-~~~
+```
 
 If everything is OK and you have got positive feedback from users you can publish adapter on npm. It would be good if before publishing you will create realease on github.
 
 Publishing can be done with following command:
 
-~~~
+```
 npm publish
-~~~
+```
 
 Call it in the adapter directory. Be sure, that you deleted all other files except required (e.g. .idea) or add them to ".gitignore" file.
 
@@ -331,9 +331,9 @@ If you want to create a widget or an adapter with a widget please check [ioBroke
 
 ### Structure of main.js
 
-~~~javascript
+```
 var utils = require(__dirname + '/lib/utils'); // Get common adapter utils - mandatory
-~~~
+```
 
 This line loads module lib/utils.js. It has common for all adapters function to find the root of iobroker.js-controller. Because adapter can be installed in three different paths:
 
@@ -343,17 +343,17 @@ This line loads module lib/utils.js. It has common for all adapters function to 
 
 utils.js do nothing except looks for iobroker.js-controller/lib/adapter.js file and loads it.
 
-~~~javascript
+```
 var adapter = utils.adapter('adapterName'); // - mandatory
-~~~
+```
 
 This line creates the object "Adapter" with name "adapterName". It loads all configuration for adapterName.X instance where X is the instance number of adapter.
 
 js-controller starts adapter as fork of own process with two parameters: instance and log level; like:
 
-~~~javascript
+```
 child_process.fork('pathToAdapter/main.js', '0 info');
-~~~
+```
 
 It is all will be automatically processed in adapter.js and developer of the adapter must not care about it.
 
@@ -370,7 +370,7 @@ Options of adapter
 
 You can create adapter object with just by name, like utils.adapter('adapterName') or with additional parameters, like:
 
-~~~javascript
+```
 var adapter = utils.adapter({
     name: 'adapterName',    // mandatory - name of adapter
     dirname: '',            // optional - path to adapter (experts only)
@@ -389,15 +389,15 @@ var adapter = utils.adapter({
     unload: null,           // optional - will be called by adapter termination
     noNamespace: false      // optional - if true, stateChange will be called with id that has no namespace. Instead "adapter.0.state" => "state"
 });
-~~~
+```
 
 All handlers can be simulated by events (see below), like:
 
-~~~javascript
+```
 adapter.on('ready', function () {
     main();
 });
-~~~
+```
 
 ### Attributes of adapter object
 
@@ -425,13 +425,13 @@ following attributes will be created in this object instance:
 
 #### Most important events
 
-~~~javascript
+```
 adapter.on('objectChange', function (id, obj) {
     adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
-~~~
+```
 
-~~~javascript
+```
 adapter.on('stateChange', function (id, state) {
 * adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
 
@@ -440,32 +440,32 @@ adapter.on('stateChange', function (id, state) {
 * * adapter.log.info('ack is not set!');
 * }
 });
-~~~
+```
 
 !> *Entry point*. Make all initialisations in main, because before "ready" there is no configuration.
 
-~~~javascript
+```
 adapter.on('ready', function () {
 * main();
 });
-~~~
+```
 
 #### Logging
 
 It is very important to have the ability to log the events for debug and controlling purposes. Following functions can be used to log the events:
 
-~~~javascript
+```
 adapter.log.debug("debug message"); // log message with debug level
 adapter.log.info("info message");   // log message with info level (enabled by default for all adapters)
 adapter.log.warn("warning");        // log message with info warn
 adapter.log.error("error");         // log message with info error
-~~~
+```
 
 There is no need to indicate the origin or time of the message. These attributes will be added automatically, e.g.:
 
-~~~
+```
 admin-0 2015-07-10 17:35:52 info successful connection to socket.io from xx.yy.17.17
-~~~
+```
 
 Of course console.log, console.debug or console.error could be used too, but these messages will be visible only if adapter started manually in console or programming IDE.
 
@@ -758,7 +758,7 @@ If it happens, the status of connection will be shown in the instance's list in 
 
 ### How to create instance
 
-Before published to npm: copy into ioBroker/node_modules, go to "admin" and add instance After published at npm: go to ioBroker/ and write "npm install iobroker.xxx --production", go to "admin" and add instance
+Before published to npm: copy into ioBroker/node_modules, go to "admin" and add instance After published at npm: go to ioBroker/ and write `npm install iobroker.xxx --production --no-optional --logevel=error`, go to `admin` and add instance
 How to debug
 
 * Start ioBroker
@@ -766,7 +766,7 @@ How to debug
 * Disable instance of adapter
 * Start WebStorm
 * Create Configuration for Debug with node.js
-* Flags for application: --force, instance, log level (you can start the adapter as "node xxx.js 1 debug --force", 1 is instance index (by default 0, debug is log level and --force means ignore "enabled: false" settings)
+* Flags for application: `--force, instance, log level` (you can start the adapter as `node xxx.js 1 debug --force`, 1 is instance index (by default 0, debug is log level and `--force` means ignore "enabled: false" settings)
 
 ## admin.html
 

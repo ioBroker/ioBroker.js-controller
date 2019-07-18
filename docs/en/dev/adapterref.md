@@ -1,10 +1,10 @@
 ---
-title: development
+title: Adapterrefenz
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterref.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: IYmWNcjsLct6SUeJOBiD2aQbb8kscc212HcdRDWFGOU=
+hash: KcgRtQ6Bo8BtjAcGVTpKRfxKSrE1pBlIrkhgjrvtXfM=
 ---
 # Adapter reflex
 ?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
@@ -54,19 +54,19 @@ It is used to build the coordination of device, channels and states in hierarchy
 
 ?> Note: If adapter is not so complex, the devices and even channels can be omitted.
 
-** Adapter ** is just the package of files and placed in node_modules directory. For every adapter the description of this adapter can be found in object "system.adapter.adapterName". It is just the fields "common" and "native" from the io-package.json file. This entry is automatically created when iobroker install adapterName or iobroker add adapterName called. Iobroker.adapterName no entry will be created till first instance creation. But it is not so important. The required for "updates" information will be read from io-package.json directly. §§LLLL_0§§.
+** Adapter ** is just the package of files and placed in node_modules directory. For every adapter the description of this adapter can be found in object "system.adapter.adapterName". It is just the fields "common" and "native" from the io-package.json file. This entry is automatically created when iobroker install adapterName or iobroker add adapterName called. Iobroker.adapterName no entry will be created till first instance creation. But it is not so important. The required for "updates" information will be read from io-package.json directly. [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
 
 ** Instance ** is an instance of adapter. Depending on type of adapter more than one instance can be created, but for some adapters there is no use to create more than one instance. E.g. in case of vis or rickshaw only one instance can be created. This behavior is controlled by flags in io-package.json.
 
 For each instance the configuration object can be found in the data storage under "system.adapter.adapterName.X" ID, where X is the adapter instance number. It contains the settings for this instance of the adapter. Normally it consist of "common" and "native" settings. Common settings are:
 
-* enabled: true / false;
-* host: host name where this instance must run;
-* mode: none, daemon, subscribe, schedule, once;
+* `enabled`: true / false;
+* `host`: host name where this instance must run;
+* `mode`: none, daemon, subscribe, schedule, once;
 
 Description can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance).
 
-IP address of device, device settings and so on.
+`Native` settings consist of specific configurations for this adapter, eg .: IP address of device, device settings and so on.
 
 ?> Note: Instances can run on different hosts (in multi-hosts systems) and on the adapters.
 
@@ -76,19 +76,19 @@ Objects have different types for different purposes.
 
 For every adapter the following objects will be created automatically:
 
-* system.adapter.adapterName: Description of adapter (like name, version number, ...)
-* adapterName: Object that contains HTML / JS / CSS files from "www" directory of adapters. This object will be created only if "www" directory is found in adapter package.
-* adapterName.admin: Object that contains HTML / JS / CSS files from "admin" directory of adapter package.
+* `system.adapter.adapterName`: Description of adapters (like name, version number, ...)
+* `adapterName`: Object that contains HTML / JS / CSS files from" www "directory of adapters. This object will be created only if "www" directory is found in adapter package.
+* `adapterName.admin`: Object that contains HTML / JS / CSS files from" admin "directory of adapter package.
 
 For every adapter instance 'X', the following will be created automatically:
 
-* system.adapter.adapterName.X: configuration of adapter instance
-* system.adapter.adapterName.X.alive: indication if instance alive (send messages every 30 seconds)
-* system.adapter.adapterName.X.connected: indication if instance is connected to data storage, because it can not be connected, but because deadlock can not send alive messages.
-* system.adapter.adapterName.X.memHeapTotal: memory usage
-* system.adapter.adapterName.X.memHeapUsed: memory usage
-* system.adapter.adapterName.X.memRss: memory usage
-* system.adapter.adapterName.X.uptime: How many seconds adapter runs.
+* `system.adapter.adapterName.X`: configuration of adapter instance
+* `system.adapter.adapterName.X.alive`: indication if instance alive (send messages every 30 seconds)
+* `system.adapter.adapterName.X.connected`: indication if instance is connected to data storage, because it can not be connected, but because of deadlock can not send alive messages.
+* `system.adapter.adapterName.X.memHeapTotal`: memory usage
+* `system.adapter.adapterName.X.memHeapUsed`: memory usage
+* `system.adapter.adapterName.X.memRss`: memory usage
+* `system.adapter.adapterName.X.uptime`: How many seconds adapter runs.
 
 Explanation of memory can be found [here](http://stackoverflow.com/questions/12023359/what-do-the-return-values-of-node-js-process-memoryusage-stand-for).
 
@@ -107,7 +107,7 @@ Adapter package must have some mandatory directories and files:
 * io-package.json - mandatory
 * main.js - mandatory (can be adapterName.js)
 
-Note: lib / utils.js is a common file for all adapters, used to detect the position of js controller and accordingly path to iobroker.js-controller / lib / adapter.js. Most actual utils.js can be downloaded here. Do not change this file.
+Note: lib / utils.js is a common file for all adapters, used to detect the position of js-controller and accordingly path to iobroker.js-controller / lib / adapter.js. Most actual utils.js can be downloaded here. Do not change this file.
 
 ## File naming
 Adapter must follow some naming convention to be accepted and started by ioBroker controller.
@@ -131,7 +131,13 @@ Most important fields in common are:
 * title: mandatory. Short name of adapter, like "Adapter name"
 * desc: mandatory. Description of adapter. It may be a string like, "This adapter does this and that"
 
-~~~ json {"en": "This adapter does this and that", "de": "This aadpter does this and that", "ru": "Этот драйвер делает то и это"} ~~~
+```
+{
+   "en": "This adapter does this and that",
+   "de": "Dieser Aadpter macht dies und jenes",
+   "ru": "Этот драйвер делает то и это"
+}
+```
 
 If no entry exists for the current language, the description in english will be shown.
 
@@ -153,7 +159,7 @@ Note: localLink can have special keys.
 *% ip%: wants to be replaced with IP address defined in first "web" instance.
 *% field%, where field is attribute from "native" part of configuration of adapter instance.
 
-E.g. "http: //% ip%:% port%" wants to be displayed as "http://192.168.0.1:8080", where "192.168.0.1" is IP address from "web" adapter and 8080 is value from "system .adapter.adapterName.X => native.port ".
+E.g. "http://% ip%:% port%" wants to be displayed as "http://192.168.0.1:8080", where "192.168.0.1" is IP address from "web" adapter and 8080 is value from "system .adapter.adapterName.X => native.port ".
 Object fields
 
 objects - static objects for all instances of adapters (xxx.object) can not be created automatically. These objects must not depend on any specific instance and are common to all instances of this adapter. For example hm-rpc adapter has the structure description of all HomeMatic devices.
@@ -164,13 +170,42 @@ Note: do not mix with "vis" views.
 
 For view definitions the javascript language is used. Here is the sample:
 
-~~~ json {"_id": "_design / hm-rpc", "language": "javascript", "views": {"listDevices": {"map": "function (doc) {\ n if (doc ._id.match (/ ^ hm-rpc \\. [0-9] + \\. \\ *? [A-Za-z0-9 _-] + (\\. [0-9] +)? $ /)) {\ n emit (doc.id, {ADDRESS: (doc.native? doc.native.ADDRESS: ''), VERSION: (doc.native? doc.native.VERSION: '')}); \ n} \ n} "}," paramsetDescription ": {" map ":" function (doc) {\ n if (doc._id.match (/ ^ hm-rpc \\. meta /) && doc.meta.type === 'paramsetDescription') {\ n emit (doc._id, doc); \ n} \ n} "}}} ~~~
+```
+{
+	"_id": "_design/hm-rpc",
+	"language": "javascript",
+	"views": {
+		"listDevices": {
+			"map": "function(doc) {\n  if (doc._id.match(/^hm-rpc\\.[0-9]+\\.\\*?[A-Za-z0-9_-]+(\\.[0-9]+)?$/)) {\n   emit(doc._id, {ADDRESS:(doc.native?doc.native.ADDRESS:''),VERSION:(doc.native?doc.native.VERSION:'')});\n  }\n}"
+		},
+		"paramsetDescription": {
+			"map": "function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === 'paramsetDescription') {\n   emit(doc._id, doc);\n  }\n}"
+		}
+	}
+}
+```
 
 Here are two views defined for hm-rpc adapters: "listDevices" and "paramsetDescription". They return the set of filtered by view condition objects from data store. It can effective (if CouchDB used) request the specified list of objects.
 
 To use view:
 
-~~~ javascript adapter.objects.getObjectView ('hm-rpc', 'listDevices', {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '. \ u9999'}, function (err, doc) {if (doc && doc.rows) {for (var i = 0; i <doc.rows.length; i ++) {var id = doc.rows [i ] .id; var obj = doc.rows [i] .value; console.log ('Found' + id + ':' + JSON.stringify (obj));} if (! doc.rows.length) console. log ('No objects found.');} else {console.log ('No objects found:' + err);}}); ~~~
+```
+adapter.objects.getObjectView('hm-rpc', 'listDevices',
+    {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'},
+    function (err, doc) {
+	    if (doc && doc.rows) {
+		    for (var i = 0; i < doc.rows.length; i++) {
+			    var id  = doc.rows[i].id;
+			    var obj = doc.rows[i].value;
+			    console.log('Found ' + id + ': ' + JSON.stringify(obj));
+		    }
+            if (!doc.rows.length) console.log('No objects found.');
+	    } else {
+		    console.log('No objects found: ' + err);
+	    }
+    }
+);
+```
 
 Usage of startkey and endkey can be found on the same page too.
 
@@ -183,15 +218,32 @@ For every created instance all instances from instanceObjects field will be crea
 
 For instance adapter hm-rpc creates state "updated" for every instance to give a signal to other adapters that they must have been processed by hm-rega.
 
-~~~ json "instanceObjects": [{"_id": "updated", "type": "state", "common": {"name": "Some new devices added", "type": "bool", "read": true, "write": true}}] ~~~
+```
+"instanceObjects": [
+	{
+		"_id": "updated",
+		"type": "state",
+		"common": {
+			"name": "Some new devices added",
+			"type": "bool",
+			"read":  true,
+			"write": true
+		}
+	}
+]
+```
 
 There is no need to give the full path of object and it can not be done because adapter instance is unknown. You can use special word "% INSTANCE%" in common.name to show it in the name of object. For instance:
 
-~~~ javascript "name": "Some new devices added in hm-rpc% INSTANCE%", ~~~
+```
+"name": "Some new devices added in hm-rpc.%INSTANCE%",
+```
 
 Will be expanded to
 
-~~~ javascript "name": "Some new devices added in hm-rpc.0, ~~~
+```
+"name": "Some new devices added in hm-rpc.0,
+```
 
 by creation of first instance.
 
@@ -200,20 +252,58 @@ package.json is the npm packet standard description file and can be found under 
 
 Short structure of package.json:
 
-~~~ json {"name": "iobroker.adapterName", "version": "0.0.1", "description": "Adapter XXX", "author": "myName <myemail@mail.com>" "homepage ":" https://github.com/yourgit/ioBroker.adapterName "," readme ":" https://github.com/yourgit/ioBroker.adapterName/blob/master/README.md "," keywords ": ["ioBroker", "adapterName"], "repository": {"type": "git", "url": "https://github.com/yourgit/ioBroker.adapterName"}, "dependencies": {" myPacket1 ":" ~ 0.3.1 "," myPacket2 ":" ~ 2.1.0 "}," devDependencies ": {" grunt ":" ~ 0.4.4 "," grunt-replace ":" ~ 0.7.6 " , "grunt-contrib-jshint": "~ 0.10.0", "grunt-jscs": "~ 0.6.1", "grunt-http": "~ 1.4.1", "grunt-contrib-clean": "~ 0.5.0", "grunt-contrib-compress": "~ 0.8.0", "grunt-contrib-copy": "~ 0.5.0", "grunt-exec": "~ 0.4.5"} , "bugs": {"url": "https://github.com/yourgit/ioBroker.adapterName/issues"}, "main": "main.js", "license": "WITH"} ~~~
+```
+{
+  "name": "iobroker.adapterName",
+  "version": "0.0.1",
+  "description": "Adapter XXX",
+  "author": "myName<myemail@mail.com>"
+  "homepage": "https://github.com/yourgit/ioBroker.adapterName",
+  "readme": "https://github.com/yourgit/ioBroker.adapterName/blob/master/README.md",
+  "keywords": ["ioBroker", "adapterName"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourgit/ioBroker.adapterName"
+  },
+  "dependencies": {
+    "myPacket1": "~0.3.1",
+    "myPacket2": "~2.1.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-replace": "~0.7.6",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jscs": "~0.6.1",
+    "grunt-http": "~1.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "~0.8.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-exec": "~0.4.5"
+  },
+  "bugs": {
+    "url": "https://github.com/yourgit/ioBroker.adapterName/issues"
+  },
+  "main": "main.js",
+  "license": "MIT"
+}
+```
 
 !> All fields are mandatory. devDependencies should be able to do the grunt tasks.
 
 ### Deploying
 It is suggested to have the code on github. After you install the adapters to follow you:
 
-~~~ npm install https://github.com/yourName/iobroker.adapterName/tarball/master/ ~~~
+```
+npm install https://github.com/yourName/iobroker.adapterName/tarball/master/
+```
 
 If everything is OK and you have got positive feedback from users you can publish adapters on npm. It would be good if you want to create realease on github.
 
 Publishing can be done with the following command:
 
-~~~ npm publish ~~~
+```
+npm publish
+```
 
 Call it in the adapter directory. Be sure that you deleted all other files except required (eg .idea) or add them to ".gitignore" file.
 
@@ -229,7 +319,9 @@ Please check https://github.com/ioBroker/ioBroker.template for a template of you
 If you want to create a widget or adapter with a widget, please check [ioBroker.vis-template] https://github.com/ioBroker/ioBroker.vis-template) for a template of your own adapter.
 
 ### Structure of main.js
-~~~ javascript var utils = require (__ dirname + '/ lib / utils'); // Get common adapter utils - mandatory ~~~
+```
+var utils = require(__dirname + '/lib/utils'); // Get common adapter utils - mandatory
+```
 
 This line loads module lib / utils.js. It has common to all adapters function to find the root of iobroker.js controller. Because adapter can be installed in three different paths:
 
@@ -239,13 +331,17 @@ This line loads module lib / utils.js. It has common to all adapters function to
 
 utils.js do nothing except looks for iobroker.js-controller / lib / adapter.js file and loads it.
 
-~~~ javascript var adapter = utils.adapter ('adapterName'); // - mandatory ~~~
+```
+var adapter = utils.adapter('adapterName'); // - mandatory
+```
 
 This line creates the object "Adapter" with name "adapterName". It loads all configuration for adapterName.X where X is the instance number of adapter.
 
 js-controller starts adapter as fork of own process with two parameters: instance and log level; Like:
 
-~~~ javascript child_process.fork ('pathToAdapter / main.js', '0 info'); ~~~
+```
+child_process.fork('pathToAdapter/main.js', '0 info');
+```
 
 It is all will be processed in adapter.js and the adapter must not care about it.
 
@@ -262,15 +358,34 @@ Options of adapters
 
 You can create an adapter object with just by name, like utils.adapter ('adapterName') or with additional parameters, like:
 
-~~~ javascript var adapter = utils.adapter ({name: 'adapterName', // mandatory - name of adapter dirname: '', // optional - path to adapter (experts only) systemConfig: false, // optional - if system global config must be included in object // (content of iobroker-data / iobroker.json) config: null, // optional - alternate global configuration for adapters (experts only) instance: null, // optional - instance of the adapter useFormatDate: false, // optional - if adapter wants format file according to global settings.
-// if true (some libs must be preloaded) adapter can use "formatDate" function.
-logTransporter: false, // optional - if adapter collects logs from all adapters (experts only)
+```
+var adapter = utils.adapter({
+    name: 'adapterName',    // mandatory - name of adapter
+    dirname: '',            // optional - path to adapter (experts only)
+    systemConfig: false,    // optional - if system global config must be included in object
+                            // (content of iobroker-data/iobroker.json)
+        config: null,       // optional - alternate global configuration for adapter (experts only)
+    instance: null,         // optional - instance of the adapter
+    useFormatDate: false,   // optional - if adapter wants format date according to global settings.
+                            // if true (some libs must be preloaded) adapter can use "formatDate" function.
+    logTransporter: false,  // optional - if adapter collects logs from all adapters (experts only)
 
-objectChange: null, // optional - handler for subscribed objects changes message: null, // optional - handler for messages for this adapter stateChange: null, // optional - handler for subscribed states changes ready: null, // optional - will be called when adapter is initialized unload: null, // optional - will be called by adapter termination noNamespace: false // optional - if true, stateChange will be called with id that has no namespace. Instead of "adapter.0.state" => "state"}); ~~~
+    objectChange: null,     // optional - handler for subscribed objects changes
+    message: null,          // optional - handler for messages for this adapter
+    stateChange: null,      // optional - handler for subscribed states changes
+    ready: null,            // optional - will be called when adapter is initialized
+    unload: null,           // optional - will be called by adapter termination
+    noNamespace: false      // optional - if true, stateChange will be called with id that has no namespace. Instead "adapter.0.state" => "state"
+});
+```
 
 All handlers can be simulated by events (see below), like:
 
-~~~ javascript adapter.on ('ready', function () {main ();}); ~~~
+```
+adapter.on('ready', function () {
+    main();
+});
+```
 
 ### Attributes of adapter object
 As you created "Adapter" object with
@@ -296,37 +411,46 @@ following attributes will be created in this object instance:
 * connected - if adapter connected to host
 
 #### Most important events
-~~~ javascript adapter.on ('objectChange', function (id, obj) {adapter.log.info ('objectChange' + id + '' + JSON.stringify (obj));}); ~~~
-
-~~~ javascript adapter.on ('stateChange', function (id, state) {
-
-* adapter.log.info ('stateChange' + id + '' + JSON.stringify (state));
-
-* // you can use the ack flag to detect if state is command (false) or status (true)
-* if (! state.ack) {
-* * adapter.log.info ('ack is not set!');
-* }
-
+```
+adapter.on('objectChange', function (id, obj) {
+    adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
-~~~
+```
+
+```
+adapter.on('stateChange', function (id, state) {
+* adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
+
+* // you can use the ack flag to detect if state is command(false) or status(true)
+* if (!state.ack) {
+* * adapter.log.info('ack is not set!');
+* }
+});
+```
 
 !> *Entry point* Make all initialisations in main, because before "ready" there is no configuration.
 
-~~~ javascript adapter.on ('ready', function () {
-
-* main ();
-
+```
+adapter.on('ready', function () {
+* main();
 });
-~~~
+```
 
 #### Logging
 It is very important to have the ability to audit the events for debugging and controlling purposes. Following functions can be used to log the events:
 
-~~~ javascript adapter.log.debug ("debug message"); // log message with debug level adapter.log.info ("info message"); // log message with info level adapter.log.warn ("warning"); // log message with info warn adapter.log.error ("error"); // log message with info error ~~~
+```
+adapter.log.debug("debug message"); // log message with debug level
+adapter.log.info("info message");   // log message with info level (enabled by default for all adapters)
+adapter.log.warn("warning");        // log message with info warn
+adapter.log.error("error");         // log message with info error
+```
 
 There is no need to indicate the origin or time of the message. These attributes will be added automatically, eg .:
 
-~~~ admin-0 2015-07-10 17:35:52 info successful connection to socket.io from xx.yy.17.17 ~~~
+```
+admin-0 2015-07-10 17:35:52 info successful connection to socket.io from xx.yy.17.17
+```
 
 Of course console.log, console.debug or console.error could be used too, but these messages will be visible only if adapter started manually in console or programming IDE.
 
@@ -423,11 +547,11 @@ We should distinguish between commands and statuses, when we are talking about s
 
 Ack = false wants to be overwritten by execution after the response from device.
 
-E.g. if the user in "vis" has pressed the button and sent command "hm-rpc.0.kitchen.light" = ON. The socket adapter wants to send to the hm-rpc.0 instance the new state with "kitchen.light" = {val: 1, ack: false}.
+E.g. if the user in "vis" has pressed the button and sent command "hm-rpc.0.kitchen.light" = ON. The Socketio adapter wants to send to the hm-rpc.0 instance the new state with "kitchen.light" = {val: 1, ack: false}.
 
 Homematic adapter is subscribed to all states of hm-rpc.0 and if the new state wants to be received with ack = false, it sends the new value to the physical switch.
 
-Physical switch executes the command and sends to hm-rpc adapters the new own state ON. The hm-rpc.0 adapter publishes the new status of state "hm-rpc.0.kitchen.light" = {val: 1, ack: true} (with time stamps).
+Physical switch executes the command and sends to hm-rpc adapter the new own state ON. The hm-rpc.0 adapter publishes the new status of state "hm-rpc.0.kitchen.light" = {val: 1, ack: true} (with time stamps).
 
 This change will not be executed by hm-rpc adapter, because ack is true. And this is an acknowledgment from physical device.
 
@@ -455,7 +579,7 @@ State is a javascript object with following attributes:
 * ts: time stamp as the number of milliseconds between midnight of January 1, 1970 and the specified date. Result of method getTime () of Javascript object Date. Default: actual time.
 * lc: last change time stamp. Same format as ts, but the time stamp of value change. It may be updated, but the value will stay the same. In this case lc will not be changed.
 * from: name of the adapter instance, that set the value, e.g. "system.adapter.web.0" (In case of vis)
-* expire: (optional) there is a possibility to set the expire timeout in seconds. After this period of time, the variable wants to be set to zero. It wants to be used e.g. by "active" states of the adapter instances. If adapter instance does not trigger "active" state in 30 seconds it will be marked as down. To set state with expiration use following code setState ('variable', {val: true, expire: 30})
+* expire: (optional) there is a possibility to set the expire timeout in seconds. After this period of time the variable wants to be set to "zero". It wants to be used e.g. by "active" states of the adapter instances. If adapter instance does not trigger "active" state in 30 seconds it will be marked as down. To set state with expiration use following code setState ('variable', {val: true, expire: 30})
 * q: (optional) Quality. See here the description
 
 Running modes of adapter
@@ -617,14 +741,14 @@ rename = function rename (adapter, oldName, newName, callback)
 * unload
 
 ### How to create instance
-Before published to npm: copy into ioBroker / node_modules, go to "admin" and add instance After published at npm: go to ioBroker / and write "npm install iobroker.xxx --production", go to "admin" and add instance How to debug
+Before published to npm: copy into ioBroker / node_modules, go to "admin" and add instance After published at npm: go to ioBroker / and write `npm install iobroker.xxx --production --no-optional --logevel=error`, go to `admin` and add instance How to debug
 
 * Start ioBroker
 * Add instance of adapter
 * Disable instance of adapter
 * Start WebStorm
 * Create Configuration for Debug with node.js
-* Flags for application: --force, instance, log level (you can start the adapter as "node xxx.js 1 debug --force", 1 is instance index (by default 0, debug is log level and --force means ignore "enabled: false" settings)
+* Flags for application: `--force, instance, log level` (you can start the adapter as` node xxx.js 1 debug --force`, 1 is instance index (by default 0, debug is log level and `- -force` means ignore "enabled: false" settings)
 
 ## Admin.html
 * function showMessage (message, title, icon)

@@ -45,6 +45,9 @@ Actually only following attributes are supported:
 
 
 ## Changelog
+### 1.3.0 (2019-07-14)
+* (bluefox) Compact mode was added
+
 ### 1.2.2 (2019-06-12)
 * (LausiD) Several fixes and changes
 
@@ -104,7 +107,7 @@ Actually only following attributes are supported:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

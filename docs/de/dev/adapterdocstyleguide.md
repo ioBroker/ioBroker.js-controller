@@ -65,7 +65,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
     anzugeben.
 * Für Quelltextabschnitte gilt folgendes:
   * Je nach Quellcodesprache ist ein entsprechendes Markup zu wählen. Zum
-    Beispiel `~~~javascript`  für JavaScript.
+    Beispiel `\`\`\``  für JavaScript.
   * Ein Quelltext kann, muss aber nicht vollständig sein. Quelltextblöcke
     stellen Beispiele zur Verdeutlichung des jeweis gerade beschriebenen
     Standpunkts dar. Es müssen also keine vollständig lauffähigen Programme

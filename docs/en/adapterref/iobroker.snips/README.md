@@ -71,6 +71,10 @@ sudo apt-get install -y snips-injection
 
 ## Changelog
 
+### 1.3.0
+
+* (unltdnetworx) preparation for multilingualism support
+
 ### 1.2.1
 
 * (unltdnetworx) bugfix for multiple devices in stellite's room

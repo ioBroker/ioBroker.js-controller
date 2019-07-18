@@ -22,6 +22,9 @@ This adapter connects to the HEYtech controller gets automaticly data and can co
 Type in IP, Port and if set the PIN.
 Normaly you can leave the "Auto detect" function on. If this does not work you can choose your hardware manual.
 
+## Links
+[HEYTech](https://rolladensteuerung.de/index.htm)
+
 ## Changelog
 
 ### 0.1.5

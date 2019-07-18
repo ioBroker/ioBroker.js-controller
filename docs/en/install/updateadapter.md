@@ -1,12 +1,12 @@
 ---
-title: installation
-lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/updateadapter.md
+title: Update an adapter
+lastChanged: 16.07.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: 6FnZ5fXbcIKBSc5ffi+1uFB4hJpRxJTCKZ0Dfugv43Y=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/updateadapter.md
+hash: wncP50SmaTw3k7T7o7Qgtxw/vHr0TMXN0Rg1QSu7BvQ=
 ---
 # Updating adapters
-?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
+The procedure for upgrading an adapter is described in the Adapter Management Tutorial [described](../tutorial/adapter.md#upgradeeinesadapters).
 
-@@@ Link to the detailed description of how an adapter will upgrade / downgrade. @@@
+Downgrading to a specific version of an adapter [Likewise](../tutorial/adapter.md#downgradeeinesadapters)

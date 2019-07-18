@@ -39,7 +39,7 @@ Before you must create the directroy */mnt/1wire* with command `mkdir /mnt/1wire
 http://sourceforge.net/projects/owfs/
 
 ## Changelog
-### 0.6.0 (2018-07-07)
+### 0.6.1 (2018-07-11)
 * (bluefox) compact mode supported
 * (lvogt) Added data points counter.A/.B/.ALL from DS2423 to config page
 * (lvogt) Add option to not log faulty readouts

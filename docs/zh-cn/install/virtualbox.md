@@ -1,10 +1,10 @@
 ---
 title: 安装
 lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/virtualbox.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: VtWRmeZY9+xDVaMHS6K3m18WcJwcGA1SWlbtQ6lCYKw=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/virtualbox.md
+hash: I9fBqGuBbdh3aWQsRBtlCo0jrgRu8pfhoF5A11pGlBw=
 ---
 ＃在VirtualBox中设置和安装ioBroker
 ？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
@@ -41,7 +41,7 @@ hash: VtWRmeZY9+xDVaMHS6K3m18WcJwcGA1SWlbtQ6lCYKw=
 现在我们在Explorer中导航到下载的Debian ISO文件并选择它。
 整个事情应该是这样的：Aufnahme93.jpg
 
-由于我想在我的网络上而不是在子网络中访问ioBroker，我在CONNECTED下的NETWORK选项卡下设置，NETWORK BRIDGE的选择记录94.jpg
+由于我想在我的网络上而不是在子网络中访问ioBroker，我在CONNECTED下的NETWORK选项卡下设置，NETWORK BRIDGE上的选择记录94.jpg
 
 现在我们已经设定了一切必要
 Debian的安装可以开始了。
@@ -77,7 +77,7 @@ Aufnahme108.jpg
 
 分区硬盘2：我们选择我们的硬盘Recording110.jpg
 
-磁盘分区3：我们选择分区上的所有文件，建议初学者记录111.jpg
+分区磁盘3：我们选择分区上的所有文件，建议初学者记录111.jpg
 
 分区硬盘4：我们选择PARTITIONING EXIT和TAKE CHANGES Recording112.jpg
 
@@ -143,7 +143,7 @@ cd / opt / iobroker
 
 npm install --unsafe-perm iobroker
 
-以下内容应出现在安装结束时：Aufnahme137.jpg
+在安装结束时，应出现以下内容：Aufnahme137.jpg
 
 —
 
@@ -179,18 +179,36 @@ sudo nano /etc/init.d/StartVM&st; sudo chmod + x /etc/init.d/StartVM＆amp; sudo
 
 文件内容：
 
-~~~庆典
-
-＃！ / bin / sh的
-＃启动VirtualBox @boot
-＃/ etc / init.d /StartVM
+```
+#! /bin/sh
+# Start VirtualBox @boot
+# /etc/init.d/StartVM
 #
-#Edit这些变量！
-VMUSER =用户VMNAME = VM1 VMNAME2 = test
 
-案例“$ 1”开始）echo“启动VirtualBox VM ...”sudo -u $ VMUSER VBoxHeadless --startvm $ VMNAME＆amp; sudo -u $ VMUSER VBoxHeadless --startvm $ VMNAME2＆amp; ;;回显“保存Virtualbox VM的状态......”sudo -u $ VMUSER VBoxManage controlvm $ VMNAME savestate sudo -u $ VMUSER VBoxManage controlvm $ VMNAME2 savestate ;; *）echo“用法：/etc/init.d/StartVM {start | stop}”退出1 ;; ESAC
+#Edit these variables!
+VMUSER=user
+VMNAME=VM1
+VMNAME2=Test
 
-退出0 ~~~
+case "$1" in
+  start)
+    echo "Starting VirtualBox VM ..."
+    sudo -u $VMUSER VBoxHeadless --startvm $VMNAME &amp;
+    sudo -u $VMUSER VBoxHeadless --startvm $VMNAME2 &amp;
+    ;;
+  stop)
+    echo "Saving state of Virtualbox VM ..."
+    sudo -u $VMUSER VBoxManage controlvm $VMNAME savestate
+    sudo -u $VMUSER VBoxManage controlvm $VMNAME2 savestate
+    ;;
+  *)
+    echo "Usage: /etc/init.d/StartVM {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
+```
 
 调整3个变量！ （如果需要注释掉第三个变量或添加更多，具体取决于VM实例）
 
@@ -207,27 +225,43 @@ VMUSER =用户VMNAME = VM1 VMNAME2 = test
 我的整个个人区域包括VirtualBOX VM目录，我每晚都会在第二个硬盘上自动复制“Back in Time”程序。在某些时间后，会保留并自动删除多个版本。
 2016-04-26 22-55-23.png的屏幕截图这是VirtualBox。
 
-~~~ bash sudo apt-get install virtualbox virtualbox -qt virtualbox-dkms ~~~
+```
+sudo apt-get install virtualbox virtualbox-qt virtualbox-dkms
+```
 
-您还可以安装扩展包，例如，它支持从客户端主机连接USB 2.0或3.0设备，从主机到客户端的网络摄像头传输和AES加密。您可以在此处下载[URL：https：//www.virtualbox.org/wiki/Downloads]  - 第二点（扩展包）[/ url]下载此文件并以管理员或打开方式打开通过VirtualBOX / Global Settings / Additional Packages安装它（但启动VirtualBOX作为Admin）。
+您还可以安装扩展包，例如，它支持从客户端主机连接USB 2.0或3.0设备，从主机到客户端的网络摄像头传输和AES加密。你可以在这里下载[URL：https：//www.virtualbox.org/wiki/Downloads]  - 第二项（扩展包）[/ url]下载此文件并以管理员或打开方式打开通过VirtualBOX / Global Settings / Additional Packages安装它（但启动VirtualBOX作为Admin）。
 
 最低硬件要求非常低。你必须自己弄清楚它是如何适合的。理论上足够512 RAM和旧的Intel处理器。例如，它应该在所有英特尔NUC代中顺利运行。
-对于连续操作，拥有低功率主机当然很重要。您现在可以轻松地构建功能强大的10瓦以下的计算机。互联网上有各种10瓦的PC指令。重要的是，没有（自己的）显卡并且在低负载范围内具有高效电源，并且不使用高端主板，因为它具有的功能越多，芯片吸收的流越多。
+对于连续操作，拥有低功率主机当然很重要。您现在可以轻松地构建功能强大的10瓦以下的计算机。互联网上有各种10瓦的PC指令。重要的是，没有（自己的）显卡，并且在较低负载范围内具有高效电源，并且不使用高端主板，因为它具有的功能越多，芯片吸入的流越多。
 我真的可以推荐适用于Windows或Ubuntu的英特尔NUC系列。让我引用我的签名：在英特尔NUC Nuc6i3SYH（i3 Skylake）上安装VirtualBOX的Ubuntu VM中的iobroker，M.2 SSD，8 GB RAM，Ubuntu 16.10。 6-8瓦空转。
 
-在Virtualbox中，我将Vm的网卡设置为“Bridged”，这样VM就可以挂在LAN路由器上，可以说是一台独立的计算机。
+在Virtualbox中，我将Vm的网卡设置为“Bridged”，以便VM挂在LAN路由器上，可以说是一台独立的计算机。
 
 并且通过已安装的操作系统在VM内正常设置固定IP。
 这可以像Debian一样工作：
 
 终端：
 
-~~~ bash sudo nano / etc / network / interfaces ~~~
+```
+sudo nano /etc/network/interfaces
+```
 
-可能会有这样的事情：~~~ auto eth0 allow-hotplug eth0 iface eth0 inet dhcp ~~~
+有可能是这样的：
+
+```
+  auto eth0
+    allow-hotplug eth0
+    iface eth0 inet dhcp
+```
 
 您将其更改为（注意，将数字调整到您自己的环境）
 
-~~~ auto eth0 iface eth0 inet静态地址192.168.1.7 netmask 255.255.255.0网关192.168.1.1 ~~~
+```
+ auto eth0
+    iface eth0 inet static
+        address 192.168.1.7
+        netmask 255.255.255.0
+        gateway 192.168.1.1
+```
 
 其中eth0是您自己的LAN设备的名称，它可能在VM中有所不同，因此当您进行更改时，您必须使用正确的名称替换两个eth0字。

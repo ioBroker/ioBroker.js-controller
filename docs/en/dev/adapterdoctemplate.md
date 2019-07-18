@@ -1,223 +1,320 @@
 ---
-title: development
+title: Documentation Template
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterdoctemplate.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: rrrjyCfMyLCz6GbkLq/cltXrIL8D5wQPGBmpWRj2Bsk=
+hash: idNqdPEU1+HSIqD5A/xdiBqc4Rurmp0Kmsx3GQqqHnY=
 ---
 # Template for creating an adapter documentation
 ?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
 
-~~~ markdown --- title: "{page title}" lastChanged: "{modification date of the article}" editLink: "{link to this file on GitHub}" ---
+```
+---
+title:       "{Seitentitel}"
+lastChanged: "{Änderungsdatum des Artikels}"
+editLink:    "{Link auf diese Datei auf GitHub}"
+---
 
-!> Warning! This template is far from final! Example implementation is [harmony adapter](adapterref/docs/iobroker.harmony/de/README).
 
-# <img src="media/{Adaptericon}" width=150 hight=150/> {Name} adapter adapter
-This section provides an end-user friendly summary of the adapter's intended use. This summary should be kept short (maximum 1-3 small paragraphs). It should just contain so much information that the user's interest is aroused and he can decide if the adapter is relevant to him.
+!>Achtung!
+Dieses Template ist bei weitem noch nicht final!
+Beispielimplementierung ist der [harmony-Adapter](adapterref/docs/iobroker.harmony/de/README).
 
-Technical background information on the adapter and any devices is available in the section "Overview".
+# <img src="media/{Adaptericon}" width=150 hight=150/>&emsp;{Adaptername}-Adapter
+In diesem Abschnitt wird eine endanwenderfreundliche Zusammenfassung des
+Anwendungszwecks des Adapters gegeben. Diese Zusammenfassung soll kurz
+ gehalten sein (maximal 1-3 kleine Absätze). Sie soll gerade so viele
+ Informationen enthalten, dass das Interesse des Anwenders geweckt wird
+ und er entscheiden kann, ob der Adapter für ihn relevant ist.
 
-<!-- Einführungsbild--> ![{old picture name}](../../de/dev/media/{Bild} "{Image Description") <span style="color:grey">* {image description} *</span>
+Technische Hintergrundinformationen zum Adapter und ggf. Geräten stehen
+im Abschnitt "Überblick".
 
-<details open><summary> contents </summary><p>
 
-| Navigation |
-| 1 §§LLLL_0§§ |
-| 2 §§LLLL_0§§ |
-| 3 §§LLLL_0§§ |
-| 4 §§LLLL_0§§ |
-| 5 §§LLLL_0§§ |
-| 6 §§LLLL_0§§ |
-| 7 §§LLLL_0§§ |
-| 8 §§LLLL_0§§ |
-| 9 §§LLLL_0§§ |
-| 10 §§LLLL_0§§ |
-| 11 §§LLLL_0§§ |
-| 12 §§LLLL_0§§ |
-| 12 [History] (# history) |
+<!-- Einführungsbild-->
+![{alt BildName}](../../de/dev/media/{Bild} "{Bildbeschreibung") <span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-</ P> </ details>
+
+
+<details open><summary>Inhaltsverzeichnis</summary><p>
+
+| Navigation                          |
+|-------------------------------------|
+| 1  [Steckbrief](#steckbrief)        |
+| 2  [Überblick](#überblick)          |
+| 3  [Installation](#installation)    |
+| 4  [Konfiguration](#konfiguration)  |
+| 5  [Instanz](#instanz)              |
+| 6  [Objekte](#objekte)              |
+| 7  [Besonderheiten](#besonderheiten)|
+| 8  [FAQ](#faq)                      |
+| 9  [Beispiele](#beispiele)          |
+| 10 [Deinstallation](#deinstallation)|
+| 11 [Links](#links)                  |
+| 12 [Historie](#historie)            |
+</p></details>
+
+
 
 <a name="steckbrief"/>
 
-## Characteristics
-> Attention! The following table is only an example. It is generated dynamically by the document generator and inserted at this point.
-Depending on the selected fields, the data sources are e.g. `frontmatter`, `io-package.json` and `package.json` of the respective adapter.
+## Steckbrief
+> Achtung! Die folgende Tabelle dient nur als Beispiel. Sie wird vom
+  Dokumentengenerator dynamisch erzeugt und an dieser Stelle eingefügt.
+  Je nach den ausgewählten Feldern sind die Datenquellen z.B. `frontmatter`,
+  `io-package.json` und `package.json` des jeweilgen Adapters.
 
 |                         |                              |
 |-------------------------|:----------------------------:|
-| Status of the documentary | {date:} |
-| current version stable | ! [stable] [logo] |
-| current version latest | ! [latest] [logo] |
-| OS | supported OS |
-| node version | supported node versions |
-| Developer | Name / alias of the developer |
-| Github | LINK |
-| License | WITH | |
-| Keywords | `Suchworte` |
-| Dependencies | `dependencies` |
-| Dependencies | `dependencies` |
+| Stand der Doku          | {date:}                      |
+| aktuelle Version stable | ![stable][logo]              |
+| aktuelle Version latest | ![latest][logo]              |
+| OS                      | unterstützte OS              |
+| node-Version            | unterstützte node-Versionen  |
+| Entwickler              | Name/Alias des Entwicklers   |
+| Github                  | LINK                         |
+| Lizenz                  | MIT                          |
+| Kategorie               | gemäß Adapterliste           |
+| Keywords                | `Suchworte`                  |
+| Abhängigkeiten          | `dependencies`               |
+
+
 
 <a name="überblick"/>
 
-## Overview
-### {Tailored System}
-This section explains the basics of any connected system or procedure. What is it good for? What can you do with it? How is the communication done? What is the system structure? Which framework conditions exist?
+## Überblick
 
-### {adapter name} adapter
-Here are background information about the adapter. This can be information about the device in the context of a device adapter, or, in the case of an adapter for a communication protocol, basics for the protocol.
-Nevertheless, this text should be universally understandable for beginners.
+### {Angebundenes System}
+In diesem Abschnitt wird Grundlegendes zu einem eventuell angebundenen System
+oder Verfahren gesagt. Wofür ist es gut? Was kann man damit machen? Wie erfolgt
+die Kommunikation? Wie ist der Systemaufbau? Welche Rahmenbedingungen gibt es?
+
+### {Adaptername}-Adapter
+Hier werden Hintergrundinformationen zum Adapter gegeben. Dies kann im Rahmen
+eines Geräteadapters Information zu dem Gerät sein, oder bei einem Adapter für
+ein Kommunikationsprotokoll Grundlagen zu dem Protokoll.
+Trotzdem sollte dieser Text allgemeinverständlich auch für Einsteiger sein.
+
+
 
 <a name="voraussetzungen"/>
 
-## Prerequisites before installation
-The user receives information here, which steps, if necessary, before the installation of the adapter u.a. on external systems. These include e.g. the registration of API keys or the configuration of connected system according to manufacturer documentation.
+## Voraussetzungen vor der Installation
+Der Anwender erhält hier Informationen, welche Schritte ggf. vor der Installation
+des Adapters u.a. auf externen Systemen auszuführen sind. Dazu gehören z.B. die
+Registrierung von API-Keys oder die Konfiguration von angebundenen System
+nach Herstellerdokumentation.
+
+
 
 <a name="installation"/>
 
 ## Installation
-Here special features for the installation are described, which exceed the scope of the **here** documented standard installation. This can e.g.
-manual installation of software before the actual adapter installation or the activation of ports on the server.
+Hier werden Besonderheiten zur Installation beschrieben, die den Umfang der
+**hier** dokumentierten Standardinstallation überschreiten. Das kann z.B.
+die manuelle Installation von Software vor der eigentlichen Adapterinstallation
+oder die Freischaltung von Ports auf dem Server sein.
 
-> An instance of the adapter is installed via the ioBroker Admin interface.
-The detailed instructions for the necessary installation steps are described **here**
+> Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert.
+  Die ausführliche Anleitung für die dazu notwendigen Installatonschritte ist
+  **hier** beschrieben.
+
+
 
 <a name="konfiguration"/>
 
-## Configuration
-Short introduction to the configuration. For each admin window, a separter section is provided.
+##  Konfiguration
+Kurzer Einleitungssatz zur Konfiguration. Für jedes Admin-Fenster ist ein separter
+Abschnitt vorzusehen.
+
 
 <a name="{Eindeutiger Fensterbezeichner}"/>
 
-### Window "{Window title}"
-![{Alt-name}](../../de/dev/media/{Formularfelderbild} "{Image} Description") <span style="color:grey">* {image description} *</span>
+### Fenster "{Fenstertitel}"
+![{alt-Name}](../../de/dev/media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-| Field | Description |
+| Feld               | Beschreibung |
 |:-------------------|:-------------|
-| **{Form field 1}** | {Description} |
-| **{Form field 2}** | {Description} |
-| **{form field}** | {description} |
+|**{Formularfeld 1}**|{Beschreibung}|
+|**{Formularfeld 2}**|{Beschreibung}|
+|**{Formularfeld n}**|{Beschreibung}|
 
-Space for special notes.
+Platz für besondere Hinweise.
+
 
 <a name="{Eindeutiger Fensterbezeichner}"/>
 
-### Window "{Window title}"
-![{Alt-name}](../../de/dev/media/{Formularfelderbild} "{Image} Description") <span style="color:grey">* {image description} *</span>
+### Fenster "{Fenstertitel}"
+![{alt-Name}](../../de/dev/media/{Formularfelderbild} "{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-| Field | Description |
+| Feld               | Beschreibung |
 |:-------------------|:-------------|
-| **{Form field 1}** | {Description} |
-| **{Form field 2}** | {Description} |
-| **{form field}** | {description} |
+|**{Formularfeld 1}**|{Beschreibung}|
+|**{Formularfeld 2}**|{Beschreibung}|
+|**{Formularfeld n}**|{Beschreibung}|
 
-Space for special notes.
+Platz für besondere Hinweise.
 
-Final text for configuration
+Abschließender Text zur Konfiguration
 
-> After completing the configuration, the configuration dialog is quit with `SPEICHERN UND SCHLIEßEN`. This will result in a subsequent restart of the adapter.
+> Nach Abschluß der Konfiguration wird der Konfigurationsdialog mit
+  `SPEICHERN UND SCHLIEßEN` verlassen. Dadurch efolgt im Anschluß ein
+  Neustart des Adapters.
+
+
 
 <a name="instanz"/>
 
-## Instances
-> The installation of the adapter has created an active instance of the {adapter name} adapter in the section `Objekte`.
+##  Instanzen
+> Die Installation des Adapters hat im Bereich `Objekte` eine aktive Instanz des
+  {Adaptername}-Adapters angelegt.
 
-![instance](../../de/dev/media/a_harmony_instanz.png "instance") <span style="color:grey">* First instance *</span>
+![Instanz](../../de/dev/media/a_harmony_instanz.png "Instanz")<span style="color:grey">
+*Erste Instanz*</span>
 
-Space for more information about instances of the adapter. For example, whether multiple instances can be installed on a server or how instances behave on multihost systems.
+Platz für weitere Hinweise zu Instanzen des Adapters. Z.B. ob mehrere Instanzen
+auf einen Server installierbar sind oder wie sich Instanzen auf
+Multihost-Systemen verhalten.
 
-> Whether the adapter is enabled or connected to the {device} is indicated by the color of the status field of the instance. If the mouse pointer points to the symbol, further detailed information is displayed.
+> Ob der Adapter aktiviert oder mit dem {Gerät}  verbunden ist,
+  wird mit der Farbe des Status-Feldes der Instanz verdeutlicht. Zeigt der
+  Mauszeiger auf das Symbol, werden weitere Detailinformationen dargestellt.
+
+
 
 <a name="objekte"/>
 
-## Objects of the adapter
-> In the section `Objekte` all devices and activities detected by the adapter in the hub are listed in a tree structure. In addition, information is also provided as to whether the communication with the hub takes place smoothly.
+## Objekte des Adapters
 
-![old objects Name](../../de/dev/media/{Bildname} ""{Image} Description") <span style="color:grey">* {image description} *</span>
+> Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im Hub
+  erkannten Geräte und Aktivitäten aufgelistet. Zusätzlich wird auch noch
+  darüber informiert, ob die Kommunikation mit dem Hub reibungslos erfolgt.
 
-> The created objects and their meanings are defined as follows:
+![alt-Objektename](../../de/dev/media/{Bildname} ""{Bildbeschreibung}")<span style="color:grey">
+*{Bildbeschreibung}*</span>
 
-Object | Access | Description: ------------------------- |: -------: |: ----------- **{instance}** | R | Name of the first *instance* of the adapter &emsp; **{subobject}** | R | Name of *{...}* list, meaning ...
-&emsp; **** {sub-object}** | R | Name of *{...}* list, meaning ...
-&emsp; &emsp; ***{Datapoint}*** | R / W | Description of the data point with function &emsp; & nbsp; ***{data point}*** | R / W | Description of the data point with function
+> Die angelegten Objekte und ihre Bedeutungen sind wie folgt definiert:
 
-The table attempts to simplify the presentation of the object tree and to illustrate the meaning and application of the individual objects to the user. It provides the reference documentation for the user for e.g. the accesses to the object hierarchy using JavaScript.
+Objekt                    | Zugriff | Bescheibung
+:-------------------------|:-------:|:-----------
+**{Instanz}**                 |  R  | Name der ersten *Instanz* des Adapters
+&emsp;**{Sub-Objekt}**        |  R  | Name des *{...}*, Liste, Bedeutung ...
+&emsp;&emsp;**{Sub-Objekt}**  |  R  | Name des *{...}*, Liste, Bedeutung ...
+&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion
+&emsp;&emsp;***{Datenpunkt}***| R/W | Beschreibung des Datenpunktes mit Funktion
 
-### {More in-depth explanation of object groupings}
-Here excerpts of the object tree can be highlighted and specially considered.
+Mit der Tabelle wird versucht, den Objektbaum vereinfacht darzustellen
+und dem Anwender die Bedeutung und Anwendung der einzelnen Objekte zu
+veranschaulichen. Sie stellt die Referenzdokumentaion für den Anwender für
+z.B. den Zugriffe mit JavaScript auf die Objekthierarchie dar.
 
-#### {For more in-depth explanations of individual objects or features}
-Since the space for descriptions in the object table is usually not sufficient here, e.g. individual data points are documented in more detail.
+### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
+Hier könne Ausschnitte des Objektbaums hervorgehoben und besonders betrachtet
+werden.
 
-Example of writable data points:
+#### {Weitere tiefergehende Erläuterungen zu einzelnen Objekten oder Funktionen}
+Da der Platz für Beschreibungen in der Objekttabelle in der Regel nicht ausreichen
+müssen hier z.B. einzelne Datenpunkte ausführlicher dokumentiert werden.
 
-#### Starting an activity Activities are started when you enter a number greater than 0 for an activity `{Instanz}.{Hub Name}.activities.{Aktivität}`.
-During the execution of the activity, this value first changes to 1 (= starting) and then to 2 (= active).
-### {More in-depth explanation of object groupings}
-According to the structure of the object tree and the function of the adapter given here individual design options.
+Beispiel für beschreibbare Datenpunkte:
+#### Starten einer Aktivität
+Aktivitäten werden gestartet, wenn man bei einer Aktivität
+`{Instanz}.{Hub Name}.activities.{Aktivität}` eine Zahl größer als 0 einträgt.
+Während der Ausführung der Aktivität ändert sich dieser Wert zuerst
+nach 1 (=startend) und dann nach 2 (=aktiv).
 
-Example for the description of individual data points:
+### {Weitere tiefergehende Erläuterungen zu Objektgruppierungen}
+Entsprechend dem Aufbau des Objektbaums und der Funktion des Adapters
+hier individuelle Gestaltungsmöglichkeiten gegeben.
 
-#### Status values `{Instanz}.{Hub Name}.activities.currentActivity` returns the currently running activity as a string.
-`{Instanz}.{Hub Name}.activities.currentStatus` indicates the status of the Harmony Hub. The values mean
+Beispiel für die Beschreibung einzelner Datenpunkte:
+#### Statuswerte
+`{Instanz}.{Hub Name}.activities.currentActivity` liefert die aktuell ausgeführte
+Aktivität als Zeichenfolge.
 
-- 0 = inactive
-- 1 = starting
-- 2 = active
+`{Instanz}.{Hub Name}.activities.currentStatus` zeigt den Status des Harmony Hubs
+an. Dabei bedeuten die Werte
+- 0 = inaktiv
+- 1 = startend
+- 2 = aktiv
+
+
+
+
+
 
 ## Deinstallation
-If the instance is to be removed again, it will be removed via the assigned trashcan icon in the Instances column
+sollte die Instanz wieder entfernt werden sollen wird diese über das zugeordnete Mülleimer-Icon
+in der Rubrik Instanzen entfernt
 
 <img src="media/adapter_AdapterName_delete_01.png">
 
-A confirmation prompt appears, which must be confirmed with ***OK***
+Es erscheint eine Sicherheitsabfrage, die mit ***OK*** bestätigt werden muss
 
 <img src="media/adapter_AdapterName_delete_02.png">
 
-Then, a window will appear again showing the processing of the uninstall commands
+Anschließend erscheint wieder ein Fenster, dass die Abarbeitung der Deinstallationsbefehle zeigt
 
 <img src="media/adapter_AdapterName_delete_03.png">
 
-This uninstall removes all objects belonging to the instance completely.
+Bei dieser Deinstallation werden alle zu der Instanz gehörenden Objekte vollständig entfernt.
 
-If the installation files are completely deleted from the host, this must be done via the trashcan icon in the AdapterName adapter's tile in the Adapters section.
+Sollten die Installationsdateien vollständig von dem Host gelöscht werden, muss dies über das Mülleimer-Icon
+in der Kachel des AdapterName-Adapters in der Rubrik Adapter geschehen.
 
-## Examples / demo
+
+
+
+
+## Beispiele/Demo
 Lorem ipsum
 
-## Particularities
-Backup Multihost History Performance
 
-## Known problems
-* What ever
+## Besonderheiten
+Backup
+Multihost
+History
+Performance
 
-  Solution:
 
-* and a very bad bug
+## Bekannte Probleme
 
-  Solution:
+* was auch immer
+  Lösung:
 
-* the devil knows
+* und noch ein ganz böser Bug
+  Lösung:
 
-  Solution:
+* weiß der Teufel
+  Lösung:
 
-## Integration of States
+
+
+## Einbinden der States
+
 ### Blockly
 Lorem ipsum
 
 ### Node-Red
 Lorem ipsum
 
-### Vis
+### vis
 Lorem ipsum
 
 ### History
 Lorem ipsum
 
-## Left
-There are also links to GitHub (developer area?) And external resources? But please not at the beginning of the documentary, rather at the end.
-First the light food.
 
-## Developer area
-~~~
+## Links
+Irgendwo kommen auch noch Links zu GitHub (Entwicklerbereich?) und
+externen Ressourcen? Aber bitte nicht gleich am Doku-Anfang, eher am Ende.
+Zuerst die leichte Kost.
+
+
+
+## Entwicklerbereich
+```

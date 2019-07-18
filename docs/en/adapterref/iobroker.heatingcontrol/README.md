@@ -13,7 +13,7 @@ Adapter for controlling thermostats.
 Features:
 * Control the setpoint temperature levels of all thermostats per schedules
 * Configure multiple heating periods for each day and night 
-* Supports various homematic and max!cube thermostats
+* Supports various homematic and max! thermostats
 * supports multiple profiles (to do)
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
 * Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
@@ -51,7 +51,7 @@ Features:
 ## Changelog
 
 ### 0.0.5 (2019-07-08)
-* (René) support for max!cube thermostats
+* (René) support for max! thermostats
 
 ### 0.0.4 (2019-06-23)
 * (René) debugging

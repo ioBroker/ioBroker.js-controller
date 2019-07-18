@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
+hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -30,7 +30,7 @@ hash: yPlSOWOfUmmCRavKRHYsIIn8Z9xAqmbptjwO0Apc+jk=
 ## Iqontrol Adapter für ioBroker
 Schnelle Web-App zur Visualisierung.
 
-![Beispiel](img/screenshot1.jpg) ![Beispiel](../../../en/adapterref/iobroker.iqontrol/img/screenshot2.jpg)
+![Beispiel](img/screenshot4.jpg) ![Beispiel](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Läuft in jedem Browser.
 Sie können es als Web-App auf iOS-Homescreen speichern und es sieht aus und fühlt sich an wie eine native App.
@@ -38,7 +38,7 @@ Es ist vollständig anpassbar.
 
 ## Du brauchst...
 * Nodejs 8 oder höher
-* socketIO muss im Web-Adapter aktiviert sein
+* socket.IO muss auf 'integrated' gesetzt sein und 'Force Web-Sockets' muss im Web-Adapter deaktiviert sein
 
 ## Wie benutzt man
 * Starten Sie die Erstellung von Ansichten.
@@ -82,20 +82,31 @@ Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät 
 Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräte mit erweiterten Funktionen auszustatten, können Sie diese manuell über die (+) - Taste hinzufügen oder die von Autocreate erstellten Geräte bearbeiten.
 Um die Rolle und den Status eines Geräts zu bearbeiten, klicken Sie auf den Stift hinter dem Gerät. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
+### Ändern der Datenpunktkonfiguration
+Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter einem Datenpunkt in der Registerkarte Objekte von iobroker ändern. Hier kannst du:
+
+* Nur-Lese-Flag setzen
+* Invert-Flat setzen (geplant, noch nicht funktionsfähig)
+* Setze eigene Einheit
+* Setzen oder modifizieren Sie eine Werteliste
+
+![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
 ### Allgemeine Zustände:
 Jede Rolle hat die folgenden drei Zustände:
 
+* **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
 * **BATTERY** *Boolean* - Wenn dies zutrifft, wird ein kleines Batterie-Leersymbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen ist dies die Hauptfunktion des Geräts. Sie können ihm io-Broker-Status der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (um beispielsweise ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
 * *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
 * *string* - ein anzuzeigender Text
 * *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt.
-  * Technisch gesehen ist eine *Werteliste* ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'native.states' oder 'common.states' des Datenpunkts definiert ist:
+  * Technisch gesehen ist eine *Werteliste* ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instance> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist :
 
 ````
 "native": {
@@ -104,8 +115,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 }
 ````
 
-    * Sie können Ihre eigene Werteliste erstellen, indem Sie das States-Objekt zum `` `" native ": {}` `` `Teil des Datenpunkts hinzufügen. Dies wird nur von iQontrol gelesen und hat keinen Einfluss auf andere Skripte.
-    * Ein State-Objekt innerhalb des `` `" common ": {}` `` `-Teils wird ebenfalls von iQontrol erkannt, jedoch mit niedrigerer Priorität. Wenn Sie es hier ändern, hat es möglicherweise Einfluss auf andere Skripte. Darüber hinaus wird es möglicherweise von dem Adapter überschrieben, der den Datenpunkt erstellt hat.
+    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüssel-Symbol hinter dem Datenpunkt in der Registerkarte Objekte von iobroker, siehe oben)
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
@@ -195,7 +205,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
 * **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
-* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, wird der Blind nach oben / unten verschoben (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden).
+* **UP** / **DOWN** *boolean* - Wenn diese Option auf true gesetzt ist, wird der Blind auf / ab bewegt (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden)
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -241,6 +251,18 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.0.45 (2019-07-15)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+
+### 0.0.44
+* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
+* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
+
+### 0.0.43
+* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (Sebastian Bormann) Fixed value list type conflict.
 
 ### 0.0.42
 * (Sebastian Bormann) Adjusted pathes of demo-files.

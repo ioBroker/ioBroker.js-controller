@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
+hash: /FBuVliMgA9N2xeblOfpuQ6pvARLncAIy1/qWvxhb0s=
 ---
 ![логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -20,7 +20,7 @@ hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 
 * Контроль заданных уровней температуры всех термостатов в соответствии с расписанием
 * Настройка нескольких периодов отопления для каждого дня и ночи
-* Поддерживает различные термостаты homematic и max! Cube
+* Поддерживает различные Homematic и Макс! термостаты
 * поддерживает несколько профилей (чтобы сделать)
 * Если нет прямой связи между термостатом и приводом, привод можно отключить непосредственно от адаптера.
 * В настоящее время привод отключается непосредственно при достижении заданного значения температуры. Как только заданная температура станет ниже фактической температуры, привод будет включен. (Для этого: реализовать улучшенный контроль)
@@ -56,7 +56,7 @@ hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
 ## Changelog
 
 ### 0.0.5 (2019-07-08)
-* (René) support for max!cube thermostats
+* (René) support for max! thermostats
 
 ### 0.0.4 (2019-06-23)
 * (René) debugging

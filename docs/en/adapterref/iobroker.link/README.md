@@ -1,13 +1,12 @@
 ![Logo](admin/link.png)
 # ioBroker.link
-===================
 
-![Number of Installations](http://iobroker.live/badges/link-installed.svg) ![Number of Installations](http://iobroker.live/badges/link-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.link.svg)](https://www.npmjs.com/package/iobroker.link)
+[![NPM version](http://img.shields.io/npm/v/iobroker.link.svg)](https://www.npmjs.com/package/iobroker.link)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.link.svg)](https://www.npmjs.com/package/iobroker.link)
 
 [![NPM](https://nodei.co/npm/iobroker.link.png?downloads=true)](https://nodei.co/npm/iobroker.link/)
 
-This adapter allows secure connection over iobroker.link cloud.
+This adapter allows secure connection over [ioBroker.link](https://iobroker.link/) cloud.
 
 ## Adapter Settings
 
@@ -15,6 +14,13 @@ This adapter allows secure connection over iobroker.link cloud.
 Proxy can be defined as URI: *http://proxy:8080* or via **HTTPS_PROXY** environment variable.
 
 ## Changelog
+### 0.4.4 (2019-07-16)
+* (gh-got) closing tunnels in case server considers an agent as offline
+* (gh-got) fixed timeout to query active connection status
+
+### 0.4.2 (2019-03-28)
+* (gh-got) agents will report own version by registration
+
 ### 0.4.0 (2019-03-10)
 * (bluefox) Made this adapter to be compatible with the new server
 
@@ -34,9 +40,9 @@ Proxy can be defined as URI: *http://proxy:8080* or via **HTTPS_PROXY** environm
 * (bluefox) Initial commit
 
 ## License
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
-
 Creative Common Attribution-NonCommercial (CC BY-NC)
+
+Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
 
 http://creativecommons.org/licenses/by-nc/4.0/
 

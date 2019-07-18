@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: mCz3joKc77hO5pDqRqHgxexPv80ZNFVEKdMMnas3Ozo=
+hash: /FBuVliMgA9N2xeblOfpuQ6pvARLncAIy1/qWvxhb0s=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -20,7 +20,7 @@ Eigenschaften:
 
 * Kontrollieren Sie die Solltemperatur aller Thermostate nach Zeitplan
 * Konfigurieren Sie mehrere Heizperioden für jeden Tag und jede Nacht
-* Unterstützt verschiedene Homematic- und Max! Cube-Thermostate
+* Unterstützt verschiedene homematic und max! Thermostate
 * unterstützt mehrere Profile (zu tun)
 * Wenn keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht, kann der Stellantrieb direkt aus dem Adapter geschaltet werden
 * Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
@@ -56,7 +56,7 @@ Eigenschaften:
 ## Changelog
 
 ### 0.0.5 (2019-07-08)
-* (René) support for max!cube thermostats
+* (René) support for max! thermostats
 
 ### 0.0.4 (2019-06-23)
 * (René) debugging
