@@ -38,4 +38,5 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-6
+      - redis-server
       - redis-sentinel
