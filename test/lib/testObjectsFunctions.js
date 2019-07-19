@@ -298,8 +298,8 @@ function register(it, expect, context) {
                 password: 'winning'
             },
             protectedNative: [
-                "username",
-                "password"
+                'username',
+                'password'
             ]
         }, function (err) {
             expect(err).to.be.null;
@@ -335,8 +335,8 @@ function register(it, expect, context) {
                 password: 'winning'
             },
             protectedNative: [
-                "username",
-                "password"
+                'username',
+                'password'
             ]
         }, function (err) {
             expect(err).to.be.null;
@@ -358,89 +358,152 @@ function register(it, expect, context) {
     // setObjectNotExists
     it(testName + 'Try to set existing object', function (done) {
         context.adapter.setObjectNotExists(gid, {
-                common: {
-                    name: 'not must be set'
-                },
-                native: {
-                    pparam: 10
-                },
-                type: 'state'
+            common: {
+                name: 'not must be set'
             },
-            function (err) {
+            native: {
+                pparam: 10
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getObject(gid, function (err, obj1) {
                 expect(err).to.be.null;
 
-                context.adapter.getObject(gid, function (err, obj1) {
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.pparam).to.be.not.ok;
+
+                context.adapter.setObjectNotExists(gid + 'A', {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        ppparam: 10
+                    },
+                    type: 'state'
+                },
+                function (err) {
                     expect(err).to.be.null;
 
-                    expect(obj1.native).to.be.ok;
-                    expect(obj1.native.pparam).to.be.not.ok;
+                    context.adapter.getObject(gid + 'A', function (err, obj1) {
+                        expect(err).to.be.null;
 
-                    context.adapter.setObjectNotExists(gid + 'A', {
-                            common: {
-                                name: 'must be set'
-                            },
-                            native: {
-                                ppparam: 10
-                            },
-                            type: 'state'
-                        },
-                        function (err) {
-                            expect(err).to.be.null;
-
-                            context.adapter.getObject(gid + 'A', function (err, obj1) {
-                                expect(err).to.be.null;
-
-                                expect(obj1.native).to.be.ok;
-                                expect(obj1.native.ppparam).to.be.equal(10);
-                                done();
-                            });
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(10);
+                        done();
+                    });
                 });
             });
+        });
     });
 
     // setForeignObjectNotExists
     it(testName + 'Try to set existing foreign object', function (done) {
         context.adapter.setForeignObjectNotExists(context.adapterShortName + '.0.' + gid, {
-                common: {
-                    name: 'not must be set'
-                },
-                native: {
-                    ppparam: 11
-                },
-                type: 'state'
+            common: {
+                name: 'not must be set'
             },
-            function (err) {
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.ppparam).to.be.not.ok;
+
+                context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        ppparam: 9
+                    },
+                    type: 'state'
+                },
+                function (err) {
                     expect(err).to.be.null;
 
-                    expect(obj1.native).to.be.ok;
-                    expect(obj1.native.ppparam).to.be.not.ok;
+                    context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
+                        expect(err).to.be.null;
 
-                    context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
-                            common: {
-                                name: 'must be set'
-                            },
-                            native: {
-                                ppparam: 9
-                            },
-                            type: 'state'
-                        },
-                        function (err) {
-                            expect(err).to.be.null;
-
-                            context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
-                                expect(err).to.be.null;
-
-                                expect(obj1.native).to.be.ok;
-                                expect(obj1.native.ppparam).to.be.equal(9);
-                                done();
-                            });
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(9);
+                        done();
+                    });
                 });
             });
+        });
+    });
+
+    // getObjectView
+    it(testName + 'Try to get object view', done => {
+        // create the view
+        context.adapter.setForeignObjectAsync( '_design/hm-rpc', {
+            language: 'javascript',
+            views: {
+                paramsetDescription: {
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
+                }
+            },
+            common: {}
+        }).then(() => {
+            // now lets create an object matching the view
+            context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+                type: 'meta',
+                meta: {
+                    adapter: 'hm-rpc',
+                    type: 'paramsetDescription'
+                },
+                common: {},
+                native: {}
+            }).then(() => {
+                context.adapter.getObjectView('hm-rpc', 'paramsetDescription', {startkey: 'hm-rpc.meta.VALUES', endkey: 'hm-rpc.meta.VALUES.\u9999'}, (err, doc) => {
+                    expect(err).to.be.null;
+                    // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
+                    expect(doc.rows).to.be.an('array');
+                    done();
+                });
+            });
+        });
+    });
+
+    // getObjectViewAsync
+    it(testName + 'Try to get object view in async setup', done => {
+        // create the view
+        context.adapter.setForeignObjectAsync( '_design/hm-rpc', {
+            language: 'javascript',
+            views: {
+                paramsetDescription: {
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
+                }
+            },
+            common: {}
+        }).then(() => {
+            // now lets create an object matching the view
+            context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+                type: 'meta',
+                meta: {
+                    adapter: 'hm-rpc',
+                    type: 'paramsetDescription'
+                },
+                common: {},
+                native: {}
+            }).then(() => {
+                context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {startkey: 'hm-rpc.meta.VALUES', endkey: 'hm-rpc.meta.VALUES.\u9999'}).then(doc => {
+                    // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
+                    expect(doc.rows).to.be.an('array');
+                    done();
+                });
+            });
+        });
     });
 
     // delObject
@@ -493,17 +556,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObjectNotExists(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                err => {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -518,20 +581,20 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObject(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000);
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
 
@@ -547,17 +610,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -579,25 +642,25 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject('system.adapter.tesla.0', {
-                    common: {
-                        name: 'tesla',
-                        type: 'number',
-                        role: 'level',
-                        members: ['A']
-                    },
-                    native: {
-                        model: 'S P85D',
-                        username: 'tesla',
-                        password: 'winning'
-                    },
-                    protectedNative: [
-                        "username",
-                        "password"
-                    ]
+                common: {
+                    name: 'tesla',
+                    type: 'number',
+                    role: 'level',
+                    members: ['A']
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    model: 'S P85D',
+                    username: 'tesla',
+                    password: 'winning'
+                },
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -619,25 +682,25 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject('system.adapter.' + context.adapterShortName + '.0', {
-                    common: {
-                        name: 'tesla',
-                        type: 'number',
-                        role: 'level',
-                        members: ['A']
-                    },
-                    native: {
-                        model: 'S P85D',
-                        username: 'tesla',
-                        password: 'winning'
-                    },
-                    protectedNative: [
-                        "username",
-                        "password"
-                    ]
+                common: {
+                    name: 'tesla',
+                    type: 'number',
+                    role: 'level',
+                    members: ['A']
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    model: 'S P85D',
+                    username: 'tesla',
+                    password: 'winning'
+                },
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -652,23 +715,22 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000);
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
-
 
     // Try to access system configuration
     it(testName + 'Try to access system configuration', function (done) {
@@ -682,7 +744,6 @@ function register(it, expect, context) {
             }, 2000);
         });
     });
-
 
     // getObject with acls
     it(testName + 'Check getObjects with ACLs', function (done) {
