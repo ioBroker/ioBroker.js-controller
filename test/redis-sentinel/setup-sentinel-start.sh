@@ -1,4 +1,5 @@
 #/bin/sh
+set +e
 ./setup-sentinel-cleanup.sh
 
 if [ -z "$TRAVIS_BUILD_DIR" ]

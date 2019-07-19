@@ -1,4 +1,5 @@
 #/bin/sh
+set +e
 
 if [ -z "$TRAVIS_BUILD_DIR" ]
 then
