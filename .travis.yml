@@ -38,3 +38,4 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-6
+      - redis-sentinel
