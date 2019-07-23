@@ -244,13 +244,13 @@ class Downloads extends Component {
                 {I18n.t('instruction2')}<br/><br/>
                 <b>1. </b>{I18n.t('instruction3')}
                 <pre className={this.props.classes.instructionCode}>
-                    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -<br/>
+                    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br/>
                     sudo apt-get install -y nodejs<br/>
                     <IconButton
                         className={this.props.classes.instructionCopy}
                         title={I18n.t( 'copy to clipboard')}
                         onClick={e => {
-                            Utils.onCopy(e, 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -\nsudo apt-get install -y nodejs');
+                            Utils.onCopy(e, 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -\nsudo apt-get install -y nodejs');
                             this.setState({tooltip: I18n.t('Copied')});
                         }}><IconCopy fontSize="small"/></IconButton>
                 </pre>
