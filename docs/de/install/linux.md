@@ -112,7 +112,7 @@ gewünschten entspricht folgendes vorher ausführen:
 
 4. Node.js neu installieren für Linux und Raspberry 2/3
     
-    ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
     
     ``sudo apt install -y nodejs``
 

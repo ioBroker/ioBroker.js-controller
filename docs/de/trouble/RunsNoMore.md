@@ -209,7 +209,7 @@ ausführen.
 
 Wobei hier 8089 ein Port ist, der sicher frei ist. Danach kann man Admin unter http://ip:8089 erreichen.
 
-Nach dem als die Einstellungen wieder in Ordnung sind, sollte man die neue (zweite auf dem port 8089) Instanz deinstallieren, um die Ressourcen zu sparen.
+Nachdem die Einstellungen wieder in Ordnung sind, sollte man die neue (zweite auf dem port 8089) Instanz deinstallieren, um die Ressourcen zu sparen.
 
  
 ## npm ist verschwunden
