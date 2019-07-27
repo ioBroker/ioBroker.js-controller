@@ -66,7 +66,7 @@ Toolbar-Entrys是视图的链接。
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
+*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -115,7 +115,7 @@ Toolbar-Entrys是视图的链接。
 }
 ````
 
-    *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，见上文）
+    *您可以通过修改数据点来创建自己的值列表（iobroker的对象选项卡中数据点后面的扳手图标，见上文）
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -143,7 +143,7 @@ Toolbar-Entrys是视图的链接。
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（仅当灯具有白色和彩色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
 *替代色彩空间**尚未实施**：
-  * **HUE_MILIGHT** * number * - Milight使用色调color-cirlce中的另一个起始点：
+  * **HUE_MILIGHT** * number * - Milight在色调color-cirlce中使用另一个起始点：
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -172,7 +172,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 除了普通恒温器，您还可以定义：
 
 * **PARTY_TEMPERATURE** *string* - 特殊格式的字符串，用于定义家庭恒温器的派对或假日模式
-* **BOOST_STATE** *number* - 显示homematic恒温器的剩余提升时间
+* **BOOST_STATE** *数字* - 显示原始恒温器的剩余提升时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
 * **状态**：*数字*  - 将显示在设备下部的温度或湿度
@@ -182,7 +182,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
+* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
@@ -252,8 +252,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.0.47 (2019-07-22)
+* (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (Sebastian Bormann) Added invert-flag inside custom datapoint configuration dialog.
+
+### 0.0.46 (2019-07-20)
+* (Sebastian Bormann) Added options to device configuration dialog.
+* (Sebastian Bormann) Added readonly-flag to device options.
+* (Sebastian Bormann) Added invert color temperature flag to device options for lights.
+* (Sebastian Bormann) Added invert flag to device options for blinds.
+
 ### 0.0.45 (2019-07-15)
-* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options).
 
 ### 0.0.44
 * (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.

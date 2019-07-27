@@ -17,7 +17,7 @@ Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa vorgesehen.
 Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dafür den Adapter ioBroker.cloud.
 
 ## Die Einstellungen
-Um den Cloud-Adapter zu verwenden, müssen Sie sich zunächst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
+Um den Cloud-Adapter zu verwenden, müssen Sie sich zunächst in der ioBroker-Cloud registrieren.
 
 ![Intro](../../../en/adapterref/iobroker.iot/img/intro.png)
 
@@ -142,7 +142,7 @@ If you call ```[POST]https://service.iobroker.in/v1/iotService?service=custom_<N
 
 ```
 
-curl - Daten "myString" https://service.iobroker.in/v1/iotService?service=custom_ <NAME> & key = <XXX> & user = <USER_EMAIL>
+curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_ <NAME> & key = <XXX> & user = <USER_EMAIL>
 
 ```
 
@@ -206,7 +206,7 @@ Wenn der Text ein JSON-Objekt ist, können die folgenden Schlüssel verwendet we
 
 ** Ergebnis per Nachricht an iot-Instanz zurücksenden **
 
-Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die oben beschriebenen Schlüssel **responseText** und **shouldEndSession** enthalten kann.
+Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die Schlüssel **responseText** und **shouldEndSession** enthalten kann, wie oben beschrieben.
 Die iot-Instanz antwortet nicht auf die Nachricht!
 
 ** Beispiel für ein Skript, das Texte verwendet **

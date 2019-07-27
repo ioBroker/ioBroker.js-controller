@@ -32,8 +32,9 @@ MoMa needs at least nodejs version 8 / ES6.
 
 ## Changelog
 
-### 1.1.4 (2019-??-??)
-* (AWhiteKnight) Library 'systeminformation' version 4.14.0
+### 1.1.4 (2019-07-22)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
+                 Update of Adapters and JS-Controller.
 
 ### 1.1.3 (2019-07-03)
 * (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
@@ -80,8 +81,11 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 Basic idea is to have 
 + a tree for each instance (moma.\<instance-id\>) containing all the informations of the machine the instance is running on. 
 + a common tree (moma.meta) below which every instance creates a device \<hostname\> containing a reference to the instance and some monitoring informations.
++ an admin tab for maintenance (updates of operating system, js-controller, adapters)
 
 ## Reference
+
+An admin tabMoMa is available to start updates or if necessary start a reboot.
 
 Following functions of library systeminformation are called once on startup:
 * baseboard - Information about computers motherboard
@@ -136,6 +140,7 @@ Following functions of library systeminformation are called in interval 4 (defau
 
 Following functions of **MoMa** are called in interval 4 (default every day):
 * updates - checks for pending updates and shows the amount of updates in moma.meta.\<hostname\>.updates (currently only Ubuntu, Debian, openSUSE, RedHat)
+* checkIob - checks all adapters and the js-controller for available updates 
 * checkBatteries - checks battery state variables (current implemented state names: LOWBAT, LOW_BAT)
 
 

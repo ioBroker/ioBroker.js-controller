@@ -150,7 +150,7 @@ or
 
 ```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
 
-如果在设置中将“服务的白名单”字段设置为* custom_test *，并使用“custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
+如果在设置中将“服务的白名单”字段设置为名称* custom_test *，并使用“custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
 
 您可以在白名单中写“*”，并允许所有服务。
 

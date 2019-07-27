@@ -53,11 +53,6 @@ A bridge will be created as device with the name pattern ```bridge__<name of bri
 
 | Channel | State | Description |
 |:------- |:----- |:----------- |
-| callbacks | - | Callbacks of the Bridge |
-| callbacks | list | List of a callbacks (in JSON format) |
-| callbacks._\<UniqueIdOfCallback\>_ | - | Callback |
-| callbacks._\<UniqueIdOfCallback\>_ | \_delete | Action to remove callback from Bridge |
-| callbacks._\<UniqueIdOfCallback\>_ | url | URL of the callback |
 | - | \_connected | Flag indicating whether or not the bridge is connected to the Nuki server |
 | - | bridgeId | ID of the bridge / server |
 | - | bridgeIp | IP address of the bridge |
@@ -362,6 +357,9 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 ### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
 - (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
 - (Zefau) bump to stable release
+
+### 0.9.13 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.9.12 (2019-05-16)
 - (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))

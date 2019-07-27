@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -57,11 +57,6 @@ hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
 
 |频道|国家|说明|
 |:------- |:----- |:----------- |
-|回调| -  |桥的回调|
-|回调|列表|回调列表（采用JSON格式）|
-|回调._ \ <UniqueIdOfCallback \> _ | -  |回调|
-|回调._ \ <UniqueIdOfCallback \> _ | \ _delete |从Bridge中删除回调的操作 |
-|回调._ \ <UniqueIdOfCallback \> _ |网址|回调的URL |
 | -  | \ _连接|指示桥是否连接到Nuki服务器的标志 |
 | -  | bridgeId |网桥/服务器的ID |
 | -  | bridgeIp |桥的IP地址|
@@ -89,7 +84,7 @@ hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
 |状态|锁定** |指示门是否锁定|
 |状态|刷新** |上次更新的时间戳|
 
-如果设置了回调，_ **标记的状态将在Nuki动作上更新
+如果设置回调，_ **标记状态将在Nuki动作上更新
 
 #### Locks（使用Nuki Web API）
 锁将创建为名为pattern```door__<name of door>```的设备。将在每个锁中创建以下通道/状态（使用Nuki Web API时）：
@@ -371,6 +366,9 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 ### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
 - (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
 - (Zefau) bump to stable release
+
+### 0.9.13 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.9.12 (2019-05-16)
 - (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))

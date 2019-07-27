@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.moma/README.md
 title: без названия
-hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
+hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -49,8 +49,11 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
 Основная идея - иметь + дерево для каждого экземпляра (moma. \ <Instance-id \>), содержащее всю информацию о машине, на которой работает экземпляр.
 + общее дерево (moma.meta), ниже которого каждый экземпляр создает устройство \ <hostname \>, содержащее ссылку на экземпляр и некоторую информацию о мониторинге.
++ админка для обслуживания (обновления операционной системы, js-контроллера, адаптеров)
 
 ## Ссылка
+Вкладка администратора MoMa доступна для запуска обновлений или при необходимости начать перезагрузку.
+
 Следующие функции системной информации библиотеки вызываются один раз при запуске:
 
 * baseboard - информация о компьютерах материнской платы
@@ -93,7 +96,7 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 * графика - информация о компьютерах, видеокартах и подключенных мониторах
 * inetLatency - проверка интернет-задержки на 8.8.8.8
 * dockerInfo - Общая информация о Docker - для правильной работы требуется «adduser iobroker docker» на компьютере.
-* dockerContainers - список всех контейнеров Docker - для правильной работы требуется «докер adobser iobroker» на компьютере.
+* dockerContainers - Список всех контейнеров Docker - для правильной работы на компьютере необходим «докер adobser iobroker».
 
 Следующие функции системной информации библиотеки вызываются в интервале 4 (по умолчанию каждый день):
 
@@ -105,9 +108,14 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 Следующие функции **MoMa** вызываются в интервале 4 (по умолчанию каждый день):
 
 * updates - проверяет наличие ожидающих обновлений и показывает количество обновлений в moma.meta. \ <hostname \>. updates (в настоящее время только Ubuntu, Debian, openSUSE, RedHat)
+* checkIob - проверяет все адаптеры и js-контроллер на наличие обновлений
 * checkBatteries - проверяет переменные состояния батареи (текущие реализованные имена состояний: LOWBAT, LOW_BAT)
 
 ## Changelog
+
+### 1.1.4 (2019-07-22)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
+                 Update of Adapters and JS-Controller.
 
 ### 1.1.3 (2019-07-03)
 * (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3

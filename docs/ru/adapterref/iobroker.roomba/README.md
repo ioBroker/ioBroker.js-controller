@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: fJWbc2AUfUlvEbHQ8lUvLCgs5r8wt6RytzZfd4WRDjQ=
+hash: Q1IXY7Gv251+NOBKiMXZN/zHkn2MxA7QEGVkGiGdq7k=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -20,29 +20,15 @@ hash: fJWbc2AUfUlvEbHQ8lUvLCgs5r8wt6RytzZfd4WRDjQ=
 
 **Оглавление**
 
-1. [Особенности] (# функции)
-2. [Установка] (# установка)
-3. [Инструкции по настройке] (# инструкции по настройке)
-4. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - firmware-version)
-5. [Каналы и состояния] (# каналы - состояния)
-6. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
-7. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
-8. [Changelog] (# changelog)
-9. [Кредиты] (# кредитов)
-10. [Лицензия] (# лицензия)
-
-## Характеристики
-Следующие функции поставляются с этим адаптером:
-
-- __Отправить команды__ (запуск, остановка, возобновление, пауза, стыковка) на вашу Roomba
-- Получить __device состояния__, такие как батарея, закрепленный, полный / вставленный лоток (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
-- Получить __device configuration__, например, настройки, настройки сети или расписания (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
-- Получить статистику __device__, такую как общее количество миссий, количество часов на док-станции и т. Д. (Полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
-- Получить информацию о __current mission__ (когда уборка Roomba), например время начала и окончания, общее время выполнения, очищенный sqm и т. Д. (Только для поддерживаемых Roomba см. [Поддерживаемые версии Roomba / Прошивки] (# support-roombas --firmware-версия))
-- __Draw карта на основе полученных данных миссии__ (только на поддерживаемых Roomba's)
-- __Web Interface__, который показывает статус и карту текущих, а также предыдущих / архивных миссий:
-
-![Roomba Интерфейс](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
+1. [Установка] (# установка)
+2. [Инструкции по настройке] (# инструкции по настройке)
+3. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - версии прошивки)
+4. [Каналы и состояния] (# каналы - состояния)
+5. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
+6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
+7. [Changelog] (# changelog)
+8. [Кредиты] (# кредитов)
+9. [Лицензия] (# лицензия)
 
 ## Монтаж
 ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
@@ -283,6 +269,13 @@ _2019-05-04 исправлена ошибка, препятствовавшая 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </div>
 
 ## Changelog
+
+### 1.0.3 (2019-07-23)
+- (Zefau) fixed bug _uncaught exception: Cannot read property 'x' of undefined_
+
+### 1.0.2 (2019-07-20)
+- (Zefau) reworked placing home icon ([#23](https://github.com/Zefau/ioBroker.roomba/issues/23))
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 1.0.1 (2019-05-15)
 - (Zefau) fixed display error in Chrome ([#19](https://github.com/Zefau/ioBroker.roomba/issues/19#issuecomment-492963244))

@@ -4,7 +4,7 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/install/linux.md
-hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
+hash: fxqCnt9dyq6pvLDK+LxhsmUfrM+qGb5piy2Mkn23PXM=
 ---
 # Установка ioBroker под Linux
 !> Данное руководство НЕ подходит для готовых изображений сайта !!!
@@ -21,7 +21,7 @@ hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
 
 Если есть какие-либо вопросы, пожалуйста, оставьте их на форуме.
 
-С инструкциями, опубликованными здесь, с каждым обновлением ядра, если оно доступно, также автоматически обновляются версии node.js.
+С помощью опубликованных здесь инструкций каждое обновление ядра будет автоматически обновлять версии node.js, если они доступны.
 
 ## Необходимое оборудование
 ### Raspberry Pi 2/3,
@@ -90,7 +90,7 @@ hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
 
 4. Переустановите Node.js для Linux и Raspberry 2/3.
 
-    ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
 
     ``sudo apt install -y nodejs``
 
@@ -104,7 +104,7 @@ hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
 
 Если версии разные, пожалуйста, повторите раздел [Установка Node.js](#installation-nodejs)
 
-    В качестве последней проверки, пожалуйста, проверьте версию npm с ``npm -v``.
+    В качестве последней проверки, пожалуйста, проверьте версию npm с помощью ``npm -v``.
 
 Если это приводит к версии <6, пожалуйста, сделайте обновление npm с ``sudo -H npm install -g npm@6``
 

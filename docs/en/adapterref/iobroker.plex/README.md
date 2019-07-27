@@ -112,21 +112,24 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 - add support for all Tautulli triggers
 - add playback control for players
 
+### 0.3.1 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
 ### 0.3.0 (2019-05-16)
 - ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
-- added playlists to states
-- added state description for object tree ```_playing```
-- updated German translation (instead of generating it from English)
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- (Zefau) added playlists to states
+- (Zefau) added state description for object tree ```_playing```
+- (Zefau) updated German translation (instead of generating it from English)
 
 ### 0.2.0 (2019-05-14)
-- added authentication method (using Plex user and Plex password)
-- fixed @iobroker/adapter-core dependency
+- (Zefau) added authentication method (using Plex user and Plex password)
+- (Zefau) fixed @iobroker/adapter-core dependency
 
 ### 0.1.0 (2019-04-26)
-- get initial data from Plex API
-- receive events from Plex Webhook (Plex Pass only)
-- receive events from Tatulli (if used)
+- (Zefau) get initial data from Plex API
+- (Zefau) receive events from Plex Webhook (Plex Pass only)
+- (Zefau) receive events from Tatulli (if used)
 
 
 ## License

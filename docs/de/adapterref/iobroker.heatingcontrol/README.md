@@ -51,7 +51,7 @@ Eigenschaften:
 * Node Version 8 oder höher ist erforderlich
 
 ## Probleme und Funktionswünsche
-* Wenn Sie auf Fehler stoßen oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+* Wenn Sie mit Fehlern konfrontiert sind oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im Abschnitt "GitHub-Problem" des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ## Changelog
 

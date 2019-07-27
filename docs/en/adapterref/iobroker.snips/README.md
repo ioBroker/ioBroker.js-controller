@@ -71,6 +71,10 @@ sudo apt-get install -y snips-injection
 
 ## Changelog
 
+### 1.3.1
+
+* (unltdnetworx) add multilingual blinds/switch-rule
+
 ### 1.3.0
 
 * (unltdnetworx) preparation for multilingualism support

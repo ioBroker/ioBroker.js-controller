@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.moma/README.md
 title: kein Titel
-hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
+hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -18,9 +18,9 @@ hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
 
 ## Moma Adapter für ioBroker
 ** MoMa **ist ein Adapter für die Überwachung und Wartung einer auf ioBroker basierenden Hausautomationsinstallation.
-** MoMa** zielt auf Heiminstallationen (Automatisierungsinstallationen) ab, die etwas komplexer sind als eine einzelne Maschine, die auf einer oder einer kleinen Anzahl von Maschinen läuft und einen grundlegenden Lastenausgleich in einem Netzwerk durchführt.
+** MoMa** zielt auf Heiminstallationen (Automatisierungsinstallationen) ab, die etwas komplexer sind als eine einzelne Maschine, die auf einer oder einer kleinen Anzahl von Maschinen läuft und einen grundlegenden Lastenausgleich innerhalb eines Netzwerks durchführt.
 
-Es ist nicht als Ersatz für Verwaltungstools wie **Puppet** **Chef** **Salt** oder **Ansible** gedacht.
+Es ist nicht als Ersatz für Administrations-Tools wie **Puppet** **Chef** **Salt** oder **Ansible** gedacht.
 Diese sind für große Umgebungen mit vielen Computern gedacht und können Pakete remote installieren. **MoMa** kann nur vorhandene Installationen remote aktualisieren, keine Remote-Installation und keine Remote-Konfiguration.
 
 Ich verwende es, um meine IT-Infrastruktur zu Hause (einschließlich der Heimautomation) zu überwachen und auf dem neuesten Stand zu halten.
@@ -50,8 +50,11 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
 Grundlegende Idee ist, für jede Instanz (moma. \ <Instanz-ID \>) einen Baum zu haben, der alle Informationen zu der Maschine enthält, auf der die Instanz ausgeführt wird.
 + ein allgemeiner Baum (moma.meta), unter dem jede Instanz ein Gerät \ <Hostname \> erstellt, das einen Verweis auf die Instanz und einige Überwachungsinformationen enthält.
++ ein Admin-Tab für die Wartung (Updates des Betriebssystems, des js-Controllers, der Adapter)
 
 ## Referenz
+Ein Admin-TabMoMa ist verfügbar, um Updates zu starten oder bei Bedarf einen Neustart zu starten.
+
 Folgende Funktionen der Bibliothekssysteminformation werden beim Start einmalig aufgerufen:
 
 * Baseboard - Informationen zur Hauptplatine des Computers
@@ -106,9 +109,14 @@ Folgende Funktionen der Bibliothekssysteminformation werden in Intervall 4 aufge
 Folgende Funktionen von **MoMa** werden in Intervall 4 aufgerufen (Standard jeden Tag):
 
 * updates - prüft auf ausstehende Updates und zeigt die Anzahl der Updates in moma.meta. \ <Hostname \>. updates an (derzeit nur Ubuntu, Debian, openSUSE, RedHat)
+* checkIob - Überprüft alle Adapter und den js-controller auf verfügbare Updates
 * checkBatteries - Überprüft Batteriezustandsvariablen (aktuell implementierte Zustandsnamen: LOWBAT, LOW_BAT)
 
 ## Changelog
+
+### 1.1.4 (2019-07-22)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
+                 Update of Adapters and JS-Controller.
 
 ### 1.1.3 (2019-07-03)
 * (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3

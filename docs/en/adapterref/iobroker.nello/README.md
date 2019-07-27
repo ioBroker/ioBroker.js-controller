@@ -443,6 +443,9 @@ Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smash
 
 ## Changelog
 
+### 2.0.6 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
 ### 2.0.5 (2019-05-15)
 - ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#25](https://github.com/Zefau/ioBroker.nello/pull/25))
 - (Zefau) updated dependencies

@@ -96,7 +96,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 Jede Rolle hat die folgenden drei Zustände:
 
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
-* **BATTERY** *Boolean* - Wenn dies zutrifft, wird ein kleines Batterie-Leersymbol angezeigt
+* **BATTERY** *Boolean* - Wenn dies zutrifft, wird ein kleines Batterie-Leer-Symbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
@@ -115,7 +115,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 }
 ````
 
-    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüssel-Symbol hinter dem Datenpunkt in der Registerkarte Objekte von iobroker, siehe oben)
+    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüssel-Symbol hinter dem Datenpunkt in der Registerkarte Objekte von iobroker, siehe oben).
 
 Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
@@ -205,7 +205,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
 * **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
-* **UP** / **DOWN** *boolean* - Wenn diese Option auf true gesetzt ist, wird der Blind auf / ab bewegt (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden)
+* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, fährt der Blind auf / ab (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden)
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -252,8 +252,18 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ## Changelog
 
+### 0.0.47 (2019-07-22)
+* (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (Sebastian Bormann) Added invert-flag inside custom datapoint configuration dialog.
+
+### 0.0.46 (2019-07-20)
+* (Sebastian Bormann) Added options to device configuration dialog.
+* (Sebastian Bormann) Added readonly-flag to device options.
+* (Sebastian Bormann) Added invert color temperature flag to device options for lights.
+* (Sebastian Bormann) Added invert flag to device options for blinds.
+
 ### 0.0.45 (2019-07-15)
-* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options).
 
 ### 0.0.44
 * (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.

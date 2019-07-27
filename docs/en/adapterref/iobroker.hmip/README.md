@@ -44,6 +44,9 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 0.0.12
+* (jogibear9988) multiple fixes
+
 ### 0.0.11
 * (jogibear9988) multiple fixes
 

@@ -134,6 +134,9 @@ Under *Objects* the gateway and its learned devices are now displayed:
 The manual was created to the best of my knowledge and belief.
 
 ## Changelog
+### 1.2.8 (2019-07-18)
+* (SchumyHao) Change curtain and gateway light role that making them can be detected by type-detector
+
 ### 1.2.7 (2019-06-25)
 * (SchumyHao) Add several devices support for protocol 2.0.x
 

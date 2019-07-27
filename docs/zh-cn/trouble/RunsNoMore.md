@@ -4,7 +4,7 @@ lastChanged: 06.06.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/trouble/RunsNoMore.md
-hash: 9iXRa+c7jhjaegwF7+nwMZvFDta9QSibRxA4R/7jyGk=
+hash: 4OksFFlOB3croZRpjqMaK8/sIl+YhDm0jeKspiX222k=
 ---
 ＃ioBroker不再工作了
 在论坛中经常会出现ioBroker不再运行的情况。但这是一个包含尽可能多信息的声明：我的车不开车。
@@ -201,10 +201,10 @@ iobroker add admin --port 8089
 
 这是8089一个当然免费的端口。然后，您可以通过http：// ip：8089联系管理员。
 
-设置完成后，您应该卸载新的（第二个端口8089）实例以节省资源。
+设置再次正常后，您应该卸载新的（端口8089上的第二个）实例以节省资源。
 
 ## Npm已经消失了
-由于npm的问题，可能会发生从Linux升级后，通常也在皮肤版本（4.x，6.x，8.x）内的nodejs升级后，突然间什么都没有了。
+由于npm的问题，可能会发生这种情况，从Linux升级后，通常也会升级皮肤版本（4.x，6.x，8.x）中的nodejs，突然没有任何效果。
 
 因此，例如，不再安装适配器，错误消息是*** npm not found ***
 

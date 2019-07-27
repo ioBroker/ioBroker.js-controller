@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -22,7 +22,7 @@ hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
    1. [Получить токен API] (# get-a-api-token)
    2. [Функция обратного вызова] (# функция обратного вызова)
    3. [Штаты] (# штаты)
-2. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
+2. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
    1. [Закрывайте дверь в 10 вечера вечером] (# запирайте дверь в 10 вечера вечером)
    2. [Пусть Alexa сообщит вам об изменениях блокировки] (# let-alexa-inform-you-about-lock-changes)
    3. [Пусть Telegram сообщит вам об изменениях блокировки] (# let-telegram-inform-you-about-about-lock-changes)
@@ -57,11 +57,6 @@ hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
 
 | Канал | Государство | Описание |
 |:------- |:----- |:----------- |
-| обратные вызовы | - | Обратные вызовы моста |
-| обратные вызовы | список | Список обратных вызовов (в формате JSON) |
-| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | - | Обратный звонок |
-| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | \ _delete | Действие для удаления обратного вызова из Bridge |
-| обратные вызовы ._ \ <UniqueIdOfCallback \> _ | URL | URL обратного вызова |
 | - | \ _connected | Флаг, указывающий, подключен ли мост к серверу Nuki |
 | - | bridgeId | ID моста / сервера |
 | - | bridgeIp | IP-адрес моста |
@@ -193,7 +188,7 @@ schedule('0 22 * * *', function()
 });
 ```
 
-__Заменить `nuki2.0.door__home_door.status.lockState` на lockState вашей блокировки! __ Вы также можете настроить сообщение через `msg`.
+__Замените `nuki2.0.door__home_door.status.lockState` на lockState вашей блокировки! __ Вы также можете настроить сообщение через `msg`.
 
 ### Пусть Alexa сообщит вам об изменениях блокировки
 Для этого требуется адаптер ioBroker ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
@@ -219,7 +214,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript, чтобы произнести фразу, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
+Вы можете использовать эту функцию в ioBroker.javascript для произнесения фразы, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
 
@@ -302,7 +297,7 @@ function messenger(content, user = '')
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (конкретным пользователям).
+Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (определенным пользователям).
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
 
@@ -371,6 +366,9 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 ### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
 - (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
 - (Zefau) bump to stable release
+
+### 0.9.13 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.9.12 (2019-05-16)
 - (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))

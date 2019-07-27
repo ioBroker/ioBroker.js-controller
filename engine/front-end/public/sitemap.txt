@@ -113,6 +113,7 @@ https://doc.iobroker.net/#de/documentation/dev/stateroles.md
 https://doc.iobroker.net/#de/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#de/documentation/dev/vscode.md
 https://doc.iobroker.net/#de/documentation/dev/webstorm.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 https://doc.iobroker.net/#de/documentation/faq/basic.md
 https://doc.iobroker.net/#de/documentation/faq/README.md
 https://doc.iobroker.net/#de/documentation/faq/_010_general.md
@@ -239,6 +240,7 @@ https://doc.iobroker.net/#en/documentation/dev/stateroles.md
 https://doc.iobroker.net/#en/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#en/documentation/dev/vscode.md
 https://doc.iobroker.net/#en/documentation/dev/webstorm.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 https://doc.iobroker.net/#en/documentation/faq/basic.md
 https://doc.iobroker.net/#en/documentation/faq/README.md
 https://doc.iobroker.net/#en/documentation/faq/_010_general.md
@@ -365,6 +367,7 @@ https://doc.iobroker.net/#ru/documentation/dev/stateroles.md
 https://doc.iobroker.net/#ru/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#ru/documentation/dev/vscode.md
 https://doc.iobroker.net/#ru/documentation/dev/webstorm.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 https://doc.iobroker.net/#ru/documentation/faq/basic.md
 https://doc.iobroker.net/#ru/documentation/faq/README.md
 https://doc.iobroker.net/#ru/documentation/faq/_010_general.md
@@ -491,6 +494,7 @@ https://doc.iobroker.net/#zh-cn/documentation/dev/stateroles.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/vscode.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/webstorm.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/basic.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/README.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/_010_general.md

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.moma/README.md
 title: 无题
-hash: EfM1Dsr3gySzcPPSWDCubYJ28nYPqN+1S4SzV51US0I=
+hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -50,8 +50,11 @@ GitHub：https：//github.com/AWhiteKnight/ioBroker.moma
 
 基本思想是为每个实例（moma。\ <instance-id \>）添加一个树，其中包含运行实例的机器的所有信息。
 +一个公共树（moma.meta），每个实例在其下创建一个device \ <hostname \>，其中包含对实例的引用和一些监视信息。
++用于维护的管理选项卡（操作系统更新，js控制器，适配器）
 
 ##参考
+管理tabMoMa可用于启动更新，或者在必要时启动重新启动。
+
 以下函数库系统信息在启动时调用一次：
 
 *基板 - 有关计算机主板的信息
@@ -105,10 +108,15 @@ GitHub：https：//github.com/AWhiteKnight/ioBroker.moma
 
 以下函数** MoMa **在区间4中调用（默认每天）：
 
-*更新 - 检查挂起的更新并显示moma.meta。\ <hostname \>。更新中的更新量（目前只有Ubuntu，Debian，openSUSE，RedHat）
+*更新 - 检查挂起的更新，并显示moma.meta。\ <hostname \>。更新中的更新量（目前只有Ubuntu，Debian，openSUSE，RedHat）
+* checkIob  - 检查所有适配器和js-controller以获取可用更新
 * checkBatteries  - 检查电池状态变量（当前实现的状态名称：LOWBAT，LOW_BAT）
 
 ## Changelog
+
+### 1.1.4 (2019-07-22)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
+                 Update of Adapters and JS-Controller.
 
 ### 1.1.3 (2019-07-03)
 * (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3

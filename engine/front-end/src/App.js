@@ -26,6 +26,8 @@ import Router from './Router';
 import Utils from './Utils';
 import Cookies from './Components/Cookies';
 
+import 'react-splitter-layout/lib/index.css';
+
 import LogoBig from './assets/iobroker-logo.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
 

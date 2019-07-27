@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: fJWbc2AUfUlvEbHQ8lUvLCgs5r8wt6RytzZfd4WRDjQ=
+hash: Q1IXY7Gv251+NOBKiMXZN/zHkn2MxA7QEGVkGiGdq7k=
 ---
 ![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -20,29 +20,15 @@ Basierend auf der dorita980-Bibliothek https://github.com/koalazak/dorita980#rea
 
 **Inhaltsverzeichnis**
 
-1. [Funktionen] (# Funktionen)
-2. [Installation] (# installation)
-3. [Setup Instructions] (# Setup-Anweisungen)
-4. [Unterstützte Roomba / Firmware-Versionen] (# supported-roombas - firmware-versions)
-5. [Channels & States] (# channels - states)
-6. [Beschreibung der Einstellungen (unvollständig)] (# Beschreibung der Einstellungen (unvollständig))
-7. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
-8. [Changelog] (# changelog)
-9. [Credits] (# Credits)
-10. [Lizenz] (# Lizenz)
-
-## Eigenschaften
-Die folgenden Funktionen werden mit diesem Adapter geliefert:
-
-- __Senden Sie Befehle__ (Starten, Stoppen, Fortsetzen, Anhalten, Andocken) an Ihren Roomba
-- __Gerätestatus__ abrufen, z. B. Akku, angedockt, voll / eingelegtes Fach (vollständige Liste siehe [Kanäle & Status] (# Kanäle - Status))
-- __Gerätekonfiguration__ abrufen, z. B. Einstellungen für Einstellungen, Netzwerk oder Zeitplan (eine vollständige Liste finden Sie unter [Channels & States] (# channels - states))
-- Abrufen von __Gerätestatistiken__, z. B. Gesamtmissionen, Stunden an der Dockingstation usw. (vollständige Liste siehe [Kanäle & Status] (# Kanäle - Status))
-- Abrufen von Informationen zu __aktueller Mission__ (wenn Ihr Roomba bereinigt), z. B. Start- und Endzeit, Gesamtlaufzeit, bereinigte Fläche usw. (nur bei unterstützten Roomba-Versionen siehe [Unterstützte Roomba- / Firmware-Versionen] (# supported-roombas --firmware-versionen))
-- __Karte basierend auf den erhaltenen Missionsdaten zeichnen__ (nur auf unterstützten Roomba \ 's)
-- __Web Interface__, das den Status und die Karte der aktuellen sowie der vorherigen / archivierten Missionen anzeigt:
-
-![Roomba-Schnittstelle](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
+1. [Installation] (# Installation)
+2. [Setup Instructions] (# Setup-Anweisungen)
+3. [Unterstützte Roomba / Firmware-Versionen] (# supported-roombas - firmware-versions)
+4. [Channels & States] (# channels - states)
+5. [Beschreibung der Einstellungen (unvollständig)] (# Beschreibung der Einstellungen (unvollständig))
+6. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
+7. [Changelog] (# changelog)
+8. [Credits] (# Credits)
+9. [Lizenz] (# Lizenz)
 
 ## Installation
 ioBroker.roomba benötigt [Segeltuch](https://www.npmjs.com/package/canvas), um Karten der Roomba-Missionen zu zeichnen. ioBroker versucht, diese Abhängigkeit mit der Installation von ioBroker.roomba zu installieren.
@@ -69,7 +55,7 @@ So richten Sie ioBroker.roomba automatisch ein: Befolgen Sie die Anweisungen im 
 2. Vergewissern Sie sich, dass sich Ihr Roboter in der Home Base befindet und eingeschaltet ist (grüne Lichter leuchten).
 3. Halten Sie dann die HOME-Taste an Ihrem Roboter gedrückt, bis eine Reihe von Tönen abgespielt wird (ca. 2 Sekunden).
 4. Lassen Sie die Taste los und Ihr Roboter wird WIFI-Licht blinken.
-5. Kommen Sie dann hierher zurück und drücken Sie die Taste, um die IP-Adresse und die Anmeldeinformationen abzurufen.
+5. Kommen Sie dann hierher zurück und drücken Sie die Taste, um IP-Adresse und Anmeldeinformationen abzurufen.
 
 Wenn der automatisierte Vorgang fehlschlägt, um Ihre Anmeldeinformationen abzurufen, verwenden Sie bitte die manuelle Einrichtung.
 
@@ -283,6 +269,13 @@ Vielen Dank an [@koalazak] (https://github.com/koalazak) für die [inoffizielle 
 Icons von <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> von <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com werden</a> von <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> lizenziert </div>
 
 ## Changelog
+
+### 1.0.3 (2019-07-23)
+- (Zefau) fixed bug _uncaught exception: Cannot read property 'x' of undefined_
+
+### 1.0.2 (2019-07-20)
+- (Zefau) reworked placing home icon ([#23](https://github.com/Zefau/ioBroker.roomba/issues/23))
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 1.0.1 (2019-05-15)
 - (Zefau) fixed display error in Chrome ([#19](https://github.com/Zefau/ioBroker.roomba/issues/19#issuecomment-492963244))

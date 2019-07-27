@@ -440,7 +440,7 @@ class Markdown extends Router {
                     _path = locParts.join('/')
                 }
 
-                this.props.onNavigate(null, location.tab, _path, _link);
+                this.props.onNavigate(null, this.props.rootPath || location.tab, _path, _link);
             } else {
                 this.props.onNavigate(null, null, link);
             }
@@ -896,6 +896,7 @@ Markdown.propTypes = {
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
+    rootPath:  PropTypes.string,
     path:  PropTypes.string,
     text:  PropTypes.string,
     editMode: PropTypes.bool,

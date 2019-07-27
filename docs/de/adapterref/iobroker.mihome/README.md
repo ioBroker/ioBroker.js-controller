@@ -124,6 +124,9 @@ Unter *Objekte* wird nun das Gateway und seine angelernten Geräte angezeigt:
 Die Anleitung wurde nach besten Wissen und Gewissen erstellt.
 
 ## Changelog
+### 1.2.8 (2019-07-18)
+* (SchumyHao) Change curtain and gateway light role that making them can be detected by type-detector
+
 ### 1.2.7 (2019-06-25)
 * (SchumyHao) Add several devices support for protocol 2.0.x
 

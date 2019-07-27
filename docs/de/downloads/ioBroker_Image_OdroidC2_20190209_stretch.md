@@ -75,12 +75,9 @@ Port of states DB (file), default[9000]: ENTER
 Host name of this machine [hostname]: ENTER
 ```
  
-
 Besonderheiten bei der Installation in einem Multihost-System werden hier beschrieben:
 
-[Hier klicken](./config/multihost.md)
-
- 
+[Hier klicken](config/multihost.md)
 
 Freigabe von redis für den User iobroker
 Damit z.B. der backitup -Adapter auch auf redis zugreifen kann, muss dem User dafür das notwendige Recht gegeben werden mit:

@@ -76,7 +76,7 @@ Die nützlichsten Funktionen:
 
 - `` `<break time =" 3s "/>` `` - mache eine Pause für x Sekunden (maximal 10 Sekunden).
 - `` `<emphasis> big </ emphasis>` `` - betonen Sie ein Wort.
-- `` `<prosody volume =" + 6dB "rate =" 90% "> Ich spreche dies </ prosody>` `` - Geschwindigkeits- und Lautstärke-Parameter steuern.
+- `` `<prosody volume =" + 6dB "rate =" 90% "> Ich spreche dies </ prosody>` `` - Geschwindigkeits- und Lautstärkeparameter steuern.
 - `` `<say-as interpret-as =" digits "> 12345 </ say-as>` `` - sagen Sie jede Ziffer einzeln.
 
 Weitere [Info](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference).
@@ -114,7 +114,7 @@ Mit ```ru;75;Погода хорошая``` können wir die Verwendung der russi
 
 Sie können die Lautstärke der Ansage in Prozent von der aktuellen oder angegebenen Lautstärke (nicht von der maximalen) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` lautet und "Ansagelautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% abgespielt.
 
-Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie dieses Feld leer lassen, werden die Standardeinstellungen verwendet: Windows - cmdmp3.exe, OSX - / usr / bin / afplay, Linux - mpg321 oder Omxplayer (empfohlen).
+Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie dieses Feld leer lassen, werden die Standardeinstellungen verwendet: windows - cmdmp3.exe, OSX - / usr / bin / afplay, linux - mpg321 oder omxplayer (empfohlen).
 
 Um Omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
 

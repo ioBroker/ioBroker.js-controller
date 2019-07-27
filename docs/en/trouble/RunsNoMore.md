@@ -4,7 +4,7 @@ lastChanged: 06.06.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/trouble/RunsNoMore.md
-hash: 9iXRa+c7jhjaegwF7+nwMZvFDta9QSibRxA4R/7jyGk=
+hash: 4OksFFlOB3croZRpjqMaK8/sIl+YhDm0jeKspiX222k=
 ---
 # IoBroker is not working anymore
 It often comes in the forum that ioBroker is no longer running. But that is a statement that carries as much information as: my car does not drive.
@@ -201,7 +201,7 @@ To run.
 
 Here is 8089 a port that is certainly free. Then you can reach admin at http:// ip: 8089.
 
-After the settings are ok, you should uninstall the new (second on port 8089) instance to save resources.
+After the settings are fine again, you should uninstall the new (second on the port 8089) instance to save resources.
 
 ## Npm has disappeared
 Due to a problem with npm it can happen that after an upgrade from Linux, which usually also nodejs within a skin version (4.x, 6.x, 8.x) is upgraded, suddenly nothing is working anymore.

@@ -21,6 +21,12 @@ import Footer from '../Footer';
 import Utils from '../Utils';
 import {MdContentCopy as IconCopy} from 'react-icons/md';
 import {MdClose as IconClose} from 'react-icons/md';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Markdown from '../Markdown';
+import Router from '../Router';
 
 const MARGIN = 10;
 const styles = theme => ({
@@ -120,14 +126,18 @@ const styles = theme => ({
 });
 
 const IGONRED_ATTRS = ['file', 'date', 'linux', 'picture', 'device', 'info', 'details'];
-class Downloads extends Component {
+class Downloads extends Router {
     constructor(props) {
         super(props);
+
+        const location = Router.getLocation();
+
         this.state = {
             content: null,
             loadTimeout: false,
             filter: 'all',
             tooltip: '',
+            info: location.chapter || ''
         };
         this.load();
         // Give 300ms to load the page. After that show the loading indicator.
@@ -176,6 +186,56 @@ class Downloads extends Component {
         return (<div>{lines.map(line => [line, (<br key="br"/>)])}</div>);
     }
 
+    closeDialog() {
+        this.onNavigate(null, null, null, '');
+        this.setState({info: ''})
+    }
+
+    onNavigate(language, tab, page, chapter) {
+        this.props.onNavigate(language, tab, page, chapter);
+    }
+
+    renderInfo() {
+        if (!this.state.info) return null;
+
+        return (
+            <Dialog
+                className={this.props.classes.dialog}
+                fullWidth={this.state.mobile}
+                maxWidth="xl"
+                open={true}
+                onClose={() => this.closeDialog()}
+                aria-labelledby="max-width-dialog-title"
+            >
+
+                <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
+                    <Markdown
+                        path={'downloads/' + this.state.info}
+                        rootPath="documentation"
+                        language={this.props.language}
+                        theme={this.props.theme}
+                        mobile={this.props.mobile}
+                        editMode={false}
+                        editEnabled={false}
+                        onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => this.closeDialog()} color="primary">{I18n.t('Close')}</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+    onLink(link) {
+        if (link.match(/^https?:/i)) {
+            Utils.openLink(link);
+        } else {
+            this.onNavigate(null, null, null, link);
+            this.setState({info: link});
+        }
+    }
+
     renderImage(image) {
         if (this.state.filter && this.state.filter !== 'all' && this.state.filter !== image.device) return null;
 
@@ -211,7 +271,7 @@ class Downloads extends Component {
             </CardActionArea>
             <CardActions>
                 <Button size="small" color="primary" onClick={() => Utils.openLink(image.file.startsWith('http') ? image.file : 'http://iobroker.live/images/' + image.file)}>{I18n.t('Download')}</Button>
-                {image.info && (<Button size="small" color="primary" onClick={() => Utils.openLink(image.info)}>{I18n.t('Info')}</Button>)}
+                {image.info && (<Button size="small" color="primary" onClick={() => this.onLink(image.info)}>{I18n.t('Info')}</Button>)}
             </CardActions>
         </Card>);
     }
@@ -234,7 +294,7 @@ class Downloads extends Component {
                     <IconClose />
                 </IconButton>,
             ]}
-        />)
+        />);
     }
 
     renderInfoAboutInstall() {
@@ -300,6 +360,7 @@ class Downloads extends Component {
             </div>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
             this.renderSnackbar(),
+            this.renderInfo(),
         ];
     }
 }

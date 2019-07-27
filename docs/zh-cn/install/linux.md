@@ -4,7 +4,7 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
+hash: fxqCnt9dyq6pvLDK+LxhsmUfrM+qGb5piy2Mkn23PXM=
 ---
 Linux下的＃ioBroker安装
 ！>本手册不适用于网站的完成图像！
@@ -90,7 +90,7 @@ SSH的root访问权限将被解锁。
 
 4.重新安装适用于Linux和Raspberry 2/3的Node.js.
 
-    ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
 
     ``sudo apt install -y nodejs``
 

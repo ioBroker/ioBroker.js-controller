@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: 6qE+p3V1jrJEc9IQbXpYVXxRdP8+xVmErjqgHFZd4go=
+hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -57,11 +57,6 @@ Als Gerät wird eine Brücke mit dem Namensmuster ```bridge__<name of bridge>```
 
 | Kanal | Staat | Beschreibung |
 |:------- |:----- |:----------- |
-| Rückrufe | - | Rückrufe der Brücke |
-| Rückrufe | liste | Liste eines Rückrufs (im JSON-Format) |
-| Rückrufe ._ \ <UniqueIdOfCallback \> _ | - | Rückruf |
-| Rückrufe ._ \ <UniqueIdOfCallback \> _ | \ _löschen | Aktion zum Entfernen des Rückrufs von Bridge |
-| Rückrufe ._ \ <UniqueIdOfCallback \> _ | url | URL des Rückrufs |
 | - | \ _connected | Flag, das angibt, ob die Bridge mit dem Nuki-Server verbunden ist oder nicht |
 | - | bridgeId | ID der Bridge / des Servers |
 | - | bridgeIp | IP-Adresse der Brücke |
@@ -119,8 +114,8 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 | config | ledBrightness | Die Helligkeit der LED: 0 (aus) bis 5 (max) |
 | config | fobAction1 | Die Fob-Aktion, wenn die Taste einmal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction2 | Die Fob-Aktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
-| config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
-| config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> &quot;{&quot; 0 &quot;:&quot; NONE &quot;,&quot; 1 &quot;:&quot; UNLOCK &quot;,&quot; 2 &quot;:&quot; LOCK &quot;,&quot; 3 &quot;:&quot; LOCK_N_GO &quot;,&quot; 4 &quot;:&quot; INTELLIGENT &quot;}&quot; |
+| config | fobAction3 | Die Schlüsselanhängeraktion, wenn die Taste dreimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
+| config | fobAction3 | Die Schlüsselanhängeraktion, wenn die Taste dreimal gedrückt wird <br> &quot;{&quot; 0 &quot;:&quot; NONE &quot;,&quot; 1 &quot;:&quot; UNLOCK &quot;,&quot; 2 &quot;:&quot; LOCK &quot;,&quot; 3 &quot;:&quot; LOCK_N_GO &quot;,&quot; 4 &quot;:&quot; INTELLIGENT &quot;}&quot; |
 | config | werbemodus | Der Werbemodus (Batteriesparen) <br> `{"0": 'AUTOMATIC', "1": 'NORMAL', "2": 'SLOW', "3": 'SLOWEST'}` |
 | config | werbemodus | Der Werbemodus (Batteriesparen) <br> &quot;{&quot; 0 &quot;:&quot; AUTOMATIC &quot;,&quot; 1 &quot;:&quot; NORMAL &quot;,&quot; 2 &quot;:&quot; SLOW &quot;,&quot; 3 &quot;:&quot; SLOWEST &quot;}&quot; |
 | config | homekitState | Der Homekit-Status <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
@@ -371,6 +366,9 @@ Icons von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicon
 ### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
 - (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
 - (Zefau) bump to stable release
+
+### 0.9.13 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.9.12 (2019-05-16)
 - (Zefau) fixed an issue causing the same callback set multiple times (see [#9](https://github.com/Zefau/ioBroker.nuki2/issues/9#issuecomment-493148883))

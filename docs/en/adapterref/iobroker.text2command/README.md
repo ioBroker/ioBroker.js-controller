@@ -245,6 +245,9 @@ First the command will be processed with your javascript and if javascript will 
 - in Russian male and female answers.
 
 ## Changelog
+### 1.3.0 (2019-07-18)
+* (bluefox) Using the defined language by words
+
 ### 1.2.5 (2019-02-12)
 * (unltdnetworx) description in german corrected
 * (unltdnetworx) added percent to true/false rules

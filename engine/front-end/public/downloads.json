@@ -47,7 +47,7 @@
     "picture": "c2_img.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "http://www.iobroker.net/docu/?page_id=8955&lang=de"
+    "info": "ioBroker_Image_OdroidC2_20190209_stretch.md"
   },
   {
     "file": "ioBroker_Image_OPiplus2e_20190210_stretch.zip",

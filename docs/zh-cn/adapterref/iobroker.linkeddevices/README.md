@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.linkeddevices/README.md
-title: Objekt（Datenpunkt）verlinken
-hash: sJ8Vym9Cn0EmgbYJG+B0IgjEQKfhM9SkZlVFUvWfLE8=
+title: 无题
+hash: 5iPnnZJG/j2E5kYMQgXXzJCv7PFT9Oyp9RSMOwddB/w=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
@@ -18,86 +18,23 @@ hash: sJ8Vym9Cn0EmgbYJG+B0IgjEQKfhM9SkZlVFUvWfLE8=
 适用于ioBroker的## linkeddevices适配器
 [![贝宝（https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHPPW474N5CKQ&source=url)
 
-使用自定义结构创建设备的链接对象（数据点）。这使得在ioBroker中创建一个结构成为可能，其中所有对象都是集中的，例如用于vis或脚本。例如，这提供了以下优点：在硬件交换中，仅必须重新创建链接对象并且所有vis和脚本再次起作用。
+linkeddevices创建具有自定义结构的设备的链接对象（数据点）。这使得可以在ioBroker中创建一个结构，其中所有对象都是集中的，例如，用于vis视图或脚本。这提供了例如以下优点：通过硬件交换，仅必须重新创建链接对象并且所有可见视图和脚本再次起作用。
 
-使用适配器，您可以转换对象或将其转换为其他类型（尚未完全实现）。
+使用适配器，您还可以转换对象或将其转换为其他类型（尚未完全实现）。
 
-<img src="screenshots/structure.png?sanitize=true&raw=true" title="Beispielf�rselbstdefinierte Struktur"/>
+![Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
 
 此适配器的灵感来自[Pman的虚拟设备脚本](https://forum.iobroker.net/topic/7751/virtual-devices)。
 
-＃Objekt（Datenpunkt）verlinken
-Ein Objekt（Datenpunkt）kannst du�berdenButton'Einstellungen'imMen�'Objekt'erstellen。
-
-<img src="screenshots/object_tree_custom_button.png?sanitize=true&raw=true" title="Men�&#39;Objekt&#39;"/>
-
-## Objekt（Datenpunkt）Einstellungen
-<img src="screenshots/custom_dialog.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-Die folgendenGrundeinstellungenm�ssenf�rdasverlinkte Objekt vorgenommen werden：
-
-| Eingabefeld | Beschreibung |
-|---|---|
-| Aktiviert | einVerlinkungf�rdasObjekt aktivieren |
-| Pr�fixf�rIDdes verlinkten Objektes | Bezeichung die der Id des verlinkten Objektes vorangestellt werden soll |
-| ID des verlinkten Objekts | Id des verlinkten Objektes |
-| Zusammengesetze Id des verlinkten Objektes | Zeigt a wie die Id des verlinkten Objektes aussehen wird  -  Zusammensetzung von *'Pr�fixf�rIDdes verlinkten Objektes'＆'ID des verlinkten Objekts'* |
-
-Weiterk�nntyrNoch folgende Einstellungen vornehmen：
-
-| Eingabefeld | Beschreibung |
-|---|---|
-|名称des verlinkten Objekts | Hierk�nntihreinen Namenf�rdasverlinkte Objekte festlegen |
-| Experteneinstellungenf�rverlinktesObjekt vom Typ'X'| weitere Einstellungen dieabh�ngigvomTyp des Objektes sind。 （[Zus�tzlicheInformationenhierzu findest du weiter unten]（https://github.com/Scrounger/ioBroker.linkeddevices/blob/master/README.md#experteneinstellungen-f%C3%BCr-verlinktes-objekt-vom-typ-x ）） <ul><li> [Zahl（readonly）]（https://github.com/Scrounger/ioBroker.linkeddevices/blob/master/README.md#experteneinstellungen-f%C3%BCr-verlinktes-objekt-vom-typ-zahl-readonly） </li><li> [Zahl](https://github.com/Scrounger/ioBroker.linkeddevices/blob/master/README.md#experteneinstellungen-f%C3%BCr-verlinktes-objekt-vom-typ-zahl)</ li> </ ul> |
-
-** Beispiel：** Die oben im Screenshot dargestellten Eingaben erzeugen das folgende verlinkte Objekt： <img src="screenshots/example_create_linkedObject.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-##Experteneinstellungenf�rverlinktesObjekt vom Typ'X'
-Abh�ngigvomTyp（Zahl，Logigwert，Zeichenkette等）des zu verlinkenden Objektes，k�nntIhrweitere Einstellungen，wie z.B. Umrechnungen oder Umwandlungen in einen anderenTypf�rdasverlinkte Objekt einstellen。
-
-###Experteneinstellungenf�rverlinktesObjekt vom Typ'Zahl（readonly）'
-<img src="screenshots/expert_settings_number_readonly.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-####'Zahl（只读）'：Konvertiere in Typ'nicht umwandeln'
-<img src="screenshots/expert_settings_number_readonly_no_conversion.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-| Eingabefeld | Beschreibung | erlaubte Eingabe | Beispiel（siehe Bild）|
-|---|---|---|---|
-| �ndereEinheit'X'in | Einheitf�rdasverlinkte Objekt festlegen | keineBeschr�nkung| Objekt hat Einheit'kowh'，verlinktes Objekt hat Einheit'Wh'|
-|最大。 Anzahl der Nachkommastellen |最大。 Anzahl derNachkommastellenf�rdasverlinkte Objekt festlegen | Zahlen | Wert des Objekts'100.561'ergibtf�rdasverlinkte Objekt den Wert'101'|
-| �nderemin'X'in | minimaler Wert der das verlinkte Objekt annehmen darf | Zahlen | -  |
-| �nderemax'X'auf| maximaler Wert der das verlinkte Objekt annehmen darf | Zahlen | -  |
-| Umrechnungf�rverlinktes'read'Objekt|数学与技术学院_ + - / *。 （）_＆* Zahlen* | Wert des Objektes'279688.9'mit Umrechnung'/ 1000'zeigt beim verlinkten Objekt den Wert'280.6889'an |
-
-####'Zahl（readonly）'：Typ'Logikwert'中的Konvertiere
-<img src="screenshots/expert_settings_number_readonly_convert_to_boolean.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-| Eingabefeld | Beschreibung | erlaubte Eingabe | Beispiel（siehe Bild）|
-|---|---|---|---|
-| Bedingung'true'f�rverlinktesObjekt | Wert des Objektes，f�rden das verlinkte Objekt auf'true'gesetzt werden soll | *=！=> <> = <=* + *Zahlen* | F�rWerte'> 100'des Objekt ist das verlinkte Objekt'true'|
-
-###Experteneinstellungenf�rverlinktesObjekt vom Typ'Zahl'
-####'Zahl'：Typ'nicht umwandeln'中的Konvertiere
-<img src="screenshots/expert_settings_number_no_conversion.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-| Eingabefeld | Beschreibung | erlaubte Eingabe | Beispiel（siehe Bild）|
-|---|---|---|---|
-| �ndereEinheit'X'in | Einheitf�rdasverlinkte Objekt festlegen | keineBeschr�nkung| Objekt hat keine Einheit，verlinktes Objekt hat Einheit'％'|
-|最大。 Anzahl der Nachkommastellen |最大。 Anzahl derNachkommastellenf�rdasverlinkte Objekt festlegen | Zahlen | Wert des Objekts'100.561'ergibtf�rdasverlinkte Objekt den Wert'101'|
-| �nderemin'X'in | minimaler Wert der das verlinkte Objekt annehmen darf | Zahlen | -  |
-| �nderemax'X'auf| maximaler Wert der das verlinkte Objekt annehmen darf | Zahlen | -  |
-| Umrechnungf�rverlinktesObjekt |数学与技术学院_ / *._＆* Zahlen* | Wert des Objektes'180'mit Umrechnung'* 100 / 255'zeigt beim verlinkten Objekt den Wert'71'an。 Umgekehrt wird der Kehrwert bei der Berechnung gebildet，d.h。 wenn das verlinte Objekt den Wert'71'hat，hat das Objekt den Wert'180'。 Das kann z.B. f�rHueLampen verwendet werden，um den Wertebereich von'0-255'in'0％-100％'umzuwandeln |
-
-####'Zahl'：Typ'Logikwert'中的Konvertiere
-<img src="screenshots/expert_settings_number_convert_to_boolean.png?sanitize=true&raw=true" title="Objekt Einstellungen"/>
-
-| Eingabefeld | Beschreibung | erlaubte Eingabe | Beispiel（siehe Bild）|
-|---|---|---|---|
-| Bedingung'true'f�rverlinktesObjekt | Wert des Objektes，f�rden das verlinkte Objekt auf'true'gesetzt werden soll | *=！=> <> = <=* + *Zahlen* | F�rWerte'> 30'des Objekt ist das verlinkte Objekt'true'|
-| Wert wenn verlinktes Objekt'true'ist | Wert des Objektes wenn das verlinkte Objekt'true'ist | Zahlen | Wird das verlinkte Objekt auf'true'gesetzt，wird der Wert des Objektes'30'|
-| Wert wenn verlinktes Objekt'false'ist | Wert des Objektes wenn das verlinkte Objekt'false'ist | Zahlen | Wird das verlinkte Objekt auf'false'gesetzt，wird der Wert des Objektes'10'|
+##配置
+* [英文描述]（doc / en / README.md）
+* [deutsche Beschreibung]（doc / de / README.md）
 
 ## Changelog
+
+### 0.3.0
+* (Scrounger) linked devices overview added to adapter configuration
+* (Scrounger) bug fixes
 
 ### 0.2.1
 * (Scrounger) boolean to string converter added

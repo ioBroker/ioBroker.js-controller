@@ -108,6 +108,9 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.4.2 (2019-07-23)
+* (foxriver76) lc and ts for alarm states are now valid formatted for js-controller
+
 ### 2.4.1 (2019-07-13)
 * (foxriver76) also poll invisible vars if configured
 

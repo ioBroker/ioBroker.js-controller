@@ -102,7 +102,7 @@ hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
 
 Почти все роли имеют состояние STATE и / или LEVEL. В большинстве случаев это представляет собой основную функцию устройства. Вы можете назначить ему состояния io-broker следующих типов:
 
-* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
+* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
@@ -143,7 +143,7 @@ hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
   * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (это учитывается только в том случае, если свет имеет как белый, так и цветной светодиоды. Если у вас есть только один вид светодиодов, яркость контролируется УРОВНЕМ- Государственный)
 * Альтернативные цветовые пространства **еще не реализованы**
-  * **HUE_MILIGHT** * число * - Милайт использует другую отправную точку в оттенке цвета cirlce:
+  * **HUE_MILIGHT** * число * - Милайт использует другую отправную точку в оттенке цвета:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -166,7 +166,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
 * **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
-* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
+* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, которые связаны с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
 В дополнение к обычному термостату вы можете определить:
@@ -252,8 +252,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.0.47 (2019-07-22)
+* (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (Sebastian Bormann) Added invert-flag inside custom datapoint configuration dialog.
+
+### 0.0.46 (2019-07-20)
+* (Sebastian Bormann) Added options to device configuration dialog.
+* (Sebastian Bormann) Added readonly-flag to device options.
+* (Sebastian Bormann) Added invert color temperature flag to device options for lights.
+* (Sebastian Bormann) Added invert flag to device options for blinds.
+
 ### 0.0.45 (2019-07-15)
-* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options)
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options).
 
 ### 0.0.44
 * (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.

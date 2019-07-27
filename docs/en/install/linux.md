@@ -4,7 +4,7 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: o/98+euB9xIa8ZVKmvtwrb9QOWZ+b4TI3nl3Z0eAws8=
+hash: fxqCnt9dyq6pvLDK+LxhsmUfrM+qGb5piy2Mkn23PXM=
 ---
 # IoBroker installation under Linux
 !> This manual is NOT valid for finished images of the website !!!
@@ -21,7 +21,7 @@ Due to dependencies on other packages or additional installations during install
 
 If there are any questions, please post them in the forum.
 
-With the instructions published here with each Kernel update if available also automatically the node.js versions are updated.
+With the instructions published here, every kernel update will automatically update the node.js versions if available.
 
 ## Required hardware
 ### Raspberry Pi 2/3,
@@ -29,7 +29,7 @@ or any other hardware with a common Linux (Debian, Ubuntu, etc.), or even a Mac.
 
 We advise against using a Pi 1 as master. This is just not powerful enough (500 MB RAM, etc.). Due to the different hardware this manual does not fit for a Pi 1 anyway.
 
-Even a Pi 2 or Pi 3 has only max. 1 GB RAM. This should be enough for 15 adapter instances, but beyond that it can be scarce. Each adapter instance needs about 40 MB (and sometimes 200 MB or more) of RAM. Therefore, one should always keep an eye on RAM usage before enabling more adapter instances - 1 GB of RAM is finally available.
+Even a Pi 2 or Pi 3 has only max. 1 GB RAM. It should be enough for 15 adapter instances, but beyond that it can be scarce. Each adapter instance needs about 40 MB (and sometimes 200 MB or more) of RAM. Therefore, one should always keep an eye on RAM usage before enabling more adapter instances - 1 GB of RAM is finally available.
 
 ### Power adapter
 It is important to have a good power supply. With a weak power supply stability problems are to be expected
@@ -90,7 +90,7 @@ only if **ALL** these commands do not produce a result (ie no longer display a v
 
 4. Reinstall Node.js for Linux and Raspberry 2/3
 
-    ``curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
 
     ``sudo apt install -y nodejs``
 
