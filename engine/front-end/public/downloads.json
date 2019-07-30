@@ -1,4 +1,15 @@
 [
+    {
+    "file": "ioBroker_Image_Rock64_20190209_stretch.zip",
+    "linux": "Armbian Stretch Server",
+    "date": "20190730",
+    "device": "Rock64",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 10.16.0</li><li>npm 6.9.0</li></ul>",
+    "picture": "rock64.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "folgt"
+  },
   {
     "file": "ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.zip",
     "linux": "Raspbian light Buster",
