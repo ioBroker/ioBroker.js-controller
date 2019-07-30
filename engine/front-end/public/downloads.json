@@ -8,7 +8,7 @@
     "picture": "rock64.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "folgt"
+    "info": "ioBroker_Image_Rock64_20190209_stretch.md"
   },
   {
     "file": "ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.zip",
@@ -19,7 +19,7 @@
     "picture": "Pi4.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "folgt"
+    "info": "ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md"
   },
   {
     "file": "ioBroker_Image_RPi_2-3-4_20190723_buster.zip",
@@ -30,7 +30,7 @@
     "picture": "Pi4.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "folgt"
+    "info": "ioBroker_Image_RPi_2-3-4_20190723_buster.md"
   },
   {
     "file": "win/iobroker-latest-windows-installer.exe",
