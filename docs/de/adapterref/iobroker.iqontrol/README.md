@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
+hash: /F04+i5U8jSzmrOw4XXGDC7UpGfsFlrFxQ/axAdbd9w=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -96,7 +96,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 Jede Rolle hat die folgenden drei Zustände:
 
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
-* **BATTERY** *Boolean* - Wenn dies zutrifft, wird ein kleines Batterie-Leer-Symbol angezeigt
+* **BATTERY** *boolean* - wenn wahr oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
@@ -137,28 +137,36 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (dies wird nur beachtet, wenn das Licht sowohl farbige als auch weiße LEDs hat. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (dies wird nur beachtet, wenn das Licht sowohl weiße als auch farbige LEDs enthält. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
-* Alternative Farbräume **noch nicht implementiert**
-  * **HUE_MILIGHT** * number * - Milight verwendet einen anderen Startpunkt im Farbton-Farbkreis:
+* Alternative Farbräume:
+  * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
+
+    Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume auswählen:
+
+    * **RGB** / **# RGB** anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden, optional mit vorangestelltem '#'
+    * **RGBW** / **# RGBW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden, optional mit vorangestelltem '#'
+    * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex , WW = warmweiß, CW = kaltweiß), optional mit vorangestelltem '#'
+    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB (nur Farbton) -Format (hex) verwenden, optional mit vorangestelltem '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt.
+    * **Hue for Milight** Dies ist der Hue-Wert für Milight-Geräte, bei Verwendung eines anderen Startpunktes im Farbton-Farbkreis:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
+modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-  * **RGB_HUEONLY** * string * - anstelle von HUE kann das RGB_HUEONLY-Format (hex) verwendet werden. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
-  * **RGB** * string * - anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden
-  * **RGBW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden
-  * **RGBWWCW** * string * - anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS kann das RGBWWCW-Format (hex) verwendet werden
+Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das Frontend und ist daher nur aktiv, wenn iQontrol irgendwo geöffnet ist. Daher können Sie es nicht als Konverter für Farbräume verwenden. Um Konversationsschleifen zu vermeiden, wird empfohlen, entweder die ursprünglichen Farbraum-Datenpunkte (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *oder* den alternativen Farbraum-Datenpunkt zu verwenden, um diese *zu ersetzen*
+
 * Effekt-Modus:
   * **EFFECT** * Werteliste * - der abzuspielende Effekt
 * **EFFECT_NEXT** *boolean* - wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen)
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - wenn auf true gesetzt, wird der Effekt beschleunigt / verringert
-* **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
+* Verschiedenes:
+  * **LEISTUNG** * Zahl * - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
 * **SET_TEMPERATURE** *Nummer* - Zieltemperatur
@@ -189,7 +197,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *Boolean* - Zeigt an, ob eine Bewegung erkannt wurde oder nicht
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
+### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/garagedoor_closed.png" width="32"> Garagentor, <img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
   * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Fenster offen" oder "Alle geschlossen" anzuzeigen.
@@ -205,7 +213,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
 * **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
-* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, fährt der Blind auf / ab (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden)
+* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, wird der Blind nach oben / unten verschoben (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden).
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -234,7 +242,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/button.png" width="32"> Taste:
 * **STATE** *any* - jeder gewünschte Zustandstyp
-* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Button gedrückt wird
+* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn die Schaltfläche gedrückt wird
 
 ### <img src="img/icons/popup.png" width="32"> Pop-up:
 * **STATE** *any* - kann zur Anzeige weiterer Informationen verwendet werden
@@ -251,6 +259,15 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.0.49 (2019-07-27)
+* (Sebastian Bormann) Added common type and common role to custom dialog.
+* (Sebastian Bormann) Added pressure menu for toolbar.
+
+### 0.0.48 (2019-07-25)
+* (Sebastian Bormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
+* (Sebastian Bormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
+* (Sebastian Bormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
 * (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.

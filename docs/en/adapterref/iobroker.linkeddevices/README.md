@@ -36,6 +36,12 @@ This adapter is inspired from [virtual devices script by Pman](https://forum.iob
 
 ## Changelog
 
+### 0.3.2
+* (Scrounger) expertsettings for string: add prefix and suffix to string
+* (Scrounger) expertsettings for number (readonly): convert to duration
+* (Scrounger) expertsettings for number (readonly): convert to date, time or datetime
+* (Scrounger) bug fixes
+
 ### 0.3.0
 * (Scrounger) linked devices overview added to adapter configuration
 * (Scrounger) bug fixes

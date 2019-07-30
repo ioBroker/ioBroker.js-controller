@@ -63,6 +63,9 @@ to be done in admin
 
 
 ## Changelog:
+### 0.1.2
+* correction for weather (no data is given by value = 255)
+
 ### 0.1.1
 * delete buffer function to be compatible with nodejs10
 * enhanced automatic testing

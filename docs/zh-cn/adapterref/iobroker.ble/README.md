@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ble/README.md
 title: 无题
-hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
+hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
 ---
 ![建立状态](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
@@ -43,10 +43,14 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 *`“xiaomi”`：所有xiaomi蓝牙传感器，包括
   * [花卉护理植物传感器]（https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/）
   * [Mijia温度和湿度传感器]（https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse = USA）
+  * [驱蚊剂]（https://www.aliexpress.com/item/32883859984.html）
 *`“mi-flora”`：花卉植物传感器的原始插件，现在别名为“xiaomi”
 *`“ruuvi-tag”`：[Ruuvi Tag]（https://tag.ruuvi.com/）多传感器，固件版本为v1和v2。 **未经测试，请提供反馈！**
 
 ## Changelog
+
+### 0.8.1 (2019-07-26)
+* (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
 
 ### 0.7.4 (2019-07-03)
 * (AlCalzone) Removed dependency to admin instance on slaves

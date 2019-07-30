@@ -112,6 +112,11 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 - add support for all Tautulli triggers
 - add playback control for players
 
+### 0.3.2 / 0.3.3 (2019-07-25)
+- (Zefau) added file, streaming and transcoding information to Tautulli event
+- (Zefau) fixed bug when no playlists exist
+- (Zefau) fixed missing `EVENTS.json`
+
 ### 0.3.1 (2019-07-20)
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 

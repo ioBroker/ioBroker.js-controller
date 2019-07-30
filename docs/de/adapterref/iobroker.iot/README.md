@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: SvLxJ27B2YAyqHKMejjyRanFjD+2LVt6woSOELM7nHs=
+hash: J1phuITCCHerLFB2AWPbbmILWEnaBytlg9P2oFlcUrE=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -17,7 +17,7 @@ Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa vorgesehen.
 Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dafür den Adapter ioBroker.cloud.
 
 ## Die Einstellungen
-Um den Cloud-Adapter zu verwenden, müssen Sie sich zunächst in der ioBroker-Cloud registrieren.
+Um den Cloud-Adapter zu verwenden, müssen Sie sich zunächst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
 
 ![Intro](../../../en/adapterref/iobroker.iot/img/intro.png)
 
@@ -239,7 +239,27 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 });
 ```
 
+### Private Wolke
+Wenn Sie private skill / action / навык für die Kommunikation mit `Alexa/Google Home/Алиса` verwenden, haben Sie die Möglichkeit, die Anfragen von dieser IoT-Instanz zu verarbeiten.
+
+```
+sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, response => {
+    // Send this response back to alisa service
+    console.log(JSON.stringify(response));
+});
+```
+
+Folgende Typen werden unterstützt:
+
+- `alexa` - Schauspiel mit Amazon Alexa oder Amazon Custom Skill
+- `ghome` - mit Google Actions über Google Home handeln
+- "alisa" - Schauspiel mit Yandex Алиса
+- `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
+
 ## Changelog
+### 1.0.1 (2019-07-26)
+* (bluefox) Support of private skills/actions was added.
+
 ### 1.0.0 (2019-07-14)
 * (TA2k) Google Home list was added 
 

@@ -34,10 +34,14 @@ If you have any device transmitting specially encoded information via advertisem
 * `"xiaomi"`: All xiaomi bluetooth sensors, including 
   * [Flower Care plant sensor](https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
   * [Mijia Temperature and Humidity sensor](https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse=USA)
+  * [Mosquito Repellent](https://www.aliexpress.com/item/32883859984.html)
 * `"mi-flora"`: Original plugin for the flower care plant sensor, now aliased to `"xiaomi"`
 * `"ruuvi-tag"`: [Ruuvi Tag](https://tag.ruuvi.com/) multisensor with firmware versions v1 and v2. **Untested, please give feedback!** 
 
 ## Changelog
+
+### 0.8.1 (2019-07-26)
+* (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
 
 ### 0.7.4 (2019-07-03)
 * (AlCalzone) Removed dependency to admin instance on slaves

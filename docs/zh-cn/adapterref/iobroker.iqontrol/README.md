@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
+hash: /F04+i5U8jSzmrOw4XXGDC7UpGfsFlrFxQ/axAdbd9w=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -50,7 +50,7 @@ hash: 28Z1MMp6C2VUq3mo4uF+VrPj/KR4A2SpP0X2G6rwX5s=
 设备有一个角色，它决定了设备的功能，使用了哪些图标等等。
 根据该角色，您可以将多个状态链接到设备。这些将为设备提供其功能。
 如果选择“链接到其他视图”作为角色，则可以创建指向其他视图的链接。我建议将链接映射到具有相同背景的其他视图，链接视图具有。
-您还可以尝试使用Autocreate-Function从iobroker-object-tree中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
+您还可以尝试使用Autocreate-Function从iobroker-object-tree中选择现有设备。 Autocreate尝试找出角色并匹配尽可能多的状态。
 
 *之后您可以创建一个工具栏，显示为页脚。
 
@@ -78,7 +78,7 @@ Toolbar-Entrys是视图的链接。
 
 ##角色和相关状态的描述
 每个设备都有一个角色，它定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
-如果使用auto-create-function，则可以从io-broker-object树中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
+如果使用auto-create-function，则可以从io-broker-object树中选择现有设备。 Autocreate尝试找出角色并匹配尽可能多的状态。
 这仅适用于已知设备。对于未知设备，并为设备提供高级功能，您可以通过（+） - 按钮手动添加它们或编辑由自动创建创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
@@ -96,7 +96,7 @@ Toolbar-Entrys是视图的链接。
 每个角色都有以下三种状态：
 
 * **ADDITIONAL_INFO** *array* - 数据点数组，将显示在信息对话框的底部
-* **BATTERY** *boolean* - 如果为true，将显示一个小电池空图标
+* **BATTERY** * boolean * - 当为true或* number * - 当小于10％时，将显示一个小电池空图标
 * **ERROR** *boolean* - 如果为true，将显示一个小的感叹号图标
 * **UNREACH** *boolean* - 如果为true，将显示一个小的无线图标
 
@@ -115,7 +115,7 @@ Toolbar-Entrys是视图的链接。
 }
 ````
 
-    *您可以通过修改数据点来创建自己的值列表（iobroker的对象选项卡中数据点后面的扳手图标，见上文）
+    *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，见上文）
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -142,23 +142,31 @@ Toolbar-Entrys是视图的链接。
 *对于白光LED：
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（仅当灯具有白色和彩色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
-*替代色彩空间**尚未实施**：
-  * **HUE_MILIGHT** * number * - Milight在色调color-cirlce中使用另一个起始点：
+*替代色彩空间：
+ ***ALTERNATIVE_COLORSPACE_VALUE*** string ** number* 取决于选择的色彩空间） - 替代色彩空间的值
+
+    如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用各种替代颜色空间。在设备选项中，您可以选择以下颜色空间之一：
+
+    * **RGB** / **#RGB** 您可以使用RGB格式（十六进制）代替使用HUE，SATURATION和COLOR_BRIGHTNESS，可选使用前导'＃'
+    * **RGBW** / **#RGBW** 您可以使用RGBW格式（十六进制）代替使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选使用前导'＃'
+    * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW格式（十六进制）代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白色，CW =冷白色），可选带前导'＃'
+    * **RGB（仅限Hue）** /** #RGB（仅限Hue）**：您可以使用RGB（仅限Hue） - 格式（十六进制），可选使用前导'＃'，而不是使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色。
+        * **米尔的色调**：这是Milight-Devices的Hue-Value，在色调color-cirlce中使用另一个起点：
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
+modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-  * **RGB_HUEONLY** * string * - 您可以使用RGB_HUEONLY格式（十六进制）代替使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色
-  * **RGB** * string * - 您可以使用RGB格式（十六进制）而不是使用HUE，SATURATION和COLOR_BRIGHTNESS
-  * **RGBW** * string * - 您可以使用RGBW格式（十六进制）而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS
-  * **RGBWWCW** * string * - 而不是HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS你可以使用RGBWWCW格式（十六进制）
+请记住：转换到替代颜色空间是由前端完成的，因此只有在某个地方打开iQontrol时它才会激活。因此，您不能将其用作颜色空间的转换器。为了避免会话循环，建议使用原始颜色空间 - 数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS）*或*替代颜色空间 - 数据点以*替换*这些数据点。
+
 *效果模式：
     * **效果**：*值列表*  - 播放的效果
 * **EFFECT_NEXT** *boolean* - 如果设置为true，将播放下一个效果（作为不支持EFFECT值列表的设备的替代方案）
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *布尔值* - 如果设置为true，效果会加快/减小
-* **POWER** *数字* - 功耗将在右上角显示为小功率
+*杂项：
+ ***POWER*** 字* - 功耗将在右上角显示为小功率
 
 ### <img src="img/icons/radiator.png" width="32">温控器：
 * **SET_TEMPERATURE** *数字* - 目标温度
@@ -172,7 +180,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 除了普通恒温器，您还可以定义：
 
 * **PARTY_TEMPERATURE** *string* - 特殊格式的字符串，用于定义家庭恒温器的派对或假日模式
-* **BOOST_STATE** *数字* - 显示原始恒温器的剩余提升时间
+* **BOOST_STATE** *number* - 显示homematic恒温器的剩余提升时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
 * **状态**：*数字*  - 将显示在设备下部的温度或湿度
@@ -189,7 +197,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *boolean* - 显示是否检测到运动
 * **linked-view-property** 接打开
 
-### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
+### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/garagedoor_closed.png" width="32">车库门， <img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *boolean* - 显示门或窗是打开还是关闭。
     *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
     *您还可以指定*字符串*来显示任何文本，例如“3个窗口打开”或“全部关闭”。
@@ -251,6 +259,15 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.0.49 (2019-07-27)
+* (Sebastian Bormann) Added common type and common role to custom dialog.
+* (Sebastian Bormann) Added pressure menu for toolbar.
+
+### 0.0.48 (2019-07-25)
+* (Sebastian Bormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
+* (Sebastian Bormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
+* (Sebastian Bormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
 * (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.

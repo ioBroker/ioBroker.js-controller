@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ble/README.md
 title: без названия
-hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
+hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
 ---
 ![Статус сборки](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
@@ -43,10 +43,14 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 * `" xiaomi "`: все датчики bluetooth xiaomi, включая
   * [Датчик для ухода за цветами] (https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
   * [Датчик температуры и влажности Mijia] (https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse = США)
+  * [Средство от комаров] (https://www.aliexpress.com/item/32883859984.html)
 * `" mi-flora "`: оригинальный плагин для датчика по уходу за цветами, теперь псевдоним "xiaomi" `
 * `" ruuvi-tag "`: [мультисенсор Ruuvi] (https://tag.ruuvi.com/) с версиями прошивки v1 и v2. **Не проверено, пожалуйста, оставьте отзыв!**
 
 ## Changelog
+
+### 0.8.1 (2019-07-26)
+* (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
 
 ### 0.7.4 (2019-07-03)
 * (AlCalzone) Removed dependency to admin instance on slaves

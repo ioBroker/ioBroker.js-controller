@@ -86,7 +86,7 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
 ### General states:
 Every role has the following three states:
 * **ADDITIONAL_INFO**: *array* - an array of datapoints, that will be displayed at the bottom of the info-dialog
-* **BATTERY**: *boolean* - when true, a little battery-empty-icon will be displayed
+* **BATTERY**: *boolean* - when true or *number* - when less than 10%, a little battery-empty-icon will be displayed
 * **ERROR**: *boolean* - when true, a little exclamation-mark-icon will be displayed
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
 
@@ -127,21 +127,26 @@ Optional you can define the following states:
 * For white LEDs:
     * **CT**: *number* - color-temperature of the light, if it has two shades of white
     * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (this is only respected, if the light has both, white and coloured LEDs. If you have only one kind of LEDs the brightness is controlled by the LEVEL-State)
-* Alternative color-spaces **not yet implemented**:
-    * **HUE_MILIGHT**: *number* - Milight uses another starting-point in the hue color-cirlce: 
-        ````
-		MilightHue = modulo(66 - (hue / 3.60), 100) * 2.55; 
-		function modulo(n, m){ return ((n % m) + m) %m; }
-        ````
-    * **RGB_HUEONLY**: *string* - instead of using HUE you can use the RGB_HUEONLY-Format (hex). In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed
-    * **RGB**: *string* - instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex)
-    * **RGBW**: *string* - instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex)
-    * **RGBWWCW**: *string* - instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW-Format (hex)
+* Alternative color-spaces:
+    * **ALTERNATIVE_COLORSPACE_VALUE**: *string* or *number* (depending on the chosed colorspace) - the value of the alternative colorspace
+    If your device does not support using HUE, SATURATION and COLOR_BRIGHTNESS (HSB/HSV-color-space) you can use a variety of alternative colorspaces. In the device-options you can chose one of the following colorspaces:	
+        * **RGB** / **#RGB**: instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex), optional with leading '#'
+        * **RGBW** / **#RGBW**: instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex), optional with leading '#'
+        * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **#RGBCWWW**: instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW- or RGBCWWW-Format (hex, WW = warm white, CW = cold white), optional with leading '#'
+        * **RGB (Hue only)** / **#RGB (Hue only)**: instead of using HUE you can use the RGB (Hue only)-Format (hex), optional with leading '#'. In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed. 
+        * **Hue for Milight**: This is the Hue-Value for Milight-Devices, with use another starting-point in the hue color-cirlce: 
+            ````
+    		MilightHue = modulo(66 - (hue / 3.60), 100) * 2.55; 
+    		hue = modulo(-3.60 * (MilightHue/2.55 - 66), 360);
+    		function modulo(n, m){ return ((n % m) + m) %m; }
+            ````
+	Keep in Mind: Conversion to alternative colorspace is done by frontend, so it is only active, if iQontrol is opened somewhere. Therefore you can't use it as a converter for colorspaces. To avoid conversation-loops it is recommendet to either use the original colorspace-datapoints (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *or* the alternative colorspace-datapoint to *replace* these datapoints. 
 * Effect-Mode:
     * **EFFECT**: *value-list* - the effect to play
 	* **EFFECT_NEXT**: *boolean* - if set to true, the next effect will play (as an alternative for devices that dont support EFFECT-value list)
 	* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN**: *boolean* - if set to true, the effect will speed up/down
-* **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
+* Miscellaneous:
+    * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
 * **SET_TEMPERATURE**: *number* - goal-temperature
@@ -171,7 +176,7 @@ In addition to normal thermostat you can define:
 * **STATE**: *boolean* - display if motion is detected or not
 * The **linked-view-property** is opened directly
 
-### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
+### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/garagedoor_closed.png" width="32"> Garage Door, <img src="img/icons/window_closed.png" width="32"> Window:
 * **STATE**: *boolean* - display if the door or window is opened or closed. 
     * Alternatively you can assign a *value-list*, to display additional states like 'tilted'.
     * You can also assign a *string* to display any text like "3 windows open" or "all closed".
@@ -233,6 +238,15 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.0.49 (2019-07-27)
+* (Sebastian Bormann) Added common type and common role to custom dialog.
+* (Sebastian Bormann) Added pressure menu for toolbar.
+
+### 0.0.48 (2019-07-25)
+* (Sebastian Bormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
+* (Sebastian Bormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
+* (Sebastian Bormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
 * (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.text2command/README.md
 title: text2command
-hash: v/62tWbiUamGI5neCCj9swtQFEsHpzk2pjuNLKp2nZM=
+hash: MWOqjSa6FAhPnvrG+4BjD1bYM4gs19rm0o8cU2azy4c=
 ---
 ![商标](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -13,9 +13,11 @@ hash: v/62tWbiUamGI5neCCj9swtQFEsHpzk2pjuNLKp2nZM=
 ![测试](https://travis-ci.org/ioBroker/ioBroker.text2command.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.text2command.png?downloads=true)
 
-#text2command =================
+#text2command
+=================
+
 ##说明
-这个适配器可以转换普通的句子，比如*''在厨房开关灯'*'到特定命令，并将状态*'adapter.0.device.kitchenLight'*设置为** true **。
+这个适配器可以转换普通句子，比如*'将'在厨房里开灯''转换为特定命令，并将状态*'adapter.0.device.kitchenLight'*设置为** true **。
 
 这个适配器无法独立激活。它应该与其他适配器一起使用，如电报或Android app **iobroker.vis**
 
@@ -165,7 +167,7 @@ enum.functions：
 如果需要，将自动生成答案：``` in %room%```，其中％room％将被找到的设备类型和位置替换。
 
 ###打开/关闭一些东西
-用户必须指定必须被控制的设备的状态ID和必须写入的值。
+用户必须指定必须控制的设备的状态ID和必须写入的值。
 
 您应该为每个位置创建规则（例如，* on *和for * off *）。
 
@@ -184,7 +186,7 @@ enum.functions：
 
  - ```设置灯光级别```，对象ID：````hm-rpc.0.light.STATE```，值：```10```，答案：```级别设置为％s ％```。
 
-如果命令类似于```Set light level to 50%```，那么进入```hm-rpc.0.light.STATE```将写成50并且答案将是```Level set to 50%```。
+如果命令类似于```Set light level to 50%```，那么```hm-rpc.0.light.STATE```将写成50，答案将是```Level set to 50%```。
 
 如果命令类似于```Set light level```，那么进入```hm-rpc.0.light.STATE```将写入10并且答案将是```Level set to 10%```。
 
@@ -248,7 +250,7 @@ createState("textProcessor", '', function () {
 });
 ```
 
-在text2command **处理器状态ID **的设置中设置为* javascript.0.textProcessor *以使此示例有效。
+设置为text2command **处理器状态ID **为* javascript.0.textProcessor *以使此示例有效。
 
 首先，命令将使用您的javascript进行处理，如果javascript将在预定义的时间（默认为1秒）内回答''或未回答，则命令将由规则处理。
 
@@ -259,102 +261,142 @@ createState("textProcessor", '', function () {
 ```iobroker add text2command```
 
 ## Changelog
+
+### 1.3.1 (2019-07-18)
+
+* (unltdnetworx) changed copyright year to 2019, according to issue #41
+* (unltdnetworx) additional words for blinds and functions in english and german
+* (unltdnetworx) fixed typo
+
+### 1.3.0 (2019-07-18)
+
+* (bluefox) Using the defined language by words
+
 ### 1.2.5 (2019-02-12)
+
 * (unltdnetworx) description in german corrected
 * (unltdnetworx) added percent to true/false rules
 
 ### 1.2.4 (2018-05-05)
+
 * (Apollon77) Fix
 
 ### 1.2.3 (2018-05-01)
+
 * (bluefox) Support of bindings in answer {objId}
 
 ### 1.2.0 (2018-04-23)
+
 * (bluefox) Support of Admin3 (but not materialize style)
 
 ### 1.1.7 (2018-04-04)
+
 * (bluefox) The parsing error was fixed
 
 ### 1.1.6 (2017-10-05)
+
 * (bluefox) Check if units are undefined
 
 ### 1.1.5 (2017-08-14)
+
 * (bluefox) Support of iobroker.pro
 
 ### 1.1.4 (2017-03-27)
+
 * (bluefox) translations
 
 ### 1.1.3 (2016-08-30)
+
 * (bluefox) russian translations
 
 ### 1.1.2 (2016-08-29)
+
 * (bluefox) fix the russian temperature text
 * (bluefox) extend rule "control device" with option 0/1
 * (bluefox) use by control of devices min/max values if set
 
 ### 1.1.1 (2016-08-19)
+
 * (bluefox) add additional info for external text processor
 
 ### 1.1.0 (2016-08-16)
+
 * (bluefox) add text processor state ID
 
 ### 1.0.2 (2016-07-22)
+
 * (bluefox) fix error with detection of numeric values
 
 ### 1.0.1 (2016-06-01)
+
 * (bluefox) fix: send text command
 
 ### 1.0.0 (2016-05-05)
+
 * (bluefox) replace special chars in input text: #'"$&/\!?.,;:(){}^
 
 ### 0.1.10 (2016-03-20)
+
 * (bluefox) fix double pronunciation of some answers
 
 ### 0.1.9 (2016-03-20)
+
 * (bluefox) ignore spaces
 
 ### 0.1.8 (2016-03-15)
+
 * (bluefox) fix error with enums
 
 ### 0.1.7 (2016-03-12)
+
 * (bluefox) implement "say something"
 
 ### 0.1.6 (2016-02-24)
+
 * (bluefox) fix temperature
 
 ### 0.1.5 (2016-02-23)
+
 * (bluefox) fix russian outputs
 
 ### 0.1.4 (2016-02-22)
+
 * (bluefox) fix russian outputs
 
 ### 0.1.3 (2016-02-21)
+
 * (bluefox) round temperature in answers
 
 ### 0.1.2 (2016-02-21)
+
 * (bluefox) implement russian time
 
 ### 0.1.1 (2016-02-19)
+
 * (bluefox) check invalid commands
 
 ### 0.1.0 (2016-02-19)
+
 * (bluefox) fix problem with controlling of channels
 * (bluefox) enable write JSON as argument
 
 ### 0.0.3 (2016-02-14)
+
 * (bluefox) remove unused files
 
 ### 0.0.2 (2016-02-10)
+
 * (bluefox) extend readme
 
 ### 0.0.1 (2016-02-09)
+
 * (bluefox) initial commit
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018, bluefox<dogafox@gmail.com>
+Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

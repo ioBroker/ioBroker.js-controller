@@ -4,7 +4,7 @@ lastChanged: 27.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/tutorial/adapter.md
-hash: Htjtid2RO2WZS7rCBBwUlzON58VeeVaje9/ceh+glQY=
+hash: TrdgIWJY5XfUZLdbHg1wL11hjHCSK3TeI5C0KSTF5CY=
 ---
 # Basics of using adapters
 The installation of adapters and instances at ioBroker is multi-level.
@@ -46,14 +46,14 @@ If the necessary files for the adapter are not yet on the host, an iobroker inst
 
 ** This version should only be used if all other methods do not work for whatever reason. **
 
-<span style="color:red">Attention! On newer installations, the direct use of npm install causes rights problems after installation or fails. It is recommended to use the iobroker commands. !!</span>
+<span style="color:red">Attention! On newer installations, using npm install directly causes rights problems after installation or fails. It is recommended to use the iobroker commands. !!</span>
 
 ### Upgrade an adapter
 If a new version of an adapter is available, it can be updated. It also happens that adapters require a specific version of another adapter. Therefore, it makes sense to always keep all adapters up to date
 
 ** About the admin **
 
-If an adapter is upgraded, the title bar of the corresponding tile changes to green. The new version number will appear in green on the tile under "available version" and the upgrade icon to the left of it. If you want to upgrade this adapter now, click on this icon.
+If an adapter is upgraded, the title bar of the corresponding tile changes to green. The new version number will then appear in green on the tile under "available version" and the upgrade icon to the left of it. If you want to upgrade this adapter now, click on this icon.
 
 There are two processes running in the background, the actual upgrade of the adapter files and then the upload of the files to the instances.
 
@@ -66,7 +66,7 @@ There are two processes running in the background, the actual upgrade of the ada
 ### Upload adapter files
 This function is only needed in special cases. If the above procedure is used, this feature is not necessary.
 
-only when experienced users who know what they are doing are modifying files themselves, or when a beta version of Github is loaded is this feature necessary
+only when experienced users who know what they are doing are modifying files themselves, or when a beta version is loaded from Github will this feature be necessary
 
 About the Admin In the tab Admin the expert mode has to be activated. Thereafter, additional icons appear in the tile. The upward arrow (3rd icon from the right) executes this upload.
 
@@ -103,7 +103,7 @@ Where ***AdapterName*** is the name of the desired adapter as listed in iobroker
 
 ** This version should only be used if all other methods do not work for whatever reason. **
 
-<span style="color:red">Attention! On newer installations, the direct use of npm install causes rights problems after installation or fails. It is recommended to use the iobroker commands. !!</span>
+<span style="color:red">Attention! On newer installations, using npm install directly causes rights problems after installation or fails. It is recommended to use the iobroker commands. !!</span>
 
 ## Additional important information
 ### The adapter list in the admin
@@ -134,7 +134,9 @@ Either simply in the pulldown menu ***Github*** , or by entering the address of 
 
 <span style="color:red">** An installation of GitHub should only be done after consulting the developer. **</span>
 
-### The installation of Github ( <span style="color:red">only for experts!</span> )
+### The installation of Github
+( <span style="color: red">only for experts!</span> )
+
 The installation of Github should only be done by experts. Here are just beta versions, or worse, unfinished versions. <span style="color:red">Their installation can destroy the entire ioBroker installation!</span>
 
 If an update via GitHub (Octocat-Icon) is still performed (or recommended for troubleshooting via the forum), the new files will only be saved locally, but not sent to the instances. Therefore, with versions of the js-controller under 1.5 then an upload must be carried out manually.

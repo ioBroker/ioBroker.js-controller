@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ble/README.md
 title: kein Titel
-hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
+hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
 ---
 ![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
@@ -15,7 +15,7 @@ hash: YNZ2fo31kVKfBzn0EfVaziHuYIosuCcYilF2oxY/Kbo=
 ================
 
 Überwachen Sie BLE-Beacons (Bluetooth Low Energy) und zeichnen Sie deren Informationen auf.
-Derzeit wird nur die Aufzeichnung von *beworbenen* Dienstdaten unterstützt. Sie können mithilfe der nRF Connect-App (Dienstdaten-UUIDs) überwachen, welche Dienste angekündigt werden.
+Derzeit wird nur die Aufzeichnung von *beworbenen* Dienstdaten unterstützt. Mit der nRF Connect-App (Service Data UUIDs) können Sie überwachen, welche Dienste angekündigt werden.
 Merkmale des Verbindungs- und Lese- / Schreibdienstes werden in einer zukünftigen Version unterstützt.
 
 ## Installation
@@ -37,16 +37,20 @@ Geben Sie in das Textfeld unten alle UUIDs der angekündigten Dienste ein, die S
 ## Plugin-System
 Der Adapter unterstützt die Erweiterung über Plugins. Diese definieren, welche beworbenen Dienste abgehört werden sollen und wie die Daten übersetzt werden sollen. Die Plugin-Struktur ist in https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts definiert. Ein Beispiel für ein funktionierendes Plugin finden Sie hier https://github.com/AlCalzone /ioBroker.ble/blob/master/src/plugins/_default.ts
 
-Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung überträgt, können Sie eine PR mit einem neuen Plug-In für diese erstellen.
+Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung überträgt, können Sie eine PR mit einem neuen Plug-in für dieses Gerät erstellen.
 
 ### Unterstützte Plugins
 * "xiaomi": Alle xiaomi Bluetooth-Sensoren, einschließlich
   * [Flower Care Pflanzensensor] (https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
   * [Mijia-Temperatur- und Feuchtigkeitssensor] = USA)
+  * [Mückenschutz] (https://www.aliexpress.com/item/32883859984.html)
 * "mi-flora": Original Plugin für den Flower Care Plant Sensor, jetzt mit dem Alias "xiaomi"
 * `` "ruuvi-tag" `: [Ruuvi Tag] (https://tag.ruuvi.com/) Multisensor mit Firmware-Versionen v1 und v2. **Ungetestet, bitte Feedback geben!**
 
 ## Changelog
+
+### 0.8.1 (2019-07-26)
+* (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
 
 ### 0.7.4 (2019-07-03)
 * (AlCalzone) Removed dependency to admin instance on slaves

@@ -32,12 +32,17 @@ You find a detailed installation documentation here:
 |ShellyRGBW2 (SHRGBW2)|verified|verified|
 |Shelly2LED (SH2LED)|verified|verified|
 |ShellyPlug (SHPLG-1) |verified|verified|
-|ShellyPlug S (SHPLG-1) |verified|not verified|
+|ShellyPlug S (SHPLG-1) |verified|verified|
 |ShellySense (SHSEN-1)|verified|not verified|
 |Shelly4Pro (SHSW-44)|verified|not verified|
 
 
 ## Changelog
+
+### 3.0.8 (27.07.2019)
+* (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 
+* (Stübi) - Add state temperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode
+* (Stübi) - Add state overtemperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP and MQTT mode
 
 ### 3.0.7 (03.07.2019)
 * (Stübi) - correct spelling error 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: iHKYNFAzLU1k+oLLXj5UuarauihwDx++jGkxZ3HPs/c=
+hash: ABLHAz/LAWPrWC7ZzLSyOcQzCTmiRl6dyebv+daHrS8=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -37,14 +37,35 @@ hash: iHKYNFAzLU1k+oLLXj5UuarauihwDx++jGkxZ3HPs/c=
 | ShellyRGBW2（SHRGBW2）|已验证|已验证|
 | Shelly2LED（SH2LED）|已验证|已验证|
 | ShellyPlug（SHPLG-1）|已验证|已验证|
-| ShellyPlug S（SHPLG-1）|已验证|未经过验证|
+| ShellyPlug S（SHPLG-1）|已验证|已确认|
 | ShellySense（SHSEN-1）|已验证|未经验证|
 | Shelly4Pro（SHSW-44）|已验证|未经验证|
 
 ## Changelog
 
-### 3.0.2 (29.05.2019)
-* (Stübi) - Support of MQTT QoS 1 and 2 
+### 3.0.8 (27.07.2019)
+* (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 
+* (Stübi) - Add state temperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode
+* (Stübi) - Add state overtemperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP and MQTT mode
+
+### 3.0.7 (03.07.2019)
+* (Stübi) - correct spelling error 
+* (Stübi) - Adjust IP address after IP change in CoAP Modus (Issue 70)
+* (Stübi) - Bugfixing for datapoint power (rounding method was wrong)
+* (Stübi) - Fixed Buffer() is deprecated due to security and usability issues for Node >= 10
+
+### 3.0.6 (29.06.2019)
+* (Stübi) - State reboot and uptime added 
+
+### 3.0.5 (16.06.2019)
+* (Stübi) - Bugfixing 
+* (Stübi) - Add Blacklist
+
+### 3.0.4 (04.06.2019)
+* (Stübi) - Bugfixing (Issue #60) 
+
+### 3.0.3 (02.06.2019)
+* (Stübi) - Support of MQTT QoS 1 and 2. Add auto firmware update to the menu 
 
 ### 3.0.2 (25.05.2019)
 * (Stübi) - Bugfixing and longpush and input states for Shelly 1, 2, 1pm, 2.5 and Shelly RGBWW2 added. Add state temperature to Shelly 1pm, 2.5 and Plug S.  

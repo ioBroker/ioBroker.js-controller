@@ -32,21 +32,16 @@ MoMa needs at least nodejs version 8 / ES6.
 
 ## Changelog
 
-### 1.1.4 (2019-07-22)
-* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
-                 Update of Adapters and JS-Controller.
-
-### 1.1.3 (2019-07-03)
-* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
-
-### 1.1.2 (2019-06-05)
-* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
-
-### 1.1.1 (2019-05-23)
-* (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
+### 1.2.0 (2019-07-26)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.4, 
+                 check for update of Adapters and JS-Controller in Interval 4,
+				 dockerInfo, dockerContainers in Interval 3,
+				 moma admin-tab with update buttons for os, js-controller, adapters.
 
 ### 1.1.0 (2019-05-20)
-* (AWhiteKnight) Performance optimization. Fix of issue #24. Check internet latency.
+* (AWhiteKnight) Performance optimization,
+				 partial fix of Issu #24,
+				 Check internet latency.
 
 ### 1.0.0 (2019-05-11)
 * (AWhiteKnight) First release for adapter list 'stable'.

@@ -4,7 +4,7 @@ lastChanged: 27.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/tutorial/adapter.md
-hash: Htjtid2RO2WZS7rCBBwUlzON58VeeVaje9/ceh+glQY=
+hash: TrdgIWJY5XfUZLdbHg1wL11hjHCSK3TeI5C0KSTF5CY=
 ---
 ＃使用适配器的基础知识
 ioBroker上的适配器和实例的安装是多层次的。
@@ -46,14 +46,14 @@ ioBroker上的适配器和实例的安装是多层次的。
 
 **只有在所有其他方法因任何原因无效时才应使用此版本。**
 
-<span style="color:red">注意！在较新的安装中，直接使用npm install会在安装后导致权限问题或失败。建议使用iobroker命令。!!</span>
+<span style="color:red">注意！在较新的安装中，使用npm install会在安装后直接导致权限问题或失败。建议使用iobroker命令。!!</span>
 
 ###升级适配器
 如果有适配器的新版本，则可以更新它。适配器还需要另一个适配器的特定版本。因此，始终保持所有适配器最新是有意义的
 
 **关于管理员**
 
-如果升级了适配器，则相应磁贴的标题栏将变为绿色。新版本号将在“可用版本”下的磁贴上显示为绿色，并在其左侧显示升级图标。如果要立即升级此适配器，请单击此图标。
+如果升级了适配器，则相应磁贴的标题栏将变为绿色。然后，新版本号将在“可用版本”下的磁贴上显示为绿色，并在其左侧显示升级图标。如果要立即升级此适配器，请单击此图标。
 
 后台运行两个进程，即实际升级适配器文件，然后将文件上载到实例。
 
@@ -103,7 +103,7 @@ ioBroker上的适配器和实例的安装是多层次的。
 
 **只有在所有其他方法因任何原因无效时才应使用此版本。**
 
-<span style="color:red">注意！在较新的安装中，直接使用npm install会在安装后导致权限问题或失败。建议使用iobroker命令。!!</span>
+<span style="color:red">注意！在较新的安装中，使用npm install会在安装后直接导致权限问题或失败。建议使用iobroker命令。!!</span>
 
 ##其他重要信息
 ###管理员中的适配器列表
@@ -134,7 +134,9 @@ ioBroker上的适配器和实例的安装是多层次的。
 
 <span style="color:red">**只有在咨询开发人员后才能安装GitHub。**</span>
 
-###安装Github（ <span style="color:red">仅适用于专家！</span> ）
+###安装Github
+（ <span style="color: red">仅限专家！</span> ）
+
 Github的安装只能由专家完成。以下是测试版本，或者更糟糕的是，未完成的版本。 <span style="color:red">他们的安装可以破坏整个ioBroker的安装！</span>
 
 如果仍然通过GitHub（Octocat-Icon）执行更新（或建议通过论坛进行故障排除），则新文件将仅保存在本地，但不会发送到实例。因此，如果js-controller的版本低于1.5，则必须手动执行上载。

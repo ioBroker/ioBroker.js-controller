@@ -289,6 +289,8 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 2.6.4 (2019-07-25)
+* (Apollon77) add some error handling for contacts
 
 ### 2.6.1 (2019-07-22)
 * (Apollon77) add new device

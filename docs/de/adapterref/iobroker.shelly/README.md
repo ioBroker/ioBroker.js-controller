@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: iHKYNFAzLU1k+oLLXj5UuarauihwDx++jGkxZ3HPs/c=
+hash: ABLHAz/LAWPrWC7ZzLSyOcQzCTmiRl6dyebv+daHrS8=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -37,14 +37,35 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | ShellyRGBW2 (SHRGBW2) | verifiziert | verifiziert |
 | Shelly2LED (SH2LED) | verifiziert | verifiziert |
 | ShellyPlug (SHPLG-1) | verifiziert | verifiziert |
-| ShellyPlug S (SHPLG-1) | verifiziert | nicht verifiziert |
+| ShellyPlug S (SHPLG-1) | verifiziert | verifiziert |
 | ShellySense (SHSEN-1) | verifiziert | nicht verifiziert |
 | Shelly4Pro (SHSW-44) | verifiziert | nicht verifiziert |
 
 ## Changelog
 
-### 3.0.2 (29.05.2019)
-* (Stübi) - Support of MQTT QoS 1 and 2 
+### 3.0.8 (27.07.2019)
+* (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 
+* (Stübi) - Add state temperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode
+* (Stübi) - Add state overtemperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP and MQTT mode
+
+### 3.0.7 (03.07.2019)
+* (Stübi) - correct spelling error 
+* (Stübi) - Adjust IP address after IP change in CoAP Modus (Issue 70)
+* (Stübi) - Bugfixing for datapoint power (rounding method was wrong)
+* (Stübi) - Fixed Buffer() is deprecated due to security and usability issues for Node >= 10
+
+### 3.0.6 (29.06.2019)
+* (Stübi) - State reboot and uptime added 
+
+### 3.0.5 (16.06.2019)
+* (Stübi) - Bugfixing 
+* (Stübi) - Add Blacklist
+
+### 3.0.4 (04.06.2019)
+* (Stübi) - Bugfixing (Issue #60) 
+
+### 3.0.3 (02.06.2019)
+* (Stübi) - Support of MQTT QoS 1 and 2. Add auto firmware update to the menu 
 
 ### 3.0.2 (25.05.2019)
 * (Stübi) - Bugfixing and longpush and input states for Shelly 1, 2, 1pm, 2.5 and Shelly RGBWW2 added. Add state temperature to Shelly 1pm, 2.5 and Plug S.  

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: SvLxJ27B2YAyqHKMejjyRanFjD+2LVt6woSOELM7nHs=
+hash: J1phuITCCHerLFB2AWPbbmILWEnaBytlg9P2oFlcUrE=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -190,7 +190,7 @@ if *text2command* instance在配置对话框中定义，因此问题将发送到
   * **单词**包含数组中收到的单词
  * **intent** 含查询类型。目前可能的值是“askDevice”，“controlDevice”，“actionStart”，“actionEnd”，“askWhen”，“askWhere”，“askWho”
  * **deviceId** 含一个deviceId，用于标识由亚马逊发送的请求发送到的设备，如果未提供，则为空字符串
- * **sessionId** 含技能会话的sessionId，如果说亚马逊提供的多个命令，则应该是相同的，如果没有提供，则为空字符串
+ * **sessionId** 含技能会话的sessionId，如果说亚马逊提供的多个命令，则应该是相同的，如果没有提供则为空字符串
  * **userId** 含来自设备所有者的userId（或者可能是以后与该技能交互的用户），由亚马逊提供，如果没有提供，将为空字符串
 
  有关如何检测单词以及Alexa Custom Skill区分的查询类型的更多详细信息，请查看https://forum.iobroker.net/viewtopic.php?f=37&t=17452。
@@ -239,7 +239,27 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 });
 ```
 
+###私有云
+如果您使用私人技能/操作/навык与`Alexa/Google Home/Алиса`进行通信，那么您可以使用IoT实例处理来自它的请求。
+
+```
+sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, response => {
+    // Send this response back to alisa service
+    console.log(JSON.stringify(response));
+});
+```
+
+支持以下类型：
+
+ - `alexa`  - 与亚马逊Alexa或亚马逊自定义技能合作
+ - “ghome” - 通过Google Home与Google Actions合作
+ - `alisa`  - 与YandexАлиса合作
+ - `ifttt`  - 表现得像IFTTT（实际上不是必需的，但是用于测试目的）
+
 ## Changelog
+### 1.0.1 (2019-07-26)
+* (bluefox) Support of private skills/actions was added.
+
 ### 1.0.0 (2019-07-14)
 * (TA2k) Google Home list was added 
 
