@@ -1,9 +1,9 @@
 ---
-title:       "Installation"
-lastChanged: "13.09.2018"
+title:       "OS X"
+lastChanged: "31.07.2019"
 ---
 
-# macOS
+# Installation von ioBroker unter OS X
 
 ?> ***Dies ist ein Platzhalter***.
    <br><br>

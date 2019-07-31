@@ -1,15 +1,15 @@
 ---
-title:       "Installation"
-lastChanged: "13.09.2018"
+title:       "Arbeiten mit Images"
+lastChanged: "31.07.2019"
 ---
 
-# Liste mit vorbereiteten Images für verschiedene Plattformen
+# Vorgehen bei Verwendung von Images
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können.
+Nach dem Herunterladen von Images auf der Downloadseite werden diese mit einem Image-Tool (z.B. Balena-Etcher) auf die SD-Karte geschrieben.
 
-@@@ Liste aus Wordpress hier einfügen. Gliederung ggf. nach Einplatinencomputer,
-Desktop-OS usw. @@@
+Das weitere Vorgehen für jedes einzelne Image kann unterschiedlich sein.
+Daher befindet sich auf der Downloadseite unter jedem Image der Button **Info**.
+
+Klickt man dieses an, erscheint das zu diesem Image gehörende ReadMe.
+
+Dort ist das weitere Vorgehen sowie Sicherheitshinweise hinterlegt.
