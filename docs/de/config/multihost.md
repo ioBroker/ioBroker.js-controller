@@ -143,9 +143,9 @@ sudo service redis-server restart
 ## Aufgaben verteilen
 Es gibt zwei Möglichkeiten, die Aufgaben auf die Hosts zu verteilen.
 
-Ist es eine Neuinstallation, wählt man im Reiter Adapter aus dem pulldown-Menü über der Adapterliste den Host aus, auf dem die Instanz des Adapters installiert werden soll. 
+* Ist es eine Neuinstallation, wählt man im Reiter Adapter aus dem pulldown-Menü über der Adapterliste den Host aus, auf dem die Instanz des Adapters installiert werden soll. 
 Anschließend fügt man dort die Instanz hinzu, indem man auf das (+) in der rechten Spalte klickt.
-Hat man bereits vorher viele Adapter auf einem Host installiert, kann man die Zuordnung der bereits installierten Instanzen nachträglich im Reiter Instanzen ändern.
+* Hat man bereits vorher viele Adapter auf einem Host installiert, kann man die Zuordnung der bereits installierten Instanzen nachträglich im Reiter Instanzen ändern.
 
 
 
