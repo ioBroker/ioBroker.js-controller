@@ -214,7 +214,10 @@ Nachdem die Einstellungen wieder in Ordnung sind, sollte man die neue (zweite au
  
 ## npm ist verschwunden
 
-Durch ein Problem mit npm kann es vorkommen, dass nach einem Upgrade von Linux, bei dem üblicherweise auch nodejs innerhelb einer Hautversion (4.x; 6.x; 8.x) upgegradet wird auf einmal nichts mehr läuft.
+>! Aktuell passiert so etwas bei Debian (Raspbian) Buster 
+
+Durch ein Problem mit npm kann es vorkommen, dass nach einem Upgrade von Linux, bei dem üblicherweise auch nodejs innerhalb einer Hautversion (6.x; 8.x, 10.x) 
+upgegradet wird auf einmal nichts mehr läuft.
 
 So können z.B. Adapter nicht mehr installiert werden, die Fehlermeldung lautet ***npm not found***
 
@@ -223,7 +226,7 @@ In den Fällen bitte in der Konsole prüfen:
 node -v
 npm -v
 
-Üblicherweise ist jetzt die node-Version 8.11.1 (Stand 30.7.2018) obwohl vorher node 6.x installiert war, und npm wird nicht gefunden.
+Üblicherweise ist jetzt (Stand 30.7.2019) die node-Version 8.15.0 und npm wird nicht gefunden.
 
 Das normale Vorgehen npm upzugraden funktioniert nicht, weil npm nicht da ist. Daher muss man erst node deinstallieren und dann neu installieren:
 
@@ -231,14 +234,16 @@ Das normale Vorgehen npm upzugraden funktioniert nicht, weil npm nicht da ist. D
 sudo apt-get --purge remove node
 sudo apt-get --purge remove nodejs
 sudo apt-get autoremove
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 node -v
-sudo npm install -g npm@4
 npm -v
 ```
 
-War vorher eine andere Main Version (nicht 8.x) von Node installiert müssen noch die Pakete auf node 8 kompiliert werden
+Jetzt sollte üblicherweise npm 6.x installiert sein.
+
+
+War vorher eine andere Main Version (nicht 10.x) von Node installiert müssen noch die Pakete auf node 10 kompiliert werden
 
 ```
 cd /opt/iobroker
