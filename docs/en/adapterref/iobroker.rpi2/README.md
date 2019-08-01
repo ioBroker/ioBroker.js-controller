@@ -139,6 +139,12 @@ For instance PI2:
 
 ## Changelog
 
+### 1.1.1
+ - (Apollon77) Error messages for not existing values are logged only once
+
+### 1.1.0
+ - (Apollon77) Nodejs 10 support 
+
 ### 1.0.0 (2018-08-20)
  - (bluefox) Admin3 support 
 

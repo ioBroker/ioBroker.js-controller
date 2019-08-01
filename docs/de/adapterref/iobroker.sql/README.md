@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: sDjWoPBWbFNcjfaereDv7PV96w2+vmUMczc8BokyRRY=
+hash: kOf3oPq4qStRFDipZVtBzb4+UGhHEUFhZ2n7hKt1Hhg=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -240,7 +240,7 @@ sendTo('sql.0', 'getHistory', {
 ```
 
 ## History Logging Management über Javascript
-Der Adapter unterstützt das Aktivieren und Deaktivieren der Verlaufsprotokollierung über JavaScript sowie das Abrufen der Liste aktivierter Datenpunkte mit ihren Einstellungen.
+Der Adapter unterstützt das Aktivieren und Deaktivieren der Verlaufsprotokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
 
 ### Aktivieren
 Für die Nachricht muss die "ID" des Datenpunkts angegeben werden. Zusätzliche optionale "Optionen" zum Definieren der Datenpunkt-spezifischen Einstellungen:
@@ -313,7 +313,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Passwort** Passwort für SQL.
 - **Passwort bestätigen** Passwort hier einfach wiederholen.
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
-- **Runden Sie den Real auf** Anzahl der Nachkommastellen.
+- **Runden Sie den Real auf** Anzahl der Stellen nach dem Komma.
 - **Erlaube parallele Anfragen** Erlaube gleichzeitige SQL-Anfragen an DB.
 
 ## Standardeinstellungen
@@ -321,6 +321,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Unveränderte Werte protokollieren alle** Schreiben Sie zusätzlich alle X Sekunden die Werte.
 - **Mindestdifferenz vom letzten Wert zum Protokoll** Mindestintervall zwischen zwei Werten.
 - **Aufbewahrung** Wie lange werden die Werte im DB gespeichert?
+
+## 1.10.0 (2019-07-xx) WIP !!
+* (Bluefox) Auf ES6 konvertieren
 
 ## 1.9.5 (15.05.2019)
 * (Apollon77) Unterstützung für NodeJS 12 hinzufügen
@@ -340,7 +343,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Fix getHistory
 
 ## 1.7.3 (2018-03-28)
-* (Apollon77) Respektieren Sie die Einstellung "Für immer behalten", um die Datenpunktkonfiguration beizubehalten
+* (Apollon77) Respektieren Sie die Einstellung "Für immer behalten", damit die Datenpunktkonfiguration beibehalten wird
 
 ## 1.7.2 (2018-03-24)
 * (Apollon77) Deaktiviert das Schreiben von NULL-Werten für SQLite
@@ -363,7 +366,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (bluefox) Bereit für Admin3
 
 ## 1.5.8 (2017-10-05)
-* (Apollon77) Funktion zum Fixieren von Relog-Werten
+* (Apollon77) Fix Relog-Wert-Funktion
 
 ## 1.5.7 (2017-08-10)
 * (bluefox) Option "letzten Wert speichern" hinzufügen
@@ -391,14 +394,14 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Kleiner Fix für ältere Konfigurationen
 
 ### 1.4.2 (2017-01-16)
-* (bluefox) Fehlerbehebung beim Umgang mit Float-Werten in der Adapterkonfiguration und in der Datenpunktkonfiguration.
+* (bluefox) Fehlerbehebung beim Umgang mit Float-Werten in der Adapter- und Datenpunktkonfiguration.
 
 ### 1.4.1
 * (Apollon77) Rollback auf SQL-Client 0.7, um die MMAGIC-Abhängigkeit zu beseitigen, die Probleme auf älteren Systemen mit sich bringt
 
 ### 1.4.0 (2016-12-02)
 * (Apollon77) Nachrichten hinzufügen enableHistory / disableHistory
-* (Apollon77) Unterstützung für das Protokollieren von Änderungen nur dann hinzufügen, wenn der Wert von einem Mindestwert für Zahlen abweicht
+* (Apollon77) Unterstützung für das Protokollieren von Änderungen nur hinzufügen, wenn der Wert von einem Mindestwert für Zahlen abweicht
 
 ### 1.3.4 (2016-11)
 * (Apollon77) Erlaube Datenbanknamen mit '-' für MySQL

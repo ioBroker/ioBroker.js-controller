@@ -748,6 +748,9 @@ void loop() {
 получать от нее данные через облачный сервис!
 
 ## Changelog
+### 2.1.1 (2019-07-27)
+* (bluefox) Add option to overwrite the client "clean session" settings
+
 ### 2.1.0 (2019-05-02)
 * (Zefau) Add option to send message using messagebox
 * (Zefau) Fix error with logging on pubrec

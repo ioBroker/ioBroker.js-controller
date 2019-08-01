@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: ABLHAz/LAWPrWC7ZzLSyOcQzCTmiRl6dyebv+daHrS8=
+hash: 0E7mjLlbyVT/lP9OcrKA3Z94EdSkrddYD9nWqg9vzW8=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -40,13 +40,16 @@ hash: ABLHAz/LAWPrWC7ZzLSyOcQzCTmiRl6dyebv+daHrS8=
 | ShellyPlug S (SHPLG-1) | проверено | проверено |
 | ShellySense (SHSEN-1) | проверено | не проверено |
 | Shelly4Pro (SHSW-44) | проверено | не проверено |
+| Shelly EM (SHEM) | проверено | проверено |
 
 ## Changelog
 
 ### 3.0.8 (27.07.2019)
+* (Stübi) - Add device Shelly EM 
 * (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 
 * (Stübi) - Add state temperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode
 * (Stübi) - Add state overtemperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP and MQTT mode
+* (Stübi) - Bugfixing, the Shelly HT sends by CoAP the humidity multiply with 2. The fix divides the value by 2. 
 
 ### 3.0.7 (03.07.2019)
 * (Stübi) - correct spelling error 

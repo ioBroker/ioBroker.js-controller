@@ -3,14 +3,16 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rpi2/README.md
 title: без названия
-hash: yUNT/749tkPsNh55r2vRh5FX088bXozqNd5QYjdxJpo=
+hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
 ---
-![логотип](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker Адаптер RPI-монитора ==============
+![логотип](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker Адаптер RPI-монитора
 
 ![Количество установок](http://iobroker.live/badges/rpi2-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.rpi2.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
 ![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
+
+==============
 
 Реализация RPI-Monitor для интеграции в ioBroker. Это та же реализация, что и для iobroker.rpi, но с GPIO.
 
@@ -89,7 +91,7 @@ sudo apt-get install -y build-essential python
 ## Logfiles / Configuration Settings
 ## Характеристики
 ## Сделать
-## Проверенное оборудование
+## Протестированное оборудование
  - Одроид С1
  - Raspberry Pi 1
 
@@ -136,6 +138,12 @@ sudo apt-get install -y build-essential python
 ```
 
 ## Changelog
+
+### 1.1.1
+ - (Apollon77) Error messages for not existing values are logged only once
+
+### 1.1.0
+ - (Apollon77) Nodejs 10 support 
 
 ### 1.0.0 (2018-08-20)
  - (bluefox) Admin3 support 

@@ -30,6 +30,12 @@ TODO: Show queue with covers
 * all read/write, to get also changes from Sonos-App
 * "coordinator" contains the channel name of the Group-Master (e.g. 192_168_1_99). If Device do not belong to any group the value is eaqual to the own channel name
 
+## Warning: Stability problems in combination with sayit adapter
+Please note: The sonos adapter has stability problems when used in text for speech thus in combination with the sayit adapter. Symptoms observed
+1. abitrary change of volume to 0 or 100 %.
+2. no response after a random number of text to speech sequence
+
+Workaround for text to speech is the the use of the sonos http api. see https://github.com/jishi/node-sonos-http-api
 
 ## Changelog
 ### 1.8.0 (2019-01-04)

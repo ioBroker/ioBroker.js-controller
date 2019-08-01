@@ -226,7 +226,11 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ### Private cloud
 If you use private skill/action/навык for communication with `Alexa/Google Home/Алиса` so you have the possibility to use IoT instance to process the requests from it.
 
+E.g. for `yandex alice`:
+
 ```
+const OBJECT_FROM_ALISA_SERVICE = {}; // object from alisa service or empty object
+OBJECT_FROM_ALISA_SERVICE.alisa = '/path/v1.0/user/devices'; // called URL, 'path' could be any text, but it must be there
 sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, response => {
     // Send this response back to alisa service
     console.log(JSON.stringify(response));
@@ -240,6 +244,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.0.3 (2019-07-30)
+* (bluefox) Fixed language issues for google home and yandex alice
+
 ### 1.0.1 (2019-07-26)
 * (bluefox) Support of private skills/actions was added.
 

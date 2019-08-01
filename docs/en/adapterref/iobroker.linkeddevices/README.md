@@ -36,6 +36,13 @@ This adapter is inspired from [virtual devices script by Pman](https://forum.iob
 
 ## Changelog
 
+### 0.4.0
+* (Scrounger) expertsettings for string: convert to boolean
+* (Scrounger) custom settings of linked object: added button to open custom settings of parent object
+* (Scrounger) adapter configuration: auto generate globale script for [Javascript Script Engine](https://github.com/iobroker/ioBroker.javascript/blob/master/README.md) with variables for all linked Object
+* (Scrounger) Bug fix: native data stored in linked object if available
+* (Scrounger) bug fixes
+
 ### 0.3.2
 * (Scrounger) expertsettings for string: add prefix and suffix to string
 * (Scrounger) expertsettings for number (readonly): convert to duration

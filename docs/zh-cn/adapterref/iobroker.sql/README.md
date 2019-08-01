@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: sDjWoPBWbFNcjfaereDv7PV96w2+vmUMczc8BokyRRY=
+hash: kOf3oPq4qStRFDipZVtBzb4+UGhHEUFhZ2n7hKt1Hhg=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -321,6 +321,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
  -  **记录未更改的值**：每隔X秒额外写入值。
  -  **与上一个值相对于log的最小差异**：两个值之间的最小间隔。
  -  **存储保留**：值存储在DB中的时间。
+
+## 1.10.0（2019-07-xx）WIP !!
+*（bluefox）转换为ES6
 
 ## 1.9.5（2019-05-15）
 *（Apollon77）添加对nodejs 12的支持

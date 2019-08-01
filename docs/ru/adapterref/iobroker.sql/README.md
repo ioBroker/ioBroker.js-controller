@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: sDjWoPBWbFNcjfaereDv7PV96w2+vmUMczc8BokyRRY=
+hash: kOf3oPq4qStRFDipZVtBzb4+UGhHEUFhZ2n7hKt1Hhg=
 ---
 ![логотип](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -321,6 +321,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Минимальная разница от последнего значения к журналу** минимальный интервал между двумя значениями.
 - **Хранение хранения** как долго значения будут храниться в БД.
 
+## 1.10.0 (2019-07-xx) WIP !!
+* (bluefox) Конвертировать в ES6
+
 ## 1.9.5 (2019-05-15)
 * (Apollon77) Добавить поддержку для nodejs 12
 
@@ -377,7 +380,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) исправлено в преобразованиях типов данных
 
 ### 1.5.0 (2017-03-02)
-* (Apollon77) Добавить параметр для определения типа данных хранилища для каждой точки данных, включая преобразование значения при необходимости
+* (Apollon77) Добавить опцию, чтобы определить тип данных хранилища для каждой точки данных, включая преобразование значения при необходимости
 
 ### 1.4.6 (2017-02-25)
 * (Apollon77) Исправление опечатки в PostgrSQL

@@ -4,7 +4,7 @@ lastChanged: 06.06.2019
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/trouble/RunsNoMore.md
-hash: 4OksFFlOB3croZRpjqMaK8/sIl+YhDm0jeKspiX222k=
+hash: UbJALyhZ0lBEJau1MBYfLa578cAArCRtYxl1BBtaDXM=
 ---
 # IoBroker больше не работает
 На форуме часто появляется информация о том, что ioBroker больше не работает. Но это утверждение, которое несет столько информации, сколько: моя машина не ездит.
@@ -204,7 +204,9 @@ iobroker add admin --port 8089
 После того, как настройки снова в порядке, вы должны удалить новый (второй на порту 8089) экземпляр для экономии ресурсов.
 
 ## Npm исчез
-Из-за проблемы с npm может случиться так, что после обновления с Linux, которое обычно также обновляет nodejs в версии скина (4.x, 6.x, 8.x), внезапно ничего не работает.
+>! В настоящее время что-то подобное происходит в Debian (Raspbian) Buster.
+
+Из-за проблемы с npm может случиться так, что после обновления с Linux, которое обычно также обновляет nodejs в версии скина (6.x, 8.x, 10.x), вдруг ничего не происходит.
 
 Так, например, Адаптеры больше не установлены, сообщение об ошибке: ***npm not found***
 
@@ -212,7 +214,7 @@ iobroker add admin --port 8089
 
 узел -v npm -v
 
-Обычно версия узла теперь 8.11.1 (по состоянию на 30.7.2018), хотя узел 6.x был установлен ранее, а npm не найден.
+Обычно сейчас (по состоянию на 30 июля 2019 г.) версия узла - 8.15.0, а npm не найден.
 
 Обычная процедура обновления npm не работает, потому что npm там нет. Поэтому вы должны сначала удалить узел, а затем переустановить:
 
@@ -220,14 +222,15 @@ iobroker add admin --port 8089
 sudo apt-get --purge remove node
 sudo apt-get --purge remove nodejs
 sudo apt-get autoremove
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 node -v
-sudo npm install -g npm@4
 npm -v
 ```
 
-Если ранее была установлена другая основная версия (не 8.x) Node, пакеты должны быть скомпилированы на узле 8
+Теперь обычно устанавливается npm 6.x.
+
+Если ранее была установлена другая основная версия (не 10.x) Node, пакеты должны быть скомпилированы на узле 10
 
 ```
 cd /opt/iobroker

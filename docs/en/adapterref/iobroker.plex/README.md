@@ -58,7 +58,7 @@ Once Tautulli is installed, open the _Settings_ page from Tautulli dashboard and
 To setup a webook using Tautulli, following the instrucutions below and make sure you have completed all 4 steps:
 1. Add Notification Agent
 2. Configure Webhook in Notification Agent
-3. Configurehh Triggers in Notification Agent
+3. Configure Triggers in Notification Agent
 4. Configure Data in Notification Agent
 5. Configure Notification options
 
@@ -72,8 +72,10 @@ Once installed open the settings page from Tautulli dashboard and navigate to No
    
    ![Tautulli Webhook](img/screenshot_tautulli-webhook.png)
    Furthermore, choose ```POST``` for the _Webhook Method_ and enter any description you like in _Description_.
-3. Next, go to the _Triggers_ tab, select your desired (or simply all) options
-4. Now, __most importantly__, fill in the respective data payload in the _Data_ tab according to the [Notification configuration found here](README-tautulli.md#notification-configuration). Copy the whole content into the first four notification agents (```Playback Start```, ```Playback Stop```, ```Playback Pause``` and ```Playback Resume```) as shown below for ```Playback Start```:
+   
+3. Next, go to the _Triggers_ tab, select your desired (or simply all) notification agents. An enabled notification agent will trigger an event which will then be sent to ioBroker. __Make sure__ to provide the necessary data for each of the enabled notification agent in the next step!
+4. Now, __most importantly__, fill in the respective data payload in the _Data_ tab according to the __[Notification configuration found here](README-tautulli.md#notification-configuration)__.
+   Copy the notification configuration of the relevant notification agents from the previous step (e.g. ```Playback Start```, ```Playback Stop```, ```Playback Pause``` and ```Playback Resume```) in each of the text boxes as shown below for ```Playback Start```:
    
    ![Tautulli Notification](img/screenshot_tautulli-notification.png)
 
@@ -109,6 +111,7 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
+- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
 - add playback control for players
 

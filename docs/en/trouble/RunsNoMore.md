@@ -4,7 +4,7 @@ lastChanged: 06.06.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/trouble/RunsNoMore.md
-hash: 4OksFFlOB3croZRpjqMaK8/sIl+YhDm0jeKspiX222k=
+hash: UbJALyhZ0lBEJau1MBYfLa578cAArCRtYxl1BBtaDXM=
 ---
 # IoBroker is not working anymore
 It often comes in the forum that ioBroker is no longer running. But that is a statement that carries as much information as: my car does not drive.
@@ -204,7 +204,9 @@ Here is 8089 a port that is certainly free. Then you can reach admin at http:// 
 After the settings are fine again, you should uninstall the new (second on the port 8089) instance to save resources.
 
 ## Npm has disappeared
-Due to a problem with npm it can happen that after an upgrade from Linux, which usually also nodejs within a skin version (4.x, 6.x, 8.x) is upgraded, suddenly nothing is working anymore.
+>! Currently something like this happens at Debian (Raspbian) Buster
+
+Due to a problem with npm it can happen that after an upgrade from Linux, which usually also nodejs upgraded within a skin version (6.x, 8.x, 10.x) suddenly nothing is up.
 
 Thus, e.g. Adapters are no longer installed, the error message is ***npm not found***
 
@@ -212,7 +214,7 @@ In cases please check in the console:
 
 node -v npm -v
 
-Usually the node version is now 8.11.1 (as of 30.7.2018) although node 6.x was installed before, and npm is not found.
+Usually now (as of July 30, 2019) the node version is 8.15.0 and npm is not found.
 
 The normal procedure of upgrading npm does not work because npm is not there. Therefore you have to uninstall node first and then reinstall:
 
@@ -220,14 +222,15 @@ The normal procedure of upgrading npm does not work because npm is not there. Th
 sudo apt-get --purge remove node
 sudo apt-get --purge remove nodejs
 sudo apt-get autoremove
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt-get install -y nodejs
 node -v
-sudo npm install -g npm@4
 npm -v
 ```
 
-If another main version (not 8.x) of Node was installed before, the packages have to be compiled on node 8
+Now usually npm 6.x should be installed.
+
+If another main version (not 10.x) of Node was installed before, the packages have to be compiled on node 10
 
 ```
 cd /opt/iobroker

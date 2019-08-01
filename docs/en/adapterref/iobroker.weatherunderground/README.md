@@ -69,6 +69,9 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
+### 3.1.2 (2019-07-27)
+* (Apollon77) use new parameters to get decimal precision values
+ 
 ### 3.1.1 (2019-07-14)
 * (Apollon77) add windDirection as string calculated based on degrees
  

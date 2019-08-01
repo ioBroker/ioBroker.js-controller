@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: J1phuITCCHerLFB2AWPbbmILWEnaBytlg9P2oFlcUrE=
+hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -240,9 +240,13 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ```
 
 ### Private Wolke
-Wenn Sie private skill / action / навык für die Kommunikation mit `Alexa/Google Home/Алиса` verwenden, haben Sie die Möglichkeit, die Anfragen von dieser IoT-Instanz zu verarbeiten.
+Wenn Sie private skill / action / навык für die Kommunikation mit `Alexa/Google Home/Алиса` verwenden, haben Sie die Möglichkeit, die Anforderungen von dieser IoT-Instanz zu verarbeiten.
+
+Z.B. für `yandex alice`:
 
 ```
+const OBJECT_FROM_ALISA_SERVICE = {}; // object from alisa service or empty object
+OBJECT_FROM_ALISA_SERVICE.alisa = '/path/v1.0/user/devices'; // called URL, 'path' could be any text, but it must be there
 sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, response => {
     // Send this response back to alisa service
     console.log(JSON.stringify(response));
@@ -253,10 +257,13 @@ Folgende Typen werden unterstützt:
 
 - `alexa` - Schauspiel mit Amazon Alexa oder Amazon Custom Skill
 - `ghome` - mit Google Actions über Google Home handeln
-- "alisa" - Schauspiel mit Yandex Алиса
+- `alisa` - mit Yandex Алиса
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
 
 ## Changelog
+### 1.0.3 (2019-07-30)
+* (bluefox) Fixed language issues for google home and yandex alice
+
 ### 1.0.1 (2019-07-26)
 * (bluefox) Support of private skills/actions was added.
 

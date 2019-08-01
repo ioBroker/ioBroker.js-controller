@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: YzUZPhFRNPLV/ihYasl3YnhG5wbHqo2qD3QJEfKyJMM=
+hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 ---
 ![Logo](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -77,8 +77,10 @@ Nach der Installation öffnen Sie die Einstellungsseite im Tautulli-Dashboard un
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Wählen Sie außerdem ```POST``` für die _Webhook-Methode_ und geben Sie eine beliebige Beschreibung in _Description_ ein.
 
-3. Wechseln Sie anschließend zur Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Optionen aus
-4. Tragen Sie nun __wichtigst__ die entsprechende Datennutzlast in der Registerkarte _Data_ gemäß der [hier gefundenen Benachrichtigungskonfiguration] ein (README-tautulli.md # notification-configuration). Kopieren Sie den gesamten Inhalt in die ersten vier Benachrichtigungsagenten (`` `Wiedergabe starten```,` `` Wiedergabe stoppen```, `` `Wiedergabe anhalten``` und` `` Wiedergabe fortsetzen```), wie unten gezeigt für `` `Playback Start```:
+3. Wechseln Sie als Nächstes zur Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Benachrichtigungsagenten aus. Ein aktivierter Benachrichtigungsagent löst ein Ereignis aus, das dann an ioBroker gesendet wird. __Stellen Sie sicher, dass Sie im nächsten Schritt die erforderlichen Daten für jeden aktivierten Benachrichtigungsagenten bereitstellen!
+4. Tragen Sie nun __wichtigst__ die entsprechende Datennutzlast in der Registerkarte _Data_ gemäß __ [Benachrichtigungskonfiguration hier] (README-tautulli.md # notification-configuration) __ ein.
+
+   Kopieren Sie die Benachrichtigungskonfiguration der entsprechenden Benachrichtigungsagenten aus dem vorherigen Schritt (z. B. ```Playback Start```, ```Playback Stop```, ```Playback Pause``` und ```Playback Resume```) in jedes der folgenden Textfelder für § §JJJJJ_4§§:
 
    ![Tautulli-Benachrichtigung](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
@@ -112,24 +114,33 @@ Nach erfolgreichem Advanced Setup werden zusätzlich folgende Kanäle angelegt. 
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
+- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
 - add playback control for players
 
+### 0.3.2 / 0.3.3 (2019-07-25)
+- (Zefau) added file, streaming and transcoding information to Tautulli event
+- (Zefau) fixed bug when no playlists exist
+- (Zefau) fixed missing `EVENTS.json`
+
+### 0.3.1 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
 ### 0.3.0 (2019-05-16)
 - ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
-- added playlists to states
-- added state description for object tree ```_playing```
-- updated German translation (instead of generating it from English)
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- (Zefau) added playlists to states
+- (Zefau) added state description for object tree ```_playing```
+- (Zefau) updated German translation (instead of generating it from English)
 
 ### 0.2.0 (2019-05-14)
-- added authentication method (using Plex user and Plex password)
-- fixed @iobroker/adapter-core dependency
+- (Zefau) added authentication method (using Plex user and Plex password)
+- (Zefau) fixed @iobroker/adapter-core dependency
 
 ### 0.1.0 (2019-04-26)
-- get initial data from Plex API
-- receive events from Plex Webhook (Plex Pass only)
-- receive events from Tatulli (if used)
+- (Zefau) get initial data from Plex API
+- (Zefau) receive events from Plex Webhook (Plex Pass only)
+- (Zefau) receive events from Tatulli (if used)
 
 ## License
 The MIT License (MIT)

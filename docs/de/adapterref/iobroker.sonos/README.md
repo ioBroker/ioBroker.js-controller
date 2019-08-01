@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
+hash: bQ2MBSg0AsMwF2W3qZ4aI1+wWjcPOM3hkpgV061DPTI=
 ---
 ![Logo](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -12,32 +12,42 @@ hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sonos.svg)
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
-# IoBroker.sonos ================
+# IoBroker.sonos
+==============
+
 ![Bildschirmfoto](../../../en/adapterref/iobroker.sonos/img/preview1.png)
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.sonos/img/preview2.png)
 
-Steuern und überwachen Sie den SONOS-Player über ioBroker.
+Steuern und überwachen Sie den SONOS-Player von ioBroker aus.
 
 Verwendete Pakete von Jimmy Shimizu https://github.com/jishi/node-sonos-discovery und https://github.com/jishi/node-sonos-web-controller
 
-** Dieser Adapter benötigt den Knoten 4.0.0 oder höher! **
+** Dieser Adapter benötigt Node 4.0.0 oder höher! **
 
-Um die Verwendung des sayIt-Adapters mit SONOS zuzulassen, stellen Sie sicher, dass der Webadapter instanziiert ist und auch ausgeführt wird. Der Webadapter ist erforderlich, damit SONOS die generierte MP3-Datei von sayIt lesen kann.
+Stellen Sie sicher, dass der Webadapter instanziiert ist und auch ausgeführt wird, um die Verwendung des sayIt-Adapters mit SONOS zuzulassen. Der Web-Adapter ist erforderlich, damit SONOS die von sayIt generierte MP3-Datei lesen kann.
 
-Sie können auch die mobile Schnittstelle verwenden. Sie finden es unter ```http://ipaddress:8083/m/```
+Sie können auch die mobile Oberfläche verwenden. Es ist zu finden unter ```http://ipaddress:8083/m/```
 
-TODO: Warteschlange mit Cover anzeigen
+TODO: Warteschlange mit Covers anzeigen
 
-## Infos zum Umgang mit Gruppen
-* Staaten: Koordinator, Gruppenvolumen, Gruppenstummschaltung
-* Alles lesen / schreiben, um auch Änderungen von Sonos-App zu erhalten
-* "Koordinator" enthält den Kanalnamen des Group-Masters (z. B. 192_168_1_99). Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem eigenen Kanalnamen
+## Infos zur Gruppenbearbeitung
+* Status: Koordinator, Gruppenvolumen, Gruppenstummschaltung
+* Alle lesen / schreiben, um auch Änderungen von der Sonos-App zu erhalten
+* "Koordinator" enthält den Kanalnamen des Gruppenmasters (z. B. 192_168_1_99). Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem Namen des eigenen Kanals
+
+## Warnung: Stabilitätsprobleme in Kombination mit sayit Adapter
+Bitte beachten Sie: Der Sonos-Adapter weist Stabilitätsprobleme auf, wenn er in Verbindung mit dem Sayit-Adapter in Text für Sprache verwendet wird. Symptome beobachtet
+
+1. beliebige Volumenänderung auf 0 oder 100%.
+2. Keine Antwort nach einer zufälligen Anzahl von Texten auf die Sprachsequenz
+
+Problemumgehung für Text to Speech ist die Verwendung der Sonos-http-API. Siehe https://github.com/jishi/node-sonos-http-api
 
 ## Aufbau
-- Webserver - [optional] Wenn Webserver aktiviert ist oder nicht
-- Port - Wenn Webserver aktiviert ist, so den Port dafür. Standardeinstellung 8083
-- Aktualisierung der verstrichenen Zeit (ms) - Intervall in ms, wie oft der verstrichene Timer aktualisiert wird, wenn der Titel abgespielt wird. (Standardeinstellung 2000)
+- Webserver - [optional] Ob der Webserver aktiviert ist oder nicht
+- Port - Wenn der Webserver aktiviert ist, so ist der Port dafür. Standard 8083
+- Update der abgelaufenen Zeit (ms) - Intervall in ms, wie oft der abgelaufene Timer aktualisiert wird, wenn der Titel abgespielt wird. (Standard 2000)
 
 ## Changelog
 ### 1.8.0 (2019-01-04)

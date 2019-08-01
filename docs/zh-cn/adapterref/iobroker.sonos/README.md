@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
+hash: bQ2MBSg0AsMwF2W3qZ4aI1+wWjcPOM3hkpgV061DPTI=
 ---
 ![商标](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -12,7 +12,9 @@ hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
 ![下载](https://img.shields.io/npm/dm/iobroker.sonos.svg)
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
-＃ioBroker.sonos ==============
+＃ioBroker.sonos
+==============
+
 ![截图](../../../en/adapterref/iobroker.sonos/img/preview1.png)
 
 ![截图](../../../en/adapterref/iobroker.sonos/img/preview2.png)
@@ -33,6 +35,14 @@ TODO：显示带盖的队列
 *国家：协调员，group_volume，group_muted
 *所有读/写，以获得Sonos-App的更改
 *“coordinator”包含Group-Master的频道名称（例如192_168_1_99）。如果设备不属于任何组，则该值等于自己的通道名称
+
+##警告：与sayit适配器结合使用时存在稳定性问题
+请注意：当用于语音文本时，sonos适配器具有稳定性问题，因此与sayit适配器结合使用。观察到症状
+
+1.体积变化为0或100％。
+2.随机数量的文本到语音序列后没有响应
+
+文本到语音的解决方法是使用sonos http api。请参阅https://github.com/jishi/node-sonos-http-api
 
 ##配置
  -  Web服务器 -  [可选]如果启用了Web服务器

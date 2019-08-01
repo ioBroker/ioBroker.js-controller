@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
+hash: bQ2MBSg0AsMwF2W3qZ4aI1+wWjcPOM3hkpgV061DPTI=
 ---
 ![логотип](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -12,7 +12,9 @@ hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sonos.svg)
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
-# IoBroker.sonos ==============
+# IoBroker.sonos
+==============
+
 ![Скриншот](../../../en/adapterref/iobroker.sonos/img/preview1.png)
 
 ![Скриншот](../../../en/adapterref/iobroker.sonos/img/preview2.png)
@@ -31,8 +33,16 @@ hash: XdG5+4pVkLhMjWoHuz5P85UdQnndxbrh7oIFkZCHm24=
 
 ## Информация об обработке групп
 * Состояния: координатор, group_volume, group_muted
-* все чтение / запись, чтобы получить также изменения от Sonos-App
+* все чтение / запись, чтобы получить также изменения из Sonos-App
 * «Координатор» содержит название канала Мастера группы (например, 192_168_1_99). Если устройство не принадлежит ни к одной группе, значение равно названию собственного канала.
+
+## Предупреждение: проблемы со стабильностью в сочетании с адаптером sayit
+Обратите внимание: у адаптера sonos есть проблемы со стабильностью при использовании в тексте для речи, поэтому в сочетании с адаптером sayit. Наблюдаемые симптомы
+
+1. внезапное изменение громкости до 0 или 100%.
+2. нет ответа после случайного числа текста в речевой последовательности
+
+Обходной путь для преобразования текста в речь - использование sonos http api. см. https://github.com/jishi/node-sonos-http-api
 
 ## Конфигурация
 - Веб-сервер - [необязательно] Если веб-сервер включен или нет

@@ -35,14 +35,17 @@ You find a detailed installation documentation here:
 |ShellyPlug S (SHPLG-1) |verified|verified|
 |ShellySense (SHSEN-1)|verified|not verified|
 |Shelly4Pro (SHSW-44)|verified|not verified|
+|Shelly EM (SHEM)|verified|verified|
 
 
 ## Changelog
 
 ### 3.0.8 (27.07.2019)
+* (Stübi) - Add device Shelly EM 
 * (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 
 * (Stübi) - Add state temperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode
 * (Stübi) - Add state overtemperature for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP and MQTT mode
+* (Stübi) - Bugfixing, the Shelly HT sends by CoAP the humidity multiply with 2. The fix divides the value by 2. 
 
 ### 3.0.7 (03.07.2019)
 * (Stübi) - correct spelling error 

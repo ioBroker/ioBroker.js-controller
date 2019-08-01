@@ -3,26 +3,28 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rpi2/README.md
 title: kein Titel
-hash: yUNT/749tkPsNh55r2vRh5FX088bXozqNd5QYjdxJpo=
+hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
 ---
-![Logo](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker RPI-Monitor Adapter ================
+![Logo](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker RPI-Monitor Adapter
 
 ![Anzahl der Installationen](http://iobroker.live/badges/rpi2-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.rpi2.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
 ![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
 
-RPI-Monitor-Implementierung zur Integration in ioBroker. Es ist dieselbe Implementierung wie für iobroker.rpi, jedoch mit GPIOs.
+==============
+
+RPI-Monitor-Implementierung zur Integration in ioBroker. Dies ist die gleiche Implementierung wie für iobroker.rpi, jedoch mit GPIOs.
 
 ## Wichtige Informationen
 Funktioniert nur mit Knoten> = 0.12
 
-** ioBroker muss unter root ausgeführt werden, um GPIOs zu steuern. **
+** ioBroker muss unter root ausgeführt werden, um GPIOs steuern zu können. **
 
 ## Installation
-Nach der Installation müssen Sie alle benötigten Module über die Administrationsseite konfigurieren.
+Nach der Installation müssen Sie alle erforderlichen Module über die Administrationsseite konfigurieren.
 
-Nach dem Start von iobroker.rpi erzeugen alle ausgewählten Module einen Objektbaum in ioBroker innerhalb von rpi. <Instanz>. <Modulname>, z. rpi.0.cpu
+Nach dem Start von iobroker.rpi erzeugen alle ausgewählten Module einen Objektbaum in ioBroker innerhalb von rpi. <Instance>. <Modulename>, z. rpi.0.cpu
 
 Stellen Sie sicher, dass Python und Build-Essential installiert sind:
 
@@ -34,19 +36,19 @@ sudo apt-get install -y build-essential python
 Folgende Objekte stehen nach Auswahl zur Verfügung:
 
 #### **ZENTRALPROZESSOR**
-- cpu_frequency
+- CPU_Frequenz
 - load1
 - load5
 - load15
 
 #### **Himbeere (vcgencmd ist erforderlich)**
-- cpu_voltage
+- CPU-Spannung
 - mem_arm
 - mem_gpu
 
 #### **Erinnerung**
 - memory_available
-- memory_free
+- Speicher_frei
 - memory_total
 
 #### **Netzwerk (eth0)**
@@ -60,13 +62,13 @@ Folgende Objekte stehen nach Auswahl zur Verfügung:
 - sdcard_root_used
 
 #### **Wechsel**
-- swap_total
+- Swap_Total
 - swap_used
 
 #### **Temperatur**
 - soc_temp
 
-#### **Betriebszeit**
+#### **Uptime**
 - Betriebszeit
 
 #### **WLAN**
@@ -95,15 +97,15 @@ Auf der Konfigurationsseite können Sie folgende Module auswählen:
 
 ## GPIOs
 Sie können auch GPIOs lesen und steuern.
-Sie müssen lediglich die GPIOs-Optionen (zusätzliche Registerkarte) in den Einstellungen konfigurieren.
+Sie müssen lediglich die GPIO-Optionen in den Einstellungen konfigurieren (zusätzliche Registerkarte).
 
 ![GPIOs](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
 
-Nachdem einige Ports aktiviert wurden, werden in der Objektstruktur folgende Status angezeigt:
+Nachdem einige Ports aktiviert wurden, werden im Objektbaum folgende Status angezeigt:
 
 - rpi.0.gpio.PORT.state
 
-Die Anzahl der Ports ist BCM (BroadComm Pins on Chip). Die Aufzählung erhalten Sie mit ```gpio readall```.
+Die Nummerierung der Ports ist BCM (BroadComm-Pins auf dem Chip). Die Aufzählung erhalten Sie mit ```gpio readall```.
 Zum Beispiel PI2:
 
 ```
@@ -136,6 +138,12 @@ Zum Beispiel PI2:
 ```
 
 ## Changelog
+
+### 1.1.1
+ - (Apollon77) Error messages for not existing values are logged only once
+
+### 1.1.0
+ - (Apollon77) Nodejs 10 support 
 
 ### 1.0.0 (2018-08-20)
  - (bluefox) Admin3 support 

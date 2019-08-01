@@ -3,14 +3,16 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rpi2/README.md
 title: 无题
-hash: yUNT/749tkPsNh55r2vRh5FX088bXozqNd5QYjdxJpo=
+hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
 ---
-![商标](../../../en/adapterref/iobroker.rpi2/admin/rpi.png)ioBrokerRPI-Monitor适配器==============
+![商标](../../../en/adapterref/iobroker.rpi2/admin/rpi.png)ioBrokerRPI-Monitor适配器
 
 ![安装数量](http://iobroker.live/badges/rpi2-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.rpi2.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
 ![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
+
+==============
 
 用于集成到ioBroker的RPI-Monitor实现。它与iobroker.rpi的实现相同，但使用GPIO。
 
@@ -99,11 +101,11 @@ sudo apt-get install -y build-essential python
 
 ![个GPIO](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
 
-启用某些端口后，对象树中出现以下状态：
+启用某些端口后，对象树中将显示以下状态：
 
  -  rpi.0.gpio.PORT.state
 
-端口的编号是BCM（芯片上的BroadComm引脚）。您可以使用```gpio readall```获取枚举。
+端口的编号是BCM（片上BroadComm引脚）。您可以使用```gpio readall```获取枚举。
 例如PI2：
 
 ```
@@ -136,6 +138,12 @@ sudo apt-get install -y build-essential python
 ```
 
 ## Changelog
+
+### 1.1.1
+ - (Apollon77) Error messages for not existing values are logged only once
+
+### 1.1.0
+ - (Apollon77) Nodejs 10 support 
 
 ### 1.0.0 (2018-08-20)
  - (bluefox) Admin3 support 

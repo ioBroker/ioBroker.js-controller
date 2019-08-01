@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: YzUZPhFRNPLV/ihYasl3YnhG5wbHqo2qD3QJEfKyJMM=
+hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 ---
 ![商标](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -77,8 +77,10 @@ TBD
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png)此外，为_Webhook Method_选择```POST```并在_Description_中输入您喜欢的任何描述。
 
-3.接下来，转到_Triggers_选项卡，选择所需的（或简称所有）选项
-4.现在，__最重要的是，根据[此处的通知配置]（README-tautulli.md＃notification-configuration）填写_Data_选项卡中的相应数据有效负载。将整个内容复制到前四个通知代理（```Playback Start```，```Playback Stop```，```Playback Pause```和```Playback Resume```，如下图所示对于```Playback Start```：
+3.接下来，转到_Triggers_选项卡，选择所需的（或简称所有）通知代理。启用的通知代理将触发一个事件，然后将该事件发送到ioBroker。 __确保在下一步中为每个启用的通知代理提供必要的数据！
+4.现在，__最重要的是，根据__ [此处的通知配置]（README-tautulli.md＃notification-configuration）__填写_Data_选项卡中的相应数据有效负载。
+
+   复制上一步中相关通知代理的通知配置（例如```Playback Start```，```Playback Stop```，```Playback Pause```和```Playback Resume```），如下所示为§ §JJJJJ_4§§：
 
    ![Tautulli通知](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
@@ -112,24 +114,33 @@ TBD
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
+- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
 - add playback control for players
 
+### 0.3.2 / 0.3.3 (2019-07-25)
+- (Zefau) added file, streaming and transcoding information to Tautulli event
+- (Zefau) fixed bug when no playlists exist
+- (Zefau) fixed missing `EVENTS.json`
+
+### 0.3.1 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
 ### 0.3.0 (2019-05-16)
 - ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
-- added playlists to states
-- added state description for object tree ```_playing```
-- updated German translation (instead of generating it from English)
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- (Zefau) added playlists to states
+- (Zefau) added state description for object tree ```_playing```
+- (Zefau) updated German translation (instead of generating it from English)
 
 ### 0.2.0 (2019-05-14)
-- added authentication method (using Plex user and Plex password)
-- fixed @iobroker/adapter-core dependency
+- (Zefau) added authentication method (using Plex user and Plex password)
+- (Zefau) fixed @iobroker/adapter-core dependency
 
 ### 0.1.0 (2019-04-26)
-- get initial data from Plex API
-- receive events from Plex Webhook (Plex Pass only)
-- receive events from Tatulli (if used)
+- (Zefau) get initial data from Plex API
+- (Zefau) receive events from Plex Webhook (Plex Pass only)
+- (Zefau) receive events from Tatulli (if used)
 
 ## License
 The MIT License (MIT)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: YzUZPhFRNPLV/ihYasl3YnhG5wbHqo2qD3QJEfKyJMM=
+hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 ---
 ![логотип](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -35,7 +35,7 @@ TBD
 ### 2.1. Основные настройки
 Для базовой настройки требуется только указать IP-адрес (и порт) вашей установки Plex. Кроме того, вы должны предоставить пользователю пароль и пароль для извлечения данных из Plex.
 
-Если вы не хотите сохранять имя пользователя и пароль в адаптере, вы можете внести ioBroker в белый список в настройках Plex. Для этого перейдите к `Settings` вашего Plex Media Server и к `Network`. Введите IP-адрес ioBroker в оба поля: `LAN Networks` и `List of IP addresses and networks that are allowed without auth`:
+Если вы не хотите сохранять имя пользователя и пароль в адаптере, вы можете внести белый список IP-адреса ioBroker в настройки Plex. Для этого перейдите к `Settings` вашего Plex Media Server и к `Network`. Введите IP-адрес ioBroker в оба поля: `LAN Networks` и `List of IP addresses and networks that are allowed without auth`:
 
 ![Настройки сети Plex](../../../en/adapterref/iobroker.plex/img/screenshot_plex-networksettings.jpg)
 
@@ -77,8 +77,10 @@ TBD
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Кроме того, выберите ```POST``` для метода _Webhook_ и введите любое понравившееся описание в _Description_.
 
-3. Затем перейдите на вкладку _Triggers_, выберите желаемые (или просто все) параметры
-4. Теперь, ___ что наиболее важно __, заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с [найденной здесь конфигурацией уведомлений] (README-tautulli.md # Notification-configuration). Скопируйте весь контент в первые четыре агента уведомлений (`` `Playback Start```", `` `Playback Stop```,` `` Playback Pause``` и `` `Playback Resume```)), как показано ниже для `` `Playback Start```:
+3. Затем перейдите на вкладку _Triggers_, выберите нужные (или просто все) агенты уведомлений. Включенный агент уведомлений вызовет событие, которое затем будет отправлено в ioBroker. __Убедитесь ___, чтобы предоставить необходимые данные для каждого из включенных агентов уведомлений на следующем шаге!
+4. Теперь, ___ что наиболее важно __, заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с __ [Конфигурация уведомления найдена здесь] (README-tautulli.md # Notification-configuration) __.
+
+   Скопируйте конфигурацию уведомлений соответствующих агентов уведомлений из предыдущего шага (например, ```Playback Start```, ```Playback Stop```, ```Playback Pause``` и ```Playback Resume```) в каждом из текстовых полей, как показано ниже для § §JJJJJ_4§§:
 
    ![Таутулли Уведомление](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
@@ -112,24 +114,33 @@ TBD
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
+- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
 - add playback control for players
 
+### 0.3.2 / 0.3.3 (2019-07-25)
+- (Zefau) added file, streaming and transcoding information to Tautulli event
+- (Zefau) fixed bug when no playlists exist
+- (Zefau) fixed missing `EVENTS.json`
+
+### 0.3.1 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
 ### 0.3.0 (2019-05-16)
 - ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
-- added playlists to states
-- added state description for object tree ```_playing```
-- updated German translation (instead of generating it from English)
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- (Zefau) added playlists to states
+- (Zefau) added state description for object tree ```_playing```
+- (Zefau) updated German translation (instead of generating it from English)
 
 ### 0.2.0 (2019-05-14)
-- added authentication method (using Plex user and Plex password)
-- fixed @iobroker/adapter-core dependency
+- (Zefau) added authentication method (using Plex user and Plex password)
+- (Zefau) fixed @iobroker/adapter-core dependency
 
 ### 0.1.0 (2019-04-26)
-- get initial data from Plex API
-- receive events from Plex Webhook (Plex Pass only)
-- receive events from Tatulli (if used)
+- (Zefau) get initial data from Plex API
+- (Zefau) receive events from Plex Webhook (Plex Pass only)
+- (Zefau) receive events from Tatulli (if used)
 
 ## License
 The MIT License (MIT)

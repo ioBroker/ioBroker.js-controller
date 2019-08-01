@@ -351,6 +351,9 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.5.8
+* (foxriver76) increased stopTimeout to successfully shut down adapter on windows based systems
+* (foxriver76) now using setStateChanged instead of own implementation
 
 ### 0.5.7
 * (foxriver76) fix gamertag not set if no state on the object exists yet

@@ -114,6 +114,9 @@ https://doc.iobroker.net/#de/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#de/documentation/dev/vscode.md
 https://doc.iobroker.net/#de/documentation/dev/webstorm.md
 https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
 https://doc.iobroker.net/#de/documentation/faq/basic.md
 https://doc.iobroker.net/#de/documentation/faq/README.md
 https://doc.iobroker.net/#de/documentation/faq/_010_general.md
@@ -241,6 +244,9 @@ https://doc.iobroker.net/#en/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#en/documentation/dev/vscode.md
 https://doc.iobroker.net/#en/documentation/dev/webstorm.md
 https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
 https://doc.iobroker.net/#en/documentation/faq/basic.md
 https://doc.iobroker.net/#en/documentation/faq/README.md
 https://doc.iobroker.net/#en/documentation/faq/_010_general.md
@@ -368,6 +374,9 @@ https://doc.iobroker.net/#ru/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#ru/documentation/dev/vscode.md
 https://doc.iobroker.net/#ru/documentation/dev/webstorm.md
 https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
 https://doc.iobroker.net/#ru/documentation/faq/basic.md
 https://doc.iobroker.net/#ru/documentation/faq/README.md
 https://doc.iobroker.net/#ru/documentation/faq/_010_general.md
@@ -495,6 +504,9 @@ https://doc.iobroker.net/#zh-cn/documentation/dev/styleguideui.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/vscode.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/webstorm.md
 https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/basic.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/README.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/_010_general.md
@@ -615,6 +627,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.corrently/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cul/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.daswetter/README.md
@@ -929,6 +942,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.corrently/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cul/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.daswetter/README.md
@@ -1243,6 +1257,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.corrently/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cul/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.daswetter/README.md
@@ -1557,6 +1572,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.corrently/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cul/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.daswetter/README.md

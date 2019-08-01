@@ -108,6 +108,9 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ### FAQ
 
 ## Changelog
+### 2.4.3 (2019-07-31)
+* (foxriver76) also remove enums when they have been removed in CCU
+
 ### 2.4.2 (2019-07-23)
 * (foxriver76) lc and ts for alarm states are now valid formatted for js-controller
 

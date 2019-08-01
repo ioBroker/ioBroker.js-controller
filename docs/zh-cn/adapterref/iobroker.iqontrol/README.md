@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /F04+i5U8jSzmrOw4XXGDC7UpGfsFlrFxQ/axAdbd9w=
+hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -50,7 +50,7 @@ hash: /F04+i5U8jSzmrOw4XXGDC7UpGfsFlrFxQ/axAdbd9w=
 设备有一个角色，它决定了设备的功能，使用了哪些图标等等。
 根据该角色，您可以将多个状态链接到设备。这些将为设备提供其功能。
 如果选择“链接到其他视图”作为角色，则可以创建指向其他视图的链接。我建议将链接映射到具有相同背景的其他视图，链接视图具有。
-您还可以尝试使用Autocreate-Function从iobroker-object-tree中选择现有设备。 Autocreate尝试找出角色并匹配尽可能多的状态。
+您还可以尝试使用Autocreate-Function从iobroker-object-tree中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
 
 *之后您可以创建一个工具栏，显示为页脚。
 
@@ -60,13 +60,14 @@ Toolbar-Entrys是视图的链接。
 *为了给所有东西增添一种奇特的风格，你可以上传你自己的图像。
 
 您可以将图像用作视图或设备的背景图像。
+“/ usericons”文件夹中的图像可用作设备的图标。
 免费的内置演示壁纸来自www.pexels.com。
 
 ##论坛
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
+*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -78,7 +79,7 @@ Toolbar-Entrys是视图的链接。
 
 ##角色和相关状态的描述
 每个设备都有一个角色，它定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
-如果使用auto-create-function，则可以从io-broker-object树中选择现有设备。 Autocreate尝试找出角色并匹配尽可能多的状态。
+如果使用auto-create-function，则可以从io-broker-object树中选择现有设备。 Autocreate尝试找出角色并尽可能多地匹配状态。
 这仅适用于已知设备。对于未知设备，并为设备提供高级功能，您可以通过（+） - 按钮手动添加它们或编辑由自动创建创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
@@ -86,8 +87,11 @@ Toolbar-Entrys是视图的链接。
 您可以通过iobroker的objects-tab中数据点后面的扳手图标修改数据点的配置。在这里你可以：
 
 *设置Readonly-Flag
-*设置反转（计划，尚未起作用）
-*设置自己的单位
+*设置反转平
+*设置一个datapoint id，其中写入目标值（如果您有实际值和目标值的不同数据点）
+*修改datapoint的单位
+*修改数据点的类型
+*修改数据点的角色
 *设置或修改值列表
 
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
@@ -211,9 +215,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
 * **等级**：*数字*  - 盲人的高度百分比
-* **DIRECTION** *value-list* - 可以是Stop，Up和Down
-* **STOP** *boolean* - 如果设置为true，盲人将停止
-* **UP** / **DOWN** *boolean* - 如果设置为true，盲人将上/下（对于设备，使用UP和DOWN数据点而不是LEVEL）
+* **DIRECTION** *value-list* - 可以是Stop，Up和Down。可以配置表示Stop，Up，Down和Unknown的值。
+* **STOP** *boolean* - 如果按下停止按钮，则设置为true。
+* ** UP ** / ** DOWN **：* boolean * - 如果按下向上/向下按钮，则设置为true（对于设备，使用UP和DOWN数据点而不是LEVEL或除了LEVEL之外）。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE ** Datapoints定义一个值。如果已定义，则按下向上/向下按钮时，将发送此值而不是true。
+* ** FAVORITE_POSITION **：*布尔* - 可用于调出喜欢的位置。如果按下收藏夹按钮（可以在设备设置中配置按钮标题），则会将true发送到此数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE ** Datapoint定义一个值。如果已定义，则在按下收藏夹按钮时，将发送此值而不是true。
 
 ### <img src="img/icons/fire_on.png" width="32">消防传感器：
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
@@ -259,6 +264,20 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.1.2 (2019-07-29)
+* (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
+* (Sebastian Bormann) Added 'No Icon' as option to icon configuration.
+* (Sebastian Bormann) Addes icon to 'Link to other view'.
+* (Sebastian Bormann) Added a bunch of new standard-icons.
+
+### 0.1.1 (2019-07-28)
+* (Sebastian Bormann) Added usericons.
+
+### 0.1.0 **stable** (2019-07-27)
+* (Sebastian Bormann) First stable release.
+* (Sebastian Bormann) Added show Timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)
 * (Sebastian Bormann) Added common type and common role to custom dialog.

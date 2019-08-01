@@ -80,7 +80,9 @@
 * value.sun.elevation   - sun elevation in °
 * value.sun.azimuth     - sun azimuth in °
 * value.voltage         - Voltage in Volt, unit=V
-* value.current         - Current in Amper, unit=A
+* value.current         - Current in Ampere, unit=A
+* value.fill            - Fill level, unit=l,ml,m3,%
+* value.blood.sugar     - Blood sugar value, unit=mmol,mgdl
 
 ## Indicators (boolean, read-only)
 
@@ -102,6 +104,7 @@ So the indicator may not be alone in the channel. It must be some other main sta
 * indicator.alarm.fire  - fire detected
 * indicator.alarm.flood - flood detected
 * indicator.alarm.secure - door or window is opened
+* indicator.alarm.health - health problem
 
 
 ## Levels (numbers, read-write)

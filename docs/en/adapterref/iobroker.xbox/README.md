@@ -316,6 +316,9 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.5.8
+* (foxriver76) increased stopTimeout to successfully shut down adapter on windows based systems
+* (foxriver76) now using setStateChanged instead of own implementation
 
 ### 0.5.7
 * (foxriver76) fix gamertag not set if no state on the object exists yet

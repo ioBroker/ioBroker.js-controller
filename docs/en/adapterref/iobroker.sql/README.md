@@ -315,6 +315,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Changelog
 
+## 1.10.0 (2019-07-xx) WIP!!
+* (bluefox) Convert to ES6
+
 ## 1.9.5 (2019-05-15)
 * (Apollon77) Add support for nodejs 12
 

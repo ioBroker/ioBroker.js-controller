@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /F04+i5U8jSzmrOw4XXGDC7UpGfsFlrFxQ/axAdbd9w=
+hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -60,6 +60,7 @@ Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 * Um allem einen ausgefallenen Stil zu verleihen, können Sie Ihre eigenen Bilder hochladen.
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
+Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
 Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
 
 ## Forum
@@ -86,8 +87,11 @@ Um die Rolle und den Status eines Geräts zu bearbeiten, klicken Sie auf den Sti
 Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter einem Datenpunkt in der Registerkarte Objekte von iobroker ändern. Hier kannst du:
 
 * Nur-Lese-Flag setzen
-* Invert-Flat setzen (geplant, noch nicht funktionsfähig)
-* Setze eigene Einheit
+* Invert-Flat einstellen
+* Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
+* Ändern Sie die Datenpunkteinheit
+* Ändern Sie den Typ des Datenpunkts
+* Ändern Sie die Rolle des Datenpunkts
 * Setzen oder modifizieren Sie eine Werteliste
 
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
@@ -137,7 +141,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (dies wird nur beachtet, wenn das Licht sowohl farbige als auch weiße LEDs hat. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -180,7 +184,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 * **PARTY_TEMPERATURE** *string* - speziell formatierter String zur Definition des Party- oder Urlaubsmodus von Homematic-Thermostaten
-* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematic-Thermostate an
+* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematik-Thermostate an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchte-Sensor:
 * **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
@@ -211,9 +215,10 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
-* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein
-* **STOP** *boolean* - wenn auf true gesetzt, stoppt der Blind
-* **UP** / **DOWN** *Boolescher Wert* - Wenn dieser Wert auf true gesetzt ist, wird der Blind nach oben / unten verschoben (für Geräte, die UP- und DOWN-Datenpunkte anstelle von LEVEL verwenden).
+* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden.
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird.
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
+* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (in den Geräteeinstellungen konfigurierbare Tastenbeschriftung) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -259,6 +264,20 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.1.2 (2019-07-29)
+* (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
+* (Sebastian Bormann) Added 'No Icon' as option to icon configuration.
+* (Sebastian Bormann) Addes icon to 'Link to other view'.
+* (Sebastian Bormann) Added a bunch of new standard-icons.
+
+### 0.1.1 (2019-07-28)
+* (Sebastian Bormann) Added usericons.
+
+### 0.1.0 **stable** (2019-07-27)
+* (Sebastian Bormann) First stable release.
+* (Sebastian Bormann) Added show Timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)
 * (Sebastian Bormann) Added common type and common role to custom dialog.

@@ -3,37 +3,37 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/stateroles.md
 title: Государственные роли
-hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
+hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 ---
 # Государственные роли
 ## Common
-* состояние - очень распространенная цель. Если вы не знаете, какую роль играет государство, используйте эту.
+* состояние - очень распространенная цель. Если вы не знаете, какую роль имеет государство, используйте эту.
 * text (common.type = string)
 * text.url (common.type = string) состояние val содержит URL для использования в привязке, iframe или img
 * html (common.type = string)
 * json (common.type = string)
-* список (common.type = массив)
+* list (common.type = array)
 * date (common.type = string - анализируется строкой «new Date (ddd)»
 * date (common.type = number - время эпохи * 1000
 
 ## Датчик (логическое, только для чтения)
 *common.type = логический, common.write = false*
 
-* sensor.window - окно открытое (true) или закрытое (false)
+* sensor.window - окно открыто (true) или закрыто (false)
 * sensor.door - дверь открыта (true) или закрыта (false)
 * sensor.alarm - обычная тревога
 * sensor.alarm.flood - утечка воды
 * sensor.alarm.fire - датчик пожара
-* sensor.alarm.secure - дверь открыта, окно открыто или во время тревоги обнаружено движение.
+* sensor.alarm.secure - дверь открыта, окно открыто или обнаружено движение во время тревоги.
 * sensor.alarm.power - Нет питания (напряжение = 0)
-* sensor.light - обратная связь от лампы, что она включена
+* sensor.light - сигнал от лампы, что она включена
 * sensor.lock - фактическое положение блокировки
 * sensor.motion - датчик движения
 * sensor.rain - обнаружен дождь
 * sensor.noise - обнаружен шум
 
 ## Кнопки (логические, только для записи)
-*common.type = логический, common.write = true, common.read = false*
+*common.type = boolean, common.write = true, common.read = false*
 
 * кнопка
 * button.long
@@ -78,11 +78,13 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 * value.distance
 * value.distance.visibility
 * value.severity - некоторая серьезность (могут быть предоставлены состояния), важнее Higher
-* value.warning - некоторые предупреждения (могут быть предоставлены состояния), более важное значение имеет значение Higher.
+* value.warning - некоторые предупреждения (могут быть предоставлены состояния), более важное значение имеет значение Higher
 * value.sun.elevation - высота солнца в °
 * value.sun.azimuth - азимут солнца в °
-* value.voltage - напряжение в вольтах, ед. = V
-* value.current - ток в ампере, единица измерения = A
+* value.voltage - напряжение в вольт, единица измерения = V
+* value.current - ток в амперах, ед. = A
+* value.fill - уровень заполнения, ед. = л, мл, м3,%
+* value.blood.sugar - уровень сахара в крови, единица измерения = ммоль, мгдл
 
 ## Индикаторы (булево, только для чтения)
 *common.type = логический, common.write = false*
@@ -93,16 +95,17 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 * индикатор
 * Indicator.working - указывает, что целевые системы выполняют что-то, например, блайнды или открытие замка.
 * Indicator.reachable - если устройство онлайн
-* Indicator.connected - используется только для экземпляров. Используйте индикатор. Доступен для устройств
+* display.connected - используется только для экземпляров. Используйте индикатор. Доступен для устройств
 * Indicator.maintenance - указывает системные предупреждения / ошибки, аварийные сигналы, сервисные сообщения, разряженный аккумулятор или тому подобное
 * Indicator.maintenance.lowbat
-* display.maintenance.unreach
+* Indicator.maintenance.unreach
 * Indicator.maintenance.alarm
 * Indicator.lowbat - истина, если батарея разряжена
 * Indicator.alarm - так же, как индикатор
 * Indicator.alarm.fire - пожар обнаружен
 * Indicator.alarm.flood - обнаружен наводнение
 * Indicator.alarm.secure - дверь или окно открыто
+* Indicator.alarm.health - проблема со здоровьем
 
 ## Уровни (цифры, чтение-запись)
 С **уровнями** вы можете контролировать или устанавливать некоторые числовые значения.
@@ -177,7 +180,7 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 * media.title
 * media.title.next
 * media.cover - URL обложки
-* media.cover.big - большой URL-адрес обложки
+* media.cover.big - URL большой обложки
 * media.cover.small - крошечный URL-адрес обложки
 * media.duration.text - например, 2:35
 * media.duration - (common.type = number) секунд
@@ -192,7 +195,7 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 * media.bitrate - кбит / с
 * media.genre - жанровая песня
 * media.date - песня года
-* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип был действительно "string", чтобы иметь возможность указать отсутствие дорожки с помощью "")
+* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип действительно был «string», чтобы иметь возможность указать отсутствие дорожки с помощью «»)
 * media.playid - идентификатор трека медиаплеера
 * media.add - добавить текущий плейлист
 * media.clear - очистить текущий список воспроизведения (только для записи)
@@ -224,7 +227,7 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 ]
 ```
 
-* media.browser - массив json, такой как "files"
+* media.browser - массив json, подобный файлам
 
 ```
 [
@@ -275,14 +278,14 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 * location - Текстовое описание местоположения (например, адрес)
 * weather.icon - фактический URL-адрес значка состояния на данный момент
 * weather.icon.wind - фактический URL-адрес значка ветра на данный момент
-* weather.icon.name - фактическое имя значка штата на данный момент
+* weather.icon.name - фактическое имя значка состояния на данный момент
 * weather.state - Актуальное описание погоды
 * value.precipitation - (тип: число, единица измерения: мм) количество осадков за последние 24 часа дождь / снег (Niederschlag heute für Schnee oder Regen / осадки сегодня снега или дождь)
 * value.precipitation.hour - фактический уровень осадков за последний час
 * value.precipitation.today - фактический уровень осадков на сегодня (до 0:00)
 * value.radiation - Фактический уровень солнечного излучения
 * value.uv - Фактический уровень УФ
-* value.clouds - Облака на небе. 0% - нет облаков, 100% - много облаков.
+* value.clouds - облака на небе. 0% - нет облаков, 100% - много облаков.
 * value.rain - фактический уровень дождя за последние 24 часа
 * value.rain.hour - фактический уровень дождя за последний час
 * value.rain.today - фактический уровень дождя на сегодня (до 0:00)
@@ -312,9 +315,9 @@ hash: TyRDvFO26COB9IB5dLzOnd7bGkiptZ8UYCKCyrXG7Do=
 
 * date.forecast.1 - завтрашняя дата
 * weather.icon.forecast.1 - значок завтрашнего дня
-* weather.state.forecast.1 - состояние погоды на завтра
+* weather.state.forecast.1 - прогноз погоды на завтра
 * значение.темпр.мин.прогноз1
-* значение.температура.макс.прогноз
+* значение.температура.макс.прогноз1
 * value.precipitation.forecast.1 - (тип: число, единица измерения:%) Прогноз вероятности осадков на завтра
 * value.precipitation.forecast.1 - (тип: число, единица измерения: мм) Прогноз уровня осадков на завтра
 * value.direction.wind.forecast.1
