@@ -5,7 +5,6 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/
 ---
 
 # Der Multihost-Betrieb
-@@ Die Beschreibung wofür das gut ist, kommt noch.
 
 ioBroker ist in der Lage, die Aufgaben von mehreren Servern erledigen zu lassen. Dadurch kann die Rechenlast auf mehrere Hosts verteilen werden. 
 Man kann aber auch systemspezifische Erweiterungen eines Einplatinencomputers nutzen (GPIO von einem RaspberryPi, obwohl der „Hauptrechner“ 
@@ -49,7 +48,6 @@ Das nun erscheinende Menü wie folgt ausfüllen
 
 
 ### Slave Konfiguration
-Auf dem Slave danach folgendes Kommando ausführen:
 
 **Dieser Schritt ist unbedingt nötig, falls Redis DB im Einsatz ist.**
 
@@ -92,7 +90,7 @@ Config ok. Please restart ioBroker: "iobroker restart"
 
 Auf dem Hauptsystem erscheint danach unter Hosts auch der neu angelegte Host.
 
-Sollte das nicht geschenen bitte beide Hosts rebooten. zuerst den Master, dann den Slave.
+Sollte das nicht geschehen bitte beide Hosts rebooten. zuerst den Master, dann den Slave.
 
 
 ## Multihost mit verschiedenen Subnetzen
@@ -104,7 +102,7 @@ Beispiel:**
 * Normales LAN (für PC, Tablet, use.) = 192.168.178.0/24
 * IoT LAN (für Shelly, Kameras, usw.) = 10.20.30.0/24
 
-… geht die Multihost-Automatik (“sudo iobroker multihost enable” und “sudo iobroker multihost browse“) nicht, sondern nur der alte Weg (iobroker setup custom) siehe oben
+… geht die Multihost-Automatik (“sudo iobroker multihost enable” und “sudo iobroker multihost browse“) nicht, sondern nur der alte Weg (`iobroker setup custom`) siehe oben
 
 
 

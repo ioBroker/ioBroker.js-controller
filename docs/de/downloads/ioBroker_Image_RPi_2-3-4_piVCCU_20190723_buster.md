@@ -18,8 +18,8 @@ Außerdem enthalten ist piVCCU3 vom 19.07.2019 nach Download von  https://www.pi
 
 Folgender User ist angelegt:
 
-* User: pi,
-* Passwort: raspberry
+* User: `pi`,
+* Passwort: `raspberry`
 
 Node-js ist in der Version 10.16.0 installiert sowie natürlich iobroker über den installer mit dem js-controller nach Stand vom 23.07.2019.
 
@@ -31,17 +31,17 @@ Das Anlegen  von weiteren Adaptern und deren Instanzen wird [hier](/tutorial/ada
 Die folgende Anleitung wurde nach bestem Wissen mit den Informationen zum Zeitpunkt der Erstellung des Images erstellt. Durch Updates von Paketen oder des 
 Kernels kann sich da jederzeit etwas ändern.
 
-Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bitte entsprechend anpassen. (`sudo raspi-config`; 4.) Localisation Options)
+Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bitte entsprechend anpassen. (`sudo raspi-config`; 4.) `Localisation Options`)
  
 
 ## Nach dem ersten Start
 Nach dem ersten Starten des Rapberry Pi bitte mit `sudo raspi-config` folgende Einstellungen vornehmen:
 
-Punkt 1: Change User passwort (Eigenes Passwort für den User Pi vergeben)
-Punkt 2: Network Options – Hostname (Namen des Raspberry Pi ggf. ändern. Vorgabe ist ioBroker-Pi)
-wenn der Hostname geändert wird, bitte anschließend in der Konsole im Installationsverzeichnis iobroker host this eingeben
-Punkt 7: Advanced Options – Expand filesystem (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
-ggf. noch unter Punkt 4: Localisation Options Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
+Punkt 1: `Change User passwort` (Eigenes Passwort für den User `Pi` vergeben)
+Punkt 2: `Network Options – Hostname` (Namen des Raspberry Pi ggf. ändern. Vorgabe ist `ioBroker-Pi`)
+wenn der Hostname geändert wird, bitte anschließend in der Konsole im Installationsverzeichnis `iobroker host this` eingeben
+Punkt 7: `Advanced Options – Expand filesystem` (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
+ggf. noch unter Punkt 4: `Localisation Options` Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
  
 
  

@@ -9,8 +9,8 @@ Das Image wird entpackt und anschließend mit Hilfe des Programms  Win32 DiskIma
 Das Image enthält Armbian 5.71, basierend auf Debian “Stretch” vom 10.01.2019 nach download von [https://dl.armbian.com/odroidc2/](https://dl.armbian.com/odroidc2/).
 
 Folgende User sind angelegt:
-- **User:** root,  **Passwort:** 1234
-- **User:** pi, **Passwort:** raspberry
+- **User:** `root`,  **Passwort:** 1234
+- **User:** `pi`, **Passwort:** `raspberry`
 
 Weiterhin ist node-js v 8.15.0 installiert sowie natürlich iobroker mit dem js-controller nach Stand vom 09.02.2019.
 

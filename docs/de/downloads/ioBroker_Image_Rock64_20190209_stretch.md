@@ -9,8 +9,8 @@ Dies gibt es für verschiedene Betriebssysteme.
 Das Image enthält Armbian 5.90, basierend auf Debian “Stretch” vom 28.06.2019 nach download von [https://dl.armbian.com/rock64/Debian_stretch_default.7z](https://dl.armbian.com/rock64/Debian_stretch_default.7z).
 
 Folgende User sind angelegt:
-- **User:** root,  **Passwort:** 1234
-- **User:** pi, **Passwort:** raspberry
+- **User:** `root`,  **Passwort:** 1234
+- **User:** `pi`, **Passwort:** `raspberry`
 
 Weiterhin ist node-js v 10.16..0 installiert sowie natürlich iobroker mit dem js-controller nach Stand vom 30.07.2019.
 

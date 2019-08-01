@@ -15,8 +15,8 @@ Zusätzlich wurden noch Pakete, die für  einige Adapter notwendig sind, install
 
 Folgender User ist angelegt:
 
-* User: pi,
-* Passwort: raspberry
+* User: `pi`,
+* Passwort: `raspberry`
 
 Node-js ist in der Version 10.16.0 installiert sowie natürlich iobroker über den installer mit dem js-controller nach Stand vom 23.07.2019.
 
@@ -34,11 +34,11 @@ Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bi
 ## Nach dem ersten Start
 Nach dem ersten Starten des Rapberry Pi bitte mit `sudo raspi-config` folgende Einstellungen vornehmen:
 
-Punkt 1: Change User passwort (Eigenes Passwort für den User Pi vergeben)
-Punkt 2: Network Options – Hostname (Namen des Raspberry Pi ggf. ändern. Vorgabe ist ioBroker-Pi)
-wenn der Hostname geändert wird, bitte anschließend in der Konsole im Installationsverzeichnis iobroker host this eingeben
-Punkt 7: Advanced Options – Expand filesystem (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
-ggf. noch unter Punkt 4: Localisation Options Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
+Punkt 1: `Change User passwort` (Eigenes Passwort für den User `Pi` vergeben)
+Punkt 2: `Network Options – Hostname` (Namen des Raspberry Pi ggf. ändern. Vorgabe ist `ioBroker-Pi`)
+wenn der Hostname geändert wird, bitte anschließend in der Konsole im Installationsverzeichnis `iobroker host this` eingeben
+Punkt 7: `Advanced Options – Expand filesystem` (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
+ggf. noch unter Punkt 4: `Localisation Options` Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
  
 
  
