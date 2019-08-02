@@ -26,7 +26,7 @@ Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bi
 ## Nach dem ersten Start
 Sollte man nach dem ersten Starten des Rock nicht aufgefordert werden ein neues Passwort für den root und einen neuen User 
 anzulegen, bitte aus Sicherheitsgründen wie folgt vorgehen:
-- Um die volle Größe der Speicherkarte zu nutzen muss man das Filesystem mit sudo `/usr/lib/armbian/armbian-resize-filesystem` 
+- Um die volle Größe der Speicherkarte zu nutzen muss man das Filesystem mit `sudo /usr/lib/armbian/armbian-resize-filesystem start` 
   auf die Größe der SD-Karte anpassen.
 - Eventuell liegen bereits Updates zu dem zugrunde liegenden Linux und zu nodejs vor. Um dieses auf den aktuellen Stand zu bringen geht 
 man auf der Konsole wie folgt vor: `sudo apt-get update && sudo apt-get upgrade -y`

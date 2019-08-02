@@ -1,10 +1,12 @@
 # ioBroker Image für Odroid C2 mit Stretch 20190209
 
-Dies ist ein Minimal SD-Karten Image für den Odroid C2. Es ist für 4 GB Karten und größer passend. Da es jetzt schon nur gerade auf eine 4 GB-Karte passt ist eine 8 GB die empfohlene Mindestgröße. 16GB Karten sind sowieso empfohlen.
+Dies ist ein Minimal SD-Karten Image für den Odroid C2. Es ist für 4 GB Karten und größer passend. Da es jetzt schon nur gerade auf eine 4 GB-Karte 
+passt ist eine 8 GB die empfohlene Mindestgröße. 16GB Karten sind sowieso empfohlen.
 
 !> **ACHTUNG**: Der Odroid C2 ist bei µSD-Karten recht wählerisch. Er mag nur relativ flotte karten. Sollte es nicht auf Anhieb funktionieren, bitte eine andere Karte probieren.
 
-Das Image wird entpackt und anschließend mit Hilfe des Programms  Win32 DiskImager auf die SD-Karte geschrieben. Dazu wählt man die Datei nach anklicken des Ordnersymbols aus und startet mit dem Button Write. Sehr zu empfehlen ist auch Etcher. Dies gibt es für verschiedenen Betriebssysteme.
+Das Image wird entpackt und anschließend mit Hilfe des Programms  Win32 DiskImager auf die SD-Karte geschrieben. Dazu wählt man die Datei nach 
+Anklicken des Ordnersymbols aus und startet mit dem Button Write. Sehr zu empfehlen ist auch Etcher. Dies gibt es für verschiedenen Betriebssysteme.
 
 Das Image enthält Armbian 5.71, basierend auf Debian “Stretch” vom 10.01.2019 nach download von [https://dl.armbian.com/odroidc2/](https://dl.armbian.com/odroidc2/).
 
@@ -26,12 +28,14 @@ Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bi
 Sollte man nach dem ersten Starten des Odroid nicht aufgefordert 
 werden ein neues Passwort für den root und einen neuen User 
 anzulegen, bitte aus Sicherheitsgründen wie folgt vorgehen:
-- Um die volle Größe der Speicherkarte zu nutzen muss man 
-  außerdem das Filesystem mit sudo `/usr/lib/armbian/armbian-resize-filesystem` 
-  start auf die Größe der SD-Karte anpassen.
-- Eventuell liegen bereits Updates zu dem zugrunde liegenden Linux und zu nodejs vor. Um dieses auf den aktuellen Stand zu bringen geht man auf der Konsole wie folgt vor: `sudo apt-get update && sudo apt-get upgrade -y`
-- Unbedingt das root-Passwort ändern mit `sudo passwd root` Danach das Standardpasswort `1234` eingeben und anschließend ein neues Passwort eingeben und im nächsten Schritt bestätigen.
-- Das gilt auch für den User `pi`. Dies ändert man mit `sudo passwd pi` Danach das Standardpasswort `raspberry` eingeben und anschließend ein neues Passwort eingeben und im nächsten Schritt bestätigen.
+- Um die volle Größe der Speicherkarte zu nutzen muss man  außerdem das Filesystem mit `sudo /usr/lib/armbian/armbian-resize-filesystem start` 
+auf die Größe der SD-Karte anpassen.
+- Eventuell liegen bereits Updates zu dem zugrunde liegenden Linux und zu nodejs vor. Um dieses auf den aktuellen Stand zu bringen geht man auf 
+der Konsole wie folgt vor: `sudo apt-get update && sudo apt-get upgrade -y`
+- Unbedingt das root-Passwort ändern mit `sudo passwd root` Danach das Standardpasswort `1234` eingeben und anschließend ein neues Passwort 
+eingeben und im nächsten Schritt bestätigen.
+- Das gilt auch für den User `pi`. Dies ändert man mit `sudo passwd pi` Danach das Standardpasswort `raspberry` eingeben und anschließend ein neues 
+Passwort eingeben und im nächsten Schritt bestätigen.
 
 Weitere Einstellungen kann man mit dem Konfigurations-Utility durchführen, dass man aufruft mit:
 
@@ -39,15 +43,18 @@ Weitere Einstellungen kann man mit dem Konfigurations-Utility durchführen, dass
 
 Näher Informationen zu diesem Utility unter [https://docs.armbian.com/User-Guide_Armbian-Config/](https://docs.armbian.com/User-Guide_Armbian-Config/)
 
-Da zum Zeitpunkt des Downloads bereits einige Zeit seit der Erstellung des Images vergangen sein kann, sollte man als erstes überprüfen, ob bereits Updates zu den bereits installierten Adaptern und dem js-controller vorliegen (siehe Reiter Hosts)
+Da zum Zeitpunkt des Downloads bereits einige Zeit seit der Erstellung des Images vergangen sein kann, sollte man als erstes überprüfen, ob bereits Updates zu 
+den bereits installierten Adaptern und dem js-controller vorliegen (siehe Reiter Hosts)
 
 Neben der möglichst geringen Größe eines Images ist dies auch der Grund, dass nur wenige Adapter bereits vorinstalliert sind.
 
-In solchen Fällen immer zuerst den js-controller über die Konsole gemäß der Anleitung im Reiter Hosts durchführen, anschließend wenn nötig den Adapter Admin und anschließend alle weiteren Adapter.
+In solchen Fällen immer zuerst den js-controller über die Konsole gemäß der Anleitung im Reiter Hosts durchführen, anschließend wenn nötig den Adapter Admin 
+und anschließend alle weiteren Adapter.
 
 
 ## Installation von Redis
-Diese Images enthalten nicht mehr die Datenbank Redis um die States zu speichern. Bei schwachen Rechnern und geringem RAM erhöht die Verwendung von Redis die Performance teilweise erheblich.
+Diese Images enthalten nicht mehr die Datenbank Redis um die States zu speichern. Bei schwachen Rechnern und geringem RAM erhöht die Verwendung von 
+Redis die Performance teilweise erheblich.
 
 Sollte Redis installiert werden sollen muss bei den aktuellen Images wie folgt vorgegangen werden.
 
