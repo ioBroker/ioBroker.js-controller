@@ -32,13 +32,15 @@
 [Red Number](#red-number) | ![029]|Anzeige eines numerischen Werts im Stil der iOS Benachrichtigungs-Symbole. Verschwindet beim Wert 0.|
 [Bulb on/off](#bulb-on-off) | ![030]|Dieses Widget stellt einen Wert als ausgeschaltete oder leuchtende Glühbirne auf schwarzem Hintergrund dar. Ist für Bool und Float-Werte (Dimmer) einsetzbar.|
 [Bar](#bar-horizontal)  | ![031]|Dieses Widget stellt einen Wert von 0-100 als horizontalen Balken dar.|
-[Note](#note)                 | ![032]||
-[Json Table]('json-table)           | ![033]||
-[HTML logout](#html-logout)          | ![034]||
-[Gesture indicator](#gesture-indicator)    | ![035]||
+[Note](#note)                 | ![032]|Dieses Widget stellt den Wert eines (String)-Datenpunkts als Notizzettel dar|
+[Json Table](#json-table)           | ![033]|JSON-formatierte Tabelle darstellen|
+[HTML logout](#html-logout)          | ![034]|Dieses Widget dient zum Abmelden per HTML-Button|
+[Gesture indicator](#gesture-indicator)    | ![035]|Zeigt Gesten-gesteuerte Daten an|
 [Speech to text](#speech-to-text)       | ![036]||
-[Full Screen](#full-screen)          | ![037]||
-[Screen Resolution](#scree-resolution)    | ![038]||
+[Full Screen](#full-screen)          | ![037]|Mit diesem WIdget kann der Vollbild-Modus ein- und ausgeschaltet werden|
+[Screen Resolution](#scree-resolution)    | ![038]|Dieses Widget zeigt die Bildschirmauflösung an|
+*********************************************************
+
 *********************************************************
 
 ### Html Frame  
@@ -112,7 +114,7 @@ Allow useer interactions|:construction:|
 *********************************************************
 
 ### Link
-Dieses Widget entspricht dem Widget "HTML Frame", ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Kann für die Navigation zwischen Views oder für externe Links genutzt werden.  
+Dieses Widget entspricht dem Widget "HTML Frame", ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Dadurch kann es für die Navigation zwischen Views oder für externe Links genutzt werden.  
 
 Attribut|Beschreibung|
 ----|----|
@@ -165,7 +167,9 @@ Kein Sandkasten|@@@?@@@
 
 ### View in widget
 ![008]  
+
 Zeigt eine andere View an.  
+
 Attribut|Beschreibung|
 ----|----|
 Viewname| Auswahl der anzuzeigenden View (rekursiv ist nicht möglich...)  
@@ -196,7 +200,7 @@ Zeigt eines von bis zu acht Bildern in Abhängigkeit einer Steuervariablen an.
 
 Attribut|Beschreibung|
 ----|----|
-Object ID| State (Zahl), der steuert, welcher iframe angezeigt werden soll  
+Object ID| Datenpunkt (Zahl), der steuert, welcher iframe angezeigt werden soll  
 Updatezeit (ms)| Aktualisierungsintervall in Millisekunden  
 Wertanzahl bis| Gibt an, wie viele iFrames angezeigt werden können (max. 8)  
 URL falls Wert=[0]:| Pfad zum anzuzeigenden Bild, wenn Object ID den Wert 0 hat
@@ -218,7 +222,7 @@ Attribut|Beschreibung|
 ----|----|
 html|Selbsterklärend ;) ...hier den HTML-Code einfügen
 View zum Navigieren|Hier muss der Name der View, zu der navigiert werden soll, eingetragen werden.
-Anzeigen und Verbergen gleichzeitig|Nur ein Effekt zum Übergang
+Anzeigen und Verbergen gleichzeitig|Nur ein einzelner Effekt zum Übergang
 Hintergrund bei Wechsel|Hintergrundfarbe, die beim Wechsel angezeigt wird.
 Verbergeneffekt|Hier kann der Name eines jQueryUI Effektes eingetragen werden, der beim Verlassen der View genutzt wird. Verfügbare Effekte sind: Blind, Bounce, Clip, Drop, Explode, Fade, Fold, Highlight, Puff, Pulsate, Scale, Shake, Size, Slide und Transfer. 
 Verbergendauer|Dauer des Effekts in ms
@@ -264,8 +268,8 @@ Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar.
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (reine Zeichenkette)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen
 
 **Beispiel:**  
@@ -280,8 +284,8 @@ Dieses Widget stellt einen Datenpunkt vom Typ Zeichenkette dar. Im Unterschied z
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (reine Zeichenkette)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen
 **Beispiel:**  
 ![052]  
@@ -295,8 +299,8 @@ Diesem Widget kann eine Variable vom Typ Zeichenkette zugeordnet werden, eine do
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (reine Zeichenkette)  
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen 
 
 ![053]  
@@ -312,9 +316,10 @@ Attribut|Beschreibung|
 ObjectID|Datenpunkt
 Als Interval|Wenn aktiviert, wird der Zeitraum seit dem letzten Timestamp angezeigt (relativ zum Jetzt)
 Datumformat|Auswahl der Formatierung des Timestamp  
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen  
+
 ![054]  
 [:arrow_up: back to top ](#basic) 
 *********************************************************
@@ -328,9 +333,10 @@ Attribut|Beschreibung|
 ObjectID|Datenpunkt
 Als Interval|Wenn aktiviert, wird der Zeitraum seit der letzten Änderung angezeigt (relativ zum Jetzt)
 Datumformat|Auswahl der Formatierung des Timestamp  
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen  
+
 ![054]  
 [:arrow_up: back to top ](#basic) 
 *********************************************************
@@ -358,8 +364,8 @@ Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (Ganzzahl)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.  
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird.  
 Werteliste|Anzeigewerte (HTML formatierte Strings) in Semikolon-getrennter Liste; erster Wert wird angezeigt, wenn Datenpunkt den Zahlenwert 0 hat.
 Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu testen   
 
@@ -369,13 +375,13 @@ Testtext|Kann verwendet werden, um die Darstellung unabhängig vom Datenpunkt zu
 
 ### ValueList HTML 8
 ![021]  
-Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "ValueList HTML, bietet aber die Möglichkeit für 8 verschiedene Werte (0-7) auch 8 verschiedene CSS-Angaben zu verwenden.
+Dieses Widget stellt eine Variable vom Typ Werteliste dar. Entspricht dem Widget "ValueList HTML, bietet aber die Möglichkeit, für 8 verschiedene Werte (0-7) auch 8 verschiedene CSS-Angaben zu verwenden.
 
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (Ganzzahl)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird. 
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird. 
 Wert[0] ..Wert[7]|Text oder HTML-Code für die Werte 0 bis 7
 Stile für [0] .. Stil für [7]|CSS-Angaben für die Werte 0 bis 7 (alle CSS-Attribute können hier angegeben werden; jeweils mit Semikolon voneinander getrennt). Hier kann man z.B. die Schriftgröße oder Umrandungsfarbe abhängig vom Datenpunkt-Wert ändern.  
 
@@ -390,10 +396,10 @@ Dieses Widget stellt Bool-Werte dar.
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird. 
-HTML bei 'false'|Text oder HTML-Code der im False-Fall angezeigt wird.
-HTML bei 'true'|Text oder HTML-Code der im True-Fall angezeigt wird.
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird. 
+HTML bei 'false'|Text oder HTML-Code, der im False-Fall angezeigt wird.
+HTML bei 'true'|Text oder HTML-Code, der im True-Fall angezeigt wird.
 
 ![058]  
 [:arrow_up: back to top ](#basic) 
@@ -406,10 +412,10 @@ Dieses Widget stellt das Acknowledge-Flag eines Datenpunkts dar.
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird. 
-HTML bei 'false'|Text oder HTML-Code der im False-Fall (Ack-Flag nicht gesetzt) angezeigt wird.
-HTML bei 'true'|Text oder HTML-Code der im True-Fall (Ack-Flag gesetzt) angezeigt wird.
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird. 
+HTML bei 'false'|Text oder HTML-Code, der im False-Fall (Ack-Flag nicht gesetzt) angezeigt wird.
+HTML bei 'true'|Text oder HTML-Code, der im True-Fall (Ack-Flag gesetzt) angezeigt wird.
 
 ![059]  
 [:arrow_up: back to top ](#basic) 
@@ -417,13 +423,13 @@ HTML bei 'true'|Text oder HTML-Code der im True-Fall (Ack-Flag gesetzt) angezeig
 
 ### Bool Checkbox
 ![024]  
-Dieses Widget zeigt Bool-Werte als einfache Checkbox an und erlaubt außerdem den Wert  umzuschalten.
+Dieses Widget zeigt Bool-Werte als einfache Checkbox an und erlaubt außerdem, den Wert  umzuschalten.
 
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (Boolean)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird. 
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird. 
 
 ![060]  
 [:arrow_up: back to top ](#basic) 
@@ -431,13 +437,13 @@ HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird.
 
 ### Bool Select
 ![025]  
-Dieses Widget stellt Bool-Werte als Dropdown dar und erlaubt außerdem den Wert umzuschalten.
+Dieses Widget stellt Bool-Werte als Dropdown dar und erlaubt außerdem, den Wert umzuschalten.
 
 Attribut|Beschreibung|
 ----|----|
 ObjectID|Datenpunkt (Boolean)
-Voranstellen HTML|Text oder HTML-Code der vor dem String angezeigt wird.
-HTML anhängen|Text oder HTML-Code der hinter dem String angezeigt wird. 
+Voranstellen HTML|Text oder HTML-Code, der vor dem String angezeigt wird.
+HTML anhängen|Text oder HTML-Code, der hinter dem String angezeigt wird. 
 Text für TRUE|Text der im True-Fall angezeigt wird.
 Text für FALSE|Text der im False-Fall angezeigt wird.
 
@@ -447,12 +453,12 @@ Text für FALSE|Text der im False-Fall angezeigt wird.
 
 ### Bool HTML Click
 ![026]  
-Dieses Widget stellt Bool-Werte dar und erlaubt außerdem den Wert auf Klick innerhalb der Widget-Fläche umzuschalten.
+Dieses Widget stellt Bool-Werte dar und erlaubt außerdem, den Wert auf Klick innerhalb der Widget-Fläche umzuschalten.
 
 Attribut|Beschreibung|
 ----|----|
-html_prepend|Text oder HTML-Code der vor dem Bild angezeigt wird.
-html_append|Text oder HTML-Code der hinter dem Bild angezeigt wird.
+html_prepend|Text oder HTML-Code, der vor dem Bild angezeigt wird.
+html_append|Text oder HTML-Code, der hinter dem Bild angezeigt wird.
 text_true|Text für den True-Fall
 text_false|Text für den False-Fall 
 ![062]  
@@ -461,7 +467,7 @@ text_false|Text für den False-Fall
 
 ### Bool SVG  
 ![027]  
-Dieses Widget stellt Bool-Werte mittels SVG-Grafik dar und erlaubt außerdem den Wert auf Klick innerhalb der Widget-Fläche umzuschalten. Dabei ist die Widget-Fläche die Zeichnungsfläche. 
+Dieses Widget stellt Bool-Werte mittels SVG-Grafik dar und erlaubt außerdem, den Wert des Datenpunkts mit einem Klick innerhalb der Widget-Fläche umzuschalten. Dabei ist die Widget-Fläche die Zeichnungsfläche. 
 
 Attribut|Beschreibung|
 ----|----|
@@ -474,11 +480,11 @@ SVG bei 'true'|SVG-Grafik, falls Datenpunkt 'true' ist
 
 ### HTML State
 ![028]  
-Dieses Widget setzt bei Klick innerhalb der Widget-Fläche einen Wert.
+Dieses Widget setzt bei Klick innerhalb der Widget-Fläche einen bestimmten Wert.
 
 Attribut|Beschreibung|
 ----|----|
-HTML|Text oder HTML-Code der angezeigt wird
+HTML|Text oder HTML-Code, der angezeigt wird
 Wert|Wert der gesetzt werden soll  
 ![064]  
 [:arrow_up: back to top ](#basic) 
@@ -486,7 +492,8 @@ Wert|Wert der gesetzt werden soll
 
 ### Hide on 0/false
 ![030]  
-Dieses Widget verschwindet, wenn der Wert des zugeordneten Datenpunkts 0 bzw false ist. Geschickt z.B. für die Anzeige von Servicemeldungen
+Dieses Widget verschwindet, wenn der Wert des zugeordneten Datenpunkts 0 bzw false ist.  Geschickt z.B. für die Anzeige von Servicemeldungen  
+
 ![066]  
 [:arrow_up: back to top ](#basic) 
 *********************************************************
@@ -498,10 +505,10 @@ Anzeige eines numerischen Werts im Stil der iOS Benachrichtigungs-Symbole. Wenn 
 
 Attribut|Beschreibung|
 ----|----|
-Art| Darstellung als Kreis (bzw. Rechteck mit ebgerundeten Ecken) oder Pin
-HTML voranstellen|Text oder HTML-Code der vor dem Bild angezeigt wird.
-HTML anhängen (Singular)|Text oder HTML-Code der hinter dem Bild angezeigt wird, wenn Wert = 1
-HTML anhängen (Plural)|Text oder HTML-Code der hinter dem Bild angezeigt wird, wenn Wert > 1
+Art| Darstellung als Kreis (bzw. Rechteck mit abgerundeten Ecken) oder Pin
+HTML voranstellen|Text oder HTML-Code, der vor dem Bild angezeigt wird.
+HTML anhängen (Singular)|Text oder HTML-Code, der hinter dem Bild angezeigt wird, wenn Wert = 1
+HTML anhängen (Plural)|Text oder HTML-Code, der hinter dem Bild angezeigt wird, wenn Wert > 1
 
 ![065]  
 [:arrow_up: back to top ](#basic) 
@@ -542,14 +549,14 @@ Ausrichtung|horizontal (standard) oder vertikal
 Farbe|Farbe des Balkens
 Rand|@@@???@@@
 Durchsichtigkeit|@@@???@@@
-Wert umkehren|Wenn hier true eingetragen wird, wird der Balken von rechts nach links statt von links nach rechts angezeigt.
-border|CSS-Eigenschaft border des Balkens
-shadow|CSS-Eigenschaft box-shadow des Balkens
+Wert umkehren|Wenn hier 'true' eingetragen wird, wird der Balken von rechts nach links statt von links nach rechts angezeigt.
+border|CSS-Eigenschaft 'border' des Balkens
+shadow|CSS-Eigenschaft 'box-shadow' des Balkens
 ![067]  
 [:arrow_up: back to top ](#basic) 
 *********************************************************
 
-### Notes
+### Note
 ![032]  
 Dieses Widget stellt den Wert eines (String)-Datenpunkts als Notizzettel dar.
 
@@ -580,7 +587,7 @@ Zeige Scrollbar|Scrollbar, um durch längere Tabelle zu scrollen
 Detailed Widget|Hier kann ein weiteres Widget angegeben werden, das die Details einer Zeile anzeigt, auf die im JSON-Table-Widget geklickt wurde
 Maximale Zeilenzahl|Anzahl der Zeilen, die maximal dargestellt werden sollen
 Kolumnanzahl|Anzahl der Spalten aus der Tabelle
-Headers[0]|
+--> Headers[0]| (abhängig von eingestellter Spaltenanzahl)
 Name[1]|Spaltenname (abweichend vom Name im JSON-Objekt)
 Width[1]|Spaltenbreite
 Attribut in JSON[1]|Spalte entspricht diesem JSON-Attribut
@@ -589,7 +596,7 @@ Attribut in JSON[1]|Spalte entspricht diesem JSON-Attribut
 [:arrow_up: back to top ](#basic) 
 *********************************************************
 
-### Logout
+### Html Logout
 ![034]  
 Dieses Widget dient zum Abmelden per HTML-Button.
 
@@ -645,25 +652,13 @@ Keine Ergebnisse|
 Schlüsselworte-Farbe|
 Gesendet-Farbe|
 
-![072]  
 [:arrow_up: back to top ](#basic) 
 *********************************************************
 
 ### Full Screen
 ![037]  
 Schaltet in den Fullscreen-Modus (und wieder zurück)
-
-Attribut|Beschreibung|
-----|----|
-HTML voranstellen|Text oder HTML-Code der vor dem Bild angezeigt wird.
-HTML anhängen (Singular)|Text oder HTML-Code der hinter dem Bild angezeigt wird, wenn Wert = 1
-HTML anhängen (Plural)|Text oder HTML-Code der hinter dem Bild angezeigt wird, wenn Wert > 1
-Zeichen nach Komma|Anzahl der dargestellten Nachkommastellen
-Komma als Trennung|Komma statt Dezimalpunkt
-Tausender Trennzeichen|Trennzeichen anzeigen
-Wert multiplizieren|Faktor mit dem der Zahlenwert multipliziert wird
-
-![073]  
+ 
 [:arrow_up: back to top ](#basic) 
 *********************************************************
 
@@ -676,11 +671,11 @@ Zeigt die Auflösung und Instanz-ID der Standard-Ansicht an.
 
 [001]: media/basic_prev_html.png 
 [002]: media/basic_prev_shape.png
-[003]: media/basic_prev_iFrame.png
+[003]: media/basic_prev_iframe.png
 [004]: media/basic_prev_image.png
-[005]: media/basic_prev_tplLink.png
+[005]: media/basic_prev_tpllink.png
 [006]: media/basic_prev_tplframe.png
-[007]: media/basic_prev_statefulIframe8.png
+[007]: media/basic_prev_statefuliframe8.png
 [008]: media/basic_prev_containerview.png
 [009]: media/basic_prev_statefulcontainerview8.png
 [010]: media/basic_prev_statefulimage.png
