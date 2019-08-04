@@ -17,7 +17,7 @@ Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorher
 
 ### Cool CLock    
 Analoge Uhr  
-![001]
+![001]  
 Attribut|Beschreibung|
 ----|----|
 Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung  
@@ -39,7 +39,7 @@ Digitaluhr im Retro-Stil, bei der die Zahlen animiert umspringen
 
 ### Segment CLock    
 Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann  
-![004]
+![004]  
 Attribut|Beschreibung|
 ----|----
 Object ID|Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll
@@ -65,7 +65,7 @@ Ecktyp|Form der Segmente
 
 ### Simple CLock    
 Digitaluhr im 7-Segment-Stil, die  die aktuelle Uhrzeit anzeigt  
-![005]
+![005]  
 Attribut|Beschreibung|
 ----|----
 Zeige keine Sekunden|Sekunden nicht darstellen
@@ -79,7 +79,7 @@ Kein Stil| ?
 
 ### Simple Date    
 Datumsanzeige im 7-Segment-Stil für aktuelles Datum  
-![006]
+![006]  
 Attribut|Beschreibung|
 ----|----
 Wochentag| Zeige Wochentag vor dem Datum an
@@ -98,7 +98,7 @@ Kein Stil|?
 ### SVG Clock    
 Analoguhr mit vielen Darstellungsmöglichkeiten
 
-![007]
+![007]  
 Attribut|Beschreibung|
 ----|----
 Viertel-Text-Größe|Textgröße für die Viertelstunden-Darstellung
@@ -119,7 +119,7 @@ Textschrift|Schriftsatz der Zahlen
 
 ### HTC Weather    
 Wetteranzeige  (funktioniert nicht mehr, weil ...? )  
-![003]
+![003]  
 Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
@@ -133,7 +133,7 @@ Updateintervall|Aktualisierung der Wetterdaten
 ### Yahoo Weather    
 Wettervorhersageanzeige (nicht mehr zu nutzen, weil der Yahoo-Wetterdienst geändert wurde)  
 https://developer.yahoo.com/weather/  
-![010]
+![010]  
 
 [:arrow_up: back to top ](#Time&Weather)  
 *********************************************************
@@ -141,7 +141,7 @@ https://developer.yahoo.com/weather/
 ### Weather Custom
 Wettervorhersageanzeige für beliebige Wetterdatenquellen
 Aktuell empfiehlt sich, die Daten von Das.Wetter zu nutzen  
-![010]
+![010]  
 Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
