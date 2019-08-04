@@ -18,8 +18,8 @@ Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorher
 ### Cool CLock    
 Analoge Uhr  
 ![001]
-Attribut|Beschreibung
-----|----
+Attribut|Beschreibung|
+----|----|
 Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung  
 Zeige keine Sekunden|Darstellung ohne Sekundenzeiger
 Digitaluhr|
@@ -33,14 +33,14 @@ Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil
 ### Flip Clock    
 Digitaluhr im Retro-Stil, bei der die Zahlen animiert umspringen  
 ![002]  
-
+[:arrow_up: back to top ](#Time&Weather)  
 *********************************************************
 
 
 ### Segment CLock    
 Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann  
 ![004]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Object ID|Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll
 Aktiviere Uhr|
@@ -66,7 +66,7 @@ Ecktyp|Form der Segmente
 ### Simple CLock    
 Digitaluhr im 7-Segment-Stil, die  die aktuelle Uhrzeit anzeigt  
 ![005]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Zeige keine Sekunden|Sekunden nicht darstellen
 Blinken| ?
@@ -78,9 +78,9 @@ Kein Stil| ?
 *********************************************************
 
 ### Simple Date    
-Datumsanzeige im 7-Segment-Stilfür aktuelles Datum  
+Datumsanzeige im 7-Segment-Stil für aktuelles Datum  
 ![006]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Wochentag| Zeige Wochentag vor dem Datum an
 Kurzer Wochentag| Zeige den Wochentag als Kurzform an (nur wenn Wochentag aktiviert)
@@ -99,7 +99,7 @@ Kein Stil|?
 Analoguhr mit vielen Darstellungsmöglichkeiten
 
 ![007]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Viertel-Text-Größe|Textgröße für die Viertelstunden-Darstellung
 Viertel-Text-Farbe|Textfarbe für die Viertelstunden-Darstellung
@@ -118,9 +118,9 @@ Textschrift|Schriftsatz der Zahlen
 *********************************************************
 
 ### HTC Weather    
-Wetteranzeige  (funktioniert nicht mehr, weil )
+Wetteranzeige  (funktioniert nicht mehr, weil ...? )  
 ![003]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
 Stadtname|Name der Stadt
@@ -142,14 +142,14 @@ https://developer.yahoo.com/weather/
 Wettervorhersageanzeige für beliebige Wetterdatenquellen
 Aktuell empfiehlt sich, die Daten von Das.Wetter zu nutzen  
 ![010]
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
 Stadtname|Name der Stadt
 Sprache|Anzeigesprache
 
 #### Jetzt  
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----  
 Temperature ID|Datenpunkt für aktuelle Temperatur
 Text ID|Datenpunkt für Wetterbeschreibungstext
@@ -161,7 +161,7 @@ Windrichtung|Datenpunkt für Windrichtung
 Bild-URL|Datenpunkt mit URL zum passenden Wettersymbol
 
 #### Morgen  
-Attribut|Beschreibung
+Attribut|Beschreibung|
 ----|----  
 Text ID|Datenpunkt für Wetterbeschreibungstext
 Min Temperature ID|Datenpunkt für Tagestiefsttemperatur

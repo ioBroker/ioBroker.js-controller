@@ -4,20 +4,20 @@ Sie stellen bool'sche Zustände dar und können diese auch schalten.
 
 |Widget               | Image | Beschreibung|   
 |---------------------|-------|-------------|
-|[Switch light off/on](#Html-frame)  | ![001]|Hellgraue Schaltwippe
-[Slider dark off/on](#svg-shape) | ![002]|Schieber mit 'on'/'off'-Beschriftung
-[Schieber dunkel ein/aus](#iframe)       | ![003]|Schieber mit 'ein'/'aus'-Beschriftung
-[Schieber dunkel aus/ein](#image)         | ![004]|Schieber mit 'aus'/'ein'-Beschriftung
-[Wippe dunkel aus/ein](#link)           | ![005]![006]|Dunkle Schaltwippe mit 'aus'/'ein'-Beschriftung; optional auch im Hell-Stil
-[Giva Labs iButton](#border)       | ![007]| Weißer Schieber mit 'on'/'off'-Beschriftung
-[Taitem jqui Toggleswitch](#iframe-8)     | ![008]| Weißer Schieber mit 'on'/'off'-Beschriftung außerhalb des Schiebers
+|[Switch light off/on](#Html-frame)  | ![001]|Hellgraue Schaltwippe|
+[Slider dark off/on](#svg-shape) | ![002]|Schieber mit 'on'/'off'-Beschriftung|
+[Schieber dunkel ein/aus](#iframe)       | ![003]|Schieber mit 'ein'/'aus'-Beschriftung|
+[Schieber dunkel aus/ein](#image)         | ![004]|Schieber mit 'aus'/'ein'-Beschriftung|
+[Wippe dunkel aus/ein](#link)           | ![005]![006]|Dunkle Schaltwippe mit 'aus'/'ein'-Beschriftung; optional auch im Hell-Stil|
+[Giva Labs iButton](#border)       | ![007]| Weißer Schieber mit 'on'/'off'-Beschriftung|
+[Taitem jqui Toggleswitch](#iframe-8)     | ![008]| Weißer Schieber mit 'on'/'off'-Beschriftung außerhalb des Schiebers|
  
 *********************************************************
 
 ### Beschreibung der Eigenschaften 
 
 
-Attribut|Beschreibung|Betrifft
+Attribut|Beschreibung|Betrifft|
 ----|----|---|
 ObjectId|Id eines darzustellenden Objekts, das HTML enthält|Switch, Slider, Schieber, Wippe  
 Invertieren|Schaltzustand invertieren|Switch, Slider, Schieber, Wippe
