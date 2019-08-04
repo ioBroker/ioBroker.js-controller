@@ -15,16 +15,16 @@ Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorher
  
 *********************************************************
 
-### Cool CLock    
+### Cool Clock  
 Analoge Uhr  
 ![001]  
-Attribut|Beschreibung|
+Attribut|Beschreibung|  
 ----|----|
-Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung|  
+Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung|
 Zeige keine Sekunden|Darstellung ohne Sekundenzeiger|
 Digitaluhr|.|
-Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil|  
-
+Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil|
+ 
 **Beispiel:**  
 ![008]  
 [:arrow_up: back to top ](#Time&Weather)  
