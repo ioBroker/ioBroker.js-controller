@@ -172,9 +172,10 @@ Die Dateien des neuen Projektes befinden sich in der ioBroker Installation unter
 **Tipp**: Einen Projektordner kann man duplizieren und das Duplikat im VIS Editor bearbeiten 
 `<IPdesServers>:8082/vis/_projektname_duplikat_/index.html`.
 
+
 #### Anwendung
 Beim Laden eines Projektes werden alle [Views] :construction: (http://www.iobroker.net/?page_id=1193&lang=de) 
-dieses [Projektes] :construction:(http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#Projekt) mitgeladen. 
+dieses [Projektes] :construction: (http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#Projekt) mitgeladen. 
 Mitunter ist das nicht sinnvoll und bremst das System. 
 Daher kann man Views, die zusammengehören, in verschiedenen Projekten zusammenfassen. 
 Sinnvoll ist beispielsweise ein Trennung nach Endgeräten mit verschiedenen Bildschirmauflösungen. 
@@ -188,8 +189,8 @@ Das Hauptprojekt _main_ zur Anzeige aller Daten wird gängigerweise nur vom Desk
 und editiert. 
 Hier spielen Datenvolumen und Rechengeschwindigkeit meist keine Rolle. 
 Sollen Views in mehreren Projekten verwendet werden, 
-können sie mit dem Befehl [exportieren](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#exportieren):construction:/
-[importieren](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#importieren):construction: kopiert werden. 
+können sie mit dem Befehl [exportieren](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#exportieren) :construction:/
+[importieren](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#importieren) :construction: kopiert werden. 
 Das Verlinken über Navigationswidgets von einem Projekt zum anderen ist nicht möglich.  
 **Tipp**: Es kann auch sinnvoll sein, ein Test-Projekt anzulegen, wenn mit CSS-Befehlen experimentiert wird.
 
