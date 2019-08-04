@@ -76,6 +76,7 @@ Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit a
 ### Simple CLock    
 Digitaluhr im 7-Segment-Stil, die  die aktuelle Uhrzeit anzeigt  
 ![005]  
+
 Attribut|Beschreibung|
 ----|----
 Zeige keine Sekunden|Sekunden nicht darstellen
@@ -90,6 +91,7 @@ Kein Stil| ?
 ### Simple Date    
 Datumsanzeige im 7-Segment-Stil für aktuelles Datum  
 ![006]  
+
 Attribut|Beschreibung|
 ----|----
 Wochentag| Zeige Wochentag vor dem Datum an
@@ -109,6 +111,7 @@ Kein Stil|?
 Analoguhr mit vielen Darstellungsmöglichkeiten
 
 ![007]  
+
 Attribut|Beschreibung|
 ----|----
 Viertel-Text-Größe|Textgröße für die Viertelstunden-Darstellung
@@ -130,6 +133,7 @@ Textschrift|Schriftsatz der Zahlen
 ### HTC Weather    
 Wetteranzeige  (funktioniert nicht mehr, weil ...? )  
 ![003]  
+
 Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
@@ -152,6 +156,7 @@ https://developer.yahoo.com/weather/
 Wettervorhersageanzeige für beliebige Wetterdatenquellen
 Aktuell empfiehlt sich, die Daten von Das.Wetter zu nutzen  
 ![010]  
+
 Attribut|Beschreibung|
 ----|----
 Stadt|Wetter für diese Stadt wählen
