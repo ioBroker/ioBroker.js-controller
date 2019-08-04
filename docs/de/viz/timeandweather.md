@@ -23,7 +23,7 @@ Attribut|Beschreibung|
 Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung  
 Zeige keine Sekunden|Darstellung ohne Sekundenzeiger
 Digitaluhr|
-Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil
+Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil  
 
 **Beispiel:**  
 ![008]  
@@ -56,7 +56,7 @@ Zeichenbreite|Ziffernbreite
 Zeichenabstand|Abstand der Ziffern
 Segmentbreite|Breite der einzelnen Segment
 Segmentdistanz|Abstand zwischen den Segmenten
-Ecktyp|Form der Segmente
+Ecktyp|Form der Segmente  
 
 **Beispiel:**  
 ![011]  
