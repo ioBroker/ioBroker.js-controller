@@ -25,6 +25,12 @@ Zeige keine Sekunden|Darstellung ohne Sekundenzeiger|
 Digitaluhr|.|
 Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil|
  
+| Attribut                     |              Beschreibung                                            |
+|----------------------|----------------------------------------------------------|
+| Thema                | Es stehen verschiedene Darstellungs-Themen zur Verfügung |
+| Zeige keine Sekunden | Darstellung ohne Sekundenzeiger                          |
+| Digitaluhr           |                                                          |
+| Zeige am/pm          | Derstellung der Uhrzeit nach US-amerikanischem Stil      |
 **Beispiel:**  
 ![008]  
 [:arrow_up: back to top ](#Time&Weather)  
