@@ -47,23 +47,23 @@ Digitaluhr im Retro-Stil, bei der die Zahlen animiert umspringen
 ### Segment CLock    
 Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann  
 ![004]  
-|Attribut|Beschreibung|
-|----|----|
-|Object ID|Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll|
-|Aktiviere Uhr||
-|Sekunden|Sekunden darstellen|
-|Vorlage||
-|Segmentfarbe AN| Farbe der aktiven Segmente|
-|Segmentfarbe AUS|  Farbe der inaktiven Segmente|
-|Interval für laufenden Text [ms]|Geschwindigkeit für Lauftextdarstellung|
-|Anzahl Segmente|7/14/16 Segmente pro Ziffer|
-|Zeichenwinkel|Schrägstellung der Ziffern|
-|Zeichenhöhe|Ziffernhöhe|
-|Zeichenbreite|Ziffernbreite|
-|Zeichenabstand|Abstand der Ziffern|
-|Segmentbreite|Breite der einzelnen Segment|
-|Segmentdistanz|Abstand zwischen den Segmenten|
-|Ecktyp|Form der Segmente|  
+| Attribut|Beschreibung|
+| ----|----|
+| Object ID                       |Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll|
+| Aktiviere Uhr                   ||
+| Sekunden                        |Sekunden darstellen|
+| Vorlage                         ||
+| Segmentfarbe AN                 | Farbe der aktiven Segmente|
+| Segmentfarbe AUS                | Farbe der inaktiven Segmente|
+| Interval für laufenden Text [ms]|Geschwindigkeit für Lauftextdarstellung|
+| Anzahl Segmente                 |7/14/16 Segmente pro Ziffer|
+| Zeichenwinkel                   |Schrägstellung der Ziffern|
+| Zeichenhöhe                     |Ziffernhöhe|
+| Zeichenbreite                   |Ziffernbreite|
+| Zeichenabstand                  |Abstand der Ziffern|
+| Segmentbreite                   |Breite der einzelnen Segment|
+| Segmentdistanz                  |Abstand zwischen den Segmenten|
+| Ecktyp                          |Form der Segmente|  
 
 **Beispiel:**  
 ![011]  
