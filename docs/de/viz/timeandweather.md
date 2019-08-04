@@ -30,7 +30,7 @@ Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil|
 | Thema                | Es stehen verschiedene Darstellungs-Themen zur Verfügung |
 | Zeige keine Sekunden | Darstellung ohne Sekundenzeiger                          |
 | Digitaluhr           |                                                          |
-| Zeige am/pm          | Derstellung der Uhrzeit nach US-amerikanischem Stil      |  
+| Zeige am/pm          | Darstellung der Uhrzeit nach US-amerikanischem Stil      |  
 
 **Beispiel:**  
 ![008]  
@@ -50,9 +50,9 @@ Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit a
 |Attribut|Beschreibung|
 |----|----|
 |Object ID|Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll|
-|Aktiviere Uhr|
+|Aktiviere Uhr||
 |Sekunden|Sekunden darstellen|
-|Vorlage|
+|Vorlage||
 |Segmentfarbe AN| Farbe der aktiven Segmente|
 |Segmentfarbe AUS|  Farbe der inaktiven Segmente|
 |Interval für laufenden Text [ms]|Geschwindigkeit für Lauftextdarstellung|
