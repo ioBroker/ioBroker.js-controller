@@ -1,5 +1,5 @@
 # Time&Weather
-Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorhersagen dargestellt werden können  
+Dieses Set stellt Widgets zur Verfügung, mit denen Datum, Uhrzeit und Wettervorhersagen dargestellt werden können.  
 
 |Widget                           | Bild  | Beschreibung|   
 |---------------------------------|-------|-------------|
@@ -25,29 +25,25 @@ Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung|
 Zeige keine Sekunden|Darstellung ohne Sekundenzeiger|
 Digitaluhr|.|
 Zeige am/pm|Derstellung der Uhrzeit nach US-amerikanischem Stil|
- 
-| Attribut                     |              Beschreibung                        |
-|----------------------|----------------------------------------------------------|
-| Thema                | Es stehen verschiedene Darstellungs-Themen zur Verfügung |
-| Zeige keine Sekunden | Darstellung ohne Sekundenzeiger                          |
-| Digitaluhr           |                                                          |
-| Zeige am/pm          | Darstellung der Uhrzeit nach US-amerikanischem Stil      |  
+
 
 **Beispiel:**  
 ![008]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### Flip Clock    
 Digitaluhr im Retro-Stil, bei der die Zahlen animiert umspringen  
 ![002]  
-[:arrow_up: back to top ](#Time&Weather)  
+
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 
 ### Segment Clock    
 
-Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann  
+Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann.
+
 ![004]  
 
 | Attribut|Beschreibung|
@@ -70,11 +66,12 @@ Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit a
 
 **Beispiel:**  
 ![011]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### Simple CLock    
-Digitaluhr im 7-Segment-Stil, die  die aktuelle Uhrzeit anzeigt  
+Digitaluhr im 7-Segment-Stil, die  die aktuelle Uhrzeit anzeigt.  
+
 ![005]  
 
 Attribut|Beschreibung|
@@ -85,26 +82,28 @@ Kein Stil| ?
 
 **Beispiel:**  
 ![012]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### Simple Date    
-Datumsanzeige im 7-Segment-Stil für aktuelles Datum  
+Datumsanzeige im 7-Segment-Stil für aktuelles Datum.  
+
 ![006]  
 
 Attribut|Beschreibung|
 ----|----
 Wochentag| Zeige Wochentag vor dem Datum an
 Kurzer Wochentag| Zeige den Wochentag als Kurzform an (nur wenn Wochentag aktiviert)
-Kurzes Jahr| Nur die letzten beiden Ziffern des Jahres
-Null vorme|Führende Nullen bei Tag und Monat
+Kurzes Jahr| Nur die letzten beiden Ziffern des Jahres anzeigen
+Null vorne|Führende Nullen bei Tag und Monat
 Monat als Text|Monat als Text ausschreiben
 Kurzer Monat|Monatsabkürzung als Text ausschreiben
 USA-Format|?
-Kein Stil|?
+Kein Stil|?  
+
 **Beispiel:**  
 ![013]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### SVG Clock    
@@ -124,10 +123,11 @@ Zeige Sekunden|Zeige Sekundenzeiger
 Zeigerfarbe|Farbe des Stunden- und Minutenzeigers
 Zeigerbeulefarbe|Farbe für abgesetztes Element aus Stunden- und Mintenzeiger
 Sekundenzeigerfarbe|Farbe des Sekundenzeigers
-Textschrift|Schriftsatz der Zahlen
+Textschrift|Schriftsatz der Zahlen  
+
 **Beispiel:**  
 ![015]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### HTC Weather    
@@ -141,20 +141,22 @@ Stadtname|Name der Stadt
 Sprache|Anzeigesprache
 Updateintervall|Aktualisierung der Wetterdaten
 
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### Yahoo Weather    
 Wettervorhersageanzeige (nicht mehr zu nutzen, weil der Yahoo-Wetterdienst geändert wurde)  
-https://developer.yahoo.com/weather/  
+(siehe https://developer.yahoo.com/weather/)  
+
 ![010]  
 
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
 
 ### Weather Custom
-Wettervorhersageanzeige für beliebige Wetterdatenquellen
-Aktuell empfiehlt sich, die Daten von Das.Wetter zu nutzen  
+Wettervorhersageanzeige für beliebige Wetterdatenquellen.
+Aktuell empfiehlt sich, die Daten des Adapter 'daswetter' zu nutzen.  
+
 ![010]  
 
 Attribut|Beschreibung|
@@ -183,13 +185,13 @@ Min Temperature ID|Datenpunkt für Tagestiefsttemperatur
 Max Temperature ID|Datenpunkt für Tageshöchsttemperatur
 Bild-URL|Datenpunkt mit URL zum passenden Wettersymbol
 
-So geht es weiter für die nächsten Tage (je nach Vorhersagebedarf und Klick-Ausdauer)  
+So geht es weiter für die nächsten Tage (je nach Vorhersagebedarf und Klick-Ausdauer)...  
 
 **Beispiel:**  
 ![016]  
-[:arrow_up: back to top ](#Time&Weather)  
+[:arrow_up: back to top ](#TimeWeather)  
 *********************************************************
-*********************************************************
+
 
 [001]: media/iobroker-vis-timeandweather_timeandweather_coolclock.png 
 [002]: media/iobroker-vis-timeandweather_timeandweather_flipclock.png
