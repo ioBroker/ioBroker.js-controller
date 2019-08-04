@@ -3,15 +3,15 @@ Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorher
 
 |Widget                           | Bild  | Beschreibung|   
 |---------------------------------|-------|-------------|
-|[Cool Clock](#cool-clock)        | ![001]|Analoge Uhr
-|[Flip Clock](#flip-clock)        | ![002]|Digitaluhr im Retro-Stil (mit Animation)
-|[Segment Clock](#segment-clock)  | ![004]|Digitaluhr im 7-Segment-Stil
-|[Simple Clock](#simple-clock)    | ![005]|Digitaluhr
-|[Simple Date](#simple-date)      | ![006]|Datumsanzeige
-|[SVG Clock](#svg-clock)          | ![007]|Sehr variable Uhr im Analog-Stil
-|[HTC Weather](#htc-weather)      | ![003]|Uhrzeitanzeige mit Wetterinformationen --> funktioniert nicht mehr
-|[Yahoo Weather](#yahoo-weather)  | ![010]|Wettervorhersage von Yahoo --> funktioniert nicht mehr
-|[Weather Custom](#weather-custom)| ![010]|Wettervorhersage mit konfigurierbaren Zuständen
+|[Cool Clock](#cool-clock)        | ![001]|Analoge Uhr|
+|[Flip Clock](#flip-clock)        | ![002]|Digitaluhr im Retro-Stil (mit Animation)|
+|[Segment Clock](#segment-clock)  | ![004]|Digitaluhr im 7-Segment-Stil|
+|[Simple Clock](#simple-clock)    | ![005]|Digitaluhr|
+|[Simple Date](#simple-date)      | ![006]|Datumsanzeige|
+|[SVG Clock](#svg-clock)          | ![007]|Sehr variable Uhr im Analog-Stil|
+|[HTC Weather](#htc-weather)      | ![003]|Uhrzeitanzeige mit Wetterinformationen --> funktioniert nicht mehr|
+|[Yahoo Weather](#yahoo-weather)  | ![010]|Wettervorhersage von Yahoo --> funktioniert nicht mehr|
+|[Weather Custom](#weather-custom)| ![010]|Wettervorhersage mit konfigurierbaren Zuständen|
  
 *********************************************************
 
