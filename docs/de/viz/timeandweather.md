@@ -18,6 +18,7 @@ Dieses Set stellt WIdgets zur Verfügung, mit denen die Uhrzeit und Wettervorher
 ### Cool Clock  
 Analoge Uhr  
 ![001]  
+
 Attribut|Beschreibung|  
 ----|----|
 Thema|Es stehen verschiedene Darstellungs-Themen zur Verfügung|
@@ -44,9 +45,11 @@ Digitaluhr im Retro-Stil, bei der die Zahlen animiert umspringen
 *********************************************************
 
 
-### Segment CLock    
+### Segment Clock    
+
 Digitaluhr im 7-Segment-Stil, die entweder die aktuelle Uhrzeit oder eine Zeit aus einem Datenpunkt anzeigen kann  
 ![004]  
+
 | Attribut|Beschreibung|
 | ----|----|
 | Object ID                       |Datenpunkt, falls nicht die aktuelle Uhrzeit angezeigt werden soll|
