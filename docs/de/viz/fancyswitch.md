@@ -14,8 +14,8 @@ Sie stellen bool'sche Zustände dar und können diese auch schalten.
  
 *********************************************************
 
-### Html Frame  
-Dieses Widget stellt beliebigen HTML-Code dar. Es ist auch möglich, Javascript innerhalb des Widgets zu verwenden.  
+### Beschreibung der Eigenschaften 
+
 
 Attribut|Beschreibung|Betrifft
 ----|----|---|
@@ -37,7 +37,7 @@ Html anhängen|HTML-Code, der nach dem Objekt dargestellt werden soll|Taitem jqu
 
 **Beispiel:**  
 ![009]  
-[:arrow_up: back to top ](#basic)  
+[:arrow_up: back to top ](#Fancyswitch)  
 *********************************************************
 
 *********************************************************
