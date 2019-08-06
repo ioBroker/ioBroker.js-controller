@@ -4,27 +4,28 @@
 /* jshint expr:true */
 'use strict';
 
-const expect  = require('chai').expect;
-const setup   = require(__dirname + '/../lib/setup4controller');
 const fs      = require('fs');
+const path    = require('path');
+const expect  = require('chai').expect;
+const setup   = require(path.join(__dirname,'..', 'lib', 'setup4controller'));
 const { exec } = require('child_process');
-const dataDir = __dirname + '/../../tmp/data';
+const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects     = null;
 let states      = null;
 let onStatesChanged = null;
 
 function cleanDbs() {
-    if (fs.existsSync(dataDir + '/objects.json')) {
-        fs.unlinkSync(dataDir + '/objects.json');
+    if (fs.existsSync(path.join(dataDir, 'objects.json'))) {
+        fs.unlinkSync(path.join(dataDir, 'objects.json'));
     }
-    if (fs.existsSync(dataDir + '/objects.json.bak')) {
-        fs.unlinkSync(dataDir + '/objects.json.bak');
+    if (fs.existsSync(path.join(dataDir, 'objects.json.bak'))) {
+        fs.unlinkSync(path.join(dataDir, 'objects.json.bak'));
     }
-    if (fs.existsSync(dataDir + '/states.json')) {
-        fs.unlinkSync(dataDir + '/states.json');
+    if (fs.existsSync(path.join(dataDir, 'states.json'))) {
+        fs.unlinkSync(path.join(dataDir, 'states.json'));
     }
-    if (fs.existsSync(dataDir + '/states.json.bak')) {
-        fs.unlinkSync(dataDir + '/states.json.bak');
+    if (fs.existsSync(path.join(dataDir, 'states.json.bak'))) {
+        fs.unlinkSync(path.join(dataDir, 'states.json.bak'));
     }
 }
 
