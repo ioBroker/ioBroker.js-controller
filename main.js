@@ -2914,7 +2914,7 @@ function init() {
 
     logger = require('./lib/logger.js')(config.log);
 
-    // Delete all log files older than x das
+    // Delete all log files older than x days
     logger.activateDateChecker(true, config.log.maxDays);
 
     // If installed as npm module

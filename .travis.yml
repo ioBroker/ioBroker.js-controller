@@ -2,8 +2,6 @@ os:
   - linux
   - osx
   - windows
-services:
-  - redis-server
 language: node_js
 node_js:
   - '6'
@@ -11,6 +9,10 @@ node_js:
   - '10'
   - '12'
 before_install:
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:chris-lea/redis-server -y; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -q; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install redis-server redis-sentinel -y; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo systemctl start redis-server; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents; fi'
@@ -22,8 +24,9 @@ before_script:
   - 'if [[ $NPMVERSION == 5 ]]; then npm install -g npm@5; fi'
   - npm -v
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-socket/setup-socket.sh; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-sentinel/*.sh; fi'
 script:
-  - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh; fi'
+  - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh && cd test/redis-sentinel && ./test-sentinel.sh && cd ../..; fi'
 after_success:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install -g npm@latest; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install --package-lock-only --production; fi'
