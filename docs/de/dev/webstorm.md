@@ -4,38 +4,56 @@ WebStorm wird für die Hauptentwicklung verwendet, möglicherweise ist [Visual S
 
 Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript, NodeJS, HTML5 usw.
 
-## Installation von WebStorm unter Linux
-*Hinweis*: Je nach Linux Distribution kann die Installation abweichen. Hier wird die Installation auf Ubuntu 16.04 beschrieben.
-
-### Laden Sie WebStorm herunter und installieren Sie es
- 1. Gehen Sie auf die Webseite von [jetBrains](https://www.jetbrains.com/webstorm/download/#section=linux) und laden Sie WebStorm für Linux herunter.
+## Installation von WebStorm
+### Linux
+*Hinweis: Je nach Linux Distribution kann die Installation abweichen. Hier wird die Installation auf Ubuntu 18.04 beschrieben.*
+ 1. Gehen Sie auf die Webseite von [jetBrains](https://www.jetbrains.com/webstorm/download/#section=linux) und laden Sie WebStorm für Linux herunter
  2. Öffnen Sie ein Terminal und wechseln Sie in das Download-Verzeichnis
- 3. Entpacken Sie die Datei mit "sudo tar xfz WebStorm-*.tar.gz -C /opt/" in das Verzeichnis /opt/. E
- 4. . Öffnen Sie" WebStorm-139.1112 / bin "und geben Sie" ./webstorm.sh "ein. Möglicherweise müssen Sie das Java-JDK installieren ...
+ 3. Entpacken Sie die Datei mit `sudo tar xfz WebStorm-*.tar.gz -C /opt/` in das Verzeichnis /opt/
+ 4. Wechseln Sie in den Ordner /opt/WebStorm-*/bin/ und geben Sie `./webstorm.sh` ein
+ 5. Auf dem Welcome Screen können Sie dann unter `Konfigurieren -> Desktop Eintrag erstellen` die jeweiligen Einträge erstellen, damit Sie später, das Programm über die grafische Oberfläche starten können
 
-### Installieren Sie Java JDK
-** Dieser Schritt ist unter Windows nicht erforderlich **
+### Windows 10
+ 1. Gehen Sie auf die Webseite von [jetBrains](https://www.jetbrains.com/webstorm/download/#section=windows) und laden Sie WebStorm für Windows herunter
+ 2. Führen Sie die WebStorm.*.exe aus und folgen Sie dem Installationswizard
 
-```
-sudo apt-add-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java8-installer
-```
+## Installation von Node.js
+### Linux
+*Hinweis: Je nach Linux Distribution kann die Installation abweichen. Hier wird die Installation auf Ubuntu 18.04 beschrieben.*
+ 1. Öffnen Sie ein Terminal und installieren Sie curl mit dem Befehl `sudo apt-get install curl`
+ 2. Sobald curl installiert ist können Sie das jeweilig gewünschte PPA hinzufügen. Das PPA unterscheidet sich je nach Version die Sie installieren wollen. Wir empfehlen Ihnen mit der aktuellen  LTS Version zu arbeiten. Zum Zeitpunkt der Erstellung dieser Anleitung ist dies Node.js 10. Der Befehl dafür lautet `curl -sL https://deb.nodesource.com/setup_*.x | sudo -E bash -` -> z.B. `curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -`
+ 3. Dann können Sie Node installieren `sudo apt-get install nodejs`
+ 4. Um zu Überprüfen ob die Installation erfolgreich war können Sie die Versionen von Node.js und npm abfragen `node -v` bzw. `npm -v`
+ 
+ ### Windows 10
+  1. Gehen Sie auf die Website von [Node.js](https://nodejs.org/en/download/) und laden Sie den Windows Installer (.msi) 64-bit herunter
+  2. Führen Sie die node-v*-x64.msi aus und folgen dem Installationswizard
 
-### NodeJS installieren
-1. `sudo apt-get install nodejs` (machen Sie keinen` `sudo apt-get install node```, da der Knoten nicht nodejs ist.
-2. Erstellen Sie einen Alias "node" mit Hilfe von `` sudo ln -s / usr / bin / nodejs / usr / bin / node```
+## Installation von ioBroker
+### Linux
+*Hinweis: Je nach Linux Distribution kann die Installation abweichen. Hier wird die Installation auf Ubuntu 18.04 beschrieben.*
+ 1. Öffnen Sie ein Terminal und installieren Sie die notwendigen Build Tools für die Installation von ioBroker. Dies können Sie mit folgendem Befehl `sudo apt-get install -y build-essential libavahi-compat-libdnssd-dev libudev-dev libpam0g-dev`
+ 2. Da Sie curl durch die Node.js Installation bereits installiert haben sollten, können Sie gleich mit der Installation von ioBroker fortfahren `curl -sL https://iobroker.net/install.sh | bash -`
+ 3. Folgen Sie dem Installationswizard. Ist die Installation abgeschlossen öffnen Sie Ihren Browser mit http://localhost:8081. Sie sollten den Begrüßungsbildschirm von ioBroker sehen.
 
-## Download der neuesten ioBroker-Quellen und Import in ein WebStorm-Projekt
-1. Öffnen Sie ein Terminal und wechseln Sie in das Verzeichnis / opt.
-2. Erstellen Sie ein neues Verzeichnis mit "mkdir iobroker" und führen Sie dann "cd iobroker" aus.
-3. Installieren Sie iobroker mit "npm install iobroker".
-4. Testen Sie es mit "cd node_modules / iobroker.js-controller /" und geben Sie "chmod + x iobroker" und später "node controller.js" ein.
-5. Öffnen Sie Ihren Browser mit "http:// localhost: 8081". Sie sollten den Begrüßungsbildschirm von ioBroker sehen.
+### Windows 10
+ 1. Erstellen Sie den Ordner ioBroker im Root-Verzeichnis ihres Laufwerkes. z.B. C:\ioBroker
+ 2. Öffnen Sie eine Eingabeaufforderung und welchseln sie in das ioBroker Verzeichnis z.B. `cd /d C:\ioBroker`
+ 3. Starten Sie die Installation des ioBroker's mit dem Befehl `npm install iobroker` und folgen Sie dem Installationswizard. Ist die Installation abgeschlossen öffnen Sie Ihren Browser mit http://localhost:8081. Sie sollten den Begrüßungsbildschirm von ioBroker sehen.
+ 
+![Begrüßungsbildschirm](../../de/dev/media/WelcomeScreen.png)
 
-  ![](../../en/dev/media/WelcomeScreen.png)
 
-6. Gehen Sie zum Terminalfenster und geben Sie "ctrl + c" ein, um den ioBroker zu unterbrechen
+
+
+
+
+
+
+
+
+
+
 
 ## Konfigurieren Sie WebStorm, um den ioBroker auszuführen und zu debuggen
 1. Öffnen Sie WebStorm mit `. / Webstorm.sh`
