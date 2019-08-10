@@ -239,6 +239,18 @@ To enable compact mode for an js-controller instance you need to manually change
 Then restart the js-controller.
 All adapters that can run in compact mode will also be started in compact mode.
 
+##### Implementation details
+
+https://forum.iobroker.net/topic/18338/experimentell-js-controller-compact-mode
+
+##### Testing details for Development
+
+For testing setup your js.controller to use compact mode and change the io-package and javascript files accordingly. Do not forget to ```iobroker upload adaptername``` after changes to io-package.json.
+
+One important part is starting the adapter. 
+
+Stopping the adapter and making sure that no data are updated anymore and no error are thrown is also very important. Please make sure that in ``on('unload')``` really all initialized communications, timers and intervals are stopped and cleaned best possible.
+ 
 #### Manually Run Adapter instances for debugging
 **Feature Status: Stable**
 
