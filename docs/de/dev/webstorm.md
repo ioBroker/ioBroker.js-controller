@@ -1,20 +1,17 @@
----
-translatedFrom: en
-translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/webstorm.md
-title: WebStorm
-hash: 6XXAKFYtzFKrNxvp9WAx9BNY5RT24ZKXH9/SJBTKVJ0=
----
 # WebStorm
 Auf dieser Seite zeigen wir Ihnen, wie Sie eine ioBroker-Entwicklungsumgebung installieren und einrichten.
-WebStorm wird für die Hauptentwicklung verwendet, möglicherweise ist Nodeclipse eine alternative IDE.
+WebStorm wird für die Hauptentwicklung verwendet, möglicherweise ist [Visual Studio Code](./vscode.md) eine Alternative.
+
 Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript, NodeJS, HTML5 usw.
 
-Fühlen Sie sich frei, die folgenden Informationen zu erweitern.
+## Installation von WebStorm unter Linux
+*Hinweis*: Je nach Linux Distribution kann die Installation abweichen. Hier wird die Installation auf Ubuntu 16.04 beschrieben.
 
-## Laden Sie WebStorm unter Ubuntu 14.04 herunter und installieren Sie es
-Gehen Sie auf die Webseite von [jetBrains](https://www.jetbrains.com/webstorm/download/) und laden Sie WebStorm für Ihr Betriebssystem herunter. Wir werden uns auf Ubuntu 14.04 konzentrieren.
-Wechseln Sie in das Download-Verzeichnis und verschieben Sie die Datei mit "mv WebStorm-9.0.3.tar.gz / opt /" in das Verzeichnis / opt. Entpacken / entpacken Sie "tar xvzf WebStorm-9.0.3.tar.gz. Öffnen Sie" WebStorm-139.1112 / bin "und geben Sie" ./webstorm.sh "ein. Möglicherweise müssen Sie das Java-JDK installieren ...
+### Laden Sie WebStorm herunter und installieren Sie es
+ 1. Gehen Sie auf die Webseite von [jetBrains](https://www.jetbrains.com/webstorm/download/#section=linux) und laden Sie WebStorm für Linux herunter.
+ 2. Öffnen Sie ein Terminal und wechseln Sie in das Download-Verzeichnis
+ 3. Entpacken Sie die Datei mit "sudo tar xfz WebStorm-*.tar.gz -C /opt/" in das Verzeichnis /opt/. E
+ 4. . Öffnen Sie" WebStorm-139.1112 / bin "und geben Sie" ./webstorm.sh "ein. Möglicherweise müssen Sie das Java-JDK installieren ...
 
 ### Installieren Sie Java JDK
 ** Dieser Schritt ist unter Windows nicht erforderlich **
