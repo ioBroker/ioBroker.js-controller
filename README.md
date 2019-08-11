@@ -116,7 +116,10 @@ If needed, especially for low memory situations the memory limit for all adapter
   },
 ```
 
+### Statistics
+**Feature Status: Stable**
  
+The js-controller is collecting statistics for the host (system.host.hostname.*) and also for each adapter (system.adapter.adaptername.*).The data contain memory usage, free memory, number of events and also the event loop lag of the node.js process.
 
 ### Logging
 
