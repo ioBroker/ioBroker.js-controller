@@ -144,7 +144,7 @@ function delDir(source) {
                 const sourceName = path.join(source, file);
                 const stat = fs.statSync(sourceName);
                 if (stat.isDirectory()) {
-                    setImmediate(() => delDir(sourceName));
+                    delDir(sourceName);
                     //fs.rmdirSync(sourceName)
                 } else {
                     fs.unlinkSync(sourceName);

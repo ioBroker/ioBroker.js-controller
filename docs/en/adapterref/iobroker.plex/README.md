@@ -122,6 +122,10 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 - add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
 
+### 0.4.3 (2019-08-11)
+- (Zefau) Performance improvements (dutyCycleRun and state comparison)
+- (Zefau) added refresh button (to scan library files) to libraries
+
 ### 0.4.1 / 0.4.2 (2019-08-03)
 - (Zefau) fixed newly introduced playback control not working for certain players
 - (Zefau) removed unnecessary dependencies

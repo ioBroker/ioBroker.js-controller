@@ -39,7 +39,23 @@ It's fully customizable.
 ## You need...
 * Nodejs 8 or higher
 * Web-Adapter with one instance running the same protocol (http or https) as the admin-adapter, socket.IO set to 'integrated' and 'Force Web-Sockets' disabled
-    * It this stands in conflict to other adapters, simply add another instance with the above settings. iQontrol will search the besst fitting web-adapter-instance and use it for communication.
+    * If this stands in conflict to other adapters, simply add another instance with the above settings - iQontrol will search the besst fitting web-adapter-instance and use it for communication
+	* For connecting over *iobroker.pro-Cloud* both, admin- and web-adapter should be set to http (not https)
+
+
+## Troubleshooting
+* Make shure you fulfilled the 'You need...' section at top of this page
+* If something doesn't work like expected after update please try the following steps:
+    * Start upload of adapter:
+    \
+        ![Upload](img/adapter_upload.png)
+	* Clear browser cache
+	* Restart ioBroker
+* Start iQonrol with opened debugging-console of your browser (mostly you need to press F12 to open it) and look for messages in the console-window
+
+
+## Forum
+Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol). 
 
 
 ## How to use
@@ -57,10 +73,6 @@ It's fully customizable.
 	You can use your images as background-images for views, or for devices.
 	Images in the folder '/usericons' can be used as icons for devices.
 	The free builtin demo-wallpapers are from www.pexels.com.
-
-
-## Forum
-Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol). 
 
 
 ## URL-Parameters
@@ -133,10 +145,10 @@ Optional you can define the following states:
 * For coloured LEDs (HSB-color-space):
     * **HUE**: *number* - color of the light from 0-360° (hue format)
     * **SATURATION**: *number* - saturation of the light (from white to pure color)
-    * **COLOR_BRIGHTNESS**: *number* - the brightness of the colored LEDs (this is only respected, if the light has both, coloured and white LEDs. If you have only one kind of LEDs the brightness is controlled by the LEVEL-State)
+    * **COLOR_BRIGHTNESS**: *number* - the brightness of the colored LEDs (if you have a LEVEL-State and no white LEDs, this is ignored, because brightness is controled completely by LEVEL)
 * For white LEDs:
     * **CT**: *number* - color-temperature of the light, if it has two shades of white
-    * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (this is only respected, if the light has both, white and coloured LEDs. If you have only one kind of LEDs the brightness is controlled by the LEVEL-State)
+    * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (if you have a LEVEL-State and no coloured LEDs, this is ignored, because brightness is controled completely by LEVEL)
 * Alternative color-spaces:
     * **ALTERNATIVE_COLORSPACE_VALUE**: *string* or *number* (depending on the chosed colorspace) - the value of the alternative colorspace
     If your device does not support using HUE, SATURATION and COLOR_BRIGHTNESS (HSB/HSV-color-space) you can use a variety of alternative colorspaces. In the device-options you can chose one of the following colorspaces:	
@@ -252,21 +264,18 @@ In addition to normal thermostat you can define:
 * **URL**: CONSTANT *string* - this url will be opened
 
 
-## Troubleshooting
-* Make shure you fulfilled the 'You need' section at top of this page
-* If something doesn't work like expected after update please try the following steps:
-    * Start upload of adapter
-	* Clear browser cache
-	* Restart ioBroker
-* Start iQonrol with opened debugging-console of your browser (mostly you need to press F12 to open it) and look for messages in the console-window
-
-
 ## Developing
 * Have a look at [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md)
 
 ****
 
 # Changelog
+
+### 0.1.8 (2019-08-11)
+* (Sebastian Bormann) Further improvements on connecting over iobroker.pro.
+* (Sebastian Bormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
+* (Sebastian Bormann) Added thumbnail-previews of fonts.
+* (Sebastian Bormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
 
 ### 0.1.7 (2019-08-11)
 * (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.

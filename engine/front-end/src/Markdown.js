@@ -510,18 +510,23 @@ class Markdown extends Router {
     }
 
     formatAuthors(text) {
-        return text.split(',').map(a => {
-            const m = a.trim().match(/<([-.\w\d_@]+)>$/);
+        const parts = text.split(',').map(t => t.trim()).filter(t => t);
+
+        const authors = [];
+        for (let i = 0; i < parts.length; i++) {
+            const m = parts[i].trim().match(/<([-.\w\d_@]+)>$/);
             if (m) {
                 const email = m[1];
-                return (<span key={a} className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
+                authors.push((<span key={parts[i]} className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
                     Utils.onCopy(e, email);
                     this.setState({tooltip: I18n.t('Copied')});
-                }}>{a.replace(m[0], '').trim()}</span>);
+                }}>{parts[i].replace(m[0], '').trim() + (parts.length - 1 === i ? '' : ', ')}</span>));
             } else {
-                return (<span key={a} className={this.props.classes.name}>{a}</span>);
+                authors.push((<span key={parts[i]} className={this.props.classes.name}>{parts[i] + (parts.length - 1 === i ? '' : ', ')}</span>));
             }
-        });
+        }
+
+        return authors;
     }
 
     renderHeader() {
@@ -534,6 +539,7 @@ class Markdown extends Router {
 
             data.push((<div key="translatedFrom" className={this.props.classes.headerTranslated} onClick={() => this.props.onNavigate(this.state.header.translatedFrom)} title={I18n.t('Go to original')}>{I18n.t('Translated from %s', translatedFrom)}</div>));
         }
+
         if (this.state.header.adapter) {
             data.push((<h1 key="h1">{[
                 this.state.header.logo ? (<img key="logo" src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
@@ -572,8 +578,7 @@ class Markdown extends Router {
                         .map((attr, i) => [
                                 this.state.header[attr].indexOf('nodei.co') !== -1 ? (<br key={'br' + i}/>) : null,
                                 (<img key={'img' + i} src={this.state.header[attr]} alt={attr.substring(6)}/>)
-                            ]
-                        )}
+                            ])}
                 </ExpansionPanelDetails>
             </ExpansionPanel>));
         }

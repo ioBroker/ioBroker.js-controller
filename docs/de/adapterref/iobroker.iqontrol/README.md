@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: wVVuLJkz72BjppJ2Rm0p+XX+0dGaVOqVhgW/mh1h8Qo=
+hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -39,7 +39,23 @@ Es ist vollständig anpassbar.
 ## Du brauchst...
 * Nodejs 8 oder höher
 * Web-Adapter mit einer Instanz, die dasselbe Protokoll (http oder https) wie der Admin-Adapter ausführt, socket.IO auf 'integrated' gesetzt und 'Force Web-Sockets' deaktiviert
-    * Wenn dies in Konflikt mit anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den obigen Einstellungen hinzu. iQontrol durchsucht die passende Webadapter-Instanz und verwendet sie zur Kommunikation.
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu. IQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+* Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Web-Adapter auf http (nicht https) eingestellt sein.
+
+## Fehlerbehebung
+* Stellen Sie sicher, dass Sie den Abschnitt "Sie brauchen ..." oben auf dieser Seite erfüllt haben
+* Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie bitte die folgenden Schritte aus:
+    * Starten Sie den Upload des Adapters:
+
+    \
+        ![Hochladen](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
+
+* Löschen Sie den Browser-Cache
+* Starten Sie ioBroker neu
+* Starten Sie iQonrol mit der geöffneten Debug-Konsole Ihres Browsers (meistens müssen Sie F12 drücken, um es zu öffnen) und suchen Sie im Konsolenfenster nach Nachrichten
+
+## Forum
+Besuchen Sie [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
 ## Wie benutzt man
 * Starten Sie die Erstellung von Ansichten.
@@ -63,9 +79,6 @@ Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
 Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
-
-## Forum
-Besuchen Sie [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
 ## URL-Parameter
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
@@ -143,10 +156,10 @@ Optional können Sie folgende Zustände definieren:
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
   * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
-  * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (dies wird nur beachtet, wenn das Licht sowohl farbige als auch weiße LEDs hat. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
+  * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status haben und keine weißen LEDs, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
-  * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (dies wird nur beachtet, wenn das Licht sowohl weiße als auch farbige LEDs enthält. Wenn Sie nur eine Art von LEDs haben, wird die Helligkeit durch die LEVEL- Zustand)
+  * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (wenn Sie einen LEVEL-Status und keine farbigen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
 
@@ -267,20 +280,18 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *any* - kann zur Anzeige weiterer Informationen verwendet werden
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
-## Fehlerbehebung
-* Stellen Sie sicher, dass Sie den Abschnitt "Sie benötigen" oben auf dieser Seite erfüllt haben
-* Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie bitte die folgenden Schritte aus:
-    * Starten Sie den Upload des Adapters
-* Löschen Sie den Browser-Cache
-* Starten Sie ioBroker neu
-* Starten Sie iQonrol mit der geöffneten Debug-Konsole Ihres Browsers (meistens müssen Sie F12 drücken, um es zu öffnen) und suchen Sie im Konsolenfenster nach Nachrichten
-
 ## Entwickeln
 * Schauen Sie sich [Funktionsweise des Frontends] an (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
 ****
 
 ## Changelog
+
+### 0.1.8 (2019-08-11)
+* (Sebastian Bormann) Further improvements on connecting over iobroker.pro.
+* (Sebastian Bormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
+* (Sebastian Bormann) Added thumbnail-previews of fonts.
+* (Sebastian Bormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
 
 ### 0.1.7 (2019-08-11)
 * (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.

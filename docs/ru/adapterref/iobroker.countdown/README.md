@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
+hash: Zev4uVyABT0yxwZxD5Oz+mujy9UL8xc4M5AO6iz8v3A=
 ---
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -71,12 +71,17 @@ hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
 
 ## 0.7.0 (2019-07-07)
 * (Джек-Блэксон) Исправления
-* (Джек-Блэксон) addminutes и addhours теперь также возможны
+* (Джек-Блэксон) addminutes и addhours теперь возможны
 * (jack-blackson) точка данных в настройках теперь редактируема
 * (Джек-Блэксон) добавлено всего нет. недель
 
 ## 1.0.2 (2019-07-22)
 * (Джек-Блэксон) Релиз-версия
+
+## 1.0.3 (2019-08-10)
+* (Джек-Блэксон) Изменения в компактном режиме
+* (Джек-Блэксон) Различные исправления
+* (Джек-Блэксон) Теперь возможно использование нескольких экземпляров адаптера.
 
 ## Changelog
 ### 0.1.0 (2019-04-29)

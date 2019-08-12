@@ -191,8 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
-### 1.9.19 (2019-08-09)
+### 1.10.0 (2019-08-12)
 * (foxriver76) new meta data handling procedure
+* __js-controller >= 1.4.2 required__
 
 ### 1.9.17 (2019-08-04)
 * (foxriver76) handle meta values with max 1.01 as 1

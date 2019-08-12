@@ -69,7 +69,7 @@
     "picture": "orangePlus2E.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "http://www.iobroker.net/docu/?page_id=8955&lang=de"
+    "info": "https://www.iobroker.net/docu/index-201.htm?page_id=8955&lang=de"
   },
   {
     "file": "ioBroker_Image_Rock64_20190209_stretch.zip",
@@ -80,7 +80,7 @@
     "picture": "rock64.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "http://www.iobroker.net/docu/?page_id=8879&lang=de"
+    "info": "https://www.iobroker.net/docu/index-203.htm?page_id=8879&lang=de"
   },
   {
     "file": "ioBroker_Image_Tinker_20190208_stretch.zip",
@@ -91,7 +91,7 @@
     "picture": "tinkerboard.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "http://www.iobroker.net/docu/?page_id=8799&lang=de"
+    "info": "https://www.iobroker.net/docu/index-204.htm?page_id=8873&lang=de"
   },
   {
     "file": "ioBroker_Image_RPi_2-3_20190128_stretch.zip",
@@ -102,7 +102,7 @@
     "picture": "raspberry3.png",
     "user": "pi",
     "password": "raspberry",
-    "info": "http://www.iobroker.net/docu/?page_id=8799&lang=de"
+    "info": "https://www.iobroker.net/docu/index-205.htm?page_id=8799&lang=de"
   },
   {
     "file": "ioBroker_Image_RPi_2-3_20190104_stretch.zip",
@@ -124,7 +124,7 @@
     "picture": "tinkerboard.png",
     "user": "root",
     "password": "1234",
-    "info": "noch kein Readme!<br/>Testing fÃ¼r neue Installationsroutine, bitte Feedback im Forum."
+    "info": "noch kein Readme!<br/>Testing für neue Installationsroutine, bitte Feedback im Forum."
   },
   {
     "file": "ioBroker_Image_Pine64_20181215_Ubuntu.zip",
@@ -135,7 +135,7 @@
     "picture": "Pine64.png",
     "user": "root",
     "password": "1234",
-    "info": "nand-sata-install funktioniert wieder<br/>jedoch nightly build!",
+    "info": ""
   },
   {
     "file": "ioBroker_all_in_one_Image_RPi_2-3_20180419_stretch.zip",

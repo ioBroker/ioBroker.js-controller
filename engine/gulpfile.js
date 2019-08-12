@@ -146,6 +146,24 @@ gulp.task('downloadAdapterTest', () => {
         });
 });
 
+// removes adapter from all languages "gulp remove --adapterName"
+gulp.task('remove', done => {
+    let adapter = process.argv[3].replace(/^-+/, '').replace(/^iobroker\./i, '');
+    console.log(process.argv[3].replace(/^-+/, ''));
+    adapter = 'iobroker.' + adapter;
+    consts.LANGUAGES.forEach(lang => {
+        const dir = consts.SRC_DOC_DIR + lang + '/adapterref/' + adapter;
+        if (fs.existsSync(dir)) {
+            try {
+                utils.delDir(dir);
+            } catch (e) {
+                console.error('Cannot delete ' + path.normalize(dir));
+            }
+        }
+    });
+    done();
+});
+
 gulp.task('0.clean', done => {
     consts.LANGUAGES.forEach(lang => utils.delDir(path.join(consts.FRONT_END_DIR, lang)));
     done();
@@ -154,9 +172,7 @@ gulp.task('0.clean', done => {
 // translate and copy blogs
 gulp.task('1.blog', () => {
     return blog.build()
-        .then(() => {
-            console.log('Done');
-        });
+        .then(() => console.log('Done'));
 });
 
 // download all adapters

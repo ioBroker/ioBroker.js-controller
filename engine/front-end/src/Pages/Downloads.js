@@ -209,16 +209,17 @@ class Downloads extends Router {
             >
 
                 <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
-                    <Markdown
-                        path={'downloads/' + this.state.info}
-                        rootPath="documentation"
-                        language={this.props.language}
-                        theme={this.props.theme}
-                        mobile={this.props.mobile}
-                        editMode={false}
-                        editEnabled={false}
-                        onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
-                    />
+                    {this.state.info.endsWith('.md') ?
+                        (<Markdown
+                            path={'downloads/' + this.state.info}
+                            rootPath="documentation"
+                            language={this.props.language}
+                            theme={this.props.theme}
+                            mobile={this.props.mobile}
+                            editMode={false}
+                            editEnabled={false}
+                            onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                        />) : (<div dangerouslySetInnerHTML={{ __html: this.state.info}}/>)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => this.closeDialog()} color="primary">{I18n.t('Close')}</Button>
@@ -231,7 +232,7 @@ class Downloads extends Router {
         if (link.match(/^https?:/i)) {
             Utils.openLink(link);
         } else {
-            this.onNavigate(null, null, null, link);
+            link.endsWith('.md') && this.onNavigate(null, null, null, link);
             this.setState({info: link});
         }
     }

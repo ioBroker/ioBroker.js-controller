@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: wVVuLJkz72BjppJ2Rm0p+XX+0dGaVOqVhgW/mh1h8Qo=
+hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -39,7 +39,23 @@ hash: wVVuLJkz72BjppJ2Rm0p+XX+0dGaVOqVhgW/mh1h8Qo=
 ＃＃ 你需要...
 * Nodejs 8或更高版本
 * Web-Adapter，其中一个实例运行与管理适配器相同的协议（http或https），socket.IO设置为“集成”和“强制Web套接字”已禁用
-    *这与其他适配器冲突，只需使用上述设置添加另一个实例。 iQontrol将搜索最合适的Web适配器实例并将其用于通信。
+    *如果这与其他适配器发生冲突，只需添加具有上述设置的另一个实例 -  iQontrol将搜索最合适的Web适配器实例并将其用于通信
+*对于通过* iobroker.pro-Cloud *连接，admin-和web-adapter应设置为http（而不是https）
+
+＃＃ 故障排除
+*确保您完成了本页顶部的“您需要......”部分
+*如果更新后某些内容无法正常工作，请尝试以下步骤：
+    *开始上传适配器：
+
+    \
+        ![上传](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
+
+*清除浏览器缓存
+*重启ioBroker
+*使用浏览器的打开调试控制台启动iQonrol（大多数情况下需要按F12打开它）并在控制台窗口中查找消息
+
+##论坛
+访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ＃＃ 如何使用
 *开始创建视图。
@@ -63,9 +79,6 @@ Toolbar-Entrys是视图的链接。
 您可以将图像用作视图或设备的背景图像。
 “/ usericons”文件夹中的图像可用作设备的图标。
 免费的内置演示壁纸来自www.pexels.com。
-
-##论坛
-访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## URL-Parameters
 *前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
@@ -143,10 +156,10 @@ Toolbar-Entrys是视图的链接。
 *对于彩色LED（HSB颜色空间）：
  ***HUE*** 字* - 0-360°光线的颜色（色调格式）
     * **饱和度**：*数量*  - 光线饱和度（从白色到纯色）
- ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（仅当灯具有彩色和白色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
+ ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有一个LEVEL状态而没有白色LED，这会被忽略，因为亮度完全由LEVEL控制）
 *对于白光LED：
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
- ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（仅当灯具有白色和彩色LED时才会受到尊重。如果您只有一种LED，则亮度由LEVEL控制 - 州）
+ ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（如果你有一个LEVEL状态而没有彩色LED，这会被忽略，因为亮度完全由LEVEL控制）
 *替代色彩空间：
  ***ALTERNATIVE_COLORSPACE_VALUE*** string ** number* 取决于选择的色彩空间） - 替代色彩空间的值
 
@@ -267,20 +280,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **状态**：*任何*  - 可用于显示更多信息
 * **URL** CONSTANT *string* - 此网址将被打开
 
-＃＃ 故障排除
-*确保您已完成本页顶部的“您需要”部分
-*如果更新后某些内容无法正常工作，请尝试以下步骤：
-    *开始上传适配器
-*清除浏览器缓存
-*重启ioBroker
-*使用浏览器的打开调试控制台启动iQonrol（大多数情况下需要按F12打开它）并在控制台窗口中查找消息
-
 ##开发
 *看看[前端的工作原理]（运营％20Principle％20of％20Frontend.md）
 
 ****
 
 ## Changelog
+
+### 0.1.8 (2019-08-11)
+* (Sebastian Bormann) Further improvements on connecting over iobroker.pro.
+* (Sebastian Bormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
+* (Sebastian Bormann) Added thumbnail-previews of fonts.
+* (Sebastian Bormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
 
 ### 0.1.7 (2019-08-11)
 * (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.

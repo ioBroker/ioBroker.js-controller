@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
+hash: Zev4uVyABT0yxwZxD5Oz+mujy9UL8xc4M5AO6iz8v3A=
 ---
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -77,6 +77,11 @@ ioBroker的倒计时适配器---------------------------------------------- ----
 
 ## 1.0.2（2019-07-22）
 *（jack-blackson）发行版
+
+## 1.0.3（2019-08-10）
+*（jack-blackson）紧凑模式的变化
+*（jack-blackson）各种错误修正
+*（jack-blackson）现在可以使用适配器的多个实例
 
 ## Changelog
 ### 0.1.0 (2019-04-29)

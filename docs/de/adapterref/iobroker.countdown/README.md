@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
+hash: Zev4uVyABT0yxwZxD5Oz+mujy9UL8xc4M5AO6iz8v3A=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -77,6 +77,11 @@ Sie können einen Countdown mit dem sendto löschen. Senden Sie daher nur den Na
 
 ## 1.0.2 (2019-07-22)
 * (Jack-Blackson) Release-Version
+
+## 1.0.3 (2019-08-10)
+* (jack-blackson) Änderungen für den Kompaktmodus
+* (jack-blackson) Verschiedene Bugfixes
+* (jack-blackson) Mehrere Instanzen des Adapters sind jetzt möglich
 
 ## Changelog
 ### 0.1.0 (2019-04-29)
