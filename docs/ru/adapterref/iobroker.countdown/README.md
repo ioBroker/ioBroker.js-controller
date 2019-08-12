@@ -3,22 +3,18 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: DWYoX4my5DusQGFYJOZeKYOPmOB2Ii2b27Bi3cj3Vyg=
+hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
 ---
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
 ![Значок Greenkeeper](https://badges.greenkeeper.io/jack-blackson/ioBroker.countdown.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.countdown.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.countdown.svg)
+![Количество установок](http://iobroker.live/badges/countdown-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
-![Количество установок](http://iobroker.live/badges/bring-stable.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.bring.svg)
 
 # IoBroker.countdown
 =================
-
-** Тесты: ** [![Статус сборки Трэвис] (https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master)](https://travis-ci.com/jack-blackson/ioBroker.countdown)
-
--->
 
 Адаптер обратного отсчета для ioBroker ---------------------------------------------- --------------------------------
 

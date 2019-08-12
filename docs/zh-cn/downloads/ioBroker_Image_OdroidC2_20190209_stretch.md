@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 title: 带有Stretch 20190209的Odroid C2的ioBroker图像
-hash: SPWB5e3HN3WCg4xs1Uzh7vinxDimNJ2F1lYmDnWDm6A=
+hash: iH8lwAH09suBze4A8aYWuU8K9QY0mbMjxa7TjalM9co=
 ---
 #ioBroker图片为Odroid C2与Stretch 20190209
 这是Odroid C2的最小SD卡图像。适用于4 GB以上的卡。由于它仅适用于4 GB卡，因此建议最小尺寸为8 GB。无论如何，建议使用16GB卡。
@@ -16,8 +16,8 @@ hash: SPWB5e3HN3WCg4xs1Uzh7vinxDimNJ2F1lYmDnWDm6A=
 
 创建以下用户：
 
- -  **用户：** root，**密码：** 1234
- -  **用户：** pi，**密码：**覆盆子
+ -  **用户：**`root`，**密码：** 1234
+ -  **用户：**`pi`，**密码：**`raspberry`
 
 此外，从09.02.2019开始，安装了node-js v 8.15.0，当然还有isroker和js-controller。
 
@@ -32,13 +32,21 @@ hash: SPWB5e3HN3WCg4xs1Uzh7vinxDimNJ2F1lYmDnWDm6A=
 ##第一次启动后
 如果第一次启动Odroid后没有提示您为root用户和新用户创建新密码，请出于安全原因执行以下操作：
 
- - 使用您必须使用的全尺寸存储卡
+ - 为了使用存储卡的完整大小，您还必须使用`sudo / usr / lib / armbian / armbian-resize-filesystem'启动文件系统。
 
-也用sudo`/usr/lib/armbian/armbian-resize-filesystem`调整文件系统，开始SD卡的大小。
+达到SD卡的大小。
 
- - 可能已经有基础Linux和nodejs的更新。要使其更新，您可以在控制台上执行以下操作：`sudo apt-get update && sudo apt-get upgrade -y`
- - 务必使用`sudo passwd root`更改root密码然后输入默认密码`1234`然后输入新密码并在下一步中确认。
- - 这也适用于用户`pi`。使用`sudo passwd pi'更改此设置然后输入默认密码`raspberry`然后输入新密码并在下一步中确认。
+ - 可能已经有基础Linux和nodejs的更新。为了使这更新，你继续
+
+控制台如下：`sudo apt-get update && sudo apt-get upgrade -y`
+
+ - 务必使用`sudo passwd root`更改root密码然后输入默认密码`1234`然后输入新密码
+
+并在下一步确认。
+
+ - 这也适用于用户`pi`。用`sudo passwd pi'改变它然后输入默认密码`raspberry`然后输入一个新密码
+
+输入密码并在下一步中确认。
 
 可以使用调用的配置实用程序进行进一步设置：
 

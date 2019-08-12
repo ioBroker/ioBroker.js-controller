@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
+hash: ADjjBU+qDKKk5+5odWm2RMJMw4HxodOHbt1BmxZ15GQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -32,17 +32,24 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 
 ## Installation
 ### Holen Sie sich ein API-Token
-So erhalten Sie Ihren Brücken-Token:
+So erhalten Sie Ihr Hardware-Bridge-Token (funktioniert nicht bei Software-Bridges):
 
-1. Rufen Sie `` http:// <bridge_ip>: <bridge_port> / auth``` in einem beliebigen Browser in Ihrem Netzwerk auf
-2. Die Brücke schaltet ihre LED ein
-2. Drücken Sie innerhalb von 30 Sekunden den Knopf der Brücke
-3. Das Ergebnis des Browseraufrufs sollte ungefähr so aussehen: `` `
+1. Rufen Sie `` http:// <bridge_ip>: <bridge_port> / auth``` in einem beliebigen Browser in Ihrem Netzwerk auf. Die Brücke schaltet ihre LED ein.
+2. Drücken Sie innerhalb von 30 Sekunden den Knopf der Brücke.
+3. Das Ergebnis des Browseraufrufs sollte ungefähr so aussehen:
 
-{"token": "token123", "success": true} `` `
+```
+ {
+ "token": "token123",
+ "success": true
+ }
+```
 
-### Rückruffunktion
-Wenn die Rückruffunktion verwendet wird, versucht der Adapter, den Rückruf auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Die entsprechenden Nuki-Zustände ([siehe unten](#locks-with-nuki-bridge-api)) werden von der Nuki-Brücke auf dem neuesten Stand gehalten, während der Rückruf aktiviert ist.
+4. Verwenden Sie das generierte Token im Nuki2-Adapter.
+
+### Rückruf manuell setzen (optional)
+Wenn die Rückruffunktion verwendet wird, setzt der Adapter den Rückruf automatisch auf der Nuki-Bridge, wenn die Instanz gespeichert wird. Die entsprechenden Nuki-Zustände ([siehe unten](#locks-with-nuki-bridge-api)) werden von der Nuki-Brücke auf dem neuesten Stand gehalten, während der Rückruf aktiviert ist.
+
 Rückrufe können auch manuell in jedem Browser mit folgenden URLs festgelegt und entfernt werden:
 
 * set Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fnuki-api-bridge & token = <bridgeToken> `` `
@@ -87,7 +94,7 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 _ ** markierte Zustände werden bei einer Nuki-Aktion aktualisiert, wenn der Rückruf gesetzt ist_
 
 #### Locks (mit Nuki Web API)
-Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` angelegt. Die folgenden Kanäle / Zustände werden in jeder Sperre erstellt (bei Verwendung der Nuki Web API):
+Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` angelegt. Die folgenden Kanäle / Status werden in jeder Sperre erstellt (bei Verwendung der Nuki Web API):
 
 | Kanal | Staat | Beschreibung (mögliche Werte) |
 |:------- |:----- |:----------------------------- |
@@ -96,7 +103,7 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 | - | name | Name des Nuki |
 | status | - | Aktueller Status der Sperre |
 | status | batteryCritical | Gibt den kritischen Akkuladestand an |
-| status | geschlossen | Anzeige, ob die Tür geschlossen ist (boolescher Wert von doorState) |
+| status | geschlossen | Anzeige, ob die Tür geschlossen ist (boolean von doorState) |
 | status | doorState | Aktueller Türzustand der Nuki |
 | status | lastAction | Letzte ausgelöste Aktion |
 | status | lockState | Aktueller Sperrzustand des Nuki |
@@ -214,7 +221,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-Sie können diese Funktion in ioBroker.javascript verwenden, um eine Phrase mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
+Sie können diese Funktion in ioBroker.javascript verwenden, um einen Ausdruck mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
 
 Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript und fügen Sie den folgenden Listener hinzu. WICHTIG: Ersetzen Sie #LOCK STATE ID # (auch # ersetzen) durch den Status, der den Sperrstatus enthält (z. B. ```nuki2.0.door__home_door.status.lockState```):
 
@@ -363,9 +370,8 @@ Icons von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicon
 
 ## Changelog
 
-### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
-- (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
-- (Zefau) bump to stable release
+### 1.0.0 (2019-08-03)
+- (Zefau) bump to stable release (no changes)
 
 ### 0.9.13 (2019-07-20)
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages

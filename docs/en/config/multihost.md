@@ -4,11 +4,9 @@ lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/multihost.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: hwB4QpKxHvOKk/uSPrXgYgzMI2oPACWDIXDurFBQ2Uc=
+hash: bn0CAoBAN5DPBn11696x47c991NbZ42OEAQayrrozEY=
 ---
 # The multihost operation
-@@ The description for what is good, is yet to come.
-
 ioBroker is able to handle the tasks of several servers. This allows the workload to be distributed among multiple hosts.
 But you can also use system-specific extensions of a single-board computer (GPIO from a RaspberryPi, although the "mainframe" is a more powerful Intel NUC).
 
@@ -46,8 +44,6 @@ Host name of this machine [ioBroker-RasPi]:
 3. `sudo service iobroker restart`
 
 ### Slave configuration
-Then execute the following command on the slave:
-
 ** This step is absolutely necessary if Redis DB is in use. **
 
 Please enter via the console on the slave
@@ -88,7 +84,7 @@ Config ok. Please restart ioBroker: "iobroker restart"
 
 On the main system, the newly created host then appears under Hosts.
 
-If not, please reboot both hosts. first the master, then the slave.
+If that does not happen please reboot both hosts. first the master, then the slave.
 
 ## Multihost with different subnets
 ** If both ioBroker hosts are on different subnets, ...
@@ -98,10 +94,10 @@ Example:**
 * Normal LAN (for PC, Tablet, use.) = 192.168.178.0/24
 * IoT LAN (for Shelly, Cameras, etc) = 10.20.30.0/24
 
-... the multi-host automatic ("sudo iobroker multihost enable" and "sudo iobroker multihost browse") does not work, but only the old way (iobroker setup custom) see above
+... the multihost automatic ("sudo iobroker multihost enable" and "sudo iobroker multihost browse") does not work, but only the old path (`iobroker setup custom`) see above
 
 ## Multihost with redis
-If a multi-host environment is to be installed, where the states are stored in redis, a lot has to be considered.
+If a multi-host environment is to be installed, where the states are stored in redis, a lot of attention needs to be paid.
 
 The file redis.conf on the host where the states are stored must be changed as follows.
 

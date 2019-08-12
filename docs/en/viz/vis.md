@@ -1,30 +1,30 @@
 ---
-title: Vis
-lastChanged: 13.09.2018
+title: visualization
+lastChanged: 11.08.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/viz/vis.md
-hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
+hash: jhqCx3JWJrpTK1iXzcCVHrIJcZgFdkRTJhUR65z4jKo=
 ---
 # Visualizations with VIS
-?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
-
 ## As a general rule
-> VIS is a powerful application that deserves detailed instructions and tutorials. The form and location of this manual is not yet defined.
+@@@ VIS is a powerful application that deserves detailed instructions and tutorials. The form and location of this manual is not yet defined.
+@@@
 
+## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#konfiguration)
 ## Configuration
 A configuration of the adapter is not necessary. There can only be one VIS instance.
 
-## Service
-[](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)
+* * *
 
+## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)Operation
 The adapter is called via `<IPdesServers>:8082/vis/index.html` and the visualization is displayed.
 There are several views in a project.
 On each view, several widgets are again freely placeable, which serve for display or operation.
 To create and configure a visualization you have to load the **editor** The editor is called via `<IPdesServers>:8082/vis/edit.html` or via the hyperlink in the Instances tab of the admin adapter.
 After closing the editor via the Close-Window icon ((x) on the top right), the last edited view is displayed in the function view.
 This can be called up at any time with `<IPdesServers>:8082/vis/index.html#ViewName` The editor is divided into different areas.
-![](../../de/viz/media/vis_ioBroker_vis_Editor_002-300x165.jpg)
+![overview](../../de/viz/media/vis_ioBroker_vis_Editor_002-300x165.jpg)
 
 * * *
 
@@ -32,10 +32,10 @@ This can be called up at any time with `<IPdesServers>:8082/vis/index.html#ViewN
 ### Views
 If this tab is selected, you can select the view to be edited from the existing pull-down menu in the pull-down menu below.
 ![iobroker_vis_Editor_Views_Header](../../de/viz/media/iobroker_vis_Editor_Views_Header.jpg) The four icons to the right are self-explanatory and refer to the views.
-After clicking on the workspace, the view in the Properties sidebar on the right side changes to the Views tab and displays the settings for the view.
+After clicking on the working area, the view in the Properties sidebar on the right side changes to the Views tab and displays the settings for the view.
 
 ### Widgets
-If the tab Widgets is activated, the underlying toolbar changes. ![iobroker_vis_Editor_Widgets_Header](../../de/viz/media/iobroker_vis_Editor_Widgets_Header.jpg) The tools for editing widgets are displayed.
+If the Widgets tab is activated, the underlying toolbar changes. ![iobroker_vis_Editor_Widgets_Header](../../de/viz/media/iobroker_vis_Editor_Widgets_Header.jpg) The tools for editing widgets are displayed.
 
 #### Pulldown menu
 Here you can select a widget for editing, or the selected widget will be displayed here.
@@ -68,7 +68,7 @@ Here are many preset screen resolutions displayed by mobile devices, but also a 
 If you select something here, a frame will be drawn on the desktop that corresponds to the selected screen resolution.
 
 #### Default
-If _default_ is checked, the active [View](http://www.iobroker.net/?page_id=1193&lang=de) is made a default view and loaded if the VIS view (see [Project](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#Projekt)) is loaded with the resolution set above.
+If _default_ is checked, the active [View](http://www.iobroker.net/?page_id=1193&lang=de) is made the default view and loaded if the VIS view (see [Project](http://www.iobroker.net/?page_id=188&lang=de&preview_id=188&preview_nonce=d845a20ee2&preview=true#Projekt)) is loaded with the resolution set above.
 ** Example: ** The display _iPad Portrait_ is selected and the _Default_ box is checked in the _Start_ view.
 Assuming that the project now loads a view named _Weather_ in landscape format on an iPad.
 If the iPad is now rotated to portrait orientation, the _Start_ view previously defined for this resolution (portrait) as default (_default_) will automatically be displayed.
@@ -101,10 +101,10 @@ The operating language for the editor can be specified
 #### Projects
 Projects are collections of [Views](http://www.iobroker.net/?page_id=1193&lang=de).
 By default, the project _main_ is created and is called via `<IPdesServers>:8082/vis/index.html#ViewName`.
-The files of the project are in the ioBroker installation in the order `_ioBroker-Ordner_/iobroker-data/files/vis.0/main`.
+The files of the project are in the ioBroker installation in the folder `_ioBroker-Ordner_/iobroker-data/files/vis.0/main`.
 
 #### Project export / import
-Projects can be exported as a whole (for example, to share with other users): A zip file is created containing the images used, the vis-user.css stylesheet, and the actual vis-views.json definitions.
+Projects can be exported as a whole (for example, to share with other users): A zip file is created containing the images used, the vis-user.css stylesheet and the actual vis-views.json definitions.
 In addition, there is the option to export the project anonymously. : construction: To import other projects, simply drag the zip file of an export described above onto the window and enter a name for the new project: ![](../../de/viz/media/iobroker_vis_Editor_Setup_Projekt_ImportHeader.gif)
 
 #### New project...
@@ -129,13 +129,7 @@ Linking via navigation widgets from one project to another is not possible.
 
 #### File Manager ... (6)
 After selecting this menu item, files can be easily copied or copied to the ioBroker file system without the need for additional programs.
-The file manager opens:
-
-![](../../de/viz/media/iobroker_vis_Editor_Setup_Dateimanager.JPG)
-
-![](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)
-
-* The images are just the sample images and are copyrighted by relevant companies. [/ Caption]
+The file manager opens: ![align = "aligncenter" width = "799"](media/iobroker_vis_Editor_Setup_Dateimanager.JPG) [caption id = "attachment_6007" align = "aligncenter" width = "799"] [![] (Img / ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg) * The pictures are only the sample pictures and are copyrighted by respective companies. / caption]
 
 The behavior is similar to any file manager.
 Use the blue button "arrow left" to maneuver a hierarchy level higher, by clicking on a folder in it.

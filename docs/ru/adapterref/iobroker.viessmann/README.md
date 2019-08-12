@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: rI/AFONJ0pKDcc0t0qfbXtqNzqQnfUx5gFpp9i7mUns=
+hash: j6m0qzV1f1E3JpYwTGgqLGC8xzydsmg606nEXmekPEg=
 ---
 ![логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -21,11 +21,11 @@ hash: rI/AFONJ0pKDcc0t0qfbXtqNzqQnfUx5gFpp9i7mUns=
 
 **[Английское описание](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit Diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
+Mit Diesem Adapter ist es möglich, Werte aus einer, Viessmann Steuerung die mit mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
 Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу мёглиха.
 
 #### (продавец Host)
-Sollte Vcontrold auf dem gleichen Хост с IOBroker laufen, а также под Linux eigentlich keine weitere Veränderung в расширенной конфигурации.
+Sollte Vcontrold auf dem gleichen Хост-хост с IOBroker laufen, а также с Linux eigentlich keine weitere Veränderung в расширенной конфигурации.
 * (Vorausgesetzt, sie liegt in dem Standard Pfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
@@ -69,47 +69,7 @@ Es ist empfehlenswert, bei reltiv unwichtigen Abfragewerten, ein möglichst gros
 - Anderung der Vito.xml ohne Verlust der Einstellungen
 - Внедрение блока вкл / выкл
 
-## Changelog
-#### Versions from 0.5.0. needs node > 4.x and admin V3
-
-#### 1.0.0 (16.06.2019)
-* (misanorot) fixes little issues in compact modus
-
-#### 0.9.5 (13.01.2019)
-* (misanorot) Compact modus added
-
-#### 0.9.2 (13.01.2018)
-* (misanorot) Fixed little issue with new xml read
-
-#### 0.9.0 (11.12.2018)
-* (misanorot) create types from vcontrold.xml to states (require a new config)
-* (misanorot) add sort tables
-
-#### 0.8.0 (11.11.2018)
-* (misanorot) create units from vcontrold.xml (require a new config)
-
-#### 0.7.0 (01.11.2018)
-* (Bjoern3003) added lastPoll state
-
-#### 0.6.0 (24.09.2018)
-* (misanorot) os:linux--> read vito.xml from /etc/vcontrold from the same host
-* (misanorot) use a ssh connection to read the vito.xml from a other server
-
-#### 0.5.0 (13.07.2018)
-* (misanorot) option to create only states if you use
-* (misanorot) option to restart the connection after to many errors
-
-#### 0.4.0 (28.01.2018)
-* (misanorot) parse vito.xml file
-
-#### 0.3.0 (22.01.2018)
-* (misanorot) ready for admin V3
-
-#### 0.2.6
-* (misanorot) add option to use format values
-
-#### 0.0.1
-* (misanorot) initial release
+**[CHANGELOG](https://github.com/misanorot/ioBroker.viessmann/blob/master/changelog.md)**
 
 ## License
 

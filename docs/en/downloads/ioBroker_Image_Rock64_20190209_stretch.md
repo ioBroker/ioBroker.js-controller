@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 title: ioBroker Image for Rock64 with Stretch 20190730
-hash: 6ASvKW7zGlCioocgoT0Wgo+ChyeXdit13HY/U3JI+sg=
+hash: bt7jUjoNqqdU7o+F0pVJb2O7qiRvqkfYdg9IJEmaxmg=
 ---
 # IoBroker Image for Rock64 with Stretch 20190730
 This is a minimal SD card image for the Rock64. It is suitable for 4 GB cards and larger. Since it only fits on a 2 GB card, a 4 GB is the recommended minimum size. 16GB cards or larger are recommended anyway so that not always the same cells are described.
@@ -15,8 +15,8 @@ The image contains Armbian 5.90, based on Debian "Stretch" from 28.06.2019 after
 
 The following users are created:
 
-- **User:** root, **Password:** 1234
-- **User:** pi, **Password:** raspberry
+- **User:** `root`, **Password:** 1234
+- **User:** `pi`, **Password:** raspberry`
 
 Furthermore, node-js v 10.16..0 is installed and of course iobroker with the js-controller as of 30.07.2019.
 
@@ -32,7 +32,7 @@ The image is localized for Germany. If using in other environments please adjust
 ## After the first start
 If you are not asked to create a new password for the root and a new user after the first start of the Rock, please proceed as follows for security reasons:
 
-- To use the full size of the memory card you have to use the file system with sudo `/ usr / lib / armbian / armbian-resize-filesystem`
+- To use the full size of the memory card you have to start the file system with `sudo / usr / lib / armbian / armbian-resize-filesystem`
 
   to the size of the SD card.
 
@@ -56,7 +56,7 @@ More information about this utility under [https://docs.armbian.com/User-Guide_A
 
 Since it may have been some time since the image was created at the time of the download, you should first check whether there are already updates to the adapters already installed and the js controller (see tab Hosts).
 
-In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already pre-installed.
+In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already preinstalled.
 
 In such cases always first run the js-controller via the console according to the instructions in the tab Hosts, then if necessary the adapter Admin and then all other adapters.
 

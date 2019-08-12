@@ -3,19 +3,19 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/viz/basic.md
 title: основной
-hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
+hash: etbVpAzrbmCGhUSuLWHQsijZqnkLIrMzJzIHy4nh+sM=
 ---
 # Basic
 | Виджет | Изображение | описание
 
 | [`HTML`](#html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | Этот виджет представляет собой произвольный HTML-код. |
-| [`Свг форма`](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Представляет форму |
-| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | Этот виджет включает в себя iframe |
+| [`Форма свг`](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Представляет форму |
+| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | Этот виджет включает в себя iFrame |
 | [`Image`](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | Этот виджет отображает изображение. |
 | [`Link`](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | Этот виджет соответствует виджету «static - HTML», но также является интерактивной ссылкой на всей своей поверхности. Может использоваться для навигации между представлениями или для внешних ссылок. |
-| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
-| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
-| [`Посмотреть в виджете`](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | Этот виджет может отображать виды в пределах видов. для навигации: вы создаете представление с элементами навигации, а затем интегрируете их в любое количество других представлений. |
+| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) | Представляет рамку, необязательно с заголовком и строкой заголовка |
+| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) | Отображает до 8 изображений в кадрах |
+| [`Посмотреть в виджете`](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | Этот виджет может отображать виды внутри видов. для навигации: вы создаете представление с элементами навигации, а затем интегрируете их в любое количество других представлений. |
 | [`просмотр в виджете 8`](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Отображает один из 8 видов в зависимости от состояния. |
 | `Image 8` | ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png) | Отображает одно из 8 изображений в зависимости от состояния. |
 | [`HTML навигация`](#html-navigation) | ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png) | Этот виджет служит для создания навигации между представлениями. Соответствует виджету «статическая ссылка», но используется только для навигации между представлениями и дополнительно предлагает возможность использовать анимированные эффекты при смене видов. |
@@ -26,9 +26,9 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | [`String img src`](#string-img-src) | ![016](../../de/viz/media/widget_images/basic/Prev_ValueStringImg.png) | Для этого виджета может быть назначена переменная типа string, а содержащийся в нем URL затем отображается как рисунок |
 | `Timestamp` | ![+017](../../de/viz/media/widget_images/basic/Prev_ValueTimestamp.png) ||
 | [`Загрузить метку времени`](#last-change-timestamp) | ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png) ||
-| [`ValueList Text`](#valuelist-text) | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | Этот виджет представляет собой переменную из списка типов значений. |
-| [`ValueList HTML`](#valuelist-html) | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | Этот виджет представляет собой переменную из списка значений типа. Соответствует виджету «hm_val - ValueList Text, но он не« экранирован », то есть HTML-код может быть введен в список значений. |
-| [`ValueList HTML Style`](#valuelist-html-8) | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | Этот виджет представляет собой переменную списка значений типа. Соответствует widm "hm_val - ValueList HTML, но предлагает возможность использовать 8 различных CSS-значений для 8 различных значений (0-7). |
+| [`ValueList Text`](#valuelist-text) | ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png) | Этот виджет представляет собой переменную списка значений типа. |
+| [`ValueList HTML`](#valuelist-html) | ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png) | Этот виджет представляет собой переменную списка значений типа. Соответствует виджету «hm_val - ValueList Text, но он не« экранирован », т. Е. HTML-код может быть введен в список значений. |
+| [`ValueList HTML Style`](#valuelist-html-8) | ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png) | Этот виджет представляет собой переменную списка значений типа. Соответствует widm "hm_val - ValueList HTML, но предлагает возможность использовать 8 разных CSS-значений для 8 разных значений (0-7). |
 | [`Bool HTML`](#bool-html) | ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png) | Этот виджет представляет значения Bool. |
 | `AckFlag HTML` | ![023](../../de/viz/media/widget_images/basic/Prev_AckBool.png) ||
 | [`Bool Checkbox`](#bool-checkbox) | ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png) | Этот виджет отображает значения Bool в виде простого флажка, а также позволяет переключать значение. |
@@ -124,7 +124,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | Атрибут | Описание |
 |-----|----|
 
-| Название | Объяснение | шрифт верхней метки | шрифт заголовка | Верхний цвет этикетки | Цвет заголовка | Фон заголовка | Цвет фона текста заголовка | Название До Расстояние | Расстояние от верхнего края | Title-Left-Distance | Расстояние заголовка от левого поля | Высота головы | Высота балки от верхнего края | Цвет головы | Цвет бара
+| Название | Объяснение | шрифт верхней метки | шрифт заголовка | Верхний цвет этикетки | Цвет заголовка | Фон заголовка | Цвет фона текста заголовка | Название До Расстояние | Расстояние от верхнего края | Title-Left-Distance | Расстояние заголовка от левого поля | Высота головы | высота балки от верхнего края | Цвет головы | Цвет бара
 
 ** Пример: ** ![](../../de/viz/media/widget_images/basic/Explanation/border.gif)
 
@@ -163,7 +163,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | Атрибут | Описание |
 |-----|----|
 
-| `html_prepend` | Текст или HTML-код отображаются перед строкой.
+| `html_prepend` | Текст или HTML-код, который появляется перед строкой.
 | `html_append` | Текст или HTML-код отображаются за строкой.
 
 ### Строка (неэкранированная)
@@ -187,8 +187,8 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 ### Отметка времени последнего изменения
 Отображает последнюю временную метку подключенного состояния.
 
-### ValueList text
-Этот виджет представляет собой переменную списка типов значений.
+### Текст ValueList
+Этот виджет представляет собой переменную из списка типов значений.
 
 | Атрибут | Описание |
 |-----|----|
@@ -198,7 +198,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | `html_append` | Текст или HTML-код, отображаемый за изображением.
 
 ### ValueList HTML
-Этот виджет представляет собой переменную из списка типов значений, соответствует виджету «hm_val - ValueList», но он не «экранирован», поэтому HTML-код может быть введен в valuelist.
+Этот виджет представляет собой переменную из списка типов значений. Соответствует виджету "hm_val - ValueList Text, но он не" экранирован ", поэтому HTML-код может быть введен в valuelist.
 
 | Атрибут | Описание |
 |-----|----|
@@ -208,7 +208,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | `html_append` | Текст или HTML-код, отображаемый за изображением.
 
 ### ValueList HTML 8
-Этот виджет представляет переменную списка значений. Соответствует HTML-виджету ValueList, но предлагает возможность использовать 8 различных значений CSS для 8 различных значений (0-7).
+Этот виджет представляет переменную списка значений. Соответствует HTML-виджету ValueList HTML, но предлагает возможность использовать 8 различных значений CSS для 8 различных значений (0-7).
 
 | Атрибут | Описание |
 |-----|----|
@@ -235,7 +235,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | Атрибут | Описание |
 |-----|----|
 
-| `html_prepend` | Текст или HTML-код, отображаемый перед флажком.
+| `html_prepend` | Текст или HTML-код отображаются перед флажком.
 | `html_append` | Текст или HTML-код, отображаемый за флажком.
 
 ### Bool Select
@@ -268,9 +268,9 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | `html` | Отображается текст или HTML код | `value` | Задаваемое значение
 
 ### Скрыть на 0 / ложь
-Этот виджет исчезает, если значение связанной точки данных равно 0 или false. Квалифицированный, например для отображения служебных сообщений
+Этот виджет исчезает, если значение связанной точки данных равно 0 или ложно. Квалифицированный, например для отображения служебных сообщений
 
-### Красное число
+### Красный номер
 Отображение числового значения в стиле значков уведомлений iOS. Исчезает при значении 0.
 
 ### Лампа вкл / выкл
@@ -292,7 +292,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 |-----|----|
 
 | `factor` | коэффициент, на который умножается значение. Пример: для диммера (который идет от 0,00 до 1,00) необходимо ввести 100.
-| `color` | CSS свойство background-color панели | `border` | CSS свойство границы панели | `shadow` | CSS свойство box-shadow of bar | `reverse` | Если введено значение true, полоса отображается справа налево, а не слева направо.
+| `color` | CSS свойство background-color панели | `border` | CSS свойство границы панели | `shadow` | CSS свойство box-shadow of bar | `reverse` | Если здесь введено значение true, полоса отображается справа налево, а не слева направо.
 
 ### Вертикальная черта
 Соответствует виджету "hm_val - полоса горизонтальная, но вертикальная, а не горизонтальная.

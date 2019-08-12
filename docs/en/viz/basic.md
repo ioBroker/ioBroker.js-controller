@@ -3,18 +3,18 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/viz/basic.md
 title: basic
-hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
+hash: etbVpAzrbmCGhUSuLWHQsijZqnkLIrMzJzIHy4nh+sM=
 ---
 # Basic
 | Widget | Image | description
 
 | [`HTML`](#html-frame) | ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png) | This widget represents arbitrary HTML code. |
 | [`Svg shape`](#svg-shape) | ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png) | Represents a form |
-| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | This widget includes an iframe |
+| [`iFrame`](#iframe) | ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png) | This widget includes an iFrame |
 | [`Image`](#image) | ![004](../../de/viz/media/widget_images/basic/Prev_Image.png) | This widget displays a picture. |
 | [`Link`](#link) | ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png) | This widget corresponds to the widget "static - HTML" but is also a clickable link on its entire surface. Can be used for navigation between views or for external links. |
-| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) ||
-| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) ||
+| [`Border`](#border) | ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png) | Represents a frame, optionally with title and title bar |
+| [`iFrame8`](#iframe8) | ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png) | Displays up to 8 images in iframes |
 | [`View in widget`](#view-in-widget) | ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png) | This widget can display views within views. for a navigation: You build a view with navigation elements and then integrate them in any number of other views. |
 | [`view in widget 8`](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png) | Displays one of 8 views depending on a state. |
 | `Image 8` | ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png) | Displays one of 8 pictures depending on a condition. |
@@ -124,7 +124,7 @@ This widget simply represents a frame - no further function, only text and color
 | Attribute | Description |
 |-----|----|
 
-| Title | Self explanatory | upper label font | font of the title | Upper label color | Title color | Title background | Background color of title text | Title Up Distance | Distance of title from top edge | Title-Left-Distance | Distance of title from left margin | Head height | Height of a beam from the top edge | Head color | Color of the bar
+| Title | Self explanatory | upper label font | font of the title | Upper label color | Title color | Title background | Background color of title text | Title Up Distance | Distance of title from top edge | Title-Left-Distance | Distance of title from left margin | Head height | height of a beam from the top edge | Head color | Color of the bar
 
 ** Example: ** ![](../../de/viz/media/widget_images/basic/Explanation/border.gif)
 
@@ -163,7 +163,7 @@ This widget represents a data point of the string type.
 | Attribute | Description |
 |-----|----|
 
-| `html_prepend` | Text or HTML code displayed before the string.
+| `html_prepend` | Text or HTML code that appears before the string.
 | `html_append` | Text or HTML code displayed behind the string.
 
 ### String (unescaped)
@@ -292,7 +292,7 @@ This widget represents a value of 0-100 as a horizontal bar.
 |-----|----|
 
 | `factor` | factor with which the value is multiplied. Example: for a dimmer (which goes from 0.00 to 1.00) 100 must be entered.
-| `color` | CSS property background-color of the bar | `border` | CSS property border of the bar | `shadow` | CSS property box-shadow of the bar | `reverse` | If true is entered, the bar is displayed from right to left instead of from left to right.
+| `color` | CSS property background-color of the bar | `border` | CSS property border of the bar | `shadow` | CSS property box-shadow of the bar | `reverse` | If true is entered here, the bar is displayed from right to left instead of from left to right.
 
 ### Bar Vertical
 Corresponds to the widget "hm_val - Bar Horizontal, but vertical instead of horiziontal.

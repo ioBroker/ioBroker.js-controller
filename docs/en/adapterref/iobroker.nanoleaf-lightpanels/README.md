@@ -46,6 +46,10 @@ You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## Changelog
 
+### 0.8.2 (2019-08-02)
+* (daniel_2k) fixed: effects with special characters (german umlauts) can now be set (fixes HTTP error code 422)
+* (daniel_2k) changed: removed fixed effects *Solid* and *Dynamic* for all devices (works also no longer with Light Panels since firmware update)
+
 ### 0.8.1 (2019-01-31)
 * (daniel_2k) new: rhythm module mode (microphone/AUX input) can be changed
 * (daniel_2k) changed: removed fixed effects *Solid* and *Dynamic* for Canvas because not supported
@@ -106,3 +110,4 @@ You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## License
 The MIT License (MIT)
+Copyright (c) 2019 daniel_2k <daniel_2k@outlook.com>

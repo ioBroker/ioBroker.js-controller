@@ -443,6 +443,12 @@ Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smash
 
 ## Changelog
 
+### 2.0.8 (2019-08-11)
+- (Zefau) Fixed Error `State not properly defined`
+
+### 2.0.7 (2019-08-10)
+- (Zefau) Performance improvements
+
 ### 2.0.6 (2019-07-20)
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 

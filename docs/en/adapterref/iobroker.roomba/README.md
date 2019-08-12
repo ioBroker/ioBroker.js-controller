@@ -265,6 +265,10 @@ You may edit the variable ```message``` to any notification you would like to re
 
 ## Changelog
 
+### 1.0.4 (2019-08-xx)
+- (Zefau) updated `dorita980` dependency to v3.1.3
+- (Zefau) updated `canvas` dependency to v2.6.0
+
 ### 1.0.3 (2019-07-23)
 - (Zefau) fixed bug _uncaught exception: Cannot read property 'x' of undefined_
 

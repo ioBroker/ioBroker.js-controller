@@ -3,22 +3,22 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/basic.md
 title: 基本
-hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
+hash: etbVpAzrbmCGhUSuLWHQsijZqnkLIrMzJzIHy4nh+sM=
 ---
 ＃基本
 |小工具|图片|描述
 
 | [`HTML`](#html-frame)| ![001](../../de/viz/media/widget_images/basic/Prev_HTML.png)|此小部件代表任意HTML代码 |
 | [`Svg形状`](#svg-shape)| ![002](../../de/viz/media/widget_images/basic/Prev_Shape.png)|表示形式|
-| [`iFrame`](#iframe)| ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png)|这个小部件包含一个iframe |
+| [`iFrame`](#iframe)| ![003](../../de/viz/media/widget_images/basic/Prev_iFrame.png)|这个小部件包含一个iFrame |
 | [`Image`](#image)| ![004](../../de/viz/media/widget_images/basic/Prev_Image.png)|此小组件显示图片 |
 | [`Link`](#link)| ![005](../../de/viz/media/widget_images/basic/Prev_tplLink.png)|此小部件对应于小部件“static  -  HTML”，但也是整个表面上的可点击链接。可用于视图之间或外部链接的导航 |
-| [`Border`](#border)| ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png)||
-| [`iFrame8`](#iframe8)| ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png)||
+| [`Border`](#border)| ![006](../../de/viz/media/widget_images/basic/Prev_tplFrame.png)|表示一个框架，可选择带有标题栏和标题栏 |
+| [`iFrame8`](#iframe8)| ![007](../../de/viz/media/widget_images/basic/Prev_StatefulIFrame8.png)|在iframe中显示最多8个图像 |
 | [`在小部件中查看](#view-in-widget)| ![008](../../de/viz/media/widget_images/basic/Prev_ContainerView.png)|此小组件可以在视图中显示视图。导航：使用导航元素构建视图，然后将它们集成到任意数量的其他视图中 |
 | [`在小部件8中查看](#view-in-widget-8)] | ![009](../../de/viz/media/widget_images/basic/Prev_StatefulContainerView8.png)|根据状态显示8个视图中的一个 |
 | `Image 8`| ![010](../../de/viz/media/widget_images/basic/Prev_StatefulImage.png)|根据条件显示8张图片中的一张 |
-| [`HTML导航`](#html-navigation)| ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png)|此小组件用于在视图之间构建导航。对应于小部件“静态 - 链接”，但仅可用于视图之间的导航，并且还提供在更改视图时使用动画效果的可能性。 |
+| [`HTML导航`](#html-navigation)| ![011](../../de/viz/media/widget_images/basic/Prev_HTMLnavigation.png)|此小组件用于在视图之间构建导航。对应于小部件“静态 - 链接”，但仅可用于视图之间的导航，并且还可以在更改视图时使用动画效果 |
 | [`filter  -  dropdown`](#filter-dropdown)| ![012](../../de/viz/media/widget_images/basic/Prev_FilterDropdown.png)||
 | [`Number`](#number)| ![013](../../de/viz/media/widget_images/basic/Prev_ValueFloat.png)|此小组件表示数值|
 | [`String`](#string)| ![014](../../de/viz/media/widget_images/basic/Prev_ValueString.png)|此小组件表示String类型的数据点 |
@@ -27,11 +27,11 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 | `Timestamp`| ![017](../../de/viz/media/widget_images/basic/Prev_ValueTimestamp.png)||
 | [`加载更改时间戳`](#last-change-timestamp)| ![018](../../de/viz/media/widget_images/basic/Prev_ValueLastchange.png)||
 | [`ValueList Text`](#valuelist-text)| ![019](../../de/viz/media/widget_images/basic/Prev_ValueList.png)|此小组件表示值类型列表的变量 |
-| [`ValueList HTML`](#valuelist-html)| ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png)|这个小部件代表一个类型值列表的变量。对应于小部件“hm_val  -  ValueList Text，但它不是”转义“，也就是说，可以在valuelist中输入HTML代码。 |
+| [`ValueList HTML`](#valuelist-html)| ![020](../../de/viz/media/widget_images/basic/Prev_ValueListHtml.png)|这个小部件代表一个类型值列表的变量。对应于小部件“hm_val  -  ValueList Text，但它不是”转义“，即HTML代码可以在valuelist中输入。 |
 | [`ValueList HTML Style`](#valuelist-html-8)| ![021](../../de/viz/media/widget_images/basic/Prev_ValueListHtml8.png)|这个小部件代表一个类型值列表的变量。对应于widm“hm_val  -  ValueList HTML，但是可以为8个不同的值（0-7）使用8个不同的CSS值。” |
 | [`Bool HTML`](#bool-html)| ![022](../../de/viz/media/widget_images/basic/Prev_ValueBool.png)|此小组件代表Bool值 |
 | `AckFlag HTML`| ![023](../../de/viz/media/widget_images/basic/Prev_AckBool.png)||
-| [`Bool Checkbox`](#bool-checkbox)| ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png)|此小部件将Bool值显示为一个简单的复选框，并允许您切换值。 |
+| [`Bool Checkbox`](#bool-checkbox)| ![024](../../de/viz/media/widget_images/basic/Prev_ValueBoolCheckbox.png)|此小组件将Bool值显示为一个简单的复选框，并允许您切换值。 |
 | [`Bool Select`](#bool-select)| ![025](../../de/viz/media/widget_images/basic/Prev_ValueBoolSelect.png)|此小组件将Bool值显示为下拉列表，并允许您切换值。 |
 | [`Bool HTML控件`](#bool-html-control)| ![026](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrl.png)|此小组件显示bool值，还允许您切换值以在小组件区域内单击。 |
 | [`Bool SVG`](#bool-svg)| ![027](../../de/viz/media/widget_images/basic/Prev_ValueBoolCtrlSvg.png)|此小组件在小组件区域中单击时设置值 |
@@ -54,7 +54,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 
 |属性|说明|
 |-----|----|
-| `ObjectId`|要显示的包含HTML的对象的ID |
+| `ObjectId`|要显示的包含HTML |的对象的ID |
 |前缀html | HTML代码显示在对象前面 |
 |在对象|之后附加html | HTML代码以显示 |
 
@@ -71,7 +71,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 |线宽||
 |以|度为单位转动|从初始位置开始的旋转角度 |
 |宽度比例|将宽度缩放在0到100％|之间 |
-|高度比例|将高度缩放在0到100％|之间 |
+|高度比例|在0到100％之间调整高度 |
 
 **示例：**![](../../de/viz/media/widget_images/basic/Explanation/svg.gif)
 
@@ -124,7 +124,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 |属性|说明|
 |-----|----|
 
-|标题|自我解释| upper label font |标题的字体|上标签颜色|标题颜色|标题背景|标题文本的背景颜色|标题向上距离|标题距离上边缘的距离|标题 - 左距离|标题距离左边距|头部高度|从顶部边缘的光束高度|头部颜色|条形图颜色
+|标题|自我解释| upper label font |标题的字体|上标签颜色|标题颜色|标题背景|标题文本的背景颜色|标题向上距离|标题距离上边缘的距离|标题 - 左距离|标题距离左边距|从顶部边缘开始的梁的头部高度头部颜色|条形图颜色
 
 **示例：**![](../../de/viz/media/widget_images/basic/Explanation/border.gif)
 
@@ -163,11 +163,11 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 |属性|说明|
 |-----|----|
 
-| `html_prepend`|字符串前显示的文本或HTML代码。
+| `html_prepend`|出现在字符串之前的文本或HTML代码。
 | `html_append`|字符串后面显示的文本或HTML代码。
 
 ### String（未转义）
-此Widget表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。变量也可能包含HTML代码，然后会显示。
+此Widget表示类型字符串的数据点。与小部件“hm_val  -  String”相比，没有特殊字符被“转义” -  i。该变量也可能包含HTML代码，然后会显示。
 
 |属性|说明|
 |-----|----|
@@ -292,7 +292,7 @@ hash: rpKLtY8zamkhgvSmToonP7bcGqA0u+qyquj9GA1PSPM=
 |-----|----|
 
 | `factor`|乘以该值的因子。示例：对于调光器（从0.00到1.00），必须输入100。
-| `color`|条形图的CSS属性background-color `border`|条形图的CSS属性边框`shadow`|条形图的CSS属性框阴影`reverse`|如果输入为true，则条形图从右向左显示，而不是从左向右显示。
+| `color`|条形图的CSS属性background-color `border`|条形图的CSS属性边框`shadow`|条形图的CSS属性框阴影`reverse`|如果在此输入为true，则条形图从右到左而不是从左到右显示。
 
 ### Bar Vertical
 对应于小部件“hm_val  -  Bar Horizontal，但是垂直而不是horiziontal。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
+hash: ADjjBU+qDKKk5+5odWm2RMJMw4HxodOHbt1BmxZ15GQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -32,18 +32,25 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 
 ## Монтаж
 ### Получить API-токен
-Как получить свой токен мостов:
+Как получить маркер аппаратного моста (не работает для программных мостов):
 
-1. Вызвать `` `http:// <bridge_ip>: <bridge_port> / auth``` из любого браузера в вашей сети
-2. Мост включает светодиод
-2. Нажмите кнопку моста в течение 30 секунд
-3. Результат вызова браузера должен выглядеть примерно так: `` `
+1. Вызвать `` `http:// <bridge_ip>: <bridge_port> / auth``` из любого браузера в вашей сети. Мост включает светодиод.
+2. Нажмите кнопку моста в течение 30 секунд.
+3. Результат вызова браузера должен выглядеть примерно так:
 
-{"token": "token123", "success": true} `` `
+```
+ {
+ "token": "token123",
+ "success": true
+ }
+```
 
-### Функция обратного вызова
-Если используется функция обратного вызова, адаптер попытается автоматически установить обратный вызов на мосту Nuki при сохранении экземпляра. Соответствующие состояния Nuki ([увидеть ниже](#locks-with-nuki-bridge-api)) будут обновляться мостом Nuki, пока активирован обратный вызов.
-Обратные вызовы также можно устанавливать и удалять вручную из любого браузера со следующими URL-адресами:
+4. Используйте сгенерированный токен в адаптере Nuki2.
+
+### Установить обратный вызов вручную (опционально)
+Если используется функция обратного вызова, адаптер автоматически установит обратный вызов на мосту Nuki при сохранении экземпляра. Соответствующие состояния Nuki ([увидеть ниже](#locks-with-nuki-bridge-api)) будут обновляться мостом Nuki, пока активирован обратный вызов.
+
+Обратные вызовы также можно устанавливать и удалять __manually__ из любого браузера со следующими URL-адресами:
 
 * установить обратный вызов: `` `http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fnuki-api-bridge & token = <bridgeToken> `` `
 * Remove Callback: `` `http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>` ``
@@ -214,7 +221,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript для произнесения фразы, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
+Вы можете использовать эту функцию в ioBroker.javascript, чтобы произнести фразу, используя Alexa ```say('Hello World')``` или ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` для голосового вывода с нескольких устройств.
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
 
@@ -297,7 +304,7 @@ function messenger(content, user = '')
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (определенным пользователям).
+Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (конкретным пользователям).
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующего слушателя. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki2.0.door__home_door.status.lockState```):
 
@@ -363,9 +370,8 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
-### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
-- (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
-- (Zefau) bump to stable release
+### 1.0.0 (2019-08-03)
+- (Zefau) bump to stable release (no changes)
 
 ### 0.9.13 (2019-07-20)
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages

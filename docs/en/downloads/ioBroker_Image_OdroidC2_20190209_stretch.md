@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/downloads/ioBroker_Image_OdroidC2_20190209_stretch.md
 title: ioBroker Image for Odroid C2 with Stretch 20190209
-hash: SPWB5e3HN3WCg4xs1Uzh7vinxDimNJ2F1lYmDnWDm6A=
+hash: iH8lwAH09suBze4A8aYWuU8K9QY0mbMjxa7TjalM9co=
 ---
 # IoBroker Image for Odroid C2 with Stretch 20190209
 This is a minimal SD card image for the Odroid C2. It is suitable for 4 GB cards and larger. Since it only fits on a 4 GB card, an 8 GB is the recommended minimum size. 16GB cards are recommended anyway.
@@ -16,8 +16,8 @@ The image contains Armbian 5.71, based on Debian "Stretch" from 10.01.2019 after
 
 The following users are created:
 
-- **User:** root, **Password:** 1234
-- **User:** pi, **Password:** raspberry
+- **User:** `root`, **Password:** 1234
+- **User:** `pi`, **Password:** raspberry`
 
 Furthermore, node-js v 8.15.0 is installed and of course iobroker with the js-controller as of 09.02.2019.
 
@@ -32,13 +32,21 @@ The image is localized for Germany. If using in other environments please adjust
 ## After the first start
 If you are not prompted to create a new password for the root and a new user after the Odroid has been started for the first time, please proceed as follows for security reasons:
 
-- To use the full size of the memory card you have to
+- In order to use the full size of the memory card you must also start the file system with `sudo / usr / lib / armbian / armbian-resize-filesystem`
 
-also adjust the file system with sudo `/usr/lib/armbian/armbian-resize-filesystem` start to the size of the SD card.
+to the size of the SD card.
 
-- There may already be updates to the underlying Linux and to nodejs. To bring this up to date, you can do the following on the console: `sudo apt-get update && sudo apt-get upgrade -y`
-- Be sure to change the root password with `sudo passwd root` Then enter the default password` 1234` and then enter a new password and confirm in the next step.
-- This also applies to the user `pi`. Change this with `sudo passwd pi` Then enter the default password` raspberry` and then enter a new password and confirm in the next step.
+- There may already be updates to the underlying Linux and to nodejs. To bring this up to date you go on
+
+the console as follows: `sudo apt-get update && sudo apt-get upgrade -y`
+
+- Be sure to change the root password with `sudo passwd root` Then enter the default password` 1234` and then a new password
+
+and confirm in the next step.
+
+- This also applies to the user `pi`. Change this with `sudo passwd pi` Then enter the default password` raspberry` and then a new one
+
+Enter password and confirm in next step.
 
 Further settings can be made with the configuration utility that calls:
 
@@ -48,7 +56,7 @@ More information about this utility under [https://docs.armbian.com/User-Guide_A
 
 Since it may have been some time since the image was created at the time of the download, you should first check whether there are already updates to the adapters already installed and the js controller (see tab Hosts).
 
-In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already pre-installed.
+In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already preinstalled.
 
 In such cases always first run the js-controller via the console according to the instructions in the tab Hosts, then if necessary the adapter Admin and then all other adapters.
 

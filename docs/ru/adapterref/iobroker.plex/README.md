@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
+hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 ---
 ![логотип](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -29,13 +29,21 @@ hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 5. [Лицензия] (# лицензия)
 
 ## 1. Особенности
-TBD
+- Получать события из Plex (через Plex Pass или Tautulli)
+- Контроль воспроизведения для игроков
+- Получить серверы
+- Получить библиотеки
+- Получить все предметы в библиотеке
+- Получить пользователей (только с Tautulli)
+- Получить статистику (только с Таутулли)
+- Получить плейлисты
+- Получить настройки
 
 ## 2. Инструкция по настройке
 ### 2.1. Основные настройки
 Для базовой настройки требуется только указать IP-адрес (и порт) вашей установки Plex. Кроме того, вы должны предоставить пользователю пароль и пароль для извлечения данных из Plex.
 
-Если вы не хотите сохранять имя пользователя и пароль в адаптере, вы можете внести белый список IP-адреса ioBroker в настройки Plex. Для этого перейдите к `Settings` вашего Plex Media Server и к `Network`. Введите IP-адрес ioBroker в оба поля: `LAN Networks` и `List of IP addresses and networks that are allowed without auth`:
+Если вы не хотите сохранять имя пользователя и пароль в адаптере, вы можете внести ioBroker в белый список в настройках Plex. Для этого перейдите к `Settings` вашего Plex Media Server и к `Network`. Введите IP-адрес ioBroker в оба поля: `LAN Networks` и `List of IP addresses and networks that are allowed without auth`:
 
 ![Настройки сети Plex](../../../en/adapterref/iobroker.plex/img/screenshot_plex-networksettings.jpg)
 
@@ -43,16 +51,16 @@ TBD
 
 ### 2.2. Расширенная настройка (Plex Pass или Tautulli)
 #### 2.2.1. Плекс Пасс
-Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в Настройках Plex, чтобы получить текущее событие / действие с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
+Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в настройках Plex для получения текущего события / действия с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
 
-Перейдите к своему Plex Media Server и перейдите к ```Settings``` и ```Webhook```. Создайте новый веб-крючок, нажав ```Add Webhook``` и введите свой IP-адрес ioBroker с настраиваемым портом, указанным в настройках ioBroker.plex и в конце пути ```/plex```, например, ```http://192.168.178.29:41891/plex```:
+Перейдите к своему Plex Media Server и перейдите к ```Settings``` и ```Webhook```. Создайте новый веб-крюк, щелкнув ```Add Webhook``` и введите IP-адрес ioBroker с настраиваемым портом, указанным в настройках ioBroker.plex и в конце пути ```/plex```, например, ```http://192.168.178.29:41891/plex```:
 
 ![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 #### 2.2.2.Tautulli
 [Tautulli - это стороннее приложение] (https://tautulli.com/#about), которое вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Самое главное, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где они смотрели, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным. Проверьте [Предварительный просмотр Tautulli] (https://tautulli.com/#preview) и [установите его на предпочитаемую систему](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation), если вы заинтересованы.
 
-Этот адаптер подключается к [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md), а также принимает события webhook от Tautulli.
+Этот адаптер подключается к [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md), а также получает события webhook от Tautulli.
 
 ##### 2.2.2.1. API
 После установки Tautulli откройте страницу _Settings_ на панели инструментов Tautulli и перейдите на _Web Interface_. Прокрутите вниз до раздела _API_ и убедитесь, что флажок ```Enable API``` отмечен. Скопируйте ```API key``` и введите его в настройках ioBroker.plex. Кроме того, добавьте IP-адрес и порт Tautulli, чтобы обеспечить связь API.
@@ -116,7 +124,14 @@ TBD
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
 - add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
-- add playback control for players
+
+### 0.4.1 / 0.4.2 (2019-08-03)
+- (Zefau) fixed newly introduced playback control not working for certain players
+- (Zefau) removed unnecessary dependencies
+
+### 0.4.0 (2019-08-01)
+- (Zefau) added playback control for players
+- (Zefau) added configuration options to only retrieve specific objects from Plex
 
 ### 0.3.2 / 0.3.3 (2019-07-25)
 - (Zefau) added file, streaming and transcoding information to Tautulli event

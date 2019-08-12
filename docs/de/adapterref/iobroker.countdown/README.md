@@ -3,22 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: DWYoX4my5DusQGFYJOZeKYOPmOB2Ii2b27Bi3cj3Vyg=
+hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/jack-blackson/ioBroker.countdown.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.countdown.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.countdown.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/countdown-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
-![Anzahl der Installationen](http://iobroker.live/badges/bring-stable.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.bring.svg)
 
 # IoBroker.countdown
 =================
-
-** Tests: ** [![Build Status Travis] (https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master)](https://travis-ci.com/jack-blackson/ioBroker.countdown)
-
--->
 
 Countdown-Adapter für ioBroker ------------------------------------------ --------------------------------
 

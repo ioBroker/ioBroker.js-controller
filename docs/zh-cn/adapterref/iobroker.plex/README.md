@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
+hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 ---
 ![商标](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -29,7 +29,15 @@ hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 5. [许可证]（#licence）
 
 ## 1.特点
-TBD
+ - 从Plex接收活动（通过Plex Pass或Tautulli）
+ - 玩家的播放控制
+ - 检索服务器
+ - 检索库
+ - 检索库中的所有项目
+ - 检索用户（仅限Tautulli）
+ - 检索统计数据（仅限Tautulli）
+ - 检索播放列表
+ - 检索设置
 
 ## 2.安装说明
 ### 2.1。基本设置
@@ -116,7 +124,14 @@ TBD
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
 - add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
-- add playback control for players
+
+### 0.4.1 / 0.4.2 (2019-08-03)
+- (Zefau) fixed newly introduced playback control not working for certain players
+- (Zefau) removed unnecessary dependencies
+
+### 0.4.0 (2019-08-01)
+- (Zefau) added playback control for players
+- (Zefau) added configuration options to only retrieve specific objects from Plex
 
 ### 0.3.2 / 0.3.3 (2019-07-25)
 - (Zefau) added file, streaming and transcoding information to Tautulli event

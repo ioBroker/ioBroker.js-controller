@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
+hash: wVVuLJkz72BjppJ2Rm0p+XX+0dGaVOqVhgW/mh1h8Qo=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -38,7 +38,8 @@ hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 
 ＃＃ 你需要...
 * Nodejs 8或更高版本
-* socket.IO必须设置为“集成”，并且必须在Web适配器中禁用“强制Web套接字”
+* Web-Adapter，其中一个实例运行与管理适配器相同的协议（http或https），socket.IO设置为“集成”和“强制Web套接字”已禁用
+    *这与其他适配器冲突，只需使用上述设置添加另一个实例。 iQontrol将搜索最合适的Web适配器实例并将其用于通信。
 
 ＃＃ 如何使用
 *开始创建视图。
@@ -67,7 +68,7 @@ Toolbar-Entrys是视图的链接。
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
+*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -84,10 +85,10 @@ Toolbar-Entrys是视图的链接。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
 ###修改数据点配置
-您可以通过iobroker的objects-tab中数据点后面的扳手图标修改数据点的配置。在这里你可以：
+您可以通过设备配置对话框中数据点后面的扳手图标或iobroker的对象选项卡修改数据点的配置。在这里你可以：
 
 *设置Readonly-Flag
-*设置反转平
+*设置反转标志
 *设置一个datapoint id，其中写入目标值（如果您有实际值和目标值的不同数据点）
 *修改datapoint的单位
 *修改数据点的类型
@@ -119,7 +120,7 @@ Toolbar-Entrys是视图的链接。
 }
 ````
 
-    *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，见上文）
+    *您可以通过修改数据点来创建自己的值列表（iobroker的对象选项卡中数据点后面的扳手图标，见上文）
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -135,7 +136,7 @@ Toolbar-Entrys是视图的链接。
 每个灯都可能具有以下一种或两种状态：
 
 * **STATE** *boolean* - 显示和设置开/关状态
-* **LEVEL** *number* - 显示和设置灯光的级别
+* **LEVEL** *number* - 显示和设置灯光的等级
 
 可选您可以定义以下状态：
 
@@ -194,23 +195,29 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
+* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
 * **STATE** *boolean* - 显示是否检测到运动
 * **linked-view-property** 接打开
 
-### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/garagedoor_closed.png" width="32">车库门， <img src="img/icons/window_closed.png" width="32">窗口：
+### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *boolean* - 显示门或窗是打开还是关闭。
     *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
     *您还可以指定*字符串*来显示任何文本，例如“3个窗口打开”或“全部关闭”。
 *尊重** linked-view-property **
 
+### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
+* **STATE** *boolean* - 显示门是打开还是关闭。
+    *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
+    *您还可以指定*字符串*来显示任何文本，例如“3门打开”或“全部关闭”。
+* **TOGGLE** *boolean* - 显示'Toggle'按钮，如果按下则设置为true。
+
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
 * **STATE** *boolean* - 显示门是打开还是关闭。
 * **LOCK_STATE** *boolean* - 显示门是锁定还是解锁
-* **LOCK_STATE_UNCERTAIN** *boolean* - STATE将以斜体显示，如果为true则表示锁的确切位置未知
+* **LOCK_STATE_UNCERTAIN** *boolean* - 如果为true，则STATE将以斜体显示，表示锁的确切位置未知
 * **LOCK_OPEN** *boolean* - 如果设置为true，门将完全打开
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
@@ -230,6 +237,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
     *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
     *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
+* **CONTROL_MODE** *value-list* - 选择“Armed”和“Disarmed”等操作模式
+    *在设备选项中，您可以定义代表撤防的值，以便显示代表图标
 
 ### <img src="img/icons/battery_full.png" width="32">电池：
 * **状态**：*数字*  - 电池电量百分比
@@ -258,12 +267,47 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **状态**：*任何*  - 可用于显示更多信息
 * **URL** CONSTANT *string* - 此网址将被打开
 
+＃＃ 故障排除
+*确保您已完成本页顶部的“您需要”部分
+*如果更新后某些内容无法正常工作，请尝试以下步骤：
+    *开始上传适配器
+*清除浏览器缓存
+*重启ioBroker
+*使用浏览器的打开调试控制台启动iQonrol（大多数情况下需要按F12打开它）并在控制台窗口中查找消息
+
 ##开发
 *看看[前端的工作原理]（运营％20Principle％20of％20Frontend.md）
 
 ****
 
 ## Changelog
+
+### 0.1.7 (2019-08-11)
+* (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
+* (Sebastian Bormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
+
+### 0.1.6 (2019-08-08)
+* (Sebastian Bormann) Next try to connect via iobroker.pro
+
+### 0.1.5 (2019-08-06)
+* (Sebastian Bormann) Added validation to options.
+* (Sebastian Bormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
+* (Sebastian Bormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
+* (Sebastian Bormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
+
+### 0.1.4 (2019-08-04)
+* (Sebastian Bormann) Optimized fading of tiles.
+* (Sebastian Bormann) Added toggle-button to blind, if no up/down button is defined.
+* (Sebastian Bormann) Added detection of protocol for socket in admin.
+* (Sebastian Bormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
+* (Sebastian Bormann) Added toggle-button to garage door.
+
+### 0.1.3 (2019-08-01)
+* (Sebastian Bormann) Added seperate background image for active devices.
+* (Sebastian Bormann) Fixed background-options (color and opacity) for active and inactive device tiles.
+* (Sebastian Bormann) Added more space to views bottom.
+* (Sebastian Bormann) Fixed invert level for blinds.
+* (Sebastian Bormann) Organized options in collapsible layout.
 
 ### 0.1.2 (2019-07-29)
 * (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
@@ -276,7 +320,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### 0.1.0 **stable** (2019-07-27)
 * (Sebastian Bormann) First stable release.
-* (Sebastian Bormann) Added show Timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
 * (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)

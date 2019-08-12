@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki2/README.md
 title: ioBroker.nuki2
-hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
+hash: ADjjBU+qDKKk5+5odWm2RMJMw4HxodOHbt1BmxZ15GQ=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki2/admin/nuki-logo.png)
 
@@ -32,18 +32,25 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 
 ##安装
 ###获取API令牌
-如何获取桥接令牌：
+如何获取硬件桥接令牌（不适用于软件桥接）：
 
-1.从网络中的任何浏览器调用```http：// <bridge_ip>：<bridge_port> / auth```
-这座桥打开了它的LED
-2.在30秒内按下桥接按钮
-3.浏览器调用的结果应该是这样的：```
+1.从网络中的任何浏览器调用```http：// <bridge_ip>：<bridge_port> / auth```。这座桥打开了它的LED。
+2.在30秒内按下桥接按钮。
+3.浏览器调用的结果应该是这样的：
 
-{“token”：“token123”，“success”：true}```
+```
+ {
+ "token": "token123",
+ "success": true
+ }
+```
 
-###回调函数
-如果正在使用回调函数，则适配器将尝试在保存实例时自动在Nuki桥上设置回调。在回调激活时，Nuki桥将保持最新的Nuki状态（[见下文](#locks-with-nuki-bridge-api)）。
-也可以从具有以下URL的任何浏览器手动设置和删除回调：
+4.使用Nuki2适配器中生成的令牌。
+
+###手动设置回调（可选）
+如果正在使用回调函数，则在保存实例时，适配器将自动在Nuki桥上设置回调。在回调激活时，Nuki桥将保持最新的Nuki状态（[见下文](#locks-with-nuki-bridge-api)）。
+
+还可以从具有以下URL的任何浏览器设置和删除回调__manually__：
 
 * set Callback：```http：// <bridge_ip>：<bridge_port> / callback / add？url = http％3A％2F％2F <host_ip>％3A <host_port>％2Fnuki-api-bridge＆token = <bridgeToken> ```
 * remove callback：```http：// <bridge_ip>：<bridge_port> / callback / remove？id = <callback_id>＆token = <bridgeToken>```
@@ -84,7 +91,7 @@ hash: MUvrkLsECUAuYto5Ul01US986A4CBQvryUKjWKKwE7M=
 |状态|锁定** |指示门是否锁定|
 |状态|刷新** |上次更新的时间戳|
 
-如果设置回调，_ **标记状态将在Nuki动作上更新
+如果设置了回调，_ **标记的状态将在Nuki动作上更新
 
 #### Locks（使用Nuki Web API）
 锁将创建为名为pattern```door__<name of door>```的设备。将在每个锁中创建以下通道/状态（使用Nuki Web API时）：
@@ -363,9 +370,13 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
-### 1.0.0 (2019-05-xx) [IN DEVELOPMENT]
-- (Zefau) support for hashed token for hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-180/4/#heading--token) in the [nuki-bridge-api](https://github.com/Mik13/nuki-bridge-api/pull/9)
-- (Zefau) bump to stable release
+### 1.0.1 (2019-08-11)
+- (Zefau) Performance improvements
+- (Zefau) Small re-design of admin panel
+- (Zefau) Fixed Bug within user retrieval
+
+### 1.0.0 (2019-08-03)
+- (Zefau) bump to stable release (no changes)
 
 ### 0.9.13 (2019-07-20)
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
+hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 ---
 ![Logo](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -29,7 +29,15 @@ hash: gpdzdstwB9+/v+GiJ4cWT8HqBfc7XA9Y3520xXazWqE=
 5. [Lizenz] (# Lizenz)
 
 ## 1. Eigenschaften
-tbd
+- Empfangen Sie Ereignisse von Plex (über Plex Pass oder Tautulli)
+- Wiedergabesteuerung für Spieler
+- Server abrufen
+- Bibliotheken abrufen
+- Abrufen aller Elemente in einer Bibliothek
+- Benutzer abrufen (nur mit Tautulli)
+- Statistiken abrufen (nur mit Tautulli)
+- Wiedergabelisten abrufen
+- Einstellungen abrufen
 
 ## 2. Setup-Anweisungen
 ### 2.1. Grundeinstellung
@@ -55,11 +63,11 @@ Navigieren Sie zu Ihrem Plex Media Server und gehen Sie zu ```Settings``` und ``
 Dieser Adapter stellt eine Verbindung zum [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md) her und empfängt auch Webhook-Ereignisse von Tautulli.
 
 ##### 2.2.2.1. API
-Öffnen Sie nach der Installation von Tautulli die Seite _Einstellungen_ im Tautulli-Dashboard und navigieren Sie zu _Webschnittstelle_. Scrollen Sie zum Abschnitt _API_ und vergewissern Sie sich, dass ```Enable API``` markiert ist. Kopieren Sie den ```API key``` und tragen Sie ihn in die ioBroker.plex-Einstellungen ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
+Öffnen Sie nach der Installation von Tautulli die Seite _Settings_ im Tautulli-Dashboard und navigieren Sie zu _Web Interface_. Scrollen Sie zum Abschnitt _API_ und vergewissern Sie sich, dass ```Enable API``` markiert ist. Kopieren Sie den ```API key``` und tragen Sie ihn in die ioBroker.plex-Einstellungen ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
 
 ##### 2.2.2.2. Webhook
 ###### Überblick
-Befolgen Sie zum Einrichten eines Webooks mit Tautulli die nachstehenden Anweisungen und vergewissern Sie sich, dass Sie alle vier Schritte ausgeführt haben:
+Befolgen Sie zum Einrichten eines Webooks mit Tautulli die nachstehenden Anweisungen und vergewissern Sie sich, dass Sie alle 4 Schritte ausgeführt haben:
 
 1. Fügen Sie den Notification Agent hinzu
 2. Konfigurieren Sie Webhook im Notification Agent
@@ -77,7 +85,7 @@ Nach der Installation öffnen Sie die Einstellungsseite im Tautulli-Dashboard un
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Wählen Sie außerdem ```POST``` für die _Webhook-Methode_ und geben Sie eine beliebige Beschreibung in _Description_ ein.
 
-3. Wechseln Sie als Nächstes zur Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Benachrichtigungsagenten aus. Ein aktivierter Benachrichtigungsagent löst ein Ereignis aus, das dann an ioBroker gesendet wird. __Stellen Sie sicher, dass Sie im nächsten Schritt die erforderlichen Daten für jeden aktivierten Benachrichtigungsagenten bereitstellen!
+3. Wechseln Sie anschließend zur Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Benachrichtigungsagenten aus. Ein aktivierter Benachrichtigungsagent löst ein Ereignis aus, das dann an ioBroker gesendet wird. __Stellen Sie sicher, dass Sie im nächsten Schritt die erforderlichen Daten für jeden aktivierten Benachrichtigungsagenten bereitstellen!
 4. Tragen Sie nun __wichtigst__ die entsprechende Datennutzlast in der Registerkarte _Data_ gemäß __ [Benachrichtigungskonfiguration hier] (README-tautulli.md # notification-configuration) __ ein.
 
    Kopieren Sie die Benachrichtigungskonfiguration der entsprechenden Benachrichtigungsagenten aus dem vorherigen Schritt (z. B. ```Playback Start```, ```Playback Stop```, ```Playback Pause``` und ```Playback Resume```) in jedes der folgenden Textfelder für § §JJJJJ_4§§:
@@ -116,7 +124,14 @@ Nach erfolgreichem Advanced Setup werden zusätzlich folgende Kanäle angelegt. 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
 - add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
-- add playback control for players
+
+### 0.4.1 / 0.4.2 (2019-08-03)
+- (Zefau) fixed newly introduced playback control not working for certain players
+- (Zefau) removed unnecessary dependencies
+
+### 0.4.0 (2019-08-01)
+- (Zefau) added playback control for players
+- (Zefau) added configuration options to only retrieve specific objects from Plex
 
 ### 0.3.2 / 0.3.3 (2019-07-25)
 - (Zefau) added file, streaming and transcoding information to Tautulli event

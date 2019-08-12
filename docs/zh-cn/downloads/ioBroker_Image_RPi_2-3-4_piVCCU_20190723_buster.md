@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
 title: 用于Raspberry Pi2 / 3/4 Buster的ioBroker图像，带有piVCCU 20190723
-hash: fdPxXaqZLD7Fzo1Q+/gc3r+XxPVt6ondUpWQd9YjeBk=
+hash: L4dLRRw9D79V40wOLwLVK9FFGyZR4A9u3J8HOvrxj3s=
 ---
 #ioBroker用于Raspberry Pi2 / 3/4 Buster的图像，带有piVCCU 20190723
 ##创建μ-SD卡
@@ -22,8 +22,8 @@ hash: fdPxXaqZLD7Fzo1Q+/gc3r+XxPVt6ondUpWQd9YjeBk=
 
 创建以下用户：
 
-*用户：pi，
-*密码：覆盆子
+*用户：`pi`，
+*密码：`raspberry`
 
 Node-js安装在版本10.16.0中，当然iobroker通过安装程序安装了js-controller，截止日期为23.07.2019。
 
@@ -33,12 +33,12 @@ Node-js安装在版本10.16.0中，当然iobroker通过安装程序安装了js-c
 
 **注意！**以下说明是根据我们所知，在创建图像时的信息。对包或内核的更新可以随时更改任何内容。
 
-该图像已针对德国本地化。如果在其他环境中使用，请相应调整。 （`sudo raspi-config`; 4.）本地化选项）
+该图像已针对德国本地化。如果在其他环境中使用，请相应调整。 （`sudo raspi-config`; 4.）`Localisation Options`）
 
 ##第一次启动后
 首次启动Rapberry Pi后，请使用`sudo raspi-config`进行以下设置：
 
-第1点：更改用户密码（分配给用户Pi的自己的密码）第2点：网络选项 - 主机名（如有必要，更改Raspberry Pi的名称，默认为ioBroker-Pi）如果主机名已更改，请在安装目录的控制台中iobroker主机输入此项目7：高级选项 - 扩展文件系统（将根文件系统扩展到所使用的SD卡的最大大小），如有必要，仍然在第4项：进行本地化选项调整。默认设置适用于德国
+第1点：`Change User passwort`（分配给用户的自己的密码`Pi`）第2点：`Network Options – Hostname`（如有必要，更改Raspberry Pi的名称）如果主机名更改，则默认为`ioBroker-Pi`然后，请在安装目录的控制台中`iobroker host this`输入第7点：`Advanced Options – Expand filesystem`（将根文件系统扩展到所使用的SD卡的最大大小）可能仍在第4点：§§SSSSS_6§ §进行调整。默认设置适用于德国
 
 ##系统更新
 由于图像是在下载时创建的，因此您应该首先更新系统。
@@ -47,7 +47,7 @@ Node-js安装在版本10.16.0中，当然iobroker通过安装程序安装了js-c
 
 ```sudo apt-get update && sudo apt-get upgrade -y```
 
-此外，您应该检查是否已经安装了适配器和js-controller的更新（请参阅主机标签）。
+此外，您应该检查是否已经对已安装的适配器和js控制器进行了更新（请参阅主机标签）。
 
 除了图像的最小可能尺寸之外，这也是仅预先安装了几个适配器的原因。
 

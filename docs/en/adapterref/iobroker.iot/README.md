@@ -244,6 +244,12 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.0.7 (2019-08-04)
+* (bluefox) Added support for Nightscout
+
+### 1.0.4 (2019-08-01)
+* (bluefox) Fixed password encoding. Please enter password anew!
+
 ### 1.0.3 (2019-07-30)
 * (bluefox) Fixed language issues for google home and yandex alice
 

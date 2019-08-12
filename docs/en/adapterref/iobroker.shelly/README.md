@@ -40,6 +40,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.0.9 (06.08.2019)
+* (Stübi) - Bugfixing, with the new firmware, Shelly HT sends the humidity by CoAP as it should. Division by 2 removed! 
+
 ### 3.0.8 (27.07.2019)
 * (Stübi) - Add device Shelly EM 
 * (Stübi) - Add state energy for Shelly Plug S, Shelly PM and Shelly 2.5 in CoAP mode 

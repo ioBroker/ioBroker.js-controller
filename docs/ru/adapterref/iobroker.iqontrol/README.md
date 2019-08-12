@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
+hash: wVVuLJkz72BjppJ2Rm0p+XX+0dGaVOqVhgW/mh1h8Qo=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -38,7 +38,8 @@ hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 
 ## Тебе нужно...
 * Nodejs 8 или выше
-* socket.IO должен быть установлен на «встроенный» и «Force Web-Sockets» должен быть отключен в веб-адаптере
+* Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
+    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками. iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи.
 
 ## Как пользоваться
 * Начните создавать представления.
@@ -84,10 +85,10 @@ hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 Чтобы отредактировать роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
 
 ### Изменение конфигурации Datapoint
-Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных на вкладке объектов iobroker. Здесь вы можете:
+Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне настройки устройства или на вкладке объектов iobroker. Здесь вы можете:
 
 * Установить флажок только для чтения
-* Установите Invert-Flat
+* Установите флаг инвертирования
 * Установите идентификатор точки данных, в который записываются целевые значения (если у вас есть разные точки данных для фактического и целевого значения)
 * Изменить единицу назначения данных
 * Изменить тип назначения данных
@@ -134,8 +135,8 @@ hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
 ### <img src="img/icons/light_on.png" width="32"> Свет:
 Каждый источник света может иметь одно или оба из следующих состояний:
 
-* **STATE** *boolean* - отображать и устанавливать вкл / выкл
-* **УРОВЕНЬ** *число* - показать и установить уровень освещенности
+* **STATE** *логическое* - показать и установить вкл / выкл
+* **LEVEL** *number* - показать и установить уровень освещенности
 
 По желанию вы можете определить следующие состояния:
 
@@ -155,7 +156,7 @@ hash: tloPutJRwIqzSFmBNCyUd5lhdPGu4IZbC0k2cqoDURo=
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW- или RGBCWWW (hex) , WW = теплый белый, CW = холодный белый), необязательно с начальным '#'
     * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (шестнадцатеричный), опционально с начальным '#'. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается.
-    * **Hue for Milight** это значение оттенка для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
+    * **Hue for Milight** это значение Hue для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -178,7 +179,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
 * **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
-* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
+* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, которые связаны с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
 В дополнение к обычному термостату вы можете определить:
@@ -201,16 +202,22 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *логическое* - отображать, обнаружено движение или нет
 * **связанный-вид-свойство** открывается напрямую
 
-### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/garagedoor_closed.png" width="32"> Гаражная дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
+### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
 * **STATE** *boolean* - отображать, открыта или закрыта дверь или окно.
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон».
   * Вы также можете назначить *строку* для отображения любого текста, например «3 открытых окна» или «все закрыто».
 * Уважайте **свойство связанных просмотров**
 
+### <img src="img/icons/garagedoor_closed.png" width="32"> Гаражная дверь:
+* **STATE** *boolean* - отображать, открыта или закрыта дверь.
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон».
+  * Вы также можете назначить *строку* для отображения любого текста, такого как «3 двери открыты» или «все закрыты».
+* **TOGGLE** *boolean* - отображает кнопку Toggle и устанавливается в значение true, если нажата.
+
 ### <img src="img/icons/door_locked.png" width="32"> Дверь с замком:
-* **STATE** *логическое* - отображать, открыта или закрыта дверь.
+* **STATE** *boolean* - отображать, открыта или закрыта дверь.
 * **LOCK_STATE** *логический* - отображать, заблокирована или разблокирована дверь
-* **LOCK_STATE_UNCERTAIN** *логическое значение* - СОСТОЯНИЕ будет отображаться курсивом, если true, чтобы показать, что точная позиция блокировки неизвестна
+* **LOCK_STATE_UNCERTAIN** *boolean* - если true, STATE будет отображаться курсивом, чтобы показать, что точная позиция блокировки неизвестна
 * **LOCK_OPEN** *boolean* - если установлено значение true, дверь полностью откроется
 
 ### <img src="img/icons/blind_middle.png" width="32"> Слепой:
@@ -222,14 +229,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «подделка».
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/alarm_on.png" width="32"> Тревога:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «подделка».
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
+* **CONTROL_MODE** *список значений* - выбрать режим работы, такой как «Постановка на охрану» и «Снятие с охраны»
+    * В настройках устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
 
 ### <img src="img/icons/battery_full.png" width="32"> Батарея:
 * **STATE** *число* - уровень заряда батареи в процентах
@@ -258,12 +267,47 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *any* - может использоваться для отображения дополнительной информации
 * **URL** CONSTANT *string* - этот URL будет открыт
 
+## Поиск проблемы
+* Убедитесь, что вы выполнили раздел «Вам нужно» в верхней части этой страницы
+* Если после обновления что-то не работает, как ожидается, попробуйте выполнить следующие действия:
+    * Начать загрузку адаптера
+* Очистить кеш браузера
+* Перезагрузите ioBroker
+* Запустите iQonrol с открытой отладочной консолью вашего браузера (в основном вам нужно нажать F12, чтобы открыть его) и искать сообщения в окне консоли
+
 ## Разработка
 * Взгляните на [Принцип работы внешнего интерфейса] (Операция% 20Principle% 20of% 20Frontend.md)
 
 ****
 
 ## Changelog
+
+### 0.1.7 (2019-08-11)
+* (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
+* (Sebastian Bormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
+
+### 0.1.6 (2019-08-08)
+* (Sebastian Bormann) Next try to connect via iobroker.pro
+
+### 0.1.5 (2019-08-06)
+* (Sebastian Bormann) Added validation to options.
+* (Sebastian Bormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
+* (Sebastian Bormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
+* (Sebastian Bormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
+
+### 0.1.4 (2019-08-04)
+* (Sebastian Bormann) Optimized fading of tiles.
+* (Sebastian Bormann) Added toggle-button to blind, if no up/down button is defined.
+* (Sebastian Bormann) Added detection of protocol for socket in admin.
+* (Sebastian Bormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
+* (Sebastian Bormann) Added toggle-button to garage door.
+
+### 0.1.3 (2019-08-01)
+* (Sebastian Bormann) Added seperate background image for active devices.
+* (Sebastian Bormann) Fixed background-options (color and opacity) for active and inactive device tiles.
+* (Sebastian Bormann) Added more space to views bottom.
+* (Sebastian Bormann) Fixed invert level for blinds.
+* (Sebastian Bormann) Organized options in collapsible layout.
 
 ### 0.1.2 (2019-07-29)
 * (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
@@ -276,7 +320,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### 0.1.0 **stable** (2019-07-27)
 * (Sebastian Bormann) First stable release.
-* (Sebastian Bormann) Added show Timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
 * (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)

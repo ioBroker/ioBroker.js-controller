@@ -316,6 +316,8 @@ $ sudo apt-get install smartmontools
 Записи форума будут отображаться без проблем при доступе к ioBroker через IP или localhost:8081. Но если вы используете имя хоста, такое как meinhaus.de:8081, вы должны получить бесплатный ключ API в Feednami. Чтобы зарегистрироваться, нажмите [здесь](https://toolkit.sekando.com/docs/en/setup/hostnames) и следуйте инструкциям.
 
 ## Changelog
+### 1.4.1 (2019-08-01)
+* (bluefox) Removed default socket.io
 
 ### 1.3.7 (2019-04-17)
 * (ldittmar) better integration to admin adapter

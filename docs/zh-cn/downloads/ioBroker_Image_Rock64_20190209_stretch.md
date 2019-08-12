@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 title: 带有Stretch 20190730的Rock64的ioBroker映像
-hash: 6ASvKW7zGlCioocgoT0Wgo+ChyeXdit13HY/U3JI+sg=
+hash: bt7jUjoNqqdU7o+F0pVJb2O7qiRvqkfYdg9IJEmaxmg=
 ---
 #ioBroker用于Stretch 20190730的Rock64图像
 这是Rock64的最小SD卡映像。适用于4 GB以上的卡。由于它仅适用于2 GB卡，因此建议最小尺寸为4 GB。无论如何，建议使用16GB或更大的卡，因此并不总是描述相同的单元。
@@ -15,10 +15,10 @@ hash: 6ASvKW7zGlCioocgoT0Wgo+ChyeXdit13HY/U3JI+sg=
 
 创建以下用户：
 
- -  **用户：** root，**密码：** 1234
- -  **用户：** pi，**密码：**覆盆子
+ -  **用户：**`root`，**密码：** 1234
+ -  **用户：**`pi`，**密码：**`raspberry`
 
-此外，node-js v 10.16..0已安装，当然还有ibroker与js-controller截至30.07.2019。
+此外，安装了node-js v 10.16..0，当然还有ibroker和js-controller截至30.07.2019。
 
 **仅预安装了admin和发现适配器**并创建了实例。
 [这里](/tutorial/adapter.md)中描述了创建其他适配器及其实例
@@ -32,7 +32,7 @@ hash: 6ASvKW7zGlCioocgoT0Wgo+ChyeXdit13HY/U3JI+sg=
 ##第一次启动后
 如果在第一次启动Rock之后没有要求您为root用户和新用户创建新密码，请出于安全原因执行以下操作：
 
- - 要使用存储卡的完整大小，你必须使用文件系统sudo`/ usr / lib / armbian / armbian-resize-filesystem`
+ - 要使用存储卡的完整大小，您必须使用`sudo / usr / lib / armbian / armbian-resize-filesystem'启动文件系统。
 
   达到SD卡的大小。
 

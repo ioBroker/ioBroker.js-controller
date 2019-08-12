@@ -135,6 +135,12 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.9.19 (2019-08-09)
+* (foxriver76) new meta data handling procedure
+
+### 1.9.17 (2019-08-04)
+* (foxriver76) handle meta values with max 1.01 as 1
+
 ### 1.9.16 (2019-07-18)
 * (foxriver76) no longer use adapter.objects if not necessary
 * (foxriver76) added meta data

@@ -35,9 +35,12 @@ Runs in any Browser.
 You can save it as Web-App on iOS-Homescreen and it looks and feels like a native app.
 It's fully customizable.
 
+
 ## You need...
 * Nodejs 8 or higher
-* socket.IO has to be set to 'integrated' and 'Force Web-Sockets' has to be disabled in web-adapter
+* Web-Adapter with one instance running the same protocol (http or https) as the admin-adapter, socket.IO set to 'integrated' and 'Force Web-Sockets' disabled
+    * It this stands in conflict to other adapters, simply add another instance with the above settings. iQontrol will search the besst fitting web-adapter-instance and use it for communication.
+
 
 ## How to use
 * Start creating views.
@@ -55,8 +58,10 @@ It's fully customizable.
 	Images in the folder '/usericons' can be used as icons for devices.
 	The free builtin demo-wallpapers are from www.pexels.com.
 
+
 ## Forum
 Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol). 
+
 
 ## URL-Parameters
 * The frontend is called via ``http[s]://<url or ip of iobroker>:<port of web adapter>/iqontrol/index.html``
@@ -68,6 +73,7 @@ Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visu
 * ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
     * Note upper and lower case
 
+
 ## Description of roles and associated states
 Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding io-broker state.
 If you use the auto-create-function, you can choose an existing device from the io-broker-object tree.  Autocreate tries to find out the role and to match as many states as possible.
@@ -75,9 +81,9 @@ This will only work for known devices. For unknown devices, and to give devices 
 To edit the role and the states of a device, click on the pencil behind the device. You will find a short description of the roles and the used states below:
 
 ### Modifying Datapoint Configuration
-You can modify the configuration of datapoints via the wrench-icon behind a datapoint in the objects-tab of iobroker. Here you can:
+You can modify the configuration of datapoints via the wrench-icon behind a datapoint in the device-configuration dialog or in objects-tab of iobroker. Here you can:
 * Set Readonly-Flag
-* Set Invert-Flat
+* Set Invert-Flag
 * Set a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
 * Modify unit of datapoint
 * Modify type of datapoint
@@ -120,8 +126,8 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 
 ### <img src="img/icons/light_on.png" width="32"> Light:
 Every light may have one or both of the following states:
-* **STATE**: *boolean* - display and set on/off-state
-* **LEVEL**: *number* - display and set the level of the light
+* **STATE**: *boolean* - show and set on/off-state
+* **LEVEL**: *number* - show and set the level of the light
 
 Optional you can define the following states:
 * For coloured LEDs (HSB-color-space):
@@ -180,16 +186,22 @@ In addition to normal thermostat you can define:
 * **STATE**: *boolean* - display if motion is detected or not
 * The **linked-view-property** is opened directly
 
-### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/garagedoor_closed.png" width="32"> Garage Door, <img src="img/icons/window_closed.png" width="32"> Window:
+### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
 * **STATE**: *boolean* - display if the door or window is opened or closed. 
     * Alternatively you can assign a *value-list*, to display additional states like 'tilted'.
     * You can also assign a *string* to display any text like "3 windows open" or "all closed".
 * Respect the **linked-view-property**
 
+### <img src="img/icons/garagedoor_closed.png" width="32"> Garage Door:
+* **STATE**: *boolean* - display if the door is opened or closed. 
+    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'.
+    * You can also assign a *string* to display any text like "3 doors open" or "all closed".
+* **TOGGLE**: *boolean* - displays a 'Toggle'-Button and is set to true, if pressed. 
+
 ### <img src="img/icons/door_locked.png" width="32"> Door with lock:
 * **STATE**: *boolean* - display if the door is opened or closed. 
 * **LOCK_STATE**: *boolean* - display if the door is locked or unlocked
-* **LOCK_STATE_UNCERTAIN**: *boolean* - the STATE will be displayed in italic-font, if true to represent that the exact position of the lock is unknown
+* **LOCK_STATE_UNCERTAIN**: *boolean* - if true, the STATE will be displayed in italic-font to represent that the exact position of the lock is unknown
 * **LOCK_OPEN**: *boolean* - if set to true, the door will open completely
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
@@ -209,6 +221,8 @@ In addition to normal thermostat you can define:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
     * Alternatively you can assign a *value-list*, to display additional states like 'tampered'.
     * You can also assign a *string* to display any text like "fire in upper floor".
+* **CONTROL_MODE**: *value-list* - select operation mode like "Armed" and "Disarmed"
+    * In device options you can define the value that represents disarmed, so the representing icon can be shown
 
 ### <img src="img/icons/battery_full.png" width="32"> Battery:
 * **STATE**: *number* - battery level in percentage
@@ -237,12 +251,49 @@ In addition to normal thermostat you can define:
 * **STATE**: *any* - can be used to display further informations
 * **URL**: CONSTANT *string* - this url will be opened
 
+
+## Troubleshooting
+* Make shure you fulfilled the 'You need' section at top of this page
+* If something doesn't work like expected after update please try the following steps:
+    * Start upload of adapter
+	* Clear browser cache
+	* Restart ioBroker
+* Start iQonrol with opened debugging-console of your browser (mostly you need to press F12 to open it) and look for messages in the console-window
+
+
 ## Developing
 * Have a look at [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md)
 
 ****
 
 # Changelog
+
+### 0.1.7 (2019-08-11)
+* (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
+* (Sebastian Bormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
+
+### 0.1.6 (2019-08-08)
+* (Sebastian Bormann) Next try to connect via iobroker.pro
+
+### 0.1.5 (2019-08-06)
+* (Sebastian Bormann) Added validation to options.
+* (Sebastian Bormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
+* (Sebastian Bormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
+* (Sebastian Bormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
+
+### 0.1.4 (2019-08-04)
+* (Sebastian Bormann) Optimized fading of tiles.
+* (Sebastian Bormann) Added toggle-button to blind, if no up/down button is defined.
+* (Sebastian Bormann) Added detection of protocol for socket in admin.
+* (Sebastian Bormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
+* (Sebastian Bormann) Added toggle-button to garage door.
+
+### 0.1.3 (2019-08-01)
+* (Sebastian Bormann) Added seperate background image for active devices.
+* (Sebastian Bormann) Fixed background-options (color and opacity) for active and inactive device tiles.
+* (Sebastian Bormann) Added more space to views bottom.
+* (Sebastian Bormann) Fixed invert level for blinds.
+* (Sebastian Bormann) Organized options in collapsible layout.
 
 ### 0.1.2 (2019-07-29)
 * (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
@@ -255,7 +306,7 @@ In addition to normal thermostat you can define:
 
 ### 0.1.0 **stable** (2019-07-27)
 * (Sebastian Bormann) First stable release.
-* (Sebastian Bormann) Added show Timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
 * (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)

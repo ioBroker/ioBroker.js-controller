@@ -1,19 +1,23 @@
 ---
 title:       "Widgets"
-lastChanged: "13.09.2018"
+lastChanged: "11.08.2019"
 ---
 # Widgets
+
 
 ## Generell
 
 Widgets ('Gerät, Ding') sind in diesem Zusammenhang Anzeigeelemente, die auf verschiedene Weisen 
 Zahlen, Texte, Bilder oder Diagramme darstellen und Interaktionsmöglichkeiten bieten.
 
-## ioBroker.vis Widgets
+## **ioBroker.vis Widgets**
 
 Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 
-### Die Grundeinstellungen von Widgets
+-------------------------------------------------------------------------------  
+-------------------------------------------------------------------------------  
+
+### Die Grundeinstellungen von Widgets
  
 #### Generell
 
@@ -28,9 +32,9 @@ Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 | Zeige in Views|Hier kann ausgewählt werden, ob dieses Widget nur im aktuellen View oder in mehreren erscheinen soll.
 | Inaktiv (locked)|:construction:
 
-#### Sichtbarkeit
+#### **Sichtbarkeit**
 
-Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig gemacht werden.  
+Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig gemacht werden.
 ![002_Widget_Sichtbarkeit](media/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)  
 
 
@@ -40,17 +44,18 @@ Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig
 | Bedingung|Das Widget wird sichtbar wenn die hier eingegebene Bedingung für den o.a. Datenpunkt...
 | Wert für die Bedingung|...dem hier eingebenen Wert entspricht.
 
-#### Allgemein
+#### **Allgemein**
 
-![](media/vis_widgets_003_Widget_Allgemein.jpg)  
+![](media/vis_widgets_003_Widget_Allgemein.jpg)
 Der Abschnitt 'Allgemein' ist für jedes Widget spezifisch 
 und wird bei den einzelnen Widgets näher beschrieben. 
-In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.  
+In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.  
 
-Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten 
+***
+Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten 
 und können den eigenen Wünschen angepasst werden:
 
-#### CSS allgemein
+#### **CSS allgemein**
 ![](media/vis_widgets_004_CSS_allgemein.jpg)  
 
 | Attribut|Beschreibung|
@@ -82,9 +87,9 @@ und können den eigenen Wünschen angepasst werden:
 | `letter-spacing`|Zeichenabstand
 | `word-spacing`|Wortabstand
 
-#### CSS-Hintergrund
+#### **CSS-Hintergrund**
 
-![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)  
+![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)  
 
 | Attribut | Beschreibung |
 |-----|-----| 
@@ -98,11 +103,16 @@ und können den eigenen Wünschen angepasst werden:
 | `-clip` |Regelt die Überschneidung mit dem Rand
 | `-origin` |Koordinatensystemursprung für Bildkoordinaten
 
-(siehe https://www.w3schools.com/cssref/css3_pr_background.asp)  
+#### **CSS Border**
 
-#### CSS Border
+![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)  
 
-![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)  
+|Attribut|Beschreibung|
+|----|----|
+|-width|Dicke der Umrandung|  |
+|-style|Linienart der Umrandung|  
+|-color|Farbe der Umrandung| 
+|-radius|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein|  
 
 | Attribut|Beschreibung|
 |-----|----| 
@@ -112,8 +122,20 @@ und können den eigenen Wünschen angepasst werden:
 | `-radius`|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein
 
 #### CSS Schatten und Abstand
+![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
 
-![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
+|Attribut|Beschreibung|  
+|----|----|
+|padding|Versatz vom Rand der Widget-Box|  
+|padding-left|Versatz auf der linken Seite|  
+|padding-top|Versatz auf der oberen Seite|  
+|padding-right|Versatz auf der rechten Seite|  
+|padding-bottom|Versatz auf der unteren Seite|  
+|box-shadow|Farbe des Schattens der Widget-Box|  
+|margin-top|Oberer Rand um das Widget (auto, %, px, pt, cm)|  
+|margin-right|Rechter Rand um das Widget|  
+|margin-bottom|Unterer Rand um das Widget|  
+|margin-left|Linker Rand um das Widget|
 
 | Attribut|Beschreibung|
 |-----|----| 
@@ -127,7 +149,4 @@ und können den eigenen Wünschen angepasst werden:
 | `margin-right`|Rechter Rand um das Widget
 | `margin-bottom`|Unterer Rand um das Widget
 | `margin-left`|Linker Rand um das Widget
-
-[185]: media/widget_images/swipe/Prev_Carousel.png
-[186]: media/widget_images/swipe/Prev_Swipe.png
 

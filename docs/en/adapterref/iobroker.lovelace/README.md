@@ -382,7 +382,11 @@ Security must be taken from current user and not from default_user
 4. `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
 5. Format index.html
 6. Start `gulp rename` task.
+
 ## Changelog
+### 0.1.4 (2019-08-05)
+* (bluefox) fixed timestamp conversion
+
 ### 0.1.3 (2019-07-18)
 * (SchumyHao) If no ACTUAL is discovered, use SET value as switch entity value
 

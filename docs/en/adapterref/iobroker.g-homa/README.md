@@ -12,6 +12,9 @@ The inclusion of plugs has to be performed with the app for now, but will soon b
 
 ## Changelog
 
+### 0.5.0 (2019-08-09)
+* (AlCalzone) Improve detection of G-Homa devices
+
 ### 0.4.0 (2018-07-31)
 * (AlCalzone) Avoid overwriting the name of existing objects
 

@@ -108,8 +108,11 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
-### 2.4.3 (2019-07-31)
-* (foxriver76) also remove enums when they have been removed in CCU
+### 2.4.6 (2019-08-11)
+* (foxriver76) only deleting hm adapter objects from enums
+
+### 2.4.4 (2019-08-02)
+* (foxriver76) fixed enum sync and improved logging
 
 ### 2.4.2 (2019-07-23)
 * (foxriver76) lc and ts for alarm states are now valid formatted for js-controller

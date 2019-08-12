@@ -129,6 +129,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.6.2 (2019-08-04)
+* (foxriver76) also use translations for enumSentence and notifiations (e. g. email)
+
 ### 1.6.1 (2019-07-13)
 * (foxriver76) fixed bug, that prevent html states and other from being set
 

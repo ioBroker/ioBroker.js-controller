@@ -4,11 +4,11 @@
 |----------------------------------------------|-------|-------------|
 | [`HTML`](#html-frame)                        | ![001](media/widget_images/basic/Prev_HTML.png)|Dieses Widget stellt beliebigen HTML-Code dar.|
 | [`Svg Shape`](#svg-shape)                    | ![002](media/widget_images/basic/Prev_Shape.png)|Stellt eine Form dar|
-| [`iFrame`](#iframe)                          | ![003](media/widget_images/basic/Prev_iFrame.png)|Dieses Widget bindet ein iFrame ein|
+| [`iFrame`](#iframe)                          | ![003](media/widget_images/basic/Prev_iFrame.png)|Dieses Widget bindet einen iFrame ein|
 | [`Image`](#image)                            | ![004](media/widget_images/basic/Prev_Image.png)|Dieses Widget stellt ein Bild dar.|
 | [`Link`](#link)                              | ![005](media/widget_images/basic/Prev_tplLink.png)|Dieses Widget entspricht dem Widget "static - HTML" ist aber zusätzlich auf seiner ganzen Fläche ein klickbarer Link. Kann für die Navigation zwischen Views oder für externe Links genutzt werden.|
-| [`Border`](#border)                          | ![006](media/widget_images/basic/Prev_tplFrame.png)||
-| [`iFrame8`](#iframe8)                        | ![007](media/widget_images/basic/Prev_StatefulIFrame8.png)||
+| [`Border`](#border)                          | ![006](media/widget_images/basic/Prev_tplFrame.png)|Stellt einen Rahmen dar, optional mit Titel und Titelbalken|
+| [`iFrame8`](#iframe8)                        | ![007](media/widget_images/basic/Prev_StatefulIFrame8.png)|Zeigt bis zu 8 Bilder in iFrames an|
 | [`View in widget`](#view-in-widget)          | ![008](media/widget_images/basic/Prev_ContainerView.png)|Dieses Widget kann Views innerhalb von Views darstellen.Sinnvoll z.B. für eine Navigation: Man baut eine View mit Navigations-Elementen auf und bindet diese dann in beliebig vielen anderen Views ein.|
 | [`view in widget 8`](#view-in-widget-8)]     | ![009](media/widget_images/basic/Prev_StatefulContainerView8.png)|Zeigt eine von 8 Views in Abhängigkeit von einem Zustand an.|
 | `Image 8`                                    | ![010](media/widget_images/basic/Prev_StatefulImage.png)|Zeigt eines von 8 Bildern in Abhängigkeit von einem Zustand an.|

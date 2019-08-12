@@ -1,23 +1,23 @@
 ---
-title: 可见
-lastChanged: 13.09.2018
+title: 可视化
+lastChanged: 11.08.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/vis.md
-hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
+hash: jhqCx3JWJrpTK1iXzcCVHrIJcZgFdkRTJhUR65z4jKo=
 ---
 #VIS可视化
-？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
-
 ##一般
-> VIS是一个功能强大的应用程序，需要详细的说明和教程。本手册的形式和位置尚未定义。
+@@@ VIS是一个功能强大的应用程序，需要详细的说明和教程。本手册的形式和位置尚未定义。
+@@@
 
+## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#konfiguration)
 ##配置
 不需要配置适配器。只能有一个VIS实例。
 
-##操作
-[](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)
+* * *
 
+##[](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-vis#bedienung)Operation
 通过`<IPdesServers>:8082/vis/index.html`调用适配器并显示可视化。
 项目中有几个视图。
 在每个视图上，可以再次自由放置几个小部件，这些小部件用于显示或操作。
@@ -25,7 +25,7 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 编辑器通过`<IPdesServers>:8082/vis/edit.html`或通过管理适配器的Instances选项卡中的超链接调用。
 通过关闭窗口图标（右上角的（x））关闭编辑器后，最后编辑的视图将显示在功能视图中。
 这可以随时使用§§SSSSS_2§来调用。编辑器分为不同的区域。
-![](../../de/viz/media/vis_ioBroker_vis_Editor_002-300x165.jpg)
+![概观](../../de/viz/media/vis_ioBroker_vis_Editor_002-300x165.jpg)
 
 * * *
 
@@ -33,7 +33,7 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 ###观看
 如果选择此选项卡，则可以从下面下拉菜单中的现有下拉菜单中选择要编辑的视图。
 ![iobroker_vis_Editor_Views_Header](../../de/viz/media/iobroker_vis_Editor_Views_Header.jpg)右边的四个图标是不言自明的，并参考了视图。
-单击工作区后，右侧属性侧栏中的视图将更改为“视图”选项卡，并显示视图的设置。
+单击工作区域后，右侧属性侧栏中的视图将更改为“视图”选项卡，并显示视图的设置。
 
 ###小部件
 如果激活了选项卡窗口小部件，则基础工具栏会更改.![iobroker_vis_Editor_Widgets_Header](../../de/viz/media/iobroker_vis_Editor_Widgets_Header.jpg)将显示用于编辑窗口小部件的工具。
@@ -45,9 +45,9 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 选择窗口小部件时，删除，复制和信息的三个图标将变为活动状态。
 
 ####对齐小部件
-![](../../de/viz/media/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG)如果用按下鼠标按钮（或按住Ctrl键单击）选择几个小部件，则可以在这些图标组的帮助下对齐（左对齐，右对齐，齐平顶部，底部齐平，居中，中心垂直对齐）。
+![](../../de/viz/media/iobroker_vis_Editor_Widgets_Ausrichten_Header.JPG)如果您在按下鼠标按钮（或按住Ctrl键单击）的情况下选择多个小部件，则可以使用这些图标对齐组（左对齐，右对齐，齐平顶部，底部齐平，居中，中心垂直对齐）。
 此外，您可以使用相同的距离（水平和垂直）定位多个小部件，以及使用最后两个图标调整多个小部件的大小。
-如果选择窗口小部件，则右侧“属性”侧栏中的视图将更改为“窗口小部件”选项卡，并显示此窗口小部件的设置。
+如果选择窗口小部件，则右侧“属性”侧边栏中的视图将更改为“窗口小部件”选项卡，并显示此窗口小部件的设置。
 通过多种选择的可能性，您可以同时更改右侧边栏上的多个小部件的属性。
 
 ####所有小部件
@@ -73,7 +73,7 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 **示例：**选择了显示_iPad Portrait_，并在_Start_视图中选中了_Default_框。
 假设项目现在在iPad上以横向格式加载名为_Weather_的视图。
 如果iPad现在旋转为纵向，则将自动显示先前为此分辨率（纵向）定义的默认（_default_）的_Start_视图。
-例如，可以使用相应的可移动设备“移回主菜单”或_hoch_显示与_quer_不同的视图。
+例如，可以使用相应的可移动设备“移回主菜单”或_hoch_显示除_quer之外的视图。
 
 #### Grid
 这里有_inaktiv _，_Elemente_和_Raster_的可能性。如果选择元素，则在使用鼠标移动到相邻元素时，小部件会捕捉。使用Raster，您可以指定网格大小（以px为单位），然后将小部件捕捉到位。
@@ -101,8 +101,8 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 
 ####项目
 项目是[查看](http://www.iobroker.net/?page_id=1193&lang=de)的集合。
-默认情况下，项目_main_已创建并通过`<IPdesServers>:8082/vis/index.html#ViewName`调用。
-项目的文件按照`_ioBroker-Ordner_/iobroker-data/files/vis.0/main`的顺序在ioBroker安装中。
+默认情况下，项目_main_已创建，并通过`<IPdesServers>:8082/vis/index.html#ViewName`进行调用。
+项目的文件位于文件夹`_ioBroker-Ordner_/iobroker-data/files/vis.0/main`中的ioBroker安装中。
 
 ####项目导出/导入
 项目可以作为一个整体导出（例如，与其他用户共享）：创建一个zip文件，其中包含使用的图像，vis-user.css样式表和实际的vis-views.json定义。
@@ -115,7 +115,7 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 **提示**：您可以复制项目文件夹并在VIS编辑器`<IPdesServers>:8082/vis/_projektname_duplikat_/index.html`中编辑副本。
 
 ####申请
-加载项目时，[项目]的所有[视图]：构造：（http://www.iobroker.net/?page_id=1193&lang=en）：构造：（http://www.iobroker.net/?page_id = 188＆lang = DE＆preview_id = 188＆preview_nonce = d845a20ee2＆preview = true #project）。
+加载项目时，所有[视图]：构建:( http://www.iobroker.net/?page_id=1193&lang=en）此[项目]：构造：（http://www.iobroker.net/?page_id = 188＆lang = DE＆preview_id = 188＆preview_nonce = d845a20ee2＆preview = true #project）。
 有时这没有意义并且会减慢系统速度。
 因此，可以总结在不同项目中属于一起的视图。
 例如，分离具有不同屏幕分辨率的设备是有意义的。
@@ -130,13 +130,7 @@ hash: yfi34kuUbMBeFxy4RLhpw+kXhNdkv9+fpsvIERotyL4=
 
 ####档案管理员......（6）
 选择此菜单项后，可以轻松地将文件复制或复制到ioBroker文件系统，而无需其他程序。
-文件管理器打开：
-
-![](../../de/viz/media/iobroker_vis_Editor_Setup_Dateimanager.JPG)
-
-![](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)
-
-*图像只是样本图像，并且相关公司拥有版权。[/ Caption]
+文件管理器打开：![align =“aligncenter”width =“799”](media/iobroker_vis_Editor_Setup_Dateimanager.JPG)[caption id =“attachment_6007”align =“aligncenter”width =“799”] [![]（图/ ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg）](../../de/viz/img/ioBroker_Adapter_Vis_Editor_Setup_filemanager.jpg)*图像仅为样本图像，并且各自公司拥有版权。 /字幕]
 
 该行为类似于任何文件管理器。
 使用蓝色按钮“向左箭头”可以通过单击其中的文件夹来更高级别。

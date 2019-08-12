@@ -25,7 +25,15 @@ Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Fu
 
 
 ## 1. Features
-tbd
+- Receive events from Plex (via Plex Pass or Tautulli)
+- Playback control for players
+- Retrieve servers
+- Retrieve libraries
+- Retrieve all items within a library
+- Retrieve users (only with Tautulli)
+- Retrieve statistics (only with Tautulli)
+- Retrieve playlists
+- Retrieve settings 
 
 ## 2. Setup instructions
 ### 2.1. Basic Setup
@@ -113,7 +121,14 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
 - add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - add support for all Tautulli triggers
-- add playback control for players
+
+### 0.4.1 / 0.4.2 (2019-08-03)
+- (Zefau) fixed newly introduced playback control not working for certain players
+- (Zefau) removed unnecessary dependencies
+
+### 0.4.0 (2019-08-01)
+- (Zefau) added playback control for players
+- (Zefau) added configuration options to only retrieve specific objects from Plex
 
 ### 0.3.2 / 0.3.3 (2019-07-25)
 - (Zefau) added file, streaming and transcoding information to Tautulli event

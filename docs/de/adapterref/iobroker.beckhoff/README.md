@@ -65,44 +65,58 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
-### 1.0.3 (2019-07-23)
-* (dkleber89) Increase depth of LOG details, Update dependency versions
+
+### 1.0.6 (2019-08-11)
+
+-   (dkleber89) Add check change of Datatype on resync
+
+### 1.0.5 (2019-08-10)
+
+-   (dkleber89) Eslint, Prettier with Airbnb Codestyle, CI adopted, little random changes in Project Structure
+
+### 1.0.4 (2019-08-01)
+
+-   (dkleber89) Increase depth of LOG details, Update dependency versions
 
 ### 1.0.2 (2019-05-18)
-* (Appollon77) Update testing for Node.js v12 in Appveyor und Travis
+
+-   (Appollon77) Update testing for Node.js v12 in Appveyor und Travis
 
 ### 1.0.1 (2019-04-06)
-* (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
+
+-   (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
 
 ### 1.0.0 (2019-03-23)
-* (dkleber 89) Stable Release, Update Gulp, add new Translations
+
+-   (dkleber 89) Stable Release, Update Gulp, add new Translations
 
 ### 0.3.0 (2019-03-09)
-* (Appollon77) Core Files/Testing Update and introduce adapter-core
-* (dkleber89) Fix Problem 'write after End'
+
+-   (Appollon77) Core Files/Testing Update and introduce adapter-core
+-   (dkleber89) Fix Problem 'write after End'
 
 ### 0.2.2 (2019-02-11)
-* (dkleber89) DEBUG Version -> Still Problems with 'write after end'
+
+-   (dkleber89) DEBUG Version -> Still Problems with 'write after end'
 
 ### 0.2.1 (2018-12-30)
-* (dkleber89) Add IE 11 and Mobile Support
+
+-   (dkleber89) Add IE 11 and Mobile Support
 
 ### 0.2.0 (2018-11-24)
-* (dkleber89) Code cleanup and second Beta Release
+
+-   (dkleber89) Code cleanup and second Beta Release
 
 ### 0.1.4 (2018-11-21)
-* (dkleber89) Fixing Dataexchange on TwinCat 2 Runtime
+
+-   (dkleber89) Fixing Dataexchange on TwinCat 2 Runtime
 
 ### 0.1.3 (2018-11-11)
-* (dkleber89) Bugfix on ending Processes
 
-### 0.1.2 (2018-11-05)
-* (dkleber89) Bugfix in Adapter Unload
-
-### 0.1.1 (2018-11-04)
-* (dkleber89) Bugfix in Connection handling
+-   (dkleber89) Bugfix on ending Processes
 
 ## License
+
 The MIT License (MIT)
 
 Copyright (c) 2018-2019 dkleber89 <dkleber89@gmail.com>

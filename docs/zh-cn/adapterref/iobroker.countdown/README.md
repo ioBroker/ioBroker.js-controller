@@ -3,22 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: DWYoX4my5DusQGFYJOZeKYOPmOB2Ii2b27Bi3cj3Vyg=
+hash: 2pwvd3sP6qi/L5PCTCuA+vmVlqzm533lnBCNbrnJfTk=
 ---
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
 ![Greenkeeper徽章](https://badges.greenkeeper.io/jack-blackson/ioBroker.countdown.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.countdown.svg)
+![下载](https://img.shields.io/npm/dm/iobroker.countdown.svg)
+![安装数量](http://iobroker.live/badges/countdown-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
-![安装数量](http://iobroker.live/badges/bring-stable.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.bring.svg)
 
 ＃ioBroker.countdown
 =================
-
-**测试：** [![建立状态Travis]（https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master）](https://travis-ci.com/jack-blackson/ioBroker.countdown)
-
--->
 
 ioBroker的倒计时适配器---------------------------------------------- --------------------------------
 
@@ -50,7 +46,7 @@ ioBroker的倒计时适配器---------------------------------------------- ----
 |小时|倒数结束前的小时数（不是全部！）|
 |天|倒计时结束的天数（不是全部！）|
 |月|倒计时结束的月份（不是全部！）|
-|年|倒数结束的年份（不是全部！）|
+|年|倒计时结束的年份（不是全部！）|
 |名称|倒计时名称|
 | endDate |倒计时结束日期 - 在设置定义中格式化 |
 | inWordsShort |分钟，小时，...的组合值 - 例如1Y 5M 4D |
