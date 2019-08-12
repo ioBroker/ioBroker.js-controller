@@ -64,7 +64,7 @@ or
 
 ## Configuration
 
-The main configuration is stored in `iobroker-data/iobroker.json`.
+The main configuration is stored in `iobroker-data/iobroker.json`. Normally there is no need to edit this file because the ioBroker CLI commands cancontrol most of the settings.
 
 ## Feature Overview
 
@@ -83,7 +83,7 @@ The command line interface is described at https://www.iobroker.net/#de/document
 ### Hostname
 **Feature status:** stable
 
-By default, the hostname for the js-controller instance will be taken from the official hostname of the server ioBroker is running on. The hostname should not change after the first start of ioBroker on this host.
+By default, the hostname for the js-controller instance will be taken from the official hostname of the server ioBroker is running on. The hostname should not be changed after the first start of ioBroker on this host.
 
 If changes are needed there are CLI commands available to update the hostname. Look under https://www.iobroker.net/#de/documentation/config/cli.md for the `iobroker host ...` commands
 
@@ -262,7 +262,7 @@ https://forum.iobroker.net/topic/18338/experimentell-js-controller-compact-mode
 
 For testing, setup your js-controller to use compact mode and change the `io-package.json` and javascript files accordingly. Do not forget to ```iobroker upload adaptername``` after changing `io-package.json`.
 
-One important part is starting the adapter. 
+Please check that your adapter starts and runs as expected also when compact mode is used.
 
 For adapters running in compact mode, special care must be taken to clean up used resources without throwing errors. You need to make sure that **all** initialized connections, timers and intervals are closed and stopped in the `unload` handler.
  
@@ -302,9 +302,9 @@ By default the js-controller process is offering in-memory DBs at ports 9000 (fo
 
 The in-memory DBs for states and objects use JSON files to store the data. The files are stored after changes every 30 seconds and are backed up automatically. The files are stored in iobroker-data directory, the backups in a sub folder.
 
-The in-memory DBs work well for up to 10.000 objects and normal state update frequencies. When your system has more objects and states or its states are updated very often, it is a better idea to use Redis as the database engine. A good indicator for this if the js-controller process is using a lot of CPU and/or the system feels slow.
+The in-memory DBs work well for up to 10000 objects and normal state update frequencies. When your system has more objects and states or its states are updated very often, it is a better idea to use Redis as the database engine. A good indicator for this if the js-controller process is using a lot of CPU and/or the system feels slow.
 
-js-controller 1.x was using socket.io as the communication protocol between the adapters and the in-memory DBs. Starting with js-controller 2.0, the communication protocol was changed to be a lightweight Redis protocol. 
+js-controller 1.x was using socket.io as the communication protocol between the adapters and the in-memory DBs. Starting with js-controller 2.0, the communication protocol was changed to be a lightweight Redis protocol. This simplifies the logic and shuld increase performance.
 
 For the objects and states databases special additional logging of the redis protocl messages can be activated in iobroker.json
 
@@ -318,15 +318,14 @@ For the objects and states databases special additional logging of the redis pro
 
 #### Redis as database
 
-Redis is a well known industrial grade in-memory database optimized for speed and stability.
+Redis is a well known industrial grade in-memory database optimized for speed and stability. It performs better then the ioBroker  In-Memory database which is written in JavaScript.
 
 ##### Install Redis
 - Linux from here: https://redis.io/download
 - Windows from here: [https://github.com/MSOpenTech/redis/releases](https://github.com/MSOpenTech/redis/releases)
 
 e.g. for Linux:
-```apt-get install redis-server``` .
-
+https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
 
 ##### Configure Redis
 
@@ -345,7 +344,7 @@ More details can be found at https://redis.io/topics/replication#configuration a
 
 Redis slaves will be not writable by default.
 
-In case of a crash of the master you can reconfigure one of the slaves to be the new master and it will use the current content. Reconfigure all Slaves to sync with the new Master and the logic is restored.
+In case of a crash of the master you can reconfigure one of the slaves to be the new master and it will use the current content. After reconfiguring all slaves to sync with the new Master the redis database is functional again.
 
 After reconfiguring Redis you also need to update all ioBroker states/objects DB settings to connect to the new Redis Master host.
 
@@ -356,7 +355,7 @@ By default Redis is a pure in-memory Database which means that it has no content
 Depending on how many changes your system is doing it will update the data on disk roughly every 5 minutes by default.
 Please consider this if your system runs from an SD card (like Raspberry Pi).
 
-If you are not working on a SD card and want to have real up-to-date data you can use the second persistance method called AOF.
+If you are not working on a SD card and want to have real up-to-date data on disk you can use the second persistance method called AOF. Else the latest dumped data are used, which could be some minutes old.
 
 Please see https://redis.io/topics/persistence for details, differences and configuration information for both persistence options.
 
@@ -366,7 +365,7 @@ Please see https://redis.io/topics/persistence for details, differences and conf
 There is a possibility to use Redis as states database. It is reasonable to do that for big installations or for systems with performance problems.
 It is possible to switch anytime between Redis and in-memory Javascript DB. 
 
-**Note for js-controller <2.0**: After changing to Redis, all states must be updated by the adapters again (the previous values will be lost). Please especially note this for own JavaScript objects! Objects and configuration are not affected.
+**Note for js-controller <2.0**: After changing to Redis, all states must be updated by the adapters again (the previous values will be lost). Please especially note this for the state values from own JavaScript states! Objects and configuration are not affected.
 
 To switch to Redis, execute the following on the console:
 
@@ -392,7 +391,7 @@ creating conf/iobroker.json
 Now ioBroker can be started.
 If it does not start, please check the log at `log/iobroker.*.log` in the ioBroker directory. Please also check that redis is running (use e.g. ```redis-cli```) and that the firewall is set up correctly.
 
-To switch back to JS states write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
+To switch back to file based states write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
 
 ##### Using Redis as objects/File-DB
 **Feature status:** New in 2.0.0
