@@ -55,7 +55,7 @@ or
 
 ### Windows
 
-* run ```iobroker start``` in the ioBroker directory to start the ioBroker controller in the background
+* run ```iobroker start``` in the ioBroker directory to start the ioBroker controller as service. The name of the service is "iobroker(<servicename>)"
 * check the logfile ```log/iobroker.log```
 
 or
