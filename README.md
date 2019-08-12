@@ -14,8 +14,8 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 
 ## Links
 
-* [Changelog](CHANGELOG.md).
-* Official Web-Site: http://www.iobroker.net
+* [Changelog](CHANGELOG.md)
+* Official web site: http://www.iobroker.net
 * Forum: http://forum.iobroker.net
 * ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
 * Explanation of the concept: https://github.com/iobroker/iobroker
@@ -26,7 +26,7 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 
 ### Install Node.js
 
-Example for a Debian based System ...
+Example for a Debian based system:
 
 ```
 sudo apt-get update
@@ -40,54 +40,52 @@ sudo apt-get install -y nodejs
 
 see https://github.com/ioBroker/ioBroker/wiki/Installation
 
-After that the ioBroker should run and be available in browser under ```http://<ip>:8081/```
+After that, ioBroker should be running and available in the browser under ```http://<ip>:8081/```.
 
 ### Start ioBroker controller
 
-#### ... on Linux
+#### Linux
 
-* run ```./iobroker start``` in the ioBroker directory to start the ioBroker controller in the background
+* run ```iobroker start``` to start the ioBroker controller in the background
 * watch the logfile ```tail -f log/iobroker.<Date>.log```
 
 or
 
-* run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
+* run ```node node_modules/iobroker.js-controller/controller.js``` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console
 
-### ... on windows
+### Windows
 
-* run ```iobroker start``` in the ioBroker directory to start the ioBroker controller in the background console
+* run ```iobroker start``` in the ioBroker directory to start the ioBroker controller in the background
 * check the logfile ```node_modules/iobroker.js-controller/log/iobroker.log```
 
 or
 
-* run ```node node_modules/iobroker.js-controller/controller.js``` to start the ioBroker controller in foreground and watch the log on console
+* run ```node node_modules/iobroker.js-controller/controller.js``` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console
 
 ## Configuration
 
-The main configuration is stored in iobroker-data/iobroker.json
+The main configuration is stored in `iobroker-data/iobroker.json`.
 
 ## Feature Overview
 
 ### Admin UI
-**Feature Status: Stable**
+**Feature status:** stable
 
-The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open http://&lt;iobroker-ip&gt;:8081/
+The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
 
-If port 8081 is occupied, you can install second Admin UI on alternate port and change port for first admin UI:
-
-* run ```./iobroker add admin --enabled --port 8090``` and go to the http://&lt;iobroker&gt;:8090/. Of course you can change port 8090 to an other one.
+If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run ```iobroker add admin --enabled --port 8090``` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
 
 ### Command Line Interface
-**Feature Status: Stable**
+**Feature status:** stable
 
 The command line interface is described at https://www.iobroker.net/#de/documentation/config/cli.md
 
 ### Hostname
-**Feature Status: Stable**
+**Feature status:** stable
 
-By default the hostname for the js-controller instance will be taken from the official hostname of the server the process runs on. The hostname should not change after the first start of ioBroker on this host.
+By default, the hostname for the js-controller instance will be taken from the official hostname of the server ioBroker is running on. The hostname should not change after the first start of ioBroker on this host.
 
-If changes are needed there are CLI commands available to update the hostname. See https://www.iobroker.net/#de/documentation/config/cli.md for "iobroker host ..." commands
+If changes are needed there are CLI commands available to update the hostname. Look under https://www.iobroker.net/#de/documentation/config/cli.md for the `iobroker host ...` commands
 
 If you need to set a specific hostname before the first start of iobroker you can also edit the iobroker.json file:
 
@@ -100,56 +98,64 @@ If you need to set a specific hostname before the first start of iobroker you ca
   },
 ```
 
-### Adapter Process Memory limitation
-**Feature Status: Stable**
+### Adapter process memory limitation
+**Feature status:** stable
 
-By default the memory management is done by Node.JS automatically. A Garbage Collector (GC) will clean up unused objects automatically from time to time.
+By default the memory management is done by Node.js automatically. A Garbage Collector (GC) will clean up unused objects automatically from time to time.
 
-If needed, especially for low memory situations the memory limit for all adapter processes can be set in iobroker.json. Only set this if really needed and you know what you are doing. Leave the value at 0 to not set a special memory limitation.
+If needed, especially for low memory situations the memory limit for all adapter processes can be set in `iobroker.json`. Only set this if really needed and you know what you are doing. Leave the value at 0 to not set a special memory limitation.
 
 ```
 {
+...
   "system": {
     ...
-    "memoryLimitMB":0,
+    "memoryLimitMB": 0,
     ...
   },
+...
+}
 ```
 
 ### Statistics
-**Feature Status: Stable**
+**Feature status:** stable
  
-The js-controller is collecting statistics for the host (system.host.hostname.*) and also for each adapter (system.adapter.adaptername.*).The data contain memory usage, free memory, number of events and also the event loop lag of the node.js process.
+The js-controller is collecting statistics for the host (`system.host.hostname.*`) and also for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
 ### Logging
 
-#### Loglevels
-**Feature Status: Stable**
+#### Log levels
+**Feature status:** stable
 
-The js-controller and each adapter has defined it's own loglevel. By default "info" is used. The following loglevels can be used:
+The js-controller and each adapter has defined it's own loglevel. By default, `info` is used. The following loglevels can be used:
 * silly (most logging)
 * debug
 * info
 * warn
 * error (only errors are logged)
 
-For the js-controller the loglevel is configured in iobroker.json in the logs section:
+The log level for js-controller is configured in iobroker.json in the logs section:
 
 ```
+{
   ...
   "log": {
     "level": "info",
+    ...
+  }
   ...
+}
 ```
 
-#### File based Logging
-**Feature Status: Stable**
+#### File based logging
+**Feature status:** stable
 
-The default logging will log file based in the log directory inside the ioBroker directory. The Logfile will be stored with a name that contains the date and will be deleted after 7 days.
+The default logging will log file based in the log directory inside the ioBroker directory. The logfile will be stored with a name that contains the date and will be deleted after 7 days. It only contains the logs from the current host.
 
-The logging is configured in the iobroker.json file and can be changed there:
+The logging is configured in the `iobroker.json` file and can be changed there:
 
 ```
+{
   ...
   "log": {
     "level": "info",
@@ -164,18 +170,20 @@ The logging is configured in the iobroker.json file and can be changed there:
         "maxsize": null,
         "maxFiles": null
       },
+    },
   ...
-
+}
 ```
 
-The logfile will only contain the logs from this host.
 
-#### Syslog Logging
-**Feature Status: Stable**
+#### Syslog logging
+**Feature status:** stable
 
-ioBroker also supports logging to a Syslog server. The configuration is also stored in the iobroker.json configuration file. A section for syslog is pre-created but disabled by default.
+ioBroker also supports logging to a syslog server. The configuration is also stored in the `iobroker.json` configuration file. A section for syslog is pre-created but disabled by default.
 
 ```
+{
+  ...
   "log": {
     ...
     "transport": {
@@ -197,104 +205,106 @@ ioBroker also supports logging to a Syslog server. The configuration is also sto
         "eol_comment": "The end of line character to be added to the end of the message (Default: Message without modifications)."
       }
     }
-  },
+  }
+  ...
+}
 ```
 
-### Controlling and Monitoring of Adapter processes
+### Controlling and monitoring of adapter processes
 
-#### Multiple Adapter instances
-**Feature Status: Stable**
+#### Multiple adapter instances
+**Feature status:** stable
 
 ioBroker allows to install multiple adapters on the sytem. For each adapter multiple instances can be created and started with an independent configuration.
 
-#### Start Adapter instances as normal processes
-**Feature Status: Stable**
+#### Start adapter instances as normal processes
+**Feature status:** stable
 
-By default adapters are started by the js-controller as separate nodejs processes. They connect to the State and Objects DBs to read and write their data and some statistical information.
+By default adapters are started by the js-controller as separate Node.js processes. They connect to the state and object DBs to read and write their data and some statistical information.
 
-The js-controller is monitoring the process-id of the started process and also controls stopping or restarting these processes.
+The js-controller is monitoring the process ids of the started processes and also controls stopping or restarting these processes.
 
 With this approach the whole iobroker system is very robust. A faulty adapter will only affect his own process and the js-controller and the other adapter processes are unaffected.
 
-The downside of the approach is that more RAM is needed because each node.js process needs 20-30MB RAM for the Node.JS part of it. With this a 1GB system is usually limited to run approx 10 to max 15 adapter processes. Beside using systems with more RAM also splitting adapters on multiplte hosts in a multihost environment could be an idea.
+The downside is that more RAM is required because each Node.js process needs 20-30 MB RAM for the Node.js part of it. With this a 1GB system is usually limited to run approximately 10 to 15 adapter processes. Aside from using systems with more RAM, distributing adapters onto multiple hosts in a multihost environment is possible.
 
-#### Start Adapter instances in compact mode
-**Feature Status: Technology Preview since 2.0.0**
+#### Start adapter instances in compact mode
+**Feature status:** Technology preview (since 2.0.0)
 
-The compact mode is developed especially for low memory systems. All adapters configured to run in compact mode will run inside the js-controller process.
+The compact mode is developed especially for systems with low memery. All adapters configured to run in compact mode will run inside the same process as js-controller.
 
-The positive effect of this is that each adapter needs 20-30MB less RAM because it do not need to have it's own node.js process handling. With this also a 512MB RAM system can run several adapter instances.
+As a result, each adapter needs 20-30 MB less RAM because it does not need to have it's own Node.js process handling. This way, even a system with only 512MB RAM can run several adapter instances.
 
-The downside is that as soon as one adapter is reacting faulty and generate an unhandled error, the whole js-controller process will be restarted.
+The downside is that as soon as one adapter is crashes or generates an unhandled error, the whole js-controller process will be restarted.
 
-This means that this feature is especially good for slave systems but not for the ioBroker master process.
+It is recommended to use this feature on slave systems but not for the ioBroker master host.
 
-To enable compact mode for an js-controller instance you need to manually change the iobroker.json configuration file:
+To enable compact mode for a js-controller instance, you need to manually change the `iobroker.json` configuration file
 
 ```
 {
+  ...
   "system": {
     ...
     "compact":true
-  },
+  }
+  ...
+}
 ```
-
-Then restart the js-controller.
-All adapters that can run in compact mode will also be started in compact mode.
+and restart the js-controller.
+All adapters that can run in compact mode will now be started in compact mode.
 
 ##### Implementation details
 
 https://forum.iobroker.net/topic/18338/experimentell-js-controller-compact-mode
 
-##### Testing details for Development
+##### Testing details for development
 
-For testing setup your js.controller to use compact mode and change the io-package and javascript files accordingly. Do not forget to ```iobroker upload adaptername``` after changes to io-package.json.
+For testing, setup your js-controller to use compact mode and change the `io-package.json` and javascript files accordingly. Do not forget to ```iobroker upload adaptername``` after changing `io-package.json`.
 
 One important part is starting the adapter. 
 
-Stopping the adapter and making sure that no data are updated anymore and no error are thrown is also very important. Please make sure that in ``on('unload')``` really all initialized communications, timers and intervals are stopped and cleaned best possible.
+For adapters running in compact mode, special care must be taken to clean up used resources without throwing errors. You need to make sure that **all** initialized connections, timers and intervals are closed and stopped in the `unload` handler.
  
-#### Manually Run Adapter instances for debugging
-**Feature Status: Stable**
+#### Manually run adapter instances for debugging
+**Feature status:** stable
 
-For debugging reasons sometimes it is needed to start an adapter instance via the command line to get more detailled logging.
+For debugging reasons sometimes it is necessary to start an adapter instance via the command line to get more detailled logging.
 
-You need to directly execute the main adapter javascript file (can be namens main.js or adaptername.js) where "adaptername" is the name of the adapter.
-
+To do so, manually execute the adapter's main javascript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
 ```
 node node_modules/iobroker.adaptername/main.js --force --logs
 ```
-
-The logging will be looged to the console
+All log output will now be printed to the console.
 
 ### Multihost
-**Feature Status: Stable**
+**Feature status:** stable
 
-When local interfaces are needed or the ressources are all used the ioBroker system can be extended by additional hosts. They all connect to the same states and objects databases and are so synced with each other.
+When local interfaces are required or the host system is reaching its resource limits, the ioBroker system can be distributed to additional hosts. All hosts in a multihost environment are connected to the same states and objects databases and are thus synchronized with each other.
 
-When the states and/or objects databases are provided by an js-controller process on one host this process need to be configured for these dstabases to bind to port 0.0.0.0 (enter this in ```iobroker setup custom```) instead of 127.0.0.1
+When the states and/or objects databases are provided by an js-controller process on one host, this "master" host needs to be configured so the databases are available on the local network. TO do so, enter 0.0.0.0 as the address in ```iobroker setup custom``` instead of 127.0.0.1.
 
 All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
 
-### State and Objects Databases and Files
+### State and objects databases and files
 
 ioBroker is storing three different type of data:
-* **Objects** contain the meta data, descriptions and configuration values for all objects and states stored by ioBroker. Objects are created initially and sometimes updated, but more or less not changed that often
-* **Files** are all JSON-, Image- and other files that are accessible for all ioBroker adapters
-* **States** contain the real data from sensors, devices and objects which are updated often
+* **objects** contain the meta data, descriptions and configuration values for all objects and states stored by ioBroker. Objects are created initially and sometimes updated, but usually not changed very frequently
+* **files** are all JSON, image and other files that are accessible for all ioBroker adapters
+* **states** contain the real data from sensors, devices and objects which are updated frequently
 
-#### ioBroker In-Memory Database with JSON-File Storage
+#### ioBroker in-memory database with JSON file storage
 
-By default the js-controller process is offering In-Memory-DBs at ports 9000 (for states) and 9001 (for objects/file). All adapter processes and other js-controller processes connect to these databases to read and store data.
+By default the js-controller process is offering in-memory DBs at ports 9000 (for states) and 9001 (for objects/file). All adapter processes and js-controller processes from other hosts connect to these databases to read and store data.
 
-The In-Memory-DBs for States and Objects use JSON files to store the data. The files are stored after changes every 30 seconds and are backed up automatically. The files are stored in iobroker-data directory, the backups in a sub folder.
+The in-memory DBs for states and objects use JSON files to store the data. The files are stored after changes every 30 seconds and are backed up automatically. The files are stored in iobroker-data directory, the backups in a sub folder.
 
-The In-Memory-DBs work well for up to 10.000 Objects and normal State update frequencies. As soon as you have more Objects and States or you have states that are updated very often it is a better idea to use Redis as Database engine. You can detect this if js-controller process is using more and more CPU and/or the system feels slow.
+The in-memory DBs work well for up to 10.000 objects and normal state update frequencies. When your system has more objects and states or its states are updated very often, it is a better idea to use Redis as the database engine. A good indicator for this if the js-controller process is using a lot of CPU and/or the system feels slow.
 
-js-controller 1.x was using socket.io as communication protocol between the adapters and the In-Memory-DBs. Starting with js-controller 2.0 the communication protocol was changed to be a lightweight Redis protocol. 
+js-controller 1.x was using socket.io as the communication protocol between the adapters and the in-memory DBs. Starting with js-controller 2.0, the communication protocol was changed to be a lightweight Redis protocol. 
 
 For the objects and states databases special additional logging of the redis protocl messages can be activated in iobroker.json
 
@@ -306,9 +316,9 @@ For the objects and states databases special additional logging of the redis pro
 ``` 
 
 
-#### Redis as Database
+#### Redis as database
 
-Redis is a well known industry In-Memory database which is optimized for speed and stability.
+Redis is a well known industrial grade in-memory database optimized for speed and stability.
 
 ##### Install Redis
 - Linux from here: https://redis.io/download
@@ -323,13 +333,13 @@ e.g. for Linux:
 ###### Allow Network access
 Ideally the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used the ioBroker installation will not work without it.
 
-If you plan to install Redis on a different host then the js-controller or use mulithost environment (see below) you must allow connections to redis from any address (default only 127.0.0.1).
-To do that edit file */etc/redis/redis.conf* (```sudo nano /etc/redis/redis.conf```) and replace ```bind 127.0.0.1``` with ```bind 0.0.0.0``` .
+If you plan to install Redis on a different host then the js-controller or use a mulithost environment (see below), you must allow connections to redis from any address (the default only accepts connections from 127.0.0.1).
+To do that edit the file `/etc/redis/redis.conf` (```sudo nano /etc/redis/redis.conf```) and replace ```bind 127.0.0.1``` with ```bind 0.0.0.0``` .
 Don't forget to restart redis after that. (```sudo systemctl restart redis-server```)
 
 ###### Redis Slaves
 
-If you have multiple hosts you can install Redis to all of them and configure the other hosts to be slaves of the Master host. With this all data are available on all hosts, so even if one host crashs completely you still have the database content from the other hosts.
+If you have multiple hosts, you can install Redis to all of them and configure the other hosts to be slaves of the Master host. With this all data is available on all hosts, so even if one host crashes completely, you still have the database content from the other hosts.
 
 More details can be found at https://redis.io/topics/replication#configuration and https://redis.io/commands/replicaof
 
@@ -341,31 +351,31 @@ After reconfiguring Redis you also need to update all ioBroker states/objects DB
 
 ###### Redis persistence
 
-By default Redis is a pure In-memory Database which means that it has no content on start. In the default configuration the content of the redis DB is stored on disk after a certain amount of changed keys.
+By default Redis is a pure in-memory Database which means that it has no content when it starts. In the default configuration, the content of the redis DB is stored on disk after a certain amount of changed keys.
 
 Depending on how many changes your system is doing it will update the data on disk roughly every 5 minutes by default.
-Please consider this if you run on a SD card.
+Please consider this if your system runs from an SD card (like Raspberry Pi).
 
 If you are not working on a SD card and want to have real up-to-date data you can use the second persistance method called AOF.
 
 Please see https://redis.io/topics/persistence for details, differences and configuration information for both persistence options.
 
-##### Using REDIS as States-DB
-**Feature Status: Stable**
+##### Using Redis as States-DB
+**Feature status:** stable
 
-There is a possibility to use REDIS as states database. It is reasonable to do that for big installations or for systems with performance problems.
-It is possible to switch anytime between REDIS and In-Memory Javascript DB. 
+There is a possibility to use Redis as states database. It is reasonable to do that for big installations or for systems with performance problems.
+It is possible to switch anytime between Redis and in-memory Javascript DB. 
 
-**Note for js-controller <2.0**: After changing to Redis all states must be updated by the adapters again (values will be lost). Please especially note this for own JavaScript objects! Objects and configuration are not affected.
+**Note for js-controller <2.0**: After changing to Redis, all states must be updated by the adapters again (the previous values will be lost). Please especially note this for own JavaScript objects! Objects and configuration are not affected.
 
-To switch to REDIS write in the console following:
+To switch to Redis, execute the following on the console:
 
 ```
->iobroker stop
->iobroker setup custom
+iobroker stop
+iobroker setup custom
 ```
 
-And then:
+And then enter `redis` as the states DB type (line 4):
 
 ```
 Type of objects DB [file, redis], default [file]:
@@ -379,32 +389,30 @@ Host name of this machine [FastPC]:
 creating conf/iobroker.json
 ```
 
-Note that in fourth line it was entered **redis**.
-
 Now ioBroker can be started.
-If ioBroker does not start please check the log at log/iobroker.*.log in ioBroker directory. Please also check that redis is running (use e.g. ```redis-cli```) and that the firewall is set up correctly
+If it does not start, please check the log at `log/iobroker.*.log` in the ioBroker directory. Please also check that redis is running (use e.g. ```redis-cli```) and that the firewall is set up correctly.
 
-To switch back to JS States write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
+To switch back to JS states write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
 
-##### Using REDIS as Objects/File-DB
-**Feature Status: New since 2.0.0**
+##### Using Redis as objects/File-DB
+**Feature status:** New in 2.0.0
 
-Starting with js-controller 2.0.0 also objects and files can be stored in Redis. Please note that this uses much more RAM because beside object definitions also uploaded files and image assets are also stored in redis. Redis holds all data in RAM. Please think carefull about this step and make sure your system has enough RAM available!
+Starting with js-controller 2.0.0, objects and files can also be stored in Redis. Since Redis holds all data in the RAM, this setup uses much more RAM because uploaded files and image assets are also stored in Redis. Please think carefully about this step and make sure your system has enough RAM available!
 
-The setup is comparable to the setup for States in Redis by using ```iobroker setup custom```, but enter **redis** as type of the objects database. You can use the same redis server for states and objects/files database.
+The setup is comparable to the setup for states in Redis by using ```iobroker setup custom```, but enter **redis** as type of the objects database. You can use the same redis server for states and objects/files database.
 
-##### Using REDIS Sentinel as Objects/File-DB
-**Feature Status: New since 2.0.0**
+##### Using Redis Sentinel as objects/File-DB
+**Feature status:** New in 2.0.0
 
-Redis Sentinel is an industry standard to allow a high available redis databases. It is based on a Redis master-slave setup with at least three nodes! Additional so called sentinel processes monitor all this redis instances in the master-slave setup. 
+Redis Sentinel is an industry standard to achieve a highly available redis database. It is based on a Redis master-slave setup with at least three nodes. Additional so-called sentinel processes monitor all redis instances in the master-slave setup. 
 
-If the Master is going offline the sentinel processes react and coordinate to select a new master. After this is done the master-slave cluster is reconfigured and the new master is taking over.
+If the master is going offline, the sentinel processes react and coordinate to select a new master. After this is done, the master-slave cluster is reconfigured and the new master is taking over.
 
 More details about the Redis sentinel can be found in the official documentation at https://redis.io/topics/sentinel .
 
-ioBroker allows to use a Redis Sentinel system. For this you use ``ìobroker custom```as seen above, but provide a comma separated list of the sentinel hosts. Also for the sentinel ports you can enter a comma separated list with the same number of entries, or only one which is then used for all hosts.
+ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker custom``` like above, but provide a comma separated list of the sentinel hosts. For the sentinel ports you can either enter a comma separated list with the same number of entries, or a single one which is then used for all hosts.
 
-When such a list is configured ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to this Redis. When the connection to the Master is disconnected all data updates are cached and sent as soon as a connection to the new master has been established.
+With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
 ## License 
 
