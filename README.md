@@ -56,7 +56,7 @@ or
 ### Windows
 
 * run ```iobroker start``` in the ioBroker directory to start the ioBroker controller in the background
-* check the logfile ```node_modules/iobroker.js-controller/log/iobroker.log```
+* check the logfile ```log/iobroker.log```
 
 or
 
