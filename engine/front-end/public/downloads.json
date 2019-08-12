@@ -1,5 +1,5 @@
 [
-    {
+  {
     "file": "ioBroker_Image_Rock64_20190730_stretch.zip",
     "linux": "Armbian Stretch Server",
     "date": "20190730",
@@ -136,7 +136,6 @@
     "user": "root",
     "password": "1234",
     "info": "nand-sata-install funktioniert wieder<br/>jedoch nightly build!",
-    "readme": "http://www.iobroker.net/docu/?page_id=8071&lang=de"
   },
   {
     "file": "ioBroker_all_in_one_Image_RPi_2-3_20180419_stretch.zip",
