@@ -1,5 +1,27 @@
 [
   {
+    "file": "ioBroker_Image_Tinker_piVCCU3_20190813_stretch.zip",
+    "linux": "Armbian Stretch Server",
+    "date": "20190813",
+    "device": "Tinkerboard(S)",
+    "details": "ioBroker All-In-One Image<br>mit piVCCU<br><ul><li>nodejs 10.16.2</li><li>npm 6.9.0</li></ul>",
+    "picture": "tinkerboard.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "ioBroker_Image_Tinker_piVCCU3_20190813_stretch.md"
+  },
+  {
+    "file": "ioBroker_Image_Tinker_201900813_buster.zip",
+    "linux": "Armbian Stretch Server",
+    "date": "20190813",
+    "device": "Tinkerboard(S)",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 10.16.2</li><li>npm 6.9.0</li></ul>",
+    "picture": "tinkerboard.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "ioBroker_Image_Tinker_201900813_buster.md"
+  },
+  {
     "file": "ioBroker_Image_Rock64_20190730_stretch.zip",
     "linux": "Armbian Stretch Server",
     "date": "20190730",
