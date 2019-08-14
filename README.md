@@ -413,6 +413,25 @@ ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker cus
 
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
+## Release cycle and Development process overview
+
+The goal is to release an update for the js-controller roughly all 3 months. The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies. 
+
+For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently js-controller 2.0 will start with nodes 8.x up to 12.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
+
+For the planned changes we use a backlog approach. This means that out of the existing issues for the project the core developers select issues to put into a prioritized backlog in the project view. Other users also can propose tickets. All merged PRs (also when unplanned/not prioritized before) are included as finished tickets in the project (so project is assigned to them manually on merge).
+When a ticket is contained in the backlog this does not mean that it will be done in the next version! But it helps if developers have some time to see what’s considered important. The current project will always get the name „Next Release“. All older projects will get the respective release version number to know the history.
+
+Roughly at the end of each quarter (so 31.3./30.6./30.9./31.12.) we will finalize the next release version, update changelogs. A version branch for this version is created that will allow hotfixes. 1-2 weeks before that cut-off date.no new feature PRs should be added. Changes are flagged as [Bugfix], [Feature] or [Breaking Change] in changelog (ideally also in PRs) and version increase is depending on the type of the changes.
+
+After this we will have a testing phase for this version. Once tests ended successfully it will be published to „latest“ repository to get feedback from community. After this it goes too stable. Depending on the problems, bugs and feedback the goal is to release the stable version roughly 1 - 1.5 month after cut-off date from the version.
+
+All changes should be added via PRs that are reviewed and merged by the core developers. PRs are flagged as [Bugfix], [Feature] or [Breaking Change].
+
+It is also allowed to introduce unfinished new features, as soon as they do not break the system. We will also start to introduce „testing quality features“ that only may be configured manually in JSON files or via CLI. They are then flagged as „Technology Preview“. This means we will not delay a new js-controller version because a new feature is not possible to configure via admin. The feature list and details in js-controller README needs to be updated as soon as the feature is ready in general (including "Technology preview"). Unfinished features are not included in the README even if existing partly in the code.
+
+This new process and rules are introduced with js-controller 2.0.0. The cut-off date will most likely be (different from described above) somewhere before end of September. Also the testing phase may be longer because of the size of the 2.0.0. W need to test this version carefully because it contains big rewrites and refactorings.
+
 ## License 
 
 The MIT License (MIT)
