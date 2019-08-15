@@ -22,14 +22,15 @@ function testAdapter(options) {
 
     const tests = [
         require('./testAdapterHelpers'),
-        require('./testEnums'),
-        require('./testFiles'),
-        require('./testHelperStates'),
-        require('./testMessages'),
-        require('./testObjectsFunctions'),
-        require('./testObjectsACL'),
-        require('./testStates'),
-        require('./testConsole')
+//        require('./testEnums'),
+ //       require('./testFiles'),
+ //       require('./testHelperStates'),
+ //       require('./testMessages'),
+  //      require('./testObjectsFunctions'),
+  //      require('./testObjectsACL'),
+  //      require('./testStates'),
+        require('./testAliases'),
+  //      require('./testConsole')
     ];
 
     const context = {
