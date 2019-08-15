@@ -371,6 +371,81 @@ function register(it, expect, context) {
         });
     }).timeout(1000);
 
+    it(testName + 'Test subscribe aliases pattern', done => {
+        context.onAdapterStateChanged = function (id, state) {
+            if (id === gAliasID) {
+                expect(state).to.be.ok;
+                expect(state.val).to.equal(1);
+                context.onAdapterStateChanged = null;
+                done();
+            }
+        };
+
+        const parts = gAliasID.split('.');
+        parts.pop();
+
+        context.adapter.subscribeForeignStates(parts.join('.') + '.*', () =>
+            context.states.setState(gid, 10, err =>
+                expect(err).to.be.not.ok));
+    }).timeout(1000);
+
+    it(testName + 'Test unsubscribe aliases pattern', done => {
+        context.onAdapterStateChanged = function (id, state) {
+            expect(true).to.be.false;
+        };
+
+        const parts = gAliasID.split('.');
+        parts.pop();
+
+        context.adapter.unsubscribeForeignStates(parts.join('.') + '.*', () => {
+            context.states.setState(gid, 10, err => {
+                expect(err).to.be.not.ok;
+                setTimeout(() => done(), 500);
+            });
+        });
+    }).timeout(1000);
+
+    it(testName + 'Test subscribe aliases array', done => {
+        let count = 0;
+        context.onAdapterStateChanged = function (id, state) {
+            if (id === gAliasID) {
+                count++;
+                expect(state).to.be.ok;
+                expect(state.val).to.equal(1);
+                if (count === 2) {
+                    context.onAdapterStateChanged = null;
+                    done();
+                }
+            } else
+            if (id === gid) {
+                count++;
+                expect(state).to.be.ok;
+                expect(state.val).to.equal(10);
+                if (count === 2) {
+                    context.onAdapterStateChanged = null;
+                    done();
+                }
+            }
+        };
+
+        context.adapter.subscribeForeignStates([gAliasID, gid], () =>
+            context.states.setState(gid, 10, err =>
+                expect(err).to.be.not.ok));
+    }).timeout(1000);
+
+    it(testName + 'Test unsubscribe aliases array', done => {
+        context.onAdapterStateChanged = function (id, state) {
+            expect(true).to.be.false;
+        };
+
+        context.adapter.unsubscribeForeignStates([gAliasID, gid], () => {
+            context.states.setState(gid, 10, err => {
+                expect(err).to.be.not.ok;
+                setTimeout(() => done(), 500);
+            });
+        });
+    }).timeout(1000);
+
     /*
     // getState
     it(testName + 'Get local state', function (done) {

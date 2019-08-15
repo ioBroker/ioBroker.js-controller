@@ -688,10 +688,7 @@ function register(it, expect, context) {
         const sGid = context.adapterShortName + '2.0.' + gid + '6';
 
         context.onAdapterStateChanged = function (id, state) {
-            if (id === sGid) {
-                expect(state).to.be.ok;
-                expect(state.val).to.be.not.equal(10);
-            }
+            expect(true).to.be.false;
         };
 
         context.states.setState(sGid, 9, function (err) {
