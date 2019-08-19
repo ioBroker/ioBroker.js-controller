@@ -2,7 +2,7 @@
 Auf dieser Seite zeigen wir Ihnen, wie Sie eine ioBroker-Entwicklungsumgebung installieren und einrichten.
 WebStorm wird für die Hauptentwicklung verwendet, möglicherweise ist [Visual Studio Code](./vscode.md) eine Alternative für Sie.
 
-Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript, NodeJS, HTML5 usw.
+Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript, Node.js, HTML5 usw.
 
 ## Installation von WebStorm
 ### Linux
@@ -112,7 +112,7 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
     ![Configuration](../../de/dev/media/Run-Debug Configurations.png)
     
 ## Debuggen eines Adapters
- 1. Falls ioBroker noch nicht läuft, [starten](startStopIobroker) Sie den ioBroker.
+ 1. Falls ioBroker noch nicht läuft, starten Sie den ioBroker.
  2. Öffnen Sie Webstorm mit dem zuvor eingerichteten Projekt und wechseln Sie in die Bereiche / Dateien, die Sie debuggen möchten.
  3. Setzen Sie sich die Haltepunkte, die Sie benötigen.
  
