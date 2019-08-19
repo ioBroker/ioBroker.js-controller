@@ -58,7 +58,7 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
  
 ![Begrüßungsbildschirm](../../de/dev/media/WelcomeScreen.png)
 
-## Konfigurieren Sie WebStorm, um einen Adapter zu debuggen
+## Konfigurieren Sie WebStorm und ioBroker, um einen Adapter zu debuggen
 *Hinweis: Die Konfiguration von WebStorm unterscheidet sich kaum zwischen Linux und Windows, deshalb werden wir hier nicht mehr unterscheiden*
 
  1. Öffnen Sie WebStorm
@@ -68,8 +68,60 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
  3. Ihr neues WebStorm-Projekt sollte so aussehen...
  
     ![ioBroker Projektbaum](../../de/dev/media/newProject01.png)
+    
+ 4. Wir empfehlen für das Debugging des jeweiligen Adapters Favoriten anzulegen um einfacher zu navigieren. 
 
-### Erstellen Sie die "Run Configuration" des ioBrokers und des Adapters
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    ![ioBroker Projektbaum](../../de/dev/media/newProject01.png)
+ 
+    
+### Starten / Stoppen des ioBrokers
+ * Linux: Handelt es sich um eine ältere Installation (vor Anfang bis Mitte Januar 2019), sollten im Wurzelverzeichnis des ioBrokers `/opt/iobroker` die Terminalbefehle `iobroker *` <- start / stop / status / restart funktionieren um den ioBroker zu steuern. Evtl. je nach Installation wird `sudo` benötigt.
+  
+   Ist es eine neuere Installation werden stattdessen die Terminalbefehle `sudo systemctl * iobroker` <- start / stop / status / restart benötigt.
+ * Windows: Im Wurzelverzeichnis des ioBrokers kann der ioBroker mit den Befehlen `iobroker *` <- start / stop / status / restart in der Eingabeaufforderung gesteuert werden.
+  
+### Installation und Konfiguration des Adapters im ioBroker   
+#### Installation des Adapters
+ 1. ioBroker wird gestartet.
+ 2. Den Verwahrungsort auf `latest` umschalten. Dazu in der Übersicht auf System gehen und den entsprechenden Eintrag auswählen.
+ 
+    ![Verwahrungsort umschalten](../../de/dev/media/verwahrungsort.png)
+    
+ 3. 
+    * Wurde der Adapter bereits auf NPM veröffentlicht und in das latest Repositiory des ioBrokers eingetragen. So kann der Adapter über die normale Installation in ioBroker installiert werden. Dazu einfach auf das jeweilige + Zeichen klicken.
+ 
+      ![Standardinstallation](../../de/dev/media/standardAdapterInstallation.png)
+     
+    * Alternativ kann der Adapter aber auch direkt von GitHub installiert werden. Dazu im ioBroker auf `Adpater -> Installieren aus eigener URL (GitHub Logo oben links) -> BELIEBIG` auswählen. Dort dann den Adapter mit Angabe des Branches, wie folgt angeben.
+    
+      `git://github.com/user/repositiory.git#branch` -> z.B. `git://github.com/dkleber89/ioBroker.beckhoff.git#7-addOldTc2AndBcSupport`
+    
+      ![GitHub Installation](../../de/dev/media/githubInstallation.png)
+      
+      Wurde der Adapter heruntergeladen und installiert muss noch eine Instanz hinzugefügt werden. dazu einfach wie in der normalen Installation auf das jeweilige + Zeichen klicken.
+      
+#### Adapter Konfiguration
+ 1. Nach der Installation den Adapter auf der Konfigurationsseite wie benötigt konfigurieren. 
+ 2. Der Adapter muss im ioBroker gestoppt sein und wir empfehlen die `Log-Stufe` auf Debug zu stellen, damit die Logausgaben detaillierter werden. Falls die `Log-Stufe` nicht sichtbar ist muss in den `Expertenmodus` gewechselt werden.
+ 
+    ![GitHub Installation](../../de/dev/media/adapterKonfig.png)
+    
+ 3. Die Instanznummer sollten Sie sich merken, diese ist im nächsten Schritt notwendig.
+
+### Erstellen Sie die "Run Configuration" des Adapters
 1. Gehen Sie zu `Run -> Edit Configuration` und erstellen Sie eine Node.js Konfiguration.
 
    ![Neue Konfiguration anlegen](../../de/dev/media/newRunConfig.png)
@@ -81,6 +133,20 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
  3. Damit sie den ioBroker aus WebStorm heraus starten können empfehlen wir Ihnen auch eine "Run Configuration" für den ioBroker zu erstellen. Startet ioBroker mit dem Betriebssystem mit, ist dies nicht notwendig.
  
     ![Configuration](../../de/dev/media/Run-Debug Configurations_ioBroker.png)
+    
+ 4. Sie fragen sich vielleicht, wie Sie ioBroker stoppen können? Öffnen Sie ein Terminal in WebStorm und geben Sie folgendes ein ...
+ 
+    
+   sudo systemctl stop iobroker
+   
+
+
+
+
+
+
+
+
     
 ### Debuggen eines Adapters
  1. Falls ioBroker noch nicht läuft starten Sie ioBroker mit der Auswahl...
