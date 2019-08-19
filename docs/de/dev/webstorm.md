@@ -69,25 +69,7 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
  
     ![ioBroker Projektbaum](../../de/dev/media/newProject01.png)
     
- 4. Wir empfehlen für das Debugging des jeweiligen Adapters Favoriten anzulegen um einfacher zu navigieren. 
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    ![ioBroker Projektbaum](../../de/dev/media/newProject01.png)
- 
-    
-### Starten / Stoppen des ioBrokers
+### Starten / Stoppen des ioBrokers <a name="startStopIobroker"></a>
  * Linux: Handelt es sich um eine ältere Installation (vor Anfang bis Mitte Januar 2019), sollten im Wurzelverzeichnis des ioBrokers `/opt/iobroker` die Terminalbefehle `iobroker *` <- start / stop / status / restart funktionieren um den ioBroker zu steuern. Evtl. je nach Installation wird `sudo` benötigt.
   
    Ist es eine neuere Installation werden stattdessen die Terminalbefehle `sudo systemctl * iobroker` <- start / stop / status / restart benötigt.
@@ -100,18 +82,17 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
  
     ![Verwahrungsort umschalten](../../de/dev/media/verwahrungsort.png)
     
- 3. 
-    * Wurde der Adapter bereits auf NPM veröffentlicht und in das latest Repositiory des ioBrokers eingetragen. So kann der Adapter über die normale Installation in ioBroker installiert werden. Dazu einfach auf das jeweilige + Zeichen klicken.
+ 3. Wurde der Adapter bereits auf NPM veröffentlicht und in das latest Repositiory des ioBrokers eingetragen. So kann der Adapter über die normale Installation in ioBroker installiert werden. Dazu einfach auf das jeweilige + Zeichen klicken.
  
       ![Standardinstallation](../../de/dev/media/standardAdapterInstallation.png)
      
-    * Alternativ kann der Adapter aber auch direkt von GitHub installiert werden. Dazu im ioBroker auf `Adpater -> Installieren aus eigener URL (GitHub Logo oben links) -> BELIEBIG` auswählen. Dort dann den Adapter mit Angabe des Branches, wie folgt angeben.
+ 4. Alternativ kann der Adapter aber auch direkt von GitHub installiert werden. Dazu im ioBroker auf `Adpater -> Installieren aus eigener URL (GitHub Logo oben links) -> BELIEBIG` auswählen. Dort dann den Adapter mit Angabe des Branches, wie folgt angeben.
     
-      `git://github.com/user/repositiory.git#branch` -> z.B. `git://github.com/dkleber89/ioBroker.beckhoff.git#7-addOldTc2AndBcSupport`
-    
-      ![GitHub Installation](../../de/dev/media/githubInstallation.png)
-      
-      Wurde der Adapter heruntergeladen und installiert muss noch eine Instanz hinzugefügt werden. dazu einfach wie in der normalen Installation auf das jeweilige + Zeichen klicken.
+    `git://github.com/user/repositiory.git#branch` -> z.B. `git://github.com/dkleber89/ioBroker.beckhoff.git#7-addOldTc2AndBcSupport`
+
+    ![GitHub Installation](../../de/dev/media/githubInstallation.png)
+  
+    Wurde der Adapter heruntergeladen und installiert muss noch eine Instanz hinzugefügt werden. dazu einfach wie in der normalen Installation auf das jeweilige + Zeichen klicken.
       
 #### Adapter Konfiguration
  1. Nach der Installation den Adapter auf der Konfigurationsseite wie benötigt konfigurieren. 
@@ -130,52 +111,17 @@ Diese Dokumentation ist wie ein "Kochbuch", aber ohne Erklärungen zu Javascript
 
     ![Configuration](../../de/dev/media/Run-Debug Configurations.png)
     
- 3. Damit sie den ioBroker aus WebStorm heraus starten können empfehlen wir Ihnen auch eine "Run Configuration" für den ioBroker zu erstellen. Startet ioBroker mit dem Betriebssystem mit, ist dies nicht notwendig.
+## Debuggen eines Adapters
+ 1. Falls ioBroker noch nicht läuft, [starten](startStopIobroker) Sie den ioBroker.
+ 2. Öffnen Sie Webstorm mit dem zuvor eingerichteten Projekt und wechseln Sie in die Bereiche / Dateien die Sie debuggen möchten.
+ 3. Setzen Sie sich die Haltepunkte die Sie benötigen.
  
-    ![Configuration](../../de/dev/media/Run-Debug Configurations_ioBroker.png)
-    
- 4. Sie fragen sich vielleicht, wie Sie ioBroker stoppen können? Öffnen Sie ein Terminal in WebStorm und geben Sie folgendes ein ...
+    ![Haltepunkte setzen](../../de/dev/media/haltepunkte.png)
+
+ 4. Starten Sie das Debugging.
  
+    ![Haltepunkte setzen](../../de/dev/media/startDebug.png)
     
-   sudo systemctl stop iobroker
-   
-
-
-
-
-
-
-
-
-    
-### Debuggen eines Adapters
- 1. Falls ioBroker noch nicht läuft starten Sie ioBroker mit der Auswahl...
-
-    ![ioBroker starten](../../de/dev/media/startIoBroker.png)
-
-2. Sie fragen sich vielleicht, wie Sie ioBroker stoppen können? Öffnen Sie ein Terminal in WebStorm und geben Sie folgendes ein ...
-
-    ![](../../de/dev/media/TerminalRun01.png)
-
-## So debuggen Sie einen ioBroker-Adapter
-In diesem Kapitel erfahren Sie, wie Sie einen ioBroker-Adapter wie "iobroker.hmm" debuggen können.
-Starten Sie den ioBroker wie zuvor erwähnt. Verwenden Sie nicht den "Debug-Modus". Verwenden Sie für ioBroker nur den "Run-Modus".
-Installieren Sie einen Adapter wie ioBroker.hmm von der Befehlszeile aus wie folgt ![](../../de/dev/media/CLIinstallHMM01.png)
-
-Konfigurieren Sie den WebStorm "Debug-Einstellungen" ...
-![](../../de/dev/media/DebugSettingsHMM01.png)
-
-Gehen Sie zur ioBroker-Webseite http:// localhost: 8081 und installieren Sie den iobroker.hmm-Adapter: ![](../../de/dev/media/InstallHMMfromWeb01.png)
-
-Nach der Installation des Adapters müssen wir die Adapterinstanz deaktivieren ...
-![](../../de/dev/media/DisableHMMWeb011.png)
-
-... weiter ![](../../de/dev/media/DisableHMMWeb01.png)
-
-... am Ende sollten Sie dieses Ergebnis sehen: ![](../../de/dev/media/DisableHMMWeb02.png)
-
-Nun zurück zu WebStorm. Öffnen Sie die Datei hmm.js und setzen Sie einen Haltepunkt wie diesen: ![](../../de/dev/media/WebstormBreakpointsHMM01.png)
-
-Beginnen Sie mit dem Beheben des iobroker.hmm-Adapters: ![](../../de/dev/media/WebstormDebugHMM01.png)
-
-Wenn Sie am ersten Haltepunkt anhalten, können Sie die nächsten Schritte steuern, indem Sie 1) das Programm fortsetzen. 2) Schritt vorbei: ![](../../de/dev/media/DebugHMM02.png)
+ 5. Wenn Sie am ersten Haltepunkt anhalten, können Sie den aktuellen Zustand analysieren und die nächsten Schritte steuern.
+ 
+    ![Debugging Steuerung](../../de/dev/media/debugging.png)
