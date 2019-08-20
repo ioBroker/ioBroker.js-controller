@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.3",
-    "chokidar": "^2.1.1",
+    "chokidar": "^3.0.2",
     "daemonize2": "^0.4.2",
     "debug": "^4.1.1",
     "event-stream": "^4.0.1",
