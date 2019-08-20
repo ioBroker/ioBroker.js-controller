@@ -5,4 +5,4 @@
  *      MIT License
  *
  */
-require('./main');
+require('./main').init();
