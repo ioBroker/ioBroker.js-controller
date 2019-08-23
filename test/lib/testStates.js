@@ -684,25 +684,28 @@ function register(it, expect, context) {
 
     // unsubscribeForeignStates
     it(testName + 'Test unsubscribe foreign states', function (done) {
-        this.timeout(4000);
+        this.timeout(3000);
         const sGid = context.adapterShortName + '2.0.' + gid + '6';
 
         context.onAdapterStateChanged = function (id, state) {
-            expect(true).to.be.false;
+            if (id === sGid) {
+                expect(state.val).to.be.equal(9);
+            } else {
+                expect(true).to.be.false;
+            }
         };
 
-        context.states.setState(sGid, 9, function (err) {
+        context.states.setState(sGid, 9, err => {
             expect(err).to.be.not.ok;
 
-            context.adapter.unsubscribeForeignStates(context.adapterShortName + '2.0.*', function () {
-                context.states.setState(sGid, 10, function (err) {
+            context.adapter.unsubscribeForeignStates(context.adapterShortName + '2.0.*', () =>
+                context.states.setState(sGid, 10, err => {
                     expect(err).to.be.not.ok;
-                    setTimeout(function () {
+                    setTimeout(() => {
                         context.onAdapterStateChanged = null;
                         done();
-                    }, 2000);
-                });
-            });
+                    }, 1000);
+                }));
         });
     });
 
