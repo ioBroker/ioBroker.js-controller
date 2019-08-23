@@ -2,6 +2,8 @@
 # ioBroker.plex
 Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Furthermore, Tautulli integration.
 
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+
 ![Number of Installations](http://iobroker.live/badges/plex-installed.svg)
 ![Stable version](http://iobroker.live/badges/plex-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.plex.svg)](https://www.npmjs.com/package/iobroker.plex)
@@ -25,33 +27,39 @@ Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Fu
 
 
 ## 1. Features
-- Receive events from Plex (via Plex Pass or Tautulli)
+- Receive `events` from Plex (via [Plex Webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) and [Plex Notifications](https://support.plex.tv/articles/push-notifications/#toc-0) using Plex Pass or via Tautulli, [__see setup!__](#22-advanced-setup-plex-pass-or-tautulli))
 - Playback control for players
-- Retrieve servers
-- Retrieve libraries
+- Retrieve `servers`
+- Retrieve `libraries`
 - Retrieve all items within a library
-- Retrieve users (only with Tautulli)
-- Retrieve statistics (only with Tautulli)
-- Retrieve playlists
-- Retrieve settings 
+- Retrieve `users` (only with Tautulli)
+- Retrieve `statistics` (only with Tautulli)
+- Retrieve `playlists`
+- Retrieve `settings`
+- Web Interface that shows the recent events from Plex:
+  ![Plex Web Interface](img/screenshot_adapter-interface.png)
+
 
 ## 2. Setup instructions
 ### 2.1. Basic Setup
-For the basic setup it is only required to provide the IP address (and port) of your Plex installation. Furthermore, you have to provide user and password for the adapter to retrieve data from Plex.
-
-If you __do not__ want to store user and password within the adapter, you may whitelist the ioBroker IP within your Plex settings. For this, go to the `Settings` of your Plex Media Server and to `Network`. Type in the ioBroker IP address in both the fields `LAN Networks` and `List of IP addresses and networks that are allowed without auth`:
-
-![Plex Network settings](img/screenshot_plex-networksettings.jpg)
+For the basic setup it is required to provide the IP address (and port) of your Plex installation. Furthermore, you have to retrieve a dedicated token for the adapter to retrieve data from Plex.
 
 Once this is given, ioBroker.plex will retrieve all the basic data (incl. Servers, Libraries). See [Channels & States](#21-with-basis-setup) for the full list of basic data.
 
 ### 2.2. Advanced Setup (Plex Pass or Tautulli)
 #### 2.2.1. Plex Pass
+__Webhook__
+
 If you are a Plex Pass user, you may [setup a webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) in the Plex Settings to retrieve the current event / action from your Plex Media Server (play, pause, resume, stop, viewed and rated).
 
 Navigate to your Plex Media Server and go to ```Settings``` and ```Webhook```. Created a new webhook by clicking ```Add Webhook``` and enter your ioBroker IP adress with the custom port specified in the ioBroker.plex settings and trailing ```/plex``` path, e.g. ```http://192.168.178.29:41891/plex```:
 
 ![Plex Webhook](img/screenshot_plex-webhook.png)
+
+__Events__
+
+For information regarding the Plex Notifications, please [see the official documentation](https://support.plex.tv/articles/push-notifications/#toc-0). To turn on Notifications on your Plex Media Server, go to `Settings` > `Server` > `General` and then enable the `Push Notifications` preference.
+
 
 #### 2.2.2.Tautulli
 [Tautulli is a 3rd party application](https://tautulli.com/#about) that you can run alongside your Plex Media Server to monitor activity and track various statistics. Most importantly, these statistics include what has been watched, who watched it, when and where they watched it, and how it was watched. All statistics are presented in a nice and clean interface with many tables and graphs, which makes it easy to brag about your server to everyone else. Check out [Tautulli Preview](https://tautulli.com/#preview) and [install it on your preferred system](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) if you are interested.
@@ -119,8 +127,15 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
-- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
-- add support for all Tautulli triggers
+- Remote Player Control
+
+### 0.6.0 (2019-08-19)
+- (Zefau) replaced password with token authentication
+
+### 0.5.0 (2019-08-18)
+- (Zefau) added support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
+- (Zefau) added support for all Tautulli triggers
+- (Zefau) added Adapter Web Interface that shows the recent events
 
 ### 0.4.3 (2019-08-11)
 - (Zefau) Performance improvements (dutyCycleRun and state comparison)

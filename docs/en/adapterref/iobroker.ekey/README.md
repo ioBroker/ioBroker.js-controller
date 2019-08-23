@@ -1,6 +1,5 @@
 ![Logo](admin/ekey.png)
 # ioBroker.ekey
-======================
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/ioBroker/ioBroker.ekey.svg)](https://greenkeeper.io/)
 
@@ -23,6 +22,10 @@ or here https://www.ekey.net/assets/media_center/EN/User_Guide_ekey_net_4.3_en_w
 
 ## Changelog
 
+### 1.1.0
+* (bluefox) Added compact mode
+* (bluefox) Own port is now configurable
+
 ### 1.0.0
 * (bluefox) Configuration dialog under firefox was corrected
 
@@ -36,7 +39,7 @@ or here https://www.ekey.net/assets/media_center/EN/User_Guide_ekey_net_4.3_en_w
 
 The MIT License (MIT)
 
-Copyright (c) 2018 ioBroker <dogafox@gmail.com>
+Copyright (c) 2018-2019 ioBroker <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

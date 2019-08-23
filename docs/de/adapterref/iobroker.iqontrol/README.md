@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
+hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -114,7 +114,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 Jede Rolle hat die folgenden drei Zustände:
 
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
-* **BATTERY** *boolean* - wenn wahr oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
+* **BATTERY** *boolean* - wenn true oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
@@ -145,6 +145,11 @@ Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise d
 * **STATE** *Boolean* - Anzeigen und Ein- / Ausschalten
 * **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
+### <img src="img/icons/button.png" width="32"> Taste:
+* **STATE** *any* - jeder gewünschte Zustandstyp
+* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Button gedrückt wird
+* **OFF_SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!). Falls definiert, wird STATE nach der in den Optionen definierten Zeit oder 100ms auf diesen Wert zurückgesetzt
+
 ### <img src="img/icons/light_on.png" width="32"> Licht:
 Jedes Licht kann einen oder beide der folgenden Zustände haben:
 
@@ -155,7 +160,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status haben und keine weißen LEDs, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -237,7 +242,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden.
 * **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird.
-* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
 * **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (in den Geräteeinstellungen konfigurierbare Tastenbeschriftung) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
@@ -251,7 +256,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
   * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsart wie "scharf" und "unscharf" wählen
-    * In den Geräteoptionen können Sie den Wert definieren, der für "Unscharf" steht, sodass das entsprechende Symbol angezeigt werden kann
+    * In den Geräteoptionen können Sie den Wert festlegen, der für "Unscharf" steht, damit das entsprechende Symbol angezeigt wird
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
@@ -267,10 +272,6 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/play.png" width="32"> Szene:
 * **STATE** *Boolean* - Zeigt an, ob die Szene aktiv ist. Bei true wird die Szene gestartet
 
-### <img src="img/icons/button.png" width="32"> Taste:
-* **STATE** *any* - jeder gewünschte Zustandstyp
-* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn die Schaltfläche gedrückt wird
-
 ### <img src="img/icons/popup.png" width="32"> Pop-up:
 * **STATE** *any* - kann zur Anzeige weiterer Informationen verwendet werden
 * **URL** CONSTANT *string* - Diese URL wird als iframe in Popup geöffnet
@@ -281,11 +282,28 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
 ## Entwickeln
-* Schauen Sie sich [Funktionsweise des Frontends] an (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
+* Siehe [Funktionsweise des Frontends] (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
 ****
 
 ## Changelog
+
+### 0.1.10 (2019-08-20)
+* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
+* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
+* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (Sebastian Bormann) Fixed handling of spaces in image filenames.
+
+### 0.1.9 (2019-08-18)
+* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
+* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
+* (Sebastian Bormann) Added multiple file upload to images tab.
+* (Sebastian Bormann) Added check for dead links to other views when saving settings.
+* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
 * (Sebastian Bormann) Further improvements on connecting over iobroker.pro.

@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: Q1IXY7Gv251+NOBKiMXZN/zHkn2MxA7QEGVkGiGdq7k=
+hash: U8JyFng8pXWZePr9Z20INwu4Kj3qLI2F71RbGzxcqas=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
+![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Количество установок](http://iobroker.live/badges/roomba-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/roomba-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.roomba.svg)
@@ -20,30 +21,69 @@ hash: Q1IXY7Gv251+NOBKiMXZN/zHkn2MxA7QEGVkGiGdq7k=
 
 **Оглавление**
 
-1. [Установка] (# установка)
-2. [Инструкции по настройке] (# инструкции по настройке)
-3. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - версии прошивки)
-4. [Каналы и состояния] (# каналы - состояния)
-5. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
-6. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# smart-home - alexa -gration-using-iobrokerjavascript)
-7. [Changelog] (# changelog)
-8. [Кредиты] (# кредитов)
-9. [Лицензия] (# лицензия)
+1. [Особенности] (# функции)
+2. [Установка] (# установка)
+3. [Инструкции по настройке] (# инструкции по настройке)
+4. [Поддерживаемые версии Roomba / прошивки] (# support-roombas - firmware-version)
+5. [Каналы и состояния] (# каналы - состояния)
+6. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
+7. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
+8. [Changelog] (# changelog)
+9. [Кредиты] (# кредитов)
+10. [Лицензия] (# лицензия)
+
+## Характеристики
+Следующие функции поставляются с этим адаптером:
+
+- __Отправить команды__ (`start`,` stop`, `resume`,` pause`, `dock`) на ваш Roomba
+- Извлечение __device состояний__, таких как батарея, закрепленный, полный / вставленный лоток (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
+- Получить __device configuration__, например, настройки, настройки сети или расписания (полный список см. В разделе [Каналы и состояния] (# каналы - состояния)).
+- Получить статистику __device__, такую как общее количество миссий, количество часов на стыковочной станции и т. Д. (Полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
+- Получить информацию о __current mission__ (когда уборка Roomba), например время начала и окончания, общее время выполнения, очищенный sqm и т. Д. (Только для поддерживаемых Roomba см. [Поддерживаемые версии Roomba / Прошивки] (# support-roombas --firmware-версия))
+- __Draw карта на основе полученных данных миссии__ (только на поддерживаемых Roomba's)
+- __Web Interface__, который показывает статус и карту текущих, а также предыдущих / архивных миссий:
+
+  ![Roomba Интерфейс](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
 
 ## Монтаж
 ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
 
-Тем не менее, вам, вероятно, придется установить зависимости пакета canvas с помощью следующей команды:
+Тем не менее, вы, вероятно, должны установить пакетные зависимости canvas (и самого canvas) с помощью следующей команды:
 
+### Linux
 ```
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-```
-
-Если вы получаете сообщение об ошибке, что canvas не установлен, попробуйте установить его вручную в папку ioBroker.roomba (через SSH), выполнив:
-
-```
 sudo npm install canvas --unsafe-perm=true
 ```
+
+### Windows
+1. Убедитесь, что у вас установлен `node-gyp` через
+
+```
+npm install -g node-gyp
+```
+
+2. Убедитесь, что вы установили основы сборки через
+
+```
+npm install --global --production windows-build-tools
+```
+
+3. Загрузите GTK 2 (для [Win32] (http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip) или [Win64] (http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip)) и распакуйте его (например, в `C: \ path \ to \ GTK2`)
+4. Беги
+
+```
+node-gyp rebuild --GTK_Root=C:\path\to\GTK2
+```
+
+5. Установите холст из папки iobroker.roomba.
+
+```
+cd C:\path\to\iobroker\node_modules\iobroker.roomba
+npm install canvas
+```
+
+Для получения дополнительной информации см. Https://github.com/Automattic/node-canvas/wiki/Installation:-Windows.
 
 ## Инструкция по настройке
 ### Автоматическая настройка
@@ -269,6 +309,21 @@ _2019-05-04 исправлена ошибка, препятствовавшая 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </div>
 
 ## Changelog
+
+### 1.0.5 (2019-08-19)
+- (Zefau) added loading screen to web interface
+
+### 1.0.5 (2019-08-18)
+- (Zefau) fixed failing secure connection
+- (Zefau) fixed broken credential retrieval
+- (Zefau) fixed broken refresh
+
+### 1.0.4 (2019-08-15)
+- (Zefau) fixed password retrieval
+- (Zefau) fixed German translations
+- (Zefau) added donations button
+- (Zefau) updated `dorita980` dependency to v3.1.3
+- (Zefau) updated `canvas` dependency to v2.6.0
 
 ### 1.0.3 (2019-07-23)
 - (Zefau) fixed bug _uncaught exception: Cannot read property 'x' of undefined_

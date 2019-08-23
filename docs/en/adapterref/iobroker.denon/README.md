@@ -470,6 +470,15 @@ Following states will be created by the adapter:
    setState('denon.0.settings.surroundMode', '3'); // Sets Multi Channel Stereo as surround mode
    ```
    
+* settings.lfeAmount
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R/W|
+
+    *Amount of subwoofer signal additional directed to speakers in dB. 
+    Range is from 0 dB to -10 dB. Where 10 = -10 dB.*
+    
 * settings.expertCommand
 
     |Data type|Permission|                                                                       
@@ -798,6 +807,8 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
    
 ## Changelog
+### 1.6.0
+* (foxriver76) added new state settings.lfeAmount
 
 ### 1.5.1
 * (foxriver76) fix to detect DENON Ceol

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
+hash: 0oVj4G5vwFHyy/pjIOJipmb/158lNn0AhsoSYYaP5RE=
 ---
 ![логотип](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
@@ -16,17 +16,19 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
 # IoBroker.ekey
-======================
-
 [![Статус зависимости] (https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg)](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey) [![Изменение климата] (https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg)](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 
 Этот адаптер для ioBroker подключается к ekey разъему UDP.
 
-Реализуется, как описано в http://descargas.futurasmus-knxgroup.org/DOC/GB/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf или здесь https://www.ekey.net/assets/media_center/EN/User_Guide_e_net_net_ekey .pdf
+Реализовано как описано в http://descargas.futurasmus-knxgroup.org/DOC/GB/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf или здесь https://www.ekey.net/assets/media_center/EN/User_Guide_e_net_net .pdf
 
 ![образ](../../../en/adapterref/iobroker.ekey/img/ekey.png)
 
 ## Changelog
+
+### 1.1.0
+* (bluefox) Added compact mode
+* (bluefox) Own port is now configurable
 
 ### 1.0.0
 * (bluefox) Configuration dialog under firefox was corrected
@@ -41,7 +43,7 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 ioBroker <dogafox@gmail.com>
+Copyright (c) 2018-2019 ioBroker <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -10,9 +10,8 @@
 [![NPM](https://nodei.co/npm/iobroker.iogo.png?downloads=true)](https://nodei.co/npm/iobroker.iogo/)
 
 This adapter is adding extra featrures to the smarthome app ioGo (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
-Please navigate to settings/account in order to signup with email and password.
-After creating an account in the app, you can use this adapter for push notification.
-Additionally this adapter is storing the current states of your smarthome devices.
+Please visit iogo.nisnagel.de for more information on how to getting started.
+
 
 ## Configuration
 You should set your account information (email/password). After this start the adapter.
@@ -44,17 +43,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-**Possible options**:
-- *user*: Single user or list of users
-- *text*: The notification's body text
-- *title*: The notification's title
-
-## PRO Features
-
-Pro features are immediatly availabe after buying monthly/yearly subscription in ioGo App.
-
-### Images ###
-Just send the path to your image instead of text ```sendTo('iogo.0', 'absolute/path/file.png')```
+Just send the path to your image instead of text or use url attribute ```sendTo('iogo.0', 'absolute/path/file.png')```
 ```
 sendTo('iogo', {
     user:                   'Username',
@@ -64,7 +53,16 @@ sendTo('iogo', {
 });
 ```
 
+**Possible options**:
+- *user*: Single user or list of users
+- *text*: The message itself
+- *title*: The notification's title
+- *url*: Absolute path to an image
+
 ## Changelog
+
+### 0.4.0
+* (nisio) Changes for ioGo app version 2.0.0+
 
 ### 0.3.x
 * (nisio) added support of compact mode

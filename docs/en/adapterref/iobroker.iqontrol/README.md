@@ -136,6 +136,11 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 * **STATE**: *boolean* - display and set on/off-state
 * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 
+### <img src="img/icons/button.png" width="32"> Button:
+* **STATE**: *any* - any desired type of state
+* **SET_VALUE**: CONSTANT *string* - this is a constant (not a linked io-broker-state!) that will be assigned to the STATE if the button is pressed
+* **OFF_SET_VALUE**: CONSTANT *string* - this is a constant (not a linked io-broker-state!). If defined, STATE will be resetted to this value after the in options defined time or 100ms
+
 ### <img src="img/icons/light_on.png" width="32"> Light:
 Every light may have one or both of the following states:
 * **STATE**: *boolean* - show and set on/off-state
@@ -250,10 +255,6 @@ In addition to normal thermostat you can define:
 ### <img src="img/icons/play.png" width="32"> Scene:
 * **STATE**: *boolean* - displays, if the scene is active. If set to true, the scene will be started
 
-### <img src="img/icons/button.png" width="32"> Button:
-* **STATE**: *any* - any desired type of state
-* **SET_VALUE**: CONSTANT *string* - this is a constant (not a linked io-broker-state!) that will be assigned to the STATE if the button is pressed
-
 ### <img src="img/icons/popup.png" width="32"> Popup:
 * **STATE**: *any* - can be used to display further information
 * **URL**: CONSTANT *string* - this url will be opened as iframe inside popup
@@ -270,6 +271,23 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.1.10 (2019-08-20)
+* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
+* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
+* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (Sebastian Bormann) Fixed handling of spaces in image filenames.
+
+### 0.1.9 (2019-08-18)
+* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
+* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
+* (Sebastian Bormann) Added multiple file upload to images tab.
+* (Sebastian Bormann) Added check for dead links to other views when saving settings.
+* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
 * (Sebastian Bormann) Further improvements on connecting over iobroker.pro.

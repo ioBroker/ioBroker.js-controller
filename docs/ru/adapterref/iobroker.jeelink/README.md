@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.jeelink/README.md
 title: ioBroker.jeelink
-hash: pqu3Bjsp33UvrKBQ05qx1l3rKcZM5SddWQfAlEtdnF8=
+hash: apV/B74CjZZUMKx+MC9nfCoMdKN4fZnzSlibWD1ycMc=
 ---
 ![логотип](../../../en/adapterref/iobroker.jeelink/admin/jeelab_logo.png)
 
+![Количество установок](http://iobroker.live/badges/jeelink-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.jeelink.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.jeelink.svg)
 ![Статус сборки](https://travis-ci.org/foxthefox/ioBroker.jeelink.svg?branch=master)
@@ -50,7 +51,7 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 должно быть сделано в админ
 
 * определение порта USB
-* установка скорости передачи
+* настройка скорости передачи
 - определить адрес датчика, который получен в эфире
 - определить уникальный адрес датчика в адаптере (LaCrosse меняет адрес в эфире после замены батареи, поэтому просмотрите журнал и отрегулируйте адрес датчика после замены батареи)
 - определить тип датчика (см. примеры ниже)
@@ -62,6 +63,7 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 | emonTH | emonTH | OK 19 ... | датчик от openenergy.org |
 | emonWater | emonWater | OK 21 ... | датчик с RFM12B для дозирования воды |
 | LaCrosseDTH | TX | OK 9 ... | датчики от LaCrosse, технолин |
+| LaCrosseDTT | TX | OK 9 ... | датчики от LaCrosse, технолин двойной температуры |
 | HMS100TF | TXH29DTH-IT | H00 ... | датчики технолин |
 | LaCrosseBMP180 || OK WS ... | сенсорный мод, суперджи |
 | LaCrosseWS | WS1080, TX22, WS1600 | OK WS ... | Метеостанция |
@@ -72,14 +74,26 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 ## СДЕЛАТЬ:
 * другие типы датчиков
 * поместите код датчика в отдельный файл
-* толкает новый датчик в конфигурацию, затем отображается на странице admin / config
+* подталкивание нового датчика в конфигурацию, затем отображается на странице admin / config
 * Температура HMS100TF ниже 0 °C и низкий уровень заряда батареи должны быть реализованы
 
 ## Changelog
+### 0.1.3
+* (atl285) added new sensor type LacCrosseDTT (double temp like TX25-IT)
+
+### 0.1.2
+* correction for weather (no data is given by value = 255)
+
+### 0.1.1
+* delete buffer function to be compatible with nodejs10
+* enhanced automatic testing
+
 ### 0.1.0
 * compact mode
+
 ### 0.0.7
-* new level sensor (fhem) 
+* new level sensor (fhem)
+
 ### 0.0.6
 * last version of serialport
 * new sensor TXH29DTH-IT

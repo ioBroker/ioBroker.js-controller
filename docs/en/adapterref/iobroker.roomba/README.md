@@ -4,6 +4,8 @@ Connect your iRobot Roomba to ioBroker.
 
 Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+
 [![Number of Installations](http://iobroker.live/badges/roomba-installed.svg)](http://iobroker.live/badges/roomba-installed.svg)
 [![Stable version](http://iobroker.live/badges/roomba-stable.svg)](http://iobroker.live/badges/roomba-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
@@ -14,31 +16,64 @@ Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 [![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)](https://nodei.co/npm/iobroker.roomba/)
 
 **Table of contents**
-1. [Installation](#installation)
-2. [Setup instructions](#setup-instructions)
-3. [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions)
-4. [Channels & States](#channels--states)
-5. [Description of Preferences (incomplete)](#description-of-preferences-incomplete)
-6. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
-7. [Changelog](#changelog)
-8. [Credits](#credits)
-9. [Licence](#license)
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Setup instructions](#setup-instructions)
+4. [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions)
+5. [Channels & States](#channels--states)
+6. [Description of Preferences (incomplete)](#description-of-preferences-incomplete)
+7. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
+8. [Changelog](#changelog)
+9. [Credits](#credits)
+10. [Licence](#license)
+
+
+## Features
+The following features come with this adapter:
+- __Send commands__ (`start`, `stop`, `resume`, `pause`, `dock`) to your Roomba
+- Retrieve __device states__, such as battery, docked, full / inserted bin (see [Channels & States](#channels--states) for full list)
+- Retrieve __device configuration__, such as preferences, network or schedule settings (see [Channels & States](#channels--states) for full list)
+- Retrieve __device statistics__, such as total missions, hours on docking station, etc. (see [Channels & States](#channels--states) for full list)
+- Retrieve information about __current mission__ (when your Roomba is cleaning), such as start and end time, total runtime, sqm cleaned, etc. (only on supported Roomba\'s see [Supported Roomba's / Firmware versions](#supported-roombas--firmware-versions))
+- __Draw map based on the mission data__ received (only on supported Roomba\'s)
+- __Web Interface__ that shows the status and map of the current as well as previous / archived missions: 
+  ![Roomba Interface](img/roomba.interface.png)
 
 
 ## Installation
 ioBroker.roomba needs [canvas](https://www.npmjs.com/package/canvas) in order to draw maps of the Roomba missions. ioBroker will try to install this dependency with ioBroker.roomba installation.
 
-Though, you probably have to install package dependencies of canvas with the following command:
+Though, you probably have to install package dependencies of canvas (and canvas itself) with the following command:
 
+### Linux
 ```
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-```
-
-If you are receiving an error message that canvas is not installed, try to install it manually in the ioBroker.roomba folder (via SSH) by running:
-
-```
 sudo npm install canvas --unsafe-perm=true
 ```
+
+### Windows
+1. Make sure you have `node-gyp` installed via
+   ```
+   npm install -g node-gyp
+   ```
+   
+2. Make sure you have build essentials installed via
+   ```
+   npm install --global --production windows-build-tools
+   ```
+   
+3. Download GTK 2 (for [Win32](http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip) or [Win64](http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip)) and unzip it (e.g. to `C:\path\to\GTK2`)
+4. Run 
+   ```
+   node-gyp rebuild --GTK_Root=C:\path\to\GTK2
+   ```
+5. Install canvas from within the iobroker.roomba folder
+   ```
+   cd C:\path\to\iobroker\node_modules\iobroker.roomba
+   npm install canvas
+   ```
+
+For details, see https://github.com/Automattic/node-canvas/wiki/Installation:-Windows.
 
 
 ## Setup instructions
@@ -265,7 +300,18 @@ You may edit the variable ```message``` to any notification you would like to re
 
 ## Changelog
 
-### 1.0.4 (2019-08-xx)
+### 1.0.5 (2019-08-19)
+- (Zefau) added loading screen to web interface
+
+### 1.0.5 (2019-08-18)
+- (Zefau) fixed failing secure connection
+- (Zefau) fixed broken credential retrieval
+- (Zefau) fixed broken refresh
+
+### 1.0.4 (2019-08-15)
+- (Zefau) fixed password retrieval
+- (Zefau) fixed German translations
+- (Zefau) added donations button
 - (Zefau) updated `dorita980` dependency to v3.1.3
 - (Zefau) updated `canvas` dependency to v2.6.0
 

@@ -117,8 +117,16 @@ https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_OdroidC2_201
 https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
 https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_Tinker_201900813_buster.md
+https://doc.iobroker.net/#de/documentation/downloads/ioBroker_Image_Tinker_piVCCU3_20190813_stretch.md
 https://doc.iobroker.net/#de/documentation/faq/basic.md
 https://doc.iobroker.net/#de/documentation/faq/README.md
+https://doc.iobroker.net/#de/documentation/faq/_010_general.md
+https://doc.iobroker.net/#de/documentation/faq/_020_installation.md
+https://doc.iobroker.net/#de/documentation/faq/_020_usage.md
+https://doc.iobroker.net/#de/documentation/faq/_040_contibution.md
+https://doc.iobroker.net/#de/documentation/faq/_050_advanced.md
+https://doc.iobroker.net/#de/documentation/faq/_050_cloud.md
 https://doc.iobroker.net/#de/documentation/imprint.md
 https://doc.iobroker.net/#de/documentation/install/docker.md
 https://doc.iobroker.net/#de/documentation/install/hardware.md
@@ -243,6 +251,8 @@ https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_OdroidC2_201
 https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
 https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_Tinker_201900813_buster.md
+https://doc.iobroker.net/#en/documentation/downloads/ioBroker_Image_Tinker_piVCCU3_20190813_stretch.md
 https://doc.iobroker.net/#en/documentation/faq/basic.md
 https://doc.iobroker.net/#en/documentation/faq/README.md
 https://doc.iobroker.net/#en/documentation/faq/_010_general.md
@@ -375,6 +385,8 @@ https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_OdroidC2_201
 https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
 https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_Tinker_201900813_buster.md
+https://doc.iobroker.net/#ru/documentation/downloads/ioBroker_Image_Tinker_piVCCU3_20190813_stretch.md
 https://doc.iobroker.net/#ru/documentation/faq/basic.md
 https://doc.iobroker.net/#ru/documentation/faq/README.md
 https://doc.iobroker.net/#ru/documentation/faq/_010_general.md
@@ -507,6 +519,8 @@ https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_OdroidC2_
 https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_Rock64_20190209_stretch.md
 https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_RPi_2-3-4_20190723_buster.md
 https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_RPi_2-3-4_piVCCU_20190723_buster.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_Tinker_201900813_buster.md
+https://doc.iobroker.net/#zh-cn/documentation/downloads/ioBroker_Image_Tinker_piVCCU3_20190813_stretch.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/basic.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/README.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/_010_general.md
@@ -839,6 +853,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tankerkoenig/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.telegram/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.terminal/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.text2command/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tradfri/README.md
@@ -878,6 +893,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wifilight/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wlanthermo-nano/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wolf/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.worx/README.md
@@ -1157,6 +1173,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tankerkoenig/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.telegram/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.terminal/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.text2command/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tradfri/README.md
@@ -1196,6 +1213,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wifilight/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wlanthermo-nano/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wolf/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.worx/README.md
@@ -1475,6 +1493,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tankerkoenig/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.telegram/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.terminal/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.text2command/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tradfri/README.md
@@ -1514,6 +1533,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wifilight/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wlanthermo-nano/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wolf/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.worx/README.md
@@ -1793,6 +1813,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tankerkoenig/README
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.telegram/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.terminal/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.text2command/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tradfri/README.md
@@ -1832,6 +1853,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wiffi-wz/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wifilight/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wlanthermo-nano/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wm-bus/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wolf/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.worx/README.md

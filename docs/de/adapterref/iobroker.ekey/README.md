@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
+hash: 0oVj4G5vwFHyy/pjIOJipmb/158lNn0AhsoSYYaP5RE=
 ---
 ![Logo](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
@@ -16,17 +16,19 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
 # IoBroker.ekey
-======================
-
 [![Abhängigkeitsstatus] (https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg)](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey) [![Code Climate] (https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg)](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 
-Dieser Adapter für ioBroker stellt eine Verbindung zu einem ekey-Connector-UDP her.
+Dieser Adapter für ioBroker stellt eine Verbindung zu einem E-Key-Connector-UDP her.
 
-Implementiert wie beschrieben in http://descargas.futurasmus-knxgroup.org/DOC/DE/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf oder hier https://www.ekey.net/assets/media_center/DE/User_Guide_ekey_net_4. .pdf
+Implementiert wie in http://descargas.futurasmus-knxgroup.org/DOC/GB/E-Key/13004/Operating_instructions_ekey_converter_UDP_RS485_ID51.pdf beschrieben oder hier https://www.ekey.net/assets/media_center/EN/User_Guide_ekey_net_4.3_en_Guide .pdf
 
 ![Bild](../../../en/adapterref/iobroker.ekey/img/ekey.png)
 
 ## Changelog
+
+### 1.1.0
+* (bluefox) Added compact mode
+* (bluefox) Own port is now configurable
 
 ### 1.0.0
 * (bluefox) Configuration dialog under firefox was corrected
@@ -41,7 +43,7 @@ Implementiert wie beschrieben in http://descargas.futurasmus-knxgroup.org/DOC/DE
 
 The MIT License (MIT)
 
-Copyright (c) 2018 ioBroker <dogafox@gmail.com>
+Copyright (c) 2018-2019 ioBroker <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

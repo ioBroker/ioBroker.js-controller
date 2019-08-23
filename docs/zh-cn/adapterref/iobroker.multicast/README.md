@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.multicast/README.md
 title: 适用于ioBroker的Multicast-APi适配器
-hash: Aj0Fnll16PmyET1sMTJI9oGXEoXGyLHdAJzfGUwjc5o=
+hash: FQYT5r9hyrzBqOoXag+7OuaWV4F3/7g10pxhyHnPha0=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.multicast.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.multicast.svg)
@@ -15,7 +15,7 @@ hash: Aj0Fnll16PmyET1sMTJI9oGXEoXGyLHdAJzfGUwjc5o=
 
 <h1>
 
-<img  src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.multicast/master/admin/multicast.png"  width="64"/> ioBroker.multicast
+<img  src="admin/multicast.png"  width="64"/> ioBroker.multicast
 
 </ H1>
 
@@ -26,7 +26,7 @@ hash: Aj0Fnll16PmyET1sMTJI9oGXEoXGyLHdAJzfGUwjc5o=
 
 *提供http post和MQTT protokoll的替代方案
 *基于多播通信和JSON格式的数据传输，提供统一的API
-*有一个零接触适配器来集成任何以太网设备（例如：基于ESP的板eq Wemos D1 mini），如Vansware / Gosound smadmin / multicast.pngart插件或其他自定义构建自动化。
+*配备零接触适配器以集成任何以太网设备（例如：基于ESP的电路板eq Wemos D1 mini），如Vansware / Gosound智能插头或其他自定义构建自动化。
 
 ###零接触？
 APi的构建方式不需要在适配器本身或要使用的设备中使用最终用户的额外配置。

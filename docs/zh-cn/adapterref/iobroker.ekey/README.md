@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ekey/README.md
 title: ioBroker.ekey
-hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
+hash: 0oVj4G5vwFHyy/pjIOJipmb/158lNn0AhsoSYYaP5RE=
 ---
 ![商标](../../../en/adapterref/iobroker.ekey/admin/ekey.png)
 
@@ -16,8 +16,6 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ![NPM](https://nodei.co/npm/iobroker.ekey.png?downloads=true)
 
 #ioBroker.ekey
-======================
-
 [![依赖状态]（https://gemnasium.com/badges/github.com/ioBroker/ioBroker.ekey.svg）](https://gemnasium.com/github.com/ioBroker/ioBroker.ekey)[![代码气候]（https://codeclimate.com/github/ioBroker/ioBroker.ekey/badges/gpa.svg）](https://codeclimate.com/github/ioBroker/ioBroker.ekey)
 
 此ioBroker适配器连接到ekey连接器UDP。
@@ -27,6 +25,10 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 ![图片](../../../en/adapterref/iobroker.ekey/img/ekey.png)
 
 ## Changelog
+
+### 1.1.0
+* (bluefox) Added compact mode
+* (bluefox) Own port is now configurable
 
 ### 1.0.0
 * (bluefox) Configuration dialog under firefox was corrected
@@ -41,7 +43,7 @@ hash: n6eM6ONtc0caKVXHkqzEUaKdBk1fFsp31IGBii0J8LM=
 
 The MIT License (MIT)
 
-Copyright (c) 2018 ioBroker <dogafox@gmail.com>
+Copyright (c) 2018-2019 ioBroker <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

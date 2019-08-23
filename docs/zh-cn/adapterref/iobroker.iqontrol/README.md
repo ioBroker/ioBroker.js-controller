@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
+hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -81,7 +81,7 @@ Toolbar-Entrys是视图的链接。
 免费的内置演示壁纸来自www.pexels.com。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
+*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -133,7 +133,7 @@ Toolbar-Entrys是视图的链接。
 }
 ````
 
-    *您可以通过修改数据点来创建自己的值列表（iobroker的对象选项卡中数据点后面的扳手图标，见上文）
+    *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，见上文）
 
 但是，并非每种类型对每个角色都有意义。因此，在大多数情况下，开关的STATE将是一个布尔值，可以在打开和关闭之间切换。可能会显示一个字符串，但该开关将不起作用。
 
@@ -144,6 +144,11 @@ Toolbar-Entrys是视图的链接。
 ### <img src="img/icons/switch_on.png" width="32">开关， <img src="img/icons/fan_on.png" width="32">风扇：
 * **STATE** *boolean* - 显示和设置开/关状态
 * **POWER** *数字* - 功耗将在右上角显示为小功率
+
+### <img src="img/icons/button.png" width="32">按钮：
+* **状态**：*任何*  - 任何所需类型的状态
+* **SET_VALUE** CONSTANT *string* - 这是一个常量（不是链接的io-broker-state！），如果按下按钮，它将被分配给STATE
+* **OFF_SET_VALUE** CONSTANT *string* - 这是一个常量（不是链接的io-broker-state！）。如果已定义，则在输入选项定义的时间或100ms后，STATE将重置为此值
 
 ### <img src="img/icons/light_on.png" width="32">光：
 每个灯都可能具有以下一种或两种状态：
@@ -156,7 +161,7 @@ Toolbar-Entrys是视图的链接。
 *对于彩色LED（HSB颜色空间）：
  ***HUE*** 字* - 0-360°光线的颜色（色调格式）
     * **饱和度**：*数量*  - 光线饱和度（从白色到纯色）
- ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有一个LEVEL状态而没有白色LED，这会被忽略，因为亮度完全由LEVEL控制）
+ ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有LEVEL状态且没有白色LED，则会被忽略，因为亮度完全由LEVEL控制）
 *对于白光LED：
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（如果你有一个LEVEL状态而没有彩色LED，这会被忽略，因为亮度完全由LEVEL控制）
@@ -198,7 +203,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 除了普通恒温器，您还可以定义：
 
 * **PARTY_TEMPERATURE** *string* - 特殊格式的字符串，用于定义家庭恒温器的派对或假日模式
-* **BOOST_STATE** *number* - 显示homematic恒温器的剩余提升时间
+* **BOOST_STATE** *数字* - 显示原始恒温器的剩余提升时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
 * **状态**：*数字*  - 将显示在设备下部的温度或湿度
@@ -208,7 +213,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
+* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
@@ -267,10 +272,6 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/play.png" width="32">现场：
 * **STATE** *boolean* - 显示场景是否有效。如果设置为true，则将启动场景
 
-### <img src="img/icons/button.png" width="32">按钮：
-* **状态**：*任何*  - 任何所需类型的状态
-* **SET_VALUE** CONSTANT *string* - 这是一个常量（不是链接的io-broker-state！），如果按下按钮，它将被分配给STATE
-
 ### <img src="img/icons/popup.png" width="32">弹出：
 * **状态**：*任何*  - 可用于显示更多信息
 * **URL** CONSTANT *string* - 此url将在弹出窗口中以iframe方式打开
@@ -286,6 +287,23 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.1.10 (2019-08-20)
+* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
+* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
+* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (Sebastian Bormann) Fixed handling of spaces in image filenames.
+
+### 0.1.9 (2019-08-18)
+* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
+* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
+* (Sebastian Bormann) Added multiple file upload to images tab.
+* (Sebastian Bormann) Added check for dead links to other views when saving settings.
+* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
 * (Sebastian Bormann) Further improvements on connecting over iobroker.pro.

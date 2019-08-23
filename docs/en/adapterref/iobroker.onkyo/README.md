@@ -36,7 +36,10 @@ Example of VIS view
 * VXS-S520D  
 * VSX-1131   
 
-## ChangeLog
+## ChangeLog   
+
+### 2.0.3   
+* (Eisbaeeer) now support zone3   
 ### 2.0.2
 * (Eisbaeeer) fix double .js 
 
@@ -133,3 +136,6 @@ Example of VIS view
 ### 0.0.1
 * (owagner) initial version
 
+## License
+The MIT License (MIT)
+Copyright (c) 2019 Eisbaeeer <eisbaeeer@gmail.com>, owagner 

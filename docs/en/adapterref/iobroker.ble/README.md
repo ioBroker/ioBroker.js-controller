@@ -40,6 +40,9 @@ If you have any device transmitting specially encoded information via advertisem
 
 ## Changelog
 
+### 0.8.2 (2019-08-14)
+* (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
+
 ### 0.8.1 (2019-07-26)
 * (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
+hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -124,7 +124,7 @@ hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
-  * Технически *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
+  * Технически, *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
 
 ````
 "native": {
@@ -145,6 +145,11 @@ hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
 * **STATE** *boolean* - отображать и устанавливать вкл / выкл
 * **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
+### <img src="img/icons/button.png" width="32"> Кнопка:
+* **STATE** *any* - любой желаемый тип состояния
+* **SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!), Которая будет назначена в STATE при нажатии кнопки
+* **OFF_SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!). Если определено, STATE будет сброшен на это значение после определенного в опциях времени или 100 мс
+
 ### <img src="img/icons/light_on.png" width="32"> Свет:
 Каждый источник света может иметь одно или оба из следующих состояний:
 
@@ -156,7 +161,7 @@ hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
 * Для цветных светодиодов (HSB-цвет-пространство):
   * **HUE** * number * - цвет света от 0 до 360 ° (формат оттенка)
   * **НАСЫЩЕННОСТЬ** * число * - насыщенность света (от белого до чистого цвета)
-  * **COLOR_BRIGHTNESS** * число * - яркость цветных светодиодов (если у вас есть LEVEL-состояние и нет белых светодиодов, это игнорируется, потому что яркость полностью контролируется LEVEL)
+  * **COLOR_BRIGHTNESS** * number * - яркость цветных светодиодов (если у вас есть LEVEL-состояние и нет белых светодиодов, это игнорируется, потому что яркость полностью контролируется LEVEL)
 * Для белых светодиодов:
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
   * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (если у вас есть LEVEL-состояние и нет цветных светодиодов, это игнорируется, потому что LEVEL полностью контролирует яркость)
@@ -169,7 +174,7 @@ hash: 51yActLnnhCodPIveeUm6KgaXGkZOUzFZLYOifmLp6Q=
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW- или RGBCWWW (hex) , WW = теплый белый, CW = холодный белый), необязательно с начальным '#'
     * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (шестнадцатеричный), опционально с начальным '#'. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается.
-    * **Hue for Milight** это значение Hue для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
+    * **Hue for Milight** это значение оттенка для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -182,7 +187,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * Эффект-режим:
   * **EFFECT** * value-list * - эффект для воспроизведения
 * **EFFECT_NEXT** *boolean* - если установлено значение true, будет воспроизводиться следующий эффект (в качестве альтернативы для устройств, которые не поддерживают список значений EFFECT)
-* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - если установлено значение true, эффект будет ускоряться вверх / вниз
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - при значении true эффект будет ускоряться вверх / вниз
 * Разнообразный:
   * **POWER** * number * - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
@@ -251,7 +256,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
 * **CONTROL_MODE** *список значений* - выбрать режим работы, такой как «Постановка на охрану» и «Снятие с охраны»
-    * В настройках устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
+    * В параметрах устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
 
 ### <img src="img/icons/battery_full.png" width="32"> Батарея:
 * **STATE** *число* - уровень заряда батареи в процентах
@@ -266,10 +271,6 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/play.png" width="32"> Сцена:
 * **STATE** *boolean* - отображается, если сцена активна. Если установлено значение true, сцена будет запущена
-
-### <img src="img/icons/button.png" width="32"> Кнопка:
-* **STATE** *any* - любой желаемый тип состояния
-* **SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!), Которая будет назначена в STATE при нажатии кнопки
 
 ### <img src="img/icons/popup.png" width="32"> Неожиданно возникнуть:
 * **STATE** *any* - может использоваться для отображения дополнительной информации
@@ -286,6 +287,23 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.1.10 (2019-08-20)
+* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
+* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
+* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (Sebastian Bormann) Fixed handling of spaces in image filenames.
+
+### 0.1.9 (2019-08-18)
+* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
+* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
+* (Sebastian Bormann) Added multiple file upload to images tab.
+* (Sebastian Bormann) Added check for dead links to other views when saving settings.
+* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
 * (Sebastian Bormann) Further improvements on connecting over iobroker.pro.

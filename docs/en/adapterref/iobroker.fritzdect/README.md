@@ -123,6 +123,8 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 0.2.4
+* (Scrounger) correction of type mismatch (string boolean)
 ### 0.2.3
 * skip updating values, when device not present
 

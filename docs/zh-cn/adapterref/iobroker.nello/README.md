@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: +ujTBqRIPaMS7TG7Sl3TND/WYFxQWQ7fM02PlrlhgCk=
+hash: KHMCB9HRsYdH9J1r0p0yPnDhlS6GNyjrldwjCBn1gE0=
 ---
 ![商标](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
+![Paypal捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![安装数量](http://iobroker.live/badges/nello-installed.svg)
 ![稳定的版本](http://iobroker.live/badges/nello-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nello.svg)
@@ -21,19 +22,36 @@ hash: +ujTBqRIPaMS7TG7Sl3TND/WYFxQWQ7fM02PlrlhgCk=
 ## [德语自述文件/ Deutsche Anleitung](https://github.com/Zefau/ioBroker.nello/blob/master/README.de.md)
 **目录**
 
-1. [设置说明（快速设置）]（＃快速设置）
-2. [设置说明（高级设置）]（＃高级设置）
-3. [使用/操作]（＃用法 - 操作）
+1. [特点]（＃个特写）
+2. [设置说明（快速设置）]（＃快速设置）
+3. [设置说明（高级设置）]（＃高级设置）
+4. [使用/操作]（＃用法 - 操作）
    1. [门户开放]（＃开门）
    2. [添加时间窗口]（＃adding-a-new-time-window）
    3. [删除时间窗口]（＃deletion-a-time-window）
-4. [智能家居/ Alexa使用ioBroker.javascript集成]（＃smart-home  -  alexa-integration-using-iobrokerjavascript）
+5. [智能家居/ Alexa使用ioBroker.javascript集成]（＃smart-home  -  alexa-integration-using-iobrokerjavascript）
    1. [使用Alexa打开门]（＃open-door-using-alexa）
    2. [让Alexa告诉你关于门铃的信息]（＃let-alexa-inform-you-about-door-ring）
    3. [让彩色灯通知你门环]（＃let-colored-lamps-inform-you-about-door-ring）
-5. [学分]（＃学分）
-6. [更改日志]（#changelog）
-7. [许可证]（#licence）
+6. [学分]（＃学分）
+7. [更改日志]（#changelog）
+8. [许可证]（#licence）
+
+＃＃ 特征
+此适配器附带以下功能：
+
+ - 从您的nello中检索__all locations__，包括`address`和`time windows`（[查看状态]（＃状态）以获取完整列表）
+ - 通过ioBroker添加和删除时间窗口
+ - 当门铃响起时，从nello接收所有类型的“事件”：
+   -  __deny__：当nello检测到铃声响起时，时间窗口和Homezone事件都没有导致门被打开。
+   -  __swipe__：授权用户打开门时。
+   -  __geo__：由于Homezone Unlock功能（带铃声）打开门。
+   -  __tw__：由于时间流逝（带铃声）打开门。
+ - 让Alexa告诉你关于门环的信息（[见下文]（＃let-alexa-inform-you-about-door-ring））
+ - 从ioBroker触发__打开门___
+ -  __Web Interface__显示来自nello的最新事件：
+
+  ![Nello界面](../../../en/adapterref/iobroker.nello/screenshots/interface.png)
 
 ##安装说明
 ＃＃＃ 快速设置
@@ -462,23 +480,36 @@ on({id: 'nello.0.#YOUR DOOR ID#.events.feed', change: 'any'}, function(obj)
 
 ## Changelog
 
+### 2.0.8 (2019-08-11)
+- (Zefau) Fixed Error `State not properly defined`
+
+### 2.0.7 (2019-08-10)
+- (Zefau) Performance improvements
+
+### 2.0.6 (2019-07-20)
+- (Zefau) updated dependencies to fix security vulnerabilities in depending packages
+
+### 2.0.5 (2019-05-15)
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#25](https://github.com/Zefau/ioBroker.nello/pull/25))
+- (Zefau) updated dependencies
+
 ### 2.0.4 (2019-03-15)
 - ([@Apollon77](https://github.com/Apollon77)) Core Files/Testing Update and introduce adapter-core ([#17](https://github.com/Zefau/ioBroker.nello/pull/17)) and Update CI testing ([#19](https://github.com/Zefau/ioBroker.nello/pull/19))
 
 ### 2.0.3 (2019-03-03)
-- (zefau) added folder `.events.latest` with states `action`, `twName`, `userId` and `userName` reflecting the information of the latest event
+- (Zefau) added folder `.events.latest` with states `action`, `twName`, `userId` and `userName` reflecting the information of the latest event
 
 ### 2.0.2 (2019-02-09)
-- (zefau) fixed error incorrectly stating a missing token
+- (Zefau) fixed error incorrectly stating a missing token
 
 ### 2.0.1 (2019-02-01)
-- (zefau) added error stack trace in log debug output
+- (Zefau) added error stack trace in log debug output
 - ([@ldittmar81](https://github.com/ldittmar81)) added support for gulp
 
 ### 2.0.0 (2019-01-27)
-- (zefau) added visual timeline of nello events
-- (zefau) support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
-- (zefau) updated API dependency
+- (Zefau) added visual timeline of nello events
+- (Zefau) support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
+- (Zefau) updated API dependency
 
 ### 1.x.x
 For earlier release, [please see Github branch for v1](https://github.com/Zefau/ioBroker.nello/tree/v1#changelog).

@@ -155,6 +155,23 @@ Following global Actions are current supported:
 
 ## Changelog
 
+### 1.5.1
+* (cburghardt) The *refresh node* command no longer excludes the node
+
+### 1.5.0
+* (AlCalzone) Update OpenZWave dependency to version 1.6
+
+### 1.4.2
+* (AlCalzone) Also escape spaces in state IDs.
+
+### 1.4.1
+* (AlCalzone) Pinned version of OpenZWave to 1.4 because 1.6 is not compatible yet
+
+### 1.4.0
+* (AlCalzone) Fixed breaks with OpenZWave 1.6
+* (AlCalzone) Switched to new testing
+* (AlCalzone) Support for compact mode
+
 ### 1.3.2 (2018-11-28)
 * (AlCalzone) Replace all chars in state IDs that are forbidden in JS-Controller 1.5+
 * (AlCalzone) Include @types/iobroker and strongly type adapter config properties

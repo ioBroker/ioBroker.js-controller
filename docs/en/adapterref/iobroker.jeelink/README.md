@@ -48,6 +48,7 @@ to be done in admin
 |emonTH|emonTH|OK 19 ...|sensor from openenergy.org|
 |emonWater|emonWater|OK 21 ... |sensor with RFM12B for water metering|
 |LaCrosseDTH |TX|OK 9 ... |sensors from LaCrosse, technoline|
+|LaCrosseDTT |TX|OK 9 ... |sensors from LaCrosse, technoline double temp|
 |HMS100TF |TXH29DTH-IT|H00 ... |sensors technoline|
 |LaCrosseBMP180||OK WS ... |sensor mod, superjee|
 |LaCrosseWS|WS1080,TX22,WS1600|OK WS ... |Weather Station|
@@ -63,6 +64,9 @@ to be done in admin
 
 
 ## Changelog:
+### 0.1.3
+* (atl285) added new sensor type LacCrosseDTT (double temp like TX25-IT)
+
 ### 0.1.2
 * correction for weather (no data is given by value = 255)
 

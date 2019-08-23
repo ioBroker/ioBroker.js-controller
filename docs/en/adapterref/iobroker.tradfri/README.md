@@ -70,6 +70,15 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
+#### 2.4.0 (2019-08-18)
+* (AlCalzone) Add support for blinds
+
+#### 2.3.0 (2019-04-05)
+* (AlCalzone) The gateway can now be discovered automatically
+
+#### 2.2.0 (2019-02-25)
+* (AlCalzone) Expose the battery percentage for devices with a battery
+
 #### 2.1.0 (2019-01-08)
 * (AlCalzone) When `node-aead-crypto` is not installed, display instructions on how to fix it
 * (AlCalzone) Optimizations and fixes under the hood

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.multicast/README.md
 title: Multicast-APi-Adapter für ioBroker
-hash: Aj0Fnll16PmyET1sMTJI9oGXEoXGyLHdAJzfGUwjc5o=
+hash: FQYT5r9hyrzBqOoXag+7OuaWV4F3/7g10pxhyHnPha0=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.multicast.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.multicast.svg)
@@ -15,7 +15,7 @@ hash: Aj0Fnll16PmyET1sMTJI9oGXEoXGyLHdAJzfGUwjc5o=
 
 <h1>
 
-<img  src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.multicast/master/admin/multicast.png"  width="64"/> ioBroker.multicast
+<img  src="admin/multicast.png"  width="64"/> ioBroker.multicast
 
 </ h1>
 
@@ -26,12 +26,12 @@ Zweck dieses Adapters war:
 
 * Alternative zu http post und MQTT-Protokoll
 * Bereitstellung einer einheitlichen API basierend auf Multicast-Kommunikation und JSON-formatierter Datenübertragung
-* Verwenden Sie einen Zero-Touch-Adapter, um ein beliebiges Ethernet-Gerät (Beispiel: ESP-basiertes Board EQ Wemos D1 Mini) wie Vansware / Gosound smadmin / multicast.pngart-Stecker oder andere kundenspezifische Automatisierungslösungen zu integrieren.
+* Verwenden Sie einen Zero-Touch-Adapter, um ein beliebiges Ethernet-Gerät (Beispiel: ESP-basiertes Board eq Wemos D1 mini) wie Vansware / Gosound-Smart-Plugs oder andere kundenspezifische Automatisierungslösungen zu integrieren.
 
 ### Zero Touch?
 Der APi ist so aufgebaut, dass keine zusätzliche Konfiguration des Endbenutzers im Adapter selbst oder auf dem zu verwendenden Gerät erforderlich ist.
 Wenn die WLAN-Übertragung verwendet wird, muss nur der WLAN-Berechtigungsnachweis angegeben werden (LAN-basierte Geräte werden vollautomatisch verarbeitet).
-Dies erfordert die Anstrengung des Entwicklers der Binärdatei, um auf dem zugehörigen Chipsatz (wie ESP-basierten Chipsätzen) geflasht zu werden.
+Dazu muss der Entwickler der Binärdatei auf dem entsprechenden Chipsatz (wie bei ESP-basierten Chipsätzen) einen Flash durchführen.
 
 Wenn die Firmware allen Regeln des APi folgt (siehe weiter unten), wird die Kommunikation wie folgt behandelt:
 
@@ -41,7 +41,7 @@ Wenn die Firmware allen Regeln des APi folgt (siehe weiter unten), wird die Komm
 #### Neues Gerät
 In der vorherigen Meldung hat der Adapter angegeben, dass kein Gerät gefunden wurde. Die folgende Routine wird ausgeführt:
 
-* ioBroker sendet eine Broadcast-Nachricht zum Initialisieren des Geräts
+* ioBroker sendet eine Broadcast-Nachricht, um das Gerät zu initialisieren
 * Das Gerät sendet alle Status und die zugehörige Struktur an ioBroker
 * ioBroker erstellt das neue Gerät und alle erforderlichen Status
 * Wenn alle Status erstellt wurden, sendet ioBroker einen Handshake an das Gerät "Empfangsbereit".
@@ -57,7 +57,7 @@ Aus der vorherigen Nachricht, dass das vom Adapter angegebene Gerät bereits vor
 * Das Gerät sendet seine Zustände in Intervallen oder durch Änderungen (wie vom Entwickler des Geräts programmiert).
 
 #### Statusänderungen
-Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sicherzustellen, dass alle Statusänderungen vom Gerät empfangen werden. Dieser Vorgang wird wie folgt behandelt:
+Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sicherzustellen, dass alle Statusänderungen vom Gerät empfangen werden. Diese Prozedur wird wie folgt gehandhabt:
 
 * Status wird in ioBroker geändert
 * Der Adapter erkennt die Wertänderung und sendet den neuen Wert an das Gerät

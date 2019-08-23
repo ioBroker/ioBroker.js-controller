@@ -2,7 +2,7 @@
 
 <h1>
 
-<img  src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.multicast/master/admin/multicast.png"  width="64"/>
+<img  src="admin/multicast.png"  width="64"/>
     ioBroker.multicast
 
 </h1>
@@ -24,7 +24,7 @@ Purpose of this adapter was :
 
 * provide an alternative to http post and MQTT protokoll
 * Have a uniform API available based on multicast communication and JSON formatted data transmission
-* Have an zero-touch adapter in place to integrate any ethernet device (example : ESP based board eq Wemos D1 mini), like Vansware/Gosound smadmin/multicast.pngart plugs or other custom build automation.
+* Have an zero-touch adapter in place to integrate any ethernet device (example : ESP based board eq Wemos D1 mini), like Vansware/Gosound smart plugs or other custom build automation.
 
 ### Zero touch ?
 

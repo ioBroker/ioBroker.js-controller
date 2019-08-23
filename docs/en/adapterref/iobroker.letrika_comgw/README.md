@@ -17,6 +17,9 @@ Collects data from Letrika SMI 260 via letrika communication gateway.
 
 ## Changelog
 
+### 0.0.4
+* (AWhiteKnight) code cleanup
+
 ### 0.0.3
 * (AWhiteKnight) translations, code cleanup
 

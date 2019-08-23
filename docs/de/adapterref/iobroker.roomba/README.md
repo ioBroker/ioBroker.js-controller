@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: Q1IXY7Gv251+NOBKiMXZN/zHkn2MxA7QEGVkGiGdq7k=
+hash: U8JyFng8pXWZePr9Z20INwu4Kj3qLI2F71RbGzxcqas=
 ---
 ![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
+![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/roomba-installed.svg)
 ![stabile Version](http://iobroker.live/badges/roomba-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.roomba.svg)
@@ -20,30 +21,69 @@ Basierend auf der dorita980-Bibliothek https://github.com/koalazak/dorita980#rea
 
 **Inhaltsverzeichnis**
 
-1. [Installation] (# Installation)
-2. [Setup Instructions] (# Setup-Anweisungen)
-3. [Unterstützte Roomba / Firmware-Versionen] (# supported-roombas - firmware-versions)
-4. [Channels & States] (# channels - states)
-5. [Beschreibung der Einstellungen (unvollständig)] (# Beschreibung der Einstellungen (unvollständig))
-6. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
-7. [Changelog] (# changelog)
-8. [Credits] (# Credits)
-9. [Lizenz] (# Lizenz)
+1. [Funktionen] (# Funktionen)
+2. [Installation] (# installation)
+3. [Setup Instructions] (# Setup-Anweisungen)
+4. [Unterstützte Roomba / Firmware-Versionen] (# supported-roombas - firmware-versions)
+5. [Channels & States] (# channels - states)
+6. [Beschreibung der Einstellungen (unvollständig)] (# Beschreibung der Einstellungen (unvollständig))
+7. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
+8. [Changelog] (# changelog)
+9. [Credits] (# Credits)
+10. [Lizenz] (# Lizenz)
+
+## Eigenschaften
+Die folgenden Funktionen werden mit diesem Adapter geliefert:
+
+- __Senden Sie Befehle__ (`Start`,` Stopp`, `Fortsetzen`,` Pause`, `Andocken`) an Ihren Roomba
+- __Gerätestatus__ abrufen, z. B. Akku, angedockt, voll / eingelegtes Fach (vollständige Liste siehe [Kanäle & Status] (# Kanäle - Status))
+- __Gerätekonfiguration__ abrufen, z. B. Einstellungen für Einstellungen, Netzwerk oder Zeitplan (eine vollständige Liste finden Sie unter [Channels & States] (# channels - states))
+- Rufen Sie __Gerätestatistiken__ ab, z. B. Gesamtmissionen, Stunden an der Dockingstation usw. (eine vollständige Liste finden Sie unter [Kanäle und Status] (# Kanäle - Status)).
+- Abrufen von Informationen zu __aktueller Mission__ (wenn Ihr Roomba bereinigt), z. B. Start- und Endzeit, Gesamtlaufzeit, bereinigte Fläche usw. (nur bei unterstützten Roomba-Versionen siehe [Unterstützte Roomba- / Firmware-Versionen] (# supported-roombas --firmware-versionen))
+- __Karte basierend auf den empfangenen Missionsdaten zeichnen__ (nur auf unterstützten Roomba \ 's)
+- __Web Interface__, das den Status und die Karte der aktuellen sowie der vorherigen / archivierten Missionen anzeigt:
+
+  ![Roomba-Schnittstelle](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
 
 ## Installation
 ioBroker.roomba benötigt [Segeltuch](https://www.npmjs.com/package/canvas), um Karten der Roomba-Missionen zu zeichnen. ioBroker versucht, diese Abhängigkeit mit der Installation von ioBroker.roomba zu installieren.
 
-Wahrscheinlich müssen Sie die Paketabhängigkeiten von canvas mit dem folgenden Befehl installieren:
+Wahrscheinlich müssen Sie die Paketabhängigkeiten von canvas (und canvas selbst) mit dem folgenden Befehl installieren:
 
+### Linux
 ```
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-```
-
-Wenn Sie eine Fehlermeldung erhalten, dass Canvas nicht installiert ist, versuchen Sie, es manuell im Ordner ioBroker.roomba (über SSH) zu installieren, indem Sie Folgendes ausführen:
-
-```
 sudo npm install canvas --unsafe-perm=true
 ```
+
+### Windows
+1. Stellen Sie sicher, dass Sie `node-gyp` über installiert haben
+
+```
+npm install -g node-gyp
+```
+
+2. Vergewissern Sie sich, dass Sie die wichtigsten Komponenten über installiert haben
+
+```
+npm install --global --production windows-build-tools
+```
+
+3. Laden Sie GTK 2 (für [Win32] (http://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/2.24/gtk+-bundle_2.24.10-20120208_win32.zip) oder [Win64] (http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip)) und entpacken (zB nach `C: \ path \ to \ GTK2`)
+4. Führen Sie aus
+
+```
+node-gyp rebuild --GTK_Root=C:\path\to\GTK2
+```
+
+5. Installieren Sie canvas aus dem Ordner iobroker.roomba
+
+```
+cd C:\path\to\iobroker\node_modules\iobroker.roomba
+npm install canvas
+```
+
+Weitere Informationen finden Sie unter https://github.com/Automattic/node-canvas/wiki/Installation:-Windows.
 
 ## Setup Anweisungen
 ### Automatisiertes Setup
@@ -101,7 +141,7 @@ Nach erfolgreicher Einrichtung werden die folgenden Kanäle und Zustände erstel
 | reinigung | letzte | Fehler | Zeigt einen Fehler während der letzten Mission an |
 | reinigung | Zeitplan - | Fahrplanauskunft |
 | reinigung | Zeitplan zyklus | Programmzyklus (Sonntag bis Samstag) |
-| reinigung | Zeitplan Stunden | Stunde zum Starten des Zyklus (Sonntag bis Samstag) |
+| reinigung | Zeitplan Stunden | Startstunde (Sonntag bis Samstag) |
 | reinigung | Zeitplan Minuten | Minute zum Starten des Zyklus (Sonntag bis Samstag) |
 | reinigung | - | Dock | Schicken Sie den Roboter zur Dockingstation |
 | reinigung | - | Pause | Unterbrechen Sie den aktuellen Reinigungsvorgang |
@@ -269,6 +309,21 @@ Vielen Dank an [@koalazak] (https://github.com/koalazak) für die [inoffizielle 
 Icons von <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> von <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com werden</a> von <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> lizenziert </div>
 
 ## Changelog
+
+### 1.0.5 (2019-08-19)
+- (Zefau) added loading screen to web interface
+
+### 1.0.5 (2019-08-18)
+- (Zefau) fixed failing secure connection
+- (Zefau) fixed broken credential retrieval
+- (Zefau) fixed broken refresh
+
+### 1.0.4 (2019-08-15)
+- (Zefau) fixed password retrieval
+- (Zefau) fixed German translations
+- (Zefau) added donations button
+- (Zefau) updated `dorita980` dependency to v3.1.3
+- (Zefau) updated `canvas` dependency to v2.6.0
 
 ### 1.0.3 (2019-07-23)
 - (Zefau) fixed bug _uncaught exception: Cannot read property 'x' of undefined_

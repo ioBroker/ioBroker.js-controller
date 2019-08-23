@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.denon/README.md
 title: ioBroker.denon
-hash: e4i+gX4TyFbXSpQQZr3P6qkymJ+uPqUccthOL0ManTI=
+hash: p8APn/+DeEWFbZmRaTvhR97ElqQOqWIFgKf4CB2U3To=
 ---
 ![商标](../../../en/adapterref/iobroker.denon/admin/denon.png)
 
@@ -268,25 +268,25 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    *字符串值包含当前输入源。您还可以使用以下编码设置输入源：*
 
-   * 0：PHONO *
+   *0：PHONO*
 
-   * 1：CD *
+   *1：CD*
 
-   * 2：TUNER *
+   *2：TUNER*
 
-   * 3：DVD *
+   *3：DVD*
 
-   * 4：BD *
+   *4：BD*
 
    * 5：电视*
 
-   * 6：SAT / CBL *
+   *6：SAT / CBL*
 
-   * 7：MPLAY *
+   *7：MPLAY*
 
    * 8：游戏*
 
-   * 9：NET *
+   *9：NET*
 
    * 10：Spotify的*
 
@@ -298,21 +298,21 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    * 14：收藏*
 
-   * 15：AUX1 *
+   *15：AUX1*
 
-   * 16：AUX2 *
+   *16：AUX2*
 
-   * 17：AUX3 *
+   *17：AUX3*
 
-   * 18：AUX4 *
+   *18：AUX4*
 
-   * 19：AUX5 *
+   *19：AUX5*
 
-   * 20：AUX6 *
+   *20：AUX6*
 
-   * 21：AUX7 *
+   *21：AUX7*
 
-   * 22：BT *
+   *22：BT*
 
    *请注意，并非每个AVR型号都提供每个输入源。*
 
@@ -426,47 +426,47 @@ setState('denon.0.display.brightness', '3'); // Sets display brightness to "Brig
 
    *字符串值包含当前的环绕声模式。您还可以使用以下编码更改源：*
 
-   * 0：STEREO *
+   *0：STEREO*
 
    * 1：虚拟*
 
    * 2：视频游戏*
 
-   * 3：MCH STEREO *
+   *3：MCH STEREO*
 
-   * 4：DTS SURROUND *
+   *4：DTS SURROUND*
 
-   * 5：DOLBY DIGITAL *
+   *5：DOLBY DIGITAL*
 
-   * 6：MOVIE *
+   *6：MOVIE*
 
-   * 7：MUSIC *
+   *7：MUSIC*
 
    * 8：直接*
 
-   * 9：PURE DIRECT *
+   *9：PURE DIRECT*
 
-   * 10：AUTO *
+   *10：AUTO*
 
-   * 11：GAME *
+   *11：GAME*
 
-   * 12：AURO3D *
+   *12：AURO3D*
 
-   * 13：AURO2DSURR *
+   *13：AURO2DSURR*
 
    * 14：宽屏*
 
-   * 15：SUPER STADIUM *
+   *15：SUPER STADIUM*
 
-   * 16：ROCK ARENA *
+   *16：ROCK ARENA*
 
-   * 17：JAZZ CLUB *
+   *17：JAZZ CLUB*
 
-   * 18：CLASSIC CONCERT *
+   *18：CLASSIC CONCERT*
 
-   * 19：MONO MOVIE *
+   *19：MONO MOVIE*
 
-   * 20：MATRIX *
+   *20：MATRIX*
 
    *请注意，并非每种AVR型号都可以使用每种环绕声模式。*
 
@@ -475,6 +475,15 @@ setState('denon.0.display.brightness', '3'); // Sets display brightness to "Brig
 ```javascript
 setState('denon.0.settings.surroundMode', '3'); // Sets Multi Channel Stereo as surround mode
 ```
+
+* settings.lfeAmount
+
+    |数据类型|权限|
+    |:---:|:---:|
+    |数| R / W |
+
+*以dB为单位指向扬声器的超低音扬声器信号量。
+范围从0 dB到-10 dB。其中10 = -10 dB。*
 
 * settings.expertCommand
 
@@ -500,9 +509,9 @@ setState('denon.0.settings.expertCommand', 'ECOON'); // Turns Main Zone ECO mode
 
    * 0：自动 - >自动检测显示器*
 
-   * 1：1  - >输出信号监视器1 *
+   *1：1  - >输出信号监视器1*
 
-   * 2：2  - >输出信号监视器2 *
+   *2：2  - >输出信号监视器2*
 
    *例：*
 
@@ -590,9 +599,9 @@ setState('denon.0.settings.videoProcessingMode', '2'); // Sets Video Processing 
 
    * 0：关*
 
-   * 1：AUDYSSEY *
+   *1：AUDYSSEY*
 
-   * 2：BYP.LR *
+   *2：BYP.LR*
 
    * 3：平板*
 
@@ -622,7 +631,7 @@ setState('denon.0.settings.videoProcessingMode', '2'); // Sets Video Processing 
 
    *通过以下编码选择参考电平偏移的字符串值：*
 
-   * 0：0 dB *
+   *0：0 dB*
 
    * 5：5分贝*
 
@@ -646,7 +655,7 @@ setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level 
 
    *您可以将以下值设置为字符串：*
 
-   * '关' *
+   *'关'*
 
    *'标准'*
 
@@ -656,7 +665,7 @@ setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level 
 
    *'流'*
 
-   * '自定义' *
+   *'自定义'*
 
    *'ISF Day'*
 
@@ -796,6 +805,8 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
 适配器使用DENON AVR-X1200W和Marantz SR5009进行测试。
 
 ## Changelog
+### 1.6.0
+* (foxriver76) added new state settings.lfeAmount
 
 ### 1.5.1
 * (foxriver76) fix to detect DENON Ceol

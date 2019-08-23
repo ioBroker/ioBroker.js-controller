@@ -14,12 +14,14 @@ Features:
 * Control the setpoint temperature levels of all thermostats per schedules
 * Configure multiple heating periods for each day and night 
 * Supports various homematic and max! thermostats
-* supports multiple profiles (to do)
+* supports multiple profiles
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
 * Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
 * up to two actuators are supported
 * Thermostat and actuator are automatically detected per room. The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
+* per room we can use more then one themostat, actuator or sensor
+* sensor is used to reduce target temperature (e.g. if a window is open)
 * A visualization example will be provided later
 
 
@@ -27,19 +29,18 @@ Features:
 ### main
 * use actors = if you want to control actuators directly from adapter. Just in case there is no direct connection between thermostat and actuator.
 * Gewerk = Function to be used to detect thermostats and actuators per room
-* Path to Thermostats = object path to thermostats, e.g. "hm-rpc.0."
-* Path To Actors = object path to actuators, e.g. "hm-rpc.0."
 * timezone = to be used for cron to adjust cron jobs
 * delete all = delete all room settings when admin opens. After that a new scan for rooms will start
 
 ### profile
-* Profile Type = at this moment only monday to sunday is supportet. The others will be implemented soon
+* Profile Type = three different profile types (Monday - Sunday, or Monday - Friday and Suturday/Sunday or every day) are supported
 * number of profiles = if you need more then on profile increase that value. You can then select which profile will be used.
 * number of periods = define how many daily sections with different temperature you need. As more you set as more datapoints will be created. Better to use a low value (e.g. 5)
-* public holyday = if you check this you get a separate adjustment for public holidays (not implemented yet)
+
 
 ### devices
-* a list of all rooms with thermostats and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
+* a list of all rooms with thermostats, sensors and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
+* if device is not detected automatically, it can be added and configured manually
 
 ## Requirements
 * Node version 8 or higher is required
@@ -49,6 +50,12 @@ Features:
 
 
 ## Changelog
+
+### 0.1.0 (2019-08-18)
+* (René) redesign of data structure
+	- more then one actuator, sensor and thermostat per room
+	- three different profile types
+	- manual configuration of devices (is device is not detected automatically)
 
 ### 0.0.5 (2019-07-08)
 * (René) support for max! thermostats

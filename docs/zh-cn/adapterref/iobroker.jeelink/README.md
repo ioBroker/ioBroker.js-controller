@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.jeelink/README.md
 title: ioBroker.jeelink
-hash: pqu3Bjsp33UvrKBQ05qx1l3rKcZM5SddWQfAlEtdnF8=
+hash: apV/B74CjZZUMKx+MC9nfCoMdKN4fZnzSlibWD1ycMc=
 ---
 ![商标](../../../en/adapterref/iobroker.jeelink/admin/jeelab_logo.png)
 
+![安装数量](http://iobroker.live/badges/jeelink-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.jeelink.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.jeelink.svg)
 ![建立状态](https://travis-ci.org/foxthefox/ioBroker.jeelink.svg?branch=master)
@@ -62,6 +63,7 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 | emonTH | emonTH | OK 19 ... |来自openenergy.org的传感器|
 | emonWater | emonWater | OK 21 ... |带RFM12B的传感器用于水计量|
 | LaCrosseDTH | TX | OK 9 ... |传感器来自LaCrosse，technoline |
+| LaCrosseDTT | TX | OK 9 ... |来自LaCrosse的传感器，technoline双温度|
 | HMS100TF | TXH29DTH-IT | H00 ... |传感器技术|
 | LaCrosseBMP180 || OK WS ... | sensor mod，superjee |
 | LaCrosseWS | WS1080，TX22，WS1600 | OK WS ... |气象站|
@@ -76,10 +78,22 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 * HMS100TF温度低于0°C且电池电量低
 
 ## Changelog
+### 0.1.3
+* (atl285) added new sensor type LacCrosseDTT (double temp like TX25-IT)
+
+### 0.1.2
+* correction for weather (no data is given by value = 255)
+
+### 0.1.1
+* delete buffer function to be compatible with nodejs10
+* enhanced automatic testing
+
 ### 0.1.0
 * compact mode
+
 ### 0.0.7
-* new level sensor (fhem) 
+* new level sensor (fhem)
+
 ### 0.0.6
 * last version of serialport
 * new sensor TXH29DTH-IT

@@ -4,6 +4,8 @@ nello one connects your intercom with your smartphone and Wi-Fi. This adapter co
 
 Developers may find the javascript implementation of the nello.io API via https://github.com/Zefau/nello.io.
 
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+
 ![Number of Installations](http://iobroker.live/badges/nello-installed.svg)
 ![Stable version](http://iobroker.live/badges/nello-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.nello.svg)](https://www.npmjs.com/package/iobroker.nello)
@@ -16,19 +18,35 @@ Developers may find the javascript implementation of the nello.io API via https:
 ## [German Readme / Deutsche Anleitung](https://github.com/Zefau/ioBroker.nello/blob/master/README.de.md)
 
 **Table of contents**
-1. [Setup instructions (Quick Setup)](#quick-setup)
-2. [Setup instructions (Advanced Setup)](#advanced-setup)
-3. [Usage / Actions](#usage--actions)
+1. [Features](#features)
+2. [Setup instructions (Quick Setup)](#quick-setup)
+3. [Setup instructions (Advanced Setup)](#advanced-setup)
+4. [Usage / Actions](#usage--actions)
    1. [Open Door](#open-door)
    2. [Adding a Time Window](#adding-a-new-time-window)
    3. [Deleting a Time Window](#deleting-a-time-window) 
-4. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
+5. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
    1. [Open door using Alexa](#open-door-using-alexa)
    2. [Let Alexa inform you about door ring](#let-alexa-inform-you-about-door-ring)
    3. [Let colored lamps inform you about door ring](#let-colored-lamps-inform-you-about-door-ring)
-5. [Credits](#credits)
-6. [Changelog](#changelog)
-7. [Licence](#license)
+6. [Credits](#credits)
+7. [Changelog](#changelog)
+8. [Licence](#license)
+
+
+## Features
+The following features come with this adapter:
+- Retrieve __all locations__ from your nello including `address` and `time windows` ([see States](#states) for full list)
+- Add and delete time windows via ioBroker
+- Receive all kind of `events` from nello when your door bell rings:
+  - __deny__: When nello detects a bell ring, but neither a Time Window nor a Homezone Event caused the door to be opened.
+  - __swipe__: When the door opens by an authorized user.
+  - __geo__: When the door is opened because of the Homezone Unlock feature (with a bell ring).
+  - __tw__: When the door is opened because of a Time indow (with a bell ring).
+- Let Alexa inform you about door ring ([see below](#let-alexa-inform-you-about-door-ring))
+- Trigger to __open the door__ from ioBroker
+- __Web Interface__ that shows the recent events from nello: 
+  ![Nello Interface](screenshots/interface.png)
 
 
 ## Setup instructions

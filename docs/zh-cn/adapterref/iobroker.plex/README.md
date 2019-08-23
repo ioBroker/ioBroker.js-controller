@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
+hash: 9m/tRvAGi2VZifTmIIULKck7p+PJMWQ9bsY5J7SZvFo=
 ---
 ![商标](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
+![Paypal捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![安装数量](http://iobroker.live/badges/plex-installed.svg)
 ![稳定的版本](http://iobroker.live/badges/plex-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.plex.svg)
@@ -29,33 +30,38 @@ hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 5. [许可证]（#licence）
 
 ## 1.特点
- - 从Plex接收活动（通过Plex Pass或Tautulli）
+ - 从Plex接收`events`（通过[Plex Webhook]（https://support.plex.tv/articles/115002267687-webhooks/#toc-0）和[Plex Notifications]（https://support.plex.tv） / articles / push-notifications /＃toc-0）使用Plex Pass或通过Tautulli，[__ see setup！__]（＃22-advanced-setup-plex-pass-or-tautulli））
  - 玩家的播放控制
- - 检索服务器
- - 检索库
+ - 检索`服务器`
+ - 检索`libraries`
  - 检索库中的所有项目
- - 检索用户（仅限Tautulli）
- - 检索统计数据（仅限Tautulli）
- - 检索播放列表
- - 检索设置
+ - 检索`用户'（仅限Tautulli）
+ - 检索`统计数据'（仅限Tautulli）
+ - 检索“播放列表”
+ - 检索`settings`
+ - 显示Plex最近事件的Web界面：
+
+  ![Plex Web界面](../../../en/adapterref/iobroker.plex/img/screenshot_adapter-interface.png)
 
 ## 2.安装说明
 ### 2.1。基本设置
-对于基本设置，只需要提供Plex安装的IP地址（和端口）。此外，您必须提供适配器的用户和密码才能从Plex检索数据。
-
-如果您想要在适配器中存储用户和密码，则可以在Plex设置中将ioBroker IP列入白名单。为此，请转到Plex Media Server的`Settings`和`Network`。在`LAN Networks`和`List of IP addresses and networks that are allowed without auth`字段中键入ioBroker IP地址：
-
-![Plex网络设置](../../../en/adapterref/iobroker.plex/img/screenshot_plex-networksettings.jpg)
+对于基本设置，需要提供Plex安装的IP地址（和端口）。此外，您必须为适配器检索专用令牌以从Plex检索数据。
 
 一旦给出，ioBroker.plex将检索所有基本数据（包括服务器，库）。有关基本数据的完整列表，请参见[频道和国家](#21-with-basis-setup)。
 
 ### 2.2。高级设置（Plex Pass或Tautulli）
 #### 2.2.1。 Plex Pass
+__Webhook__
+
 如果您是Plex Pass用户，您可以在Plex设置中[设置webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0)从Plex媒体服务器检索当前事件/操作（播放，暂停，恢复，停止，查看和评级）。
 
 导航到Plex Media Server并转到```Settings```和```Webhook```。单击```Add Webhook```创建一个新的webhook，并使用ioBroker.plex设置和尾随```/plex```路径中指定的自定义端口输入您的ioBroker IP地址，例如： ```http://192.168.178.29:41891/plex```：
 
 ![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
+
+__Events__
+
+有关Plex通知的信息，请参见[看官方文档](https://support.plex.tv/articles/push-notifications/#toc-0)。要打开Plex Media Server上的通知，请转至`Settings`>`Server`>`General`，然后启用`Push Notifications`首选项。
 
 #### 2.2.2.Tautulli
 [Tautulli是第三方应用程序]（https://tautulli.com/#about），您可以与Plex Media Server一起运行以监控活动并跟踪各种统计信息。最重要的是，这些统计数据包括观看内容，观看内容，观看时间和地点以及观看方式。所有统计信息都显示在一个漂亮而干净的界面中，其中包含许多表格和图形，这使得您可以轻松地向其他人吹嘘您的服务器。查看[Tautulli预览]（https://tautulli.com/#preview）并[在您首选的系统上安装它]](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation)如果您有兴趣。
@@ -81,7 +87,7 @@ hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 ![Tautulli设置](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-settings.png)
 
 1.单击_添加新通知代理_和_Webhook_。
-2.使用ioBroker.plex设置中指定的自定义端口输入您的ioBroker IP地址，并在其后面添加“`/ / tautulli```路径，例如： ```HTTP：//192.168.178.29：41891 / tautulli```：
+2.使用ioBroker.plex设置中指定的自定义端口输入您的ioBroker IP地址，并在其后面添加“`/ / tautulli```路径，例如```HTTP：//192.168.178.29：41891 / tautulli```：
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png)此外，为_Webhook Method_选择```POST```并在_Description_中输入您喜欢的任何描述。
 
@@ -97,7 +103,7 @@ hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
    ![Tautulli通知设置](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification_settings.png)
 
 ## 3.频道和国家
-配置了基本和高级设置后，将显示以下通道（当然，库，服务器和用户仅是示例）。有关[完整的渠道和州名单](#21-with-basis-setup)，请参见下文。
+配置了基本和高级设置后，将显示以下通道（库，服务器和用户当然只是示例）。有关[完整的渠道和州名单](#21-with-basis-setup)，请参见下文。
 
 ![频道和州示例](../../../en/adapterref/iobroker.plex/img/screenshot_plex-states.jpg)
 
@@ -122,8 +128,19 @@ hash: ihnvf+MUeRshlR2jF8t89A7y13pR9wbn8Zm5KetUmi8=
 ## Changelog
 
 ### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
-- add support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
-- add support for all Tautulli triggers
+- Remote Player Control
+
+### 0.6.0 (2019-08-19)
+- (Zefau) replaced password with token authentication
+
+### 0.5.0 (2019-08-18)
+- (Zefau) added support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
+- (Zefau) added support for all Tautulli triggers
+- (Zefau) added Adapter Web Interface that shows the recent events
+
+### 0.4.3 (2019-08-11)
+- (Zefau) Performance improvements (dutyCycleRun and state comparison)
+- (Zefau) added refresh button (to scan library files) to libraries
 
 ### 0.4.1 / 0.4.2 (2019-08-03)
 - (Zefau) fixed newly introduced playback control not working for certain players

@@ -357,6 +357,9 @@ on({id: '#LOCK STATE ID#', change: 'any'}, function(obj)
 
 ## Changelog
 
+### 1.0.2 (2019-08-14)
+- (Zefau) Fixed Bug with incorrect callbacks
+
 ### 1.0.1 (2019-08-11)
 - (Zefau) Performance improvements
 - (Zefau) Small re-design of admin panel

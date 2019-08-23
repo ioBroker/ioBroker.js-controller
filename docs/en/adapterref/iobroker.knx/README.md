@@ -112,6 +112,23 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * require node Version >8.9.4!
 
 ## Changelog
+### 1.0.31
+* fixed bug in deviceTree generation
+
+### 1.0.30
+* new Importer for ETS5.7.2 knxproj files
+* extended accepted Datapointtypes
+* new adapter configuration menu
+* implemented a switch for the user to decide to use "true" and "false" or "0" or "1" for binary values
+* fixed bug in GroupValue_Read
+* implemented a selector for local network interface for KNX to Gateway communiction
+* extended State Object for later features
+* fixed some small other bugs
+
+### 1.0.20
+* fixed bug in handling KNX-data packages, which occures periodical reconnects
+* fixed bug in KNX-projectfile upload procedure
+
 ### 1.0.19
 * reverted to true/false handling for DPT1.x
 

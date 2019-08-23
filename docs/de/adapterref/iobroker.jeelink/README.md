@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.jeelink/README.md
 title: ioBroker.jeelink
-hash: pqu3Bjsp33UvrKBQ05qx1l3rKcZM5SddWQfAlEtdnF8=
+hash: apV/B74CjZZUMKx+MC9nfCoMdKN4fZnzSlibWD1ycMc=
 ---
 ![Logo](../../../en/adapterref/iobroker.jeelink/admin/jeelab_logo.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/jeelink-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.jeelink.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.jeelink.svg)
-![Build-Status](https://travis-ci.org/foxthefox/ioBroker.jeelink.svg?branch=master)
+![Build Status](https://travis-ci.org/foxthefox/ioBroker.jeelink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.jeelink.png?downloads=true)
 
 # IoBroker.jeelink
 Dies ist ein Adapter für ioBroker zur Integration von RFM12B / RFM69 über Jeelink.
-Der Jeelink kann mit der vorinstallierten Software (rfmdemo) zum Lesen von Openenergiesensoren (emon) verwendet werden.
-Für den Einsatz von LaCrosse-Sensoren muss die Firmware ausgetauscht werden (siehe iobroker-Forum).
+Der jeelink kann mit der vorinstallierten Software (rfmdemo) zum Auslesen von Openenergiesensoren (emon) verwendet werden.
+Für die Verwendung von LaCrosse-Sensoren muss die Firmware ausgetauscht werden (siehe iobroker-Forum).
 
 ## Installation:
 ### Freigegebene Version
@@ -23,15 +24,15 @@ Für den Einsatz von LaCrosse-Sensoren muss die Firmware ausgetauscht werden (si
 npm install iobroker.jeelink
 ```
 
-auf Himbeere kann es helfen, zu verwenden:
+auf Himbeere könnte es helfen, zu verwenden:
 
 ```javascript
  npm install --unsafe-perm iobroker.jeelink
  ```
 
- weil das serialport-Paket auf einem nicht unterstützten arm-hw erstellt werden muss
+ weil serialport package auf nicht unterstütztem arm-hw aufgebaut sein muss
 
-### Die eigentliche Entwicklungsversion von github (funktioniert möglicherweise nicht!)
+### Die aktuelle Entwicklungsversion von Github (im Test möglicherweise nicht funktionsfähig!)
 ```javascript
 npm install https://github.com/foxthefox/ioBroker.jeelink/tarball/master --production
 ```
@@ -43,43 +44,56 @@ npm install --unsafe-perm https://github.com/foxthefox/ioBroker.jeelink/tarball/
 ```
 
 ## Die Einstellungen:
-- USB-Anschluss von JeelinkAdapter in der Regel / dev / ttyACME
+- USB-Anschluss von JeelinkAdapter normalerweise / dev / ttyACME
 - Seriengeschwindigkeit normalerweise 57600 Baud
 
 ## Aufbau:
-in admin gemacht werden
+zu erledigen in admin
 
-* Deinitierung des USB-Ports
-* Einstellung der Baudrate
-- Definieren Sie die Adresse des Sensors, der auf Luft empfangen wird
-- Definieren Sie eine eindeutige Sensoradresse im Adapter (LaCrosse ändert die On-Air-Adresse nach dem Batteriewechsel. Beobachten Sie das Protokoll und passen Sie die Sensoradresse nach dem Batteriewechsel an.)
-- den Sensortyp definieren (siehe Beispiele unten)
-- den Raum definieren
+* Deinition des USB-Ports
+* Einstellen der Baudrate
+- Fühleradresse festlegen, die auf Sendung empfangen wird
+- Definieren Sie eine eindeutige Sensoradresse im Adapter (LaCrosse ändert die On-Air-Adresse nach dem Batteriewechsel. Beachten Sie daher das Protokoll und passen Sie die Sensoradresse nach dem Batteriewechsel an.)
+- Definieren Sie den Sensortyp (siehe nachfolgende Beispiele)
+- definieren Sie den Raum
 
 ## Sensoren
 | Objekt | Gerätevarianten | Telegrammbeispiel | Beschreibung |
 |--------|-------|:-:|--------|
 | emonTH | emonTH | OK 19 ... | sensor von openenergy.org |
-| emonWater | emonWater | OK 21 ... | Sensor mit RFM12B für Wassermessung |
+| emonWater | emonWater | OK 21 ... | Sensor mit RFM12B zur Wasserdosierung |
 | LaCrosseDTH | TX | OK 9 ... | Sensoren von LaCrosse, technoline |
-| HMS100TF | TXH29DTH-IT | H00 ... | sensors technoline |
+| LaCrosseDTT | TX | OK 9 ... | Sensoren von LaCrosse, technoline double temp |
+| HMS100TF | TXH29DTH-IT | H00 ... | Sensoren technoline |
 | LaCrosseBMP180 || OK WS ... | sensor mod, superjee |
 | LaCrosseWS | WS1080, TX22, WS1600 | OK WS ... | Wetterstation |
 | EC3000 | EC3000 | OK 22 ... | Energiezähler |
 | EMT7110 | EMT7110 | OK EMT7110 ... | Energiezähler |
-| Füllstand | Füllstand | OK LS ... | Füllstandssensor |
+| Füllstand | Füllstand | OK LS ... | Füllstandsensor |
 
 ## MACHEN:
 * andere Sensortypen
 * Geben Sie den Sensorcode in eine separate Datei ein
-* Schieben des neuen Sensors auf config, dann sichtbar auf der Admin / Config-Seite
-* HMS100TF Temperatur unter 0 °C und niedriger Batteriestand
+* Neuen Sensor in die Konfiguration schieben, dann auf der Admin / Config-Seite sichtbar
+* HMS100TF Temperatur unter 0 °C und niedriger Batteriestand müssen implementiert werden
 
 ## Changelog
+### 0.1.3
+* (atl285) added new sensor type LacCrosseDTT (double temp like TX25-IT)
+
+### 0.1.2
+* correction for weather (no data is given by value = 255)
+
+### 0.1.1
+* delete buffer function to be compatible with nodejs10
+* enhanced automatic testing
+
 ### 0.1.0
 * compact mode
+
 ### 0.0.7
-* new level sensor (fhem) 
+* new level sensor (fhem)
+
 ### 0.0.6
 * last version of serialport
 * new sensor TXH29DTH-IT

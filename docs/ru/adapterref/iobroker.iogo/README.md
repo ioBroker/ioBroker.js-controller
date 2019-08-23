@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: zs7UW0HgpBA0XC5DMs3tWSub1JZijsFLm/oEkvK+vhw=
+hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -17,9 +17,7 @@ hash: zs7UW0HgpBA0XC5DMs3tWSub1JZijsFLm/oEkvK+vhw=
 =================
 
 Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
-Пожалуйста, перейдите в настройки / учетную запись, чтобы зарегистрироваться по электронной почте и паролю.
-После создания учетной записи в приложении вы можете использовать этот адаптер для push-уведомлений.
-Кроме того, этот адаптер хранит текущее состояние ваших устройств SmartHome.
+Пожалуйста, посетите iogo.nisnagel.de для получения дополнительной информации о том, как начать.
 
 ## Конфигурация
 Вы должны установить данные своей учетной записи (адрес электронной почты / пароль). После этого запустите адаптер.
@@ -52,17 +50,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-** Возможные варианты **:
-
-- *пользователь* один пользователь или список пользователей
-- *текст* основной текст уведомления
-- *title* заголовок уведомления
-
-## PRO Особенности
-Профессиональные функции доступны сразу после покупки ежемесячной / годовой подписки в приложении ioGo.
-
-### Изображений ###
-Просто отправьте путь к изображению вместо текста ```sendTo('iogo.0', 'absolute/path/file.png')```
+Просто отправьте путь к вашему изображению вместо текста или используйте атрибут url ```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {
@@ -73,9 +61,21 @@ sendTo('iogo', {
 });
 ```
 
+** Возможные варианты **:
+
+- *пользователь* один пользователь или список пользователей
+- *текст* само сообщение
+- *title* заголовок уведомления
+- *url* абсолютный путь к изображению
+
 ## Changelog
-### 0.3.0
+
+### 0.4.0
+* (nisio) Changes for ioGo app version 2.0.0+
+
+### 0.3.x
 * (nisio) added support of compact mode
+* (nisio) added support node 12
 
 ### 0.2.x
 * (nisio) added pro features
@@ -86,7 +86,7 @@ sendTo('iogo', {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Nis Nagel <support@nisnagel.de>
+Copyright (c) 2018 - 2019 Nis Nagel <support@nisnagel.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

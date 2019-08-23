@@ -198,6 +198,9 @@ The following objects are currently implemented:
 * dialog level
 
 ## Changelog
+#### 0.1.2
+* (Scrounger) correction of type mismatch (string boolean)
+
 #### 0.1.1
 * correction for clock "oneday"
 
