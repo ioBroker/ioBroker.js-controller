@@ -215,7 +215,7 @@ class App extends Router {
             showTabMenu: false,
             languageMenu: false,
             anchorMenu: null,
-            width: width,
+            width,
             height: window.innerHeight,
             selectedPage: hash.tab || 'intro',
             search: '',

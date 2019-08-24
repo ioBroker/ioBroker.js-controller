@@ -60,12 +60,19 @@ const styles = theme => ({
         borderRadius: 3
     },
     cardTitle: {
-        width: '100%',
+        maxWidth: 'calc(100% - 16px)',
+        overflow: 'hidden',
         position: 'absolute',
-        top: 0,
-        left: 16,
+        top: 16,
+        left: 6,
         zIndex: 1,
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        fontSize: 20,
+        fontWeight: 'bold',
+        paddingRight: 10,
+        paddingLeft: 10,
+        borderRadius: 5,
+        background: '#FFFFFF80',
     },
     cardContent: {
         zIndex: 1
@@ -189,6 +196,15 @@ const styles = theme => ({
     tableColumnInstalled: {
         width: 80,
     },
+    tableColumnWeekDownloads: {
+        width: 80,
+    },
+    tableColumnGithubStars: {
+        width: 80,
+    },
+    tableColumnGithubScore: {
+        width: 80,
+    },
     tableColumnLicense: {
         width: 80,
     },
@@ -307,6 +323,10 @@ class Adapters extends Component {
                             }
                         });
                     }
+                    obj.installs = obj.installs || 0;
+                    obj.weekDownloads = parseInt(obj.weekDownloads || 0, 10);
+                    obj.stars = obj.stars <= 0 ? 0 : parseInt(obj.stars, 10);
+                    obj.score = parseFloat(obj.score || 0);
                     obj.keywords = obj.keywords || '';
                     obj.keywords += obj.title;
                     obj.keywords = obj.keywords.toLowerCase();
@@ -351,10 +371,11 @@ class Adapters extends Component {
 
     renderAdapterStatistics() {
             return this.state.stats ? (<AdapterStatistics
+                key="statistics"
                 onClose={() => this.setState({stats: ''})}
                 mobile={this.props.mobile}
                 theme={this.props.theme}
-                width={this.props.width}
+                width={this.props.contentWidth}
                 language={this.props.language}
                 adapter={this.state.stats}
                 statistics={this.state.statistics}
@@ -368,7 +389,7 @@ class Adapters extends Component {
                     className={this.props.classes.cardMedia}
                     style={{backgroundImage: 'url(' + this.props.language + '/' + obj.icon + ')'}}
                 />
-                <div className={this.props.classes.cardTitle}><h2>{adapter}</h2></div>
+                <div className={this.props.classes.cardTitle}>{adapter}</div>
                 <CardContent className={this.props.classes.cardContent}>
                     <h2>&nbsp;</h2>
                     <p>
@@ -379,6 +400,8 @@ class Adapters extends Component {
                         {obj.authors ? (<div><span className={this.props.classes.cardName}>{this.words.authors}</span><span className={this.props.classes.cardValue}>{obj.authors.map(item => item.name).join(', ')}</span></div>) : null}
                         {obj.version ? (<div><span className={this.props.classes.cardName}>{this.words.stable}</span><span className={this.props.classes.cardValue}>{obj.version}</span></div>) : null}
                         {this.state.statistics.adapters[adapter] ? (<div><span className={this.props.classes.cardName}>{this.words.installs}</span><span className={this.props.classes.cardValue}>{this.state.statistics.adapters[adapter]}</span></div>) : null}
+                        {obj.stars > 0 ? (<div><span className={this.props.classes.cardName}>{this.words.githubStars}</span><span className={this.props.classes.cardValue} title={'Score: ' + (Math.floor(obj.score * 10) / 10)}>{obj.stars}</span></div>) : null}
+                        {obj.weekDownloads ? (<div><span className={this.props.classes.cardName}>{this.words.weekDownloads}</span><span className={this.props.classes.cardValue}>{obj.weekDownloads}</span></div>) : null}
                     </div>
                 </CardContent>
             </CardActionArea>),
@@ -398,6 +421,9 @@ class Adapters extends Component {
         this.words.github = this.words.github || I18n.t('Github');
         this.words.stats = this.words.stats || I18n.t('Info');
         this.words.close = this.words.close || I18n.t('Close');
+        this.words.githubStars = this.words.githubStars || I18n.t('Github stars:');
+        this.words.githubScore = this.words.githubScore || I18n.t('Github score:');
+        this.words.weekDownloads = this.words.weekDownloads || I18n.t('Week downloads') + ':';
 
         return (<Card key={adapter} className={this.props.classes.card} style={{width: this.cardWidth}}>
             {this.renderAdapterMain(adapter, obj)}
@@ -566,47 +592,53 @@ class Adapters extends Component {
 
     formatDate(date) {
         if (!date) return '';
+        if (date.getFullYear().toString() === 'NaN') {
+            return '';
+        }
         return date.getFullYear() + '.' + Utils.padding(date.getMonth() + 1) + '.' + Utils.padding(date.getDate());
     }
 
     formatAuthor(author, email) {
         if (email) {
-            return (<span className={this.props.classes.tableEmail} title={I18n.t('Click to copy %s', email)} onClick={e => {
+            return (<span key={email} className={this.props.classes.tableEmail} title={I18n.t('Click to copy %s', email)} onClick={e => {
                 Utils.onCopy(e, email);
                 this.setState({tooltip: I18n.t('Copied')});
             }}>{author}</span>);
         } else {
-            return (<span className={this.props.classes.tableAuthor}>{author}</span>);
+            return (<span key={author} className={this.props.classes.tableAuthor}>{author}</span>);
         }
     }
 
     renderVersion(obj) {
         if (obj.version !== obj.latestVersion) {
             return [
-                (<div className={this.props.classes.versionTitle}>stable</div>),
+                (<div key="stable" className={this.props.classes.versionTitle}>stable</div>),
                 obj.version,
-                (<br/>),
-                (<div className={this.props.classes.versionTitle}>latest</div>),
+                (<br key="br"/>),
+                (<div key="latest" className={this.props.classes.versionTitle}>latest</div>),
                 obj.latestVersion
             ];
         } else {
-            return [(<div className={this.props.classes.versionTitle}>&nbsp;</div>), obj.version];
+            return [(<div key="version" className={this.props.classes.versionTitle}>&nbsp;</div>), obj.version];
         }
     }
 
-    renderTableLine(name, obj) {
-        return (<TableRow className={this.props.classes.tableRow} onClick={() => {
+    renderTableLine(name, obj, width) {
+        return (<TableRow className={this.props.classes.tableRow} key={name} onClick={() => {
             this.onNavigate(`adapterref/iobroker.${name}/README.md`);
         }}>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnIcon} align="left" padding="dense">{(<img className={this.props.classes.tableLogo} alt="logo" src={this.props.language + '/' + obj.icon}/>)}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnTitle} align="left" padding="dense">{name}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnDesc} padding="dense">{typeof obj.description === 'object' ? obj.description[this.props.language] || obj.description.en : obj.description || ''}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnType} align="right" padding="dense">{obj.type}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnInstalled} align="right" padding="dense">{obj.installs}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnLicense} align="right" padding="dense">{obj.license}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnAuthor} align="right" padding="dense">{obj.authors ? obj.authors.map(item => [this.formatAuthor(item.name, item.email), (<br/>)]) : ''}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnCreated} align="right" padding="dense">{this.formatDate(obj.published)}</TableCell>
-            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnVersions} align="right" padding="dense">{this.renderVersion(obj)}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnIcon} align="left" padding="none">{(<img className={this.props.classes.tableLogo} alt="logo" src={this.props.language + '/' + obj.icon}/>)}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnTitle} align="left" padding="none">{name}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnDesc} padding="none">{typeof obj.description === 'object' ? obj.description[this.props.language] || obj.description.en : obj.description || ''}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnType} align="right" padding="none">{obj.type}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnInstalled} align="right" padding="none">{obj.installs}</TableCell>
+            {width > 2 ? (<TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnGithubScore} align="right" padding="none">{obj.score ? Math.floor(obj.score * 10) / 10 : ''}</TableCell>) : null}
+            {width > 1 ? (<TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnGithubStars} align="right" padding="none">{obj.stars > 0 ? obj.stars : ''}</TableCell>) : null}
+            {width > 0 ? (<TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnWeekDownloads} align="right" padding="none">{obj.weekDownloads}</TableCell>) : null}
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnLicense} align="right" padding="none">{obj.license}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnAuthor} align="right" padding="none">{obj.authors ? obj.authors.map(item => [this.formatAuthor(item.name, item.email), (<br key="br"/>)]) : ''}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnCreated} align="right" padding="none">{this.formatDate(obj.published)}</TableCell>
+            <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnVersions} align="right" padding="none">{this.renderVersion(obj)}</TableCell>
         </TableRow>)
     }
 
@@ -616,7 +648,7 @@ class Adapters extends Component {
             this.setState({order});
             window.localStorage && window.localStorage.setItem('Docs.aOrder', order);
         } else {
-            const order = col === 'Installed' || col === 'Created' ? 'desc' : 'asc';
+            const order = col === 'Installed' || col === 'Created' || col === 'Github stars' || col === 'Github score' || col === 'Week downloads'  ? 'desc' : 'asc';
             window.localStorage && window.localStorage.setItem('Docs.aOrder', order);
             window.localStorage && window.localStorage.setItem('Docs.aOrderBy', col);
             this.setState({order, orderBy: col})
@@ -645,6 +677,7 @@ class Adapters extends Component {
 
     renderSnackbar() {
         return (<Snackbar
+            key="snackbar"
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             open={!!this.state.tooltip}
             autoHideDuration={6000}
@@ -666,6 +699,7 @@ class Adapters extends Component {
 
     renderTable() {
         let names = Object.keys(this.state.adapters);
+        const width = this.props.contentWidth > 1900 ? 3 : (this.props.contentWidth > 1700 ? 2 : (this.props.contentWidth > 1500 ? 1 : 0));
         if (this.state.filter) {
             const filter = this.state.filter.toLowerCase();
             names = names.filter(adapter =>
@@ -683,6 +717,27 @@ class Adapters extends Component {
                 names.sort((a, b) => ad[a].installs - ad[b].installs);
             } else {
                 names.sort((a, b) => ad[b].installs - ad[a].installs);
+            }
+        } else if (this.state.orderBy === 'Github score') {
+            const ad = this.state.adapters;
+            if (this.state.order === 'asc') {
+                names.sort((a, b) => ad[a].score - ad[b].score);
+            } else {
+                names.sort((a, b) => ad[b].score - ad[a].score);
+            }
+        } else if (this.state.orderBy === 'Github stars') {
+            const ad = this.state.adapters;
+            if (this.state.order === 'asc') {
+                names.sort((a, b) => ad[a].stars - ad[b].stars);
+            } else {
+                names.sort((a, b) => ad[b].stars - ad[a].stars);
+            }
+        } else if (this.state.orderBy === 'Week downloads') {
+            const ad = this.state.adapters;
+            if (this.state.order === 'asc') {
+                names.sort((a, b) => ad[a].weekDownloads - ad[b].weekDownloads);
+            } else {
+                names.sort((a, b) => ad[b].weekDownloads - ad[a].weekDownloads);
             }
         } else if (this.state.orderBy === 'License') {
             const ad = this.state.adapters;
@@ -707,7 +762,7 @@ class Adapters extends Component {
             }
         }
 
-        return (<div className={this.props.classes.tableRoot}><Table key="table" padding="dense" className={this.props.classes.table}>
+        return (<div className={this.props.classes.tableRoot} key="table"><Table key="table" padding="none" className={this.props.classes.table}>
             <TableHead>
                 <TableRow>
                     <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnIcon} align="left">{I18n.t('Icon')}</TableCell>
@@ -715,6 +770,9 @@ class Adapters extends Component {
                     <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnDesc}>{I18n.t('Description')}</TableCell>
                     {this.renderHeaderCell(this.props.classes.tableColumnType, 'Type', 'right')}
                     {this.renderHeaderCell(this.props.classes.tableColumnInstalled, 'Installed', 'right')}
+                    {width > 2 ? this.renderHeaderCell(this.props.classes.tableColumnGithubScore, 'Github score', 'right') : null}
+                    {width > 1 ? this.renderHeaderCell(this.props.classes.tableColumnGithubStars, 'Github stars', 'right') : null}
+                    {width > 0 ? this.renderHeaderCell(this.props.classes.tableColumnWeekDownloads, 'Week downloads', 'right') : null}
                     {this.renderHeaderCell(this.props.classes.tableColumnLicense, 'License', 'right')}
                     <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnAuthor} align="right">{I18n.t('Maintainer')}</TableCell>
                     {this.renderHeaderCell(this.props.classes.tableColumnCreated, 'Created', 'right')}
@@ -722,7 +780,7 @@ class Adapters extends Component {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {names.map(a => this.renderTableLine(a, this.state.adapters[a]))}
+                {names.map(a => this.renderTableLine(a, this.state.adapters[a], width))}
             </TableBody>
         </Table></div>)
     }
@@ -752,7 +810,7 @@ Adapters.propTypes = {
     onNavigate: PropTypes.func,
     theme: PropTypes.string,
     mobile: PropTypes.bool,
-    width: PropTypes.number,
+    contentWidth: PropTypes.number,
 };
 
 export default withStyles(styles)(Adapters);

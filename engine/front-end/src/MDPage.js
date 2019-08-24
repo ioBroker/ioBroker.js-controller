@@ -74,7 +74,7 @@ class MDPage extends Component {
                 <IconMenuClosed />
             </div>);
         } else {
-            return (<div key="closeMenu" className={this.props.classes.menuOpenCloseButton + ' ' + (this.props.mobile ? this.props.classes.menuOpenCloseButtonMobile : '')} style={{left: this.props.menuOpened ? this.props.contentWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
+            return (<div key="closeMenu" className={this.props.classes.menuOpenCloseButton + ' ' + (this.props.mobile ? this.props.classes.menuOpenCloseButtonMobile : '')} style={{left: this.props.menuOpened ? this.props.menuWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
                 {this.props.menuOpened ? (<IconMenuOpened />) : (<IconMenuClosed />)}
             </div>);
         }
@@ -100,6 +100,7 @@ class MDPage extends Component {
                     (<Adapters path={this.props.path}
                          language={this.props.language}
                          theme={this.props.theme}
+                         contentWidth={this.props.contentWidth}
                          mobile={this.props.mobile}
                          scrollPosition={top => {
                              if (top !== undefined) {
@@ -126,7 +127,6 @@ class MDPage extends Component {
     }
 }
 
-
 MDPage.propTypes = {
     path: PropTypes.string,
     language: PropTypes.string,
@@ -138,6 +138,7 @@ MDPage.propTypes = {
     mobile: PropTypes.bool,
     menuOpened: PropTypes.bool,
     contentWidth: PropTypes.number,
+    menuWidth: PropTypes.number,
 };
 
 export default withStyles(styles)(MDPage);

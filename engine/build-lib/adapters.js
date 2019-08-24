@@ -558,6 +558,11 @@ function buildAdapterContent(adapter) {
                                 Object.keys(content.pages).find(type => {
                                    if (content.pages[type].pages && content.pages[type].pages[a]) {
                                        content.pages[type].pages[a].installs = stat.adapters[a];
+
+                                       content.pages[type].pages[a].weekDownloads = repo[a].weekDownloads;
+                                       content.pages[type].pages[a].stars = repo[a].stars;
+                                       content.pages[type].pages[a].issues = repo[a].issues;
+                                       content.pages[type].pages[a].score = repo[a].score;
                                        return true;
                                    }
                                 });

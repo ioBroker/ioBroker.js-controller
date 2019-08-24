@@ -377,7 +377,8 @@ class TreePage extends Router {
             onEditMode={this.onEditMode.bind(this)}
             editMode={this.state.editMode}
             resizing={this.state.resizing}
-            contentWidth={this.state.menuSize}
+            menuWidth={this.state.menuSize}
+            contentWidth={this.state.menuOpened ? this.props.contentWidth - this.state.menuSize : this.props.contentWidth}
             menuOpened={this.state.menuOpened}
             onNavigate={this.props.onNavigate}
             language={this.props.language}
