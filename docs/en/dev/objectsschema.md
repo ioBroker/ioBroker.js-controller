@@ -202,6 +202,7 @@ attributes:
 * `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
 * `common.min`    (optional)
 * `common.max`    (optional)
+* `common.step`   (optional) - increase/decrease interval. E.g. 0.5 for thermostat
 * `common.unit`   (optional)
 * `common.def`    (optional - the default value)
 * `common.defAck` (optional - if common.def is set this value is used as ack flag, js-controller 2.0.0+)
