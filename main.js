@@ -1359,12 +1359,12 @@ function startAdapterUpload() {
     }
 
     upload.uploadAdapter(uploadTasks[0].adapter, true, true, () =>
-        upload.upgradeAdapterObjects(uploadTasks[0], () =>
-            upload.uploadAdapter(uploadTasks[0], false, true, () => {
+        upload.upgradeAdapterObjects(uploadTasks[0].adapter, () =>
+            upload.uploadAdapter(uploadTasks[0].adapter, false, true, () => {
                 const msg = uploadTasks[0].msg;
 
                 // send response to requester
-                msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {result: 'done'}, msg.callback);
 
                 uploadTasks.shift();
 
