@@ -220,7 +220,7 @@ function createStates(onConnect) {
             if (id.match(/.logging$/)) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
-            // If this is messagebox
+            // If this is messagebox, only the main controller is handling the host messages
             if (!compactGroupController && id === 'messagebox.' + hostObjectPrefix) {
                 // Read it from fifo list
                 states.delMessage(hostObjectPrefix, state._id);
@@ -324,6 +324,7 @@ function createStates(onConnect) {
         },
         connected: (handler) => {
             states = handler;
+            // logs and cleanups are only handled by the main controller process
             if (!compactGroupController) {
                 if (states.clearAllLogs) states.clearAllLogs();
                 if (states.clearAllMessages) states.clearAllMessages();
@@ -400,7 +401,7 @@ function createObjects(onConnect) {
                         initMessageQueue();
                     }
                 });
-            }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 10 : 0));
+            }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
 
         },
         change: (id, obj) => {
@@ -481,11 +482,15 @@ function createObjects(onConnect) {
                 } else if (obj && obj.common) {
                     const _ipArr = getIPs();
                     // new adapter
-                    if (checkAndAddInstance(obj, _ipArr) && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
-                            // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                            if (compactGroupController) {
-                                procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
-                            }
+                    if (
+                        checkAndAddInstance(obj, _ipArr) &&
+                        procs[id].config.common.enabled &&
+                        (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)
+                    ) {
+                        // We should give is a slight delay to allow an pot. former existing process on other host to exit
+                        if (compactGroupController) {
+                            procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
+                        }
                     }
                 }
             } catch (err) {
@@ -503,6 +508,7 @@ function startAliveInterval() {
     config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     if (!compactGroupController) {
+        // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
         states.setState(hostObjectPrefix + '.compactModeEnabled', {
             ack: true,
             from: hostObjectPrefix,
@@ -594,25 +600,24 @@ function reportStatus() {
         eventLoopLags = [];
     }
 
-    states.setState(id + '.compactGroupProcesses',   {val: Object.keys(compactProcs).length, ack: true, from: id});
+    states.setState(id + '.compactgroupProcesses',   {val: Object.keys(compactProcs).length, ack: true, from: id});
     let realProcesses = 0;
     let compactProcesses = 0;
     Object.keys(procs).forEach(proc => {
-       if (procs[proc].process) {
-           if (procs[proc].startedInCompactMode) {
-               compactProcesses++
-           }
-           else {
-               realProcesses++;
-           }
-
-       }
+        if (procs[proc].process) {
+            if (procs[proc].startedInCompactMode) {
+                compactProcesses++;
+            }
+            else {
+                realProcesses++;
+            }
+        }
     });
     states.setState(id + '.instancesAsProcess',   {val: realProcesses, ack: true, from: id});
     states.setState(id + '.instancesAsCompact',   {val: compactProcesses, ack: true, from: id});
 
     if (compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
-        logger.info('Compactgroup controller ' + compactGroup + ' does not own any processes, stop');
+        logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
         stop();
     }
     inputCount  = 0;
@@ -742,6 +747,7 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
+    // only main host controller needs to check/fix the host assignments from the instances
     if (compactGroupController) {
         callback && callback();
         return;
@@ -1074,7 +1080,7 @@ function setMeta() {
         tasks.push(obj);
 
         obj = {
-            _id:       id + '.compactGroupProcesses',
+            _id:       id + '.compactgroupProcesses',
             type:      'state',
             common: {
                 name:  'Controller - number of compact group controllers',
@@ -2070,6 +2076,12 @@ function getInstances() {
     });
 }
 
+/**
+ * CHecks if an instance is relevant for this host to be considered or not
+ * @param instance name of the instance
+ * @param _ipArr IP-Array from this host
+ * @returns {boolean} instance needs to be handled by this host (true) or not
+ */
 function instanceRelevantForThisHost(instance, _ipArr) {
     if (!_ipArr.includes(instance.common.host) && instance.common.host !== hostname) return false;
 
@@ -2086,6 +2098,12 @@ function instanceRelevantForThisHost(instance, _ipArr) {
     return true;
 }
 
+/**
+ * Check if an instance is handled by this host process and initialize internal data structures
+ * @param instance name of the instance
+ * @param ipArr IP-Array from this host
+ * @returns {boolean} instance needs to be handled by this host (true) or not
+ */
 function checkAndAddInstance(instance, ipArr) {
     if (!instanceRelevantForThisHost(instance, ipArr)) return false;
     if (config.system.compact && instance.common.compact) {
@@ -2095,7 +2113,7 @@ function checkAndAddInstance(instance, ipArr) {
     }
 
     if (compactGroupController) {
-        logger.debug(hostLogPrefix + ' instance ' + instance._id + ' is relevant for this controller');
+        logger.debug(hostLogPrefix + ' instance ' + instance._id + ' is managed by this controller');
     }
     procs[instance._id] = procs[instance._id] || {};
     if (!procs[instance._id].config) {
