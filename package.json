@@ -40,7 +40,7 @@
     "safe-replace": "^1.1.0",
     "semver": "^6.3.0",
     "socket.io": "2.1.1",
-    "socket.io-client": "2.1.1",
+    "socket.io-client": "2.2.0",
     "tar": "^4.4.8",
     "vm2": "^3.8.1",
     "winston": "^3.2.1",
