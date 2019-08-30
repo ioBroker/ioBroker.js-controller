@@ -23,6 +23,7 @@ const {NodeVM}   = require('vm2');
 
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
+let   upload; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
    Currently Node.js on Windows platform do not implements os.loadavg() functionality - it returns [0,0,0]
@@ -70,6 +71,8 @@ let eventLoopLags           = [];
 let mhService               = null; // multihost service
 const uptimeStart           = Date.now();
 const adapterModules        = {};
+
+const uploadTasks           = [];
 
 const config = getConfig();
 
@@ -1279,9 +1282,12 @@ function sendTo(objName, command, message, callback) {
         message = command;
         command = 'send';
     }
-    const obj = {command: command, message: message, from: 'system.host.' + hostname};
-    if (objName.substring(0, 'system.adapter.'.length) !== 'system.adapter.' &&
-        objName.substring(0, 'system.host.'.length)    !== 'system.host.') objName = 'system.adapter.' + objName;
+
+    const obj = {command, message, from: 'system.host.' + hostname};
+
+    if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
+        objName = 'system.adapter.' + objName;
+    }
 
     if (callback) {
         if (typeof callback === 'function') {
@@ -1291,8 +1297,10 @@ function sendTo(objName, command, message, callback) {
                 ack:     false,
                 time:    Date.now()
             };
-            if (callbackId > 0xFFFFFFFF) callbackId = 1;
-            if (!callbacks) callbacks = {};
+            if (callbackId > 0xFFFFFFFF) {
+                callbackId = 1;
+            }
+            callbacks = callbacks || {};
             callbacks['_' + obj.callback.id] = {cb: callback};
         } else {
             obj.callback     = callback;
@@ -1323,7 +1331,7 @@ function _deleteAllZipPackages(list, cb) {
     if (!list || !list.length) {
         cb && cb();
     } else {
-        states.detBinaryState(list.shift(), _err =>
+        states.delBinaryState(list.shift(), _err =>
             setImmediate(() =>
                 _deleteAllZipPackages(list, cb)));
     }
@@ -1337,6 +1345,31 @@ function _deleteAllZipPackages(list, cb) {
 function deleteAllZipPackages(cb) {
     states.getKeys('system.host.' + hostname + '.zip.*',
         (err, list) => _deleteAllZipPackages(list, cb));
+}
+
+function startAdapterUpload() {
+    if (!uploadTasks.length) return;
+
+    if (!upload) {
+        const Upload = require('./lib/setup/setupUpload');
+        upload = new Upload({
+            states:      states,
+            objects:     objects
+        });
+    }
+
+    upload.uploadAdapter(uploadTasks[0].adapter, true, true, () =>
+        upload.upgradeAdapterObjects(uploadTasks[0].adapter, () =>
+            upload.uploadAdapter(uploadTasks[0].adapter, false, true, () => {
+                const msg = uploadTasks[0].msg;
+
+                // send response to requester
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {result: 'done'}, msg.callback);
+
+                uploadTasks.shift();
+
+                setImmediate(startAdapterUpload);
+            })));
 }
 
 // Process message to controller, like execute some script
@@ -1381,7 +1414,7 @@ function processMessage(msg) {
                     child.stdout.on('data', data => {
                         data = data.toString().replace(/\n/g, '');
                         logger.info('host.' + hostname + ' ' + tools.appName + ' ' + data);
-                        if (msg.from) sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
+                        msg.from && sendTo(msg.from, 'cmdStdout', {id: msg.message.id, data: data});
                     });
                 }
 
@@ -1389,7 +1422,7 @@ function processMessage(msg) {
                     child.stderr.on('data', data => {
                         data = data.toString().replace(/\n/g, '');
                         logger.error('host.' + hostname + ' ' + tools.appName + ' ' + data);
-                        if (msg.from) sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
+                        msg.from && sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
                     });
                 }
 
@@ -1708,11 +1741,11 @@ function processMessage(msg) {
 
         case 'delLogs': {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-            if (fs.existsSync(__dirname +       '/log/' + tools.appName + '.log')) fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
-            if (fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log')) fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
-            if (fs.existsSync(logFile)) fs.writeFileSync(logFile);
+            fs.existsSync(__dirname +       '/log/' + tools.appName + '.log') && fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
+            fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log') && fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
+            fs.existsSync(logFile) && fs.writeFileSync(logFile);
 
-            if (msg.callback && msg.from) sendTo(msg.from, msg.command, null, msg.callback);
+            msg.callback && msg.from && sendTo(msg.from, msg.command, null, msg.callback);
             break;
         }
 
@@ -1835,6 +1868,19 @@ function processMessage(msg) {
                 }
             })();
             break;
+
+        case 'upload': {
+            (function (msg) {
+                if (msg.message) {
+                    uploadTasks.push({adapter: msg.message, msg});
+                    // start upload if no tasks running
+                    uploadTasks.length === 1 && startAdapterUpload();
+                } else {
+                    logger.error('host.' + hostname + ' No adapter name is specified for upload command from  ' + msg.from);
+                }
+            })(msg);
+            break;
+        }
     }
 }
 
