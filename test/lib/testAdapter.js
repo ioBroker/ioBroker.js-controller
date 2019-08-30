@@ -241,6 +241,12 @@ function testAdapter(options) {
             expect(context.adapter.config.password).to.be.equal('winning');
             let count = 0;
 
+            context.states.getState('system.adapter.' + context.adapterShortName + '.0.compactMode', function (err, state) {
+                expect(state.val).to.be.equal(true);
+                setTimeout(() => (!--count) && done(), 0);
+            });
+
+            count++;
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.connected', function (err, state) {
                 expect(state.val).to.be.equal(true);
                 setTimeout(() => (!--count) && done(), 0);
@@ -248,21 +254,19 @@ function testAdapter(options) {
 
             count++;
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.memRss', function (err, state) {
-                expect(state.val).to.be.above(0);
+                expect(state.val).to.be.equal(0);
                 setTimeout(() => (!--count) && done(), 0);
             });
 
             count++;
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapTotal', function (err, state) {
-                expect(state.val).to.be.above(0);
-                setTimeout(function () {
-                    if (!--count) done();
-                }, 0);setTimeout(() => (!--count) && done(), 0);
+                expect(state.val).to.be.equal(0);
+                setTimeout(() => (!--count) && done(), 0);
             });
 
             count++;
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapUsed', function (err, state) {
-                expect(state.val).to.be.above(0);
+                expect(state.val).to.be.equal(0);
                 setTimeout(() => (!--count) && done(), 0);
             });
 

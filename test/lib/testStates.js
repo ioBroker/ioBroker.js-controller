@@ -637,7 +637,7 @@ function register(it, expect, context) {
         context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
             expect(err).to.be.null;
             expect(state).to.be.ok;
-            expect(state.val).to.be.ok;
+            expect(state.val).to.be.equal(0);
             done();
         });
     });
