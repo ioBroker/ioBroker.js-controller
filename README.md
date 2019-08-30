@@ -120,7 +120,7 @@ If needed, especially for low memory situations the memory limit for all adapter
 ### Statistics
 **Feature status:** stable
  
-The js-controller is collecting statistics for the host (`system.host.hostname.*`) and also for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
+The js-controller is collecting statistics for the host (`system.host.hostname.*`), running compact groups (`system.host.hostname.compaczgroupX.*`) and for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
 ### Logging
 
@@ -175,7 +175,6 @@ The logging is configured in the `iobroker.json` file and can be changed there:
 }
 ```
 
-
 #### Syslog logging
 **Feature status:** stable
 
@@ -210,12 +209,32 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
 }
 ```
 
+#### Adapters allow to subscribe to logs
+**Feature status:** stable
+
+ioBroker allows adapters to subscribe to logs from the whole system. E.g. admin adapter is using this logic
+
+More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md 
+
 ### Controlling and monitoring of adapter processes
+
+The full definition for adapter settings can be found at https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter
 
 #### Multiple adapter instances
 **Feature status:** stable
 
-ioBroker allows to install multiple adapters on the sytem. For each adapter multiple instances can be created and started with an independent configuration.
+ioBroker allows to install multiple adapters on the system. For each adapter the JavaScript code is installed once.
+For each adapter multiple instances can be created and started with independent configurations.
+
+#### Adapter types
+**Feature status:** stable
+
+ioBroker supports multiple Adapter modes. These are:
+* **deamon:** The adapter is started and runs all the time. If the process gets killed it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continously. These adapters also supports a restart schedule where the controller restarts the insances. The adapter needs RAM and some CPU resources also when doing nothing.
+* **schedule:** The adapter is started based on a defined schedule (e.g. once per hour, once a day, all 10 minutes ...), then is doing it's work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
+* **once:** The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
+* **subscribe:** The adapter is started when a defined state ID gets set to true, and stopped when set to false
+* **none:** The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
 #### Start adapter instances as normal processes
 **Feature status:** stable
@@ -229,7 +248,6 @@ With this approach the whole iobroker system is very robust. A faulty adapter wi
 The downside is that more RAM is required because each Node.js process needs 20-30 MB RAM for the Node.js part of it. With this a 1GB system is usually limited to run approximately 10 to 15 adapter processes. Aside from using systems with more RAM, distributing adapters onto multiple hosts in a multihost environment is possible.
 
 #### Start adapter instances in compact mode
-**Feature status:** Technology preview (since 2.0.0)
 
 The compact mode is developed especially for systems with low memery. All adapters configured to run in compact mode will run inside the same process as js-controller.
 
@@ -237,9 +255,12 @@ As a result, each adapter needs 20-30 MB less RAM because it does not need to ha
 
 The downside is that as soon as one adapter is crashes or generates an unhandled error, the whole js-controller process will be restarted.
 
-It is recommended to use this feature on slave systems but not for the ioBroker master host.
+It is recommended to use this feature on slave systems but not for the ioBroker master host or use compact groups.
 
-To enable compact mode for a js-controller instance, you need to manually change the `iobroker.json` configuration file
+##### Compact mode
+**Feature status:** Technology preview (since 2.0.0)
+
+To enable compact mode for a js-controller instance, you can use the new "compact" CLI commands or you can manually change the `iobroker.json` configuration file
 
 ```
 {
@@ -252,7 +273,15 @@ To enable compact mode for a js-controller instance, you need to manually change
 }
 ```
 and restart the js-controller.
-All adapters that can run in compact mode will now be started in compact mode.
+
+##### Compact groups
+**Feature status:** Technology preview (since 2.0.0)
+
+To be able to handle the risk of crashed controller processes affecting the whole system it is possible to assign the adapter instances to different compact groups. Each group will be run in their own process, only group 0 is handled directly by the main js-controller process.
+
+Using several compact groups you can, by using a bit more memory, lower the risk of a crashing js-controller main process.
+
+Compact groups can be configured for the respective instances using the compact CLI commands.
 
 ##### Implementation details
 

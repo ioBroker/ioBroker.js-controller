@@ -46,6 +46,7 @@ let callbacks               = {};
 const hostname              = tools.getHostName();
 let hostObjectPrefix        = 'system.host.' + hostname;
 let hostLogPrefix           = 'host.' + hostname;
+const compactGroupObjectPrefix = '.compactgroup';
 const logList               = [];
 let detectIpsCount          = 0;
 let disconnectTimeout       = null;
@@ -976,7 +977,7 @@ function setMeta() {
                 _id: id,
                 type: 'device',
                 common: {
-                    name: hostname + '.compactgroup' + compactGroup,
+                    name: hostname + compactGroupObjectPrefix + compactGroup,
                     cmd: process.argv[0] + ' ' + (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') + process.argv.slice(1).join(' '),
                     hostname: hostname,
                     address: getIPs()
@@ -1421,7 +1422,7 @@ function setMeta() {
         // identify existing states for deletion, because they are not in the new tasks-list
         let thishostStates = doc.rows;
         if (!compactGroupController) {
-            thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + '.compactgroup'));
+            thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
         }
         const todelete = thishostStates.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
 
@@ -3291,9 +3292,9 @@ function init(compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
 
-        hostObjectPrefix += '.compactgroup' + compactGroup;
-        hostLogPrefix += '.compactgroup' + compactGroup;
-        title += '.compactgroup' + compactGroup;
+        hostObjectPrefix += compactGroupObjectPrefix + compactGroup;
+        hostLogPrefix += compactGroupObjectPrefix + compactGroup;
+        title += compactGroupObjectPrefix + compactGroup;
     }
     else {
         stopTimeout += 5000;
