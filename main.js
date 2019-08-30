@@ -406,7 +406,7 @@ function createObjects(onConnect) {
                     }
                 });
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
-
+            // give main controller a bit longer, so that adapter and compact processes can exit before
         },
         change: (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
