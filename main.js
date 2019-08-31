@@ -2367,11 +2367,12 @@ function installAdapters() {
         procs[task.id].downloadRetry++;
         logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
 
-        const installArgs = []
+        const installArgs = [];
         if (task.installedFrom) {
             if (task.installedFrom.includes('://')) {
                 installArgs.push('url');
                 installArgs.push(task.installedFrom);
+                installArgs.push(task.id.split('.')[2]);
             }
             else {
                 installArgs.push('install');
