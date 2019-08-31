@@ -2230,7 +2230,7 @@ function initInstances() {
             const adapterDir = tools.getAdapterDir(name);
             if (!fs.existsSync(adapterDir)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version, installedFrom: instance.common.installedFrom});
+                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version, installedFrom: procs[id].config.common.installedFrom});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
             }
@@ -2387,7 +2387,7 @@ function installAdapters() {
             installArgs.push(name);
         }
         logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' '));
-        installArgs.unshift(__dirname + '/' + tools.appName + '.js');]
+        installArgs.unshift(__dirname + '/' + tools.appName + '.js');
 
         try {
             const child = require('child_process').spawn('node', installArgs, {windowsHide: true});
