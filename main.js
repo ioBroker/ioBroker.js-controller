@@ -2103,7 +2103,7 @@ function getInstances() {
                         const adapterDir_ = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir_)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
-                            installQueue.push({id: instance._id, disabled: true, version: instance.common.version});
+                            installQueue.push({id: instance._id, disabled: true, version: instance.common.version, installedFrom: instance.common.installedFrom});
                             // start install queue if not started
                             if (installQueue.length === 1) installAdapters();
                         }
@@ -2230,7 +2230,7 @@ function initInstances() {
             const adapterDir = tools.getAdapterDir(name);
             if (!fs.existsSync(adapterDir)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version});
+                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version, installedFrom: instance.common.installedFrom});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
             }
@@ -2366,10 +2366,31 @@ function installAdapters() {
     if (procs[task.id].downloadRetry < 3) {
         procs[task.id].downloadRetry++;
         logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
-        logger.info(hostLogPrefix + ' ' + tools.appName + ' install ' + name);
+
+        const installArgs = []
+        if (task.installedFrom) {
+            if (task.installedFrom.includes('://')) {
+                installArgs.push('url');
+                installArgs.push(task.installedFrom);
+            }
+            else {
+                installArgs.push('install');
+                let installedFrom = task.installedFrom;
+                if (installedFrom.startsWith(tools.appName + '.')) {
+                    installedFrom = installedFrom.substr(tools.appName.length + 1)
+                }
+                installArgs.push(installedFrom);
+            }
+        }
+        else {
+            installArgs.push('install');
+            installArgs.push(name);
+        }
+        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' '));
+        installArgs.unshift(__dirname + '/' + tools.appName + '.js');]
 
         try {
-            const child = require('child_process').spawn('node', [__dirname + '/' + tools.appName + '.js', 'install', name], {windowsHide: true});
+            const child = require('child_process').spawn('node', installArgs, {windowsHide: true});
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
@@ -2489,7 +2510,7 @@ function startInstance(id, wakeUp) {
     const adapterDir_ = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
-        installQueue.push({id: id, version: instance.common.version, wakeUp: wakeUp});
+        installQueue.push({id: id, version: instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
         // start install queue if not started
         if (installQueue.length === 1) installAdapters();
         return;
