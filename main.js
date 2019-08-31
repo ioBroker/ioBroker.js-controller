@@ -432,7 +432,7 @@ function createObjects(onConnect) {
                         if (
                             !compactGroupController &&
                             procs[id].config.common.compactGroup &&
-                            (procs[id].config.common.compactGroup !== obj.common.compactGroup || procs[id].config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
+                            (procs[id].config.common.compactGroup !== obj.common.compactGroup || procs[id].config.common.runAsCompactMode != obj.common.runAsCompactMode) &&
                             compactProcs[procs[id].config.common.compactGroup] &&
                             compactProcs[procs[id].config.common.compactGroup].instances &&
                             compactProcs[procs[id].config.common.compactGroup].instances.includes(id)
@@ -2139,7 +2139,7 @@ function instanceRelevantForThisHost(instance, _ipArr) {
 
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
-        if (instance.common.runAsCompactMode === undefined) instance.common.runAsCompactMode = true; // TODO repo logic!!
+        if (instance.common.runAsCompactMode === undefined) instance.common.runAsCompactMode = null; // TODO repo logic!!
         if (instance.common.compactGroup === undefined) instance.common.compactGroup = 0; // run in controller by default
     }
 
