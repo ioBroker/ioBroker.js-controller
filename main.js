@@ -2768,7 +2768,7 @@ function startInstance(id, wakeUp) {
                             } catch (e) {
                                 console.log(e.message);
                                 console.log(e.stackTrace);
-                                logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance}: ${JSON.stringify(e)}`);
+                                logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: ${e.message}`);
                             }
                         }
 
