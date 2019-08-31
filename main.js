@@ -1531,11 +1531,17 @@ function startAdapterUpload() {
         });
     }
 
-    upload.uploadAdapter(uploadTasks[0].adapter, true, true, () =>
-        upload.upgradeAdapterObjects(uploadTasks[0].adapter, () =>
-            upload.uploadAdapter(uploadTasks[0].adapter, false, true, () => {
-                const msg = uploadTasks[0].msg;
+    const msg = uploadTasks[0].msg;
 
+    const logger = msg.from ? {
+        log:   text => states.pushMessage(msg.from, {command: 'log',   text, from: 'system.host.' + hostname}),
+        warn:  text => states.pushMessage(msg.from, {command: 'warn',  text, from: 'system.host.' + hostname}),
+        error: text => states.pushMessage(msg.from, {command: 'error', text, from: 'system.host.' + hostname}),
+    } : null;
+
+    upload.uploadAdapter(uploadTasks[0].adapter, true, true, logger,() =>
+        upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger, () =>
+            upload.uploadAdapter(uploadTasks[0].adapter, false, true, logger, () => {
                 // send response to requester
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {result: 'done'}, msg.callback);
 
