@@ -24,7 +24,7 @@
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
 * (bluefox) Add adapter handling to prevent "error 7" (adapters will stop themself as soon as PID is not as expected)
-* (Apollon77) upgrade all dependencies 
+* (Apollon77) upgrade all dependencies, means: 0 vulnerabilities :-)
 * (AlCalzone) Don't chmod 777 after controller upgrade
 * (alcalzone) refactoring of many CLI commands
 * (bluefox) add possibility to return zip file as a link and not as base64
