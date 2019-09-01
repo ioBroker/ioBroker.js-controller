@@ -4,10 +4,10 @@
 * Minimum requirement for js-controller 2.0.0 is nodejs 8.x
 
 ### New user features
-* (Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)
-* (bluefox) Add build in Alias handling for Objects/States, see [Alias Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases)
-* (Bluefox/Apollon77) Add support to also use Redis for Objects and Files, see [Redis Objects Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-as-objectsfile-db)
-* (Apollon77) Add Redis sentinel support, see [Redis Sentinel Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-sentinel-as-objectsfile-db)
+* **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)**
+* **(bluefox) Add build in Alias handling for Objects/States, see [Alias Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases)**
+* **(Bluefox/Apollon77) Add support to also use Redis for Objects and Files, see [Redis Objects Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-as-objectsfile-db)**
+* **(Apollon77) Add Redis sentinel support, see [Redis Sentinel Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-sentinel-as-objectsfile-db)**
 * (Bluefox) Add optional migration for State and/or Objects values when using `setup custom`. 
 * (Apollon77) add monitoring for event-Loop-Lag as host and adapter objects. This can be used to analyze if an node.js process is blocked too much
 * (foxriver76) add possibility to validate backup files
