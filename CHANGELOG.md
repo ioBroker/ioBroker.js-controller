@@ -1,24 +1,52 @@
-## 2.0.0 (2019-xx-xx) Release Bea
-* Code refactoring, fixes and optimizations
-* (AlCalzone) Don't chmod 777 after controller upgrade
-* (Apollon77) CHange InMem-DB (State&Object) to TCP (redis style) protocol and deprecate socket.io version; will be removed approx. in v2.1 
-* (Apollon77) add monitoring for event-Loop-Lag as host objects
-* (Apollon77) Further compact mode optimizations
-* 
+## 2.0.0 (2019-09-xx) Release Bella
+
+### Breaking changes
+* Minimum requirement for js-controller 2.0.0 is nodejs 8.x
+
+### New user features
+* (Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)
+* (bluefox) Add build in Alias handling for Objects/States, see [Alias Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases)
+* (Bluefox/Apollon77) Add support to also use Redis for Objects and Files, see [Redis Objects Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-as-objectsfile-db)
+* (Apollon77) Add Redis sentinel support, see [Redis Sentinel Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-sentinel-as-objectsfile-db)
+* (Bluefox) Add optional migration for State and/or Objects values when using `setup custom`. 
+* (Apollon77) add monitoring for event-Loop-Lag as host and adapter objects. This can be used to analyze if an node.js process is blocked too much
 * (foxriver76) add possibility to validate backup files
+* (alcalzone) Support command `iobroker logs`
+* (Stabilostick) `cert create` CLI commands
+* (Apollon77) Remember installation location for reinstallations. For GitHub installs it gets the exact commit hash to reinstall really the correct version
+
+### New adapter developer features
+* (foxriver76) Ability to define secured objects in io-pack access only via own adapter and admin, details see #287
+* (foxriver76) added getObjectView and getObjectViewAsync on adapter object
+* (bluefox) allow the deletion of multiple objects with wildcard
+* (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
+
+### Further changes
+* (Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors
+* (bluefox) Add adapter handling to prevent "error 7" (adapters will stop themself as soon as PID is not as expected)
 * (Apollon77) upgrade all dependencies 
-* (bluefox) support of compact mode
+* (AlCalzone) Don't chmod 777 after controller upgrade
 * (alcalzone) refactoring of many CLI commands
 * (bluefox) add possibility to return zip file as a link and not as base64
-* (alcalzone) Enable ESLint and fix most issues
 * (bluefox) standardize error codes
 * (alcalzone) Root should always npm install with --unsafe-perm
-* (bluefox) enable gzip for read repositories
-* (bluefox) Add some information to user-agent, like chrome, IE and Firefox do by update checks - the information is absolutely anonymous
-* (alcalzone) Support command `iobroker logs`
+* (bluefox) enable gzip to read repositories
 * (bluefox) read hash of sources.json before read the whole file
-* (Moritz Heusinger) adding possibility to validate backup files
+* (bluefox) Add some information to user-agent, like chrome, IE and Firefox do by update checks - the information is absolutely anonymous
 * (bluefox) verify the version of node.js by start of the instance
+* (bluefox) hide cmd window on windows
+* (AlCalzone) Include certificate creation in `setup first`
+* (bluefox) suppress warning by npm install
+* (bluefox) allow optional dependencies being installed
+* (Apollon77) optimize `setup custom`and add more user guidance
+* (Apollon77) Add Feature overview to README
+* and much more code refactoring and optimizations in various places
+
+### Bugfixes
+* (alcalzone) Enable ESLint and fix most issues
+* (bluefox) optimize multi host upload
+* and many more fixes in various places
+
 
 ## 1.5.13 (2019-06-12) Evolution release (Ann)
 * (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install

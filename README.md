@@ -317,6 +317,9 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+### Object and State Aliases
+
+TBD!
 
 ### State and objects databases and files
 
