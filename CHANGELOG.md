@@ -22,7 +22,7 @@
 * (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
 
 ### Further changes
-* (Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors
+* **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
 * (bluefox) Add adapter handling to prevent "error 7" (adapters will stop themself as soon as PID is not as expected)
 * (Apollon77) upgrade all dependencies 
 * (AlCalzone) Don't chmod 777 after controller upgrade
