@@ -193,10 +193,9 @@ function register(it, expect, context) {
                 min: -100,
                 max: 100
             },
-            native: {
-            },
+            native: {},
             type: 'state',
-            acl : {
+            acl: {
                 object: 1536, // 0600
                 owner: 'system.user.userC',
                 ownerGroup: 'system.group.user1'
@@ -204,7 +203,7 @@ function register(it, expect, context) {
         }, err => {
             context.adapter.setForeignState(gid, 2, true, err => {
                 expect(err).to.be.not.ok;
-                
+
                 // create alias
                 context.adapter.setForeignObject(gAliasID, {
                     common: {
@@ -219,7 +218,7 @@ function register(it, expect, context) {
                     },
                     native: {},
                     type: 'state',
-                    acl : {
+                    acl: {
                         object: 1638, // 0666
                         owner: 'system.user.userC',
                         ownerGroup: 'system.group.user1'
@@ -416,8 +415,7 @@ function register(it, expect, context) {
                     context.onAdapterStateChanged = null;
                     done();
                 }
-            } else
-            if (id === gid) {
+            } else if (id === gid) {
                 count++;
                 expect(state).to.be.ok;
                 expect(state.val).to.equal(10);
@@ -467,7 +465,7 @@ function register(it, expect, context) {
                     },
                     native: {},
                     type: 'state',
-                    acl : {
+                    acl: {
                         object: 1638, // 0666
                         owner: 'system.user.userC',
                         ownerGroup: 'system.group.user1'
@@ -516,6 +514,93 @@ function register(it, expect, context) {
                 context.states.setState(gid, 10, err =>
                     expect(err).to.be.not.ok))); // => GOTO A:
 
+    }).timeout(3000);
+
+    it(testName + 'Test subscribe "*"', done => {
+        // 1. Create alias
+        // 2. Create normal state (independent from alias)
+        // 3. subscribe "*"
+        // 4. changes must come for alias and independent state
+        // 5. unsubscribe "*"
+        // 6. changes must not come for any state
+
+        // 1. create new alias
+        context.adapter.setForeignObject(gid + 'Star', {
+            common: {
+                name: 'forAliasStar',
+                type: 'number',
+                role: 'level',
+                min: 0,
+                max: 100
+            },
+            native: {},
+            type: 'state'
+        }, err =>
+            context.adapter.setForeignObject(gAliasID + 'Star', {
+                common: {
+                    name: 'Test Alias',
+                    type: 'number',
+                    role: 'state',
+                    min: -10,
+                    max: 10,
+                    alias: {
+                        id: gid + 'Star'
+                    }
+                },
+                native: {},
+                type: 'state'
+            }, err =>
+                // 2. Create normal state (independent from alias)
+                context.adapter.setForeignObject(gid + 'NotAlias', {
+                    common: {
+                        name: 'NotForAliasStar',
+                        type: 'number',
+                        role: 'level',
+                        min: 0,
+                        max: 10
+                    },
+                    native: {},
+                    type: 'state'
+                }, err =>
+                    context.adapter.subscribeForeignStates('*', err => {
+                        let count = 0;
+                        context.onAdapterStateChanged = function (id, state) {
+                            // B:
+                            if (id === gid + 'NotAlias') {
+                                expect(state.val).to.be.equal(2);
+                                count++;
+                            } else
+                            if (id === gAliasID + 'Star') {
+                                count++;
+                                expect(state.val).to.be.equal(-8);
+                            }
+                            else
+                            if (id === gid + 'Star') {
+                                count++;
+                                expect(state.val).to.be.equal(10);
+                            }
+
+                            if (count === 3) {
+                                // 6. changes must not come for any state
+                                context.onAdapterStateChanged = function (id, state) {
+                                    // C:
+                                    expect('Shit happens!').to.be.equal('Should not happen');
+                                };
+
+                                // 5. unsubscribe "*"
+                                context.adapter.unsubscribeForeignStates('*', err =>
+                                    context.states.setState(gid + 'NotAlias', 3, err =>
+                                        context.states.setState(gAliasID + 'Star', 5, err =>
+                                            setTimeout(() => done(), 500))));
+                            }
+                        };
+
+                        // 4. changes must come for alias and independent state
+                        context.states.setState(gid + 'NotAlias', 2, err =>
+                            context.states.setState(gid + 'Star', 10, err => {
+                                // go to B:
+                            }));
+                    }))));
     }).timeout(3000);
 }
 
