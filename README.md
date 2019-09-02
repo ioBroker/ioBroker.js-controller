@@ -249,13 +249,13 @@ The downside is that more RAM is required because each Node.js process needs 20-
 
 #### Start adapter instances in compact mode
 
-The compact mode is developed especially for systems with low memery. All adapters configured to run in compact mode will run inside the same process as js-controller.
+The compact mode is developed especially for systems with low memory. All adapters configured to run in compact mode will run inside the same process as js-controller.
 
 As a result, each adapter needs 20-30 MB less RAM because it does not need to have it's own Node.js process handling. This way, even a system with only 512MB RAM can run several adapter instances.
 
 The downside is that as soon as one adapter is crashes or generates an unhandled error, the whole js-controller process will be restarted.
 
-It is recommended to use this feature on slave systems but not for the ioBroker master host or use compact groups.
+To minimize the risk adapter instances are run by default in compact group 1 which means that a second process is created for all adapters. A problem there would also not crash the js-controller itself. If you need less RAM usage you can manually change that and configure the instances to run on group 0 (=inside js-controller).
 
 ##### Compact mode
 **Feature status:** Technology preview (since 2.0.0)

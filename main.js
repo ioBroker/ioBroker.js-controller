@@ -2140,7 +2140,7 @@ function instanceRelevantForThisHost(instance, _ipArr) {
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) instance.common.runAsCompactMode = null; // TODO repo logic!!
-        if (instance.common.compactGroup === undefined) instance.common.compactGroup = 0; // run in controller by default
+        if (instance.common.compactGroup === undefined) instance.common.compactGroup = 1; // run in controller by default
     }
 
     if (compactGroupController) {
