@@ -281,7 +281,7 @@ To be able to handle the risk of crashed controller processes affecting the whol
 
 Using several compact groups you can, by using a bit more memory, lower the risk of a crashing js-controller main process.
 
-Compact groups can be configured for the respective instances using the compact CLI commands.
+Compact groups can be configured for the respective instances using the compact CLI commands (see ìobroker compact ...`commands on https://www.iobroker.net/#de/documentation/config/cli.md).
 
 ##### Implementation details
 
