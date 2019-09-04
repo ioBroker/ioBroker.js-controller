@@ -2668,7 +2668,7 @@ function startInstance(id, wakeUp) {
                             } else {
                                 code = parseInt(code, 10);
                                 const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                                if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
+                                if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR || code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP || code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX) {
                                     logger.info(text);
                                 } else {
                                     logger.error(text);
@@ -2731,7 +2731,6 @@ function startInstance(id, wakeUp) {
 
                         if (!adapterModules[name] && fileNameFull) {
                             try {
-                                //adapterModules[name] = require(fileNameFull);
                                 adapterModules[name] = vm;
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} error with ${fileNameFull}: ${JSON.stringify(e)}`);
@@ -2762,7 +2761,7 @@ function startInstance(id, wakeUp) {
                                     '   adapter.on("exit", (code, signal) => callback(code, signal));\n' +
                                     '   return adapter;\n' +
                                     '};\n';
-                                logger.silly(starterScript);
+                                //logger.silly(starterScript);
                                 procs[id].process = adapterModules[name].run(starterScript, name + '.js')(exitHandler);
                                 procs[id].startedInCompactMode = true;
                             } catch (e) {
