@@ -104,7 +104,7 @@
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
     "restart": "node iobroker.js restart",
-    "prepublish": "node lib/scripts/scripts.js --prepublish",
+    "prepublishOnly": "node lib/scripts/scripts.js --prepublish",
     "test": "node node_modules/mocha/bin/mocha test --exit",
     "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/ --exit",
     "test-redis-sentinel": "node node_modules/mocha/bin/mocha test/redis-sentinel/ --exit",
