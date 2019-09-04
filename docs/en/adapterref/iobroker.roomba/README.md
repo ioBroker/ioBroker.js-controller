@@ -300,7 +300,11 @@ You may edit the variable ```message``` to any notification you would like to re
 
 ## Changelog
 
-### 1.0.5 (2019-08-19)
+### 1.0.7 (2019-09-03)
+- (Zefau) fixed bugs occurring when Roomba is on a mission
+- (Zefau) added additional debug logging
+
+### 1.0.6 (2019-08-19)
 - (Zefau) added loading screen to web interface
 
 ### 1.0.5 (2019-08-18)

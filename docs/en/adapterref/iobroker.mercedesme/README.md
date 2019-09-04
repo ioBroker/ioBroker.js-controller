@@ -17,6 +17,14 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.14
+
+-   fix when webpage streams are not reachable
+
+### 0.0.13
+
+-   add hard reconnect after 6h for stream data
+
 ### 0.0.12
 
 -   add gas prices via tankerkönig

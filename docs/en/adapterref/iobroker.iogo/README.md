@@ -14,7 +14,10 @@ Please visit iogo.nisnagel.de for more information on how to getting started.
 
 
 ## Configuration
-You should set your account information (email/password). After this start the adapter.
+You need an valid licence key to use this adapter.
+A licence can be bought after creating an acooun at https://iogo.nisnagel.de.
+
+Please enter your account information (email/password) in the instance configuration.
 
 ## Usage
 You can send message to all authenticated users over messageBox ```sendTo('iogo', 'New message')```
@@ -62,7 +65,7 @@ sendTo('iogo', {
 ## Changelog
 
 ### 0.4.0
-* (nisio) Changes for ioGo app version 2.0.0+
+* (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x
 * (nisio) added support of compact mode

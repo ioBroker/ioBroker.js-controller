@@ -32,6 +32,9 @@ automatic control for shutters
 
 ## Changelog
 
+### 0.4.0 (28.08.2019)
+* (simatec) Fix shutdown for Elevation
+
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter
 * (simatec) Bugfix sunprotect

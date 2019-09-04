@@ -76,6 +76,9 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
+### 3.6.5 (2019-09-02)
+* (ldittmar) Fix anoying popups from info adapter
+
 ### 3.6.4 (2019-06-03)
 * (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
 

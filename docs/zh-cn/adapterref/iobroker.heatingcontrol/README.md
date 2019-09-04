@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
+hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,7 +14,7 @@ hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
 
 ＃ioBroker.HeatingControl
-用于控制恒温器的适配器。
+用于控制加热系统的适配器。
 
 特征：
 
@@ -24,28 +24,48 @@ hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，执行器可以直接从适配器中切换出来
 *目前，当达到设定点温度时，执行器会立即关闭。一旦设定点温度低于实际温度，执行器就会打开。 （要做：实施改进的控制）
-*最多支持两个执行器
-*每个房间自动检测恒温器和执行器。该功能（例如“加热”）用于此。
+*支持每间客房无限制的恒温器，执行器和sonsor
+*每个房间自动检测恒温器，执行器和传感器。该功能（例如“加热”）用于此。
 *如果房间包含恒温器但不应控制，则可以在管理界面中排除房间
-*每个房间我们可以使用超过一个恒温器，执行器或传感器
 *传感器用于降低目标温度（例如，如果窗户打开）
+*与Feiertag-Adapter的接口。公众假期可以是正常的一天，也可以像星期日一样。 （管理员设置）
 *稍后将提供可视化示例
 
 ##设置
 ### Main
-*使用actors =如果你想直接从适配器控制执行器。以防止恒温器和执行器之间没有直接连接。
-* Gewerk =用于检测每个房间的恒温器和执行器的功能
+*功能=用于检测每个房间的恒温器，执行器和传感器的功能。这是系统之一
 * timezone =用于cron调整cron作业
-*删除全部=删除管理员打开时的所有房间设置。之后，将开始新的房间扫描
+* Feiertag的路径 - 适配器=如果你想使用Feiertag-Adapter自动检测今天的公共假期，那么在这里设置路径（例如feiertage.0）
+*当admin打开时删除所有设备=应禁用。仅在需要删除所有房间，执行器和传感器设置时启用它。适配器管理员打开时将执行设备搜索
+*使用传感器=如果您有窗口传感器，并且您希望在窗口打开时降低目标温度，则启用该选项
+*演员使用=如果你想直接从适配器控制执行器。以防止恒温器和执行器之间没有直接连接。
+*如果没有加热周期=仅对执行器有效，则使用执行器。定义在没有加热周期有效时如何设置执行器
+*如果没有可用的恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，您可以打开或关闭它们
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一 - 周日，或周一 - 周五和周六/周日或每天）
 *配置文件的数量=如果您需要更多，然后在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要的每日不同温度段数。随着您设置的越多，将创建更多的数据点。最好使用低值（例如5）
+*“像星期日这样的公众假期=如果你想在公众假期设定目标温度，如周日启用该选项。否则公共假期设置与正常日期相同
 
 ＃＃＃ 设备
-*所有房间的列表，包括恒温器，传感器和执行器。你可以在这里禁用一个房间。您不应更改恒温器或执行器的设置，因为这将在您下次启动管理员时被覆盖
-*如果未自动检测到设备，则可以手动添加和配置设备
+*所有房间的清单。你可以在这里禁用一个房间。
+*按右侧的编辑按钮打开该房间的恒温器，执行器和传感器的设置窗口
+
+###编辑室
+*在这里，您可以验证并设置恒温器，执行器和传感器的对象ID
+*您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后你得到一个需要填满的空行。编辑按钮打开系统上可用设备的列表
+*恒温器：
+
+**应设置名称，温度目标OID和当前温度OID。
+
+*执行器
+
+**应设置州的名称和OID
+
+*传感器
+
+**应设置当前状态的名称和OID
 
 ＃＃ 要求
 *需要节点版本8或更高版本
@@ -55,11 +75,15 @@ hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
 
 ## Changelog
 
-### 0.1.0 (2019-08-18)
+### 0.1.0 (2019-08-25)
 * (René) redesign of data structure
 	- more then one actuator, sensor and thermostat per room
 	- three different profile types
-	- manual configuration of devices (is device is not detected automatically)
+	- manual configuration of devices (if device is not detected automatically)
+	- interface to Feiertag-Adapter
+	- public holiday as normal day or like sunday (setting in admin)
+	- window sensor support. Reduce target temperature when window is open
+	- !!ATTENTION!! data structure/objects has been changed. You need to update your visualisation settings
 
 ### 0.0.5 (2019-07-08)
 * (René) support for max! thermostats

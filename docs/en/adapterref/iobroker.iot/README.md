@@ -244,6 +244,14 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.0.8 (2019-09-03)
+* (TA2k) Improved support for Google Home
+  * Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
+  * Added support for manualy adding states as devices
+  * Fix update state after Sync
+  * Added typical Google Home devices and traits/actions
+  * Fix only process update message when Alexa is checked in the options
+
 ### 1.0.7 (2019-08-04)
 * (bluefox) Added support for Nightscout
 

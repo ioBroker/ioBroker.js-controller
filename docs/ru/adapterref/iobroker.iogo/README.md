@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
+hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -20,7 +20,10 @@ hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
 Пожалуйста, посетите iogo.nisnagel.de для получения дополнительной информации о том, как начать.
 
 ## Конфигурация
-Вы должны установить данные своей учетной записи (адрес электронной почты / пароль). После этого запустите адаптер.
+Вам нужен действующий лицензионный ключ, чтобы использовать этот адаптер.
+Лицензию можно приобрести после создания аккаунта на сайте https://iogo.nisnagel.de.
+
+Пожалуйста, введите данные вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
 
 ## Использование
 Вы можете отправить сообщение всем аутентифицированным пользователям через блок сообщения ```sendTo('iogo', 'New message')``` или конкретному пользователю ```sendTo('iogo', {user: 'Username', text: 'Test message'})```.
@@ -71,7 +74,7 @@ sendTo('iogo', {
 ## Changelog
 
 ### 0.4.0
-* (nisio) Changes for ioGo app version 2.0.0+
+* (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x
 * (nisio) added support of compact mode

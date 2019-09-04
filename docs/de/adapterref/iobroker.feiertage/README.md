@@ -26,6 +26,9 @@ Feiertage, die bei der Befüllung der Datenpunkte berücksichtigt werden sollen,
 Der Adapter startet jeden Tag um Mitternacht. Ein häufigeres Starten ist nicht erforderlich.
 
 ## Changelog
+### 1.0.12 (2019-08-26)
+* (pix) Added Weltkindertag (Thuringa)
+
 ### 1.0.11 (2018-10-29)
 * (pix) Added Mariä Empfängnis for AUT
 
@@ -128,9 +131,9 @@ Der Adapter startet jeden Tag um Mitternacht. Ein häufigeres Starten ist nicht 
 
 ## License
 
-The MIT License (MIT)
-
 Copyright (c) 2019 pix
+
+The MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

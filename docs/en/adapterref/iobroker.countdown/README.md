@@ -52,26 +52,16 @@ You  can delete a countdown with the sendto. Therefore, send just the name with 
 * Possibility to use plus and minus in addminutes and the other add functions
 
 ## Changelog
-### 0.1.0 (2019-04-29)
-* (jack-blackson) initial version
+## 1.0.4 (2019-08-25)
+* (jack-blackson) Reordered release infos
 
-### 0.2.0 (2019-05-21)
-* (jack-blackson) adjusted packages
+## 1.0.3 (2019-08-10)
+* (jack-blackson) Changes for Compact Mode
+* (jack-blackson) Various bugfixes
+* (jack-blackson) Having multiple instances of the adapater are now possible
 
-### 0.3.0 (2019-05-24)
-* (jack-blackson) added total No. of days and hours
-
-### 0.4.0 (2019-06-04)
-* (jack-blackson) restructuring - creation of alarms with sendto or manually with datapoint is now possible
-
-## 0.5.0 (2019-07-04)
-* (jack-blackson) adjust the data in the table
-* (jack-blackson) bugfix date import 
-
-## 0.6.0 (2019-07-06)
-* (jack-blackson) adjustable date format for input and output
-* (jack-blackson) delete countdowns with sendto
-* (jack-blackson) ability to add countdowns by "days/months/weeks from now)
+## 1.0.2 (2019-07-22)
+* (jack-blackson) Release version
 
 ## 0.7.0 (2019-07-07)
 * (jack-blackson) Bugfixes
@@ -79,13 +69,26 @@ You  can delete a countdown with the sendto. Therefore, send just the name with 
 * (jack-blackson) datapoint in setup is now editable
 * (jack-blackson) added total no. of weeks
 
-## 1.0.2 (2019-07-22)
-* (jack-blackson) Release version
+## 0.6.0 (2019-07-06)
+* (jack-blackson) adjustable date format for input and output
+* (jack-blackson) delete countdowns with sendto
+* (jack-blackson) ability to add countdowns by "days/months/weeks from now)
 
-## 1.0.3 (2019-08-10)
-* (jack-blackson) Changes for Compact Mode
-* (jack-blackson) Various bugfixes
-* (jack-blackson) Having multiple instances of the adapater are now possible
+## 0.5.0 (2019-07-04)
+* (jack-blackson) adjust the data in the table
+* (jack-blackson) bugfix date import 
+
+### 0.4.0 (2019-06-04)
+* (jack-blackson) restructuring - creation of alarms with sendto or manually with datapoint is now possible
+
+### 0.3.0 (2019-05-24)
+* (jack-blackson) added total No. of days and hours
+
+### 0.2.0 (2019-05-21)
+* (jack-blackson) adjusted packages
+
+### 0.1.0 (2019-04-29)
+* (jack-blackson) initial version
 
 ## License
 The MIT License (MIT)

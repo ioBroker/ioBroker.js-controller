@@ -123,6 +123,9 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+### 3.6.5 (2019-09-02)
+* (ldittmar) Fix anoying popups from info adapter
+
 ### 3.6.4 (2019-06-03)
 * (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
 

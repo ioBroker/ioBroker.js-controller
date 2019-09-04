@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
+hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,7 +14,7 @@ hash: qZ15kt2BF3t7Zi7ABeJ1ZbLS0aGc3bU/Z1sylY3w8xg=
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
 
 # IoBroker.HeatingControl
-Adapter zur Steuerung von Thermostaten.
+Adapter zur Steuerung Ihrer Heizungsanlage.
 
 Eigenschaften:
 
@@ -24,28 +24,48 @@ Eigenschaften:
 * unterstützt mehrere Profile
 * Wenn keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht, kann der Stellantrieb direkt aus dem Adapter geschaltet werden
 * Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
-* Es werden bis zu zwei Aktoren unterstützt
-* Thermostat und Stellantrieb werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
+* Es werden unbegrenzt Thermostat, Stellantrieb und Sonde pro Raum unterstützt
+* Thermostat, Stellantrieb und Sensor werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
 * Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
-* Pro Raum können wir mehr als einen Thermostat, Aktor oder Sensor verwenden
 * Sensor wird verwendet, um die Zieltemperatur zu senken (z. B. wenn ein Fenster geöffnet ist)
+* Schnittstelle zum Feiertag-Adapter. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
 * Ein Visualisierungsbeispiel wird später bereitgestellt
 
 ## Die Einstellungen
 ### Main
-* Verwenden Sie Actors =, wenn Sie die Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
-* Gewerk = Funktion zur Erkennung von Thermostaten und Antrieben pro Raum
+* Funktion = Funktion zur Erkennung von Thermostaten, Antrieben und Sensoren pro Raum. Es ist eine der Systemaufzählungen
 * timezone = Wird für Cron verwendet, um Cron-Jobs anzupassen
-* delete all = löscht alle Raumeinstellungen, wenn der Admin sich öffnet. Danach wird ein neuer Scan nach Räumen gestartet
+* Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter für die automatische Erkennung von Feiertagen für heute verwenden möchten, geben Sie hier den Pfad ein (z. B. feiertage.0).
+* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
+* Verwendeter Sensor = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
+* Verwendete Akteure = Wenn Sie Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
+* Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
+* Antriebe verwenden, wenn kein Thermostat vorhanden ist = nur gültig mit Antrieben. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktor haben, können Sie diese dauerhaft ein- oder ausschalten
 
 ### Profil
 * Profiltyp = drei verschiedene Profiltypen (Montag - Sonntag oder Montag - Freitag und Suturday / Sonntag oder jeden Tag) werden unterstützt
 * Anzahl der Profile = Wenn Sie mehr als ein Profil benötigen, erhöhen Sie diesen Wert. Sie können dann auswählen, welches Profil verwendet werden soll.
 * Anzahl der Perioden = Definieren Sie, wie viele tägliche Abschnitte mit unterschiedlicher Temperatur Sie benötigen. Je mehr Sie einstellen, desto mehr Datenpunkte werden erstellt. Verwenden Sie besser einen niedrigen Wert (z. B. 5).
+* "Feiertag wie Sonntag = Wenn Sie an Feiertagen wie Sonntag Zieltemperaturen einstellen möchten, aktivieren Sie diese Option. Ansonsten sind die Feiertagseinstellungen dieselben wie an normalen Tagen
 
 ### Geräte
-* eine Liste aller Räume mit Thermostaten, Sensoren und Aktoren. Hier können Sie einen Raum deaktivieren. Sie sollten die Einstellungen für Thermostate oder Stellantriebe nicht ändern, da diese beim nächsten Start von admin überschrieben werden
-* Wenn das Gerät nicht automatisch erkannt wird, kann es manuell hinzugefügt und konfiguriert werden
+* eine Liste aller Räume. Hier können Sie einen Raum deaktivieren.
+* Klicken Sie auf die Schaltfläche Bearbeiten auf der rechten Seite, um das Einstellungsfenster für Thermostate, Aktoren und Sensoren für diesen Raum zu öffnen
+
+### Bearbeitungsraum
+* Hier können Sie Objekt-IDs für Thermostate, Aktoren und Sensoren überprüfen und einstellen
+* Sie können manuell neue Thermostate, Aktoren oder Sensoren hinzufügen. Drücken Sie einfach die + Taste. Dann erhalten Sie eine leere Zeile, die gefüllt werden muss. Der Edit-Button öffnet eine Liste der verfügbaren Geräte im System
+* Thermostate:
+
+** Name, Temperaturziel-OID und aktuelle Temperatur-OID sollten eingestellt werden.
+
+* Aktoren
+
+** Name und OID für Status sollten festgelegt werden
+
+* Sensoren
+
+** Name und OID für den aktuellen Status sollten festgelegt werden
 
 ## Bedarf
 * Node Version 8 oder höher ist erforderlich
@@ -55,11 +75,15 @@ Eigenschaften:
 
 ## Changelog
 
-### 0.1.0 (2019-08-18)
+### 0.1.0 (2019-08-25)
 * (René) redesign of data structure
 	- more then one actuator, sensor and thermostat per room
 	- three different profile types
-	- manual configuration of devices (is device is not detected automatically)
+	- manual configuration of devices (if device is not detected automatically)
+	- interface to Feiertag-Adapter
+	- public holiday as normal day or like sunday (setting in admin)
+	- window sensor support. Reduce target temperature when window is open
+	- !!ATTENTION!! data structure/objects has been changed. You need to update your visualisation settings
 
 ### 0.0.5 (2019-07-08)
 * (René) support for max! thermostats

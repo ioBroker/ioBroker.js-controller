@@ -108,6 +108,14 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ### FAQ
 
 ## Changelog
+### 2.4.9 (2019-09-04)
+* (foxriver76) fix minor bug which prevented correct room sync
+* (foxriver76) in 2.4.6 we implemented the mechanism for hm-rega and rpc, in fact we should only delete hm-rpc devices, 
+because rega will be added on ioB side (can't be done in CCU)
+
+### 2.4.7 (2019-08-28)
+* (foxriver76) fixed another legacy bug, which prevented some enums from getting correct name
+
 ### 2.4.6 (2019-08-11)
 * (foxriver76) only deleting hm adapter objects from enums
 

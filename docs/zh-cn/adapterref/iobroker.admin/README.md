@@ -74,6 +74,9 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 3.6.5 (2019-09-02)
+* (ldittmar) Fix anoying popups from info adapter
+
 ### 3.6.4 (2019-06-03)
 * (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
 

@@ -4,7 +4,6 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.upnp.svg)](https://greenkeeper.io/)
 ![Number of Installations](http://iobroker.live/badges/upnp-installed.svg) ![Number of Installations](http://iobroker.live/badges/upnp-stable.svg) ![Logo](http://img.shields.io/npm/v/iobroker.upnp.svg) ![Image](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
-IMPORTANT: This Adapter is BETA state.
 
 ***Node 4.x+ needed!***
 
@@ -76,6 +75,8 @@ Die folgenden Objekte finden sich für jedes Gerät/jeden Dienst und werden zur 
 
 **Sid –** Dient als identifikation der Subscription. Diese sid wird jedesmal vom host erzeugt wenn eine Subscription von einem client angefordert wird. Die sid läuft nach einer vom host definierten Zeit ab, daher wird sie immer wieder Aktualisiert. Sie gilt nur für einen bestimmten Dienst.
 
+**request –** sendet einen SOAP request mit den gegebenen Optionen
+ 
 ### UPnP Objekte
 
 Die hier auf gelisteten Objekte finden sich im UPnP Standard und/oder den Geräte-/Dinestbeschreibungen. Es handelt sich hier nicht um eine Vollständige liste aller Objekte, diese Auswahl an Objekten stellt lediglich häufig vorkommende Objekte dar.
@@ -108,7 +109,7 @@ schedule("*/10 * * * * *",  function () {
 });
 ```
 
-Es gibt auch die Möglichkeit bei den "request" states die Polling über Admin einzustellen.
+Es gibt auch die Möglichkeit bei dem "request" Objekt das Polling im Admin einzustellen. Dafür Klickt man auf das Schraubenschlüssel Symbol bei dem Objekt.
 
 ### Geräte/Dienst Spezifische Besonderheiten
 
@@ -220,6 +221,10 @@ You can enable polling in admin via objects configuration.
 **Amazon Kindle:** Provides an UPnP service, but no UPnP service description is provided and therefore cannot be used.
 
 ## Changelog
+
+### 1.0.15 (2019-08-27)
+* (jey-cee) make control of devices work again (including player controls)
+
 ### 1.0.14 (2019-08-04)
 * (bluefox) Tried to fix error with player
 

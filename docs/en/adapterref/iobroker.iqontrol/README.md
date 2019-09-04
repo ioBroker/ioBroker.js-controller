@@ -97,7 +97,8 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
 * Set Readonly-Flag
 * Set Invert-Flag
 * Set a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
-* Modify unit of datapoint
+* Modify unit of datapoint, seperate for zero, singular and plural values
+* Modify min and max of datapoint
 * Modify type of datapoint
 * Modify role of datapoint
 * Set or modify a Value-List
@@ -272,6 +273,29 @@ In addition to normal thermostat you can define:
 
 # Changelog
 
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.

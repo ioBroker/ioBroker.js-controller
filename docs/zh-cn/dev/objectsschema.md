@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心概念
-hash: /+zjF1sxTW9nTd9/4ssdJVC89TA4xSYZjT8bNVA6QHo=
+hash: svUDg6PeuwzW2SVde6BsJumvN2lf/qOxZtj6X/fZx+U=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的**状态**（`states`）和**对象**。
@@ -194,6 +194,7 @@ getState / stateChange / setState对象的属性：
 *`common.type`（可选 - （默认为mixed == any type）（可能的值：number，string，boolean，array，object，mixed，file）
 *`common.min`（可选）
 *`common.max`（可选）
+*`common.step`（可选） - 增加/减少间隔。例如。 0.5为恒温器
 *`common.unit`（可选）
 *`common.def`（可选 - 默认值）
 *`common.defAck`（可选 - 如果设置了common.def，则此值用作ack标志，js-controller 2.0.0+）
@@ -245,7 +246,7 @@ getState / stateChange / setState对象的属性：
 *`light.dimmer`  - 调光器
 *`light.switch`  - 灯开关。
 *`light.color`  - 具有变色能力的灯光控制
-*`light.color.rgb`  - 设置RGB颜色
+*`light.color.rgb`  - 用RGB设置颜色
 *`light.color.rgbw`  - 以RGBW设置颜色
 *`light.color.hsl`  - 以色相/饱和度/亮度设置颜色（色调颜色 -  LivingColors ......）
 *`light.color.hslct`  - 设置色相/饱和度/亮度或色温（色调扩展色光）
@@ -498,7 +499,7 @@ id`system.adapter.<adapter.name>`
 *`common.subscribable`  - 必须使用sendTo订阅此适配器的变量才能启用更新
 *`common.wakeup`  -
 *`common.availableModes`  - 如果可能有多个模式，则为common.mode的值
-*`common.localLink`  - 指向此适配器的Web服务的链接。例如http：// localhost：5984 / _utils来自管理员的蒲团
+*`common.localLink`  - 指向此适配器的Web服务的链接。例如，http：// localhost：5984 / _utils来自管理员的蒲团
 *`common.logTransporter`  - 如果这个适配器从其他主机和适配器接收日志（例如在某个地方敲击它们）
 *`common.nondeletable`  -  [true / false]此适配器无法删除或更新。它将与控制器一起更新。
 *`common.icon`  - 本地图标的名称（应位于子目录“admin”中）
@@ -555,7 +556,7 @@ id *system.adapter。＆lt; adapter.name＆gt;。＆lt; instance-number＆gt;*
 ##### Adapter / instance common.mode
 *`none`  - 此适配器无法启动进程
 *`daemon`  - 始终运行进程（如果进程退出，将重新启动）
-*`subscribe`  - 在state * system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *时被杀死，并且如果进程退出则将* .alive *设置为* false *（当进程退出时**将不会重新启动）
+*`subscribe`  - 在state * system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *更改为* true *时启动。当* .alive *更改为* false *时被杀死，并且如果进程退出则将* .alive *设置为* false *（当进程退出时**将不会重新启动）
 *`schedule` - 由* system.adapter中的时间表启动。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *- 通过重新安排新状态对* .schedule* 更改作出反应
 *`once`  - 每次更改system.adapter.yyy.x对象时都会启动此适配器。终止后不会重新启动。
 

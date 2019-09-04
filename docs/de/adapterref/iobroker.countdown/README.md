@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: Zev4uVyABT0yxwZxD5Oz+mujy9UL8xc4M5AO6iz8v3A=
+hash: 6m4E+5DhMPAtwRejIliYG6m+WNCHVJYCBw+/CSuNbx4=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -60,14 +60,16 @@ Sie können einen Countdown mit dem sendto löschen. Senden Sie daher nur den Na
 * Möglichkeit, ein Skript als Parameter hinzuzufügen und es am Ende des Countdowns zu starten
 * Möglichkeit, Plus und Minus in addminutes und den anderen add-Funktionen zu verwenden
 
-## 0.5.0 (2019-07-04)
-* (Jack-Blackson) Passen Sie die Daten in der Tabelle an
-* (Jack-Blackson) Bugfix-Datumsimport
+## 1.0.4 (2019-08-25)
+* (jack-blackson) Nachbestellte Release-Infos
 
-## 0.6.0 (2019-07-06)
-* (Jack-Blackson) einstellbares Datumsformat für Ein- und Ausgabe
-* (jack-blackson) Countdowns mit sendto löschen
-* (Jack-Blackson) Fähigkeit, Countdowns von "Tagen / Monaten / Wochen ab jetzt" hinzuzufügen
+## 1.0.3 (2019-08-10)
+* (jack-blackson) Änderungen für den Kompaktmodus
+* (jack-blackson) Verschiedene Bugfixes
+* (jack-blackson) Mehrere Instanzen des Adapters sind jetzt möglich
+
+## 1.0.2 (2019-07-22)
+* (Jack-Blackson) Release-Version
 
 ## 0.7.0 (07.07.2019)
 * (Jack-Blackson) Bugfixes
@@ -75,26 +77,28 @@ Sie können einen Countdown mit dem sendto löschen. Senden Sie daher nur den Na
 * Der (Jack-Blackson) -Datenpunkt im Setup kann jetzt bearbeitet werden
 * (jack-blackson) addierte insgesamt nr. von Wochen
 
-## 1.0.2 (2019-07-22)
-* (Jack-Blackson) Release-Version
+## 0.6.0 (2019-07-06)
+* (Jack-Blackson) einstellbares Datumsformat für Ein- und Ausgabe
+* (jack-blackson) Countdowns mit sendto löschen
+* (Jack-Blackson) Fähigkeit, Countdowns von "Tagen / Monaten / Wochen ab jetzt" hinzuzufügen
 
-## 1.0.3 (2019-08-10)
-* (jack-blackson) Änderungen für den Kompaktmodus
-* (jack-blackson) Verschiedene Bugfixes
-* (jack-blackson) Mehrere Instanzen des Adapters sind jetzt möglich
-
-## Changelog
-### 0.1.0 (2019-04-29)
-* (jack-blackson) initial version
-
-### 0.2.0 (2019-05-21)
-* (jack-blackson) adjusted packages
-
-### 0.3.0 (2019-05-24)
-* (jack-blackson) added total No. of days and hours
+## 0.5.0 (2019-07-04)
+* (Jack-Blackson) Passen Sie die Daten in der Tabelle an
+* (Jack-Blackson) Bugfix-Datumsimport
 
 ### 0.4.0 (2019-06-04)
-* (jack-blackson) restructuring - creation of alarms with sendto or manually with datapoint is now possible
+* (Jack-Blackson) Restrukturierung - Erstellung von Alarmen mit Sendto oder manuell mit Datenpunkt ist jetzt möglich
+
+### 0.3.0 (2019-05-24)
+* (jack-blackson) addiert die Anzahl der Tage und Stunden
+
+### 0.2.0 (2019-05-21)
+* (Jack-Blackson) angepasste Pakete
+
+### 0.1.0 (2019-04-29)
+* (Jack-Blackson) ursprüngliche Version
+
+## Changelog
 
 ## License
 The MIT License (MIT)

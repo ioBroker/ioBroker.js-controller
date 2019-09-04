@@ -29,6 +29,8 @@ You must first link to deConz.
 Required node.js >= 0.12.
 
 ## Changelog
+### 1.1.3
+* Changed default port to 80
 
 ### 1.1.2
 * fix button objects

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
+hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
 ---
 ![商标](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -20,7 +20,10 @@ hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
 有关如何入门的更多信息，请访问iogo.nisnagel.de。
 
 ##配置
-您应该设置您的帐户信息（电子邮件/密码）。在此之后启动适配器。
+您需要有效的许可证密钥才能使用此适配器。
+在https://iogo.nisnagel.de创建公告后可以购买许可证。
+
+请在实例配置中输入您的帐户信息（电子邮件/密码）。
 
 ##用法
 您可以通过messageBox```sendTo('iogo', 'New message')```或特定用户```sendTo('iogo', {user: 'Username', text: 'Test message'})```向所有经过身份验证的用户发送消息。
@@ -71,7 +74,7 @@ sendTo('iogo', {
 ## Changelog
 
 ### 0.4.0
-* (nisio) Changes for ioGo app version 2.0.0+
+* (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x
 * (nisio) added support of compact mode

@@ -6,23 +6,31 @@
 
 [![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)](https://nodei.co/npm/iobroker.sonos/)
 
-Control and monitor SONOS player from ioBroker.
+Control and monitor SONOS devices with ioBroker.
 
-To allow using sayIt adapter with SONOS, be sure that web adapter is instantiated and running too. Web adapter is required to enable SONOS to read the generated MP3 file from sayIt.
+## Handling of groups
+* States for handling SONOS groups:
+   * **`coordinator`** *: set/get the coordinator, so the SONOS device which is the master and coordinating the group. It requires the IP address (channel name) of the SONOS device to be the coordinator, but with underscore `_` instead of dot `.`, so use for example `192_168_0_100` for IP address `192.168.0.100`. If the device does not belong to any group, then the value is equal to the own channel name (IP).
+   * **`group_volume`** *: the volume of the group
+   * **`group_muted`** *: mute status of the group.
+   * **`add_to_group`**: Add a certain SONOS device to the SONOS device under which this state is. Use IP address with underscores (see above).
+   * **`remove_from_group`**: Remove a certain SONOS device from the SONOS device under which this state is. Use IP address with underscores (see above).
+   
+*) These states will be updated if changes are made in the SONOS app.
 
-TODO: Show queue with covers
+## Using with the sayit adapter
+To use the [sayit adapter](https://github.com/ioBroker/ioBroker.sayit) with this SONOS adapter, ensure that the [web adapter](https://github.com/ioBroker/ioBroker.web) is instantiated and running too. The web adapter is required to allow the SONOS adapter to read the generated MP3 file from the sayit adapter.
 
-## Infos on Groups handling
-* States: coordinator, group_volume, group_muted
-* all read/write, to get also changes from Sonos-App
-* "coordinator" contains the channel name of the Group-Master (e.g. 192_168_1_99). If Device do not belong to any group the value is eaqual to the own channel name
+### Warning: Stability problems in combination with sayit adapter
+Please note: This SONOS adapter has stability issues if using 'text to speech' with the sayit adapter. Symptoms observed:
+1. Arbitrary change of volume to 0 or 100 %.
+2. No response after a random number of text to speech sequences
 
-## Warning: Stability problems in combination with sayit adapter
-Please note: The sonos adapter has stability problems when used in text for speech thus in combination with the sayit adapter. Symptoms observed
-1. abitrary change of volume to 0 or 100 %.
-2. no response after a random number of text to speech sequence
+Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/jishi/node-sonos-http-api).
 
-Workaround for text to speech is the the use of the sonos http api. see https://github.com/jishi/node-sonos-http-api
+## To Do
+* Show queue with covers
+
 
 ## Changelog
 ### 2.0.0 (2019-08-13)

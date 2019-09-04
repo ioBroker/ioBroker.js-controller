@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
+hash: A5IitdBx/qfhSgFSr828FU78fjr3keeMJ6I8kD5ybUw=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -39,7 +39,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 ## Тебе нужно...
 * Nodejs 8 или выше
 * Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
-    * Если это вступает в конфликт с другими адаптерами, просто добавьте еще один экземпляр с вышеуказанными настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
+    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
 * Для подключения через *iobroker.pro-Cloud* оба, admin и web-адаптер должны быть установлены на http (не https)
 
 ## Поиск проблемы
@@ -103,7 +103,8 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 * Установить флажок только для чтения
 * Установите флаг инвертирования
 * Установите идентификатор точки данных, в который записываются целевые значения (если у вас есть разные точки данных для фактического и целевого значения)
-* Изменить единицу назначения данных
+* Изменить единицу назначения данных, разделить на ноль, единственное и множественное число
+* Изменить минимальное и максимальное значения datapoint
 * Изменить тип назначения данных
 * Изменить роль datapoint
 * Установить или изменить список значений
@@ -124,7 +125,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
-  * Технически, *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
+  * Технически *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
 
 ````
 "native": {
@@ -164,7 +165,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
   * **COLOR_BRIGHTNESS** * number * - яркость цветных светодиодов (если у вас есть LEVEL-состояние и нет белых светодиодов, это игнорируется, потому что яркость полностью контролируется LEVEL)
 * Для белых светодиодов:
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
-  * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (если у вас есть LEVEL-состояние и нет цветных светодиодов, это игнорируется, потому что LEVEL полностью контролирует яркость)
+  * **WHITE_BRIGHTNESS** * number * - яркость белых светодиодов (если у вас есть LEVEL-состояние и нет цветных светодиодов, это игнорируется, потому что LEVEL полностью контролирует яркость)
 * Альтернативные цветовые пространства:
   * **ALTERNATIVE_COLORSPACE_VALUE** * строка * или * число * (в зависимости от выбранного цветового пространства) - значение альтернативного цветового пространства
 
@@ -174,7 +175,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW- или RGBCWWW (hex) , WW = теплый белый, CW = холодный белый), необязательно с начальным '#'
     * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (шестнадцатеричный), опционально с начальным '#'. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается.
-    * **Hue for Milight** это значение оттенка для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
+    * **Hue for Milight** это значение Hue для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -247,16 +248,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «подделка».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/alarm_on.png" width="32"> Тревога:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «подделка».
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
 * **CONTROL_MODE** *список значений* - выбрать режим работы, такой как «Постановка на охрану» и «Снятие с охраны»
-    * В параметрах устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
+    * В настройках устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
 
 ### <img src="img/icons/battery_full.png" width="32"> Батарея:
 * **STATE** *число* - уровень заряда батареи в процентах
@@ -288,6 +289,29 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.

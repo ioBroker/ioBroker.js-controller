@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.upnp/README.md
 title: ioBroker.upnp
-hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
+hash: fLFkntZ34BVfHeFIN9BgSFM5pbg/hJ7cZwTZSm8/U00=
 ---
 ![商标](../../../en/adapterref/iobroker.upnp/admin/upnp-discovery.png)
 
@@ -13,8 +13,6 @@ hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
 ![图片](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
 ＃ioBroker.upnp
-重要说明：此适配器是BETA状态。
-
 ***节点4.x +需要！***
 
 1. [Deutsch]（＃german_description）
@@ -86,6 +84,8 @@ Die folgenden Objekte findensichfürjedesGerät/ jeden Dienst und werden zurVerw
 
 ** Sid - ** Dient als identifikation der Subscription。 Diese sid wird jedesmal vom host erzeugt wenn eine Subscription von einem client angefordert wird。 Diesidläuftnacheiner vom host definierten Zeit ab，daher wird sie immer wieder Aktualisiert。 Sie giltnurfüreinenbenstimmten Dienst。
 
+**请求 - ** sendet einen SOAP request mit den gegebenen Optionen
+
 ### UPnP Objekte
 Die hier auf gelisteten Objekte finden sich im UPnP Standard und / oderdenGeräte-/ Dinestbeschreibungen。 Es handelt sich hier nicht umeineVollständige聆听过敏Objekte，diese Auswahl an Objekten stelltlediglichhäufigorkommendeObjekte dar。
 
@@ -118,7 +118,7 @@ schedule("*/10 * * * * *",  function () {
 });
 ```
 
-Es gibt auchdieMöglichkeitbeiden“request”state diePollingüberAdmineinzustellen。
+Es gibt auchdieMöglichkeitbeidem“request”Objekt das Polling im Admin einzustellen。 DafürKlicktman aufdasSchraubenschlüsselNaturebei dem Objekt。
 
 ###Geräte/ Dienst Spezifische Besonderheiten
 ** Sonos：**FürQPlayist esnichtmöglicheineSubscription zu erstellen。 MöglicherweiseisthierfüreineAutentifikation notwendig
@@ -217,7 +217,11 @@ schedule("*/10 * * * * *",  function () {
 **亚马逊Kindle：**提供UPnP服务，但未提供UPnP服务说明，因此无法使用。
 
 ## Changelog
-### 1.0.12 (2019-06-12)
+
+### 1.0.15 (2019-08-27)
+* (jey-cee) make control of devices work again (including player controls)
+
+### 1.0.14 (2019-08-04)
 * (bluefox) Tried to fix error with player
 
 ### 1.0.11 (2019-03-07)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 0E7mjLlbyVT/lP9OcrKA3Z94EdSkrddYD9nWqg9vzW8=
+hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -41,8 +41,17 @@ hash: 0E7mjLlbyVT/lP9OcrKA3Z94EdSkrddYD9nWqg9vzW8=
 | ShellySense（SHSEN-1）|已验证|未经验证|
 | Shelly4Pro（SHSW-44）|已验证|未经验证|
 | Shelly EM（SHEM）|已验证|已确认|
+| Shelly Flood（SHWT-1）|已验证|已确认|
 
 ## Changelog
+
+### 3.1.0 (03.09.2019)
+* (Stübi) - Add device Shelly flood
+
+### 3.0.9 (06.08.2019)
+* (Stübi) - Bugfixing, with the new firmware, Shelly HT sends the humidity by CoAP as it should. Division by 2 removed!
+* (Stübi) - Add status Duration in roller (shutter) mode for CoAP (not working with MQTT) 
+* (Stübi) - Changed role from level to level.brightness for state Gain
 
 ### 3.0.8 (27.07.2019)
 * (Stübi) - Add device Shelly EM 

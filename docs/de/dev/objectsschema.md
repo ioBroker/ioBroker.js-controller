@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: /+zjF1sxTW9nTd9/4ssdJVC89TA4xSYZjT8bNVA6QHo=
+hash: svUDg6PeuwzW2SVde6BsJumvN2lf/qOxZtj6X/fZx+U=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -194,15 +194,16 @@ Attribute:
 * `common.type` (optional - (Standardeinstellung ist mixed == any type) (mögliche Werte: number, string, boolean, array, object, mixed, file)
 * `common.min` (optional)
 * `common.max` (optional)
+* `common.step` (optional) - Intervall erhöhen / verringern. Z.B. 0,5 für Thermostat
 * `common.unit` (optional)
 * `common.def` (optional - der Standardwert)
-* `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack Flag verwendet, js-controller 2.0.0+)
+* `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, string)
 * `common.read` (Boolescher Wert, obligatorisch) - true, wenn der Status lesbar ist
 * `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status beschreibbar ist
 * `common.role` (string, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
-* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände
-* `common.workingID` (string, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
+* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
+* `common.workingID` (String, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
 
 ##### Bundesland `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
@@ -235,7 +236,7 @@ mögliche Werte:
 * `media.tv` - TV
 * `media.tts` - Text zur Rede
 
-* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit und so weiter
+* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit usw.
 * `thermo.heat`
 * `thermo.cool`
 
@@ -536,7 +537,7 @@ id `system.adapter.<adapter.name>`
 * `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von github möglich
 * `common.materialise` - wenn der Adapter> admin3 unterstützt (materialise style)
 * `common.materializeTab` - wenn der Adapter> admin3 für tab unterstützt (materialize style)
-* `common.dataFolder` - Ordner relativ zu iobroker-Daten, in dem der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
+* `common.dataFolder` - Ordner relativ zu den iobroker-Daten, in denen der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
 * `common.webPreSettings` - Liste der Parameter, die vom Webserver-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
 * `common.apt-get` - Liste der Debian-Pakete, die für diesen Adapter benötigt werden (natürlich nur Debian)
 * `common.eraseOnUpload` - löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
@@ -556,7 +557,7 @@ id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
 * `none` - dieser Adapter startet keinen Prozess
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
 * `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
-* `Zeitplan` - wird durch einen Zeitplan gestartet, der in * system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist
+* `Zeitplan` - wird nach Zeitplan gestartet, der in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist.* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
 * `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 #### Host

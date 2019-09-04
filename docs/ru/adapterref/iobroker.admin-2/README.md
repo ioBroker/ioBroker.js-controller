@@ -170,6 +170,9 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.6.5 (2019-09-02)
+* (ldittmar) Fix anoying popups from info adapter
+
 ### 3.6.4 (2019-06-03)
 * (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
 

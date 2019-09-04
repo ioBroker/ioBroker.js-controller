@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: vD8CqSsYqg/me8a/h9eTZlJAbNFwzcLNLWkDIjrgk0A=
+hash: mmZYqCeLZ17CE0iJUzEBUkEQCTYS3BGyPlOoGn9mZJA=
 ---
 ![商标](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -13,24 +13,31 @@ hash: vD8CqSsYqg/me8a/h9eTZlJAbNFwzcLNLWkDIjrgk0A=
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
 ＃ioBroker.sonos
-从ioBroker控制和监控SONOS播放器。
+使用ioBroker控制和监控SONOS设备。
 
-要允许将sayIt适配器与SONOS一起使用，请确保Web适配器已实例化并正在运行。需要Web适配器才能使SONOS从sayIt读取生成的MP3文件。
+##处理组
+*处理SONOS组的国家：
+  * **coordinator`** *：设置/获取协调器，因此SONOS设备是主设备并协调组。它需要SONOS设备的IP地址（通道名称）作为协调器，但是使用下划线`_`而不是点`.`，因此使用例如`192_168_0_100`来获取IP地址`192.168.0.100`。如果设备不属于任何组，则该值等于自己的通道名称（IP）。
+  * **group_volume`** *：组的音量
+  * **group_muted`** *：组的静音状态。
+   * **`add_to_group` **：将某个SONOS设备添加到此状态所在的SONOS设备。使用带下划线的IP地址（见上文）。
+   * **`remove_from_group` **：从SONOS设备中删除某个SONOS设备，此设备处于此状态。使用带下划线的IP地址（见上文）。
 
-TODO：显示带盖的队列
+*）如果在SONOS应用程序中进行了更改，这些状态将会更新。
 
-##组处理的信息
-*国家：协调员，group_volume，group_muted
-*所有读/写，以获得Sonos-App的更改
-*“coordinator”包含Group-Master的频道名称（例如192_168_1_99）。如果设备不属于任何组，则该值等于自己的通道名称
+##与sayit适配器一起使用
+使用[sayit adapter]（https://github.com/ioBroker/ioBroker.sayit）与这个SONOS适配器，确保[web适配器]](https://github.com/ioBroker/ioBroker.web)也是实例化并运行的。需要Web适配器才允许SONOS适配器从sayit适配器读取生成的MP3文件。
 
-##警告：与sayit适配器结合使用时存在稳定性问题
-请注意：当用于语音文本时，sonos适配器具有稳定性问题，因此与sayit适配器结合使用。观察到症状
+###警告：与sayit适配器组合的稳定性问题
+请注意：如果在sayit适配器上使用“text to speech”，则此SONOS适配器会出现稳定性问题。观察到的症状：
 
-1.体积变化为0或100％。
+1.任意改变音量为0或100％。
 2.随机数量的文本到语音序列后没有响应
 
-文本到语音的解决方法是使用sonos http api。请参阅https://github.com/jishi/node-sonos-http-api
+文本到语音的解决方法是使用[SONOS HTTP API](https://github.com/jishi/node-sonos-http-api)。
+
+＃＃ 去做
+*显示带盖的队列
 
 ##配置
  -  Web服务器 -  [可选]如果启用了Web服务器

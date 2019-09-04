@@ -697,6 +697,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hp-ilo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hue/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hyperion/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ical/README.md
@@ -1017,6 +1018,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hp-ilo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hue/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hyperion/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ical/README.md
@@ -1337,6 +1339,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hp-ilo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hue/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hyperion/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ical/README.md
@@ -1657,6 +1660,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.homepilot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hp-ilo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hue/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hyperion/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ical/README.md

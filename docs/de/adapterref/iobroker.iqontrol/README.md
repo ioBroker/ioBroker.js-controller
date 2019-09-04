@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
+hash: A5IitdBx/qfhSgFSr828FU78fjr3keeMJ6I8kD5ybUw=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -103,10 +103,11 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 * Nur-Lese-Flag setzen
 * Invert-Flag setzen
 * Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
-* Ändern Sie die Datenpunkteinheit
+* Ändern Sie die Einheit des Datenpunkts und trennen Sie sie für Null, Singular und Plural
+* Min. Und Max. Des Datenpunkts ändern
 * Ändern Sie den Typ des Datenpunkts
 * Ändern Sie die Rolle des Datenpunkts
-* Setzen oder modifizieren Sie eine Werteliste
+* Eine Werteliste festlegen oder ändern
 
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
 
@@ -114,7 +115,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 Jede Rolle hat die folgenden drei Zustände:
 
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
-* **BATTERY** *boolean* - wenn true oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
+* **BATTERY** *boolean* - wenn wahr oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
@@ -243,7 +244,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden.
 * **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird.
 * **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
-* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (in den Geräteeinstellungen konfigurierbare Tastenbeschriftung) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
+* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (die Beschriftung der Taste kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -256,7 +257,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
   * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsart wie "scharf" und "unscharf" wählen
-    * In den Geräteoptionen können Sie den Wert festlegen, der für "Unscharf" steht, damit das entsprechende Symbol angezeigt wird
+    * In den Geräteoptionen können Sie den Wert definieren, der für "Unscharf" steht, sodass das entsprechende Symbol angezeigt werden kann
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
@@ -288,6 +289,29 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ## Changelog
 
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.

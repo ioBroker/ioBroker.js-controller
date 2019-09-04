@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
+hash: A5IitdBx/qfhSgFSr828FU78fjr3keeMJ6I8kD5ybUw=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -81,7 +81,7 @@ Toolbar-Entrys是视图的链接。
 免费的内置演示壁纸来自www.pexels.com。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
+*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -103,7 +103,8 @@ Toolbar-Entrys是视图的链接。
 *设置Readonly-Flag
 *设置反转标志
 *设置一个datapoint id，其中写入目标值（如果您有实际值和目标值的不同数据点）
-*修改datapoint的单位
+*修改数据点的单位，分别为零，单数和复数值
+*修改数据点的最小值和最大值
 *修改数据点的类型
 *修改数据点的角色
 *设置或修改值列表
@@ -161,7 +162,7 @@ Toolbar-Entrys是视图的链接。
 *对于彩色LED（HSB颜色空间）：
  ***HUE*** 字* - 0-360°光线的颜色（色调格式）
     * **饱和度**：*数量*  - 光线饱和度（从白色到纯色）
- ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有LEVEL状态且没有白色LED，则会被忽略，因为亮度完全由LEVEL控制）
+ ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有一个LEVEL状态而没有白色LED，这会被忽略，因为亮度完全由LEVEL控制）
 *对于白光LED：
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（如果你有一个LEVEL状态而没有彩色LED，这会被忽略，因为亮度完全由LEVEL控制）
@@ -213,7 +214,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **状态**：*数字*  - 亮度将显示在设备的下半部分
-* **亮度**：*数字*  - 亮度将在右上角显示为小亮度
+* **BRIGHTNESS** *数字* - 亮度将在右上角显示为小亮度
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/motion_on.png" width="32">运动传感器：
@@ -288,6 +289,29 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
