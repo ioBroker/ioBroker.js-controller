@@ -50,6 +50,8 @@ const styles = theme => ({
 });
 
 const PRESS = [
+    {title: '2019.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/tests/ioBroker-Die-wichtigsten-neuen-Erweiterungen-der-Smart-Home-Steuersoftware-4502251.html'},
+    {title: '2019.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/ratgeber/ioBroker-Smart-Home-Steuersoftware-sicher-installieren-und-betreiben-4497372.html'},
     {title: '2018.08', alt: 'C\'t',          image: ImageCT,           link: 'https://www.heise.de/select/ct/2018/17/1534562336998502'},
     {title: '2018.08', alt: 'Smarthome DIY', image: ImageSmarthomeDIY, link: 'https://leanpub.com/smarthdiy'},
     {title: '2018.04', alt: 'Linux Magazin', image: ImageLinuxMagazin, link: 'http://www.linux-magazin.de/ausgaben/2018/04/io-broker/'},
