@@ -253,8 +253,8 @@ function createStates(onConnect) {
                     }
                 }
             } else
-            // If this NAME.0.info.connection
-            if (id.match(/^[^.]+\.\d+\.info\.connection$/)) {
+            // If this NAME.0.info.connection, only main controller is handling this
+            if (compactGroupController && id.match(/^[^.]+\.\d+\.info\.connection$/)) {
                 // Disabled in 1.5.x
                 // if (state && !state.val) {
                 //     tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
@@ -264,9 +264,9 @@ function createStates(onConnect) {
                 //             logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
                 //         });
                 // }
-            }
-            else    // If this system.adapter.NAME.0.alive
-            if (id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
+            } else
+            // If this system.adapter.NAME.0.alive, only main controller is handling this
+            if (compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     const enabled = state.val;
                     setImmediate(() => {
@@ -276,7 +276,7 @@ function createStates(onConnect) {
                                 // IF adapter enabled => disable it
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
                                     obj.common.enabled = !!enabled;
-                                    logger.warn(hostLogPrefix + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled'));
+                                    logger.info(hostLogPrefix + ' instance "' + obj._id + '" ' + (obj.common.enabled ? 'enabled' : 'disabled') + ' via .alive');
                                     setImmediate(() => {
                                         obj.from = hostObjectPrefix;
                                         obj.ts = Date.now();
@@ -309,6 +309,25 @@ function createStates(onConnect) {
                         logger.warn(hostLogPrefix + ' controller Adapter subscribed on ' + id + ' does not exist!');
                     }
                 }
+            } else
+            if (id === hostObjectPrefix + '.logLevel') {
+                if (! config || !config.log || !state || state.ack) return;
+                let currentLevel = config.log.level;
+                if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
+                    config.log.level = state.val;
+                    for (const transport in logger.transports) {
+                        if (!logger.transports.hasOwnProperty(transport)) continue;
+                        if (logger.transports[transport].level === currentLevel) {
+                            logger.transports[transport].level = state.val;
+                        }
+                    }
+                    logger.info(hostLogPrefix + ' Loglevel changed from "' + currentLevel + '" to "' + state.val + '"');
+                    currentLevel = state.val;
+                } else if (state.val && state.val !== currentLevel) {
+                    logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
+                }
+                states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
+                return;
             }
             /* it is not used because of code before
             else
@@ -410,7 +429,7 @@ function createObjects(onConnect) {
         },
         change: (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
-            logger.info(hostLogPrefix + ' object change ' + id);
+            logger.info(hostLogPrefix + ' object change ' + id + ' (from: ' + obj.from + ')');
             try {
                 // known adapter
                 if (procs[id]) {
@@ -426,7 +445,10 @@ function createObjects(onConnect) {
                         logger.info(hostLogPrefix + ' object deleted ' + id);
                     } else {
                         if (procs[id].config.common.enabled  && !obj.common.enabled) logger.info(hostLogPrefix + ' "' + id + '" disabled');
-                        if (!procs[id].config.common.enabled &&  obj.common.enabled) logger.info(hostLogPrefix + ' "' + id + '" enabled');
+                        if (!procs[id].config.common.enabled &&  obj.common.enabled) {
+                            logger.info(hostLogPrefix + ' "' + id + '" enabled');
+                            procs[id].downloadRetry = 0;
+                        }
 
                         // Check if compactgroup or compact mode changed
                         if (
@@ -465,6 +487,8 @@ function createObjects(onConnect) {
                                 delete procs[id];
                             }
                         });
+                    } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
+                        logger.debug(hostLogPrefix + ' ignore object change because adapter still in installation queue');
                     } else {
                         const _ipArr = getIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -1367,6 +1391,21 @@ function setMeta() {
     };
     tasks.push(obj);
 
+    obj = {
+        _id:    id + '.logLevel',
+        type:   'state',
+        common: {
+            name:   'Controller - Loglevel',
+            type:   'string',
+            read:   true,
+            write:  true,
+            desc:   'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
+            role:   'state'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
 
     if (config.system.checkDiskInterval) {
@@ -2103,7 +2142,7 @@ function getInstances() {
                         const adapterDir_ = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir_)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
-                            installQueue.push({id: instance._id, disabled: true, version: instance.common.version, installedFrom: instance.common.installedFrom});
+                            installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
                             // start install queue if not started
                             if (installQueue.length === 1) installAdapters();
                         }
@@ -2129,7 +2168,7 @@ function getInstances() {
 }
 
 /**
- * CHecks if an instance is relevant for this host to be considered or not
+ * Checks if an instance is relevant for this host to be considered or not
  * @param instance name of the instance
  * @param _ipArr IP-Array from this host
  * @returns {boolean} instance needs to be handled by this host (true) or not
@@ -2230,7 +2269,7 @@ function initInstances() {
             const adapterDir = tools.getAdapterDir(name);
             if (!fs.existsSync(adapterDir)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
-                installQueue.push({id: id, disabled: true, version: procs[id].config.common.version, installedFrom: procs[id].config.common.installedFrom});
+                installQueue.push({id: id, disabled: true, version: procs[id].config.common.installedVersion || procs[id].config.common.version, installedFrom: procs[id].config.common.installedFrom});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
             }
@@ -2363,12 +2402,28 @@ function installAdapters() {
         name += '@' + task.version;
     }
 
-    if (procs[task.id].downloadRetry < 3) {
+    if (config.system.compact && procs[task.id].config.common.compact && procs[task.id].config.common.runAsCompactMode) {
+        // compactgroup = 0 is executed by main js.controller, all others as own processes
+        if (
+            (!compactGroupController && procs[task.id].config.common.compactGroup !== 0) ||
+            (compactGroupController && procs[task.id].config.common.compactGroup === 0)
+        ) {
+            logger.info(hostLogPrefix + ' adapter ' + name + ' is not installed, installation will be handled by group controller');
+            setImmediate(() => {
+                installQueue.shift();
+                installAdapters();
+            });
+            return;
+        }
+    }
+
+    if (procs[task.id].downloadRetry < 4) {
         procs[task.id].downloadRetry++;
         logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
 
         const installArgs = [];
-        if (task.installedFrom) {
+        if (task.installedFrom && procs[task.id].downloadRetry < 3) {
+            // two tries with installed location, afterwards we try normal npm version install
             if (task.installedFrom.includes('://')) {
                 installArgs.push('url');
                 installArgs.push(task.installedFrom);
@@ -2387,7 +2442,7 @@ function installAdapters() {
             installArgs.push('install');
             installArgs.push(name);
         }
-        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' '));
+        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' ') + ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion'));
         installArgs.unshift(__dirname + '/' + tools.appName + '.js');
 
         try {
@@ -2395,24 +2450,34 @@ function installAdapters() {
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + data);
+                    logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-install: ' + data);
                 });
             }
             if (child.stderr) {
                 child.stderr.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.error(hostLogPrefix + ' ' + tools.appName + ' ' + data);
+                    logger.error(hostLogPrefix + ' ' + tools.appName + ' npm-install: ' + data);
                 });
             }
 
             child.on('exit', exitCode => {
-                logger.info(hostLogPrefix + ' ' + tools.appName + ' exit ' + exitCode);
-                if (!task.disabled) {
-                    startInstance(task.id, task.wakeUp);
+                logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-install: exit ' + exitCode);
+                installQueue.shift();
+                if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
+                    installQueue.push(task); // We add at the end again to try three times
+                } else if (!task.disabled) {
+                    if (!procs[task.id].config.common.enabled) {
+                        logger.info(hostLogPrefix + ' startInstance ' + task.id + ': should start instance but disabled, re-enable');
+                        states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
+                    }
+                    else {
+                        startInstance(task.id, task.wakeUp);
+                    }
+                } else {
+                    logger.debug(hostLogPrefix + ' ' + tools.appName + ' installation successfull but instance disabled');
                 }
 
                 setTimeout(() => {
-                    installQueue.shift();
                     installAdapters();
                 }, 1000);
             });
@@ -2431,7 +2496,7 @@ function installAdapters() {
             }, 1000);
         }
     } else {
-        logger.error(hostLogPrefix + ' Cannot download adapter "' + name + '". To restart it disable/enable it or restart host.');
+        logger.error(hostLogPrefix + ' Cannot download and install adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!');
         setTimeout(() => {
             installQueue.shift();
             installAdapters();
@@ -2511,7 +2576,7 @@ function startInstance(id, wakeUp) {
     const adapterDir_ = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
-        installQueue.push({id: id, version: instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
+        installQueue.push({id: id, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
         // start install queue if not started
         if (installQueue.length === 1) installAdapters();
         return;
@@ -2602,7 +2667,7 @@ function startInstance(id, wakeUp) {
         case 'daemon':
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
-                logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
+                logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
 
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
@@ -3474,6 +3539,10 @@ function init(compactGroupId) {
 
             // Subscribe for all logging objects
             states.subscribe('system.adapter.*.alive');
+
+            // set current Loglevel and subscribe for changes
+            states.setState(hostObjectPrefix + '.logLevel', {val: config.log.level, ack: true, from: hostObjectPrefix});
+            states.subscribe(hostObjectPrefix + '.logLevel');
 
             // Read current state of all log subscribers
             states.getKeys('*.logging', (err, keys) => {
