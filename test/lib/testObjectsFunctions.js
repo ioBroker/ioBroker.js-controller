@@ -506,6 +506,66 @@ function register(it, expect, context) {
         });
     });
 
+    // getObjectList
+    it(testName + 'Try to get object list', done => {
+        // lets create an object matching the list
+        context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+            type: 'meta',
+            meta: {
+                adapter: 'hm-rpc',
+                type: 'paramsetDescription'
+            },
+            common: {},
+            native: {}
+        }).then(() => {
+            // now lets get our object
+            context.adapter.getObjectList({
+                startkey: 'hm-rpc.meta.VALUES',
+                endkey: 'hm-rpc.meta.VALUES.\u9999'
+            }, (err, res) => {
+                expect(err).to.be.null;
+                expect(res.rows.length).to.be.equal(1);
+                expect(res.rows[0].id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
+
+                // and try a non existing pattern
+                context.adapter.getObjectList({startkey: '', endkey: '_'}, (err, res) => {
+                    expect(err).to.be.not.ok;
+                    expect(res.rows.length).to.be.equal(0);
+                    done();
+                });
+            });
+        });
+    });
+
+    // getObjectListAsync
+    it(testName + 'Try to get object list async', done => {
+        // lets create an object matching the list
+        context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+            type: 'meta',
+            meta: {
+                adapter: 'hm-rpc',
+                type: 'paramsetDescription'
+            },
+            common: {},
+            native: {}
+        }).then(() => {
+            // now lets get our object
+            context.adapter.getObjectListAsync({
+                startkey: 'hm-rpc.meta.VALUES',
+                endkey: 'hm-rpc.meta.VALUES.\u9999'
+            }).then(res => {
+                expect(res.rows.length).to.be.equal(1);
+                expect(res.rows[0].id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
+
+                // and try a non existing pattern
+                context.adapter.getObjectListAsync({startkey: '', endkey: '_'}).then(res => {
+                    expect(res.rows.length).to.be.equal(0);
+                    done();
+                });
+            });
+        });
+    });
+
     // delObject
     it(testName + 'Try to delete existing object', function (done) {
         context.adapter.delObject(gid, function (err) {
