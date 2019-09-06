@@ -147,6 +147,15 @@ The log level for js-controller is configured in iobroker.json in the logs secti
 }
 ```
 
+#### Dynamic Loglevel change
+**Feature status:** stable since js-controller 2.0.0
+
+The loglevel can be changed dynamically for adapter-instance and host (main controller and compact group controllers) after they have been started. Initially always the configured loglevel is used!
+
+The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured loglevel and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
+
+This possibility allows to better debug adapters also during runtime.
+
 #### File based logging
 **Feature status:** stable
 
@@ -320,7 +329,39 @@ For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?p
 ### Object and State Aliases
 **Feature status:** Technology preview (since 2.0.0)
 
-TBD!
+The Alias Feature allows to define one object/state to be the "alias" of an other object/state. The alias-object and the target-object can be different, but need to share the same type (?).
+
+All Aliases will be created in the Object namespace `alias.0`
+
+Effectively an Alias object will mirror the state alue of the target object. If allowed, both states can be changed and are synced automatically by the ioBroker core system. ALso both states can be used to subscribe in scripts and should behave exactly identical.
+
+Additionally to defining the target ID theAlias object can also define "read and write functions" to do easy value conversions, so e.g. the target state could contain a power measurement value in Wh (because an adapter delivers the value that way) and the alias could use the same value calculated as kWh.
+
+As of now (js-controller 2.0.0 release) there are no frontends to configure alias. To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section:
+
+```
+{
+    common: {
+        name: 'Test AliasC',
+        type: 'number',
+        role: 'state',
+        min: -10,
+        max: 10,
+        alias: {
+            id: 'state.id.of.target',
+            read: 'val * 10 + 1',
+            write: '(val - 1) / 10'
+        }
+    },
+    native: {},
+    type: 'state'
+}
+```
+The following fileds are allowed in the alias structure:
+
+* **alias.id** contains the ID of the target object/stae to mirror
+* **alias.read** can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
+* **alias.write** can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed  
 
 ### State and objects databases and files
 
@@ -445,6 +486,45 @@ More details about the Redis sentinel can be found in the official documentation
 ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker custom``` like above, but provide a comma separated list of the sentinel hosts. For the sentinel ports you can either enter a comma separated list with the same number of entries, or a single one which is then used for all hosts.
 
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
+
+### Adapter Development
+**Feature status:** Stable
+
+TODO: Link to Adapter Development docs
+
+#### Adapter Feature Detection
+**Feature status:** Stable since js-controller 2.0.0
+
+Since js-controller 2.0 there exists a dedicated method to detect if certain features exists for an adapter.
+
+The preferred way to use it (also because of backward compatibility reasons) is:
+
+```js
+if (adapter.supportsFeature && adapter.supportsFeature('NAME')) {
+    ...
+}
+```
+
+The following features can be checked using this method:
+
+* **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0.0)
+
+To check if certain adapter methods itself are existing please simply check for their existence like 
+
+```js
+if (adapter.getObjectView) {
+    ...
+}
+``` 
+
+or 
+
+```js
+if (typeof adapter.getObjectView === 'function') {
+    ...
+}
+```
+
 
 ## Release cycle and Development process overview
 

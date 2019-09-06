@@ -5,19 +5,23 @@
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
-* **(bluefox) Add build in Alias handling for Objects/States, see [Alias Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases)** (Technology Preview)
+* **(bluefox) Add build-in Alias handling for Objects/States, see [Alias Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases)** (Technology Preview)
 * **(Bluefox/Apollon77) Add support to also use Redis for Objects and Files, see [Redis Objects Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-as-objectsfile-db)**
 * **(Apollon77) Add Redis sentinel support, see [Redis Sentinel Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-sentinel-as-objectsfile-db)**
+* (Apollon77) Allow dynamic change of Loglevel for adapter instance and js-controller hosts processes, see [Dynamic Loglevel changes Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#dynamic-loglevel-changes)
 * (Bluefox) Add optional migration for State and/or Objects values when using `setup custom`. 
 * (Apollon77) add monitoring for event-Loop-Lag as host and adapter objects. This can be used to analyze if an node.js process is blocked too much
 * (foxriver76) add possibility to validate backup files
 * (alcalzone) Support command `iobroker logs`
 * (Stabilostick) `cert create` CLI commands
 * (Apollon77) Remember installation location for reinstallations. For GitHub installs it gets the exact commit hash to reinstall really the correct version
+* (Apollon77) Use remembered installation location for automatic adapter installs (e.g. if missing, host move cases)
 
 ### New adapter developer features
+* (Apollon77) adds adapter.supportsFeature('NAME') method to check if a certain feature exists. fixes #244, see  [Adapter Feature Detection Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#adapter-feature-dtection) for information and the full list of allowed features
 * (foxriver76) Ability to define secured objects in io-pack access only via own adapter and admin, details see #287
 * (foxriver76) added getObjectView and getObjectViewAsync on adapter object
+* (foxriver76) added getObjectList and getObjectListAsync on adapter object
 * (bluefox) allow the deletion of multiple objects with wildcard
 * (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
 
@@ -40,13 +44,25 @@
 * (bluefox) allow optional dependencies being installed
 * (Apollon77) optimize `setup custom`and add more user guidance
 * (Apollon77) Add Feature overview to README
+* (bluefox) forward upload console outputs from slave to master 
+* (Apollon77) make sure to upload and upgrade all relevant objects on installations and updates of adapters
+* (Apollon77) always upgrade instance objects after successful installs or upgrades
+* (Apollon77) optimize adapter start processes and such, especially when combined with needed automatic installations of adapters, also for error cases
+* (Apollon77) after 2 installation tries with "last-installedFrom" use the installedVersion field to try to install from npm
+* (Apollon77) hosts now ignore object changes when the affected instances is still in installQueue
 * and much more code refactoring and optimizations in various places
 
 ### Bugfixes
+* (Apollon77) log scheduled restarts as info only (fixes #315)
+* (Apollon77) fixes #340 to maintain restartSchedule on updates
+* (Apollon77) fix bug where "ack" was possible to set to any value via cli
 * (alcalzone) Enable ESLint and fix most issues
 * (bluefox) optimize multi host upload
+* (Apollon77) Restart stopped adapters at the end of the upload and not before to make sure to not have two adapter restarts on upgrade cases
+* (Apollon77) Enhance checks for failed installations in cli and controller
+* (Apollon77) also update adapter instance statistic objects when no instanceObejcts are defined
+* (Apollon77) "alive" state values are only checked on adapter start if ack=true to allow to start a process if not running
 * and many more fixes in various places
-
 
 ## 1.5.13 (2019-06-12) Evolution release (Ann)
 * (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install
