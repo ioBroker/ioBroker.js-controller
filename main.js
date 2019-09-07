@@ -143,10 +143,10 @@ function startMultihost(__config) {
         }
 
         if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
-            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address is for objects is ' + _config.objects.host);
+            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address for objects is ' + _config.objects.host);
         } else
-        if ((_config.states.host   || _config.states.host  === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type  === 'file') {
-            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address is for states is ' + _config.states.host);
+        if ((!_config.states.host || _config.states.host === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type === 'file') {
+            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address for states is ' + _config.states.host);
         }
 
         if (_config.multihostService.secure) {
