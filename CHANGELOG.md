@@ -62,6 +62,8 @@
 * (Apollon77) Enhance checks for failed installations in cli and controller
 * (Apollon77) also update adapter instance statistic objects when no instanceObejcts are defined
 * (Apollon77) "alive" state values are only checked on adapter start if ack=true to allow to start a process if not running
+* (Apollon77) fixes for mutlihost detection
+* (Apollon77) fix backup of states
 * and many more fixes in various places
 
 ## 1.5.13 (2019-06-12) Evolution release (Ann)
