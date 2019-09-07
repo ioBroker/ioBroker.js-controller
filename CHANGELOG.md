@@ -24,6 +24,7 @@
 * (foxriver76) added getObjectList and getObjectListAsync on adapter object
 * (bluefox) allow the deletion of multiple objects with wildcard
 * (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
+* (Apollon77) allow getPort to check for the port optionally on a certain host/IP
 
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
