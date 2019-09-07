@@ -79,7 +79,9 @@ function register(it, expect, context) {
 
     it(testName + 'check clearAllLogs', function (done) {
         context.states.clearAllLogs(function (err) {
-            expect(err).to.be.equal('Not exists');
+            if (err) { // undefined for "file" db version
+                expect(err).to.be.equal('Not exists');
+            }
             done();
         });
     });
