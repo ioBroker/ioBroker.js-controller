@@ -26,7 +26,7 @@ function register(it, expect, context) {
         //Works like it should be
         context.adapter.getPort(8080, function (port) {
             expect(port).to.be.at.least(8080);
-            expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
+            expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'host', 'callback']);
             expect(context.adapter.getPortRunning).to.have.property('port', port);
 
             done();
