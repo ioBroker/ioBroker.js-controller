@@ -775,8 +775,9 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
+    const objectData = objects.getStatus();
     // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    if (compactGroupController || !objectData.server) {
         callback && callback();
         return;
     }
