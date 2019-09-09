@@ -143,10 +143,10 @@ function startMultihost(__config) {
         }
 
         if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
-            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address is for objects is ' + _config.objects.host);
+            logger.warn(hostLogPrefix + ' Multihost Master on this system is not possible, because IP address for objects is ' + _config.objects.host);
         } else
-        if ((_config.states.host   || _config.states.host  === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type  === 'file') {
-            logger.warn(hostLogPrefix + ' Host on this system is not possible, because IP address is for states is ' + _config.states.host);
+        if ((!_config.states.host || _config.states.host === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type === 'file') {
+            logger.warn(hostLogPrefix + ' Multihost Master on this system is not possible, because IP address for states is ' + _config.states.host);
         }
 
         if (_config.multihostService.secure) {
@@ -155,7 +155,7 @@ function startMultihost(__config) {
                     tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
                         _startMultihost(_config, secret));
                 } else {
-                    logger.error(hostLogPrefix + ' Cannot start multihost: no system.config found');
+                    logger.error(hostLogPrefix + ' Cannot start multihost discovery server: no system.config found (err:' + err + ')');
                 }
             });
         } else {
@@ -168,7 +168,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(hostLogPrefix + ' Cannot stop multihost: ' + e);
+            logger.warn(hostLogPrefix + ' Cannot stop multihost discovery: ' + e);
         }
         return false;
     }
@@ -775,8 +775,9 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
+    const objectData = objects.getStatus();
     // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    if (compactGroupController || !objectData.server) {
         callback && callback();
         return;
     }
