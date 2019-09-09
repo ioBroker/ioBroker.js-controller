@@ -45,7 +45,7 @@
     "tar": "^4.4.8",
     "vm2": "^3.8.1",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^3.7.0",
+    "winston-daily-rotate-file": "^4.0.0",
     "yargs": "^14.0.0"
   },
   "devDependencies": {
