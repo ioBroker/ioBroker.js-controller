@@ -1,6 +1,5 @@
 ![Logo](lib/img/iobroker.png)
 # ioBroker.js-controller
-==================
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
@@ -10,7 +9,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.js-controller.png?downloads=true)](https://nodei.co/npm/iobroker.js-controller/)
 
-The ioBroker.js-controller is the heart of any ioBroker installation. The controller is owning the central configuration of the ioBroker installation and controls and monitors all adapter processes for the current host. 
+The ioBroker.js-controller is the heart of any ioBroker installation. The controller is owning the central configuration of the ioBroker installation and controls and monitors all adapter processes for the current host.
 
 ## Links
 
@@ -24,7 +23,7 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 
 ## Usage
 
-### Install Node.js
+### Install `Node.js`
 
 Example for a Debian based system:
 
@@ -36,22 +35,20 @@ sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
 sudo apt-get install -y nodejs
 ```
 
-### Install ioBroker 
+### Install ioBroker
+See [Linux instructions](https://www.iobroker.net/#en/documentation/install/linux.md),
+[Windows instructions](https://www.iobroker.net/#en/documentation/install/windows.md) and
 
-see https://github.com/ioBroker/ioBroker/wiki/Installation
-
-After that, ioBroker should be running and available in the browser under ```http://<ip>:8081/```.
+after that, ioBroker should be running and available in the browser under ```http://<ip>:8081/```.
 
 ### Start ioBroker controller
-
 #### Linux
-
 * run ```iobroker start``` to start the ioBroker controller in the background
 * watch the logfile ```tail -f log/iobroker.<Date>.log```
 
 or
 
-* run ```node node_modules/iobroker.js-controller/controller.js``` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console
+* run ```node node_modules/iobroker.js-controller/controller.js``` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console.
 
 ### Windows
 
@@ -119,7 +116,7 @@ If needed, especially for low memory situations the memory limit for all adapter
 
 ### Statistics
 **Feature status:** stable
- 
+
 The js-controller is collecting statistics for the host (`system.host.hostname.*`), running compact groups (`system.host.hostname.compaczgroupX.*`) and for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
 ### Logging
@@ -127,7 +124,7 @@ The js-controller is collecting statistics for the host (`system.host.hostname.*
 #### Log levels
 **Feature status:** stable
 
-The js-controller and each adapter has defined it's own loglevel. By default, `info` is used. The following loglevels can be used:
+The js-controller and each adapter has defined it's own log level. By default, `info` is used. The following loglevels can be used:
 * silly (most logging)
 * debug
 * info
@@ -150,9 +147,9 @@ The log level for js-controller is configured in iobroker.json in the logs secti
 #### Dynamic Loglevel change
 **Feature status:** stable since js-controller 2.0.0
 
-The loglevel can be changed dynamically for adapter-instance and host (main controller and compact group controllers) after they have been started. Initially always the configured loglevel is used!
+The log level can be changed dynamically for adapter-instance and host (main controller and compact group controllers) after they have been started. Initially always the configured loglevel is used!
 
-The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured loglevel and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
+The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
 
 This possibility allows to better debug adapters also during runtime.
 
@@ -223,7 +220,7 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
 
 ioBroker allows adapters to subscribe to logs from the whole system. E.g. admin adapter is using this logic
 
-More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md 
+More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
 
 ### Controlling and monitoring of adapter processes
 
@@ -239,11 +236,11 @@ For each adapter multiple instances can be created and started with independent 
 **Feature status:** stable
 
 ioBroker supports multiple Adapter modes. These are:
-* **deamon:** The adapter is started and runs all the time. If the process gets killed it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continously. These adapters also supports a restart schedule where the controller restarts the insances. The adapter needs RAM and some CPU resources also when doing nothing.
-* **schedule:** The adapter is started based on a defined schedule (e.g. once per hour, once a day, all 10 minutes ...), then is doing it's work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
-* **once:** The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
-* **subscribe:** The adapter is started when a defined state ID gets set to true, and stopped when set to false
-* **none:** The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
+* `deamon`:    The adapter is started and runs all the time. If the process gets killed it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continously. These adapters also supports a restart schedule where the controller restarts the insances. The adapter needs RAM and some CPU resources also when doing nothing.
+* `schedule`:  The adapter is started based on a defined schedule (e.g. once per hour, once a day, all 10 minutes ...), then is doing it's work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
+* `once`:      The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
+* `subscribe`: The adapter is started when a defined state ID gets set to true, and stopped when set to false
+* `none`:      The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
 #### Start adapter instances as normal processes
 **Feature status:** stable
@@ -303,7 +300,7 @@ For testing, setup your js-controller to use compact mode and change the `io-pac
 Please check that your adapter starts and runs as expected also when compact mode is used.
 
 For adapters running in compact mode, special care must be taken to clean up used resources without throwing errors. You need to make sure that **all** initialized connections, timers and intervals are closed and stopped in the `unload` handler.
- 
+
 #### Manually run adapter instances for debugging
 **Feature status:** stable
 
@@ -329,15 +326,20 @@ For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?p
 ### Object and State Aliases
 **Feature status:** Technology preview (since 2.0.0)
 
-The Alias Feature allows to define one object/state to be the "alias" of an other object/state. The alias-object and the target-object can be different, but need to share the same type (?).
+The Alias Feature allows to define one object/state to be the "alias" of an other object/state.
 
 All Aliases will be created in the Object namespace `alias.0`
 
-Effectively an Alias object will mirror the state alue of the target object. If allowed, both states can be changed and are synced automatically by the ioBroker core system. ALso both states can be used to subscribe in scripts and should behave exactly identical.
+Effectively an `alias` object will mirror the state value of the target object.
+If allowed, both states can be changed and are synced automatically by the ioBroker core system.
+Also both states can be used to subscribe in scripts and should behave exactly identical.
 
-Additionally to defining the target ID theAlias object can also define "read and write functions" to do easy value conversions, so e.g. the target state could contain a power measurement value in Wh (because an adapter delivers the value that way) and the alias could use the same value calculated as kWh.
+Additionally to defining the target ID theAlias object can also define "read and write functions" to do easy value conversions, so e.g.
+the target state could contain a power measurement value in Wh (because an adapter delivers the value that way)
+and the alias could use the same value calculated as kWh.
 
-As of now (js-controller 2.0.0 release) there are no frontends to configure alias. To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section:
+As of now (js-controller 2.0.0 release) there are no front-ends to configure alias.
+To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section:
 
 ```
 {
@@ -357,11 +359,13 @@ As of now (js-controller 2.0.0 release) there are no frontends to configure alia
     type: 'state'
 }
 ```
-The following fileds are allowed in the alias structure:
+The following fields are allowed in the alias structure:
 
-* **alias.id** contains the ID of the target object/stae to mirror
-* **alias.read** can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
-* **alias.write** can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed  
+* `alias.id` contains the ID of the target object/state to mirror
+* `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
+* `alias.write` can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed
+
+Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
 ### State and objects databases and files
 
@@ -387,7 +391,7 @@ For the objects and states databases special additional logging of the redis pro
   ...
   "enhancedLogging": false
 }
-``` 
+```
 
 
 #### Redis as database
@@ -437,7 +441,7 @@ Please see https://redis.io/topics/persistence for details, differences and conf
 **Feature status:** stable
 
 There is a possibility to use Redis as states database. It is reasonable to do that for big installations or for systems with performance problems.
-It is possible to switch anytime between Redis and in-memory Javascript DB. 
+It is possible to switch anytime between Redis and in-memory Javascript DB.
 
 **Note for js-controller <2.0**: After changing to Redis, all states must be updated by the adapters again (the previous values will be lost). Please especially note this for the state values from own JavaScript states! Objects and configuration are not affected.
 
@@ -477,7 +481,7 @@ The setup is comparable to the setup for states in Redis by using ```iobroker se
 ##### Using Redis Sentinel as objects/File-DB
 **Feature status:** New in 2.0.0
 
-Redis Sentinel is an industry standard to achieve a highly available redis database. It is based on a Redis master-slave setup with at least three nodes. Additional so-called sentinel processes monitor all redis instances in the master-slave setup. 
+Redis Sentinel is an industry standard to achieve a highly available redis database. It is based on a Redis master-slave setup with at least three nodes. Additional so-called sentinel processes monitor all redis instances in the master-slave setup.
 
 If the master is going offline, the sentinel processes react and coordinate to select a new master. After this is done, the master-slave cluster is reconfigured and the new master is taking over.
 
@@ -509,15 +513,15 @@ The following features can be checked using this method:
 
 * **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0.0)
 
-To check if certain adapter methods itself are existing please simply check for their existence like 
+To check if certain adapter methods itself are existing please simply check for their existence like
 
 ```js
 if (adapter.getObjectView) {
     ...
 }
-``` 
+```
 
-or 
+or
 
 ```js
 if (typeof adapter.getObjectView === 'function') {
@@ -528,7 +532,7 @@ if (typeof adapter.getObjectView === 'function') {
 
 ## Release cycle and Development process overview
 
-The goal is to release an update for the js-controller roughly all 3 months. The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies. 
+The goal is to release an update for the js-controller roughly all 3 months. The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
 
 For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently js-controller 2.0 will start with nodes 8.x up to 12.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
 
@@ -545,7 +549,7 @@ It is also allowed to introduce unfinished new features, as soon as they do not 
 
 This new process and rules are introduced with js-controller 2.0.0. The cut-off date will most likely be (different from described above) somewhere before end of September. Also the testing phase may be longer because of the size of the 2.0.0. W need to test this version carefully because it contains big rewrites and refactorings.
 
-## License 
+## License
 
 The MIT License (MIT)
 
