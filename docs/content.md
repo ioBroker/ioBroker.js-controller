@@ -133,6 +133,7 @@
   * [Adapter reference](dev/adapterref)
   * [Object schema](dev/objectsschema)
   * [State roles](dev/stateroles)
+  * [Aliases](dev/aliases)
   * [Template](dev/adaptertemplate)
   * [Adapter tests](dev/adaptertesting)
   * [Adapter doc template](dev/adapterdoctemplate)
