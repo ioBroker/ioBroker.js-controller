@@ -51,6 +51,10 @@
                 {
                     "title": "ioBroker-Tutorial-Reihe",
                     "link": "https://haus-automatisierung.com/iobroker-tutorial-reihe/"
+                },
+                {
+                    "title": "IOBroker Home Automation",
+                    "link": "https://wiki.instar.de/Software/Smarthome/IOBroker/"
                 }
             ],
             "development": [
@@ -92,6 +96,16 @@
                     "title": "Funktioniert – ioBroker auf neuem Raspberry Pi 4 installieren",
                     "link": "https://technikkram.net/2019/07/funktioniert-iobroker-auf-neuem-raspberry-pi-4-installieren",
                     "date": "2019-07-21T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker auf dem Raspberry Pi installieren und konfigurieren",
+                    "link": "https://www.modius-techblog.de/smart-home/iobroker-auf-dem-raspberry-pi-installieren-und-konfigurieren/",
+                    "date": "2019-05-23T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker unter Docker auf der Synology Diskstation (V3)",
+                    "link": "https://buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/",
+                    "date": "2019-05-04T00:00:00.000Z"
                 },
                 {
                     "title": "Alle Smarthome Systeme unter einen Hut – ioBroker vereint das Smart Home",
@@ -226,6 +240,10 @@
                 {
                     "title": "Wikipedia - ioBroker",
                     "link": "https://de.wikipedia.org/wiki/IoBroker"
+                },
+                {
+                    "title": "ioBroker - Visualisierung erstellen im ioBroker Udemy)",
+                    "link": "https://www.udemy.com/course/iobroker-visualisierung-erstellen/"
                 }
             ]
         },
