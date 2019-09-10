@@ -365,6 +365,14 @@ The following fields are allowed in the alias structure:
 * `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
 * `alias.write` can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed
 
+To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
+
+```
+iobroker object set common.alias.id=here.the.target.id
+iobroker object set common.alias.read="read-func"
+iobroker object set common.alias.write="write-func"
+```
+
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
 ### State and objects databases and files
