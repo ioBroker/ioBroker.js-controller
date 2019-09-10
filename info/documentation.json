@@ -38,7 +38,7 @@
             "documentation": [
                 {
                     "title": "ioBroker Homepage",
-                    "link": "http://www.iobroker.net/docu/?lang=de"
+                    "link": "https://www.iobroker.net/#de/intro"
                 },
                 {
                     "title": "smarthome-tricks.de - Tricks und Tipps rund um Dein Smarthome",
@@ -261,7 +261,7 @@
             "documentation": [
                 {
                     "title": "ioBroker Homepage",
-                    "link": "http://www.iobroker.net/docu/?lang=en"
+                    "link": "https://www.iobroker.net/#en/intro"
                 }
             ],
             "development": [
@@ -318,7 +318,7 @@
             "documentation": [
                 {
                     "title": "Домашняя страница ioBroker",
-                    "link": "http://www.iobroker.net/docu/?lang=ru"
+                    "link": "https://www.iobroker.net/#ru/intro"
                 },
                 {
                     "title": "ioBroker - Визуализация",
@@ -500,6 +500,10 @@
                 }
             ],
             "documentation": [
+                {
+                    "title": "ioBroker主页",
+                    "link": "https://www.iobroker.net/#zh-cn/intro"
+                },
                 {
                     "title": "中文文档",
                     "link": "https://doc.iobroker.cn/#/_zh-cn/"
