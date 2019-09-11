@@ -1,4 +1,4 @@
-![Logo](lib/img/iobroker.png)
+![Logo](assets/img/iobroker.png)
 # ioBroker.js-controller
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)

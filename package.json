@@ -61,7 +61,8 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "typescript": "^3.6.3"
   },
   "homepage": "http://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
@@ -108,7 +109,8 @@
     "test": "node node_modules/mocha/bin/mocha test --exit",
     "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/ --exit",
     "test-redis-sentinel": "node node_modules/mocha/bin/mocha test/redis-sentinel/ --exit",
-    "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
+    "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec",
+    "tsc": "tsc"
   },
   "main": "main.js",
   "license": "MIT"

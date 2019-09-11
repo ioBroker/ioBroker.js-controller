@@ -61,7 +61,7 @@ gulp.task('updateRepo', done => {
 });
 
 gulp.task('renameFiles', done => {
-    fs.unlink(__dirname + '/lib/img/iobroker.png');
+    fs.unlink(__dirname + '/assets/img/iobroker.png');
     if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
     if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
     if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
