@@ -12,13 +12,45 @@
 /* jshint -W097 */
 /* jshint strict:false */
 /* jslint node: true */
-'use strict';
 
-const fs                = require('fs');
-const path              = require('path');
-const tools             = require('./tools.js');
+import fs                = require('fs');
+import path              = require('path');
+import tools             = require('./tools.js');
 const getDefaultDataDir = tools.getDefaultDataDir;
-const utils             = require('./objects/objectsUtils'); // TODO move to tools?
+import utils             = require('./objects/objectsUtils'); // TODO move to tools?
+
+interface ILogger {
+    silly: (msg) => void
+    debug: (msg) => void
+    info:  (msg) => void
+    warn:  (msg) => void
+    error: (msg) => void
+}
+
+interface IBackup {
+    disabled: boolean
+    files: number
+    hours: number
+    period: number
+    path: string
+}
+
+interface ISettings {
+    change: (id, state) => void
+    connected: (nameOfServer) => boolean
+    logger: ILogger
+    connection: {
+           dataDir: string
+    },
+    auth: null
+    secure: boolean
+    certificates: any
+    port: number
+    host: string
+    namespace: string
+    backup: IBackup
+    fileDB: any
+}
 
 // settings = {
 //    change:    function (id, state) {},
@@ -46,9 +78,21 @@ const utils             = require('./objects/objectsUtils'); // TODO move to too
  * and general subscription and publish functionality
  **/
 class InMemoryFileDB {
+    settings: ISettings;
+    change: any;
+    dataset: {};
+    namespace: string;
+    lastSave: any;
+    zlib: any;
+    callbackSubscriptionClient: {};
+    dataDir: any;
+    datasetName: string;
+    stateTimer: any;
+    backupDir: any;
+    log: ILogger;
 
-    constructor(settings) {
-        this.settings = settings || {};
+    constructor(settings: ISettings) {
+        this.settings = settings || <ISettings>{};
 
         this.change = this.settings.change;
 
@@ -86,18 +130,18 @@ class InMemoryFileDB {
         if (!this.settings.backup.disabled) {
             this.zlib = this.zlib || require('zlib');
             // Interval in minutes => to milliseconds
-            this.settings.backup.period = this.settings.backup.period === undefined ? 120 : parseInt(this.settings.backup.period);
+            this.settings.backup.period = this.settings.backup.period === undefined ? 120 : this.settings.backup.period;
             if (isNaN(this.settings.backup.period)) {
                 this.settings.backup.period = 120;
             }
             this.settings.backup.period *= 60000;
 
-            this.settings.backup.files = this.settings.backup.files === undefined ? 24 : parseInt(this.settings.backup.files);
+            this.settings.backup.files = this.settings.backup.files === undefined ? 24 : this.settings.backup.files;
             if (isNaN(this.settings.backup.files)) {
                 this.settings.backup.files = 24;
             }
 
-            this.settings.backup.hours = this.settings.backup.hours === undefined ? 48 : parseInt(this.settings.backup.hours);
+            this.settings.backup.hours = this.settings.backup.hours === undefined ? 48 : this.settings.backup.hours;
             if (isNaN(this.settings.backup.hours)) {
                 this.settings.backup.hours = 48;
             }
@@ -195,7 +239,7 @@ class InMemoryFileDB {
     }
 
     /** @returns {number} */
-    publishToClients(_client, _type, _id, _obj) {
+    publishToClients(_client, _type, _id, _obj): number {
         throw new Error('no communication handling implemented');
     }
 
