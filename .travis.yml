@@ -25,6 +25,7 @@ before_script:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-socket/setup-socket.sh; fi'
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo chmod ogu+x test/redis-sentinel/*.sh; fi'
 script:
+  - 'npm run tsc || true'
   - 'npm test && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test/redis-socket/setup-socket.sh && cd test/redis-sentinel && ./test-sentinel.sh && cd ../..; fi'
 after_success:
   - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm install -g npm@latest; fi'
