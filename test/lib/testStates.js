@@ -93,7 +93,7 @@ function register(it, expect, context) {
         context.adapter.getStates('*', function (err, states) {
             expect(err).to.be.not.ok;
             expect(states).to.be.an('object');
-            expect(states[context.adapterShortName + '.0.' + gid]).to.be.ok;
+            expect(states[context.adapterShortName + '.0.' + gid]).to.be.an('object');
             expect(states[context.adapterShortName + '.0.' + gid].val).to.equal(3);
             expect(states[context.adapterShortName + '.0.' + gid].ack).equal(true);
 
@@ -110,7 +110,7 @@ function register(it, expect, context) {
                 context.adapter.getStates(gid.substring(0, gid.length - 2) + '*', function (err, states) {
                     expect(err).to.be.not.ok;
                     expect(states).to.be.an('object');
-                    expect(states[context.adapterShortName + '.0.' + gid]).to.be.ok;
+                    expect(states[context.adapterShortName + '.0.' + gid]).to.be.an('object');
                     expect(states[context.adapterShortName + '.0.' + gid].val).to.equal(3);
                     expect(states[context.adapterShortName + '.0.' + gid].ack).equal(true);
 
