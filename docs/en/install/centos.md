@@ -1,6 +1,19 @@
 # Install on CentOS
 
-## Install node.js
+## Automatic installation
+Be sure, that `curl` is installed or install it with:
+
+`sudo yum install -y curl`
+
+And then use install script:
+
+`curl -sL https://iobroker.net/install.sh | bash -`
+
+If automatic installation does not work, you still can use manuall install.
+
+## Manual installation
+
+### Install node.js
 If not installed:
 
 ```
@@ -9,7 +22,7 @@ curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash -
 sudo yum install -y nodejs
 ```
 
-## Install ioBroker
+### Install ioBroker
 
 ```
 sudo groupadd iobroker
@@ -24,7 +37,7 @@ npm i iobroker.admin --production
 npm i iobroker.js-controller@stable --production
 ```
 
-## Optional install redis
+### Optional install redis
 ```
 sudo yum install -y epel-release nano
 sudo yum update
@@ -34,7 +47,7 @@ sudo systemctl enable redis
 sudo nano /etc/redis.conf
 ```
 
-### Set redis as states DB
+#### Set redis as states DB
 
 ```
 ./iobroker setup custom
@@ -54,14 +67,14 @@ Outputs:
 # creating conf/iobroker.json
 ```
 
-### Optional only for Redis+Multihost
+#### Optional only for Redis+Multihost
 Change bind 127.0.0.1 to bind 0.0.0.0
 
 ```
 sudo systemctl restart redis
 ```
 
-## Change user to "iobroker"
+### Change user to "iobroker"
 
 ```
 cd /opt/iobroker/
@@ -69,7 +82,7 @@ sudo chmod 744 * -R
 sudo chown iobroker:iobroker * -R
 ```
 
-## Autostart
+### Autostart
 
 ```
 sudo nano /lib/systemd/system/iobroker.service
@@ -94,7 +107,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-## Start iobroker
+### Start iobroker
 
 ```
 sudo chown root:root /lib/systemd/system/iobroker.service
