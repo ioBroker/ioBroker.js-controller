@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
 title: 简单的API
-hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
+hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
 ---
 ![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -124,6 +124,18 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 当然数据点* javascript.0.test *必须存在。
 
+另外，可以定义值的类型：
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+和ack标志也可以定义：
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
+
 ###切换
     切换价值：
 
@@ -241,6 +253,13 @@ Grafana JSON / SimpleJSON插件需要此命令。
 <pre> HTTP：// IP：8087 /查询/ system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed / prettyPrint＆noHistory =真的吗？ </pre><pre> [{“target”：“system.host.iobroker-dev.load”，“datapoints”：[[0.58,1559970500342]]}，{“target”：“system.host.iobroker-dev.memHeapUsed”，“datapoints “：[[21.53,1559970500342]]}] </pre>
 
 ## Changelog
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

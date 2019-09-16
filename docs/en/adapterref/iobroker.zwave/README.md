@@ -155,6 +155,15 @@ Following global Actions are current supported:
 
 ## Changelog
 
+### 1.6.0
+* (cburghardt) Cleanup obsolete states on startup
+* (cburghardt) Added confirmation dialog for hard reset
+* (cburghardt) Translation fixes
+* (cburghardt) Removed non-existing `getNeighbors` function
+* (cburghardt) Display network map
+* (cburghardt) Allow manual input of a serial port together with the selection
+* (cburghardt) Suppress permission denied warnings during installation
+
 ### 1.5.1
 * (cburghardt) The *refresh node* command no longer excludes the node
 

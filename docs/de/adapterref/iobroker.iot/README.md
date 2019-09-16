@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
+hash: WKONbjSZUegXJcU4RVAcYlxkPJlVxq1endd2qgo0O/c=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -13,11 +13,13 @@ hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
 ![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)
 
 # IoBroker IoT Adapter
-Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa vorgesehen.
+Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa, Google Home und Nightscout vorgesehen.
 Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dafür den Adapter ioBroker.cloud.
 
 ## Die Einstellungen
 Um den Cloud-Adapter zu verwenden, müssen Sie sich zunächst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
+
+[Verweis auf Google API-Typeinstellungen](https://developers.google.com/actions/smarthome/guides/)
 
 ![Intro](../../../en/adapterref/iobroker.iot/img/intro.png)
 
@@ -112,7 +114,7 @@ Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fa
 
 Wenn *common.smartName* **false** ist, wird der Status oder die Aufzählung nicht in die Listengenerierung einbezogen.
 
-Über den Konfigurationsdialog können Sie die einzelnen Status bequem entfernen und zu virtuellen Gruppen oder als einzelnes Gerät hinzufügen.
+Über den Konfigurationsdialog können Sie die einzelnen Status bequem zu virtuellen Gruppen oder als Einzelgerät hinzufügen und entfernen.
 ![Aufbau](../../../en/adapterref/iobroker.iot/img/configuration.png)
 
 Wenn die Gruppe nur einen Status hat, kann sie umbenannt werden, da hierfür der SmartName des Status verwendet wird.
@@ -206,7 +208,7 @@ Wenn der Text ein JSON-Objekt ist, können die folgenden Schlüssel verwendet we
 
 ** Ergebnis per Nachricht an iot-Instanz zurücksenden **
 
-Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die Schlüssel **responseText** und **shouldEndSession** enthalten kann, wie oben beschrieben.
+Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die oben beschriebenen Schlüssel **responseText** und **shouldEndSession** enthalten kann.
 Die iot-Instanz antwortet nicht auf die Nachricht!
 
 ** Beispiel für ein Skript, das Texte verwendet **
@@ -257,10 +259,39 @@ Folgende Typen werden unterstützt:
 
 - `alexa` - Schauspiel mit Amazon Alexa oder Amazon Custom Skill
 - `ghome` - mit Google Actions über Google Home handeln
-- `alisa` - mit Yandex Алиса
+- "alisa" - Schauspiel mit Yandex Алиса
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
 
 ## Changelog
+### 1.1.8 (2019-09-12)
+* (bluefox) Optimization of googe home communication was done
+
+### 1.1.7 (2019-09-11)
+* (bluefox) The sending rate to google home is limited now
+
+### 1.1.6 (2019-09-11)
+* (TA2k) Room fix for Google Home and LinkedDevices
+
+### 1.1.4 (2019-09-10)
+* (bluefox) decreased keepalive value to fix issue with disconnect
+
+### 1.1.3 (2019-09-09)
+* (TA2k) Google Home problem fixed with LinkedDevices
+
+### 1.1.0 (2019-09-06)
+* (bluefox) Added support of aliases
+
+### 1.0.8 (2019-09-03)
+* (TA2k) Improved support for Google Home
+* (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
+* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Fix update state after Sync
+* (TA2k) Added typical Google Home devices and traits/actions
+* (TA2k) Fix only process update message when Alexa is checked in the options
+
+### 1.0.4 (2019-08-01)
+* (bluefox) Fixed password encoding. Please enter password anew!
+
 ### 1.0.3 (2019-07-30)
 * (bluefox) Fixed language issues for google home and yandex alice
 
@@ -268,16 +299,16 @@ Folgende Typen werden unterstützt:
 * (bluefox) Support of private skills/actions was added.
 
 ### 1.0.0 (2019-07-14)
-* (TA2k) Google Home list was added 
+* (TA2k) Google Home list was added
 
 ### 0.5.0 (2019-06-29)
-* (bluefox) tried to add yandex Alisa 
+* (bluefox) tried to add yandex Alisa
 
 ### 0.4.3 (2019-04-14)
-* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
+* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home

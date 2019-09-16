@@ -63,7 +63,8 @@ Fully supported and individually adapted are following devices:
   - Light sensor (Type 78)
   - Scenario Switch V2 (Type 81)
   - Shock sensor (Type 93)
-
+  - Smoke detector V2 (Type 14)
+  - Inwall relay with dimmer V3 (Type 66)
 
 The two states apple_home_a1 and lupusec.0.status.apple_home_a2 for the Apple Homekit adapter yahka supported. You can turn in addition to the lupusec states the alarm system for area 1 and 2 on and off.  
 
@@ -87,6 +88,13 @@ You find all connected surveillance cams under 'webcams'. You can copy the link 
 ![lupusec_obj_webcam](docs/en/img/lupusec_obj_webcam.png)
 
 ## Changelog
+
+### 1.2.0 (13.09.2019)
+* (Stübi) Changing error handling of adapter
+
+### 1.1.9 (06.09.2019)
+* (Stübi) Add device: Smoke detector V2
+* (Stübi) Add device: Inwall relay with dimmer V3
 
 ### 1.1.8 (10.06.2019)
 * (Stübi) Add device: 360 PIR motion sensor

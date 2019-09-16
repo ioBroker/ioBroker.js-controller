@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
+hash: GGnDwWhJLnfy48ukh1ZdpoeXgDepGBZ38cMnFtM0viw=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -68,6 +68,8 @@ hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
    - 光传感器（78型）
    - 场景交换机V2（类型81）
    - 冲击传感器（93型）
+   - 烟雾探测器V2（14型）
+   - 带调光器V3的内壁继电器（66型）
 
 支持Apple Homekit适配器yahka的两个州apple_home_a1和lupusec.0.status.apple_home_a2。除了lupusec之外，您还可以打开和关闭区域1和2的警报系统。
 
@@ -94,6 +96,13 @@ ioBroker为您提供与Lupusec应用程序相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.2.0 (13.09.2019)
+* (Stübi) Changing error handling of adapter
+
+### 1.1.9 (06.09.2019)
+* (Stübi) Add device: Smoke detector V2
+* (Stübi) Add device: Inwall relay with dimmer V3
 
 ### 1.1.8 (10.06.2019)
 * (Stübi) Add device: 360 PIR motion sensor

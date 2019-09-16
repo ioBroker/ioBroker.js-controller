@@ -9,7 +9,6 @@ Connect your Philips Hue Lights with ioBroker.
 [![NPM version](http://img.shields.io/npm/v/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.hue-extended.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.hue-extended)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.hue-extended.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.hue-extended.png?downloads=true)](https://nodei.co/npm/iobroker.hue-extended/) 
 
@@ -31,6 +30,24 @@ Connect your Philips Hue Lights with ioBroker.
 
 
 ## Changelog
+
+### 0.8.3 (2019-09-13)
+- (Zefau) added `lastAction` channel (with states `lastCommand`, `lastResult`, `error`, `timestamp` and `datetime`) to each light and group as well as for all lights / groups in `info` channel
+- (Zefau) fixed error retrieving and setting state `xy`
+- (Zefau) moved `syncing`, `timestamp`, `datetime` to `info` channel
+
+### 0.8.2 (2019-09-11)
+- (Zefau) ~~Node.js v6 compatibility~~ Node.js v6 compatibility not possible due to a package dependency, thus added warning on adapter start.
+- (Zefau) fixed error retrieving a new user from Hue Bridge
+
+### 0.8.1 (2019-09-09)
+- (Zefau) fixed incorrect Version in ioBroker
+
+### 0.8.0 (2019-09-08)
+- (Zefau) reworked triggering scenes
+- (Zefau) fixed missing level state on non-Philips lights
+- (Zefau) changed data retrieval from Hue Bridge to reduce parallel connection attemps
+- (Zefau) added connection retry when Hue Bridge returns error
 
 ### 0.7.0 (2019-08-27)
 - (Zefau) added `0-all`-group to apply action on all groups at once

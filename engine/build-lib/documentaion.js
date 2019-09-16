@@ -72,6 +72,12 @@ async function processContent(filePath) {
                 const words = await translateTitle(line.substring(pos + 1));
                 const link = words.link;
                 if (link) {
+                    // ignore links if en/"link" does not exist
+                    if (!fs.existsSync(path.join(consts.SRC_DOC_DIR, 'en', link))) {
+                        console.error(`DOCUMENT ${link} does not exist, but listed in content.md!`);
+                        return;
+                    }
+                    // check if this file exists in en
                     delete words.link;
                 }
                 const obj = {

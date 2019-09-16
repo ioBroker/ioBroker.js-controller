@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
+hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
 ---
 ![商标](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,7 +16,7 @@ hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
 ＃ioBroker.iogo
 =================
 
-此适配器正在为智能家居应用程序ioGo添加额外功能（https://play.google.com/store/apps/details?id=de.nisnagel.iogo）。
+此适配器正在向智能家居应用程序ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo添加额外功能。
 有关如何入门的更多信息，请访问iogo.nisnagel.de。
 
 ##配置

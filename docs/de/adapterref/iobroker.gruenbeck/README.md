@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.gruenbeck/README.md
 title: kein Titel
-hash: PAhCILfexsbqEddYXsWuE4+ANWoHCzbiIGuT7c4dISw=
+hash: Dvd7ZASPUclPeQQ2hlcNDWVpyVXhlKGGE+PXj6DP7tQ=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.gruenbeck.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.gruenbeck.svg)
@@ -15,9 +15,13 @@ hash: PAhCILfexsbqEddYXsWuE4+ANWoHCzbiIGuT7c4dISw=
 <h1><img src="admin/gruenbeck.png" width="64"/> ioBroker.gruenbeck </h1>
 
 ## Gruenbeck Adapter für ioBroker
-Ein ioBroker Adapter für Grünbeck Wasseraufbereitung SC18, SC23 Geräte.
+Ein ioBroker Adapter für Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD21, SD23 Geräte.
 
 ## Changelog
+
+### 0.0.13 (2019-09-13)
+
+- Add Support for SDxx devices
 
 ### 0.0.11 (2019-05-12)
 

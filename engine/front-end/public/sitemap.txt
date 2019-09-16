@@ -104,6 +104,7 @@ https://doc.iobroker.net/#de/documentation/dev/adapterref.md
 https://doc.iobroker.net/#de/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#de/documentation/dev/adaptertesting.md
 https://doc.iobroker.net/#de/documentation/dev/adaptervis.md
+https://doc.iobroker.net/#de/documentation/dev/aliases.md
 https://doc.iobroker.net/#de/documentation/dev/bestpractices.md
 https://doc.iobroker.net/#de/documentation/dev/controller.md
 https://doc.iobroker.net/#de/documentation/dev/ide.md
@@ -238,6 +239,7 @@ https://doc.iobroker.net/#en/documentation/dev/adapterref.md
 https://doc.iobroker.net/#en/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#en/documentation/dev/adaptertesting.md
 https://doc.iobroker.net/#en/documentation/dev/adaptervis.md
+https://doc.iobroker.net/#en/documentation/dev/aliases.md
 https://doc.iobroker.net/#en/documentation/dev/bestpractices.md
 https://doc.iobroker.net/#en/documentation/dev/controller.md
 https://doc.iobroker.net/#en/documentation/dev/ide.md
@@ -372,6 +374,7 @@ https://doc.iobroker.net/#ru/documentation/dev/adapterref.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptertesting.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptervis.md
+https://doc.iobroker.net/#ru/documentation/dev/aliases.md
 https://doc.iobroker.net/#ru/documentation/dev/bestpractices.md
 https://doc.iobroker.net/#ru/documentation/dev/controller.md
 https://doc.iobroker.net/#ru/documentation/dev/ide.md
@@ -506,6 +509,7 @@ https://doc.iobroker.net/#zh-cn/documentation/dev/adapterref.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptertesting.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptervis.md
+https://doc.iobroker.net/#zh-cn/documentation/dev/aliases.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/bestpractices.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/controller.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/ide.md
@@ -752,6 +756,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.megaesp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.meross/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.miele/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mihome-airpurifier/README.md
@@ -907,6 +912,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/admin/tab-enums.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/admin/tab-events.md
@@ -1073,6 +1079,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.megaesp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.meross/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.miele/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mihome-airpurifier/README.md
@@ -1228,6 +1235,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/admin/tab-enums.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/admin/tab-events.md
@@ -1394,6 +1402,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.megaesp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.meross/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.miele/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mihome-airpurifier/README.md
@@ -1549,6 +1558,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/admin/tab-enums.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/admin/tab-events.md
@@ -1715,6 +1725,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.megaesp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.meross/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.miele/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mihome-airpurifier/README.md
@@ -1870,3 +1881,4 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zwave/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zwave2/README.md

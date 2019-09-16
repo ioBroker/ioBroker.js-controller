@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.gruenbeck/README.md
 title: 无题
-hash: PAhCILfexsbqEddYXsWuE4+ANWoHCzbiIGuT7c4dISw=
+hash: Dvd7ZASPUclPeQQ2hlcNDWVpyVXhlKGGE+PXj6DP7tQ=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.gruenbeck.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.gruenbeck.svg)
@@ -15,9 +15,13 @@ hash: PAhCILfexsbqEddYXsWuE4+ANWoHCzbiIGuT7c4dISw=
 <h1><img src="admin/gruenbeck.png" width="64"/> ioBroker.gruenbeck </h1>
 
 适用于ioBroker的## gruenbeck适配器
-适用于GrünbeckWasseraufbereitungSC18，SC23设备的ioBroker适配器。
+适用于GrünbeckWasseraufbereitungSC18，SC23，SD18，SD21，SD23设备的ioBroker适配器。
 
 ## Changelog
+
+### 0.0.13 (2019-09-13)
+
+- Add Support for SDxx devices
 
 ### 0.0.11 (2019-05-12)
 

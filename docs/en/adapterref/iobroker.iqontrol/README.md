@@ -1,6 +1,8 @@
 ![Logo](admin/iqontrol.png)
 # ioBroker.iqontrol
 
+![Number of Installations](http://iobroker.live/badges/iqontrol-installed.svg) 
+![Stable version](http://iobroker.live/badges/iqontrol-stable.svg) 
 [![NPM version](http://img.shields.io/npm/v/iobroker.iqontrol.svg)](https://www.npmjs.com/package/iobroker.iqontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)](https://www.npmjs.com/package/iobroker.iqontrol)
 [![Dependency Status](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)](https://david-dm.org/sbormann/iobroker.iqontrol)
@@ -114,10 +116,10 @@ Every role has the following three states:
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
 
 Almost all roles have a STATE- and/or a LEVEL-state. In most cases this represents the main function of the device. You can assign io-broker-states of the following types to it:
-* *boolean* - if possible, it will be translated to a senseful text like 'on/off', 'opened/closed' or similar. If you click on the icon of a tile it tries to toggle the boolean (for example to turn a light on or off). If it is not read-only it will generate a flip-switch in the dialog.
-* *number* - will be displayed with its corresponding unit and generate a slider in the dialog.
+* *boolean* - if possible, it will be translated to a senseful text like 'on/off', 'opened/closed' or similar. If you click on the icon of a tile it tries to toggle the boolean (for example to turn a light on or off). If it is not read-only it will generate a flip-switch in the dialog
+* *number* - will be displayed with its corresponding unit and generate a slider in the dialog
 * *string* - a text to be displayed
-* *value-list* - the selected value will be displayed. If it is not write-protected it will generate a drop-down-menu in dialog. 
+* *value-list* - the selected value will be displayed. If it is not write-protected it will generate a drop-down-menu in dialog 
     * Technically a *value-list* is a value with a corresponding translation-list, defined in the 'common.custom.iqontrol.<instance>.states', 'native.states' or 'common.states' object of the datapoint:
         ````
         "native": {
@@ -125,7 +127,7 @@ Almost all roles have a STATE- and/or a LEVEL-state. In most cases this represen
             ...
         }
         ````
-    * You can create your own value list by modifying the datapoint (wrench-icon behind the datapoint in the objects-tab of iobroker, see above) 
+    * You can create your own value list by modifying the datapoint (wrench-icon behind the datapoint in the objects-tab of iobroker, see above)
 
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
@@ -161,7 +163,7 @@ Optional you can define the following states:
         * **RGB** / **#RGB**: instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex), optional with leading '#'
         * **RGBW** / **#RGBW**: instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex), optional with leading '#'
         * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **#RGBCWWW**: instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW- or RGBCWWW-Format (hex, WW = warm white, CW = cold white), optional with leading '#'
-        * **RGB (Hue only)** / **#RGB (Hue only)**: instead of using HUE you can use the RGB (Hue only)-Format (hex), optional with leading '#'. In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed. 
+        * **RGB (Hue only)** / **#RGB (Hue only)**: instead of using HUE you can use the RGB (Hue only)-Format (hex), optional with leading '#'. In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed
         * **Hue for Milight**: This is the Hue-Value for Milight-Devices, with use another starting-point in the hue color-cirlce: 
             ````
     		MilightHue = modulo(66 - (hue / 3.60), 100) * 2.55; 
@@ -205,40 +207,41 @@ In addition to normal thermostat you can define:
 * The **linked-view-property** is opened directly
 
 ### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
-* **STATE**: *boolean* - display if the door or window is opened or closed. 
-    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'.
-    * You can also assign a *string* to display any text like "3 windows open" or "all closed".
+* **STATE**: *boolean* - display if the door or window is opened or closed
+    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'
+    * You can also assign a *string* to display any text like "3 windows open" or "all closed"
 * Respect the **linked-view-property**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Garage Door:
-* **STATE**: *boolean* - display if the door is opened or closed. 
-    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'.
-    * You can also assign a *string* to display any text like "3 doors open" or "all closed".
-* **TOGGLE**: *boolean* - displays a 'Toggle'-Button and is set to true, if pressed. 
+* **STATE**: *boolean* - display if the door is opened or closed
+    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'
+    * You can also assign a *string* to display any text like "3 doors open" or "all closed"
+* **TOGGLE**: *boolean* - displays a 'Toggle'-Button and is set to true, if pressed
 
 ### <img src="img/icons/door_locked.png" width="32"> Door with lock:
-* **STATE**: *boolean* - display if the door is opened or closed. 
+* **STATE**: *boolean* - display if the door is opened or closed
 * **LOCK_STATE**: *boolean* - display if the door is locked or unlocked
 * **LOCK_STATE_UNCERTAIN**: *boolean* - if true, the STATE will be displayed in italic-font to represent that the exact position of the lock is unknown
 * **LOCK_OPEN**: *boolean* - if set to true, the door will open completely
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL**: *number* - height of the blind in percentage
-* **DIRECTION**: *value-list* - can be Stop, Up and Down. The values that represent Stop, Up, Down and Unknown can be configured.
-* **STOP**: *boolean* - is set to true, if the stop button is pressed.
-* **UP** / **DOWN**: *boolean* - is set to true, if the up / down button is pressed (for devices, that use UP and DOWN datapoints instead of or in addition to LEVEL). Additional you can define a value via the **UP_SET_VALUE** / **DOWN_SET_VALUE** Datapoints. If defined, this value will be sent instead of true, when the Up / Down button is pressed. 
-* **FAVORITE_POSITION**: *boolean* - can be used to recall a favorite position. If the Favorite button (button caption can be configured in the device settings) is pressed, true will be sent to this datapoint. Additional you can define a value via the **FAVORITE_POSITION_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the favorite button is pressed. 
+* **DIRECTION**: *value-list* - can be Stop, Up and Down. The values that represent Stop, Up, Down and Unknown can be configured
+* **STOP**: *boolean* - is set to true, if the stop button is pressed
+* **UP** / **DOWN**: *boolean* - is set to true, if the up / down button is pressed (for devices, that use UP and DOWN datapoints instead of or in addition to LEVEL). Additional you can define a value via the **UP_SET_VALUE** / **DOWN_SET_VALUE** Datapoints. If defined, this value will be sent instead of true, when the Up / Down button is pressed
+* **FAVORITE_POSITION**: *boolean* - can be used to recall a favorite position. If the Favorite button (button caption can be configured in the device settings) is pressed, true will be sent to this datapoint. Additional you can define a value via the **FAVORITE_POSITION_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the favorite button is pressed 
+* **SLATS_LEVEL**: *number* - position of slats in percentage
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
-    * Alternatively you can assign a *value-list*, to display additional states like 'tampered'.
-    * You can also assign a *string* to display any text like "fire in upper floor".
+    * Alternatively you can assign a *value-list*, to display additional states like 'tampered'
+    * You can also assign a *string* to display any text like "fire in upper floor"
 * The **linked-view-property** is opened directly
 
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
-    * Alternatively you can assign a *value-list*, to display additional states like 'tampered'.
-    * You can also assign a *string* to display any text like "fire in upper floor".
+    * Alternatively you can assign a *value-list*, to display additional states like 'tampered'
+    * You can also assign a *string* to display any text like "fire in upper floor"
 * **CONTROL_MODE**: *value-list* - select operation mode like "Armed" and "Disarmed"
     * In device options you can define the value that represents disarmed, so the representing icon can be shown
 
@@ -272,6 +275,29 @@ In addition to normal thermostat you can define:
 ****
 
 # Changelog
+
+### 0.2.4 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
+
+### 0.2.3 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+
+### 0.2.2 (2019-09-14)
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+
+### 0.2.1 (2019-09-07)
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+
+### 0.2.0 (2019-09-06)
+* (Sebastian Bormann) Added slats level to blind.
+
+### 0.1.15 (2019-09-05)
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
 
 ### 0.1.14 (2019-09-01)
 * (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.

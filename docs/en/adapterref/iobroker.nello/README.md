@@ -11,7 +11,6 @@ Developers may find the javascript implementation of the nello.io API via https:
 [![NPM version](http://img.shields.io/npm/v/iobroker.nello.svg)](https://www.npmjs.com/package/iobroker.nello)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.nello.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.nello)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nello.svg)](https://www.npmjs.com/package/iobroker.nello)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)](https://nodei.co/npm/iobroker.nello/) 
 

@@ -2,7 +2,7 @@
 # ioBroker.knx
 =================
 
-![Number of Installations](http://iobroker.live/badges/knx-installed.svg) ![Number of Installations](http://iobroker.live/badges/knx-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.knx.svg)](https://www.npmjs.com/package/iobroker.knx)
+[![NPM version](http://img.shields.io/npm/v/iobroker.knx.svg)](https://www.npmjs.com/package/iobroker.knx)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.knx.svg)](https://www.npmjs.com/package/iobroker.knx)
 
 [![NPM](https://nodei.co/npm/iobroker.knx.png?downloads=true)](https://nodei.co/npm/iobroker.knx/)
@@ -13,11 +13,6 @@ en: This adapter allows importing of knxproj Files from ETS. It generates the tr
 It connects to standard KNX/LAN Gateways.
 
 Before beginning: Every DPT of com.Objects should be set in your ETS project. Every device should be sorted into your facility structure.
-
-## Obsolete for the moment in 1.0.19
-### ATTENTION for Version 1.0.18: For future releases I've changed the values for "boolean" from 1 and 0 to true false, as it should be. In fact of this, check your scripts to use "true" and "false" instead of 0 and 1
-### ACHTUNG für Version 1.0.18: Für zukünfige Versionen wurden die Werte für den DPT1.xxx boolean wurde von 1 bzw 0 auf true bzw false gesetzt. Deshalb sind alle Scripte auf diese Auswertung hin zu prüfen.
-
 
 ## Features:
 * importing knxproj file
@@ -75,10 +70,21 @@ Hier wird die GAS anhand der GAR ID's erzeugt und ebenfalls die DPT's zugeordnet
 
 ### 3) Herausfinden der Schalt- und Statusaddressen
 In dem ETS Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Ähnlichkeitsprüfung aller Gruppenadressnamen durch mit der Auswertung auf status und state.
- Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 70% beträgt, dann wird angenommen, das die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei erhält GA1 das write=true und read=false und GA2 das write=false und read=true.
+ Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 90% beträgt, dann wird angenommen, das die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei erhält GA1 das write=true und read=false und GA2 das write=false und read=true.
  Ausserdem werden die DPT abgeglichen aus der jeweilig korrespondierenden GA. Aus diesem Grund ist es schwierig, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
 
-### 4) Erzeugen der Datenpunktpärchen (im folgenden DPP)
+Weiterhin werden die Flags in den Gerätekonfigurationen betrachtet. Dabei werden die Flags wie folgt umgesetzt:
+
+|KNX                          |||iobroker                   |||
+| Lesen | Schreiben | Übertragen|Lesen|Schreiben| Erklärung |
+|-----------------------------------------------------------|
+|   -   |    -      |    -      | -   |    -    | der wert wird über GroupValueResponse aktualiesiert |
+|   x   |    -      |    -      | x   |    x    | ein Trigger darauf löst GroupValueRead aus|
+|   -   |    x      |    -      | -   |    x    | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus|
+|   -   |    -      |    x      | x   |    -    | der Wert wird über GroupValueResponse aktualisiert |
+|   x   |    -      |    x      | x   |    x    | ein Trigger darauf löst GroupValueRead aus|
+
+###  4)Erzeugen der Datenpunktpaaren (im folgenden DPP)
 Ein DPP wird erzeugt, wenn die GA, GAR und der DPT valid sind. Mit diesen DPP arbeitet der Adapter. Fehlen also die DPT's in einer GA, weil sie auf keiner der o. A. Wege gefunden werden konnte, so wird für diese GA kein DPP erzeugt und ist im Weiteren nicht nutzbar.
 
 Im Idealfall werden somit für einen Schaltkanal 2 DPP erzeugt. Das erste ist das Schalten. In diesem ist die GAR ID des Status DPP hinterlegt. Das zweite ist dann das Status DPP ohne weitere Refenrenz.
@@ -112,6 +118,19 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * require node Version >8.9.4!
 
 ## Changelog
+### 1.0.33 (2019-09-12)
+* fixed bug while writing to bus
+* added units to states
+* fixed "read/write of undefined" error
+
+### 1.0.32 (2019-09-03)
+* updated importer for ETS V5.7.2, some changes in KNX-stack statemachine
+
+### 1.0.31
+* some fixes on ETS5.7.2 importer
+* small changes in knx-stack statemachine
+* added (again) phys address to admin config dialog
+
 ### 1.0.31
 * fixed bug in deviceTree generation
 

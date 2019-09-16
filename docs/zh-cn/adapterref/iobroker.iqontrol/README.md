@@ -3,10 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: A5IitdBx/qfhSgFSr828FU78fjr3keeMJ6I8kD5ybUw=
+hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
+![安装数量](http://iobroker.live/badges/iqontrol-installed.svg)
+![稳定的版本](http://iobroker.live/badges/iqontrol-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![依赖状态](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -81,7 +83,7 @@ Toolbar-Entrys是视图的链接。
 免费的内置演示壁纸来自www.pexels.com。
 
 ## URL-Parameters
-*前端通过``http [s]：// <url或ip of iobroker>调用：<web适配器端口> / iqontrol / index.html``
+*前端通过``http [s]：// <url或ip of iobroker>：<端口的web适配器> / iqontrol / index.html`来调用
     *``<web of port adapter>``通常是8082
 *要打开指定的实例，可以添加``namespace = iqontrol。<instance-number>``作为URL参数
 *要将指定视图作为主页打开，可以添加``home = <viewID>``作为URL参数
@@ -121,10 +123,10 @@ Toolbar-Entrys是视图的链接。
 
 几乎所有角色都具有STATE和/或LEVEL状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-states：
 
-* *布尔*  - 如果可能，它将被翻译成有意义的文本，如'开/关'，'打开/关闭'或类似。如果单击图块的图标，它会尝试切换布尔值（例如打开或关闭灯光）。如果它不是只读的，它将在对话框中生成一个翻转开关。
-* *number* - 将与相应的单位一起显示，并在对话框中生成滑块。
+* *布尔*  - 如果可能，它将被翻译成有意义的文本，如'开/关'，'打开/关闭'或类似。如果单击图块的图标，它会尝试切换布尔值（例如打开或关闭灯光）。如果它不是只读的，它将在对话框中生成一个翻转开关
+* *number* - 将与相应的单位一起显示，并在对话框中生成滑块
 * *string* - 要显示的文本
-* *value-list* - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单。
+* *value-list* - 将显示所选值。如果它没有写保护，它将在对话框中生成一个下拉菜单
     *技术上，* value-list *是一个带有相应翻译列表的值，在数据点的'common.custom.iqontrol。<instance> .states'，'native.states'或'common.states'对象中定义：
 
 ````
@@ -162,7 +164,7 @@ Toolbar-Entrys是视图的链接。
 *对于彩色LED（HSB颜色空间）：
  ***HUE*** 字* - 0-360°光线的颜色（色调格式）
     * **饱和度**：*数量*  - 光线饱和度（从白色到纯色）
- ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有一个LEVEL状态而没有白色LED，这会被忽略，因为亮度完全由LEVEL控制）
+ ***COLOR_BRIGHTNESS*** 字* - 彩色LED的亮度（如果你有LEVEL状态且没有白色LED，则会被忽略，因为亮度完全由LEVEL控制）
 *对于白光LED：
  ***CT*** 字* - 光的色温，如果它有两种白色阴影
  ***WHITE_BRIGHTNESS*** 字* - 白色LED的亮度（如果你有一个LEVEL状态而没有彩色LED，这会被忽略，因为亮度完全由LEVEL控制）
@@ -174,7 +176,7 @@ Toolbar-Entrys是视图的链接。
     * **RGB** / **#RGB** 您可以使用RGB格式（十六进制）代替使用HUE，SATURATION和COLOR_BRIGHTNESS，可选使用前导'＃'
     * **RGBW** / **#RGBW** 您可以使用RGBW格式（十六进制）代替使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选使用前导'＃'
     * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW格式（十六进制）代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白色，CW =冷白色），可选带前导'＃'
-    * **RGB（仅限Hue）** /** #RGB（仅限Hue）**：您可以使用RGB（仅限Hue） - 格式（十六进制），可选使用前导'＃'，而不是使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色。
+    * **RGB（仅限Hue）** /** #RGB（仅限Hue）**：您可以使用RGB（仅限Hue） - 格式（十六进制），可选使用前导'＃'，而不是使用HUE。在这种特殊情况下，RGB格式只接受色调 - 色环的纯饱和色。不允许混合白色
         * **米尔的色调**：这是Milight-Devices的Hue-Value，在色调color-cirlce中使用另一个起点：
 
 ````
@@ -204,7 +206,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 除了普通恒温器，您还可以定义：
 
 * **PARTY_TEMPERATURE** *string* - 特殊格式的字符串，用于定义家庭恒温器的派对或假日模式
-* **BOOST_STATE** *数字* - 显示原始恒温器的剩余提升时间
+* **BOOST_STATE** *number* - 显示homematic恒温器的剩余提升时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
 * **状态**：*数字*  - 将显示在设备下部的温度或湿度
@@ -222,40 +224,41 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
-* **STATE** *boolean* - 显示门或窗是打开还是关闭。
-    *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
-    *您还可以指定*字符串*来显示任何文本，例如“3个窗口打开”或“全部关闭”。
+* **STATE** *boolean* - 显示门或窗是打开还是关闭
+    *或者您可以指定*值列表*，以显示其他状态，如'倾斜'
+    *您还可以指定*字符串*来显示任何文本，例如“3个窗口打开”或“全部关闭”
 *尊重** linked-view-property **
 
 ### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
-* **STATE** *boolean* - 显示门是打开还是关闭。
-    *或者，您可以指定*值列表*，以显示“倾斜”等其他状态。
-    *您还可以指定*字符串*来显示任何文本，例如“3门打开”或“全部关闭”。
-* **TOGGLE** *boolean* - 显示'Toggle'按钮，如果按下则设置为true。
+* **STATE** *boolean* - 显示门是打开还是关闭
+    *或者您可以指定*值列表*，以显示其他状态，如'倾斜'
+    *您还可以指定*字符串*来显示任何文本，例如“3门打开”或“全部关闭”
+* **TOGGLE** *boolean* - 显示'Toggle' - 按钮并设置为true，如果按下
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
-* **STATE** *boolean* - 显示门是打开还是关闭。
+* **STATE** *boolean* - 显示门是打开还是关闭
 * **LOCK_STATE** *boolean* - 显示门是锁定还是解锁
 * **LOCK_STATE_UNCERTAIN** *boolean* - 如果为true，则STATE将以斜体显示，表示锁的确切位置未知
 * **LOCK_OPEN** *boolean* - 如果设置为true，门将完全打开
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
 * **等级**：*数字*  - 盲人的高度百分比
-* **DIRECTION** *value-list* - 可以是Stop，Up和Down。可以配置表示Stop，Up，Down和Unknown的值。
-* **STOP** *boolean* - 如果按下停止按钮，则设置为true。
-* ** UP ** / ** DOWN **：* boolean * - 如果按下向上/向下按钮，则设置为true（对于设备，使用UP和DOWN数据点而不是LEVEL或除了LEVEL之外）。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE ** Datapoints定义一个值。如果已定义，则按下向上/向下按钮时，将发送此值而不是true。
-* ** FAVORITE_POSITION **：*布尔* - 可用于调出喜欢的位置。如果按下收藏夹按钮（可以在设备设置中配置按钮标题），则会将true发送到此数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE ** Datapoint定义一个值。如果已定义，则在按下收藏夹按钮时，将发送此值而不是true。
+* **DIRECTION** *value-list* - 可以是Stop，Up和Down。可以配置表示Stop，Up，Down和Unknown的值
+* **STOP** *boolean* - 如果按下停止按钮，则设置为true
+* ** UP ** / ** DOWN **：* boolean * - 如果按下向上/向下按钮，则设置为true（对于设备，使用UP和DOWN数据点而不是LEVEL或除了LEVEL之外）。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE ** Datapoints定义一个值。如果已定义，则按下向上/向下按钮时，将发送此值而不是true
+* ** FAVORITE_POSITION **：*布尔* - 可用于调出喜欢的位置。如果按下收藏夹按钮（可以在设备设置中配置按钮标题），则会将true发送到此数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE ** Datapoint定义一个值。如果已定义，则在按下收藏夹按钮时，将发送此值而不是true
+* **SLATS_LEVEL** *number* - 板条的位置百分比
 
 ### <img src="img/icons/fire_on.png" width="32">消防传感器：
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
-    *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
-    *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
+    *或者您可以指定*值列表*，以显示“篡改”等其他状态
+    *你也可以指定一个*字符串*来显示任何文字，如“楼上的火”
 * **linked-view-property** 接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *boolean* - 如果为true，传感器将显示为已触发
-    *或者，您可以指定*值列表*，以显示“篡改”等其他状态。
-    *您还可以指定一个*字符串*来显示任何文本，如“在楼上火”。
+    *或者您可以指定*值列表*，以显示“篡改”等其他状态
+    *你也可以指定一个*字符串*来显示任何文字，如“楼上的火”
 * **CONTROL_MODE** *value-list* - 选择“Armed”和“Disarmed”等操作模式
     *在设备选项中，您可以定义代表撤防的值，以便显示代表图标
 
@@ -288,6 +291,29 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.2.4 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
+
+### 0.2.3 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+
+### 0.2.2 (2019-09-14)
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+
+### 0.2.1 (2019-09-07)
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+
+### 0.2.0 (2019-09-06)
+* (Sebastian Bormann) Added slats level to blind.
+
+### 0.1.15 (2019-09-05)
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
 
 ### 0.1.14 (2019-09-01)
 * (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.

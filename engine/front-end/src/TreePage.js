@@ -43,6 +43,9 @@ const styles = theme => ({
     listItem: {
         padding: 0,
     },
+    listExpandIcon: {
+        maxWidth: 22,
+    },
     footer: {
         height: 24,
     },
@@ -294,7 +297,7 @@ class TreePage extends Router {
                 className={this.props.classes.element + ' ' + (root.content && root.content === this.state.path ? this.props.classes.selected : '')}
                 onClick={() => this.onNavigate(item, root)}>
                 {this.renderFolderButtons(item, root.pages, isExpanded)}
-                {root.pages ? (<ListItemIcon children={isExpanded ? (<IconFolderOpened/>) : (<IconFolder/>)}/>) : null}
+                {root.pages ? (<ListItemIcon className={this.props.classes.listExpandIcon} children={isExpanded ? (<IconFolderOpened/>) : (<IconFolder/>)}/>) : null}
                 <ListItemText
                     classes={{root: this.props.classes.listItem, primary: (root.content && root.content === this.state.path ? this.props.classes.selected : '')}}
                     style={{}} primary={[

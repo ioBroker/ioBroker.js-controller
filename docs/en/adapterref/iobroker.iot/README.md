@@ -6,11 +6,13 @@
 
 [![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)](https://nodei.co/npm/iobroker.iot/)
 
-This adapter is ONLY for communication with Amazon Alexa.
+This adapter is ONLY for communication with Amazon Alexa, Google Home and Nightscout.
 It is not for remote access to your ioBroker instance. Use ioBroker.cloud adapter for that.
 
 ## Settings
 To use cloud adapter you should first to register on the ioBroker cloud [https://iobroker.pro](https://iobroker.pro).
+
+[Refference to google API type settings](https://developers.google.com/actions/smarthome/guides/)
 
 ![Intro](img/intro.png)
 
@@ -178,7 +180,7 @@ The adapter will provide the details in two states with different detail level
   * **deviceId** contains a deviceId identifying the device the request was send to, delivered by Amazon, will be empty string if not provided
   * **sessionId** contains a sessionId of the Skill session, should be the same if multiple commands were spoken, delivered by Amazon, will be empty string if not provided
   * **userId** contains a userId from the device owner (or maybe later the user that was interacting with the skill), delivered by Amazon, will be empty string if not provided
-  
+
  More details on how the words are detected and what type of queries the Alexa Custom Skill differentiates please check https://forum.iobroker.net/viewtopic.php?f=37&t=17452 .
 
 **Return result via smart.lastResponse state**
@@ -213,10 +215,10 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
         'responseText': 'Received phrase is: ' + request.words.join(' ') + '. Bye',
         'shouldEndSession': true
     };
-    
+
     // Return response via state
     setState('iot.0.smart.lastResponse', JSON.stringify(response)); // important, that ack=false (default)
-    
+
     // or alternatively return as message
     sendTo('iot.0', response);
 });
@@ -244,16 +246,31 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.1.8 (2019-09-12)
+* (bluefox) Optimization of googe home communication was done
+
+### 1.1.7 (2019-09-11)
+* (bluefox) The sending rate to google home is limited now
+
+### 1.1.6 (2019-09-11)
+* (TA2k) Room fix for Google Home and LinkedDevices
+
+### 1.1.4 (2019-09-10)
+* (bluefox) decreased keepalive value to fix issue with disconnect
+
+### 1.1.3 (2019-09-09)
+* (TA2k) Google Home problem fixed with LinkedDevices
+
+### 1.1.0 (2019-09-06)
+* (bluefox) Added support of aliases
+
 ### 1.0.8 (2019-09-03)
 * (TA2k) Improved support for Google Home
-  * Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
-  * Added support for manualy adding states as devices
-  * Fix update state after Sync
-  * Added typical Google Home devices and traits/actions
-  * Fix only process update message when Alexa is checked in the options
-
-### 1.0.7 (2019-08-04)
-* (bluefox) Added support for Nightscout
+* (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
+* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Fix update state after Sync
+* (TA2k) Added typical Google Home devices and traits/actions
+* (TA2k) Fix only process update message when Alexa is checked in the options
 
 ### 1.0.4 (2019-08-01)
 * (bluefox) Fixed password encoding. Please enter password anew!
@@ -265,16 +282,16 @@ Following types are supported:
 * (bluefox) Support of private skills/actions was added.
 
 ### 1.0.0 (2019-07-14)
-* (TA2k) Google Home list was added 
+* (TA2k) Google Home list was added
 
 ### 0.5.0 (2019-06-29)
-* (bluefox) tried to add yandex Alisa 
+* (bluefox) tried to add yandex Alisa
 
 ### 0.4.3 (2019-04-14)
-* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
+* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home

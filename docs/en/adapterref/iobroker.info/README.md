@@ -314,7 +314,8 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
-### 1.4.2 (2019-08-26)
+### 1.4.3 (2019-09-09)
+* (ldittmar) change systeminformation call interval
 * (ThomasBahn) News problem fixed
 * (ldittmar) Update systeminformation library
 * (badenbaden) Fixed russian spelling 

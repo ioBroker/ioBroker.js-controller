@@ -32,8 +32,8 @@ MoMa needs at least nodejs version 8 / ES6.
 
 ## Changelog
 
-### 1.2.2 (2019-??-??)
-* (AWhiteKnight) ioBroker adapter/controller updates for windows 
+### 1.2.2 (2019-09-12)
+* (AWhiteKnight) ioBroker adapter/controller updates for windows, issue #24 
 
 ### 1.2.1 (2019-08-12)
 * (AWhiteKnight) Bugfixing on 1.2.0 
@@ -143,6 +143,7 @@ Following functions of **MoMa** are called in interval 4 (default every day):
 * updates - checks for pending updates and shows the amount of updates in moma.meta.\<hostname\>.updates (currently only Ubuntu, Debian, openSUSE, RedHat)
 * checkIob - checks all adapters and the js-controller for available updates 
 * checkBatteries - checks battery state variables (current implemented state names: LOWBAT, LOW_BAT)
+
 
 
 ## License

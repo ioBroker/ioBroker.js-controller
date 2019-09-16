@@ -1,5 +1,5 @@
 ---
-title:       "eigener Adapter"
+title:       "Eigener Adapter"
 lastChanged: "16.06.2019"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterdev.md"
 ---
@@ -11,7 +11,7 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
    <br>Daher werden hier, neben den hier bisher vorhandenen Themen zur Adapter-Entwicklung, noch hilfreiche Links gelistet.
    <br><br>
    *Hilf mit bei ioBroker und erweitere die Artikel.*
-   *Bitte beachte dabei den [ioBroker Style Guide](community/styleguidedoc), 
+   *Bitte beachte dabei den [ioBroker Style Guide](community/styleguidedoc),
    damit die Änderungen einfacher übernommen werden können.*
 
 

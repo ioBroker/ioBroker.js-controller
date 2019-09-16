@@ -99,6 +99,20 @@ Result:
 ```
 Of course the data point *javascript.0.test* must exist.
 
+Additionally the type of value could be defined:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+and ack flag could be defined too:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
+
+
+
 ### toggle
     toggles value:
 - boolean: true => false, false => true
@@ -533,6 +547,13 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

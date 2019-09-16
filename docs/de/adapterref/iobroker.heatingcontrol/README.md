@@ -3,15 +3,15 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
+hash: CIUJBr/fS2w6jX5rdIKlxt0JPx9RDk/w3qim/zQANb8=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/heatingcontrol-stable.svg)
-![NPM-Version](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
-![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
 
 # IoBroker.HeatingControl
 Adapter zur Steuerung Ihrer Heizungsanlage.
@@ -28,7 +28,7 @@ Eigenschaften:
 * Thermostat, Stellantrieb und Sensor werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
 * Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
 * Sensor wird verwendet, um die Zieltemperatur zu senken (z. B. wenn ein Fenster geöffnet ist)
-* Schnittstelle zum Feiertag-Adapter. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
+* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
 * Ein Visualisierungsbeispiel wird später bereitgestellt
 
 ## Die Einstellungen
@@ -37,7 +37,7 @@ Eigenschaften:
 * timezone = Wird für Cron verwendet, um Cron-Jobs anzupassen
 * Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter für die automatische Erkennung von Feiertagen für heute verwenden möchten, geben Sie hier den Pfad ein (z. B. feiertage.0).
 * Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
-* Verwendeter Sensor = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
+* Sensor verwendet = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Verwendete Akteure = Wenn Sie Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
 * Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
 * Antriebe verwenden, wenn kein Thermostat vorhanden ist = nur gültig mit Antrieben. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktor haben, können Sie diese dauerhaft ein- oder ausschalten
@@ -71,9 +71,22 @@ Eigenschaften:
 * Node Version 8 oder höher ist erforderlich
 
 ## Probleme und Funktionswünsche
-* Wenn Sie mit Fehlern konfrontiert sind oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im Abschnitt "GitHub-Problem" des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+* Wenn Sie auf Fehler stoßen oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ## Changelog
+
+### 0.2.2 (2019-09-13)
+* (René) see issue #14: description of datapoint time changed ('from' instead 'until')
+* (René) see issue #12: unnecessary warnings removed
+* (René) see issue #17: seconds removed from time list
+* (René) datepoint change handling reworked
+* (René) see issue #18: take over values from external PublicHoliday-datapoint
+
+### 0.2.1 (2019-09-08)
+* (René) bug fixes in actuator handling
+
+### 0.2.0 (2019-09-05)
+* (René) path to Feiertag-Adapter can also include a complete datapoint path 
 
 ### 0.1.0 (2019-08-25)
 * (René) redesign of data structure

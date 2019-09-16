@@ -3,15 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
+hash: CIUJBr/fS2w6jX5rdIKlxt0JPx9RDk/w3qim/zQANb8=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![安装数量](http://iobroker.live/badges/heatingcontrol-stable.svg)
-![NPM版本](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
-![测试](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
+![特拉维斯-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
 
 ＃ioBroker.HeatingControl
 用于控制加热系统的适配器。
@@ -28,7 +28,7 @@ hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 *每个房间自动检测恒温器，执行器和传感器。该功能（例如“加热”）用于此。
 *如果房间包含恒温器但不应控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）
-*与Feiertag-Adapter的接口。公众假期可以是正常的一天，也可以像星期日一样。 （管理员设置）
+*与Feiertag-Adapter或任何其他人接口以检测公共假期。公众假期可以是正常的一天，也可以像星期日一样。 （管理员设置）
 *稍后将提供可视化示例
 
 ##设置
@@ -74,6 +74,19 @@ hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 *如果您遇到任何错误或有此适配器的功能请求，请在[github]的适配器的GitHub问题部分中创建一个问题（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。任何反馈都表示赞赏，并将有助于改进此适配器。
 
 ## Changelog
+
+### 0.2.2 (2019-09-13)
+* (René) see issue #14: description of datapoint time changed ('from' instead 'until')
+* (René) see issue #12: unnecessary warnings removed
+* (René) see issue #17: seconds removed from time list
+* (René) datepoint change handling reworked
+* (René) see issue #18: take over values from external PublicHoliday-datapoint
+
+### 0.2.1 (2019-09-08)
+* (René) bug fixes in actuator handling
+
+### 0.2.0 (2019-09-05)
+* (René) path to Feiertag-Adapter can also include a complete datapoint path 
 
 ### 0.1.0 (2019-08-25)
 * (René) redesign of data structure

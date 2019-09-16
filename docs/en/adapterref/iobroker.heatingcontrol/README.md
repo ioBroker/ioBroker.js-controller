@@ -1,12 +1,20 @@
 ![Logo](admin/heatingcontrol.png)
 # ioBroker.HeatingControl
-![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) ![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg) 
 
-[![NPM version](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
+
+
+![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
-[![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
+
+[![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
+
+
+
+
 
 Adapter for controlling your heating system.
 
@@ -21,7 +29,7 @@ Features:
 * Thermostat, actuator and sensor are automatically detected per room. The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
 * sensor is used to reduce target temperature (e.g. if a window is open)
-* interface to Feiertag-Adapter. Public holiday can be a normal day or like sundays. (admin setting)
+* interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
 * A visualization example will be provided later
 
 
@@ -65,6 +73,19 @@ Features:
 
 
 ## Changelog
+
+### 0.2.2 (2019-09-13)
+* (René) see issue #14: description of datapoint time changed ('from' instead 'until')
+* (René) see issue #12: unnecessary warnings removed
+* (René) see issue #17: seconds removed from time list
+* (René) datepoint change handling reworked
+* (René) see issue #18: take over values from external PublicHoliday-datapoint
+
+### 0.2.1 (2019-09-08)
+* (René) bug fixes in actuator handling
+
+### 0.2.0 (2019-09-05)
+* (René) path to Feiertag-Adapter can also include a complete datapoint path 
 
 ### 0.1.0 (2019-08-25)
 * (René) redesign of data structure

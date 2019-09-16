@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
+hash: CIUJBr/fS2w6jX5rdIKlxt0JPx9RDk/w3qim/zQANb8=
 ---
 ![логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![Количество установок](http://iobroker.live/badges/heatingcontrol-stable.svg)
-![Версия NPM](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
-![тесты](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
 
 # IoBroker.HeatingControl
 Адаптер для управления вашей системой отопления.
 
-Особенности:
+Функции:
 
 * Контроль заданных уровней температуры всех термостатов в соответствии с расписанием
 * Настройка нескольких периодов отопления для каждого дня и ночи
@@ -28,7 +28,7 @@ hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 * Термостат, привод и датчик автоматически определяются для каждой комнаты. Для этого используется функция (например, «нагрев»).
 * Комнаты могут быть исключены из интерфейса администратора, если комната содержит термостат, но не должна контролироваться
 * датчик используется для снижения целевой температуры (например, если окно открыто)
-* интерфейс к Feiertag-адаптеру. Государственный праздник может быть обычным днем или как воскресенье. (настройка администратора)
+* Интерфейс к Feiertag-Adapter или любому другому для обнаружения выходных дней. Государственный праздник может быть обычным днем или как воскресенье. (настройка администратора)
 * Пример визуализации будет предоставлен позже
 
 ## Настройки
@@ -74,6 +74,19 @@ hash: WkbcW9tp+82mcPt2smV2CEGrDLlLlECsoWM8TRd9ctE=
 * Если вы столкнулись с какими-либо ошибками или у вас есть запросы на функции для этого адаптера, пожалуйста, создайте проблему в разделе проблем GitHub адаптера на [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ). Любая обратная связь приветствуется и поможет улучшить этот адаптер.
 
 ## Changelog
+
+### 0.2.2 (2019-09-13)
+* (René) see issue #14: description of datapoint time changed ('from' instead 'until')
+* (René) see issue #12: unnecessary warnings removed
+* (René) see issue #17: seconds removed from time list
+* (René) datepoint change handling reworked
+* (René) see issue #18: take over values from external PublicHoliday-datapoint
+
+### 0.2.1 (2019-09-08)
+* (René) bug fixes in actuator handling
+
+### 0.2.0 (2019-09-05)
+* (René) path to Feiertag-Adapter can also include a complete datapoint path 
 
 ### 0.1.0 (2019-08-25)
 * (René) redesign of data structure

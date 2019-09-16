@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.simple-api/README.md
 title: Simple-API
-hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
+hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
 ---
 ![Logo](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -17,7 +17,7 @@ hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
 Dies ist die RESTFul-Schnittstelle zum Lesen der Objekte und Zustände von ioBroker und zum Schreiben / Steuern der Zustände über HTTP-Get / Post-Anforderungen.
 
 ## Verwendungszweck
-Rufen Sie im Browser ```http://ipaddress:8087/help``` auf, um die Hilfe zur API zu erhalten. Das Ergebnis ist:
+Rufen Sie im Browser ```http://ipaddress:8087/help``` auf, um Hilfe zur API zu erhalten. Das Ergebnis ist:
 
 ```
 {
@@ -51,7 +51,7 @@ Ergebnis:
 true
 ```
 
-### Erhalten
+### Bekommen
 Rufen Sie z.
 
 ```
@@ -124,6 +124,18 @@ Ergebnis:
 
 Natürlich muss der Datenpunkt *javascript.0.test* vorhanden sein.
 
+Zusätzlich kann die Art des Wertes definiert werden:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+und ack flag können auch definiert werden:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
+
 ### Umschalten
     Schaltet den Wert um:
 
@@ -172,7 +184,7 @@ Statuswert als Text lesen. Sie können weitere durch Semikolon geteilte IDs ange
 
 <pre> http:// ip: 8087 / getPlainValue / admin.0.memHeapTotal, admin.0.memHeapUsed </pre><pre> 31.19 17.52 </pre>
 
-### Erhalten
+### Bekommen
 Liest Status- und Objektdaten des Status als json. Sie können weitere durch Semikolon geteilte IDs angeben.
 Wenn mehr als eine ID angefordert wird, wird das JSON-Array zurückgegeben.
 
@@ -201,9 +213,9 @@ Wenn innerhalb der angegebenen Zeit keine Antwort eingeht, wird der Wert *null* 
 Im ersten Fall wird die Antwort sofort zurückgegeben und *ack* ist falsch. Im zweiten Fall ist *ack* wahr. Das heißt, es war die Antwort des Fahrers.
 
 ### SetBulk
-- Schreiben Sie einen Großteil der IDs in einer Anfrage.
+- Schreiben Sie einen Großteil der IDs auf einmal.
 
-<pre> http:// ip: 8087 / setBulk? hm-rpc.0.FEQ1234567: 1.LEVEL = 0.7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: datapoint \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Sie können diese Anfrage auch als POST senden.
+<pre> http:// ip: 8087 / setBulk? hm-rpc.0.FEQ1234567: 1.LEVEL = 0.7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: Datenpunkt \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Sie können diese Anfrage auch als POST senden.
 
 ### Objekte
 Ruft die Liste aller Objekte für das Muster ab. Wenn kein Muster angegeben ist, werden alle Objekte als JSON-Array zurückgegeben.
@@ -241,6 +253,13 @@ Wurde keine Datenquelle angegeben oder der Parameter noHistory übergeben, wird 
 <pre> http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; noHistory = true </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints&quot; &quot;: [[21.53, 1559970500342]]}] </pre>
 
 ## Changelog
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

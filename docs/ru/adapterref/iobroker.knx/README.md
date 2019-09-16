@@ -3,16 +3,17 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: 5ikYMO9N6xRwzYabxcpGt0/3qRMjI8H71DF8VB/w2CQ=
+hash: dd89TC8+mUVZyhj0EwZ7Du9fDTn0IgeGmiVSl27FBOc=
 ---
 ![логотип](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
-![Количество установок](http://iobroker.live/badges/knx-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.knx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.knx.svg)
 ![NPM](https://nodei.co/npm/iobroker.knx.png?downloads=true)
 
-# IoBroker.knx =================
+# IoBroker.knx
+=================
+
 ## Описание
 en: Этот адаптер позволяет импортировать файлы knxproj из ETS. Он генерирует перевод между адресами групп KNX и ioBroker и помещает устройства в комнаты (особенно для MobileUI).
 
@@ -20,19 +21,16 @@ en: Этот адаптер позволяет импортировать фай
 
 Перед началом: Каждый DPT для com.Objects должен быть установлен в вашем проекте ETS. Каждое устройство должно быть отсортировано в структуре вашего объекта.
 
-## Устаревший на данный момент в 1.0.19
-### ВНИМАНИЕ для версии 1.0.18: для будущих выпусков я изменил значения «логическое» с 1 и 0 на истинное ложное, как и должно быть. На самом деле, проверьте, чтобы ваши сценарии использовали «true» и «false» вместо 0 и 1
-### ACHTUNG für Версия 1.0.18: Версия для проверки подлинности Werte für den DPT1.xxx boolean wurde von 1 bzw 0 auf true bzw false gesetzt. Deshalb sind alle Scripte auf diese Auswertung hin zu prüfen.
-## Характеристики:
+## Особенности:
 * импорт файла knxproj
 * создание ETS-подобной структуры объекта
 * нахождение и объединение акт-канала и канала состояния (эвристический)
 * обновление всех состояний при запуске
-* испуская READ на KNX-Bus, при записи на объекте состояния
+* выдает READ на шину KNX, при записи на объекте состояния
 * сортировка каналов по комнатам
 
 ## Конфигурация адаптера
-После установки этого адаптера откройте конфигурацию адаптера. Заполнить:
+После установки этого адаптера откройте конфигурацию адаптера. Заполнять:
 
 ### KNX Gateway IP
 <IP вашего KNX / Lan GW> в формате ipv4
@@ -41,7 +39,7 @@ en: Этот адаптер позволяет импортировать фай
 это обычно порт 3671
 
 ### Физ. EIB Адрес
-заполните бесплатный физ. адрес, соответствующий вашей KNX-архитектуре, !!! НО не то же самое, что ваш шлюз KNX !!!
+заполнить бесплатный физ. адрес, соответствующий вашей KNX-архитектуре, !!! НО не то же самое, что ваш KNX Gateway !!!
 
 ### Уровень отладки
 расширяет выходной уровень адаптера для целей отладки
@@ -68,24 +66,35 @@ en: Этот адаптер позволяет импортировать фай
 Это приводит к ф. Е. в значении, таком как «0,5», где «0» означает «уменьшение», а «5» означает количество интервалов.
 
 ## Wie werden die Datenpunkte generiert
-### 1) Ауслезен аллерг Коммуникационсобъектреферензен (im folgenden KOR)
+### 1) Ауслезен аллергик
 Dabei werden den Gruppenaddressreferenz (im folgenden GAR) удостоверение личности ювелирного изделия DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Атрибут write = yes и read = no. Alle darauf folgenden GAR ID в bekommen nur den DPT zugeordnet
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
-Его странная смерть GAS anhand der GAR ID erzeugt и ebenfalls умирает zugeordnet DPT, падает умирает до 1) noch nicht geschehen ist.
+Его странная смерть GAS anhand der GAR ID erzeugt und ebenfalls умирает zugeordnet DPT, падает умирает до 1) noch nicht geschehen ist.
 
 ### 3) Herausfinden der Schalt- und Statusaddressen
-ETS Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Ähnlichkeitsprüfung аллергия Gruppenadressnamen durch mit der Auswertung auf status and state.
-Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 70% beträgt, dann wird angenommen, das die GA1 die Schaltadresse и GA2 die Statusadresse ist. Dabei erhält GA1 das write = true и read = false and GA2 das write = false и read = true.
+В ETS Export sind die Schalt- und Statusadressen ничего не стоит. Somit führe ich eine Ähnlichkeitsprüfung аллергия Gruppenadressnamen durch mit der Auswertung auf status and state.
+Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 90% beträgt, dann wird angenommen, das die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei erhält GA1 das write = true и read = false and GA2 das write = false и read = true.
 Ausserdem werden die DPT abgeglichen aus der jewelilig korrespondierenden GA. Aus diesem Grund ist es schwierig, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht последовательный вид.
 
-### 4) Erzeugen der Datenpunktpärchen (im folgenden DPP)
+Weiterhin werden die Flags in den Gerätekonfigurationen betrachtet. Dabei werden die Flags wie folgt umgesetzt:
+
+| KNX ||| iobroker |||
+| Лесен | Шрайбен | Übertragen | Lesen | Schreiben | Erklärung |
+|-----------------------------------------------------------|
+| - | - | - | - | - | der wert wird über GroupValueResponse aktualiesiert |
+| х | - | - | х | х | ein Trigger Darauf Löst GroupValueRead aus |
+| - | х | - | - | х | Schreibt den angegeben Wert с GroupValueWrite auf den KNX-Bus |
+| - | - | х | х | - | der Wert ird über GroupValueResponse aktualisiert |
+| х | - | х | х | х | ein Trigger Darauf Löst GroupValueRead aus |
+
+### 4) Erzeugen der Datenpunktpaaren (im folgenden DPP)
 Ein DPP wird erzeugt, wenn die GA, GAR и der DPT действительный вид. Mit Diesen DPP arbeitet der Adapter. Фелен также умирает от АКДС в Эйнере, штат Джорджия, США. A. Wege gefunden werden konnte, так странно, что GA GAIN DPP erzeugt und ist im Weiteren nicht nutzbar.
 
 Im Idealfall werden somit für einen Schaltkanal 2 DPP erzeugt. Das erste ist das Schalten. В этом случае GAR ID des Статус DPP задним числом. Das zweite ist dann das Статус DPP ohne weitere Refenrenz.
 
 ## Beim Start des Adapters
-Alle mit dem Lesen-Flag markieren DPP werden beim Запустить abgefragt. Умирает verursacht u.U. Eine Höhere Buslast und Dauert Einen Момент. Im Anschluss sind aber alle aktuellen Werte verfügbar.
+Alle mit dem Lesen-Flag markieren DPP werden beim Запустите abgefragt. Умирает verursacht u.U. eine höhere Buslast und dauert einen Момент. Im Anschluss sind aber alle aktuellen Werte verfügbar.
 
 ## (скрыто) Особенности:
 Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekte innerhalb dieser Gruppenadresse per GroupValueRead abgefragt.
@@ -103,7 +112,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 4) Der Port der LAN Schnittstelle ist i.d.R. 3671
 
-5) В настоящее время мы не имеем права участвовать в этой работе: 40 минут, 40 минут, больше, чем когда-либо.
+5) Вы можете узнать, как это происходит, если у вас есть все, что вам нужно.
 
 ## Строганные функции
 * добавление адресов в описание объекта (id)
@@ -111,6 +120,36 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * Требуется версия узла> 8.9.4!
 
 ## Changelog
+### 1.0.33 (2019-09-12)
+* fixed bug while writing to bus
+* added units to states
+* fixed "read/write of undefined" error
+
+### 1.0.32 (2019-09-03)
+* updated importer for ETS V5.7.2, some changes in KNX-stack statemachine
+
+### 1.0.31
+* some fixes on ETS5.7.2 importer
+* small changes in knx-stack statemachine
+* added (again) phys address to admin config dialog
+
+### 1.0.31
+* fixed bug in deviceTree generation
+
+### 1.0.30
+* new Importer for ETS5.7.2 knxproj files
+* extended accepted Datapointtypes
+* new adapter configuration menu
+* implemented a switch for the user to decide to use "true" and "false" or "0" or "1" for binary values
+* fixed bug in GroupValue_Read
+* implemented a selector for local network interface for KNX to Gateway communiction
+* extended State Object for later features
+* fixed some small other bugs
+
+### 1.0.20
+* fixed bug in handling KNX-data packages, which occures periodical reconnects
+* fixed bug in KNX-projectfile upload procedure
+
 ### 1.0.19
 * reverted to true/false handling for DPT1.x
 

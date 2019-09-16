@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
+hash: GGnDwWhJLnfy48ukh1ZdpoeXgDepGBZ38cMnFtM0viw=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -68,6 +68,8 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
   - Lichtsensor (Typ 78)
   - Szenarioschalter V2 (Typ 81)
   - Stoßsensor (Typ 93)
+  - Rauchmelder V2 (Typ 14)
+  - Unterputzrelais mit Dimmer V3 (Typ 66)
 
 Die beiden Zustände apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen die Alarmanlage für Bereich 1 und 2 ein- und ausschalten.
 
@@ -94,6 +96,13 @@ Folgende Dinge sind in der Zukunft geplant:
 * Verfassen einer Dokumentation für jeden Sensor / jedes Gerät
 
 ## Changelog
+
+### 1.2.0 (13.09.2019)
+* (Stübi) Changing error handling of adapter
+
+### 1.1.9 (06.09.2019)
+* (Stübi) Add device: Smoke detector V2
+* (Stübi) Add device: Inwall relay with dimmer V3
 
 ### 1.1.8 (10.06.2019)
 * (Stübi) Add device: 360 PIR motion sensor

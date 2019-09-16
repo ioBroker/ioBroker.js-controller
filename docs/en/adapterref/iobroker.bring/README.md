@@ -129,6 +129,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.6.4 (2019-09-07)
+* (foxriver76) re-auth when bearer token is no longer valid
+
 ### 1.6.3 (2019-08-28)
 * (foxriver76) fixed bug which only allowed one registered event handler
 * (foxriver76) by using obj with wid instead of var because vis handles global variables of widgets global

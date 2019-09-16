@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.simple-api/README.md
 title: Простой апи
-hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
+hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
 ---
 ![логотип](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -94,7 +94,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ### GetBulk
     получить много состояний одним запросом, возвращенным как массив объектов в порядке списка в запросе и id / val / ts как подобъект
 
-### Задавать
+### Установлен
 Звоните, например:
 
 ```
@@ -124,6 +124,18 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 Конечно, точка данных *javascript.0.test* должна существовать.
 
+Дополнительно может быть определен тип значения:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+и флаг ack также может быть определен:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
+
 ### Переключатель
     переключает значение:
 
@@ -149,7 +161,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 Эта команда необходима для подключаемого модуля Grafana JSON / SimpleJSON.
 
 ### Помогите
-Возвращает [этот](#usage) обратно
+Возвращает [это](#usage) обратно
 
 ## Установить
 ```node iobroker.js add simple-api```
@@ -190,7 +202,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 
 <pre> {&quot;admin.0.memHeapTotal&quot;: {&quot;val&quot;: 31.19, &quot;ts&quot;: 1423154754}, &quot;admin.0.memHeapUsed&quot;: {&quot;val&quot;: 15.6, &quot;ts&quot;: 1423154754}} </pre>
 
-### Задавать
+### Установлен
 Напишите состояния с указанными идентификаторами. Вы можете указать опцию *wait* в миллисекундах, чтобы дождаться ответа от водителя.
 
 <pre> http:// IP: 8087 / набор / гм-rpc.0.IEQ12345.LEVEL значение = 1 &amp; prettyPrint </pre><pre> {&quot;id&quot;: &quot;hm-rpc.0.IEQ12345.LEVEL&quot;, &quot;value&quot;: 1} </pre>
@@ -228,7 +240,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 Если в конфигурации задан источник данных (History, SQL), то будут перечислены только точки данных, известные источнику данных.
 Если активирована опция «Список всех точек данных» или не указан источник данных, будут перечислены все точки данных.
 
-<pre> http:// IP: 8087 / шаблон поиска = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.outputCount&quot;, &quot;system.adapter.admin.0.inputCount&quot;, &quot;system.adapter.admin.0.uptime&quot;, &quot;system.adapter.admin.0.memRss&quot;, &quot; system.adapter.admin.0. adapter.admin.0.connected &quot;,&quot; system.adapter.admin.0.alive &quot;} </pre>
+<pre> http:// IP: 8087 / шаблон поиска = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.outputCount&quot;, &quot;system.adapter.admin.0.inputCount&quot;, &quot;system.adapter.admin.0.uptime&quot;, &quot;system.adapter.admin.0.memRss&quot;, &quot; system.adapter.admin.0.memHeapTotal &quot;,&quot; system.adapter.admin.0.memHeapUsed &quot;,&quot; system.adapter.admin.0.cputime &quot;,&quot; system.adapter.admin.0.cpu &quot;,&quot; system. adapter.admin.0.connected &quot;,&quot; system.adapter.admin.0.alive &quot;} </pre>
 
 ### Запрос
 Если был указан источник данных (History, SQL), данные из указанных точек данных считываются за указанный период.
@@ -240,6 +252,13 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 <pre> http:// IP: 8087 / запрос / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed / prettyPrint &amp; noHistory = верно? </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints &quot;: [[21.53, 1559970500342]]}] </pre>
 
 ## Changelog
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

@@ -37,6 +37,10 @@ This adapter is inspired from [virtual devices script by Pman](https://forum.iob
 
 ## Changelog
 
+### 1.0.1
+* (Scrounger) adapter configuration: repair function added
+* (Scrounger) receive system messages added
+
 ### 1.0.0
 * (Scrounger) bug fixes
 

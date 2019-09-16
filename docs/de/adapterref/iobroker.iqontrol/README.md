@@ -3,10 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: A5IitdBx/qfhSgFSr828FU78fjr3keeMJ6I8kD5ybUw=
+hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/iqontrol-installed.svg)
+![stabile Version](http://iobroker.live/badges/iqontrol-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -39,7 +41,7 @@ Es ist vollständig anpassbar.
 ## Du brauchst...
 * Nodejs 8 oder höher
 * Web-Adapter mit einer Instanz, die dasselbe Protokoll (http oder https) wie der Admin-Adapter ausführt, socket.IO auf 'integrated' gesetzt und 'Force Web-Sockets' deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu. IQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+    * Steht dies im Widerspruch zu anderen Adaptern, fügen Sie einfach eine weitere Instanz mit den obigen Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Web-Adapter auf http (nicht https) eingestellt sein.
 
 ## Fehlerbehebung
@@ -103,11 +105,11 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 * Nur-Lese-Flag setzen
 * Invert-Flag setzen
 * Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
-* Ändern Sie die Einheit des Datenpunkts und trennen Sie sie für Null, Singular und Plural
+* Ändern Sie die Einheit des Datenpunkts, und trennen Sie sie für die Werte Null, Singular und Plural
 * Min. Und Max. Des Datenpunkts ändern
 * Ändern Sie den Typ des Datenpunkts
 * Ändern Sie die Rolle des Datenpunkts
-* Eine Werteliste festlegen oder ändern
+* Setzen oder modifizieren Sie eine Werteliste
 
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
 
@@ -121,10 +123,10 @@ Jede Rolle hat die folgenden drei Zustände:
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen ist dies die Hauptfunktion des Geräts. Sie können ihm io-Broker-Status der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
-* *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert
+* *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog
 * *string* - ein anzuzeigender Text
-* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt.
+* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt
   * Technisch gesehen ist eine *Werteliste* ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instance> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist :
 
 ````
@@ -174,7 +176,7 @@ Optional können Sie folgende Zustände definieren:
     * **RGB** / **# RGB** anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden, optional mit vorangestelltem '#'
     * **RGBW** / **# RGBW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden, optional mit vorangestelltem '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex , WW = warmweiß, CW = kaltweiß), optional mit vorangestelltem '#'
-    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB (nur Farbton) -Format (hex) verwenden, optional mit vorangestelltem '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt.
+    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB (nur Farbton) -Format (hex) verwenden, optional mit vorangestelltem '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Hue for Milight** Dies ist der Hue-Wert für Milight-Geräte, bei Verwendung eines anderen Startpunktes im Farbton-Farbkreis:
 
 ````
@@ -189,7 +191,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
   * **EFFECT** * Werteliste * - der abzuspielende Effekt
 * **EFFECT_NEXT** *boolean* - wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen)
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - wenn auf true gesetzt, wird der Effekt beschleunigt / verringert
-* Verschiedenes:
+* Sonstiges:
   * **LEISTUNG** * Zahl * - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
@@ -222,29 +224,30 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
-* **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
   * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Fenster offen" oder "Alle geschlossen" anzuzeigen.
 * Respektiere die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Garagentor:
-* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
-  * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "3 Türen offen" oder "Alle geschlossen" anzuzeigen.
-* **TOGGLE** *boolean* - zeigt einen 'Toggle'-Button an und wird bei Betätigung auf true gesetzt.
+  * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Türen offen" oder "Alle geschlossen" anzuzeigen.
+* **TOGGLE** *boolean* - zeigt einen 'Toggle'-Button an und wird bei Betätigung auf true gesetzt
 
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
-* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist
 * **LOCK_STATE** *Boolean* - Zeigt an, ob die Tür verriegelt oder entriegelt ist
 * **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der Status in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - wenn auf true gesetzt, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
-* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden.
-* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird.
-* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
-* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (die Beschriftung der Taste kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
+* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird
+* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (die Beschriftung der Taste kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
+* **SLATS_LEVEL** *Anzahl* - Position der Lamellen in Prozent
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -288,6 +291,29 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.2.4 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
+
+### 0.2.3 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+
+### 0.2.2 (2019-09-14)
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+
+### 0.2.1 (2019-09-07)
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+
+### 0.2.0 (2019-09-06)
+* (Sebastian Bormann) Added slats level to blind.
+
+### 0.1.15 (2019-09-05)
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
 
 ### 0.1.14 (2019-09-01)
 * (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.

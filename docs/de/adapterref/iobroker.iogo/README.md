@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
+hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
 ---
 ![Logo](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,8 +16,8 @@ hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
 # IoBroker.iogo
 =================
 
-Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
-Bitte besuchen Sie iogo.nisnagel.de für weitere Informationen zu den ersten Schritten.
+Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen: https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
+Bitte besuchen Sie iogo.nisnagel.de für weitere Informationen zum Einstieg.
 
 ## Aufbau
 Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter zu verwenden.

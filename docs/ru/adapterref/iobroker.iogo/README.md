@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
+hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,14 +16,14 @@ hash: UD2wg92FBcbvi7srfMHGfdYfcVUgr6Kjzyvg24oF6v0=
 # IoBroker.iogo
 =================
 
-Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
+Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
 Пожалуйста, посетите iogo.nisnagel.de для получения дополнительной информации о том, как начать.
 
 ## Конфигурация
 Вам нужен действующий лицензионный ключ, чтобы использовать этот адаптер.
-Лицензию можно приобрести после создания аккаунта на сайте https://iogo.nisnagel.de.
+Лицензию можно приобрести после создания аккаунта на https://iogo.nisnagel.de.
 
-Пожалуйста, введите данные вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
+Пожалуйста, введите информацию о вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
 
 ## Использование
 Вы можете отправить сообщение всем аутентифицированным пользователям через блок сообщения ```sendTo('iogo', 'New message')``` или конкретному пользователю ```sendTo('iogo', {user: 'Username', text: 'Test message'})```.

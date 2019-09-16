@@ -70,6 +70,9 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
+#### 2.4.1 (2019-09-05)
+* (AlCalzone) Fix: Also create objects for blinds
+
 #### 2.4.0 (2019-08-18)
 * (AlCalzone) Add support for blinds
 
