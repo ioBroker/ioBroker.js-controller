@@ -6,7 +6,7 @@ If not installed:
 ```
 sudo yum install -y gcc-c++ make build-essential
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo -E bash -
-sudo yum install nodejs
+sudo yum install -y nodejs
 ```
 
 ## Install ioBroker
@@ -26,9 +26,9 @@ npm i iobroker.js-controller@stable --production
 
 ## Optional install redis
 ```
-sudo yum install epel-release nano
+sudo yum install -y epel-release nano
 sudo yum update
-sudo yum install redis
+sudo yum install -y redis
 sudo systemctl start redis
 sudo systemctl enable redis
 sudo nano /etc/redis.conf
