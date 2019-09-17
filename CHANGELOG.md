@@ -1,7 +1,7 @@
-## 2.0.0 (2019-09-xx) Release Bella
+## 2.0.2 (2019-09-17) Release Bella
 
 ### Breaking changes
-* Minimum requirement for js-controller 2.0.0 is nodejs 8.x
+* Minimum requirement for js-controller 2.0.2 is nodejs 8.x
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
