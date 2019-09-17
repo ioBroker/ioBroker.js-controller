@@ -235,7 +235,8 @@
                     "fr": "Administrateur",
                     "it": "Amministratore",
                     "es": "Administrador",
-                    "pl": "Administrator"
+                    "pl": "Administrator",
+                    "zh-cn": "管理员"
                 },
                 "description": {
                     "en": "Can do everything with System",
@@ -246,7 +247,8 @@
                     "fr": "Peut tout faire avec le système",
                     "it": "Può fare tutto con il sistema",
                     "es": "Puede hacer todo con System",
-                    "pl": "Potrafi zrobić wszystko dzięki Systemowi"
+                    "pl": "Potrafi zrobić wszystko dzięki Systemowi",
+                    "zh-cn": "可以用系统做任何事情"
                 },
                 "members": [
                     "system.user.admin"
@@ -306,7 +308,8 @@
                     "fr": "Utilisateur",
                     "it": "Utente",
                     "es": "Usuario",
-                    "pl": "Użytkownik"
+                    "pl": "Użytkownik",
+                    "zh-cn": "用户"
                 },
                 "description": {
                     "en": "Cannot modify everything",
@@ -317,7 +320,8 @@
                     "fr": "Impossible de tout modifier",
                     "it": "Non è possibile modificare tutto",
                     "es": "No se puede modificar todo",
-                    "pl": "Nie można modyfikować wszystkiego"
+                    "pl": "Nie można modyfikować wszystkiego",
+                    "zh-cn": "用户无法修改所有内容"
                 },
                 "members": [],
                 "dontDelete": true,
@@ -377,7 +381,8 @@
                     "fr": "Pièces",
                     "it": "Camere",
                     "es": "Habitaciones",
-                    "pl": "Pokoje"
+                    "pl": "Pokoje",
+                    "zh-cn": "客房"
                 },
                 "desc": {
                     "en": "List of the rooms",
@@ -388,7 +393,8 @@
                     "fr": "Liste des chambres",
                     "it": "Elenco delle stanze",
                     "es": "Lista de las habitaciones",
-                    "pl": "Lista pokoi"
+                    "pl": "Lista pokoi",
+                    "zh-cn": "房间清单"
                 },
                 "members": [],
                 "dontDelete": true
@@ -413,7 +419,9 @@
                     "fr": "Les fonctions",
                     "it": "funzioni",
                     "es": "Funciones",
-                    "pl": "Funkcje"
+                    "pl": "Funkcje",
+                    "zh-cn": "职能"
+
                 },
                 "desc": {
                     "en": "List of the functions",
@@ -424,7 +432,9 @@
                     "fr": "Liste des fonctions",
                     "it": "Elenco delle funzioni",
                     "es": "Lista de las funciones",
-                    "pl": "Lista funkcji"
+                    "pl": "Lista funkcji",
+                    "zh-cn": "功能列表"
+
                 },
                 "members": [],
                 "dontDelete": true
