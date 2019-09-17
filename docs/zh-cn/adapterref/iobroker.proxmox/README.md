@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.proxmox/README.md
 title: ioBroker.proxmox
-hash: mlb7o9szaXMRHkYexpPhjW/npqfJBzqaoUpp0Sh6MaA=
+hash: ZT1/mtpdXzxKTr9inR426GZ7McKFUNaMke7stIR+xEw=
 ---
 ![商标](../../../en/adapterref/iobroker.proxmox/admin/logo.png)
 
@@ -13,14 +13,24 @@ hash: mlb7o9szaXMRHkYexpPhjW/npqfJBzqaoUpp0Sh6MaA=
 ![NPM](https://nodei.co/npm/iobroker.proxmox.png?downloads=true)
 ![特拉维斯-CI](https://api.travis-ci.org/iobroker-community-adapters/ioBroker.proxmox.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.proxmox?branch=master&svg=true)
+![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.proxmox.svg)
 
-＃ioBroker.proxmox =================
+＃ioBroker.proxmox
+=================
+
 此适配器从您的proxmox安装中读取数据
 
 ＃＃ 脚步
+## Bugs
+ 无法使用密码中的特殊字符建立连接
+
 ＃＃ 要求
+至少需要Node 8.X.X.
 
 ## Changelog
+### 0.5.0 (17.09.2019)
+* (MeisterTR) add act. disk size form vm and lxc
+* (MeisterTR) add start/stop and shutdown for vm an lxc (nodes must be testet my dev is on the node so i cant test stop node)
 ### 0.3.1 (03.10.2018)
 * (MeisterTR) fixed mem_lev, error at install, catch error no node and vm
 ### 0.3.0 (28.09.2018)

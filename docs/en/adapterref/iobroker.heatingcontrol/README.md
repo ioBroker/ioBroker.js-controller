@@ -74,6 +74,9 @@ Features:
 
 ## Changelog
 
+### 0.2.3 (2019-09-16)
+* (René) see issue #19: handling of enums created in iobroker admin fixed
+
 ### 0.2.2 (2019-09-13)
 * (René) see issue #14: description of datapoint time changed ('from' instead 'until')
 * (René) see issue #12: unnecessary warnings removed

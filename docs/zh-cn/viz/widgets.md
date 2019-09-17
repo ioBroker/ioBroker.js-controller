@@ -4,7 +4,7 @@ lastChanged: 11.08.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/viz/widgets.md
-hash: MFqQmODI369VpLR2C4c5OmX3JichVmmuSddEvsi/EOY=
+hash: PluUjl+xw1lq5O8JDBHv5XTAJU9SlDzZC9hZ5z1o38A=
 ---
 #Widgets
 ##一般
@@ -13,7 +13,7 @@ hash: MFqQmODI369VpLR2C4c5OmX3JichVmmuSddEvsi/EOY=
 ## ** ioBroker.vis小工具**
 对于带有vis的ioBroker中的可视化，有不同的小部件集。
 
--------------------------------------------------------------------------------  
+-------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
 ###小部件的基本设置
@@ -76,10 +76,10 @@ hash: MFqQmODI369VpLR2C4c5OmX3JichVmmuSddEvsi/EOY=
 
 |属性|说明|
 |----|----|
-| -width |边框的厚度| |
-| -style |边框的线条样式|
-| -color |边框颜色|
-| -radius |边界的角半径;最多可以是小部件的较短范围的一半 |
+|`-width`|边界的厚度| |
+|`-color`|边界颜色|
+|`-radius`|边界的圆角半径;最多可以是小部件的较短范围的一半 |
+|`-radius` |边界的圆角半径;最多可以是小部件的较短范围的一半 |
 
 |属性|说明|
 |-----|----|
@@ -91,16 +91,16 @@ hash: MFqQmODI369VpLR2C4c5OmX3JichVmmuSddEvsi/EOY=
 
 |属性|说明|
 |----|----|
-| padding |从小部件框的边缘偏移|
-| padding-left |左侧偏移|
-| padding-top |顶部偏移|
-| padding-right |右侧偏移|
-| padding-bottom |下侧偏移|
-| box-shadow |小部件框阴影的颜色|
-| margin-top |小部件周围的顶部边框（auto，％，px，pt，cm）|
-| margin-right |小部件周围的右边距|
-| margin-bottom |小部件周围的下边距|
-| margin-left |小部件周围的左边距|
+|`padding`|从小部件框的边缘偏移|
+|`padding-top`|上侧偏移|
+|`padding-right`|右侧偏移|
+|`padding-bottom`|下侧偏移|
+|`box-shadow`|小部件框的阴影颜色|
+|`margin-top`|小部件周围的顶部边框（auto，％，px，pt，cm）|
+|`margin-right`|小部件周围的右边距|
+|`margin-bottom`|小部件的底部|
+|`margin-left`|小部件周围的左边距|
+|`margin-left` |小部件周围的左边距|
 
 |属性|说明|
 |-----|----|

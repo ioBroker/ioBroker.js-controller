@@ -108,6 +108,9 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.4.10 (2019-09-17)
+* (foxriver76) we set enum name as translation object again
+
 ### 2.4.9 (2019-09-04)
 * (foxriver76) fix minor bug which prevented correct room sync
 * (foxriver76) in 2.4.6 we implemented the mechanism for hm-rega and rpc, in fact we should only delete hm-rpc devices, 

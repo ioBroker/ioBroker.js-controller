@@ -44,7 +44,7 @@ const styles = theme => ({
         padding: 0,
     },
     listExpandIcon: {
-        maxWidth: 22,
+        minWidth: 22,
     },
     footer: {
         height: 24,
