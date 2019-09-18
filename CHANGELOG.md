@@ -1,7 +1,11 @@
 ## 2.0.2 (2019-09-17) Release Bella
 
 ### Breaking changes
-* Minimum requirement for js-controller 2.0.2 is nodejs 8.x
+* Minimum requirement for js-controller 2.0 is nodejs 8.x
+* The following Adapters needs to be updated tobe compatible with js-controller 2.0
+  * email 1.0.5 or higher
+  * pushover 1.1.1 or higher
+  * hue 1.2.4 or higher
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
@@ -65,6 +69,7 @@
 * (Apollon77) "alive" state values are only checked on adapter start if ack=true to allow to start a process if not running
 * (Apollon77) fixes for mutlihost detection
 * (Apollon77) fix backup of states
+* (bluefox) Make sure also VIS global CSS is included in backup and restored
 * and many more fixes in various places
 
 ## 1.5.13 (2019-06-12) Evolution release (Ann)
