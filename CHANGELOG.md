@@ -1,3 +1,7 @@
+## 2.0.4 (2019-09-19) Release Bella
+* (Apollon77) fixes #434, host command
+* (Apollon77) Add one more confirmation question when migrating objects
+
 ## 2.0.3 (2019-09-19) Release Bella
 * (Apollon77) Log Process-ID for all adapter log messages
 * (Apollon77) When Objects/States connection dies and is no longer able to be restored for adapters we end the adapter process. This prevents us from hanging processes
