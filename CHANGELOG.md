@@ -1,3 +1,8 @@
+## 2.0.3 (2019-09-19) Release Bella
+* (Apollon77) Log Process-ID for all adapter log messages
+* (Apollon77) When Objects/States connection dies and is no longer able to be restored for adapters we end the adapter process. This prevents us from hanging processes
+* (Apollon77) End adapters with code 11 when they decide to end themself because they are not the current process, so that no additional restarts happen
+
 ## 2.0.2 (2019-09-17) Release Bella
 
 ### Breaking changes
