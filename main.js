@@ -2389,7 +2389,8 @@ function storePids() {
                 fs.writeFileSync(__dirname + '/pids.txt', JSON.stringify(pids));
             }
             catch (err) {
-                logger.error(hostLogPrefix + ' could not store process id list in ' + __dirname + '/pids.txt . Please check permissions and check left over processes when stopping ioBroker! \n' + err);
+                logger.error(hostLogPrefix + ' could not store process id list in ' + __dirname + '/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n' + err);
+                logger.error(hostLogPrefix + ' Please consider running the installation fixer when on Linux.')
             }
         }, 1000);
     }
