@@ -2594,17 +2594,17 @@ function startInstance(id, wakeUp) {
         args.push('--max-old-space-size=' + parseInt(instance.common.memoryLimitMB, 10));
     }
 
-    let fileNameFull = adapterDir_ + '/' + fileName;
+    let fileNameFull = path.join(adapterDir_ , fileName);
 
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') instance.common.onlyWWW = false;
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
-        fileNameFull = adapterDir_ + '/' + fileName;
+        fileNameFull = path.join(adapterDir_,fileName);
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
-            if (instance.common.onlyWWW || fs.existsSync(adapterDir_ + '/www')) {
+            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
                 logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
             } else {
                 logger.error(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ': cannot find start file!');
@@ -2780,6 +2780,7 @@ function startInstance(id, wakeUp) {
                         storePids(); // Store all pids to make possible kill them all
                     });
                 };
+
                 // If system has compact mode enabled and adapter supports it and instance has it enabled
                 if (config.system.compact && instance.common.compact && instance.common.runAsCompactMode) {
                     // compactgroup = 0 is executed by main js.controller, all others as own processes
@@ -2804,12 +2805,7 @@ function startInstance(id, wakeUp) {
                                 logger.error(`${hostLogPrefix} error with ${fileNameFull}: ${JSON.stringify(e)}`);
                             }
                         }
-                        if (!adapterModules[name]) {
-                            procs[id].process = cp.fork(fileNameFull, args, {
-                                stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                windowsHide: true
-                            });
-                        } else {
+                        if (adapterModules[name]) {
                             const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
                             try {
@@ -2833,10 +2829,13 @@ function startInstance(id, wakeUp) {
                                 procs[id].process = adapterModules[name].run(starterScript, name + '.js')(exitHandler);
                                 procs[id].startedInCompactMode = true;
                             } catch (e) {
-                                console.log(e.message);
-                                console.log(e.stackTrace);
-                                logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: ${e.message}`);
+                                logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`);
+                                logger.error(e.stackTrace);
+                                procs[id].process && delete procs[id].process;
                             }
+                        }
+                        else {
+                            logger.warn(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: VM2 initialization error. Fallback to normal start!`);
                         }
 
                         if (procs[id].process && !procs[id].process.kill) {
@@ -2960,9 +2959,9 @@ function startInstance(id, wakeUp) {
                         }
                         procs[id].process = compactProcs[instance.common.compactGroup].process;
                         procs[id].startedAsCompactGroup = true;
-
                     }
-                } else {
+                }
+                if (!procs[id].process) { // We were not able or should not start as compact mode
                     procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
                 }
 

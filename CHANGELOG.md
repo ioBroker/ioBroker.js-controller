@@ -1,3 +1,11 @@
+# Changelog
+
+## 2.0.5 (2019-09-20) Release Bella
+* (Apollon77) fix some error while accessing custom directories, fixes #455
+* (Apollon77) Add more logic to better handle migration edge cases (especially slaves vs migrations), fixes #458
+* (Apollon77) Make sure invalid alias values do not crash controller process (logger was missing), fixes #456
+* (Apollon77) Add better error and fallback handling for compact mode, fixes #460
+
 ## 2.0.4 (2019-09-19) Release Bella
 * (Apollon77) fixes #434, host command
 * (Apollon77) Add one more confirmation question when migrating objects
