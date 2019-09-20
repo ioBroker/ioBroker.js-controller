@@ -57,8 +57,8 @@
   {
     "file": "win/iobroker-latest-windows-installer.exe",
     "linux": "Windows",
-    "date": "20190402",
-    "device": "Windows x64",
+    "date": "20190902",
+    "device": "Windows",
     "details": "Universal Installer",
     "picture": "windows.png"
   },
