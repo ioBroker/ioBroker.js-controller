@@ -2671,6 +2671,7 @@ function startInstance(id, wakeUp) {
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
+                states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set ID so if some process runs it ends itself
 
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
@@ -2832,6 +2833,7 @@ function startInstance(id, wakeUp) {
                                 logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`);
                                 logger.error(e.stackTrace);
                                 procs[id].process && delete procs[id].process;
+                                states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}); // if started let it end itself
                             }
                         }
                         else {
