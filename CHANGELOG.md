@@ -5,7 +5,7 @@
 * (Apollon77) prevent "keys Not found" error in log, be more redis compatible, fixes #461
 * (Apollon77) prevent "invalid instance object" errors for channel objects, fixes #462
 * (Apollon77) optimize further on compact- and general adapter starting mechanisms to better prevent multistarts
-* (Apollon77) update objects-ha lib to 1.1.16 to normalize filenames to prevent problems on double-slashes
+* (Apollon77) update objects-ha lib to 1.1.17 to normalize filenames to prevent problems on double-slashes
 
 ## 2.0.5 (2019-09-20) Release Bella
 * (Apollon77) fix some error while accessing custom directories, fixes #455
@@ -26,10 +26,13 @@
 
 ### Breaking changes
 * Minimum requirement for js-controller 2.0 is nodejs 8.x
+* Manually uploaded files into `iobroker-data/files/...` may no be fully supported
 * The following Adapters needs to be updated tobe compatible with js-controller 2.0
   * email 1.0.5 or higher
   * pushover 1.1.1 or higher
   * hue 1.2.4 or higher
+  * node-red 1.10.1 or higher
+  * iqontrol TBD
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
