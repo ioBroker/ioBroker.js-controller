@@ -1,5 +1,12 @@
 # Changelog
 
+
+## 2.0.6 (2019-09-21) Release Bella
+* (Apollon77) prevent "keys Not found" error in log, be more redis compatible, fixes #461
+* (Apollon77) prevent "invalid instance object" errors for channel objects, fixes #462
+* (Apollon77) optimize further on compact- and general adapter starting mechanisms to better prevent multistarts
+* (Apollon77) update objects-ha lib to 1.1.16 to normalize filenames to prevent problems on double-slashes
+
 ## 2.0.5 (2019-09-20) Release Bella
 * (Apollon77) fix some error while accessing custom directories, fixes #455
 * (Apollon77) Add more logic to better handle migration edge cases (especially slaves vs migrations), fixes #458
