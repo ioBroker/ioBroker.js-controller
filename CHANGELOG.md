@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.7 (2019-09-22) Release Bella
+* (Apollon77) Correct file based internal structure to prevent entries with "//" in the path
+* (Apollon77) Check for existing of states DB in some more places to prevent problems in compact end scenarios 
+* (Apollon77) try to add a better retry logic on disconnect to the DBs, restart after 30s
+* (Apollon77) make some file operations with Paths more compatible to former versions
 
 ## 2.0.6 (2019-09-21) Release Bella
 * (Apollon77) prevent "keys Not found" error in log, be more redis compatible, fixes #461
@@ -32,6 +37,7 @@
   * pushover 1.1.1 or higher
   * hue 1.2.4 or higher
   * node-red 1.10.1 or higher
+  * vis 1.2.1 or higher 
   * iqontrol TBD
 
 ### New user features

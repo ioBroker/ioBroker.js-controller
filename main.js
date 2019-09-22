@@ -55,6 +55,7 @@ let connected               = null; // not false, because want to detect first c
 let ipArr                   = [];
 let lastCalculationOfIps    = null;
 let lastDiskSizeCheck       = 0;
+let restartTimeout          = null;
 
 const procs                 = {};
 const subscribe             = {};
@@ -405,11 +406,16 @@ function createObjects(onConnect) {
                 clearTimeout(disconnectTimeout);
                 disconnectTimeout = null;
             }
+            if (restartTimeout) {
+                clearTimeout(restartTimeout);
+                restartTimeout = null;
+            }
 
             initializeController();
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
+            if (restartTimeout) return;
             if (disconnectTimeout) clearTimeout(disconnectTimeout);
             disconnectTimeout = setTimeout(() => {
                 connected = false;
@@ -422,6 +428,20 @@ function createObjects(onConnect) {
                         getInstances();
                         startAliveInterval();
                         initMessageQueue();
+                    } else
+                    if (!isStopping) {
+                        restartTimeout = setTimeout(() => {
+                            restartTimeout = null;
+                            if (objects) {
+                                objects.destroy();
+                                objects = null;
+                            }
+                            if (states) {
+                                states.destroy();
+                                states = null;
+                            }
+                            init(compactGroup);
+                        }, 30000);
                     }
                 });
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
@@ -3362,18 +3382,18 @@ function stopInstances(forceStop, callback) {
             isStopping = isStopping || Date.now();
         }
 
-        if (forceStop || isDaemon) {
+        for (const id in compactProcs) {
+            if (!compactProcs.hasOwnProperty(id)) continue;
+            if (compactProcs[id].process) compactProcs[id].process.kill(); // TODO better?
+        }
+        //if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
-            for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) continue;
-                if (compactProcs[id].process) compactProcs[id].process.kill(); // TODO better?
-            }
             for (const id in procs) {
                 if (!procs.hasOwnProperty(id)) continue;
                 stopInstance(id);
             }
-        }
+        //}
 
         waitForInstances();
     } catch (e) {
@@ -3402,6 +3422,11 @@ function stop() {
     stopInstances(false, wasForced => {
         if (objects && objects.destroy) objects.destroy();
 
+        if (!states) {
+            logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated') + '. Could not reset alive status for instances');
+            setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+            return;
+        }
         outputCount++;
         states.setState(hostObjectPrefix + '.alive', {val: false, ack: true, from: hostObjectPrefix}, () => {
             logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
