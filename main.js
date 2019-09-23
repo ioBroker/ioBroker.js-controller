@@ -3227,7 +3227,7 @@ function stopInstance(id, force, callback) {
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-                            delete procs[id].process;
+                            //delete procs[id].process;
                         }
 
                         if (typeof callback === 'function') {
@@ -3248,7 +3248,7 @@ function stopInstance(id, force, callback) {
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-                            delete procs[id].process;
+                            //delete procs[id].process;
                         }
                         if (typeof callback === 'function') {
                             callback();
@@ -3277,7 +3277,7 @@ function stopInstance(id, force, callback) {
                                 } catch (e) {
                                     logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                                 }
-                                delete procs[id].process;
+                                //delete procs[id].process;
                             }
                         }, timeoutDuration);
                     }); // if started let it end itself as first try
