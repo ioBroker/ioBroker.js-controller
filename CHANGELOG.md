@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.8 (2019-09-23) Release Bella
+* (Apollon77) Optimize Adapter and Controller stopping processes
+
 ## 2.0.7 (2019-09-22) Release Bella
 * (Apollon77) Correct file based internal structure to prevent entries with "//" in the path
 * (Apollon77) Check for existing of states DB in some more places to prevent problems in compact end scenarios 

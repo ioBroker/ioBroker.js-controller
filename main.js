@@ -430,18 +430,16 @@ function createObjects(onConnect) {
                         initMessageQueue();
                     } else
                     if (!isStopping) {
-                        restartTimeout = setTimeout(() => {
-                            restartTimeout = null;
-                            if (objects) {
-                                objects.destroy();
-                                objects = null;
-                            }
-                            if (states) {
-                                states.destroy();
-                                states = null;
-                            }
-                            init(compactGroup);
-                        }, 30000);
+                        if (compactGroupController) {
+                            process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+                        }
+                        else {
+                            restartTimeout = setTimeout(() => {
+                                restartTimeout = null;
+                                processMessage({command: 'cmdExec', message: {data: '_restart'}});
+                                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                            }, 15000);
+                        }
                     }
                 });
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
@@ -2691,8 +2689,6 @@ function startInstance(id, wakeUp) {
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
                 logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
-                states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set ID so if some process runs it ends itself
-
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
@@ -2809,6 +2805,7 @@ function startInstance(id, wakeUp) {
                         (!compactGroupController && instance.common.compactGroup === 0) ||
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
+                        states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
                         const vm = new NodeVM({
                             console: 'inherit',
                             sandbox: {},
@@ -2983,6 +2980,9 @@ function startInstance(id, wakeUp) {
                         procs[id].startedAsCompactGroup = true;
                     }
                 }
+                else {
+                    states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
+                }
                 if (!procs[id].process) { // We were not able or should not start as compact mode
                     procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
                 }
@@ -3130,7 +3130,11 @@ function startInstance(id, wakeUp) {
     }
 }
 
-function stopInstance(id, callback) {
+function stopInstance(id, force, callback) {
+    if (typeof force === 'function') {
+        callback = force;
+        force = false;
+    }
     logger.info(hostLogPrefix + ' stopInstance ' + id);
     if (!procs[id]) {
         logger.warn(hostLogPrefix + ' unknown instance ' + id);
@@ -3188,8 +3192,26 @@ function stopInstance(id, callback) {
                 }
                 if (typeof callback === 'function') callback();
             } else {
+                if (force && !procs[id].startedAsCompactGroup) {
+                    logger.info(hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
+                    if (procs[id].process) {
+                        procs[id].stopping = true;
+                        try {
+                            procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                        }
+                        delete procs[id].process;
+                    }
+
+                    if (typeof callback === 'function') {
+                        callback();
+                        callback = null;
+                    }
+
+                } else
                 //noinspection JSUnresolvedVariable
-                if (instance.common.messagebox && instance.common.supportStopInstance && !procs[id].startedAsCompactGroup) {
+                if (instance.common.messagebox && instance.common.supportStopInstance) {
                     let timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
                     sendTo(instance._id, 'stopInstance', null, result => {
@@ -3234,18 +3256,31 @@ function stopInstance(id, callback) {
                         }
                     }, timeoutDuration);
                 } else if (!procs[id].startedAsCompactGroup) {
-                    logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
-                    procs[id].stopping = true;
-                    try {
-                        procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
-                    } catch (e) {
-                        logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
-                    }
-                    delete procs[id].process;
-                    if (typeof callback === 'function') {
-                        callback();
-                        callback = null;
-                    }
+                    states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}, (err) => { // send kill signal
+                        logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' send kill signal');
+                        if (!err) {
+                            procs[id].stopping = true;
+                            if (typeof callback === 'function') {
+                                callback();
+                                callback = null;
+                            }
+                        }
+                        const timeoutDuration = instance.common.stopTimeout || 1000;
+                        // If no response from adapter, kill it in 1 second
+                        let timeout = setTimeout(() => {
+                            timeout = null;
+                            if (procs[id].process && !procs[id].startedAsCompactGroup) {
+                                logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                                procs[id].stopping = true;
+                                try {
+                                    procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
+                                } catch (e) {
+                                    logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
+                                }
+                                delete procs[id].process;
+                            }
+                        }, timeoutDuration);
+                    }); // if started let it end itself as first try
                 }
                 else {
                     delete procs[id].process;
@@ -3382,18 +3417,18 @@ function stopInstances(forceStop, callback) {
             isStopping = isStopping || Date.now();
         }
 
-        for (const id in compactProcs) {
-            if (!compactProcs.hasOwnProperty(id)) continue;
-            if (compactProcs[id].process) compactProcs[id].process.kill(); // TODO better?
+        for (const id in procs) {
+            if (!procs.hasOwnProperty(id)) continue;
+            stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
         }
-        //if (forceStop || isDaemon) {
+        if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
-            for (const id in procs) {
-                if (!procs.hasOwnProperty(id)) continue;
-                stopInstance(id);
+            for (const id in compactProcs) {
+                if (!compactProcs.hasOwnProperty(id)) continue;
+                if (compactProcs[id].process) compactProcs[id].process.kill(); // TODO better?
             }
-        //}
+        }
 
         waitForInstances();
     } catch (e) {
@@ -3461,6 +3496,8 @@ function init(compactGroupId) {
         hostObjectPrefix += compactGroupObjectPrefix + compactGroup;
         hostLogPrefix += compactGroupObjectPrefix + compactGroup;
         title += compactGroupObjectPrefix + compactGroup;
+
+        isDaemon = true;
     }
     else {
         stopTimeout += 5000;
