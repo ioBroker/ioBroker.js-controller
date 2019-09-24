@@ -258,40 +258,7 @@
         "fa-icon": "ban",
         "created": "2019-09-24T00:00:00.000Z",
         "conditions": {
-            "info": "bigger(1.5.0)"
-        }
-    },
-    {
-        "title": {
-            "en": "Node.JS versions smaller than 8 will be soon deprecated",
-            "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
-            "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
-            "pt": "Versões do Node.JS menores que 8 serão descontinuadas em breve",
-            "nl": "Node.JS-versies kleiner dan 8 worden binnenkort verouderd",
-            "fr": "Les versions de Node.JS inférieures à 8 seront bientôt obsolètes",
-            "it": "Le versioni di Node.JS inferiori a 8 saranno presto deprecate",
-            "es": "Las versiones de Node.JS más pequeñas que 8 pronto serán desaprobadas",
-            "pl": "Wersje Node.JS mniejsze niż 8 zostaną wkrótce wycofane",
-            "zh-cn": "小于8的Node.JS版本将很快被弃用"
-        },
-        "content": {
-            "en": "With the upcoming version 2 of the JS-controller, the support of Node.JS versions smaller than 8.x.x will be discontinued. Please update your system to a higher version. We recommend the Node.JS version 10.x.x.",
-            "de": "Mit der kommenden Version 2 des JS-Controllers wird die Unterstützung von Node.JS-Versionen kleiner als 8.x.x eingestellt. Bitte aktualisieren Sie Ihr System auf eine höhere Version. Wir empfehlen die Node.JS-Version 10.x.x.",
-            "ru": "С выходом второй версии JS-контроллера поддержка версий Node.JS, меньших 8.x.x, будет прекращена. Пожалуйста, обновите вашу систему до более поздней версии. Мы рекомендуем Node.JS версии 10.x.x.",
-            "pt": "Com a próxima versão 2 do controlador JS, o suporte às versões do Node.JS menores que 8.x.x será descontinuado. Atualize seu sistema para uma versão superior. Recomendamos a versão 10.x.x do Node.JS.",
-            "nl": "Met de komende versie 2 van de JS-controller wordt de ondersteuning van Node.JS-versies kleiner dan 8.x.x stopgezet. Werk uw systeem bij naar een hogere versie. We raden de Node.JS-versie 10.x.x aan.",
-            "fr": "Avec la prochaine version 2 du contrôleur JS, le support des versions de Node.JS inférieures à 8.x.x sera supprimé. Veuillez mettre à jour votre système avec une version supérieure. Nous recommandons la version 10.x.x de Node.JS.",
-            "it": "Con la prossima versione 2 del controller JS, il supporto delle versioni Node.JS inferiori a 8.x.x verrà sospeso. Si prega di aggiornare il sistema a una versione successiva. Consigliamo Node.JS versione 10.x.x.",
-            "es": "Con la próxima versión 2 del controlador JS, se suspenderá el soporte de las versiones Node.JS más pequeñas que 8.x.x. Actualice su sistema a una versión superior. Recomendamos el Node.JS versión 10.x.x.",
-            "pl": "W nadchodzącej wersji 2 kontrolera JS obsługa Node.JS w wersji mniejszej niż 8.x.x zostanie przerwana. Zaktualizuj system do wyższej wersji. Zalecamy wersję 10.x.x. Node.JS",
-            "zh-cn": "随着即将发布的JS-controller版本2，将不再支持小于8.x.x的Node.JS版本。请更新您的系统到更高版本。我们建议使用Node.JS版本10.x.x。"
-        },
-        "id": "js-controller",
-        "node-version": "smaller(8.0.0)",
-        "class": "warning",
-        "fa-icon": "ban",
-        "created": "2019-09-24T00:00:00.000Z",
-        "conditions": {
+            "info": "bigger(1.5.0)",
             "admin": "bigger(3.6.6)"
         }
     }
