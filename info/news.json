@@ -257,8 +257,7 @@
         "class": "warning",
         "fa-icon": "ban",
         "created": "2019-09-24T00:00:00.000Z",
-        "conditions": {
-            "info": "bigger(1.5.0)",
+        "conditions": {           
             "admin": "bigger(3.6.6)"
         }
     }
