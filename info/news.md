@@ -14,9 +14,11 @@
 - **date-start** - When should the message be displayed (in format 2019-01-01T00:00:00.000Z)
 - **date-end** - When should the message no longer be displayed (in format 2019-01-01T00:00:00.000Z)
 - **conditions** - Object in format ("adapter" : "condition") -> All conditions are linked with "and"
+  - **node-bigger(x.x.x)** - Node version is bigger than (example: "node-bigger(11.0.0)") - Info 1.5.0, Admin 3.6.7
+  - **node-smaller(x.x.x)** - Node version is smaller than (example: "node-smaller(8.0.0)") - Info 1.5.0, Admin 3.6.7
   - **installed** - Adapter is installed (example: "iot": "installed")
   - **!installed** - Adapter is not installed  (example: "cloud": "!installed")
-  - **bigger(x.x.x)** - Adapter version is bigger as (example: "admin": "bigger(2.2.2)")
+  - **bigger(x.x.x)** - Adapter version is bigger than (example: "admin": "bigger(2.2.2)")
   - **smaller(x.x.x)** - Adapter version is smaller than (example: "fronius": "smaller(1.2.2)")
   - **equals(x.x.x)** - Adapter has exactly the same version (example: "cloud": "equals(0.2.2)")
-  - **between(x.x.x,y.y.y)** - The version of the adapter is between x and y or equal to x or y (example: "tankerkoenig": "between(1.0.5,2.0.4)") - only when 1.3.x is stable
+  - **between(x.x.x,y.y.y)** - The version of the adapter is between x and y or equal to x or y (example: "tankerkoenig": "between(1.0.5,2.0.4)")
