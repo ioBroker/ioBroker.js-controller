@@ -662,12 +662,12 @@ function reportStatus() {
     states.setState(id + '.instancesAsProcess',   {val: realProcesses, ack: true, from: id});
     states.setState(id + '.instancesAsCompact',   {val: compactProcesses, ack: true, from: id});
 
-    if (compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
+    inputCount  = 0;
+    outputCount = 0;
+    if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
         logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
         stop();
     }
-    inputCount  = 0;
-    outputCount = 0;
 }
 
 function changeHost(objs, oldHostname, newHostname, callback) {
@@ -3188,7 +3188,7 @@ function stopInstance(id, force, callback) {
         case 'daemon':
             if (!procs[id].process) {
                 if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled && !procs[id].startedAsCompactGroup) {
-                    logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not running');
+                    !isStopping && logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not running');
                 }
                 if (typeof callback === 'function') callback();
             } else {
@@ -3294,7 +3294,7 @@ function stopInstance(id, force, callback) {
 
         case 'schedule':
             if (!procs[id].schedule) {
-                logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not scheduled');
+                !isStopping && logger.debug(hostLogPrefix + ' stopInstance ' + instance._id + ' not scheduled');
             } else {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
@@ -3405,16 +3405,14 @@ function stopInstances(forceStop, callback) {
     }
 
     try {
-        const elapsed = (isStopping ? (Date.now() - isStopping) : 0);
+        isStopping = isStopping || Date.now(); // Sometimes process receives SIGTERM twice
+        const elapsed = Date.now() - isStopping;
         logger.debug(hostLogPrefix + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
             isStopping = null;
             if (timeout) clearTimeout(timeout);
             if (typeof callback === 'function') callback(true);
             callback = null;
-        } else {
-            // Sometimes process receives SIGTERM twice
-            isStopping = isStopping || Date.now();
         }
 
         for (const id in procs) {

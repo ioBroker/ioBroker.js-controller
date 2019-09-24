@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.9 (2019-09-24) Release Bella
+* (Apollon77) Optimize Adapter and Controller stopping processes further
+* (Apollon77) Optimize redis connection handling on exit
+* (Apollon77) Update objects-ha lib to 1.1.19
+
 ## 2.0.8 (2019-09-23) Release Bella
 * (Apollon77) Optimize Adapter and Controller stopping processes
 
