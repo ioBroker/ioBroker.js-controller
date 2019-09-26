@@ -226,5 +226,73 @@
         "conditions": {
             "weatherunderground": "smaller(3.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "Important for those who use Let's Encrypt ...",
+            "de": "Wichtig für diejenigen, die Let's Encrypt verwenden ...",
+            "ru": "Важно для тех, кто использует Let's Encrypt ...",
+            "pt": "Importante para quem usa o Let's Encrypt ...",
+            "nl": "Belangrijk voor degenen die Let's Encrypt gebruiken ...",
+            "fr": "Important pour ceux qui utilisent Let's Encrypt ...",
+            "it": "Importante per coloro che usano Let's Encrypt ...",
+            "es": "Importante para aquellos que usan Let's Encrypt ...",
+            "pl": "Ważne dla tych, którzy używają Let's Encrypt ...",
+            "zh-cn": "对于使用“让我们加密”的人来说很重要..."
+        },
+        "content": {
+            "en": "Let's Encrypt will switch off the support of an older version of their API on 01.10.2019. The library that ioBroker uses to offer the Lets' encrypt functionality is currently not supporting newer API versions and we currently wait for an update from these developers. Therefore, all users should create a new certificate until 30.09.2019, which will remain valid for the next 3 months. With this you can make sure the best way to stay SSL secured.",
+            "de": "Let's encrypt schaltet zum 1.10.2019 die von ioBroker verwendete Schnittstelle ab. Die Entwicker arbeiten an einer Lösung. Alle User von let's encrypt müssen vor dem 30.09. ein neues Zertifikat über den Admin erstellen. Dieses ist dann weitere 3 Monate gültig.",
+            "ru": "Let's Encrypt отключит поддержку более старой версии их API 01.10.2019. Библиотека, которую ioBroker использует для предоставления возможности шифрования Lets, в настоящее время не поддерживает более новые версии API, и в настоящее время мы ожидаем обновления от этих разработчиков. Поэтому все пользователи должны создать новый сертификат до 30.09.2019, который будет действовать в течение следующих 3 месяцев. При этом вы можете быть уверены, что лучший способ сохранить безопасность SSL.",
+            "pt": "O Let's Encrypt desativará o suporte de uma versão mais antiga da API em 01.10.2019. A biblioteca que o ioBroker usa para oferecer a funcionalidade de criptografia do Lets atualmente não suporta versões mais recentes da API e, atualmente, aguardamos uma atualização desses desenvolvedores. Portanto, todos os usuários devem criar um novo certificado até 30.09.2019, que permanecerá válido pelos próximos 3 meses. Com isso, você pode garantir a melhor maneira de manter o SSL protegido.",
+            "nl": "Let's Encrypt schakelt de ondersteuning van een oudere versie van hun API uit op 01.10.2019. De bibliotheek die ioBroker gebruikt om de coderingsfunctionaliteit van Lets aan te bieden, ondersteunt momenteel geen nieuwere API-versies en we wachten momenteel op een update van deze ontwikkelaars. Daarom moeten alle gebruikers een nieuw certificaat maken tot 30.09.2019, dat de komende 3 maanden geldig blijft. Hiermee kunt u ervoor zorgen dat de beste manier om SSL beveiligd te blijven.",
+            "fr": "Let's Encrypt désactive la prise en charge d'une ancienne version de leur API le 01.10.2019. La bibliothèque utilisée par ioBroker pour offrir la fonctionnalité de chiffrement de Lets ne prend actuellement pas en charge les versions d'API les plus récentes et nous attendons actuellement une mise à jour de ces développeurs. Par conséquent, tous les utilisateurs doivent créer un nouveau certificat jusqu'au 30.09.2019, qui restera valable pendant les 3 prochains mois. Avec cela, vous pouvez être sûr que le meilleur moyen de rester sécurisé SSL.",
+            "it": "Let's Encrypt disattiverà il supporto di una versione precedente della loro API il 01.10.2019. La libreria che ioBroker utilizza per offrire la funzionalità di crittografia di Lets al momento non supporta versioni API più recenti e stiamo attualmente aspettando un aggiornamento da questi sviluppatori. Pertanto, tutti gli utenti dovrebbero creare un nuovo certificato fino al 30.09.2019, che rimarrà valido per i prossimi 3 mesi. Con questo puoi assicurarti il modo migliore per mantenere SSL protetto.",
+            "es": "Let's Encrypt desactivará el soporte de una versión anterior de su API el 01.10.2019. La biblioteca que ioBroker usa para ofrecer la funcionalidad de cifrado de Lets actualmente no es compatible con las nuevas versiones de API y actualmente esperamos una actualización de estos desarrolladores. Por lo tanto, todos los usuarios deben crear un nuevo certificado hasta el 30.09.2019, que seguirá siendo válido durante los próximos 3 meses. Con esto, puede asegurarse de la mejor manera de mantenerse seguro SSL.",
+            "pl": "Let's Encrypt wyłączy obsługę starszej wersji swojego interfejsu API od 01.10.2019. Biblioteka, której używa ioBroker do oferowania funkcji szyfrowania Lets, nie obsługuje obecnie nowszych wersji API i obecnie czekamy na aktualizację od tych programistów. Dlatego wszyscy użytkownicy powinni utworzyć nowy certyfikat do 30.09.2019, który będzie ważny przez kolejne 3 miesiące. Dzięki temu możesz upewnić się, że najlepszym sposobem na zapewnienie bezpieczeństwa SSL.",
+            "zh-cn": "让我们加密将在2019年10月10日关闭对旧版API的支持。 ioBroker用于提供Lets加密功能的库目前不支持较新的API版本，我们目前正在等待这些开发人员的更新。因此，所有用户都应在2019年9月30日之前创建一个新证书，该证书在接下来的3个月内仍然有效。这样，您可以确保保持SSL安全的最佳方法。"
+        },
+        "id": "letsencrypt",
+        "class": "warning",
+        "fa-icon": "exclamation",
+        "date-end": "2019-10-01T00:00:00.000Z",
+        "created": "2019-09-22T00:00:00.000Z",
+        "conditions": {           
+            "admin": "bigger(3.6.4)"
+        }
+    },
+    {
+        "title": {
+            "en": "Node.JS versions smaller than 8 will be soon deprecated",
+            "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
+            "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
+            "pt": "Versões do Node.JS menores que 8 serão descontinuadas em breve",
+            "nl": "Node.JS-versies kleiner dan 8 worden binnenkort verouderd",
+            "fr": "Les versions de Node.JS inférieures à 8 seront bientôt obsolètes",
+            "it": "Le versioni di Node.JS inferiori a 8 saranno presto deprecate",
+            "es": "Las versiones de Node.JS más pequeñas que 8 pronto serán desaprobadas",
+            "pl": "Wersje Node.JS mniejsze niż 8 zostaną wkrótce wycofane",
+            "zh-cn": "小于8的Node.JS版本将很快被弃用"
+        },
+        "content": {
+            "en": "With the upcoming version 2 of the JS-controller, the support of Node.JS versions smaller than 8.x.x will be discontinued. Please update your system to a higher version. We recommend the Node.JS version 10.x.x.",
+            "de": "Mit der kommenden Version 2 des JS-Controllers wird die Unterstützung von Node.JS-Versionen kleiner als 8.x.x eingestellt. Bitte aktualisieren Sie Ihr System auf eine höhere Version. Wir empfehlen die Node.JS-Version 10.x.x.",
+            "ru": "С выходом второй версии JS-контроллера поддержка версий Node.JS, меньших 8.x.x, будет прекращена. Пожалуйста, обновите вашу систему до более поздней версии. Мы рекомендуем Node.JS версии 10.x.x.",
+            "pt": "Com a próxima versão 2 do controlador JS, o suporte às versões do Node.JS menores que 8.x.x será descontinuado. Atualize seu sistema para uma versão superior. Recomendamos a versão 10.x.x do Node.JS.",
+            "nl": "Met de komende versie 2 van de JS-controller wordt de ondersteuning van Node.JS-versies kleiner dan 8.x.x stopgezet. Werk uw systeem bij naar een hogere versie. We raden de Node.JS-versie 10.x.x aan.",
+            "fr": "Avec la prochaine version 2 du contrôleur JS, le support des versions de Node.JS inférieures à 8.x.x sera supprimé. Veuillez mettre à jour votre système avec une version supérieure. Nous recommandons la version 10.x.x de Node.JS.",
+            "it": "Con la prossima versione 2 del controller JS, il supporto delle versioni Node.JS inferiori a 8.x.x verrà sospeso. Si prega di aggiornare il sistema a una versione successiva. Consigliamo Node.JS versione 10.x.x.",
+            "es": "Con la próxima versión 2 del controlador JS, se suspenderá el soporte de las versiones Node.JS más pequeñas que 8.x.x. Actualice su sistema a una versión superior. Recomendamos el Node.JS versión 10.x.x.",
+            "pl": "W nadchodzącej wersji 2 kontrolera JS obsługa Node.JS w wersji mniejszej niż 8.x.x zostanie przerwana. Zaktualizuj system do wyższej wersji. Zalecamy wersję 10.x.x. Node.JS",
+            "zh-cn": "随着即将发布的JS-controller版本2，将不再支持小于8.x.x的Node.JS版本。请更新您的系统到更高版本。我们建议使用Node.JS版本10.x.x。"
+        },
+        "id": "js-controller",
+        "node-version": "smaller(8.0.0)",
+        "class": "warning",
+        "fa-icon": "ban",
+        "created": "2019-09-24T00:00:00.000Z",
+        "conditions": {           
+            "admin": "bigger(3.6.6)"
+        }
     }
 ]
