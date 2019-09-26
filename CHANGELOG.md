@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.11 (2019-09-27) Release Bella
+* (Apollon77) Correct selections with wildcards at the beginning, should solve the admin issues
+
 ## 2.0.10 (2019-09-26) Release Bella
 * (Apollon77) Optimize Compact mode CLI commands (fixes #468, fixes #471, fixes #470)
 * (Apollon77) fixes #475, #476
