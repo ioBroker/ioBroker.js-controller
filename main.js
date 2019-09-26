@@ -448,7 +448,7 @@ function createObjects(onConnect) {
         change: (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) return;
             try {
-                logger.info(hostLogPrefix + ' object change ' + id + ' (from: ' + (obj ? obj.from : null) + ')');
+                logger.debug(hostLogPrefix + ' object change ' + id + ' (from: ' + (obj ? obj.from : null) + ')');
                 // known adapter
                 if (procs[id]) {
                     // adapter deleted

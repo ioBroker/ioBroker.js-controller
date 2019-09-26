@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.10 (2019-09-26) Release Bella
+* (Apollon77) Optimize Compact mode CLI commands (fixes #468, fixes #471, fixes #470)
+* (Apollon77) fixes #475, #476
+* (Apollon77) only use quit from redid and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
+* (Apollon77) object changes are only logged as debug from now on, fixes #473
+* (Apollon77) Some adapter tweaks when running in "--install" mode (no reporting, don't check sigKill)
+
 ## 2.0.9 (2019-09-24) Release Bella
 * (Apollon77) Optimize Adapter and Controller stopping processes further
 * (Apollon77) Optimize redis connection handling on exit
@@ -46,7 +53,8 @@
   * hue 1.2.4 or higher
   * node-red 1.10.1 or higher
   * vis 1.2.1 or higher 
-  * iqontrol TBD
+  * iqontrol 0.2.6 pr higher
+  * radar2 TBD
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
