@@ -2954,7 +2954,7 @@ function startInstance(id, wakeUp) {
                                 // Restart group controller because still instances assigned to him, done via startInstance
                                 if (connected && !isStopping && compactProcs[instance.common.compactGroup].instances.length) {
                                     logger.info(hostLogPrefix + ' Restart compact group controller ' + instance.common.compactGroup);
-                                    logger.info(JSON.stringify(compactProcs[instance.common.compactGroup].instances));
+                                    logger.debug('Instances: ' + JSON.stringify(compactProcs[instance.common.compactGroup].instances));
 
                                     compactProcs[instance.common.compactGroup].instances.forEach(id => {
                                         //noinspection JSUnresolvedVariable

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.13 (2019-09-28) Release Bella
+* (Apollon77) optimize `iobroker status` CLI command
+* (Apollon77) some other small fixes
+* (Apollon77) remove clearAllLogs logic
+
 ## 2.0.12 (2019-09-27) Release Bella
 * (Apollon77) Correct selections with wildcards at the beginning, should solve the admin issues
 
@@ -51,12 +56,14 @@
 * Minimum requirement for js-controller 2.0 is nodejs 8.x
 * Manually uploaded files into `iobroker-data/files/...` may no be fully supported
 * The following Adapters needs to be updated tobe compatible with js-controller 2.0
+  * simple-api 2.1.2 or higher
   * email 1.0.5 or higher
   * pushover 1.1.1 or higher
   * hue 1.2.4 or higher
   * node-red 1.10.1 or higher
   * vis 1.2.1 or higher 
-  * iqontrol 0.2.6 pr higher
+  * iqontrol 0.2.6 or higher
+  * socketio 2.1.2 or higher
   * radar2 TBD
 
 ### New user features
