@@ -80,7 +80,7 @@ function register(it, expect, context) {
                 // ask for non-existing state
                 context.adapter.getState(gid + '6', function (err, state) {
                     expect(err).to.be.not.ok;
-                    expect(state).to.be.not.ok;
+                    expect(state).to.be.undefined;
                     done();
                 });
             });
@@ -128,7 +128,7 @@ function register(it, expect, context) {
 
             context.adapter.getState(gid, function (err, state) {
                 expect(err).to.be.not.ok;
-                expect(state).to.be.not.ok;
+                expect(state).to.be.undefined;
 
                 context.adapter.delState(gid, function (err) {
                     expect(err).to.be.not.ok;
@@ -573,7 +573,7 @@ function register(it, expect, context) {
             // ask for non-existing state
             context.adapter.getForeignState(fGid + '5', function (err, state) {
                 expect(err).to.be.not.ok;
-                expect(state).to.be.not.ok;
+                expect(state).to.be.undefined;
                 done();
             });
         });
@@ -708,6 +708,33 @@ function register(it, expect, context) {
                 }));
         });
     });
+
+    /*
+    // getState
+    it(testName + 'Set/Get local state wit expiry', function (done) {
+        this.timeout(1000);
+        context.adapter.setState(gid, {val: 1, expire: 5000, ack: true}, function (err) {
+            expect(err).to.be.not.ok;
+
+            context.adapter.getState(gid, function (err, state) {
+                // read directly, should work
+                expect(err).to.be.null;
+                expect(state).to.be.ok;
+                expect(state.val).to.equal(1);
+                expect(state.ack).to.equal(true);
+
+                setTimeout(() => {
+                    // read after timeout, should not work
+                    context.adapter.getState(gid, function (err, state) {
+                        expect(err).to.be.not.ok;
+                        expect(state).to.be.undefined;
+                        done();
+                    });
+                }, 5100)
+            });
+        });
+    });*/
+
 
     // getHistory - cannot be tested
 }
