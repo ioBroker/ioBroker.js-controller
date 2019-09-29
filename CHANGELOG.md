@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.14 (2019-09-29) Release Bella
+* (Apollon77) fix checking if iobroker is running (bug in 2.0.13)
+* (Apollon77) upgrade socketio deps
+* (Stabilostick) Randomize Certificate Serial numbers
+
 ## 2.0.13 (2019-09-28) Release Bella
 * (Apollon77) optimize `iobroker status` CLI command
 * (Apollon77) some other small fixes
