@@ -716,7 +716,12 @@ function register(it, expect, context) {
         let published = false;
         context.onAdapterStateChanged = function (id, state) {
             if (id === context.adapterShortName + '.0.' + gid) {
-                expect(state).to.be.null;
+                if (context.statesConfig.type === 'file') {
+                    expect(state).to.be.ok;
+                    expect(state.val).to.be.null;
+                } else { // redis
+                    expect(state).to.be.null;
+                }
                 context.onAdapterStateChanged = null;
                 published = true;
             }
@@ -737,7 +742,14 @@ function register(it, expect, context) {
                         // read after timeout, should not work
                         context.adapter.getState(gid, function (err, state) {
                             expect(err).to.be.not.ok;
-                            expect(state).to.be.null;
+
+                            if (context.statesConfig.type === 'file') {
+                                expect(state).to.be.ok;
+                                expect(state.val).to.be.null;
+                            } else { // redis
+                                expect(state).to.be.null;
+                            }
+
                             expect(published).to.be.true;
                             done();
                         });
