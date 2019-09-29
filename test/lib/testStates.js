@@ -752,7 +752,7 @@ function register(it, expect, context) {
                     expect(state.val).to.equal(1);
                     expect(state.ack).to.equal(true);
 
-                    context.adapter.subscribeStates(eGid, function () {
+                    context.adapter.subscribeForeignStates(eGid, function () {
                         setTimeout(() => {
                             // read after timeout, should not work
                             context.adapter.getState(gid + '_expire', function (err, state) {
@@ -766,6 +766,7 @@ function register(it, expect, context) {
                                 }
 
                                 expect(published).to.be.true;
+                                context.adapter.unsubscribeForeignStates(eGid, () =>
                                 done();
                             });
                         },6000);
