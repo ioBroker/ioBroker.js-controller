@@ -713,47 +713,63 @@ function register(it, expect, context) {
     it(testName + 'Set/Get local state wit expiry', function (done) {
         this.timeout(1000);
 
-        let published = false;
-        context.onAdapterStateChanged = function (id, state) {
-            if (id === context.adapterShortName + '.0.' + gid) {
-                if (context.statesConfig.type === 'file') {
-                    expect(state).to.be.ok;
-                    expect(state.val).to.be.null;
-                } else { // redis
-                    expect(state).to.be.null;
+        const eGid = context.adapterShortName + '.0.' + gid + '_expire';
+        context.adapter.setForeignObject(eGid, {
+            common: {
+                name: 'test1_expire',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {
+            },
+            type: 'state'
+        }, function (err) {
+            expect(err).to.be.null;
+
+            let published = false;
+            context.onAdapterStateChanged = function (id, state) {
+                if (id === eGid) {
+                    if (context.statesConfig.type === 'file') {
+                        expect(state).to.be.ok;
+                        expect(state.val).to.be.null;
+                    } else { // redis
+                        expect(state).to.be.null;
+                    }
+                    context.onAdapterStateChanged = null;
+                    published = true;
                 }
-                context.onAdapterStateChanged = null;
-                published = true;
-            }
-        };
+            };
 
-        context.adapter.setState(gid, {val: 1, expire: 4, ack: true}, function (err) {
-            expect(err).to.be.not.ok;
+            context.adapter.setState(gid + '_expire', {val: 1, expire: 4, ack: true}, function (err) {
+                expect(err).to.be.not.ok;
 
-            context.adapter.getState(gid, function (err, state) {
-                // read directly, should work
-                expect(err).to.be.null;
-                expect(state).to.be.ok;
-                expect(state.val).to.equal(1);
-                expect(state.ack).to.equal(true);
+                context.adapter.getState(gid + '_expire', function (err, state) {
+                    // read directly, should work
+                    expect(err).to.be.null;
+                    expect(state).to.be.ok;
+                    expect(state.val).to.equal(1);
+                    expect(state.ack).to.equal(true);
 
-                context.adapter.subscribeStates('*', function () {
-                    setTimeout(() => {
-                        // read after timeout, should not work
-                        context.adapter.getState(gid, function (err, state) {
-                            expect(err).to.be.not.ok;
+                    context.adapter.subscribeStates(eGid, function () {
+                        setTimeout(() => {
+                            // read after timeout, should not work
+                            context.adapter.getState(gid + '_expire', function (err, state) {
+                                expect(err).to.be.not.ok;
 
-                            if (context.statesConfig.type === 'file') {
-                                expect(state).to.be.ok;
-                                expect(state.val).to.be.null;
-                            } else { // redis
-                                expect(state).to.be.null;
-                            }
+                                if (context.statesConfig.type === 'file') {
+                                    expect(state).to.be.ok;
+                                    expect(state.val).to.be.null;
+                                } else { // redis
+                                    expect(state).to.be.null;
+                                }
 
-                            expect(published).to.be.true;
-                            done();
-                        });
-                    },6000);
+                                expect(published).to.be.true;
+                                done();
+                            });
+                        },6000);
+                    });
                 });
             });
         });
