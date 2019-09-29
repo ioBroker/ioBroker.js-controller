@@ -766,8 +766,7 @@ function register(it, expect, context) {
                                 }
 
                                 expect(published).to.be.true;
-                                context.adapter.unsubscribeForeignStates(eGid, () =>
-                                done();
+                                context.adapter.unsubscribeForeignStates(eGid, () => done());
                             });
                         },6000);
                     });
