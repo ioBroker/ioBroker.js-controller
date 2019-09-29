@@ -722,7 +722,7 @@ function register(it, expect, context) {
             }
         };
 
-        context.adapter.setState(gid, {val: 1, expire: 5000, ack: true}, function (err) {
+        context.adapter.setState(gid, {val: 1, expire: 5, ack: true}, function (err) {
             expect(err).to.be.not.ok;
 
             context.adapter.getState(gid, function (err, state) {
