@@ -711,7 +711,7 @@ function register(it, expect, context) {
 
     // getState
     it(testName + 'Set/Get local state wit expiry', function (done) {
-        this.timeout(1000);
+        this.timeout(10000);
 
         const eGid = context.adapterShortName + '.0.' + gid + '_expire';
         context.adapter.setForeignObject(eGid, {
