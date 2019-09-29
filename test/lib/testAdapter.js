@@ -46,7 +46,9 @@ function testAdapter(options) {
         sendToID: 1,
         adapterShortName: 'test',
         name: options.name,
-        appName: setup.appName
+        appName: setup.appName,
+        statesConfig,
+        objectsConfig
     };
 
     function startAdapter(callback) {

@@ -741,7 +741,7 @@ function register(it, expect, context) {
                             expect(published).to.be.true;
                             done();
                         });
-                    }, 5500)
+                    }, context.statesConfig.type === 'redis' ? 6000 : 11000);
                 });
             });
         });
