@@ -40,7 +40,7 @@
     "respjs": "^4.2.0",
     "safe-replace": "^1.1.0",
     "semver": "^6.3.0",
-    "socket.io": "2.2.0",
+    "socket.io": "2.3.0",
     "socket.io-client": "2.3.0",
     "tar": "^4.4.11",
     "vm2": "^3.8.4",
