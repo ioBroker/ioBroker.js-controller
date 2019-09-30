@@ -3193,7 +3193,7 @@ function stopInstance(id, force, callback) {
                 if (typeof callback === 'function') callback();
             } else {
                 if (force && !procs[id].startedAsCompactGroup) {
-                    logger.info(hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
+                    logger.info(hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid);
                     if (procs[id].process) {
                         procs[id].stopping = true;
                         try {
@@ -3220,7 +3220,7 @@ function stopInstance(id, force, callback) {
                             timeout = null;
                         }
                         logger.info(hostLogPrefix + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
-                        if (procs[id].process && !procs[id].startedAsCompactGroup) {
+                        if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             procs[id].stopping = true;
                             try {
                                 procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
@@ -3240,7 +3240,7 @@ function stopInstance(id, force, callback) {
                     // If no response from adapter, kill it in 1 second
                     timeout = setTimeout(() => {
                         timeout = null;
-                        if (procs[id].process && !procs[id].startedAsCompactGroup) {
+                        if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             logger.info(hostLogPrefix + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
                             try {
@@ -3269,7 +3269,7 @@ function stopInstance(id, force, callback) {
                         // If no response from adapter, kill it in 1 second
                         let timeout = setTimeout(() => {
                             timeout = null;
-                            if (procs[id].process && !procs[id].startedAsCompactGroup) {
+                            if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                                 logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                                 procs[id].stopping = true;
                                 try {
