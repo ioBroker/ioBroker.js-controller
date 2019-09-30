@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.15 (2019-09-30) Release Bella
+## 2.0.16 (2019-09-30) Release Bella
 * (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
   * not set states will always return null now
   * States will set to null completely (not only value) when they expire
