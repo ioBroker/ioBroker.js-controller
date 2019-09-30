@@ -2,7 +2,7 @@
 
 ## 2.0.15 (2019-09-30) Release Bella
 * (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
-  * not set states will always return null now - 
+  * not set states will always return null now
   * States will set to null completely (not only value) when they expire
   * States will also be published to onChanged handlers when states are in Redis
 * (Apollon77) rework expiry handling for File-States to use Timouts
@@ -66,7 +66,7 @@
 
 ### Breaking changes
 * Minimum requirement for js-controller 2.0 is nodejs 8.x
-* Manually uploaded files into `iobroker-data/files/...` may no be fully supported
+* Manually uploaded files into `iobroker-data/files/...` may no be fully supported. Please make sure to put them into officially allowed directories, e.g. vis.0
 * The following Adapters needs to be updated tobe compatible with js-controller 2.0
   * simple-api 2.1.2 or higher
   * email 1.0.5 or higher
@@ -100,6 +100,10 @@
 * (bluefox) allow the deletion of multiple objects with wildcard
 * (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
 * (Apollon77) allow getPort to check for the port optionally on a certain host/IP
+* (Apollon77) Streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
 
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
