@@ -76,7 +76,7 @@
   * vis 1.2.1 or higher 
   * iqontrol 0.2.6 or higher
   * socketio 2.1.2 or higher
-  * radar2 TBD
+  * radar2 1.0.9 (1.2.0 from Github needs a manual fix!)
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
