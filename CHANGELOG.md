@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.15 (2019-09-30) Release Bella
+* (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now - 
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
+* (Apollon77) rework expiry handling for File-States to use Timouts
+
 ## 2.0.14 (2019-09-29) Release Bella
 * (Apollon77) fix checking if iobroker is running (bug in 2.0.13)
 * (Apollon77) upgrade socketio deps
