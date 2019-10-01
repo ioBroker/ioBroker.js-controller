@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.18 (2019-10-01) Release Bella
+* (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
+
 ## 2.0.17 (2019-10-01) Release Bella
 * (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapterstart, basically 4s delay)
 * (Apollon77) Optimize some Migration questions
