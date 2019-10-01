@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.17 (2019-10-01) Release Bella
+* (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapterstart, basically 4s delay)
+* (Apollon77) Optimize some Migration questions
+* (Apollon77) smaller fixes and optimization
+
 ## 2.0.16 (2019-09-30) Release Bella
 * (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
   * not set states will always return null now
@@ -67,7 +72,7 @@
 ### Breaking changes
 * Minimum requirement for js-controller 2.0 is nodejs 8.x
 * Manually uploaded files into `iobroker-data/files/...` may no be fully supported. Please make sure to put them into officially allowed directories, e.g. vis.0
-* The following Adapters needs to be updated tobe compatible with js-controller 2.0
+* The following Adapters needs to be updated to the listed versions to be compatible with js-controller 2.0
   * simple-api 2.1.2 or higher
   * email 1.0.5 or higher
   * pushover 1.1.1 or higher
@@ -77,6 +82,7 @@
   * iqontrol 0.2.6 or higher
   * socketio 2.1.2 or higher
   * radar2 1.0.9 (1.2.0 from Github needs a manual fix!)
+  * ring 1.0.5 or higher
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)

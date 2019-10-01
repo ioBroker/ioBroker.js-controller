@@ -77,6 +77,7 @@ const adapterModules        = {};
 let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
+const scheduledInstances    = {};
 
 const uploadTasks           = [];
 
@@ -2558,6 +2559,71 @@ function cleanErrors(procObj, now, doOutput) {
     }
 }
 
+function startScheduledInstance(callback) {
+    const idsToStart = Object.keys(scheduledInstances);
+    if (!idsToStart.length) {
+        callback && callback();
+        return;
+    }
+    let skipped = false;
+    const id = idsToStart[0];
+    const fileNameFull = scheduledInstances[idsToStart[0]].fileNameFull;
+
+    if (procs[id]) {
+        const instance = procs[id].config;
+
+        // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
+        if (!procs[id].lastStart || Date.now() - procs[id].lastStart >= 2000) {
+            // Remember the last run
+            procs[id].lastStart = Date.now();
+            if (!procs[id].process) {
+                const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                storePids(); // Store all pids to make possible kill them all
+                logger.info(hostLogPrefix + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+
+                procs[id].process.on('exit', (code, signal) => {
+                    outputCount++;
+                    states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
+                    if (signal) {
+                        logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
+                    } else if (code === null) {
+                        logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
+                    } else {
+                        code = parseInt(code, 10);
+                        const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
+                        if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
+                            logger.info(text);
+                        } else {
+                            logger.error(text);
+                        }
+                    }
+                    if (procs[id] && procs[id].process) {
+                        delete procs[id].process;
+                    }
+                    storePids(); // Store all pids to make possible kill them all
+                });
+            } else {
+                !wakeUp && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                skipped = true;
+            }
+        } else {
+            logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
+            skipped = true;
+        }
+    } else {
+        logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
+        skipped = true;
+    }
+
+    let delay = (config.system && config.system.instanceStartInterval) || 2000;
+    delay = skipped ? 0 : delay + 2000;
+    setTimeout(() => {
+        delete scheduledInstances[id];
+        startScheduledInstance(callback);
+    }, delay); // 4 seconds pause
+}
+
 function startInstance(id, wakeUp) {
     if (isStopping || !connected) return;
 
@@ -3044,48 +3110,11 @@ function startInstance(id, wakeUp) {
             }
 
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
-                if (!procs[id]) {
-                    logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
-                    return;
-                }
-                // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-                if (procs[id].lastStart && Date.now() - procs[id].lastStart < 2000) {
-                    logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
-                    return;
-                }
-
-                // Remember the last run
-                procs[id].lastStart = Date.now();
-                if (!procs[id].process) {
-                    const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
-                    storePids(); // Store all pids to make possible kill them all
-                    logger.info(hostLogPrefix + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
-
-                    procs[id].process.on('exit', (code, signal) => {
-                        outputCount++;
-                        states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
-                        if (signal) {
-                            logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
-                        } else if (code === null) {
-                            logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
-                        } else {
-                            code = parseInt(code, 10);
-                            const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                            if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
-                                logger.info(text);
-                            } else {
-                                logger.error(text);
-                            }
-                        }
-                        if (procs[id] && procs[id].process) {
-                            delete procs[id].process;
-                        }
-                        storePids(); // Store all pids to make possible kill them all
-                    });
-                } else {
-                    !wakeUp && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
-                }
+                // queue up, but only if not alredy queued
+                scheduledInstances[id] = {
+                    fileNameFull
+                };
+                Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
             });
             logger.info(hostLogPrefix + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
             // Start one time adapter by start or if configuration changed
