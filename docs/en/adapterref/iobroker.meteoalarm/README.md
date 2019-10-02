@@ -86,6 +86,8 @@ If you don't find your country, please create an issue on github, and I will be 
 
 
 ## Changelog
+## 1.0.5 (2019-09-22)
+* (jack-blackson) Small logging adjustments
 ## 1.0.4 (2019-09-11)
 * (jack-blackson) Travis error
 ## 1.0.3 (2019-09-09)

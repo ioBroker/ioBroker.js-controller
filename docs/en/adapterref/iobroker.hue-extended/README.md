@@ -31,6 +31,21 @@ Connect your Philips Hue Lights with ioBroker.
 
 ## Changelog
 
+### 0.8.7 (2019-09-27)
+- (Zefau) added option to use Queue optionally (or sending commands directly)
+- (Zefau) fixed bug sending incomplete commands when commands include `bri` ([#2](https://github.com/Zefau/ioBroker.hue-extended/issues/2))
+- (Zefau) fixed bug not being able to deactivate / unset option `using xy instead of hue`
+
+### 0.8.6 (2019-09-25)
+- (Zefau) added support for LightScenes
+- (Zefau) added option to hide deleted devices (if `recycle` is `true`)
+- (Zefau) added support to trigger schedules
+- (Zefau) added support to trigger rules
+- (Zefau) fixed incorrect conversion between `bri` and `level`
+
+### 0.8.5 (2019-09-21)
+- (Zefau) added trigger for sensors with state `config.on` (moved and mapped as `action.on`)
+
 ### 0.8.4 (2019-09-17)
 - (Zefau) added option to either `prepend` or `append` unique ID of a device before / after device name (additionally, prepended IDs are filled up with leading zeros)
 - (Zefau) fixed bug `Cannot read property getObject of undefined` on adapter start

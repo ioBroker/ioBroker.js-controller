@@ -129,6 +129,7 @@ https://doc.iobroker.net/#de/documentation/faq/_040_contibution.md
 https://doc.iobroker.net/#de/documentation/faq/_050_advanced.md
 https://doc.iobroker.net/#de/documentation/faq/_050_cloud.md
 https://doc.iobroker.net/#de/documentation/imprint.md
+https://doc.iobroker.net/#de/documentation/install/centos.md
 https://doc.iobroker.net/#de/documentation/install/docker.md
 https://doc.iobroker.net/#de/documentation/install/hardware.md
 https://doc.iobroker.net/#de/documentation/install/images.md
@@ -264,6 +265,7 @@ https://doc.iobroker.net/#en/documentation/faq/_040_contibution.md
 https://doc.iobroker.net/#en/documentation/faq/_050_advanced.md
 https://doc.iobroker.net/#en/documentation/faq/_050_cloud.md
 https://doc.iobroker.net/#en/documentation/imprint.md
+https://doc.iobroker.net/#en/documentation/install/centos.md
 https://doc.iobroker.net/#en/documentation/install/docker.md
 https://doc.iobroker.net/#en/documentation/install/hardware.md
 https://doc.iobroker.net/#en/documentation/install/images.md
@@ -399,6 +401,7 @@ https://doc.iobroker.net/#ru/documentation/faq/_040_contibution.md
 https://doc.iobroker.net/#ru/documentation/faq/_050_advanced.md
 https://doc.iobroker.net/#ru/documentation/faq/_050_cloud.md
 https://doc.iobroker.net/#ru/documentation/imprint.md
+https://doc.iobroker.net/#ru/documentation/install/centos.md
 https://doc.iobroker.net/#ru/documentation/install/docker.md
 https://doc.iobroker.net/#ru/documentation/install/hardware.md
 https://doc.iobroker.net/#ru/documentation/install/images.md
@@ -534,6 +537,7 @@ https://doc.iobroker.net/#zh-cn/documentation/faq/_040_contibution.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/_050_advanced.md
 https://doc.iobroker.net/#zh-cn/documentation/faq/_050_cloud.md
 https://doc.iobroker.net/#zh-cn/documentation/imprint.md
+https://doc.iobroker.net/#zh-cn/documentation/install/centos.md
 https://doc.iobroker.net/#zh-cn/documentation/install/docker.md
 https://doc.iobroker.net/#zh-cn/documentation/install/hardware.md
 https://doc.iobroker.net/#zh-cn/documentation/install/images.md
@@ -656,6 +660,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.denon/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.doorbird/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.egigeozone/README.md
@@ -979,6 +984,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.denon/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.doorbird/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.egigeozone/README.md
@@ -1302,6 +1308,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.denon/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.doorbird/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.egigeozone/README.md
@@ -1625,6 +1632,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.denon/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.doorbird/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.egigeozone/README.md

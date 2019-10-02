@@ -2,37 +2,59 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
+title: 移至https://github.com/iobroker-community-adapters/ioBroker.hue
+hash: kO0q9BBZOPYEkmaGizJv1Q9Yms3sXUtpJenPSjO889o=
 ---
 ![安装数量](http://iobroker.live/badges/hue-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hue.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.hue.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)
 
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.hue
+＃移至https://github.com/iobroker-community-adapters/ioBroker.hue
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
-#ioBroker飞利浦Hue Bridge适配器
+＃ioBroker飞利浦Hue桥适配器
 ==============
 
-##英文：gb：
-通过飞利浦Hue Bridges将飞利浦Hue LED灯泡，Hue LED灯和条纹之友以及其他支持SmartLink的设备（LivingWhites，一些LivingColors）连接到ioBroker。
+##英语：gb：
+此适配器将您的Philips Hue桥与ioBroker连接，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
 
-您必须先将HUE桥与ioBroker链接起来。
+＃＃＃ 设定
+在ioBroker中安装此适配器后，请相应地创建一个适配器实例。接下来，您需要在适配器设置内将Hue桥与ioBroker连接：
 
-1.首先按“查找桥”按钮找到IP地址。仅在未输入IP地址时启用。
-2.找到IP地址后，必须创建USER。为此，按“创建用户”按钮，然后按HUE桥上的“链接”按钮。仅当未输入USER时，才会启用“创建用户”按钮
+1.单击“查找网桥”按钮以获取网桥的IP地址。这将搜索您环境中的所有网桥。然后选择要连接的网桥。字段“网桥地址”将填充您所选的色相网桥的IP地址。
+2.接下来，在设置中单击“创建用户”按钮，然后步行至Hue桥接设备（即您的硬件）以按其圆形按钮。您将有30秒钟的时间进行。按下按钮后，应在字段“ Bridge User”中填充生成的字符串。
+4.修改适配器设置中的任何其他选项，然后选择“保存并关闭”。
+5.最后，您已经准备就绪：适配器将生成所有对象，以相应地控制Hue设备。
+
+请注意：如果填写了“网桥地址”字段，则适配器设置按钮“查找网桥”将无效，而如果填写了“网桥用户”字段，则“创建用户”按钮将无效。
 
 ## Deutsch：de：
-Bindet Philips Hue / LivingColors / LivingWhites Lampen ein。
-In den Adapter-Settings muss die IP der Hue Bridge sowie ein用户名konfiguriert werden。 Um einen用户zu aktivieren einmal auf创建用户drückenunddann innerhalb von 30 Sekunden den Button an der Huebridgedrücken。 Dann wird automatisch derUserübergeben。
+Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
+在Adapter-Settings中，用户名konfiguriert werden属于IP der Hue Bridge。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
 
 ##路线图/ Todo
-*自动桥发现
+*自动桥接发现
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -174,5 +196,5 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein用户名konfigurier
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

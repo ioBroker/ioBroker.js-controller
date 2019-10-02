@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: dUsld3yH2f1dAw2TT8qbx9+CnNQoHa33NCkdJM9WCSM=
+hash: /UuqRf0fQOLjTNWpl4OG3gv7l+6zCiWKQ3xcZQ2NpEc=
 ---
 ![логотип](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -87,6 +87,9 @@ meteoalarm Адаптер для ioBroker --------------------------------------
 
 ## Особенности для реализации
 * Обработка нескольких аварийных сигналов за один день
+
+## 1.0.5 (2019-09-22)
+* (Джек-Блэксон) Небольшие настройки регистрации
 
 ## 1.0.4 (2019-09-11)
 * (Джек-Блэксон) Ошибка Трэвиса

@@ -34,8 +34,11 @@ Fast Web-App for Visualization.
 ![Example](img/screenshot3.jpg)
 
 Runs in any Browser.
-You can save it as Web-App on iOS-Homescreen and it looks and feels like a native app.
 It's fully customizable.
+
+## Add to Homescreen
+You can save it as Web-App on Homescreen and it looks and feels like a native app:
+![Add to Homescreeen](img/add_to_homescreen.png)
 
 
 ## You need...
@@ -248,6 +251,8 @@ In addition to normal thermostat you can define:
 ### <img src="img/icons/battery_full.png" width="32"> Battery:
 * **STATE**: *number* - battery level in percentage
 * **CHARGING**: *boolean* - if true, a charging-icon is displayed
+* **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
+* **VOLTAGE**: *number* - voltage that will be displayed in small in the upper right corner
 
 ### <img src="img/icons/value_on.png" width="32"> Value:
 * **STATE**: *any* - any valid state to be displayed (have a look at general states-section)
@@ -274,7 +279,25 @@ In addition to normal thermostat you can define:
 
 ****
 
-# Changelog
+## Changelog
+
+### 0.2.8 (2019-09-27)
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+
+### 0.2.7 (2019-09-27)
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
+
+### 0.2.6 (2019-09-24)
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+
+### 0.2.5 (2019-09-22)
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
 
 ### 0.2.4 (2019-09-15)
 * (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.

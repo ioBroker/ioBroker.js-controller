@@ -70,7 +70,10 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
-#### 2.4.1 (2019-09-05)
+#### 2.4.3 (2019-09-22)
+* (AlCalzone) Fix: Operate blinds when states are changed
+
+#### 2.4.2 (2019-09-22)
 * (AlCalzone) Fix: Also create objects for blinds
 
 #### 2.4.0 (2019-08-18)

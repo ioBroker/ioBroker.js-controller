@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.musiccast/README.md
 title: ioBroker.musiccast
-hash: XnE4QwDFRjUpKw9w5tMIJ7qYPO7YYoM0zgipGsj69/c=
+hash: tt/h/le4GOU9PDRh7t6r+yzRzstX8rUJyno2AOEsUHM=
 ---
 ![логотип](../../../en/adapterref/iobroker.musiccast/admin/musiccast.png)
 
+![Количество установок](http://iobroker.live/badges/musiccast-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.musiccast.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.musiccast.svg)
 ![Статус сборки](https://travis-ci.org/foxthefox/ioBroker.musiccast.svg?branch=master)
@@ -32,7 +33,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 
 ## Настройки
 Страницу администратора «+» можно использовать для добавления вручную IP-адреса, DeviceID, Type и Name.
-Нажмите кнопку поиска для обнаружения. Если у вас есть несколько устройств, вы должны нажимать кнопку несколько раз, пока все устройства не будут обнаружены. К сожалению, обнаружение возвращает только один объект за раз, и это может быть любое из ваших устройств MusicCast. Если возврат такой же, как уже у части таблицы, вы должны снова нажать кнопку. Иногда это помогает сохранить и открыть страницу Damin снова.
+Нажмите кнопку поиска для обнаружения. Если у вас есть несколько устройств, вы должны нажимать кнопку несколько раз, пока все устройства не будут обнаружены. К сожалению, обнаружение возвращает только один объект за раз, и это может быть любое из ваших устройств MusicCast. Если возврат такой же, как уже в таблице, вам нужно снова нажать кнопку. Иногда это помогает сохранить и открыть страницу Damin снова.
 
 В маловероятном случае, когда 2 или более устройств предоставляют один и тот же идентификатор, слегка измените один идентификатор. В противном случае адаптер не сможет различить 2 устройства.
 
@@ -61,7 +62,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | {zone} .link_control | text | x | установить управление ссылками |
 | {zone} .link_control_list | text | - | возможные настройки управления ссылками |
 | {zone} .link_audio_delay | text | x | установить задержку аудио ссылки |
-| {zone} .link_audio_delay_list | text | - | возможные настройки ссылки аудио-задержки ссылки |
+| {zone} .link_audio_delay_list | text | - | возможные настройки ссылки link аудио задержки |
 | {zone} .clearVoice | логический | x | clear Голосовое управление |
 | {zone} .low | value | x | level EQ low |
 | {zone} .mid | значение | x | уровень EQ mid |
@@ -84,6 +85,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | netusb.input | значение | x | набор / фактический ввод |
 | netusb.playPause | boolean | x | set Play / Pause |
 | netusb.playback | text | - | status net player |
+| netusb.stop | логическое значение | x | установить Stop |
 | netusb.auto_stop | логический | - | автоматически останавливается |
 | netusb.next | логическое значение | x | установить вперед |
 | netusb.prev | логическое значение | x | установить перемотку |
@@ -115,17 +117,17 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | system.inputs. {service} .distribution_enable | value | - | доступные службы ввода распространяемые |
 | system.inputs. {service} .play_info_type | value | - | доступный тип службы ввода |
 
-### CD-плеер
+### СиДи плэйер
 | Объект | Значение | устанавливаемое | Описание |
 |--------|-------|:-:|--------|
 | cd.playPause | логическое значение | x | set Play / Pause |
 | cd.playback | text | - | статус проигрывателя компакт-дисков |
 | cd.stop | логическое значение | x | set Stop |
-| cd.next | логический | x | установить вперед |
+| cd.next | логическое значение | x | установить вперед |
 | cd.prev | логическое значение | x | установить перемотку |
 | cd.shuffle | логическое значение | x | переключение в случайном порядке |
 | cd.shuffle_stat | текст | - | статус в случайном порядке |
-| cd.repeat | логический | x | переключить повтор |
+| cd.repeat | логическое значение | x | переключение повтора |
 | cd.repeat_stat | text | - | повторить статус |
 | cd.device_stat | text | - | состояние устройства |
 | cd.playtime | value | - | текущее время воспроизведения |
@@ -181,30 +183,33 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | clock.format | string | x | Формат часов 12ч / 24ч |
 | clock.alarm_on | boolean | x | Состояние будильника вкл / выкл |
 | clock.volume | number | x | Громкость будильника |
-| clock.fade_interval | number | x | Интервал исчезновения будильника |
+| clock.fade_interval | number | x | Интервал замирания будильника |
 | clock.fade_type | number | x | Часы с будильником исчезают |
-| clock.mode | string | x | Режим будильника на день / неделю |
+| clock.mode | string | x | Режим будильника однодневный / еженедельный |
 | clock.repeat | boolean | x | Повтор будильника, если указан один день |
 | clock. {день} .enable | логический | x | Срок действия установки часов |
 | часы. {день} .time | строка | - | Время запуска будильника ччмм 00-23,00-59 |
 | clock. {day} .beep | логический | x | Срок действия Clock Beep |
-| clock. {day} .playback_type | string | - | Тип воспроизведения будильника возобновить / предварительно установить |
-| часы. {день} .resume_input | строка | - | Идентификатор входа возобновления будильника |
+| часы. {день} .playback_type | строка | - | Тип воспроизведения будильника возобновить / предварительно установить |
+| часы. {день} .resume_input | строка | - | Будильник возобновил ввод идентификатора |
 | часы. {день} .preset_type | строка | - | Тип пресета будильника |
 | часы. {день} .preset_num | номер | - | Идентификатор предустановки входа будильника |
-| clock. {day} .preset_netusb_input | string | - | ID входа netusb для будильника |
-| clock. {day} .preset_netusb_text | string | - | Будильник netusb text |
+| часы. {день} .preset_netusb_input | строка | - | ID входа netusb будильника |
+| clock. {day} .preset_netusb_text | string | - | Текст будильника netusb |
 | clock. {day} .preset_tuner_band | string | - | Диапазон настройки будильника |
-| clock. {day} .preset_tuner_number | number | - | Частота тюнера будильника или идентификатор станции |
+| часы. {день} .preset_tuner_number | номер | - | Частота тюнера будильника или идентификатор станции |
 
 ## Сделать
 * поддержка списков
 * изменение значений взаимодействия на приятное именование
 * fastforward / fastrewind для NETUSB / CD
-* блютуз
+* блютус
 * уровень диалога
 
 ## Changelog
+#### 0.1.2
+* (Scrounger) correction of type mismatch (string boolean)
+
 #### 0.1.1
 * correction for clock "oneday"
 
@@ -263,4 +268,4 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2017 - 2019 foxthefox <foxthefox@wysiwis.net>

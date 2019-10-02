@@ -123,6 +123,13 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+### 3.6.7 (2019-09-24)
+* (ldittmar) Add Node.JS version check to popup messages
+
+### 3.6.6 (2019-09-18)
+* (SchumyHao) Update Chinese translation
+* (tmikulski) Update translations.json
+
 ### 3.6.5 (2019-09-02)
 * (ldittmar) Fix anoying popups from info adapter
 

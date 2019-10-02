@@ -34,6 +34,14 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
+### 0.11.4 (2019-09-30)
+* (Asgothian) Danalock V3 BTZB
+* (Asgothian) GroupErrorInGetDevices
+* (Asgothian) new Dev Innr RB 245
+* (Asgothian) new Dev RS 225
+* (Asgothian) new Dev Heiman COSensor
+* (Asgothian) Improved device configuration method
+* (Stabilostil) Fix for install error if running zigbee-adapter is updated
 
 ### 0.11.3 (2019-09-11)
 * (kirovilya) Update Z-Stack 3 compatible
@@ -65,9 +73,9 @@ Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mi
 * (kirovilya) New DIY devices [ZigUP](https://github.com/formtapez/ZigUP) and [DIYRUZ_R4_5](http://modkam.ru/?p=1054)
 * (arteck) JIAWEN FB56-ZCW08KU1.2, Nue / 3A FNB56-ZCW25FB1.9, HOMA1031, Trust CSW_ADUROLIGHT
 * (allofmex) security update
-* (allofmex) brightness fix 
+* (allofmex) brightness fix
 * (Asgothian) Osram Gardenpole Mini
-* (Asgothian) Innr Plugs (BY 265 C, BY 165 C, RB265 
+* (Asgothian) Innr Plugs (BY 265 C, BY 165 C, RB265
 * (Asgothian) Fix for Ikea Tradfri repeater (image)
 * (sonntam) tint enhancements
 * (stream2me) support for Danalock V3
@@ -79,7 +87,7 @@ Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mi
 * (arteck) sensor_86sw2 new states
 * (allofmex) Improved device configuration and network map
 * (allofmex) security update
-* (allofmex) brightness fix 
+* (allofmex) brightness fix
 
 ### 0.10.2 (2019-03-15)
 * some fixes
@@ -110,7 +118,7 @@ No support of node.js 4 any more
 
 **BREAKING CHANGES**:
 * (kirovilya) Rename state "isopen" to "opened".
-* (kirovilya) Change brightness interval from 0..254 to 0..100 
+* (kirovilya) Change brightness interval from 0..254 to 0..100
 
 Other changes:
 * (kirovilya) Fix for admin2

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tinker/README.md
 title: ioBroker.tinker
-hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
+hash: JEPSSK8ggpw+2f3PKk6ehT+Aenx/6AA5+dciOw/uXoI=
 ---
 ![商标](../../../en/adapterref/iobroker.tinker/admin/tinker.png)
 
@@ -12,57 +12,63 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 ![下载](https://img.shields.io/npm/dm/iobroker.tinker.svg)
 ![NPM](https://nodei.co/npm/iobroker.tinker.png?downloads=true)
 
-＃ioBroker.tinker ===================
-Tinker Board Monitor适配器是用于ioBroker的Raspberry PI Monitor适配器和OrangePi Monitor适配器的修改版本
+＃ioBroker.tinker
+===================
+
+Tinker Board Monitor适配器是ioBroker的Raspberry PI Monitor适配器和OrangePi Monitor适配器的修改版
+
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝（https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
 ###重要信息
-测试硬件：华硕Tinker Board
+经过测试的硬件：华硕Tinker板
 
-###选择后可以使用以下对象：
+选择后可以使用以下对象：
 ＃＃ *中央处理器*
- -  cpu_frequency
- -  load1
- -  load5
- -  load15
+-cpu_frequency
+-负载1
+-负载5
+-负载15
 
 ## *内存*
- -  memory_available
- -  memory_free
- -  memory_total
+-memory_available
+-memory_free
+-memory_total
 
 ## *网络（eth0）*
- -  net_received
- -  net_send
+-net_received
+-net_send
 
 ＃＃ *SD卡*
- -  sdcard_root_total
- -  sdcard_root_used
+-sdcard_root_total
+-sdcard_root_used
 
 ## *交换*
- -  swap_total
- -  swap_used
+-swap_total
+-swap_used
 
 ## *温度*
- -  soc_temp
+-soc_temp
 
 ## *正常运行时间*
- - 正常运行时间
+-正常运行时间
 
 ## *WLAN*
- -  wifi_received
- -  wifi_send
+-wifi_received
+-wifi_send
 
 ##配置
 在配置页面上，您可以选择以下模块：
 
 - 中央处理器
- - 记忆
- - 网络
+-记忆
+-网络
 - SD卡
- - 交换
- - 温度
- - 正常运行时间
- -  WLAN
+-交换
+-温度
+-正常运行时间
+-无线局域网
 
 ## Changelog
 

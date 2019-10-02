@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
+hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -17,7 +17,7 @@ hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 
 # IoBroker.lovelace
 ## Lovelace Adapter für ioBroker
-Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen
+Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen.
 
 ## Aufbau
 Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden können:
@@ -382,31 +382,47 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übernommen werden
 
 ## Entwicklung
+### Ausführung
+Verwendete Version von home-assistant-frontend@1.0.0
+
 ### So erstellen Sie die neue Lovelace-Version
 1. Wechseln Sie in das Verzeichnis ./build.
-2. `git clone https:// github.com / home-assistant / home-assistant-polymer.git`
+2. `git clone https:// github.com / GermanBluefox / home-assistant-polymer.git` Es ist eine Abspaltung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (zB Benachrichtigungen).
 3. `cd home-assistant-polymer`
 4. `Git Checkout Master`
 5. `npm install`
-6. `gulp run build-app`
-4. `. / Build / home-assistant-polymer / hass_frontend` in`. / Hass_frontend` in diesem Repo
-5. Formatieren Sie index.html
-6. Starten Sie die Aufgabe "gulp rename".
+6. `gulp run build-app` für die Veröffentlichung oder` gulp run develop-iob` für die Debug-Version
+7. Kopieren Sie alle Dateien von `. / Build / home-assistant-polymer / hass_frontend` nach`. / Hass_frontend` in diesem Repo
+8. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
+### 0.2.0 (2019-09-19)
+* (Scrounger) Some bugs on "Custom Dialog" were fixed
+* (Scrounger) bug fix: if value set by lovelace and max is not 100
+* (Scrounger) log warn if no max value set for light entity
+* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
+
+### 0.1.5 (2019-08-26)
+* (bluefox) fixed timestamp conversion
+
+### 0.1.3 (2019-07-18)
+* (SchumyHao) If no ACTUAL is discovered, use SET value as switch entity value
+
+### 0.1.2 (2019-07-14)
+* (SchumyHao) Translate Chinese words to pinyin
 
 ### 0.1.1 (2019-06-10)
 * (bluefox) Fixed control of states
 
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker 
+* (bluefox) Lovelace compiled extra for ioBroker
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release
 
 ## License
-   
+
 Copyright 2019, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");

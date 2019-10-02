@@ -13,7 +13,7 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroke
 
 ## lovelace adapter for ioBroker
 
-With this adapter you can build visualization for ioBroker with Home Assistant Lovelace UI
+With this adapter you can build visualization for ioBroker with Home Assistant Lovelace UI.
 
 ## Configuration
 There are two arts how the entities could be configured:
@@ -21,8 +21,8 @@ There are two arts how the entities could be configured:
 - manual
 
 ### Auto
-In auto mode the similar process will be applied like for `google home` or `material adapter`. 
-  
+In auto mode the similar process will be applied like for `google home` or `material adapter`.
+
 ***Only objects and channel will be detected that have `function`and `room` categories defined***
 
 You can define friendly names and this will be used in entities.
@@ -186,7 +186,7 @@ Shopping list writes the values in form:
 ]
 ```
 into `lovelace.X.control.shopping_list` state.
-   
+
 ### Map
 The objects must look like this one:
 
@@ -256,7 +256,7 @@ To upload the custom card write following:
 After restart of lovelace adapter it will include all files from the `cards` directory automatically.
 
 Following custom cards could be tested successfully:
-- bignumber-card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js 
+- bignumber-card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 - simple-thermostat: https://github.com/nervetattoo/simple-thermostat/releases (take the latest release)
 - thermostat: https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card (both files .js and .lib.js are required)
 
@@ -271,7 +271,7 @@ The custom images (e.g. for background) could be loaded via the same configurati
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
-or 
+or
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
@@ -285,54 +285,54 @@ midnight:
   # Main colors
   primary-color: '#5294E2'                                                        # Header
   accent-color: '#E45E65'                                                         # Accent color
-  dark-primary-color: 'var(--accent-color)'                                       # Hyperlinks                                         
+  dark-primary-color: 'var(--accent-color)'                                       # Hyperlinks
   light-primary-color: 'var(--accent-color)'                                      # Horizontal line in about
-  																			 
-  # Text colors                                                                  
+
+  # Text colors
   primary-text-color: '#FFFFFF'                                                   # Primary text colour, here is referencing dark-primary-color
   text-primary-color: 'var(--primary-text-color)'                                 # Primary text colour
   secondary-text-color: '#5294E2'                                                 # For secondary titles in more info boxes etc.
   disabled-text-color: '#7F848E'                                                  # Disabled text colour
-  label-badge-border-color: 'green'                                               # Label badge border, just a reference value   
-  
-  # Background colors                                                            
+  label-badge-border-color: 'green'                                               # Label badge border, just a reference value
+
+  # Background colors
   primary-background-color: '#383C45'                                             # Settings background
-  secondary-background-color: '#383C45'                                           # Main card UI background  
-  divider-color: 'rgba(0, 0, 0, .12)'                                             # Divider 
-    
-  # Table rows                                                                   
+  secondary-background-color: '#383C45'                                           # Main card UI background
+  divider-color: 'rgba(0, 0, 0, .12)'                                             # Divider
+
+  # Table rows
   table-row-background-color: '#353840'                                           # Table row
   table-row-alternative-background-color: '#3E424B'                               # Table row alternative
-  																			 
-  # Nav Menu                                                                   
+
+  # Nav Menu
   paper-listbox-color: 'var(--primary-color)'                                     # Navigation menu selection hoover
   paper-listbox-background-color: '#2E333A'                                       # Navigation menu background
-  paper-grey-50: 'var(--primary-text-color)'                                   
+  paper-grey-50: 'var(--primary-text-color)'
   paper-grey-200: '#414A59'                                                       # Navigation menu selection
-  																			 
-  # Paper card                                                               
+
+  # Paper card
   paper-card-header-color: 'var(--accent-color)'                                  # Card header text colour
   paper-card-background-color: '#434954'                                          # Card background colour
   paper-dialog-background-color: '#434954'                                        # Card dialog background colour
   paper-item-icon-color: 'var(--primary-text-color)'                              # Icon color
   paper-item-icon-active-color: '#F9C536'                                         # Icon color active
-  paper-item-icon_-_color: 'green'           
-  paper-item-selected_-_background-color: '#434954'                               # Popup item select                      
+  paper-item-icon_-_color: 'green'
+  paper-item-selected_-_background-color: '#434954'                               # Popup item select
   paper-tabs-selection-bar-color: 'green'
-  
-  # Labels 
+
+  # Labels
   label-badge-red: 'var(--accent-color)'                                          # References the brand colour label badge border
   label-badge-text-color: 'var(--primary-text-color)'                             # Now same as label badge border but that's a matter of taste
   label-badge-background-color: '#2E333A'                                         # Same, but can also be set to transparent here
-  
+
   # Switches
   paper-toggle-button-checked-button-color: 'var(--accent-color)'
   paper-toggle-button-checked-bar-color: 'var(--accent-color)'
   paper-toggle-button-checked-ink-color: 'var(--accent-color)'
   paper-toggle-button-unchecked-button-color: 'var(--disabled-text-color)'
   paper-toggle-button-unchecked-bar-color: 'var(--disabled-text-color)'
-  paper-toggle-button-unchecked-ink-color: 'var(--disabled-text-color)'  
-  
+  paper-toggle-button-unchecked-ink-color: 'var(--disabled-text-color)'
+
   # Sliders
   paper-slider-knob-color: 'var(--accent-color)'
   paper-slider-knob-start-color: 'var(--accent-color)'
@@ -342,7 +342,7 @@ midnight:
   paper-slider-secondary-color: 'var(--secondary-background-color)'
   paper-slider-disabled-active-color: 'var(--disabled-text-color)'
   paper-slider-disabled-secondary-color: 'var(--disabled-text-color)'
-  
+
   # Google colors
   google-red-500: '#E45E65'
   google-green-500: '#39E949'
@@ -372,18 +372,26 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 Security must be taken from current user and not from default_user
 
 ## Development
+### Version
+Used version of home-assistant-frontend@1.0.0
+
 ### How to build the new Lovelace version
 1. go to ./build directory.
-2. `git clone https://github.com/home-assistant/home-assistant-polymer.git`
+2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (e.g. notifications).
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app`
-4. `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
-5. Format index.html
-6. Start `gulp rename` task.
+6. `gulp run build-app` for release or `gulp run develop-iob` for debug version
+7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
+8. Start `gulp rename` task.
 
 ## Changelog
+### 0.2.0 (2019-09-19)
+* (Scrounger) Some bugs on "Custom Dialog" were fixed
+* (Scrounger) bug fix: if value set by lovelace and max is not 100
+* (Scrounger) log warn if no max value set for light entity
+* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
+
 ### 0.1.5 (2019-08-26)
 * (bluefox) fixed timestamp conversion
 
@@ -398,13 +406,13 @@ Security must be taken from current user and not from default_user
 
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker 
+* (bluefox) Lovelace compiled extra for ioBroker
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release
 
 ## License
-   
+
 Copyright 2019, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");

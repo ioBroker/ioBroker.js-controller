@@ -36,6 +36,14 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
+### 0.11.4 (2019-09-30)
+* (Asgothian) Danalock V3 BTZB
+* (Asgothian) GroupErrorInGetDevices
+* (Asgothian) new Dev Innr RB 245
+* (Asgothian) new Dev RS 225
+* (Asgothian) new Dev Heiman COSensor
+* (Asgothian) Improved device configuration method
+* (Stabilostil) Fix for install error if running zigbee-adapter is updated
 
 ### 0.11.3 (2019-09-11)
 * (kirovilya) Update Z-Stack 3 compatible
@@ -67,9 +75,9 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * (kirovilya) New DIY devices [ZigUP](https://github.com/formtapez/ZigUP) and [DIYRUZ_R4_5](http://modkam.ru/?p=1054)
 * (arteck) JIAWEN FB56-ZCW08KU1.2, Nue / 3A FNB56-ZCW25FB1.9, HOMA1031, Trust CSW_ADUROLIGHT
 * (allofmex) security update
-* (allofmex) brightness fix 
+* (allofmex) brightness fix
 * (Asgothian) Osram Gardenpole Mini
-* (Asgothian) Innr Plugs (BY 265 C, BY 165 C, RB265 
+* (Asgothian) Innr Plugs (BY 265 C, BY 165 C, RB265
 * (Asgothian) Fix for Ikea Tradfri repeater (image)
 * (sonntam) tint enhancements
 * (stream2me) support for Danalock V3
@@ -81,7 +89,7 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * (arteck) sensor_86sw2 new states
 * (allofmex) Improved device configuration and network map
 * (allofmex) security update
-* (allofmex) brightness fix 
+* (allofmex) brightness fix
 
 ### 0.10.2 (2019-03-15)
 * some fixes
@@ -112,7 +120,7 @@ No support of node.js 4 any more
 
 **BREAKING CHANGES**:
 * (kirovilya) Rename state "isopen" to "opened".
-* (kirovilya) Change brightness interval from 0..254 to 0..100 
+* (kirovilya) Change brightness interval from 0..254 to 0..100
 
 Other changes:
 * (kirovilya) Fix for admin2

@@ -64,7 +64,7 @@ sendTo('iogo', {
 
 ## Changelog
 
-### 0.4.0
+### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x

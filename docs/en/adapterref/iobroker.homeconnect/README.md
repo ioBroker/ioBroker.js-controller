@@ -74,6 +74,10 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 ## Changelog
 
+### 0.0.24 (08.09.2019)
+
+-   (ta2k) improve error messaging
+  
 ### 0.0.22 (08.09.2019)
 
 -   (ta2k) improve error messaging

@@ -114,6 +114,7 @@ function createDir(dir) {
 }
 
 function writeSafe(fileName, data) {
+    fileName = fileName.replace(/\?[^?]*$/, '');
     const parts = fileName.replace(/\\/g, '/').split('/');
     parts.pop();
     createDir(parts.join('/'));

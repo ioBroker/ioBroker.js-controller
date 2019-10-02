@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
+hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -17,22 +17,22 @@ hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 
 # IoBroker.lovelace
 ## Адаптер ловелас для ioBroker
-С помощью этого адаптера вы можете создавать визуализацию для ioBroker с Home Assistant Lovelace UI
+С помощью этого адаптера вы можете создавать визуализацию для ioBroker с помощью интерфейса Home Assistant Lovelace.
 
 ## Конфигурация
 Существует два способа настройки сущностей:
 
 - авто
-- руководство
+- руководство по эксплуатации
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
 Вы можете определить дружественные имена, и это будет использоваться в сущностях.
 
-### Руководство
+### Руководство по эксплуатации
 Объекты могут быть определены вручную в дереве объектов, например, sql или histroy. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
 С помощью этого метода могут быть созданы только простые объекты, такие как input_number, input_text или input_boolean. Он не может иметь более одного состояния или атрибута.
 
@@ -382,31 +382,47 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 Безопасность должна быть взята от текущего пользователя, а не от default_user
 
 ## Разработка
+### Версия
+Используемая версия home-assistant-frontend@1.0.0
+
 ### Как собрать новую версию Lovelace
 1. Перейдите в каталог ./build.
-2. `git clone https:// github.com / home-assistant / home-assistant-Polymer.git`
+2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (например, уведомления).
 3. «CD-домашний помощник-полимер»
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app`
-4. `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
-5. Формат index.html
-6. Запустите задачу `gulp rename`.
+6. `gulp run build-app` для релиза или` gulp run build-iob` для отладочной версии
+7. Скопируйте все файлы из `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
+8. Запустите задачу gulp rename.
 
 ## Changelog
+### 0.2.0 (2019-09-19)
+* (Scrounger) Some bugs on "Custom Dialog" were fixed
+* (Scrounger) bug fix: if value set by lovelace and max is not 100
+* (Scrounger) log warn if no max value set for light entity
+* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
+
+### 0.1.5 (2019-08-26)
+* (bluefox) fixed timestamp conversion
+
+### 0.1.3 (2019-07-18)
+* (SchumyHao) If no ACTUAL is discovered, use SET value as switch entity value
+
+### 0.1.2 (2019-07-14)
+* (SchumyHao) Translate Chinese words to pinyin
 
 ### 0.1.1 (2019-06-10)
 * (bluefox) Fixed control of states
 
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker 
+* (bluefox) Lovelace compiled extra for ioBroker
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release
 
 ## License
-   
+
 Copyright 2019, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");

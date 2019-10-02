@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wolf/README.md
 title: ioBroker.wolf
-hash: Rot/Djk/wBUnhJuUMYvWkk2S+OtcuUb2MEMu6oCNOgk=
+hash: hJN1wPthOOw6ah76o1cwsTXamihFDd930aCLfCEEqgw=
 ---
 ![商标](../../../en/adapterref/iobroker.wolf/admin/wolf_logo.png)
 
@@ -15,49 +15,59 @@ hash: Rot/Djk/wBUnhJuUMYvWkk2S+OtcuUb2MEMu6oCNOgk=
 ＃ioBroker.wolf
 ======================
 
-##应用领域：加热/太阳能/家庭通风
-适配器可通过ISM8i评估最多4个以下加热器：
+##应用领域：供暖/太阳能/家庭通风
+通过ISM8i，适配器最多可以评估以下4个加热器：
 
-*气体冷凝装置：CGB-2（包括：CGW-2，CGS-2，CSZ-2），MGK-2
-*油冷凝锅炉：TOB
-*分体式热泵：BWL-1-S
-*客厅通风CWL优秀
+   *气体冷凝单元：CGB-2（包括：CGW-2，CGS-2，CSZ-2），MGK-2
+   *冷凝油锅炉：TOB
+   *分体式热泵：BWL-1-S
+   *客厅通风CWL优秀
 
-始终需要系统控制模块BM-2。
-此外，诸如混合器模块MM，级联模块KM，太阳能模块SM1或SM2的附加组件可以存在于eBus系统中。
+始终需要系统控制模块BM-2或显示模块AM。
+此外，在eBus系统中可能存在其他组件，例如混合器模块MM，级联模块KM，太阳能模块SM1或SM2。
 
 单个模块的最大数量：
 
-*最大4个加热器hg（1）-hg（4）（其中BWL-1-S创建为hg0）
-*最大3个搅拌机mm（1） -  mm（3）
-*最大4个操作面板（BM-2）bm（1）-bm（4）
-*最大1级联模块km（1）
-*最大1个太阳能组件（SM1或SM2）sm（1）
+   *最高4个加热器汞（1）-汞（4）
+   *最高3个搅拌器mm（1）-mm（3）
+   *最高4个操作员面板（BM-2）bm（1）-bm（4）
+   *最高1级联模块km（1）
+   *最高1个太阳能模块（SM1或SM2）sm（1）
+   *最高1分体式空气/水热泵（BWL-1-S）汞（0）
 
-CWL Excellent系列的住宅通风装置也可以使用ISM8i进行评估和操作。
+   也可以使用ISM8i对CWL Excellent系列的住宅通风装置进行评估和操作。
 
 ## Einsatzbereiche：Heizung / Solar /Wohnraumlüftung
-Der AdapterkannüberdasISM8i maximal 4 von dennachfolgendenHeizgerätenaucewerten：
+Der Adapter kannüberdas ISM8i最多4个目录：
 
-  *Gasbrennwertgerät：CGB-2（beinhaltet：CGW-2，CGS-2，CSZ-2），MGK-2
+  *Gasbrennwertgerät：CGB-2（Beinhaltet：CGW-2，CGS-2，CSZ-2），MGK-2
   *ÖlBrennwertkessel：TOB
-  * Split-Wärmepumpe：BWL-1-S
+  *分体式水泵：BWL-1-S
   *WohnraumlüftungCWL优秀
 
-Es ist immer ein System-Bedienmodul BM-2 erforderlich。
-WeiterhinkönnenzusätzlicheKomponentenwie Mischermodul MM，Kaskadenmodul KM，Solarmodul SM1 oder SM2，im eBusSystem vorhanden sein。
+浸入系统中的Bedienmodul BM-2或Anzeigemodul AM erforderlich。
+WeiterhinkönnenzusätzlicheKomponenten wie Mischermodul MM，Kaskadenmodul KM，Solarmodul SM1 oder SM2，eBusSystem vorhanden sein。
 
   Maximale Anzahl der einzelnen模块：
 
-  *最大4Heizgerätehg（1）-hg（4）（wobei ein BWL-1-S als hg0 angelegt wird）
-  *最大3 Mischer mm（1） -  mm（3）
-  *最大4卧床（BM-2）bm（1）-bm（4）
-  *最大1 Kaskadenmodul km（1）
-  *最大1 Solarmodul（SM1或SM2）sm（1）
+  *最大4Heizgerätehg（1）-hg（4）
+  *最大3 Mischer毫米（1）-毫米（3）
+  *最大4Bediengeräte（BM-2）bm（1）-bm（4）
+  *最大1 Kaskadenmodul公里（1）
+  *最大1个阳模（SM1或SM2）sm（1）
+  *最大1分离式进气/瓦瑟泵（BWL-1-S）hg（0）
 
-  EinWohnraumlüftungsgerätderBaureihe CWL优秀的kann mit dem ISM8i ebenfalls ausgewertet und bedient werden。
+  鲍威尔（Baureihe）CWL的出色表现ISM8i堪称一流的典范，同时也为卧床不起。
 
 ## Changelog
+### 1.1.0 [2019.09.13]
+* (RustyThePropellerHead) ISM8i Firmware v1.50 Update to be able to use the new DataPoints (FW Released in 2016)
+                          * As a side note the GLT °C boiler setpoint is defined and read as a 1°C resolution, but you can send the boiler setpoint commands with 0.1°C resolution
+* (RustyThePropellerHead) DHW minimum value reduced from 20°C to 0°C to allow for deactivation                          
+* (RustyThePropellerHead) Reorganisation of the hg0 to have its own area on the adapter configuration webpage.
+* (RustyThePropellerHead) Scalling DPT_FlowRate_m3/h corrected
+* (RustyThePropellerHead) Lookup "Programmwahl CWL" corrected
+
 ### 1.0.0 [2017.11.21]
 * (bluefox) resize logo
 
@@ -108,7 +118,7 @@ WeiterhinkönnenzusätzlicheKomponentenwie Mischermodul MM，Kaskadenmodul KM，
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 smiling_Jack
+Copyright (c) 2015-2019 smiling_Jack
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

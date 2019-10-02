@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hue/README.md
 title: Перемещено на https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
+hash: kO0q9BBZOPYEkmaGizJv1Q9Yms3sXUtpJenPSjO889o=
 ---
 # Перемещено на https://github.com/iobroker-community-adapters/ioBroker.hue
 ![логотип](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
@@ -17,12 +17,17 @@ hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ==============
 
 ## Английский: gb:
-Подключает светодиодные лампы Philips Hue, светодиодные лампы и полосы Friends of Hue и другие устройства с поддержкой SmartLink (LivingWhites, некоторые LivingColors) через мосты Philips Hue Bridges к ioBroker.
+Этот адаптер соединяет ваши мосты Philips Hue с ioBroker для управления светодиодными лампами Philips Hue, светодиодными лампами Friends of Hue, полосами, штекерами, такими как Osram, и другими устройствами с поддержкой SmartLink (такими как LivingWhites и некоторые LivingColors).
 
-Сначала вы должны связать свой мост HUE с ioBroker.
+### Настроить
+После того, как вы установили этот адаптер в ioBroker, создайте соответствующий экземпляр адаптера. Далее вам необходимо подключить ваш мост Hue к ioBroker в настройках адаптера:
 
-1. Для этого сначала найдите IP-адрес, нажав кнопку «Найти мост». Он активируется только в том случае, если IP-адрес не введен.
-2. После того, как IP-адрес найден, пользователь должен быть создан. Для этого нажмите кнопку «Создать пользователя», а затем нажмите кнопку «Ссылка» на мосту HUE. Кнопка «Создать пользователя» активна, только если не введен пользователь
+1. Нажмите кнопку «Найти мост», чтобы получить IP-адрес вашего моста. Это будет искать все мосты в вашей среде. Затем выберите мост, к которому вы хотите подключиться. Поле «Адрес моста» будет заполнено IP-адресом выбранного вами моста Хюэ.
+2. Затем нажмите кнопку «Создать пользователя» в настройках, а затем перейдите к устройству моста Hue, а затем к своему оборудованию, чтобы нажать его круглую кнопку. У тебя будет 30 секунд, чтобы продолжить. После того, как вы нажали кнопку, поле «Пользователь моста» должно быть заполнено сгенерированной строкой.
+4. Измените любые другие параметры в настройках адаптера и затем выберите «сохранить и закрыть».
+5. Наконец, у вас все должно быть готово: адаптер сгенерирует все объекты для соответствующего управления вашими устройствами Hue.
+
+Обратите внимание: кнопка настроек адаптера «Найти мост» будет неактивной, если заполнено поле «Адрес моста», а кнопка «Создать пользователя» будет неактивной, если заполнено поле «Пользователь моста».
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -33,6 +38,23 @@ Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
 * Автоматическая настройка пользователя с помощью кнопки моста
 
 ## Changelog
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -174,5 +196,5 @@ Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

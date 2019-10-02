@@ -76,6 +76,7 @@ The following objects are currently implemented:
 |netusb.input|value|x|set/actual input|
 |netusb.playPause|boolean|x|set Play/Pause|
 |netusb.playback|text|-|status net player|
+|netusb.stop|boolean|x|set Stop|
 |netusb.auto_stop|boolean|-|automatically stopped|
 |netusb.next|boolean|x|set Forward|
 |netusb.prev|boolean|x|set Rewind|

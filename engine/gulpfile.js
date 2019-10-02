@@ -176,12 +176,10 @@ gulp.task('1.blog', () => {
 });
 
 // download all adapters
-gulp.task('2.downloadAdapters', () => {
-    return adapters.buildAdapterContent()
-        .then(content => {
-            console.log(JSON.stringify(content));
-        });
-});
+gulp.task('2.downloadAdapters', () =>
+    adapters.buildAdapterContent()
+        .then(content =>
+            console.log(JSON.stringify(content))));
 
 gulp.task('3.downloadVisCordova', done => {
     request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {

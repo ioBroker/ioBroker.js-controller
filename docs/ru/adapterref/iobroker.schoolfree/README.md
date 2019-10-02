@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: aAgpzMQSPRFzfXLU6vJ8g9hjY9lngmIhTi6UkHFu6Jo=
+hash: K06DKuylCol7chKVtwTgroTBBcxOLqKQ1P0oTxXfVY8=
 ---
 ![логотип](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
@@ -17,6 +17,10 @@ hash: aAgpzMQSPRFzfXLU6vJ8g9hjY9lngmIhTi6UkHFu6Jo=
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
 # IoBroker.schoolfree
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 ## Школьный адаптер для ioBroker
 ### Deutsche Beschreibung:
 Schoolfree ist ein Adapter for iobroker Installationen.

@@ -40,6 +40,15 @@ If you have any device transmitting specially encoded information via advertisem
 
 ## Changelog
 
+### 0.10.0 (2019-09-26)
+* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+
+### 0.9.2 (2019-09-26)
+* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+
+### 0.9.1 (2019-09-22)
+* (AlCalzone) Fix compact mode crashes
+
 ### 0.9.0 (2019-09-04)
 * (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
 * (AlCalzone) `_default` plugin: Create states for manufacturer data

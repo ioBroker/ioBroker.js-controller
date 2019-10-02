@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: D/wb6g5D8l09HJDjgNuTnBsgEYgyDYY9TcTPAmgsAyY=
+hash: /l80m4JRm4EQrQ96YQen6Y46NuiLRHXqY6rh1NVE0rM=
 ---
 ![Logo](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -18,9 +18,37 @@ hash: D/wb6g5D8l09HJDjgNuTnBsgEYgyDYY9TcTPAmgsAyY=
 ## Nina Adapter für ioBroker
 Notfall-Informations- und Nachrichten-App
 
-### Fertig machen
+https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html
+
+https://warnung.bund.de/
+
+### Loslegen
+Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
+
+Liste der AGS mit Strg + F suchen:
+
+https://warnung.bund.de/assets/json/suche_channel.json
 
 ## Changelog
+
+### 0.0.13
+
+-   (tomboxi) Identifierliste hinzugefügt.
+
+### 0.0.12
+
+-   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+
+### 0.0.8
+
+-   (tomboxi) Katwarn Warnungen hinzugefügt.
+### 0.0.7
+
+-   (tomboxi) BiwApp Warnungen hinzugefügt.
+
+### 0.0.6
+
+-   (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
 
 ### 0.0.5
 

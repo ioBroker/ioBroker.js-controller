@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
+### 2.4.12 (2019-09-26)
+* (foxriver76) fixed bug which lead to alarm counter showing number of service messages
+
 ### 2.4.10 (2019-09-17)
 * (foxriver76) we set enum name as translation object again
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
+hash: kO0q9BBZOPYEkmaGizJv1Q9Yms3sXUtpJenPSjO889o=
 ---
 # Nach https://github.com/iobroker-community-adapters/ioBroker.hue verschoben
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
@@ -17,12 +17,17 @@ hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ==============
 
 ## English: gb:
-Verbindet Philips Hue LED-Lampen, Friends of Hue LED-Lampen und Stripes und andere SmartLink-fähige Geräte (LivingWhites, einige LivingColors) über Philips Hue Bridges mit ioBroker.
+Dieser Adapter verbindet Ihre Philips Hue Bridges mit ioBroker, um Philips Hue LED-Lampen, Friends of Hue LED-Lampen, Streifen, Stecker wie von Osram und andere SmartLink-fähige Geräte (wie LivingWhites und einige LivingColors) zu steuern.
 
-Sie müssen zuerst Ihre HUE-Bridge mit ioBroker verknüpfen.
+### Konfiguration
+Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als nächstes müssen Sie Ihre Hue Bridge mit ioBroker in den Adaptereinstellungen verbinden:
 
-1. Suchen Sie dazu zuerst die IP-Adresse, indem Sie auf die Schaltfläche "Find Bridge" klicken. Es ist nur aktiviert, wenn keine IP-Adresse eingegeben wurde.
-2. Nachdem die IP-Adresse gefunden wurde, muss der USER erstellt werden. Klicken Sie dazu auf die Schaltfläche "Create User" und anschließend auf die Schaltfläche "Link" auf der HUE Bridge. Die Schaltfläche "Benutzer erstellen" ist nur aktiviert, wenn kein Benutzer eingegeben wurde
+1. Klicken Sie auf die Schaltfläche "Find Bridge", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch werden alle Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Bridge aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Bridge Address" wird mit der IP-Adresse der von Ihnen gewählten Hue Bridge gefüllt.
+2. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Button gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
+4. Ändern Sie andere Optionen in den Adaptereinstellungen und wählen Sie dann "Speichern und schließen".
+5. Schließlich sollten Sie fertig sein: Der Adapter generiert alle Objekte, um Ihre Hue-Geräte entsprechend zu steuern.
+
+Bitte beachten Sie: Die Schaltfläche "Find Bridge" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge Address" (Brückenadresse) ausgefüllt ist, und die Schaltfläche "Create User" (Benutzer erstellen) ist inaktiv, wenn das Feld "Bridge User" (Brückenbenutzer) ausgefüllt ist.
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -33,6 +38,23 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 * Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -174,5 +196,5 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

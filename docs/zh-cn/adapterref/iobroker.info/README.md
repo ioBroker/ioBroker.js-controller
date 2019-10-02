@@ -324,6 +324,14 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 当通过IP或localhost：8081访问ioBroker时，论坛条目将显示没有问题。但是如果你使用像meinhaus.de:8081这样的主机名，你必须在Feednami获得一个免费的API密钥。 要注册，请单击 [此处](https://toolkit.sekando.com/docs/en/setup/hostnames) 并按照说明进行操作。
 
 ## Changelog
+### 1.5.3 (2019-09-25)
+* (ldittmar) add event calendar
+
+### 1.5.2 (2019-09-24)
+* (ldittmar) show comments for adapter requests
+* (ldittmar) show closed adapter requests
+* (ldittmar) check node version for messages
+
 ### 1.4.3 (2019-09-09)
 * (ldittmar) change systeminformation call interval
 * (ThomasBahn) News problem fixed

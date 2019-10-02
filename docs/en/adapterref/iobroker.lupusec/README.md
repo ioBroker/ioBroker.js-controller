@@ -30,6 +30,8 @@ For only reading the status, select a user without write access. If you want to 
 ![admin_main](docs/en/img/lupusec_admin.png)
 If you have surveillance cams connected to your Lupusec alarm system you can provide them in ioBroker. The Lupusec adapter finds all Lupusec cams by it own. You have to enter a address (your ioBroker IP addrss or 0.0.0.0) and a port for later connecting to the cams.
 ![admin_webcam](docs/en/img/lupusec_admin_webcam.png)
+If you have your Nuki door opener connected to your Lupusec alarm system you can use it from ioBroker too. On the ioBroker instance admin menu, you can enter your Lupusec door sensor which is mounted to the Nuki door. If you now open the door where the Nuki is mounted you have the additional state 'door opened' instead only 'unlocked'. If you do not have a Lupusec door sensor at the Nuki door, you will only see the states 'locked' or 'locked'.
+![admin_nuki](docs/en/img/lupusec_admin_nuki.png)
 
 By default all Lupusec devices will be on the ioBroker object tab  displayed.
 Fully supported and individually adapted are following devices:
@@ -53,6 +55,7 @@ Fully supported and individually adapted are following devices:
   - Room sensor V1 (Type 54)
   - LCD temperature sensor (Type 54)  
   - Mini temperature (Type 54)
+  - Nuki door opener (Type 57)
   - Heat detector (Type 58)
   - Dimmer (Type 66)
   - Light Switch V2 (Type 66)
@@ -87,10 +90,15 @@ Detailed view of a sensor or device. In this example you see the CO sensor. On C
 You find all connected surveillance cams under 'webcams'. You can copy the link provided in the 'image' and 'stream' state to your web browser for opening. 
 ![lupusec_obj_webcam](docs/en/img/lupusec_obj_webcam.png)
 
+### Lupusec Nuki
+You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuki provides 2 states. The state nuki_state shows you the actuall state of the Nuki door opener like door is locked or unlocked. With the state nuki_action you can open, lock or unlock your door.  
+![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
+
 ## Changelog
 
 ### 1.2.0 (13.09.2019)
 * (Stübi) Changing error handling of adapter
+* (Stübi) Add Nuki door opener
 
 ### 1.1.9 (06.09.2019)
 * (Stübi) Add device: Smoke detector V2

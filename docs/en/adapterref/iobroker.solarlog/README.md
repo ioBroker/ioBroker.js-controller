@@ -22,6 +22,10 @@ Solarlog 200PM+ / 300PM+ / 500 / 1200Meter
 
 ## Changelog
 
+### 0.1.6
+
+-   Reads now battery data
+
 ### 0.1.5
 
 -   Reads now historic data (yearly sum per Inverter), testing update

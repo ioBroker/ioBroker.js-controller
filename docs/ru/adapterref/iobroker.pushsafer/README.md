@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pushsafer/README.md
 title: без названия
-hash: O4eLpad/kEJhALGXL2ez6WtAOW5JLcyyTlSeK9WNIf8=
+hash: Y5Kks5tuSiTJUikSXpEqu6ZdbHVMxRB3eg8UFZ5YsA8=
 ---
 ![логотип](../../../en/adapterref/iobroker.pushsafer/admin/pushsafer.png)
 
@@ -12,13 +12,15 @@ hash: O4eLpad/kEJhALGXL2ez6WtAOW5JLcyyTlSeK9WNIf8=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.pushsafer.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushsafer.png?downloads=true)
 
-ioBroker pushsafer Adapter ==============
+ioBroker pushsafer Адаптер
+
+==============
 
 Отправить pushsafer уведомления от ioBroker.
 Pushsafer.com поддерживает устройства iOS, Android, Windows 10 (телефон и рабочий стол) и Webpush (Chrome & Firefox)
 
 ## Конфигурация
-Прежде всего, требуется учетная запись на pushsafer с [закрытый ключ](https://www.pushsafer.com/) вместо закрытого ключа, вы также можете использовать псевдоним с предопределенными параметрами.
+Прежде всего требуется учетная запись на pushsafer с [закрытый ключ](https://www.pushsafer.com/), вместо закрытого ключа, вы также можете использовать псевдоним с предопределенными параметрами.
 ![Конфигурация Pushsafer](../../../en/adapterref/iobroker.pushsafer/img/Screen0.png)
 
 ## Использование
@@ -36,9 +38,13 @@ sendTo("pushsafer", {
    message:   'Test text',             // mandatory - your text message
    title:     'SweetHome',             // optional  - your message's title, otherwise your app's name is used
    device:    '12',                    // optional  - a device id or device group id (empty or a = all devices)
-   sound:     '2',                     // optional  - a number betwenn 0-28 (see pushsafers API description)
-   icon:      '2',                     // optional  - a number betwenn 1-98 (see pushsafers API description)
+   sound:     '2',                     // optional  - a number betwenn 0-60 (see pushsafers API description)
+   icon:      '2',                     // optional  - a number betwenn 1-177 (see pushsafers API description)
    vibration: '0',                     // optional  - a number betwenn 0-3 (see pushsafers API description)
+   priority:  '2',                     // optional  - 2, 1, 0, -1, -2 (see pushsafers API description)
+   retry:     '600',                   // optional  - Integer 60-10800 (60s steps): Time in seconds, after a message shuld resend (see pushsafers API description)
+   expire:    '1200',                  // optional  - Integer 60-10800: Time in seconds, after the retry/resend should stop. (see pushsafers API description)
+   answer:    '1',                     // optional  - 1 = Answer is possible, 0 = Answer is not possible. (see pushsafers API description)
    picture:   'absolutePathToPicture'  // optional  - absolute path to picture or base64 coded image URL
    picture2:  'absolutePathToPicture2' // optional  - absolute path to picture or base64 coded image URL
    picture3:  'absolutePathToPicture3' // optional  - absolute path to picture or base64 coded image URL
@@ -51,6 +57,9 @@ sendTo("pushsafer", {
 Вы можете найти описание API [Вот](https://www.pushsafer.com/en/pushapi)
 
 ## Changelog
+### 0.1.9 (2019-09-19)
+* (appzer) add new sounds & icons, add new parameter (priority, retry, expire, answer)
+
 ### 0.1.8 (2017-09-12)
 * (bluefox) use new pushsafer package
 

@@ -11,6 +11,7 @@ Developers may find the javascript implementation of the nello.io API via https:
 [![NPM version](http://img.shields.io/npm/v/iobroker.nello.svg)](https://www.npmjs.com/package/iobroker.nello)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.nello.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.nello)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nello.svg)](https://www.npmjs.com/package/iobroker.nello)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)](https://nodei.co/npm/iobroker.nello/) 
 
@@ -27,7 +28,8 @@ Developers may find the javascript implementation of the nello.io API via https:
 5. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
    1. [Open door using Alexa](#open-door-using-alexa)
    2. [Let Alexa inform you about door ring](#let-alexa-inform-you-about-door-ring)
-   3. [Let colored lamps inform you about door ring](#let-colored-lamps-inform-you-about-door-ring)
+   3. [Let Telegram inform you about door ring](#let-telegram-inform-you-about-door-ring)
+   4. [Let colored lamps inform you about door ring](#let-colored-lamps-inform-you-about-door-ring)
 6. [Credits](#credits)
 7. [Changelog](#changelog)
 8. [Licence](#license)
@@ -287,8 +289,8 @@ var L = {
 
 on({id: 'nello.0.ID.events.feed', change: 'any'}, function(obj)
 {
-   var events = JSON.parse(obj.state.val);
-   if (events.length === 0) return;
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
 
    var event = events[events.length-1];
    if (event.action == 'deny')
@@ -308,6 +310,65 @@ _(updated on 2019-01-02 to also reflect geo option with specific Alexa phrase)_
 
 Based on the action of the event, Alexa will inform you about the door being opened or the door bell being recognized.
 **IMPORTANT**: Replace #YOUR DOOR ID# (also replace #) with your nello door ID.
+
+### Let Telegram inform you about door ring
+This requires the ioBroker adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram#iobroker-telegram-adapter).
+
+In order to use the Telegram messenger we define a function ```msg```. Place the following function in a script in the "global" folder of ioBroker.javascript (you may place it in the same one as above).
+
+```javascript
+/**
+ * Send something with Telegram
+ * 
+ * @param       {string}        content         Content to send via Telegram
+ * @param       {string}  		[user='']		User to send the content to
+ * @return      void
+ * 
+ */
+function msg(content, user = '')
+{
+    const CONFIG = {
+        text: content,
+        parse_mode: 'HTML'
+    };
+    
+    sendTo('telegram', user ? Object.assign({user: user}, CONFIG) : CONFIG);
+}
+```
+
+You can use this function within ioBroker.javascript to send anything to Telegram using ```msg('Hello World')```. You may use ```msg('Hello World', 'User')``` to send the content to a specific user.
+
+Create a script in the "common" folder of ioBroker.javascript (or use the one you created above) and add the following listener to it:
+
+```javascript
+var L = {
+   'actionRingUnknown': 'Es hat geklingelt',
+   'actionOpenName': '%name% hat die Tür geöffnet',
+   'actionOpenGeo': '%name% hat das Haus betreten',
+   'actionOpen': 'Die Haustür wurde geöffnet'
+};
+
+on({id: 'nello.0.ID.events.feed', change: 'any'}, function(obj)
+{
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
+
+   var event = events[events.length-1];
+   if (event.action == 'deny')
+      msg(L.actionRingUnknown);
+
+   else if (event.action == 'swipe')
+      msg(L.actionOpenName.replace(/%name%/gi, event.data.name));
+
+   else if (event.action == 'geo')
+      msg(L.actionOpenGeo.replace(/%name%/gi, event.data.name));
+
+   else
+      msg(L.actionOpen);
+});
+```
+
+Based on the action of the event, Telegram will inform you about the door being opened or the door bell being recognized.
 
 ### Let colored lamps inform you about door ring
 This functionality requires an adapter which can set colored / rgb lamps, e.g. ioBroker.hue (https://github.com/ioBroker/ioBroker.hue).
@@ -420,8 +481,8 @@ var rgb = {
 
 on({id: 'nello.0.#YOUR DOOR ID#.events.feed', change: 'any'}, function(obj)
 {
-    var events = JSON.parse(obj.state.val);
-    if (events.length === 0) return;
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
     
     var event = events[events.length-1];
     if (event.action == 'deny')

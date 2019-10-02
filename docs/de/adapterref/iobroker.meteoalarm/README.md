@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: dUsld3yH2f1dAw2TT8qbx9+CnNQoHa33NCkdJM9WCSM=
+hash: /UuqRf0fQOLjTNWpl4OG3gv7l+6zCiWKQ3xcZQ2NpEc=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -87,6 +87,9 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gern
 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
+
+## 1.0.5 (2019-09-22)
+* (Jack-Blackson) Kleine Protokollierungsanpassungen
 
 ## 1.0.4 (2019-09-11)
 * (Jack-Blackson) Travis-Fehler

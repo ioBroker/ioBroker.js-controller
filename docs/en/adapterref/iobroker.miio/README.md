@@ -50,6 +50,9 @@ This adapter controls devices which followed miIO protocol.
 
 
 ## Changelog
+### 0.0.13 (2019-09-19)
+* Fix device can not control after adapter restart
+
 ### 0.0.12 (2019-09-14)
 * Change channel object to device object
 

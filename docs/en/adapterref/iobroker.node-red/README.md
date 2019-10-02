@@ -16,6 +16,9 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 **Note:** If in select ID dialog of the ioBroker node you cannot find some variable, restart node-red instance. By restarting the new list of objects will be created.
 
 ## Changelog
+### 1.10.1 (2019-09-20)
+* (Apollon77) Make sure also checkState calls are executed after ioBroker databases are initialized
+
 ### 1.10.0 (2019-09-15)
 * (Apollon77) Used newer version of node-red 0.20.8 and updated other dependencies
 

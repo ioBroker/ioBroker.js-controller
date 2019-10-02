@@ -26,6 +26,9 @@ Feiertage, die bei der Befüllung der Datenpunkte berücksichtigt werden sollen,
 Der Adapter startet jeden Tag um Mitternacht. Ein häufigeres Starten ist nicht erforderlich.
 
 ## Changelog
+### 1.0.13 (2019-09-20)
+* (pix) Offsets corrected
+
 ### 1.0.12 (2019-08-26)
 * (pix) Added Weltkindertag (Thuringa)
 

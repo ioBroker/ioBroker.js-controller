@@ -10,40 +10,50 @@
 
 ## Areas of application: heating / solar / domestic ventilation
 The adapter can evaluate a maximum of 4 of the following heaters via the ISM8i:
-   * Gas condensing unit: CGB-2 (includes: CGW-2, CGS-2, CSZ-2), MGK-2
-   * Oil condensing boiler: TOB
-   * Split heat pump: BWL-1-S
-   * Living room ventilation CWL Excellent
-   A system control module BM-2 is always required.
-   Furthermore, additional components such as mixer module MM, cascade module KM, solar module SM1 or SM2, may be present in the eBus system.
-
+   * Gas condensing unit: CGB-2 (includes: CGW-2, CGS-2, CSZ-2), MGK-2
+   * Oil condensing boiler: TOB
+   * Split heat pump: BWL-1-S
+   * Living room ventilation CWL Excellent
+   A system control module BM-2 or display module AM is always required.
+   Furthermore, additional components such as mixer module MM, cascade module KM, solar module SM1 or SM2, may be present in the eBus system.
+   
 Maximum number of individual modules:
-   * Max. 4 heaters hg (1) -hg (4) (where a BWL-1-S is created as hg0)
-   * Max. 3 mixers mm (1) - mm (3)
-   * Max. 4 operator panels (BM-2) bm (1) -bm (4)
-   * Max. 1 cascade module km (1)
-   * Max. 1 solar module (SM1 or SM2) sm (1)
-   A residential ventilation unit of the CWL Excellent series can also be evaluated and operated with the ISM8i.
-
+   * Max. 4 heaters hg (1) -hg (4)
+   * Max. 3 mixers mm (1) - mm (3)
+   * Max. 4 operator panels (BM-2) bm (1) -bm (4)
+   * Max. 1 cascade module km (1)
+   * Max. 1 solar module (SM1 or SM2) sm (1)
+   * Max. 1 Split air/water heatpump (BWL-1-S) hg (0)
+   A residential ventilation unit of the CWL Excellent series can also be evaluated and operated with the ISM8i.
+   
 ## Einsatzbereiche: Heizung / Solar / Wohnraumlüftung
 Der Adapter kann über das ISM8i maximal 4  von den nachfolgenden Heizgeräten auswerten:
   * Gasbrennwertgerät: CGB-2 (beinhaltet: CGW-2, CGS-2, CSZ-2), MGK-2 
   * Öl Brennwertkessel:   TOB 
   * Split-Wärmepumpe:  BWL-1-S 
   * Wohnraumlüftung CWL Excellent
-  Es ist immer ein System-Bedienmodul BM-2 erforderlich. 
+  Es ist immer ein System-Bedienmodul BM-2 oder Anzeigemodul AM erforderlich. 
   Weiterhin können zusätzliche Komponenten wie Mischermodul MM, Kaskadenmodul KM, Solarmodul SM1 oder SM2, im eBusSystem vorhanden sein. 
   
   Maximale Anzahl der einzelnen Module: 
-  * max. 4 Heizgeräte hg(1)-hg(4)  (wobei ein BWL-1-S als hg0 angelegt wird)
+  * max. 4 Heizgeräte hg(1)-hg(4)
   * max. 3 Mischer mm(1)- mm(3)
   * max. 4 Bediengeräte (BM-2) bm(1) -bm(4)
   * max. 1 Kaskadenmodul km(1) 
-  * max. 1 Solarmodul (SM1 oder SM2) sm(1) 
+  * max. 1 Solarmodul (SM1 oder SM2) sm(1)
+  * max. 1 Split-Luft/Wasser-Wärmepumpe (BWL-1-S) hg(0)
   Ein Wohnraumlüftungsgerät der Baureihe CWL Excellent kann mit dem ISM8i ebenfalls ausgewertet und bedient werden. 
 
 
 ## Changelog
+### 1.1.0 [2019.09.13]
+* (RustyThePropellerHead) ISM8i Firmware v1.50 Update to be able to use the new DataPoints (FW Released in 2016)
+                          * As a side note the GLT °C boiler setpoint is defined and read as a 1°C resolution, but you can send the boiler setpoint commands with 0.1°C resolution
+* (RustyThePropellerHead) DHW minimum value reduced from 20°C to 0°C to allow for deactivation                          
+* (RustyThePropellerHead) Reorganisation of the hg0 to have its own area on the adapter configuration webpage.
+* (RustyThePropellerHead) Scalling DPT_FlowRate_m3/h corrected
+* (RustyThePropellerHead) Lookup "Programmwahl CWL" corrected
+
 ### 1.0.0 [2017.11.21]
 * (bluefox) resize logo
 
@@ -99,7 +109,7 @@ Der Adapter kann über das ISM8i maximal 4  von den nachfolgenden Heizgeräten a
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 smiling_Jack
+Copyright (c) 2015-2019 smiling_Jack
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

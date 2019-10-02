@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
+hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -35,13 +35,15 @@ hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
 ![пример](img/screenshot4.jpg) ![пример](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Работает в любом браузере.
-Вы можете сохранить его как веб-приложение на домашнем экране iOS, и оно будет выглядеть как родное приложение.
 Это полностью настраиваемый.
+
+## Добавить на домашний экран
+Вы можете сохранить его как веб-приложение на главном экране, и оно будет выглядеть и выглядеть как собственное приложение: ![Добавить в Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Тебе нужно...
 * Nodejs 8 или выше
 * Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
-    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
+    * Если это вступает в конфликт с другими адаптерами, просто добавьте еще один экземпляр с вышеуказанными настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
 * Для подключения через *iobroker.pro-Cloud* оба, admin и web-адаптер должны быть установлены на http (не https)
 
 ## Поиск неисправностей
@@ -127,7 +129,7 @@ hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
-  * Технически *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
+  * Технически, *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
 
 ````
 "native": {
@@ -138,7 +140,7 @@ hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
 
     * Вы можете создать свой собственный список значений, изменив точку данных (значок гаечного ключа за точкой данных на вкладке объектов iobroker, см. Выше)
 
-Однако не каждый тип имеет смысл для каждой роли. Так, например, СОСТОЯНИЕ переключателя будет в большинстве случаев булевым, чтобы его можно было переключать между включением и выключением. Строка может отображаться, но переключатель не будет работать.
+Однако не каждый тип имеет смысл для каждой роли. Так, например, СОСТОЯНИЕ переключателя в большинстве случаев будет логическим, чтобы его можно было переключать между включением и выключением. Строка может отображаться, но переключатель не будет работать.
 
 ### Ссылка на другой вид:
 * Не имеет больше состояний
@@ -167,7 +169,7 @@ hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
   * **COLOR_BRIGHTNESS** * число * - яркость цветных светодиодов (если у вас есть LEVEL-состояние и нет белых светодиодов, это игнорируется, потому что яркость полностью контролируется LEVEL)
 * Для белых светодиодов:
   * **CT** * число * - цветовая температура света, если он имеет два оттенка белого
-  * **WHITE_BRIGHTNESS** * число * - яркость белых светодиодов (если у вас есть LEVEL-состояние и нет цветных светодиодов, это игнорируется, потому что LEVEL полностью контролирует яркость)
+  * **WHITE_BRIGHTNESS** * number * - яркость белых светодиодов (если у вас есть LEVEL-состояние и нет цветных светодиодов, это игнорируется, потому что LEVEL полностью контролирует яркость)
 * Альтернативные цветовые пространства:
   * **ALTERNATIVE_COLORSPACE_VALUE** * строка * или * число * (в зависимости от выбранного цветового пространства) - значение альтернативного цветового пространства
 
@@ -190,7 +192,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * Эффект-режим:
   * **EFFECT** * value-list * - эффект для воспроизведения
 * **EFFECT_NEXT** *boolean* - если установлено значение true, будет воспроизводиться следующий эффект (в качестве альтернативы для устройств, которые не поддерживают список значений EFFECT)
-* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - если установлено значение true, эффект будет ускоряться вверх / вниз
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - при значении true эффект будет ускоряться вверх / вниз
 * Разнообразный:
   * **POWER** * number * - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
@@ -200,7 +202,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **ВЛАЖНОСТЬ** *число* - фактическая влажность отображается в маленьком правом верхнем углу
 * **CONTROL_MODE** *список значений* - отобразить и установить режим термостата
 * **WINDOW_OPENING_REPORTING** *boolean* - если true, отображается небольшое открытое окно
-* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, связанных с термостатом
+* **VALVE_STATES** массив имен и номеров - отображает открытие клапанов, которые связаны с термостатом
 
 ### <img src="img/icons/radiator.png" width="32"> Homematic Термостат:
 В дополнение к обычному термостату вы можете определить:
@@ -224,7 +226,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
-* **STATE** *логическое* - отображать, открыта или закрыта дверь или окно
+* **STATE** *логический* - отображать, открыта или закрыта дверь или окно
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон»
   * Вы также можете назначить *строку* для отображения любого текста, такого как «3 открытых окна» или «все закрыто»
 * Уважайте **свойство связанных просмотров**
@@ -265,6 +267,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/battery_full.png" width="32"> Батарея:
 * **STATE** *число* - уровень заряда батареи в процентах
 * **CHARGING** *boolean* - если true, отображается значок зарядки
+* **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
+* **VOLTAGE** *number* - напряжение, которое будет отображаться маленьким в верхнем правом углу
 
 ### <img src="img/icons/value_on.png" width="32"> Стоимость:
 * **СОСТОЯНИЕ** *любое* - любое допустимое состояние, которое будет отображаться (посмотрите раздел общих состояний)
@@ -291,6 +295,24 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.2.8 (2019-09-27)
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+
+### 0.2.7 (2019-09-27)
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
+
+### 0.2.6 (2019-09-24)
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+
+### 0.2.5 (2019-09-22)
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
 
 ### 0.2.4 (2019-09-15)
 * (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.

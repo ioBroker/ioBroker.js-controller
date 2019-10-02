@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tinker/README.md
 title: ioBroker.tinker
-hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
+hash: JEPSSK8ggpw+2f3PKk6ehT+Aenx/6AA5+dciOw/uXoI=
 ---
 ![логотип](../../../en/adapterref/iobroker.tinker/admin/tinker.png)
 
@@ -12,8 +12,14 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.tinker.svg)
 ![NPM](https://nodei.co/npm/iobroker.tinker.png?downloads=true)
 
-# IoBroker.tinker ===================
+# IoBroker.tinker
+===================
+
 Адаптер Tinker Board Monitor является модифицированной версией адаптера Raspberry PI Monitor и адаптера OrangePi Monitor для ioBroker
+
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
 ### Важная информация
 протестированное оборудование: Asus Tinker Board
@@ -25,7 +31,7 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 - нагрузка5
 - нагрузка15
 
-## *Объем памяти*
+## *Память*
 - память доступна
 - память_свободная
 - memory_total
@@ -38,7 +44,7 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 - sdcard_root_total
 - sdcard_root_used
 
-## *Своп*
+## *Поменять местами*
 - swap_total
 - swap_used
 
@@ -56,10 +62,10 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 На странице конфигурации вы можете выбрать следующие модули:
 
 - ЦПУ
-- Объем памяти
+- Память
 - сеть
 - SD Card
-- Своп
+- Поменять местами
 - температура
 - время работы
 - WLAN

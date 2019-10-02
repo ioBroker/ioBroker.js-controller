@@ -15,6 +15,10 @@
 [![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)](https://travis-ci.org/simatec/ioBroker.shuttercontrol)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)](https://ci.appveyor.com/project/simatec/ioBroker-shuttercontrol/)
 
+**If you like it, please consider a donation:**
+  
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 
 ## shuttercontrol adapter for ioBroker
 
@@ -34,6 +38,8 @@ automatic control for shutters
 
 ### 0.4.0 (28.08.2019)
 * (simatec) Fix shutdown for Elevation
+* (simatec) Fix triggerHeight
+* (simatec) Fix Travis
 
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter

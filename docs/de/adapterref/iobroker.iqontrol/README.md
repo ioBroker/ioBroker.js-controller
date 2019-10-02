@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: nhvo+hkHyygNZAIP3yIXZN2BgbAxxhiT7sY7ZlG8hNw=
+hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -35,8 +35,10 @@ Schnelle Web-App zur Visualisierung.
 ![Beispiel](img/screenshot4.jpg) ![Beispiel](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Läuft in jedem Browser.
-Sie können es als Web-App auf iOS-Homescreen speichern und es sieht aus und fühlt sich an wie eine native App.
 Es ist vollständig anpassbar.
+
+## Zum Startbildschirm hinzufügen
+Sie können es als Web-App auf Homescreen speichern und es sieht aus wie eine native App: ![Hinzufügen zu Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Du brauchst...
 * Nodejs 8 oder höher
@@ -104,7 +106,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 
 * Nur-Lese-Flag setzen
 * Invert-Flag setzen
-* Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
+* Legen Sie eine Datenpunkt-ID fest, in die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
 * Ändern Sie die Einheit des Datenpunkts, und trennen Sie sie für die Werte Null, Singular und Plural
 * Min. Und Max. Des Datenpunkts ändern
 * Ändern Sie den Typ des Datenpunkts
@@ -265,6 +267,8 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
 * **CHARGING** *boolean* - wenn wahr, wird ein Ladesymbol angezeigt
+* **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
+* **VOLTAGE** *number* - Spannung, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/value_on.png" width="32"> Wert:
 * **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
@@ -291,6 +295,24 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### 0.2.8 (2019-09-27)
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+
+### 0.2.7 (2019-09-27)
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
+
+### 0.2.6 (2019-09-24)
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+
+### 0.2.5 (2019-09-22)
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
 
 ### 0.2.4 (2019-09-15)
 * (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.

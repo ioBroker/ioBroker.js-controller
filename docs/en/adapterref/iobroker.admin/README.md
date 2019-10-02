@@ -76,6 +76,13 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
+### 3.6.7 (2019-09-24)
+* (ldittmar) Add Node.JS version check to popup messages
+
+### 3.6.6 (2019-09-18)
+* (SchumyHao) Update Chinese translation
+* (tmikulski) Update translations.json
+
 ### 3.6.5 (2019-09-02)
 * (ldittmar) Fix anoying popups from info adapter
 

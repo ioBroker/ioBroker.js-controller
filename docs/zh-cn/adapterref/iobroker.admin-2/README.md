@@ -74,6 +74,13 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 3.6.7 (2019-09-24)
+* (ldittmar) Add Node.JS version check to popup messages
+
+### 3.6.6 (2019-09-18)
+* (SchumyHao) Update Chinese translation
+* (tmikulski) Update translations.json
+
 ### 3.6.5 (2019-09-02)
 * (ldittmar) Fix anoying popups from info adapter
 

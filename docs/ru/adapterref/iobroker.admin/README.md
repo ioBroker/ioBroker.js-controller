@@ -170,6 +170,13 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.6.7 (2019-09-24)
+* (ldittmar) Add Node.JS version check to popup messages
+
+### 3.6.6 (2019-09-18)
+* (SchumyHao) Update Chinese translation
+* (tmikulski) Update translations.json
+
 ### 3.6.5 (2019-09-02)
 * (ldittmar) Fix anoying popups from info adapter
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.email/README.md
 title: электронная почта ioBroker
-hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
+hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
 ---
 ![логотип](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -17,9 +17,9 @@ hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 
 Вся работа заставляет [nodemailer](https://github.com/nodemailer/nodemailer), а ioBroker просто использует ее.
 
-** Для этого адаптера требуется nodejs 6.x или выше !! **
+** Этот адаптер требует nodejs 6.x или выше !! **
 
-Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, и в этом случае вам потребуется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать вашу учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
+Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, в этом случае вам придется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать вашу учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
 
 ## Использование
 Чтобы отправить письмо от ScriptEngine, просто напишите:
@@ -103,6 +103,9 @@ sendTo("email", {
 Для других услуг см. Документацию **Nodemailer** `§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.5 (2019-09-18)
+* (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
+
 ### 1.0.4 (2018-03-26)
 * (skraw.iobroker) Add ith
 

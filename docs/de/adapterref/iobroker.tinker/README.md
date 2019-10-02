@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tinker/README.md
 title: ioBroker.tinker
-hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
+hash: JEPSSK8ggpw+2f3PKk6ehT+Aenx/6AA5+dciOw/uXoI=
 ---
 ![Logo](../../../en/adapterref/iobroker.tinker/admin/tinker.png)
 
@@ -12,22 +12,28 @@ hash: xxbqCyR1TEDAXjI1oIlBEQJETGcmkcy6j08Xq0rJ9wM=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tinker.svg)
 ![NPM](https://nodei.co/npm/iobroker.tinker.png?downloads=true)
 
-# IoBroker.tinker =====================
-Der Tinker Board Monitor-Adapter ist eine modifizierte Version des Raspberry PI Monitor-Adapters und des OrangePi Monitor-Adapters für ioBroker
+# IoBroker.tinker
+===================
+
+Der Tinker Board Monitor Adapter ist eine modifizierte Version des Raspberry PI Monitor Adapters und des OrangePi Monitor Adapters für ioBroker
+
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
 ### Wichtige Informationen
 getestete Hardware: Asus Tinker Board
 
-### Folgende Objekte stehen nach Auswahl zur Verfügung:
+### Folgende Objekte sind nach Auswahl verfügbar:
 ## *ZENTRALPROZESSOR*
-- cpu_frequency
+- CPU_Frequenz
 - load1
 - load5
 - load15
 
 ## *Erinnerung*
 - memory_available
-- memory_free
+- Speicher_frei
 - memory_total
 
 ## *Netzwerk (eth0)*
@@ -39,7 +45,7 @@ getestete Hardware: Asus Tinker Board
 - sdcard_root_used
 
 ## *Wechsel*
-- swap_total
+- Swap_Total
 - swap_used
 
 ## *Temperatur*

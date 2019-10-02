@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
+hash: S+p8pQRFLsevvAnrkWmHx3JHnuFmq9sNgqzbW1Fv3Pg=
 ---
 ![Logo](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -17,6 +17,10 @@ hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)
 
 # IoBroker.shuttercontrol
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 ## Shuttercontrol Adapter für ioBroker
 automatische Rollladensteuerung
 
@@ -29,6 +33,11 @@ automatische Steuerung für Rollläden
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.4.0 (28.08.2019)
+* (simatec) Fix shutdown for Elevation
+* (simatec) Fix triggerHeight
+* (simatec) Fix Travis
 
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter

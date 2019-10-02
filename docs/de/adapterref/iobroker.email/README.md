@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.email/README.md
-title: ioBroker E-Mail
-hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
+title: ioBroker-E-Mail
+hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
 ---
 ![Logo](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -12,14 +12,14 @@ hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-# IoBroker E-Mail
+# IoBroker-E-Mail
 Senden Sie E-Mails von ioBroker.
 
-Der gesamte Job macht [nodemailer](https://github.com/nodemailer/nodemailer) und ioBroker einfach dazu.
+Der ganze Job macht [Nodemailer](https://github.com/nodemailer/nodemailer) und ioBroker benutzt es einfach.
 
-** Dieser Adapter benötigt Nodejs 6.x oder höher !! **
+** Dieser Adapter benötigt NodeJS 6.x oder höher !! **
 
-Zur Verwendung von Google Mail müssen Sie möglicherweise "Weniger sichere Apps zulassen" in Ihrem Google Mail-Konto konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssen Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie Ihr Konto außerdem mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP verwenden zu können.
+Um Google Mail zu verwenden, müssen Sie in Ihrem Google Mail-Konto möglicherweise "Weniger sichere Apps zulassen" konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssen Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie auch Ihr Konto mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP zu verwenden.
 
 ## Verwendungszweck
 Um E-Mails von ScriptEngine zu senden, schreiben Sie einfach:
@@ -60,14 +60,14 @@ sendTo("email", {
 });
 ```
 
-Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **adapter.sendTo**
+Verwenden Sie die Funktion **adapter.sendTo** um E-Mails von einem anderen Adapter zu senden.
 
 ## Unterstützte Dienste
 - 1und1
 - AOL
 - DebugMail.io
 - DynectEmail
-- FastMail
+- Fastmail
 - GandiMail
 - Google Mail
 - Los Papa
@@ -85,7 +85,7 @@ Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **ada
 - Naver
 - Büro 365
 - OpenMailBox
-- Stempel
+- Poststempel
 - QQ
 - QQex
 - SendCloud
@@ -98,11 +98,14 @@ Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **ada
 - Yahoo
 - Yandex
 - Zoho
-- benutzerspezifisch (Server, Port und Sicherheit manuell definiert)
+- Benutzerspezifisch (Server, Port und Sicherheit manuell definiert)
 
 Für andere Dienste siehe Dokumentation von **Nodemailer** `§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.5 (2019-09-18)
+* (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
+
 ### 1.0.4 (2018-03-26)
 * (skraw.iobroker) Add ith
 
