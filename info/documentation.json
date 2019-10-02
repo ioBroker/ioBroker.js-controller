@@ -83,6 +83,11 @@
             ],
             "news": [
                 {
+                    "title": "ioBroker – die kostenlose Smart-Home Zentrale",
+                    "link": "https://gacheck.de/iobroker-die-kostenlose-smarthome-zentrale/",
+                    "date": "2019-09-27T00:00:00.000Z"
+                },
+                {
                     "title": "ioBroker: Smart-Home-Steuersoftware sicher installieren und betreiben",
                     "link": "https://www.heise.de/ratgeber/ioBroker-Smart-Home-Steuersoftware-sicher-installieren-und-betreiben-4497372.html",
                     "date": "2019-08-22T00:00:00.000Z"
@@ -186,6 +191,10 @@
                 {
                     "title": "TeamSpeak SmartHome",
                     "link": "https://www.youtube.com/channel/UCdQZAiYa6Yw6p10pX49zQDQ"
+                },
+                {
+                    "title": "Einfach nur Chris",
+                    "link": "https://www.youtube.com/channel/UC7mqX5iCL97hGiT8RidtTAw/videos"
                 },
                 {
                     "title": "Verdrahtet",
