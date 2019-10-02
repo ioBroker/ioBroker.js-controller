@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.19 (2019-10-02) Release Bella
+* (Apollon77) fix migration
+* (Apollon77) fix potential cases where objects/states files were not stored
+
+
 ## 2.0.18 (2019-10-01) Release Bella
 * (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
 
