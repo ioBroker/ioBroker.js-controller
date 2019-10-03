@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.22 (2019-10-02) Release Bella
+* (Apollon77) work on some performance optimizations
+* (Apollon77) Fix binary state handling
+
 ## 2.0.21 (2019-10-02) Release Bella
 * (Apollon77) make sure also states starting with "io" will be notified on stateChange
 * (Apollon77) fix Loglevel change via instance state
