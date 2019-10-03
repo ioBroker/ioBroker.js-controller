@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.20 (2019-10-02) Release Bella
+* (Apollon77) make sure also states starting with "io" will be notified on stateChange
+* (Apollon77) fix Loglevel change via instance state
+* (Apollon77) make sure subscribes for instances states are correctly passed through to adapter for all cases he subscribed them (also for special states like logLevel or sigKill)
+* (Apollon77) make sure id filtering also works correct for >10 instances of the same adapter
+* (Apollon77) some more small fixes and optimizations
+
 ## 2.0.19 (2019-10-02) Release Bella
 * (Apollon77) fix migration
 * (Apollon77) fix potential cases where objects/states files were not stored
