@@ -6,6 +6,7 @@
 * (Apollon77) make sure subscribes for instances states are correctly passed through to adapter for all cases he subscribed them (also for special states like logLevel or sigKill)
 * (Apollon77) make sure id filtering also works correct for >10 instances of the same adapter
 * (Apollon77) some more small fixes and optimizations
+* (Bluefox) Do not kill instance in debug mode on PID mismatch
 
 ## 2.0.19 (2019-10-02) Release Bella
 * (Apollon77) fix migration
