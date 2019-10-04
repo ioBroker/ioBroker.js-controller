@@ -343,25 +343,25 @@ function register(it, expect, context) {
 
     it(textName + 'should read file and prevent path traversing', done => {
         const objects = context.objects;
-        objects.readFile(testId, '../../myFile/abc1.txt', err => {
+        objects.readFile(testId, '../../myFile/abc1.txt', (err, data, mimeType) => {
             expect(err).to.be.not.ok;
             expect(data).to.be.equal('dataInFile');
-            objects.readFile(testId, '/myFile/abc1.txt', err => {
+            objects.readFile(testId, '/myFile/abc1.txt', (err, data, mimeType) => {
                 expect(err).to.be.not.ok;
                 expect(data).to.be.equal('dataInFile');
-                objects.readFile(testId, '/../../myFile/abc1.txt', err => {
+                objects.readFile(testId, '/../../myFile/abc1.txt', (err, data, mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
-                    objects.readFile(testId, 'myFile/../blubb/../myFile/abc1.txt', err => {
+                    objects.readFile(testId, 'myFile/../blubb/../myFile/abc1.txt', (err, data, mimeType) => {
                         expect(err).to.be.not.ok;
                         expect(data).to.be.equal('dataInFile');
-                        objects.readFile(testId, '/myFile/../blubb/../myFile/abc1.txt', err => {
+                        objects.readFile(testId, '/myFile/../blubb/../myFile/abc1.txt', (err, data, mimeType) => {
                             expect(err).to.be.not.ok;
                             expect(data).to.be.equal('dataInFile');
-                            objects.readFile(testId, '../blubb/../myFile/abc1.txt', err => {
+                            objects.readFile(testId, '../blubb/../myFile/abc1.txt', (err, data, mimeType) => {
                                 expect(err).to.be.not.ok;
                                 expect(data).to.be.equal('dataInFile');
-                                objects.readFile(testId, '/../blubb/../myFile/abc1.txt', err => {
+                                objects.readFile(testId, '/../blubb/../myFile/abc1.txt', (err, data, mimeType) => {
                                     expect(err).to.be.not.ok;
                                     expect(data).to.be.equal('dataInFile');
                                     done();
