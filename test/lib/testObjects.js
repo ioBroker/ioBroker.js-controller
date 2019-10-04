@@ -341,6 +341,39 @@ function register(it, expect, context) {
         });
     });
 
+    it(textName + 'should read file and prevent path traversing', done => {
+        const objects = context.objects;
+        objects.readFile(testId, '../../myFile/abc1.txt', err => {
+            expect(err).to.be.not.ok;
+            expect(data).to.be.equal('dataInFile');
+            objects.readFile(testId, '/myFile/abc1.txt', err => {
+                expect(err).to.be.not.ok;
+                expect(data).to.be.equal('dataInFile');
+                objects.readFile(testId, '/../../myFile/abc1.txt', err => {
+                    expect(err).to.be.not.ok;
+                    expect(data).to.be.equal('dataInFile');
+                    objects.readFile(testId, 'myFile/../blubb/../myFile/abc1.txt', err => {
+                        expect(err).to.be.not.ok;
+                        expect(data).to.be.equal('dataInFile');
+                        objects.readFile(testId, '/myFile/../blubb/../myFile/abc1.txt', err => {
+                            expect(err).to.be.not.ok;
+                            expect(data).to.be.equal('dataInFile');
+                            objects.readFile(testId, '../blubb/../myFile/abc1.txt', err => {
+                                expect(err).to.be.not.ok;
+                                expect(data).to.be.equal('dataInFile');
+                                objects.readFile(testId, '/../blubb/../myFile/abc1.txt', err => {
+                                    expect(err).to.be.not.ok;
+                                    expect(data).to.be.equal('dataInFile');
+                                    done();
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     it(textName + 'should unlink file', done => {
         const objects = context.objects;
         objects.unlink(testId, 'myFile/abc1.txt', err => {
