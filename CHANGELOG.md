@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.23 (2019-10-02) Release Bella
+* (Apollon77) enhance path sanitization
+
 ## 2.0.22 (2019-10-02) Release Bella
 * (Apollon77) work on some performance optimizations
 * (Apollon77) Fix binary state handling

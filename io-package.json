@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.22",
+        "version": "2.0.23",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.22": {
+            "2.0.23": {
               "en": "see CHANGELOG.md",
               "de": "Sehe CHANGELOG.md",
               "ru": "см. CHANGELOG.md",
