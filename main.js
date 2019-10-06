@@ -1480,28 +1480,32 @@ function setMeta() {
         tasks.push(obj);
     }
 
-    // delete obsolete states
+    // delete obsolete states and create new ones
     objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (_err, doc) => {
         // identify existing states for deletion, because they are not in the new tasks-list
         let thishostStates = doc.rows;
         if (!compactGroupController) {
             thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
         }
-        const todelete = thishostStates.filter(out1 => !tasks.some(out2 => out1.id === out2._id));
+        const todelete = thishostStates.filter(out1 => {
+            const found = tasks.find(out2 => out1.id === out2._id);
+            return (found === undefined)
+        });
 
         if (todelete && todelete.length > 0) {
             delObjects(todelete, () =>
                 logger && logger.info(hostLogPrefix + ' Some obsolete host states deleted.'));
         }
+
+        extendObjects(tasks, () => {
+            // create UUID if not exist
+            if (!compactGroupController) {
+                tools.createUuid(objects, uuid =>
+                    uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid));
+            }
+        });
     });
 
-    extendObjects(tasks, () => {
-        // create UUID if not exist
-        if (!compactGroupController) {
-            tools.createUuid(objects, uuid =>
-                uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid));
-        }
-    });
 }
 
 // Subscribe on message queue

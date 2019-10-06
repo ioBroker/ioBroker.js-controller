@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.24 (2019-10-02) Release Bella
+* (Apollon77) optimize performance, especially for file/file systems
+* (Apollon77) enhance path sanitization
+* (Apollon77) hopefully prevent Redis errors on connection close
+* (Apollon77) fix adapter logging with --debug flag
+* (Apollon77) fix Adapter Restarts also for widgets
+
 ## 2.0.22 (2019-10-02) Release Bella
 * (Apollon77) work on some performance optimizations
 * (Apollon77) Fix binary state handling
