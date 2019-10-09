@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.25 (2019-10-09) Release Bella
+* (Apollon77) Also allow states/objects with capital letters as first letter
+* (Apollon77) fix adapter/instance deletion
+* (AlCalzone) fix CLI get state getvalue
+* (Apollon77) increas LUA script timeout
+* (Apollon77) update in objects lib, also update other dependencies
+* (bluefox) small logging optimization
+
 ## 2.0.24 (2019-10-02) Release Bella
 * (Apollon77) optimize performance, especially for file/file systems
 * (Apollon77) enhance path sanitization
