@@ -34,74 +34,6 @@
     },
     {
         "title": {
-            "en": "Maintenance work on the cloud server on 06.01.2019",
-            "de": "Wartungsarbeiten am Cloud-Server am 06.01.2019",
-            "ru": "Техническое обслуживание на облачном сервере 06.01.2019",
-            "pt": "Trabalho de manutenção no servidor de nuvem em 06.01.2019",
-            "nl": "Onderhoudswerkzaamheden aan de cloudserver op 06.01.2019",
-            "fr": "Travaux de maintenance sur le serveur cloud le 06.01.2019",
-            "it": "Lavori di manutenzione sul cloud server il 06.01.2019",
-            "es": "Trabajos de mantenimiento en el servidor en la nube el 06.01.2019",
-            "pl": "Prace konserwacyjne na serwerze chmury w dniu 06.01.2019",
-            "zh-cn": "在06.01.2019上对云服务器进行维护工作"
-        },
-        "content": {
-            "en": "On 06.01.2019, maintenance work will take place at 21:00 on the Free-Cloud. Duration approx. 1 hour.",
-            "de": "Am 06.01.2019 finden um 21:00 Uhr Wartungsarbeiten in der Free-Cloud statt. Dauer ca. 1 Stunde.",
-            "ru": "06.01.2019 г. в 21:00 на Free-Cloud начнутся работы по техническому обслуживанию. Продолжительность ок. 1 час.",
-            "pt": "Em 06/01/2019, o trabalho de manutenção será realizado às 21:00 horas no Free-Cloud. Duração aprox. 1 hora.",
-            "nl": "Op 06.01.2019 vinden onderhoudswerkzaamheden plaats om 21.00 uur op de Free-Cloud. Duur ca. 1 uur.",
-            "fr": "Le 06.01.2019, les travaux de maintenance auront lieu à 21h00 sur le Free-Cloud. Durée approx. 1 heure.",
-            "it": "Il 06.01.2019, i lavori di manutenzione si svolgeranno alle 21:00 su Free-Cloud. Durata ca. 1 ora.",
-            "es": "El 06.01.2019, el trabajo de mantenimiento se llevará a cabo a las 21:00 en el Free-Cloud. Duración aprox. 1 hora.",
-            "pl": "W dniu 06.01.2019 prace konserwacyjne będą miały miejsce o godzinie 21:00 w Free-Cloud. Czas trwania ok. 1 godzina.",
-            "zh-cn": "在2017年1月6日，Free-Cloud的维护工作将于21:00进行。持续时间约。 1小时。"
-        },
-        "id": "cloud",
-        "class": "warning",
-        "created": "2019-01-01T00:00:00.000Z",
-        "fa-icon": "info-circle",
-        "date-end": "2019-01-06T23:00:00.000Z",
-        "conditions": {
-            "cloud": "installed"
-        }
-    },
-    {
-        "title": {
-            "en": "Maintenance work on the cloud server on 06.01.2019",
-            "de": "Wartungsarbeiten am Cloud-Server am 06.01.2019",
-            "ru": "Техническое обслуживание на облачном сервере 06.01.2019",
-            "pt": "Trabalho de manutenção no servidor de nuvem em 06.01.2019",
-            "nl": "Onderhoudswerkzaamheden aan de cloudserver op 06.01.2019",
-            "fr": "Travaux de maintenance sur le serveur cloud le 06.01.2019",
-            "it": "Lavori di manutenzione sul cloud server il 06.01.2019",
-            "es": "Trabajos de mantenimiento en el servidor en la nube el 06.01.2019",
-            "pl": "Prace konserwacyjne na serwerze chmury w dniu 06.01.2019",
-            "zh-cn": "在06.01.2019上对云服务器进行维护工作"
-        },
-        "content": {
-            "en": "On 06.01.2019, maintenance work will take place at 21:00 on the Free-Cloud. Duration approx. 1 hour.",
-            "de": "Am 06.01.2019 finden um 21:00 Uhr Wartungsarbeiten in der Free-Cloud statt. Dauer ca. 1 Stunde.",
-            "ru": "06.01.2019 г. в 21:00 на Free-Cloud начнутся работы по техническому обслуживанию. Продолжительность ок. 1 час.",
-            "pt": "Em 06/01/2019, o trabalho de manutenção será realizado às 21:00 horas no Free-Cloud. Duração aprox. 1 hora.",
-            "nl": "Op 06.01.2019 vinden onderhoudswerkzaamheden plaats om 21.00 uur op de Free-Cloud. Duur ca. 1 uur.",
-            "fr": "Le 06.01.2019, les travaux de maintenance auront lieu à 21h00 sur le Free-Cloud. Durée approx. 1 heure.",
-            "it": "Il 06.01.2019, i lavori di manutenzione si svolgeranno alle 21:00 su Free-Cloud. Durata ca. 1 ora.",
-            "es": "El 06.01.2019, el trabajo de mantenimiento se llevará a cabo a las 21:00 en el Free-Cloud. Duración aprox. 1 hora.",
-            "pl": "W dniu 06.01.2019 prace konserwacyjne będą miały miejsce o godzinie 21:00 w Free-Cloud. Czas trwania ok. 1 godzina.",
-            "zh-cn": "在2017年1月6日，Free-Cloud的维护工作将于21:00进行。持续时间约。 1小时。"
-        },
-        "id": "cloud",
-        "class": "warning",
-        "created": "2019-01-01T00:00:00.000Z",
-        "fa-icon": "info-circle",
-        "date-end": "2019-01-06T23:00:00.000Z",
-        "conditions": {
-            "iot": "installed"
-        }
-    },
-    {
-        "title": {
             "en": "Broadlink not maintained anymore",
             "de": "Broadlink wird nicht mehr gepflegt",
             "ru": "Broadlink больше не поддерживается",
@@ -229,40 +161,6 @@
     },
     {
         "title": {
-            "en": "Important for those who use Let's Encrypt ...",
-            "de": "Wichtig für diejenigen, die Let's Encrypt verwenden ...",
-            "ru": "Важно для тех, кто использует Let's Encrypt ...",
-            "pt": "Importante para quem usa o Let's Encrypt ...",
-            "nl": "Belangrijk voor degenen die Let's Encrypt gebruiken ...",
-            "fr": "Important pour ceux qui utilisent Let's Encrypt ...",
-            "it": "Importante per coloro che usano Let's Encrypt ...",
-            "es": "Importante para aquellos que usan Let's Encrypt ...",
-            "pl": "Ważne dla tych, którzy używają Let's Encrypt ...",
-            "zh-cn": "对于使用“让我们加密”的人来说很重要..."
-        },
-        "content": {
-            "en": "Let's Encrypt will switch off the support of an older version of their API on 01.10.2019. The library that ioBroker uses to offer the Lets' encrypt functionality is currently not supporting newer API versions and we currently wait for an update from these developers. Therefore, all users should create a new certificate until 30.09.2019, which will remain valid for the next 3 months. With this you can make sure the best way to stay SSL secured.",
-            "de": "Let's encrypt schaltet zum 1.10.2019 die von ioBroker verwendete Schnittstelle ab. Die Entwicker arbeiten an einer Lösung. Alle User von let's encrypt müssen vor dem 30.09. ein neues Zertifikat über den Admin erstellen. Dieses ist dann weitere 3 Monate gültig.",
-            "ru": "Let's Encrypt отключит поддержку более старой версии их API 01.10.2019. Библиотека, которую ioBroker использует для предоставления возможности шифрования Lets, в настоящее время не поддерживает более новые версии API, и в настоящее время мы ожидаем обновления от этих разработчиков. Поэтому все пользователи должны создать новый сертификат до 30.09.2019, который будет действовать в течение следующих 3 месяцев. При этом вы можете быть уверены, что лучший способ сохранить безопасность SSL.",
-            "pt": "O Let's Encrypt desativará o suporte de uma versão mais antiga da API em 01.10.2019. A biblioteca que o ioBroker usa para oferecer a funcionalidade de criptografia do Lets atualmente não suporta versões mais recentes da API e, atualmente, aguardamos uma atualização desses desenvolvedores. Portanto, todos os usuários devem criar um novo certificado até 30.09.2019, que permanecerá válido pelos próximos 3 meses. Com isso, você pode garantir a melhor maneira de manter o SSL protegido.",
-            "nl": "Let's Encrypt schakelt de ondersteuning van een oudere versie van hun API uit op 01.10.2019. De bibliotheek die ioBroker gebruikt om de coderingsfunctionaliteit van Lets aan te bieden, ondersteunt momenteel geen nieuwere API-versies en we wachten momenteel op een update van deze ontwikkelaars. Daarom moeten alle gebruikers een nieuw certificaat maken tot 30.09.2019, dat de komende 3 maanden geldig blijft. Hiermee kunt u ervoor zorgen dat de beste manier om SSL beveiligd te blijven.",
-            "fr": "Let's Encrypt désactive la prise en charge d'une ancienne version de leur API le 01.10.2019. La bibliothèque utilisée par ioBroker pour offrir la fonctionnalité de chiffrement de Lets ne prend actuellement pas en charge les versions d'API les plus récentes et nous attendons actuellement une mise à jour de ces développeurs. Par conséquent, tous les utilisateurs doivent créer un nouveau certificat jusqu'au 30.09.2019, qui restera valable pendant les 3 prochains mois. Avec cela, vous pouvez être sûr que le meilleur moyen de rester sécurisé SSL.",
-            "it": "Let's Encrypt disattiverà il supporto di una versione precedente della loro API il 01.10.2019. La libreria che ioBroker utilizza per offrire la funzionalità di crittografia di Lets al momento non supporta versioni API più recenti e stiamo attualmente aspettando un aggiornamento da questi sviluppatori. Pertanto, tutti gli utenti dovrebbero creare un nuovo certificato fino al 30.09.2019, che rimarrà valido per i prossimi 3 mesi. Con questo puoi assicurarti il modo migliore per mantenere SSL protetto.",
-            "es": "Let's Encrypt desactivará el soporte de una versión anterior de su API el 01.10.2019. La biblioteca que ioBroker usa para ofrecer la funcionalidad de cifrado de Lets actualmente no es compatible con las nuevas versiones de API y actualmente esperamos una actualización de estos desarrolladores. Por lo tanto, todos los usuarios deben crear un nuevo certificado hasta el 30.09.2019, que seguirá siendo válido durante los próximos 3 meses. Con esto, puede asegurarse de la mejor manera de mantenerse seguro SSL.",
-            "pl": "Let's Encrypt wyłączy obsługę starszej wersji swojego interfejsu API od 01.10.2019. Biblioteka, której używa ioBroker do oferowania funkcji szyfrowania Lets, nie obsługuje obecnie nowszych wersji API i obecnie czekamy na aktualizację od tych programistów. Dlatego wszyscy użytkownicy powinni utworzyć nowy certyfikat do 30.09.2019, który będzie ważny przez kolejne 3 miesiące. Dzięki temu możesz upewnić się, że najlepszym sposobem na zapewnienie bezpieczeństwa SSL.",
-            "zh-cn": "让我们加密将在2019年10月10日关闭对旧版API的支持。 ioBroker用于提供Lets加密功能的库目前不支持较新的API版本，我们目前正在等待这些开发人员的更新。因此，所有用户都应在2019年9月30日之前创建一个新证书，该证书在接下来的3个月内仍然有效。这样，您可以确保保持SSL安全的最佳方法。"
-        },
-        "id": "letsencrypt",
-        "class": "warning",
-        "fa-icon": "exclamation",
-        "date-end": "2019-10-01T00:00:00.000Z",
-        "created": "2019-09-22T00:00:00.000Z",
-        "conditions": {           
-            "admin": "bigger(3.6.4)"
-        }
-    },
-    {
-        "title": {
             "en": "Node.JS versions smaller than 8 will be soon deprecated",
             "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
             "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
@@ -293,6 +191,105 @@
         "created": "2019-09-24T00:00:00.000Z",
         "conditions": {           
             "admin": "bigger(3.6.6)"
+        }
+    },
+    {
+        "title": {
+            "en": "The latest version of JS-Controller 2.x is not compatible with the e-mail adapter smaller than 1.0.5",
+            "de": "Die neueste Version von JS-Controller 2.x ist nicht mit dem E-Mail-Adapter kleiner als 1.0.5 kompatibel",
+            "ru": "Последняя версия JS-Controller 2.x не совместима с почтовым адаптером меньше, чем 1.0.5",
+            "pt": "A versão mais recente do JS-Controller 2.x não é compatível com o adaptador de email menor que 1.0.5",
+            "nl": "De nieuwste versie van JS-Controller 2.x is niet compatibel met de e-mailadapter kleiner dan 1.0.5",
+            "fr": "La dernière version de JS-Controller 2.x n'est pas compatible avec l'adaptateur de messagerie électronique inférieur à 1.0.5.",
+            "it": "L'ultima versione di JS-Controller 2.x non è compatibile con l'adattatore di posta elettronica inferiore alla 1.0.5",
+            "es": "La última versión de JS-Controller 2.x no es compatible con el adaptador de correo electrónico más pequeño que 1.0.5",
+            "pl": "Najnowsza wersja JS-Controller 2.x nie jest kompatybilna z adapterem e-mail mniejszym niż 1.0.5",
+            "zh-cn": "JS-Controller 2.x的最新版本与小于1.0.5的电子邮件适配器不兼容"
+        },
+        "content": {
+            "en": "If you want to install the current beta version of the JS controller 2.x, first update the adapter email to a version 1.0.5 or higher.",
+            "de": "Wenn Sie die aktuelle Betaversion des JS-Controllers 2.x installieren möchten, aktualisieren Sie zuerst die Adapter-E-Mail auf eine Version 1.0.5 oder höher.",
+            "ru": "Если вы хотите установить текущую бета-версию контроллера JS 2.x, сначала обновите адрес электронной почты адаптера до версии 1.0.5 или выше.",
+            "pt": "Se você deseja instalar a versão beta atual do controlador JS 2.x, primeiro atualize o email do adaptador para uma versão 1.0.5 ou superior.",
+            "nl": "Als u de huidige bètaversie van de JS-controller 2.x wilt installeren, werkt u eerst de adapter-e-mail bij naar versie 1.0.5 of hoger.",
+            "fr": "Si vous souhaitez installer la version bêta actuelle du contrôleur JS 2.x, mettez d'abord à jour le courrier électronique de l'adaptateur avec une version 1.0.5 ou supérieure.",
+            "it": "Se si desidera installare la versione beta corrente del controller JS 2.x, aggiornare innanzitutto l'e-mail dell'adattatore con una versione 1.0.5 o successiva.",
+            "es": "Si desea instalar la versión beta actual del controlador JS 2.x, primero actualice el correo electrónico del adaptador a una versión 1.0.5 o superior.",
+            "pl": "Jeśli chcesz zainstalować bieżącą wersję beta kontrolera JS 2.x, najpierw zaktualizuj adres e-mail adaptera do wersji 1.0.5 lub nowszej.",
+            "zh-cn": "如果要安装JS控制器2.x的当前beta版本，请首先将适配器电子邮件更新为1.0.5或更高版本。"
+        },
+        "id": "email",
+        "class": "warning",
+        "fa-icon": "exclamation-triangle",
+        "created": "2019-10-09T00:00:00.000Z",
+        "conditions": {           
+            "email": "smaller(1.0.5)"
+        }
+    },
+    {
+        "title": {
+            "en": "The latest version of JS-Controller 2.x is not compatible with the pushover adapter smaller than 1.1.1",
+            "de": "Die neueste Version von JS-Controller 2.x ist nicht mit dem Pushover-Adapter kleiner als 1.1.1 kompatibel",
+            "ru": "Последняя версия JS-Controller 2.x не совместима с переходным адаптером, меньшим, чем 1.1.1",
+            "pt": "A versão mais recente do JS-Controller 2.x não é compatível com o adaptador pushover menor que 1.1.1",
+            "nl": "De nieuwste versie van JS-Controller 2.x is niet compatibel met de pushover-adapter kleiner dan 1.1.1",
+            "fr": "La dernière version de JS-Controller 2.x n'est pas compatible avec l'adaptateur intermédiaire supérieur à 1.1.1.",
+            "it": "L'ultima versione di JS-Controller 2.x non è compatibile con l'adattatore pushover più piccolo di 1.1.1",
+            "es": "La última versión de JS-Controller 2.x no es compatible con el adaptador pushover más pequeño que 1.1.1",
+            "pl": "Najnowsza wersja JS-Controller 2.x nie jest kompatybilna z adapterem pushover mniejszym niż 1.1.1",
+            "zh-cn": "JS-Controller 2.x的最新版本与小于1.1.1的推入适配器不兼容"
+        },
+        "content": {
+            "en": "If you want to install the current beta version of the JS controller 2.x, first update the adapter pushover to a version 1.1.1 or higher.",
+            "de": "Wenn Sie die aktuelle Betaversion des JS-Controllers 2.x installieren möchten, aktualisieren Sie zuerst den Adapter-Pushover auf eine Version 1.1.1 oder höher.",
+            "ru": "Если вы хотите установить текущую бета-версию контроллера JS 2.x, сначала обновите версию адаптера до версии 1.1.1 или выше.",
+            "pt": "Se você deseja instalar a versão beta atual do controlador JS 2.x, primeiro atualize a transferência do adaptador para uma versão 1.1.1 ou superior.",
+            "nl": "Als u de huidige bètaversie van de JS-controller 2.x wilt installeren, werkt u eerst de adapter-pushover bij naar een versie 1.1.1 of hoger.",
+            "fr": "Si vous souhaitez installer la version bêta actuelle du contrôleur JS 2.x, mettez tout d'abord à jour le transfert de l'adaptateur vers une version 1.1.1 ou ultérieure.",
+            "it": "Se si desidera installare la versione beta corrente del controller JS 2.x, aggiornare innanzitutto il pushover dell'adattatore a una versione 1.1.1 o successiva.",
+            "es": "Si desea instalar la versión beta actual del controlador JS 2.x, primero actualice el adaptador a una versión 1.1.1 o superior.",
+            "pl": "Jeśli chcesz zainstalować bieżącą wersję beta kontrolera JS 2.x, najpierw zaktualizuj funkcję pushover adaptera do wersji 1.1.1 lub nowszej.",
+            "zh-cn": "如果要安装JS控制器2.x的当前beta版本，请首先将适配器推入更新到1.1.1或更高版本。"
+        },
+        "id": "pushover",
+        "class": "warning",
+        "fa-icon": "exclamation-triangle",
+        "created": "2019-10-09T00:00:00.000Z",
+        "conditions": {           
+            "pushover": "smaller(1.1.1)"
+        }
+    },
+    {
+        "title": {
+            "en": "The latest version of JS-Controller 2.x is not compatible with the hue adapter smaller than 1.2.4",
+            "de": "Die neueste Version von JS-Controller 2.x ist nicht mit dem Farbtonadapter kleiner als 1.2.4 kompatibel",
+            "ru": "Последняя версия JS-Controller 2.x не совместима с адаптером оттенка меньше, чем 1.2.4",
+            "pt": "A versão mais recente do JS-Controller 2.x não é compatível com o adaptador de matiz menor que 1.2.4",
+            "nl": "De nieuwste versie van JS-Controller 2.x is niet compatibel met de tintadapter kleiner dan 1.2.4",
+            "fr": "La dernière version de JS-Controller 2.x n'est pas compatible avec l'adaptateur de teinte inférieur à 1.2.4.",
+            "it": "L'ultima versione di JS-Controller 2.x non è compatibile con l'adattatore di tonalità inferiore a 1.2.4",
+            "es": "La última versión de JS-Controller 2.x no es compatible con el adaptador de tono más pequeño que 1.2.4",
+            "pl": "Najnowsza wersja JS-Controller 2.x nie jest kompatybilna z adapterem hue mniejszym niż 1.2.4",
+            "zh-cn": "最新版本的JS-Controller 2.x与小于1.2.4的色相适配器不兼容"
+        },
+        "content": {
+            "en": "If you want to install the current beta version of the JS controller 2.x, first update the adapter hue to a version 1.2.4 or higher.",
+            "de": "Wenn Sie die aktuelle Betaversion des JS-Controllers 2.x installieren möchten, aktualisieren Sie zuerst den Adapter-Farbton auf eine Version 1.2.4 oder höher.",
+            "ru": "Если вы хотите установить текущую бета-версию контроллера JS 2.x, сначала обновите оттенок адаптера до версии 1.2.4 или выше.",
+            "pt": "Se você deseja instalar a versão beta atual do controlador JS 2.x, primeiro atualize o matiz do adaptador para uma versão 1.2.4 ou superior.",
+            "nl": "Als u de huidige bètaversie van de JS-controller 2.x wilt installeren, werkt u eerst de adaptertint bij naar een versie 1.2.4 of hoger.",
+            "fr": "Si vous souhaitez installer la version bêta actuelle du contrôleur JS 2.x, mettez d'abord la teinte de l'adaptateur à jour avec une version 1.2.4 ou supérieure.",
+            "it": "Se si desidera installare la versione beta corrente del controller JS 2.x, aggiornare prima la tonalità dell'adattatore con una versione 1.2.4 o successiva.",
+            "es": "Si desea instalar la versión beta actual del controlador JS 2.x, primero actualice el tono del adaptador a una versión 1.2.4 o superior.",
+            "pl": "Jeśli chcesz zainstalować bieżącą wersję beta kontrolera JS 2.x, najpierw zaktualizuj odcień adaptera do wersji 1.2.4 lub nowszej.",
+            "zh-cn": "如果要安装JS控制器2.x的当前beta版本，请首先将适配器色相更新为1.2.4或更高版本。"
+        },
+        "id": "hue",
+        "class": "warning",
+        "fa-icon": "exclamation-triangle",
+        "created": "2019-10-09T00:00:00.000Z",
+        "conditions": {           
+            "hue": "smaller(1.2.4)"
         }
     }
 ]
