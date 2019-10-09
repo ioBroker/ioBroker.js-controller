@@ -291,5 +291,41 @@
         "conditions": {           
             "hue": "smaller(1.2.4)"
         }
+    },
+    {
+        "title": {
+            "en": "Do not update the JS-Controller to 2.x with npm in Windows systems",
+            "de": "Aktualisieren Sie den JS-Controller nicht mit npm auf 2.x in Windows",
+            "ru": "Не обновляйте JS-контроллер до 2.x с npm в системах Windows",
+            "pt": "Não atualize o JS-Controller para 2.x com npm nos sistemas Windows",
+            "nl": "Werk de JS-Controller niet bij naar 2.x met npm in Windows-systemen",
+            "fr": "Ne mettez pas à jour le JS-Controller vers 2.x avec npm sur les systèmes Windows",
+            "it": "Non aggiornare JS-Controller a 2.x con npm nei sistemi Windows",
+            "es": "No actualice el controlador JS a 2.x con npm en sistemas Windows",
+            "pl": "Nie aktualizuj kontrolera JS do wersji 2.x z npm w systemach Windows",
+            "zh-cn": "不要在Windows系统中使用npm将JS-Controller更新到2.x"
+        },
+        "content": {
+            "en": "On systems set up with the new Windows Installer, the JS-Controller 2.x can not be updated with npm. There will be a new version of the Windows Installer, which allows the update of the js-controller with a few mouse clicks.",
+            "de": "Auf Systemen, die mit dem neuen Windows Installer eingerichtet wurden, kann der JS-Controller 2.x nicht mit npm aktualisiert werden. Es wird eine neue Version des Windows Installers geben, mit der sich der js-controller mit wenigen Mausklicks aktualisieren lässt.",
+            "ru": "В системах, настроенных с помощью нового установщика Windows, JS-Controller 2.x не может быть обновлен с помощью npm. Появится новая версия установщика Windows, которая позволяет обновлять js-контроллер несколькими щелчками мыши.",
+            "pt": "Nos sistemas configurados com o novo Windows Installer, o JS-Controller 2.x não pode ser atualizado com o npm. Haverá uma nova versão do Windows Installer, que permite a atualização do controlador js com apenas alguns cliques do mouse.",
+            "nl": "Op systemen die zijn ingesteld met de nieuwe Windows Installer, kan de JS-Controller 2.x niet worden bijgewerkt met npm. Er komt een nieuwe versie van Windows Installer, waarmee de js-controller met een paar muisklikken kan worden bijgewerkt.",
+            "fr": "Sur les systèmes configurés avec le nouveau Windows Installer, JS-Controller 2.x ne peut pas être mis à jour avec npm. Il y aura une nouvelle version de Windows Installer, qui permet la mise à jour du contrôleur js en quelques clics de souris.",
+            "it": "Sui sistemi configurati con il nuovo Windows Installer, JS-Controller 2.x non può essere aggiornato con npm. Ci sarà una nuova versione di Windows Installer, che consente l'aggiornamento del controller js con pochi clic del mouse.",
+            "es": "En los sistemas configurados con el nuevo Windows Installer, el JS-Controller 2.x no se puede actualizar con npm. Habrá una nueva versión del Instalador de Windows, que permite la actualización del controlador js con unos pocos clics del mouse.",
+            "pl": "W systemach skonfigurowanych za pomocą nowego Instalatora Windows, JS-Controller 2.x nie może być aktualizowany przy pomocy npm. Pojawi się nowa wersja Instalatora Windows, która umożliwia aktualizację kontrolera js kilkoma kliknięciami myszy.",
+            "zh-cn": "在使用新的Windows Installer设置的系统上，无法使用npm更新JS-Controller2.x。 Windows Installer将有一个新版本，只需单击几下鼠标，即可更新js-controller。"
+        },
+        "id": "js-controler",
+        "os": "win32",
+        "class": "warning",
+        "fa-icon": "windows",
+        "created": "2019-10-10T00:00:00.000Z",
+        "conditions": {           
+            "info": "bigger(1.5.4)",
+            "admin": "bigger(3.6.7)",
+            "js-controller": "smaller(2.0.0)"
+        }
     }
 ]
