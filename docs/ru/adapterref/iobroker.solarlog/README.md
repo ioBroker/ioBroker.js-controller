@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: U8pUIrorKcYz3knA7868IABMJOl/POaKWry0RlLazCU=
+hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
 ---
 ![логотип](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -15,16 +15,24 @@ hash: U8pUIrorKcYz3knA7868IABMJOl/POaKWry0RlLazCU=
 # IoBroker.solarlog
 Адаптер ioBroker для solarlog - устройства
 
-Открытый JSON-интерфейс (offene Json-Schnittstelle) необходимо активировать в меню конфигурации Solarlog (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
+Открытый JSON-интерфейс (offene Json-Schnittstelle) должен быть активирован в меню конфигурации Solarlog (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Установите адаптер, создайте экземпляр.
 Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и опрос - интервал (в миллисекундах)
 
 Проверьте, собраны ли все данные инвертора. !! Для этой опции пароль пользователя в solarlog должен быть деактивирован !! Achtung: Damit die Abfrage der Unterzaehler funktioniert, Muss das Benutzerpasswort im Solarlog deaktiviert sein
 
-Проверено: Solarlog 200PM + / 300PM + / 500 / 1200Meter
+Проверено: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 
 ## Changelog
+
+### 1.0.0
+
+-   Reads now devicetypes, -brands and -classes. Sets correct params for batteries. Displays self-consumption @'status'
+
+### 0.1.6
+
+-   Reads now battery data
 
 ### 0.1.5
 

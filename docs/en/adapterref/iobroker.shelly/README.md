@@ -37,8 +37,12 @@ You find a detailed installation documentation here:
 |Shelly4Pro (SHSW-44)|verified|not verified|
 |Shelly EM (SHEM)|verified|verified|
 |Shelly Flood (SHWT-1)|verified|verified|
+|Shelly Dimmer (SHDM-1)|verified|verified|
 
 ## Changelog
+
+### 3.1.1 (14.09.2019)
+* (Stübi) - Add device Shelly Dimmer
 
 ### 3.1.0 (03.09.2019)
 * (Stübi) - Add device Shelly flood

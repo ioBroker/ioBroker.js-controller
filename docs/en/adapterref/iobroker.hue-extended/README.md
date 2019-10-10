@@ -31,6 +31,11 @@ Connect your Philips Hue Lights with ioBroker.
 
 ## Changelog
 
+### 0.8.8 (2019-10-09)
+- (Zefau) added option to set level to 0 when device is turned off
+- (Zefau) fix `{"on":true,"bri":null}` when device is turned on
+- (Zefau) reduced log messages for successful applied actions
+
 ### 0.8.7 (2019-09-27)
 - (Zefau) added option to use Queue optionally (or sending commands directly)
 - (Zefau) fixed bug sending incomplete commands when commands include `bri` ([#2](https://github.com/Zefau/ioBroker.hue-extended/issues/2))

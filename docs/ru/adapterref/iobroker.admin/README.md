@@ -170,6 +170,11 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.6.8 (2019-10-09)
+* (ldittmar) Add NPM version and OS check to popup messages
+* (bluefox) Log paths were sanitized
+* (bluefox) NPM packages were updated
+
 ### 3.6.7 (2019-09-24)
 * (ldittmar) Add Node.JS version check to popup messages
 
@@ -364,7 +369,7 @@ IP-адрес с которого доступен драйвер (поддер�
 
 ### 3.0.11 (2018-01-11)
 * (DeepCoreSystem) French update
-* (bluefox) fix error with empty ID 
+* (bluefox) fix error with empty ID
 * (bluefox) add sort by "recently updated"
 * (ldittmar) add readme and issues viewer
 
@@ -375,7 +380,7 @@ IP-адрес с которого доступен драйвер (поддер�
 
 ### 3.0.7 (2018-01-01)
 * (soef) update instances, objects and other lists
-* (bluefox) rewrite interface with materialize 
+* (bluefox) rewrite interface with materialize
 
 ### 2.0.11 (2017-10-23)
 * (bluefox) Configurable event update disable threshold

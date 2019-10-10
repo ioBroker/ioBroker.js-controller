@@ -17,7 +17,15 @@ Alternative Z-Wave implementation
 
 ## Changelog
 
-### 0.1.0
+### 0.1.3
+
+-   (AlCalzone) Update `zwave-js` dependency. Notable improvements include:
+    -   Support for `Time` and `Time Parameters` CCs. This automatically sets the correct time on supporting nodes.
+    -   Support for `Battery` CC v2
+    -   Cleanup of CC values
+-   (AlCalzone) Update misc. dependencies
+
+### 0.1.2
 
 -   (AlCalzone) Several bugfixes and working admin menu
 

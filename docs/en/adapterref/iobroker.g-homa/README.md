@@ -12,6 +12,9 @@ The inclusion of plugs has to be performed with the app for now, but will soon b
 
 ## Changelog
 
+### 0.5.1 (2019-10-10)
+* (AlCalzone) Defined missing `info.connection` object
+
 ### 0.5.0 (2019-08-09)
 * (AlCalzone) Improve detection of G-Homa devices
 

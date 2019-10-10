@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
+hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -42,8 +42,12 @@ hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
 | Shelly4Pro (SHSW-44) | проверено | не проверено |
 | Shelly EM (SHEM) | проверено | проверено |
 | Шелли Потоп (SHWT-1) | проверено | проверено |
+| Шелли Диммер (ШДМ-1) | проверено | проверено |
 
 ## Changelog
+
+### 3.1.1 (14.09.2019)
+* (Stübi) - Add device Shelly Dimmer
 
 ### 3.1.0 (03.09.2019)
 * (Stübi) - Add device Shelly flood

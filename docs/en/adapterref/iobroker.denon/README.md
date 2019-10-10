@@ -807,6 +807,9 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
    
 ## Changelog
+### 1.6.1 (2019-10-08)
+* (foxriver76) fixed bug with selectInput for zone2 and 3
+
 ### 1.6.0
 * (foxriver76) added new state settings.lfeAmount
 

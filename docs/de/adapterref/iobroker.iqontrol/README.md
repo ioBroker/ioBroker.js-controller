@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
+hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -38,7 +38,7 @@ Läuft in jedem Browser.
 Es ist vollständig anpassbar.
 
 ## Zum Startbildschirm hinzufügen
-Sie können es als Web-App auf Homescreen speichern und es sieht aus wie eine native App: ![Hinzufügen zu Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
+Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt sich an wie eine native App: ![Hinzufügen zu Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Du brauchst...
 * Nodejs 8 oder höher
@@ -49,7 +49,7 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus wie eine na
 ## Fehlerbehebung
 * Stellen Sie sicher, dass Sie den Abschnitt "Sie brauchen ..." oben auf dieser Seite erfüllt haben
 * Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie bitte die folgenden Schritte aus:
-    * Starten Sie den Upload des Adapters:
+    * Upload des Adapters starten:
 
     \
         ![Hochladen](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
@@ -68,7 +68,7 @@ Sie können Ansichten als eine Art Seite betrachten.
 
 * Erstellen Sie dann Geräte in diesen Ansichten.
 
-Geräte haben eine Rolle, die die Funktion des Geräts bestimmt, welche Symbole verwendet werden usw.
+Geräte haben eine Rolle, die die Funktion des Geräts bestimmt, welche Symbole verwendet werden und so weiter.
 Abhängig von dieser Rolle können Sie mehrere Status mit dem Gerät verknüpfen. Dadurch erhält das Gerät seine Funktionalität.
 Wenn Sie als Rolle "Mit anderer Ansicht verknüpfen" auswählen, können Sie Verknüpfungen zu anderen Ansichten erstellen. Ich schlage vor, Verknüpfungen zu anderen Ansichten mit demselben Hintergrund wie die verknüpfte Ansicht zu erstellen.
 Sie können auch versuchen, mit der Autocreate-Funktion ein vorhandenes Gerät aus dem iobroker-Objektbaum auszuwählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
@@ -82,7 +82,7 @@ Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
-Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
+Die kostenlosen eingebauten Demo-Wallpaper sind von www.pexels.com.
 
 ## URL-Parameter
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
@@ -95,7 +95,7 @@ Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
 * `` https://192.168.1.1: 8082 / iqontrol / index.html? namespace = iqontrol.1 & home = iqontrol.1.Views.Living-Room``
     * Groß- und Kleinschreibung beachten
 
-## Beschreibung der Rollen und zugehörigen Zustände
+## Beschreibung der Rollen und der zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden io-Broker-Status verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem io-broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
 Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräte mit erweiterten Funktionen auszustatten, können Sie diese manuell über die (+) - Taste hinzufügen oder die von Autocreate erstellten Geräte bearbeiten.
@@ -106,7 +106,9 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 
 * Nur-Lese-Flag setzen
 * Invert-Flag setzen
-* Legen Sie eine Datenpunkt-ID fest, in die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
+* Set Confirm-Flag (zwingt den Benutzer zur Bestätigung, bevor eine Änderung in einen Datenpunkt geschrieben wird)
+* PIN-Code setzen (zwingt den Benutzer, diesen PIN-Code einzugeben, bevor eine Änderung in einen Datenpunkt geschrieben wird - aber Vorsicht: Dies ist nur von geringer Sicherheit, da die PIN im Frontend überprüft wird! Verwenden Sie eine Zahl, um einen Vollbildmodus anzuzeigen -Pin-Pad wenn nach Code gefragt)
+* Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
 * Ändern Sie die Einheit des Datenpunkts, und trennen Sie sie für die Werte Null, Singular und Plural
 * Min. Und Max. Des Datenpunkts ändern
 * Ändern Sie den Typ des Datenpunkts
@@ -119,7 +121,7 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 Jede Rolle hat die folgenden drei Zustände:
 
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, die am unteren Rand des Info-Dialogs angezeigt werden
-* **BATTERY** *boolean* - wenn wahr oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
+* **BATTERY** *boolean* - wenn true oder *number* - wenn weniger als 10%, wird ein kleines Batterie-Leer-Symbol angezeigt
 * **ERROR** *boolean* - wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
 
@@ -140,7 +142,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüssel-Symbol hinter dem Datenpunkt in der Registerkarte Objekte von iobroker, siehe oben).
 
-Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
+Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
@@ -152,7 +154,7 @@ Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise d
 
 ### <img src="img/icons/button.png" width="32"> Taste:
 * **STATE** *any* - jeder gewünschte Zustandstyp
-* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Button gedrückt wird
+* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn die Schaltfläche gedrückt wird
 * **OFF_SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!). Falls definiert, wird STATE nach der in den Optionen definierten Zeit oder 100ms auf diesen Wert zurückgesetzt
 
 ### <img src="img/icons/light_on.png" width="32"> Licht:
@@ -165,7 +167,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status haben und keine weißen LEDs, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -208,7 +210,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 * **PARTY_TEMPERATURE** *string* - speziell formatierter String zur Definition des Party- oder Urlaubsmodus von Homematic-Thermostaten
-* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematic-Thermostate an
+* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematik-Thermostate an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchte-Sensor:
 * **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
@@ -266,12 +268,12 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
-* **CHARGING** *boolean* - wenn wahr, wird ein Ladesymbol angezeigt
+* **CHARGING** *boolean* - wenn true, wird ein Ladesymbol angezeigt
 * **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 * **VOLTAGE** *number* - Spannung, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/value_on.png" width="32"> Wert:
-* **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
+* **STATE** *any* - jeder gültige Status, der angezeigt werden soll (siehe Abschnitt "Allgemeine Status")
 * **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
 ### <img src="img/icons/play_on.png" width="32"> Programm:
@@ -290,11 +292,24 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
 ## Entwickeln
-* Siehe [Funktionsweise des Frontends] (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
+* Schauen Sie sich [Funktionsweise des Frontends] an (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
 ****
 
 ## Changelog
+
+### 0.2.11 (2019-10-07)
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+
+### 0.2.10 (2019-10-05)
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
+
+### 0.2.9 (2019-10-02)
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
 
 ### 0.2.8 (2019-09-27)
 * (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.

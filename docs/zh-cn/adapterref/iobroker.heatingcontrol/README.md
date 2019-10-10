@@ -3,65 +3,68 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: CIUJBr/fS2w6jX5rdIKlxt0JPx9RDk/w3qim/zQANb8=
+hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![安装数量](http://iobroker.live/badges/heatingcontrol-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
+![特拉维斯](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
 
 ＃ioBroker.HeatingControl
 用于控制加热系统的适配器。
 
 特征：
 
-*按时间表控制所有恒温器的设定温度水平
-*为每天和晚上配置多个加热时段
+*根据时间表控制所有恒温器的设定温度水平
+*为白天和黑夜配置多个供暖时段
 *支持各种homematic和max！温控器
 *支持多个配置文件
-*如果恒温器和执行器之间没有直接连接，执行器可以直接从适配器中切换出来
-*目前，当达到设定点温度时，执行器会立即关闭。一旦设定点温度低于实际温度，执行器就会打开。 （要做：实施改进的控制）
-*支持每间客房无限制的恒温器，执行器和sonsor
-*每个房间自动检测恒温器，执行器和传感器。该功能（例如“加热”）用于此。
-*如果房间包含恒温器但不应控制，则可以在管理界面中排除房间
+*如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
+*当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
+*每个房间均支持无限制的恒温器，执行器和传感器
+*每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
+*如果房间内装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）
-*与Feiertag-Adapter或任何其他人接口以检测公共假期。公众假期可以是正常的一天，也可以像星期日一样。 （管理员设置）
+*与Feiertag-Adapter或任何其他接口，以检测公众假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
+*手动控制温度超过一定时间
+*预定加热时间
 *稍后将提供可视化示例
 
 ##设置
-### Main
-*功能=用于检测每个房间的恒温器，执行器和传感器的功能。这是系统之一
-* timezone =用于cron调整cron作业
-* Feiertag的路径 - 适配器=如果你想使用Feiertag-Adapter自动检测今天的公共假期，那么在这里设置路径（例如feiertage.0）
-*当admin打开时删除所有设备=应禁用。仅在需要删除所有房间，执行器和传感器设置时启用它。适配器管理员打开时将执行设备搜索
-*使用传感器=如果您有窗口传感器，并且您希望在窗口打开时降低目标温度，则启用该选项
-*演员使用=如果你想直接从适配器控制执行器。以防止恒温器和执行器之间没有直接连接。
-*如果没有加热周期=仅对执行器有效，则使用执行器。定义在没有加热周期有效时如何设置执行器
-*如果没有可用的恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，您可以打开或关闭它们
+###主要
+*功能=每个房间用于检测恒温器，执行器和传感器的功能。这是系统枚举之一
+*时区=用于cron调整cron作业
+* Feiertag的路径-适配器=如果您使用Feiertag-Adapter自动检测今天的公共假期，则在此处设置路径（例如feiertage.0）
+*当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
+*使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
+*使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
+*如果没有加热时间，则使用执行器=仅对执行器有效。定义没有加热时间时如何设置执行器
+*如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
 
 ###个人资料
-*配置文件类型=支持三种不同的配置文件类型（周一 - 周日，或周一 - 周五和周六/周日或每天）
-*配置文件的数量=如果您需要更多，然后在配置文件上增加该值。然后，您可以选择要使用的配置文件。
-*周期数=定义您需要的每日不同温度段数。随着您设置的越多，将创建更多的数据点。最好使用低值（例如5）
-*“像星期日这样的公众假期=如果你想在公众假期设定目标温度，如周日启用该选项。否则公共假期设置与正常日期相同
+*配置文件类型=支持三种不同的配置文件类型（周一-周日，或周一-周五和周六/周日或每天）
+*配置文件数量=如果需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
+*周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
+*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+* HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
-*所有房间的清单。你可以在这里禁用一个房间。
-*按右侧的编辑按钮打开该房间的恒温器，执行器和传感器的设置窗口
+*所有房间的清单。您可以在此处禁用房间。
+*按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
-*在这里，您可以验证并设置恒温器，执行器和传感器的对象ID
-*您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后你得到一个需要填满的空行。编辑按钮打开系统上可用设备的列表
-*恒温器：
+*您可以在此处验证并设置恒温器，执行器和传感器的对象ID
+*您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后，您会得到一个空行，需要填写。编辑按钮将打开系统上可用设备的列表
+*温控器：
 
-**应设置名称，温度目标OID和当前温度OID。
+**应设置名称，目标温度OID和当前温度OID。
 
 *执行器
 
-**应设置州的名称和OID
+**应该设置状态的名称和OID
 
 *传感器
 
@@ -71,9 +74,24 @@ hash: CIUJBr/fS2w6jX5rdIKlxt0JPx9RDk/w3qim/zQANb8=
 *需要节点版本8或更高版本
 
 ##问题和功能请求
-*如果您遇到任何错误或有此适配器的功能请求，请在[github]的适配器的GitHub问题部分中创建一个问题（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。任何反馈都表示赞赏，并将有助于改进此适配器。
+*如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ## Changelog
+
+### 0.3.0 (2019-10-xx)
+* (René) see issue #20 + #24: start and end of heating period is configurable in admin 
+* (René) see issue #24: use external data point to set internal "present" data point 
+* (René) see issue #15: manual temperatur override
+* (René) reset DeleteAll at next admin start 
+
+
+### 0.2.3 (2019-09-20)
+* (René) see issue #19: handling of enums created in iobroker admin fixed
+* (René) see issue #13: check order of periods; if order is wrong (next time is smaller than previous) then time si not used for cron and a warning appears in log
+* (René) see issue #21: check temperatures after changing of period settings (e.g. time)
+* (René) see issue #25: select OID for target and current of thermostat in admin overworked
+* (René) change datapoint type from bool to boolean
+
 
 ### 0.2.2 (2019-09-13)
 * (René) see issue #14: description of datapoint time changed ('from' instead 'until')

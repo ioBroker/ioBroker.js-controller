@@ -657,6 +657,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.daswetter/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.deconz/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.denon/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.doorbird/README.md
@@ -981,6 +982,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.daswetter/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.deconz/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.denon/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.doorbird/README.md
@@ -1305,6 +1307,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.daswetter/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.deconz/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.denon/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.doorbird/README.md
@@ -1629,6 +1632,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.daikin/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.daswetter/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.deconz/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.denon/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovery/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.doorbird/README.md

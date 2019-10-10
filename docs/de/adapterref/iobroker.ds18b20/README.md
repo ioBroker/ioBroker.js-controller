@@ -26,7 +26,9 @@ Es wird eine entsprechende Hardware mit Unterstützung für den 1-Wire Bus benö
 
 ## Installation
 
-Der Adapter kann er über die URL `https://github.com/crycode-de/ioBroker.ds18b20.git` installiert werden.
+Der Adapter ist aktuell über das latest-Repository verfügbar.
+
+Alternativ kann er über die URL `https://github.com/crycode-de/ioBroker.ds18b20.git` installiert werden.
 
 
 ## Konfiguration
@@ -130,6 +132,9 @@ Wenn das jeweils letzte Lesen von allen Sensoren erfolgreich war, ist dieser Sta
 Sobald einer der Sensoren einen Fehler aufweist, ist dieser State `false`.
 
 ## Changelog
+### 1.0.2 (2019-10-07)
+* (Peter Müller) Display error message when tried to search for sensors without adapter running.
+
 ### 1.0.1 (2019-10-01)
 * (Peter Müller) Type changed to hardware, Renamed command, Added missing documentation
 

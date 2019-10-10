@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
+hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
 ![安装数量](http://iobroker.live/badges/iqontrol-installed.svg)
 ![稳定版](http://iobroker.live/badges/iqontrol-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![依赖状态](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
 ![已知漏洞](https://snyk.io/test/github/sbormann/ioBroker.iqontrol/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.iqontrol.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
+![特拉维斯](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
 ＃ioBroker.iqontrol
@@ -25,7 +25,7 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 
 \ **如果您喜欢，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ****
 
@@ -42,17 +42,17 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 
 ＃＃ 你需要...
 * Nodejs 8或更高版本
-* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”，并且禁用了“强制Web-Sockets”
+* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”并且“强制Web-Sockets”被禁用
     *如果与其他适配器冲突，只需添加具有上述设置的另一个实例-iQontrol将搜索最合适的web-adapter-instance并将其用于通信
 *为了同时通过* iobroker.pro-Cloud *进行连接，应将admin-和web-adapter设置为http（而非https）
 
 ＃＃ 故障排除
-*确保您已满足此页面顶部的“您需要...”部分
+*确保您已满足本页顶部的“您需要...”部分
 *如果更新后某些功能无法正常工作，请尝试以下步骤：
     *开始上传适配器：
 
     \
-        ![上传](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
+        ![上载](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
 
 *清除浏览器缓存
 *重新启动ioBroker
@@ -106,6 +106,8 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 
 *设置只读标志
 *设置反转标志
+*设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
+*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
 *设置一个写入目标值的数据点ID（如果实际值和目标值有不同的数据点）
 *修改数据点的单位，分隔零，单数和复数值
 *修改数据点的最小值和最大值
@@ -140,7 +142,7 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
 
-但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便能够在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
+但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
 
 ###链接到其他视图：
 *没有其他状态
@@ -150,9 +152,9 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
 * **STATE** *布尔值*-显示和设置开/关状态
 * **电源**：*数字*-功耗将在右上角以小号显示
 
-### <img src="img/icons/button.png" width="32">按钮：
+### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！），如果按下按钮，它将分配给STATE
+* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker状态！），如果按下按钮，它将分配给STATE
 * **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则在in选项中定义的时间或100ms后，STATE将重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
@@ -171,14 +173,14 @@ hash: jaYw4nkZ7tV7+X4n2zCcvd1hEGIcRx4yUDdxaFxoPRs=
  ***CT*** 字*-灯光的色温（如果有两个白色阴影）
  ***WHITE_BRIGHTNESS*** 字*-白色LED的亮度（如果您处于LEVEL状态且没有彩色LED，则将忽略此亮度，因为亮度完全由LEVEL控制）
 *替代色彩空间：
- ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选的色彩空间）-替代色彩空间的值
+ ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选择的色彩空间）-替代色彩空间的值
 
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用多种替代颜色空间。在设备选项中，您可以选择以下颜色空间之一：
 
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，并以'＃'开头
     * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选，并以'＃'开头
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
-    * **RGB（仅色相）** /** RGB（仅色相）**：您可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
+    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）代替使用HUE，并在前导'＃'处可选。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
 ````
@@ -187,7 +189,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-切记：转换到替代色彩空间是由前端完成的，因此只有在iQontrol在某个地方打开时，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+注意事项：转换到替代色彩空间是由前端完成的，因此只有在iQontrol在某个地方打开时，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -204,7 +206,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **WINDOW_OPENING_REPORTING** *布尔值*-如果为true，则显示一个打开的小窗口
 * **VALVE_STATES** 名称和数字数组-显示与恒温器关联的阀门的开度
 
-### <img src="img/icons/radiator.png" width="32"> Homematic，温控器：
+### <img src="img/icons/radiator.png" width="32">恒温器：
 除常规恒温器外，您还可以定义：
 
 * **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义恒温疗法的聚会或假期模式
@@ -226,9 +228,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
-* **STATE** *布尔值*-在门或窗打开或关闭时显示
+* **STATE** *布尔值*-如果门或窗户被打开或关闭，则显示
     *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”
-    *您还可以分配* string *以显示任何文本，例如“ 3个打开的窗口”或“全部关闭”
+    *您还可以分配* string *以显示任何文本，例如“ 3个窗口打开”或“全部关闭”
 *尊重**链接视图属性**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
@@ -247,20 +249,20 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **等级**：*数量*-百叶窗高度
 * **方向**：*值列表*-可以是停止，向上和向下。可以配置代表Stop，Up，Down和Unknown的值
 * **STOP** *布尔值*-如果按下停止按钮，则设置为true
-* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时将发送此值而不是true
+* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上/向下”按钮时将发送此值，而不是发送真值
 * ** FAVORITE_POSITION **：*布尔值*-可用于调出喜欢的位置。如果按下“收藏夹”按钮（可以在设备设置中配置按钮标题），则将true发送到该数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE **数据点定义一个值。如果已定义，则当按下“收藏夹”按钮时，将发送此值而不是true
 * **SLATS_LEVEL** *数量*-百叶板的位置百分比
 
-### <img src="img/icons/fire_on.png" width="32">消防传感器：
+### <img src="img/icons/fire_on.png" width="32">火灾传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
-    *或者，您可以分配*值列表*，以显示其他状态，例如“已篡改”
-    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
+    *您还可以分配* string *来显示任何文本，例如“楼上火”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
-    *或者，您可以分配*值列表*，以显示其他状态，例如“已篡改”
-    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
+    *您还可以分配* string *来显示任何文本，例如“楼上火”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
@@ -283,7 +285,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/popup.png" width="32">弹出：
 * **STATE** *任何*-可用于显示更多信息
 * **URL** 常量*字符串*-该网址将作为iframe在弹出窗口中打开
-* **HTML** 常量*字符串*-如果未指定URL，此标记将显示在弹出窗口内
+* **HTML** 常量*字符串*-如果未指定URL，此标记将显示在弹出窗口中
 
 ### <img src="img/icons/link.png" width="32">外部链接：
 * **STATE** *任何*-可用于显示更多信息
@@ -295,6 +297,19 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 0.2.11 (2019-10-07)
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+
+### 0.2.10 (2019-10-05)
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
+
+### 0.2.9 (2019-10-02)
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
 
 ### 0.2.8 (2019-09-27)
 * (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
+hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -11,39 +11,43 @@ hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
 ![AppVeyor构建状态](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
 ![安装数量](http://iobroker.live/badges/shelly-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.shelly.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.shelly.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.shelly.svg)
 ![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
 ＃ioBroker.shelly
 需要node.js 8.0或更高版本以及Admin v3！
 
 适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
-通过默认的Shelly固件（不需要闪存固件！）。您可以在此处找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+默认情况下为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
 
 ##安装
-您可以在此处找到详细的安装文档：[安装文档](./docs/EN/INSTALL.md)
+您可以在此处找到详细的安装文档：[安装文件](./docs/EN/INSTALL.md)
 
 ##支持的设备
-| Shelly Device |默认（CoAP）| MQTT |
+| Shelly设备|默认（CoAP）| MQTT |
 |-------------|--------------|----|
-| Shelly1（SHSW-1）|已验证|已确认|
-| Shelly2（SHSW-21 / SHSW-22）|已验证|已确认|
+| Shelly1（SHSW-1）|已验证|已验证|
+| Shelly2（SHSW-21 / SHSW-22）|已验证|已验证|
 | ShellyBulb（SHBLB）|已验证|已验证|
-| Shelly H＆T（SHHT-1）|已验证|已确认|
-| Shelly Smoke（SHSM-01）|已验证|已确认|
-| Shelly 1 PM（SHSW-PM）|已验证|已确认|
-| Shelly 2.5（SHSW-25）|已验证|已确认|
+| Shelly H＆T（SHHT-1）|已验证|已验证|
+| Shelly Smoke（SHSM-01）|已验证|已验证|
+| Shelly 1 1PM（SHSW-PM）|已验证|已验证|
+| Shelly 2.5（SHSW-25）|已验证|已验证|
 | ShellyRGBW（SHRGBWW-01）|已验证|已验证|
 | ShellyRGBW2（SHRGBW2）|已验证|已验证|
 | Shelly2LED（SH2LED）|已验证|已验证|
 | ShellyPlug（SHPLG-1）|已验证|已验证|
-| ShellyPlug S（SHPLG-1）|已验证|已确认|
-| ShellySense（SHSEN-1）|已验证|未经验证|
-| Shelly4Pro（SHSW-44）|已验证|未经验证|
-| Shelly EM（SHEM）|已验证|已确认|
-| Shelly Flood（SHWT-1）|已验证|已确认|
+| ShellyPlug S（SHPLG-1）|已验证|已验证|
+| ShellySense（SHSEN-1）|已验证|未验证|
+| Shelly4Pro（SHSW-44）|已验证|未验证|
+| Shelly EM（SHEM）|已验证|已验证|
+| Shelly Flood（SHWT-1）|已验证|已验证|
+| Shelly Dimmer（SHDM-1）|已验证|已验证|
 
 ## Changelog
+
+### 3.1.1 (14.09.2019)
+* (Stübi) - Add device Shelly Dimmer
 
 ### 3.1.0 (03.09.2019)
 * (Stübi) - Add device Shelly flood

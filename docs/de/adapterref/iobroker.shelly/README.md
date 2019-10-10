@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: HRADHqvHIKlhvTCDsp9mYyD704owO7VQuxrNU47oEm4=
+hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -42,8 +42,12 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly4Pro (SHSW-44) | verifiziert | nicht verifiziert |
 | Shelly EM (SHEM) | verifiziert | verifiziert |
 | Shelly Flood (SHWT-1) | verifiziert | verifiziert |
+| Shelly Dimmer (SHDM-1) | verifiziert | verifiziert |
 
 ## Changelog
+
+### 3.1.1 (14.09.2019)
+* (Stübi) - Add device Shelly Dimmer
 
 ### 3.1.0 (03.09.2019)
 * (Stübi) - Add device Shelly flood

@@ -18,9 +18,13 @@ Check if all inverter - data is collected. !! The user-password in solarlog has 
 Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein
 
 Tested on:
-Solarlog 200PM+ / 300PM+ / 500 / 1200Meter
+Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
 
 ## Changelog
+
+### 1.0.0
+
+-   Reads now devicetypes, -brands and -classes. Sets correct params for batteries. Displays self-consumption @'status'
 
 ### 0.1.6
 

@@ -124,6 +124,8 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 * FritzDECT500, FritzDECT440 after API release
 
 ## Changelog
+### 0.2.5
+* fixed testing
 ### 0.2.4
 * (Scrounger) correction of type mismatch (string boolean)
 ### 0.2.3

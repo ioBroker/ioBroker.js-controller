@@ -32,6 +32,27 @@ pass = demo
 
 ## Changelog
 
+### 0.5.0 (Development in progress)
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+
+### 0.4.5 several fixes & code optimalisation
+* (Dutchman) implement adjustable timing intervall
+* (Dutchman) make state names configurable
+* (Dutchman) update attr library
+* (Dutchman) code cleanup
+
+### 0.4.4 ALPHA version of rebuilded adapter
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
+* (Dutchman) ensure split values for consumption and delivery
+
+
 ### 0.4.0
 * small code fixes
 * updated dependecys

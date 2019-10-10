@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: svUDg6PeuwzW2SVde6BsJumvN2lf/qOxZtj6X/fZx+U=
+hash: c4ZzbhsSa0aBzuk1yWRo8ZryMxadrDIKqXV9xV1SVEw=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -128,10 +128,10 @@ Attribute für das Objekt getState / stateChange / setState:
 * `val` - der tatsächliche Wert - kann ein beliebiger Typ sein, der JSON-" codierbar "ist
 * `ack` - ein Boolesches Flag, das angibt, ob das Zielsystem den Wert bestätigt hat
 * `ts` - ein Unix-Zeitstempel, der die letzte Aktualisierung des Status angibt (in Millisekunden)
-* `lc` - ein Unix-Zeitstempel, der die letzte Änderung des tatsächlichen Zustands anzeigt (in Millisekunden)
+* `lc` - ein Unix-Zeitstempel, der die letzte Änderung des tatsächlichen Werts des Zustands angibt (in Millisekunden)
 * `from` - Adapterinstanz, die den` setState` ausgeführt hat
 * `user` - Benutzername, der den Wert festlegt
-* `expire` - ein ganzzahliger Wert, mit dem Zustände festgelegt werden können, die nach einer bestimmten Anzahl von Sekunden ablaufen. Kann nur mit `setValue` verwendet werden. Nachdem der Wert abgelaufen ist, verschwindet er aus redisDB.
+* `expire` - Ein ganzzahliger Wert, mit dem Zustände festgelegt werden können, die nach einer bestimmten Anzahl von Sekunden ablaufen. Kann nur mit `setValue` verwendet werden. Nachdem der Wert abgelaufen ist, verschwindet er aus redisDB.
 * `c` - Kommentar zu dieser Zustandsänderung.
 * `q` - Qualität. Nummer mit folgenden Zuständen:
 
@@ -179,13 +179,14 @@ Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.ad
 * `device` - Objekt zum Gruppieren eines oder mehrerer Kanäle oder Zustände. Sollte keinen übergeordneten außer dem Adapterinstanz-Namespace haben.
 * `enum` - Objekte, die ein Array in common.members enthalten, das auf Zustände, Kanäle, Geräte oder Dateien verweist. Aufzählungen können eine übergeordnete Aufzählung haben (Baumstruktur möglich)
 * `host` - Ein Host, der einen Controller-Prozess ausführt
-* `adapter` - die Standardkonfiguration eines Adapters. Anwesenheit zeigt auch an, dass der Adapter erfolgreich installiert wurde. (Vorschlag: sollte ein Attribut enthalten, das ein Array der Hosts enthält, auf denen es installiert ist)
+* `adapter` - Die Standardkonfiguration eines Adapters. Anwesenheit zeigt auch an, dass der Adapter erfolgreich installiert wurde. (Vorschlag: sollte ein Attribut enthalten, das ein Array der Hosts enthält, auf denen es installiert ist)
 * `instance` - Instanz des Adapters. Eltern müssen vom Typ Adapter sein
 * `meta` - Ändert selten die Meta-Informationen, die ein Adapter oder seine Instanzen benötigen
 * `config` - Konfigurationen
-* `script`
-* `Benutzer`
-* `Gruppe`
+* `script` - Skripte
+* `user` - Benutzer
+* `group` - Gruppen
+* `chart` - Diagramme
 
 #### Attribute für bestimmte Objekttypen
 ##### Zustand
@@ -200,15 +201,15 @@ Attribute:
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, string)
 * `common.read` (Boolescher Wert, obligatorisch) - true, wenn der Status lesbar ist
-* `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status beschreibbar ist
+* `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status schreibbar ist
 * `common.role` (string, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
 * `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
-* `common.workingID` (String, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
+* `common.workingID` (string, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
 
 ##### Bundesland `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
 
-Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
+Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um Standardeinstellungen zu verwenden
 
 Eine Liste der Transporte finden Sie in der README-Datei des Verlaufsadapters
 
@@ -234,9 +235,9 @@ mögliche Werte:
 * `media - gemeinsamer Medienkanal
 * `media.music` - Mediaplayer wie SONOS, YAMAHA und so weiter
 * `media.tv` - TV
-* `media.tts` - Text zur Rede
+* `media.tts` - text to speech
 
-* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit usw.
+* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit und so weiter
 * `thermo.heat`
 * `thermo.cool`
 
@@ -470,14 +471,14 @@ mögliche Werte:
 
 #### Gerät
 #### Enum
-* `common.members` - (optionales) Array von Enum-Member-IDs
+* `common.members` - (optionales) Array von Enum-Mitglieds-IDs
 
 #### Meta
 Ich würde
 
- ** &lt; Adaptername &gt;. & lt; Instanznummer & gt; .meta & lt; Metaname & gt;*
- ** &lt; Adaptername &gt; .meta & lt; Metaname & gt;*
- *system. * meta. &lt; metaname &gt;*
+ * `* &lt; Adaptername &gt;. & lt; Instanznummer & gt; .meta & lt; Metaname & gt; * '
+ * `* &lt; Adaptername &gt; .meta & lt; Metaname & gt; *`
+ * `system. *meta. &lt; metaname &gt;*
 
 #### Adapter
 id `system.adapter.<adapter.name>`
@@ -492,7 +493,7 @@ id `system.adapter.<adapter.name>`
 * `common.installedVersion` - **obligatorisch** installierte Version
 * `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
 * `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
-* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem WWW-Ordner des Adapters bereitstellen sollen
+* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
 * `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
 * `common.subscribe` - Name der Variablen, die automatisch abonniert wird
@@ -537,12 +538,12 @@ id `system.adapter.<adapter.name>`
 * `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von github möglich
 * `common.materialise` - wenn der Adapter> admin3 unterstützt (materialise style)
 * `common.materializeTab` - wenn der Adapter> admin3 für tab unterstützt (materialize style)
-* `common.dataFolder` - Ordner relativ zu den iobroker-Daten, in denen der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
+* `common.dataFolder` - Ordner relativ zu iobroker-Daten, in dem der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
 * `common.webPreSettings` - Liste der Parameter, die vom Webserver-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
 * `common.apt-get` - Liste der Debian-Pakete, die für diesen Adapter benötigt werden (natürlich nur Debian)
 * `common.eraseOnUpload` - löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
 * `common.webByVersion` - Version als Präfix im Webadapter anzeigen (normalerweise - IP: Port / Material, WebByVersion - IP: Port / 1.2.3 / Material)
-* `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm in Admin (wie Icons, Widgets)
+* `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm im Admin (wie Icons, Widgets)
 * `common.expert` - zeige dieses Objekt nur im Expertenmodus in admin
 * `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
 
@@ -557,7 +558,7 @@ id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
 * `none` - dieser Adapter startet keinen Prozess
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
 * `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
-* `Zeitplan` - wird nach Zeitplan gestartet, der in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist.* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
+* `Zeitplan` - wird nach dem Zeitplan in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule gestartet* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
 * `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 #### Host
@@ -578,7 +579,7 @@ id `system.host.<host>`
 * `common.source` - (obligatorisch) die Skriptquelle
 * `common.engine` - (optional) *Skript-Engine* Instanz, die dieses Skript ausführen soll (zB 'javascript.0') - wenn die Engine weggelassen wird, wird sie automatisch ausgewählt
 
-#### Nutzer
+#### Benutzer
 * `common.name` - (obligatorisch) Name des Benutzers (Groß- und Kleinschreibung beachten)
 * `common.password` - (obligatorisch) MD5 Hash des Passworts
 

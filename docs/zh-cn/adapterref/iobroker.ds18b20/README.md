@@ -9,14 +9,14 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ds18b20/README.md
 title: ioBroker.ds18b20
-hash: sqfSPahxZns4w1hedt56SBxCnsrz6ZkFNNuhelO/WLU=
+hash: qJfRB/5MczqQ0Aivc91lJ64NChstHjwb6g4+Ev03rfI=
 ---
 ![徽标](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
 
 ＃ioBroker.ds18b20
-适配器`ds18b20`可以将ioBroker中DS18B20类型的1-Wire温度传感器直接集成。
+适配器`ds18b20`使ioBroker中的DS18B20型1-Wire温度传感器直接集成。
 
-需要具有支持1-Wire总线的相应硬件（例如Raspberry Pi），并且必须在系统上设置1-Wire总线正常工作（在`/sys/bus/w1/devices/`中列出的传感器）。
+需要支持1-Wire总线的相应硬件（例如Raspberry Pi），并且必须在系统上功能上设置1-Wire总线（在`/sys/bus/w1/devices/`中列出的传感器）。
 
 ##功能
 *读取当前温度值
@@ -26,7 +26,9 @@ hash: sqfSPahxZns4w1hedt56SBxCnsrz6ZkFNNuhelO/WLU=
 *每个传感器可调整的测量值的四舍五入和转换
 
 ##安装
-可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装适配器。
+当前可以通过最新的存储库使用该适配器。
+
+或者，可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装。
 
 ##配置
 在适配器配置中，可以以毫秒为单位设置所有传感器的**标准轮询间隔**。最小值为500。
@@ -41,7 +43,7 @@ hash: sqfSPahxZns4w1hedt56SBxCnsrz6ZkFNNuhelO/WLU=
 可以自由选择**名称**以识别传感器。
 
 可以为每个传感器设置额外的**轮询间隔**（以毫秒为单位）。
-如果该字段保留为空，则应用默认查询间隔。
+如果该字段保留为空白，则应用默认查询间隔。
 最小值为500。
 
 **单位**确定ioBroker对象中存储的值的单位。
@@ -117,6 +119,9 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
 一旦其中一个传感器发生错误，此状态即为`false`。
 
 ## Changelog
+### 1.0.2 (2019-10-07)
+* (Peter Müller) Display error message when tried to search for sensors without adapter running.
+
 ### 1.0.1 (2019-10-01)
 * (Peter Müller) Type changed to hardware, Renamed command, Added missing documentation
 

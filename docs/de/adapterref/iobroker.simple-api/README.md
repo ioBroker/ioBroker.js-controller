@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.simple-api/README.md
 title: Simple-API
-hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
+hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
 ---
 ![Logo](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -17,7 +17,7 @@ hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
 Dies ist die RESTFul-Schnittstelle zum Lesen der Objekte und Zustände von ioBroker und zum Schreiben / Steuern der Zustände über HTTP-Get / Post-Anforderungen.
 
 ## Verwendungszweck
-Rufen Sie im Browser ```http://ipaddress:8087/help``` auf, um Hilfe zur API zu erhalten. Das Ergebnis ist:
+Rufen Sie im Browser ```http://ipaddress:8087/help``` auf, um die Hilfe zur API zu erhalten. Das Ergebnis ist:
 
 ```
 {
@@ -92,7 +92,7 @@ Ergebnis:
 ```
 
 ### GetBulk
-    Holen Sie sich viele Zustände mit einer Anfrage, die als Array von Objekten in der Reihenfolge der Liste in der Anfrage und ID / Wert / ts als Unterobjekt zurückgegeben werden
+    Holen Sie sich viele Zustände mit einer Anfrage, die als Array von Objekten in der Reihenfolge der Liste in der Anfrage und ID / Wert / TS als Unterobjekt zurückgegeben werden
 
 ### Einstellen
 Rufen Sie z.
@@ -137,7 +137,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 ```
 
 ### Umschalten
-    Schaltet den Wert um:
+    schaltet den Wert um:
 
 - Boolescher Wert: true => false, false => true
 - Anzahl ohne Grenzen: x => 100-x
@@ -213,7 +213,7 @@ Wenn innerhalb der angegebenen Zeit keine Antwort eingeht, wird der Wert *null* 
 Im ersten Fall wird die Antwort sofort zurückgegeben und *ack* ist falsch. Im zweiten Fall ist *ack* wahr. Das heißt, es war die Antwort des Fahrers.
 
 ### SetBulk
-- Schreiben Sie einen Großteil der IDs auf einmal.
+- Schreiben Sie einen Großteil der IDs in einer Anfrage.
 
 <pre> http:// ip: 8087 / setBulk? hm-rpc.0.FEQ1234567: 1.LEVEL = 0.7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: Datenpunkt \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Sie können diese Anfrage auch als POST senden.
 
@@ -235,7 +235,7 @@ Holen Sie sich die Liste aller Zustände für Muster. Wenn kein Muster angegeben
 
  Holen Sie sich alle Kontrollobjekte des Adapters system.adapter.admin.0:
 
-<pre> http:// ip: 8087 / states? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32161, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156149}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41.14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, &quot;system.adapter.admin.0.memHeapUsed&quot;: {&quot;val&quot;: 19.07, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423156149},&quot; system.adapter.admin.0.connected &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin .0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28100},&quot; system.adapter.admin.0.alive &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28115}} </pre>
+<pre> http:// ip: 8087 / states? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32161, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156149}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41,14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, &quot;system.adapter.admin.0.memHeapUsed&quot;: {&quot;val&quot;: 19.07, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423156149},&quot; system.adapter.admin.0.connected &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin .0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28100},&quot; system.adapter.admin.0.alive &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28115}} </pre>
 
 ### Suche
 Ist in der Konfiguration eine Datenquelle (History, SQL) eingestellt, so werden nur die der Datenquelle bekannten Datenpunkte aufgelistet.
@@ -253,6 +253,9 @@ Wurde keine Datenquelle angegeben oder der Parameter noHistory übergeben, wird 
 <pre> http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; noHistory = true </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints&quot; &quot;: [[21.53, 1559970500342]]}] </pre>
 
 ## Changelog
+### 2.3.0 (2019-10-10)
+* (bluefox) Admin 3 is now supported
+* (bluefox) NPM packages were updated
 
 ### 2.2.0 (2019-09-10)
 * (bluefox) New flags are supported: ack and type

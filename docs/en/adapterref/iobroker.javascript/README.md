@@ -67,6 +67,9 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [instance](#instance)
     - [messageTo](#messageto)
     - [onMessage](#onmessage)
+    - [onMessageUnregister](#onmessageunregister)
+    - [onLog](#onlog)
+    - [onLogUnregister](#onlogunregister)
 
 - [Scripts activity](#scripts-activity)
 - [Changelog](#changelog)
@@ -912,7 +915,7 @@ To get specific information about messages you must read the documentation for p
 Example:
 
 ```js
-sendTo('telegram', {user: 'UserName', text: 'Test message'};
+sendTo('telegram', {user: 'UserName', text: 'Test message'});
 ```
 
 Some adapters also support responses to the send messages. (e.g. history, sql, telegram)
@@ -1310,16 +1313,18 @@ It is not a function. It is a variable with javascript instance, that is visible
 
 ### messageTo
 ```
-messageTo({instance: 'instance', script: 'scriptName', message: 'messageName'}, data, {timeout: 1000}, (err, result) =>
+messageTo({instance: 'instance', script: 'script.js.common.scriptName', message: 'messageName'}, data, {timeout: 1000}, result =>
     console.log(JSON.stringify(result)));
 ```
 
-Sends via the message bus the message to some other script. Or even in the same script.
+Sends via the "message bus" the message to some other script. Or even to some handler in the same script.
+
+Timeout for callback is 5 seconds by default.
 
 The target could be shorted to:
 
 ```
-messageTo('messageName', data, (err, result) =>
+messageTo('messageName', data, result =>
     console.log(JSON.stringify(result)));
 ```
 
@@ -1329,27 +1334,69 @@ Callback and options are optional and timeout is by default 5000 milliseconds (i
 messageTo('messageName', dataWithNoResponse);
 ```
 
-***Not implemented yet***
-
 ### onMessage
 ```
-onMessage('messageName', (data, callback) => {console.log(data); callback(null, Date.now())});
+onMessage('messageName', (data, callback) => {console.log('Received data: ' + data); callback(null, Date.now())});
 ```
 
 Subscribes on message bus and delivers response via callback.
 The response from script which sends response as first will be accepted as answer, all other answers will be ignored.
 
-***Not implemented yet***
-
 ### onMessageUnregister
 ```
 const id = onMessage('messageName', (data, callback) => {console.log(data); callback(Date.now())});
 
-// unsubscribe
+// unsubscribe specific handler
 onMessageUnregister(id);
+// or unsubscribe by name
+onMessageUnregister('messageName');
 ```
 
 Unsubscribes from this message.
+
+### onLog
+```
+onLog('error', data => {
+    sendTo('telegram.0', {user: 'UserName', text: data.message});
+    console.log('Following was sent to telegram: ' + data.message);
+});
+```
+
+Subscribes on logs with specified severity.
+
+*Important:* you cannot output logs in handler with the same severity to avoid infinite loops.
+
+E.g. this will produce no logs:
+```
+onLog('error', data => {
+    console.error('Error: ' + data.message);
+});
+```
+
+To receive all logs the `*` could be used. In this case the log output in handler will be disabled at all.
+
+```
+onLog('*', data => {
+    console.error('Error: ' + data.message); // will produce no logs
+});
+```
+
+### onLogUnregister
+```
+function logHandler(data) {
+    console.error('Error: ' + data.message);
+}
+const id = onLog('warn', logHandler);
+
+// unsubscribe by ID
+onLogUnregister(id);
+// or unsubscribe by function handler
+onLogUnregister(logHandler);
+// or unsubscribe all handlers with specific severity
+onLogUnregister('warn');
+```
+
+Unsubscribes from this logs.
 
 ## Option - "Do not subscribe all states on start"
 There are two modes of subscribe on states:
@@ -1376,6 +1423,15 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.3.0 (2019-10-09)
+* (bluefox) log handlers were implemented
+* (bluefox) fixed the error with $ selector and with disabled subscribes
+
+### 4.2.1 (2019-10-07)
+* (bluefox) implement inter-script communication.
+* (bluefox) Implemented the mirroring on disk
+* (bluefox) Translation for other languages was added
+
 ### 4.1.17 (2019-08-xx)
 * (bluefox) Optimization: do not make useless iterations
 * (bluefox) Allow to make requests to sites with self/signed certificates

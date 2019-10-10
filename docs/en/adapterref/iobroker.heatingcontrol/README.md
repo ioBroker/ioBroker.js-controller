@@ -30,6 +30,8 @@ Features:
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
 * sensor is used to reduce target temperature (e.g. if a window is open)
 * interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
+* manual temperature override for a certain time
+* predefined heating period
 * A visualization example will be provided later
 
 
@@ -50,6 +52,9 @@ Features:
 * number of profiles = if you need more then on profile increase that value. You can then select which profile will be used.
 * number of periods = define how many daily sections with different temperature you need. As more you set as more datapoints will be created. Better to use a low value (e.g. 5)
 * "public holiday like sunday = if you want to set target temperatures on public holiday like sunday enable that option. Otherwise public holiday settings are the same as on normal days
+* HeatingPeriod = start and end date of heating period. Used to set "HeatingPeriodActive" 
+
+
 
 ### devices
 * a list of all rooms. You can disable a room here. 
@@ -74,9 +79,12 @@ Features:
 
 ## Changelog
 
-### 0.3.0 (2019-09-xx)
+### 0.3.0 (2019-10-xx)
 * (René) see issue #20 + #24: start and end of heating period is configurable in admin 
 * (René) see issue #24: use external data point to set internal "present" data point 
+* (René) see issue #15: manual temperatur override
+* (René) reset DeleteAll at next admin start 
+
 
 ### 0.2.3 (2019-09-20)
 * (René) see issue #19: handling of enums created in iobroker admin fixed

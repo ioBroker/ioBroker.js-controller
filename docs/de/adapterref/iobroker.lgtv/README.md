@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
+hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 ---
 ![Logo](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -14,39 +14,41 @@ hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
 ![Travis-CI](https://travis-ci.org/SebastianSchultz/ioBroker.lgtv.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
-# IoBroker.lgtv ===================
-LG WebOS SmartTV-Adapter für ioBroker
+# IoBroker.lgtv
+=================
 
-Fernsteuerung eines LG WebOS SmartTV (ab 2013) ab [ioBroker](https://www.iobroker.net).
+LG WebOS SmartTV Adapter für ioBroker
+
+Fernbedienung eines LG WebOS SmartTV (Modelle ab 2013) über [ioBroker](https://www.iobroker.net).
 
 ---
 
 ## Verwendungszweck:
 Installieren Sie den Adapter über die ioBroker-Administrationsoberfläche.
-Geben Sie in der Adapterkonfiguration die IP-Adresse Ihres LG WebOS TV ein.
-Bei der ersten Verbindung erhalten Sie auf Ihrem Fernsehbildschirm eine Aufforderung zum Pairing, bei der Sie die Verbindung zulassen sollten.
+In der Adapterkonfiguration geben Sie die IP-Adresse Ihres LG WebOS TV ein.
+Bei der ersten Verbindung wird auf Ihrem Fernsehbildschirm eine Pairing-Aufforderung angezeigt, in der Sie die Verbindung zulassen sollten.
 
 ## Einige Beispiele:
 ```setState('lgtv.0.states.popup', 'Some text!');```
 
-Daraufhin wird ein Popup mit dem Text "Etwas Text!" Angezeigt. im Fernsehen.
+Dies zeigt ein Popup mit dem Text "Some text!" im Fernsehen.
 Sie können HTML-Zeilenumbrüche (br) im Text verwenden.
 
 ```setState('lgtv.0.states.turnOff', true);```
 
-Fernseher ausschalten.
+Fernsehgerät ausschalten.
 
 ```setState('lgtv.0.states.mute', true);```
 
-Schalten Sie den Fernseher aus.
+Schalte den Fernseher aus.
 
 ```setState('lgtv.0.states.mute', false);```
 
-Stummschalten des Fernsehers
+Schalten Sie den Fernseher ein.
 
 ```setState('lgtv.0.states.volumeUp', true);```
 
-Dadurch wird die Lautstärke des Fernsehgeräts erhöht.
+Dies erhöht die Lautstärke des Fernsehgeräts.
 
 ```setState('lgtv.0.states.volumeDown', true);```
 
@@ -58,7 +60,7 @@ Erhöhen des aktuellen Fernsehkanals.
 
 ```setState('lgtv.0.states.channelDown', true);```
 
-Verringern des aktuellen Fernsehkanals.
+Verringert den aktuellen Fernsehkanal.
 
 ```setState('lgtv.0.states.3Dmode', true);```
 
@@ -74,60 +76,80 @@ Umschalten des Live-Fernsehers auf Kanalnummer 7.
 
 ```setState('lgtv.0.states.launch', 'livetv');```
 
-Umschalten in den Live-TV-Modus.
+In den Live-TV-Modus wechseln.
 
 ```setState('lgtv.0.states.launch', 'smartshare');```
 
-Öffnen der SmartShare App auf dem Fernsehgerät.
+Öffnen der SmartShare App auf dem Fernseher.
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
-Führt die TV-Benutzerhandbuch-App auf dem Fernsehgerät aus.
+Führt die TV User Guide App auf dem Fernseher aus.
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
-Öffnen der Netflix-App auf dem Fernsehgerät.
+Öffnen Sie die Netflix-App auf dem Fernseher.
 
 ```setState('lgtv.0.states.launch', 'youtube');```
 
-Öffnet die Youtube-App auf dem Fernseher.
+Öffnet die Youtube App auf dem Fernseher.
 
 ```setState('lgtv.0.states.launch', 'prime');```
 
-Öffnet die Amazon Prime App auf dem Fernseher.
+Öffnet die Amazon Prime App im Fernsehen.
 
 ```setState('lgtv.0.states.launch', 'amazon');```
 
-Bei einigen Fernsehgeräten öffnet dieser Befehl die Amazon Prime App.
+Auf einigen Fernsehgeräten wird mit diesem Befehl die Amazon Prime-App geöffnet.
 
 ```setState('lgtv.0.states.openURL', 'http://www.iobroker.net');```
 
-Öffnet den Webbrowser auf dem Fernsehgerät und navigiert zu www.iobroker.net.
+Öffnet den Webbrowser auf dem Fernseher und navigiert zu www.iobroker.net.
 Kann auch zum Öffnen von Bildern oder Videos (im Browser) verwendet werden.
 
-```setState('lgtv.0.states.input', 'AV_1');```
+```setState('lgtv.0.states.input', 'av1');```
 
-Schaltet den iPod auf den AV1 um.
+Schaltet den Iput des Fernsehers auf AV1.
 
-```setState('lgtv.0.states.input', 'SCART_1');```
+```setState('lgtv.0.states.input', 'scart');```
 
-Schaltet den Iput des Fernsehers auf Scart um.
+Schaltet den Iput des Fernsehgeräts auf Scart.
 
-```setState('lgtv.0.states.input', 'COMP_1');```
+```setState('lgtv.0.states.input', 'component');```
 
-Schaltet den Iput des Fernsehers auf Component um.
+Schaltet den Iput des Fernsehgeräts auf Component um.
 
-```setState('lgtv.0.states.input', 'HDMI_1');```
+```setState('lgtv.0.states.input', 'hdmi1');```
 
-Schaltet den iput des Fernsehgeräts auf HDMI 1 um.
+Schaltet den Anschluss des Fernsehgeräts auf HDMI 1 um.
 
-```setState('lgtv.0.states.input', 'HDMI_2');```
+```setState('lgtv.0.states.input', 'hdmi2');```
 
-Schaltet den iput des Fernsehgeräts auf HDMI 2 um.
+Schaltet den Anschluss des Fernsehgeräts auf HDMI 2 um.
 
-```setState('lgtv.0.states.input', 'HDMI_3');```
+```setState('lgtv.0.states.input', 'hdmi3');```
 
-Schaltet den iput des Fernsehgeräts auf HDMI 3 um.
+Schaltet den iPod am Fernseher auf HDMI 3 um.
+
+```setState('lgtv.0.states.youtube', 'https://www.youtube.com/watch?v=AjSpMQfRmEo'); OR setState('lgtv.0.states.youtube', 'AjSpMQfRmEo');```
+
+YouTube-Video abspielen.
+
+```setState('lgtv.0.states.raw', {url: 'ssap://system.launcher/launch', cmd: {id: "netflix"} });```
+
+Senden der RAW-Befehls-API.
+
+```setState('lgtv.0.remote.*KEY*', true);```
+
+Senden Sie den Fernbedienungsschlüssel an das Fernsehgerät.
+
+```setState('lgtv.0.states.power', true/false);```
+
+TV ausschalten und TV einschalten (Einschalten, funktioniert nur im LAN mit WOL).
+
+```setState('lgtv.0.states.soundOutput', 'external_arc');```
+
+Schaltet den Audioausgang über ARC (HDMI) um.
 
 ---
 
@@ -138,7 +160,7 @@ hält den aktuellen Kanal
 
 Volumen
 
-hält den aktuellen Lautstärkepegel und kann die Lautstärke ändern
+Hält den aktuellen Lautstärkepegel und kann die Lautstärke ändern
 
 auf
 
@@ -147,6 +169,14 @@ ist wahr, wenn das Fernsehgerät eingeschaltet ist, und falsch, wenn das Fernseh
 ---
 
 ## Changelog
+
+### 1.1.0 (2019-10-10)
+* (instalator) adding object remote.KEY
+* (instalator) fix connect to TV
+* (instalator) add subscribe volume and mute state
+* (instalator) translate admin to RUS
+* (instalator) add Turn On, using WOL
+* (instalator) adding new different objects
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

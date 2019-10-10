@@ -2615,6 +2615,15 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.3.0 (2019-10-09)
+* (bluefox) log handlers were implemented
+* (bluefox) fixed the error with $ selector and with disabled subscribes
+
+### 4.2.1 (2019-10-07)
+* (bluefox) implement inter-script communication.
+* (bluefox) Implemented the mirroring on disk
+* (bluefox) Translation for other languages was added
+
 ### 4.1.17 (2019-08-xx)
 * (bluefox) Optimization: do not make useless iterations
 * (bluefox) Allow to make requests to sites with self/signed certificates

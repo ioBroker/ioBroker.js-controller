@@ -137,7 +137,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 ### query
     If a data source (History, SQL) has been specified, the data from the specified data points are read out for the specified period, otherwise only the current value is read out.
     This command is needed for the Grafana JSON / SimpleJSON Plugin.
-    
+
 ### help
 Gives [this](#usage) output back
 
@@ -160,12 +160,12 @@ Read state value as text. You can specify more ids divided by semicolon
 
 <pre>http://ip:8087/getPlainValue/admin.0.memHeapTotal</pre>
 
-<pre>   
+<pre>
   31.19
-</pre>  
+</pre>
 
 <pre>http://ip:8087/getPlainValue/admin.0.memHeapTotal, admin.0.memHeapUsed</pre>
-<pre>  
+<pre>
   31.19
   17.52
 </pre>
@@ -547,6 +547,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+### 2.3.0 (2019-10-10)
+* (bluefox) Admin 3 is now supported
+* (bluefox) NPM packages were updated
 
 ### 2.2.0 (2019-09-10)
 * (bluefox) New flags are supported: ack and type

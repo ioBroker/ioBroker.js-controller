@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.simple-api/README.md
 title: Простой апи
-hash: hqXNx+2HTOYaU4M76LB03KaDsgeK6nzKODQ8ngc4nBY=
+hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
 ---
 ![логотип](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -161,13 +161,13 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 Эта команда необходима для подключаемого модуля Grafana JSON / SimpleJSON.
 
 ### Помогите
-Возвращает [это](#usage) обратно
+Дает [это](#usage) вывод обратно
 
 ## Установить
 ```node iobroker.js add simple-api```
 
 ## Использование
-Предположим, у нас нет защиты, и сервер работает по умолчанию через порт 8087.
+Предположим, у нас нет безопасности, и сервер работает по умолчанию порт 8087.
 
 Для всех запросов можно указать имя или идентификатор состояния.
 
@@ -203,7 +203,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 <pre> {&quot;admin.0.memHeapTotal&quot;: {&quot;val&quot;: 31.19, &quot;ts&quot;: 1423154754}, &quot;admin.0.memHeapUsed&quot;: {&quot;val&quot;: 15.6, &quot;ts&quot;: 1423154754}} </pre>
 
 ### Установлен
-Напишите состояния с указанными идентификаторами. Вы можете указать опцию *wait* в миллисекундах, чтобы дождаться ответа от водителя.
+Напишите состояния с указанными идентификаторами. Вы можете указать опцию *wait* в миллисекундах, чтобы ждать ответа от водителя.
 
 <pre> http:// IP: 8087 / набор / гм-rpc.0.IEQ12345.LEVEL значение = 1 &amp; prettyPrint </pre><pre> {&quot;id&quot;: &quot;hm-rpc.0.IEQ12345.LEVEL&quot;, &quot;value&quot;: 1} </pre>
 
@@ -219,7 +219,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 ### Объекты
 Получить список всех объектов для шаблона. Если шаблон не указан, будут возвращены все объекты в виде массива JSON.
 
-<pre> http:// IP: 8087 / объекты prettyPrint? </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident установить размер &quot;,&quot; тип &quot;:&quot; число &quot;,&quot; роль &quot;:&quot; индикатор.стейт &quot;,&quot; единица измерения &quot;:&quot; МБ &quot;,&quot; история &quot;: {&quot; включено &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot;debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
+<pre> http:// IP: 8087 / объекты prettyPrint? </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident задать размер &quot;,&quot; тип &quot;:&quot; число &quot;,&quot; роль &quot;:&quot; индикатор. состояние &quot;,&quot; единица измерения &quot;:&quot; МБ &quot;,&quot; история &quot;: {&quot; включено &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot;debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
 </pre>
 
 Получить все объекты управления адаптера system.adapter.admin.0: <pre> http:// IP: 8087 / объекты шаблон = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; Indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}}, ...
@@ -252,6 +252,9 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 <pre> http:// IP: 8087 / запрос / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed / prettyPrint &amp; noHistory = верно? </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints &quot;: [[21.53, 1559970500342]]}] </pre>
 
 ## Changelog
+### 2.3.0 (2019-10-10)
+* (bluefox) Admin 3 is now supported
+* (bluefox) NPM packages were updated
 
 ### 2.2.0 (2019-09-10)
 * (bluefox) New flags are supported: ack and type

@@ -101,6 +101,8 @@ To edit the role and the states of a device, click on the pencil behind the devi
 You can modify the configuration of datapoints via the wrench-icon behind a datapoint in the device-configuration dialog or in objects-tab of iobroker. Here you can:
 * Set Readonly-Flag
 * Set Invert-Flag
+* Set Confirm-Flag (forces the user to confirm before a change is written to a datapoint)
+* Set PIN-Code (forces the user to enter this PIN-Code before a change is written to a datapoint - but take care: this is only of low security, because the pin is checked in frontend! Use a number to display a fullscreen-pin-pad if asked for code)
 * Set a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
 * Modify unit of datapoint, seperate for zero, singular and plural values
 * Modify min and max of datapoint
@@ -280,6 +282,19 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
+
+### 0.2.11 (2019-10-07)
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+
+### 0.2.10 (2019-10-05)
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
+
+### 0.2.9 (2019-10-02)
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
 
 ### 0.2.8 (2019-09-27)
 * (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.

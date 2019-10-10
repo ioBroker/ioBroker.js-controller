@@ -3,28 +3,36 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: U8pUIrorKcYz3knA7868IABMJOl/POaKWry0RlLazCU=
+hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
 ---
 ![商标](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
 ![安装数量](http://iobroker.live/badges/solarlog-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.solarlog.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.solarlog.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.solarlog.svg)
 ![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
 
-#ioBroker.solarlog
-适用于solarlog的ioBroker适配器 - 设备
+＃ioBroker.solarlog
+适用于solarlog的ioBroker适配器-设备
 
-必须在Solarlog的配置菜单中激活开放的JSON接口（offene Json-Schnittstelle）（Konfiguration  -  System  -  Zugangskontrolle  -  Offene Json-Schnittstelle：aktivieren。）
+必须在Solarlog的配置菜单中激活开放的JSON接口（offene Json-Schnittstelle）（Konfiguration-系统-Zugangskontrolle-Offene Json-Schnittstelle：aktivieren。）
 
 安装适配器，创建实例。
-设置Solarlog  -  IP-adress（192.XXX.X.XXX），端口（可选）和轮询 -  intervall（以毫秒为单位）
+设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-intervall（以毫秒为单位）
 
-检查是否收集了所有逆变器数据。 ！必须停用solarlog中的用户密码才能使用此选项！ Achtung：Damit die Abfrage der Unterzaehler funktioniert，muss das Benutzerpasswort im Solarlog deaktiviert sein
+检查是否收集了所有逆变器数据。 !!此选项必须禁用solarlog中的用户密码！！ Achtung：发生在地下的地下城，在日光下的博物馆
 
-测试：Solarlog 200PM + / 300PM + / 500/1200Meter
+经过测试：Solarlog 200PM + / 300PM + / 500/1200米/ 50
 
 ## Changelog
+
+### 1.0.0
+
+-   Reads now devicetypes, -brands and -classes. Sets correct params for batteries. Displays self-consumption @'status'
+
+### 0.1.6
+
+-   Reads now battery data
 
 ### 0.1.5
 
