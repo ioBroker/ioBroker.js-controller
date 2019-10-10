@@ -161,40 +161,6 @@
     },
     {
         "title": {
-            "en": "Node.JS versions smaller than 8 will be soon deprecated",
-            "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
-            "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
-            "pt": "Versões do Node.JS menores que 8 serão descontinuadas em breve",
-            "nl": "Node.JS-versies kleiner dan 8 worden binnenkort verouderd",
-            "fr": "Les versions de Node.JS inférieures à 8 seront bientôt obsolètes",
-            "it": "Le versioni di Node.JS inferiori a 8 saranno presto deprecate",
-            "es": "Las versiones de Node.JS más pequeñas que 8 pronto serán desaprobadas",
-            "pl": "Wersje Node.JS mniejsze niż 8 zostaną wkrótce wycofane",
-            "zh-cn": "小于8的Node.JS版本将很快被弃用"
-        },
-        "content": {
-            "en": "With the upcoming version 2 of the JS-controller, the support of Node.JS versions smaller than 8.x.x will be discontinued. Please update your system to a higher version. We recommend the Node.JS version 10.x.x.",
-            "de": "Mit der kommenden Version 2 des JS-Controllers wird die Unterstützung von Node.JS-Versionen kleiner als 8.x.x eingestellt. Bitte aktualisieren Sie Ihr System auf eine höhere Version. Wir empfehlen die Node.JS-Version 10.x.x.",
-            "ru": "С выходом второй версии JS-контроллера поддержка версий Node.JS, меньших 8.x.x, будет прекращена. Пожалуйста, обновите вашу систему до более поздней версии. Мы рекомендуем Node.JS версии 10.x.x.",
-            "pt": "Com a próxima versão 2 do controlador JS, o suporte às versões do Node.JS menores que 8.x.x será descontinuado. Atualize seu sistema para uma versão superior. Recomendamos a versão 10.x.x do Node.JS.",
-            "nl": "Met de komende versie 2 van de JS-controller wordt de ondersteuning van Node.JS-versies kleiner dan 8.x.x stopgezet. Werk uw systeem bij naar een hogere versie. We raden de Node.JS-versie 10.x.x aan.",
-            "fr": "Avec la prochaine version 2 du contrôleur JS, le support des versions de Node.JS inférieures à 8.x.x sera supprimé. Veuillez mettre à jour votre système avec une version supérieure. Nous recommandons la version 10.x.x de Node.JS.",
-            "it": "Con la prossima versione 2 del controller JS, il supporto delle versioni Node.JS inferiori a 8.x.x verrà sospeso. Si prega di aggiornare il sistema a una versione successiva. Consigliamo Node.JS versione 10.x.x.",
-            "es": "Con la próxima versión 2 del controlador JS, se suspenderá el soporte de las versiones Node.JS más pequeñas que 8.x.x. Actualice su sistema a una versión superior. Recomendamos el Node.JS versión 10.x.x.",
-            "pl": "W nadchodzącej wersji 2 kontrolera JS obsługa Node.JS w wersji mniejszej niż 8.x.x zostanie przerwana. Zaktualizuj system do wyższej wersji. Zalecamy wersję 10.x.x. Node.JS",
-            "zh-cn": "随着即将发布的JS-controller版本2，将不再支持小于8.x.x的Node.JS版本。请更新您的系统到更高版本。我们建议使用Node.JS版本10.x.x。"
-        },
-        "id": "js-controller",
-        "node-version": "smaller(8.0.0)",
-        "class": "warning",
-        "fa-icon": "ban",
-        "created": "2019-09-24T00:00:00.000Z",
-        "conditions": {           
-            "admin": "bigger(3.6.6)"
-        }
-    },
-    {
-        "title": {
             "en": "The latest version of JS-Controller 2.x is not compatible with the email-adapter smaller than 1.0.5",
             "de": "Die neueste Version von JS-Controller 2.x ist nicht mit dem E-Mail-Adapter kleiner als 1.0.5 kompatibel",
             "ru": "Последняя версия JS-Controller 2.x не совместима с почтовым адаптером меньше, чем 1.0.5",
@@ -290,6 +256,76 @@
         "created": "2019-10-09T00:00:00.000Z",
         "conditions": {           
             "hue": "smaller(1.2.4)"
+        }
+    },
+    {
+        "title": {
+            "en": "Do not update the JS-Controller to 2.x with npm in Windows systems",
+            "de": "Aktualisieren Sie den JS-Controller nicht mit npm auf 2.x in Windows",
+            "ru": "Не обновляйте JS-контроллер до 2.x с npm в системах Windows",
+            "pt": "Não atualize o JS-Controller para 2.x com npm nos sistemas Windows",
+            "nl": "Werk de JS-Controller niet bij naar 2.x met npm in Windows-systemen",
+            "fr": "Ne mettez pas à jour le JS-Controller vers 2.x avec npm sur les systèmes Windows",
+            "it": "Non aggiornare JS-Controller a 2.x con npm nei sistemi Windows",
+            "es": "No actualice el controlador JS a 2.x con npm en sistemas Windows",
+            "pl": "Nie aktualizuj kontrolera JS do wersji 2.x z npm w systemach Windows",
+            "zh-cn": "不要在Windows系统中使用npm将JS-Controller更新到2.x"
+        },
+        "content": {
+            "en": "On systems set up with the new Windows Installer, the JS-Controller 2.x can not be updated with npm. There will be a new version of the Windows Installer, which allows the update of the js-controller with a few mouse clicks.",
+            "de": "Auf Systemen, die mit dem neuen Windows Installer eingerichtet wurden, kann der JS-Controller 2.x nicht mit npm aktualisiert werden. Es wird eine neue Version des Windows Installers geben, mit der sich der js-controller mit wenigen Mausklicks aktualisieren lässt.",
+            "ru": "В системах, настроенных с помощью нового установщика Windows, JS-Controller 2.x не может быть обновлен с помощью npm. Появится новая версия установщика Windows, которая позволяет обновлять js-контроллер несколькими щелчками мыши.",
+            "pt": "Nos sistemas configurados com o novo Windows Installer, o JS-Controller 2.x não pode ser atualizado com o npm. Haverá uma nova versão do Windows Installer, que permite a atualização do controlador js com apenas alguns cliques do mouse.",
+            "nl": "Op systemen die zijn ingesteld met de nieuwe Windows Installer, kan de JS-Controller 2.x niet worden bijgewerkt met npm. Er komt een nieuwe versie van Windows Installer, waarmee de js-controller met een paar muisklikken kan worden bijgewerkt.",
+            "fr": "Sur les systèmes configurés avec le nouveau Windows Installer, JS-Controller 2.x ne peut pas être mis à jour avec npm. Il y aura une nouvelle version de Windows Installer, qui permet la mise à jour du contrôleur js en quelques clics de souris.",
+            "it": "Sui sistemi configurati con il nuovo Windows Installer, JS-Controller 2.x non può essere aggiornato con npm. Ci sarà una nuova versione di Windows Installer, che consente l'aggiornamento del controller js con pochi clic del mouse.",
+            "es": "En los sistemas configurados con el nuevo Windows Installer, el JS-Controller 2.x no se puede actualizar con npm. Habrá una nueva versión del Instalador de Windows, que permite la actualización del controlador js con unos pocos clics del mouse.",
+            "pl": "W systemach skonfigurowanych za pomocą nowego Instalatora Windows, JS-Controller 2.x nie może być aktualizowany przy pomocy npm. Pojawi się nowa wersja Instalatora Windows, która umożliwia aktualizację kontrolera js kilkoma kliknięciami myszy.",
+            "zh-cn": "在使用新的Windows Installer设置的系统上，无法使用npm更新JS-Controller2.x。 Windows Installer将有一个新版本，只需单击几下鼠标，即可更新js-controller。"
+        },
+        "id": "js-controler",
+        "os": "win32",
+        "class": "warning",
+        "fa-icon": "windows",
+        "created": "2019-10-10T00:00:00.000Z",
+        "conditions": {           
+            "info": "bigger(1.5.4)",
+            "admin": "bigger(3.6.7)",
+            "js-controller": "smaller(2.0.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "Node.JS versions smaller than 8 will be soon deprecated",
+            "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
+            "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
+            "pt": "Versões do Node.JS menores que 8 serão descontinuadas em breve",
+            "nl": "Node.JS-versies kleiner dan 8 worden binnenkort verouderd",
+            "fr": "Les versions de Node.JS inférieures à 8 seront bientôt obsolètes",
+            "it": "Le versioni di Node.JS inferiori a 8 saranno presto deprecate",
+            "es": "Las versiones de Node.JS más pequeñas que 8 pronto serán desaprobadas",
+            "pl": "Wersje Node.JS mniejsze niż 8 zostaną wkrótce wycofane",
+            "zh-cn": "小于8的Node.JS版本将很快被弃用"
+        },
+        "content": {
+            "en": "With the upcoming version 2 of the JS-controller, the support of Node.JS versions smaller than 8.x.x will be discontinued. Please update your system to a higher version. We recommend the Node.JS version 10.x.x.",
+            "de": "Mit der kommenden Version 2 des JS-Controllers wird die Unterstützung von Node.JS-Versionen kleiner als 8.x.x eingestellt. Bitte aktualisieren Sie Ihr System auf eine höhere Version. Wir empfehlen die Node.JS-Version 10.x.x.",
+            "ru": "С выходом второй версии JS-контроллера поддержка версий Node.JS, меньших 8.x.x, будет прекращена. Пожалуйста, обновите вашу систему до более поздней версии. Мы рекомендуем Node.JS версии 10.x.x.",
+            "pt": "Com a próxima versão 2 do controlador JS, o suporte às versões do Node.JS menores que 8.x.x será descontinuado. Atualize seu sistema para uma versão superior. Recomendamos a versão 10.x.x do Node.JS.",
+            "nl": "Met de komende versie 2 van de JS-controller wordt de ondersteuning van Node.JS-versies kleiner dan 8.x.x stopgezet. Werk uw systeem bij naar een hogere versie. We raden de Node.JS-versie 10.x.x aan.",
+            "fr": "Avec la prochaine version 2 du contrôleur JS, le support des versions de Node.JS inférieures à 8.x.x sera supprimé. Veuillez mettre à jour votre système avec une version supérieure. Nous recommandons la version 10.x.x de Node.JS.",
+            "it": "Con la prossima versione 2 del controller JS, il supporto delle versioni Node.JS inferiori a 8.x.x verrà sospeso. Si prega di aggiornare il sistema a una versione successiva. Consigliamo Node.JS versione 10.x.x.",
+            "es": "Con la próxima versión 2 del controlador JS, se suspenderá el soporte de las versiones Node.JS más pequeñas que 8.x.x. Actualice su sistema a una versión superior. Recomendamos el Node.JS versión 10.x.x.",
+            "pl": "W nadchodzącej wersji 2 kontrolera JS obsługa Node.JS w wersji mniejszej niż 8.x.x zostanie przerwana. Zaktualizuj system do wyższej wersji. Zalecamy wersję 10.x.x. Node.JS",
+            "zh-cn": "随着即将发布的JS-controller版本2，将不再支持小于8.x.x的Node.JS版本。请更新您的系统到更高版本。我们建议使用Node.JS版本10.x.x。"
+        },
+        "id": "js-controller",
+        "node-version": "smaller(8.0.0)",
+        "class": "warning",
+        "fa-icon": "ban",
+        "created": "2019-09-24T00:00:00.000Z",
+        "conditions": {           
+            "admin": "bigger(3.6.6)"
         }
     }
 ]
