@@ -325,7 +325,7 @@
         "fa-icon": "ban",
         "created": "2019-09-24T00:00:00.000Z",
         "conditions": {           
-            "admin": "bigger(3.6.6)"
+            "admin": "bigger(3.6.7)"
         }
     }
 ]
