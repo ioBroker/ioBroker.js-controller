@@ -283,15 +283,15 @@
             "pl": "W systemach skonfigurowanych za pomocą nowego Instalatora Windows, JS-Controller 2.x nie może być aktualizowany przy pomocy npm. Pojawi się nowa wersja Instalatora Windows, która umożliwia aktualizację kontrolera js kilkoma kliknięciami myszy.",
             "zh-cn": "在使用新的Windows Installer设置的系统上，无法使用npm更新JS-Controller2.x。 Windows Installer将有一个新版本，只需单击几下鼠标，即可更新js-controller。"
         },
-        "id": "js-controler",
+        "id": "js-controller",
         "os": "win32",
         "class": "warning",
         "fa-icon": "windows",
         "created": "2019-10-10T00:00:00.000Z",
-        "conditions": {           
+        "conditions": {
+            "js-controller": "smaller(2.0.0)",
             "info": "bigger(1.5.4)",
-            "admin": "bigger(3.6.7)",
-            "js-controller": "smaller(2.0.0)"
+            "admin": "bigger(3.6.7)"            
         }
     },
     {
