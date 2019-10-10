@@ -407,6 +407,10 @@
         },
         "pt": {
             "community": [
+                {
+                    "title": "Fórum de suporte português",
+                    "link": "https://forum.iobroker.net/category/104"
+                }
             ],
             "documentation": [
             ],
