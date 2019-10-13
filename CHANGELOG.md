@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.26 (2019-10-1x) Release Bella
+## 2.0.26 (2019-10-13) Release Bella
 * (Apollon77) Make sure Logs are only streamed to admin for selected loglevel
 * (Apollon77) Fix "iobroker file write"
 * (Apollon77) Make sure invalid ids are handled correctly without throwing errors
