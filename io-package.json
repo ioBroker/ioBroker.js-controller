@@ -537,6 +537,31 @@
                 "ownerGroup": "system.group.administrator",
                 "object": 1536
             }
+        },
+        {
+            "_id": "alias.0",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "Aliases' root folder",
+                    "de": "Aliase-Stammordner",
+                    "ru": "Корневая папка алиасов",
+                    "pt": "Pasta raiz de aliases",
+                    "nl": "Aliassen` root folder",
+                    "fr": "Le dossier racine des alias",
+                    "it": "Cartella radice degli alias",
+                    "es": "Carpeta raíz de alias",
+                    "pl": "Folder główny aliasów",
+                    "zh-cn": "别名的根文件夹"
+                },
+                "type": "meta.folder",
+                "dontDelete": true
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
+            }
         }
     ]
 }
