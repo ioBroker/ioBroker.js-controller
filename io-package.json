@@ -172,6 +172,18 @@
             "_id": "_design/system",
             "language": "javascript",
             "common": {
+                "name": {
+                    "en": "Object's selectors",
+                    "de": "Objekt-Selektoren",
+                    "ru": "Селекторы объекта",
+                    "pt": "Seletores de objetos",
+                    "nl": "Objectkiezers",
+                    "fr": "Sélecteurs d'objet",
+                    "it": "Selettori di oggetti",
+                    "es": "Selectores de objeto",
+                    "pl": "Selektory obiektów",
+                    "zh-cn": "对象的选择器"
+                },
                 "dontDelete": true
             },
             "views": {
@@ -450,7 +462,18 @@
             "_id": "system.config",
             "type": "config",
             "common": {
-                "name": "System configuration",
+                "name": {
+                    "en": "System configuration",
+                    "de": "Systemkonfiguration",
+                    "ru": "Конфигурация системы",
+                    "pt": "Configuração do sistema",
+                    "nl": "Systeem configuratie",
+                    "fr": "Configuration du système",
+                    "it": "Configurazione di sistema",
+                    "es": "Configuración del sistema",
+                    "pl": "Konfiguracja systemu",
+                    "zh-cn": "系统配置"
+                },
                 "city": "",
                 "country": "",
                 "longitude": "",
@@ -489,7 +512,18 @@
             "_id": "system.repositories",
             "type": "config",
             "common": {
-                "name": "System repositories",
+                "name": {
+                    "en": "System repositories",
+                    "de": "System-Repositorys",
+                    "ru": "Системные репозитории",
+                    "pt": "Repositórios do sistema",
+                    "nl": "Systeemrepository's",
+                    "fr": "Référentiels système",
+                    "it": "Repository di sistema",
+                    "es": "Repositorios del sistema",
+                    "pl": "Repozytoria systemowe",
+                    "zh-cn": "系统资料库"
+                },
                 "dontDelete": true
             },
             "native": {
@@ -524,7 +558,18 @@
             "_id": "system.certificates",
             "type": "config",
             "common": {
-                "name": "System certificates"
+                "name": {
+                    "en": "System certificates",
+                    "de": "Systemzertifikate",
+                    "ru": "Системные сертификаты",
+                    "pt": "Certificados do sistema",
+                    "nl": "Systeem certificaten",
+                    "fr": "Certificats système",
+                    "it": "Certificati di sistema",
+                    "es": "Certificados del sistema",
+                    "pl": "Certyfikaty systemowe",
+                    "zh-cn": "系统证书"
+                }
             },
             "native": {
                 "certificates": {
@@ -536,6 +581,31 @@
                 "owner": "system.user.admin",
                 "ownerGroup": "system.group.administrator",
                 "object": 1536
+            }
+        },
+        {
+            "_id": "alias.0",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "Aliases' root folder",
+                    "de": "Aliase-Stammordner",
+                    "ru": "Корневая папка алиасов",
+                    "pt": "Pasta raiz de aliases",
+                    "nl": "Aliassen` root folder",
+                    "fr": "Le dossier racine des alias",
+                    "it": "Cartella radice degli alias",
+                    "es": "Carpeta raíz de alias",
+                    "pl": "Folder główny aliasów",
+                    "zh-cn": "别名的根文件夹"
+                },
+                "type": "meta.folder",
+                "dontDelete": true
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
             }
         }
     ]
