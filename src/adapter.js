@@ -69,6 +69,8 @@ const ACCESS_USER_READ   = 0x400;
 // const ACCESS_DELETE      = 'delete';
 // const ACCESS_CREATE      = 'create';
 
+const ERROR_PERMISSION   = 'permissionError';
+
 if (fs.existsSync(getConfigFileName())) {
     config = JSON.parse(fs.readFileSync(getConfigFileName(), 'utf8'));
     if (!config.states)  config.states  = {type: 'file'};
@@ -125,6 +127,9 @@ function Adapter(options) {
     this.aliases = {};
 
     this.eventLoopLags = [];
+    this.overwriteLogLevel = false;
+    this.adapterReady = false;
+    this.systemStateSubscribes = {};
 
     // possible arguments
     // 0,1,.. - instance
@@ -138,6 +143,7 @@ function Adapter(options) {
         for (let a = 1; a < process.argv.length; a++) {
             if (process.argv[a] === 'info' || process.argv[a] === 'debug' || process.argv[a] === 'error' || process.argv[a] === 'warn' || process.argv[a] === 'silly') {
                 config.log.level = process.argv[a];
+                this.overwriteLogLevel = true;
             } else if (process.argv[a] === '--silent') {
                 config.isInstall = true;
                 process.argv[a] = '--install';
@@ -150,6 +156,10 @@ function Adapter(options) {
             } else if (process.argv[a] === '--debug') {
                 config.forceIfDisabled = true;
                 config.consoleOutput   = true;
+                if (config.log.level !== 'silly') {
+                    config.log.level = 'debug';
+                    this.overwriteLogLevel = true;
+                }
             } else if (process.argv[a] === '--console') {
                 config.consoleOutput   = true;
             } else if (parseInt(process.argv[a], 10).toString() === process.argv[a]) {
@@ -234,13 +244,13 @@ function Adapter(options) {
             || exitCode === EXIT_CODES.NO_ERROR
         ;
 
-        const text = `${this.namespace} Terminated (${getErrorText(exitCode)}): ${reason ? reason : 'Without reason'}`;
+        const text = `${this.namespaceLog} Terminated (${getErrorText(exitCode)}): ${reason ? reason : 'Without reason'}`;
         if (isNotCritical) {
             logger.info(text);
         } else {
             logger.warn(text);
         }
-        if (this.startedInCompactMode) {
+        setTimeout(() => { // give last states some time to get handled
             if (this.states) {
                 this.states.destroy();
                 this.states = null;
@@ -249,10 +259,12 @@ function Adapter(options) {
                 this.objects.destroy();
                 this.objects = null;
             }
-            this.emit('exit', exitCode, reason);
-        } else {
-            process.exit(exitCode === undefined ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : exitCode);
-        }
+            if (this.startedInCompactMode) {
+                this.emit('exit', exitCode, reason);
+            } else {
+                process.exit(exitCode === undefined ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : exitCode);
+            }
+        });
     };
 
     // If installed as npm module
@@ -279,7 +291,7 @@ function Adapter(options) {
             } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
                 this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
             } else {
-                logger.error(this.namespace + ' Cannot find directory of adapter ' + options.name);
+                logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
         } else {
@@ -293,7 +305,7 @@ function Adapter(options) {
                 parts.pop();
                 this.adapterDir = parts.join('/') + '/node_modules/' + tools.appName + '.' + options.name;
             } else {
-                logger.error(this.namespace + ' Cannot find directory of adapter ' + options.name);
+                logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
         }
@@ -302,14 +314,14 @@ function Adapter(options) {
     if (fs.existsSync(this.adapterDir + '/package.json')) {
         this.pack = JSON.parse(fs.readFileSync(this.adapterDir + '/package.json', 'utf8'));
     } else {
-        logger.info(this.namespace + ' Non npm module. No package.json');
+        logger.info(this.namespaceLog + ' Non npm module. No package.json');
     }
 
     if (!this.pack || !this.pack.io) {
         if (fs.existsSync(this.adapterDir + '/io-package.json')) {
             this.ioPack = JSON.parse(fs.readFileSync(this.adapterDir + '/io-package.json', 'utf8'));
         } else {
-            logger.error(this.namespace + ' Cannot find: ' + this.adapterDir + '/io-package.json');
+            logger.error(this.namespaceLog + ' Cannot find: ' + this.adapterDir + '/io-package.json');
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
     } else {
@@ -359,6 +371,9 @@ function Adapter(options) {
 
     this.name            = options.name;
     this.namespace       = options.name + '.' + instance;
+    this.namespaceLog    = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
+    this._namespaceRegExp = new RegExp('^' + (this.namespace + '.').replace(/\./g, '\\.')); // cache the regex object 'adapter.0.'
+
     /** The cache of users */
     this.users           = {}; // cache of user groups
     /** The cache of user groups */
@@ -775,9 +790,9 @@ function Adapter(options) {
                                 }
                             }
                         } catch (e) {
-                            logger.error(this.namespace + ' Cannot set acl: ' + e);
-                            logger.error(this.namespace + ' Cannot set acl: ' + JSON.stringify(gAcl));
-                            logger.error(this.namespace + ' Cannot set acl: ' + JSON.stringify(acl));
+                            logger.error(this.namespaceLog + ' Cannot set acl: ' + e);
+                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(gAcl));
+                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(acl));
                         }
                     }
                 }
@@ -798,7 +813,7 @@ function Adapter(options) {
                     cert = fs.readFileSync(cert).toString();
                     // start watcher of this file
                     fs.watch(cert, (eventType, filename) => {
-                        logger.warn(this.namespace + ' New certificate "' + filename + '" detected. Restart adapter');
+                        logger.warn(this.namespaceLog + ' New certificate "' + filename + '" detected. Restart adapter');
                         setTimeout(stop, 2000, false, true);
                     });
                 }
@@ -857,7 +872,7 @@ function Adapter(options) {
                 !obj.native.certificates[privateName] ||
                 (chainedName && !obj.native.certificates[chainedName])
             ) {
-                logger.error(this.namespace + ' Cannot enable secure web server, because no certificates found: ' + publicName + ', ' + privateName + ', ' + chainedName);
+                logger.error(this.namespaceLog + ' Cannot enable secure web server, because no certificates found: ' + publicName + ', ' + privateName + ', ' + chainedName);
                 if (callback) callback(tools.ERRORS.ERROR_NOT_FOUND);
             } else {
                 let ca;
@@ -891,7 +906,7 @@ function Adapter(options) {
      * @memberof Adapter
      */
     this.restart = () => {
-        logger.warn(this.namespace + ' Restart initiated');
+        logger.warn(this.namespaceLog + ' Restart initiated');
         // Restarting an adapter can easily be done by writing the adapter object without changing it
         this.terminate(EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
     };
@@ -916,7 +931,7 @@ function Adapter(options) {
                 obj.native = _config;
                 return this.setForeignObjectAsync(configObjId, obj);
             })
-            .catch(err => logger.error(`${this.namespace} Updating the adapter config failed: ${err}`))
+            .catch(err => logger.error(`${this.namespaceLog} Updating the adapter config failed: ${err}`))
         ;
     };
 
@@ -931,7 +946,7 @@ function Adapter(options) {
                 obj.common.enabled = false;
                 return this.setForeignObjectAsync(configObjId, obj);
             })
-            .catch(err => logger.error(`${this.namespace} Disabling the adapter instance failed: ${err}`))
+            .catch(err => logger.error(`${this.namespaceLog} Disabling the adapter instance failed: ${err}`))
         ;
     };
 
@@ -1001,7 +1016,7 @@ function Adapter(options) {
 
         const _id = 'system.adapter.' + this.namespace;
 
-        if (!instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
+        if (instanceObj && instanceObj.common && !instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
             objs = [
                 {
                     _id:    _id + '.alive',
@@ -1190,7 +1205,7 @@ function Adapter(options) {
             objs = [];
         }
 
-        if (instanceObj.common.wakeup) {
+        if (instanceObj && instanceObj.common && instanceObj.common.wakeup) {
             objs.push({
                 _id:    _id + '.wakeup',
                 type:   'state',
@@ -1207,7 +1222,7 @@ function Adapter(options) {
 
         if (this.ioPack.instanceObjects) {
             this.ioPack.instanceObjects.forEach((obj) => {
-                if (obj && (obj._id || obj.type === 'meta')) {
+                if (obj && (obj._id || obj._id === '' || obj.type === 'meta')) {
                     if (obj.common) {
                         if (obj.common.name) {
                             obj.common.name = obj.common.name.replace('%INSTANCE%', instance);
@@ -1218,11 +1233,11 @@ function Adapter(options) {
                     }
                     if (!obj._id.startsWith(this.namespace)) {
                         // instanceObjects are normally defined without namespace prefix
-                        obj._id = this.namespace + '.' + obj._id;
+                        obj._id = (obj._id === '') ? this.namespace : this.namespace + '.' + obj._id;
                     }
                     objs.push(obj);
                 } else {
-                    logger.error(this.namespace + ' ' + options.name + '.' + instance + ' invalid instance object: ' + JSON.stringify(obj));
+                    logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid instance object: ' + JSON.stringify(obj));
                 }
             });
         }
@@ -1231,28 +1246,40 @@ function Adapter(options) {
     };
 
     const prepareInitAdapter = () => {
-        this.getForeignState('system.adapter.' + this.namespace + '.alive', null, (err, res) => {
-            if (options.instance !== undefined) {
-                initAdapter(options);
-            } else
-            if (!config.isInstall && res && res.val === true && res.ack && !config.forceIfDisabled) {
-                logger.error(this.namespace + ' ' + options.name + '.' + instance + ' already running');
-                this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
-            } else {
-                this.getForeignObject('system.adapter.' + this.namespace, null, (err, res) => {
-                    if ((err || !res) && !config.isInstall) {
-                        logger.error(this.namespace + ' ' + options.name + '.' + instance + ' invalid config');
-                        this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+        if (options.instance !== undefined) {
+            initAdapter(options);
+        } else {
+            this.getForeignState('system.adapter.' + this.namespace + '.alive', null, (err, resAlive) => {
+                this.getForeignState('system.adapter.' + this.namespace + '.sigKill', null, (err, killRes) => {
+                    if (!config.isInstall && this.startedInCompactMode && killRes && killRes.ack && killRes.val === -1) {
+                        logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' needs to be stopped because not correctly started in compact mode');
+                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                    } else
+                    if (!config.isInstall && !this.startedInCompactMode && killRes && killRes.ack && killRes.val !== 0 && killRes.val !== process.pid) {
+                        logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid process id scenario ' + killRes.val + ' vs. ' + process.pid + '. Stopping');
+                        // do not terminate in force mode
+                        !config.forceIfDisabled && this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                    } else
+                    if (!config.isInstall && resAlive && resAlive.val === true && resAlive.ack && !config.forceIfDisabled) {
+                        logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' already running');
+                        this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
-                        createInstancesObjects(res,() => initAdapter(res));
+                        this.getForeignObject('system.adapter.' + this.namespace, null, (err, res) => {
+                            if ((err || !res) && !config.isInstall) {
+                                logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid config');
+                                this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+                            } else {
+                                createInstancesObjects(res, () => initAdapter(res));
+                            }
+                        });
                     }
                 });
-            }
-        });
+            });
+        }
     };
 
     const autoSubscribeOn = (cb) => {
-        if (!this.autoSubscribe) {
+        if (!this.autoSubscribe && this.objects) {
             // collect all
             this.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, options, (err, res) => {
                 if (res && res.rows) {
@@ -1278,7 +1305,7 @@ function Adapter(options) {
 
     const initObjects = (cb) => {
         const objectsInst = new Objects({
-            namespace: this.namespace,
+            namespace: this.namespaceLog,
             connection: config.objects,
             logger:     logger,
             connected: (objectsInstance) => {
@@ -1304,25 +1331,30 @@ function Adapter(options) {
                     cb();
                 }
             },
-            disconnected: () =>
-                this.connected = false,
+            disconnected: () => {
+                this.connected = false;
+                !this.terminated && setTimeout(() => {
+                    if (this.connected) return; // If reconnected in the meantime, do not terminate
+                    logger && logger.warn(this.namespaceLog + ' Cannot connect/reconnect to objects DB. Terminating');
+                    this.terminate(EXIT_CODES.NO_ERROR);
+                }, 4000);
+            },
             change: (id, obj) => {
                 if (obj === 'null' || obj === '') {
                     obj = null;
                 }
 
                 if (!id) {
-                    logger.error(this.namespace + ' change ID is empty:  ' + JSON.stringify(obj));
+                    logger.error(this.namespaceLog + ' change ID is empty:  ' + JSON.stringify(obj));
                     return;
                 }
 
                 // If desired, that adapter must be terminated
                 if (id === 'system.adapter.' + this.namespace && obj && obj.common && obj.common.enabled === false) {
-                    logger.info(this.namespace + ' Adapter is disabled => stop');
-                    if (!obj.common.enabled) {
-                        stop();
-                        setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
-                    }
+                    logger.info(this.namespaceLog + ' Adapter is disabled => stop');
+                    stop();
+                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
+                    return;
                 }
 
                 // update language, dateFormat and comma
@@ -1387,7 +1419,7 @@ function Adapter(options) {
 
                 // process autosubscribe adapters
                 if (id.startsWith('system.adapter.')) {
-                    if (obj && obj.common.subscribable) {
+                    if (obj && obj.common && obj.common.subscribable) {
                         const _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
                             if (this.autoSubscribe.indexOf(_id) === -1) {
@@ -1411,14 +1443,7 @@ function Adapter(options) {
                     } // endFor
                 } // endIf
 
-                // It was an error in the calculation
-                if ((options.noNamespace || config.noNamespace) && this._namespaceRegExp.test(id)) {
-                    // emit 'objectChange' event instantly
-                    setImmediate(() => {
-                        typeof options.objectChange === 'function' && options.objectChange(id.substring(this.namespace.length + 1), obj);
-                        this.emit('objectChange', id.substring(this.namespace.length + 1), obj);
-                    });
-                } else {
+                if (this.adapterReady) {
                     setImmediate(() => {
                         typeof options.objectChange === 'function' && options.objectChange(id, obj);
                         // emit 'objectChange' event instantly
@@ -1426,23 +1451,23 @@ function Adapter(options) {
                     });
                 }
             },
-            connectTimeout: (/* err */) => {
+            connectTimeout: (/* err */) => { // TODO: Remove once socket.io is removed
                 if (config.isInstall) {
-                    logger && logger.warn(this.namespace + ' no connection to objects DB');
+                    logger && logger.warn(this.namespaceLog + ' no connection to objects DB');
                     this.terminate(EXIT_CODES.NO_ERROR);
                 } else {
-                    logger && logger.error(this.namespace + ' no connection to objects DB');
+                    logger && logger.error(this.namespaceLog + ' no connection to objects DB');
                 }
             }
         });
-
-        this._namespaceRegExp = new RegExp('^' + this.namespace);       // chache the regex object 'adapter.0'
 
         /**
          * @param {string | {device?: string, channel?: string, state?: string}} id
          * @param {boolean} [isPattern=false]
          */
         this._fixId = (id, isPattern/* , type */) => {
+            if (!id) id = '';
+
             let result  = '';
             // If id is an object
             if (typeof id === 'object') {
@@ -1451,7 +1476,8 @@ function Adapter(options) {
             } else {
                 result = id;
 
-                if (!this._namespaceRegExp.test(id)) {
+                // if not instance name itself and also not starts with namespace and "."
+                if (id !== this.namespace && !this._namespaceRegExp.test(id)) {
                     if (!isPattern) {
                         result = this.namespace + (id ? '.' + id : '');
                     } else {
@@ -1524,24 +1550,24 @@ function Adapter(options) {
             }
 
             if (!obj) {
-                logger.error(`${this.namespace} setObject: try to set null object for ${id}`);
+                logger.error(`${this.namespaceLog} setObject: try to set null object for ${id}`);
                 return callback && callback(tools.ERRORS.ERROR_EMPTY_OBJECT);
             }
 
             if (!id && obj.type !== 'meta') {
-                logger.error(tools.appendStackTrace(this.namespace + ' setObject id missing!!'));
+                logger.error(tools.appendStackTrace(this.namespaceLog + ' setObject id missing!!'));
                 if (typeof callback === 'function') callback('id missing!');
                 return;
             }
 
             if (obj.hasOwnProperty('type')) {
                 if (!obj.hasOwnProperty('native')) {
-                    logger.warn(this.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property native missing!');
+                    logger.warn(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property native missing!');
                     obj.native = {};
                 }
                 // Check property 'common'
                 if (!obj.hasOwnProperty('common')) {
-                    logger.warn(this.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common missing!');
+                    logger.warn(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common missing!');
                     obj.common = {};
                 } else if (obj.type === 'state') {
                     // Try to extend the model for type='state'
@@ -1549,22 +1575,22 @@ function Adapter(options) {
                     if (obj.common.hasOwnProperty('role') && defaultObjs[obj.common.role]) {
                         obj.common = extend(true, {}, defaultObjs[obj.common.role], obj.common);
                     } else if (!obj.common.hasOwnProperty('role')) {
-                        logger.warn(this.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.role missing!');
+                        logger.warn(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common.role missing!');
                     }
                     if (!obj.common.hasOwnProperty('type')) {
-                        logger.warn(this.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.type missing!');
+                        logger.warn(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common.type missing!');
                     }
                 }
 
                 if (!obj.common.hasOwnProperty('name')) {
                     obj.common.name = id;
-                    logger.debug(this.namespace + ' setObject ' + id + ' (type=' + obj.type + ') property common.name missing, using id as name');
+                    logger.debug(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common.name missing, using id as name');
                 }
 
                 id = this._fixId(id, false/*, obj.type*/);
 
                 if (obj.children || obj.parent) {
-                    logger.warn(this.namespace + ' Do not use parent or children for ' + id);
+                    logger.warn(this.namespaceLog + ' Do not use parent or children for ' + id);
                 }
                 if (!obj.from) obj.from = 'system.adapter.' + this.namespace;
                 if (!obj.user) obj.user = (options ? options.user : '') || 'system.user.admin';
@@ -1572,7 +1598,7 @@ function Adapter(options) {
 
                 setObjectWithDefaultValue(id, obj, options, callback);
             } else {
-                logger.error(this.namespace + ' setObject ' + id + ' mandatory property type missing!');
+                logger.error(this.namespaceLog + ' setObject ' + id + ' mandatory property type missing!');
                 if (typeof callback === 'function') callback('mandatory property type missing!');
             }
         };
@@ -1700,17 +1726,17 @@ function Adapter(options) {
 
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
-                logger.warn(`${this.namespace} Used invalid characters: ${id} changed to ${mId}`);
+                logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
                 id = mId;
             }
 
             if (!obj) {
-                logger.error(`${this.namespace} extendObject: try to set null object for ${id}`);
+                logger.error(`${this.namespaceLog} extendObject: try to set null object for ${id}`);
                 return callback && callback(tools.ERRORS.ERROR_EMPTY_OBJECT);
             }
 
             if (obj.children || obj.parent) {
-                logger.warn(this.namespace + ' Do not use parent or children for ' + id);
+                logger.warn(this.namespaceLog + ' Do not use parent or children for ' + id);
             }
             // delete arrays if they should be changed
             if (obj && (
@@ -1726,7 +1752,7 @@ function Adapter(options) {
                         return;
                     }
                     if (!oldObj) {
-                        logger.error(this.namespace + ' Object ' + id + ' not exist!');
+                        logger.error(this.namespaceLog + ' Object ' + id + ' not exist!');
                         oldObj = {};
                     }
                     if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
@@ -1786,7 +1812,7 @@ function Adapter(options) {
             }
 
             if (!obj) {
-                logger.error(`${this.namespace} setForeignObject: try to set null object for ${id}`);
+                logger.error(`${this.namespaceLog} setForeignObject: try to set null object for ${id}`);
                 return callback && callback(tools.ERRORS.ERROR_EMPTY_OBJECT);
             }
 
@@ -1794,10 +1820,12 @@ function Adapter(options) {
             obj.user = obj.user || (options ? options.user : '') || 'system.user.admin';
             obj.ts   = obj.ts   || Date.now();
 
-            const mId = id.replace(FORBIDDEN_CHARS, '_');
-            if (mId !== id) {
-                logger.warn(`${this.namespace} Used invalid characters: ${id} changed to ${mId}`);
-                id = mId;
+            if (id) {
+                const mId = id.replace(FORBIDDEN_CHARS, '_');
+                if (mId !== id) {
+                    logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
+                    id = mId;
+                }
             }
 
             if (obj && obj.common && obj.common.alias && obj.common.alias.id && obj.common.alias.id.startsWith(ALIAS_STARTS_WITH)) {
@@ -1836,12 +1864,12 @@ function Adapter(options) {
             }
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
-                logger.warn(`${this.namespace} Used invalid characters: ${id} changed to ${mId}`);
+                logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
                 id = mId;
             }
 
             if (!obj) {
-                logger.error(`${this.namespace} extendForeignObject: try to set null object for ${id}`);
+                logger.error(`${this.namespaceLog} extendForeignObject: try to set null object for ${id}`);
                 return callback && callback(tools.ERRORS.ERROR_EMPTY_OBJECT);
             }
 
@@ -1856,7 +1884,7 @@ function Adapter(options) {
                         return;
                     }
                     if (!oldObj) {
-                        logger.error(this.namespace + ' Object ' + id + ' not exist!');
+                        logger.error(this.namespaceLog + ' Object ' + id + ' not exist!');
                         oldObj = {};
                     }
                     if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
@@ -2210,7 +2238,7 @@ function Adapter(options) {
                 options = type;
                 type = null;
             }
-            if (typeof enums === 'object' && !(enums instanceof Array)) {
+            if (typeof enums === 'object' && !Array.isArray(enums)) {
                 options = enums;
                 enums = null;
             }
@@ -2225,7 +2253,7 @@ function Adapter(options) {
                     const list = {};
                     for (let i = 0; i < res.rows.length; i++) {
                         if (!res.rows[i].value) {
-                            logger.debug(`${this.namespace} getEnums(${JSON.stringify(enums)}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(res.rows[i])}`);
+                            logger.debug(`${this.namespaceLog} getEnums(${JSON.stringify(enums)}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(res.rows[i])}`);
                             continue;
                         }
                         const id = res.rows[i].value._id;
@@ -2534,7 +2562,7 @@ function Adapter(options) {
             id = this._fixId(id);
 
             if (obj.children || obj.parent) {
-                logger.warn(this.namespace + ' Do not use parent or children for ' + id);
+                logger.warn(this.namespaceLog + ' Do not use parent or children for ' + id);
             }
 
             this.objects.getObject(id, options, (err, _obj) => {
@@ -2620,7 +2648,7 @@ function Adapter(options) {
                 options = null;
             }
             if (!deviceName) {
-                logger.error(this.namespace + ' Try to create device with empty name!');
+                logger.error(this.namespaceLog + ' Try to create device with empty name!');
                 return;
             }
             if (typeof _native === 'function') {
@@ -2732,7 +2760,7 @@ function Adapter(options) {
             common.write = (common.write === undefined) ? false : common.write;
 
             if (!common.role) {
-                logger.error(this.namespace + ' Try to create state ' + (parentDevice ? (parentDevice + '.') : '') + parentChannel + '.' + stateName + ' without role');
+                logger.error(this.namespaceLog + ' Try to create state ' + (parentDevice ? (parentDevice + '.') : '') + parentChannel + '.' + stateName + ' without role');
                 return;
             }
 
@@ -2753,7 +2781,7 @@ function Adapter(options) {
                         min = parseFloat(min);
                         if (isNaN(min)) {
                             err = 'Wrong type of ' + id + '.common.min';
-                            logger.error(this.namespace + ' ' + err);
+                            logger.error(this.namespaceLog + ' ' + err);
                             if (callback) callback(err);
                             return;
                         } else {
@@ -2767,7 +2795,7 @@ function Adapter(options) {
                         max = parseFloat(max);
                         if (isNaN(max)) {
                             err = 'Wrong type of ' + id + '.common.max';
-                            logger.error(this.namespace + ' ' + err);
+                            logger.error(this.namespaceLog + ' ' + err);
                             if (callback) callback(err);
                             return;
                         } else {
@@ -2781,7 +2809,7 @@ function Adapter(options) {
                         def = parseFloat(def);
                         if (isNaN(def)) {
                             err = 'Wrong type of ' + id + '.common.def';
-                            logger.error(this.namespace + ' ' + err);
+                            logger.error(this.namespaceLog + ' ' + err);
                             if (callback) callback(err);
                             return;
                         } else {
@@ -2849,7 +2877,7 @@ function Adapter(options) {
                 }
                 let cnt = 0;
                 if (res.rows.length > 1) {
-                    logger.warn(this.namespace + ' Found more than one device ' + deviceName);
+                    logger.warn(this.namespaceLog + ' Found more than one device ' + deviceName);
                 }
 
                 for (let t = 0; t < res.rows.length; t++) {
@@ -3132,7 +3160,7 @@ function Adapter(options) {
 
             channelName  = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
 
-            logger.info(this.namespace + ' Delete channel ' + channelName);
+            logger.info(this.namespaceLog + ' Delete channel ' + channelName);
 
             this.objects.getObjectView('system', 'channel', {startkey: channelName, endkey: channelName}, options, (err, res) => {
                 if (err || !res || !res.rows) {
@@ -3141,7 +3169,7 @@ function Adapter(options) {
                     return;
                 }
                 let cnt = 0;
-                res.rows.length > 1 && logger.warn(this.namespace + ' Found more than one channel ' + channelName);
+                res.rows.length > 1 && logger.warn(this.namespaceLog + ' Found more than one channel ' + channelName);
 
                 for (let t = 0; t < res.rows.length; t++) {
                     cnt++;
@@ -3925,7 +3953,7 @@ function Adapter(options) {
         this.getForeignObject(options.user, null, (err, userAcl) => {
             if (!userAcl) {
                 // User does not exists
-                logger.error(this.namespace + ' unknown user "' + options.user + '"');
+                logger.error(this.namespaceLog + ' unknown user "' + options.user + '"');
                 callback(options);
             } else {
                 this.getForeignObjects('*', 'group', null, null, (err, groups) => {
@@ -4046,79 +4074,79 @@ function Adapter(options) {
                 if (options.user === obj.acl.owner) {
                     if (command === 'setState' || command === 'delState') {
                         if (command === 'delState' && !options.acl.state['delete']) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else
                         if (command === 'setState' && !options.acl.state.write) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else
                         if (!(obj.acl.state & ACCESS_USER_WRITE)) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
                     } else if (command === 'getState') {
                         if (!(obj.acl.state & ACCESS_USER_READ) || !options.acl.state.read) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespace + ' Called unknown command:' + command);
+                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
                     }
                 } else if (options.groups.indexOf(obj.acl.ownerGroup) !== -1 && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
                         if (command === 'delState' && !options.acl.state['delete']) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else
                         if (command === 'setState' && !options.acl.state.write) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else
                         if (!(obj.acl.state & ACCESS_GROUP_WRITE)) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
                     } else if (command === 'getState') {
                         if (!(obj.acl.state & ACCESS_GROUP_READ) || !options.acl.state.read) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespace + ' Called unknown command:' + command);
+                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
                         if (command === 'delState' && !options.acl.state['delete']) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else
                         if (command === 'setState' && !options.acl.state.write) {
-                            logger.warn(`${this.namespace} Permission error for user "${options.user} on "${obj._id}": ${command}`);
+                            logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else if (!(obj.acl.state & ACCESS_EVERY_WRITE)) {
-                            logger.warn('${this.namespace} Permission error for user "' + options.user + '": ' + command);
+                            logger.warn(`${this.namespaceLog} Permission error for user "' + options.user + '": ` + command);
                             return false;
                         }
                     } else if (command === 'getState') {
                         if (!(obj.acl.state & ACCESS_EVERY_READ) || !options.acl.state.read) {
-                            logger.warn('${this.namespace} Permission error for user "' + options.user + '": ' + command);
+                            logger.warn(`${this.namespaceLog} Permission error for user "' + options.user + '": ` + command);
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespace + ' Called unknown command:' + command);
+                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
                         return false;
                     }
                 } else {
-                    logger.warn(this.namespace + ' Permissions limited to Owner rights');
+                    logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
                     return false;
                 }
             } else if (limitToOwnerRights) {
-                logger.warn(this.namespace + ' Permissions limited to Owner rights');
+                logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
                 return false;
             }
         } else if (limitToOwnerRights) {
-            logger.warn(this.namespace + ' Permissions limited to Owner rights');
+            logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
             return false;
         }
 
@@ -4130,7 +4158,7 @@ function Adapter(options) {
             return getUserGroups(options, () => checkStates(ids, options, command, callback));
         }
 
-        if (ids instanceof Array) {
+        if (Array.isArray(ids)) {
             if (!ids.length) {
                 callback(null, ids);
                 return;
@@ -4202,7 +4230,7 @@ function Adapter(options) {
                     return callback(err, {_id: ids});
                 } else {
                     if (!checkState(obj, options, command)) {
-                        return callback('permissionError', {_id: ids});
+                        return callback(ERROR_PERMISSION, {_id: ids});
                     }
                 }
                 callback(null, obj);
@@ -4247,36 +4275,13 @@ function Adapter(options) {
         }
     };
 
-    const pattern2RegEx = (pattern) => {
-        pattern = (pattern || '').toString()
-            .replace(/\$/g, '\\$')
-            .replace(/\^/g, '\\^');
-
-        if (pattern !== '*') {
-            if (pattern[0] === '*' && pattern[pattern.length - 1] !== '*') pattern += '$';
-            if (pattern[0] !== '*' && pattern[pattern.length - 1] === '*') pattern = '^' + pattern;
-            if (pattern[0] !== '*' && pattern[pattern.length - 1] !== '*') pattern = '^' + pattern + '$';
-        }
-
-        pattern = pattern
-            .replace(/\?/g, '\\?')
-            .replace(/\./g, '\\.')
-            .replace(/\(/g, '\\(')
-            .replace(/\)/g, '\\)')
-            .replace(/\[/g, '\\[')
-            .replace(/]/g, '\\]')
-            .replace(/\*/g, '.*');
-
-        return pattern;
-    };
-
     const _setStateChangedHelper = (id, state, callback) => {
         if (id.startsWith(ALIAS_STARTS_WITH)) {
             this.objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
                     _setStateChangedHelper(obj.common.alias.id, state, callback);
                 } else {
-                    logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 1`));
+                    logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 1`));
                     callback(err || `Alias ${id} has no target`);
                 }
             });
@@ -4329,24 +4334,26 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = (cb) => {
-        logger.debug(this.namespace + ' objectDB connected');
+        logger.debug(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
         // Internal object, but some special adapters want to access it anyway.
         const _states = new States({
-            namespace:  this.namespace,
+            namespace:  this.namespaceLog,
             connection: config.states,
             connected: (statesInstance) => {
                 this.states = statesInstance;
-                logger.debug(this.namespace + ' statesDB connected');
+                logger.debug(this.namespaceLog + ' statesDB connected');
+                this.statesConnectedTime = Date.now();
 
-                // Subscribe for process exit signal
-                this.states.subscribe('system.adapter.' + this.namespace + '.sigKill');
+                if (!config.isInstall) {
+                    // Subscribe for process exit signal
+                    this.states.subscribe('system.adapter.' + this.namespace + '.sigKill');
 
-                // Subscribe for loglevel
-                this.states.subscribe('system.adapter.' + this.namespace + '.logLevel');
-
+                    // Subscribe for loglevel
+                    this.states.subscribe('system.adapter.' + this.namespace + '.logLevel');
+                }
                 if (options.subscribable) {
                     this.states.subscribe('system.adapter.' + this.namespace + '.subscribes');
                     this.states.getState('system.adapter.' + this.namespace + '.subscribes', (err, state) => {
@@ -4357,7 +4364,7 @@ function Adapter(options) {
                                 this.patterns = JSON.parse(state.val);
                                 for (const p in this.patterns) {
                                     if (this.patterns.hasOwnProperty(p)) {
-                                        this.patterns[p].regex = pattern2RegEx(p);
+                                        this.patterns[p].regex = tools.pattern2RegEx(p);
                                     }
                                 }
                             } catch (e) {
@@ -4373,6 +4380,7 @@ function Adapter(options) {
             logger: logger,
             change: (id, state) => {
                 this.inputCount++;
+
                 if (state === 'null' || state === '') state = null;
 
                 if (!id || typeof id !== 'string') {
@@ -4380,44 +4388,45 @@ function Adapter(options) {
                     return;
                 }
 
-                if (id === 'system.adapter.' + this.namespace + '.sigKill') {
-                    if (this.startedInCompactMode) {
-                        logger.info(this.namespace + ' Got terminate signal.');
+                if (id === 'system.adapter.' + this.namespace + '.sigKill' && state && state.ts > this.statesConnectedTime) {
+                    if (this.startedInCompactMode || state.val === -1) {
+                        logger.info(this.namespaceLog + ' Got terminate signal ' + (state.val === -1 ? 'TERMINATE_YOURSELF' : (' TERMINATE ' + state.val)));
                     } else {
-                        logger.warn(this.namespace + ' Got terminate signal. Desired PID: ' + (state && state.val) + ' <> own PID ' + process.pid);
+                        logger.warn(this.namespaceLog + ' Got terminate signal. Checking desired PID: ' + state.val + ' vs own PID ' + process.pid);
                     }
                     // by deletion of state, stop this instance
-                    if ((!state || state.val !== process.pid) && !config.forceIfDisabled) {
-                        stop();
-                        setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
+                    if ((state.val !== process.pid) && !config.forceIfDisabled) {
+                        stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                        setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                     }
-                    return;
                 }
 
                 if (id === 'system.adapter.' + this.namespace + '.logLevel') {
-                    if (! config || !config.log || !state || state.ack) return;
-                    let currentLevel = config.log.level;
-                    if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
-                        config.log.level = state.val;
-                        for (const transport in logger.transports) {
-                            if (!logger.transports.hasOwnProperty(transport)) continue;
-                            if (logger.transports[transport].level === currentLevel) {
+                    if (config && config.log && state && !state.ack) {
+                        let currentLevel = config.log.level;
+                        if (state.val && state.val !== currentLevel && ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)) {
+                            this.overwriteLogLevel = true;
+                            config.log.level = state.val;
+                            for (const transport in logger.transports) {
+                                if (!logger.transports.hasOwnProperty(transport)) continue;
                                 logger.transports[transport].level = state.val;
                             }
+                            logger.info(this.namespaceLog + ' Loglevel changed from "' + currentLevel + '" to "' + state.val + '"');
+                            currentLevel = state.val;
+                        } else if (state.val && state.val !== currentLevel) {
+                            logger.info(this.namespaceLog + ' Got invalid loglevel "' + state.val + '", ignoring');
                         }
-                        logger.info(this.namespace + ' Loglevel changed from "' + currentLevel + '" to "' + state.val + '"');
-                        currentLevel = state.val;
-                    } else if (state.val && state.val !== currentLevel) {
-                        logger.info(this.namespace + ' Got invalid loglevel "' + state.val + '", ignoring');
+                        this.states && this.states.setState('system.adapter.' + this.namespace + '.logLevel', {
+                            val: currentLevel,
+                            ack: true,
+                            from: 'system.adapter.' + this.namespace
+                        });
                     }
-                    this.states.setState('system.adapter.' + this.namespace + '.logLevel', {val: currentLevel, ack: true, from: 'system.adapter.' + this.namespace});
-                    return;
                 }
 
                 // todo remove it as an error with log will be found
                 if (id === 'system.adapter.' + this.namespace + '.checkLogging') {
                     checkLogging();
-                    return;
                 }
 
                 // someone subscribes or unsubscribes from adapter
@@ -4430,7 +4439,7 @@ function Adapter(options) {
                     }
                     for (const p in subs) {
                         if (subs.hasOwnProperty(p)) {
-                            subs[p].regex = pattern2RegEx(p);
+                            subs[p].regex = tools.pattern2RegEx(p);
                         }
                     }
 
@@ -4440,7 +4449,6 @@ function Adapter(options) {
                     } else {
                         this.emit('subscribesChange', state);
                     }
-                    return;
                 }
 
                 // Clear cache if accidentally got the message about change (Will work for admin and javascript)
@@ -4452,7 +4460,7 @@ function Adapter(options) {
                 // If someone want to have log messages
                 if (this.logList && id.match(/\.logging$/)) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    if (logger) logger.debug(this.namespace + ' ' + instance + ': logging ' + (state ? state.val : false));
+                    if (logger) logger.debug(this.namespaceLog + ' ' + instance + ': logging ' + (state ? state.val : false));
                     this.logRedirect(state ? state.val : false, instance);
                 } else
                 if (id === 'log.system.adapter.' + this.namespace) {
@@ -4461,7 +4469,7 @@ function Adapter(options) {
                 // If this is messagebox
                 if (id === 'messagebox.system.adapter.' + this.namespace && state) {
                     // Read it from fifo list
-                    this.states.delMessage('system.adapter.' + this.namespace, state._id);
+                    this.states && this.states.delMessage('system.adapter.' + this.namespace, state._id);
                     const obj = state;
                     if (obj) {
                         // If callback stored for this request
@@ -4498,32 +4506,25 @@ function Adapter(options) {
                         }
                     }
 
-                    if (this.aliases[id]) {
-                        const aState = JSON.parse(JSON.stringify(state));
-
-                        tools.formatAliasValue(this.aliases[id].source, this.aliases[id].target, aState);
-
-                        // It was an error in the calculation
-                        if (typeof options.stateChange === 'function') {
-                            options.stateChange(this.aliases[id].sourceId, aState);
-                        } else {
-                            // emit 'stateChange' event instantly
-                            setImmediate(() =>
-                                this.emit('stateChange', this.aliases[id].sourceId, aState));
+                    if (this.adapterReady) {
+                        if (id.startsWith('system.adapter.' + this.namespace + '.')) {
+                            const subscribed = Object.keys(this.systemStateSubscribes).find(subId => this.systemStateSubscribes[subId].test(id), this);
+                            if (subscribed === undefined) return;
                         }
-                    }
+                        if (this.aliases[id]) {
+                            const aState = tools.formatAliasValue(this.aliases[id].source, this.aliases[id].target, JSON.parse(JSON.stringify(state)), logger, this.namespaceLog);
 
-                    // It was an error in the calculation
-                    if ((options.noNamespace || config.noNamespace) && this._namespaceRegExp.test(id)) {
-                        if (typeof options.stateChange === 'function') {
-                            options.stateChange(id.substring(this.namespace.length + 1), state);
-                        } else {
-                            // emit 'stateChange' event instantly
-                            setImmediate(() =>
-                                this.emit('stateChange', id.slice(this.namespace.length + 1), state));
+                            if (aState) {
+                                if (typeof options.stateChange === 'function') {
+                                    options.stateChange(this.aliases[id].sourceId, aState);
+                                } else {
+                                    // emit 'stateChange' event instantly
+                                    setImmediate(() =>
+                                        this.emit('stateChange', this.aliases[id].sourceId, aState));
+                                }
+                            }
                         }
 
-                    } else {
                         if (typeof options.stateChange === 'function') {
                             options.stateChange(id, state);
                         } else {
@@ -4534,12 +4535,20 @@ function Adapter(options) {
                     }
                 }
             },
+            disconnected: () => {
+                this.connected = false;
+                !this.terminated && setTimeout(() => {
+                    if (this.connected) return; // If reconnected in the meantime, do not terminate
+                    logger && logger.warn(this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating');
+                    this.terminate(EXIT_CODES.NO_ERROR);
+                }, 5000);
+            },
             connectTimeout: (error) => {
                 if (config.isInstall) {
-                    logger && logger.warn(this.namespace + ' no connection to states DB');
+                    logger && logger.warn(this.namespaceLog + ' no connection to states DB');
                     this.terminate(EXIT_CODES.NO_ERROR);
                 } else {
-                    logger && logger.error(this.namespace + ' no connection to states DB: ' + (error || ''));
+                    logger && logger.error(this.namespaceLog + ' no connection to states DB: ' + (error || ''));
                 }
             }
         });
@@ -4576,10 +4585,15 @@ function Adapter(options) {
 
             if (!instanceName.match(/^system\.adapter\./)) instanceName = 'system.adapter.' + instanceName;
 
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (typeof message !== 'object') {
-                logger.debug(this.namespace + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace + ': ' + message);
+                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace + ': ' + message);
             } else {
-                logger.debug(this.namespace + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace);
+                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace);
             }
 
             // If not specific instance
@@ -4655,6 +4669,11 @@ function Adapter(options) {
                 command = 'send';
             }
             const obj = {command: command, message: message, from: 'system.adapter.' + this.namespace};
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
 
             if (hostName && !hostName.startsWith('system.host.')) {
                 hostName = 'system.host.' + hostName;
@@ -4750,14 +4769,21 @@ function Adapter(options) {
                 options = {};
             }
 
-            id = this._fixId(id, false, 'state');
+            id = this._fixId(id, false);
 
             if (typeof ack === 'function') {
                 callback = ack;
                 ack = undefined;
             }
 
-            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined || Array.isArray(state)) {
+                state = {val: state};
+            }
 
             if (ack !== undefined) {
                 state.ack = ack;
@@ -4781,11 +4807,11 @@ function Adapter(options) {
                                     } else {
                                         // write target state
                                         this.outputCount++;
-                                        this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state), callback);
+                                        this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state, logger, this.namespaceLog), callback);
                                     }
                                 });
                             } else {
-                                logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 2`));
+                                logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 2`));
                                 callback(err || `Alias ${id} has no target`);
                             }
                         } else {
@@ -4804,10 +4830,10 @@ function Adapter(options) {
                             this.objects.getObject(obj.common.alias.id, options, (err, targetObj) => {
                                 // write target state
                                 this.outputCount++;
-                                this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state), callback);
+                                this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state, logger, this.namespaceLog), callback);
                             });
                         } else {
-                            logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 3`));
+                            logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 3`));
                             callback(err || `Alias ${id} has no target`);
                         }
                     });
@@ -4861,7 +4887,14 @@ function Adapter(options) {
                 ack = undefined;
             }
 
-            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined || Array.isArray(state)){
+                state = {val: state};
+            }
 
             if (ack !== undefined) {
                 state.ack = ack;
@@ -4933,7 +4966,12 @@ function Adapter(options) {
                 ack = undefined;
             }
 
-            if (typeof state !== 'object' || state === null || state === undefined) {
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined || Array.isArray(state)) {
                 state = {val: state};
             }
 
@@ -4946,13 +4984,13 @@ function Adapter(options) {
 
             if (!id || typeof id !== 'string') {
                 const warn = id ? `ID can be only string and not "${typeof id}"` : `Empty ID: ${JSON.stringify(state)}`;
-                logger.warn(this.namespace + ' ' + warn);
+                logger.warn(this.namespaceLog + ' ' + warn);
                 return (typeof callback === 'function') && callback(warn);
             }
 
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
-                logger.warn(`${this.namespace} Used invalid characters: ${id} changed to ${mId}`);
+                logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
                 id = mId;
             }
 
@@ -4970,11 +5008,11 @@ function Adapter(options) {
                                         typeof callback === 'function' && callback(err);
                                     } else {
                                         this.outputCount++;
-                                        this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state), callback);
+                                        this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state, logger, this.namespaceLog), callback);
                                     }
                                 });
                             } else {
-                                logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 4`));
+                                logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 4`));
                                 callback(err || `Alias ${id} has no target`);
                             }
                         } else {
@@ -4992,10 +5030,10 @@ function Adapter(options) {
                             // read object for formatting
                             this.objects.getObject(obj.common.alias.id, options, (err, targetObj) => {
                                 this.outputCount++;
-                                this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state), callback);
+                                this.states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, state, logger, this.namespaceLog), callback);
                             });
                         } else {
-                            logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 5`));
+                            logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 5`));
                             callback(err || `Alias ${id} has no target`);
                         }
                     });
@@ -5058,7 +5096,14 @@ function Adapter(options) {
                 ack = undefined;
             }
 
-            if (typeof state !== 'object' || state === null || state === undefined) state = {val: state};
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            if (typeof state !== 'object' || state === null || state === undefined || Array.isArray(state)) {
+                state = {val: state};
+            }
 
             if (ack !== undefined) {
                 state.ack = ack;
@@ -5069,7 +5114,7 @@ function Adapter(options) {
 
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
-                logger.warn(`${this.namespace} Used invalid characters: ${id} changed to ${mId}`);
+                logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
                 id = mId;
             }
 
@@ -5119,7 +5164,12 @@ function Adapter(options) {
                 return;
             }
 
-            id = this._fixId(id, false, 'state');
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            id = this._fixId(id, false);
 
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', err => {
@@ -5132,16 +5182,16 @@ function Adapter(options) {
                                     if (this.oStates && this.oStates[obj.common.alias.id]) {
                                         this.objects.getObject(obj.common.alias.id, (err, sourceObj) => {
                                             const state = JSON.parse(JSON.stringify(this.oStates[obj.common.alias.id]));
-                                            callback(err, tools.formatAliasValue(sourceObj, obj, state));
+                                            callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog));
                                         });
                                     } else {
                                         this.objects.getObject(obj.common.alias.id, (err, sourceObj) => {
                                             this.states.getState(obj.common.alias.id, (err, state) =>
-                                                callback(err, tools.formatAliasValue(sourceObj, obj, state)));
+                                                callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog)));
                                         });
                                     }
                                 } else {
-                                    logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 6`));
+                                    logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 6`));
                                     callback(err || `Alias ${id} has no target`);
                                 }
                             });
@@ -5161,14 +5211,14 @@ function Adapter(options) {
                             this.objects.getObject(obj.common.alias.id, options, (err, sourceObj) => {
                                 if (this.oStates && this.oStates[obj.common.alias.id]) {
                                     const state = JSON.parse(JSON.stringify(this.oStates[obj.common.alias.id]));
-                                    callback(err, tools.formatAliasValue(sourceObj, obj, state));
+                                    callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog));
                                 } else {
                                     this.states.getState(obj.common.alias.id, (err, state) =>
-                                        callback(err, tools.formatAliasValue(sourceObj, obj, state)));
+                                        callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog)));
                                 }
                             });
                         } else {
-                            logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 7`));
+                            logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 7`));
                             callback(err || `Alias ${id} has no target`);
                         }
                     });
@@ -5214,6 +5264,11 @@ function Adapter(options) {
                 return;
             }
 
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', (err, obj) => {
                     if (err) {
@@ -5228,7 +5283,7 @@ function Adapter(options) {
                                                 callback(err);
                                             } else {
                                                 const state = JSON.parse(JSON.stringify(this.oStates[obj.common.alias.id]));
-                                                callback(err, tools.formatAliasValue(sourceObj, obj, state));
+                                                callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog));
                                             }
                                         });
                                     } else {
@@ -5238,12 +5293,12 @@ function Adapter(options) {
                                             } else {
                                                 this.inputCount++;
                                                 this.states.getState(obj.common.alias.id, (err, state) =>
-                                                    callback(err, tools.formatAliasValue(sourceObj, obj, state)));
+                                                    callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog)));
                                             }
                                         });
                                     }
                             } else {
-                                logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 8`));
+                                logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 8`));
                                 callback(err || `Alias ${id} has no target`);
                             }
                         } else {
@@ -5265,15 +5320,15 @@ function Adapter(options) {
                                 }
                                 if (this.oStates && this.oStates[obj.common.alias.id]) {
                                     const state = JSON.parse(JSON.stringify(this.oStates[obj.common.alias.id]));
-                                    callback(err, tools.formatAliasValue(sourceObj, obj, state));
+                                    callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog));
                                 } else {
                                     this.inputCount++;
                                     this.states.getState(obj.common.alias.id, (err, state) =>
-                                        callback(err, tools.formatAliasValue(sourceObj, obj, state)));
+                                        callback(err, tools.formatAliasValue(sourceObj, obj, state, logger, this.namespaceLog)));
                                 }
                             });
                         } else {
-                            logger.warn(this.namespace + ' ' + (err || `Alias ${id} has no target 9`));
+                            logger.warn(this.namespaceLog + ' ' + (err || `Alias ${id} has no target 9`));
                             callback(err || `Alias ${id} has no target`);
                         }
                     });
@@ -5374,7 +5429,7 @@ function Adapter(options) {
             if (!id) return null;
             const parts = id.split('.');
             if (parts[0] + '.' + parts[1] !== this.namespace) {
-                logger.warn(this.namespace + ' Try to decode id not from this adapter');
+                logger.warn(this.namespaceLog + ' Try to decode id not from this adapter');
                 return null;
             }
             return {device: parts[2], channel: parts[3], state: parts[4]};
@@ -5427,6 +5482,12 @@ function Adapter(options) {
                 callback = options;
                 options = null;
             }
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'delState', err => {
                     if (err) {
@@ -5467,7 +5528,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            pattern = this._fixId(pattern, true, 'state');
+            pattern = this._fixId(pattern, true);
             this.getForeignStates(pattern, options, callback);
         };
         /**
@@ -5491,7 +5552,7 @@ function Adapter(options) {
                         } catch (e) {
                             // if it is not binary state
                             if (arr[i] < 2000) {
-                                logger.error(this.namespace + ' Cannot parse state "' + keys[i] + ': ' + arr[i]);
+                                logger.error(this.namespaceLog + ' Cannot parse state "' + keys[i] + ': ' + arr[i]);
                             }
                         }
                     }
@@ -5500,7 +5561,8 @@ function Adapter(options) {
                         if (obj.common.alias.val !== undefined) {
                             result[obj._id] = obj.common.alias.val;
                         } else {
-                            result[obj._id] = tools.formatAliasValue(srcObjs[i], obj, arr[i] || null);
+                            const resState = tools.formatAliasValue(srcObjs[i], obj, arr[i] || null, logger, this.namespaceLog);
+                            result[obj._id] = resState ? resState.val : null;
                         }
                     } else {
                         result[keys[i]] = arr[i] || null;
@@ -5572,11 +5634,21 @@ function Adapter(options) {
             }
 
             if (typeof callback !== 'function') {
-                return logger.error(this.namespace + ' getForeignStates invalid callback for ' + pattern);
+                return logger.error(this.namespaceLog + ' getForeignStates invalid callback for ' + pattern);
+            }
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
+            if (!this.objects) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('Objects database not connected');
+                return;
             }
 
             // if pattern is array
-            if (pattern instanceof Array) {
+            if (Array.isArray(pattern)) {
                 if (options && options.user && options.user !== 'system.user.admin') {
                     checkStates(pattern, options, 'getState', (err, keys, objs) => {
                         if (err) {
@@ -5619,7 +5691,7 @@ function Adapter(options) {
                     let regEx;
                     // process patterns like "*.someValue". The patterns "someValue.*" will be processed by getObjectView
                     if (pattern && pattern !== '*' && pattern[pattern.length - 1] !== '*') {
-                        regEx = new RegExp(pattern2RegEx(pattern));
+                        regEx = new RegExp(tools.pattern2RegEx(pattern));
                     }
                     for (let i = 0; i < res.rows.length; i++) {
                         if (!regEx || regEx.test(res.rows[i].id)) {
@@ -5636,6 +5708,25 @@ function Adapter(options) {
          * Promise-version of Adapter.getForeignStates
          */
         this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
+
+        /**
+         * Check if the subscribe if for one of the own instance system objects to decide later if we need to pass then through
+         * @param pattern the subscribed id or pattern
+         * @param subscribe boolean if it is subscribe or unsubscribe
+         */
+        this.rememberSystemSubscribes = (pattern, subscribe) => {
+            subscribe = (subscribe === undefined) ? true : subscribe;
+            if (subscribe) {
+                const patternRegEx = new RegExp(tools.pattern2RegEx(pattern));
+                if (patternRegEx.test('system.adapter.' + this.namespace + '.')) {
+                    // the subscribed pattern matches system objects of this adapter instance
+                    this.systemStateSubscribes[pattern] = patternRegEx;
+                }
+            }
+            else {
+                this.systemStateSubscribes[pattern] && delete this.systemStateSubscribes[pattern];
+            }
+        };
 
         /**
          * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -5658,8 +5749,17 @@ function Adapter(options) {
                 options = null;
             }
 
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             // Todo check rights for options
             autoSubscribeOn(() => {
+                if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                    callback && callback('States database not connected');
+                    return;
+                }
                 // compare if this pattern for one of auto-subscribe adapters
                 for (let s = 0; s < this.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, this.autoSubscribe[s].length + 1) === this.autoSubscribe[s] + '.') {
@@ -5671,7 +5771,7 @@ function Adapter(options) {
                             try {
                                 subs = JSON.parse(state.val);
                             } catch (e) {
-                                logger.error(this.namespace + ' Cannot parse subscribes for "' + this.autoSubscribe[s] + '.subscribes"');
+                                logger.error(this.namespaceLog + ' Cannot parse subscribes for "' + this.autoSubscribe[s] + '.subscribes"');
                             }
                             subs[pattern] = subs[pattern] || {};
                             subs[pattern][this.namespace] = subs[pattern][this.namespace] || 0;
@@ -5682,7 +5782,7 @@ function Adapter(options) {
                     }
                 }
 
-                if (pattern instanceof Array) {
+                if (Array.isArray(pattern)) {
                     let aliasesFound;
                     const ids = pattern.map(id => {
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -5727,9 +5827,10 @@ function Adapter(options) {
                                             }
                                         });
                                     } else {
-                                        logger.warn(`${this.namespace} Alias ${obj._id} has no target 10`);
+                                        logger.warn(`${this.namespaceLog} Alias ${obj._id} has no target 10`);
                                     }
                                 } else {
+                                    this.rememberSystemSubscribes(id, true);
                                     this.states.subscribe(id);
                                 }
                             });
@@ -5737,6 +5838,7 @@ function Adapter(options) {
                             !count && typeof callback === 'function' && callback();
                         });
                     } else {
+                        this.rememberSystemSubscribes(pattern, true);
                         this.states.subscribe(pattern, callback);
                     }
                 } else if (pattern.includes('*')) {
@@ -5766,6 +5868,7 @@ function Adapter(options) {
                                         // Do this step only no global subscription will be done
                                         if (pattern !== '*') {
                                             count++;
+                                            this.rememberSystemSubscribes(obj.common.alias.id, true);
                                             this.states.subscribe(obj.common.alias.id, () => {
                                                 if (!--count) {
                                                     this._getObjectsByArray(sourcesIds, null, options, (errors, srcObjs) => {
@@ -5775,6 +5878,7 @@ function Adapter(options) {
                                                             }
                                                         });
                                                         if (!pattern.startsWith(ALIAS_STARTS_WITH)) {
+                                                            this.rememberSystemSubscribes(pattern, true);
                                                             this.states.subscribe(pattern, callback);
                                                         } else {
                                                             typeof callback === 'function' && callback();
@@ -5799,6 +5903,7 @@ function Adapter(options) {
                                     });
 
                                     if (pattern === '*') {
+                                        this.rememberSystemSubscribes(pattern, true);
                                         this.states.subscribe(pattern, callback);
                                     } else {
                                         typeof callback === 'function' && callback();
@@ -5807,6 +5912,7 @@ function Adapter(options) {
                             }
                         });
                     } else {
+                        this.rememberSystemSubscribes(pattern, true);
                         this.states.subscribe(pattern, callback);
                     }
                 } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
@@ -5831,11 +5937,12 @@ function Adapter(options) {
                                     typeof callback === 'function' && callback(err);
                                 }));
                         } else {
-                            logger.warn(this.namespace + ' ' + (err || `Alias ${pattern} has no target 12`));
+                            logger.warn(this.namespaceLog + ' ' + (err || `Alias ${pattern} has no target 12`));
                             typeof callback === 'function' && callback();
                         }
                     });
                 } else {
+                    this.rememberSystemSubscribes(pattern, true);
                     this.states.subscribe(pattern, callback);
                 }
             });
@@ -5866,7 +5973,7 @@ function Adapter(options) {
             if (!pattern) pattern = '*';
 
             if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
-                callback && callback(new Error('States database not connected'));
+                callback && callback('States database not connected');
                 return;
             }
             // Todo check rights for options
@@ -5885,7 +5992,7 @@ function Adapter(options) {
                             try {
                                 subs = JSON.parse(state.val);
                             } catch (e) {
-                                logger.error(this.namespace + ' Cannot parse subscribes for "' + this.autoSubscribe[s] + '.subscribes"');
+                                logger.error(this.namespaceLog + ' Cannot parse subscribes for "' + this.autoSubscribe[s] + '.subscribes"');
                                 return;
                             }
                             if (!subs[pattern]) return;
@@ -5908,7 +6015,7 @@ function Adapter(options) {
                 }
             }
 
-            if (pattern instanceof Array) {
+            if (Array.isArray(pattern)) {
                 if (pattern.find(id => id.startsWith(ALIAS_STARTS_WITH))) {
                     let count = 0;
                     const jsonPattern = JSON.stringify(pattern);
@@ -5924,6 +6031,7 @@ function Adapter(options) {
                     pattern.forEach(id => {
                         if (!id.startsWith(ALIAS_STARTS_WITH)) {
                             count++;
+                            this.rememberSystemSubscribes(id, false);
                             this.states.unsubscribe(id, () =>
                                 !--count && typeof callback === 'function' && callback());
                         }
@@ -5938,6 +6046,7 @@ function Adapter(options) {
 
                     !count && typeof callback === 'function' && callback();
                 } else {
+                    this.rememberSystemSubscribes(pattern, false);
                     this.states.unsubscribe(pattern, callback);
                 }
             } else if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
@@ -5950,6 +6059,7 @@ function Adapter(options) {
                         // Un-subscribe each alias apart
                         if (pattern !== '*') {
                             count++;
+                            this.rememberSystemSubscribes(id, false);
                             this.states.unsubscribe(id, () =>
                                 !--count && typeof callback === 'function' && callback());
                         }
@@ -5966,12 +6076,14 @@ function Adapter(options) {
 
                 if (!count) {
                     if (pattern === '*') {
+                        this.rememberSystemSubscribes(pattern, false);
                         this.states.unsubscribe(pattern, callback);
                     } else {
                         typeof callback === 'function' && callback();
                     }
                 }
             } else {
+                this.rememberSystemSubscribes(pattern, false);
                 this.states.unsubscribe(pattern, callback);
             }
         };
@@ -6005,7 +6117,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 this.states.subscribe(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true, 'state');
+                pattern = this._fixId(pattern, true);
                 this.states.subscribe(pattern, callback);
             }
         };
@@ -6033,7 +6145,7 @@ function Adapter(options) {
          */
         this.unsubscribeStates = (pattern, options, callback) => {
             if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
-                callback && callback(new Error('States database not connected'));
+                callback && callback('States database not connected');
                 return;
             }
             // Todo check rights for options
@@ -6045,7 +6157,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 this.states.unsubscribe(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true, 'state');
+                pattern = this._fixId(pattern, true);
                 this.states.unsubscribe(pattern, callback);
             }
         };
@@ -6115,6 +6227,12 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'setState', err => {
                     if (err) {
@@ -6146,6 +6264,12 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'getState', err => {
                     if (err) {
@@ -6183,6 +6307,12 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
+
+            if (!this.states) { // if states is no longer existing, we do not need to unsubscribe
+                callback && callback('States database not connected');
+                return;
+            }
+
             if (options && options.user && options.user !== 'system.user.admin') {
                 checkStates(id, options, 'delState', err => {
                     if (err) {
@@ -6244,7 +6374,7 @@ function Adapter(options) {
                                     if (logs) {
                                         logs.push('Subscriber - ' + id + ' (disabled)');
                                     } else {
-                                        logger.error(this.namespace + ' LOGINFO: Subscriber - ' + id + ' (disabled)');
+                                        logger.error(this.namespaceLog + ' LOGINFO: Subscriber - ' + id + ' (disabled)');
                                     }
                                 }
                             }
@@ -6252,7 +6382,7 @@ function Adapter(options) {
                     }
                     if (logs) {
                         for (let m = 0; m < logs.length; m++) {
-                            logger.error(this.namespace + ' LOGINFO: ' + logs[m]);
+                            logger.error(this.namespaceLog + ' LOGINFO: ' + logs[m]);
                         }
                         logs = null;
                     }
@@ -6315,7 +6445,7 @@ function Adapter(options) {
         ts.on('logged', info => {
             info.from = this.namespace;
             // emit to itself
-            if (options.logTransporter) {
+            if (options.logTransporter && this.logRequired) {
                 this.emit('log', info);
             }
 
@@ -6351,7 +6481,7 @@ function Adapter(options) {
                             // disable log receiving after 10 seconds
                             this.logOffTimer = setTimeout(() => {
                                 this.logOffTimer = null;
-                                logger.debug(this.namespace + ' Change log subscriber state: FALSE');
+                                logger.debug(this.namespaceLog + ' Change log subscriber state: FALSE');
                                 this.outputCount++;
                                 this.states.setState('system.adapter.' + this.namespace + '.logging', {val: false, ack: true, from: 'system.adapter.' + this.namespace});
                             }, 10000);
@@ -6360,7 +6490,7 @@ function Adapter(options) {
                                 clearTimeout(this.logOffTimer);
                                 this.logOffTimer = null;
                             } else {
-                                logger.debug(this.namespace + ' Change log subscriber state: true');
+                                logger.debug(this.namespaceLog + ' Change log subscriber state: true');
                                 this.outputCount++;
                                 this.states.setState('system.adapter.' + this.namespace + '.logging', {val: true, ack: true, from: 'system.adapter.' + this.namespace});
                             }
@@ -6371,6 +6501,8 @@ function Adapter(options) {
 
             this.processLog = msg => {
                 msg && this.emit('log', msg);
+
+                // BF (2019_10_09): this is not required anyMore
                 this.states && this.states.delLog && this.states.delLog('system.adapter.' + this.namespace, msg._id);
             };
 
@@ -6379,7 +6511,7 @@ function Adapter(options) {
             this.states.subscribeLog('system.adapter.' + this.namespace);
         } else {
             this.requireLog = (_isActive) => {
-                logger.warn(this.namespace + ' requireLog is not supported by this adapter! Please set common.logTransporter to true');
+                logger.warn(this.namespaceLog + ' requireLog is not supported by this adapter! Please set common.logTransporter to true');
             };
         }
     };
@@ -6389,9 +6521,9 @@ function Adapter(options) {
             if (options.instance === undefined) {
                 if (!adapterConfig || !adapterConfig.common || !adapterConfig.common.enabled) {
                     if (adapterConfig && adapterConfig.common && adapterConfig.common.enabled !== undefined) {
-                        !config.isInstall && logger.error(this.namespace + ' adapter disabled');
+                        !config.isInstall && logger.error(this.namespaceLog + ' adapter disabled');
                     } else {
-                        !config.isInstall && logger.error(this.namespace + ' no config found for adapter');
+                        !config.isInstall && logger.error(this.namespaceLog + ' no config found for adapter');
                     }
 
                     if (!config.isInstall && (!process.argv || !config.forceIfDisabled)) {
@@ -6416,7 +6548,7 @@ function Adapter(options) {
                 }
 
                 if (!config.isInstall && !adapterConfig._id) {
-                    logger.error(this.namespace + ' invalid config: no _id found');
+                    logger.error(this.namespaceLog + ' invalid config: no _id found');
                     this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                     return;
                 }
@@ -6427,7 +6559,7 @@ function Adapter(options) {
                 if (!config.isInstall) {
                     const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
                     if (!tmp) {
-                        logger.error(this.namespace + ' invalid config');
+                        logger.error(this.namespaceLog + ' invalid config');
                         this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                         return;
                     }
@@ -6439,15 +6571,20 @@ function Adapter(options) {
                     adapterConfig = adapterConfig || {common: {mode: 'once', name: name}, native: {}, protectedNative: []};
                 }
 
-                for (const tp in logger.transports) {
-                    if (logger.transports.hasOwnProperty(tp)) {
-                        logger.transports[tp].level = adapterConfig.common.logLevel || 'info';
+                if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+                    // set configured in DB log level
+                    for (const trans in logger.transports) {
+                        if (logger.transports.hasOwnProperty(trans)) {
+                            logger.transports[trans].level = adapterConfig.common.loglevel;
+                        }
                     }
+                    config.log.level = adapterConfig.common.loglevel;
                 }
 
                 this.name = adapterConfig.common.name;
                 this.instance = instance;
                 this.namespace = name + '.' + instance;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
                 if (!this.startedInCompactMode) {
                     process.title = 'io.' + this.namespace;
                 }
@@ -6469,24 +6606,16 @@ function Adapter(options) {
                 this.states.subscribe('*.logging');
 
                 if (typeof options.message === 'function' && !adapterConfig.common.messagebox) {
-                    logger.error(this.namespace + ' : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.');
+                    logger.error(this.namespaceLog + ' : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.');
                 } else if (/*typeof options.message === 'function' && */adapterConfig.common.messagebox) {
                     this.mboxSubscribed = true;
                     this.states.subscribeMessage('system.adapter.' + this.namespace);
-                }
-
-                // set configured in DB log level
-                if (adapterConfig.common.loglevel) {
-                    for (const trans in logger.transports) {
-                        if (logger.transports.hasOwnProperty(trans)) {
-                            logger.transports[trans].level = adapterConfig.common.loglevel;
-                        }
-                    }
                 }
             } else {
                 this.name = adapterConfig.name || options.name;
                 this.instance = adapterConfig.instance || 0;
                 this.namespace = this.name + '.' + this.instance;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
 
                 this.config = adapterConfig.native || {};
                 this.common = adapterConfig.common || {};
@@ -6513,19 +6642,19 @@ function Adapter(options) {
                     this.warn  = this.warn.bind(this);
                 }
                 silly(msg) {
-                    logger.silly(this.adapter.namespace + ' ' + msg);
+                    logger.silly(this.adapter.namespaceLog + ' ' + msg);
                 }
                 debug(msg) {
-                    logger.debug(this.adapter.namespace + ' ' + msg);
+                    logger.debug(this.adapter.namespaceLog + ' ' + msg);
                 }
                 info(msg) {
-                    logger.info(this.adapter.namespace + ' ' + msg);
+                    logger.info(this.adapter.namespaceLog + ' ' + msg);
                 }
                 error(msg) {
-                    logger.error(this.adapter.namespace + ' ' + msg);
+                    logger.error(this.adapter.namespaceLog + ' ' + msg);
                 }
                 warn(msg) {
-                    logger.warn(this.adapter.namespace + ' ' + msg);
+                    logger.warn(this.adapter.namespaceLog + ' ' + msg);
                 }
             }
 
@@ -6537,24 +6666,26 @@ function Adapter(options) {
             if (options.instance === undefined) {
                 this.version = (this.pack && this.pack.version) ? this.pack.version : ((this.ioPack && this.ioPack.common) ? this.ioPack.common.version : 'unknown');
 
-                logger.info(this.namespace + ' starting. Version ' + this.version + ' in ' + this.adapterDir + ', node: ' + process.version);
+                logger.info(this.namespaceLog + ' starting. Version ' + this.version + ' in ' + this.adapterDir + ', node: ' + process.version);
                 config.system = config.system || {};
                 config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
-                reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
-                reportStatus();
-                const id = 'system.adapter.' + this.namespace;
-                this.states.setState(id + '.compactMode', {ack: true, from: id, val: !!this.startedInCompactMode});
-                this.outputCount++;
-                if (this.startedInCompactMode) {
-                    this.states.setState(id + '.cpu', {ack: true, from: id, val: 0});
-                    this.states.setState(id + '.cputime', {ack: true, from: id, val: 0});
-                    this.states.setState(id + '.memRss', {val: 0, ack: true, from: id});
-                    this.states.setState(id + '.memHeapTotal', {val: 0, ack: true, from: id});
-                    this.states.setState(id + '.memHeapUsed', {val: 0, ack: true, from: id});
-                    this.states.setState(id + '.eventLoopLag', {val: 0, ack: true, from: id});
-                    this.outputCount += 6;
-                } else {
-                    tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
+                if (!config.isInstall) {
+                    reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
+                    reportStatus();
+                    const id = 'system.adapter.' + this.namespace;
+                    this.states.setState(id + '.compactMode', {ack: true, from: id, val: !!this.startedInCompactMode});
+                    this.outputCount++;
+                    if (this.startedInCompactMode) {
+                        this.states.setState(id + '.cpu', {ack: true, from: id, val: 0});
+                        this.states.setState(id + '.cputime', {ack: true, from: id, val: 0});
+                        this.states.setState(id + '.memRss', {val: 0, ack: true, from: id});
+                        this.states.setState(id + '.memHeapTotal', {val: 0, ack: true, from: id});
+                        this.states.setState(id + '.memHeapUsed', {val: 0, ack: true, from: id});
+                        this.states.setState(id + '.eventLoopLag', {val: 0, ack: true, from: id});
+                        this.outputCount += 6;
+                    } else {
+                        tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
+                    }
                 }
             }
 
@@ -6562,12 +6693,12 @@ function Adapter(options) {
                 try {
                     schedule = require('node-schedule');
                 } catch (e) {
-                    logger.error(this.namespace + ' Cannot load node-schedule. Scheduled restart is disabled');
+                    logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
                 }
                 if (schedule) {
-                    logger.debug(this.namespace + ' Schedule restart: ' + adapterConfig.common.restartSchedule);
+                    logger.debug(this.namespaceLog + ' Schedule restart: ' + adapterConfig.common.restartSchedule);
                     restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
-                        logger.info(this.namespace + ' Scheduled restart.');
+                        logger.info(this.namespaceLog + ' Scheduled restart.');
                         stop(false, true);
                     });
                 }
@@ -6586,10 +6717,12 @@ function Adapter(options) {
                         if (typeof options.reconnect === 'function') options.reconnect();
                         this.emit('reconnect');
                     }
+                    this.adapterReady = true;
                 });
             } else {
                 if (typeof options.ready === 'function') options.ready();
                 this.emit('ready');
+                this.adapterReady = true;
 
                 // todo remove it later, when the error is fixed
                 this.subscribeStates('checkLogging');
@@ -6657,56 +6790,64 @@ function Adapter(options) {
         this.outputCount = 0;
     };
 
-    const stop = (isPause, isScheduled) => {
-        clearInterval(reportInterval);
-        reportInterval = null;
-        const id = 'system.adapter.' + this.namespace;
+    const stop = (isPause, isScheduled, exitCode, updateAliveState) => {
+        exitCode = exitCode || isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0
+        if (updateAliveState === undefined) updateAliveState = true;
 
-        const finishUnload = () => {
-            if (this.states) {
-                this.outputCount++;
-                this.states.setState(id + '.alive', {val: false, ack: true, from: id}, () => {
-                    if (!isPause && this.log) logger.info(this.namespace + ' terminating');
-                    this.terminate(isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
-                });
-            }
-        };
+        if (reportInterval || config.isInstall) { // when interval is deleted we already had a stop call before
+            reportInterval && clearInterval(reportInterval);
+            reportInterval = null;
+            const id = 'system.adapter.' + this.namespace;
 
-        if (typeof options.unload === 'function') {
-            if (options.unload.length >= 1) {
-                // The method takes (at least) a callback
-                options.unload(finishUnload);
-            } else {
-                // The method takes no arguments, so it must return a Promise
-                const unloadPromise = options.unload();
-                if (unloadPromise instanceof Promise) {
-                    // Call finishUnload in the case of success and failure
-                    unloadPromise.then(finishUnload, finishUnload);
+            const finishUnload = () => {
+                if (this.states && updateAliveState) {
+                    this.outputCount++;
+                    this.states.setState(id + '.alive', {val: false, ack: true, from: id}, () => {
+                        if (!isPause && logger) logger.info(this.namespaceLog + ' terminating');
+                        this.terminate(exitCode);
+                    });
                 } else {
-                    // No callback accepted and no Promise returned - force unload
-                    logger.error(`${this.namespace} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`);
+                    if (!isPause && this.log) logger.info(this.namespaceLog + ' terminating');
+                    this.terminate(exitCode);
                 }
-            }
-        } else {
-            this.emit('unload', finishUnload);
-        }
+            };
 
-        // Even if the developer forgets to call the unload callback, we need to stop the process
-        // Therefore wait a short while and then force the unload
-        setTimeout(() => {
-            if (this.states) {
-                finishUnload();
-
-                // Give 2 seconds to write the value
-                setTimeout(() => {
-                    if (!isPause && this.log) logger.info(this.namespace + ' terminating with timeout');
-                    this.terminate(isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
-                }, 1000);
+            if (typeof options.unload === 'function') {
+                if (options.unload.length >= 1) {
+                    // The method takes (at least) a callback
+                    options.unload(finishUnload);
+                } else {
+                    // The method takes no arguments, so it must return a Promise
+                    const unloadPromise = options.unload();
+                    if (unloadPromise instanceof Promise) {
+                        // Call finishUnload in the case of success and failure
+                        unloadPromise.then(finishUnload, finishUnload);
+                    } else {
+                        // No callback accepted and no Promise returned - force unload
+                        logger.error(`${this.namespaceLog} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`);
+                    }
+                }
             } else {
-                if (!isPause && this.log) logger.info(this.namespace + ' terminating');
-                this.terminate(isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
+                this.emit('unload', finishUnload);
             }
-        }, (this.common && this.common.stopTimeout) || 500);
+
+            // Even if the developer forgets to call the unload callback, we need to stop the process
+            // Therefore wait a short while and then force the unload
+            setTimeout(() => {
+                if (this.states) {
+                    finishUnload();
+
+                    // Give 2 seconds to write the value
+                    setTimeout(() => {
+                        if (!isPause && this.log) logger.info(this.namespaceLog + ' terminating with timeout');
+                        this.terminate(exitCode);
+                    }, 1000);
+                } else {
+                    if (!isPause && this.log) logger.info(this.namespaceLog + ' terminating');
+                    this.terminate(exitCode);
+                }
+            }, (this.common && this.common.stopTimeout) || 500);
+        }
     };
 
     process.once('SIGINT', stop);
@@ -6733,26 +6874,26 @@ function Adapter(options) {
 
         // catch it on windows
         if (this.getPortRunning && err.message === 'listen EADDRINUSE') {
-            logger.warn(this.namespace + ' Port ' + this.getPortRunning.port + (this.getPortRunning.host ? ' for host ' + this.getPortRunning.host : '') + ' is in use. Get next');
+            logger.warn(this.namespaceLog + ' Port ' + this.getPortRunning.port + (this.getPortRunning.host ? ' for host ' + this.getPortRunning.host : '') + ' is in use. Get next');
 
             setImmediate(() => this.getPort(this.getPortRunning.port + 1, this.getPortRunning.host, this.getPortRunning.callback));
             return;
         }
 
-        logger.error(this.namespace + ' uncaught exception: ' + (err.message || err));
-        if (err.stack) logger.error(this.namespace + ' ' + err.stack);
+        logger.error(this.namespaceLog + ' uncaught exception: ' + (err.message || err));
+        if (err.stack) logger.error(this.namespaceLog + ' ' + err.stack);
 
         try {
             stop();
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1000);
         } catch (err) {
-            logger.error(this.namespace + ' exception by stop: ' + (err.message || err));
+            logger.error(this.namespaceLog + ' exception by stop: ' + (err.message || err));
         }
     });
 
     initObjects(() => {
         if (this.inited) {
-            this.log && logger.warn(this.namespace + ' Reconnection to DB.');
+            this.log && logger.warn(this.namespaceLog + ' Reconnection to DB.');
             return;
         }
 

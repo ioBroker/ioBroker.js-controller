@@ -1,7 +1,143 @@
-## 2.0.0 (2019-09-xx) Release Bella
+# Changelog
+
+## 2.0.29 (2019-10-13) Release Bella
+* (Apollon77) fix backup on empty/null states
+
+## 2.0.28 (2019-10-13) Release Bella
+* (Apollon77) Correct meta data return for some special cases
+
+## 2.0.27 (2019-10-13) Release Bella
+* (Apollon77) Correct some potential object issues
+
+## 2.0.26 (2019-10-13) Release Bella
+* (Apollon77) Make sure Logs are only streamed to admin for selected loglevel
+* (Apollon77) Fix "iobroker file write"
+* (Apollon77) Make sure invalid ids are handled correctly without throwing errors
+* (bluefox) Add alias.0 as object to be added
+* (bluefox) Allow Arrays as state values
+* (bluefox) Translate object names
+
+## 2.0.25 (2019-10-09) Release Bella
+**This is the First version which is released into Latest Repository.** 
+
+**[Discussion Thread in Forum](https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo)**
+* (Apollon77) Also allow states/objects with capital letters as first letter
+* (Apollon77) fix adapter/instance deletion
+* (AlCalzone) fix CLI get state getvalue
+* (Apollon77) increase LUA script timeout
+* (Apollon77) update in objects lib, also update other dependencies
+* (bluefox) small logging optimization
+
+
+## 2.0.24 (2019-10-02) Release Bella
+* (Apollon77) optimize performance, especially for file/file systems
+* (Apollon77) enhance path sanitization
+* (Apollon77) hopefully prevent Redis errors on connection close
+* (Apollon77) fix adapter logging with --debug flag
+* (Apollon77) fix Adapter Restarts also for widgets
+
+## 2.0.22 (2019-10-02) Release Bella
+* (Apollon77) work on some performance optimizations
+* (Apollon77) Fix binary state handling
+
+## 2.0.21 (2019-10-02) Release Bella
+* (Apollon77) make sure also states starting with "io" will be notified on stateChange
+* (Apollon77) fix Loglevel change via instance state
+* (Apollon77) make sure subscribes for instances states are correctly passed through to adapter for all cases he subscribed them (also for special states like logLevel or sigKill)
+* (Apollon77) make sure id filtering also works correct for >10 instances of the same adapter
+* (Apollon77) some more small fixes and optimizations
+* (Bluefox) Do not kill instance in debug mode on PID mismatch
+
+## 2.0.19 (2019-10-02) Release Bella
+* (Apollon77) fix migration
+* (Apollon77) fix potential cases where objects/states files were not stored
+
+## 2.0.18 (2019-10-01) Release Bella
+* (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
+
+## 2.0.17 (2019-10-01) Release Bella
+* (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapterstart, basically 4s delay)
+* (Apollon77) Optimize some Migration questions
+* (Apollon77) smaller fixes and optimization
+
+## 2.0.16 (2019-09-30) Release Bella
+* (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
+* (Apollon77) rework expiry handling for File-States to use Timouts
+
+## 2.0.14 (2019-09-29) Release Bella
+* (Apollon77) fix checking if iobroker is running (bug in 2.0.13)
+* (Apollon77) upgrade socketio deps
+* (Stabilostick) Randomize Certificate Serial numbers
+
+## 2.0.13 (2019-09-28) Release Bella
+* (Apollon77) optimize `iobroker status` CLI command
+* (Apollon77) some other small fixes
+* (Apollon77) remove clearAllLogs logic
+
+## 2.0.12 (2019-09-27) Release Bella
+* (Apollon77) Correct selections with wildcards at the beginning, should solve the admin issues
+
+## 2.0.10 (2019-09-26) Release Bella
+* (Apollon77) Optimize Compact mode CLI commands (fixes #468, fixes #471, fixes #470)
+* (Apollon77) fixes #475, #476
+* (Apollon77) only use quit from redis and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
+* (Apollon77) object changes are only logged as debug from now on, fixes #473
+* (Apollon77) Some adapter tweaks when running in "--install" mode (no reporting, don't check sigKill)
+
+## 2.0.9 (2019-09-24) Release Bella
+* (Apollon77) Optimize Adapter and Controller stopping processes further
+* (Apollon77) Optimize redis connection handling on exit
+* (Apollon77) Update objects-ha lib to 1.1.19
+
+## 2.0.8 (2019-09-23) Release Bella
+* (Apollon77) Optimize Adapter and Controller stopping processes
+
+## 2.0.7 (2019-09-22) Release Bella
+* (Apollon77) Correct file based internal structure to prevent entries with "//" in the path
+* (Apollon77) Check for existing of states DB in some more places to prevent problems in compact end scenarios 
+* (Apollon77) try to add a better retry logic on disconnect to the DBs, restart after 30s
+* (Apollon77) make some file operations with Paths more compatible to former versions
+
+## 2.0.6 (2019-09-21) Release Bella
+* (Apollon77) prevent "keys Not found" error in log, be more redis compatible, fixes #461
+* (Apollon77) prevent "invalid instance object" errors for channel objects, fixes #462
+* (Apollon77) optimize further on compact- and general adapter starting mechanisms to better prevent multistarts
+* (Apollon77) update objects-ha lib to 1.1.17 to normalize filenames to prevent problems on double-slashes
+
+## 2.0.5 (2019-09-20) Release Bella
+* (Apollon77) fix some error while accessing custom directories, fixes #455
+* (Apollon77) Add more logic to better handle migration edge cases (especially slaves vs migrations), fixes #458
+* (Apollon77) Make sure invalid alias values do not crash controller process (logger was missing), fixes #456
+* (Apollon77) Add better error and fallback handling for compact mode, fixes #460
+
+## 2.0.4 (2019-09-19) Release Bella
+* (Apollon77) fixes #434, host command
+* (Apollon77) Add one more confirmation question when migrating objects
+
+## 2.0.3 (2019-09-19) Release Bella
+* (Apollon77) Log Process-ID for all adapter log messages
+* (Apollon77) When Objects/States connection dies and is no longer able to be restored for adapters we end the adapter process. This prevents us from hanging processes
+* (Apollon77) End adapters with code 11 when they decide to end themself because they are not the current process, so that no additional restarts happen
+
+## 2.0.2 (2019-09-17) Release Bella
 
 ### Breaking changes
-* Minimum requirement for js-controller 2.0.0 is nodejs 8.x
+* Minimum requirement for js-controller 2.0 is nodejs 8.x
+* Manually uploaded files into `iobroker-data/files/...` may no be fully supported. Please make sure to put them into officially allowed directories, e.g. vis.0
+* The following Adapters needs to be updated to the listed versions to be compatible with js-controller 2.0
+  * simple-api 2.1.2 or higher
+  * email 1.0.5 or higher
+  * pushover 1.1.1 or higher
+  * hue 1.2.4 or higher
+  * node-red 1.10.1 or higher
+  * vis 1.2.1 or higher 
+  * iqontrol 0.2.6 or higher
+  * socketio 2.1.2 or higher
+  * radar2 1.0.9 (1.2.0 from Github needs a manual fix!)
+  * ring 1.0.5 or higher
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
@@ -25,6 +161,10 @@
 * (bluefox) allow the deletion of multiple objects with wildcard
 * (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
 * (Apollon77) allow getPort to check for the port optionally on a certain host/IP
+* (Apollon77) Streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
 
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
@@ -65,6 +205,7 @@
 * (Apollon77) "alive" state values are only checked on adapter start if ack=true to allow to start a process if not running
 * (Apollon77) fixes for mutlihost detection
 * (Apollon77) fix backup of states
+* (bluefox) Make sure also VIS global CSS is included in backup and restored
 * and many more fixes in various places
 
 ## 1.5.13 (2019-06-12) Evolution release (Ann)

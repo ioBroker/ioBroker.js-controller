@@ -9,6 +9,11 @@
 
 'use strict';
 
+const COLOR_RED    = '\x1b[31m';
+const COLOR_YELLOW = '\x1b[33m';
+const COLOR_RESET  = '\x1b[0m';
+const COLOR_GREEN  = '\x1b[32m';
+
 /** @class */
 function Setup(options) {
     const EXIT_CODES = require('../exitCodes');
@@ -50,7 +55,7 @@ function Setup(options) {
 
     function setupReady(callback) {
         if (!callback) {
-            console.log('database setup done. you can add adapters and start ' + tools.appName + ' now');
+            console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
             processExit(EXIT_CODES.NO_ERROR);
         } else {
             callback();
@@ -112,30 +117,98 @@ function Setup(options) {
 
     function migrateObjects(newConfig, oldConfig, rl, callback) {
         if (oldConfig && (oldConfig.states.type !== newConfig.states.type || oldConfig.objects.type !== newConfig.objects.type)) {
-            if (newConfig.objects.type === 'redis') {
-                console.log('');
+            let fromMaster = (oldConfig.states.type === 'file' && (oldConfig.states.host === 'localhost' || oldConfig.states.host === '127.0.0.1' || oldConfig.states.host === '0.0.0.0')) ||
+                (oldConfig.objects.type === 'file' && (oldConfig.objects.host === 'localhost' || oldConfig.objects.host === '127.0.0.1' || oldConfig.objects.host === '0.0.0.0'));
+            let toMaster = (newConfig.states.type === 'file' && (newConfig.states.host === 'localhost' || newConfig.states.host === '127.0.0.1' || newConfig.states.host === '0.0.0.0')) ||
+                (newConfig.objects.type === 'file' && (newConfig.objects.host === 'localhost' || newConfig.objects.host === '127.0.0.1' || newConfig.objects.host === '0.0.0.0'));
+            if (oldConfig.states.type === 'redis' && oldConfig.objects.type === 'redis') {
+                fromMaster = null; // Master can not be detected, check new
+            }
+            if (newConfig.states.type === 'redis' && newConfig.objects.type === 'redis') {
+                toMaster = null; // new
+            }
+
+            let allowMigration = false;
+            if (fromMaster) {
+                if (!toMaster) {
+                    const answer = rl.question(`Please choose if this is a Master/single host (enter "m") or a Slave host (enter "s") you are about to edit. For Slave hosts the data migration will be skipped. [S/m]: `, {
+                        limit: /^[SsMm]?$/,
+                        defaultInput: 'S'
+                    });
+                    allowMigration = !((answer === 'S' || answer === 's'));
+                }
+                if (!allowMigration || toMaster) {
+                    const answer = rl.question(`This host appears to be a Master or a Single host system. Is this correct? [Y/n]: `, {
+                        limit: /^[YyNnJj]?$/,
+                        defaultInput: 'Y'
+                    });
+                    allowMigration = ((answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j'));
+                }
+            } else {
+                if (toMaster) {
+                    const answer = rl.question(`It appears that you want to convert this slave host into a Master or Single host system. Is this correct? [Y/n]: `, {
+                        limit: /^[YyNnJj]?$/,
+                        defaultInput: 'Y'
+                    });
+                    allowMigration = ((answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j'));
+                }
+                if (!allowMigration || !toMaster) {
+                    const answer = rl.question(`This host appears to be an ioBroker SLAVE system. Migration will be skipped. Is this correct? [Y/n]: `, {
+                        limit: /^[YyNnJj]?$/,
+                        defaultInput: 'Y'
+                    });
+                    allowMigration = !((answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j'));
+                }
+            }
+
+            if (newConfig.objects.type === 'redis' && oldConfig.objects.type !== 'redis') {
+                console.log(COLOR_YELLOW);
                 console.log('Important: Using Redis for the Objects database is only supported');
                 console.log('with js-controller 2.0 or higher!');
                 console.log('When your system consists of multiple hosts please make sure to have');
-                console.log('installed js-controller 2.0 or higher on ALL hosts *before* continuing!');
-                console.log('');
-                console.log('');
-                console.log('Also Important: If you already did the migration on an other host');
-                console.log('please *do not* migrate again! This can destroy your system!');
-                console.log('');
+                console.log('js-controller 2.0 or higher installed on ALL hosts *before* continuing!');
+                if (allowMigration) {
+                    console.log('');
+                    console.log('');
+                    console.log('Important #2: If you already did the migration on an other host');
+                    console.log('please *do not* migrate again! This can destroy your system!');
+                    console.log('');
+                    console.log('');
+                    console.log('Important #3: The process will migrate all files that were officially');
+                    console.log('uploaded into the ioBroker system. If you have manually copied files into');
+                    console.log('iobroker-data/files/... into own directories then these files will NOT be');
+                    console.log('migrated! Make sure all files are in adapter directories inside the files');
+                    console.log('directory!');
+                }
+                console.log(COLOR_RESET);
             }
 
-            const answer = rl.question(`Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `, {
-                limit: /^[YyNnJj]?$/,
-                defaultInput: 'N'
-            });
+            let answer = 'N';
+            if (allowMigration) {
+                console.log();
+                answer = rl.question(`Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `, {
+                    limit: /^[YyNnJj]?$/,
+                    defaultInput: 'N'
+                });
+
+                if (newConfig.objects.type !== oldConfig.objects.type && (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j')) {
+                    console.log(COLOR_YELLOW);
+                    answer = rl.question(`Migrating the objects database will overwrite all objects! Are you sure that this is not a slave host and you want to migrate the data? [y/N]: `, {
+                        limit: /^[YyNnJj]?$/,
+                        defaultInput: 'N'
+                    });
+                    console.log(COLOR_RESET);
+                }
+            }
+
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
                 console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
-                dbConnect(params, (objects, states) => {
-                    const type = objects.getStatus();
-                    if (type.type === 'file' && !type.server) {
-                        console.error('\nCannot migrate DB while js-controller is still running!');
-                        console.error('Please stop iobroker and try again. No settings have been changed.');
+
+                dbConnect(params, (objects, states, isOffline) => {
+                    if (!isOffline) {
+                        console.error(COLOR_RED);
+                        console.error('Cannot migrate DB while js-controller is still running!');
+                        console.error('Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET);
                         callback(90);
                     }
 
@@ -148,15 +221,37 @@ function Setup(options) {
                     });
 
                     console.log('Creating backup ...');
-                    console.log('This can take some time ... please be patient!');
+                    console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
+
                     backup.createBackup('', true, filePath => {
+                        const origBackupPath = filePath;
+                        filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
+                        try {
+                            fs.renameSync(origBackupPath, filePath);
+                        } catch (err) {
+                            filePath = origBackupPath;
+                            console.log('[Not Critical Error] Could not rename Backup file');
+                        }
+
                         console.log('Backup created: ' + filePath);
                         resetDbConnect();
-                        console.log('creating conf/' + tools.appName + '.json');
+
+                        console.log('updating conf/' + tools.appName + '.json');
                         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
+
                         console.log('');
                         console.log(`Connecting to new DB "${newConfig.objects.type}" ...`);
-                        dbConnect(Object.assign(params, {timeout: 60000}), (objects, states) => {
+
+                        dbConnect(true, Object.assign(params, {timeout: 60000}), (objects, states) => {
+                            if (!states || !objects) {
+                                console.error(COLOR_RED);
+                                console.log('New Database could not be connected. Please check your settings. No settings have been changed.' + COLOR_RESET);
+
+                                console.log('restoring conf/' + tools.appName + '.json');
+                                fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
+
+                                return void callback(78);
+                            }
                             const backup = new Backup({
                                 states,
                                 objects,
@@ -166,14 +261,25 @@ function Setup(options) {
                                 dbMigration: true
                             });
                             console.log('Restore backup ...');
-                            console.log('This can take some time ... please be patient!');
+                            console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
                             backup.restoreBackup(filePath, err => {
-                                console.log('Backup restored!');
-                                if (!err) {
-                                    console.log('');
-                                    console.log('Important: If your system consists of multiple hosts please execute ');
-                                    console.log('"iobroker upload all" on all other hosts/slaves before you continue!');
+                                if (err) {
+                                    console.log('Error happened during restore: ' + err);
+                                    console.log();
+                                    console.log('restoring conf/' + tools.appName + '.json');
+                                    fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                                 }
+                                else {
+                                    console.log('Backup restored!');
+
+                                    console.log(COLOR_YELLOW);
+                                    console.log('Important: If your system consists of multiple hosts please execute ');
+                                    console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
+                                    console.log('also been updated to this states/objects database configuration AND are');
+                                    console.log('running!' + COLOR_RESET);
+
+                                }
+
                                 callback(err ? 78 : 0);
                             });
                         });
@@ -183,11 +289,11 @@ function Setup(options) {
             } else if (newConfig.objects.type === 'redis') {
                 console.log('');
                 console.log('No Database migration was done.');
-                console.log('Please execute "iobroker setup first" to newly initialize all objects.');
+                console.log(COLOR_YELLOW + 'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' + COLOR_RESET);
                 console.log('');
             }
         }
-        console.log('creating conf/' + tools.appName + '.json');
+        console.log('updating conf/' + tools.appName + '.json');
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
         callback();
     }
@@ -240,17 +346,17 @@ function Setup(options) {
         }
 
         if (otype !== 'file' && otype !== 'redis') {
-            console.log('Unknown objects type: ' + otype);
+            console.log(COLOR_RED + 'Unknown objects type: ' + otype + COLOR_RESET);
             callback(23);
         }
 
         if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
-            console.log('');
+            console.log(COLOR_YELLOW);
             console.log('When Objects and Files are stored in a Redis database please consider the following:');
             console.log('1. All data will be stored in RAM, make sure to have enough free RAM available!');
             console.log('2. Make sure to check Redis persistence options to make sure a Redis problem will not cause data loss!');
             console.log('3. The Redis persistence files can get big, make sure not to use an SD card to store them.');
-            console.log('');
+            console.log(COLOR_RESET);
         }
 
         const defaultObjectsHost = (otype === originalConfig.objects.type) ? originalConfig.objects.host : '127.0.0.1';
@@ -284,14 +390,14 @@ function Setup(options) {
             oport.forEach((port, idx) => {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
-                    console.log('Invalid objects port: ' + oport[idx]);
+                    console.log(COLOR_RED + 'Invalid objects port: ' + oport[idx] + COLOR_RESET);
                     callback(23);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
-                console.log('Invalid objects port: ' + oport);
+                console.log(COLOR_RED + 'Invalid objects port: ' + oport + COLOR_RESET);
                 callback(23);
             }
         }
@@ -309,15 +415,15 @@ function Setup(options) {
         }
 
         if (stype !== 'file' && stype !== 'redis') {
-            console.log('Unknown states type: ' + stype);
+            console.log(COLOR_RED + 'Unknown states type: ' + stype + COLOR_RESET);
             callback(23);
         }
 
         if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
-            console.log('');
+            console.log(COLOR_YELLOW);
             console.log('When States are stored in a Redis database please make sure to configure Redis');
             console.log('persistence to make sure a Redis problem will not cause data loss!');
-            console.log('');
+            console.log(COLOR_RESET);
         }
 
         let defaultStatesHost = (stype === originalConfig.states.type) ? originalConfig.states.host : '127.0.0.1';
@@ -351,14 +457,14 @@ function Setup(options) {
             sport.forEach((port, idx) => {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
-                    console.log('Invalid states port: ' + sport[idx]);
+                    console.log(COLOR_RED + 'Invalid states port: ' + sport[idx] + COLOR_RESET);
                     callback(23);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
-                console.log('Invalid states port: ' + sport);
+                console.log(COLOR_RED + 'Invalid states port: ' + sport + COLOR_RESET);
                 callback(23);
             }
         }
@@ -382,22 +488,26 @@ function Setup(options) {
         }
 
         if (hname.match(/\s/)) {
-            console.log('Invalid host name: ' + hname);
+            console.log(COLOR_RED + 'Invalid host name: ' + hname + COLOR_RESET);
             callback(23);
         }
 
-        config.system          = config.system || {};
-        config.system.hostname = hname;
-        config.objects.host    = ohost;
-        config.objects.type    = otype;
-        config.objects.port    = oport;
-        config.states.host     = shost;
-        config.states.type     = stype;
-        config.states.port     = sport;
+        config.system           = config.system || {};
+        config.system.hostname  = hname;
+        config.objects.host     = ohost;
+        config.objects.type     = otype;
+        config.objects.port     = oport;
+        config.states.host      = shost;
+        config.states.type      = stype;
+        config.states.port      = sport;
         config.states.dataDir   = undefined;
         config.objects.dataDir  = undefined;
-        if (dir && config.objects.type === 'file') config.objects.dataDir = dir;
-        if (dir && config.states.type === 'file') config.states.dataDir = dir;
+        if (dir && config.objects.type === 'file') {
+            config.objects.dataDir = dir;
+        }
+        if (dir && config.states.type  === 'file') {
+            config.states.dataDir = dir;
+        }
 
         migrateObjects(config, originalConfig, rl, callback);
     };

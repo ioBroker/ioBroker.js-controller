@@ -1583,16 +1583,20 @@ function measureEventLoopLag(ms, cb) {
  * This function convert state values by read and write of aliases. Function is synchron.
  *
  * @param {object} sourceObj
- * @param {object} targetObj Callback function to call for each new value
+ * @param {object} targetObj
  * @param {object} state Object with val, ack and so on
+ * @param {object} logger Logging object
+ * @param {string} logNamespace optional Logging namespace
  */
-function formatAliasValue(sourceObj, targetObj, state) {
+function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
+    logNamespace = logNamespace ? logNamespace + ' ' : '';
+
     if (!state) {
         return;
     }
     if (state.val === undefined) {
         state.val = null;
-        return;
+        return state;
     }
 
     if (targetObj && targetObj.common && targetObj.common.alias && targetObj.common.alias.read) {
@@ -1601,7 +1605,8 @@ function formatAliasValue(sourceObj, targetObj, state) {
             const func = new Function('val', 'return ' + targetObj.common.alias.read);
             state.val = func(state.val);
         } catch (e) {
-            logger.error(`${this.namespace} Invalid read function for ${targetObj._id}: ${targetObj.common.alias.read} => ${e}`);
+            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.common.alias.read} => ${e}`);
+            return null;
         }
     }
 
@@ -1611,17 +1616,17 @@ function formatAliasValue(sourceObj, targetObj, state) {
             const func = new Function('val', 'return ' + sourceObj.common.alias.write);
             state.val = func(state.val);
         } catch (e) {
-            logger.error(`${this.namespace} Invalid write function for ${sourceObj._id}: ${sourceObj.common.alias.write} => ${e}`);
+            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.common.alias.write} => ${e}`);
+            return null;
         }
     }
 
     if (targetObj && targetObj.common && typeof state.val !== targetObj.common.type && state.val !== null) {
         if (targetObj.common.type === 'boolean') {
-            if (state.val === 'on' || state.val === 'ON' || state.val === 'AN' || state.val === 'an' || state.val === 1 || state.val === '1') {
-                state.val = true;
-            } else if (state.val === 'off' || state.val === 'OFF' || state.val === 'AUS' || state.val === 'aus' || state.val === 0 || state.val === '0') {
-                state.val = true;
+            if (state.val === 'off' || state.val === 'OFF' || state.val === 'AUS' || state.val === 'aus' || state.val === 0 || state.val === '0') {
+                state.val = false;
             } else {
+                // this also handles strings like "EIN" or such that will be true
                 state.val = !!state.val;
             }
         } else if (targetObj.common.type === 'number') {

@@ -19,6 +19,7 @@ const fs         = require('fs');
 const tools      = require('./tools.js');
 const cli        = require('./cli/index.js');
 const EXIT_CODES = require('./exitCodes');
+const {enumHosts} = require('./cli/cliTools');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -1561,7 +1562,7 @@ function processCommand(command, args, params, callback) {
 
                     const path = args[2].replace(/\\/g, '/').split('/');
 
-                    let file = path[parts.length - 1];
+                    let file = parts[parts.length - 1];
                     if (!file) {
                         path.splice(path.length - 1, 1);
                         file = path[path.length - 1];
@@ -1572,6 +1573,7 @@ function processCommand(command, args, params, callback) {
                     let adapt = path.shift();
                     if (!adapt) adapt = path.shift();
                     const data = fs.readFileSync(toRead);
+
                     _objects.writeFile(adapt, path.join('/'), data, _err => {
                         console.log('File "' + toRead + '" stored as "' + path.join('/') + '"');
                         return void callback(0);
@@ -2108,6 +2110,32 @@ function resetDbConnect(_callback) {
 //     }
 // }
 
+function checkSystemOffline(onlyCheck, callback) {
+    if (!objects || !states) { // should never happen
+        callback && callback(true);
+        return;
+    }
+    if (onlyCheck) {
+        callback && callback(true);
+        return;
+    }
+    enumHosts(objects).then(hosts => {
+        const hostToCheck = hosts.map(host => 'system.host.' + host.common.hostname + '.alive');
+
+        states.getStates(hostToCheck, (err, res) => {
+            res.forEach(aliveState => {
+                if (aliveState && aliveState.val) {
+                    callback && callback(false);
+                    callback = null;
+                }
+            });
+            callback && callback(true);
+        });
+    } , err => {
+        callback && callback(true);
+    });
+}
+
 /**
  * Connects to the DB or tests the connection. The callback has the following signature:
  * `(objects: any, states: any, isOffline?: boolean, objectsDBType?: string) => void`
@@ -2151,11 +2179,6 @@ function dbConnect(onlyCheck, params, callback) {
     setTimeout(() => {
         if (isObjectConnected && isStatesConnected) return;
 
-        if (onlyCheck) {
-            if (typeof callback === 'function') callback(null, null, config.objects.type === 'file', config.objects.type, config);
-            return;
-        }
-
         if (!isObjectConnected) {
             if (config.objects.type === 'file') {
                 if (objClientInst) { // Destroy Client we tried to connect with
@@ -2176,7 +2199,7 @@ function dbConnect(onlyCheck, params, callback) {
                         objects = objectInst;
                         isObjectConnected = true;
                         if (isStatesConnected && typeof callback === 'function') {
-                            return void callback(objects, states, config.objects.type === 'file', config.objects.type, config);
+                            return void callback(objects, states, true, config.objects.type, config);
                         }
                     }
                 });
@@ -2206,7 +2229,7 @@ function dbConnect(onlyCheck, params, callback) {
                         states = statesInst;
                         isStatesConnected = true;
                         if (isObjectConnected && typeof callback === 'function') {
-                            return void callback(objects, states, config.objects.type === 'file', config.objects.type, config);
+                            return void callback(objects, states, true, config.objects.type, config);
                         }
                     },
                     // react on change
@@ -2236,7 +2259,9 @@ function dbConnect(onlyCheck, params, callback) {
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                return void callback(objects, states, config.objects.type !== 'file', config.objects.type, config);
+                checkSystemOffline(onlyCheck, isOffline => {
+                    callback(objects, states, isOffline, config.objects.type, config);
+                });
             }
         }
     });
@@ -2256,7 +2281,9 @@ function dbConnect(onlyCheck, params, callback) {
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                return void callback(objects, states, config.objects.type !== 'file', config.objects.type, config);
+                checkSystemOffline(onlyCheck, isOffline => {
+                    callback(objects, states, isOffline, config.objects.type, config);
+                });
             }
         },
         change: (id, state) => stateClientInst.onChange && stateClientInst.onChange(id, state)

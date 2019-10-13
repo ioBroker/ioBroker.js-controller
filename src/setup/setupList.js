@@ -87,7 +87,7 @@ function List(options) {
         } else {
             text += (file.isDir ? 'd' : '-') + '?????????' + new Array(31).join(' ');
         }
-        let size = (file.stats) ? file.stats.size.toString() : '';
+        let size = (file.stats && file.stats.size) ? file.stats.size.toString() : '';
         if (size.length < 7) size = new Array(7 - size.length).join(' ') + size;
 
         text += ' ' + size + ' ' + adapter + ((!path || path[0] === '/') ? '' : '/') + path + '/' + file.file;

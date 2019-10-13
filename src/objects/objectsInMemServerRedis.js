@@ -18,6 +18,7 @@ const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
 const mkdirp = require('mkdirp');
+const utils  = require('./objectsUtils.js');
 
 const RedisHandler          = require('../redisHandler.js');
 const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
@@ -71,6 +72,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         this.knownScripts = {};
 
+        this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
+        this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
+
         this._initRedisServer(this.settings.connection, this.server);
 
         if (this.settings.connected) {
@@ -114,14 +118,14 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     id = idWithNamespace.substr(idx);
                 }
                 if (ns === this.namespaceFile) {
-                    let fileIdDetails = id.match(/^(.*)\$%\$(.*)\$%\$(meta|data)$/);
+                    let fileIdDetails = id.match(this.normalizeFileRegex1);
                     if (fileIdDetails) {
                         id = fileIdDetails[1];
                         name = fileIdDetails[2] || '';
                         isMeta = (fileIdDetails[3] === 'meta');
                     }
                     else {
-                        fileIdDetails = id.match(/^(.*)\$%\$(.*)\/?\*$/);
+                        fileIdDetails = id.match(this.normalizeFileRegex2);
                         if (fileIdDetails) {
                             id = fileIdDetails[1];
                             name = fileIdDetails[2]|| '';
@@ -149,7 +153,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         const found = s.find(sub => sub.regex.test(id));
         if (found) {
             const objString = JSON.stringify(obj);
-            this.log.silly('Redis Publish Object ' + id + '=' + objString);
+            this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
             const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
             const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
             client.sendArray(null,['pmessage', sendPattern, sendId, objString]);
@@ -204,6 +208,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "QUIT" request
         handler.on('quit', (_data, responseId) => {
+            this.log.silly(this.namespace + ' Redis QUIT received, close connection');
             handler.sendString(responseId, 'OK');
             handler.close();
         });
@@ -234,15 +239,15 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
 
                     this.knownScripts[scriptChecksum] = {design: design, search: search};
-                    if (this.settings.enhancedLogging) this.log.silly('Register View LUA Script: ' + scriptChecksum + ' = ' + JSON.stringify(this.knownScripts[scriptChecksum]));
+                    if (this.settings.enhancedLogging) this.log.silly(this.namespace + ' Register View LUA Script: ' + scriptChecksum + ' = ' + JSON.stringify(this.knownScripts[scriptChecksum]));
                     handler.sendBulk(responseId, scriptChecksum);
                 }
                 else if (scriptFunc && scriptFunc[1]) {
                     this.knownScripts[scriptChecksum] = {func: scriptFunc[1]};
-                    if (this.settings.enhancedLogging) this.log.silly('Register Func LUA Script: ' + scriptChecksum + ' = ' + JSON.stringify(this.knownScripts[scriptChecksum]));
+                    if (this.settings.enhancedLogging) this.log.silly(this.namespace + ' Register Func LUA Script: ' + scriptChecksum + ' = ' + JSON.stringify(this.knownScripts[scriptChecksum]));
                     handler.sendBulk(responseId, scriptChecksum);
                 }
-                else{
+                else {
                     handler.sendError(responseId, new Error('Unknown LUA script'));
                 }
             }
@@ -265,7 +270,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         scriptSearch = data[5];
                     }
                     if (!scriptSearch) scriptSearch = 'state';
-                    if (this.settings.enhancedLogging) this.log.silly('Script transformed into getObjectView: design=' + scriptDesign + ', search=' + scriptSearch);
+                    if (this.settings.enhancedLogging) this.log.silly(this.namespace + ' Script transformed into getObjectView: design=' + scriptDesign + ', search=' + scriptSearch);
                     this.getObjectView(scriptDesign, scriptSearch, {
                         startkey: data[3],
                         endkey: data[4],
@@ -286,7 +291,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
             else if (this.knownScripts[data[0]].func && data.length > 4) {
                 const scriptFunc = {map: this.knownScripts[data[0]].func.replace('%1', data[5])};
-                if (this.settings.enhancedLogging) this.log.silly('Script transformed into _applyView: func=' + scriptFunc.map);
+                if (this.settings.enhancedLogging) this.log.silly(this.namespace + ' Script transformed into _applyView: func=' + scriptFunc.map);
                 this._applyView(scriptFunc, {
                     startkey: data[3],
                     endkey: data[4],
@@ -319,7 +324,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             handler.sendInteger(responseId, publishCount);
         });
 
-        // Handle Redis "MGET" request for state namespace
+        // Handle Redis "MGET" requests
         handler.on('mget', (data, responseId) => {
             if (!data || !data.length) {
                 handler.sendArray(responseId, []);
@@ -333,7 +338,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     const {id, namespace} = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
-                        this.log.warn('Got MGET request for non Object-ID in Objects-ID chunk for ' + namespace + ' / ' + dataId);
+                        this.log.warn(this.namespace + ' Got MGET request for non Object-ID in Objects-ID chunk for ' + namespace + ' / ' + dataId);
                         return;
                     }
                     keys.push(id);
@@ -357,7 +362,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         const {id, namespace, name} = this._normalizeId(dataId);
                         if (namespace !== this.namespaceFile) {
                             response.push(null);
-                            this.log.warn('Got MGET request for non File ID in File-ID chunk for ' + dataId);
+                            this.log.warn(this.namespace + ' Got MGET request for non File ID in File-ID chunk for ' + dataId);
                             return;
                         }
                         this.loadFileSettings(id);
@@ -369,7 +374,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         try {
                             obj.stats = fs.statSync(path.join(this.objectsDir, id, name));
                         } catch (err) {
-                            this.log.warn('Got MGET request for non existing file ' + dataId + ', err: ' + err);
+                            if (!name.endsWith('/_data.json')) {
+                                this.log.warn(this.namespace + ' Got MGET request for non existing file ' + dataId + ', err: ' + err);
+                            }
                             response.push(null);
                             return;
                         }
@@ -386,7 +393,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         });
 
-        // Handle Redis "GET" request for state and session namespace
+        // Handle Redis "GET" requests
         handler.on('get', (data, responseId) => {
             const {id, namespace, name, isMeta} = this._normalizeId(data[0]);
 
@@ -423,7 +430,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         return;
                     }
 
-                    const obj = this.clone(this.fileOptions[id][name]);
+                    let obj = this.clone(this.fileOptions[id][name]);
+                    if (typeof obj !== 'object') {
+                        obj = {
+                            mimeType:    obj,
+                            acl: {
+                                owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)            || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup)       || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_ALL) // 777
+                            }
+                        };
+                    }
                     obj.stats = stats;
                     handler.sendBulk(responseId, JSON.stringify(obj));
                 }
@@ -442,14 +459,14 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         });
 
-        // Handle Redis "SET" request for state namespace
+        // Handle Redis "SET" requests
         handler.on('set', (data, responseId) => {
             const {id, namespace, name, isMeta} = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 try {
                     const obj = JSON.parse(data[1].toString('utf-8'));
-                    this.setObject(id, obj, (err, id) => {
+                    this.setObject(id, obj, null,(err, id) => {
                         if (err || !id) {
                             handler.sendError(responseId, new Error('ERROR id=' + id + ' - ' + err)); // TODO
                         } else {
@@ -493,6 +510,38 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 }
             } else {
                 handler.sendError(responseId, new Error('SET-UNSUPPORTED for namespace ' + namespace));
+            }
+        });
+
+        // Handle Redis "RENAME" requests
+        handler.on('rename', (data, responseId) => {
+            const oldDetails = this._normalizeId(data[0]);
+            const newDetails = this._normalizeId(data[1]);
+
+            if (oldDetails.namespace === this.namespaceFile) {
+                if (oldDetails.id !== newDetails.id) {
+                    handler.sendError(responseId, new Error('id needs to stay the same'));
+                    return;
+                }
+
+                // Handle request for Meta data for files
+                if (oldDetails.isMeta) {
+                    handler.sendString(responseId, 'OK');
+                    return;
+                }
+                // Handle request for File data
+                else {
+                    this.rename(oldDetails.id, oldDetails.name, newDetails.name, err => {
+                        if (err) {
+                            handler.sendNull(responseId);
+                        } else {
+                            handler.sendString(responseId, 'OK');
+                        }
+                    });
+                }
+            }
+            else {
+                handler.sendError(responseId, new Error('RENAME-UNSUPPORTED for namespace ' + oldDetails.namespace));
             }
         });
 
@@ -557,9 +606,22 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 // Handle request to get meta data keys
                 if (isMeta === undefined) {
                     this.readDir(id, name, (err, res) => {
+                        if (err && err.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
+                            res = [];
+                            err = null;
+                        } else
                         if (err) {
-                            handler.sendError(responseId, new Error('ERR keys id=' + id + ' - ' + err)); // TODO
+                            handler.sendError(responseId, new Error('ERR keys id=' + id + ' - ' + err));
                             return;
+                        }
+                        else if (!res.length) {
+                            res = [{
+                                file: '_data.json',
+                                stats: {},
+                                isDir: false,
+                                virtualFile: true,
+                                notExists: true
+                            }];
                         }
                         const response = [];
                         const baseName = name + ((!name.length || name.endsWith('/')) ? '' : '/');
@@ -614,6 +676,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         });
 
+        // Handle Redis "CONFIG" ... currently mainly ignored
+        handler.on('config', (data, responseId) => {
+            if (data[0] === 'set' && data[1] === 'lua-time-limit') {
+                // we ignore these type of commands for now, irrelevant
+                handler.sendString(responseId, 'OK');
+            }
+            else {
+                handler.sendError(responseId, new Error('CONFIG-UNSUPPORTED for ' + JSON.stringify(data)));
+            }
+        });
+
         handler.on('error', err => this.log.warn(this.namespace + ' Redis states: ' + err));
     }
 
@@ -654,7 +727,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * @private
      */
     _initSocket(socket) {
-        if (this.settings.enhancedLogging) this.log.silly('Handling new Redis Objects connection');
+        if (this.settings.enhancedLogging) this.log.silly(this.namespace + ' Handling new Redis Objects connection');
         const options = {
             log: this.log,
             logScope: this.settings.namespace + ' Objects',

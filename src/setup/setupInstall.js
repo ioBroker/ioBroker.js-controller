@@ -1136,7 +1136,10 @@ function Install(options) {
             ? new RegExp(`^system\\.adapter\\.${adapter}\\.${instance}$`)
             : new RegExp(`^system\\.adapter\\.${adapter}\\.\\d+$`);
 
-        return getObjectViewAsync('system', 'instance', {}, null).then(doc => {
+        return getObjectViewAsync('system', 'instance', {
+            startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+            endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+        }, null).then(doc => {
             // add non-duplicates to the list (only for this host)
             const newObjIDs = doc.rows
                 // only the ones with an ID that matches the pattern
@@ -1171,7 +1174,10 @@ function Install(options) {
      * @type {(knownObjIDs: string[], adapter: string) => Promise<void>}
      */
     this.enumerateAdapterMeta = function enumerateMeta(knownObjIDs, adapter) {
-        return getObjectViewAsync('system', 'meta', {startkey: adapter + '.meta', endkey: adapter + '.meta\u9999'}).then(doc => {
+        return getObjectViewAsync('system', 'meta', {
+            startkey: adapter + '.meta',
+            endkey: adapter + '.meta\u9999'
+        }).then(doc => {
             if (doc.rows.length !== 0) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1229,9 +1235,12 @@ function Install(options) {
      * @param {string} [instance] The instance to enumerate the devices for (optional)
      */
     this.enumerateAdapterDevices = function enumerateAdapterDevices(knownObjIDs, adapter, instance) {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}`);
+        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
-        return getObjectViewAsync('system', 'device', {}, null).then(doc => {
+        return getObjectViewAsync('system', 'device', {
+            startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+            endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+        }, null).then(doc => {
             if (doc.rows.length !== 0) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1257,9 +1266,12 @@ function Install(options) {
      * @param {string} [instance] The instance to enumerate the channels for (optional)
      */
     this.enumerateAdapterChannels = function enumerateAdapterChannels(knownObjIDs, adapter, instance) {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}`);
+        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
-        return getObjectViewAsync('system', 'channel', {}, null).then(doc => {
+        return getObjectViewAsync('system', 'channel', {
+            startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+            endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+        }, null).then(doc => {
             if (doc.rows.length !== 0) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1285,16 +1297,19 @@ function Install(options) {
      * @param {string} [instance] The instance to enumerate the states for (optional)
      */
     this.enumerateAdapterStateObjects = function enumerateAdapterStateObjects(knownObjIDs, adapter, instance) {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}`);
+        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
-        return getObjectViewAsync('system', 'state', {}, null).then(doc => {
+        return getObjectViewAsync('system', 'state', {
+            startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+            endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+        }, null).then(doc => {
             if (doc.rows.length !== 0) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
-                    .filter(id => adapterRegex.test(id) || sysAdapterRegex.test(id))
+                    .filter(id => adapterRegex.test(id))
                     .filter(id => knownObjIDs.indexOf(id) === -1)
                 ;
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
@@ -1302,6 +1317,28 @@ function Install(options) {
                     console.log(`host.${hostname} Counted ${newObjs.length} states of ${adapter}${instance ? `.${instance}` : ''}`);
                 }
             }
+
+            return getObjectViewAsync('system', 'state', {
+                startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+            }, null).then(doc => {
+                if (doc.rows.length !== 0) {
+                    // add non-duplicates to the list
+                    const newObjs = doc.rows
+                        .filter(row => row && row.value && row.value._id)
+                        .map(row => row.value._id)
+                        .filter(id => sysAdapterRegex.test(id))
+                        .filter(id => knownObjIDs.indexOf(id) === -1)
+                    ;
+                    knownObjIDs.push.apply(knownObjIDs, newObjs);
+                    if (newObjs.length > 0) {
+                        console.log(`host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${instance ? `.${instance}` : ''}`);
+                    }
+                }
+            }).catch(err => {
+                if (err !== tools.ERRORS.ERROR_NOT_FOUND) console.error('host.' + hostname + ' error: ' + err);
+            });
+
         }).catch(err => {
             if (err !== tools.ERRORS.ERROR_NOT_FOUND) console.error('host.' + hostname + ' error: ' + err);
         });
@@ -1315,8 +1352,8 @@ function Install(options) {
      * @param {string} [instance] The instance to enumerate the states for (optional)
      */
     this.enumerateAdapterDocs = function enumerateAdapterDocs(knownObjIDs, adapter, instance) {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}`);
+        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         return getObjectListAsync({include_docs: true}).then(doc => {
             if (doc.rows.length !== 0) {
@@ -1343,11 +1380,11 @@ function Install(options) {
      */
     this.enumerateAdapterStates = tools.poorMansAsync(function* (knownStateIDs, adapter, instance) {
         for (const pattern of [
-            `io.${adapter}.${instance ? instance + '.' : ''}*`,
-            `messagebox.${adapter}.${instance ? instance + '.' : ''}*`,
-            `log.${adapter}.${instance ? instance + '.' : ''}*`,
-            `${adapter}.${instance ? instance + '.' : ''}*`,
-            `system.adapter.${adapter}.${instance ? instance + '.' : ''}*`
+            `io.${adapter}.${instance ? instance + '.' : ''}.*`,
+            `messagebox.${adapter}.${instance ? instance + '.' : ''}.*`,
+            `log.${adapter}.${instance ? instance + '.' : ''}.*`,
+            `${adapter}.${instance ? instance + '.' : ''}.*`,
+            `system.adapter.${adapter}.${instance ? instance + '.' : ''}.*`
         ]) {
             try {
                 const ids = yield getKeysAsync(pattern);

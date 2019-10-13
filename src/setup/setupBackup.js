@@ -37,7 +37,7 @@ class BackupRestore {
         this.cleanDatabase = options.cleanDatabase;
         this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
-        this.mime; // TODO: this is unused!
+        this.mime = null;
 
         this.upload = new Upload(options);
 
@@ -54,58 +54,52 @@ class BackupRestore {
     // --------------------------------------- BACKUP ---------------------------------------------------
     _copyFile(id, srcPath, destPath, callback) {
         this.objects.readFile(id, srcPath, '', (err, data) => {
-            if (data) fs.writeFileSync(destPath, data);
+            data && fs.writeFileSync(destPath, data);
             setImmediate(callback);
         });
     }
 
     copyDir(id, srcPath, destPath, callback) {
         let count = 0;
-        if (!fs.existsSync(destPath)) {
-            fs.mkdirSync(destPath);
-        }
+        !fs.existsSync(destPath) && fs.mkdirSync(destPath);
+
         this.objects.readDir(id, srcPath, (err, res) => {
             if (res) {
                 for (let t = 0; t < res.length; t++) {
                     if (res[t].isDir) {
                         count++;
-                        this.copyDir(id, srcPath + '/' + res[t].file, destPath + '/' + res[t].file, () => {
-                            if (!--count) {
-                                setImmediate(callback);
-                            }
-                        });
+                        this.copyDir(id, srcPath + '/' + res[t].file, destPath + '/' + res[t].file, () =>
+                            !--count && setImmediate(callback));
                     } else {
-                        if (!fs.existsSync(destPath)) {
-                            fs.mkdirSync(destPath);
-                        }
+                        !fs.existsSync(destPath) && fs.mkdirSync(destPath);
+
                         count++;
-                        this._copyFile(id, srcPath + '/' + res[t].file, destPath + '/' + res[t].file, () => {
-                            if (!--count) {
-                                setImmediate(callback);
-                            }
-                        });
+
+                        this._copyFile(id, srcPath + '/' + res[t].file, destPath + '/' + res[t].file, () =>
+                            !--count && setImmediate(callback));
                     }
                 }
             }
-            if (!count) {
-                setImmediate(callback);
-            }
+            !count && setImmediate(callback);
         });
     }
 
     _removeFolderRecursive(path) {
         return new Promise(resolve => {
-            if(fs.existsSync(path) ) {
+            if (fs.existsSync(path) ) {
                 fs.readdirSync(path).forEach(file => {
                     const curPath = path + '/' + file;
-                    if(fs.statSync(curPath).isDirectory()) { // recurse
+
+                    if (fs.statSync(curPath).isDirectory()) { // recurse
                         this._removeFolderRecursive(curPath);
                     } else { // delete file
                         fs.unlinkSync(curPath);
                     }
                 });
+
                 fs.rmdirSync(path);
             }
+
             resolve();
         });
     } // endRemoveFolderRecursive
@@ -251,16 +245,18 @@ class BackupRestore {
                 }
                 }*/
 
+                // NOTE for all "replace" with $$$$ ... result will be just $$
                 this.states.getStates(keys, (err, obj) => {
                     const hostname = tools.getHostName();
                     const r = new RegExp('^system\\.host\\.' + hostname + '\\.(\\w+)$');
 
                     for (let i = 0; i < keys.length; i++) {
-                        if (obj[i].from === 'system.host.' + hostname) {
-                            obj[i].from = 'system.host.$$__hostname__$$';
+                        if (!obj[i]) continue;
+                        if (obj[i].from === 'system.host.' + hostname || r.test(obj[i].from)) {
+                            obj[i].from.replace('system.host.' + hostname, 'system.host.$$$$__hostname__$$$$');
                         }
                         if (r.test(keys[i])) {
-                            keys[i] = keys[i].replace(hostname, '$$__hostname__$$');
+                            keys[i] = keys[i].replace(hostname, '$$$$__hostname__$$$$');
                         }
                         result.states[keys[i]] = obj[i];
                     }
@@ -268,75 +264,96 @@ class BackupRestore {
 
                     if (!fs.existsSync(bkpDir)) fs.mkdirSync(bkpDir);
                     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-                    if (!fs.existsSync(tmpDir + '/backup')) fs.mkdirSync(tmpDir + '/backup');
-                    if (!fs.existsSync(tmpDir + '/backup/files')) fs.mkdirSync(tmpDir + '/backup/files');
 
-                    // try to find user files
-                    for (let j = 0; j < result.objects.length; j++) {
-                        if (!result.objects[j].value || !result.objects[j].value._id || !result.objects[j].value.common) continue;
-                        //if (result.objects[j].doc) delete result.objects[j].doc;
-                        if (result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
-                            result.objects[j].value.common.host === hostname) {
-                            result.objects[j].value.common.host = '$$__hostname__$$';
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc.common.host = '$$__hostname__$$';
+                    this._removeFolderRecursive(tmpDir + /backup/).then(() => { // clean up first
+                        if (!fs.existsSync(tmpDir + '/backup')) fs.mkdirSync(tmpDir + '/backup');
+                        if (!fs.existsSync(tmpDir + '/backup/files')) fs.mkdirSync(tmpDir + '/backup/files');
+
+                        // try to find user files
+                        for (let j = 0; j < result.objects.length; j++) {
+                            if (!result.objects[j] || !result.objects[j].value || !result.objects[j].value._id || !result.objects[j].value.common) continue;
+                            //if (result.objects[j].doc) delete result.objects[j].doc;
+                            if (result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
+                                result.objects[j].value.common.host === hostname) {
+                                result.objects[j].value.common.host = '$$__hostname__$$';
+                                if (result.objects[j].doc) {
+                                    result.objects[j].doc.common.host = '$$__hostname__$$';
+                                }
+                            } else if (r.test(result.objects[j].value._id)) {
+                                result.objects[j].value._id = result.objects[j].value._id.replace(hostname, '$$$$__hostname__$$$$');
+                                result.objects[j].id = result.objects[j].value._id;
+                                if (result.objects[j].doc) {
+                                    result.objects[j].doc._id = result.objects[j].value._id;
+                                }
+                            } else if (result.objects[j].value._id === 'system.host.' + hostname) {
+                                result.objects[j].value._id = 'system.host.$$__hostname__$$';
+                                result.objects[j].value.common.name = result.objects[j].value._id;
+                                result.objects[j].value.common.hostname = '$$__hostname__$$';
+                                if (result.objects[j].value.native && result.objects[j].value.native.os) {
+                                    result.objects[j].value.native.os.hostname = '$$__hostname__$$';
+                                }
+                                result.objects[j].id = result.objects[j].value._id;
+                                if (result.objects[j].doc) {
+                                    result.objects[j].doc._id = result.objects[j].value._id;
+                                    result.objects[j].doc.common.name = result.objects[j].value._id;
+                                    result.objects[j].doc.common.hostname = '$$__hostname__$$';
+                                    if (result.objects[j].doc.native && result.objects[j].value.native.os) {
+                                        result.objects[j].doc.native.os.hostname = '$$__hostname__$$';
+                                    }
+                                }
                             }
-                        } else if (r.test(result.objects[j].value._id)) {
-                            result.objects[j].value._id = result.objects[j].value._id.replace(hostname, '$$__hostname__$$');
-                            result.objects[j].id = result.objects[j].value._id;
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc._id = result.objects[j].value._id;
+
+                            // Read all files
+                            if (result.objects[j].value.type === 'meta' &&
+                                result.objects[j].value.common &&
+                                result.objects[j].value.common.type === 'meta.user'
+                            ) {
+                                // do not process "xxx.0. " and "xxx.0."
+                                if (result.objects[j].id.trim() === result.objects[j].id &&
+                                    result.objects[j].id[result.objects[j].id.length - 1] !== '.') {
+                                    promises.push(new Promise(resolve =>
+                                        this.copyDir(result.objects[j].id, '', tmpDir + '/backup/files/' + result.objects[j].id, resolve)));
+                                }
                             }
-                        } else if (result.objects[j].value._id === 'system.host.' + hostname) {
-                            result.objects[j].value._id = 'system.host.$$__hostname__$$';
-                            result.objects[j].value.common.name = result.objects[j].value._id;
-                            result.objects[j].value.common.hostname = '$$__hostname__$$';
-                            if (result.objects[j].value.native && result.objects[j].value.native.os) {
-                                result.objects[j].value.native.os.hostname = '$$__hostname__$$';
-                            }
-                            result.objects[j].id = result.objects[j].value._id;
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc._id = result.objects[j].value._id;
-                                result.objects[j].doc.common.name = result.objects[j].value._id;
-                                result.objects[j].doc.common.hostname = '$$__hostname__$$';
-                                if (result.objects[j].doc.native && result.objects[j].value.native.os) {
-                                    result.objects[j].doc.native.os.hostname = '$$__hostname__$$';
+
+                            // Read all files
+                            if (result.objects[j].value.type === 'instance' &&
+                                result.objects[j].value.common &&
+                                result.objects[j].value.common.dataFolder) {
+                                let path = result.objects[j].value.common.dataFolder;
+
+                                if (path[0] !== '/' && !path.match(/^\w:/)) {
+                                    path = pathLib.join(this.configDir, path);
+                                }
+
+                                if (fs.existsSync(path)) {
+                                    this.copyFolderRecursiveSync(path, tmpDir + '/backup');
                                 }
                             }
                         }
 
-                        // Read all files
-                        if (result.objects[j].value.type === 'meta' &&
-                            result.objects[j].value.common &&
-                            result.objects[j].value.common.type === 'meta.user') {
-                            promises.push(new Promise(resolve => {
-                                this.copyDir(result.objects[j].id, '', tmpDir + '/backup/files/' + result.objects[j].id, resolve);
-                            }));
-                        } // endIf
+                        // special case: copy vis vis-common-user.css file
+                        promises.push(this.objects.readFile('vis', 'css/vis-common-user.css', (err, data) => {
+                            if (data) {
+                                const dir = tmpDir + '/backup/files/';
+                                !fs.existsSync(dir + 'vis') && fs.mkdirSync(dir + 'vis');
+                                !fs.existsSync(dir + 'vis/css') && fs.mkdirSync(dir + 'vis/css');
 
-                        // Read all files
-                        if (result.objects[j].value.type === 'instance' &&
-                            result.objects[j].value.common &&
-                            result.objects[j].value.common.dataFolder) {
-                            let path = result.objects[j].value.common.dataFolder;
-                            if (path[0] !== '/' && !path.match(/^\w:/)) {
-                                path = pathLib.join(this.configDir, path);
+                                fs.writeFileSync(dir + 'vis/css/vis-common-user.css', data);
                             }
+                        }));
 
-                            if (fs.existsSync(path)) {
-                                this.copyFolderRecursiveSync(path, tmpDir + '/backup');
-                            }
-                        }
-                    }
-                    console.log('host.' + hostname + ' ' + result.objects.length + ' objects saved');
+                        console.log('host.' + hostname + ' ' + result.objects.length + ' objects saved');
 
-                    fs.writeFileSync(tmpDir + '/backup/backup.json', JSON.stringify(result, null, 2));
+                        fs.writeFileSync(tmpDir + '/backup/backup.json', JSON.stringify(result, null, 2));
 
-                    Promise.all(promises).then(() => this.validateBackupAfterCreation(name))
-                        .then(() => this.packBackup(name, callback)).catch(e => {
-                            console.log(e);
-                            this._removeFolderRecursive(tmpDir + /backup/).then(() => this.processExit(26));
-                        });
+                        Promise.all(promises).then(() => this.validateBackupAfterCreation())
+                            .then(() => this.packBackup(name, callback))
+                            .catch(e => {
+                                console.error(e);
+                                this._removeFolderRecursive(tmpDir + /backup/).then(() => this.processExit(26));
+                            });
+                    });
                 });
             });
 
@@ -569,7 +586,7 @@ class BackupRestore {
                 this._setObjHelper(0, restore.objects, () => {
                     console.log(restore.objects.length + ' objects restored.');
                     // Required for upload adapter
-                    this.mime = require('mime');
+                    this.mime = this.mime || require('mime');
                     // Load user files into DB
                     this.uploadUserFiles(tmpDir + '/backup/files', () => {
                         //  reload objects of adapters

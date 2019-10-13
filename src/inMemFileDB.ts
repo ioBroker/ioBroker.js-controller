@@ -343,6 +343,7 @@ class InMemoryFileDB {
     publishAll(type, id, obj) {
         if (id === undefined) {
             this.log.error('Can not publish empty ID');
+            return 0;
         }
 
         const clients = this.getClients();

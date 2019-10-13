@@ -38,6 +38,7 @@ const IoSysLog = SysLog && class extends SysLog {
     }
 };
 
+// Class used to inform adapter about new log entry
 class NotifierTransport extends Transport {
     constructor(opts) {
         super(opts);
@@ -204,7 +205,12 @@ const logger = function (level, files, noStdout, prefix) {
             //label:     prefix || '' // TODO format.label()
         }));
     }
-    options.transports.push(new NotifierTransport());
+    
+    // Must be registered, for adapter.js notification about new logs
+    options.transports.push(new NotifierTransport({
+        level:  level,
+        silent: false
+    }));
 
     const log = winston.createLogger(options);
 

@@ -63,7 +63,8 @@ const successMessages = Object.freeze({
     adapterStarted: (/** @type {string} */ adapter) => `The adapter "${adapter}" was started.`,
     adapterStopped: (/** @type {string} */ adapter) => `The adapter "${adapter}" was stopped.`,
     adapterRestarted: (/** @type {string} */ adapter) => `The adapter "${adapter}" was restarted.`,
-    controllerStatus: (/** @type {boolean} */ isRunning) => `${tools.appName} is ${isRunning ? '' : 'not '}running.`,
+    systemStatus: (/** @type {boolean} */ isRunning) => isRunning ? `At least one ${tools.appName} host is running.` : `No ${tools.appName} host is running.`,
+    controllerStatus: (/** @type {boolean} */ isRunning) => `${tools.appName} is ${isRunning ? '' : 'not '}running on this host.`,
     messageSent: (
         /** @type {string} */ adapter,
         /** @type {string} */ command,

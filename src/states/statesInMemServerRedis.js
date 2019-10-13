@@ -121,7 +121,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
 
         if (found) {
             const objString = JSON.stringify(obj);
-            this.log.silly('Redis Publish State ' + id + '=' + objString);
+            this.log.silly(this.namespace + ' Redis Publish State ' + id + '=' + objString);
             const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
             const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
             client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
@@ -148,12 +148,13 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             infoString += '# CPU\r\n';
             infoString += '# Cluster\r\n';
             infoString += '# Keyspace\r\n';
-            infoString += 'db0:keys=' + Object.keys(this.dataset).length + ',expires=' + this.expires.length + ',avg_ttl=98633637897';
+            infoString += 'db0:keys=' + Object.keys(this.dataset).length + ',expires=' + (Object.keys(this.stateExpires).length + Object.keys(this.sessionExpires).length) + ',avg_ttl=98633637897';
             handler.sendBulk(responseId, infoString);
         });
 
         // Handle Redis "QUIT" request
         handler.on('quit', (_data, responseId) => {
+            this.log.silly(this.namespace + ' Redis QUIT received, close connection');
             handler.sendString(responseId, 'OK');
             handler.close();
         });
@@ -202,7 +203,12 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                     if (err || !result) {
                         handler.sendNull(responseId);
                     } else {
-                        handler.sendBulk(responseId, JSON.stringify(result));
+                        if (Buffer.isBuffer(result)) {
+                            handler.sendBufBulk(responseId, result);
+                        }
+                        else {
+                            handler.sendBulk(responseId, JSON.stringify(result));
+                        }
                     }
                 });
             }
@@ -230,8 +236,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                         state = JSON.parse(data[1].toString('utf-8'));
                     }
                     catch (e) { // No JSON, so handle as binary data and set as Buffer
-                        state = data[1];
-                        this.setBinaryState(id, state, (err, id) => {
+                        this.setBinaryState(id, data[1], (err, id) => {
                             if (err || !id) {
                                 handler.sendError(responseId, new Error('ERROR id=' + id + ' - ' + err)); // TODO
                             } else {
@@ -240,7 +245,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                         });
                         return;
                     }
-                    this.setState(id, state, (err, id) => {
+                    this._setStateDirect(id, state, (err, id) => {
                         if (err || !id) {
                             handler.sendError(responseId, new Error('ERROR id=' + id + ' - ' + err)); // TODO
                         } else {
@@ -268,8 +273,12 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                     catch (e) { // No JSON, so handle as binary data and set as Buffer
                         state = data[2];
                     }
-                    state.expire = parseInt(data[1].toString('utf-8'), 10);
-                    this.setState(id, state, (err, id) => {
+                    let expire = parseInt(data[1].toString('utf-8'), 10);
+                    if (isNaN(expire)) {
+                        handler.sendError(responseId, new Error('ERROR parsing expire value ' + data[1].toString('utf-8'))); // TODO
+                        return
+                    }
+                    this._setStateDirect(id, state, expire, (err, id) => {
                         if (err || !id) {
                             handler.sendError(responseId, new Error('ERROR id=' + id + ' - ' + err)); // TODO
                         } else {
@@ -282,8 +291,13 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             }
             else if (namespace === this.namespaceSession) {
                 try {
-                    const state = JSON.parse(data[2].toString('utf-8'));
-                    this.setSession(id, parseInt(data[1].toString('utf-8'), 10), state, () => {
+                    let state = JSON.parse(data[2].toString('utf-8'));
+                    let expire = parseInt(data[1].toString('utf-8'), 10);
+                    if (isNaN(expire)) {
+                        handler.sendError(responseId, new Error('ERROR parsing expire value ' + data[1].toString('utf-8'))); // TODO
+                        return
+                    }
+                    this.setSession(id, expire, state, () => {
                         handler.sendString(responseId, 'OK');
                     });
                 } catch (err) {
@@ -382,6 +396,29 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             }
         });
 
+
+        // Handle Redis "SUBSCRIBE" ... currently mainly ignored
+        handler.on('subscribe', (data, responseId) => {
+            if (data[0].startsWith('__keyevent@')) {
+                // we ignore these type of events because we publish expires anyway directly
+                handler.sendArray(responseId, ['subscribe', data[0], 1]);
+            }
+            else {
+                handler.sendError(responseId, new Error('SUBSCRIBE-UNSUPPORTED for ' + data[0]));
+            }
+        });
+
+        // Handle Redis "CONFIG" ... currently mainly ignored
+        handler.on('config', (data, responseId) => {
+            if (data[0] === 'set' && data[1] === 'notify-keyspace-events') {
+                // we ignore these type of commands for now, should only be to subscribe to keyspace events
+                handler.sendString(responseId, 'OK');
+            }
+            else {
+                handler.sendError(responseId, new Error('CONFIG-UNSUPPORTED for ' + JSON.stringify(data)));
+            }
+        });
+
         handler.on('error', err => this.log.warn(this.namespace + ' Redis states: ' + err));
     }
 
@@ -422,11 +459,11 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @private
      */
     _initSocket(socket) {
-        this.settings.enhancedLogging && this.log.silly('Handling new Redis States connection');
+        this.settings.enhancedLogging && this.log.silly(this.namespace + ' Handling new Redis States connection');
 
         const options = {
             log: this.log,
-            logScope: this.settings.namespace + ' States',
+            logScope: this.namespace + ' States',
             handleAsBuffers: true,
             enhancedLogging: this.settings.enhancedLogging
         };

@@ -40,7 +40,7 @@ module.exports = class CLIStates extends CLICommand {
                 };
                 return this.get(args, resultTransform);
             case 'getvalue':
-                resultTransform = obj => obj ? formatValue(obj, pretty) : 'null';
+                resultTransform = obj => obj ? formatValue(obj.val, pretty) : 'null';
                 return this.get(args, resultTransform);
             case 'set':
                 return this.set(args);
@@ -78,7 +78,7 @@ module.exports = class CLIStates extends CLICommand {
                                 if (err || !obj) {
                                     CLI.error.unknown(err);
                                 } else {
-                                    tools.formatAliasValue(sourceObj, obj, state);
+                                    tools.formatAliasValue(sourceObj, obj, state, console, '');
                                     console.log(resultTransform(state));
                                 }
                                 return void callback();
@@ -137,7 +137,7 @@ module.exports = class CLIStates extends CLICommand {
                             }
 
                             // write target
-                            states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, newVal), err => {
+                            states.setState(obj.common.alias.id, tools.formatAliasValue(obj, targetObj, newVal, console, ''), err => {
                                 if (err) {
                                     CLI.error.unknown(err);
                                     return void callback(1); // ?

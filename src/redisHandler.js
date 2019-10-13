@@ -86,7 +86,7 @@ class RedisHandler extends EventEmitter {
         if (this.options.enhancedLogging) this.log.silly(this.socketId + ' Parser result: id=' + responseId + ', command=' + command + ', data=' + ((JSON.stringify(data).length > 1024) ? JSON.stringify(data).substring(0,100) + ' -- ' + JSON.stringify(data).length + ' bytes' : JSON.stringify(data)));
         this.writeQueue.push({id: responseId, data: false});
         if (this.listenerCount(command) !== 0) {
-            this.emit(command, data, responseId);
+            setImmediate(() => this.emit(command, data, responseId));
         }
         else {
             this.sendError(responseId, new Error(command + ' NOT SUPPORTED'));
@@ -165,7 +165,7 @@ class RedisHandler extends EventEmitter {
      * Close network connection
      */
     close() {
-        this.log.silly(this.socketId + ' Redis connection close');
+        this.log.silly(this.socketId + ' close Redis connection');
         this.stop = true;
         this.socket.end();
     }
