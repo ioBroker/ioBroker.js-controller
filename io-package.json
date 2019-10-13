@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.28",
+        "version": "2.0.29",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,17 +18,17 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.28": {
-                "en": "logs in admin tab fixed and other optimizations",
-                "de": "logs in admin tab behoben und andere optimierungen",
-                "ru": "исправлены логи в админке и другие оптимизации",
-                "pt": "logs na guia admin corrigidos e outras otimizações",
-                "nl": "logt vast in admin tab en andere optimalisaties",
-                "fr": "connecte dans l'onglet admin fixe et autres optimisations",
-                "it": "registri nella scheda admin fissi e altre ottimizzazioni",
-                "es": "registros en la pestaña de administrador arreglados y otras optimizaciones",
-                "pl": "logi w zakładce admin stałe i inne optymalizacje",
-                "zh-cn": "修复了“管理”标签中的登录信息以及其他优化"
+            "2.0.29": {
+                "en": "logs in admin tab fixed and other optimizations and bug fixes",
+                "de": "logs in admin tab behoben und andere optimierungen und fehlerbehebungen",
+                "ru": "исправлены логи в админке и другие оптимизации и исправления ошибок",
+                "pt": "logs na guia admin corrigidos e outras otimizações e correções de bugs",
+                "nl": "logt in admin tab fixed en andere optimalisaties en bugfixes",
+                "fr": "Journaux dans l'onglet administrateur corrigé et autres optimisations et corrections de bugs",
+                "it": "registri nella scheda admin fissi e altre ottimizzazioni e correzioni di bug",
+                "es": "registros en la pestaña de administrador corregidos y otras optimizaciones y correcciones de errores",
+                "pl": "logi w zakładce admin naprawione i inne optymalizacje oraz poprawki błędów",
+                "zh-cn": "修复了管理标签中的登录信息以及其他优化和错误修复"
             },
             "2.0.25": {
                 "en": "see CHANGELOG.md",

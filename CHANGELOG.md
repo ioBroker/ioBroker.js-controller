@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.29 (2019-10-13) Release Bella
+* (Apollon77) fix backup on empty/null states
+
 ## 2.0.28 (2019-10-13) Release Bella
 * (Apollon77) Correct meta data return for some special cases
 
