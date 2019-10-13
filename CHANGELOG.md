@@ -1,10 +1,13 @@
 # Changelog
 
 ## 2.0.25 (2019-10-09) Release Bella
+**This is the First version which is released into Latest Repository.** 
+
+**[Discussion Thread in Forum](https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo)**
 * (Apollon77) Also allow states/objects with capital letters as first letter
 * (Apollon77) fix adapter/instance deletion
 * (AlCalzone) fix CLI get state getvalue
-* (Apollon77) increas LUA script timeout
+* (Apollon77) increase LUA script timeout
 * (Apollon77) update in objects lib, also update other dependencies
 * (bluefox) small logging optimization
 
@@ -30,7 +33,6 @@
 ## 2.0.19 (2019-10-02) Release Bella
 * (Apollon77) fix migration
 * (Apollon77) fix potential cases where objects/states files were not stored
-
 
 ## 2.0.18 (2019-10-01) Release Bella
 * (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
@@ -63,7 +65,7 @@
 ## 2.0.10 (2019-09-26) Release Bella
 * (Apollon77) Optimize Compact mode CLI commands (fixes #468, fixes #471, fixes #470)
 * (Apollon77) fixes #475, #476
-* (Apollon77) only use quit from redid and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
+* (Apollon77) only use quit from redis and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
 * (Apollon77) object changes are only logged as debug from now on, fixes #473
 * (Apollon77) Some adapter tweaks when running in "--install" mode (no reporting, don't check sigKill)
 
