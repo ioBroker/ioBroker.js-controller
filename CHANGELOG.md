@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.26 (2019-10-1x) Release Bella
+* (Apollon77) Make sure Logs are only streamed to admin for selected loglevel
+* (Apollon77) Fix "iobroker file write"
+* (Apollon77) Make sure invalid ids are handled correctly without throwing errors
+* (bluefox) Add alias.0 as object to be added
+* (bluefox) Allow Arrays as state values
+* (bluefox) Translate object names
+
 ## 2.0.25 (2019-10-09) Release Bella
 **This is the First version which is released into Latest Repository.** 
 
@@ -10,6 +18,7 @@
 * (Apollon77) increase LUA script timeout
 * (Apollon77) update in objects lib, also update other dependencies
 * (bluefox) small logging optimization
+
 
 ## 2.0.24 (2019-10-02) Release Bella
 * (Apollon77) optimize performance, especially for file/file systems
