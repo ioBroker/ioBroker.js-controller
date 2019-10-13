@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.27",
+        "version": "2.0.28",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.27": {
+            "2.0.28": {
                 "en": "logs in admin tab fixed and other optimizations",
                 "de": "logs in admin tab behoben und andere optimierungen",
                 "ru": "исправлены логи в админке и другие оптимизации",
