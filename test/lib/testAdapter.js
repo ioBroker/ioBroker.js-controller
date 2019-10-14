@@ -332,7 +332,7 @@ function testAdapter(options) {
          });*/
 
         after(options.name + ' ' + context.adapterShortName + ' adapter: Stop js-controller', function (done) {
-            this.timeout(10000);
+            this.timeout(15000);
 
             expect(context.adapter.connected).to.be.true;
             setup.stopController(normalTerminated => {
