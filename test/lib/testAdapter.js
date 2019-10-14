@@ -337,15 +337,21 @@ function testAdapter(options) {
             expect(context.adapter.connected).to.be.true;
             setup.stopController(normalTerminated => {
                 console.log('Adapter normal terminated: ' + normalTerminated);
+                let adapterStopped = false;
+                context.adapter.on('exit', () => {
+                    console.log('Adapter stopped');
+                    adapterStopped = true;
+                });
                 // redis server cannot be stopped
                 if (objectsConfig.type === 'file') {
                     setTimeout(() => {
                         expect(context.adapter.connected).to.be.false;
                         context.adapter.stop();
-                        context.adapter.on('exit', () => {
+                        setTimeout(() => {
+                            expect(adapterStopped).to.be.true;
                             setTimeout(done, 2000);
-                        });
-                    }, 5000);
+                        }, 2000);
+                    }, 3000);
                 } else {
                     setTimeout(done, 2000);
                 }
