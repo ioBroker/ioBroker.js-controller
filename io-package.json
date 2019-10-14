@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.29",
+        "version": "2.0.30",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.0.30": {
+                "en": "enhance reconnection handling and other optimizations and bug fixes",
+                "de": "Verbesserte Behandlung von Wiederverbindungen und andere Optimierungen und Fehlerkorrekturen",
+                "ru": "улучшить обработку переподключения и другие оптимизации и исправления ошибок",
+                "pt": "aprimorar o manuseio de reconexão e outras otimizações e correções de bugs",
+                "nl": "verbetering van de afhandeling van herverbindingen en andere optimalisaties en bugfixes",
+                "fr": "améliorer la gestion de la reconnexion et d’autres optimisations et corrections de bugs",
+                "it": "migliorare la gestione della riconnessione e altre ottimizzazioni e correzioni di bug",
+                "es": "mejorar el manejo de reconexión y otras optimizaciones y correcciones de errores",
+                "pl": "usprawnij obsługę ponownego łączenia oraz inne optymalizacje i poprawki błędów",
+                "zh-cn": "增强重新连接处理以及其他优化和错误修复"
+            },
             "2.0.29": {
                 "en": "logs in admin tab fixed and other optimizations and bug fixes",
                 "de": "logs in admin tab behoben und andere optimierungen und fehlerbehebungen",

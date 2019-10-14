@@ -50,12 +50,14 @@ let hostLogPrefix           = 'host.' + hostname;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList               = [];
 let detectIpsCount          = 0;
-let disconnectTimeout       = null;
+let objectsDisconnectTimeout= null;
+let statesDisconnectTimeout = null;
 let connected               = null; // not false, because want to detect first connection
 let ipArr                   = [];
 let lastCalculationOfIps    = null;
 let lastDiskSizeCheck       = 0;
 let restartTimeout          = null;
+let connectTimeout          = null;
 
 const procs                 = {};
 const subscribe             = {};
@@ -360,6 +362,19 @@ function createStates(onConnect) {
 
             initializeController();
             onConnect && onConnect();
+        },
+        disconnected: (/*error*/) => {
+            if (restartTimeout) return;
+
+            if (statesDisconnectTimeout) {
+                clearTimeout(statesDisconnectTimeout);
+                statesDisconnectTimeout = null;
+            }
+            // only log for now, TODO
+            statesDisconnectTimeout = setTimeout(() => {
+                statesDisconnectTimeout = null;
+                !connected && !isStopping && logger.warn(hostLogPrefix + ' Slave controller detected states disconnection.');
+            }, (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
         }
     });
     return true;
@@ -403,9 +418,9 @@ function createObjects(onConnect) {
         connected:  handler => {
             objects = handler;
             // stop disconnect timeout
-            if (disconnectTimeout) {
-                clearTimeout(disconnectTimeout);
-                disconnectTimeout = null;
+            if (objectsDisconnectTimeout) {
+                clearTimeout(objectsDisconnectTimeout);
+                objectsDisconnectTimeout = null;
             }
             if (restartTimeout) {
                 clearTimeout(restartTimeout);
@@ -417,11 +432,11 @@ function createObjects(onConnect) {
         },
         disconnected: (/*error*/) => {
             if (restartTimeout) return;
-            if (disconnectTimeout) clearTimeout(disconnectTimeout);
-            disconnectTimeout = setTimeout(() => {
+            if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
+            objectsDisconnectTimeout = setTimeout(() => {
                 connected = false;
-                disconnectTimeout = null;
-                logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
+                objectsDisconnectTimeout = null;
+                logger.warn(hostLogPrefix + ' Slave controller detected objects disconnection. Stop all instances.');
                 stopInstances(true, () => {
                     // if during stopping the DB has connection again
                     if (connected && !isStopping) {
@@ -3382,11 +3397,11 @@ function stopInstance(id, force, callback) {
 /*
  //test disconnect
  setTimeout(function () {
- if (disconnectTimeout) clearTimeout(disconnectTimeout);
- disconnectTimeout = setTimeout(function () {
+ if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
+ objectsDisconnectTimeout = setTimeout(function () {
  console.log('TEST !!!!! STOP!!!! ===============================================');
  connected = false;
- disconnectTimeout = null;
+ objectsDisconnectTimeout = null;
  logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
  stopInstances(true, function () {
  // if during stopping the DB has connection again
@@ -3403,9 +3418,9 @@ function stopInstance(id, force, callback) {
  setTimeout(function () {
  console.log('TEST !!!!! START AGAIN!!!! ===============================================');
  // stop disconnect timeout
- if (disconnectTimeout) {
- clearTimeout(disconnectTimeout);
- disconnectTimeout = null;
+ if (objectsDisconnectTimeout) {
+ clearTimeout(objectsDisconnectTimeout);
+ objectsDisconnectTimeout = null;
  }
 
  if (!connected) {
@@ -3631,6 +3646,10 @@ function init(compactGroupId) {
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
 
+            if (connectTimeout) {
+                clearTimeout(connectTimeout);
+                connectTimeout = null;
+            }
             // Subscribe for all logging objects
             states.subscribe('*.logging');
 
@@ -3674,6 +3693,13 @@ function init(compactGroupId) {
             });
         });
     });
+
+    connectTimeout = setTimeout(() => {
+        connectTimeout = null;
+        logger.error(hostLogPrefix + ' No connection to databases possible, restart');
+        processMessage({command: 'cmdExec', message: {data: '_restart'}});
+        setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+    }, 30000);
 
     process.on('SIGINT', () => {
         logger.info(hostLogPrefix + ' received SIGINT');
