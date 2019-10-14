@@ -208,6 +208,7 @@ is true when TV is on and false if TV is off
 * (instalator) translate admin to RUS
 * (instalator) add Turn On, using WOL
 * (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update
