@@ -1,7 +1,6 @@
 ---
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/aliases.md
-title: Aliase
-hash: NWUy6T4dxNPqgj/4GIA3p697eSGnvkF0Twd3+v0eRmg=
+title: Alias
 ---
 # Alias
 Alias (Pseudonym) ist ein virtueller Datenpunkt, der mit einem realen Datenpunkt verknüpft ist.
