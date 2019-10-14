@@ -351,7 +351,7 @@ function testAdapter(options) {
                             expect(adapterStopped).to.be.true;
                             setTimeout(done, 2000);
                         }, 2000);
-                    }, 3000);
+                    }, 6000);
                 } else {
                     setTimeout(done, 2000);
                 }
