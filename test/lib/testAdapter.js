@@ -345,7 +345,7 @@ function testAdapter(options) {
                         context.adapter.on('exit', () => {
                             setTimeout(done, 2000);
                         });
-                    }, 500);
+                    }, 5000);
                 } else {
                     setTimeout(done, 2000);
                 }
