@@ -3697,8 +3697,8 @@ function init(compactGroupId) {
     connectTimeout = setTimeout(() => {
         connectTimeout = null;
         logger.error(hostLogPrefix + ' No connection to databases possible, restart');
-        processMessage({command: 'cmdExec', message: {data: '_restart'}});
-        setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+        !compactGroupController && processMessage({command: 'cmdExec', message: {data: '_restart'}});
+        setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
     }, 30000);
 
     process.on('SIGINT', () => {
