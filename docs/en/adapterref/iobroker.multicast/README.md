@@ -7,7 +7,7 @@
 
 </h1>
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.multicast.svg)](https://www.npmjs.com/package/iobroker.multicast)
+![Number of Installations](http://iobroker.live/badges/discovergy-installed.svg) ![Number of Installations](http://iobroker.live/badges/iobroker.multicastsvg) [![NPM version](http://img.shields.io/npm/v/iobroker.multicast.svg)](https://www.npmjs.com/package/iobroker.multicast)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.multicast.svg)](https://www.npmjs.com/package/iobroker.multicast)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.multicast.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.multicast)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.multicast/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.multicast)  

@@ -200,7 +200,7 @@ The tree structure is assembled automatically by names. E.g. ```system.adapter.0
 
 attributes:
 
-* `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
+* `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file). As exception the objects with type `meta` could have `common.type=meta.user` or `meta.folder`
 * `common.min`    (optional)
 * `common.max`    (optional)
 * `common.step`   (optional) - increase/decrease interval. E.g. 0.5 for thermostat

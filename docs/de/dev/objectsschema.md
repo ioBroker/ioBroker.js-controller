@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: c4ZzbhsSa0aBzuk1yWRo8ZryMxadrDIKqXV9xV1SVEw=
+hash: n3+1+dfUm8MwoOIj0Sns9VxKdeVMf/JLbSGZ9B+4pek=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -192,7 +192,7 @@ Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.ad
 ##### Zustand
 Attribute:
 
-* `common.type` (optional - (Standardeinstellung ist mixed == any type) (mögliche Werte: number, string, boolean, array, object, mixed, file)
+* `common.type` (optional - (Standardeinstellung ist mixed == any type) (mögliche Werte: number, string, boolean, array, object, mixed, file) Als Ausnahme könnten die Objekte mit dem Typ` meta` `common haben .type = meta.user` oder `meta.folder`
 * `common.min` (optional)
 * `common.max` (optional)
 * `common.step` (optional) - Intervall erhöhen / verringern. Z.B. 0,5 für Thermostat
@@ -209,7 +209,7 @@ Attribute:
 ##### Bundesland `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
 
-Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um Standardeinstellungen zu verwenden
+Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
 
 Eine Liste der Transporte finden Sie in der README-Datei des Verlaufsadapters
 
@@ -558,7 +558,7 @@ id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
 * `none` - dieser Adapter startet keinen Prozess
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
 * `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
-* `Zeitplan` - wird nach dem Zeitplan in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule gestartet* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
+* `Zeitplan` - wird nach Zeitplan gestartet, der in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist.* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
 * `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 #### Host

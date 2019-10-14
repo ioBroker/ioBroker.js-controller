@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
+hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -18,11 +18,14 @@ Ein ioBroker-Adapter für Solarlog-Geräte
 Die offene Json-Schnittstelle muss im Konfigurationsmenü des Solarlogs aktiviert werden (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Adapter installieren, Instanz erstellen.
-Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Polling - Intervall (in Millisekunden)
+Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Polling - Intervall (in Millisekunden). Da der Adapter viele http-Anfragen an Sie sendet, empfehle ich, das Polling-Intervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die benötigt wird, um mindestens 10 Sekunden abzufragen oder einzustellen.
 
 Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !! Das User-Passwort im Solarlog muss für diese Option deaktiviert sein !! Achtung: Damit die Abfrage der Unterzähler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert werden
 
+## Hardware
 Getestet auf: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
+
+SolarLog 50: Es sind keine JSON-Interface @ SolarLog 50-Geräte geöffnet. Bestimmte Werte in den Kanälen 'info' und 'status' lauten daher 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Präferenzen in einem entsprechenden Problem.
 
 ## Changelog
 

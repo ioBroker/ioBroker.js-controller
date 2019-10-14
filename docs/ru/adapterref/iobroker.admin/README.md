@@ -170,7 +170,7 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
-### 3.6.8 (2019-10-09)
+### 3.6.10 (2019-10-11)
 * (ldittmar) Add NPM version and OS check to popup messages
 * (bluefox) Log paths were sanitized
 * (bluefox) NPM packages were updated

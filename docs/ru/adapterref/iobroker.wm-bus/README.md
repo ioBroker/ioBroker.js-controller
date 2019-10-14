@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wm-bus/README.md
 title: без названия
-hash: bcgdW0CboxN5Utg+pXdL1OPVf7BRFiWefI38lZNV50A=
+hash: 6njKhpGr6/kOA37w9bFfDaO2DkjSIZlXknJm5sm7v8M=
 ---
 ![логотип](../../../en/adapterref/iobroker.wm-bus/admin/wm-bus.png)
 
@@ -21,7 +21,7 @@ hash: bcgdW0CboxN5Utg+pXdL1OPVf7BRFiWefI38lZNV50A=
 #### Информация
 Поддерживаемые USB-адаптеры:
 
-+ [iM871A](http://www.wireless-solutions.de/products/gateways/wirelessadapter) + [CUL](http://shop.busware.de/product_info.php/products_id/29?osCsid=eab2ce6ef5efc95dbdf61396ca256b6e)
++ [iM871A](http://www.wireless-solutions.de/products/gateways/wirelessadapter) + [CUL](http://shop.busware.de/product_info.php/products_id/29?osCsid=eab2ce6ef5efc95dbdf61396ca256b6e) + [Янтарь 8465-М](https://www.amber-wireless.de/en/amb8465-m.html)
 
 #### Конфигурация
 Если используется, ключ AES для расшифровки сообщения.

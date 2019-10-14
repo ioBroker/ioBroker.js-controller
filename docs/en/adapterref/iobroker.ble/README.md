@@ -40,6 +40,9 @@ If you have any device transmitting specially encoded information via advertisem
 
 ## Changelog
 
+### 0.10.1 (2019-10-13)
+* (AlCalzone) Fixed crash in JS-Controller 2.0
+
 ### 0.10.0 (2019-09-26)
 * (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
 

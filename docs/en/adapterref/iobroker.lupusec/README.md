@@ -96,6 +96,9 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 
 ## Changelog
 
+### 1.2.1 (14.10.2019)
+* (Stübi) Bugfixing (Issue #9)
+
 ### 1.2.0 (13.09.2019)
 * (Stübi) Changing error handling of adapter
 * (Stübi) Add Nuki door opener
@@ -189,7 +192,7 @@ Following things are planed in the future:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

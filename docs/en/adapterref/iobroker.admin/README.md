@@ -76,7 +76,7 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
-### 3.6.8 (2019-10-09)
+### 3.6.10 (2019-10-11)
 * (ldittmar) Add NPM version and OS check to popup messages
 * (bluefox) Log paths were sanitized
 * (bluefox) NPM packages were updated

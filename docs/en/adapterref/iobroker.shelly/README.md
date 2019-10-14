@@ -41,6 +41,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.1.2 (11.10.2019)
+* (Stübi) - Bugfixing. Error message will not only be shown in debug modus
+
 ### 3.1.1 (14.09.2019)
 * (Stübi) - Add device Shelly Dimmer
 

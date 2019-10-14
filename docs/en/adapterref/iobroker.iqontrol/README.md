@@ -283,6 +283,9 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
+### 0.2.12 (2019-10-12)
+* (Sebastian Bormann) Improvement of homematic-thermostat for controler 2.0 compatiility.
+
 ### 0.2.11 (2019-10-07)
 * (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
 * (Sebastian Bormann) Pincode now works for buttons as well.

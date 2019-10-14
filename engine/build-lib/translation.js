@@ -595,6 +595,10 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource, fileN
 }
 
 function translateText(fromLang, text, toLang) {
+    if (!text) {
+        return Promise.resolve('');
+    }
+
     // detect LINKS, IMAGES and CODES and if the line has only that, do not translate it
     if (text.trim().match(/^[^\w]*§§[ILJ]+_\d+§§[^\w]*$/)) {
         return Promise.resolve(text);

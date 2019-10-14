@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
+hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
 ---
 ![логотип](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -18,11 +18,14 @@ hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
 Открытый JSON-интерфейс (offene Json-Schnittstelle) должен быть активирован в меню конфигурации Solarlog (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Установите адаптер, создайте экземпляр.
-Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и опрос - интервал (в миллисекундах)
+Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и опрос - интервал (в миллисекундах). Поскольку адаптер отправляет вам много http-запросов к Solarlog, я рекомендую не устанавливать слишком плотный опросный интервал. Проверьте в журнале отладки время, необходимое для опроса или установки не менее 10 секунд.
 
-Проверьте, собраны ли все данные инвертора. !! Для этой опции пароль пользователя в solarlog должен быть деактивирован !! Achtung: Damit die Abfrage der Unterzaehler funktioniert, Muss das Benutzerpasswort im Solarlog deaktiviert sein
+Проверьте, собраны ли все данные инвертора. !! Для этого параметра пароль пользователя в solarlog должен быть деактивирован! Achtung: Damit die Abfrage der Unterzaehler funktioniert, Muss das Benutzerpasswort im Solarlog deaktiviert sein
 
+## Аппаратное обеспечение
 Проверено: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
+
+SolarLog 50: нет открытых устройств JSON-Interface @ SolarLog 50. Таким образом, определенные значения в «info» и «status» канале будут «ACCESS DENIED». Если вы предпочитаете другое решение, пожалуйста, откройте проблему или опубликуйте ваши предпочтения в соответствующей проблеме.
 
 ## Changelog
 

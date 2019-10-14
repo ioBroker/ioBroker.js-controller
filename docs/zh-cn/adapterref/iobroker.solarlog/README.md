@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
+hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
 ---
 ![商标](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -18,11 +18,14 @@ hash: cFvOwz+yVAtJh10Aom74hD6DCvND83xSF4ylLpCfass=
 必须在Solarlog的配置菜单中激活开放的JSON接口（offene Json-Schnittstelle）（Konfiguration-系统-Zugangskontrolle-Offene Json-Schnittstelle：aktivieren。）
 
 安装适配器，创建实例。
-设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-intervall（以毫秒为单位）
+设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-intervall（以毫秒为单位）。由于适配器向您发送了许多http请求，因此我建议不要将polling-intervall设置得过于密集。检查调试日志，以了解轮询或设置至少10s所需的时间。
 
 检查是否收集了所有逆变器数据。 !!此选项必须禁用solarlog中的用户密码！！ Achtung：发生在地下的地下城，在日光下的博物馆
 
+＃＃ 硬件
 经过测试：Solarlog 200PM + / 300PM + / 500/1200米/ 50
+
+SolarLog 50：没有开放的JSON接口@ SolarLog 50设备。因此，“信息”和“状态”通道中的某些值将为“访问权限被拒绝”。如果您想要其他解决方案，请打开一个问题或在相应的问题中发布您的偏好。
 
 ## Changelog
 

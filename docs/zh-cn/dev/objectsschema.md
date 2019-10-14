@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: c4ZzbhsSa0aBzuk1yWRo8ZryMxadrDIKqXV9xV1SVEw=
+hash: n3+1+dfUm8MwoOIj0Sns9VxKdeVMf/JLbSGZ9B+4pek=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
@@ -48,7 +48,7 @@ ID具有不同的级别。每个级别由点确定。示例：`system.adapter.ad
 *`system.adapter。<适配器名称>`-适配器的默认配置
 *`<适配器名称> .`-特定适配器的对象。
 *`<适配器名称> .meta.`-此适配器的所有实例使用的公共元数据
-*`<适配器名称>。<实例编号> .`-适配器实例名称空间
+*`<适配器名称>。<实例号> .`-适配器实例名称空间
 *枚举。-枚举
 *`history.`-历史数据
 *`scripts.`-脚本引擎脚本
@@ -127,7 +127,7 @@ getState / stateChange / setState对象的属性：
 
 *`val`-实际值-可以是JSON-“可编码”的任何类型
 *`ack`-一个布尔型标志，指示目标系统是否已确认该值
-*`ts`-Unix时间戳，指示状态的最新更新（以毫秒为单位）
+*`ts`-指示状态的最后更新的unix时间戳（以毫秒为单位）
 *`lc`-UNIX时间戳，指示状态的实际值的最后一次更改（以毫秒为单位）
 *`from`-完成`setState`的适配器实例
 *`user`-用户名，用于设置值
@@ -192,7 +192,7 @@ getState / stateChange / setState对象的属性：
 #####状态
 属性：
 
-*`common.type`（可选-（默认是混合==任何类型）（可能的值：数字，字符串，布尔值，数组，对象，混合，文件）
+*`common.type`（可选-（默认为blend ==任何类型）（可能的值：数字，字符串，布尔值，数组，对象，混合对象，文件）。作为例外，类型为meta的对象可以具有common .type = meta.user`或`meta.folder`
 *`common.min`（可选）
 *`common.max`（可选）
 *`common.step`（可选）-增加/减少间隔。例如。调温器为0.5
@@ -357,8 +357,8 @@ getState / stateChange / setState对象的属性：
 #####`light.switch`-属性说明
 | **称** |** common.role **|** M **|** W **|** common.type **|** 明** | ------------- |：-------------------------- |：-----：| ：-----：| ------------------------------------
 
-|州|开关| X | X |布尔值|
-|说明| text.description | | | |
+|州|开关| X | X |布尔|
+|描述| text.description | | | |
 | mmm | indicator.maintenance.mmm | | | | mmm =低矮或不可达或其他 |
 
 ```
@@ -486,7 +486,7 @@ id`system.adapter.<adapter.name>`
 *注意：*所有标志都是可选的，除非特殊标记为“强制性”。
 
 *`common.name`-**必填**不带“ ioBroker”的适配器的名称。
-*`common.title`-（不建议使用）适配器的更长名称，以在admin中显示
+*`common.title`-适配器的较长名称（不建议使用）以在admin中显示
 *`common.titleLang`-**必填**所有支持的语言（如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}的适配器的更长名称
 *`common.mode`-**必填**可能的值见下
 *`common.version`-**必需**可用版本
@@ -530,7 +530,7 @@ id`system.adapter.<adapter.name>`
 *`common.supportCustoms`-[true / false]如果适配器支持每种状态的设置。它必须在管理员中具有custom.html文件。样本可以在ioBroker.history中找到
 *`common.getHistory`-[true / false]如果适配器支持getHistory消息
 *`common.blockly`-[true / false]如果适配器具有用于块的自定义块。 （需要admin / blockly.js）
-*`common.webExtendable`-[true / false]如果此适配器中的Web服务器可以通过代理/ simple-api之类的插件/扩展名进行扩展
+*`common.webExtendable`-[true / false]如果此适配器中的Web服务器可以使用代理，simple-api之类的插件/扩展名进行扩展
 *`common.webExtension`-用于连接网络扩展名的相对文件名。例如。在相对于适配器根目录的simple-api“ lib / simpleapi.js”中。此外，native.webInstance要求说出该扩展名的位置。空意味着，它必须作为自己的Web服务运行。 “ *”表示每个Web服务器都必须包含它。
 *`common.welcomeScreen`-页面数组，应显示在“网络” index.html页面上。 [“ vis / edit.html”，“ vis / index.html”]或[{“ link”：“ vis / edit.html”，“ name”：“ Vis编辑器”，“ img”：“ vis / img / edit.png“，” color“：” blue“}，” vis / index.html“]
 *`common.unchanged`-（系统）请不要使用此标志。这是通知系统的标志，必须在admin中显示配置对话框。
@@ -544,7 +544,7 @@ id`system.adapter.<adapter.name>`
 *`common.eraseOnUpload`-上传前擦除目录中所有先前的数据
 *`common.webByVersion`-将版本显示为Web适配器中的前缀（通常-ip：port / material，webByVersion-ip：port / 1.2.3 / material）
 *`common.noIntro`-从不在管理员的“简介/概述”屏幕上显示此适配器的实例（如图标，小部件）
-*`common.expert`-仅在admin中以专家模式显示此对象
+*`common.expert`-仅在admin中的专家模式下显示此对象
 *`common.compact`-对控制器说，如果需要，此适配器可以在同一过程中启动
 
 ####实例
@@ -558,7 +558,7 @@ id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
 *`none`-此适配器不会启动进程
 *`daemon`-始终运行的进程（如果进程退出，将重新启动）
 *`subscribe`-在状态* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *并被杀死（如果进程退出，则将* .alive *设置为* false *）（进程退出时将不重新启动）
-*`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。-对* .schedule *的更改作出反应，并以新状态重新安排
+*`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。
 *`once`-每次更改system.adapter.yyy.x对象时，都会启动此适配器。终止后将不会重新启动。
 
 ####主机
@@ -574,14 +574,14 @@ id`system.host.<host>`
 
 ####配置
 ####脚本
-*`common.platform`-（必填）可能的值`Javascript / Node.js`（以后会有更多）
+*`common.platform`-（必填）可能的值`Javascript / Node.js`（以后还会有更多）
 *`common.enabled`-（强制）是否激活脚本
 *`common.source`-（强制性）脚本源
 *`common.engine`-（可选）*脚本引擎*应该运行此脚本的实例（例如'javascript.0'）-如果自动选择省略的引擎
 
 ####个用户
 *`common.name`-（必填）用户名（区分大小写）
-*`common.password`-（强制性）MD5密码哈希
+*`common.password`-（必填）MD5密码哈希
 
 ####组
 *`common.name`-（必填）组名

@@ -3,8 +3,18 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Новости, объявления и идеи о ioBroker]]></description>
         <link>https://www.iobroker.net/#ru/blog</link>
-        <lastBuildDate>Thu, 10 Oct 2019 21:59:12 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 14 Oct 2019 19:57:24 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[no title]]></title>
+            <description><![CDATA[
+                <p>Привет сообщество ioBroker,</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#ru/blog/2019_10_14</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#ru/blog/2019_10_14</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Mon, 14 Oct 2019 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Установщик Windows]]></title>
             <description><![CDATA[

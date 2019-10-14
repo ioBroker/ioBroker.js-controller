@@ -9,16 +9,20 @@
 
 An ioBroker adapter for solarlog - devices
 
-The open JSON-interface (offene Json-Schnittstelle) has to be activated in the Solarlog's configuration menue (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
+The open JSON-interface (offene Json-Schnittstelle) has to be activated in the Solarlog's configuration menu (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Install adapter, create instance.
-Set Solarlog - IP-adress (192.XXX.X.XXX), port (optional) and polling - intervall (in millilseconds)
+Set Solarlog - IP-adress (192.XXX.X.XXX), port (optional) and polling - intervall (in millilseconds). Since the adapter sends a lot of http-requests to you solarlog, I recommend not to set the polling-intervall too dense. Check your debug-log for the time needed to poll or set at least 10s.
 
 Check if all inverter - data is collected. !! The user-password in solarlog has to be deactivated for this option!!
 Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein
 
+## Hardware
+
 Tested on:
 Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
+
+SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain values in the 'info' and the 'status' channel will be 'ACCESS DENIED'. If you prefer another solution, please open an issue or post your preferences in a corresponding issue.
 
 ## Changelog
 

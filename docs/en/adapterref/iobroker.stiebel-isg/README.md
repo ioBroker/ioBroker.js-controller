@@ -24,9 +24,13 @@ Help or hints are welcome.
 
 ## Requirements
 
-* stiebel-eltron/tecalor internet service gateway (ISG)   
+* stiebel-eltron/tecalor internet service gateway (ISG)
 
 ## Changelog
+
+### 1.4.8
+
+* update due to security vulnerabilities in dependencies
 
 ### 1.4.7
 

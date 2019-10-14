@@ -2,27 +2,29 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-airpurifier/README.md
-title: ioBroker.mihome-airpurifier
-hash: aP5HbXr/jC25Q7hsEn7VDVtlmTeECXkZ9XzIXva5+dE=
+title: ioBroker.mihome-Luftreiniger
+hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
 ---
-![Logo](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
-
 ![Anzahl der Installationen](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![Build Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
 
-# IoBroker.mihome-airpurifier Xiaomi Luftreinigeradapter für die ioBroker IoT-Plattform.
-## Wie bekomme ich das Token?
-Sie müssen das miio-Befehlszeilentool installieren. `npm install -g miio`
+---
+---
+![Logo](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
+
+# IoBroker.mihome-airpurifier Xiaomi Air Purifier-Adapter für die ioBroker IoT-Plattform.
+## Wie bekomme ich den Token?
+Sie müssen das miio-Kommandozeilen-Tool `npm install -g miio` installieren.
 
 Jetzt haben Sie zwei Möglichkeiten:
 
-1. Mit Mi Home App:
+1. Mit der Mi Home App:
 
-    Sie verbinden den Reiniger mit der MI Home App mit Ihrem WLAN-Netzwerk und führen dann den folgenden Befehl aus:
+    Sie verbinden den Luftreiniger mit der MI Home App mit Ihrem Wifi-Netzwerk und führen dann den folgenden Befehl aus:
 
     `miio discover`
 
-    Sie sollten die folgende Ausgabe erhalten und das Token speichern.
+    Sie sollten die folgende Ausgabe erhalten und können das Token speichern.
 
 ```
 Device ID: 48765421
@@ -34,50 +36,53 @@ Support: At least basic
 
 2. Ohne Mi Home App:
 
-    Sie setzen die WLAN-Einstellungen des Luftreinigers zurück. Dann verbinden Sie Ihr Netzwerk mit dem WLAN des Luftreinigers und führen den folgenden Befehl aus:
+    Sie setzen die WLAN-Einstellungen des Luftreinigers zurück. Dann verbinden Sie Ihr Netzwerk mit dem WIFI des Luftreinigers und führen den folgenden Befehl aus:
 
     `miio discover`
 
-    Sie sollten dieselbe Ausgabe wie oben erhalten und können nun die Verbindung zu Ihrem Netzwerk mit folgendem Befehl konfigurieren:
+    Sie sollten die gleiche Ausgabe wie oben erhalten und können nun die Verbindung zu Ihrem Netzwerk mit dem folgenden Befehl konfigurieren:
 
     `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
-    Nun ist der Luftreiniger an Ihr Netzwerk angeschlossen.
+    Jetzt ist der Luftreiniger mit Ihrem Netzwerk verbunden.
 
 ## Cloud-Verbindung
-Um den Luftreiniger mit dem Cloud-Adapter zu steuern, fügen Sie Ihrem Cloud-Adapter einfach den Status "manuallevel" hinzu. Danach können Sie zB f.e. die folgenden Befehle über Alexa:
+Um den Luftreiniger mit dem Cloud-Adapter zu steuern, fügen Sie Ihrem Cloud-Adapter einfach den Status "manuallevel" hinzu. Danach können Sie f.e. die folgenden Befehle über Alexa:
 
 * Alexa, schalte den Luftreiniger ein *,
 
-* Alexa, setze den Luftreiniger auf 50% *,
+* Alexa, stelle den Luftreiniger auf 50% *,
 
 *Alexa, schalte den Luftreiniger aus*
 
-Wenn Sie im Cloud-Adapter den Wert "On Value" auf "Last active value" setzen, läuft das Gerät immer mit der neuesten aktiven Leistungsstufe.
+Wenn Sie im Cloud-Adapter den Wert "On Value" auf "Last active value" setzen, wird das Gerät immer mit der neuesten aktiven Leistungsstufe gestartet.
 
-## Kontrollstaaten
+## Kontrollzustände
 Zur Steuerung Ihres Luftreinigers können die folgenden Objekte geschrieben werden:
 
-| Zustand | Beschreibung |
+| Staat | Beschreibung |
 | :---           | :---        |
-| Macht | Gerät ein- / ausschalten |
-| auto | Aktivieren Sie den Auto-Modus des Geräts. |
-| stumm | Aktivieren Sie den Silent-Modus des Geräts. |
-| manuell | Aktivieren Sie den manuellen Modus des Geräts. |
-| Handlevel | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
+| `power` | Gerät ein- / ausschalten |
+| `silent` | Aktivieren Sie den Silent-Modus des Geräts. |
+| `manual` | Aktivieren Sie den manuellen Modus des Geräts. |
+| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
+| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
 
-## Info Staaten
-Die folgenden Informationen werden von Ihrem Luftreiniger erfasst (Nur-Lesen-Status):
+## Info States
+Die folgenden Informationen werden von Ihrem Luftreiniger gesammelt (schreibgeschützt):
 
 ### Geräteinformationen
-| Zustand | Beschreibung |
+| Staat | Beschreibung |
 | :---        | :---        |
-| Modus | Der tatsächliche Gerätemodus ist nur gültig, wenn das Gerät eingeschaltet ist. |
-| Temperatur | Die gemessene Temperatur in °C des Geräts. |
-| Luftfeuchtigkeit | Die gemessene relative Luftfeuchtigkeit in% des Geräts. |
-| pm25 | Die Luftverschmutzung in PM2.5. |
+| `mode` | Der tatsächliche Gerätemodus, nur gültig, wenn das Gerät eingeschaltet ist. |
+| `humidity` | Die gemessene relative Luftfeuchtigkeit in% des Geräts. |
+| `pm25` | Die Luftverschmutzung in PM2.5. |
+| `pm25` | Die Luftverschmutzung in PM2.5. |
 
 ## Changelog
+### 0.0.6 (09.04.2019)
+* (JoJ123) update miio to fork of Sineos
+
 ### 0.0.5 (06.01.2019)
 * (JoJ123) update natives
 

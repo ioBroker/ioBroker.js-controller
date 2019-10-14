@@ -1,3 +1,6 @@
+
+---
+---
 ![Logo](admin/mihome-airpurifier.png)
 # ioBroker.mihome-airpurifier
 ![Number of Installations](http://iobroker.live/badges/mihome-airpurifier-installed.svg) ![Number of Installations](http://iobroker.live/badges/mihome-airpurifier-stable.svg) 
@@ -54,11 +57,11 @@ To control your air purifier, the following objects can be written:
 
 | State          | Description |
 | :---           | :---        |
-| power          | Turn the device on / off  |
-| auto           | Activate the auto mode of the device. |
-| silent         | Activate the silent mode of the device. |
-| manual         | Activate the manual mode of the device. |
-| manuallevel    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if necessary |
+| `power`          | Turn the device on / off  |
+| `auto`           | Activate the auto mode of the device. |
+| `silent`         | Activate the silent mode of the device. |
+| `manual`         | Activate the manual mode of the device. |
+| `manuallevel`    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if necessary |
 
 ## Info States
 The following information is collected from your air purifier (read-only states):
@@ -67,10 +70,10 @@ The following information is collected from your air purifier (read-only states)
 
 | State       | Description |
 | :---        | :---        |
-| mode        | The actual device mode, just valid, if the device is powered on. |
-| temperature | The measured temperature in °C of the device. |
-| humidity    | The measured relative humidity in % of the device. |
-| pm25        | The air pollution in PM2.5. |
+| `mode`        | The actual device mode, just valid, if the device is powered on. |
+| `temperature` | The measured temperature in °C of the device. |
+| `humidity`    | The measured relative humidity in % of the device. |
+| `pm25`        | The air pollution in PM2.5. |
 
 ## Changelog
 ### 0.0.6 (09.04.2019)
@@ -115,3 +118,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
+

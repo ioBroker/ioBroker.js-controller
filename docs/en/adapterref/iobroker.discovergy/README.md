@@ -38,7 +38,10 @@ pass = demo
 * (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
 * (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
 
-### 0.4.5 several fixes & code optimalisation
+### 0.4.8 Fix wrong readings and make intervall adjustable
+* (Dutchman) Implemented adjustable intervall
+* (Dutchman) Ensure propper reset to 0 of power values
+* (Dutchman) Fix "-" values for power delivery
 * (Dutchman) implement adjustable timing intervall
 * (Dutchman) make state names configurable
 * (Dutchman) update attr library
@@ -51,9 +54,9 @@ pass = demo
 * (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
 * (Dutchman) implement data pulling (needs improvement to avoid block by provider)
 * (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) make state attributes configurable in library
 
-
-### 0.4.0
+### 0.4.0 Stable Release
 * small code fixes
 * updated dependecys
 * release for stable repository

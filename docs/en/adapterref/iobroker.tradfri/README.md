@@ -70,6 +70,9 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
+#### 2.4.4 (2019-10-11)
+* (AlCalzone) Fix: Suppress log warnings for slave remotes and signal repeaters
+
 #### 2.4.3 (2019-09-22)
 * (AlCalzone) Fix: Operate blinds when states are changed
 

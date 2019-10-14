@@ -123,7 +123,7 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
-### 3.6.8 (2019-10-09)
+### 3.6.10 (2019-10-11)
 * (ldittmar) Add NPM version and OS check to popup messages
 * (bluefox) Log paths were sanitized
 * (bluefox) NPM packages were updated
