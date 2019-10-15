@@ -341,6 +341,7 @@ function testAdapter(options) {
                 context.adapter.on('exit', () => {
                     console.log('Adapter stopped');
                     adapterStopped = true;
+                    expect(context.adapter.connected).to.be.false;
                 });
                 // redis server cannot be stopped
                 if (objectsConfig.type === 'file') {
@@ -351,7 +352,7 @@ function testAdapter(options) {
                             expect(adapterStopped).to.be.true;
                             setTimeout(done, 2000);
                         }, 2000);
-                    }, 6000);
+                    }, 3000 + (process.platform === 'win32' ? 20000 : 0));
                 } else {
                     setTimeout(done, 2000);
                 }
