@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.31 (2019-10-14) Release Bella
+* (Apollon77) fix undefined variable on one place 
+
 ## 2.0.30 (2019-10-14) Release Bella
 * (Apollon77) enhance reconnection handling (system tries to reconnect up to 40s including re-sending all data changes  before restart happens, on no connection to db on start a restart is tried every 30s)
 * (Apollon77) fix file handing issue

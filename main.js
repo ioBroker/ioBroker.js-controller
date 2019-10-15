@@ -2587,6 +2587,7 @@ function startScheduledInstance(callback) {
     let skipped = false;
     const id = idsToStart[0];
     const fileNameFull = scheduledInstances[idsToStart[0]].fileNameFull;
+    const wakeUp = scheduledInstances[idsToStart[0]].wakeUp;
 
     if (procs[id]) {
         const instance = procs[id].config;
@@ -3131,7 +3132,8 @@ function startInstance(id, wakeUp) {
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
                 // queue up, but only if not alredy queued
                 scheduledInstances[id] = {
-                    fileNameFull
+                    fileNameFull,
+                    wakeUp
                 };
                 Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
             });
