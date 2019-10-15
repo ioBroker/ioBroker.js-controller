@@ -212,6 +212,43 @@ function logRedirect(isActive, id, reason) {
     }
 }
 
+function handleDisconnect() {
+    if (!connected || restartTimeout || isStopping) return;
+    if (statesDisconnectTimeout) {
+        clearTimeout(statesDisconnectTimeout);
+        statesDisconnectTimeout = null;
+    }
+    if (objectsDisconnectTimeout) {
+        clearTimeout(objectsDisconnectTimeout);
+        objectsDisconnectTimeout = null;
+    }
+
+    connected = false;
+    logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
+    stopInstances(true, () => {
+        // if during stopping the DB has connection again
+        if (connected && !isStopping) {
+            logger.warn(hostLogPrefix + ' Slave controller has connection again ... restarting');
+            getInstances();
+            startAliveInterval();
+            initMessageQueue();
+        } else
+        if (!isStopping) {
+            if (compactGroupController) {
+                process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+            }
+            else {
+                restartTimeout = setTimeout(() => {
+                    restartTimeout = null;
+                    processMessage({command: 'cmdExec', message: {data: '_restart'}});
+                    setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                }, 15000);
+            }
+        }
+    });
+
+}
+
 function createStates(onConnect) {
     const _inst = new States({
         namespace: hostLogPrefix,
@@ -366,14 +403,10 @@ function createStates(onConnect) {
         disconnected: (/*error*/) => {
             if (restartTimeout) return;
 
-            if (statesDisconnectTimeout) {
-                clearTimeout(statesDisconnectTimeout);
-                statesDisconnectTimeout = null;
-            }
-            // only log for now, TODO
+            if (statesDisconnectTimeout) clearTimeout(statesDisconnectTimeout);
             statesDisconnectTimeout = setTimeout(() => {
                 statesDisconnectTimeout = null;
-                !connected && !isStopping && logger.warn(hostLogPrefix + ' Slave controller detected states disconnection.');
+                handleDisconnect();
             }, (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
         }
     });
@@ -434,30 +467,8 @@ function createObjects(onConnect) {
             if (restartTimeout) return;
             if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
-                connected = false;
                 objectsDisconnectTimeout = null;
-                logger.warn(hostLogPrefix + ' Slave controller detected objects disconnection. Stop all instances.');
-                stopInstances(true, () => {
-                    // if during stopping the DB has connection again
-                    if (connected && !isStopping) {
-                        logger.warn(hostLogPrefix + ' Slave controller has connection again ... restarting');
-                        getInstances();
-                        startAliveInterval();
-                        initMessageQueue();
-                    } else
-                    if (!isStopping) {
-                        if (compactGroupController) {
-                            process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
-                        }
-                        else {
-                            restartTimeout = setTimeout(() => {
-                                restartTimeout = null;
-                                processMessage({command: 'cmdExec', message: {data: '_restart'}});
-                                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-                            }, 15000);
-                        }
-                    }
-                });
+                handleDisconnect();
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
             // give main controller a bit longer, so that adapter and compact processes can exit before
         },

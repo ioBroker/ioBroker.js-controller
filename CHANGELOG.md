@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.32 (2019-10-15) Release Bella
+* (Apollon77) Also restart controller if only states connection disconnects 
+
 ## 2.0.31 (2019-10-14) Release Bella
 * (Apollon77) fix undefined variable on one place 
 
