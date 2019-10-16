@@ -421,6 +421,10 @@
             "news": [
             ],
             "video": [
+                {
+                    "title": "ioBroker Brasil",
+                    "link": "https://www.youtube.com/channel/UCugK_StwrTzqXLbW6o6NKyQ"
+                }
             ],
             "other": [
             ]
