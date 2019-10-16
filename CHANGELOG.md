@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.33 (2019-10-15) Release Bella
+* (Apollon77) Sync objects and states retry max delay defaults
+* (Apollon77) Re-Add the certificate check and automatic re-creation for old certificates as in 1.5.14
+
 ## 2.0.32 (2019-10-15) Release Bella
 * (Apollon77) Also restart controller if only states connection disconnects 
 

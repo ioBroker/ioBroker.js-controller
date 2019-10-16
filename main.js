@@ -403,7 +403,7 @@ function createStates(onConnect) {
         disconnected: (/*error*/) => {
             if (restartTimeout) return;
 
-            if (statesDisconnectTimeout) clearTimeout(statesDisconnectTimeout);
+            statesDisconnectTimeout && clearTimeout(statesDisconnectTimeout);
             statesDisconnectTimeout = setTimeout(() => {
                 statesDisconnectTimeout = null;
                 handleDisconnect();
@@ -465,7 +465,7 @@ function createObjects(onConnect) {
         },
         disconnected: (/*error*/) => {
             if (restartTimeout) return;
-            if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
+            objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
                 objectsDisconnectTimeout = null;
                 handleDisconnect();

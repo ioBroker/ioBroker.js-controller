@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.32",
+        "version": "2.0.33",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.32": {
+            "2.0.33": {
                 "en": "enhance reconnection handling and other optimizations and bug fixes",
                 "de": "Verbesserte Behandlung von Wiederverbindungen und andere Optimierungen und Fehlerkorrekturen",
                 "ru": "улучшить обработку переподключения и другие оптимизации и исправления ошибок",
