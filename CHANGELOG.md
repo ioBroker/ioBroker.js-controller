@@ -3,6 +3,7 @@
 ## 2.0.34 (2019-10-17) Release Bella
 * (Apollon77) Allow custom settings to be removed again if objects are "file"
 * (Apollon77) Remove default value for "switch" and "level.dimmer" roles
+* (bluefox) fix user authentication 
 
 ## 2.0.33 (2019-10-15) Release Bella
 * (Apollon77) Sync objects and states retry max delay defaults
