@@ -1228,7 +1228,7 @@ function setMeta() {
         type:      'state',
         common: {
             name:  'Controller - cpu usage in % of one core',
-            type:  'number',
+            type:  'string',
             read:  true,
             write: false,
             min:   0,
