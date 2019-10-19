@@ -7,6 +7,7 @@
 * (bluefox) Remove mkdirp, safe-replace, bluebird, pyconf packages
 * (bluefox) Fix alias logic in some places
 * (paul53/AlCalzone/Apollon77) Fix datatype of system.host.cpu and system.adapter.XY.Z.cpu
+* (Apollon77) Make sure alias.0 and other controller objects are also checked and created if needed on setup first when updating 
 
 ## 2.0.34 (2019-10-17) Release Bella
 * (Apollon77) Allow custom settings to be removed again if objects are "file"
