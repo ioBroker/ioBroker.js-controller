@@ -3,7 +3,9 @@
 ## 2.0.35 (2019-10-19) Release Bella
 * (Apollon77) Allow to use Redis password as "pass" parameter for States ad Objects
 * (Apollon77) Prevent hangs on "iobroker upgrade self" from 1.5 to 2.0
-
+* (bluefox) Update IPs information periodically
+* (bluefox) Remove mkdirp, safe-replace, bluebird, pyconf packages
+* (bluefox) Fix alias logic in some places
 
 ## 2.0.34 (2019-10-17) Release Bella
 * (Apollon77) Allow custom settings to be removed again if objects are "file"
