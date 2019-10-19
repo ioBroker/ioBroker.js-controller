@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.35 (2019-10-19) Release Bella
+* (Apollon77) Allow to use Redis password as "pass" parameter for States ad Objects
+* (Apollon77) Prevent hangs on "iobroker upgrade self" from 1.5 to 2.0
+
+
 ## 2.0.34 (2019-10-17) Release Bella
 * (Apollon77) Allow custom settings to be removed again if objects are "file"
 * (Apollon77) Remove default value for "switch" and "level.dimmer" roles
