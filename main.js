@@ -81,6 +81,8 @@ let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
 
+let updateIPsTimer          = null;
+
 const uploadTasks           = [];
 
 const config = getConfig();
@@ -184,17 +186,31 @@ function getIPs() {
         const ifaces = os.networkInterfaces();
         lastCalculationOfIps = Date.now();
         ipArr = [];
-        for (const dev in ifaces) {
-            if (!ifaces.hasOwnProperty(dev)) continue;
-
-            /* jshint loopfunc:true */
+        Object.keys(ifaces).forEach(dev =>
             ifaces[dev].forEach(details =>
                 // noinspection JSUnresolvedVariable
-                !details.internal && ipArr.push(details.address));
-        }
+                !details.internal && ipArr.push(details.address)));
     }
 
     return ipArr;
+}
+
+/**
+ * Starts cyclic update of IP interfaces.
+ * At start every 30 seconds and after 5 minutes, every hour.
+ * Because DHCP could change the IPs.
+ */
+function startUpdateIPs() {
+    if (!updateIPsTimer) {
+        updateIPsTimer = setInterval(() => {
+            if (Date.now() - uptimeStart > 5 * 60000) {// 5 minutes at start check every 30 seconds because of DHCP
+                clearInterval(updateIPsTimer);
+
+                updateIPsTimer = setInterval(() => setIPs(), 3600000); // update IPs every hour
+            }
+            setIPs();
+        }, 30000);
+    }
 }
 
 // subscribe or unsubscribe loggers
@@ -499,7 +515,7 @@ function createObjects(onConnect) {
                         if (
                             !compactGroupController &&
                             procs[id].config.common.compactGroup &&
-                            (procs[id].config.common.compactGroup !== obj.common.compactGroup || procs[id].config.common.runAsCompactMode != obj.common.runAsCompactMode) &&
+                            (procs[id].config.common.compactGroup !== obj.common.compactGroup || procs[id].config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
                             compactProcs[procs[id].config.common.compactGroup] &&
                             compactProcs[procs[id].config.common.compactGroup].instances &&
                             compactProcs[procs[id].config.common.compactGroup].instances.includes(id)
@@ -1008,14 +1024,18 @@ function setIPs(ipList) {
         // IPv4 found => write to object
         objects.getObject('system.host.' + hostname, (err, oldObj) => {
             const networkInterfaces = os.networkInterfaces();
+
             if (JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
-                JSON.stringify(oldObj.common.address)           !== JSON.stringify(ipList)) {
-                oldObj.common.address = ipList;
+                JSON.stringify(oldObj.common.address) !== JSON.stringify(_ipList)) {
+                oldObj.common.address = _ipList;
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = hostObjectPrefix;
                 oldObj.ts = Date.now();
                 objects.setObject(oldObj._id, oldObj, err => err && logger.error(hostLogPrefix + ' Cannot write host object:' + err));
             }
+
+            // update IP list periodically
+            startUpdateIPs();
         });
     } else {
         logger.info(hostLogPrefix + ' No IPv4 address found after 5 minutes.');
@@ -3511,6 +3531,11 @@ function stop() {
     if (mhService) {
         mhService.close();
         mhService = null;
+    }
+
+    if (updateIPsTimer) {
+        clearInterval(updateIPsTimer);
+        updateIPsTimer = null;
     }
 
     stopInstances(false, wasForced => {
