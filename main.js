@@ -630,7 +630,7 @@ function reportStatus() {
     pidUsage(process.pid, (err, stats) => {
         // controller.s might be stopped, but this is still running
         if (!err && states && states.setState && stats) {
-            states.setState(id + '.cpu',     {ack: true, from: id, val: parseFloat(stats.cpu).toFixed(2)});
+            states.setState(id + '.cpu',     {ack: true, from: id, val: Math.round(100 * parseFloat(stats.cpu)) / 100});
             states.setState(id + '.cputime', {ack: true, from: id, val: stats.ctime / 1000});
             outputCount+=2;
         }
