@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.34",
+        "version": "2.0.35",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.34": {
+            "2.0.35": {
                 "en": "Allow custom settings to be removed again if objects are \"file\"",
                 "de": "Ermöglichen, dass benutzerdefinierte Einstellungen wieder entfernt werden, wenn Objekte \"Datei\" sind",
                 "ru": "Разрешить удаление пользовательских настроек еще раз, если объекты \"файл\"",
