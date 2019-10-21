@@ -504,6 +504,7 @@ function createObjects(onConnect) {
                         procs[id].config.common.enabled = false;
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
+                        delete hostAdapter[id];
                         logger.info(hostLogPrefix + ' object deleted ' + id);
                     } else {
                         if (procs[id].config.common.enabled  && !obj.common.enabled) logger.info(hostLogPrefix + ' "' + id + '" disabled');
@@ -524,6 +525,7 @@ function createObjects(onConnect) {
                             compactProcs[procs[id].config.common.compactGroup].instances.splice(compactProcs[procs[id].config.common.compactGroup].instances.indexOf(id), 1);
                         }
                         procs[id].config = obj;
+                        hostAdapter[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
                         stopInstance(id, () => {
@@ -547,6 +549,7 @@ function createObjects(onConnect) {
                                     delete procs[id].restartTimer;
                                 }
                                 delete procs[id];
+                                delete hostAdapter[id];
                             }
                         });
                     } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
@@ -567,6 +570,7 @@ function createObjects(onConnect) {
                                 delete procs[id].restartTimer;
                             }
                             delete procs[id];
+                            delete hostAdapter[id];
                         }
                     }
                 } else if (obj && obj.common) {
