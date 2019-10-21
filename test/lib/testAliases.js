@@ -404,6 +404,34 @@ function register(it, expect, context) {
         });
     }).timeout(1000);
 
+    it(testName + 'Test negative subscribe aliases regex', done => {
+        const parts = gAliasID.split('.');
+        parts.pop();
+        const regexp = new RegExp(parts.join('\\.') + '\\..*');
+
+        context.adapter.subscribeForeignStates(regexp, err => {
+            expect(err).to.be.ok;
+            done();
+        });
+    }).timeout(1000);
+
+    it(testName + 'Test unsubscribe aliases regex', done => {
+        context.onAdapterStateChanged = function (id, state) {
+            expect(true).to.be.false;
+        };
+
+        const parts = gAliasID.split('.');
+        parts.pop();
+        const regexp = new RegExp(parts.join('\\.') + '\\..*');
+
+        context.adapter.unsubscribeForeignStates(regexp, () => {
+            context.states.setState(gid, 10, err => {
+                expect(err).to.be.not.ok;
+                setTimeout(() => done(), 500);
+            });
+        });
+    }).timeout(1000);
+
     it(testName + 'Test subscribe aliases array', done => {
         let count = 0;
         context.onAdapterStateChanged = function (id, state) {
