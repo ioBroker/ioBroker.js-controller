@@ -60,6 +60,7 @@ let restartTimeout          = null;
 let connectTimeout          = null;
 
 const procs                 = {};
+const hostAdapter           = {};
 const subscribe             = {};
 let states                  = null;
 let objects                 = null;
@@ -2244,9 +2245,7 @@ function getInstances() {
  * @param _ipArr IP-Array from this host
  * @returns {boolean} instance needs to be handled by this host (true) or not
  */
-function instanceRelevantForThisHost(instance, _ipArr) {
-    if (!_ipArr.includes(instance.common.host) && instance.common.host !== hostname) return false;
-
+function instanceRelevantForThisController(instance, _ipArr) {
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) instance.common.runAsCompactMode = null; // TODO repo logic!!
@@ -2267,7 +2266,14 @@ function instanceRelevantForThisHost(instance, _ipArr) {
  * @returns {boolean} instance needs to be handled by this host (true) or not
  */
 function checkAndAddInstance(instance, ipArr) {
-    if (!instanceRelevantForThisHost(instance, ipArr)) return false;
+    if (!ipArr.includes(instance.common.host) && instance.common.host !== hostname) return false;
+
+    hostAdapter[instance._id] = hostAdapter[instance._id] || {};
+    if (!hostAdapter[instance._id].config) {
+        hostAdapter[instance._id].config = JSON.parse(JSON.stringify(instance));
+    }
+
+    if (!instanceRelevantForThisController(instance, ipArr)) return false;
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode) {
             compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {instances: []};
@@ -2365,11 +2371,11 @@ function checkVersion(id, name, version) {
         }
     }
     if (!isFound) {
-        for (const p in procs) {
-            if (!procs.hasOwnProperty(p)) continue;
-            if (procs[p] && procs[p].config && procs[p].config.common && procs[p].config.common.name === name) {
-                if (version && !semver.satisfies(procs[p].config.common.version, version)) {
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + procs[p].config.common.version + '", required "' + version + '"!');
+        for (const p in hostAdapter) {
+            if (!hostAdapter.hasOwnProperty(p)) continue;
+            if (hostAdapter[p] && hostAdapter[p].config && hostAdapter[p].config.common && hostAdapter[p].config.common.name === name) {
+                if (version && !semver.satisfies(hostAdapter[p].config.common.version, version)) {
+                    logger.error(hostLogPrefix + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + hostAdapter[p].config.common.version + '", required "' + version + '"!');
                     return false;
                 }
                 isFound = true;
@@ -2414,7 +2420,8 @@ function checkVersions(id, deps) {
                         if (!checkVersion(id, __name, deps[__name][i])) {
                             return false;
                         }
-                    }                }
+                    }
+                }
             } else {
                 for (const _name in deps) {
                     if (!deps.hasOwnProperty(_name)) continue;
