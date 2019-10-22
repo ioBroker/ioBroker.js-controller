@@ -19,6 +19,18 @@
         },
         "news": {
             "2.0.35": {
+                "en": "optimizations and bugfixes for alias and more, allow password usage for Redis connections",
+                "de": "Optimierungen und Bugfixes für Alias und mehr ermöglichen die Verwendung von Kennwörtern für Redis-Verbindungen",
+                "ru": "оптимизация и исправления для псевдонима и многое другое, разрешить использование пароля для подключений Redis",
+                "pt": "otimizações e correções de bugs para alias e mais, permitem o uso de senha para conexões Redis",
+                "nl": "optimalisaties en bugfixes voor alias en meer, staan wachtwoordgebruik toe voor Redis-verbindingen",
+                "fr": "optimisations et corrections de bugs pour les alias et plus, autoriser l'utilisation de mots de passe pour les connexions Redis",
+                "it": "ottimizzazioni e correzioni di bug per alias e altro, consentono l'utilizzo della password per le connessioni Redis",
+                "es": "optimizaciones y correcciones de errores para alias y más, permiten el uso de contraseñas para conexiones Redis",
+                "pl": "optymalizacje i poprawki błędów dla aliasu i więcej, pozwalają na użycie hasła do połączeń Redis",
+                "zh-cn": "别名的优化和错误修正等，允许Redis连接使用密码"
+            },
+            "2.0.34": {
                 "en": "Allow custom settings to be removed again if objects are \"file\"",
                 "de": "Ermöglichen, dass benutzerdefinierte Einstellungen wieder entfernt werden, wenn Objekte \"Datei\" sind",
                 "ru": "Разрешить удаление пользовательских настроек еще раз, если объекты \"файл\"",
