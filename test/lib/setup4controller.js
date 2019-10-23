@@ -43,7 +43,8 @@ function startController(options, callback) {
             redisNamespace:     options.objects.redisNamespace || '',
             noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
             connectTimeout:     options.objects.connectTimeout || 2000,
-            dataDir:            options.objects.dataDir || ''
+            dataDir:            options.objects.dataDir || '',
+            enhancedLogging: true
         },
         logger: options.objects.logger || options.logger || {
             silly: msg => console.log(msg),
@@ -72,8 +73,7 @@ function startController(options, callback) {
                 }
             }
         },
-        change: options.objects.onChange || null,
-        enhancedLogging: true
+        change: options.objects.onChange || null
     };
 
     let Objects;
@@ -136,7 +136,8 @@ function startController(options, callback) {
             port:           (options.states.port === undefined) ? 19000 : options.states.port,
             user:           options.states.user     || '',
             pass:           options.states.pass     || '',
-            dataDir:        options.states.dataDir  || ''
+            dataDir:        options.states.dataDir  || '',
+            enhancedLogging: true
         },
         logger:         options.states.logger || options.logger || {
             silly: msg => console.log(msg),
@@ -154,8 +155,7 @@ function startController(options, callback) {
                 callback && callback(objects, states);
             }
         },
-        change: options.states.onChange || null,
-        enhancedLogging: true
+        change: options.states.onChange || null
     };
 
     const _statesInst = new States(settingsStates);
