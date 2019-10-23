@@ -2959,7 +2959,7 @@ function startInstance(id, wakeUp) {
 
                                 // fix problem on windows
                                 if (process.platform === 'win32') {
-                                    fileNameFull = fileNameFull.replace(/\//g, '\\\\');
+                                    fileNameFull = fileNameFull.replace(/[\/\\]/g, '\\\\');
                                 }
                                 const starterScript =
                                     'module.exports = function (callback) {\n' +
