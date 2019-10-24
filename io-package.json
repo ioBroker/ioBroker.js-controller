@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.35",
+        "version": "2.0.36",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.0.36": {
+                "en": "optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
+                "de": "Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Verbesserungen bei der Protokollierung",
+                "ru": "исправления и исправления ошибок, исправлены ошибки в компактном режиме в Windows, улучшено ведение журнала",
+                "pt": "otimizações e correções de erros, erros no modo compacto no Windows corrigidos, aprimoramentos de log",
+                "nl": "optimalisaties en bugfixes, fouten met compacte modus op Windows fixed, logboekverbeteringen",
+                "fr": "optimisations et corrections de bugs, erreurs avec le mode compact sur Windows corrigées, améliorations de la journalisation",
+                "it": "ottimizzazioni e correzioni di errori, errori con modalità compatta su Windows fissi, miglioramenti della registrazione",
+                "es": "optimizaciones y correcciones de errores, errores con modo compacto en Windows arreglado, mejoras de registro",
+                "pl": "optymalizacje i poprawki błędów, naprawiono błędy w trybie kompaktowym w systemie Windows, ulepszenia rejestrowania",
+                "zh-cn": "优化和错误修复，Windows上的精简模式错误已修复，日志记录增强"
+            },
             "2.0.35": {
                 "en": "optimizations and bugfixes for alias and more, allow password usage for Redis connections",
                 "de": "Optimierungen und Bugfixes für Alias und mehr ermöglichen die Verwendung von Kennwörtern für Redis-Verbindungen",

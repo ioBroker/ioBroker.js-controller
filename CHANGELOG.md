@@ -1,5 +1,12 @@
 # Changelog
 
+
+## 2.0.36 (2019-10-24) Release Bella
+* (Apollon77) Add some more logic to prevent access with invalid ids
+* (Apollon77) change "enhancedLogging" to not be global but "per DB"
+* (Apollon77) Fix compact mode on Windows systems
+* (Apollon77) make sure multiple callbacks to "unload" will be ignored
+
 ## 2.0.35 (2019-10-19) Release Bella
 * (Apollon77) Allow to use Redis password as "pass" parameter for States and Objects
 * (Apollon77) Prevent hangs on "iobroker upgrade self" from 1.5 to 2.0
