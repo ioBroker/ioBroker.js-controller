@@ -15,7 +15,8 @@
 - **date-end** - When should the message no longer be displayed (in format 2019-01-01T00:00:00.000Z)
 - **node-version** - Can be used with bigger(x.x.x), smaller(x.x.x), equals(x.x.x) or between(x.x.x,y.y.y) to check the installed node version (since Info 1.5.1, Admin 3.6.7)
 - **npm-version** - Can be used with bigger(x.x.x), smaller(x.x.x), equals(x.x.x) or between(x.x.x,y.y.y) to check the installed node version (since Info 1.5.5, Admin tba)
-- **os** - Can be 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32' and 'android' (since Info 1.5.5, Admin tba)
+- **os** - Can be 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32' and 'android' (since Info 1.5.5, Admin 3.6.10)
+- **repo** - Can be 'latest' or 'default' (since Info 1.5.6, Admin tba)
 - **conditions** - Object in format ("adapter" : "condition") -> All conditions are linked with "and"
   - **installed** - Adapter is installed (example: "iot": "installed")
   - **!installed** - Adapter is not installed  (example: "cloud": "!installed")
