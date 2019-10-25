@@ -668,6 +668,58 @@
                 "ownerGroup": "system.group.administrator",
                 "object": 1604
             }
+        },
+        {
+            "_id": "0_userdata.0",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "User objects and files root folder",
+                    "de": "Stammordner für Benutzerobjekte und Dateien",
+                    "ru": "Корневая папка пользовательских объектов и файлов",
+                    "pt": "Pasta raiz de objetos e arquivos do usuário",
+                    "nl": "Hoofdmap van objecten en bestanden van gebruikers",
+                    "fr": "Objets utilisateur et dossier racine des fichiers",
+                    "it": "Cartella principale di oggetti e file dell'utente",
+                    "es": "Carpeta raíz de objetos y archivos de usuario",
+                    "pl": "Folder główny obiektów i plików użytkownika",
+                    "zh-cn": "用户对象和文件根文件夹"
+                },
+                "desc": {
+                    "en": "Here you can upload your files or create your private objects and states",
+                    "de": "Hier können Sie Ihre Dateien hochladen oder Ihre privaten Objekte und Zustände erstellen",
+                    "ru": "Здесь вы можете загрузить свои файлы или создать свои личные объекты и состояния",
+                    "pt": "Aqui você pode enviar seus arquivos ou criar seus objetos e estados particulares",
+                    "nl": "Hier kunt u uw bestanden uploaden of uw privé-objecten en statussen maken",
+                    "fr": "Ici, vous pouvez télécharger vos fichiers ou créer vos objets et états privés",
+                    "it": "Qui puoi caricare i tuoi file o creare oggetti e stati privati",
+                    "es": "Aquí puede cargar sus archivos o crear sus objetos y estados privados",
+                    "pl": "Tutaj możesz przesyłać pliki lub tworzyć prywatne obiekty i stany",
+                    "zh-cn": "在这里您可以上传文件或创建私有对象和状态"
+                },
+                "type": "meta.folder",
+                "dontDelete": true
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
+            }
+        },
+        {
+            "_id": "0_userdata.0.example_state",
+            "type": "state",
+            "common": {
+                "name": "Example state",
+                "role": "indicator",
+                "def": false,
+                "type": "boolean"
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
+            }
         }
     ]
 }
