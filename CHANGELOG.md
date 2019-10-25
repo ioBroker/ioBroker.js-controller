@@ -7,6 +7,7 @@
 * (Apollon77) Fix compact mode on Windows systems
 * (Apollon77) make sure multiple callbacks to "unload" will be ignored
 * (bluefox) Rise all user in admin group to administrators
+* (Apollon77) Allow buffers to be passes in messages again
 
 ## 2.0.35 (2019-10-19) Release Bella
 * (Apollon77) Allow to use Redis password as "pass" parameter for States and Objects
