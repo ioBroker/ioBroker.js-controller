@@ -7,7 +7,7 @@
 * (Apollon77) Fix compact mode on Windows systems
 * (Apollon77) make sure multiple callbacks to "unload" will be ignored
 * (bluefox) Rise all user in admin group to administrators
-* (Apollon77) Allow buffers to be passes in messages again
+* (Apollon77) Allow buffers to be passed in messages again
 * (bluefox) Fix session storage
 * (Apollon77) Introduce 0_userdata as new home for user specific files, objects and states
 * (Apollon77) Enhance logging
