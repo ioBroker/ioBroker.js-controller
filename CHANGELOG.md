@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 2.0.36 (2019-10-24) Release Bella
+## 2.0.37 (2019-10-26) Release Bella
 * (Apollon77) Add some more logic to prevent access with invalid ids
 * (Apollon77) change "enhancedLogging" to not be global but "per DB"
 * (Apollon77) Fix compact mode on Windows systems
@@ -11,6 +11,8 @@
 * (bluefox) Fix session storage
 * (Apollon77) Introduce 0_userdata as new home for user specific files, objects and states
 * (Apollon77) Enhance logging
+* (bluefox) fix letsencrypt (was broken n 2.0.35)
+* (Apollon77) fix install adapter starts like vis installation when db is not available
 
 ## 2.0.35 (2019-10-19) Release Bella
 * (Apollon77) Allow to use Redis password as "pass" parameter for States and Objects

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.36",
+        "version": "2.0.37",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,17 +18,17 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.36": {
-                "en": "optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
-                "de": "Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Verbesserungen bei der Protokollierung",
-                "ru": "исправления и исправления ошибок, исправлены ошибки в компактном режиме в Windows, улучшено ведение журнала",
-                "pt": "otimizações e correções de erros, erros no modo compacto no Windows corrigidos, aprimoramentos de log",
-                "nl": "optimalisaties en bugfixes, fouten met compacte modus op Windows fixed, logboekverbeteringen",
-                "fr": "optimisations et corrections de bugs, erreurs avec le mode compact sur Windows corrigées, améliorations de la journalisation",
-                "it": "ottimizzazioni e correzioni di errori, errori con modalità compatta su Windows fissi, miglioramenti della registrazione",
-                "es": "optimizaciones y correcciones de errores, errores con modo compacto en Windows arreglado, mejoras de registro",
-                "pl": "optymalizacje i poprawki błędów, naprawiono błędy w trybie kompaktowym w systemie Windows, ulepszenia rejestrowania",
-                "zh-cn": "优化和错误修复，Windows上的精简模式错误已修复，日志记录增强"
+            "2.0.37": {
+                "en": "0_userdata for own states, obejcts and files introduced, optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
+                "de": "0_userdata für eigene Zustände, Objekte und Dateien, Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Logging-Verbesserungen",
+                "ru": "0_userdata для собственных состояний, введенных объектов и файлов, оптимизаций и исправлений, исправлены ошибки с компактным режимом в Windows, улучшения ведения журнала",
+                "pt": "0_userdata para estados próprios, obejts e arquivos introduzidos, otimizações e correções de erros, erros com o modo compacto no Windows corrigido, aprimoramentos de registro",
+                "nl": "0_userdata voor eigen toestanden, geïntroduceerde obejcts en bestanden, optimalisaties en bugfixes, fouten met compacte modus op Windows vast, logboekverbeteringen",
+                "fr": "0_userdata pour les états, objets et fichiers introduits, optimisations et corrections de bugs, erreurs avec le mode compact sur Windows corrigées, améliorations de la journalisation",
+                "it": "0_userdata per propri stati, oggetti e file introdotti, ottimizzazioni e correzioni di errori, errori con modalità compatta su Windows fissi, miglioramenti della registrazione",
+                "es": "0_datos de usuario para estados propios, obejcts y archivos introducidos, optimizaciones y correcciones de errores, errores con modo compacto en Windows fijo, mejoras de registro",
+                "pl": "0_userdata dla własnych stanów, wprowadzone obiekty i pliki, optymalizacje i poprawki błędów, naprawione błędy w trybie kompaktowym w systemie Windows, ulepszenia rejestrowania",
+                "zh-cn": "0_userdata用于自身状态，引入的对象和文件，优化和错误修正，Windows上的紧凑模式下的错误已修复，日志记录增强"
             },
             "2.0.35": {
                 "en": "optimizations and bugfixes for alias and more, allow password usage for Redis connections",
