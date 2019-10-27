@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.37",
+        "version": "2.0.38",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.37": {
+            "2.0.38": {
                 "en": "0_userdata for own states, obejcts and files introduced, optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
                 "de": "0_userdata für eigene Zustände, Objekte und Dateien, Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Logging-Verbesserungen",
                 "ru": "0_userdata для собственных состояний, введенных объектов и файлов, оптимизаций и исправлений, исправлены ошибки с компактным режимом в Windows, улучшения ведения журнала",

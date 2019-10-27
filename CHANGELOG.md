@@ -1,7 +1,6 @@
 # Changelog
 
-
-## 2.0.37 (2019-10-26) Release Bella
+## 2.0.38 (2019-10-26) Release Bella
 * (Apollon77) Add some more logic to prevent access with invalid ids
 * (Apollon77) change "enhancedLogging" to not be global but "per DB"
 * (Apollon77) Fix compact mode on Windows systems
