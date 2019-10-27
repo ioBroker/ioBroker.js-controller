@@ -697,7 +697,7 @@
                     "pl": "Tutaj możesz przesyłać pliki lub tworzyć prywatne obiekty i stany",
                     "zh-cn": "在这里您可以上传文件或创建私有对象和状态"
                 },
-                "type": "meta.folder",
+                "type": "meta.user",
                 "dontDelete": true
             },
             "acl": {
