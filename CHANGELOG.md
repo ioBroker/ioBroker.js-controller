@@ -13,6 +13,7 @@
 * (Apollon77) Enhance logging
 * (bluefox) fix letsencrypt (was broken n 2.0.35)
 * (Apollon77) fix install adapter starts like vis installation when db is not available
+* (Stabilostick) Auto generated self-signed certificates need to have a max duration of 2 years according to new Apple rules
 
 ## 2.0.35 (2019-10-19) Release Bella
 * (Apollon77) Allow to use Redis password as "pass" parameter for States and Objects
