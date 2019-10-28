@@ -135,6 +135,12 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.10.3 (2019-10-27)
+* (foxriver76) fixed info channel
+
+### 1.10.2 (2019-10-24)
+* (foxriver76) replace min max values of hmip with correct numbers 
+
 ### 1.10.0 (2019-08-12)
 * (foxriver76) new meta data handling procedure
 * __js-controller >= 1.4.2 required__

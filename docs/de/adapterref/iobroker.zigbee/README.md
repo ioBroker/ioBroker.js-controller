@@ -34,6 +34,15 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
+### 0.11.5 (2019-10-26)
+* (allofmex) Improved publish-to-zigbee queue
+* (arteck) Gledopto GL-B-001Z
+* (kirovilya) iHORN Temperature & humidity sensor
+* (kirovilya) Trust ZLED-TUNE9, DIYRuZ contact, Lonsonho Plug
+* (kirovilya) IKEA driver 30W
+* (allofmex) Hue Smart Plug
+* (arteck) LST004
+
 ### 0.11.4 (2019-09-30)
 * (Asgothian) Danalock V3 BTZB
 * (Asgothian) GroupErrorInGetDevices

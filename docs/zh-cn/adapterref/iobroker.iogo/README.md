@@ -3,35 +3,35 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
+hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 ---
 ![商标](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
 ![安装数量](http://iobroker.live/badges/iogo-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iogo.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.iogo.svg)
-![特拉维斯-CI](http://img.shields.io/travis/nisiode/ioBroker.iogo/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.iogo.svg)
+![特拉维斯](http://img.shields.io/travis/nisiode/ioBroker.iogo/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.iogo.png?downloads=true)
 
 ＃ioBroker.iogo
 =================
 
-此适配器正在向智能家居应用程序ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo添加额外功能。
-有关如何入门的更多信息，请访问iogo.nisnagel.de。
+此适配器为ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo智能家居应用程序增加了额外的功能。
+请访问iogo.nisnagel.de了解有关入门的更多信息。
 
 ##配置
 您需要有效的许可证密钥才能使用此适配器。
-在https://iogo.nisnagel.de创建公告后可以购买许可证。
+在https://iogo.nisnagel.de创建助手后，可以购买许可证。
 
 请在实例配置中输入您的帐户信息（电子邮件/密码）。
 
 ##用法
-您可以通过messageBox```sendTo('iogo', 'New message')```或特定用户```sendTo('iogo', {user: 'Username', text: 'Test message'})```向所有经过身份验证的用户发送消息。
+您可以通过messageBox```sendTo('iogo', 'New message')```向所有经过身份验证的用户或特定用户§§JJJJJ_1_1§§发送消息。
 必须先创建用户（请阅读应用程序文档以获取更多详细信息）。
 
-可以指定多个收件人（只需用逗号分隔用户名）。例如：收件人：“User1，User4，User5”
+可以指定多个收件人（只需用逗号分隔用户名）。例如：收件人：“ User1，User4，User5”
 
-示例如何使用javascript发送通知自定义消息：
+示例如何使用javascript发送通知定制消息：
 
 ```
 sendTo('iogo', {
@@ -43,9 +43,9 @@ sendTo('iogo', {
 
 还有一个例子：
 
-![blockly](../../../en/adapterref/iobroker.iogo/img/blockly.png)
+![块状](../../../en/adapterref/iobroker.iogo/img/blockly.png)
 
-支持回调以及：
+还支持回调：
 
 ```
 sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
@@ -53,7 +53,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-只需将路径发送到您的图像而不是文本或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
+只需将路径发送到您的图片而不是文本，或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {
@@ -64,16 +64,16 @@ sendTo('iogo', {
 });
 ```
 
-**可能的选择**：
+**可能的选项**：
 
- - *user* 单个用户或用户列表
- - *text* 消息本身
- - *title* 通知的标题
- - *url* 图像的绝对路径
+-*用户*：单个用户或用户列表
+-*文本*：消息本身
+-* title *：通知的标题
+-* url *：图片的绝对路径
 
 ## Changelog
 
-### 0.4.0
+### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x

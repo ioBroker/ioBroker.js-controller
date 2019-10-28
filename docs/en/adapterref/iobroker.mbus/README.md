@@ -36,6 +36,10 @@ In the created states for each device one state exists called "updateNow". When 
 
 ## Changelog
 
+### 2.0.0 (2019-10-16)
+* (lvogt) **BREAKING CHANGE** better handling for values with changing scaling based on the value - maybe incompatible with old values!
+* (lvogt) add setting to force kWh values for energy
+
 ### 1.1.1 (2018-12-10)
 * (Apollon77) make sure adapter is not communicating too fast at the beginning
 
@@ -69,7 +73,7 @@ In the created states for each device one state exists called "updateNow". When 
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

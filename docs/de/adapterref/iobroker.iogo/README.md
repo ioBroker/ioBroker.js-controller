@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
+hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 ---
 ![Logo](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -21,7 +21,7 @@ Bitte besuchen Sie iogo.nisnagel.de für weitere Informationen zum Einstieg.
 
 ## Aufbau
 Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter zu verwenden.
-Eine Lizenz kann nach dem Erstellen einer Akustik unter https://iogo.nisnagel.de erworben werden.
+Eine Lizenz kann nach Erstellung eines Accounts unter https://iogo.nisnagel.de erworben werden.
 
 Bitte geben Sie Ihre Kontoinformationen (E-Mail / Passwort) in die Instanzkonfiguration ein.
 
@@ -73,7 +73,7 @@ sendTo('iogo', {
 
 ## Changelog
 
-### 0.4.0
+### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x

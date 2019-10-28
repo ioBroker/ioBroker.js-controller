@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: kO0q9BBZOPYEkmaGizJv1Q9Yms3sXUtpJenPSjO889o=
+hash: jaPO4HOvxaUmQXvTTjTM136xdGeXdThA0GX71m9v4Uk=
 ---
 # Nach https://github.com/iobroker-community-adapters/ioBroker.hue verschoben
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
@@ -22,12 +22,13 @@ Dieser Adapter verbindet Ihre Philips Hue Bridges mit ioBroker, um Philips Hue L
 ### Konfiguration
 Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als nächstes müssen Sie Ihre Hue Bridge mit ioBroker in den Adaptereinstellungen verbinden:
 
-1. Klicken Sie auf die Schaltfläche "Find Bridge", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch werden alle Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Bridge aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Bridge Address" wird mit der IP-Adresse der von Ihnen gewählten Hue Bridge gefüllt.
-2. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Button gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
+1. Wenn Sie eine andere Bridge als v2 verwenden, konfigurieren Sie den Port auf 80 (nicht https), andernfalls sollte 443 (https) der richtige Weg sein.
+2. Klicken Sie auf die Schaltfläche "Find Bridge", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch werden alle Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Bridge aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Bridge Address" wird mit der IP-Adresse der von Ihnen gewählten Hue Bridge gefüllt.
+3. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Knopf gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
 4. Ändern Sie andere Optionen in den Adaptereinstellungen und wählen Sie dann "Speichern und schließen".
 5. Schließlich sollten Sie fertig sein: Der Adapter generiert alle Objekte, um Ihre Hue-Geräte entsprechend zu steuern.
 
-Bitte beachten Sie: Die Schaltfläche "Find Bridge" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge Address" (Brückenadresse) ausgefüllt ist, und die Schaltfläche "Create User" (Benutzer erstellen) ist inaktiv, wenn das Feld "Bridge User" (Brückenbenutzer) ausgefüllt ist.
+Bitte beachten Sie: Die Schaltfläche "Bridge suchen" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge-Adresse" ausgefüllt ist, und die Schaltfläche "Benutzer erstellen" ist inaktiv, wenn das Feld "Bridge-Benutzer" ausgefüllt ist.
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -38,6 +39,20 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 * Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
+### 2.2.3 (2019-10-21)
+* (foxriver76) migrate everything to Hue v3
+* (foxriver76) add possibility to turn on/off sensor
+* (foxriver76) add anyOn state for all group
+* (foxriver76) different kinds of fixes for v3 (Osram Plugs, SSL connection, etc)
+
+### 2.1.0 (2019-10-15)
+* (foxriver76) usage and adaptions for node-hue-api v3
+* (foxriver76) ability to turn lights on with last settings
+* (foxriver76) polling interval minimum is now 2 sec
+
+### 2.0.1 (2019-10-04)
+* (foxriver76) fixed bug, that prevented some sensor states getting updated during runtime
+
 ### 2.0.0 (2019-09-23)
 __ATTENTION: Remove all objects once, ids have changed__
 * (foxriver76) internal optimizations

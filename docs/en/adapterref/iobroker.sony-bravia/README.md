@@ -3,7 +3,7 @@
   ioBroker.sony-bravia
 </h1>
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.sony-bravia.svg)](https://www.npmjs.com/package/iobroker.sony-bravia)
+![Number of Installations](http://iobroker.live/badges/sony-bravia-installed.svg) ![Number of Installations](http://iobroker.live/badges/sony-bravia-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sony-bravia.svg)](https://www.npmjs.com/package/iobroker.sony-bravia)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sony-bravia.svg)](https://www.npmjs.com/package/iobroker.sony-bravia)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.sony-bravia.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.sony-bravia)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sony-bravia/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sony-bravia)

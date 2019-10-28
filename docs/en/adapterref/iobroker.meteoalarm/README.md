@@ -72,7 +72,9 @@ Please go to http://meteoalarm.eu and choose your region. Then go to the RSS sym
 * Italy
 * Netherlands
 * Norwege
+* Slovakia
 * Spain
+* Switzerland
 
 If you don't find your country, please create an issue on github, and I will be happy to add it
 
@@ -86,6 +88,8 @@ If you don't find your country, please create an issue on github, and I will be 
 
 
 ## Changelog
+## 1.0.6 (2019-10-19)
+* (jack-blackson) Added Switzerland & Slowakia
 ## 1.0.5 (2019-09-22)
 * (jack-blackson) Small logging adjustments
 ## 1.0.4 (2019-09-11)

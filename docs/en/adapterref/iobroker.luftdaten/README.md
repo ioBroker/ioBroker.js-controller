@@ -2,9 +2,18 @@
 
 # ioBroker.luftdaten
 
-![Number of Installations](http://iobroker.live/badges/luftdaten-installed.svg) ![Number of Installations](http://iobroker.live/badges/luftdaten-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.luftdaten.svg)](https://www.npmjs.com/package/iobroker.luftdaten)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.luftdaten.svg)](https://www.npmjs.com/package/iobroker.luftdaten)
+[![Stable](http://iobroker.live/badges/luftdaten-stable.svg)](http://iobroker.live/badges/luftdaten-stable.svg)
+[![installed](http://iobroker.live/badges/luftdaten-installed.svg)](http://iobroker.live/badges/luftdaten-installed.svg)
+[![Dependency Status](https://img.shields.io/david/klein0r/iobroker.luftdaten.svg)](https://david-dm.org/klein0r/iobroker.luftdaten)
+[![Known Vulnerabilities](https://snyk.io/test/github/klein0r/ioBroker.luftdaten/badge.svg)](https://snyk.io/test/github/klein0r/ioBroker.luftdaten)
+[![Build Status](http://img.shields.io/travis/klein0r/ioBroker.luftdaten.svg)](https://travis-ci.org/klein0r/ioBroker.luftdaten)
 
-This adapter adds "luftdaten.info" sensor data to your ioBroker installation. You can decide if you want to add a local sensor by ip or if you just want to use the API of lufdaten.info to get the data of another sensor.
+[![NPM](https://nodei.co/npm/iobroker.luftdaten.png?downloads=true)](https://nodei.co/npm/iobroker.luftdaten/)
+
+This adapter adds "luftdaten.info" sensor data to your ioBroker installation.
+You can decide if you want to add a local sensor by ip or if you just want to use the API of lufdaten.info to get the data of another sensor.
 
 ## Configuration
 
@@ -42,23 +51,37 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 ## Changelog
 
+### 0.0.9
+
+* (klein0r) improved logging
+
+### 0.0.8
+
+* (klein0r) added response time and units
+
 ### 0.0.7
+
 * (klein0r) merged pull requests - thanks a lot for contribution
 
 ### 0.0.6
+
 * (klein0r) changed type to weather
 
 ### 0.0.5
+
 * (klein0r) fixed issues when sensor is not available
 * (klein0r) added location information for remote sensors
 
 ### 0.0.4
+
 * (pix) path is IP if sensor is local
 
 ### 0.0.3
+
 * (pix) path and sensor name added
 
 ### 0.0.1
+
 * (klein0r) initial release
 
 ## License

@@ -547,6 +547,10 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+
+### 2.3.2 (2019-10-18)
+* (Apollon77) Fix Admin 3 support
+
 ### 2.3.1 (2019-10-12)
 * (bluefox) Admin 3 is now supported
 * (bluefox) NPM packages were updated

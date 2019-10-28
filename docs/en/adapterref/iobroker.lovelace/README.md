@@ -368,6 +368,9 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Original sources for lovelace
+Used sources are here https://github.com/GermanBluefox/home-assistant-polymer .
+
 ## Todo
 Security must be taken from current user and not from default_user
 
@@ -386,6 +389,12 @@ Used version of home-assistant-frontend@1.0.0
 8. Start `gulp rename` task.
 
 ## Changelog
+### 0.2.3 (2019-10-22)
+* (bluefox) The custom settings were corrected
+
+### 0.2.1 (2019-10-15)
+* (bluefox) Processing of empty states was corrected
+
 ### 0.2.0 (2019-09-19)
 * (Scrounger) Some bugs on "Custom Dialog" were fixed
 * (Scrounger) bug fix: if value set by lovelace and max is not 100

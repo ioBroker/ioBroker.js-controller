@@ -314,6 +314,10 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+### 1.5.6 (2019-xx-xx)
+* (ldittmar) Add Repo check for popup
+* (ldittmar) Fix dp type
+
 ### 1.5.5 (2019-10-12)
 * (ldittmar) Add NPM and OS check for popup
 

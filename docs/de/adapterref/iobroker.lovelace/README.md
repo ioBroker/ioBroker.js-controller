@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
+hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -17,10 +17,10 @@ hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
 
 # IoBroker.lovelace
 ## Lovelace Adapter für ioBroker
-Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen.
+Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Lovelace-Benutzeroberfläche von Home Assistant erstellen.
 
 ## Aufbau
-Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden können:
+Es gibt zwei Arten, wie die Entitäten konfiguriert werden könnten:
 
 - auto
 - manuell
@@ -78,7 +78,7 @@ oder du benutzt einfach `lovelace.X.control.alarm (entity_id = alarm_control_pan
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
 Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` sowie die optionalen Werte für `step` hinzugefügt.
-Wenn Sie die Auf- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
+Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
 
 ```
 common: {
@@ -284,7 +284,7 @@ oder
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-in der Lovelace Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
+in Lovelace Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
 
 ## Themes
 Die Themen können im Konfigurationsdialog von ioBroker definiert werden.
@@ -378,6 +378,9 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Originalquellen für Lovelace
+Verwendete Quellen sind hier https://github.com/GermanBluefox/home-assistant-polymer.
+
 ## Machen
 Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übernommen werden
 
@@ -396,6 +399,12 @@ Verwendete Version von home-assistant-frontend@1.0.0
 8. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
+### 0.2.3 (2019-10-22)
+* (bluefox) The custom settings were corrected
+
+### 0.2.1 (2019-10-15)
+* (bluefox) Processing of empty states was corrected
+
 ### 0.2.0 (2019-09-19)
 * (Scrounger) Some bugs on "Custom Dialog" were fixed
 * (Scrounger) bug fix: if value set by lovelace and max is not 100

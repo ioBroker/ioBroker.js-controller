@@ -31,6 +31,20 @@ Connect your Philips Hue Lights with ioBroker.
 
 ## Changelog
 
+### 1.1.0 (2019-10-27)
+- (Zefau) add full support for Hue Labs scenes
+- (Zefau) add retry if bridge returns error `socket hang up`
+- (Zefau) add retry if device is not reachable
+
+### 1.0.2 (2019-10-20)
+- (Zefau) added scenes from Hue Labs
+
+### 1.0.1 (2019-10-20)
+- (Zefau) fixed incorrect omitting GroupScenes
+
+### 1.0.0 (2019-10-20)
+- (Zefau) fixed issue setting devices with `bri` / `brightness` (e.g. plugs)
+
 ### 1.0.0-rc.1 (2019-10-13)
 - (Zefau) __BREAKING CHANGE__ changed certain objects due to standardization (see https://forum.iobroker.net/post/298019)
 	- changed `bri` to `brightness`*

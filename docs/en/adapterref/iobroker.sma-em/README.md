@@ -44,6 +44,9 @@ Example:
         
 ## Changelog
 
+### 0.5.4
+* (Andiling) Adapter compatibility extended for Node 10 and higher
+
 ### 0.5.3
 * (Marcolotti) Fix units 
 

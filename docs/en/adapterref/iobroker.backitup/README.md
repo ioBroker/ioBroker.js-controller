@@ -215,6 +215,12 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.2.2 (20.10.2019)
+(simatec) Fix update process
+
+### 1.2.1 (19.10.2019)
+(simatec) Fix CIFS password with special characters
+
 ### 1.2.0 (02.07.2019)
 * (bluefox) Google Drive was added
 * (simatec) Support for node 6 ended

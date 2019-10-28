@@ -71,6 +71,9 @@ Build on top of the following projects:
 10. npm publish
 
 ## Changelog
+### 2.3.1 (2019-10-23)
+* (angelnu) Tested compact mode works in Linux and Windows
+
 ### 2.2.3 (2019-03-19)
 * news
 

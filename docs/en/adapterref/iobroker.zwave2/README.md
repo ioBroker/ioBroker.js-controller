@@ -17,21 +17,28 @@ Alternative Z-Wave implementation
 
 ## Changelog
 
+### next version
+
+-   Update `zwave-js` to v1.6.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#160-2019-10-23)
+-   improve value/metadata logging and change loglevel to debug
+-   use unit from value metadata
+-   use translated property keys to name states
+
 ### 0.1.3
 
--   (AlCalzone) Update `zwave-js` dependency. Notable improvements include:
+-   Update `zwave-js` dependency. Notable improvements include:
     -   Support for `Time` and `Time Parameters` CCs. This automatically sets the correct time on supporting nodes.
     -   Support for `Battery` CC v2
     -   Cleanup of CC values
--   (AlCalzone) Update misc. dependencies
+-   Update misc. dependencies
 
 ### 0.1.2
 
--   (AlCalzone) Several bugfixes and working admin menu
+-   Several bugfixes and working admin menu
 
 ### 0.0.1
 
--   (AlCalzone) initial release
+-   initial release
 
 ## License
 

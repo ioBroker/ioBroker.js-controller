@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
+hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -21,7 +21,7 @@ hash: 0xTE+p6KLGSVY0lkRWtH9z6KzXj+kkKOra/1nMNgTNE=
 
 ## Конфигурация
 Вам нужен действующий лицензионный ключ, чтобы использовать этот адаптер.
-Лицензию можно приобрести после создания аккаунта на https://iogo.nisnagel.de.
+Лицензию можно приобрести после создания счета на https://iogo.nisnagel.de.
 
 Пожалуйста, введите информацию о вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
 
@@ -73,7 +73,7 @@ sendTo('iogo', {
 
 ## Changelog
 
-### 0.4.0
+### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x

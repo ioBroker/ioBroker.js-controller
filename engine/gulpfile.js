@@ -148,19 +148,25 @@ gulp.task('downloadAdapterTest', () => {
 
 // removes adapter from all languages "gulp remove --adapterName"
 gulp.task('remove', done => {
-    let adapter = process.argv[3].replace(/^-+/, '').replace(/^iobroker\./i, '');
-    console.log(process.argv[3].replace(/^-+/, ''));
-    adapter = 'iobroker.' + adapter;
-    consts.LANGUAGES.forEach(lang => {
-        const dir = consts.SRC_DOC_DIR + lang + '/adapterref/' + adapter;
-        if (fs.existsSync(dir)) {
-            try {
-                utils.delDir(dir);
-            } catch (e) {
-                console.error('Cannot delete ' + path.normalize(dir));
+    if (!process.argv[3]) {
+        console.error('Please specify adapter name as "gulp remove --adapterName"');
+    } else {
+        let adapter = process.argv[3].replace(/^-+/, '').replace(/^iobroker\./i, '');
+        console.log(process.argv[3].replace(/^-+/, ''));
+
+        adapter = 'iobroker.' + adapter;
+        consts.LANGUAGES.forEach(lang => {
+            const dir = consts.SRC_DOC_DIR + lang + '/adapterref/' + adapter;
+            if (fs.existsSync(dir)) {
+                try {
+                    utils.delDir(dir);
+                } catch (e) {
+                    console.error('Cannot delete ' + path.normalize(dir));
+                }
             }
-        }
-    });
+        });
+    }
+
     done();
 });
 

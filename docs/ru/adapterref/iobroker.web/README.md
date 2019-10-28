@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
+hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 ---
 ![логотип](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -17,7 +17,7 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 Веб-сервер на базе Node.js и экспресс для чтения файлов из БД ioBroker
 
 ## Настройка веб-сокетов
-На некоторых клиентах веб-сокетов существует проблема с производительностью связи. Иногда эта проблема связана с откатом соединения socket.io с длинным механизмом опроса.
+На некоторых клиентах веб-сокетов существует проблема с производительностью связи. Иногда эта проблема возникает из-за сбоя соединения socket.io с длинным механизмом опроса.
 Вы можете установить опцию *Force Web-Sockets* чтобы принудительно использовать только транспорт веб-сокетов.
 
 ## Давайте зашифруем сертификаты
@@ -31,10 +31,23 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 Требуется, чтобы все службы были доступны на одном веб-сервере.
 
 ## Защита от грубой силы
-Если аутентификация включена и пользователь вводит 5 раз неверный пароль в течение одной минуты, он должен ждать не менее одной минуты до следующей попытки.
+Если аутентификация включена и пользователь вводит 5 раз неверный пароль в течение одной минуты, он должен подождать не менее одной минуты до следующей попытки.
 После 15-й неправильной попытки пользователь должен ждать 1 час.
 
+## Параметр «Оставаться в системе»
+Если выбрана эта опция, пользователь остается в системе в течение одного месяца.
+Если нет, пользователь останется в системе в течение настроенного времени ожидания входа.
+
 ## Changelog
+### 2.4.8 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
+### 2.4.6 (2019-10-12)
+* (bluefox) Fixed issue with simple-api
+
+### 2.4.4 (2019-06-27)
+* (bluefox) Fixed issue with socket.io.js not found
+
 ### 2.4.3 (2019-01-14)
 * (SchumyHao) Add Chinese support
 
@@ -94,7 +107,7 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 
 ### 2.0.3 (2017-04-01)
  * (bluefox) catch errors for invalid objects
- 
+
 ### 2.0.2 (2017-02-08)
 * (bluefox) fix selectID dialog
 
@@ -208,7 +221,7 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 
 ### 1.1.1 (2015-11-01)
 * (bluefox) some files were missed on npm
-* 
+*
 ### 1.1.0 (2015-11-01)
 * (bluefox) update jquery UI libs
 
@@ -262,10 +275,10 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 
 ### 0.2.3 (2015-02-12)
 * (bluefox) add simple api
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.2 (2015-01-20)
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.1 (2015-01-18)
 * (bluefox) update select ID dialog

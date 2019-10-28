@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: K06DKuylCol7chKVtwTgroTBBcxOLqKQ1P0oTxXfVY8=
+hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
 ---
 ![Logo](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
@@ -17,11 +17,11 @@ hash: K06DKuylCol7chKVtwTgroTBBcxOLqKQ1P0oTxXfVY8=
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
 # IoBroker.schoolfree
+## Schulfreier Adapter für ioBroker
 ** Wenn es dir gefällt, erwäge bitte eine Spende: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
-## Schulfreier Adapter für ioBroker
 ### Deutsche Beschreibung:
 Schoolfree ist ein Adapter für iobroker Installationen.
 Mit dem Adapter lassen sich die Schulferien auswerten und in Datenpunkte übergeben.
@@ -67,6 +67,13 @@ Folgende Datenpunkte stehen für die Weiterverarbeitung mit Schoolfree zur Verf�
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.3.1 (28.10.2019)
+* (simatec) Fix start after install
+
+### 0.3.0 (18.10.2019)
+* (simatec) end of node 6 support
+* (simatec) changed dateformat
 
 ### 0.2.2 (04.06.2019)
 * (simatec)new object structure

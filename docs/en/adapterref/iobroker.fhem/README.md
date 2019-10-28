@@ -45,6 +45,9 @@ Actually only following attributes are supported:
 
 
 ## Changelog
+### 1.4.0 (2019-10-22)
+* (LausiD) Optimized adapter
+
 ### 1.3.0 (2019-07-14)
 * (bluefox) Compact mode was added
 

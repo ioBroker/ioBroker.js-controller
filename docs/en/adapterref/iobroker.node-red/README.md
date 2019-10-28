@@ -16,6 +16,9 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 **Note:** If in select ID dialog of the ioBroker node you cannot find some variable, restart node-red instance. By restarting the new list of objects will be created.
 
 ## Changelog
+### 1.13.0 (2019-10-20)
+* (WolfspiritM) Get Object node added
+
 ### 1.12.0 (2019-10-06)
 * (Apollon77) Allow to enable/diable the projects feature via Admin
 * (Apollon77) Upgrade to node.red 1.0.1 and also add all now extra npm packages to stay compatible

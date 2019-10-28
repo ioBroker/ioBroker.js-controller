@@ -98,6 +98,7 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 
 ### 1.2.1 (14.10.2019)
 * (Stübi) Bugfixing (Issue #9)
+* (Stübi) Bugfixing: if the name of a device is empty, the name was changed all the time between NaN and ''  
 
 ### 1.2.0 (13.09.2019)
 * (Stübi) Changing error handling of adapter

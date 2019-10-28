@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: /UuqRf0fQOLjTNWpl4OG3gv7l+6zCiWKQ3xcZQ2NpEc=
+hash: GiKt6up6qUq4Ido90T1D1UfgDqhAQKHmL3T9gF8Fh48=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -16,7 +16,7 @@ hash: /UuqRf0fQOLjTNWpl4OG3gv7l+6zCiWKQ3xcZQ2NpEc=
 # IoBroker.meteoalarm
 =================
 
-meteoalarm Adapter für ioBroker ------------------------------------------ -------------------------------- Dieser Adapter sendet Wetteralarme von meteoalarm.eu, einschließlich Wind, Schnee und Regen , hohe und niedrige Temperatur usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
+meteoalarm Adapter für ioBroker ------------------------------------------ -------------------------------- Dieser Adapter sendet Wetteralarme von meteoalarm.eu, einschließlich Wind, Schnee und Regen , hohe und niedrige Temperaturen usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
 
 ## Wie man es benutzt
 Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen Sie dann zum RSS-Symbol oben rechts, machen Sie einen Rechtsklick und kopieren Sie den Link. Dies ist der Link, den Sie bitte zum Setup des Adapters hinzufügen.
@@ -32,7 +32,7 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 | Veröffentlichungsdatum Veröffentlichungsdatum des Alarms gemäß der Website |
 | HTMLToday | HTML-Widget, das Alarme für heute anzeigt |
 | Heute / Morgen | Diese Datenpunkte sind für heute und morgen verfügbar: |
-| Text | Alarm Text in länderspezifischer Sprache |
+| Text | Alarmtext in länderspezifischer Sprache |
 | Von | Alarmstartdatum |
 | Bis | Enddatum des Alarms |
 | Art des Alarms als Zahl |
@@ -76,7 +76,9 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 * Italien
 * Niederlande
 * Norwege
+* Slowakei
 * Spanien
+* Schweiz
 
 Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gerne füge ich es hinzu
 
@@ -87,6 +89,9 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gern
 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
+
+## 1.0.6 (2019-10-19)
+* (jack-blackson) Schweiz & Slowakei hinzugefügt
 
 ## 1.0.5 (2019-09-22)
 * (Jack-Blackson) Kleine Protokollierungsanpassungen

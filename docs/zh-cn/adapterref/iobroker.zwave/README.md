@@ -3,46 +3,48 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.zwave/README.md
 title: ioBroker zwave适配器
-hash: MOnafPN3SVLChdx3C9Oqj/6x3xtrLHFZZIq5xCd9rdg=
+hash: CLW9bI1lIyxKiU2eXBY314KMIp5jHUAnDwy7F/Fl8IQ=
 ---
 ![商标](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
 
 ![安装数量](http://iobroker.live/badges/zwave-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.zwave.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.zwave.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.zwave.svg)
 ![NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
 
-＃ioBroker zwave Adapter ==============
+＃ioBroker zwave适配器
+==============
+
 Zwave支持openzwave。
 
-对于这个适配器使用相当好的支持npm模块：https：//github.com/OpenZWave/node-openzwave-shared您应该找到名称有Z-Wave棒的USB端口，并在适配器设置中设置它。
+对于此适配器，使用了受良好支持的npm模块：https://github.com/OpenZWave/node-openzwave-shared您应该找出Z-Wave棒的USB端口名称，并在适配器设置中进行设置。
 
 ##重要信息
- - 首次运行时，适配器需要一些时间来计算iobroker中的所有对象。
- - 如果你添加一个设备，让适配器做它的工作并等待一点。
- - 如果设备在附带的管理网站中不可见，则不会完全导入到ioBroker中。
+-首次运行时，适配器需要一些时间来计算iobroker中的所有对象。
+-如果添加设备，则让适配器完成其工作，然后稍等片刻。
+-如果设备在随附的管理站点中不可见，则表示该设备未完全导入ioBroker。
 
 ##安装
-首先，仅在ARM Linux上测试实现（例如Raspberry Pi（2））。
-您需要一个完全开发环境（gcc，make，...）
+首先，仅在ARM Linux（例如Raspberry Pi（2））上测试实现。
+您需要一个完整的开发环境（gcc，make等）
 
 ###安装其他软件包
-在某些系统上，需要安装其他软件包。因此，在安装适配器之前在控制台上运行以下命令：
+在某些系统上，有必要安装其他软件包。因此，在安装适配器之前，请在控制台上运行以下命令：
 
 ```bash
 apt-get install pkg-config libudev-dev build-essential curl unzip
 ```
 
-###仅限Raspberry Pi3：激活GPIO UART
-在Raspberry Pi 3上，UART默认由蓝牙模块占用。要将其激活以用于GPIO模块，请按照下列步骤操作：
+###仅适用于Raspberry Pi3：激活GPIO UART
+在Raspberry Pi 3上，默认情况下，UART由蓝牙模块占用。要激活它以与GPIO模块一起使用，请按照以下步骤操作：
 
 1.`sudo nano / boot / cmdline.txt`
-1.删除`console = serial0,115200`
-1.保存文件并关闭它
+1.删除“ console = serial0,115200”
+1.保存文件并关闭
 
 2.`sudo nano / boot / config.txt`
 
-查找以下每行。如果使用`#`注释掉它们，请将其删除。如果它们不存在，请将它们添加到文件末尾：
+查找以下各行。如果使用`#`注释掉了它们，则将其删除。如果它们不存在，请将它们添加到文件末尾：
 
 *`dtoverlay = pi3-miniuart-bt`
 *`enable_uart = 1`
@@ -50,23 +52,23 @@ apt-get install pkg-config libudev-dev build-essential curl unzip
 
 3.重启
 
-###首先开始
-GPIO模块通常具有类似于`/dev/ttyAMA0`或`/dev/ttyACM0`的地址。
-USB记忆棒可以在`/dev/ttyUSB0`或`/dev/ttyUSB1`下找到。
+###第一次开始
+GPIO模块通常具有类似于`/dev/ttyAMA0`或`/dev/ttyACM0`§的地址。
+可以在`/dev/ttyUSB0`或`/dev/ttyUSB1`下找到USB记忆棒。
 
- - 进入iobroker管理员并添加Zwave适配器（安装相当长，耐心等待）
- - 启动新的zwave Adapter实例，并从管理UI中的下拉列表中选择控制器设备的地址。
- - 如果未检测到您的设备，请在关闭适配器时进行检查或尝试手动输入其地址。
- - 等到“Instances”选项卡中的指示灯变为绿色或在iobroker日志中找到“zwave.0 Scan completed”消息。
+-进入iobroker管理员并添加Zwave适配器（安装时间相当长，请耐心等待）
+-启动新的zwave Adapter实例，然后从管理UI的下拉列表中选择控制器设备的地址。
+-如果未检测到设备，请在关闭适配器后对其进行检查或尝试手动输入其地址。
+-等待直到“实例”选项卡中的指示器变为绿色，或者在iobroker日志中找到消息“ zwave.0扫描已完成”。
 
 ＃＃＃ 已知的问题
-如果在启动适配器后出现以下（或类似）错误
+如果启动适配器后出现以下（或类似的）错误
 
 ```
 libopenzwave.so.1.4: cannot open shared object file: No such file or directory
 ```
 
-你可以通过运行来修复它
+您可以通过运行来修复它
 
 ```
 sudo ldconfig
@@ -84,86 +86,123 @@ sudo ldconfig /usr/local
 sudo ldconfig /usr/local/lib64
 ```
 
-如果所有这些命令都不起作用，则以下过程可能：
+如果所有这些命令都不起作用，则可能会执行以下过程：
 
-1.“sudo nano / etc / ld.so.conf.d / zwave.conf`
+1.`sudo nano / etc / ld.so.conf.d / zwave.conf`
 1.输入`/ usr / local / lib64`
-1.用`CTRL + X`退出编辑器，用'Y`确认保存更改
+1.使用“ CTRL + X”退出编辑器，使用“ Y”确认以保存更改
 
 1.`sudo ldconfig`
 
 ##配置
-在管理员设置中，您可以设置以下属性
+在管理设置中，您可以设置以下属性
 
- - 强制对象重新初始化（重新初始化ioBroker中的所有对象）
- -  USB名称（Z-Wave棒的USB端口）
- - 记录（启用记录到OZW_Log.txt）
- - 控制台输出（将日志记录复制到控制台，将所有日志记录到ioBroker.log）
- - 保存配置（编写XML网络布局在linux上创建/zwcfg_<HOMEID>.xml）
- - 司机尝试（在放弃之前尝试多次）
- - 轮询间隔（民意调查之间的间隔，以毫秒为单位）
- - 抑制刷新（如果没有改变，不发送更新）
+-USB名称（Z-Wave棒的USB端口）
+-记录（启用记录到OZW_Log.txt）
+-控制台输出（将日志记录复制到控制台，全部记录到ioBroker.log）
+-保存配置（编写XML网络布局，在Linux上创建/zwcfg_<HOMEID>.xml）
+-驾驶员尝试（放弃前请尝试多次）
+-轮询间隔（轮询之间的间隔，以毫秒为单位）
+-禁止刷新（如果没有更改，则不发送更新）
 
-![管理员的设置](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
+![管理员设置](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
 
 ##日志文件/配置设置
 如果您已将iobroker安装到默认文件夹中：
 
-  - 日志文件：linux上的/opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt
-  - 配置：linux上的/opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml
+ -日志文件：/opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt在Linux上
+ -配置：Linux上的/opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml
 
 ##设备添加或删除
-如果添加或删除设备，则需要60秒。然后页面自动重新加载。
+如果添加或删除设备，则需要60秒钟。然后页面将自动重新加载。
 
-如果更改名称或位置，则需要5秒钟。然后页面自动重新加载。
+如果更改名称或位置，则需要5秒钟。然后页面将自动重新加载。
 
 ＃＃ 特征
-在OpenZWave Configurator中，您可以看到所有节点及其类。
+在OpenZWave Configurator中，您可以查看所有节点及其类。
 
-当前支持以下操作（仅限上下文菜单）：
+当前支持以下操作（仅在上下文菜单中）：
 
- - 为节点本身设置名称和设置位置
- - 改变班级的价值
+-设置节点本身的名称和位置
+-改变课程价值
 
-目前支持以下全局操作：
+当前支持以下全局操作：
 
- - 添加节点
- - 删除节点
- - 刷新节点（从ioBroker通信刷新节点）
+-添加节点
+-删除节点
+-刷新节点（通过ioBroker通信刷新节点）
 
 ＃＃ 去做
-### ZWave具体
- - 场景
- - 集团管理
- - 投票
- - 控制器命令
- - 配置命令
+### ZWave特定
+-场景
+-集团管理
+-轮询
+-控制器命令
+-配置命令
 
-### Global
- - 测试更多硬件
- - 将配置和日志文件移动到iobroker默认路径（/ opt / iobroker / log，/ opt / iobroker / data / files / zwave）
- - 语言支持（英语，德语，俄语）
+###全球
+-测试更多硬件
+-将配置和日志文件移至iobroker默认路径（/ opt / iobroker / log，/ opt / iobroker / data / files / zwave）
+-语言支持（英语，德语，俄语）
 
-##经测试的硬件
+##经过测试的硬件
 ### ZWave
- -  ZME_UZB1 USB记忆棒
- -  RaspBerry的RazBerry GPIO董事会（1/2）
+-ZME_UZB1 USB记忆棒
+-用于RaspBerry的RazBerry GPIO板（1/2）
 
 ### Fibaro
- -  FGBS001通用二元传感器
- -  FGS222双继电器开关2x1.5kW
- -  FGWPE墙插头
- -  FGSS001烟雾传感器
- -  FGMS001运动传感器
- -  FGS-223双开关2
- -  FGR-222卷帘门2
- -  FGDW-002门窗传感器2
+-FGBS001通用二进制传感器
+-FGS222双继电器开关2x1.5kW
+-FGWPE墙塞
+-FGSS001烟雾传感器
+-FGMS001运动传感器
+-FGS-223双开关2
+-FGR-222卷帘门2
+-FGDW-002门窗传感器2
 
 ###丹佛斯
- -  Danfoss Living Connect室温控器（型号0003，内容8010）
- -  Danfoss Z Thermostat 014G0013
+-丹佛斯Living Connect Room恒温器（类型0003，ID 8010）
+-丹佛斯Z温控器014G0013
 
 ## Changelog
+
+### 1.7.0
+* (cburghardt) Added multi-instance associations
+
+### 1.6.3
+* (cburghardt) Update openzwave version
+* (cburghardt) Verify that the correct version of openzwave is installed by checking the manufacturer revision
+* (cburghardt) Don't refresh the association menu directly after adding or removing for sleeping devices as it is not updated
+* (cburghardt) Add `removeFailedNode` command
+
+### 1.6.1
+* (cburghardt) Fix issues 75 and 76
+
+### 1.6.0
+* (cburghardt) Cleanup obsolete states on startup
+* (cburghardt) Added confirmation dialog for hard reset
+* (cburghardt) Translation fixes
+* (cburghardt) Removed non-existing `getNeighbors` function
+* (cburghardt) Display network map
+* (cburghardt) Allow manual input of a serial port together with the selection
+* (cburghardt) Suppress permission denied warnings during installation
+
+### 1.5.1
+* (cburghardt) The *refresh node* command no longer excludes the node
+
+### 1.5.0
+* (AlCalzone) Update OpenZWave dependency to version 1.6
+
+### 1.4.2
+* (AlCalzone) Also escape spaces in state IDs.
+
+### 1.4.1
+* (AlCalzone) Pinned version of OpenZWave to 1.4 because 1.6 is not compatible yet
+
+### 1.4.0
+* (AlCalzone) Fixed breaks with OpenZWave 1.6
+* (AlCalzone) Switched to new testing
+* (AlCalzone) Support for compact mode
 
 ### 1.3.2 (2018-11-28)
 * (AlCalzone) Replace all chars in state IDs that are forbidden in JS-Controller 1.5+
@@ -268,7 +307,7 @@ sudo ldconfig /usr/local/lib64
 
 ## License
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
 
 SOFTWARE NOTICE AND LICENSE
 
