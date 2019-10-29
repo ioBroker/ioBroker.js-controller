@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.39 (2019-10-29) Release Bella
+* (Apollon77) "upgrade name" for a controller will return an error to use "upgrade self"
+* (Apollon77) "upgrade all" will no longer update controller too
+* (Apollon77) add some more checks in adapter.js for existence of states/objects
+* (Apollon77) enhance `iobroker setup custom` for Redis sentinel usage
+* (Apollon77) make sure flot store works again also with objects with empty names
+
 ## 2.0.38 (2019-10-26) Release Bella
 * (Apollon77) Add some more logic to prevent access with invalid ids
 * (Apollon77) change "enhancedLogging" to not be global but "per DB"
