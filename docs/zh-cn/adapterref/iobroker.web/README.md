@@ -3,38 +3,51 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
+hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
 ![安装数量](http://iobroker.live/badges/web-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.web.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.web.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.web.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 ＃ioBroker.web
-基于Node.js的Web服务器并表示从ioBroker DB读取文件
+基于Node.js的Web服务器，并表示可以从ioBroker DB中读取文件
 
 ##调整Web套接字
-在某些Web套接字客户端上，通信存在性能问题。有时这个问题是由于长轮询机制上socket.io通信的回退造成的。
-您可以设置选项*强制Web套接字*以强制仅使用Web套接字传输。
+在某些网络套接字客户端上，通信存在性能问题。有时，此问题是由于长轮询机制上的socket.io通信回退所致。
+您可以设置选项* Force Web-Sockets *强制仅使用Web套接字传输。
 
 ##让我们加密证书
 阅读[这里](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
 
 ##扩展
-Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，将调用该处理程序。
-扩展看起来像普通适配器，但它们没有正在运行的进程，将由Web服务器调用。
+Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
+这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊代理适配器并访问同一Web服务器中的其他设备（如Web摄像头）。
-需要在一个Web服务器下提供所有服务。
+例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
+必须让所有服务在一台Web服务器下可用。
 
-##蛮力保护
-如果启用了身份验证并且用户在一分钟内输入了5次无效密码，则必须至少等待一分钟直到下一次尝试。
-在第15次错误尝试后，用户必须等待1小时。
+##暴力保护
+如果启用了身份验证，并且用户在一分钟内输入了5次无效密码，则他必须至少等待一分钟才能进行下一次尝试。
+第15次错误尝试后，用户必须等待1个小时。
+
+##“保持登录状态”选项
+如果选择此选项，则用户将保持登录状态一个月。
+否则，用户将保持登录状态以配置“登录超时”。
 
 ## Changelog
+### 2.4.8 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
+### 2.4.6 (2019-10-12)
+* (bluefox) Fixed issue with simple-api
+
+### 2.4.4 (2019-06-27)
+* (bluefox) Fixed issue with socket.io.js not found
+
 ### 2.4.3 (2019-01-14)
 * (SchumyHao) Add Chinese support
 
@@ -94,7 +107,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ### 2.0.3 (2017-04-01)
  * (bluefox) catch errors for invalid objects
- 
+
 ### 2.0.2 (2017-02-08)
 * (bluefox) fix selectID dialog
 
@@ -208,7 +221,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ### 1.1.1 (2015-11-01)
 * (bluefox) some files were missed on npm
-* 
+*
 ### 1.1.0 (2015-11-01)
 * (bluefox) update jquery UI libs
 
@@ -262,10 +275,10 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ### 0.2.3 (2015-02-12)
 * (bluefox) add simple api
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.2 (2015-01-20)
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.1 (2015-01-18)
 * (bluefox) update select ID dialog

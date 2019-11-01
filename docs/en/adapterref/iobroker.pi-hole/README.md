@@ -32,6 +32,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.2.2
+
+* (unltdnetworx) bugfix for objecttypes
+
 ### 1.2.1
 
 * (unltdnetworx) bugfix for update notification

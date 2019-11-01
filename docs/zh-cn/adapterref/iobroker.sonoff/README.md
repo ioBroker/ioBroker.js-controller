@@ -3,107 +3,114 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: RSDMeYvJdHdLRa0sQZfy3RIpl1BQYRnCBww693bWEvM=
+hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 ---
 ![商标](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
 ![安装数量](http://iobroker.live/badges/sonoff-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sonoff.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sonoff.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.sonoff.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sonoff.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.sonoff.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sonoff.png?downloads=true)
 
-#ioBroker Sonoff ==============
-需要node.js 4.0或更高版本。
-
+＃ioBroker Sonoff
 ##用法
-此适配器通过MQTT与具有Tasmota固件或ESP设备的Sonoff设备进行通信。
+此适配器通过MQTT与具有Tasmota固件的Sonoff设备或ESP设备通信。
 
-预计会有以下主题：
+预期以下主题：
 
- -  tele / DeviceNAME / STATE
- -  tele / DeviceNAME / SENSOR
- -  tele / DeviceNAME / INFOx
- -  tele / DeviceNAME / ENERGY
- -  cmnd / DeviceNAME / POWERx
- -  stat / DeviceNAME / POWERx
- -  / DeviceNAME / BM280 /温度
- -  / DeviceNAME / BM280 /湿度
- -  / DeviceNAME / BM280 / Temperatur
- -  / DeviceNAME / BM280 / Feuchtigkeit
- -  / DeviceNAME / BM280 / Vcc
- -  / DeviceNAME / BM280 / VCC
- -  / DeviceNAME / BM280 / Laufzeit
- -  / DeviceNAME / BM280 / RSSI
- -  / DeviceNAME / BM280 / POWER
- -  / DeviceNAME / BM280 / POWER1
- -  / DeviceNAME / BM280 / POWER2
- -  / DeviceNAME / BM280 / POWER3
- -  / DeviceNAME / BM280 / POWER4
- -  / DeviceNAME / BM280 / Switch1
- -  / DeviceNAME / BM280 / Switch2
- -  / DeviceNAME / BM280 /总计
- -  / DeviceNAME / BM280 /今天
- -  / DeviceNAME / BM280 / heute
- -  / DeviceNAME / BM280 /昨天
- -  / DeviceNAME / BM280 / gestern
- -  / DeviceNAME / BM280 / Faktor
- -  / DeviceNAME / BM280 / Factor
- -  / DeviceNAME / BM280 / Power
- -  / DeviceNAME / BM280 / Leistung
- -  / DeviceNAME / BM280 /电压
- -  / DeviceNAME / BM280 / Spannung
- -  / DeviceNAME / BM280 /当前
- -  / DeviceNAME / BM280 / Strom
- -  / DeviceNAME / BM280 / Punkt
- -  / DeviceNAME / BM280 / Counter1
- -  / DeviceNAME / BM280 / Counter2
- -  / DeviceNAME / BM280 / Counter3
- -  / DeviceNAME / BM280 / Counter4
- -  / DeviceNAME / BM280 /压力
- -  / DeviceNAME / BM280 / SeaPressure
- -  / DeviceNAME / BM280 / Druck
- -  / DeviceNAME / BM280 /约。高度
- -  / DeviceNAME / BM280 / Module
- -  / DeviceNAME / BM280 /版本
- -  / DeviceNAME / BM280 /主机名
- -  / DeviceNAME / BM280 / IPAddress
- -  / DeviceNAME / BM280 / IPaddress
- -  / DeviceNAME / BM280 / RestartReason
- -  / DeviceNAME / BM280 / CarbonDioxide
- -  / DeviceNAME / DHT11 / Illuminance
- -  / DeviceNAME / SonoffSC / Light
- -  / DeviceNAME / SonoffSC / Noise
- -  / DeviceNAME / SonoffSC / AirQuality
- -  /DeviceNAME/SDS0X1/PM2.5
- -  / DeviceNAME / SDS0X1 / PM10
- -  / DeviceNAME / SDS0X1 / UvLevel
- -  / DeviceNAME / SDS0X1 /纬度
- -  / DeviceNAME / SDS0X1 /经度
- -  / DeviceNAME / SR04 /距离
+-`tele / DeviceNAME / STATE`
+-`ele / DeviceNAME / SENSOR`
+-`ele / DeviceNAME / INFOx`
+-`ele / DeviceNAME / ENERGY`
+-`mnd / DeviceNAME / POWERx`
+-`tat / DeviceNAME / POWERx`
+-`/ DeviceNAME / BM280 / Temperature`
+-`/ DeviceNAME / BM280 / Humidity`
+-`/ DeviceNAME / BM280 / Temperatur`
+-`/ DeviceNAME / BM280 / Feuchtigkeit`
+-`/ DeviceNAME / BM280 / Vcc`
+-`/ DeviceNAME / BM280 / VCC`
+-`/ DeviceNAME / BM280 / Laufzeit`
+-`/ DeviceNAME / BM280 / RSSI`
+-`/ DeviceNAME / BM280 / POWER`
+-`/ DeviceNAME / BM280 / POWER1`
+-`/ DeviceNAME / BM280 / POWER2`
+-`/ DeviceNAME / BM280 / POWER3`
+-`/ DeviceNAME / BM280 / POWER4`
+-`/ DeviceNAME / BM280 / Switch1`
+-`/ DeviceNAME / BM280 / Switch2`
+-`/ DeviceNAME / BM280 / Total`
+-`/ DeviceNAME / BM280 / Today`
+-`/ DeviceNAME / BM280 / heute`
+-`/ DeviceNAME / BM280 /昨天`
+-`/ DeviceNAME / BM280 / gestern`
+-`/ DeviceNAME / BM280 / Faktor`
+-`/ DeviceNAME / BM280 / Factor`
+-`/ DeviceNAME / BM280 / Power`
+-`/ DeviceNAME / BM280 / Leistung`
+-`/ DeviceNAME / BM280 / Voltage`
+-`/ DeviceNAME / BM280 / Spannung`
+-`/ DeviceNAME / BM280 / Current`
+-`/ DeviceNAME / BM280 / Strom`
+-`/ DeviceNAME / BM280 / Punkt`
+-`/ DeviceNAME / BM280 / Counter1`
+-`/ DeviceNAME / BM280 / Counter2`
+-`/ DeviceNAME / BM280 / Counter3`
+-`/ DeviceNAME / BM280 / Counter4`
+-`/ DeviceNAME / BM280 / Pressure`
+-`/ DeviceNAME / BM280 / SeaPressure`
+-`/ DeviceNAME / BM280 / Druck`
+-`/ DeviceNAME / BM280 / Approx。海拔`
+-`/ DeviceNAME / BM280 / Module`
+-`/ DeviceNAME / BM280 / Version`
+-`/ DeviceNAME / BM280 / Hostname`
+-`/ DeviceNAME / BM280 / IPAddress`
+-`/ DeviceNAME / BM280 / IPaddress`
+-`/ DeviceNAME / BM280 / RestartReason`
+-`/ DeviceNAME / BM280 / CarbonDioxide`
+-`/ DeviceNAME / DHT11 / Illuminance`
+-`/ DeviceNAME / SonoffSC / Light`
+-`/ DeviceNAME / SonoffSC / Noise`
+-`/ DeviceNAME / SonoffSC / AirQuality`
+-`/ DeviceNAME / SDS0X1 / PM2.5`
+-`/ DeviceNAME / SDS0X1 / PM10`
+-`/ DeviceNAME / SDS0X1 / UvLevel`
+-`/ DeviceNAME / SDS0X1 / Latitude`
+-`/ DeviceNAME / SDS0X1 / Longitude`
+-`/ DeviceNAME / SR04 / Distance`
 
-**注意**：列表可以很容易地扩展。请向开发人员发送* Pull Requests ** debug data* for unknown states（通过问题）。
+**注意**：该列表可以轻松扩展。请发送`Pull Requests`或*调试数据*到未知状态给开发人员（通过发出）。
 
 ##自动创建对象
-在Web配置中，您可以确定哪些MQTT报文创建的新对象不在默认数据点中
+在Web配置中，您可以确定哪些MQTT报文创建不在默认数据点中的新对象
 
-* TELE_SENSOR从tele / xxx / SENSOR报文创建对象
-* TELE_STATE从tele / xxx / STATE电报创建对象
-* STAT_RESULT从stat / xxx / RESULT报文创建对象
+*`TELE_SENSOR`从`tele / xxx / SENSOR`电报创建对象
+*`TELE_STATE`通过`tele / xxx / STATE`电报创建对象
+*`STAT_RESULT`从`stat / xxx / RESULT`电报创建对象
 
-通常TELE_SENSOR应该足以满足大多数用户的需求。
+通常，TELE_SENSOR对于大多数用户来说就足够了。
 
 ## LED控制器的标志
 仅当设备具有以下状态之一时，才会创建模式状态：
 
- - '红色'，'绿色'，'蓝色'，'WW'，'CW'，'颜色'，'RGB_POWER'，'WW_POWER'，'CW_POWER'，'Hue'，'饱和度'
+-红色，绿色，蓝色，WW，CW，颜色，RGB_POWER，WW_POWER，CW_POWER，色相，饱和度
 
 状态：
 
-* modeLedExor  - 白色LED指示灯和彩色指示灯=>如果白色指示灯亮起，彩色指示灯熄灭，反之亦然（默认为真）
-* modeReadColors  - 允许从MQTT读取颜色（默认为false）
+*`modeLedExor`-白色LED和彩色LED的exor =>如果打开白色LED，关闭彩色LED，反之亦然（默认为true）
+*`modeReadColors`-允许从MQTT读取颜色（默认为false）
 
 ## Changelog
+
+### 2.3.2 (2019-10-23)
+* (bluefox) Fixed the password input in the configuration
+* (bluefox) Allowed to set the IP interface for server
+* (bluefox) Fixed tests for js-controller 2.0
+* (bluefox) Fixed the monitoring of the client connection
+* (bluefox) Changed "indicator.connected" to "indicator.reachable" for clients
+* (bluefox) Supported `{POWERn: "true"}`
+* (bluefox) Correct processing of `{temp: nan}`
 
 ### 2.2.3 (2019-01-10)
 * (simatec) Support for comapct mode
@@ -128,7 +135,7 @@ hash: RSDMeYvJdHdLRa0sQZfy3RIpl1BQYRnCBww693bWEvM=
 
 ### 2.1.0 (2018-03-30)
 * (gemu2015) Support of the devices control (many thanks :)
-* (gemu2015) Support of many new values 
+* (gemu2015) Support of many new values
 * (modmax) Update alive status of the clients
 * (modmax) Added POWER5-8 and Switch3-4
 

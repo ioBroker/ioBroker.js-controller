@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
+hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -24,94 +24,98 @@ hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
 * Руководство по установке sbfspot на Raspberry Pi (или аналогичном) можно найти по адресу https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite или https://www.rg-engineering.eu/index. PHP / Продукты / программное обеспечение / плагин-Fuer-iobroker-sbfspot
 * для Raspberry Pi есть полуавтоматический инструмент настройки, доступный по адресу https://github.com/SBFspot/sbfspot-config
 
-## Известные вопросы
+## Известные проблемы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
 
-## Changelog
+## 2.3.4 (2019-10-31)
+* (René) обновление flot до версии 3.0
 
 ### 2.3.3 (2019-02-03)
-* (René) due to install problems downgrade of sqlite3 package
+* (René) из-за проблем с установкой понижения пакета sqlite3
 
 ### 2.3.1 (2019-02-02)
-* (René) bug fix: with sqlite "today" data were not shown
+* (René) исправление ошибки: с sqlite "сегодня" данные не отображались
 
 ### 2.3.0 (2019-01-20)
-* (René) support of compact mode
-* (René) add additional error information in log
+* (Рене) поддержка компактного режима
+* (René) добавить дополнительную информацию об ошибке в журнал
 
 ### 2.2.5 (2018-11-26)
-* (René) upgrade packages
+* (René) пакеты обновлений
 
 ### 2.2.5 (2018-11-04)
-* (René) reset yield if no new value from today
+* (René) сбросить доходность, если нет нового значения за сегодняшний день
 
 ### 2.2.4 (2018-08-19)
-* (René) bugfix for ticks on X
+* (René) исправление для тиков на X
 
 ### 2.2.3
-* (René) the same as 2.2.2
+* (Рене) так же, как 2.2.2
 
 ### 2.2.2
-* (René) add timestamp of last update
+* (Рене) добавить метку времени последнего обновления
 
 ### 2.2.1
-* (René) close of database connection after last query result is available (e.g. to support more than one inverter)
+* (René) закрытие соединения с базой данных после получения последнего результата запроса (например, для поддержки более одного преобразователя)
 
 ### 2.2.0
-* (Nis) background color and border
-* (René) bug fixes in admin3
+* (Nis) цвет фона и границы
+* (René) исправление ошибок в admin3
 
 ### 2.1.0
-* (René) Support MariaDB
+* (Рене) Поддержка MariaDB
 
 ### 2.0.1
-* (René) Support of admin3
+* (René) Поддержка admin3
 
 ### 2.0.0
-* (René) since we always use one graph per widget, only one is supported now
-		Attention: widget is not compatible with version 1.x.x; just check settings in widget after installation!
+* (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один
+
+Внимание: виджет не совместим с версией 1.x.x; просто проверьте настройки в виджете после установки!
 
 ### 1.1.0
-* (René) autoscale of y axis
-* (René) color for y axis 
-* (René) adjustable date format 
+* (Рене) автомасштабирование оси у
+* (Рене) цвет для оси у
+* (Рене) регулируемый формат даты
 
 ### 1.0.1
-* (René) bug fix for sqlite
+* (Рене) исправление ошибки для sqlite
 
 ### 1.0.0
-* (René) first stable release
+* (Рене) первый стабильный релиз
 
 ### 0.2.6
-* (René) bug fix for android app > 1.0.6
+* (Рене) исправление ошибки для приложения для Android> 1.0.6
 
 ### 0.2.5
-* (René) use install date to calculate historical values
+* (Рене) использовать дату установки для расчета исторических значений
 
 ### 0.2.4
-* (René) logo changed
+* (Рене) логотип изменен
 
 ### 0.2.3
-* (René) adding historical data as datapoint (JSON)
-* (René) new vis widget to show historical data
+* (René) добавление исторических данных в качестве точки данных (JSON)
+* (René) новый виджет vis для отображения исторических данных
 
 ### 0.2.2
-* (René) renamed to sbfspot
+* (Рене) переименован в sbfspot
 
 ### 0.2.1
-* (René) index.html updated
+* (René) index.html обновлен
 
 ### 0.2.0
-* (René) support of sqlite and license changed to MIT
+* (René) поддержка sqlite и лицензии изменена на MIT
 
 ### 0.1.1
-* (René) UTF8 coding
+* (Рене) кодировка UTF8
 
 ### 0.1.0
-* (René) first release
+* (Рене) первый выпуск
 
 ### 0.0.1
-* (René) initial release
+* (Рене) первый выпуск
+
+## Changelog
 
 ## License
 Copyright (C) <2017-2019>  <info@rg-engineering.eu>

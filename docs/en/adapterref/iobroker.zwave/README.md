@@ -80,7 +80,6 @@ If all of those commands don't work, the following process might:
 ## Configuration
 Within Admin Settings you can set following Attributes
 
-- Force objects re-init (ReInitialize all Objects within ioBroker)
 - USB name (the USB Port of your Z-Wave stick)
 - Logging (enable logging to OZW_Log.txt)
 - Console Output (copy logging to the console, Logs all to ioBroker.log)
@@ -154,6 +153,9 @@ Following global Actions are current supported:
 - Danfoss Z Thermostat 014G0013
 
 ## Changelog
+
+### 1.7.0
+* (cburghardt) Added multi-instance associations
 
 ### 1.6.3
 * (cburghardt) Update openzwave version

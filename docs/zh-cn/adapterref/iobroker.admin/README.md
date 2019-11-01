@@ -74,6 +74,9 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 3.6.11 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
 ### 3.6.10 (2019-10-11)
 * (ldittmar) Add NPM version and OS check to popup messages
 * (bluefox) Log paths were sanitized

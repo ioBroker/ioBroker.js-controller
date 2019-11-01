@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: K06DKuylCol7chKVtwTgroTBBcxOLqKQ1P0oTxXfVY8=
+hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
 ---
 ![логотип](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
@@ -17,11 +17,11 @@ hash: K06DKuylCol7chKVtwTgroTBBcxOLqKQ1P0oTxXfVY8=
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
 # IoBroker.schoolfree
+## Школьный адаптер для ioBroker
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
-## Школьный адаптер для ioBroker
 ### Deutsche Beschreibung:
 Schoolfree ist ein Adapter for iobroker Installationen.
 Mit dem Adapter lassen sich die Schulferien auswerten und in Datenpunkte übergeben.
@@ -47,7 +47,7 @@ Folgende Datenpunkte stehen mit Schoolfree für die weitere Verarbeitung zur Ver
 ### Английское описание:
 Schoolfree - это адаптер для установки iobroker.
 С помощью адаптера можно оценить школьные каникулы и перенести их в точки данных.
-Таким образом, точки данных могут быть оценены и обработаны для других функций, таких как управление обогревом, затвор и контроль присутствия.
+Таким образом, точки данных могут быть оценены и обработаны для других функций, таких как управление нагревом, затвор и контроль присутствия.
 
 Текущая подписка на школьные каникулы осуществляется через API https://www.mehr-schulferien.de.
 
@@ -67,6 +67,13 @@ Schoolfree - это адаптер для установки iobroker.
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.3.1 (28.10.2019)
+* (simatec) Fix start after install
+
+### 0.3.0 (18.10.2019)
+* (simatec) end of node 6 support
+* (simatec) changed dateformat
 
 ### 0.2.2 (04.06.2019)
 * (simatec)new object structure

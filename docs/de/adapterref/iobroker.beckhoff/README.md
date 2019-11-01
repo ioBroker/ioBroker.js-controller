@@ -1,6 +1,6 @@
 ---
 BADGE-Build Status: https://travis-ci.org/dkleber89/ioBroker.beckhoff.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/laebb0pq4pd4d08x/branch/master?svg=true
+BADGE-Build status: https://ci.appveyor.com/api/projects/status/tpqe657lqrir3kew/branch/master?svg=true
 BADGE-npm: https://img.shields.io/npm/v/iobroker.beckhoff.svg
 BADGE-Number of Installations: http://iobroker.live/badges/beckhoff-installed.svg
 ---
@@ -66,6 +66,10 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 
 ## Changelog
 
+### 1.0.7 (2019-10-25)
+
+- (dkleber89) Add Support for Compact Mode -> JS Controller >= 2.0.0
+
 ### 1.0.6 (2019-08-11)
 
 -   (dkleber89) Add check change of Datatype on resync
@@ -110,10 +114,6 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 ### 0.1.4 (2018-11-21)
 
 -   (dkleber89) Fixing Dataexchange on TwinCat 2 Runtime
-
-### 0.1.3 (2018-11-11)
-
--   (dkleber89) Bugfix on ending Processes
 
 ## License
 

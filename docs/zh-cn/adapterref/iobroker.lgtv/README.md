@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
+hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 ![商标](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -26,7 +26,7 @@ hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 ##用法：
 通过ioBroker管理界面安装适配器。
 在适配器配置中，输入LG WebOS TV的IP地址。
-首次连接时，您会在电视屏幕上收到一个配对提示，您应该在其中允许连接。
+首次连接时，您会在电视屏幕上收到一个配对提示，您应该在该提示下进行连接。
 
 ＃＃ 一些例子：
 ```setState('lgtv.0.states.popup', 'Some text!');```
@@ -80,7 +80,7 @@ hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 
 ```setState('lgtv.0.states.launch', 'smartshare');```
 
-在电视上打开SmartShare应用程序。
+在电视上打开SmartShare应用。
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
@@ -135,9 +135,11 @@ hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 
 播放YouTube视频。
 
-```setState('lgtv.0.states.raw', {url: 'ssap://system.launcher/launch', cmd: {id: "netflix"} });```
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
 
-正在发送RAW命令API。
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
+
+发送和响应RAW命令API。
 
 ```setState('lgtv.0.remote.*KEY*', true);```
 
@@ -170,6 +172,11 @@ hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 
 ## Changelog
 
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
+
 ### 1.1.0 (2019-10-10)
 * (instalator) adding object remote.KEY
 * (instalator) fix connect to TV
@@ -177,6 +184,7 @@ hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
 * (instalator) translate admin to RUS
 * (instalator) add Turn On, using WOL
 * (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

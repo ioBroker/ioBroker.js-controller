@@ -9,11 +9,9 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.shuttercontrol.svg)](https://www.npmjs.com/package/iobroker.shuttercontrol)
 [![Dependency Status](https://img.shields.io/david/simatec/iobroker.shuttercontrol.svg)](https://david-dm.org/simatec/iobroker.shuttercontrol)
 [![Known Vulnerabilities](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol/badge.svg)](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol)
+[![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)](https://travis-ci.org/simatec/ioBroker.shuttercontrol)
 
 [![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)](https://nodei.co/npm/iobroker.shuttercontrol/)
-
-[![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)](https://travis-ci.org/simatec/ioBroker.shuttercontrol)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)](https://ci.appveyor.com/project/simatec/ioBroker-shuttercontrol/)
 
 **If you like it, please consider a donation:**
   
@@ -35,6 +33,10 @@ automatic control for shutters
 
 
 ## Changelog
+
+### 0.4.1 (20.10.2019)
+* (simatec) Fix update process
+* (simatec) Fix appveyor
 
 ### 0.4.0 (28.08.2019)
 * (simatec) Fix shutdown for Elevation

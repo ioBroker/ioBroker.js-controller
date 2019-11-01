@@ -12,7 +12,7 @@ This ioBroker adapter allows to control and monitor the [Nuki Smart Lock](https:
 Each instance of the Nuki adapter represents a Nuki bridge. When creating an instance, simply enter IP address, port and token of your Nuki bridge. The name is optional and will be generated automatically if left empty. The checkbox "use callback" and the value "callback port in ioBroker" are optional and can be set in order to make use of the callback function of the Nuki. After saving an instance there will be created a bridge device with a channel for each Nuki lock that is connected to the specified Nuki bridge. The channels provide the current state of the Nuki lock as output parameters:
 
 * batteryCritical: Indicator for low battery
-* lockState: Indicator whether Nuki is locked
+* lockState: Indicator whether Nuki is locked (Nuki Lock only)
 * state: Current (numeric) lock state (Nuki native)
 * timestamp: Last updated
 
@@ -20,7 +20,7 @@ Additionally, the channels provide input parameters which enable basic control o
 
 * action: Numeric action code for setting the Nuki state (Nuki native)
 
-Valid input values are:
+Valid input values for locks are:
 
     0 (no action)
     1 (unlock)
@@ -33,6 +33,20 @@ Valid input values are:
 * openAction: Button for unlatching the Nuki
 * openLocknGoAction: Button for unlatching and after some seconds locking the Nuki
 * unlockLocknGoAction: Button for unlocking and after some seconds locking the Nuki
+
+Valid input values for openers are:
+
+    0 (no action)
+    1 (activate rto)
+    2 (deactivate rto)
+    3 (electric strike actuation)
+    4 (activate continuous mode)
+    5 (deactivate continuous mode)
+
+* rtoAction: Switch for activating / deactivating the Ring to Open function (true = activate; false = deactivate)
+* openAction: Button for electric strike actuation
+* cmActiveAction: Button for activating the Continous Mode
+* cmDeactiveAction: Button for deactivating the Continous Mode
 
 ## Additional information
 How to get your bridges token:
@@ -59,6 +73,9 @@ Remove:
 When updating from 0.1.x to 0.2.0 or higher it is recommended to delete all instances of the old version before installing the new version. Please be aware that version changes bigger than on patch level (-> change of only the last digit) could always contain changes to data points e.g. 0.1.3 to 0.2.0
 
 ## Changelog
+
+### 1.1.0
+* (smaragdschlange) improvement: support for Nuki Opener
 
 ### 1.0.7
 * (smaragdschlange) bug fix: impact on other Nuki-connected gateways

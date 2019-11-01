@@ -34,6 +34,15 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 Поэтому, если какие-либо улучшения или поддержка новых zigbee-устройств происходит в проекте Zigbee2MQTT, то можно перенести и добавить этот же функционал в этот драйвер. Если заметили это, то напиши issue - перенесем.
 
 ## Changelog
+### 0.11.5 (2019-10-26)
+* (allofmex) Improved publish-to-zigbee queue
+* (arteck) Gledopto GL-B-001Z
+* (kirovilya) iHORN Temperature & humidity sensor
+* (kirovilya) Trust ZLED-TUNE9, DIYRuZ contact, Lonsonho Plug
+* (kirovilya) IKEA driver 30W
+* (allofmex) Hue Smart Plug
+* (arteck) LST004
+
 ### 0.11.4 (2019-09-30)
 * (Asgothian) Danalock V3 BTZB
 * (Asgothian) GroupErrorInGetDevices

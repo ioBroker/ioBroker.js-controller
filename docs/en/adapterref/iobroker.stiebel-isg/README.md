@@ -28,6 +28,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.4.9
+
+* bug in rounding for info-values fixed
+
 ### 1.4.8
 
 * update due to security vulnerabilities in dependencies

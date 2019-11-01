@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
+hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -26,7 +26,7 @@ hash: ugJ5o31YNWISKs9bbk8FTY4xEBXHwLwOBQvk1zwgDOA=
 - руководство по эксплуатации
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
@@ -77,8 +77,8 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
-Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
-Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «номер»:
+Для этого типа могут быть добавлены значения `min` и `max` в `common` и необязательные `step`.
+Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
 
 ```
 common: {
@@ -178,7 +178,7 @@ createState(
 ```
 
 ### Погода
-Протестировано с год и daswetter. Для одного или нескольких следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
+Протестировано с год и daswetter. Для одного или нескольких из следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
 
 - daswetter.0.NextDays.Location_1
 - год.0.прогноз
@@ -272,7 +272,7 @@ createState('location.latitude', 39.5681295, false, {
 Я нашел эту ссылку https://github.com/jimz011/homeassistant как интересный ресурс для пользовательских карт.
 
 Часто пользовательские карты хранятся на github как источники и должны быть скомпилированы перед использованием.
-Вы должны проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
+Вам следует проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
 Как этот: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Найдите файл `mini-graph-card-bundle.js`)
 
 ## Собственные изображения
@@ -361,7 +361,7 @@ midnight:
 взято из [Вот](https://community.home-assistant.io/t/midnight-theme/28598/2).
 
 ## Иконки
-Используйте значки в форме `mdi:NAME`, например «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
+Используйте значки в форме `mdi:NAME`, например, «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
 
 ## Уведомления
 Вы можете добавить уведомления через функции `sendTo` или записав состояние в `lovelace.X.notifications.add`:
@@ -377,6 +377,9 @@ sendTo('lovelace.0', 'send', 'Message text'); // short version
 setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "Title"}'); // full version
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
+
+## Оригинальные источники для ловеласа
+Использованные источники здесь https://github.com/GermanBluefox/home-assistant-polymer.
 
 ## Сделать
 Безопасность должна быть взята от текущего пользователя, а не от default_user
@@ -396,6 +399,12 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 8. Запустите задачу gulp rename.
 
 ## Changelog
+### 0.2.3 (2019-10-22)
+* (bluefox) The custom settings were corrected
+
+### 0.2.1 (2019-10-15)
+* (bluefox) Processing of empty states was corrected
+
 ### 0.2.0 (2019-09-19)
 * (Scrounger) Some bugs on "Custom Dialog" were fixed
 * (Scrounger) bug fix: if value set by lovelace and max is not 100

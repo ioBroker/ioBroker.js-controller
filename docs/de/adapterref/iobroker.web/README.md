@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
+hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -14,27 +14,40 @@ hash: /RkRCKe7PmJC23Tavd63ERYU6dB367rZMWrDQOjiOts=
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 # IoBroker.web
-Webserver auf der Basis von Node.js und express zum Lesen der Dateien aus der ioBroker-Datenbank
+Webserver auf der Basis von Node.js und Express zum Lesen der Dateien aus der ioBroker DB
 
-## Tuning von Web-Sockets
-Bei einigen Web-Sockets-Clients gibt es Leistungsprobleme bei der Kommunikation. Manchmal ist dieses Problem auf den Fallback der Kommunikation von socket.io bei einem langen Abfragemechanismus zurückzuführen.
-Sie können die Option *Force Web-Sockets* so einstellen, dass nur der Web-Sockets-Transport erzwungen wird.
+## Web-Sockets einstellen
+Auf einigen Web-Sockets-Clients liegt ein Leistungsproblem bei der Kommunikation vor. Manchmal ist dieses Problem auf ein Zurückfallen der socket.io-Kommunikation bei langen Abfragemechanismen zurückzuführen.
+Sie können die Option *Web-Sockets erzwingen* so einstellen, dass nur der Transport von Web-Sockets erzwungen wird.
 
 ## Lassen Sie uns Zertifikate verschlüsseln
 Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
 
 ## Erweiterungen
-Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist ein URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
-Die Erweiterungen sehen wie normale Adapter aus, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
+Der Web-Treiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anfrage erscheint.
+Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
 Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (z. B. Webcams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
-Wenn die Authentifizierung aktiviert ist und der Benutzer eine Minute lang fünfmal ein ungültiges Kennwort eingibt, muss er mindestens eine Minute bis zum nächsten Versuch warten.
+Wenn die Authentifizierung aktiviert ist und der Benutzer innerhalb einer Minute das fünffache eines ungültigen Kennworts eingibt, muss er mindestens eine Minute bis zum nächsten Versuch warten.
 Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 
+## Option "Angemeldet bleiben"
+Wenn diese Option ausgewählt ist, bleibt der Benutzer einen Monat lang angemeldet.
+Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmelde-Timeout" angemeldet.
+
 ## Changelog
+### 2.4.8 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
+### 2.4.6 (2019-10-12)
+* (bluefox) Fixed issue with simple-api
+
+### 2.4.4 (2019-06-27)
+* (bluefox) Fixed issue with socket.io.js not found
+
 ### 2.4.3 (2019-01-14)
 * (SchumyHao) Add Chinese support
 
@@ -94,7 +107,7 @@ Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 
 ### 2.0.3 (2017-04-01)
  * (bluefox) catch errors for invalid objects
- 
+
 ### 2.0.2 (2017-02-08)
 * (bluefox) fix selectID dialog
 
@@ -208,7 +221,7 @@ Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 
 ### 1.1.1 (2015-11-01)
 * (bluefox) some files were missed on npm
-* 
+*
 ### 1.1.0 (2015-11-01)
 * (bluefox) update jquery UI libs
 
@@ -262,10 +275,10 @@ Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 
 ### 0.2.3 (2015-02-12)
 * (bluefox) add simple api
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.2 (2015-01-20)
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.1 (2015-01-18)
 * (bluefox) update select ID dialog

@@ -38,7 +38,7 @@ pass = demo
 * (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
 * (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
 
-### 0.4.8 Fix wrong readings and make intervall adjustable
+### 0.4.9 Fix wrong readings and make intervall adjustable
 * (Dutchman) Implemented adjustable intervall
 * (Dutchman) Ensure propper reset to 0 of power values
 * (Dutchman) Fix "-" values for power delivery

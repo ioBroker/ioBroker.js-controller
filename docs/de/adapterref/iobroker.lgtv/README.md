@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
+hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -135,13 +135,15 @@ Schaltet den iPod am Fernseher auf HDMI 3 um.
 
 YouTube-Video abspielen.
 
-```setState('lgtv.0.states.raw', {url: 'ssap://system.launcher/launch', cmd: {id: "netflix"} });```
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
 
-Senden der RAW-Befehls-API.
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
+
+Sende- und Antwort-RAW-Befehls-API.
 
 ```setState('lgtv.0.remote.*KEY*', true);```
 
-Senden Sie den Fernbedienungsschlüssel an das Fernsehgerät.
+Senden Sie den Fernbedienungsschlüssel an den Fernseher.
 
 ```setState('lgtv.0.states.power', true/false);```
 
@@ -164,11 +166,16 @@ Hält den aktuellen Lautstärkepegel und kann die Lautstärke ändern
 
 auf
 
-ist wahr, wenn das Fernsehgerät eingeschaltet ist, und falsch, wenn das Fernsehgerät ausgeschaltet ist
+ist wahr, wenn der Fernseher eingeschaltet ist, und falsch, wenn der Fernseher ausgeschaltet ist
 
 ---
 
 ## Changelog
+
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
 
 ### 1.1.0 (2019-10-10)
 * (instalator) adding object remote.KEY
@@ -177,6 +184,7 @@ ist wahr, wenn das Fernsehgerät eingeschaltet ist, und falsch, wenn das Fernseh
 * (instalator) translate admin to RUS
 * (instalator) add Turn On, using WOL
 * (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

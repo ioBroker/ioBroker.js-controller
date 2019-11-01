@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: JjCYDf7IKVdpZeI6PDUTVVAkN6uotwVPlUGxuVdZswo=
+hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 ![логотип](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -26,7 +26,7 @@ LG WebOS SmartTV адаптер для ioBroker
 ## Использование:
 Установите адаптер через интерфейс администратора ioBroker.
 В конфигурации адаптера введите IP-адрес вашего телевизора LG WebOS.
-При первом подключении вы получите сообщение о сопряжении на экране телевизора, где вы должны разрешить подключение.
+При первом подключении вы получите запрос на сопряжение на экране телевизора, где вам следует разрешить подключение.
 
 ## Некоторые примеры:
 ```setState('lgtv.0.states.popup', 'Some text!');```
@@ -84,7 +84,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
-Запускает приложение «Руководство пользователя телевизора» на телевизоре.
+Запускает приложение Руководство пользователя телевизора на телевизоре.
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
@@ -135,9 +135,11 @@ LG WebOS SmartTV адаптер для ioBroker
 
 Воспроизвести видео с YouTube.
 
-```setState('lgtv.0.states.raw', {url: 'ssap://system.launcher/launch', cmd: {id: "netflix"} });```
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
 
-Отправка API команд RAW.
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
+
+Отправка и ответ RAW команды API.
 
 ```setState('lgtv.0.remote.*KEY*', true);```
 
@@ -170,6 +172,11 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ## Changelog
 
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
+
 ### 1.1.0 (2019-10-10)
 * (instalator) adding object remote.KEY
 * (instalator) fix connect to TV
@@ -177,6 +184,7 @@ LG WebOS SmartTV адаптер для ioBroker
 * (instalator) translate admin to RUS
 * (instalator) add Turn On, using WOL
 * (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

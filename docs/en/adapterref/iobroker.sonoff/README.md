@@ -1,6 +1,5 @@
 ![Logo](admin/sonoff.png)
 # ioBroker Sonoff
-==============
 
 ![Number of Installations](http://iobroker.live/badges/sonoff-installed.svg) ![Number of Installations](http://iobroker.live/badges/sonoff-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sonoff.svg)](https://www.npmjs.com/package/iobroker.sonoff)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sonoff.svg)](https://www.npmjs.com/package/iobroker.sonoff)
@@ -8,96 +7,103 @@
 
 [![NPM](https://nodei.co/npm/iobroker.sonoff.png?downloads=true)](https://nodei.co/npm/iobroker.sonoff/)
 
-Requires node.js 4.0 or higher.
-
 ## Usage
 
 This adapter communicates with Sonoff devices with Tasmota firmware or ESP devices via MQTT.
 
 Following topics are expected:
-- tele/DeviceNAME/STATE
-- tele/DeviceNAME/SENSOR
-- tele/DeviceNAME/INFOx
-- tele/DeviceNAME/ENERGY
-- cmnd/DeviceNAME/POWERx
-- stat/DeviceNAME/POWERx
-- /DeviceNAME/BM280/Temperature
-- /DeviceNAME/BM280/Humidity
-- /DeviceNAME/BM280/Temperatur
-- /DeviceNAME/BM280/Feuchtigkeit
-- /DeviceNAME/BM280/Vcc
-- /DeviceNAME/BM280/VCC
-- /DeviceNAME/BM280/Laufzeit
-- /DeviceNAME/BM280/RSSI
-- /DeviceNAME/BM280/POWER
-- /DeviceNAME/BM280/POWER1
-- /DeviceNAME/BM280/POWER2
-- /DeviceNAME/BM280/POWER3
-- /DeviceNAME/BM280/POWER4
-- /DeviceNAME/BM280/Switch1
-- /DeviceNAME/BM280/Switch2
-- /DeviceNAME/BM280/Total
-- /DeviceNAME/BM280/Today
-- /DeviceNAME/BM280/heute
-- /DeviceNAME/BM280/Yesterday
-- /DeviceNAME/BM280/gestern
-- /DeviceNAME/BM280/Faktor
-- /DeviceNAME/BM280/Factor
-- /DeviceNAME/BM280/Power
-- /DeviceNAME/BM280/Leistung
-- /DeviceNAME/BM280/Voltage
-- /DeviceNAME/BM280/Spannung
-- /DeviceNAME/BM280/Current
-- /DeviceNAME/BM280/Strom
-- /DeviceNAME/BM280/Punkt
-- /DeviceNAME/BM280/Counter1
-- /DeviceNAME/BM280/Counter2
-- /DeviceNAME/BM280/Counter3
-- /DeviceNAME/BM280/Counter4
-- /DeviceNAME/BM280/Pressure
-- /DeviceNAME/BM280/SeaPressure
-- /DeviceNAME/BM280/Druck
-- /DeviceNAME/BM280/Approx. Altitude
-- /DeviceNAME/BM280/Module
-- /DeviceNAME/BM280/Version
-- /DeviceNAME/BM280/Hostname
-- /DeviceNAME/BM280/IPAddress
-- /DeviceNAME/BM280/IPaddress
-- /DeviceNAME/BM280/RestartReason
-- /DeviceNAME/BM280/CarbonDioxide
-- /DeviceNAME/DHT11/Illuminance
-- /DeviceNAME/SonoffSC/Light
-- /DeviceNAME/SonoffSC/Noise
-- /DeviceNAME/SonoffSC/AirQuality
-- /DeviceNAME/SDS0X1/PM2.5
-- /DeviceNAME/SDS0X1/PM10
-- /DeviceNAME/SDS0X1/UvLevel
-- /DeviceNAME/SDS0X1/Latitude
-- /DeviceNAME/SDS0X1/Longitude
-- /DeviceNAME/SR04/Distance
+- `tele/DeviceNAME/STATE`
+- `ele/DeviceNAME/SENSOR`
+- `ele/DeviceNAME/INFOx`
+- `ele/DeviceNAME/ENERGY`
+- `mnd/DeviceNAME/POWERx`
+- `tat/DeviceNAME/POWERx`
+- `/DeviceNAME/BM280/Temperature`
+- `/DeviceNAME/BM280/Humidity`
+- `/DeviceNAME/BM280/Temperatur`
+- `/DeviceNAME/BM280/Feuchtigkeit`
+- `/DeviceNAME/BM280/Vcc`
+- `/DeviceNAME/BM280/VCC`
+- `/DeviceNAME/BM280/Laufzeit`
+- `/DeviceNAME/BM280/RSSI`
+- `/DeviceNAME/BM280/POWER`
+- `/DeviceNAME/BM280/POWER1`
+- `/DeviceNAME/BM280/POWER2`
+- `/DeviceNAME/BM280/POWER3`
+- `/DeviceNAME/BM280/POWER4`
+- `/DeviceNAME/BM280/Switch1`
+- `/DeviceNAME/BM280/Switch2`
+- `/DeviceNAME/BM280/Total`
+- `/DeviceNAME/BM280/Today`
+- `/DeviceNAME/BM280/heute`
+- `/DeviceNAME/BM280/Yesterday`
+- `/DeviceNAME/BM280/gestern`
+- `/DeviceNAME/BM280/Faktor`
+- `/DeviceNAME/BM280/Factor`
+- `/DeviceNAME/BM280/Power`
+- `/DeviceNAME/BM280/Leistung`
+- `/DeviceNAME/BM280/Voltage`
+- `/DeviceNAME/BM280/Spannung`
+- `/DeviceNAME/BM280/Current`
+- `/DeviceNAME/BM280/Strom`
+- `/DeviceNAME/BM280/Punkt`
+- `/DeviceNAME/BM280/Counter1`
+- `/DeviceNAME/BM280/Counter2`
+- `/DeviceNAME/BM280/Counter3`
+- `/DeviceNAME/BM280/Counter4`
+- `/DeviceNAME/BM280/Pressure`
+- `/DeviceNAME/BM280/SeaPressure`
+- `/DeviceNAME/BM280/Druck`
+- `/DeviceNAME/BM280/Approx. Altitude`
+- `/DeviceNAME/BM280/Module`
+- `/DeviceNAME/BM280/Version`
+- `/DeviceNAME/BM280/Hostname`
+- `/DeviceNAME/BM280/IPAddress`
+- `/DeviceNAME/BM280/IPaddress`
+- `/DeviceNAME/BM280/RestartReason`
+- `/DeviceNAME/BM280/CarbonDioxide`
+- `/DeviceNAME/DHT11/Illuminance`
+- `/DeviceNAME/SonoffSC/Light`
+- `/DeviceNAME/SonoffSC/Noise`
+- `/DeviceNAME/SonoffSC/AirQuality`
+- `/DeviceNAME/SDS0X1/PM2.5`
+- `/DeviceNAME/SDS0X1/PM10`
+- `/DeviceNAME/SDS0X1/UvLevel`
+- `/DeviceNAME/SDS0X1/Latitude`
+- `/DeviceNAME/SDS0X1/Longitude`
+- `/DeviceNAME/SR04/Distance`
 
-**Note**: The list could be easily extended. Please send *Pull Requests* or *debug data* for unknown states to developer (via issue).
+**Note**: The list could be easily extended. Please send `Pull Requests` or *debug data* for unknown states to developer (via issue).
 
 ## Auto-creation of objects
 In the web config you can determine which MQTT telegrams create the new objects not in default datapoints
 
-* TELE_SENSOR creates objects from tele/xxx/SENSOR telegrams
-* TELE_STATE creates objects from tele/xxx/STATE telegrams
-* STAT_RESULT creates objects from stat/xxx/RESULT telegrams
+* `TELE_SENSOR` creates objects from `tele/xxx/SENSOR` telegrams
+* `TELE_STATE` creates objects from `tele/xxx/STATE` telegrams
+* `STAT_RESULT` creates objects from `stat/xxx/RESULT` telegrams
 
 Usually TELE_SENSOR should be sufficient for most users.
 
 ## Flags for LED controllers
 The mode states will be created only if device has one of the states:
 
-- 'Red', 'Green', 'Blue', 'WW', 'CW', 'Color', 'RGB_POWER', 'WW_POWER', 'CW_POWER', 'Hue', 'Saturation'
+- `Red`, `Green`, `Blue`, `WW`, `CW`, `Color`, `RGB_POWER`, `WW_POWER`, `CW_POWER`, `Hue`, `Saturation`
 
 States:
 
-* modeLedExor - exor for white LEDs and color leds => if the white LEDs are switched on, color LEDs are switched off and vice versa (default true)
-* modeReadColors - allow for color read from MQTT (default false)
+* `modeLedExor` - exor for white LEDs and color leds => if the white LEDs are switched on, color LEDs are switched off and vice versa (default true)
+* `modeReadColors` - allow for color read from MQTT (default false)
 
 ## Changelog
+
+### 2.3.2 (2019-10-23)
+* (bluefox) Fixed the password input in the configuration
+* (bluefox) Allowed to set the IP interface for server
+* (bluefox) Fixed tests for js-controller 2.0
+* (bluefox) Fixed the monitoring of the client connection
+* (bluefox) Changed "indicator.connected" to "indicator.reachable" for clients
+* (bluefox) Supported `{POWERn: "true"}`
+* (bluefox) Correct processing of `{temp: nan}`
 
 ### 2.2.3 (2019-01-10)
 * (simatec) Support for comapct mode
@@ -122,7 +128,7 @@ States:
 
 ### 2.1.0 (2018-03-30)
 * (gemu2015) Support of the devices control (many thanks :)
-* (gemu2015) Support of many new values 
+* (gemu2015) Support of many new values
 * (modmax) Update alive status of the clients
 * (modmax) Added POWER5-8 and Switch3-4
 

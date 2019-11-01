@@ -15,7 +15,7 @@ Please visit iogo.nisnagel.de for more information on how to getting started.
 
 ## Configuration
 You need an valid licence key to use this adapter.
-A licence can be bought after creating an acooun at https://iogo.nisnagel.de.
+A licence can be bought after creating an acoount at https://iogo.nisnagel.de.
 
 Please enter your account information (email/password) in the instance configuration.
 

@@ -2,24 +2,24 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
-title: ioBroker.meteoalarm
-hash: /UuqRf0fQOLjTNWpl4OG3gv7l+6zCiWKQ3xcZQ2NpEc=
+title: ioBroker.metaarm
+hash: GiKt6up6qUq4Ido90T1D1UfgDqhAQKHmL3T9gF8Fh48=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
 ![环保管理员徽章](https://badges.greenkeeper.io/jack-blackson/ioBroker.meteoalarm.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
 ![安装数量](http://iobroker.live/badges/meteoalarm-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 ＃ioBroker.meteoalarm
 =================
 
-ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，包括风，雪，雨，高温和低温等。此信息以本地语言和详细区域提供。
+ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和详细区域提供。
 
 ＃＃ 如何使用它
-请访问http://meteoalarm.eu并选择您的地区。然后转到右上角的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
+请访问http://meteoalarm.eu并选择您的地区。然后转到右上方的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
 
 ![商标](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
 
@@ -46,7 +46,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |警报类型|描述|
 |:---:|:---:|
 | 1 |风|
-| 2 |冰/雪|
+| 2 |雪/冰|
 | 3 |雷电|
 | 4 |雾|
 | 5 |高温|
@@ -57,7 +57,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 | 10 |雨|
 | 11 |未知|
 | 12 |洪水|
-| 13 |雨洪水|
+| 13 |雨洪|
 
 ##警报级别
 |警报级别|描述|
@@ -76,7 +76,9 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 * 意大利
 *荷兰
 *挪威
+*斯洛伐克
 *西班牙
+*瑞士
 
 如果找不到您的国家，请在github上创建一个问题，我很乐意添加
 
@@ -88,8 +90,11 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ##要实现的功能
 *一天处理多个警报
 
+## 1.0.6（2019-10-19）
+*（jack-blackson）添加了瑞士和Slowakia
+
 ## 1.0.5（2019-09-22）
-*（jack-blackson）较小的日志调整
+*（jack-blackson）较小的日志记录调整
 
 ## 1.0.4（2019-09-11）
 *（杰克·布莱克森）特拉维斯错误

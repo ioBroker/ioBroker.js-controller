@@ -2615,6 +2615,20 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
+### 4.3.2 (2019-10-27)
+* (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
+* (AlCalzone) Target ES 2017 in TypeScript (#419)
+* (AlCalzone) Automatically load declarations for 3rd party modules (#422)
+* (bluefox) Functions with non latin text are working now
+
+### 4.3.1 (2019-10-16)
+* (bluefox) Fixed login with non-admin user
+* (bluefox) fixed log
+* (bluefox) Some GUI fixes
+
 ### 4.3.0 (2019-10-09)
 * (bluefox) log handlers were implemented
 * (bluefox) fixed the error with $ selector and with disabled subscribes

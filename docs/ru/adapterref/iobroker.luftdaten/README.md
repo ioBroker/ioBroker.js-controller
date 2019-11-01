@@ -3,14 +3,22 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luftdaten/README.md
 title: ioBroker.luftdaten
-hash: t++RIFfnayjNaUPWkpg1D5IUURSloAA+5zk3veApoN0=
+hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 ---
 ![логотип](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
 
-![Количество установок](http://iobroker.live/badges/luftdaten-stable.svg)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.luftdaten.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.luftdaten.svg)
+![стабильный](http://iobroker.live/badges/luftdaten-stable.svg)
+![установлен](http://iobroker.live/badges/luftdaten-installed.svg)
+![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.luftdaten.svg)
+![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.luftdaten/badge.svg)
+![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.luftdaten.svg)
+![NPM](https://nodei.co/npm/iobroker.luftdaten.png?downloads=true)
 
 # IoBroker.luftdaten
-Этот адаптер добавляет данные датчика «luftdaten.info» в вашу установку ioBroker. Вы можете решить, хотите ли вы добавить локальный датчик по ip или просто использовать API lufdaten.info для получения данных другого датчика.
+Этот адаптер добавляет данные датчика «luftdaten.info» в вашу установку ioBroker.
+Вы можете решить, хотите ли вы добавить локальный датчик по ip или просто использовать API lufdaten.info для получения данных другого датчика.
 
 ## Конфигурация
 ### Местный
@@ -24,7 +32,7 @@ hash: t++RIFfnayjNaUPWkpg1D5IUURSloAA+5zk3veApoN0=
 
 *Не стесняйтесь изменять настройки расписания на вкладке экземпляров (по умолчанию каждые 5 минут).*
 
-### Дистанционный пульт
+### Удаленный
 1. Выберите один из датчиков на онлайн-карте: [deutschland.maps.luftdaten.info] (https://deutschland.maps.luftdaten.info/)
 2. Нажмите на датчик и скопируйте идентификатор (#XXXXX)
 3. Создайте новый экземпляр адаптера
@@ -44,23 +52,37 @@ hash: t++RIFfnayjNaUPWkpg1D5IUURSloAA+5zk3veApoN0=
 
 ## Changelog
 
+### 0.0.9
+
+* (klein0r) improved logging
+
+### 0.0.8
+
+* (klein0r) added response time and units
+
 ### 0.0.7
+
 * (klein0r) merged pull requests - thanks a lot for contribution
 
 ### 0.0.6
+
 * (klein0r) changed type to weather
 
 ### 0.0.5
+
 * (klein0r) fixed issues when sensor is not available
 * (klein0r) added location information for remote sensors
 
 ### 0.0.4
+
 * (pix) path is IP if sensor is local
 
 ### 0.0.3
+
 * (pix) path and sensor name added
 
 ### 0.0.1
+
 * (klein0r) initial release
 
 ## License

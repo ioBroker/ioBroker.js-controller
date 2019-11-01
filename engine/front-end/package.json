@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.2.1",
-    "echarts": "^4.2.1",
-    "echarts-for-react": "^2.0.15-beta.0",
+    "@material-ui/core": "^4.5.2",
+    "echarts": "^4.4.0",
+    "echarts-for-react": "^2.0.15-beta.1",
     "gulp": "^4.0.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-icons": "^3.7.0",
-    "react-scripts": "^3.0.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-icons": "^3.8.0",
+    "react-scripts": "^3.2.0",
     "react-showdown": "^1.6.0",
     "react-splitter-layout": "^4.0.0",
-    "react-typed": "^1.1.2",
+    "react-typed": "^1.2.0",
     "start": "^5.1.0",
-    "react-responsive-carousel": "^3.1.49"
+    "react-responsive-carousel": "^3.1.51"
   },
   "scripts": {
     "start": "react-scripts start",

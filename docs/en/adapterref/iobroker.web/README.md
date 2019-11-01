@@ -28,7 +28,14 @@ It is required to let all services be available under one web server.
 If authentication is enabled and the user enters 5 times invalid password during one minute, he must wait at least one minute till next attempt.
 After 15th wrong attempt the user must wait 1 hour.
 
+## "Stay logged in" option
+If this options is selected the user stays logged in for one month.
+If not, the user will stay logged in for the configured "login timeout".
+
 ## Changelog
+### 2.4.8 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
 ### 2.4.6 (2019-10-12)
 * (bluefox) Fixed issue with simple-api
 
