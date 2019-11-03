@@ -2962,15 +2962,15 @@ function startInstance(id, wakeUp) {
                                 if (process.platform === 'win32') {
                                     fileNameFull = fileNameFull.replace(/[\/\\]/g, '\\\\');
                                 }
-                                decache = decache || require('decache');
-                                decache(fileNameFull);
                                 const starterScript =
                                     'module.exports = function (callback) {\n' +
+                                    '   const decache = require("decache");\n' +
+                                    '   decache("' + fileNameFull + '");\n' +
                                     '   const adapter = require("' + fileNameFull + '")(' + JSON.stringify({
-                                        logLevel,
-                                        compactInstance: _instance,
-                                        compact: true
-                                    }) + ');\n' +
+                                            logLevel,
+                                            compactInstance: _instance,
+                                            compact: true
+                                        }) + ');\n' +
                                     '   adapter.on("exit", (code, signal) => callback(code, signal));\n' +
                                     '   return adapter;\n' +
                                     '};\n';
