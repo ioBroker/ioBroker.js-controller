@@ -38,6 +38,7 @@ let title = tools.appName + '.js-controller';
 
 let Objects;
 let States;
+let decache;
 
 const semver                = require('semver');
 let logger;
@@ -2961,6 +2962,8 @@ function startInstance(id, wakeUp) {
                                 if (process.platform === 'win32') {
                                     fileNameFull = fileNameFull.replace(/[\/\\]/g, '\\\\');
                                 }
+                                decache = decache || require('decache');
+                                decache(fileNameFull);
                                 const starterScript =
                                     'module.exports = function (callback) {\n' +
                                     '   const adapter = require("' + fileNameFull + '")(' + JSON.stringify({
