@@ -2935,6 +2935,7 @@ function startInstance(id, wakeUp) {
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
                         states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
+                        const decache = require("decache");
                         const vm = new NodeVM({
                             console: 'inherit',
                             sandbox: {},
