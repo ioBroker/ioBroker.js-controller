@@ -34,7 +34,7 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 | Heute / Morgen | Diese Datenpunkte sind für heute und morgen verfügbar: |
 | Text | Alarmtext in länderspezifischer Sprache |
 | Von | Alarmstartdatum |
-| Bis | Enddatum des Alarms |
+| Bis | Alarm Enddatum |
 | Art des Alarms als Zahl |
 | TypeText | Alarmtyp als Text |
 | Alarmstufe als Zahl |

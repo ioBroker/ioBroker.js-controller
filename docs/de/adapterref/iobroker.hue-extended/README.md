@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue-extended/README.md
 title: ioBroker.hue-extended
-hash: y5kbOH0iJ5KCE3tYre3C2OhHSAN96aFMsxO7Pycpv7s=
+hash: +7mvpgyGLIqB/rz6wLJuyVlxu5F1NAQuodVAP+4X520=
 ---
 ![Logo](../../../en/adapterref/iobroker.hue-extended/admin/hue-extended.png)
 
@@ -13,79 +13,27 @@ hash: y5kbOH0iJ5KCE3tYre3C2OhHSAN96aFMsxO7Pycpv7s=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hue-extended.svg)
 ![Travis CI](https://travis-ci.org/Zefau/ioBroker.hue-extended.svg?branch=master)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.hue-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue-extended.png?downloads=true)
 
 # IoBroker.hue-extended Verbinden Sie Ihre Philips Hue Lights mit ioBroker.
 ## Eigenschaften
-- Config synchronisieren
-- Gruppen synchronisieren
 - Lichter synchronisieren
+- Gruppen synchronisieren
+- Synchronisieren von Szenen (einschließlich GroupScenes, LightScenes und Szenen aus [HueLabs] (https://labs.meethue.com/))
+- Sensoren synchronisieren
+- Zeitpläne synchronisieren
+- Config synchronisieren
 - Ressourcen synchronisieren
 - Regeln synchronisieren
-- Szenen synchronisieren
-- Zeitpläne synchronisieren
-- Sensoren synchronisieren
-- Triggern Sie Änderungen der Zustände "Ein / Aus", "Bri" ("Pegel"), "Farbton", "Gesessen", "XY", "CT", "Alarm", "Effekt" und "Übergangszeit"
-- Zusätzliche Trigger basierend auf Farbräumen für `rgb`,` hsv`, `xyz`,` cmyk` und `hex`
-- Wenden Sie eine eigene Befehlskombination mit dem Befehlstrigger an
+- Triggern Sie Änderungen der Zustände "Ein / Aus", "Helligkeit" ("Stufe"), "Farbton", "Sättigung", "xy", "Farbtemperatur", "Alarm", "Effekt" und "Übergangszeit"
+- Zusätzliche Trigger basierend auf Farbräumen für `rgb`,` hsv` und `hex`
+- Wenden Sie eine eigene Befehlskombination mit dem Trigger "_commands" an
 - Kontrollieren Sie die Lichter aller Gruppen gleichzeitig mit der Gruppe "0-all"
-- Führen Sie eine Szene aus oder wenden Sie "Szene" auf Licht oder Gruppe an
+- Führen Sie eine Szene aus oder wenden Sie "_scene" auf Licht oder Gruppe an
 
 ## Changelog
 
-### 0.7.0 (2019-08-27)
-- (Zefau) added `0-all`-group to apply action on all groups at once
-- (Zefau) added `commands` action to apply own commands combination at once
-- (Zefau) lowered minimum refresh time
-
-### 0.6.2 (2019-08-18)
-- (Zefau) fixed error when triggering scene (`Error setting /lights/undefined/state: resource, /lights/undefined/state, not available`)
-- (Zefau) fixed display error in adapter configuration interface
-
-### 0.6.1 (2019-08-16)
-- (Zefau) Corrected German translations
-- (Zefau) Completed README
-
-### 0.6.0 (2019-08-15)
-- (Zefau) implemented queue for any applied actions
-- (Zefau) implemented user creation in interface configuration (admin panel)
-- (Zefau) added additional actions for color spaces `rgb`, `hsv`, `cmyk`, `xyz` and `hex`
-
-### 0.5.0 (2019-08-11)
-- (Zefau) added support for scenes (reorganized states and added trigger)
-- (Zefau) fixed action `xy`
-- (Zefau) reorganized states within tree `state` into `action` in case they are executable
-
-### 0.4.0 (2019-08-10)
-- (Zefau) fixed applying action on group
-
-### 0.4.0 (2019-08-09)
-- (Zefau) renamed adapter to hue-extended (formerly hue-lights)
-- (Zefau) changed roles of some states
-
-### 0.3.2 (2019-08-07)
-- (Zefau) refactored data retrieval and state creation
-
-### 0.3.1 (2019-08-03)
-- (Zefau) when turning on a device, set level / bri to 100 if it was set to 0
-
-### 0.3.0 (2019-08-03)
-
-__REMARK: If you are coming from an earlier version, please delete all your hue-extended states before running this release!__
-
-- (Zefau) added error message when incorrect bridge credentials are provided ([see issue description](https://forum.iobroker.net/post/287505))
-- (Zefau) when turning off a device, set level / bri to 0 ([see issue description](https://forum.iobroker.net/post/287566))
-- (Zefau) fixed error that prevented `groups` being set / changed
-- (Zefau) added specific role information to states under `lights`, `groups` and `sensors` ([see issue description](https://forum.iobroker.net/post/287566))
-- (Zefau) fixed wrong value for temperature sensors ([see issue description](https://forum.iobroker.net/post/287564))
-
-### 0.2.0 (2019-07-24)
-- (Zefau) added support to change states _level_, _xy_, _effect_, _alert_, and _transitiontime_
-
-### 0.1.0 (2019-07-21)
-- (Zefau) retrieve lights, groups, resourcelinks, rules, scenes, schedules, sensors and config from Hue Bridge
-- (Zefau) change states (e.g. on/off, brightness, saturation)
+Please see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
 
 ## License
 The MIT License (MIT)

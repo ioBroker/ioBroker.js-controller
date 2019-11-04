@@ -25,7 +25,7 @@ Sie können entscheiden, ob Sie einen lokalen Sensor per IP hinzufügen oder nur
 1. Bauen Sie Ihren eigenen Adapter und fügen Sie ihn Ihrem lokalen WLAN-Netzwerk hinzu
 2. Erstellen Sie eine neue Instanz des Adapters
 3. Wählen Sie als Typ "Lokal"
-4. Geben Sie die IP-Adresse oder den Hostnamen des Sensors in die zweite Eingabe ein
+4. Geben Sie die IP oder den Hostnamen des Sensors in die zweite Eingabe ein
 5. Wählen Sie einen Namen und speichern Sie die Einstellungen
 
 Warten Sie einige Minuten, bis der Cronjob die Daten zum ersten Mal erfasst.

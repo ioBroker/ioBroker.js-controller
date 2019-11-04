@@ -1,5 +1,3 @@
-# Moved to https://github.com/iobroker-community-adapters/ioBroker.hue
-
 ![Logo](admin/hue.jpeg)
 # ioBroker Philips Hue Bridge Adapter
 ==============
@@ -22,11 +20,31 @@ Once you have installed this adapter within ioBroker, create an adapter instance
 
 Please note: Adapter settings button "Find Bridge" will be inactive if field "Bridge Address" is populated, and button "Create User" will be inactive if field "Bridge User" is populated.
 
+### Settings
+|Name|Description|
+|---|---|
+|__Bridge address__|IP address of your Hue bridge, you can try to detect it by pressing `Find Bridge` button.|
+|__Port__|Port of your Hue bridge, normally 443 (SSL) and 80 (non-SSL).|
+|__SSL__|If checked, connecton is secured via SSL, port will automatically change to 443 (it is strongly recommended to use SSL).|
+|__User__|Username of your bridge user. You can create it, by pressing `Create User` button and following the screen instructions.|
+|__Ignore scenes__|If checked, scenes will not be shown/controlled by the adapter.|
+|__Ignore groups__|If checked, groups will not be shown/controlled by the adapter.|
+|__"Legacy" structure__|To support backwards compatibility, it is possible to hold an old object structure in ioBroker. This old structure is `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. The new structure removes `<brdige_name_channel>` and thus makes it necessary to adapt old scripts, etc. If an existing old strcuture is detected by the adapter, the structure will be used without checking the checkbox. However, if migration from old to new structure is desired, delete the whole `hue.<instance_number>` namespace once.
+|__Native turn off/on behaviour__|If checked, the adapter will turn on/off lights in the same fashion as the native Hue app does. Otherwise, lamps will be set to a level of 100 % when switching on.|
+|__Polling__|If checked, the adapter will poll state changes, otherwise it can only be used to control lamps, not to show their status.|
+|__Polling interval__|Defines how often the states will be polled, and thus updated in ioBroker. Low polling intervals can cause performance issues in some settings. Hence, the minimum allowed polling interval is 2 seconds. If polling interval is set to less than 2 seconds it will be set to 2 seconds during runtime.|
+
 ## Deutsch :de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein. 
 In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf create user drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben. 
 
 ## Changelog
+### 2.4.0 (2019-11-03)
+* (foxriver76) added possibility to control software sensors
+
+### 2.3.1 (2019-11-02)
+* (foxriver76) fixed controlling `on` state of sensors
+
 ### 2.2.3 (2019-10-21)
 * (foxriver76) migrate everything to Hue v3
 * (foxriver76) add possibility to turn on/off sensor

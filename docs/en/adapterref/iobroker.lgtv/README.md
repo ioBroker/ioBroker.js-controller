@@ -161,9 +161,10 @@ Switches the iput oh the TV to HDMI 3.
 
 Play YouTube video.
 
-```setState('lgtv.0.states.raw', {url: 'ssap://system.launcher/launch', cmd: {id: "netflix"} });```
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
 
-Sending RAW command API.
+Sending and response RAW command API.
 
 ```setState('lgtv.0.remote.*KEY*', true);```
 
@@ -200,6 +201,11 @@ is true when TV is on and false if TV is off
 
 
 ## Changelog
+
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
 
 ### 1.1.0 (2019-10-10)
 * (instalator) adding object remote.KEY

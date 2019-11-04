@@ -27,7 +27,7 @@ This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor th
 ## Features
 - Support for Nuki Smartlock and Nuki Opener
 - Support for both Nuki Bridge API and Nuki Web API
-- Support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
+- ~~Support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
 - Fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
 - Retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
 - Option to regularly synchronise instead of using Bridge API callback (which may be delayed due to Hardware Bridge)
@@ -473,18 +473,9 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ```
 
 
-## Changelog
+## Changelog / Release-Notes
 
-### 2.0.0 (2019-10-xx)
-- (Zefau) added support for new Nuki Opener
-- (Zefau) added support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
-- (Zefau) added fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- (Zefau) added retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
-- (Zefau) added option to regularly synchronise instead of using Bridge API callback
-- (Zefau) added refreshing all states of Nuki Web API when callback is received via Nuki Bridge API
-- (Zefau) added states for Nuki Notifications
-- (Zefau) added support for multiple devices (including Nuki Opener) on adapter web interface
-- (Zefau) added option to not retrieve all information (by deselecting `config` or `users`) via Nuki Web API
+Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
 
 ## Credits

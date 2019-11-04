@@ -2615,6 +2615,9 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
 ### 4.3.2 (2019-10-27)
 * (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
 * (AlCalzone) Target ES 2017 in TypeScript (#419)

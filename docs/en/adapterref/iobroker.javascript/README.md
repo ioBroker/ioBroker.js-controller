@@ -1425,6 +1425,9 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
 ### 4.3.2 (2019-10-27)
 * (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
 * (AlCalzone) Target ES 2017 in TypeScript (#419)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.youtube/README.md
 title: ioBroker.youtube
-hash: 6jbXy3SpMfNI/X9C3pNXKuSieicLGIzn4p5bbG9NNYM=
+hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
 ---
 ![логотип](../../../en/adapterref/iobroker.youtube/admin/youtube.png)
 
@@ -17,10 +17,12 @@ hash: 6jbXy3SpMfNI/X9C3pNXKuSieicLGIzn4p5bbG9NNYM=
 ![NPM](https://nodei.co/npm/iobroker.youtube.png?downloads=true)
 
 # IoBroker.youtube
-Статистика как просмотры, подписчики и видео
+Добавляет статистику канала, такую как просмотры, подписчики и последние видео, в ioBroker. С помощью этого решения вы можете отслеживать рост своего канала или сравнивать свои значения с другими пользователями YouTube.
+
+Поскольку вся эта информация общедоступна, вы также можете использовать этот адаптер, чтобы следить за вашими любимыми YouTube-сообщениями и информировать вас (например, когда будет доступно новое видео). Все, что вам нужно, это API-ключ для доступа к этой информации. Подробнее смотрите в разделе «Конфигурация».
 
 ## Конфигурация
-Чтобы получить API-ключ, вам нужно перейти к [console.developers.google.com](https://console.developers.google.com/apis/dashboard).
+Чтобы получить API-ключ, вы должны перейти к [console.developers.google.com](https://console.developers.google.com/apis/dashboard).
 
 1. Создайте новый проект
 2. Создайте новый ключ API

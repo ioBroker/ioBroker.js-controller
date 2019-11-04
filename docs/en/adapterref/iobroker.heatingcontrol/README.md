@@ -79,10 +79,34 @@ Features:
 
 ## Changelog
 
-### 0.3.0 (2019-10-xx)
+### 0.3.3 (2019-11-xx)
+Attention: some changes in datapoints!!
+* (René) in admin: new buttons to add search new rooms
+* (René) bug fix: in profil type Mo-Fr / Sa- So period order check failed  
+* (René) see issue #38: new datapoint for WindowIsOpen
+* (René) change datapoint "CurrentTimePeriod" to "CurrentTimePeriodFull", "CurrentTimePeriod" and "CurrentTimePeriodTime"
+* (René) bugfix datapoint name "Sa-Su"
+* (René) see issue #16: new datapoint "state" per room to show reason for temperatur change 
+* (René) change format of LastProgramRun date / time
+
+
+
+### 0.3.2 (2019-11-01)
+* (René) try to convert temperature to number if NaN
+* (René) see issue #33: check for heating period when adapter starts
+* (René) fix a problem in subscription function when room can not be found 
+
+### 0.3.1 (2019-10-31)
+* (René) see issue #42 and #44: check all sensors per room and set state when adapter starts
+* (René) show message in admin when adapter is not online
+* (René) pre-define devicelist; add dummy thermostat, if list is empty
+
+
+### 0.3.0 (2019-10-27)
 * (René) see issue #20 + #24: start and end of heating period is configurable in admin 
 * (René) see issue #24: use external data point to set internal "present" data point 
 * (René) see issue #15: manual temperatur override
+* (René) see issue #35: delete of devices
 * (René) reset DeleteAll at next admin start 
 
 

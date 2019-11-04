@@ -53,7 +53,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-Просто отправьте путь к вашему изображению вместо текста или используйте атрибут url ```sendTo('iogo.0', 'absolute/path/file.png')```
+Просто отправьте путь к изображению вместо текста или используйте атрибут url ```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {

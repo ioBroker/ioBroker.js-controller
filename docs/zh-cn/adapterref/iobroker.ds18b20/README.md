@@ -9,7 +9,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ds18b20/README.md
 title: ioBroker.ds18b20
-hash: qJfRB/5MczqQ0Aivc91lJ64NChstHjwb6g4+Ev03rfI=
+hash: q9VZmrwA+sLrNiHTVoHFc0wpppVHdQmzWD97klY1Kw0=
 ---
 ![徽标](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
 
@@ -17,6 +17,8 @@ hash: qJfRB/5MczqQ0Aivc91lJ64NChstHjwb6g4+Ev03rfI=
 适配器`ds18b20`使ioBroker中的DS18B20型1-Wire温度传感器直接集成。
 
 需要支持1-Wire总线的相应硬件（例如Raspberry Pi），并且必须在系统上功能上设置1-Wire总线（在`/sys/bus/w1/devices/`中列出的传感器）。
+
+DS18B20传感器与Raspberry Pi的连接示例如下。
 
 ##功能
 *读取当前温度值
@@ -28,12 +30,12 @@ hash: qJfRB/5MczqQ0Aivc91lJ64NChstHjwb6g4+Ev03rfI=
 ##安装
 当前可以通过最新的存储库使用该适配器。
 
-或者，可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装。
+或者，可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`进行安装。
 
 ##配置
 在适配器配置中，可以以毫秒为单位设置所有传感器的**标准轮询间隔**。最小值为500。
 
-在表格中，可以手动添加单个传感器，也可以通过*搜索传感器*添加。
+在表格中，可以手动添加或通过*搜索传感器*添加单个传感器。
 
 ![组态](../../../de/adapterref/iobroker.ds18b20/./img/konfiguration.png)
 
@@ -43,7 +45,7 @@ hash: qJfRB/5MczqQ0Aivc91lJ64NChstHjwb6g4+Ev03rfI=
 可以自由选择**名称**以识别传感器。
 
 可以为每个传感器设置额外的**轮询间隔**（以毫秒为单位）。
-如果该字段保留为空白，则应用默认查询间隔。
+如果该字段保留为空，则应用默认查询间隔。
 最小值为500。
 
 **单位**确定ioBroker对象中存储的值的单位。
@@ -118,7 +120,33 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
 如果所有传感器的最后一次读取成功，则此状态为`true`。
 一旦其中一个传感器发生错误，此状态即为`false`。
 
+Raspberry Pi上的## DS18B20
+DS18B20温度传感器与Raspberry Pi的连接如下图所示。
+注意，上拉电阻必须连接到+ 3.3V而不是+ 5V，因为这会损坏GPIO。
+本示例使用GPIO.04（BCM）。
+
+![DS18B20 Raspberry Pi](../../../de/adapterref/iobroker.ds18b20/./img/raspi-ds18b20.png)
+
+要在Raspberry Pi上激活1-Wire总线，必须在文件`/boot/config.txt`中添加以下行，然后必须重新启动Raspberry Pi。
+
+```
+dtoverlay=w1-gpio,gpiopin=4
+```
+
+如果一切正常，则在`/sys/bus/w1/devices/`下可以看到已连接的传感器。
+
+```
+$ ls -l /sys/bus/w1/devices/
+insgesamt 0
+lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b4592 -> ../../../devices/w1_bus_master1/28-0000077b4592
+lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus_master1/28-0000077b9fea
+lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
+```
+
 ## Changelog
+### 1.0.3 (2019-11-03)
+* (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
+
 ### 1.0.2 (2019-10-07)
 * (Peter Müller) Display error message when tried to search for sensors without adapter running.
 

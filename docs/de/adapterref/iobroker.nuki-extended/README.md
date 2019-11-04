@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-erweitert
-hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
+hash: HELzK1mWNuZtbfH8Aj54qCOpgurEUn5UA1pWTD8tA+I=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -33,9 +33,9 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 ## Eigenschaften
 - Unterstützung für Nuki Smartlock und Nuki Opener
 - Unterstützung für Nuki Bridge API und Nuki Web API
-- Unterstützung für Hash-Token auf Hardware-Bridges (siehe https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
-- Fallback auf die Nuki Web API, falls die auf die Nuki Bridge API angewendeten Aktionen fehlschlagen, z. wegen Brückenfehler 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- Wiederholen Sie den Vorgang, falls die auf die Nuki Bridge-API angewendeten Aktionen fehlschlagen (wenn die Nuki Web-API nicht verwendet wird).
+- ~~ Unterstützung für Hash-Token auf Hardware-Bridges (siehe https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
+- Fallback auf Nuki Web API, falls angewendete Aktionen auf Nuki Bridge API fehlschlagen, z. wegen Brückenfehler 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
+- Wiederholen Sie den Vorgang, falls die auf die Nuki Bridge API angewendeten Aktionen fehlschlagen (wenn die Nuki Web API nicht verwendet wird).
 - Option zur regelmäßigen Synchronisierung anstelle des Bridge-API-Rückrufs (möglicherweise verzögert aufgrund von Hardware Bridge)
 - Aktualisierung aller Zustände der Nuki Web API, wenn ein Rückruf über die Nuki Bridge API eingeht
 - Berechtigte Benutzer für Nuki Smartlock und Nuki Opener abrufen (siehe unten [Channels & States] (# general-information))
@@ -188,7 +188,7 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 | config | buttonEnabled | True, wenn die Schaltfläche auf dem Smartlock aktiviert ist |
 | config | Fähigkeiten Die Funktionen geben an, ob das Öffnen der Tür über App, RTO oder beides möglich ist |
 | config | fobAction1 | Die Fob-Aktion, wenn die Taste einmal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
-| config | fobAction2 | Die Fob-Aktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
+| config | fobAction2 | Die Schlüsselanhängeraktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> &quot;{&quot; 0 &quot;:&quot; NONE &quot;,&quot; 1 &quot;:&quot; UNLOCK &quot;,&quot; 2 &quot;:&quot; LOCK &quot;,&quot; 3 &quot;:&quot; LOCK_N_GO &quot;,&quot; 4 &quot;:&quot; INTELLIGENT &quot;}&quot; |
 | config | fobPaired | True, wenn ein Anhänger mit dem Smartlock | gepaart ist |
@@ -481,16 +481,7 @@ Icons von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicon
 
 ## Changelog
 
-### 2.0.0 (2019-10-xx)
-- (Zefau) added support for new Nuki Opener
-- (Zefau) added support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
-- (Zefau) added fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- (Zefau) added retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
-- (Zefau) added option to regularly synchronise instead of using Bridge API callback
-- (Zefau) added refreshing all states of Nuki Web API when callback is received via Nuki Bridge API
-- (Zefau) added states for Nuki Notifications
-- (Zefau) added support for multiple devices (including Nuki Opener) on adapter web interface
-- (Zefau) added option to not retrieve all information (by deselecting `config` or `users`) via Nuki Web API
+Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
 ## License
 The MIT License (MIT)

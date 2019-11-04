@@ -14,6 +14,8 @@ Der Adapter `ds18b20` ermöglicht die direkte Einbindung von 1-Wire Temperaturse
 
 Es wird eine entsprechende Hardware mit Unterstützung für den 1-Wire Bus benötigt (z.B. Raspberry Pi) und der 1-Wire Bus muss auf dem System funktionsfähig eingerichtet sein (Sensoren unter `/sys/bus/w1/devices/` aufgelistet).
 
+Ein Beispiel für die Anbindung von DS18B20 Sensoren an einen Raspberry Pi ist weiter unten zu finden.
+
 
 ## Features
 
@@ -131,7 +133,33 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
 Wenn das jeweils letzte Lesen von allen Sensoren erfolgreich war, ist dieser State `true`.
 Sobald einer der Sensoren einen Fehler aufweist, ist dieser State `false`.
 
+
+## DS18B20 am Raspberry Pi
+
+Der Anschluss von DS18B20 Temperatursensoren an einen Raspberry Pi erfolgt wie in der folgenden Grafik dargestellt.
+Zu beachten ist dabei, dass der Pullup-Widerstand an die +3,3V angeschlossen werden muss und nicht an +5V, da dies den GPIO beschädigen würde.
+In diesem Beispiel wird der GPIO.04 (BCM) verwendet.
+
+![DS18B20 Raspberry Pi](./img/raspi-ds18b20.png)
+
+Zur Aktivierung des 1-Wire Bus auf dem Raspberry Pi muss in der Datei `/boot/config.txt` die folgende Zeile hinzugefügt und anschließend der Raspberry Pi neu gestartet werden.
+```
+dtoverlay=w1-gpio,gpiopin=4
+```
+
+Wenn alles funktioniert sind die angeschlossenen Sensoren dann unter `/sys/bus/w1/devices/` sichtbar.
+```
+$ ls -l /sys/bus/w1/devices/
+insgesamt 0
+lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b4592 -> ../../../devices/w1_bus_master1/28-0000077b4592
+lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus_master1/28-0000077b9fea
+lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
+```
+
 ## Changelog
+### 1.0.3 (2019-11-03)
+* (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
+
 ### 1.0.2 (2019-10-07)
 * (Peter Müller) Display error message when tried to search for sensors without adapter running.
 

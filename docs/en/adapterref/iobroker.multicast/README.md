@@ -68,6 +68,17 @@ The adapter is build to send up to 5-times a retry to ensure all state changes a
 
 { to be done / in progress }
 
+
+## To-Do planned :
+
+* [ ] Optimise state retry, dont fire every 500ms more queuing
+* [ ] Send recovery data if Harbeat is received and connection to device is FALSE
+* [ ] Implement states (capability for value list)
+* [ ] Implement queueing, wait 20ms after state change for device and send array with all state updates
+* [ ] Implement expire value by API
+* [ ] Correct handling of hostname and hostname changes
+
+
 ## Changelog
 
 ### 0.1.0

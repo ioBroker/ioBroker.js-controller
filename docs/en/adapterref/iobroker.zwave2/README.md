@@ -17,9 +17,11 @@ Alternative Z-Wave implementation
 
 ## Changelog
 
-### next version
+### 0.2.0
 
--   Update `zwave-js` to v1.6.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#160-2019-10-23)
+-   Update `zwave-js` from v1.5.0 to v1.7.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#170-2019-11-03). Notable improvements include:
+    -   Complete `Multi Channel` support
+    -   Improved `Multilevel Switch` support
 -   improve value/metadata logging and change loglevel to debug
 -   use unit from value metadata
 -   use translated property keys to name states

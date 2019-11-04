@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: jaPO4HOvxaUmQXvTTjTM136xdGeXdThA0GX71m9v4Uk=
+title: ioBroker Philips Hue Bridge Adapter
+hash: +wmhAQViMGBbMc3up4o09shIerhDFbIruvymapkXLIU=
 ---
-# Nach https://github.com/iobroker-community-adapters/ioBroker.hue verschoben
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hue-stable.svg)
@@ -28,7 +27,21 @@ Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine ent
 4. Ändern Sie andere Optionen in den Adaptereinstellungen und wählen Sie dann "Speichern und schließen".
 5. Schließlich sollten Sie fertig sein: Der Adapter generiert alle Objekte, um Ihre Hue-Geräte entsprechend zu steuern.
 
-Bitte beachten Sie: Die Schaltfläche "Bridge suchen" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge-Adresse" ausgefüllt ist, und die Schaltfläche "Benutzer erstellen" ist inaktiv, wenn das Feld "Bridge-Benutzer" ausgefüllt ist.
+Bitte beachten Sie: Die Schaltfläche "Find Bridge" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge Address" (Brückenadresse) ausgefüllt ist, und die Schaltfläche "Create User" (Benutzer erstellen) ist inaktiv, wenn das Feld "Bridge User" (Brückenbenutzer) ausgefüllt ist.
+
+### Die Einstellungen
+| Name | Beschreibung |
+|---|---|
+| __Bridge-Adresse__ | IP-Adresse Ihrer Hue-Bridge. Sie können versuchen, sie zu erkennen, indem Sie die Taste `Find Bridge` drücken. |
+| __Port__ | Port Ihrer Hue-Bridge, normalerweise 443 (SSL) und 80 (Nicht-SSL). |
+| __User__ | Benutzername Ihres Bridge-Benutzers. Sie können es erstellen, indem Sie die Taste `Create User` drücken und den Anweisungen auf dem Bildschirm folgen |
+| __User__ | Benutzername Ihres Bridge-Benutzers. Sie können es erstellen, indem Sie auf die Schaltfläche "Benutzer erstellen" klicken und den Anweisungen auf dem Bildschirm folgen |
+| __Ignore scenes__ | Wenn diese Option aktiviert ist, werden Szenen vom Adapter nicht angezeigt / gesteuert. |
+| __Gruppen ignorieren__ | Wenn diese Option aktiviert ist, werden Gruppen vom Adapter nicht angezeigt / gesteuert. |
+| __ "Legacy" -Struktur__ | Um die Abwärtskompatibilität zu unterstützen, ist es möglich, eine alte Objektstruktur in ioBroker zu behalten. Diese alte Struktur ist `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Die neue Struktur entfernt `<brdige_name_channel>` und macht es daher erforderlich, alte Skripte usw. anzupassen. Wenn der Adapter eine vorhandene alte Struktur erkennt, wird die Struktur verwendet, ohne das Kontrollkästchen zu aktivieren. Wenn Sie jedoch von einer alten zu einer neuen Struktur migrieren möchten, löschen Sie den gesamten `hue.<instance_number>`-Namespace einmal. |
+| __Natives Ein- / Ausschaltverhalten__ | Wenn diese Option aktiviert ist, schaltet der Adapter die Lichter auf dieselbe Weise ein / aus wie die native Hue-App. Andernfalls werden die Lampen beim Einschalten auf einen Wert von 100% gesetzt |
+| __Polling__ | Wenn diese Option aktiviert ist, werden Statusänderungen vom Adapter abgefragt. Andernfalls können Lampen nur gesteuert und nicht angezeigt werden. |
+| __Polling interval__ | Definiert, wie oft die Status abgefragt und somit in ioBroker aktualisiert werden. Niedrige Abfrageintervalle können in einigen Einstellungen zu Leistungsproblemen führen. Daher beträgt das minimal zulässige Abfrageintervall 2 Sekunden. Wenn das Abfrageintervall auf weniger als 2 Sekunden festgelegt ist, wird es während der Laufzeit auf 2 Sekunden festgelegt |
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -39,6 +52,12 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 * Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
+### 2.4.0 (2019-11-03)
+* (foxriver76) added possibility to control software sensors
+
+### 2.3.1 (2019-11-02)
+* (foxriver76) fixed controlling `on` state of sensors
+
 ### 2.2.3 (2019-10-21)
 * (foxriver76) migrate everything to Hue v3
 * (foxriver76) add possibility to turn on/off sensor

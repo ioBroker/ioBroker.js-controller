@@ -26,6 +26,10 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 1.1.0
+
+-   Shows detailed information on self - consumption. Imports yearly & monthly historic data.
+
 ### 1.0.0
 
 -   Reads now devicetypes, -brands and -classes. Sets correct params for batteries. Displays self-consumption @'status'

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki扩展
-hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
+hash: HELzK1mWNuZtbfH8Aj54qCOpgurEUn5UA1pWTD8tA+I=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -33,12 +33,12 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 ＃＃ 特征
 -支持Nuki Smartlock和Nuki Opener
 -支持Nuki Bridge API和Nuki Web API
--在硬件桥接器上支持哈希令牌（请参阅https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token）
+-~~在硬件桥接器上支持哈希令牌（请参阅https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
 -如果在Nuki Bridge API上应用的操作失败，则回退到Nuki Web API，例如由于桥接错误503（请参阅https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau）
 -如果在Nuki Bridge API上应用的操作失败（不使用Nuki Web API时），请重试
 -可以选择定期同步而不是使用Bridge API回调（由于硬件Bridge可能会延迟）
 -通过Nuki Bridge API收到回调时，刷新Nuki Web API的所有状态
--检索Nuki Smartlock和Nuki Opener的授权用户（请参阅下面的[频道和州]（＃general-information））
+-检索Nuki Smartlock和Nuki Opener的授权用户（请参见下面的[频道和国家]（＃general-information））
 -检索Nuki Smartlock和Nuki Opener的配置（请参见下面的[Channels＆States]（＃general-config））
 -检索设置Nuki通知（请参见下面的[频道和状态]（＃users））
 -Web界面，显示Nuki Smartlock和Nuki Opener的最近事件：
@@ -119,7 +119,7 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 | notifications._notificationIndex_ |状态|当前激活状态<br> `{“ 0”：&#39;INIT&#39;，“ 1”：&#39;ACTIVE&#39;，“ 2”：&#39;FAILED&#39;}`|
 
 ### Smartlocks和Opener（使用Nuki Bridge API）
-将使用名称模式```door__<name of door>```创建一个锁作为设备。将在每个锁中创建以下通道/状态（使用Nuki Bridge API时）：
+将使用名称模式```door__<name of door>```创建一个锁作为设备。在每个锁中（使用Nuki Bridge API时）将创建以下通道/状态：
 
 |频道|州|描述 |
 |:------- |:----- |:----------- |
@@ -213,10 +213,10 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 | advancedConfig | automaticBatteryTypeDetection |指示是否启用了自动检测电池类型的标志 |
 | advancedConfig |电池类型|智能锁中存在的电池类型<br> `{"0": 'ALKALI', "1": 'ACCUMULATOR', "2": 'LITHIUM'}`|
 | advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}`|
-| advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{“ 0”：“ NO_ACTION”，“ 1”：“ INTELLIGENT”，“ 2”：“ UNLOCK”，“ 3”：“ LOCK”，“ 4”：“ UNLATCH”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
+| advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“解锁”，“ 3”：“ LOCK”，“ 4”：“解锁”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
 | advancedConfig | lngTimeout |锁定“ n”的超时时间（以秒为单位）|
 | advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}`|
-| advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{“ 0”：“ NO_ACTION”，“ 1”：“ INTELLIGENT”，“ 2”：“ UNLOCK”，“ 3”：“ LOCK”，“ 4”：“ UNLATCH”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
+| advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“解锁”，“ 3”：“ LOCK”，“ 4”：“解锁”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
 | advancedConfig | singleLockedPositionOffsetDegrees |改变单个锁定位置的偏移量 |
 | advancedConfig | totalDegrees |校准期间达到的绝对总位置（以度为单位）|
 | advancedConfig | unlatchDuration |将闩锁保持在解锁位置的持续时间（以秒为单位）|
@@ -236,7 +236,7 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 | openerAdvancedConfig | disableRtoAfterRing |振铃后禁用RTO的标志|
 | openerAdvancedConfig |门铃抑制|门铃抑制模式<br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}`|
 | openerAdvancedConfig |门铃抑制|门铃抑制模式<br> `{“ 0”：“从不”，“ 1”：“ ALWAYS”，“ 2”：“ RTO”，“ 3”：“ CONTINUOUS”，“ 4”：“ CONTINUOUS + RTO”} |
-| openerAdvancedConfig |门铃抑制持续时间|门铃抑制的持续时间，以毫秒为单位（仅在工作模式2-Digital Intercom-中）|
+| openerAdvancedConfig |门铃抑制持续时间|门铃抑制的持续时间（毫秒）（仅在工作模式2-Digital Intercom-中）|
 | openerAdvancedConfig | soundRing |响声|
 | openerAdvancedConfig | soundOpen |开放的声音|
 | openerAdvancedConfig | soundRto | RTO的声音|
@@ -263,7 +263,7 @@ hash: TlM/nSgWkaONGEu+OYzokMhDGqwAbaeQTZ9OLSTs834=
 | users._userName_ | dateCreated |创建日期|
 | users._userName_ | dateUpdated |更新日期|
 | users._userName_ | dateLastActive |上次有效日期|
-| users._userName_ |启用|如果启用了用户，则为true |
+| users._userName_ |已启用|如果启用了用户，则为true |
 | users._userName_ | id |用户的唯一ID |
 | users._userName_ | lockCount |锁数|
 | users._userName_ |名称|用户名|
@@ -444,7 +444,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-注意：如果同时使用Alexa和Telegram脚本，则只能为这两个操作定义一个侦听器：
+注意：如果同时使用Alexa和Telegram脚本，则只能为这两种操作定义一个侦听器：
 
 ```javascript
 const DOOR_STATES = {
@@ -481,16 +481,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 
 ## Changelog
 
-### 2.0.0 (2019-10-xx)
-- (Zefau) added support for new Nuki Opener
-- (Zefau) added support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
-- (Zefau) added fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- (Zefau) added retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
-- (Zefau) added option to regularly synchronise instead of using Bridge API callback
-- (Zefau) added refreshing all states of Nuki Web API when callback is received via Nuki Bridge API
-- (Zefau) added states for Nuki Notifications
-- (Zefau) added support for multiple devices (including Nuki Opener) on adapter web interface
-- (Zefau) added option to not retrieve all information (by deselecting `config` or `users`) via Nuki Web API
+Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
 ## License
 The MIT License (MIT)

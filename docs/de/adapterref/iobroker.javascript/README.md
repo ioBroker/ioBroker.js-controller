@@ -64,6 +64,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
 ### 4.3.2 (2019-10-27)
 * (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
 * (AlCalzone) Target ES 2017 in TypeScript (#419)

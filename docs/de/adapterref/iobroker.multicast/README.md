@@ -3,8 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.multicast/README.md
 title: Multicast-APi-Adapter für ioBroker
-hash: FQYT5r9hyrzBqOoXag+7OuaWV4F3/7g10pxhyHnPha0=
+hash: Z7mNjNd0axleKThUpnCknP1jwfFoAwhGKtExf7BUdSo=
 ---
+![Anzahl der Installationen](http://iobroker.live/badges/iobroker.multicastsvg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.multicast.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.multicast.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.multicast.svg)
@@ -67,6 +68,14 @@ Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sic
 
 ### APi Struktur und Dokumentation
 {zu erledigen / in Bearbeitung}
+
+## To-Do geplant:
+* [] Zustandswiederholung optimieren, nicht alle 500ms mehr feuern
+* [] Sende Wiederherstellungsdaten, wenn Harbeat empfangen wird und die Verbindung zum Gerät FALSE ist
+* [] Zustände implementieren (Fähigkeit zur Werteliste)
+* [] Implementieren Sie die Warteschlange, warten Sie 20 ms nach dem Statuswechsel auf das Gerät und senden Sie das Array mit allen Statusaktualisierungen
+* [] Ablaufwert per API implementieren
+* [] Richtige Behandlung von Hostnamen- und Hostnamenänderungen
 
 ## Changelog
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.youtube/README.md
 title: ioBroker.youtube
-hash: 6jbXy3SpMfNI/X9C3pNXKuSieicLGIzn4p5bbG9NNYM=
+hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
 ---
 ![Logo](../../../en/adapterref/iobroker.youtube/admin/youtube.png)
 
@@ -17,7 +17,9 @@ hash: 6jbXy3SpMfNI/X9C3pNXKuSieicLGIzn4p5bbG9NNYM=
 ![NPM](https://nodei.co/npm/iobroker.youtube.png?downloads=true)
 
 # IoBroker.youtube
-Statistiken wie Views, Abonnenten und Videos
+Fügt ioBroker Kanalstatistiken wie Aufrufe, Abonnenten und neueste Videos hinzu. Mit dieser Lösung können Sie Ihr Kanalwachstum verfolgen oder Ihre Werte mit anderen YouTubern vergleichen.
+
+Da all diese Informationen öffentlich verfügbar sind, können Sie diesen Adapter auch verwenden, um Ihren bevorzugten YouTubern zu folgen und Sie zu informieren (z. B. wenn ein neues Video verfügbar ist). Sie benötigen lediglich einen API-Schlüssel, um auf diese Informationen zuzugreifen. Weitere Informationen finden Sie im Abschnitt Konfiguration.
 
 ## Aufbau
 Um einen API-Key zu erhalten, müssen Sie zu [console.developers.google.com](https://console.developers.google.com/apis/dashboard) gehen.

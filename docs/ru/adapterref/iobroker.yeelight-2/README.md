@@ -3,21 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
+hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ---
-![Количество установок](http://iobroker.live/badges/yeelight-2-installed.svg)
-![версия](http://iobroker.live/badges/yeelight-2-stable.svg)
+![логотип](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
+
+![Количество установок](http://iobroker.live/badges/yeelight-2-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.yeelight-2.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.yeelight-2.svg)
 ![Трэвис-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
-<!-- -->
+# IoBroker.yeelight-2
+=================
 
-![логотип](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
-
-# IoBroker.yeelight-2 =================
 [Deutsche Beschreibung hier](README_de.md)
 
 Этот адаптер управляет вашим устройством Yeelight. этот адаптер только для admin3. Admin2 не поддерживается
@@ -34,7 +33,7 @@ hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
 Вы можете добавить устройства вручную или найти устройства в сети. базовый порт 55443. если вы хотите, вы можете изменить имя, IP, порт и смарт-имя
 
 ### Smartname
-если вы введете смарт-имя, устройство будет добавлено в iobroker.cloud и может управлять alexa.
+если вы вводите смарт-имя, устройство добавляется в iobroker.cloud и может управлять alexa.
 
 ### Найти устройство
 с помощью этой кнопки вы можете сканировать вашу сеть на наличие устройств, если что-то найдено, устройства добавляются в таблицу. Для сканирования сети требуется около 20 секунд. если устройства не найдены, режим Lan не включен или лампы находятся в другой сети.
@@ -53,7 +52,7 @@ hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
 - «hsv» означает изменение интеллектуального светодиода на указанный цвет и яркость.
 - «ct» означает изменение интеллектуального светодиода на указанные ct и яркость.
 - «cf» означает запуск цветового потока указанным способом.
-- «auto_delay_off» означает включить интеллектуальный светодиод для указанного
+- «auto_delay_off» означает включение интеллектуального светодиода для указанного
 
 Яркость и запустить таймер сна, чтобы выключить свет через указанные минуты.
 
@@ -72,7 +71,7 @@ hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
  Для приведенных выше примеров:
 
  - Во-первых, установите цвет «652280» и яркость 70%.
- - Во-вторых, установить цвет Hue: 300, Saturation: 70 и максимальную яркость.
+ - Во-вторых, установить цветовой тон: 300, насыщенность: 70 и максимальная яркость.
  - Третий установлен CT на 500K и яркость 100%.
  - Четвертый - запустить бесконечный поток цветов на двух кортежах потока.
  - Пятый - включить свет до 50% яркости, а затем выключить
