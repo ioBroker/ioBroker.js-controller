@@ -12,8 +12,8 @@ De lo contrario, actualice primero los esclavos con una actualización de los si
 ¡Esta es la opción recomendada!
 
 Ejecute los siguientes comandos en un shell SSH (consola):
-* `parada iobroker`
-* `actualización de iobroker`
+* `iobroker stop`
+* `iobroker update`
 * `iobroker upgrade self`
 * `iobroker start` o reiniciar el servidor, entonces ioBroker debería reiniciarse y puede estar seguro de que todos los procesos anteriores se completaron.
 
@@ -42,12 +42,12 @@ Una instalación manual generalmente se realiza con derechos de administrador
 Ejecute los siguientes comandos en un administrador SSH shell (consola):
 * `cd C:\iobroker` (o donde se instaló ioBroker)
 * ?? Detener el servicio ioBroker
-* `actualización de iobroker`
+* `iobroker update`
 * `iobroker upgrade self`
 * Inicie el servicio ioBroker o reinicie la computadora, luego ioBroker debería reiniciarse y puede estar seguro de que todos los procesos anteriores se completaron.
 
 ## Emergencia (reinstalación manual) (si de alguna manera nada funciona después de la actualización)
-Vaya al directorio ioBroker y ejecute `npm install iobroker.js-controller`. Se puede instalar una versión específica usando `npm install iobroker.js-controller @ x.y.z` (reemplace x.y.z con la versión deseada).
+Vaya al directorio ioBroker y ejecute `npm install iobroker.js-controller`. Se puede instalar una versión específica usando `npm install iobroker.js-controller@x.y.z` (reemplace x.y.z con la versión deseada).
 
 Si se producen problemas de acceso durante la ejecución, el comando debe cambiarse ligeramente:
 * Para sistemas creados con el nuevo instalador de Linux: `sudo -u iobroker -H npm install iobroker.js-controller`
