@@ -9,7 +9,7 @@ Aufgrund der verschiedenen Hardware und Platformen unter denen ioBroker läuft, 
 Ansonsten bitte bei einem Update von Master-Slave-Systemen die Slaves zuerst aktualisieren und den Master als letztes! 
 
 ## Linux/macOS (neuer Installer)
-Dies ist die Empfohlene Variante!!
+Dies ist die empfohlene Variante!!
 
 Bitte in einer SSH-Shell (Konsole) folgende Befehle ausführen:
 * `iobroker stop`
