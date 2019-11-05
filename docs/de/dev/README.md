@@ -12,7 +12,7 @@ lastChanged: "21.21.2019"
 
 ## Nützliche Links
 ### Übersetzungshilfe
-[http://iobroker.net:3000/](http://iobroker.net:3000/)
+[https://translator.iobroker.in/](https://translator.iobroker.in/)
 Damit kann man die Texte in 9 Sprachen übersetzen und das Ergebnis kann man direkt in words.js benutzen
 
 image
