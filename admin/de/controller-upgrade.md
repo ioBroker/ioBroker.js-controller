@@ -32,26 +32,26 @@ Bitte in einer SSH-Shell (Konsole) folgende Befehle ausführen:
 
 Falls beim Upgrade-Befehl Fehler wegen Zugriffsrechten/Permissions angezeigt werden, müssen diese behoben werden. Teilweise reicht "sudo" nicht aus und man muss die Installation als echter Root (Vorher einfach `sudo su -` eingeben) ausführen.
 
-## Windows (neuer Windows Installer)
+## Windows
 
-In diesem Fall bitte einen aktualisierten Installer von der Download-Seite herunterladen und mit diesem das Update vornehmen.
+Für das Updaten von ioBroker auf Windows den entsprechenden Installer mit der gewünschten js-controller-Version von der Download-Seite https://www.iobroker.net/#de/download herunterladen und mit diesem das Update vornehmen. Mit dem Windows Installer können auch vorher manuell installierte Server oder Installationen von anderen Betriebssystemen nach Windows migriert und geupdated werden.
 
 ## Windows (manuell installiert)
-Eine manuelle Installation erfolgt meist mit Administrator-Rechten
-
-Bitte in einer Administrator-SSH-Shell (Konsole) folgende Befehle ausführen:
+Eine manuelle Installation erfolgt mit Administrator-Rechten. Bitte deshalb ein cmd.exe-Kommandozeilemfenster als Administrator starten (mit Rechtsklick auf cmd.exe und "Ausführen als Administrator") und dort folgende Befehle ausführen:
 * `cd C:\iobroker` (oder wo ioBroker installiert wurde)
-* ?? ioBroker Service stoppen
+* `iobroker stop`, um den ioBroker Service zu stoppen
+* `iobroker status`, um zu prüfen, ob ioBroker beendet ist
 * `iobroker update`
 * `iobroker upgrade self`
 * ioBroker Service starten oder Rechner rebooten, danach sollte ioBroker neu starten und man kann sicher sein das alle alten Prozesse beendet waren.
 
-## Notfall (manuelle Reinstallation) (wenn nach dem Update irgendwie nichts mehr tut)
-Bitte ins ioBroker Verzeichnis wechseln und dort `npm install iobroker.js-controller` ausführen. Eine bestimmte Version kann mittels `npm install iobroker.js-controller@x.y.z` (x.y.z mit der gewollten Version ersetzen) installiert werden.
+## Notfall Linux/macOS/WIndows (manuelle Reinstallation, wenn nach dem Update irgendwie nichts mehr tut)
+Auf Windows zuerst bitte im Startmenü unter "ioBroker" die Kommandozeile der betreffenden ioBroker-Instanz aufrufen. das Verzeichnis ist dann automatisch eingestellt. Auf Linux bzw. macOS bitte ins ioBroker Verzeichnis wechseln.
 
-Falls es bei der Ausführung zu Problemen mit Zugriffsrechten kommen muss der Befehl leicht abgeändert werden:
+Dort `npm install iobroker.js-controller` ausführen. Eine bestimmte Version kann mittels `npm install iobroker.js-controller@x.y.z` (x.y.z mit der gewollten Version ersetzen) installiert werden.
+
+Falls es bei der Ausführung unter Linux zu Problemen mit Zugriffsrechten kommen muss der Befehl leicht abgeändert werden:
 * Für Systeme die mit dem neuen Linux-Installer erstellt wurden: `sudo -u iobroker -H npm install iobroker.js-controller`
 * Für Systeme die manuell unter Linux installiert wurden ggf `sudo` voranstellen oder als Root ausführen.
-* Für Windows-Systeme sollte eine Administrator-Shell ausreichen
 
 Dieser Weg ist nur in sehr wenigen Fällen nötig und vorher bitte das Forum konsultieren!
