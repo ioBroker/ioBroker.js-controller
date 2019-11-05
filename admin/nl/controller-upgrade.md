@@ -13,7 +13,7 @@ Dit is de aanbevolen optie !!
 
 Voer de volgende opdrachten uit in een SSH-shell (console):
 * `iobroker stop`
-* `iobroker-update`
+* `iobroker update`
 * `iobroker upgrade zelf`
 * `iobroker start` of reboot server, dan moet ioBroker opnieuw opstarten en u kunt er zeker van zijn dat alle oude processen zijn voltooid.
 
@@ -42,12 +42,12 @@ Een handmatige installatie vindt meestal plaats met beheerdersrechten
 Voer de volgende opdrachten uit in een SSH-shell van een beheerder (console):
 * `cd C:\iobroker` (of waar ioBroker is geïnstalleerd)
 * ?? Stop de ioBroker-service
-* `iobroker-update`
-* `iobroker upgrade zelf`
+* `iobroker update`
+* `iobroker upgrade self`
 * Start de ioBroker-service of start de computer opnieuw op. Vervolgens moet ioBroker opnieuw opstarten en kunt u er zeker van zijn dat alle oude processen zijn voltooid.
 
 ## Emergency (handmatige herinstallatie) (als er op de een of andere manier niets werkt na de update)
-Ga naar de ioBroker-directory en voer `npm install iobroker.js-controller` uit. Een specifieke versie kan worden geïnstalleerd met `npm install iobroker.js-controller @ x.y.z` (vervang x.y.z door de gewenste versie).
+Ga naar de ioBroker-directory en voer `npm install iobroker.js-controller` uit. Een specifieke versie kan worden geïnstalleerd met `npm install iobroker.js-controller@x.y.z` (vervang x.y.z door de gewenste versie).
 
 Als er tijdens de uitvoering toegangsproblemen optreden, moet de opdracht enigszins worden gewijzigd:
 * Voor systemen gemaakt met het nieuwe Linux-installatieprogramma: `sudo -u iobroker -H npm install iobroker.js-controller`
