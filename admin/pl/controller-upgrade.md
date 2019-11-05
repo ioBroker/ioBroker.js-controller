@@ -13,7 +13,7 @@ To jest zalecana opcja !!
 
 Wykonaj następujące polecenia w powłoce SSH (konsoli):
 * `iobroker stop`
-* `aktualizacja iobroker`
+* `iobroker update`
 * `iobroker upgrade self`
 * `iobroker start` lub restart serwera, następnie ioBroker powinien się zrestartować i możesz być pewien, że wszystkie stare procesy zostały zakończone.
 
@@ -30,7 +30,7 @@ Wykonaj następujące polecenia w powłoce SSH (konsoli):
 * `sudo iobroker upgrade self`
 * `sudo iobroker start` lub restart serwera, następnie ioBroker powinien się zrestartować i możesz być pewien, że wszystkie stare procesy zostały zakończone.
 
-Jeśli polecenie aktualizacji wyświetla błędy uprawnień / uprawnień, napraw je. Czasami „sudo” nie wystarczy i musisz uruchomić instalację jako prawdziwy root (wcześniej po prostu „sudo su -`).
+Jeśli polecenie aktualizacji wyświetla błędy uprawnień / uprawnień, napraw je. Czasami „sudo” nie wystarczy i musisz uruchomić instalację jako prawdziwy root (wcześniej po prostu `sudo su -`).
 
 ## Windows (nowy Instalator Windows)
 
@@ -42,12 +42,12 @@ Ręczna instalacja zwykle odbywa się z uprawnieniami administratora
 Wykonaj następujące polecenia w powłoce SSH administratora (konsoli):
 * `cd C:\iobroker` (lub gdzie został zainstalowany ioBroker)
 * ?? Zatrzymaj usługę ioBroker
-* `aktualizacja iobroker`
+* `iobroker update`
 * `iobroker upgrade self`
 * Uruchom usługę ioBroker lub uruchom ponownie komputer, następnie ioBroker powinien się zrestartować i możesz być pewien, że wszystkie stare procesy zostały zakończone.
 
 ## Emergency (ręczna ponowna instalacja) (jeśli jakoś nic nie działa po aktualizacji)
-Przejdź do katalogu ioBroker i uruchom `npm install iobroker.js-controller`. Konkretną wersję można zainstalować za pomocą `npm install iobroker.js-controller @ x.y.z` (zamień x.y.z na żądaną wersję).
+Przejdź do katalogu ioBroker i uruchom `npm install iobroker.js-controller`. Konkretną wersję można zainstalować za pomocą `npm install iobroker.js-controller@x.y.z` (zamień x.y.z na żądaną wersję).
 
 Jeśli podczas wykonywania wystąpią problemy z dostępem, polecenie należy nieznacznie zmienić:
 * W przypadku systemów utworzonych za pomocą nowego instalatora Linux: `sudo -u iobroker -H npm install iobroker.js-controller`
