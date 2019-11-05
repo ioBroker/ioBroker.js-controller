@@ -352,6 +352,11 @@
             ],
             "news": [
                 {
+                    "title": "Умный дом в контейнерах (ioBroker + Zigbee в Docker)",
+                    "link": "https://pcnews.ru/blogs/umnyj_dom_v_kontejnerah_iobroker__zigbee_v_docker-936255.html",
+                    "date": "2019-11-03T00:00:00.000Z"
+                },
+                {
                     "title": "HomeKit и ioBroker Давайте дружить домами",
                     "link": "https://habr.com/ru/company/iobroker/blog/433798/",
                     "date": "2018-12-24T00:00:00.000Z"
@@ -594,7 +599,7 @@
                         "pl": "tłumacz ioBroker",
                         "zh-cn": "ioBroker翻译"
                     },
-                    "link": "http://www.iobroker.net:3000/"
+                    "link": "https://translator.iobroker.in/"
                 }
             ],
             "blog": [
