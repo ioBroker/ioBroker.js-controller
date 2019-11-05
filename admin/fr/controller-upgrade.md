@@ -30,7 +30,7 @@ Veuillez exécuter les commandes suivantes dans un shell SSH (console):
 * `sudo iobroker upgrade self`
 * `sudo iobroker start` ou le redémarrage du serveur, ioBroker doit redémarrer et vous pouvez être sûr que tous les anciens processus sont terminés.
 
-Si la commande de mise à niveau affiche des erreurs d'autorisations / autorisations, corrigez-les. Parfois, "sudo" ne suffit pas et vous devez exécuter l'installation en tant que vraie racine (auparavant, tout simplement `sudo su-`).
+Si la commande de mise à niveau affiche des erreurs d'autorisations / autorisations, corrigez-les. Parfois, "sudo" ne suffit pas et vous devez exécuter l'installation en tant que vraie racine (auparavant, tout simplement `sudo su -`).
 
 ## Windows (nouveau Windows Installer)
 
