@@ -236,6 +236,56 @@ function register(it, expect, context) {
         });
     }).timeout(1000);
 
+    it(testName + 'Read alias states', done => {
+        context.adapter.setForeignObject(gid + '1', {
+            common: {
+                name: 'forAlias1',
+                type: 'number',
+                role: 'level'
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                object: 1536, // 0600
+                owner: 'system.user.userC',
+                ownerGroup: 'system.group.user1'
+            }
+        }, err => {
+            context.adapter.setForeignState(gid + '1', 5, true, err => {
+                expect(err).to.be.not.ok;
+
+                // create alias
+                context.adapter.setForeignObject(gAliasID + '1', {
+                    common: {
+                        name: 'Test Alias1',
+                        type: 'number',
+                        role: 'state',
+                        min: -10,
+                        max: 10,
+                        alias: {
+                            id: gid + '1'
+                        }
+                    },
+                    native: {},
+                    type: 'state',
+                    acl: {
+                        object: 1638, // 0666
+                        owner: 'system.user.userC',
+                        ownerGroup: 'system.group.user1'
+                    }
+                }, err => {
+                    context.adapter.getForeignStates(gAliasID + '1', (err, states) => {
+                        // It must be scaled from -100, 2, 100
+                        // to                     -10, 0.2, 10
+                        expect(states[gAliasID + '1'].val).to.be.equal(5);
+                        expect(states[gAliasID + '1'].ack).to.be.true;
+                        done();
+                    });
+                });
+            });
+        });
+    }).timeout(1000);
+
     it(testName + 'Write alias state', done => {
         context.adapter.setForeignState(gAliasID, 10, false, (err, state) => {
             context.adapter.getForeignState(gid, (err, state) => {
