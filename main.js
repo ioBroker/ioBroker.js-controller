@@ -20,7 +20,6 @@ const tools      = require('./lib/tools');
 const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
 const EXIT_CODES = require('./lib/exitCodes');
-const {NodeVM}   = require('vm2');
 
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
@@ -77,7 +76,6 @@ let outputCount             = 0;
 let eventLoopLags           = [];
 let mhService               = null; // multihost service
 const uptimeStart           = Date.now();
-const adapterModules        = {};
 let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
@@ -2852,17 +2850,18 @@ function startInstance(id, wakeUp) {
                                 }
 
                                 if (isStopping) {
+                                    logger.silly(hostLogPrefix + ' Check Stopping ' + id);
                                     for (const i in procs) {
                                         if (!procs.hasOwnProperty(i)) continue;
                                         if (procs[i].process) {
-                                            //console.log(procs[i].config.common.name + ' still running');
+                                            logger.silly(hostLogPrefix + ' ' + procs[i].config.common.name + ' still running');
                                             return;
                                         }
                                     }
                                     for (const i in compactProcs) {
                                         if (!compactProcs.hasOwnProperty(i)) continue;
                                         if (compactProcs[i].process) {
-                                            //console.log(compactProcs[i].config.common.name + ' still running');
+                                            logger.silly(hostLogPrefix + ' ' + compactProcs[i].config.common.name + ' still running (compact)');
                                             return;
                                         }
                                     }
@@ -2935,48 +2934,20 @@ function startInstance(id, wakeUp) {
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
                         states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
-                        const decache = require("decache");
-                        const vm = new NodeVM({
-                            console: 'inherit',
-                            sandbox: {},
-                            require: {
-                                external: true,
-                                builtin: ['*']
-                            },
-                            nesting: true
-                        });
 
-                        if (!adapterModules[name] && fileNameFull) {
-                            try {
-                                adapterModules[name] = vm;
-                            } catch (e) {
-                                logger.error(`${hostLogPrefix} error with ${fileNameFull}: ${JSON.stringify(e)}`);
-                            }
-                        }
-                        if (adapterModules[name]) {
+                        if (fileNameFull) {
                             const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
                             try {
-                                //procs[id].process = adapterModules[name]({logLevel, compactInstance: _instance, compact: true});
+                                decache = decache || require('decache');
+                                decache(fileNameFull);
 
-                                // fix problem on windows
-                                if (process.platform === 'win32') {
-                                    fileNameFull = fileNameFull.replace(/[\/\\]/g, '\\\\');
-                                }
-                                const starterScript =
-                                    'module.exports = function (callback) {\n' +
-                                    '   const decache = require("decache");\n' +
-                                    '   decache("' + fileNameFull + '");\n' +
-                                    '   const adapter = require("' + fileNameFull + '")(' + JSON.stringify({
-                                            logLevel,
-                                            compactInstance: _instance,
-                                            compact: true
-                                        }) + ');\n' +
-                                    '   adapter.on("exit", (code, signal) => callback(code, signal));\n' +
-                                    '   return adapter;\n' +
-                                    '};\n';
-                                //logger.silly(starterScript);
-                                procs[id].process = adapterModules[name].run(starterScript, name + '.js')(exitHandler);
+                                procs[id].process = require(fileNameFull)({
+                                    logLevel,
+                                    compactInstance: _instance,
+                                    compact: true
+                                });
+
                                 procs[id].startedInCompactMode = true;
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`);
@@ -3040,8 +3011,13 @@ function startInstance(id, wakeUp) {
                                     delete compactProcs[instance.common.compactGroup].process;
                                 }
 
-                                // mark all instances that should be handled by this controller also as not running.
-                                compactProcs[instance.common.compactGroup].instances.forEach(id => {
+                                function markCompactInstancesAsStopped(groupId, callback) {
+                                    if (!compactProcs[groupId].instances.length) {
+                                        callback && callback();
+                                        return;
+                                    }
+
+                                    const id = compactProcs[groupId].instances.shift();
                                     outputCount += 2;
                                     states.setState(id + '.alive',     {val: false, ack: true, from: hostObjectPrefix});
                                     states.setState(id + '.connected', {val: false, ack: true, from: hostObjectPrefix});
@@ -3055,52 +3031,57 @@ function startInstance(id, wakeUp) {
                                         if (procs[id] && procs[id].process) {
                                             delete procs[id].process;
                                         }
+                                        markCompactInstancesAsStopped(groupId, callback);
                                     });
-                                });
+                                }
 
-                                // show stored errors
-                                cleanErrors(compactProcs[instance.common.compactGroup], null, true);
+                                // mark all instances that should be handled by this controller also as not running.
+                                markCompactInstancesAsStopped(instance.common.compactGroup, () => {
+                                    // show stored errors
+                                    cleanErrors(compactProcs[instance.common.compactGroup], null, true);
 
-                                if (isStopping) {
-                                    for (const i in procs) {
-                                        if (!procs.hasOwnProperty(i)) continue;
-                                        if (procs[i].process) {
-                                            //console.log(procs[i].config.common.name + ' still running');
-                                            return;
+                                    if (isStopping) {
+                                        logger.silly(hostLogPrefix + ' Check after group exit ' + instance.common.compactGroup)
+                                        for (const i in procs) {
+                                            if (!procs.hasOwnProperty(i)) continue;
+                                            if (procs[i].process) {
+                                                logger.silly(hostLogPrefix + ' ' + procs[i].config.common.name + ' still running');
+                                                return;
+                                            }
                                         }
-                                    }
-                                    for (const i in compactProcs) {
-                                        if (!compactProcs.hasOwnProperty(i)) continue;
-                                        if (compactProcs[i].process) {
-                                            //console.log(compactProcs[i].config.common.name + ' still running');
-                                            return;
+                                        for (const i in compactProcs) {
+                                            if (!compactProcs.hasOwnProperty(i)) continue;
+                                            if (compactProcs[i].process) {
+                                                logger.silly(hostLogPrefix + ' ' + compactProcs[i].config.common.name + ' still running (compact)');
+                                                return;
+                                            }
                                         }
-                                    }
-                                    logger.info(hostLogPrefix + ' All instances are stopped.');
-                                    allInstancesStopped = true;
+                                        logger.info(hostLogPrefix + ' All instances are stopped.');
+                                        allInstancesStopped = true;
 
+                                        storePids(); // Store all pids to make possible kill them all
+                                        return;
+                                    }
+
+                                    // Restart group controller because still instances assigned to him, done via startInstance
+                                    if (connected && !isStopping && compactProcs[instance.common.compactGroup].instances.length) {
+                                        logger.info(hostLogPrefix + ' Restart compact group controller ' + instance.common.compactGroup);
+                                        logger.debug('Instances: ' + JSON.stringify(compactProcs[instance.common.compactGroup].instances));
+
+                                        compactProcs[instance.common.compactGroup].instances.forEach(id => {
+                                            //noinspection JSUnresolvedVariable
+                                            if (procs[id].restartTimer) {
+                                                clearTimeout(procs[id].restartTimer);
+                                            }
+                                            procs[id].restartTimer = setTimeout(_id => startInstance(_id),
+                                                code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
+                                            // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
+                                        });
+                                    } else {
+                                        logger.info(`${hostLogPrefix} Do not restart compact group controller ${instance.common.compactGroup} because no instances assigned to him`);
+                                    }
                                     storePids(); // Store all pids to make possible kill them all
-                                    return;
-                                }
-
-                                // Restart group controller because still instances assigned to him, done via startInstance
-                                if (connected && !isStopping && compactProcs[instance.common.compactGroup].instances.length) {
-                                    logger.info(hostLogPrefix + ' Restart compact group controller ' + instance.common.compactGroup);
-                                    logger.debug('Instances: ' + JSON.stringify(compactProcs[instance.common.compactGroup].instances));
-
-                                    compactProcs[instance.common.compactGroup].instances.forEach(id => {
-                                        //noinspection JSUnresolvedVariable
-                                        if (procs[id].restartTimer) {
-                                            clearTimeout(procs[id].restartTimer);
-                                        }
-                                        procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                                            code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
-                                        // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
-                                    });
-                                } else {
-                                    logger.info(`${hostLogPrefix} Do not restart compact group controller ${instance.common.compactGroup} because no instances assigned to him`);
-                                }
-                                storePids(); // Store all pids to make possible kill them all
+                                });
                             };
 
                             compactProcs[instance.common.compactGroup].process.on('exit', groupExitHandler);
@@ -3143,7 +3124,7 @@ function startInstance(id, wakeUp) {
 
                 storePids(); // Store all pids to make possible kill them all
 
-                !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
+                !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
 
                 if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
                     if (procs[id].startedInCompactMode) {
@@ -3231,7 +3212,7 @@ function stopInstance(id, force, callback) {
         callback = force;
         force = false;
     }
-    logger.info(hostLogPrefix + ' stopInstance ' + id);
+    logger.info(hostLogPrefix + ' stopInstance ' + id + ' (process=' + (procs[id].process ? 'true' : 'false') + ')');
     if (!procs[id]) {
         logger.warn(hostLogPrefix + ' unknown instance ' + id);
         if (typeof callback === 'function') callback();
