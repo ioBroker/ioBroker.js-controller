@@ -389,6 +389,9 @@ Used version of home-assistant-frontend@1.0.0
 8. Start `gulp rename` task.
 
 ## Changelog
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
 ### 0.2.3 (2019-10-22)
 * (bluefox) The custom settings were corrected
 

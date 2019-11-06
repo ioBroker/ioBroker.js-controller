@@ -74,6 +74,10 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 ## Changelog
 
+### 0.0.26 (04.11.2019)
+
+-   (ta2k) fix boolean settings
+
 ### 0.0.25 (08.09.2019)
 
 -   (ta2k) fix compact mode

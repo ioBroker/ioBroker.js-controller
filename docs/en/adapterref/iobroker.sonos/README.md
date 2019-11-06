@@ -33,6 +33,9 @@ Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/
 
 
 ## Changelog
+### 2.0.1 (2019-11-04)
+* (klein0r) create sonos cache directory
+
 ### 2.0.0 (2019-08-13)
 * (bluefox) no web server any more
 * (bluefox) update all used npm packages

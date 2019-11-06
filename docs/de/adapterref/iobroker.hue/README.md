@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: ioBroker Philips Hue Bridge Adapter
-hash: +wmhAQViMGBbMc3up4o09shIerhDFbIruvymapkXLIU=
+hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 ---
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -39,7 +39,8 @@ Bitte beachten Sie: Die Schaltfläche "Find Bridge" für die Adaptereinstellunge
 | __Ignore scenes__ | Wenn diese Option aktiviert ist, werden Szenen vom Adapter nicht angezeigt / gesteuert. |
 | __Gruppen ignorieren__ | Wenn diese Option aktiviert ist, werden Gruppen vom Adapter nicht angezeigt / gesteuert. |
 | __ "Legacy" -Struktur__ | Um die Abwärtskompatibilität zu unterstützen, ist es möglich, eine alte Objektstruktur in ioBroker zu behalten. Diese alte Struktur ist `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Die neue Struktur entfernt `<brdige_name_channel>` und macht es daher erforderlich, alte Skripte usw. anzupassen. Wenn der Adapter eine vorhandene alte Struktur erkennt, wird die Struktur verwendet, ohne das Kontrollkästchen zu aktivieren. Wenn Sie jedoch von einer alten zu einer neuen Struktur migrieren möchten, löschen Sie den gesamten `hue.<instance_number>`-Namespace einmal. |
-| __Natives Ein- / Ausschaltverhalten__ | Wenn diese Option aktiviert ist, schaltet der Adapter die Lichter auf dieselbe Weise ein / aus wie die native Hue-App. Andernfalls werden die Lampen beim Einschalten auf einen Wert von 100% gesetzt |
+| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Datenpunktes `status` eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet `0` die Szene aus und `1` sie ein |
+| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Status-Datenpunkts eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet "0" die Szene aus und "1" sie ein |
 | __Polling__ | Wenn diese Option aktiviert ist, werden Statusänderungen vom Adapter abgefragt. Andernfalls können Lampen nur gesteuert und nicht angezeigt werden. |
 | __Polling interval__ | Definiert, wie oft die Status abgefragt und somit in ioBroker aktualisiert werden. Niedrige Abfrageintervalle können in einigen Einstellungen zu Leistungsproblemen führen. Daher beträgt das minimal zulässige Abfrageintervall 2 Sekunden. Wenn das Abfrageintervall auf weniger als 2 Sekunden festgelegt ist, wird es während der Laufzeit auf 2 Sekunden festgelegt |
 

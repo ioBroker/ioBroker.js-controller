@@ -82,6 +82,7 @@ https://doc.iobroker.net/#de/documentation/cloud/androidapp.md
 https://doc.iobroker.net/#de/documentation/cloud/editor.md
 https://doc.iobroker.net/#de/documentation/cloud/ifttt.md
 https://doc.iobroker.net/#de/documentation/cloud/iosapp.md
+https://doc.iobroker.net/#de/documentation/cloud/iot.md
 https://doc.iobroker.net/#de/documentation/cloud/mediola.md
 https://doc.iobroker.net/#de/documentation/cloud/README.md
 https://doc.iobroker.net/#de/documentation/cloud/viz.md
@@ -218,6 +219,7 @@ https://doc.iobroker.net/#en/documentation/cloud/androidapp.md
 https://doc.iobroker.net/#en/documentation/cloud/editor.md
 https://doc.iobroker.net/#en/documentation/cloud/ifttt.md
 https://doc.iobroker.net/#en/documentation/cloud/iosapp.md
+https://doc.iobroker.net/#en/documentation/cloud/iot.md
 https://doc.iobroker.net/#en/documentation/cloud/mediola.md
 https://doc.iobroker.net/#en/documentation/cloud/README.md
 https://doc.iobroker.net/#en/documentation/cloud/viz.md
@@ -354,6 +356,7 @@ https://doc.iobroker.net/#ru/documentation/cloud/androidapp.md
 https://doc.iobroker.net/#ru/documentation/cloud/editor.md
 https://doc.iobroker.net/#ru/documentation/cloud/ifttt.md
 https://doc.iobroker.net/#ru/documentation/cloud/iosapp.md
+https://doc.iobroker.net/#ru/documentation/cloud/iot.md
 https://doc.iobroker.net/#ru/documentation/cloud/mediola.md
 https://doc.iobroker.net/#ru/documentation/cloud/README.md
 https://doc.iobroker.net/#ru/documentation/cloud/viz.md
@@ -490,6 +493,7 @@ https://doc.iobroker.net/#zh-cn/documentation/cloud/androidapp.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/editor.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/ifttt.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/iosapp.md
+https://doc.iobroker.net/#zh-cn/documentation/cloud/iot.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/mediola.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/README.md
 https://doc.iobroker.net/#zh-cn/documentation/cloud/viz.md
@@ -668,6 +672,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.feiertage/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.fhem/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.find-my-iphone/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.firetv/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.fitbit-api/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.flot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.foobar2000/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.fritzbox/README.md
@@ -989,6 +994,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.feiertage/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.fhem/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.find-my-iphone/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.firetv/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.fitbit-api/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.flot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.foobar2000/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.fritzbox/README.md
@@ -1310,6 +1316,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.feiertage/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.fhem/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.find-my-iphone/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.firetv/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.fitbit-api/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.flot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.foobar2000/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.fritzbox/README.md
@@ -1631,6 +1638,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.feiertage/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.fhem/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.find-my-iphone/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.firetv/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.fitbit-api/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.flot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.foobar2000/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.fritzbox/README.md

@@ -81,6 +81,7 @@
   * [Best Practices](logic/examples)
 
 * en:Cloud-Services & Apps;de:Cloud-Services & Apps;ru:Облачные сервисы & Apps;zh-cn:云服务
+  * [IoT](cloud/iot)
   * [Introduction](cloud/README)
   * [Visualisations](cloud/viz)
   * [Editors](cloud/editor)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/stateroles.md
 title: Государственные роли
-hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
+hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 ---
 # Государственные роли
 ## Common
@@ -49,9 +49,9 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 ## Значения (числа, только для чтения)
 *common.type = число, common.write = false*
 
-* значение
+* стоимость
 * value.window (common.states = {"0": "CLOSED", "1": "TILTED", "2": "OPEN"}) Важно иметь (CLOSED / TILTED / OPEN). Значения могут отличаться.
-* value.tempera (common.unit = '°C' или '°F' или 'K')
+* значение.температура (общ. единица = «°C» или «°F» или «K»)
 * value.humidity
 * value.brightness - уровень яркости (единица измерения: люкс,)
 * value.min
@@ -78,7 +78,7 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 * value.distance
 * value.distance.visibility
 * value.severity - некоторая серьезность (могут быть предоставлены состояния), важнее Higher
-* value.warning - некоторые предупреждения (могут быть предоставлены состояния), более важное значение имеет значение Higher
+* value.warning - некоторые предупреждения (могут быть предоставлены состояния), более важное значение имеет значение Higher.
 * value.sun.elevation - высота солнца в °
 * value.sun.azimuth - азимут солнца в °
 * value.voltage - напряжение в вольт, единица измерения = V
@@ -92,10 +92,10 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 Отличие *Indicators* от *Sensors* в том, что индикаторы будут отображаться в виде маленького значка. Датчики как реальная ценность.
 Так что индикатор может быть не один в канале. Это должно быть какое-то другое основное состояние внутри канала.
 
-* индикатор
+* показатель
 * Indicator.working - указывает, что целевые системы выполняют что-то, например, блайнды или открытие замка.
 * Indicator.reachable - если устройство онлайн
-* display.connected - используется только для экземпляров. Используйте индикатор. Доступен для устройств
+* Indicator.connected - используется только для экземпляров. Используйте индикатор. Доступен для устройств
 * Indicator.maintenance - указывает системные предупреждения / ошибки, аварийные сигналы, сервисные сообщения, разряженный аккумулятор или тому подобное
 * Indicator.maintenance.lowbat
 * Indicator.maintenance.unreach
@@ -156,7 +156,7 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 * switch.mode.moonlight - включение / выключение режима лунного света
 * switch.mode.color - цветовой режим вкл / выкл
 
-## Средства массовой информации
+## СМИ
 Специальные роли для медиаплееров
 
 * button.stop
@@ -174,7 +174,7 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 * media.seek - (common.type = number)%
 * media.mode.shuffle - (common.type = number) 0 - нет, 1 - все, 2 - один
 * media.mode.repeat - (common.type = boolean)
-* media.state - ['play', 'stop', 'pause'] или [0 - пауза, 1 - воспроизведение, 2 - остановка] или [true - воспроизведение / false - пауза]
+* media.state - ['play', 'stop', 'pause'] или [0 - pause, 1 - play, 2 - stop] или [true - воспроизведение / false - пауза]
 * media.artist
 * media.album
 * media.title
@@ -195,7 +195,7 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 * media.bitrate - кбит / с
 * media.genre - жанровая песня
 * media.date - песня года
-* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип действительно был «string», чтобы иметь возможность указать отсутствие дорожки с помощью «»)
+* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип действительно был "string", чтобы иметь возможность указать отсутствие дорожки с помощью "")
 * media.playid - идентификатор трека медиаплеера
 * media.add - добавить текущий плейлист
 * media.clear - очистить текущий список воспроизведения (только для записи)
@@ -335,6 +335,16 @@ hash: syC9htxAnnv0AgMriyuXpe6GqkUOZNtl226RMjG91Io=
 * info.display - информация отображается на дисплее устройства
 * date.start - строка или число
 * date.end - строка или число
+
+## Здоровье
+(common.type = число, common.read = true, common.write = false)
+
+* value.health.fat - индекс жира в%
+* value.health.weight - масса тела в кг, фунты
+* value.health.bmi - индекс bmi
+* value.health.calories - сожженные калории
+* value.health.steps - выполненные шаги
+* value.health.bpm - сердцебиение в минуту
 
 ## Другие
 * URL

@@ -5,8 +5,9 @@ Connect your Philips Hue Lights with ioBroker.
 [![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
 
 ![Number of Installations](http://iobroker.live/badges/hue-extended-installed.svg)
-![Stable version](http://iobroker.live/badges/hue-extended-stable.svg)
-[![NPM version](http://img.shields.io/npm/v/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
+![Stable Version](http://iobroker.live/badges/hue-extended-stable.svg)
+[![NPM Version](http://img.shields.io/npm/v/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
+[![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.hue-extended/latest.svg)](https://github.com/Zefau/ioBroker.hue-extended/releases/latest)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.hue-extended.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.hue-extended)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
 

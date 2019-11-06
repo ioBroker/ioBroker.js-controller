@@ -27,6 +27,21 @@ Normaly you can leave the "Auto detect" function on. If this does not work you c
 
 ## Changelog
 
+### 0.2.0 
+* Update Version
+
+### 0.1.9
+* (AnsgarSchulte) Support of Controller Version 1.014p of HEYtech RS874LL
+
+### 0.1.8 
+* (AnsgarSchulte) Support of Controller Version 8.027o
+
+### 0.1.7
+* (AnsgarSchulte) Set percentage shutter opening above 'percent' state. Definition of shutter groups in order to switch whole rooms at once
+
+### 0.1.6
+* (AnsgarSchulte) Bugfixes for stable setStates and shutter detection
+
 ### 0.1.5
 * telnet connection will automaticly reconnect on refresh intervall to check weather and shutter status
 

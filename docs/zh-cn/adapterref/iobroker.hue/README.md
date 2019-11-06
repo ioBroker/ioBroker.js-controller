@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
 title: ioBroker飞利浦Hue桥适配器
-hash: +wmhAQViMGBbMc3up4o09shIerhDFbIruvymapkXLIU=
+hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 ---
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -38,8 +38,9 @@ hash: +wmhAQViMGBbMc3up4o09shIerhDFbIruvymapkXLIU=
 | __User__ |网桥用户的用户名。您可以通过按“创建用户”按钮并按照屏幕说明进行创建。 |
 | __忽略场景__ |如果选中，则场景将不会由适配器显示/控制。 |
 | __忽略组__ |如果选中，则适配器将不会显示/控制组。
-| __“旧版”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，则一次删除整个`hue.<instance_number>`命名空间。 |
-| __本机关闭/打开行为__ |如果选中，则适配器将以与本机Hue应用程序相同的方式打开/关闭灯。否则，打开时，灯泡将被设置为100％的水平。 |
+| __“旧版”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，请一次删除整个`hue.<instance_number>`命名空间。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的`status`数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，`0`将场景关闭，而`1`将其打开。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
 | __轮询__ |如果选中，则适配器将轮询状态更改，否则只能用于控制指示灯，而不能显示其状态。 |
 | __轮询间隔__ ||定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
 
