@@ -32,26 +32,29 @@
 
 如果升级命令显示权限/权限错误，请修复它们。有时，“ sudo”还不够，您必须以真实的根用户身份运行安装程序（以前只是`sudo su -`）。
 
-## Windows（新的Windows Installer）
+## Windows
 
-在这种情况下，请从下载页面下载更新的安装程序并使用它进行更新。
+要在Windows上更新ioBroker，请从下载页面https://www.iobroker.net/#zh-cn/download下载具有所需js-controller版本的适当安装程序，然后进行更新。 使用Windows Installer，可以将以前手动安装的服务器或来自其他操作系统的安装迁移到Windows并进行更新。
 
 ## Windows（手动安装）
-手动安装通常在具有管理员权限的情况下进行
 
-请在管理员SSH Shell（控制台）中执行以下命令：
+手动安装已获得管理员权限。 请以管理员身份启动cmd.exe命令行窗口（右键单击cmd.exe并以管理员身份执行）并执行以下命令：
+
 * `cd C:\iobroker`（或ioBroker的安装位置）
-*  ??停止ioBroker服务
+* `iobroker stop`停止ioBroker服务
+* `iobroker status`以检查ioBroker是否已完成
 * `iobroker update`
 * `iobroker upgrade self`
 * 启动ioBroker服务或重新启动计算机，然后ioBroker应该重新启动，并且您可以确保所有旧进程均已完成。
 
-## 紧急情况（手动重新安装）（如果更新后不知何故不起作用）
-请转到ioBroker目录并运行`npm install iobroker.js-controller`。可以使用`npm install iobroker.js-controller@x.y.z`安装特定版本（将x.y.z替换为所需版本）。
+## 紧急Linux / macOS / Windows（手动重新安装，如果更新后不起作用）
+在Windows上，请首先在ioBroker实例下的命令行中的“ ioBroker”下调用开始菜单。 然后将自动设置正确的目录。 在Linux或macOS上，请转到ioBroker目录。
 
-如果在执行过程中出现访问问题，则必须对命令进行一些更改：
-* 对于使用新的Linux安装程序创建的系统：`sudo -u iobroker -H npm install iobroker.js-controller`
-* 对于在Linux下手动安装的系统，请添加前缀sudo或以root身份运行。
-* 对于Windows系统，管理员外壳程序就足够了
+在此处运行`npm install iobroker.js-controller`。 可以使用npm install`iobroker.js-controller@x.y.z`安装特定版本（将x.y.z替换为所需版本）。
+
+如果在Linux上运行时访问权限存在问题，则必须对命令进行一些更改：
+
+*对于使用新的Linux安装程序创建的系统：`sudo -u iobroker -H npm install iobroker.js-controller`
+*对于在Linux下手动安装的系统，请添加前缀`sudo`或以root身份运行。
 
 仅在极少数情况下才需要这种方式，请事先咨询论坛！

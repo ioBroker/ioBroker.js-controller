@@ -32,26 +32,30 @@ Voer de volgende opdrachten uit in een SSH-shell (console):
 
 Als de upgradeopdracht machtigingen / machtigingsfouten weergeeft, corrigeert u deze. Soms is "sudo" niet genoeg en moet je de installatie uitvoeren als een echte root (voorheen gewoon `sudo su -`).
 
-## Windows (nieuwe Windows Installer)
+## Windows
 
-Download in dit geval een bijgewerkt installatieprogramma van de downloadpagina en voer de update uit.
+Voor het updaten van ioBroker op Windows, downloadt u het juiste installatieprogramma met de gewenste js-controller-versie van de downloadpagina https://www.iobroker.net/#en/download en voert u de update uit. Met de Windows Installer kunnen eerder handmatig geïnstalleerde servers of installaties van andere besturingssystemen naar Windows worden gemigreerd en bijgewerkt.
 
 ## Windows (handmatig geïnstalleerd)
-Een handmatige installatie vindt meestal plaats met beheerdersrechten
 
-Voer de volgende opdrachten uit in een SSH-shell van een beheerder (console):
+Een handmatige installatie gebeurt met beheerdersrechten. Start een cmd.exe-opdrachtregelvenster als beheerder (klik met de rechtermuisknop op cmd.exe en voer het uit als beheerder) en voer de volgende opdrachten uit:
+
 * `cd C:\iobroker` (of waar ioBroker is geïnstalleerd)
-* ?? Stop de ioBroker-service
+* `iobroker stop` om de ioBroker-service te stoppen
+* `iobroker-status` om te controleren of ioBroker is afgelopen
 * `iobroker update`
 * `iobroker upgrade self`
 * Start de ioBroker-service of start de computer opnieuw op. Vervolgens moet ioBroker opnieuw opstarten en kunt u er zeker van zijn dat alle oude processen zijn voltooid.
 
-## Emergency (handmatige herinstallatie) (als er op de een of andere manier niets werkt na de update)
-Ga naar de ioBroker-directory en voer `npm install iobroker.js-controller` uit. Een specifieke versie kan worden geïnstalleerd met `npm install iobroker.js-controller@x.y.z` (vervang x.y.z door de gewenste versie).
+## Emergency Linux / macOS / Windows (handmatige herinstallatie, als er op de een of andere manier niets werkt na de update)
 
-Als er tijdens de uitvoering toegangsproblemen optreden, moet de opdracht enigszins worden gewijzigd:
+Roep in Windows eerst in het startmenu onder "ioBroker" de opdrachtregel van de relevante ioBroker-instantie op. De juiste map wordt dan automatisch ingesteld. Ga in Linux of macOS naar de ioBroker-directory.
+
+Voer daar `npm install iobroker.js-controller` uit. Een specifieke versie kan worden geïnstalleerd met behulp van npm install `iobroker.js-controller@x.y.z` (vervang x.y.z door de gewenste versie).
+
+Als er problemen zijn met toegangsrechten bij gebruik van Linux, moet de opdracht enigszins worden gewijzigd:
+
 * Voor systemen gemaakt met het nieuwe Linux-installatieprogramma: `sudo -u iobroker -H npm install iobroker.js-controller`
 * Voor systemen die handmatig onder Linux worden geïnstalleerd, geeft u het voorvoegsel `sudo` op of voert u het uit als root.
-* Voor Windows-systemen zou een beheerdersshell voldoende moeten zijn
 
 Deze manier is slechts in enkele gevallen nodig en raadpleeg vooraf het forum!
