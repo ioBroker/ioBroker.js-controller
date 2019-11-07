@@ -255,10 +255,9 @@ function handleDisconnect() {
             }
             else {
                 restartTimeout = setTimeout(() => {
-                    restartTimeout = null;
                     processMessage({command: 'cmdExec', message: {data: '_restart'}});
                     setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-                }, 15000);
+                }, 10000);
             }
         }
     });
@@ -404,6 +403,11 @@ function createStates(onConnect) {
         },
         connected: (handler) => {
             states = handler;
+
+            if (statesDisconnectTimeout) {
+                clearTimeout(statesDisconnectTimeout);
+                statesDisconnectTimeout = null;
+            }
             // logs and cleanups are only handled by the main controller process
             if (!compactGroupController) {
                 if (states.clearAllLogs) states.clearAllLogs();
@@ -470,10 +474,6 @@ function createObjects(onConnect) {
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
                 objectsDisconnectTimeout = null;
-            }
-            if (restartTimeout) {
-                clearTimeout(restartTimeout);
-                restartTimeout = null;
             }
 
             initializeController();
