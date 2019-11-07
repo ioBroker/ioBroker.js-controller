@@ -421,9 +421,12 @@ function createStates(onConnect) {
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
-            if (restartTimeout) return;
+            if (restartTimeout) {
+                return;
+            }
 
             statesDisconnectTimeout && clearTimeout(statesDisconnectTimeout);
+
             statesDisconnectTimeout = setTimeout(() => {
                 statesDisconnectTimeout = null;
                 handleDisconnect();
@@ -434,7 +437,9 @@ function createStates(onConnect) {
 }
 
 function initializeController() {
-    if (!states || !objects || connected) return;
+    if (!states || !objects || connected) {
+        return;
+    }
 
     logger.info(hostLogPrefix + ' connected to Objects and States');
 
@@ -480,7 +485,9 @@ function createObjects(onConnect) {
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
-            if (restartTimeout) return;
+            if (restartTimeout) {
+                return;
+            }
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
                 objectsDisconnectTimeout = null;
@@ -506,15 +513,16 @@ function createObjects(onConnect) {
                         delete hostAdapter[id];
                         logger.info(hostLogPrefix + ' object deleted ' + id);
                     } else {
-                        if (procs[id].config.common.enabled  && !obj.common.enabled) logger.info(hostLogPrefix + ' "' + id + '" disabled');
+                        if (procs[id].config.common.enabled  && !obj.common.enabled) {
+                            logger.info(hostLogPrefix + ' "' + id + '" disabled');
+                        }
                         if (!procs[id].config.common.enabled &&  obj.common.enabled) {
                             logger.info(hostLogPrefix + ' "' + id + '" enabled');
                             procs[id].downloadRetry = 0;
                         }
 
                         // Check if compactgroup or compact mode changed
-                        if (
-                            !compactGroupController &&
+                        if (!compactGroupController &&
                             procs[id].config.common.compactGroup &&
                             (procs[id].config.common.compactGroup !== obj.common.compactGroup || procs[id].config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
                             compactProcs[procs[id].config.common.compactGroup] &&
@@ -575,8 +583,7 @@ function createObjects(onConnect) {
                 } else if (obj && obj.common) {
                     const _ipArr = getIPs();
                     // new adapter
-                    if (
-                        checkAndAddInstance(obj, _ipArr) &&
+                    if (checkAndAddInstance(obj, _ipArr) &&
                         procs[id].config.common.enabled &&
                         (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)
                     ) {
@@ -603,14 +610,14 @@ function startAliveInterval() {
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
         states.setState(hostObjectPrefix + '.compactModeEnabled', {
-            ack: true,
+            ack:  true,
             from: hostObjectPrefix,
-            val: config.system.compact || false
+            val:  config.system.compact || false
         });
     }
     setInterval(reportStatus, config.system.statisticsInterval);
     reportStatus();
-    tools.measureEventLoopLag(1000, (lag) => eventLoopLags.push(lag));
+    tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag));
 }
 
 function reportStatus() {
@@ -684,7 +691,7 @@ function reportStatus() {
     }
 
     // some statistics
-    states.setState(id + '.inputCount',   {val: inputCount, ack: true, from: id});
+    states.setState(id + '.inputCount',   {val: inputCount,  ack: true, from: id});
     states.setState(id + '.outputCount',  {val: outputCount, ack: true, from: id});
 
     if (eventLoopLags.length) {
@@ -706,7 +713,7 @@ function reportStatus() {
             }
         }
     });
-    states.setState(id + '.instancesAsProcess',   {val: realProcesses, ack: true, from: id});
+    states.setState(id + '.instancesAsProcess',   {val: realProcesses,    ack: true, from: id});
     states.setState(id + '.instancesAsCompact',   {val: compactProcesses, ack: true, from: id});
 
     inputCount  = 0;
@@ -719,7 +726,7 @@ function reportStatus() {
 
 function changeHost(objs, oldHostname, newHostname, callback) {
     if (!objs || !objs.length) {
-        if (typeof callback === 'function') callback();
+        callback === 'function' && callback();
     } else {
         const row = objs.shift();
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
@@ -741,20 +748,14 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
     inputCount++;
     states.getState(autoInstance + '.subscribes', (err, state) => {
         if (!state || !state.val) {
-            if (typeof callback === 'function') {
-                setImmediate(() => callback());
-            }
-            return;
+            return typeof callback === 'function' && setImmediate(() => callback());
         }
         let subs;
         try {
             subs = JSON.parse(state.val);
         } catch (e) {
             logger.error(hostLogPrefix + ' Cannot parse subscribes: ' + state.val);
-            if (typeof callback === 'function') {
-                setImmediate(() => callback());
-            }
-            return;
+            return typeof callback === 'function' && setImmediate(() => callback());
         }
         let modified = false;
         // look for all subscribes from this instance
@@ -800,19 +801,18 @@ function cleanAutoSubscribes(instance, callback) {
                 // remove this instance from autoSubscribe
                 if (res.rows[c].value.common.subscribable) {
                     count++;
-                    cleanAutoSubscribe(instance, res.rows[c].id, () => {
-                        if (!--count && callback) callback();
-                    });
+                    cleanAutoSubscribe(instance, res.rows[c].id, () =>
+                        !--count && callback && callback());
                 }
             }
         }
-        if (!count && callback) callback();
+        !count && callback && callback();
     });
 }
 
 function delObjects(objs, callback) {
     if (!objs || !objs.length) {
-        if (typeof callback === 'function') callback();
+        callback === 'function' && callback();
     } else {
         const row = objs.shift();
         if (row && row.id) {
@@ -858,11 +858,11 @@ function checkHost(callback) {
             // find out all instances and rewrite it to actual hostname
             objects.getObjectView('system', 'instance', {}, (err, doc) => {
                 if (err && err.status_code === 404) {
-                    if (typeof callback === 'function') callback();
+                    callback === 'function' && callback();
                 } else if (doc.rows.length === 0) {
                     logger.info(hostLogPrefix + ' no instances found');
                     // no instances found
-                    if (typeof callback === 'function') callback();
+                    callback === 'function' && callback();
                 } else {
                     // reassign all instances
                     changeHost(doc.rows, oldHostname, hostname, () => {
@@ -1048,8 +1048,7 @@ function setIPs(ipList) {
 
 function extendObjects(tasks, callback) {
     if (!tasks || !tasks.length) {
-        if (typeof callback === 'function') callback();
-        return;
+        return callback === 'function' && callback();
     }
     const task = tasks.shift();
     const state = task.state;
@@ -3211,13 +3210,12 @@ function startInstance(id, wakeUp) {
 function stopInstance(id, force, callback) {
     if (typeof force === 'function') {
         callback = force;
-        force = false;
+        force    = false;
     }
     logger.info(hostLogPrefix + ' stopInstance ' + id + ' (process=' + (procs[id].process ? 'true' : 'false') + ')');
     if (!procs[id]) {
         logger.warn(hostLogPrefix + ' unknown instance ' + id);
-        if (typeof callback === 'function') callback();
-        return;
+        return callback === 'function' && callback();
     }
 
     const instance = procs[id].config;
@@ -3258,8 +3256,7 @@ function stopInstance(id, force, callback) {
                 }
             }
         }
-        if (typeof callback === 'function') callback();
-        return;
+        return callback === 'function' && callback();
     }
 
     switch (instance.common.mode) {
@@ -3268,7 +3265,7 @@ function stopInstance(id, force, callback) {
                 if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled && !procs[id].startedAsCompactGroup) {
                     !isStopping && logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not running');
                 }
-                if (typeof callback === 'function') callback();
+                callback === 'function' && callback();
             } else {
                 if (force && !procs[id].startedAsCompactGroup) {
                     logger.info(hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid);
@@ -3404,7 +3401,7 @@ function stopInstance(id, force, callback) {
             }
 
             if (!procs[id].process) {
-                if (typeof callback === 'function') callback();
+                callback === 'function' && callback();
             } else {
                 logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
@@ -3477,7 +3474,7 @@ function stopInstances(forceStop, callback) {
         } else {
             if (timeout) clearTimeout(timeout);
             isStopping = null;
-            if (typeof callback === 'function') callback();
+            callback === 'function' && callback();
             callback = null;
         }
     }
@@ -3511,8 +3508,8 @@ function stopInstances(forceStop, callback) {
         logger.error(hostLogPrefix + ' ' + e.message);
         isStopping = null;
         if (timeout) clearTimeout(timeout);
-        if (typeof callback === 'function') callback();
-        callback   = null;
+        callback === 'function' && callback();
+        callback = null;
     }
 
     // force after Xs

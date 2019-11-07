@@ -10,7 +10,7 @@
     "le-challenge-fs": "^2.0.9",
     "le-sni-auto": "^2.1.9",
     "le-acme-core": "^2.1.4",
-    "winston-syslog": "^2.2.0"
+    "winston-syslog": "^2.3.0"
   },
   "bin": {
     "iobroker": "./iobroker.js"
@@ -48,16 +48,16 @@
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.11",
+    "@types/node": "^12.12.6",
     "@types/yargs": "^13.0.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.1"
+    "mocha": "^6.2.2"
   },
   "homepage": "http://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
