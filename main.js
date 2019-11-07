@@ -2638,6 +2638,7 @@ function startScheduledInstance(callback) {
             // Remember the last run
             procs[id].lastStart = Date.now();
             if (!procs[id].process) {
+                states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // reset sigKill to 0 if it was set to an other value from "once run"
                 const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                 procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                 storePids(); // Store all pids to make possible kill them all
