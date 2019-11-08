@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.39",
+        "version": "2.0.40",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.0.40": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
             "2.0.39": {
                 "en": "optimizations and bugfixes",
                 "de": "Optimierungen und Bugfixes",
@@ -29,7 +41,8 @@
                 "es": "optimizaciones y correcciones de errores",
                 "pl": "optymalizacje i poprawki błędów",
                 "zh-cn": "优化和错误修正"
-            },"2.0.38": {
+            },
+            "2.0.38": {
                 "en": "0_userdata for own states, obejcts and files introduced, optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
                 "de": "0_userdata für eigene Zustände, Objekte und Dateien, Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Logging-Verbesserungen",
                 "ru": "0_userdata для собственных состояний, введенных объектов и файлов, оптимизаций и исправлений, исправлены ошибки с компактным режимом в Windows, улучшения ведения журнала",

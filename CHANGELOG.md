@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.40 (2019-11-08) Release Bella Stable-RC1
+* (Apollon77) make sure multiple instances of same adapter do not disturb each other in compact mode, finalize compact mode
+* (AlCalzone) correctly handle git commits and branches as custom install sources
+* (Apollon77) * make sure callbacks with setImmediate return the rela values from code execution and not pot. changed values from other actions (fixing file content being undefined when write/read happen in parallel)
+* (Apollon77) handle more cases for aliases automatically (On/Ein is converted to true case insensitive now)
+* (bluefox) getForeignStates() return correct ids when used with aliases
+* (Apollon77) optimize controller group stopping
+* (Apollon77) when target state is deleted also emit "null" onChange events to adapters for alias states
+* (Apollon77) optimize controller stop behaviour with compact groups
+* (Apollon77) make sure that schedules instances can start even after a "once" run that set a sigKill value
+* (Apollon77) add method to synchronize file directories with file DB storage
+  * add new CLI command "iobroker file sync <id>" to do the sync
+  * integrate the sync with "iobroker setup first"
+
 ## 2.0.39 (2019-10-29) Release Bella
 * (Apollon77) "upgrade name" for a controller will return an error to use "upgrade self"
 * (Apollon77) "upgrade all" will no longer update controller too
