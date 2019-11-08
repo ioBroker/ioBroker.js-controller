@@ -33,6 +33,9 @@ If this options is selected the user stays logged in for one month.
 If not, the user will stay logged in for the configured "login timeout".
 
 ## Changelog
+### 2.4.10 (2019-11-07)
+* (bluefox) Workaround for material was added
+
 ### 2.4.9 (2019-11-04)
 * (Apollon77) permission errors fixed when whitelist had at least one entry
 

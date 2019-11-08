@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luftdaten/README.md
 title: ioBroker.luftdaten
-hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
+hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 ---
 ![логотип](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
 
@@ -30,7 +30,7 @@ hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 
 Подождите несколько минут, пока cronjob соберет данные в первый раз.
 
-*Не стесняйтесь изменять настройки расписания на вкладке экземпляров (по умолчанию каждые 5 минут).*
+*Не стесняйтесь изменять настройки расписания на вкладке экземпляров (по умолчанию каждые 15 минут).*
 
 ### Удаленный
 1. Выберите один из датчиков на онлайн-карте: [deutschland.maps.luftdaten.info] (https://deutschland.maps.luftdaten.info/)
@@ -42,7 +42,7 @@ hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 
 Подождите несколько минут, пока cronjob соберет данные в первый раз.
 
-*Не стесняйтесь изменять настройки расписания на вкладке экземпляров (по умолчанию каждые 5 минут).*
+*Не стесняйтесь изменять настройки расписания на вкладке экземпляров (по умолчанию каждые 15 минут).*
 
 ## Участники
 - klein0r

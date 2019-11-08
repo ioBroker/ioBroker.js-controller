@@ -74,6 +74,10 @@ When updating from 0.1.x to 0.2.0 or higher it is recommended to delete all inst
 
 ## Changelog
 
+### 1.1.2
+* (smaragdschlange) improvement: added bridge type as object
+* (smaragdschlange) bug fix: force reset deviceType on adapter restart
+
 ### 1.1.1
 * (smaragdschlange) bug fix: default to Nuki Lock when deviceType unknown
 

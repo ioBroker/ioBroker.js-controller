@@ -30,9 +30,45 @@ Connect your Philips Hue Lights with ioBroker.
 - Run scene or apply `_scene` on light or group
 
 
-## Changelog / Release-Notes
+## Changelog
 
-Please see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+
+### 1.1.0 (2019-10-27)
+- (Zefau) add full support for Hue Labs scenes
+- (Zefau) add retry if bridge returns error `socket hang up`
+- (Zefau) add retry if device is not reachable
+
+### 1.0.2 (2019-10-20)
+- (Zefau) added scenes from Hue Labs
+
+### 1.0.1 (2019-10-20)
+- (Zefau) fixed incorrect omitting GroupScenes
+
+### 1.0.0 (2019-10-20)
+- (Zefau) fixed issue setting devices with `bri` / `brightness` (e.g. plugs)
+
+### 1.0.0-rc.1 (2019-10-13)
+- (Zefau) __BREAKING CHANGE__ changed certain objects due to standardization (see https://forum.iobroker.net/post/298019)
+	- changed `bri` to `brightness`*
+	- changed `sat` to `saturation`*
+	- removed `hue_degrees`
+	- changed `hue` (changed value range from 0-65535 (native Hue API) to 0-360°C)
+	- changed `ct` to `colorTemperature`* (changed value range from 153-500 (native Hue API) to 2000-6500K)
+	- changed `_hex` to `hex`
+	- changed `_hsv` to `hsv`
+	- changed `_rgb` to `rgb`
+	- removed `_cmyk`*
+	- removed `_xyz`*
+
+- fixed incorrect conversion between color spaces (`rgb`, `hex`, etc.)
+
+_Note: If you are using the state `_commands` **renaming is not necessary** for the states `ct` (adapting the value range is required), `bri` or `sat`._
+
+### 0.9.0 (2019-10-13)
+- (Zefau) __BREAKING CHANGE__: changed grouping of scenes and added option to choose how objects are mapping (either `scenes.<group>.<scene>.objects` or `scenes.<scene>.<group>.objects`)
+- (Zefau) retrieving group for all-lights directly from Hue Bridge API (instead of assembling through states)
+- (Zefau) added option to delete outdated devices (gargabe collector)
 
 
 ## License

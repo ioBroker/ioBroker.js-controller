@@ -70,6 +70,9 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
+#### 2.4.5 (2019-11-07)
+* (AlCalzone) Fix: Suppress log warnings for motion sensors
+
 #### 2.4.4 (2019-10-11)
 * (AlCalzone) Fix: Suppress log warnings for slave remotes and signal repeaters
 

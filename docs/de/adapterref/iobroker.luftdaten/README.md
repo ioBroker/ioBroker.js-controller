@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luftdaten/README.md
 title: ioBroker.luftdaten
-hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
+hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 ---
 ![Logo](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
 
@@ -25,12 +25,12 @@ Sie können entscheiden, ob Sie einen lokalen Sensor per IP hinzufügen oder nur
 1. Bauen Sie Ihren eigenen Adapter und fügen Sie ihn Ihrem lokalen WLAN-Netzwerk hinzu
 2. Erstellen Sie eine neue Instanz des Adapters
 3. Wählen Sie als Typ "Lokal"
-4. Geben Sie die IP oder den Hostnamen des Sensors in die zweite Eingabe ein
+4. Geben Sie die IP-Adresse oder den Hostnamen des Sensors in die zweite Eingabe ein
 5. Wählen Sie einen Namen und speichern Sie die Einstellungen
 
 Warten Sie einige Minuten, bis der Cronjob die Daten zum ersten Mal erfasst.
 
-*Sie können die Zeitplaneinstellungen auf der Registerkarte "Instanzen" ändern (Standardeinstellung ist alle 5 Minuten).*
+*Sie können die Zeitplaneinstellungen auf der Registerkarte "Instanzen" ändern (Standardeinstellung ist alle 15 Minuten).*
 
 ### Fernbedienung
 1. Wählen Sie einen der Sensoren auf der Online-Karte aus: [deutschland.maps.luftdaten.info] (https://deutschland.maps.luftdaten.info/)
@@ -42,7 +42,7 @@ Warten Sie einige Minuten, bis der Cronjob die Daten zum ersten Mal erfasst.
 
 Warten Sie einige Minuten, bis der Cronjob die Daten zum ersten Mal erfasst.
 
-*Sie können die Zeitplaneinstellungen auf der Registerkarte "Instanzen" ändern (Standardeinstellung ist alle 5 Minuten).*
+*Sie können die Zeitplaneinstellungen auf der Registerkarte "Instanzen" ändern (Standardeinstellung ist alle 15 Minuten).*
 
 ## Mitwirkende
 - klein0r

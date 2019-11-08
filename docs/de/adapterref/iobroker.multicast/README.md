@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.multicast/README.md
 title: Multicast-APi-Adapter für ioBroker
-hash: Z7mNjNd0axleKThUpnCknP1jwfFoAwhGKtExf7BUdSo=
+hash: c3cMlDxkT43iLtk4oAmyMCvXhCXzTRsP+0z0Y0td2TQ=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/iobroker.multicastsvg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.multicast.svg)
@@ -32,7 +32,7 @@ Zweck dieses Adapters war:
 ### Zero Touch?
 Der APi ist so aufgebaut, dass keine zusätzliche Konfiguration des Endbenutzers im Adapter selbst oder auf dem zu verwendenden Gerät erforderlich ist.
 Wenn die WLAN-Übertragung verwendet wird, muss nur der WLAN-Berechtigungsnachweis angegeben werden (LAN-basierte Geräte werden vollautomatisch verarbeitet).
-Dazu muss der Entwickler der Binärdatei auf dem entsprechenden Chipsatz (wie bei ESP-basierten Chipsätzen) einen Flash durchführen.
+Dies erfordert die Anstrengung des Entwicklers der Binärdatei, um auf dem zugehörigen Chipsatz (wie ESP-basierten Chipsätzen) geflasht zu werden.
 
 Wenn die Firmware allen Regeln des APi folgt (siehe weiter unten), wird die Kommunikation wie folgt behandelt:
 
@@ -70,12 +70,12 @@ Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sic
 {zu erledigen / in Bearbeitung}
 
 ## To-Do geplant:
-* [] Zustandswiederholung optimieren, nicht alle 500ms mehr feuern
-* [] Sende Wiederherstellungsdaten, wenn Harbeat empfangen wird und die Verbindung zum Gerät FALSE ist
+* [x] Zustandswiederholung optimieren, nicht alle 500ms mehr feuern
+* [x] Sende Wiederherstellungsdaten, wenn Harbeat empfangen wird und die Verbindung zum Gerät FALSE ist
 * [] Zustände implementieren (Fähigkeit zur Werteliste)
-* [] Implementieren Sie die Warteschlange, warten Sie 20 ms nach dem Statuswechsel auf das Gerät und senden Sie das Array mit allen Statusaktualisierungen
+* [] Implementiere die Warteschlange, warte 20ms nach dem Statuswechsel auf das Gerät und sende das Array mit allen Statusaktualisierungen
 * [] Ablaufwert per API implementieren
-* [] Richtige Behandlung von Hostnamen- und Hostnamenänderungen
+* [x] Richtige Behandlung von Hostnamen- und Hostnamenänderungen
 
 ## Changelog
 

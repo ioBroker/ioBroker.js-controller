@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luftdaten/README.md
 title: ioBroker.luftdaten
-hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
+hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 ---
 ![商标](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
 
@@ -18,7 +18,7 @@ hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 
 ＃ioBroker.luftdaten
 该适配器将“ luftdaten.info”传感器数据添加到您的ioBroker安装中。
-您可以决定是要通过ip添加本地传感器，还是只想使用lufdaten.info的API来获取另一个传感器的数据。
+您可以决定是否要通过ip添加本地传感器，还是只想使用lufdaten.info的API来获取另一个传感器的数据。
 
 ##配置
 ###本地
@@ -30,7 +30,7 @@ hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 
 等待几分钟，直到cronjob首次收集数据。
 
-*您可以在“实例”标签中随意更改计划设置（默认为每5分钟）。*
+*您可以在“实例”标签中随意更改计划设置（默认为每15分钟一次）。*
 
 ###遥控器
 1.选择在线地图上的传感器之一：[deutschland.maps.luftdaten.info]（https://deutschland.maps.luftdaten.info/）
@@ -42,7 +42,7 @@ hash: yrlW/s/AMQlrCeBMb3JnJ7ZrPlqqBg9DiPer7gCvelg=
 
 等待几分钟，直到cronjob首次收集数据。
 
-*您可以在“实例”标签中随意更改计划设置（默认为每5分钟）。*
+*您可以在“实例”标签中随意更改计划设置（默认为每15分钟一次）。*
 
 ##贡献者
 -klein0r

@@ -27,7 +27,7 @@ You can decide if you want to add a local sensor by ip or if you just want to us
 
 Wait some minutes until the cronjob collects the data for the first time.
 
-*Feel free to change the schedule settings in the instances tab (default is every 5 minutes).*
+*Feel free to change the schedule settings in the instances tab (default is every 15 minutes).*
 
 ### Remote
 
@@ -40,7 +40,7 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 Wait some minutes until the cronjob collects the data for the first time.
 
-*Feel free to change the schedule settings in the instances tab (default is every 5 minutes).*
+*Feel free to change the schedule settings in the instances tab (default is every 15 minutes).*
 
 ## Contributors
 

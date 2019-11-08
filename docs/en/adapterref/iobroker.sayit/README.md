@@ -35,21 +35,21 @@ The mp3/wav files can be played to by writing its name into the object. (e.g. "/
 The file must be first loaded.
 
 ### TTS engines
-online:  
+online:
 - Google: English, German, Russian, Italian, Spanish, French
-- Yandex: Russian  
+- Yandex: Russian
   To use Yandex voices you must request the API key here: [https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/).  [This service will be disabled 1st of Jan 2019 and replaced by Yandex.cloud]
   To use Yandex.cloud you should register here: [https://cloud.yandex.ru/], install SpeechKIT API in the Cloud and get Auth Token and Folder ID as described in API instructions.
-- Ivona: English, German, Russian, Italian, Spanish, French, Dansk, Welsh, Icelandic, Dutch, Polish, Portuguese, Romanian, Swedish, Turkish  
+- Ivona: English, German, Russian, Italian, Spanish, French, Dansk, Welsh, Icelandic, Dutch, Polish, Portuguese, Romanian, Swedish, Turkish
         To use Amazon(Ivona) voices you need to get access key and secret key [here](http://www.ivona.com/us/for-business/speech-cloud/).
 - Cloud:
         To use Cloud voices you need configured cloud adapter. (It can be disabled, but must be configured). This service use AWS Polly and it can be used directly.
 - Amazon Web Services Polly:
         To use AWS Polly voices you need to create access key and secret key [here](https://console.aws.amazon.com/iam/home). The Amazon documentation can you find [here](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html).
 
-offline:  
-- PicoTTS (linux only): English, German, Italian, Spanish, French  
-        For PicoTTS it is necessary to install the following packages: libttspico-utils and lame.  
+offline:
+- PicoTTS (linux only): English, German, Italian, Spanish, French
+        For PicoTTS it is necessary to install the following packages: libttspico-utils and lame.
         Installation command: 'sudo apt-get install libttspico-utils lame'
 
 ### Cloud and Amazon Web Services Polly text formatting
@@ -238,6 +238,9 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.9.0 (2019-11-06)
+* (algar42) Output file extension is changed dynamically based on the engine selected
+
 ### 1.8.2 (2019-07-11)
 * (bluefox) Web server URL will be updated if web server was updated
 
