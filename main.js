@@ -726,7 +726,7 @@ function reportStatus() {
 
 function changeHost(objs, oldHostname, newHostname, callback) {
     if (!objs || !objs.length) {
-        callback === 'function' && callback();
+        typeof callback === 'function' && callback();
     } else {
         const row = objs.shift();
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
@@ -812,7 +812,7 @@ function cleanAutoSubscribes(instance, callback) {
 
 function delObjects(objs, callback) {
     if (!objs || !objs.length) {
-        callback === 'function' && callback();
+        typeof callback === 'function' && callback();
     } else {
         const row = objs.shift();
         if (row && row.id) {
@@ -858,11 +858,11 @@ function checkHost(callback) {
             // find out all instances and rewrite it to actual hostname
             objects.getObjectView('system', 'instance', {}, (err, doc) => {
                 if (err && err.status_code === 404) {
-                    callback === 'function' && callback();
+                    typeof callback === 'function' && callback();
                 } else if (doc.rows.length === 0) {
                     logger.info(hostLogPrefix + ' no instances found');
                     // no instances found
-                    callback === 'function' && callback();
+                    typeof callback === 'function' && callback();
                 } else {
                     // reassign all instances
                     changeHost(doc.rows, oldHostname, hostname, () => {
@@ -1048,7 +1048,7 @@ function setIPs(ipList) {
 
 function extendObjects(tasks, callback) {
     if (!tasks || !tasks.length) {
-        return callback === 'function' && callback();
+        return typeof callback === 'function' && callback();
     }
     const task = tasks.shift();
     const state = task.state;
@@ -2340,7 +2340,9 @@ function initInstances() {
                     }
                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
-                    seconds += 2; // 4 seconds pause between starts
+                    if (!procs[id].config.common.onlyWWW) {
+                        seconds += 2; // 4 seconds pause between starts if not only www files
+                    }
                 }
             }
         } else {
@@ -2922,7 +2924,7 @@ function startInstance(id, wakeUp) {
                                 logger.info(`${hostLogPrefix} instance ${id} terminated while should be started once`);
                             }
                         }
-                        storePids(); // Store all pids to make possible kill them all
+                        !procs[id].startedInCompactMode && storePids(); // Store all pids to make possible kill them all
                     });
                 };
 
@@ -2957,7 +2959,7 @@ function startInstance(id, wakeUp) {
                             }
                         }
                         else {
-                            logger.warn(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: VM2 initialization error. Fallback to normal start!`);
+                            logger.warn(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: Filename invalid`);
                         }
 
                         if (procs[id].process && !procs[id].process.kill) {
@@ -2999,16 +3001,19 @@ function startInstance(id, wakeUp) {
                                 });
                             }
 
+                            const currentCompactGroup = instance.common.compactGroup;
                             // Exit handler for compact groups
                             const groupExitHandler = (code, signal) => {
                                 if (signal) {
-                                    logger.warn(hostLogPrefix + ' compactgroup controller ' + instance.common.compactGroup + ' terminated due to ' + signal);
+                                    logger.warn(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated due to ' + signal);
                                 } else if (code === null) {
-                                    logger.info(hostLogPrefix + ' compactgroup controller ' + instance.common.compactGroup + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                    logger.info(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                } else {
+                                    logger.info(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated');
                                 }
 
-                                if (compactProcs[instance.common.compactGroup] && compactProcs[instance.common.compactGroup].process) {
-                                    delete compactProcs[instance.common.compactGroup].process;
+                                if (compactProcs[currentCompactGroup] && compactProcs[currentCompactGroup].process) {
+                                    delete compactProcs[currentCompactGroup].process;
                                 }
 
                                 function markCompactInstancesAsStopped(groupId, callback) {
@@ -3036,12 +3041,12 @@ function startInstance(id, wakeUp) {
                                 }
 
                                 // mark all instances that should be handled by this controller also as not running.
-                                markCompactInstancesAsStopped(instance.common.compactGroup, () => {
+                                markCompactInstancesAsStopped(currentCompactGroup, () => {
                                     // show stored errors
-                                    cleanErrors(compactProcs[instance.common.compactGroup], null, true);
+                                    cleanErrors(compactProcs[currentCompactGroup], null, true);
 
                                     if (isStopping) {
-                                        logger.silly(hostLogPrefix + ' Check after group exit ' + instance.common.compactGroup)
+                                        logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup)
                                         for (const i in procs) {
                                             if (!procs.hasOwnProperty(i)) continue;
                                             if (procs[i].process) {
@@ -3064,11 +3069,11 @@ function startInstance(id, wakeUp) {
                                     }
 
                                     // Restart group controller because still instances assigned to him, done via startInstance
-                                    if (connected && !isStopping && compactProcs[instance.common.compactGroup].instances.length) {
-                                        logger.info(hostLogPrefix + ' Restart compact group controller ' + instance.common.compactGroup);
-                                        logger.debug('Instances: ' + JSON.stringify(compactProcs[instance.common.compactGroup].instances));
+                                    if (connected && !isStopping && compactProcs[currentCompactGroup].instances.length) {
+                                        logger.info(hostLogPrefix + ' Restart compact group controller ' + currentCompactGroup);
+                                        logger.debug('Instances: ' + JSON.stringify(compactProcs[currentCompactGroup].instances));
 
-                                        compactProcs[instance.common.compactGroup].instances.forEach(id => {
+                                        compactProcs[currentCompactGroup].instances.forEach(id => {
                                             //noinspection JSUnresolvedVariable
                                             if (procs[id].restartTimer) {
                                                 clearTimeout(procs[id].restartTimer);
@@ -3078,7 +3083,7 @@ function startInstance(id, wakeUp) {
                                             // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
                                         });
                                     } else {
-                                        logger.info(`${hostLogPrefix} Do not restart compact group controller ${instance.common.compactGroup} because no instances assigned to him`);
+                                        logger.info(`${hostLogPrefix} Do not restart compact group controller ${currentCompactGroup} because no instances assigned to him`);
                                     }
                                     storePids(); // Store all pids to make possible kill them all
                                 });
@@ -3215,7 +3220,7 @@ function stopInstance(id, force, callback) {
     logger.info(hostLogPrefix + ' stopInstance ' + id + ' (process=' + (procs[id].process ? 'true' : 'false') + ')');
     if (!procs[id]) {
         logger.warn(hostLogPrefix + ' unknown instance ' + id);
-        return callback === 'function' && callback();
+        return typeof callback === 'function' && callback();
     }
 
     const instance = procs[id].config;
@@ -3256,7 +3261,7 @@ function stopInstance(id, force, callback) {
                 }
             }
         }
-        return callback === 'function' && callback();
+        return typeof callback === 'function' && callback();
     }
 
     switch (instance.common.mode) {
@@ -3265,7 +3270,7 @@ function stopInstance(id, force, callback) {
                 if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled && !procs[id].startedAsCompactGroup) {
                     !isStopping && logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not running');
                 }
-                callback === 'function' && callback();
+                typeof callback === 'function' && callback();
             } else {
                 if (force && !procs[id].startedAsCompactGroup) {
                     logger.info(hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid);
@@ -3401,7 +3406,7 @@ function stopInstance(id, force, callback) {
             }
 
             if (!procs[id].process) {
-                callback === 'function' && callback();
+                typeof callback === 'function' && callback();
             } else {
                 logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                 procs[id].stopping = true;
@@ -3473,8 +3478,7 @@ function stopInstances(forceStop, callback) {
             setTimeout(waitForInstances, 200);
         } else {
             if (timeout) clearTimeout(timeout);
-            isStopping = null;
-            callback === 'function' && callback();
+            typeof callback === 'function' && callback();
             callback = null;
         }
     }
@@ -3484,9 +3488,8 @@ function stopInstances(forceStop, callback) {
         const elapsed = Date.now() - isStopping;
         logger.debug(hostLogPrefix + ' stop isStopping=' + elapsed + ' isDaemon=' + isDaemon + ' allInstancesStopped=' + allInstancesStopped);
         if (elapsed >= stopTimeout) {
-            isStopping = null;
             if (timeout) clearTimeout(timeout);
-            if (typeof callback === 'function') callback(true);
+            typeof callback === 'function' && callback(true);
             callback = null;
         }
 
@@ -3506,16 +3509,14 @@ function stopInstances(forceStop, callback) {
         waitForInstances();
     } catch (e) {
         logger.error(hostLogPrefix + ' ' + e.message);
-        isStopping = null;
         if (timeout) clearTimeout(timeout);
-        callback === 'function' && callback();
+        typeof callback === 'function' && callback();
         callback = null;
     }
 
     // force after Xs
     timeout = setTimeout(() => {
         timeout    = null;
-        isStopping = null;
         typeof callback === 'function' && callback(true);
         callback   = null;
     }, stopTimeout);
