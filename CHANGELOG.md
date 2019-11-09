@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.41 (2019-11-08) Release Bella Stable-RC2
+* (Stabilostick) enhance certificate methods and add certificate checks in setup first
+* (Stabilostick) add `iobroker cert view <name>` CLI command
+* (Apollon77) fix problems in stop controller handling
+
 ## 2.0.40 (2019-11-08) Release Bella Stable-RC1
 * (Apollon77) make sure multiple instances of same adapter do not disturb each other in compact mode, finalize compact mode
 * (AlCalzone) correctly handle git commits and branches as custom install sources

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.40",
+        "version": "2.0.41",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.40": {
+            "2.0.41": {
                 "en": "optimizations and bugfixes",
                 "de": "Optimierungen und Bugfixes",
                 "ru": "оптимизации и исправления",
@@ -658,8 +658,8 @@
             },
             "native": {
                 "certificates": {
-                    "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIIEogIBAAKCAQEAw7qYEzaJW8oBUGFjczWD6pkYePnKkP5sUCP1UINkW9ozOsWDv6uWewLb0aoSotbpWB/uN4s+yjiulgpNic15Z1d+q8Yt9SaADapkwACjwCqUdrdQIts9dT09N594pD7Bh1oyCzXaZM3Zb6j9tnT/pkVGuVdmgW0SoE8UDlDgLy7D6ddtiwqD9w8uQfb3cB5ws8yV6I8fnbmTeA5bX7rcs0IjYjUy4gKX24VknyEe/orwkBUBOwiqdGBkYz0aoz12lVktfbP6oj1OGVfIBeTVhdi2/utxs/9XI6OGPaP4EJ/KqjYCAlPqfCDW5WPXb9f+vvC/rxyJKoZ5DoN/d2cefQIDAQABAoIBAClVbmggTEGmF0DyUB40Xvdb/V8O4UhdcmI6NcQa+0aqfccbjwcbJVw07lcIo4bf+8cwdw4jyc7KyZPF+TnwuoKoZ4e/AlWTG9fG9B/YArzCQTgQ3kt+ISxxEkx80O1ek2ASHB9h8Az5q8F43pt5ecOTPaxGWM9cSWKxUHr1eWJ9DnNTc+xYOyn0EOl7FxHEbP7Dkh+s1iIhFdgWLAbVaWI/N9h0VTvhUqAOUE9Fmo7DLMFK+H04LV/frnGkfmtqQ9UYY4bguk7SfrelEmIxQAAxVj1BfoR+SrTi3xkmDJinFkpneiYHalknBA/K4M3/thzc9ob1x7TU9j+Yoq+wn8ECgYEA/jLC5+ZY8N5xYhUriAkTpyStUkKke28aS/t5O0SIYZzunqLX1EE1q6rMSKhUYRi8EUYyn2NhfdUmj4QfSDgN37NzFe+u6/upjNJ1wt2awIXr41IPp/GIo/6loEDDXhDCaRq0EPOKDwJJQHFcpjZF3lb7rFfcDBQtXIkrzvqV7KMCgYEAxR29rGrCAlWY3H9wkTMJoFzMrT5aG8Q9w1JVtxkZUhqbP6X7v2asGXIciv3LFIgIXsMVGvU8b1vNiyeSIXCl/BxFho0NnjJTlBq3N6GQLriTVHDuzq4aFMAdyaZdF4IEK6teV8zDCx0u8hKtzZ7HBriyIJYP+hRWifB/mddRWl8CgYA8IKm1zOjQ4O0U9Ej9vpfle2l8AcOCZv9jZbKBcG6KGGLhJ0fCL0KQvq/fp+F9rioeM+qZhRp0d0zNucTkgk3V0k6wq6dGrpqmcsnkNCL80zC+7pRBd4KIuB1ZULhlsbUqw2RAdjr73eCR2768mi3gr9aMJ6QnP0aTkubH6MI53QKBgGgptzmNkMg7A3RBw/J2zfd4EpDaCjPyF9FHiRQgp0jD1pZj2Azk7LzlmD+6rb5DxGiPHnAId89A6/VFC+uv44a+Sd84WqHmZlQ1aexz7AVEdFaC9y8wwYeFnjgZOchaZGnPPSOYiNkuqsgxJrcp2HKs1zRxGDBG3xQ1irh5F/xxAoGAR+CNHzn2suVeSypyBhSg0/UG21lw+iLsprexsd8BqwjGVoqaolU2HGFEPXTmraYUMDKWpWARrQKh8sd4kUMcetYncGZZ0LjozTrmcyHAXWN+TTGmveuBDc+K9y8TEVeVm/M3UN+EMhe5HkliEAD2VDKY5VsRaPCeryP/F4pYMp8=\r\n-----END RSA PRIVATE KEY-----\r\n",
-                    "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIIDdjCCAl6gAwIBAgIBATANBgkqhkiG9w0BAQUFADA+MREwDwYDVQQDEwhpb2Jyb2tlcjEWMBQGA1UEChMNaW9Ccm9rZXIgR21iSDERMA8GA1UECxMIaW9icm9rZXIwHhcNMTkwNzA4MDE0ODMzWhcNMjQwNzA4MDE0ODMzWjA+MREwDwYDVQQDEwhpb2Jyb2tlcjEWMBQGA1UEChMNaW9Ccm9rZXIgR21iSDERMA8GA1UECxMIaW9icm9rZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDDupgTNolbygFQYWNzNYPqmRh4+cqQ/mxQI/VQg2Rb2jM6xYO/q5Z7AtvRqhKi1ulYH+43iz7KOK6WCk2JzXlnV36rxi31JoANqmTAAKPAKpR2t1Ai2z11PT03n3ikPsGHWjILNdpkzdlvqP22dP+mRUa5V2aBbRKgTxQOUOAvLsPp122LCoP3Dy5B9vdwHnCzzJXojx+duZN4DltfutyzQiNiNTLiApfbhWSfIR7+ivCQFQE7CKp0YGRjPRqjPXaVWS19s/qiPU4ZV8gF5NWF2Lb+63Gz/1cjo4Y9o/gQn8qqNgICU+p8INblY9dv1/6+8L+vHIkqhnkOg393Zx59AgMBAAGjfzB9MAwGA1UdEwEB/wQCMAAwDwYDVR0PAQH/BAUDAwe/gDATBgNVHREEDDAKgghpb2Jyb2tlcjAdBgNVHQ4EFgQUo3LIVwV/L/Pn62Cfl4ATsgXOULQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdIwQCMAAwDQYJKoZIhvcNAQEFBQADggEBALk8tvsAVZ5jXXwcxJH6EZjhswtqD/CDd+Oi3n6xoxLbZdeR2+1fFHT6fpdDEYe/2C34E1T4kXcLkuu2RXzbp75ClWvJSPYys/LPQr+53JHxcgRmbEBzKTmwsxrtxAFPOId4zwDOAT52tpW+8ACVWrHndKqmVr9Hfk8uRpAzDgZMJAgKsbaC4iyBKuKo0xcdOqmAstsUVpfcMvMojw5hnOlNRXnvXqEyeNRKXXymTQlo0cnG9Y7KIPiP0Pr4PhgpJXdrSJsEEpYA6DtTcXm/UIijSm5IL1XQoE3TgO906GxAESao/WGnh0gTysjMTTz9ipVbf8vySxkpUp6oGia1sz0=\r\n-----END CERTIFICATE-----\r\n"
+                    "defaultPrivate": null,
+                    "defaultPublic": null
                 }
             },
             "acl": {
