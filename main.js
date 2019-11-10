@@ -2924,7 +2924,7 @@ function startInstance(id, wakeUp) {
                                 logger.info(`${hostLogPrefix} instance ${id} terminated while should be started once`);
                             }
                         }
-                        procs[id] && !procs[id].startedInCompactMode && storePids(); // Store all pids to make possible kill them all
+                        storePids(); // Store all pids to make possible kill them all
                     });
                 };
 
