@@ -279,7 +279,17 @@ function register(it, expect, context) {
                         // to                     -10, 0.2, 10
                         expect(states[gAliasID + '1'].val).to.be.equal(5);
                         expect(states[gAliasID + '1'].ack).to.be.true;
-                        done();
+
+                        // original array should not be changed
+                        const ids = [gAliasID + '1'];
+                        context.adapter.getForeignStates(ids, (err, states) => {
+                            // It must be scaled from -100, 2, 100
+                            // to                     -10, 0.2, 10
+                            expect(ids[0]).to.be.equal(gAliasID + '1');
+                            expect(states[gAliasID + '1'].val).to.be.equal(5);
+                            expect(states[gAliasID + '1'].ack).to.be.true;
+                            done();
+                        });
                     });
                 });
             });
