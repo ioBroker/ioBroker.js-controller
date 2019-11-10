@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.42 (2019-11-10) Release Bella Stable-RC3
+* (Apollon77) Correct error message if certificate can not be parsed
+* (bluefox) Fix upload of material adapter
+* (Apollon77) prevent crash when adapter instance is deleted which is also running currently and if stopped by deletion
+* (bluefox) make sure getForeignStates do not modify the input ids list
+
 ## 2.0.41 (2019-11-08) Release Bella Stable-RC2
 * (Stabilostick) enhance certificate methods and add certificate checks in setup first
 * (Stabilostick) add `iobroker cert view <name>` CLI command
