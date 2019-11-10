@@ -5,6 +5,7 @@
 * (bluefox) Fix upload of material adapter
 * (Apollon77) prevent crash when adapter instance is deleted which is also running currently and if stopped by deletion
 * (bluefox) make sure getForeignStates do not modify the input ids list
+* (Apollon77) enhance `list instances` and only show compact infos if adapter supports it
 
 ## 2.0.41 (2019-11-08) Release Bella Stable-RC2
 * (Stabilostick) enhance certificate methods and add certificate checks in setup first
