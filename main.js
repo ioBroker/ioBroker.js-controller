@@ -588,9 +588,7 @@ function createObjects(onConnect) {
                         (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                        if (compactGroupController) {
-                            procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
-                        }
+                        procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
                     }
                 }
             } catch (err) {
