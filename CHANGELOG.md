@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.43 (2019-11-12) Release Bella Stable-RC4
+* (Apollon77) enhance backup error handling for invalid files - they now display errors and not break the backup process
+* (Apollon77) make sure new enabled/moved instances are started directly
+* (Apollon77) increase object init timeout for adapter starts before complaining/stopping
+* (Apollon77) fix file read/write to not allow invalid locations and add some more checking
+* (Apollon77) add some more logging for ioredis initializations
+
 ## 2.0.42 (2019-11-10) Release Bella Stable-RC3
 * (Apollon77) Correct error message if certificate can not be parsed
 * (bluefox) Fix upload of material adapter
