@@ -21,6 +21,9 @@ const version    = ioPackage.common.version;
 const pidUsage   = require('pidusage');
 const EXIT_CODES = require('./lib/exitCodes');
 
+const exec       = cp.exec;
+const spawn      = cp.spawn;
+
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
@@ -1671,7 +1674,6 @@ function processMessage(msg) {
     switch (msg.command) {
         case 'shell':
             if (config.system && config.system.allowShellCommands) {
-                const { exec } = require('child_process');
                 logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
                 exec(msg.message, {windowsHide: true}, (err, stdout, stderr) => {
                     if (err) {
@@ -1688,7 +1690,6 @@ function processMessage(msg) {
             break;
 
         case 'cmdExec': {
-            const spawn = require('child_process').spawn;
             const args = [__dirname + '/' + tools.appName + '.js'];
             if (!msg.message.data) {
                 logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}');
@@ -1930,10 +1931,9 @@ function processMessage(msg) {
                 ioPack = null;
 
                 if (os.platform() === 'linux') {
-                    const _spawn = require('child_process').spawn;
                     const _args = ['/dev'];
                     logger.info(hostLogPrefix + ' ls /dev');
-                    const _child = _spawn('ls', _args, {windowsHide: true});
+                    const _child = spawn('ls', _args, {windowsHide: true});
                     let result = '';
                     if (_child.stdout) {
                         _child.stdout.on('data', data => result += data.toString());
@@ -2527,7 +2527,7 @@ function installAdapters() {
         installArgs.unshift(__dirname + '/' + tools.appName + '.js');
 
         try {
-            const child = require('child_process').spawn('node', installArgs, {windowsHide: true});
+            const child = spawn('node', installArgs, {windowsHide: true});
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
