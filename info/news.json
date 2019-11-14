@@ -565,7 +565,7 @@
         "created": "2019-11-14T00:00:00.000Z",
 		"repo": "latest",
         "conditions": {
-			"info": "bigger(1.5.5),
+			"info": "bigger(1.5.5)",
             "tr-064": "installed",
             "tr-064-community": "!installed"
         }
