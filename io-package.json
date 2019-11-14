@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.43",
+        "version": "2.0.44",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.0.44": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
             "2.0.43": {
                 "en": "optimizations and bugfixes",
                 "de": "Optimierungen und Bugfixes",

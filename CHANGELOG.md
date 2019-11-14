@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.44 (2019-11-14) Release Bella Stable-RC5
+* (Apollon77) optimize stopping and restarting behaviour (again)
+
 ## 2.0.43 (2019-11-12) Release Bella Stable-RC4
 * (Apollon77) enhance backup error handling for invalid files - they now display errors and not break the backup process
 * (Apollon77) make sure new enabled/moved instances are started directly
@@ -22,7 +25,7 @@
 ## 2.0.40 (2019-11-08) Release Bella Stable-RC1
 * (Apollon77) make sure multiple instances of same adapter do not disturb each other in compact mode, finalize compact mode
 * (AlCalzone) correctly handle git commits and branches as custom install sources
-* (Apollon77) * make sure callbacks with setImmediate return the rela values from code execution and not pot. changed values from other actions (fixing file content being undefined when write/read happen in parallel)
+* (Apollon77) make sure callbacks with setImmediate return the real values from code execution and not pot. changed values from other actions (fixing file content being undefined when write/read happen in parallel)
 * (Apollon77) handle more cases for aliases automatically (On/Ein is converted to true case insensitive now)
 * (bluefox) getForeignStates() return correct ids when used with aliases
 * (Apollon77) optimize controller group stopping
