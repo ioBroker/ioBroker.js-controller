@@ -13,7 +13,7 @@
 
 Пожалуйста, выполните следующие команды в SSH оболочке (консоли):
 * `iobroker stop`
-* `iobroker upgrade`
+* `iobroker update`
 * `iobroker upgrade self`
 * `iobroker start` или перезагрузите сервер, затем ioBroker должен перезагрузиться, и вы можете быть уверены, что все старые процессы завершены.
 
