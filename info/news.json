@@ -158,7 +158,7 @@
         "class": "warning",
         "fa-icon": "ban",
         "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {           
+        "conditions": {
             "admin": "bigger(3.6.10)"
         }
     },
@@ -192,7 +192,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "simple-api": "smaller(2.1.2)"
         }
     },
@@ -226,7 +226,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "email": "smaller(1.0.5)"
         }
     },
@@ -260,7 +260,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "pushover": "smaller(1.1.1)"
         }
     },
@@ -294,7 +294,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "hue": "smaller(1.2.4)"
         }
     },
@@ -328,7 +328,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "node-red": "smaller(1.10.1)"
         }
     },
@@ -362,7 +362,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "vis": "smaller(1.2.2)"
         }
     },
@@ -396,7 +396,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "iqontrol": "smaller(0.2.12)"
         }
     },
@@ -430,7 +430,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "socketio": "smaller(2.1.2)"
         }
     },
@@ -464,7 +464,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "web": "smaller(2.4.9)"
         }
     },
@@ -498,7 +498,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "vis-hqwidgets": "smaller(1.1.3)"
         }
     },
@@ -532,7 +532,7 @@
         "fa-icon": "exclamation-triangle",
         "created": "2019-11-14T00:00:00.000Z",
         "conditions": {
-			"js-controller": "bigger(2.0.0),
+			"js-controller": "bigger(2.0.0)",
             "ble": "smaller(1.10.1)"
         }
     }
