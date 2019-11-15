@@ -1,9 +1,9 @@
 # Changelog
 
-## 2.2.x (2019-12-xx) Release C??? 
+## 2.2.x (2019-12-xx) Release D??? 
 WIP!!
 
-## 2.1.0 (2019-11-15) Release Bella Stable
+## 2.1.0 (2019-11-15) Release Christina
 * (Apollon77) Stable Release as minor update to separate from development/testing phase
 
 ## 2.0.44 (2019-11-14) Release Bella Stable-RC5
