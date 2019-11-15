@@ -4,7 +4,7 @@ Vanwege de verschillende hardware en platforms waarop ioBroker werkt, moet de js
 
 ## Algemene informatie voor alle platforms
 
-**Lees voor een update van js-controller 1.x naar 2.x altijd de informatie op https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im -Laatste repo lezen en noteren!**
+**Lees voor een update van js-controller 1.x naar 2.x altijd de informatie op https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable lezen en noteren!**
 
 Werk anders eerst de slaves bij met een update van master-slave-systemen en de master als laatste!
 

@@ -4,7 +4,7 @@
 
 ## Общая информация для всех платформ
 
-**Для обновления с js-controller 1.x до 2.x, пожалуйста, прочитайте информацию https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo , которую надо иметь ввиду!**
+**Для обновления с js-controller 1.x до 2.x, пожалуйста, прочитайте информацию https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable , которую надо иметь ввиду!**
 
 В любом случае, пожалуйста, сначала обновите slave устройства, а master - в последнюю очередь!
 

@@ -4,7 +4,7 @@ Ze względu na inny sprzęt i platformy, na których działa ioBroker, kontroler
 
 ## Informacje ogólne dla wszystkich platform
 
-**W przypadku aktualizacji z kontrolera js 1.x do wersji 2.x należy zawsze przeczytać informacje na stronie https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im -Ostatnie repo przeczytaj i zanotuj!**
+**W przypadku aktualizacji z kontrolera js 1.x do wersji 2.x należy zawsze przeczytać informacje na stronie https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable przeczytaj i zanotuj!**
 
 W przeciwnym razie najpierw zaktualizuj urządzenia podrzędne o aktualizację systemów master-slave, a urządzenie master na końcu!
 

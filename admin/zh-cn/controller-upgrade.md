@@ -4,7 +4,7 @@
 
 ## 所有平台的一般信息
 
-**有关从js-controller 1.x到2.x的更新，请始终阅读https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im上的信息-最新回购阅读和注意！**
+**有关从js-controller 1.x到2.x的更新，请始终阅读https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable！**
 
 否则，请先更新主从系统，然后再更新主服务器，以更新从服务器！
 

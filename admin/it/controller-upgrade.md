@@ -4,7 +4,7 @@ A causa del diverso hardware e piattaforme su cui gira ioBroker, il controller j
 
 ## Informazioni generali per tutte le piattaforme
 
-**Per un aggiornamento da js-controller da 1.xa 2.x, leggere sempre le informazioni su https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im -Ultimo repository letto e nota!**
+**Per un aggiornamento da js-controller da 1.xa 2.x, leggere sempre le informazioni su https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable letto e nota!**
 
 Altrimenti aggiorna prima gli slave con un aggiornamento dei sistemi master-slave e l'ultimo master!
 

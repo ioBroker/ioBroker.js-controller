@@ -4,7 +4,7 @@ Aufgrund der verschiedenen Hardware und Platformen unter denen ioBroker läuft, 
 
 ## Generelle Informationen für alle Plattformen
 
-**Für ein Update von js-controller 1.x auf 2.x bitte in jedem Fall die Informationen unter https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo lesen und beachten!**
+**Für ein Update von js-controller 1.x auf 2.x bitte in jedem Fall die Informationen unter https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable lesen und beachten!**
 
 Ansonsten bitte bei einem Update von Master-Slave-Systemen die Slaves zuerst aktualisieren und den Master als letztes! 
 

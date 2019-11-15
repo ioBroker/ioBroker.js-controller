@@ -4,7 +4,7 @@ En raison du matériel et des plates-formes différentes sous lesquels ioBroker 
 
 ## Informations générales pour toutes les plateformes
 
-**Pour une mise à jour de js-controller 1.x à 2.x, veuillez toujours lire les informations sur https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im. -Latest-repo lire et noter!**
+**Pour une mise à jour de js-controller 1.x à 2.x, veuillez toujours lire les informations sur https://forum.iobroker.net/topic/26759/js-controller-2-jetzt-f%C3%BCr-alle-im-stable lire et noter!**
 
 Sinon, veuillez d'abord mettre à jour les esclaves avec une mise à jour des systèmes maître-esclave et le maître en dernier!
 
