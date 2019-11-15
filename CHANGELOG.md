@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0 (2019-11-15) Release Bella Stable
+* (Apollon77) Stable Release as minor update to separate from development/testing phase
+
 ## 2.0.44 (2019-11-14) Release Bella Stable-RC5
 * (Apollon77) optimize stopping and restarting behaviour (again)
 

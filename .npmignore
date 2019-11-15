@@ -17,3 +17,4 @@ test
 pids.txt
 doc
 appveyor.yml
+lib/setup/setupPacketManager.js
