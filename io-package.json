@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.0.12",
+        "version": "2.2.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,18 +18,151 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "2.0.12": {
-              "en": "see CHANGELOG.md",
-              "de": "Sehe CHANGELOG.md",
-              "ru": "см. CHANGELOG.md",
-              "pt": "veja CHANGELOG.md",
-              "nl": "zie CHANGELOG.md",
-              "fr": "voir CHANGELOG.md",
-              "it": "vedi CHANGELOG.md",
-              "es": "ver CHANGELOG.md",
-              "pl": "zobacz CHANGELOG.md"
+            "2.1.0": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md",
+                "zh-cn": "看到CHANGELOG.md"
             },
-            "1.5.13": {
+            "2.0.44": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
+            "2.0.43": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
+            "2.0.42": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
+            "2.0.41": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
+            "2.0.39": {
+                "en": "optimizations and bugfixes",
+                "de": "Optimierungen und Bugfixes",
+                "ru": "оптимизации и исправления",
+                "pt": "otimizações e correções de bugs",
+                "nl": "optimalisaties en bugfixes",
+                "fr": "optimisations et corrections de bugs",
+                "it": "ottimizzazioni e correzioni di bug",
+                "es": "optimizaciones y correcciones de errores",
+                "pl": "optymalizacje i poprawki błędów",
+                "zh-cn": "优化和错误修正"
+            },
+            "2.0.38": {
+                "en": "0_userdata for own states, obejcts and files introduced, optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
+                "de": "0_userdata für eigene Zustände, Objekte und Dateien, Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Logging-Verbesserungen",
+                "ru": "0_userdata для собственных состояний, введенных объектов и файлов, оптимизаций и исправлений, исправлены ошибки с компактным режимом в Windows, улучшения ведения журнала",
+                "pt": "0_userdata para estados próprios, obejts e arquivos introduzidos, otimizações e correções de erros, erros com o modo compacto no Windows corrigido, aprimoramentos de registro",
+                "nl": "0_userdata voor eigen toestanden, geïntroduceerde obejcts en bestanden, optimalisaties en bugfixes, fouten met compacte modus op Windows vast, logboekverbeteringen",
+                "fr": "0_userdata pour les états, objets et fichiers introduits, optimisations et corrections de bugs, erreurs avec le mode compact sur Windows corrigées, améliorations de la journalisation",
+                "it": "0_userdata per propri stati, oggetti e file introdotti, ottimizzazioni e correzioni di errori, errori con modalità compatta su Windows fissi, miglioramenti della registrazione",
+                "es": "0_datos de usuario para estados propios, obejcts y archivos introducidos, optimizaciones y correcciones de errores, errores con modo compacto en Windows fijo, mejoras de registro",
+                "pl": "0_userdata dla własnych stanów, wprowadzone obiekty i pliki, optymalizacje i poprawki błędów, naprawione błędy w trybie kompaktowym w systemie Windows, ulepszenia rejestrowania",
+                "zh-cn": "0_userdata用于自身状态，引入的对象和文件，优化和错误修正，Windows上的紧凑模式下的错误已修复，日志记录增强"
+            },
+            "2.0.35": {
+                "en": "optimizations and bugfixes for alias and more, allow password usage for Redis connections",
+                "de": "Optimierungen und Bugfixes für Alias und mehr ermöglichen die Verwendung von Kennwörtern für Redis-Verbindungen",
+                "ru": "оптимизация и исправления для псевдонима и многое другое, разрешить использование пароля для подключений Redis",
+                "pt": "otimizações e correções de bugs para alias e mais, permitem o uso de senha para conexões Redis",
+                "nl": "optimalisaties en bugfixes voor alias en meer, staan wachtwoordgebruik toe voor Redis-verbindingen",
+                "fr": "optimisations et corrections de bugs pour les alias et plus, autoriser l'utilisation de mots de passe pour les connexions Redis",
+                "it": "ottimizzazioni e correzioni di bug per alias e altro, consentono l'utilizzo della password per le connessioni Redis",
+                "es": "optimizaciones y correcciones de errores para alias y más, permiten el uso de contraseñas para conexiones Redis",
+                "pl": "optymalizacje i poprawki błędów dla aliasu i więcej, pozwalają na użycie hasła do połączeń Redis",
+                "zh-cn": "别名的优化和错误修正等，允许Redis连接使用密码"
+            },
+            "2.0.34": {
+                "en": "Allow custom settings to be removed again if objects are \"file\"",
+                "de": "Ermöglichen, dass benutzerdefinierte Einstellungen wieder entfernt werden, wenn Objekte \"Datei\" sind",
+                "ru": "Разрешить удаление пользовательских настроек еще раз, если объекты \"файл\"",
+                "pt": "Permitir que as configurações personalizadas sejam removidas novamente se os objetos forem \"arquivo\"",
+                "nl": "Toestaan dat aangepaste instellingen opnieuw worden verwijderd als objecten \"bestand\" zijn",
+                "fr": "Autoriser la suppression des paramètres personnalisés si les objets sont \"fichier\"",
+                "it": "Consenti di rimuovere nuovamente le impostazioni personalizzate se gli oggetti sono \"file\"",
+                "es": "Permita que la configuración personalizada se elimine nuevamente si los objetos son \"archivo\"",
+                "pl": "Zezwól, aby ustawienia niestandardowe zostały ponownie usunięte, jeśli obiekty są „plikami”",
+                "zh-cn": "如果对象是“文件”，则允许再次删除自定义设置"
+            },
+            "2.0.33": {
+                "en": "enhance reconnection handling and other optimizations and bug fixes",
+                "de": "Verbesserte Behandlung von Wiederverbindungen und andere Optimierungen und Fehlerkorrekturen",
+                "ru": "улучшить обработку переподключения и другие оптимизации и исправления ошибок",
+                "pt": "aprimorar o manuseio de reconexão e outras otimizações e correções de bugs",
+                "nl": "verbetering van de afhandeling van herverbindingen en andere optimalisaties en bugfixes",
+                "fr": "améliorer la gestion de la reconnexion et d’autres optimisations et corrections de bugs",
+                "it": "migliorare la gestione della riconnessione e altre ottimizzazioni e correzioni di bug",
+                "es": "mejorar el manejo de reconexión y otras optimizaciones y correcciones de errores",
+                "pl": "usprawnij obsługę ponownego łączenia oraz inne optymalizacje i poprawki błędów",
+                "zh-cn": "增强重新连接处理以及其他优化和错误修复"
+            },
+            "2.0.29": {
+                "en": "logs in admin tab fixed and other optimizations and bug fixes",
+                "de": "logs in admin tab behoben und andere optimierungen und fehlerbehebungen",
+                "ru": "исправлены логи в админке и другие оптимизации и исправления ошибок",
+                "pt": "logs na guia admin corrigidos e outras otimizações e correções de bugs",
+                "nl": "logt in admin tab fixed en andere optimalisaties en bugfixes",
+                "fr": "Journaux dans l'onglet administrateur corrigé et autres optimisations et corrections de bugs",
+                "it": "registri nella scheda admin fissi e altre ottimizzazioni e correzioni di bug",
+                "es": "registros en la pestaña de administrador corregidos y otras optimizaciones y correcciones de errores",
+                "pl": "logi w zakładce admin naprawione i inne optymalizacje oraz poprawki błędów",
+                "zh-cn": "修复了管理标签中的登录信息以及其他优化和错误修复"
+            },
+            "2.0.25": {
+                "en": "see CHANGELOG.md",
+                "de": "Sehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md",
+                "zh-cn": "看到CHANGELOG.md"
+            },
+            "1.5.14": {
                 "en": "Make sure Info Adapter tab is displayed automatically on install\nOptimize messages for CLI host commands\nReplace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker\nRefresh of default SSL certificates",
                 "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird.\nMeldungen für CLI-Hostbefehle optimiert.\nZur Vermeidung von Buildfehler unter node.js 10+ wurde die Abhängigkeit zu winston-syslog angepasst.\nAktualisierung der Standard SSL-Zertifikate für den Admin.",
                 "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке\nОптимизировать сообщения для команд хоста CLI\nЗаменить зависимость winston-syslog, чтобы предотвратить ошибки сборки на node.js 10+ при установке или обновлении iobroker\nОбновить сертификаты по умолчанию",
@@ -172,6 +305,18 @@
             "_id": "_design/system",
             "language": "javascript",
             "common": {
+                "name": {
+                    "en": "Object's selectors",
+                    "de": "Objekt-Selektoren",
+                    "ru": "Селекторы объекта",
+                    "pt": "Seletores de objetos",
+                    "nl": "Objectkiezers",
+                    "fr": "Sélecteurs d'objet",
+                    "it": "Selettori di oggetti",
+                    "es": "Selectores de objeto",
+                    "pl": "Selektory obiektów",
+                    "zh-cn": "对象的选择器"
+                },
                 "dontDelete": true
             },
             "views": {
@@ -450,7 +595,18 @@
             "_id": "system.config",
             "type": "config",
             "common": {
-                "name": "System configuration",
+                "name": {
+                    "en": "System configuration",
+                    "de": "Systemkonfiguration",
+                    "ru": "Конфигурация системы",
+                    "pt": "Configuração do sistema",
+                    "nl": "Systeem configuratie",
+                    "fr": "Configuration du système",
+                    "it": "Configurazione di sistema",
+                    "es": "Configuración del sistema",
+                    "pl": "Konfiguracja systemu",
+                    "zh-cn": "系统配置"
+                },
                 "city": "",
                 "country": "",
                 "longitude": "",
@@ -489,7 +645,18 @@
             "_id": "system.repositories",
             "type": "config",
             "common": {
-                "name": "System repositories",
+                "name": {
+                    "en": "System repositories",
+                    "de": "System-Repositorys",
+                    "ru": "Системные репозитории",
+                    "pt": "Repositórios do sistema",
+                    "nl": "Systeemrepository's",
+                    "fr": "Référentiels système",
+                    "it": "Repository di sistema",
+                    "es": "Repositorios del sistema",
+                    "pl": "Repozytoria systemowe",
+                    "zh-cn": "系统资料库"
+                },
                 "dontDelete": true
             },
             "native": {
@@ -524,18 +691,106 @@
             "_id": "system.certificates",
             "type": "config",
             "common": {
-                "name": "System certificates"
+                "name": {
+                    "en": "System certificates",
+                    "de": "Systemzertifikate",
+                    "ru": "Системные сертификаты",
+                    "pt": "Certificados do sistema",
+                    "nl": "Systeem certificaten",
+                    "fr": "Certificats système",
+                    "it": "Certificati di sistema",
+                    "es": "Certificados del sistema",
+                    "pl": "Certyfikaty systemowe",
+                    "zh-cn": "系统证书"
+                }
             },
             "native": {
                 "certificates": {
-                    "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIIEogIBAAKCAQEAw7qYEzaJW8oBUGFjczWD6pkYePnKkP5sUCP1UINkW9ozOsWDv6uWewLb0aoSotbpWB/uN4s+yjiulgpNic15Z1d+q8Yt9SaADapkwACjwCqUdrdQIts9dT09N594pD7Bh1oyCzXaZM3Zb6j9tnT/pkVGuVdmgW0SoE8UDlDgLy7D6ddtiwqD9w8uQfb3cB5ws8yV6I8fnbmTeA5bX7rcs0IjYjUy4gKX24VknyEe/orwkBUBOwiqdGBkYz0aoz12lVktfbP6oj1OGVfIBeTVhdi2/utxs/9XI6OGPaP4EJ/KqjYCAlPqfCDW5WPXb9f+vvC/rxyJKoZ5DoN/d2cefQIDAQABAoIBAClVbmggTEGmF0DyUB40Xvdb/V8O4UhdcmI6NcQa+0aqfccbjwcbJVw07lcIo4bf+8cwdw4jyc7KyZPF+TnwuoKoZ4e/AlWTG9fG9B/YArzCQTgQ3kt+ISxxEkx80O1ek2ASHB9h8Az5q8F43pt5ecOTPaxGWM9cSWKxUHr1eWJ9DnNTc+xYOyn0EOl7FxHEbP7Dkh+s1iIhFdgWLAbVaWI/N9h0VTvhUqAOUE9Fmo7DLMFK+H04LV/frnGkfmtqQ9UYY4bguk7SfrelEmIxQAAxVj1BfoR+SrTi3xkmDJinFkpneiYHalknBA/K4M3/thzc9ob1x7TU9j+Yoq+wn8ECgYEA/jLC5+ZY8N5xYhUriAkTpyStUkKke28aS/t5O0SIYZzunqLX1EE1q6rMSKhUYRi8EUYyn2NhfdUmj4QfSDgN37NzFe+u6/upjNJ1wt2awIXr41IPp/GIo/6loEDDXhDCaRq0EPOKDwJJQHFcpjZF3lb7rFfcDBQtXIkrzvqV7KMCgYEAxR29rGrCAlWY3H9wkTMJoFzMrT5aG8Q9w1JVtxkZUhqbP6X7v2asGXIciv3LFIgIXsMVGvU8b1vNiyeSIXCl/BxFho0NnjJTlBq3N6GQLriTVHDuzq4aFMAdyaZdF4IEK6teV8zDCx0u8hKtzZ7HBriyIJYP+hRWifB/mddRWl8CgYA8IKm1zOjQ4O0U9Ej9vpfle2l8AcOCZv9jZbKBcG6KGGLhJ0fCL0KQvq/fp+F9rioeM+qZhRp0d0zNucTkgk3V0k6wq6dGrpqmcsnkNCL80zC+7pRBd4KIuB1ZULhlsbUqw2RAdjr73eCR2768mi3gr9aMJ6QnP0aTkubH6MI53QKBgGgptzmNkMg7A3RBw/J2zfd4EpDaCjPyF9FHiRQgp0jD1pZj2Azk7LzlmD+6rb5DxGiPHnAId89A6/VFC+uv44a+Sd84WqHmZlQ1aexz7AVEdFaC9y8wwYeFnjgZOchaZGnPPSOYiNkuqsgxJrcp2HKs1zRxGDBG3xQ1irh5F/xxAoGAR+CNHzn2suVeSypyBhSg0/UG21lw+iLsprexsd8BqwjGVoqaolU2HGFEPXTmraYUMDKWpWARrQKh8sd4kUMcetYncGZZ0LjozTrmcyHAXWN+TTGmveuBDc+K9y8TEVeVm/M3UN+EMhe5HkliEAD2VDKY5VsRaPCeryP/F4pYMp8=\r\n-----END RSA PRIVATE KEY-----\r\n",
-                    "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIIDdjCCAl6gAwIBAgIBATANBgkqhkiG9w0BAQUFADA+MREwDwYDVQQDEwhpb2Jyb2tlcjEWMBQGA1UEChMNaW9Ccm9rZXIgR21iSDERMA8GA1UECxMIaW9icm9rZXIwHhcNMTkwNzA4MDE0ODMzWhcNMjQwNzA4MDE0ODMzWjA+MREwDwYDVQQDEwhpb2Jyb2tlcjEWMBQGA1UEChMNaW9Ccm9rZXIgR21iSDERMA8GA1UECxMIaW9icm9rZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDDupgTNolbygFQYWNzNYPqmRh4+cqQ/mxQI/VQg2Rb2jM6xYO/q5Z7AtvRqhKi1ulYH+43iz7KOK6WCk2JzXlnV36rxi31JoANqmTAAKPAKpR2t1Ai2z11PT03n3ikPsGHWjILNdpkzdlvqP22dP+mRUa5V2aBbRKgTxQOUOAvLsPp122LCoP3Dy5B9vdwHnCzzJXojx+duZN4DltfutyzQiNiNTLiApfbhWSfIR7+ivCQFQE7CKp0YGRjPRqjPXaVWS19s/qiPU4ZV8gF5NWF2Lb+63Gz/1cjo4Y9o/gQn8qqNgICU+p8INblY9dv1/6+8L+vHIkqhnkOg393Zx59AgMBAAGjfzB9MAwGA1UdEwEB/wQCMAAwDwYDVR0PAQH/BAUDAwe/gDATBgNVHREEDDAKgghpb2Jyb2tlcjAdBgNVHQ4EFgQUo3LIVwV/L/Pn62Cfl4ATsgXOULQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAkGA1UdIwQCMAAwDQYJKoZIhvcNAQEFBQADggEBALk8tvsAVZ5jXXwcxJH6EZjhswtqD/CDd+Oi3n6xoxLbZdeR2+1fFHT6fpdDEYe/2C34E1T4kXcLkuu2RXzbp75ClWvJSPYys/LPQr+53JHxcgRmbEBzKTmwsxrtxAFPOId4zwDOAT52tpW+8ACVWrHndKqmVr9Hfk8uRpAzDgZMJAgKsbaC4iyBKuKo0xcdOqmAstsUVpfcMvMojw5hnOlNRXnvXqEyeNRKXXymTQlo0cnG9Y7KIPiP0Pr4PhgpJXdrSJsEEpYA6DtTcXm/UIijSm5IL1XQoE3TgO906GxAESao/WGnh0gTysjMTTz9ipVbf8vySxkpUp6oGia1sz0=\r\n-----END CERTIFICATE-----\r\n"
+                    "defaultPrivate": null,
+                    "defaultPublic": null
                 }
             },
             "acl": {
                 "owner": "system.user.admin",
                 "ownerGroup": "system.group.administrator",
                 "object": 1536
+            }
+        },
+        {
+            "_id": "alias.0",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "root folder for Aliases",
+                    "de": "Stammordner für Aliase",
+                    "ru": "корневая папка для псевдонимов",
+                    "pt": "pasta raiz para aliases",
+                    "nl": "hoofdmap voor aliassen",
+                    "fr": "dossier racine pour les alias",
+                    "it": "cartella principale per gli alias",
+                    "es": "carpeta raíz para alias",
+                    "pl": "folder główny dla aliasów",
+                    "zh-cn": "别名的根文件夹"
+                },
+                "type": "meta.folder",
+                "dontDelete": true
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
+            }
+        },
+        {
+            "_id": "0_userdata.0",
+            "type": "meta",
+            "common": {
+                "name": {
+                    "en": "User objects and files root folder",
+                    "de": "Stammordner für Benutzerobjekte und Dateien",
+                    "ru": "Корневая папка пользовательских объектов и файлов",
+                    "pt": "Pasta raiz de objetos e arquivos do usuário",
+                    "nl": "Hoofdmap van objecten en bestanden van gebruikers",
+                    "fr": "Objets utilisateur et dossier racine des fichiers",
+                    "it": "Cartella principale di oggetti e file dell'utente",
+                    "es": "Carpeta raíz de objetos y archivos de usuario",
+                    "pl": "Folder główny obiektów i plików użytkownika",
+                    "zh-cn": "用户对象和文件根文件夹"
+                },
+                "desc": {
+                    "en": "Here you can upload your files or create your private objects and states",
+                    "de": "Hier können Sie Ihre Dateien hochladen oder Ihre privaten Objekte und Zustände erstellen",
+                    "ru": "Здесь вы можете загрузить свои файлы или создать свои личные объекты и состояния",
+                    "pt": "Aqui você pode enviar seus arquivos ou criar seus objetos e estados particulares",
+                    "nl": "Hier kunt u uw bestanden uploaden of uw privé-objecten en statussen maken",
+                    "fr": "Ici, vous pouvez télécharger vos fichiers ou créer vos objets et états privés",
+                    "it": "Qui puoi caricare i tuoi file o creare oggetti e stati privati",
+                    "es": "Aquí puede cargar sus archivos o crear sus objetos y estados privados",
+                    "pl": "Tutaj możesz przesyłać pliki lub tworzyć prywatne obiekty i stany",
+                    "zh-cn": "在这里您可以上传文件或创建私有对象和状态"
+                },
+                "type": "meta.user",
+                "dontDelete": true
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
+            }
+        },
+        {
+            "_id": "0_userdata.0.example_state",
+            "type": "state",
+            "common": {
+                "name": "Example state",
+                "role": "indicator",
+                "def": false,
+                "type": "boolean"
+            },
+            "acl": {
+                "owner": "system.user.admin",
+                "ownerGroup": "system.group.administrator",
+                "object": 1604
             }
         }
     ]

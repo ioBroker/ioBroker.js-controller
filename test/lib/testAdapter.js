@@ -46,7 +46,9 @@ function testAdapter(options) {
         sendToID: 1,
         adapterShortName: 'test',
         name: options.name,
-        appName: setup.appName
+        appName: setup.appName,
+        statesConfig,
+        objectsConfig
     };
 
     function startAdapter(callback) {
@@ -330,20 +332,27 @@ function testAdapter(options) {
          });*/
 
         after(options.name + ' ' + context.adapterShortName + ' adapter: Stop js-controller', function (done) {
-            this.timeout(10000);
+            this.timeout(35000);
 
             expect(context.adapter.connected).to.be.true;
             setup.stopController(normalTerminated => {
                 console.log('Adapter normal terminated: ' + normalTerminated);
+                let adapterStopped = false;
+                context.adapter.on('exit', () => {
+                    console.log('Adapter stopped');
+                    adapterStopped = true;
+                    expect(context.adapter.connected).to.be.false;
+                });
                 // redis server cannot be stopped
                 if (objectsConfig.type === 'file') {
                     setTimeout(() => {
                         expect(context.adapter.connected).to.be.false;
                         context.adapter.stop();
-                        context.adapter.on('exit', () => {
+                        setTimeout(() => {
+                            expect(adapterStopped).to.be.true;
                             setTimeout(done, 2000);
-                        });
-                    }, 500);
+                        }, 2000);
+                    }, 3000 + (process.platform === 'win32' ? 20000 : 0));
                 } else {
                     setTimeout(done, 2000);
                 }

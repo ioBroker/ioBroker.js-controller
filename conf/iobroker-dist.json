@@ -32,6 +32,10 @@
         "pass": "",
         "noFileCache": false,
         "connectTimeout": 2000,
+        "options": {
+            "auth_pass" : null,
+            "retry_max_delay" : 5000
+        },
         "backup": {
             "disabled": false,
             "files": 24,
@@ -50,9 +54,12 @@
         "host": "127.0.0.1",
         "port": 9000,
         "maxQueue": 1000,
+        "user": "",
+        "pass": "",
+        "connectTimeout": 2000,
         "options": {
             "auth_pass" : null,
-            "retry_max_delay" : 15000
+            "retry_max_delay" : 5000
         },
         "backup": {
             "disabled": false,

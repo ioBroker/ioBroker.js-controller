@@ -1,12 +1,183 @@
 # Changelog
 
+## 2.2.x (2019-12-xx) Release D??? 
+WIP!!
+
+## 2.1.0 (2019-11-15) Release Christina
+* (Apollon77) Stable Release as minor update to separate from development/testing phase
+
+## 2.0.44 (2019-11-14) Release Bella Stable-RC5
+* (Apollon77) optimize stopping and restarting behaviour (again)
+
+## 2.0.43 (2019-11-12) Release Bella Stable-RC4
+* (Apollon77) enhance backup error handling for invalid files - they now display errors and not break the backup process
+* (Apollon77) make sure new enabled/moved instances are started directly
+* (Apollon77) increase object init timeout for adapter starts before complaining/stopping
+* (Apollon77) fix file read/write to not allow invalid locations and add some more checking
+* (Apollon77) add some more logging for ioredis initializations
+
+## 2.0.42 (2019-11-10) Release Bella Stable-RC3
+* (Apollon77) Correct error message if certificate can not be parsed
+* (bluefox) Fix upload of material adapter
+* (Apollon77) prevent crash when adapter instance is deleted which is also running currently and if stopped by deletion
+* (bluefox) make sure getForeignStates do not modify the input ids list
+* (Apollon77) enhance `list instances` and only show compact infos if adapter supports it
+
+## 2.0.41 (2019-11-08) Release Bella Stable-RC2
+* (Stabilostick) enhance certificate methods and add certificate checks in setup first
+* (Stabilostick) add `iobroker cert view <name>` CLI command
+* (Apollon77) fix problems in stop controller handling
+
+## 2.0.40 (2019-11-08) Release Bella Stable-RC1
+* (Apollon77) make sure multiple instances of same adapter do not disturb each other in compact mode, finalize compact mode
+* (AlCalzone) correctly handle git commits and branches as custom install sources
+* (Apollon77) make sure callbacks with setImmediate return the real values from code execution and not pot. changed values from other actions (fixing file content being undefined when write/read happen in parallel)
+* (Apollon77) handle more cases for aliases automatically (On/Ein is converted to true case insensitive now)
+* (bluefox) getForeignStates() return correct ids when used with aliases
+* (Apollon77) optimize controller group stopping
+* (Apollon77) when target state is deleted also emit "null" onChange events to adapters for alias states
+* (Apollon77) optimize controller stop behaviour with compact groups
+* (Apollon77) make sure that schedules instances can start even after a "once" run that set a sigKill value
+* (Apollon77) add method to synchronize file directories with file DB storage
+  * add new CLI command "iobroker file sync <id>" to do the sync
+  * integrate the sync with "iobroker setup first"
+
+## 2.0.39 (2019-10-29) Release Bella
+* (Apollon77) "upgrade name" for a controller will return an error to use "upgrade self"
+* (Apollon77) "upgrade all" will no longer update controller too
+* (Apollon77) add some more checks in adapter.js for existence of states/objects
+* (Apollon77) enhance `iobroker setup custom` for Redis sentinel usage
+* (Apollon77) make sure flot store works again also with objects with empty names
+
+## 2.0.38 (2019-10-26) Release Bella
+* (Apollon77) Add some more logic to prevent access with invalid ids
+* (Apollon77) change "enhancedLogging" to not be global but "per DB"
+* (Apollon77) Fix compact mode on Windows systems
+* (Apollon77) make sure multiple callbacks to "unload" will be ignored
+* (bluefox) Rise all user in admin group to administrators
+* (Apollon77) Allow buffers to be passed in messages again
+* (bluefox) Fix session storage
+* (Apollon77) Introduce 0_userdata as new home for user specific files, objects and states
+* (Apollon77) Enhance logging
+* (bluefox) fix letsencrypt (was broken n 2.0.35)
+* (Apollon77) fix install adapter starts like vis installation when db is not available
+* (Stabilostick) Auto generated self-signed certificates need to have a max duration of 2 years according to new Apple rules
+
+## 2.0.35 (2019-10-19) Release Bella
+* (Apollon77) Allow to use Redis password as "pass" parameter for States and Objects
+* (Apollon77) Prevent hangs on "iobroker upgrade self" from 1.5 to 2.0
+* (bluefox) Update IPs information periodically
+* (bluefox) Remove safe-replace, bluebird, pyconf packages
+* (paul53/AlCalzone/Apollon77) Fix datatype of system.host.cpu and system.adapter.XY.Z.cpu
+* (Apollon77) Make sure alias.0 and other controller objects are also checked and created if needed on setup first when updating
+* (bluefox) Allow one state to multiple aliases connections
+* (Apollon77) Make sure required adapters are also checked correctly when using compact mode and groups
+* (Apollon77) Enhance logging for unsupported (should not happen) commands
+
+## 2.0.34 (2019-10-17) Release Bella
+* (Apollon77) Allow custom settings to be removed again if objects are "file"
+* (Apollon77) Remove default value for "switch" and "level.dimmer" roles
+* (bluefox) fix user authentication
+
+## 2.0.33 (2019-10-15) Release Bella
+* (Apollon77) Sync objects and states retry max delay defaults
+* (Apollon77) Re-Add the certificate check and automatic re-creation for old certificates as in 1.5.14
+
+## 2.0.32 (2019-10-15) Release Bella
+* (Apollon77) Also restart controller if only states connection disconnects
+
+## 2.0.31 (2019-10-14) Release Bella
+* (Apollon77) fix undefined variable on one place
+
+## 2.0.30 (2019-10-14) Release Bella
+* (Apollon77) enhance reconnection handling (system tries to reconnect up to 40s including re-sending all data changes  before restart happens, on no connection to db on start a restart is tried every 30s)
+* (Apollon77) fix file handing issue
+* (bluefox) handle empty states correctly in Redis scenarios
+
+## 2.0.29 (2019-10-13) Release Bella
+* (Apollon77) fix backup on empty/null states
+
+## 2.0.28 (2019-10-13) Release Bella
+* (Apollon77) Correct meta data return for some special cases
+
+## 2.0.27 (2019-10-13) Release Bella
+* (Apollon77) Correct some potential object issues
+
+## 2.0.26 (2019-10-13) Release Bella
+* (Apollon77) Make sure Logs are only streamed to admin for selected loglevel
+* (Apollon77) Fix "iobroker file write"
+* (Apollon77) Make sure invalid ids are handled correctly without throwing errors
+* (bluefox) Add alias.0 as object to be added
+* (bluefox) Allow Arrays as state values
+* (bluefox) Translate object names
+
+## 2.0.25 (2019-10-09) Release Bella
+**This is the First version which is released into Latest Repository.**
+
+**[Discussion Thread in Forum](https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo)**
+* (Apollon77) Also allow states/objects with capital letters as first letter
+* (Apollon77) fix adapter/instance deletion
+* (AlCalzone) fix CLI get state getvalue
+* (Apollon77) increase LUA script timeout
+* (Apollon77) update in objects lib, also update other dependencies
+* (bluefox) small logging optimization
+
+
+## 2.0.24 (2019-10-02) Release Bella
+* (Apollon77) optimize performance, especially for file/file systems
+* (Apollon77) enhance path sanitization
+* (Apollon77) hopefully prevent Redis errors on connection close
+* (Apollon77) fix adapter logging with --debug flag
+* (Apollon77) fix Adapter Restarts also for widgets
+
+## 2.0.22 (2019-10-02) Release Bella
+* (Apollon77) work on some performance optimizations
+* (Apollon77) Fix binary state handling
+
+## 2.0.21 (2019-10-02) Release Bella
+* (Apollon77) make sure also states starting with "io" will be notified on stateChange
+* (Apollon77) fix Loglevel change via instance state
+* (Apollon77) make sure subscribes for instances states are correctly passed through to adapter for all cases he subscribed them (also for special states like logLevel or sigKill)
+* (Apollon77) make sure id filtering also works correct for >10 instances of the same adapter
+* (Apollon77) some more small fixes and optimizations
+* (Bluefox) Do not kill instance in debug mode on PID mismatch
+
+## 2.0.19 (2019-10-02) Release Bella
+* (Apollon77) fix migration
+* (Apollon77) fix potential cases where objects/states files were not stored
+
+## 2.0.18 (2019-10-01) Release Bella
+* (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
+
+## 2.0.17 (2019-10-01) Release Bella
+* (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapterstart, basically 4s delay)
+* (Apollon77) Optimize some Migration questions
+* (Apollon77) smaller fixes and optimization
+
+## 2.0.16 (2019-09-30) Release Bella
+* (Apollon77) streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
+* (Apollon77) rework expiry handling for File-States to use Timouts
+
+## 2.0.14 (2019-09-29) Release Bella
+* (Apollon77) fix checking if iobroker is running (bug in 2.0.13)
+* (Apollon77) upgrade socketio deps
+* (Stabilostick) Randomize Certificate Serial numbers
+
+## 2.0.13 (2019-09-28) Release Bella
+* (Apollon77) optimize `iobroker status` CLI command
+* (Apollon77) some other small fixes
+* (Apollon77) remove clearAllLogs logic
+
 ## 2.0.12 (2019-09-27) Release Bella
 * (Apollon77) Correct selections with wildcards at the beginning, should solve the admin issues
 
 ## 2.0.10 (2019-09-26) Release Bella
 * (Apollon77) Optimize Compact mode CLI commands (fixes #468, fixes #471, fixes #470)
 * (Apollon77) fixes #475, #476
-* (Apollon77) only use quit from redid and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
+* (Apollon77) only use quit from redis and let ioredis handle the disconnect, hopefully fixes #472, update objects-ha-lib to 1.1.20
 * (Apollon77) object changes are only logged as debug from now on, fixes #473
 * (Apollon77) Some adapter tweaks when running in "--install" mode (no reporting, don't check sigKill)
 
@@ -20,7 +191,7 @@
 
 ## 2.0.7 (2019-09-22) Release Bella
 * (Apollon77) Correct file based internal structure to prevent entries with "//" in the path
-* (Apollon77) Check for existing of states DB in some more places to prevent problems in compact end scenarios 
+* (Apollon77) Check for existing of states DB in some more places to prevent problems in compact end scenarios
 * (Apollon77) try to add a better retry logic on disconnect to the DBs, restart after 30s
 * (Apollon77) make some file operations with Paths more compatible to former versions
 
@@ -49,15 +220,18 @@
 
 ### Breaking changes
 * Minimum requirement for js-controller 2.0 is nodejs 8.x
-* Manually uploaded files into `iobroker-data/files/...` may no be fully supported
-* The following Adapters needs to be updated tobe compatible with js-controller 2.0
+* Manually uploaded files into `iobroker-data/files/...` may no be fully supported. Please make sure to put them into officially allowed directories, e.g. vis.0
+* The following Adapters needs to be updated to the listed versions to be compatible with js-controller 2.0
+  * simple-api 2.1.2 or higher
   * email 1.0.5 or higher
   * pushover 1.1.1 or higher
   * hue 1.2.4 or higher
   * node-red 1.10.1 or higher
-  * vis 1.2.1 or higher 
-  * iqontrol 0.2.6 pr higher
-  * radar2 TBD
+  * vis 1.2.1 or higher
+  * iqontrol 0.2.6 or higher
+  * socketio 2.1.2 or higher
+  * radar2 1.0.9 (1.2.0 from Github needs a manual fix!)
+  * ring 1.0.5 or higher
 
 ### New user features
 * **(Bluefox/Apollon77) Add Compact Mode and compact groups, see [Compact Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#start-adapter-instances-in-compact-mode)** (Technology Preview)
@@ -65,7 +239,7 @@
 * **(Bluefox/Apollon77) Add support to also use Redis for Objects and Files, see [Redis Objects Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-as-objectsfile-db)**
 * **(Apollon77) Add Redis sentinel support, see [Redis Sentinel Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#using-redis-sentinel-as-objectsfile-db)**
 * (Apollon77) Allow dynamic change of Loglevel for adapter instance and js-controller hosts processes, see [Dynamic Loglevel changes Information in README](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#dynamic-loglevel-changes)
-* (Bluefox) Add optional migration for State and/or Objects values when using `setup custom`. 
+* (Bluefox) Add optional migration for State and/or Objects values when using `setup custom`.
 * (Apollon77) add monitoring for event-Loop-Lag as host and adapter objects. This can be used to analyze if an node.js process is blocked too much
 * (foxriver76) add possibility to validate backup files
 * (alcalzone) Support command `iobroker logs`
@@ -79,8 +253,12 @@
 * (foxriver76) added getObjectView and getObjectViewAsync on adapter object
 * (foxriver76) added getObjectList and getObjectListAsync on adapter object
 * (bluefox) allow the deletion of multiple objects with wildcard
-* (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation 
+* (foxriver76) setObject/setObjectNotExists now also sets default value of state after object creation
 * (Apollon77) allow getPort to check for the port optionally on a certain host/IP
+* (Apollon77) Streamline redis vs file States handling which was different also before controller 2.0:
+  * not set states will always return null now
+  * States will set to null completely (not only value) when they expire
+  * States will also be published to onChanged handlers when states are in Redis
 
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
@@ -101,7 +279,7 @@
 * (bluefox) allow optional dependencies being installed
 * (Apollon77) optimize `setup custom`and add more user guidance
 * (Apollon77) Add Feature overview to README
-* (bluefox) forward upload console outputs from slave to master 
+* (bluefox) forward upload console outputs from slave to master
 * (Apollon77) make sure to upload and upgrade all relevant objects on installations and updates of adapters
 * (Apollon77) always upgrade instance objects after successful installs or upgrades
 * (Apollon77) optimize adapter start processes and such, especially when combined with needed automatic installations of adapters, also for error cases
@@ -132,7 +310,7 @@
 * (Apollon77) Also replace default certificate used for all Web and Admin instances if the old cerfificate was used, so restart will use the new certificate
 
 ## 1.5.12 (2019-06-01) Evolution release (Ann)
-* (Apollon77) Install instance of info adapter too on first setup of controller 
+* (Apollon77) Install instance of info adapter too on first setup of controller
 
 ## 1.5.11 (2019-05-26) Evolution release (Ann)
 * (Apollon77) Allow to install specific versions/fix installing specific versions
@@ -294,7 +472,7 @@ Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 * (bluefox) allow to enable redis by setup
 * (bluefox) catch backup errors
 * (bluefox) ignore errors by setup first
-* (bluefox) fix generate repository 
+* (bluefox) fix generate repository
 * (bluefox) calculate number of datapoints in vis and deliver it in statistics
 * (bluefox) fix restoring of backup
 * (AlCalzone) fix install urls ending with ".git"
@@ -329,7 +507,7 @@ Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 
 ## 1.1.0 (2017-06-08)
 * (bluefox) BREAKING Changes: For multihost systems the user MUST explicit allow connections from other IPs in /opt/iobroker/iobroker-data/iobroker.json
-  
+
 ```
 "host": "127.0.0.1",
 =>
@@ -356,11 +534,11 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) try to ignore npm error 1
 * (bluefox) fix possible error.
 * (bluefox) create states with ack=true by default
- 
+
 ## 0.17.2 (2017-03-25)
 * (bluefox) do not store logs and messages and just publish it
 * (bluefox) remove mochawsome
- 
+
 ## 0.17.1 (2017-03-15)
 * (bluefox) add stable repository
 * (bluefox) fix bug with user=>users (required for user rights)
@@ -696,7 +874,7 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) add better backup
 
 
-## 0.7.3 (2015-07-12) 
+## 0.7.3 (2015-07-12)
 * (bluefox) add flot to repository
 * (bluefox) add chmodFile for adapter
 * (bluefox) implement rm

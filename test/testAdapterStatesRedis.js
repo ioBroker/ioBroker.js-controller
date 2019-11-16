@@ -10,7 +10,7 @@ const dataDir = __dirname + '/../tmp/data-redis';
 const statesConfig = {
     options : {
         auth_pass: null,
-        retry_max_delay: 15000
+        retry_max_delay: 100
     },
     type:           'redis',
     host:           '127.0.0.1',
@@ -29,7 +29,7 @@ if (isExecute) {
         dataDir:        __dirname + '/../tmp/data',
         options : {
             auth_pass: null,
-            retry_max_delay: 15000
+            retry_max_delay: 100
         },
         redisNamespace: 'test',
         type:           'redis',

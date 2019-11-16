@@ -80,7 +80,7 @@ function register(it, expect, context) {
                 // ask for non-existing state
                 context.adapter.getState(gid + '6', function (err, state) {
                     expect(err).to.be.not.ok;
-                    expect(state).to.be.not.ok;
+                    expect(state).to.be.null;
                     done();
                 });
             });
@@ -128,7 +128,7 @@ function register(it, expect, context) {
 
             context.adapter.getState(gid, function (err, state) {
                 expect(err).to.be.not.ok;
-                expect(state).to.be.not.ok;
+                expect(state).to.be.null;
 
                 context.adapter.delState(gid, function (err) {
                     expect(err).to.be.not.ok;
@@ -573,7 +573,7 @@ function register(it, expect, context) {
             // ask for non-existing state
             context.adapter.getForeignState(fGid + '5', function (err, state) {
                 expect(err).to.be.not.ok;
-                expect(state).to.be.not.ok;
+                expect(state).to.be.null;
                 done();
             });
         });
@@ -708,6 +708,61 @@ function register(it, expect, context) {
                 }));
         });
     });
+
+    // getState
+    it(testName + 'Set/Get local state wit expiry', function (done) {
+        this.timeout(10000);
+
+        const eGid = context.adapterShortName + '.0.' + gid + '_expire';
+        context.adapter.setForeignObject(eGid, {
+            common: {
+                name: 'test1_expire',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {
+            },
+            type: 'state'
+        }, function (err) {
+            expect(err).to.be.null;
+
+            let published = false;
+            context.onAdapterStateChanged = function (id, state) {
+                if (id === eGid) {
+                    expect(state).to.be.null;
+                    context.onAdapterStateChanged = null;
+                    published = true;
+                }
+            };
+
+            context.adapter.setState(gid + '_expire', {val: 1, expire: 4, ack: true}, function (err) {
+                expect(err).to.be.not.ok;
+
+                context.adapter.getState(gid + '_expire', function (err, state) {
+                    // read directly, should work
+                    expect(err).to.be.null;
+                    expect(state).to.be.ok;
+                    expect(state.val).to.equal(1);
+                    expect(state.ack).to.equal(true);
+
+                    context.adapter.subscribeForeignStates(eGid, function () {
+                        setTimeout(() => {
+                            // read after timeout, should not work
+                            context.adapter.getState(gid + '_expire', function (err, state) {
+                                expect(err).to.be.not.ok;
+                                expect(state).to.be.null;
+                                expect(published).to.be.true;
+                                context.adapter.unsubscribeForeignStates(eGid, () => done());
+                            });
+                        },6000);
+                    });
+                });
+            });
+        });
+    });
+
 
     // getHistory - cannot be tested
 }

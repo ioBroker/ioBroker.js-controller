@@ -10,7 +10,7 @@ const dataDir = __dirname + '/../tmp/data';
 const statesConfig = {
     options : {
         auth_pass: null,
-        retry_max_delay: 15000
+        retry_max_delay: 100
     },
     type:           'file',
     host:           '127.0.0.1',
@@ -21,6 +21,10 @@ const statesConfig = {
 };
 
 const objectsConfig = {
+    options : {
+        auth_pass: null,
+        retry_max_delay: 100
+    },
     dataDir:        dataDir,
     type:           'file',
     host:           '127.0.0.1',
