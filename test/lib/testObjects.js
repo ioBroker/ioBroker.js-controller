@@ -238,13 +238,20 @@ function register(it, expect, context) {
             expect(res.id).to.be.equal(testId);
             expect(res.value.common.def).to.be.equal('default');
 
-            objects.extendObject(namespace + '.other', {common: {def: 'default'}}, (err, res, id) => {
+            objects.getObject(testId, (err, obj) => {
                 expect(err).to.be.not.ok;
-                expect(id).to.be.equal(namespace + '.other');
-                expect(res.id).to.be.equal(namespace + '.other');
-                expect(res.value.common.def).to.be.equal('default');
+                expect(obj._id).to.be.equal(testId);
+                expect(obj.common.def).to.be.equal('default');
+                expect(obj.common.name).to.be.equal('test2');
 
-                done();
+                objects.extendObject(namespace + '.other', {common: {def: 'default'}}, (err, res, id) => {
+                    expect(err).to.be.not.ok;
+                    expect(id).to.be.equal(namespace + '.other');
+                    expect(res.id).to.be.equal(namespace + '.other');
+                    expect(res.value.common.def).to.be.equal('default');
+
+                    done();
+                });
             });
         });
     });
@@ -274,7 +281,7 @@ function register(it, expect, context) {
             expect(obj.id).to.be.equal(testId);
             expect(obj.value._id).to.be.equal(testId);
 
-            objects.getObjectList({startkey: '', endkey: '_'}, (err, res) => {
+            objects.getObjectList({startkey: '', endkey: ' '}, (err, res) => {
                 expect(err).to.be.not.ok;
                 expect(res.rows.length).to.be.equal(0);
                 done();
@@ -289,8 +296,9 @@ function register(it, expect, context) {
             const obj = res.rows.find(val => val.value._id === testId);
             expect(obj.id).to.be.equal(testId);
             expect(obj.value._id).to.be.equal(testId);
-            return objects.getObjectList({startkey: '', endkey: '_'});
+            return objects.getObjectList({startkey: '', endkey: ' '});
         }).then(res => {
+            console.log(JSON.stringify(res));
             expect(res.rows.length).to.be.equal(0);
             done();
         }).catch(err => {
