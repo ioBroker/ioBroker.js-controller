@@ -43,7 +43,7 @@
     "tar": "^5.0.5",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.2.1",
-    "yargs": "^14.2.0"
+    "yargs": "^15.0.1"
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
