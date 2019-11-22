@@ -17,3 +17,5 @@ test
 pids.txt
 doc
 appveyor.yml
+lib/objects/tools.js
+lib/objects/objectsInRedis.js
