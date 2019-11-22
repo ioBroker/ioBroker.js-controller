@@ -20,3 +20,4 @@ appveyor.yml
 lib/setup/setupPacketManager.js
 lib/objects/tools.js
 lib/objects/objectsInRedis.js
+lib/objects/lua
