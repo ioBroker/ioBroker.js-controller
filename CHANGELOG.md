@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1 (2019-11-22) Release Christina
+* (bluefox) Fix host deletion
+* (Apollon77) update objects lib to prevent one crash case and make sure extendObject works as intended also for JavaScript adapter
+* (Apollon77) make sure adapters are also reinstalled correctly when used in compact groups
+
 ## 2.1.0 (2019-11-15) Release Christina
 * (Apollon77) Stable Release as minor update to separate from development/testing phase
 
