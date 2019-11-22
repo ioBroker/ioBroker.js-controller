@@ -2481,19 +2481,13 @@ function installAdapters() {
         name += '@' + task.version;
     }
 
-    if (config.system.compact && procs[task.id].config.common.compact && procs[task.id].config.common.runAsCompactMode) {
-        // compactgroup = 0 is executed by main js.controller, all others as own processes
-        if (
-            (!compactGroupController && procs[task.id].config.common.compactGroup !== 0) ||
-            (compactGroupController && procs[task.id].config.common.compactGroup === 0)
-        ) {
-            logger.info(hostLogPrefix + ' adapter ' + name + ' is not installed, installation will be handled by group controller');
-            setImmediate(() => {
-                installQueue.shift();
-                installAdapters();
-            });
-            return;
-        }
+    if (compactGroupController) {
+        logger.info(hostLogPrefix + ' adapter ' + name + ' is not installed, installation will be handled by main controller ... waiting ');
+        setImmediate(() => {
+            installQueue.shift();
+            installAdapters();
+        });
+        return;
     }
 
     if (procs[task.id].downloadRetry < 4) {
@@ -2722,6 +2716,7 @@ function startInstance(id, wakeUp) {
     const adapterDir_ = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
+        logger.debug(hostLogPrefix + ' startInstance Queue ' + id + ' for installation');
         installQueue.push({id: id, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
         // start install queue if not started
         if (installQueue.length === 1) installAdapters();
