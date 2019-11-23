@@ -1,8 +1,9 @@
 name: Publish
 
 on:
-  schedule:
-    - cron:  '0 2 */3 * *'
+  push
+  #schedule:
+  #  - cron:  '0 2 */3 * *'
 
 jobs:
   translate:
@@ -24,4 +25,3 @@ jobs:
       - name: Gulp default
         working-directory: engine
         run: gulp
-        
