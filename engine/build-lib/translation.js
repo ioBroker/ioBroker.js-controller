@@ -3,7 +3,7 @@
 const request = require('request');
 const fs = require('fs');
 let lastRequest = null;
-const {Translate} = require('@google-cloud/translate');
+const {Translate} = require('@google-cloud/translate').v2;
 // Your Google Cloud Platform project ID
 const projectId = 'web-site-1377';
 process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + '/../google-keys.json';
