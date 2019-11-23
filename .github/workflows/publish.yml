@@ -22,12 +22,12 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
       - name: Commit files
-          run: |
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add .
-            git status
-            git commit -m "Add changes" -a
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git status
+          git commit -m "Add changes" -a
       - name: Push changes
           uses: ad-m/github-push-action@master
           with:

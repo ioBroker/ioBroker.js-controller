@@ -116,7 +116,6 @@ function createDir(dir) {
             console.error('Try to create a directory: ' + e.toString());
             console.error('Actual directory: ' + process.cwd());
         }
-
     });
 }
 
