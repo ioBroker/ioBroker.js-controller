@@ -129,6 +129,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.6.6 (2019-11-21)
+* (foxriver76) improved error handling in widget
+
 ### 1.6.5 (2019-09-22)
 * (foxriver76) re-auth when bearer token is no longer valid
 

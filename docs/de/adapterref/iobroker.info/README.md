@@ -24,6 +24,7 @@ Um das Info Fenster im Tab-Reiter zu sehen, müssen Sie nach der Installation es
 </p>
 
 * **Uhr nicht anzeigen** - Um die Uhr oben Links auszublenden.
+* **Events ausblenden** - Eventkalender wird nicht angezeigt
 * **Adapteranfragen anzeigen** - Zeigt den Panel mit den Adapteranfragen an.
     * **Adapteranfragen beim Start geschlossen** - Das Panel mit der Adapteranfragen, ist beim Start des Info Fensters geschlossen.
 * **Bekannte Fehler anzeigen** - Zeigt den Panel mit bekannten Fehler und Wünsche für installierte Adaptern an.
@@ -314,7 +315,7 @@ Mit einem Klick auf ![Link](img/link.png), kommt man direkt zum Forum.
 Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder mit localhost:8081 zugreift. Nutz man aber ein Hostnamen wie meinhaus.de:8081, muss man sich eine kostenlose API-Key bei Feednami besorgen. Um sich dort zu registrieren, klicken Sie [hier](https://toolkit.sekando.com/docs/en/setup/hostnames) und folgen den Anweisungen.
 
 ## Changelog
-### 1.5.7 (2019-xx-xx)
+### 1.5.7 (2019-11-12)
 * (ldittmar) add event vis widget
 
 ### 1.5.6 (2019-11-05)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: 1VJU4Sv5W1C2XtmfLxk38+lToDHHGJSb4n9422lSZrw=
+hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -18,16 +18,19 @@ hash: 1VJU4Sv5W1C2XtmfLxk38+lToDHHGJSb4n9422lSZrw=
 
 -使用html从ebusd提取数据
 
-在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。此刻，所有其他人都将被忽略。
+在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。目前，其他所有内容都将被忽略。
 
 有可能会轮询未通过ebusd直接轮询的数据。命令“ read -f”用于强制通过ebus进行读取。
 
-另一个功能是发送任何命令到ebusd并接收答案，例如脚本。
+另一个功能是将任何命令发送到ebusd并接收答案，例如脚本。
 
 当前支持的ebusd版本：3.3
 
 ＃＃ 已知的问题
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）上创建问题
+
+## 0.8.2（2019-11-10）
+*（René）在数据点“错误”中出现了更多错误消息
 
 ## 0.8.1（2019-10-31）
 *（René）将flot更新到3.0版

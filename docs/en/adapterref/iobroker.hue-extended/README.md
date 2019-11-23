@@ -34,6 +34,29 @@ Connect your Philips Hue Lights with ioBroker.
 
 Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
 
+### 1.1.7 (2019-11-23)
+- (Zefau) fixed incorrect behaviour of garbage collector (again)
+
+### 1.1.6 (2019-11-07)
+- (Zefau) fixed `effect` and `alert` not being applied correctly
+
+### 1.1.5 (2019-11-05)
+- (Zefau) added option for conversion of `colorTemperature` to `xy` for non-Philips lights (see [#9](https://github.com/Zefau/ioBroker.hue-extended/issues/9))
+- (Zefau) fixed conversion of `hue` to `xy` for groups consisting of either only Philips lights, mixed lights or only non-Philips lights (see [#11](https://github.com/Zefau/ioBroker.hue-extended/issues/11))
+- (Zefau) fixed conversion of `hue` to `xy` to only convert if `xy` is actually supported by the light
+
+### 1.1.3 / 1.1.4 (2019-10-31)
+- (Zefau) added option for secure connection via SSL/TLS
+- (Zefau) fixed `scenes` not being applied correctly
+
+### 1.1.2 (2019-10-29)
+- (Zefau) added option to (not) synchronise duplicated scenes
+- (Zefau) added reworked garbage collector (deletion of old states)
+- (Zefau) fixed `transitiontime` not being applied correctly (see [#8](https://github.com/Zefau/ioBroker.hue-extended/issues/8))
+
+### 1.1.1 (2019-10-28)
+- (Zefau) removed garbage collector (deletion of old states) due to incorrect behaviour
+
 ### 1.1.0 (2019-10-27)
 - (Zefau) add full support for Hue Labs scenes
 - (Zefau) add retry if bridge returns error `socket hang up`

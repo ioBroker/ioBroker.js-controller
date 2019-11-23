@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
+hash: N3i9uHqJ8n9tNnieOcBhx+XLCQhoRNmj7XvJFETfqEU=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -24,7 +24,7 @@ hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
 *当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
-*每个房间均支持无限制的恒温器，执行器和传感器
+*支持每个房间无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间内装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）
@@ -56,7 +56,7 @@ hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
 *按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
-*您可以在此处验证并设置恒温器，执行器和传感器的对象ID
+*在这里您可以验证并设置恒温器，执行器和传感器的对象ID
 *您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后，您会得到一个空行，需要填写。编辑按钮将打开系统上可用设备的列表
 *温控器：
 
@@ -70,6 +70,28 @@ hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
 
 **应设置当前状态的名称和OID
 
+＃＃ 数据点
+| DP名称|说明|
+|---------------------|-----------------------------------------------------------------------------------------------------|
+| ActivePeriodActive |如果关闭，则将不使用配置文件。 |
+| CurrentProfile |选择当前配置文件（基于1，表示配置文件1使用heatingcontrol.0.Profiles.0下的数据点）|
+| LastProgramRun |显示适配器运行的最后一次时间 |
+
+###温度降低/升高
+| DP名称|说明|相对降低的目标温度|绝对降低的目标温度|
+|-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------|
+|访客增加温度，因为客人想变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。未使用 |
+| HolidayPresent |使用周末简介，因为我们在家中| | |
+| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前轮廓温度|将目标设置为Profiles.0.room.ReducedTemperature |
+|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.ReducedTemperature |
+|今日公共假日|今天是假期，所以可能使用星期天个人资料|使用星期天配置文件配置|
+|假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.ReducedTemperature |
+
+###窗口打开
+如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
+
+a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前配置文件的温度b）如果配置了绝对降低，则将目标设置为Profiles.0.room.ReducedTemperature
+
 ＃＃ 要求
 *需要节点版本8或更高版本
 
@@ -78,10 +100,44 @@ hash: 1ToEgJe7doDulYCX0KfF2YpHGeMzxNdZcpovXFyKcI8=
 
 ## Changelog
 
-### 0.3.0 (2019-10-xx)
+### 0.3.5 (2019-11-xx)
+Attention: some changes in datapoints!!
+* (René) moved some datapoints from "profile" to "rooms"
+* (René) see issue #50: support absolute and relative decrease of target temperature
+* (René) do not check all rooms everytime: when data only for one room changed then check only one room
+
+
+### 0.3.4 (2019-11-09)
+* (René) bug fix in data point name
+
+### 0.3.3 (2019-11-08)
+Attention: some changes in datapoints!!
+* (René) in admin: new buttons to add search new rooms
+* (René) bug fix: in profil type Mo-Fr / Sa- So period order check failed  
+* (René) see issue #38: new datapoint for WindowIsOpen
+* (René) change datapoint "CurrentTimePeriod" to "CurrentTimePeriodFull", "CurrentTimePeriod" and "CurrentTimePeriodTime"
+* (René) bugfix datapoint name "Sa-Su"
+* (René) see issue #16: new datapoint "state" per room to show reason for temperatur change 
+* (René) change format of LastProgramRun date / time
+
+
+
+### 0.3.2 (2019-11-01)
+* (René) try to convert temperature to number if NaN
+* (René) see issue #33: check for heating period when adapter starts
+* (René) fix a problem in subscription function when room can not be found 
+
+### 0.3.1 (2019-10-31)
+* (René) see issue #42 and #44: check all sensors per room and set state when adapter starts
+* (René) show message in admin when adapter is not online
+* (René) pre-define devicelist; add dummy thermostat, if list is empty
+
+
+### 0.3.0 (2019-10-27)
 * (René) see issue #20 + #24: start and end of heating period is configurable in admin 
 * (René) see issue #24: use external data point to set internal "present" data point 
 * (René) see issue #15: manual temperatur override
+* (René) see issue #35: delete of devices
 * (René) reset DeleteAll at next admin start 
 
 

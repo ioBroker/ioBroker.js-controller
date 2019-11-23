@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
+hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -78,7 +78,7 @@ oder du benutzt einfach `lovelace.X.control.alarm (entity_id = alarm_control_pan
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
 Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` sowie die optionalen Werte für `step` hinzugefügt.
-Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
+Wenn Sie die Auf- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
 
 ```
 common: {
@@ -92,6 +92,29 @@ common: {
     }
 }
 ```
+
+### Eingang auswählen
+Dies kann manuell erfolgen, wenn der Entitätstyp input_select im benutzerdefinierten Dialogfeld ausgewählt ist.
+Die Liste der zur Auswahl stehenden Optionen sollte im Standardobjekt commom.states enthalten sein:
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+
+mit anderen Worten, in sollte auch in IoB input select sein.
 
 ### Timer
 Der Timer kann mit folgendem Skript simuliert werden:
@@ -182,6 +205,9 @@ Getestet mit Jahr und Daswetter. Für eines oder mehrere der folgenden Objekte m
 
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
+
+Getestet mit dem AccuWeather-Treiber v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
+Benutzerdefinierte Lovelace-Karte zur Unterstützung der AccuWeather-Vorhersage - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Einkaufsliste
 Einkaufsliste schreibt die Werte in Form:
@@ -399,6 +425,22 @@ Verwendete Version von home-assistant-frontend@1.0.0
 8. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
+### 1.0.0 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
 ### 0.2.3 (2019-10-22)
 * (bluefox) The custom settings were corrected
 

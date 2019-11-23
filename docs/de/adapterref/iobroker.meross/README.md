@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
+hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
 ---
 ![Logo](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,20 +16,35 @@ hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
+
 ## Beschreibung
-Dieser Adapter ermöglicht die Steuerung von Meross-Geräten durch Verbindung mit den Meross-Cloud-Servern.
+Mit diesem Adapter können Sie Meross-Geräte steuern, indem Sie eine Verbindung zu den Meross-Cloud-Servern herstellen.
 
 Sie müssen Ihre Cloud-Anmeldeinformationen angeben. Der Adapter stellt eine Verbindung zu Ihrem Cloud-Konto her und abonniert alle Gerätedaten über MQTT. Aus diesem Grund müssen die Geräte mit ihrer Cloud verbunden sein. Derzeit ist keine Möglichkeit bekannt, die Geräte lokal zu steuern.
 
-Eine Adapterinstanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
+Eine Adapter-Instanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
 
 ## Bekannte Arbeitsgeräte
 * mss425e
 * mss310
 
-Wenn mehrere Geräte funktionieren (oder auch nicht), melden Sie sie bitte, indem Sie ein GitHub-Problem öffnen.
+Wenn mehr Geräte funktionieren (oder auch nicht), melden Sie dies bitte durch Öffnen eines GitHub-Problems.
 
 ## Changelog
+
+### 1.2.x (2019.11.xx)
+* (Apollon77) Add msg100 with Garage Door Reed contact
+* (Apollon77) Add reconnection handling
+* (Apollon77) Add light support (e.g. MSL120 RGB bulb)
+* (Apollon77) Add units and roles for electricity
+* (Apollon77) Add support for MSXH0 (Air Purifyer)
+* (Apollon77) Add support for Hub and Thermostates
+* (Apollon77) Allow to control DND mode (LED) - be aware then if controlled via meross app it my get out of sync!
+* (Apollon77) Integrate sentry.io for automated error/exception reporting
+* (Apollon77) Add support for mts100v3
+* (Apollon77) add Compact mode
+* (Apollon77) add control option for (rgb) lights
 
 ### 1.0.0 (2018.12.16)
 * (Apollon77) finalize and move to 1.0.0
@@ -46,7 +61,7 @@ Wenn mehrere Geräte funktionieren (oder auch nicht), melden Sie sie bitte, inde
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -191,6 +191,13 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.11.1 (2019-11-20)
+* (foxriver76) LOCK.OPEN is now of type button to prevent misunderstandings
+
+### 1.11.0 (2019-11-10)
+* (foxriver76) make OFFSET and REPEATS of epaper configurable
+* (foxriver76) EPAPER_SIGNAL is now type string
+
 ### 1.10.3 (2019-10-27)
 * (foxriver76) fixed info channel
 

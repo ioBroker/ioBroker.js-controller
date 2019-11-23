@@ -3,7 +3,7 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[有关ioBroker的新闻，公告和想法]]></description>
         <link>https://www.iobroker.net/#zh-cn/blog</link>
-        <lastBuildDate>Fri, 08 Nov 2019 16:16:21 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 23 Nov 2019 14:07:19 GMT</lastBuildDate>
         <ttl>1440</ttl>
         <item>
             <title><![CDATA[js-controller 2.0]]></title>
@@ -68,7 +68,7 @@
         <item>
             <title><![CDATA[云适配器版本]]></title>
             <description><![CDATA[
-                <p>已准备好新的云适配器版本。</p>
+                <p>已经准备了新的云适配器版本。</p>
             ]]></description>
             <link>https://www.iobroker.net/#zh-cn/blog/2018_03_17</link>
             <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2018_03_17</guid>

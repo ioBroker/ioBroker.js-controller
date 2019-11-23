@@ -19,20 +19,16 @@ Backitup offers the possibility to carry out three types (optionally with DB bac
 
 1. Standard Backup
     - This backup corresponds to the backup contained in IoBroker which can be started in the console via the call "./iobroker backup". However, it is done here through the specified settings in the adapter configuration or the OneClick Backup widget without having to use the console.
-2. Complete backup
-    - This backup secures the complete IoBroker folder including all subfolders and their files including file permissions. In this case, the file size should not be ignored, because such a backup often has several hundred MB.
-To make sure that all the latest states have to be backed up, you have to set this in the configuration of the hack at IoBroker Stop / Start.
-3. CCU Backup (Homematic)
+2. CCU Backup (Homematic)
     - This backup offers the possibility to save 3 different variants of a homematic installation (CCU original / pivCCU / Raspberrymatic). The execution of this backup can also be done through the settings specified in the adapter configuration or the OneClick Backup widget.
-4. mysql backup (localhost)
-    - This separately adjustable backup, if activated, will be created for every backup whether "minimal" or "complete" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
-5. Redis backup
-    - This separately adjustable backup, if activated, will be created for every backup whether "minimal" or "complete" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
+3. mysql backup (localhost)
+    - This separately adjustable backup, if activated, will be created for "minimal" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
+4. Redis backup
+    - This separately adjustable backup, if activated, will be created for "minimal" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
+5. History backup
+    - This separately adjustable backup, if activated, will be created for "minimal" and will be deleted after expiration of the specified retention time. FTP or CIFS are also valid for this backup unless set for the other IoBroker backup types.
 
-## 2. Preparation
-The following steps should be used to use the adapter (if the v1 / v2 / v3 backup script was used, first delete everything (disable / delete data points / enum.functions / shell script and javascript!)
-
-## 3. Use Ftp, CIFS, NFS, Copy or Dropbox for the optional backup on a Nas?
+## 2. Use Ftp, CIFS, NFS, Copy or Dropbox for the optional backup on a Nas?
 - CIFS:
     - CIFS mount is not a problem on Linux.
     - It should be noted that cifs-utils is installed
@@ -64,17 +60,14 @@ The following steps should be used to use the adapter (if the v1 / v2 / v3 backu
     - ioBroker only accesses the defined areas. The code for oAuth can be viewed [here](https://github.com/simatec/ioBroker.backitup/blob/master/docs/oAuthService.js).
     - No tokens or user data are stored in the cloud.
 
-## 4. Usage
+## 3. Usage
 1. The adapter creates 7 data points for use in Vis
     - oneClick.ccu -> serves as trigger trigger for a CCU backup (can be set to true in Vis by a button)
     - oneClick.minimal -> serves as trigger trigger for a standard backup (Can be set to true in Vis by a button)
-    - oneClick.total -> serves as trigger trigger for a complete backup (Can be set to true in Vis by a button)
 
     - history.html -> serves as a history-log which in Vis via CCS is customizable by the design.
     - history.ccuLastTime -> stores the creation date and time of the last CCU backup
     - history.minimalLastTime -> stores the creation date and time of the last standard backup
-    - history.totalLastTime -> saves the creation date and time of the last complete backup
-    - history.totalSuccess -> shows the state "true" on successful backup
 	- history.ccuSuccess -> shows the state "true" on successful backup
     - history.minimalSuccess -> shows the state "true" on successful backup
 
@@ -100,12 +93,6 @@ Syntax: {BackitupInstance.history.html}
            color:white;
            font-size:20px;
        }
-   .backup-type-total
-       {
-           float:left;
-           color:yellow;
-           font-size:20px;
-       }
    .backup-type-ccu
        {
            float:left;
@@ -126,10 +113,9 @@ Syntax: {value: <BackitupInstance>.oneClick.<trigger>; value ==="true" || value 
     - Pushover
     - Email
 
-## 5. Restore:
+## 4. Restore:
 
-As of version 0.30, backitup has a restore function.
-It is currently possible to restore the total backup, the minimal backup, as well as mysql and redis either from the local path, from the Dropbox, via FTP or from the NAS.
+It is currently possible to restore the minimal backup, as well as mysql and redis either from the local path, from the Dropbox, GoogleDrive, via FTP or from the NAS.
 
 Currently the restore is still in beta.
 
@@ -144,21 +130,18 @@ Those who prefer to manually restore their backups should do the following:
     - It can be restored via the console using the command: "iobroker restore (number of backup from the list)".
     - After the restore an "iobroker upload all" is necessary
 
-2. Restore a complete backup:
-    - Execute the command: "sudo iobroker stop" via the console
-    - The created backup must be copied to the directory "/opt/iobroker"
-    - Run the command in the directory "/opt/iobroker": "sudo tar -xzvf Backupname.tar.gz -C /opt/iobroker" from the console
-    - Wait - During the restoration you will see what is being done
-    - Execute the command: "sudo iobroker start" via the console
-
-3. Restore a Raspberrymatic / CCU backup:
+2. Restore a Raspberrymatic / CCU backup:
     - Copy the * .sbk file via SCP to the directory "/usr/local/tmp directory" on the Raspberrymatic
     - Log into the Raspberrymatic via the console as the root user
     - Run the command: "/bin/restoreBackup.sh /user/local/tmp/yourbackupfilename" on the raspberrymatic.
     - Execute the command: "reboot" on the Raspberrymatic to restart the PI
     - Alternatively, the backup can of course also be restored as usual via the web interface.
-4. Restore Redis:
+
+3. Restore Redis:
     - The Redis database must be unpacked into the corresponding folder during a restore (ex: /var/lib/redis)
+
+4. Restore History Data:
+    - The History database must be unpacked into the corresponding folder during a restore
 
 
 ## 6. Troubleshooting:
@@ -178,25 +161,7 @@ Here is a list of problems encountered so far and their solutions, if any.
 3. If you use a password with special characters in the cifs-mount, users have noticed that then the password must be stored with quotation marks in the config.
 4. According to some users, cifs-mount can not handle very long passwords. If the mount does not work, the password will shorten slightly (12 characters are working for me).
 5. If the adapter does not install, check your versions of node and nodejs. The adapter does not support versions < Node 6.
-6. If your iobroker is not running as root, backitup offers the option of running mount for cifs / nfs with sudo.
-    But your system must have disabled the root password query in the call with sudo.
-
-    Here is a little tutorial how the whole is feasible in a few steps.
-
-        - sudo visudo
-
-    Insert the following line in the file at the end:
-
-        - Username ALL = (ALL) NOPASSWD: /bin/mount, /bin/umount, /bin/systemctl, /usr/bin/systemd-run
-
-    Replace "username" with your iob user
-
-    Then save with STR + o, confirm with Enter and then close with STR + x.
-    After that, I recommend a reboot ... But this is system dependent.
-
-    But I would like to emphasize once again that these things do not have to do with backitup and that also backitup has no problem.
-    These things are unique to your system.
-7. If your iobroker system was installed with the new installer script, you may not have all the rights for the new user iobroker.
+6. If your iobroker system was installed with the new installer script, you may not have all the rights for the new user iobroker.
     Unfortunately, this also applies to backitup, since backitup uses some system-relevant commands.
 
     In order to solve the problem with missing rights, there is now a fix for the installer script of iobroker.
@@ -205,7 +170,7 @@ Here is a list of problems encountered so far and their solutions, if any.
     curl -sL https://iobroker.net/fix.sh | bash -
     sudo reboot
     ```
-8. If you get an error when creating the Redis database, please check if your user iobroker has the rights and if he exists in the user group Redis.
+7. If you get an error when creating the Redis database, please check if your user iobroker has the rights and if he exists in the user group Redis.
     If this is not the case, you can fix it with the following command in the console.
     ```
     sudo usermod -a -G redis iobroker
@@ -215,11 +180,24 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.3.0 (22.11.2019)
+* (simatec) support end for the total backup
+* (simatec) Added backup of history data path
+* (simatec) Added startup of all adapters after restore
+* (simatec) Revision of the restoration for Redis
+* (simatec) revision of log issues
+* (simatec) Rebuild the start / stop processes under Unix
+* (simatec) Rebuilding the start / stop processes under Windows
+* (simatec) new translations
+* (simatec) adjustments to the new Windows Installer
+* (simatec) adjustments to the new Linux installer
+* (simatec) fixed some small bugs
+
 ### 1.2.2 (20.10.2019)
-(simatec) Fix update process
+* (simatec) Fix update process
 
 ### 1.2.1 (19.10.2019)
-(simatec) Fix CIFS password with special characters
+* (simatec) Fix CIFS password with special characters
 
 ### 1.2.0 (02.07.2019)
 * (bluefox) Google Drive was added

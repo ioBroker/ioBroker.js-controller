@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.smappee/README.md
 title: ioBroker.smappee
-hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
+hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
 ---
 ![логотип](../../../en/adapterref/iobroker.smappee/admin/smappee.png)
 
@@ -16,18 +16,18 @@ hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
 Адаптер ioBroker для smappee - устройства
 
 #### Вам необходимо установить первый адаптер ioBroker.MQTT (или использовать другого MQTT-брокера) и активировать публикацию MQTT вашего Smappee. Пожалуйста, смотрите следующие инструкции перед установкой адаптера Smappee.
-Этот адаптер предоставляет вам данные о потребляемой мощности в режиме реального времени (с интервалом в 1 с), агрегированные данные об энергии и дополнительные данные о потреблении датчиков, а также доступ к вашим переключателям / разъемам вашего Smappee - Device to ioBroker.
+Этот адаптер предоставляет вам данные о потребляемой мощности в режиме реального времени (с интервалом в 1 с), агрегированные данные о потреблении энергии и дополнительные данные о потреблении датчиков, а также доступ к вашим переключателям / разъемам вашего Smappee - Device to ioBroker.
 
 ## Инструкции
 ### Установка ioBroker.mqtt - Адаптер.
 Пожалуйста, добавьте экземпляр ioBroker.mqtt - Adapter:
 
-![ioBMQ](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
+![ioBMQ](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
 
 настроить экземпляр как сервер / посредник. Порт 1883 по умолчанию в порядке, вы можете выбрать любой другой рабочий.
 Задайте имя пользователя и пароль (вам понадобится это для конфигурации smappee- и smappee-Adapter:
 
-![ioBMC](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
+![ioBMC](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
 
 На вкладке «Настройки MQTT» необходимо установить флажок «Публиковать только при изменении».
 
@@ -35,17 +35,17 @@ hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
 Откройте браузер и перейдите по URL-адресу: <http://X.X.X.X/smappee.html> (замените X.X.X.X на IP-адрес Smappee в вашей сети).
 Нажмите кнопку входа / выхода и используйте пароль «admin» для входа.
 
-![smplogon](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smplogon.png)
+![smplogon](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smplogon.png)
 
 Перейдите в раздел «Дополнительно» и установите флажок «Дополнительно» в последнем поле таблицы.
 
-![smpadv](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
+![smpadv](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
 
 Тогда вы должны быть здесь:
 
-![smpmqt](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpmqt.png)
+![smpmqt](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpmqt.png)
 
-Введите IP-адрес вашего ioBroker, а затем порт, указанный для mqtt-broker (по умолчанию 1883), т.е. tcp: //192.168.1.111: 1883
+Введите Ip вашего ioBroker, а затем порт, указанный для mqtt-broker (по умолчанию 1883), т.е. tcp: //192.168.1.111: 1883
 
 Введите имя пользователя и пароль, которые вы указали при настройке вашего mqtt-брокера.
 Затем нажмите «Применить изменения и перезапустить монитор».
@@ -59,14 +59,14 @@ hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
 
 Пожалуйста, дайте адаптеру несколько минут, чтобы прочитать данные с вашего устройства smappee. Перезагрузите объектное дерево, если вам не хватает некоторых значений.
 
-Адаптер предоставляет данные о фактическом токе, потребляемой мощности в целом и для каждой фазы, о фактической нагрузке, а также данные о состоянии и потреблении для датчиков газа, воды и переключателей.
+Адаптер предоставляет данные о фактическом токе, общем потреблении энергии и по каждой фазе, фактической нагрузке, а также данные о состоянии и потреблении для датчиков газа, воды и переключателей.
 
 ### Агрегирование или разделение данных (ежечасно, ежедневно, ежегодно, .. значения)
-Некоторые из значений smappee являются «счетчиками», некоторые - значения для определенного периода (5-минутные значения).
+Некоторые из значений smappee являются «счетчиками», некоторые являются значениями для определенного периода (5-минутные значения).
 Для агрегирования или разделения данных, пожалуйста, используйте адаптер ioBroker.statistics.
 
-### Контрольные вилки / переключатели
-Smappee позволяет вам удаленно управлять интеллектуальными разъемами / интеллектуальными переключателями. Либо smappee-one, либо другие 433 МГц RF-штекеры / переключатели (т. Е. Intertechno IT-1500). Соедините коммутаторы с вашим приложением smappee и перезапустите smappee-адаптер ioBroker. Вы получите имена и состояния ваших штекеров и, установив «switchON» «true», включите переключатель, когда вы установите «false», вы выключите его (когда настройка «switchON» ACK должна быть ложной) ,
+### Контрольные вилки / выключатели
+Smappee позволяет вам удаленно управлять интеллектуальными разъемами / интеллектуальными переключателями. Либо smappee-ones, либо другие RF3-штекеры / переключатели 433 МГц (например, Intertechno IT-1500). Соедините коммутаторы с вашим приложением smappee и перезапустите smappee-адаптер ioBroker. Вы получите имена и состояния ваших штекеров и, установив «switchON» «true», включите переключатель, когда вы установите «false», вы выключите его (когда настройка «switchON» ACK должна быть ложной) ,
 
 ## Changelog
 

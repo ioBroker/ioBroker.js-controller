@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
+hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -26,7 +26,7 @@ hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
 - руководство по эксплуатации
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
@@ -92,6 +92,29 @@ common: {
     }
 }
 ```
+
+### Выберите вход
+Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_select.
+Список опций для выбора должен быть представлен в стандартном объекте commom.states:
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+
+другими словами, в также следует вводить select в IoB.
 
 ### Таймер
 Таймер может быть смоделирован следующим скриптом:
@@ -178,10 +201,13 @@ createState(
 ```
 
 ### Погода
-Протестировано с год и daswetter. Для одного или нескольких из следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
+Протестировано с год и daswetter. Для одного или нескольких следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
 
 - daswetter.0.NextDays.Location_1
 - год.0.прогноз
+
+Протестировано с драйвером AccuWeather v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
+Пользовательская карта Lovelace, созданная в поддержку прогноза accuweather - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Список покупок
 Список покупок записывает значения в форме:
@@ -249,7 +275,7 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-или просто вручную установите тип сущности на `camera` и запишите в него URL.
+или просто вручную установите тип объекта на `camera` и запишите в него URL-адрес.
 
 ### Скрыть панель инструментов
 Чтобы скрыть панель инструментов, вы можете установить флажок в диалоговом окне конфигурации ioBroker на вкладке Темы.
@@ -280,7 +306,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
-или же
+или
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
@@ -361,7 +387,7 @@ midnight:
 взято из [Вот](https://community.home-assistant.io/t/midnight-theme/28598/2).
 
 ## Иконки
-Используйте значки в форме `mdi:NAME`, например «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
+Используйте значки в форме `mdi:NAME`, например, «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
 
 ## Уведомления
 Вы можете добавить уведомления через функции `sendTo` или записав состояние в `lovelace.X.notifications.add`:
@@ -371,7 +397,7 @@ sendTo('lovelace.0', 'send', {message: 'Message text', title: 'Title'}); // full
 sendTo('lovelace.0', 'send', 'Message text'); // short version
 ```
 
-или же
+или
 
 ```
 setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "Title"}'); // full version
@@ -399,6 +425,22 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 8. Запустите задачу gulp rename.
 
 ## Changelog
+### 1.0.0 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
 ### 0.2.3 (2019-10-22)
 * (bluefox) The custom settings were corrected
 

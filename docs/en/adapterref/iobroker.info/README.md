@@ -24,6 +24,7 @@ In order to see the info window in the Tab tab, you must first check it as Visib
 </p>
 
 * **Do not show clock** - To hide the clock at the top left.
+* **Hide events (only german)** - Event calendar is not displayed
 * **Show adapter requests** - Displays the panel with the adapter requests.
     * **Adapter requests closed at startup** - The panel with the adapter requests is closed when the Info window starts.
 * **View known errors** - Displays the panel with known errors and requests for installed adapters.
@@ -314,7 +315,7 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
-### 1.5.7 (2019-xx-xx)
+### 1.5.7 (2019-11-12)
 * (ldittmar) add event vis widget
 
 ### 1.5.6 (2019-11-05)

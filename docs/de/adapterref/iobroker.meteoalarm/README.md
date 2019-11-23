@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: GiKt6up6qUq4Ido90T1D1UfgDqhAQKHmL3T9gF8Fh48=
+hash: 6gepr/U5aI7aF0Lgl6lXxB+Fqs7459a8Xzg3v+pWfNg=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -31,10 +31,11 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 | Standort | Alarmstandort |
 | Veröffentlichungsdatum Veröffentlichungsdatum des Alarms gemäß der Website |
 | HTMLToday | HTML-Widget, das Alarme für heute anzeigt |
+| Wetterkarte Land | HTML Link zur Wetterkarte des Alarmlandes |
 | Heute / Morgen | Diese Datenpunkte sind für heute und morgen verfügbar: |
 | Text | Alarmtext in länderspezifischer Sprache |
 | Von | Alarmstartdatum |
-| Bis | Alarm Enddatum |
+| Bis | Enddatum des Alarms |
 | Art des Alarms als Zahl |
 | TypeText | Alarmtyp als Text |
 | Alarmstufe als Zahl |
@@ -70,15 +71,28 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 ## Unterstützte Länder
 * Österreich
 * Kroatien
+* Tschechische Republik
 * Finnland
 * Deutschland
+* Griechenland
 * Ungarn
+* Irland
+* Israel
 * Italien
+* Lettland
+* Litauen
+* Malta
+* Moldawien
+* Montenegro
 * Niederlande
 * Norwege
+* Polen
+* Rumänien
+* Serbien
 * Slowakei
 * Spanien
 * Schweiz
+* Schweden
 
 Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gerne füge ich es hinzu
 
@@ -89,6 +103,13 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gern
 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
+
+## 1.0.8 (15.11.2019)
+* (jack-blackson) Hinzugefügt Polen, Moldawien, Griechenland, Rumänien
+* (jack-blackson) Neuer Datenpunkt hinzugefügt, um den Link zur Wetterkarte zu erhalten
+
+## 1.0.7 (2013-11-13)
+* (jack-blackson) Hinzugefügt: Tschechische Republik, Irland, Israel, Litauen, Lettland, Montenegro, Malta, Serbien, Schweden
 
 ## 1.0.6 (2019-10-19)
 * (jack-blackson) Schweiz & Slowakei hinzugefügt

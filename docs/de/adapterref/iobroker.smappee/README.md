@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smappee/README.md
 title: ioBroker.smappee
-hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
+hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
 ---
 ![Logo](../../../en/adapterref/iobroker.smappee/admin/smappee.png)
 
@@ -15,58 +15,58 @@ hash: kN91vzBPwDEYQJ8D/N06TsAasHmzY/2EL0v63KAJldQ=
 # IoBroker.smappee
 Ein ioBroker-Adapter für Smappee-Geräte
 
-#### Sie müssen zuerst den ioBroker.MQTT-Adapter installieren (oder einen anderen MQTT-Broker verwenden) und die MQTT-Veröffentlichung Ihres Smappee aktivieren. Bitte beachten Sie die folgenden Anweisungen, bevor Sie den Smappee-Adapter installieren.
-Mit diesem Adapter erhalten Sie Echtzeit-Energiedaten (1s-Intervall), aggregierte Daten für Energie und optionale Sensorverbrauchsdaten sowie Zugriff auf Ihre Switches / Stecker Ihres Smappee-Geräts auf ioBroker.
+#### Sie müssen zuerst den ioBroker.MQTT-Adapter installieren (oder einen anderen MQTT-Broker verwenden) und die MQTT-Veröffentlichung Ihres Smappee aktivieren. Lesen Sie bitte die folgenden Anweisungen, bevor Sie den Smappee-Adapter installieren.
+Mit diesem Adapter erhalten Sie in Echtzeit (1s-Intervall) Energieverbrauchsdaten, aggregierte Daten für den Energieverbrauch und optionale Sensorverbrauchsdaten sowie Zugriff auf Ihre Schalter / Stecker Ihres Smappee - Geräts zu ioBroker.
 
-## Anweisungen
-### IoBroker.mqtt - Adapter installieren.
-Bitte fügen Sie eine Instanz des ioBroker.mqtt-Adapters hinzu:
+## Anleitung
+### Installation von ioBroker.mqtt - Adapter.
+Bitte fügen Sie eine Instanz des ioBroker.mqtt - Adapters hinzu:
 
-![ioBMQ](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
+![ioBMQ](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
 
-Konfigurieren Sie die Instanz als Server / Broker. Port 1883 als Standard ist in Ordnung, Sie können jederzeit andere Funktionen auswählen.
-Geben Sie den Benutzernamen und das Passwort ein (dies benötigen Sie für die Konfiguration des smappee- und des smappee-Adapters:
+Konfigurieren Sie die Instanz als Server / Broker. Port 1883 ist standardmäßig in Ordnung, Sie können jedoch auch eine andere Funktion auswählen.
+Legen Sie Benutzername und Passwort fest (dies benötigen Sie für die Konfiguration von smappee- und smappee-Adapter:
 
-![ioBMC](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
+![ioBMC](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
 
-Auf der Registerkarte MQTT-Einstellungen muss das Kontrollkästchen "Nur bei Änderung veröffentlichen" aktiviert sein.
+Auf der Registerkarte MQTT-Einstellungen muss das Kontrollkästchen 'Nur bei Änderung veröffentlichen' aktiviert sein.
 
-Aktivierung der Veröffentlichung von Smappee MQTT.
-Öffnen Sie Ihren Browser und rufen Sie die URL auf: <http://X.X.X.X.X/smappee.html> (ersetzen Sie X.X.X.X durch die IP-Adresse von Smappee in Ihrem Netzwerk).
-Klicken Sie auf die Schaltfläche Anmelden / Abmelden und verwenden Sie das Kennwort "admin", um sich anzumelden.
+### Aktivierung von Smappees MQTT-Publishing.
+Öffnen Sie Ihren Browser und rufen Sie die URL <http://X.X.X.X/smappee.html> auf (ersetzen Sie X.X.X.X durch die IP-Adresse von Smappee in Ihrem Netzwerk).
+Klicken Sie auf die Anmelde- / Abmeldeschaltfläche und verwenden Sie das Kennwort "admin" zur Anmeldung.
 
-![smplogon](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smplogon.png)
+![smplogon](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smplogon.png)
 
-Gehen Sie zum Abschnitt "Erweitert" und aktivieren Sie das Kontrollkästchen "Erweitert" im letzten Feld der Tabelle.
+Gehen Sie in den Bereich "Erweitert" und aktivieren Sie das Kontrollkästchen "Erweitert" im letzten Feld der Tabelle.
 
-![smpadv](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
+![smpadv](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
 
 Dann sollten Sie hier sein:
 
-![smpmqt](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpmqt.png)
+![smpmqt](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpmqt.png)
 
-Geben Sie die IP Ihres ioBroker gefolgt vom Port ein, den Sie für den mqtt-broker angegeben haben (Standardeinstellung ist 1883), d. H. Tcp: //192.168.1.111: 1883
+Geben Sie die Ip Ihres ioBrokers gefolgt von dem Port ein, den Sie für den mqtt-broker angegeben haben (Standard ist 1883), d. H. Tcp: //192.168.1.111: 1883
 
-Geben Sie den Benutzernamen und das Kennwort ein, die Sie bei der Konfiguration Ihres mqtt-broker angegeben haben.
-Klicken Sie anschließend auf "Änderungen übernehmen und Monitor neu starten".
+Geben Sie den Benutzernamen und das Passwort ein, die Sie beim Konfigurieren Ihres mqtt-Brokers angegeben haben.
+Klicken Sie dann auf "Änderungen übernehmen und Monitor neu starten".
 
-Und jetzt ist es Zeit zu
+Und jetzt ist es Zeit für
 
 ### Installieren Sie den Smappee-Adapter
-Erstellen Sie eine Instanz des Smappee-Adapters und geben Sie den Benutzernamen und das Kennwort ein, die Sie bei der Konfiguration Ihres mqtt-broker angegeben haben.
+Erstellen Sie eine Instanz des smappee-Adapters und geben Sie den Benutzernamen und das Passwort ein, die Sie beim Konfigurieren Ihres mqtt-Brokers angegeben haben.
 
-Wenn Sie einen anderen MQTT-Adapter als ioBrokers mit Standardeinstellungen verwenden, können Sie optional die Verbindung zu Ihrem MQTT-Broker (Host und Port) angeben.
+Wenn Sie einen anderen als den ioBrokers MQTT-Adapter mit Standardeinstellungen verwenden, können Sie optional die Verbindung zu Ihrem MQTT-Broker (Host & Port) angeben.
 
-Bitte geben Sie dem Adapter einige Minuten, um die Daten von Ihrem smappee-Gerät zu lesen. Laden Sie den Objektbaum erneut, wenn einige Werte fehlen.
+Bitte geben Sie dem Adapter einige Minuten Zeit, um die Daten von Ihrem Smappee-Gerät zu lesen. Laden Sie den Objektbaum neu, wenn Sie einige Werte vermissen.
 
-Der Adapter liefert Daten zum tatsächlichen Strom, zum gesamten Stromverbrauch und für jede Phase, zur tatsächlichen Last sowie zu den Zustands- und Verbrauchsdaten für Gas-, Wasser- und Schaltsensoren.
+Der Adapter liefert Daten zum aktuellen Strom, zum Stromverbrauch insgesamt und für jede Phase, zur aktuellen Last sowie zu Zustands- und Verbrauchsdaten für Gas-, Wasser- und Schaltsensoren.
 
-### Datenaggregation oder -separation (stündliche, tägliche, jährliche, .. Werte)
-Einige der Smappee-Werte sind "Zähler", andere Werte für einen bestimmten Zeitraum (5-Minuten-Werte).
-Verwenden Sie für die Aggregation oder Trennung von Daten den ioBroker.statistics-Adapter.
+### Datenaggregation oder -trennung (stündliche, tägliche, jährliche, .. Werte)
+Einige der Smappee-Werte sind 'Zähler', andere sind Werte für einen bestimmten Zeitraum (5-Minuten-Werte).
+Verwenden Sie zum Zusammenfassen oder Trennen von Daten den ioBroker.statistics-Adapter.
 
-### Steuerstecker / -schalter
-Mit Smappee können Sie intelligente Stecker / intelligente Schalter fernsteuern. Entweder smappee-one oder andere 433 MHz HF-Stecker / Schalter (d. H. Intertechno IT-1500). Koppeln Sie die Switches mit Ihrer Smappee-App und starten Sie den ioBroker-Smappee-Adapter neu. Sie erhalten die Namen und Zustände Ihrer Stecker. Wenn Sie 'switchON' auf 'true' setzen, schalten Sie den Schalter ein. Wenn Sie ihn auf 'false' setzen, schalten Sie ihn aus (wenn 'switchON' eingestellt ist, muss ACK falsch sein). .
+### Steuerstecker / Schalter
+Mit Smappee können Sie Smart Plugs / Smart Switches fernsteuern. Entweder Smappee-Stecker oder andere 433-MHz-HF-Stecker / -Schalter (d. H. Intertechno IT-1500). Koppeln Sie die Switches mit Ihrer Smappee-App und starten Sie den ioBroker-Smappee-Adapter neu. Sie erhalten die Namen und Zustände Ihrer Stecker und durch Setzen von 'switchON' auf 'true' schalten Sie den Schalter ein, wenn Sie ihn auf 'false' setzen, schalten Sie ihn aus (wenn 'switchON' gesetzt ist, muss ACK auf 'false' gesetzt sein). .
 
 ## Changelog
 

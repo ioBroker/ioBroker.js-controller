@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: HTCuDysdffGJcO9kQvOXLG6a7YaXX0VM+u52A1+RIMU=
+hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -78,7 +78,7 @@ createState(
 ###数字输入
 如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
 可以添加`common`中的这种必需的`min`和`max`值以及可选的`step`。
-如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
+如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
 
 ```
 common: {
@@ -92,6 +92,29 @@ common: {
     }
 }
 ```
+
+###选择输入
+如果在自定义对话框中选择了input_select实体类型，则可以手动完成此操作。
+标准commom.states对象应提供可供选择的选项列表：
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+
+换句话说，也应在IoB中输入select。
 
 ###计时器
 计时器可以通过以下脚本进行模拟：
@@ -183,6 +206,9 @@ createState(
 -daswetter.0.NextDays.Location_1
 -yr.0.cast
 
+已使用AccuWeather驱动程序v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather测试。
+创建自定义Lovelace卡以支持AccuWeather天气预报-https://github.com/algar42/IoB.lovelace.accuweather-card
+
 ＃＃＃ 购物清单
 购物清单以以下形式写入值：
 
@@ -261,11 +287,11 @@ createState('location.latitude', 39.5681295, false, {
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
 
-重新启动lovelace适配器后，它将自动包含`cards`目录中的所有文件。
+重新启动lovelace适配器后，它将自动包括`cards`目录中的所有文件。
 
 以下定制卡可以成功测试：
 
--bignumber-card：https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+-大号码卡：https：//github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 -simple-thermostat：https：//github.com/nervetattoo/simple-thermostat/releases（采用最新版本）
 -恒温器：https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card（都需要.js和.lib.js文件）
 
@@ -276,7 +302,7 @@ createState('location.latitude', 39.5681295, false, {
 像这样：[https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases)（查找文件`mini-graph-card-bundle.js`）
 
 ##自己的图片
-可以通过与自定义卡相同的配置对话框来加载自定义图像（例如背景图片）。并像这样使用它：
+可以通过与自定义卡相同的配置对话框来加载自定义图像（例如用于背景）。并像这样使用它：
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
@@ -390,7 +416,7 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 
 ###如何构建新的Lovelace版本
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`这是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（例如，通知）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（例如，通知）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
@@ -399,6 +425,22 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 8.启动“ gulp重命名”任务。
 
 ## Changelog
+### 1.0.0 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
 ### 0.2.3 (2019-10-22)
 * (bluefox) The custom settings were corrected
 

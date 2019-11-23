@@ -1072,7 +1072,7 @@ Format of selector:
 "name[commonAttr=something1](enumName=something2){nativeName=something3}[id=idfilter][state.id=idfilter]"
 ```
 
-name can be: state, channel or device
+name can be: state, channel, device or schedule
 "idfilter" can have wildcards '*'
 
 Prefixes ***(not implemented - should be discussed)*** :
@@ -1089,6 +1089,7 @@ Prefixes ***(not implemented - should be discussed)*** :
 - `$('channel{TYPE=BLIND}[state.id=*.LEVEL]')` - Get all shutter of Homematic
 - `$('channel[role=switch](rooms=Living room)[state.id=*.STATE]').setState(false)` - Switch all states with .STATE of channels with role "switch" in "Living room" to false
 - `$('channel[state.id=*.STATE](functions=Windows)').each(function (id, i) {log(id);});` - print all states of enum "windows" in log
+- `$('schedule[id=*65]').each(function (id, i) {log(id);});` - print all schedules with 65 at the end
 
 
 - `$('.switch §"Living room")` - Take states with all switches in 'Living room' ***(not implemented - should be discussed)***
@@ -1425,6 +1426,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.3.4 (2019-10-28)
+* (bluefox) Values are showed in select ID dialog
+* (bluefox) Allow select with $ the schedule objects
+
 ### 4.3.3 (2019-10-28)
 * (bluefox) Search in scripts was corrected
 

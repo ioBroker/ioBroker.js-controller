@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: 1VJU4Sv5W1C2XtmfLxk38+lToDHHGJSb4n9422lSZrw=
+hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -28,6 +28,9 @@ hash: 1VJU4Sv5W1C2XtmfLxk38+lToDHHGJSb4n9422lSZrw=
 
 ## Известные проблемы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или пожелаете новых функций
+
+## 0.8.2 (2019-11-10)
+* (René) еще несколько сообщений об ошибках в datapoint "error"
 
 ## 0.8.1 (2019-10-31)
 * (René) обновление flot до версии 3.0

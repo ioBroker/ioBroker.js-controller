@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
+hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
 ---
 ![логотип](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,6 +16,8 @@ hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
+** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. **
+
 ## Описание
 Этот адаптер позволяет управлять устройствами Meross, подключаясь к облачным серверам Meross.
 
@@ -27,9 +29,22 @@ hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 * mss425e
 * mss310
 
-Если работает больше устройств (или нет), сообщите об этом, открыв проблему с GitHub.
+Если больше устройств работает (или нет), пожалуйста, сообщите о них, открыв проблему с GitHub.
 
 ## Changelog
+
+### 1.2.x (2019.11.xx)
+* (Apollon77) Add msg100 with Garage Door Reed contact
+* (Apollon77) Add reconnection handling
+* (Apollon77) Add light support (e.g. MSL120 RGB bulb)
+* (Apollon77) Add units and roles for electricity
+* (Apollon77) Add support for MSXH0 (Air Purifyer)
+* (Apollon77) Add support for Hub and Thermostates
+* (Apollon77) Allow to control DND mode (LED) - be aware then if controlled via meross app it my get out of sync!
+* (Apollon77) Integrate sentry.io for automated error/exception reporting
+* (Apollon77) Add support for mts100v3
+* (Apollon77) add Compact mode
+* (Apollon77) add control option for (rgb) lights
 
 ### 1.0.0 (2018.12.16)
 * (Apollon77) finalize and move to 1.0.0
@@ -46,7 +61,7 @@ hash: IZzDVhySIYj4MFKy7j4fG3/jRnl/U0Nb1tlmfVb40so=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

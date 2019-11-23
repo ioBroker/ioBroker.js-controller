@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.denon/README.md
 title: ioBroker.denon
-hash: p8APn/+DeEWFbZmRaTvhR97ElqQOqWIFgKf4CB2U3To=
+hash: PbP9s502vcIwTE0uffmmvzQ/IsVADkYEGzDwWycVtJY=
 ---
 ![Logo](../../../en/adapterref/iobroker.denon/admin/denon.png)
 
@@ -36,11 +36,11 @@ Navigieren Sie in Ihren iobroker-Ordner und führen Sie den folgenden Befehl aus
 npm i iobroker.denon
 ```
 
-## Konfiguration
+## Installieren
 Zusätzlich zur Adapterinstallation müssen Sie sicherstellen, dass Ihr AVR korrekt konfiguriert ist.
 
 ### IoBroker
-1. Öffnen Sie Ihre ioBroker-Oberfläche in einem Browser (z. B. 192.168.1.33:8081).
+1. Öffnen Sie Ihre ioBroker-Oberfläche in einem Browser (zB: 192.168.1.33:8081)
 2. Navigieren Sie zur Registerkarte "Adapter".
 3. Klicken Sie auf die drei Punkte und dann auf das Symbol "+" des DENON AVR-Adapters
 
@@ -79,10 +79,10 @@ Die Standardeinstellungen sollten für die meisten Benutzer gut geeignet sein.
    *Proxy: Setzen Sie diesen Parameter auf "Off".*
 
 4. Drücken Sie die SETUP-Taste. Das Menü erscheint auf dem FL-Display (und der GUI).
-5. Wählen Sie "Netzwerk" -> Netzwerksteuerung / IP-Steuerung "
+5. Wählen Sie "Netzwerk" -> "Netzwerksteuerung / IP-Steuerung".
 6. Stellen Sie diesen Parameter auf "Always On".
 
-## Verwendungszweck
+## Verwendung
 Beachten Sie, dass die AVRs nur eine einzige Telnet-Verbindung verwalten können. Wenn Sie eine aktive Telnet-Verbindung haben e. G. Mit dem Javascript-Adapter verweigert der AVR die Verbindung dieses Adapters.
 Hier finden Sie eine Beschreibung der Zustände und deren Verwendung.
 
@@ -106,13 +106,13 @@ Der Adapter erstellt die folgenden Schaltflächen:
 
    *Zum vorherigen Titel springen.*
 
-   *NICHT VOLLSTÄNDIG UNTERSTÜTZT FÜR HEOS AVR'S*
+   *NICHT VOLLSTÄNDIG FÜR HEOS AVR'S UNTERSTÜTZT*
 
 * zoneMain.skipPlus
 
    *Zum nächsten Titel springen.*
 
-   *NICHT VOLLSTÄNDIG UNTERSTÜTZT FÜR HEOS AVR'S*
+   *NICHT VOLLSTÄNDIG FÜR HEOS AVR'S UNTERSTÜTZT*
 
 * zoneMain.volumeDown / zone2.volumeDown / zone3.volumeDown
 
@@ -149,7 +149,7 @@ Der Adapter erstellt die folgenden Schaltflächen:
 #### Kanal: Einstellungen
 * settings.subwooferLevelDown / settings.subwooferTwoLevelDown
 
-   *Reduzieren Sie den Subwoofer-Pegel durch Drücken der Taste.*
+   *Verringern Sie den Subwoofer-Pegel durch Drücken der Taste.*
 
 * settings.subwooferLevelUp / settings.subwooferTwoLevelUp
 
@@ -210,7 +210,7 @@ Folgende Zustände werden vom Adapter erzeugt:
     | string | R |
 
 *Zeichenfolge im JSON-Array-Format, die die aktuell gespeicherten Favoriten nach ID und Kanal darstellt.
-Die Namen der einzelnen Kanäle sind auf 20 Stellen begrenzt. Sie können den aktuellen Kanal unter einer ID speichern, indem Sie settings.savePreset festlegen und einen Kanal laden, indem Sie settings.loadPreset auf die entsprechende ID festlegen.*
+Die Namen der einzelnen Kanäle sind auf 20 Stellen begrenzt. Sie können den aktuellen Kanal unter einer ID speichern, indem Sie settings.savePreset festlegen, und einen Kanal laden, indem Sie settings.loadPreset auf die entsprechende ID festlegen.*
 
 #### Kanal: zoneMain / zone2 / zone3
 * zoneMain.volume / zone2.volume / zone3.volume
@@ -236,7 +236,7 @@ setState('denon.0.zoneMain.volume', 45.5); // Sets volume of Main Zone to 45.5
     |:---:|:---:|
     | number | R |
 
-   *Nur-Lese-Zahl, die die maximal mögliche Lautstärke darstellt, wobei 80 = 0 dB. Die Lautstärke wird auch im Zustand maximumVolumeDB in dB eingestellt.*
+   *Nur-Lese-Zahl, die die maximal mögliche Lautstärke darstellt, wobei 80 = 0 dB. Die Lautstärke wird im Status maximumVolumeDB ebenfalls in dB eingestellt.*
 
 * zoneMain.muteIndicator / zone2.muteIndicator / zone3.muteIndicator
 
@@ -344,7 +344,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
     |:---:|:---:|
     | string | R |
 
-   *Enthält einen Link, über den Sie das Cover des aktuell wiedergegebenen Kanals / Songs finden.*
+   *Enthält einen Link, über den Sie das Cover des aktuell gespielten Kanals / Songs finden.*
 
    *NICHT UNTERSTÜTZT FÜR HEOS AVR'S*
 
@@ -364,7 +364,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
     |:---:|:---:|
     | Nummer | R / W |
 
-   *Zahlenwert, der den Höhenpegel der Zone darstellt. Der Wertebereich reicht von -6 bis +6 dB.*
+   *Zahlenwert, der den Höhenpegel der Zone angibt. Der Wertebereich reicht von -6 bis +6 dB.*
 
    *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF gestellt und die Klangregelung aktiviert ist.*
 
@@ -385,7 +385,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    *Nur-Lese-Zeichenfolge, die den Inhalt Ihres AVR-Displays enthält. Es hat neun Zustände 0 - 9.*
 
-   *DISPLAY-INHALT WIRD FÜR HEOS AVR'S NICHT UNTERSTÜTZT*
+   *ANZEIGEINHALT WIRD NICHT FÜR HEOS AVR'S UNTERSTÜTZT*
 
 * Bildschirmhelligkeit
 
@@ -499,25 +499,48 @@ Der Bereich reicht von 0 dB bis -10 dB. Wobei 10 = -10 dB.*
 setState('denon.0.settings.expertCommand', 'ECOON'); // Turns Main Zone ECO mode on
 ```
 
-* settings.outputMonitor
+* settings.expertReadingPattern
 
     | Datentyp | Berechtigung |
     |:---:|:---:|
     | string | R / W |
 
-   *Wählen Sie den Ausgangsmonitor Ihres AVR. Dieser Status wird nur erstellt, wenn Ihr AVR zwei HDMI-Ausgänge unterstützt. Sie können den Status wechseln zwischen:*
+*Wenn Sie bestimmte Antworten in `settings.expertReadingResult` speichern möchten, müssen Sie RegEx auf diesen Status einstellen.
+RegEx muss so eingestellt sein, dass ein RegEx-Konstruktor es verwenden kann. Es wird empfohlen, einen [RegEx-Tester](https://regexr.com/) zu verwenden.
+Stellen Sie `/` nicht am Anfang oder Ende der RegEx ein.*
 
-   *0: AUTO -> Automatische Erkennung des Monitors*
-
-   *1: 1 -> Gibt das Signal an Monitor 1 aus*
-
-   *2: 2 -> Gibt das Signal an Monitor 2 aus*
-
-   *Beispiel:*
+    *Beispiel:*
 
 ```javascript
-setState('denon.0.settings.outputMonitor', '2'); // Sets monitor 2 as active monitor
-```
+setState('denon.0.settings.expertReadingPattern', '(MV.+)|(SSINFAISFSV.+)');
+
+ttings.expertReadingResult
+
+|Data type|Permission|
+|:---:|:---:|
+|string|R|
+
+*Incoming data, which matches the RegEx of `settings.expertReadingPattern` will be set to this state.*
+
+ttings.outputMonitor
+
+|Data type|Permission|
+|:---:|:---:|
+|string|R/W|
+
+Select the output monitor of your AVR. This state will only be created if your AVR supports two HDMI outputs. You can switch the state between:*
+
+0: AUTO --> Auto detection of monitor*
+
+1: 1 --> Outputs signal to monitor 1*
+
+2: 2 --> Outputs signal to monitor 2*
+
+Example:*
+
+``javascript
+etState('denon.0.settings.outputMonitor', '2'); // Sets monitor 2 as active monitor
+``
 
 * settings.videoProcessingMode
 
@@ -545,7 +568,7 @@ setState('denon.0.settings.videoProcessingMode', '2'); // Sets Video Processing 
     |:---:|:---:|
     | boolean | R / W |
 
-   *Boolescher Wert, der wahr ist, wenn die mittlere Streuung abgeschnitten ist, andernfalls falsch. Mit diesem Status können Sie auch die mittlere Streuung ein- und ausschalten.*
+   *Boolescher Wert, der true ist, wenn die mittlere Streuung abgeschnitten ist, andernfalls false. Mit diesem Status können Sie auch die mittlere Streuung ein- und ausschalten.*
 
 * settings.dynamicEq
 
@@ -629,7 +652,7 @@ Der Status wird nur erstellt, wenn er von Ihrem AVR unterstützt wird.*
     |:---:|:---:|
     | string | R / W |
 
-   *String-Wert zur Auswahl des Referenzpegel-Offsets mit der folgenden Codierung:*
+   *String-Wert zur Auswahl des Referenzpegel-Offsets mit folgender Codierung:*
 
    *0: 0 dB*
 
@@ -669,7 +692,7 @@ setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level 
 
    *'ISF Day'*
 
-   *'ISF Nacht'*
+   *'ISF Night'*
 
    *Beispiel:*
 
@@ -693,7 +716,7 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
     |:---:|:---:|
     | boolean | R / W |
 
-   *Boolescher Indikator, der angibt, ob das Setup-Menü derzeit geöffnet oder geschlossen ist. Sie können es mit diesem Status öffnen und schließen.*
+   *Boolesche Anzeige, die angibt, ob das Setup-Menü derzeit geöffnet oder geschlossen ist. Sie können es mit diesem Status öffnen und schließen.*
 
 * settings.savePreset
 
@@ -702,7 +725,7 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
     | Nummer | R / W |
 
 *Zahlenwert, der auf einen Wert von info.onlinePresets gesetzt werden kann. Dann wird der aktuelle Kanal als Voreinstellung unter der angegebenen Nummer gespeichert.
-Es können nur Nummern verwendet werden, die in info.onlinePresets enthalten sind. Der Status erhält keine Bestätigung, egal ob der Befehl erfolgreich war oder nicht. Sie können info.onlinePresets überprüfen, um zu überprüfen, ob der Befehl wie gewünscht funktioniert hat.*
+Es können nur Nummern verwendet werden, die in info.onlinePresets enthalten sind. Der Staat erhält keine Bestätigung, egal ob der Befehl erfolgreich war oder nicht. Sie können info.onlinePresets überprüfen, um zu überprüfen, ob der Befehl wie gewünscht funktioniert hat.*
 
 * settings.loadPreset
 
@@ -805,6 +828,12 @@ Wenn Sie irgendwelche Funktionen vermissen oder einen Fehler entdeckt haben, öf
 Der Adapter wurde mit einem DENON AVR-X1200W und einem Marantz SR5009 getestet.
 
 ## Changelog
+### 1.7.1 (2019-11-19)
+* (foxriver76) added ability to read desired data by expertReading states
+
+### 1.6.1 (2019-10-08)
+* (foxriver76) fixed bug with selectInput for zone2 and 3
+
 ### 1.6.0
 * (foxriver76) added new state settings.lfeAmount
 

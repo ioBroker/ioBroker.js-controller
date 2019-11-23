@@ -88,6 +88,28 @@ common: {
 }
 ```
 
+### Select input
+This can be done manually if input_select entity type in custom dialog is selected.
+The list of options to select from should be provide in standard commom.states object:
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+in other words in should also be input select in IoB.
+
 ### Timer
 Timer could be simulated by following script:
 
@@ -176,6 +198,9 @@ createState(
 Tested with yr and daswetter. One or more of following objects must have `Function=Weather` and `Room=Any` set to be available in configuration:
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
+
+Tested with AccuWeather driver v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather. 
+Custom Lovelace card created in support of accuweather forecast - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Shopping list
 Shopping list writes the values in form:
@@ -389,6 +414,19 @@ Used version of home-assistant-frontend@1.0.0
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.0 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
 ### 0.2.4 (2019-11-05)
 * (ldittmar) Fixed translations
 

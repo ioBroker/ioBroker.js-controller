@@ -157,6 +157,11 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 ```
 
 ## Changelog
+### 1.1.0 (2019-11-11)
+* (Peter Müller) Own implementation of reading the sensor data.
+* (Peter Müller) Fixed bug on decimals rounding.
+* (Peter Müller) 1-wire devices path is now configurable.
+
 ### 1.0.3 (2019-11-03)
 * (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
 

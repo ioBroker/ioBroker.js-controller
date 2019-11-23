@@ -170,6 +170,9 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.7.1 (2019-11-20)
+* (bluefox) Easy admin configuration was implemented
+
 ### 3.6.12 (2019-11-04)
 * (ldittmar) Add repo check to popup messages
 * (ldittmar) Update Controller-Update info page

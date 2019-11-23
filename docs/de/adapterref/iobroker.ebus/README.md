@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: 1VJU4Sv5W1C2XtmfLxk38+lToDHHGJSb4n9422lSZrw=
+hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -28,6 +28,9 @@ aktuell unterstützte ebusd-version: 3.3
 
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 0.8.2 (2019-11-10)
+* (René) weitere Fehlermeldungen im Datenpunkt "Fehler"
 
 ## 0.8.1 (2019-10-31)
 * (René) Update Flot auf Version 3.0

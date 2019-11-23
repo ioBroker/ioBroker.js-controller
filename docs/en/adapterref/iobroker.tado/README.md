@@ -15,9 +15,13 @@
 tado° ensures a comfortable and healthy climate while saving up to 31% on your heating bill.
 
 ## Changelog
+
+### 0.1.3 Several fixes for reported error's
+* (DutchmanNL) boilerId / onDemandLogRetrievalEnabled / openWindowDetected / onDemandLogRetrievalEnabled
+* (DutchmanNL) Open Window detection implemented, only by device not by room
+
 ### 0.1.2 Bug fix
 * (DutchmanNL) Room temperature setting (overlay) fixed
-
 
 ### 0.1.1 Write API information to states
 * (DutchmanNL) Write API information to states

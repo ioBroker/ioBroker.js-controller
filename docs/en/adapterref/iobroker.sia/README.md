@@ -55,6 +55,8 @@ If you receive SIA messages you see them in the states tree
 
 ## Changelog
 
+### 1.0.4 (17.11.2019)
+* (Stübi) Bugfixing, changing the time calculation for ACK and NACK messages
 
 ### 1.0.3 (07.06.2019)
 * (Stübi) Small improvements to the SIA protocol

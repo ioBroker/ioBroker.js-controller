@@ -134,6 +134,9 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 Руководство было создано, насколько мне известно, и убеждения.
 
 ## Changelog
+### 1.2.9 (2019-11-15)
+* (Diginix) Fixed pressure range and values of Aqara weather sensor
+
 ### 1.2.8 (2019-07-18)
 * (SchumyHao) Change curtain and gateway light role that making them can be detected by type-detector
 

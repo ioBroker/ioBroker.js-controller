@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.denon/README.md
 title: ioBroker.denon
-hash: p8APn/+DeEWFbZmRaTvhR97ElqQOqWIFgKf4CB2U3To=
+hash: PbP9s502vcIwTE0uffmmvzQ/IsVADkYEGzDwWycVtJY=
 ---
 ![логотип](../../../en/adapterref/iobroker.denon/admin/denon.png)
 
@@ -18,7 +18,7 @@ hash: p8APn/+DeEWFbZmRaTvhR97ElqQOqWIFgKf4CB2U3To=
 # IoBroker.denon
 ===========================
 
-## Монтаж
+## Установка
 Вы можете установить адаптер через веб-интерфейс ioBroker или на локальный компьютер через npm.
 
 ### На основе браузера
@@ -124,27 +124,27 @@ npm i iobroker.denon
 
 * zoneMain.equalizerBassUp / zone2.equalizerBassUp / zone3.equalizerBassUp
 
-   *Кнопка, которая увеличивает уровень низких частот в Зоне.*
+   *Кнопка, которая увеличивает уровень низких частот в зоне.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 * zoneMain.equalizerBassDown / zone2.equalizerBassDown / zone3.equalizerBassDown
 
    *Кнопка, которая уменьшает уровень низких частот в Зоне.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 * zoneMain.equalizerTrebleUp / zone2.equalizerTrebleUp / zone3.equalizerTrebleUp
 
    *Кнопка, которая увеличивает уровень высоких частот в Зоне.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 * zoneMain.equalizerTrebleDown / zone2.equalizerTrebleDown / zone3.equalizerTrebleDown
 
    *Кнопка, которая уменьшает уровень высоких частот в Зоне.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 #### Канал: настройки
 * settings.subwooferLevelDown / settings.subwooferTwoLevelDown
@@ -219,7 +219,7 @@ npm i iobroker.denon
     |:---:|:---:|
     | Номер | R / W |
 
-*Числовое значение, представляющее текущую громкость основной зоны / зоны 2 / зоны 3 вашего AVR. Вы также можете установить громкость здесь.
+*Числовое значение, которое представляет текущую громкость основной зоны / зоны 2 / зоны 3 вашего AVR. Вы также можете установить громкость здесь.
 Объем также представлен в дБ в отдельных состояниях, т.е. г. mainVolumeDB*
 
    *Диапазон составляет от 0 до 98 (может быть ниже из-за максимального объема), где 80 = 0 дБ*
@@ -356,7 +356,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    *Числовое значение, представляющее уровень низких частот в Зоне. Диапазон значений от -6 до +6 дБ.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 * zoneMain.equalizerTreble / zone2.equalizerTreble / zone3.equalizerTreble
 
@@ -366,7 +366,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    *Числовое значение, представляющее уровень высоких частот в Зоне. Диапазон значений от -6 до +6 дБ.*
 
-   *Настройки низких и высоких частот можно отрегулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
+   *Настройки низких и высоких частот можно регулировать, когда Dyn EQ установлен на OFF, а Tone Control включен*
 
 * zoneMain.channelVolumeFrontLeft / zone2.channelVolumeFrontLeft / zone3.channelVolumeFrontLeft / ...
 
@@ -499,25 +499,48 @@ setState('denon.0.settings.surroundMode', '3'); // Sets Multi Channel Stereo as 
 setState('denon.0.settings.expertCommand', 'ECOON'); // Turns Main Zone ECO mode on
 ```
 
-* settings.outputMonitor
+* settings.expertReadingPattern
 
     | Тип данных | Разрешение |
     |:---:|:---:|
     | Строка | R / W |
 
-   *Выберите выходной монитор вашего AVR. Это состояние будет создано только в том случае, если ваш AVR поддерживает два выхода HDMI. Вы можете переключать состояние между:*
+*Если вы хотите получить конкретные ответы, хранящиеся в `settings.expertReadingResult`, вы должны установить RegEx в это состояние.
+Необходимо установить RegEx, чтобы конструктор RegEx мог его использовать. Рекомендуется использовать [RegEx тестер](https://regexr.com/).
+Не устанавливайте `/` в начале или конце RegEx.*
 
-   *0: АВТО -> Автоопределение монитора*
-
-   *1: 1 -> выводит сигнал на монитор 1*
-
-   *2: 2 -> Выводит сигнал на монитор 2*
-
-   *Пример:*
+    *Пример:*
 
 ```javascript
-setState('denon.0.settings.outputMonitor', '2'); // Sets monitor 2 as active monitor
-```
+setState('denon.0.settings.expertReadingPattern', '(MV.+)|(SSINFAISFSV.+)');
+
+ttings.expertReadingResult
+
+|Data type|Permission|
+|:---:|:---:|
+|string|R|
+
+*Incoming data, which matches the RegEx of `settings.expertReadingPattern` will be set to this state.*
+
+ttings.outputMonitor
+
+|Data type|Permission|
+|:---:|:---:|
+|string|R/W|
+
+Select the output monitor of your AVR. This state will only be created if your AVR supports two HDMI outputs. You can switch the state between:*
+
+0: AUTO --> Auto detection of monitor*
+
+1: 1 --> Outputs signal to monitor 1*
+
+2: 2 --> Outputs signal to monitor 2*
+
+Example:*
+
+``javascript
+etState('denon.0.settings.outputMonitor', '2'); // Sets monitor 2 as active monitor
+``
 
 * settings.videoProcessingMode
 
@@ -659,11 +682,11 @@ setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level 
 
    *'Стандарт'*
 
-   *'Кино'*
+   *'Фильм'*
 
    *'Vivid'*
 
-   *'Поток'*
+   *'Ручей'*
 
    * Пользовательский '*
 
@@ -702,7 +725,7 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
     | Номер | R / W |
 
 *Числовое значение, которое может быть установлено в значение info.onlinePresets. Тогда текущий канал будет сохранен в качестве предустановки для данного номера.
-Можно использовать только те числа, которые содержатся в info.onlinePresets. Государство не получит подтверждения, независимо от того, была ли команда успешной или нет. Вы можете проверить info.onlinePresets, чтобы проверить, работала ли команда должным образом.*
+Можно использовать только числа, которые содержатся в info.onlinePresets. Государство не получит подтверждения, независимо от того, была ли команда успешной или нет. Вы можете проверить info.onlinePresets, чтобы проверить, работала ли команда должным образом.*
 
 * settings.loadPreset
 
@@ -749,7 +772,7 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
     |:---:|:---:|
     | Строка | R / W |
 
-*Пара ключ-значение, которая представляет OperationMode AVR. Если для параметра OperationMode установлено значение «BRIDGED», динамики не могут управляться независимо, и управление динамиком один также управляет двумя динамиками.*
+*Пара ключ-значение, которая представляет OperationMode AVR. Если для параметра OperationMode установлено значение «BRIDGED», динамики не могут управляться независимо, и управление динамиком 1 также управляет двумя динамиками.*
 
     *Возможны следующие значения:*
 
@@ -805,6 +828,12 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
 Адаптер протестирован с DENON AVR-X1200W и Marantz SR5009.
 
 ## Changelog
+### 1.7.1 (2019-11-19)
+* (foxriver76) added ability to read desired data by expertReading states
+
+### 1.6.1 (2019-10-08)
+* (foxriver76) fixed bug with selectInput for zone2 and 3
+
 ### 1.6.0
 * (foxriver76) added new state settings.lfeAmount
 

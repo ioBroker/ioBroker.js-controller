@@ -548,6 +548,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 
 ## Changelog
 
+### 2.3.3 (2019-11-16)
+* (bluefox) Added response code for unknown commands
+
 ### 2.3.2 (2019-10-18)
 * (Apollon77) Fix Admin 3 support
 

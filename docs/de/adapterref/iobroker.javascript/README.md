@@ -64,6 +64,10 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.3.4 (2019-10-28)
+* (bluefox) Values are showed in select ID dialog
+* (bluefox) Allow select with $ the schedule objects
+
 ### 4.3.3 (2019-10-28)
 * (bluefox) Search in scripts was corrected
 

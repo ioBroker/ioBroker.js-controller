@@ -351,6 +351,9 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.5.10 (2019-11-13)
+* (foxriver76) we not try to install apt packages any longer if already installed
+
 ### 0.5.8
 * (foxriver76) increased stopTimeout to successfully shut down adapter on windows based systems
 * (foxriver76) now using setStateChanged instead of own implementation

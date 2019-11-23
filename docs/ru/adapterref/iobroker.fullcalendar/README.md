@@ -2,16 +2,17 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fullcalendar/README.md
-title: без названия
-hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
+title: ioBroker.fullcalendar
+hash: DX6IOtyfD2n6HEHFlbGtHzeGhrPYDF21kseu7lftq5o=
 ---
-![логотип](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png) ioBroker.fullcalendar =================
+![логотип](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png)
 
 ![Количество установок](http://iobroker.live/badges/fullcalendar-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.fullcalendar.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.fullcalendar.svg)
 ![NPM](https://nodei.co/npm/iobroker.fullcalendar.png?downloads=true)
 
+# IoBroker.fullcalendar
 Расписания с [fullcalendar](https://fullcalendar.io).
 
 Вы не должны использовать какие-либо внешние ресурсы, планирование обрабатывается только в ioBroker и не будет объединено с какими-либо внешними сервисами, такими как «Google Calender» или «iTunes».
@@ -21,6 +22,8 @@ hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
 Вы можете контролировать свои события с календарем и можете планировать контролировать их периодически.
 
 ## Changelog
+### 1.0.0 (2019-11-17)
+* (bluefox) Support of compact mode added
 
 ### 0.2.4 (2017-11-23)
 * Translations
@@ -44,4 +47,4 @@ hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
 ## License
 CC BY-NC 4.0
 
-Copyright (c) 2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>

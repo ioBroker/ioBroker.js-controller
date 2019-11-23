@@ -17,61 +17,257 @@
 
 Material Design Widgets based on [Google material components web library](https://github.com/material-components/material-components-web).
 
+Charts based on [chartjs library](https://www.chartjs.org/).
+
 ### Supported Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
 ## Button Toggle
-![Logo](doc/media/buttons.gif)
+![Logo](doc/en/media/buttons.gif)
 
 ## Card
-![Logo](doc/media/cards.png)
+![Logo](doc/en/media/cards.png)
 
 ## Icon Button
-![Logo](doc/media/icon-button.gif)
+![Logo](doc/en/media/icon-button.gif)
 
 ## List
-![Logo](doc/media/list.gif)
+![Logo](doc/en/media/list.gif)
 
 ## Progress
-![Logo](doc/media/progress.gif)
+![Logo](doc/en/media/progress.gif)
 
 ## Slider
-![Logo](doc/media/slider.gif)
+![Logo](doc/en/media/slider.gif)
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/slider.png"></td>
+            <td>initDelay</td>
+            <td>If the slider is not visible or operable after loading the runtime, then this value must be increased. Entry is made in milliseconds.<br>For example, increase by 250 steps until the slider works.</td>
+        </tr>
+    </tbody>
+</table>
+
+## Round Slider
+![Logo](doc/en/media/round_slider.gif)
+
+Based on [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
 
 ## Switch
-![Logo](doc/media/switch.gif)
+![Logo](doc/en/media/switch.gif)
 
 ## Top App Bar with Navigation Drawer
 
 Information:
+* Top App Bar use the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter - configuration is the same, search the forum for working examples.
 * App Bar position is hardcoded and always appears in the upper left corner. Only width and height are adjustable. In the editor you can move the widget, but these settings will not be applied!
 * In the editor, effects such as scrolling, etc. are not displayed correctly or behave differently!
 * Checkbox "persistent" must be activated!
+* oid must be set to a datapoint from typ number (like the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter)
 
 ##### Layout modal:
-![Logo](doc/media/topappbar_modal.gif)
+![Logo](doc/en/media/topappbar_modal.gif)
 
 ##### Layout dismissible:
-![Logo](doc/media/topappbar_dismissible.gif)
+![Logo](doc/en/media/topappbar_dismissible.gif)
 
 ##### Layout permanent:
-![Logo](doc/media/topappbar_permanent.gif)
+![Logo](doc/en/media/topappbar_permanent.gif)
 
-##### Submenu 
-![Logo](doc/media/drawer_subMenu.png)
+### Submenu 
+![Logo](doc/en/media/drawer_subMenu.png)
 
-To activate submenu, you have to add multiple views seperated with '|' into the view field, example:
-![Logo](doc/media/drawer_subMenu_views.png)
+Settings that are not listed in the table below are self-explanatory.
 
-To change the text of the items, you have to put a json object into the label field with the index of the view field, example:
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td>
+            <td>views[x]</td>
+            <td>To activate submenu, you have to add multiple views seperated with '|' into the view field, see screenshots</td>
+        </tr>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td>
+            <td>label[x]</td>
+            <td>To change the text of the items, you have to put a json object into the label field with the index of the view field.<br>
+                Example:<br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
-To change the image of the items, you have to a json object into the image filed with the index of the view field, example:
+Result: see screenshot</td>
+        </tr>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td>
+            <td>icon[x]</td>
+            <td>To change the icons of the items, you have to put a json object into the icons field with the index of the view field.<br>
+                Example:<br>
 
 `{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
 
+Result: see screenshot</td>
+        </tr>
+    </tbody>
+</table>
+
+## Charts
+
+### Line History Chart:
+
+> Required Adapter: [SQL](https://github.com/ioBroker/ioBroker.sql), [History](https://github.com/ioBroker/ioBroker.history) or [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
+
+![Logo](doc/en/media/line_history_chart.gif)
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td>
+            <td>adapter instance</td>
+            <td>Instance for the sql or history adapter</td>
+        </tr>
+        <tr>
+            <td>aggregation</td>
+            <td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">link</a></td>
+        </tr>
+        <tr>
+            <td>max. number of data points to be displayed</td>
+            <td>Number of maximum data points to display</td>
+        </tr>
+        <tr>
+            <td>time interval between the data points in [s]</td>
+            <td>Optional setting, overrides the 'count' setting.<br>Distance between the individual data points in seconds.<br>For example, if you want to display data points every minute, you have to enter 60 here</td>
+        </tr>
+        <tr>
+            <td>controlling time interval using object</td>
+            <td>Id of a datapoint to change the time interval of the chart. The data point must be a string and may contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">the linked values</a><br>For example, you can use a button here to change the display of the chart during runtime</td>
+        </tr>
+        <tr>
+            <td>boolean object for update</td>
+            <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td>
+        </tr>
+        <tr>
+            <td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td>
+            <td>time formats of x-axis</td>
+            <td>Change the time format of the X-axis. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
+        </tr>
+        <tr>
+            <td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td>
+            <td>tooltip time formats</td>
+            <td>Change the time format of the tooltip. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
+        </tr>
+    </tbody>
+</table>
+
+## Table
+![Logo](doc/en/media/table.gif)
+
+
+##### Input Data
+Input data must be a json array of objects, example:
+```
+[
+{"img":"/vis.0/myImages/erlebnis_50.png","name":"Empire","betriebszeit":"4h 06m","funk":"5G","ip":"10.0.0.1"},
+{"img":"/vis.0/myImages/erlebnis_100.png","name":"Handy","betriebszeit":"13m","funk":"5G","ip":"10.0.0.2"},
+{"img":"/vis.0/myImages/erlebnis_100.png","name":"Harmony Hub - Wohnzimmer","betriebszeit":"18T 07h 21m","funk":"2G","ip":"10.0.0.3"},
+{"img":"/vis.0/myImages/erlebnis_25.png","name":"MusicCast - Esszimmer (WX-030)","betriebszeit":"1h 57m","funk":"2G","ip":"10.0.0.4"},
+{"img":"/vis.0/myImages/erlebnis_75.png","name":"MusicCast - K�che (ISX-18D)","betriebszeit":"4h 10m","funk":"2G","ip":"10.0.0.5"}
+]
+```
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/table_general.png"></td>
+            <td>switch</td>
+            <td>Datapoint from type string with input data as shown above</td>
+        </tr>
+        <tr>
+            <td>data as JSON</td>
+            <td>Optional, input data as shown above if no oid datapoint is set</td>
+        </tr>
+        <tr>
+            <td rowspan=4><img src="doc/en/media/table_column.png"></td>
+            <td>colType[x]</td>
+            <td>If image is selected, object property must have the path to the image (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>)</td>
+        </tr>
+        <tr>
+            <td>prefix[x]</td>
+            <td>Prefix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td>
+        </tr>
+        <tr>
+            <td>suffix[x]</td>
+            <td>Suffix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td>
+        </tr>
+        <tr>
+            <td>object name for sorting[x]</td>
+            <td>Here you can define an other object property that should be used for sorting.</td>
+        </tr>
+    </tbody>
+</table>
+
+##### internal object binding
+prefix & suffix supports table internal object binding -> you can access other properties of object by using
+```
+#[obj.'propertyName']
+```
+
+Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>.
+
+Working Widget Example can be found [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+
+
 ## Changelog
+
+### 0.2.4
+* (Scrounger): Round Slider Widget bug fixes
+* (Scrounger): Line History Chart Widget: null value bug fix
+* (Scrounger): Line History Chart Widget: tooltip bug fix
+* (Scrounger): Line History Chart Widget: editor translation improved
+ 
+### 0.2.0
+* (Scrounger): Round Slider Widget added
+* (Scrounger): Icon Button Adition Widget added
+* (Scrounger): Button Adition Widget added
+* (Scrounger): Line History Chart Widget added
+* (Scrounger): Table Widget added
+* (Scrounger): Dialog iFrame Widget added
+* (Scrounger): Dialog View Widget added
+* (Scrounger): Select Widget added
+* (Scrounger): colorSchemes for Charts added
+* (Scrounger): bug fixes
 
 ### 0.1.5
 * (Scrounger): bar chart added

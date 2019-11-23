@@ -1,6 +1,5 @@
 ![Logo](admin/fullcalendar.png)
-ioBroker.fullcalendar
-=================
+# ioBroker.fullcalendar
 
 ![Number of Installations](http://iobroker.live/badges/fullcalendar-installed.svg) ![Number of Installations](http://iobroker.live/badges/fullcalendar-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fullcalendar.svg)](https://www.npmjs.com/package/iobroker.fullcalendar)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fullcalendar.svg)](https://www.npmjs.com/package/iobroker.fullcalendar)
@@ -16,6 +15,8 @@ You must not use any external resources, the scheduling is processed only in ioB
 You can control your events with calender and can plan to control them periodically.
 
 ## Changelog
+### 1.0.0 (2019-11-17)
+* (bluefox) Support of compact mode added
 
 ### 0.2.4 (2017-11-23)
 * Translations
@@ -40,4 +41,4 @@ You can control your events with calender and can plan to control them periodica
 ## License
 CC BY-NC 4.0
 
-Copyright (c) 2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>

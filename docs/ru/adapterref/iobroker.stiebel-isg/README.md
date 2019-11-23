@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-isg! [Логотип] (admin / stiebel-isg.png)
-hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
+hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
 ---
 # IoBroker.stiebel-isg ![логотип](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -15,7 +15,7 @@ hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
 
 =================
 
-Этот адаптер предназначен для считывания значений со шлюзов интернет-услуг stiebel-eltron / tecalor и управления устройством.
+Этот адаптер предназначен для считывания значений из шлюзов интернет-услуг stiebel-eltron / tecalor и управления устройством.
 
 ИСПОЛЬЗУЙТЕ НА СВОЙ РИСК!!! АБСОЛЮТНО НЕТ ГАРАНТИИ НА УЩЕРБ, ETC. !!!
 
@@ -24,12 +24,24 @@ hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
 ## Шаги
 1. Установите adpater
 
-2. Возьмите значения из вашего объекта. [X] -объект.
+2. Возьмите значения из вашего stiebel-isg. [X] -объекта.
 
 ## Требования
 * Интернет-шлюз stiebel-eltron / tecalor (ISG)
 
 ## Changelog
+
+### 1.4.10
+
+* bugfix for group definitons
+
+### 1.4.9
+
+* bug in rounding for info-values fixed
+
+### 1.4.8
+
+* update due to security vulnerabilities in dependencies
 
 ### 1.4.7
 
@@ -78,7 +90,7 @@ hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
 
 ### 1.2.4
 
-* bug repaired: unnecessary space characters in units removed 
+* bug repaired: unnecessary space characters in units removed
 
 ### 1.2.3
 

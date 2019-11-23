@@ -74,6 +74,9 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 3.7.1 (2019-11-20)
+* (bluefox) Easy admin configuration was implemented
+
 ### 3.6.12 (2019-11-04)
 * (ldittmar) Add repo check to popup messages
 * (ldittmar) Update Controller-Update info page

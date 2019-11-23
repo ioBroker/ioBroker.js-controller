@@ -24,6 +24,9 @@ Manage and create devices for using it in other adapters like material, iot,...
 
 ## Changelog
 
+### 0.1.8 (2019-11-13)
+* (bluefox) Allowed the clone of devices
+
 ### 0.1.7 (2019-09-15)
 * (bluefox) work in progress
 

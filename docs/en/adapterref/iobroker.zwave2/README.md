@@ -17,6 +17,10 @@ Alternative Z-Wave implementation
 
 ## Changelog
 
+### 0.2.1
+
+-   The network map now correctly displays the nodes' IDs
+
 ### 0.2.0
 
 -   Update `zwave-js` from v1.5.0 to v1.7.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#170-2019-11-03). Notable improvements include:

@@ -154,6 +154,9 @@ Following global Actions are current supported:
 
 ## Changelog
 
+### 1.7.1
+* (cburghardt) Updated openzwave
+
 ### 1.7.0
 * (cburghardt) Added multi-instance associations
 

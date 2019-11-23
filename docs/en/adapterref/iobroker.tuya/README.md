@@ -70,8 +70,9 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
-### 3.0.1 (2019-09-11)
+### 3.1.0 (2019-09-11)
 * (Apollon77) try to get rid of SSL errors with new proxies
+* (Apollon77) New schemas added
 
 ### 3.0.0 (2019-09-03)
 * (Apollon77) Switch from AnyProxy to mitm ... hopefully get SSL-Proxy working again. Important: The Proxy is called "NodeMITMProxyCA"!

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cloud/README.md
 title: ioBroker-Cloud-Adapter
-hash: EYfY5wDUK2BuMkI34L5pvxHGhym23Qv7P5OrUELenJE=
+hash: IBLnz1jbRRIpQ9d9ohaj94qCGQu1cVDgmgYxxzcIW1g=
 ---
 ![Logo](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -12,66 +12,66 @@ hash: EYfY5wDUK2BuMkI34L5pvxHGhym23Qv7P5OrUELenJE=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.cloud.svg)
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
-# IoBroker Cloud-Adapter ===================
+# IoBroker-Cloud-Adapter
 Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker-Cloud zur lokalen Installation von ioBroker.
 
 ## Die Einstellungen
 ### APP-KEY
-Um den Cloud-Adapter verwenden zu können, sollten Sie zuerst den APP-Key unter [https://iobroker.net](https://iobroker.net) herunterladen.
+Um den Cloud-Adapter zu nutzen, sollten Sie zuerst den APP-Key auf [https://iobroker.net](https://iobroker.net) erhalten.
 
-Dies ist der Anwendungsschlüssel, den der Benutzer auf der Website nach [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte holen Sie den Schlüssel dort ab und geben Sie ihn hier ein.
+Dies ist der Anwendungsschlüssel, den der Benutzer auf der Site [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte holen Sie sich dort den Schlüssel und geben Sie ihn hier ein.
 
 ![Intro](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
 ### Instanz
-Alle Anforderungen vom Cloud-Adapter werden an eine WEB-Instanz weitergeleitet. Der Benutzer muss hier die WEB-Instanz angeben, die dem Benutzer angezeigt wird, wenn er sich auf der https://iobroker.net-Site anmeldet.
+Alle Anforderungen vom Cloud-Adapter werden an eine WEB-Instanz weitergeleitet. Der Benutzer muss hier die WEB-Instanz angeben, die dem Benutzer angezeigt wird, wenn er sich auf der Website https://iobroker.net anmeldet.
 
 ### Selbstsignierte Zertifikate zulassen
-Wenn Sie die Standard-Cloud von iobroker.net verwenden, können Sie sie deaktivieren. Diese Option ist nur wichtig, wenn die eigene Cloud verwendet wird.
+Wenn Sie eine Standard-iobroker.net-Cloud verwenden, können Sie diese deaktivieren. Diese Option ist nur wichtig, wenn eine eigene Cloud verwendet wird.
 
 ### Sprache
-Wenn Sie "Standardsprache" auswählen, werden die intelligenten Namen der Geräte und der Aufzählungen nicht übersetzt. Wenn eine Sprache angegeben ist, werden alle bekannten Namen in diese Sprache übersetzt.
+Wenn Sie die Standardsprache auswählen, werden die Smart-Namen von Geräten und Aufzählungen nicht übersetzt. Wenn eine Sprache angegeben ist, werden alle bekannten Namen in diese Sprache übersetzt.
 Es wird getan, um zu Demonstrationszwecken schnell zwischen vielen Sprachen zu wechseln.
 
-### Platziere zuerst die Funktion in Namen
-Ändern Sie die Reihenfolge der Funktionen und Rollen in selbst erstellten Namen:
+### Platziere die Funktion zuerst in den Namen
+Ändern Sie die Reihenfolge der Funktionen und Rollen in selbst generierten Namen:
 
-- wenn falsch: "Raumfunktion", z. "Wohnraumdimmer"
-- Wenn wahr: "Funktionsraum", z. "Dimmer Wohnzimmer"
+- wenn falsch: "Raumfunktion", z. "Wohnzimmer Dimmer"
+- Wenn ja: "Veranstaltungsraum", z. "Dimmer Wohnzimmer"
 
-### Wörter mit verketten
-Sie können das Wort definieren, das zwischen Funktion und Raum platziert wird. Z.B. "in" und von "Dimmer Wohnzimmer" werden "Dimmer im Wohnzimmer".
+Verketten Sie Wörter mit
+Sie können das Wort definieren, das zwischen Funktion und Raum platziert wird. Z.B. "In" und von "Dimmer Wohnzimmer" wird "Dimmer im Wohnzimmer" sein.
 
-Dies wird jedoch nicht empfohlen, da die Erkennungs-Engine ein weiteres Wort analysieren muss und zu Missverständnissen führen kann.
+Dies wird jedoch nicht empfohlen, da die Erkennungs-Engine ein weiteres Wort analysieren muss und dies zu Missverständnissen führen kann.
 
-### AUS-Pegel für Schalter
-Einige Gruppen bestehen aus gemischten Geräten: Dimmer und Schalter. Sie können sie mit den Befehlen "EIN" und "AUS" und mit Prozenten steuern.
-Wenn der Befehl "Auf 30 %s etzen" und der * AUS-Pegel "30%" ist, werden die Schalter eingeschaltet. Mit dem Befehl "Auf 25% setzen" werden alle Schalter ausgeschaltet.
+### OFF-Pegel für Schalter
+Einige Gruppen bestehen aus gemischten Geräten: Dimmern und Schaltern. Sie können mit den Befehlen "EIN" und "AUS" und mit Prozenten gesteuert werden.
+Wenn der Befehl "Set to 30%" und der * OFF-Pegel "30%" ist, werden die Schalter eingeschaltet. Mit dem Befehl "Set to 25%" werden alle Schalter ausgeschaltet.
 
-Wenn der Befehl "AUS" ist, speichert der Adapter außerdem den aktuellen Dimmerwert, wenn der tatsächliche Wert über oder gleich "30%" liegt.
-Später, wenn der neue "EIN" -Befehl kommt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Speicherstand.
+Wenn der Befehl "OFF" ist, speichert der Adapter außerdem den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" ist.
+Später, wenn der neue "EIN" -Befehl kommt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
 
 Beispiel:
 
-- Nehmen Sie an, dass *AUS* 30% beträgt.
-- Das virtuelle Gerät "Light" verfügt über zwei physische Geräte: *Schalter* und *Dimmer*
-- Befehl: "Licht auf 40 %s etzen". Der Adapter speichert diesen Wert für *Dimmer* setzt ihn auf "Dimmer" und schaltet den *Schalter* ein.
-- Befehl: "Licht ausschalten". Der Adapter setzt den *Dimmer* auf 0% und schaltet den *Schalter* aus.
-- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
-- Befehl: "setze das Licht auf 20%". * Dimmer * => 20%, * Schalter * => OFF. Der Wert für den Dimmer wird nicht gespeichert, da er unter * OFF steht.
-- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
+- Nehmen Sie an, dass *OFF level* 30% ist.
+- Das virtuelle Gerät "Light" verfügt über zwei physikalische Geräte: *switch* und *dimmer*
+- Befehl: "Licht auf 40 %s tellen". Der Adapter speichert diesen Wert für *dimmer* stellt ihn auf "dimmer" und schaltet den *Schalter* ein.
+- Befehl: "Licht ausschalten". Der Adapter stellt den *Dimmer* auf 0% und schaltet den *Schalter* aus.
+- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => EIN.
+- Befehl: "Licht auf 20 %s tellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für den Dimmer wird nicht gespeichert, da er unter *AUS* liegt.
+- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => EIN.
 
 ### Von ON
 Sie können das Verhalten des EIN-Befehls für den Nummernstatus auswählen. Der spezifische Wert kann ausgewählt werden oder der letzte Wert ungleich Null wird verwendet.
 
-Antwort schreiben an
-Für jeden Befehl wird die Textantwort generiert. Sie können hier die Objekt-ID definieren, in die dieser Text geschrieben werden muss. Z.B. *sayit.0.tts.text*
+### Antwort schreiben an
+Für jeden Befehl wird die Textantwort generiert. Hier können Sie die Objekt-ID definieren, in die dieser Text geschrieben werden muss. Z.B. *sayit.0.tts.text*
 
 ### Farben
-Zur Zeit unterstützt nur englisch alexa die Farbkontrolle.
-Der Kanal muss 4 Status mit folgenden Rollen haben:
+Momentan unterstützt nur die englische alexa die Farbsteuerung.
+Der Kanal muss 4 Zustände mit folgenden Rollen haben:
 
-- level.color.saturation (erforderlich zur Erkennung des Kanals),
+- level.color.saturation (zur Erkennung des Kanals erforderlich),
 - level.color.hue,
 - level.dimmer,
 - Schalter (optional)
@@ -84,52 +84,52 @@ Alexa, change the kitchen to the color chocolate
 ```
 
 ### Sperren
-Damit die Sperren gesperrt werden können, muss der Status die Rolle "switch.lock" haben und native.LOCK_VALUE, um den Sperrstatus zu ermitteln.
+Um die Sperren sperren zu können, muss der Status die Rolle "switch.lock" und native.LOCK_VALUE haben, um den Sperrstatus zu bestimmen.
 
 ```
 Alexa, is "lock name" locked/unlocked
 Alexa, lock the "lock name"
 ```
 
-## Wie werden Namen generiert?
-Der Adapter versucht, virtuelle Geräte für die Smart Home-Steuerung (z. B. Amazon Alexa oder Google Home) zu generieren.
+## Wie Namen generiert werden
+Der Adapter versucht, virtuelle Geräte für die Smart-Home-Steuerung zu generieren (z. B. Amazon Alexa oder Google Home).
 
-Dies sind zwei wichtige Aufzählungen: Räume und Funktionen.
+Das sind zwei wichtige Aufzählungen: Räume und Funktionen.
 
 Die Zimmer sind wie: Wohnzimmer, Bad, Schlafzimmer.
 Funktionen sind wie: Licht, Jalousie, Heizung.
 
-Folgende Bedingungen müssen erfüllt sein, um den Status in der automatisch generierten Liste zu erhalten:
+Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch generierte Liste aufzunehmen:
 
-- Der Status muss sich in einer Funktionsaufzählung befinden.
-- Der Status muss eine Rolle haben ("state", "switch" oder "level. *", z. B. level.dimmer), wenn er nicht direkt in "Funktionen" enthalten ist.
+- Der Zustand muss in einer "Funktions" -Aufzählung sein.
+- Der Zustand muss eine Rolle haben ("Zustand", "Schalter" oder "Stufe. *", z. B. Stufe.Dimmer), wenn er nicht direkt in "Funktionen" enthalten ist.
 
-Es kann sein, dass sich der Kanal in den "Funktionen" befindet, aber selbst nicht angeben.
+Es kann sein, dass der Kanal sich in den "Funktionen" befindet, sich aber nicht selbst angibt.
 
-- Der Zustand muss beschreibbar sein: common.write = true
-- Der Zustandsdimmer muss als 'Nummer' einen gemeinsamen Typ haben.
-- Der Zustand der Heizung muss eine gemeinsame Einheit als '°C', '°F' oder '° K' und der Common.typ als 'Nummer' haben.
+- Der Status muss schreibbar sein: common.write = true
+- Der Zustandsdimmer muss den allgemeinen Typ 'Zahl' haben.
+- Die Standheizung muss die Einheit '°C', '°F' oder '° K' und den Typ 'Nummer' haben.
 
-Wenn sich der Status nur in "Funktionen" und nicht in einem "Raum" befindet, wird der Name des Status verwendet.
+Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der Name des Status verwendet.
 
 Die Zustandsnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
 Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (Zum Beispiel wurde die Funktion "Licht" in "Lichter" geändert, daher wird das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert.)
+Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. Funktion "Licht" in "Lichter" geändert, daher wird das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert.)
 
-Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart-Name verwendet.
+Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
 
-Wenn *common.smartName* **falsch** ist, wird der Status oder die Aufzählung nicht in die Listengenerierung einbezogen.
+Wenn *common.smartName* **false** ist, wird der Status oder die Aufzählung nicht in die Listengenerierung einbezogen.
 
-Der Konfigurationsdialog ermöglicht das bequeme Entfernen und Hinzufügen der einzelnen Status zu virtuellen Gruppen oder als einzelnes Gerät.
+Über den Konfigurationsdialog können Sie die einzelnen Status bequem entfernen und zu virtuellen Gruppen oder als Einzelgerät hinzufügen.
 ![Aufbau](../../../en/adapterref/iobroker.cloud/img/configuration.png)
 
-Wenn die Gruppe nur einen Status hat, kann sie umbenannt werden, da hierfür der smartName des Status verwendet wird.
+Wenn die Gruppe nur einen Status hat, kann sie umbenannt werden, da hierfür der SmartName des Status verwendet wird.
 Wenn die Gruppe mehr als einen Status hat, muss die Gruppe über die Namen der Aufzählung umbenannt werden.
 
-Um eigene Gruppen anzulegen, kann der Benutzer "Szenen" -Adapter installieren oder "Skript" im Javascript-Adapter erstellen.
+Um eigene Gruppen zu erstellen, kann der Benutzer den "Szenen" -Adapter installieren oder ein "Skript" im Javascript-Adapter erstellen.
 
 ### Ersetzt
-Sie können Zeichenfolgen angeben, die in den Gerätenamen automatisch ersetzt werden können. Z. B. wenn Sie festlegen, ersetzt:
+Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden. Zum Beispiel, wenn Sie Ersatz setzen für:
 
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
@@ -150,7 +150,7 @@ If you call ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``
 
 ```
 
-curl --data "myString" https://iobroker.net/service/custom_test/ <Benutzeranwendungstaste>
+curl --data "myString" https://iobroker.net/service/custom_test/ <user-app-key>
 
 ```
 
@@ -175,6 +175,9 @@ You may write "text2command" in white list, you can send POST request to ```http
 *to do*
 
 ## Changelog
+### 2.8.0 (2019-11-13)
+* (bluefox) Connects your ioBroker server to the ioBroker cloud
+
 ### 2.7.1 (2018-09-07)
 * (Apollon77) Enhancements for Custom Skill
 
@@ -329,3 +332,26 @@ You may write "text2command" in white list, you can send POST request to ```http
 
 ### 0.1.0 (2016-08-01)
 * (bluefox) support of read/write files
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
