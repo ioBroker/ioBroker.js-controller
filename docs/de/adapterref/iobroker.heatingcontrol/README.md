@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: N3i9uHqJ8n9tNnieOcBhx+XLCQhoRNmj7XvJFETfqEU=
+hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -26,9 +26,9 @@ Eigenschaften:
 * Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
 * Es werden unbegrenzt Thermostat, Stellantrieb und Sonde pro Raum unterstützt
 * Thermostat, Stellantrieb und Sensor werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
-* Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
+* Räume können in der Administrationsoberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
 * Sensor wird verwendet, um die Zieltemperatur zu senken (z. B. wenn ein Fenster geöffnet ist)
-* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Gesetzlicher Feiertag kann ein normaler Tag oder wie Sonntag sein. (Administratoreinstellung)
+* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
 * manuelle Übersteuerung der Temperatur für eine bestimmte Zeit
 * vordefinierte Heizperiode
 * Ein Visualisierungsbeispiel wird später bereitgestellt
@@ -38,7 +38,7 @@ Eigenschaften:
 * Funktion = Funktion zur Erkennung von Thermostaten, Antrieben und Sensoren pro Raum. Es ist eine der Systemaufzählungen
 * timezone = Wird für Cron verwendet, um Cron-Jobs anzupassen
 * Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um automatisch einen Feiertag für heute zu erkennen, geben Sie hier den Pfad ein (z. B. feiertage.0).
-* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie es nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
+* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Verwendeter Sensor = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Verwendete Akteure = Wenn Sie Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
 * Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
@@ -79,18 +79,36 @@ Eigenschaften:
 
 ### Temperatur senken / erhöhen
 | DP-Name | beschreibung | Zieltemperatur für die relative Abnahme Solltemperatur für absolute Abnahme |
-|-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------|
-| GuestsPresent | die temperatur erhöhen, weil die gäste es wärmer wollen Erhöhen Sie die aktuelle Profiltemperatur um Profiles.0.room.GuestIncrease | nicht verwendet |
-| Weihnachtsgeschenk | Verwenden Sie das Wochenendprofil, weil wir zu Hause sind | |
-| PartyNow | Temperatur senken, weil es heiß wird '| Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.PartyDecrease | Setzen Sie das Ziel auf Profiles.0.room.ReducedTemperature |
-| Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.ReducedTemperature |
-| PublicHolidyToday | Heute ist Feiertag, also benutze wahrscheinlich das Sonntagsprofil sonntagsprofil verwenden ist konfiguriert | |
-| VacationAbsent | wir sind abwesend, nehmen also auch am wochenende ab | Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.ReducedTemperature |
+|-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
+| GuestsPresent | die temperatur erhöhen, weil die gäste es wärmer wollen Erhöhen Sie die aktuelle Profiltemperatur um Profiles.0.room.GuestIncrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.GuestIncrease |
+| PartyNow | Temperatur senken, weil es heiß wird '| Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.PartyDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.PartyDecrease |
+| Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
+| VacationAbsent | wir sind abwesend, nehmen also auch am wochenende ab | Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
 
-### Fenster geöffnet
+* in beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
+* im absoluten Entfettungsfall werden nur Sollwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Absenkungswerte bei 0 ° C
+
+## Andere
+* HolidayPresent
+
+Wenn HolidayPresent auf true gesetzt ist, wird in jedem Fall das Profil für Sonntag verwendet. Wir gehen davon aus, dass Sie wie am Sonntag zu Hause sind.
+
+* PublicHolidyToday
+
+Es gibt eine Option, um PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
+
+### Fenster offen
 wenn "use sensors" aktiv ist und der / die Sensor (en) für einen Raum konfiguriert ist / sind
 
-a) Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.ReducedTemperature, wenn die absolute Verringerung konfiguriert ist
+a) Verringern Sie die aktuelle Profiltemperatur bei geöffnetem Fenster (true) um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist konfiguriert ist
+
+## Ical Unterstützung
+Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
+Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
+
+* Heizungssteuerung.0.Präsent
+* Heizungssteuerung.0.Ferienpräsent
+* Heizungsregelung.0.VacationAbsent
 
 ## Bedarf
 * Node Version 8 oder höher ist erforderlich
@@ -100,12 +118,13 @@ a) Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.WindowOpenDec
 
 ## Changelog
 
-### 0.3.5 (2019-11-xx)
+### 0.3.6 (2019-11-xx)
 Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
-
+* (René) only one event is used to lower temperature
+* (René) add interface to ical (path to vacation and path to holiday present datapoints)
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name

@@ -3,73 +3,92 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: FQuOKSYg/ch0EXF2hAJZgh2YQAhojPsALwQ+gbC/vgI=
+hash: ITcFjoWgbOVJgbLYwtz9JlPem9GwgnE7neC7mwnrJt4=
 ---
 ![商标](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
-![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
 ![安装数量](http://iobroker.live/badges/tuya-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tuya.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.tuya.svg)
-![特拉维斯-CI](http://img.shields.io/travis/Apollon77/ioBroker.tuya/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.tuya.svg)
+![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.tuya/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.tuya?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 ＃ioBroker.tuya
-ioBroker适配器连接到几个小而廉价的Wifi设备，这些设备与Tuya Cloud相连，主要使用Smartlife App / Alexa-Skill。适配器支持在与相应的移动电话应用程序同步后读取实时状态更新和控制这些设备。
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**
 
-图雅设备是来自深圳氙气灯的ESP8266MOD WiFi智能设备。
+ioBroker适配器可连接到几个廉价的Wifi设备，这些设备关心连接到Tuya Cloud并主要使用Smartlife App / Alexa-Skill。该适配器支持读取实时状态更新并控制与相应手机应用程序同步的那些设备。
 
-除了可与Smart Live App一起使用的设备外，还应该可以使用Jinvoo智能应用程序，Xenon Smart应用程序，eFamilyCloud，io.e（Luminea等）应用程序。如果成功请报告。
+涂鸦手机是深圳氙气的ESP8266MOD WiFi智能设备。
 
-适配器经证明可与所有“始终处于wifi”的设备配合使用。不支持仅在发生事件时联机，发送数据并再次脱机的设备。
+除了可与Smart Live App一起使用的设备外，还应该可以使用Jinvoo Smart App，Xenon Smart应用程序，eFamilyCloud，io.e（Luminea等）应用程序。如果成功，请报告。
 
-一个适配器实例可以处理一个网络中路由UDP包的所有设备。
+事实证明，该适配器可与“始终在wifi中”的所有设备配合使用。不支持仅在发生事件时才联机，发送数据并再次脱机的设备。
 
-##适配器的工作原理
+一个适配器实例可以处理一个路由UDP包的网络中的所有设备。
+
+##适配器如何工作
 ###基本功能
-适配器监视本地网络以获取Tuya（旧固件，仅限未加密）设备的UDP数据包。需要将运行适配器的ioBroker主机放置在与设备相同的网段中，并且路由器需要支持UDP多播！
+适配器监视本地网络中Tuya（旧固件，因此仅未加密）设备的UDP数据包。需要将运行适配器的ioBroker主机放置在与设备相同的网段中，并且路由器需要UDP多播支持！
 
-所有检测到的设备都将添加到适配器中，并且作为基本功能，适配器在定义的轮询间隔中请求数据。如果没有与相应的移动应用程序同步（见下文），则无法进行实时更新或控制等其他功能。
+将所有检测到的设备添加到适配器，并且作为基本功能，适配器在定义的轮询间隔内请求数据。如果不与相应的移动应用程序同步（请参见下文），则无法实现其他功能，例如实时更新或控制。
 
-在您进行设备同步之前，新的加密设备不会显示（请参阅下一页...）
+进行设备同步之前，不会显示较新的加密设备（请参阅下一个...）
 
 ###设备同步后的高级功能
-要获得适配器的全部功能并支持具有新加密固件的设备，适配器需要知道加密密钥。
+为了获得适配器的全部功能并支持具有新加密固件的设备，适配器需要知道加密密钥。
 
-接收此加密密钥的最简单方法是从使用过的移动应用程序中获取它们。为此，适配器提供代理以捕获应用程序与tuya服务器的通信并获取所需信息。
+接收此加密密钥的最简单方法是从使用过的移动应用程序中获取它们。为此，适配器提供代理以捕获应用程序与tuya服务器的通信并获取所需的信息。
 
-** iOS用户的重要说明：**此处描述的代理方法不再有效。只要您拥有Smart Life App 3.10或更高版本，代理就不再可以看到来自App的通信。但它仍适用于所有Android应用程序版本，因此最好的方法是安德鲁斯模拟器，如https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- GER％C3％A4te / 19
+**对于iOS用户的重要说明：**此处描述的代理方法不再起作用。一旦有了Smart Life App版本3.10或更高版本，代理将不再可见来自App的通信。但它仍适用于所有Android App版本，因此最好的方法是Androis模拟器，如https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- ger％C3％A4te / 19
 
-首先，您需要在移动设备上添加自定义Root证书。
-当您在适配器实例配置中单击“启动代理”时，将为您的系统创建证书，并向下载位置显示QR码。理想情况下，使用移动设备扫描QR码，然后按照流程添加并信任此根证书。
-如果无法访问QR代码位置（可能在使用Docker等时发生），则在浏览器中打开“代理Web信息端口”，然后单击导航中的“Root-CA”，也可以下载CA文件。
+为此，首先需要在移动设备上添加自定义的根证书。
+在适配器实例配置中单击“启动代理”时，将为您的系统创建证书，并在下载位置显示QR码。理想情况下，使用移动设备扫描QR码，并按照该过程添加并信任此根证书。
+如果无法找到QR码位置（使用Docker等时可能发生），则在浏览器中打开“代理Web信息端口”，然后单击导航中的“ Root-CA”，您也可以下载CA文件。
 
-现在请务必关闭/杀死相应的Tuya智能应用程序。
-之后，在您的手机上为您的WLAN连接添加代理端口和ioBroker主机作为“手动”代理。
+现在，请确保关闭/杀死相应的Tuya智能应用程序。
+之后，将代理端口和ioBroker主机添加为手机上WLAN连接的“手动”代理。
 
-现在打开相应的Tuya智能应用程序和/或重新加载。
+现在，打开相应的Tuya Smart App和/或重新加载。
 
-如果收到相关数据包，Admin配置将显示成功消息，然后在10秒后关闭代理。您现在可以从手机中删除代理，也可以取消信任证书。
+如果收到相关数据包，则管理员配置将显示一条成功消息，然后在10秒后关闭代理。现在，您可以从手机中删除代理，也可以不信任证书。
 
-在此之后，应该使用更有意义的名称更新对象，然后自动接收实时更新，并且应该能够进行通信。
+此后，应该立即使用更有意义的名称更新对象，并从那时起自动接收实时更新，并且应该能够进行通信。
 
-仅在最初或在您的应用程序中添加新设备后才需要同步。
+仅在开始时或将新设备添加到您的应用后才需要同步。
 
-某些移动操作系统的某些图像可以在[代理页](PROXY.md)中找到。
+某些移动OS的某些映像可以在[代理页面](PROXY.md)中找到。
 
 ##不适用于电池供电的设备
-此适配器通常不支持电池供电的设备！原因是他们不是一直在线以节省电力。每当他们收到信号时，他们就会上线，将更新发送到Tuya云服务器并再次离线。它们不会发出任何UDP包或在线时间足够长，以便适配器可以连接到它们。
-一旦有人找到直接从Tuya云获取数据的方法，这可能会发生变化。
+此适配器通常不支持电池供电的设备！原因是他们并非一直在线以节省电量。每当他们收到信号时，就上网，将更新发送到Tuya云服务器，然后再次脱机。它们不会发出任何UDP程序包或在线时间足够长，以便适配器可以连接到它们。
+一旦有人找到直接从Tuya云中获取数据的方法，这种情况可能会改变。
 
 ##学分
-如果没有@codetheweb，@ kueblc和@ NorthernMan54（https://github.com/codetheweb/tuyapi）和https://github.com/clach04/python-tuya的出色工作，适配器的工作是不可能实现的。还有很多。
+没有@ codetheweb，@ kueblc和@ NorthernMan54（https://github.com/codetheweb/tuyapi）和https://github.com/clach04/python-tuya的出色工作，就不可能实现适配器的工作。还有很多。
 
 ＃＃ 去做
-*增强测试：状态检查和setState
+*增强测试：状态检查和setState的
 *增强文档
 
 ## Changelog
+
+### 3.1.1 (2019-11-23)
+* (Apollon77) try to get rid of SSL errors with new proxies
+* (Apollon77) New schemas added
+* (Apollon77) Sentry added for error reporting
+* (Apollon77) Compact Mode added
+
+### 3.0.0 (2019-09-03)
+* (Apollon77) Switch from AnyProxy to mitm ... hopefully get SSL-Proxy working again. Important: The Proxy is called "NodeMITMProxyCA"!
+
+### 2.0.4 (2019-08-01)
+* (Apollon77) New schemas added
+* (Apollon77) removed a check so that also devices that use other message formats can be read
+
+### 2.0.3 (2019-07-11)
+* (Apollon77) New schemas added
+* (Apollon77) removed a check so that also devices that use other message formats can be read
 
 ### 2.0.2 (2019-06-27)
 * (Apollon77) New schemas added
@@ -118,7 +137,7 @@ ioBroker适配器连接到几个小而廉价的Wifi设备，这些设备与Tuya 
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

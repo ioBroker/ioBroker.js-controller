@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
+hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -16,7 +16,7 @@ hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.lovelace?branch=master&svg=true)
 
 # IoBroker.lovelace
-## Адаптер ловелас для ioBroker
+## Адаптер lovelace для ioBroker
 С помощью этого адаптера вы можете создавать визуализацию для ioBroker с помощью интерфейса Home Assistant Lovelace.
 
 ## Конфигурация
@@ -26,14 +26,14 @@ hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
 - руководство по эксплуатации
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
 Вы можете определить дружественные имена, и это будет использоваться в сущностях.
 
 ### Руководство по эксплуатации
-Объекты могут быть определены вручную в дереве объектов, например, sql или histroy. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
+Объекты могут быть определены вручную в дереве объектов, таких как sql или history. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
 С помощью этого метода могут быть созданы только простые объекты, такие как input_number, input_text или input_boolean. Он не может иметь более одного состояния или атрибута.
 
 ## Панели
@@ -77,8 +77,8 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
-Для этого типа могут быть добавлены значения `min` и `max` в `common` и необязательные `step`.
-Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «номер»:
+Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
+Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
 
 ```
 common: {
@@ -204,7 +204,7 @@ createState(
 Протестировано с год и daswetter. Для одного или нескольких следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
 
 - daswetter.0.NextDays.Location_1
-- год.0.прогноз
+- yr.0.forecast
 
 Протестировано с драйвером AccuWeather v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
 Пользовательская карта Lovelace, созданная в поддержку прогноза accuweather - https://github.com/algar42/IoB.lovelace.accuweather-card
@@ -275,11 +275,16 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-или просто вручную установите тип объекта на `camera` и запишите в него URL-адрес.
+или просто вручную установите тип сущности на `camera` и запишите в него URL.
 
 ### Скрыть панель инструментов
 Чтобы скрыть панель инструментов, вы можете установить флажок в диалоговом окне конфигурации ioBroker на вкладке Темы.
 Чтобы показать его, вы можете снова отключить его в диалоговом окне или просто вызвать URL с параметром `?toolbar=true`.
+
+### Уценка
+Вы можете использовать привязки в уценке как в [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
+
+Например. Текст `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` выведет текст `Admin adapter is alive` на панели уценки.
 
 ## Пользовательские карты
 ### Загрузка пользовательских карт
@@ -404,6 +409,21 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Голосовое управление
+Все команды из веб-интерфейса будут записаны в состояние lovelace.X.conversation с `ack=false`.
+Вы можете написать скрипт, который будет реагировать на запросы и отвечать:
+
+```
+on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
+   console.log('Question: ' + obj.state.val);
+   if (obj.state.val.includes('time')) {
+      setState('lovelace.0.conversation', new Date().toString(), true); // true is important. It will say, that this is answer.
+   } else {
+      setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
+   }
+});
+```
+
 ## Оригинальные источники для ловеласа
 Использованные источники здесь https://github.com/GermanBluefox/home-assistant-polymer.
 
@@ -414,18 +434,34 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 ### Версия
 Используемая версия home-assistant-frontend@1.0.0
 
-### Как собрать новую версию Lovelace
+### Как построить новую версию Lovelace
+Прежде всего фактический https://github.com/home-assistant/home-assistant-polymer (ветвь разработчика) необходимо **вручную** объединить с https://github.com/GermanBluefox/home-assistant-polymer. .git (iob) ветка.
+
+Все изменения для ioBroker помечены комментарием `// IoB`.
+На данный момент (2019.11.23) были изменены следующие файлы:
+
+- `.gitignore` - добавлено` .idea` игнорировать
+- `build-scripts / gulp / app.js` - добавлено новое задание gulp
+- `build-scripts / gulp / webpack.js` - добавлено новое задание gulp
+- `src / entrypoints / core.ts` - модифицированный процесс аутентификации
+- `src / data / lovelace.ts` - добавлена опция скрытия панели
+- `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
+- `src / dialogs / notifications / messages-pocket.js` - добавлена кнопка подтверждения всех
+- `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
+
+После этого извлечения измененная версия в папке `./build`. Затем.
+
 1. Перейдите в каталог ./build.
-2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (например, уведомления).
-3. «CD-домашний помощник-полимер»
+2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (см. список файлов ранее).
+3. «CD-home-assistant-polymer»
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app` для релиза или` gulp run build-iob` для отладочной версии
+6. «gulp run build-app» для выпуска или «gulp runvelop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызвать` build-app` после того, как версия будет готова к использованию.
 7. Скопируйте все файлы из `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
 8. Запустите задачу gulp rename.
 
 ## Changelog
-### 1.0.0 (2019-11-23)
+### 1.0.1 (2019-11-23)
 * (bluefox) Implemented bindings ala vis in markdown
 
 ### 0.2.5 (2019-11-18)
@@ -434,7 +470,7 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 * (algar42) input_boolean processing correct and initial value added to entity
 * (algar42) input_select processing added
 * (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
-* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
 * (algar42) Russian translation updated
 * (algar42) Language support added. Lovelace runs with IoB System Language
 

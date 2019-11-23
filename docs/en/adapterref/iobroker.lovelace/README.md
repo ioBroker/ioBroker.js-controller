@@ -272,6 +272,11 @@ or just set manually the entity type to `camera` and write URL into it.
 To hide toolbar you can set the checkbox in the ioBroker configuration dialog on the Themes tab.
 To show it, you can disable it in dialog again or just call the URL with `?toolbar=true` parameter.
 
+### Markdown 
+You can use bindings in markdown like in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
+
+E.g. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` will produce text `Admin adapter is alive` in markdown panel.
+
 ## Custom cards
 ### Upload of custom cards
 To upload the custom card write following:
@@ -393,6 +398,20 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Voice control
+All commands from web interface will be written into lovelace.X.conversation state with `ack=false`.
+You can write a script that will react on request and will answer:
+```
+on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
+   console.log('Question: ' + obj.state.val);
+   if (obj.state.val.includes('time')) {
+      setState('lovelace.0.conversation', new Date().toString(), true); // true is important. It will say, that this is answer.
+   } else {
+      setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
+   }
+}); 
+```
+
 ## Original sources for lovelace
 Used sources are here https://github.com/GermanBluefox/home-assistant-polymer .
 
@@ -404,17 +423,32 @@ Security must be taken from current user and not from default_user
 Used version of home-assistant-frontend@1.0.0
 
 ### How to build the new Lovelace version
+First of all the actual https://github.com/home-assistant/home-assistant-polymer (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (iob) branch.
+
+All changes for ioBroker are marked with comment `// IoB`.
+For now (2019.11.23) following files were modified:
+- `.gitignore` - added `.idea` ignore
+- `build-scripts/gulp/app.js` - Added new gulp task
+- `build-scripts/gulp/webpack.js` - Added new gulp task
+- `src/entrypoints/core.ts` - modified authentication process
+- `src/data/lovelace.ts` - added hide bar option
+- `src/panels/lovelace/hui-root.ts` - added notifications and voice control
+- `src/dialogs/notifications/notification-drawer.js` - added button ack all
+- `src/layouts/home-assistant-main.ts` - remove app sidebar
+
+After that checkout modified version in `./build` folder. Then.
+
 1. go to ./build directory.
-2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (e.g. notifications).
+2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (see the file list earlier).
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app` for release or `gulp run develop-iob` for debug version
+6. `gulp run build-app` for release or `gulp run develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use. 
 7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
 8. Start `gulp rename` task.
 
 ## Changelog
-### 1.0.0 (2019-11-23)
+### 1.0.1 (2019-11-23)
 * (bluefox) Implemented bindings ala vis in markdown
 
 ### 0.2.5 (2019-11-18)
@@ -423,7 +457,7 @@ Used version of home-assistant-frontend@1.0.0
 * (algar42) input_boolean processing correct and initial value added to entity
 * (algar42) input_select processing added
 * (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
-* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
 * (algar42) Russian translation updated
 * (algar42) Language support added. Lovelace runs with IoB System Language
 
