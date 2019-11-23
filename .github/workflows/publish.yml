@@ -16,12 +16,8 @@ jobs:
       - name: Install
         working-directory: engine
         run: npm i
-      - name: Create google-keys
-        working-directory: engine
-        run: echo ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}} > google-keys.json
-      - name: check google-keys
-        working-directory: engine
-        run: cat ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
       - name: Gulp default
         working-directory: engine
         run: gulp
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}

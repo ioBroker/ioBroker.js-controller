@@ -65,6 +65,10 @@ async function translateYandex(text, targetLang, yandex) {
 }
 
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+        fs.writeFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+    }
+
     if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
         translate
             .translate(text, {to: targetLang, from: sourceLang})
