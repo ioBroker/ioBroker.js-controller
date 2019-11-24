@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: CsD0zpzMLLwcwlKe4VezpA4KTwSetoumlxpUNd0WdSE=
+hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -76,9 +76,9 @@ createState(
 或者您只使用`lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)`。
 
 ###数字输入
-如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
-可以添加`common`中的这种必需的`min`和`max`值以及可选的`step`。
-如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
+如果选择了自定义对话框中的input_number实体类型，则可以手动完成此操作。
+可以添加`common`中的`min`和`max`值以及可选的`step`类型。
+如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
 
 ```
 common: {
@@ -275,11 +275,16 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-或仅将实体类型手动设置为`camera`并将URL写入其中。
+或者只是将实体类型手动设置为`camera`并将URL写入其中。
 
 ###隐藏工具栏
 要隐藏工具栏，可以在“主题”选项卡上的ioBroker配置对话框中设置复选框。
 要显示它，可以再次在对话框中将其禁用，或者仅使用`?toolbar=true`参数调用URL。
+
+### Markdown
+您可以像[iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)中那样在markdown中使用绑定。
+
+例如。文本`Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.`将在markdown面板中生成文本`Admin adapter is alive`。
 
 ##自定义卡
 ###上载自定义卡
@@ -287,11 +292,11 @@ createState('location.latitude', 39.5681295, false, {
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
 
-重新启动lovelace适配器后，它将自动包括`cards`目录中的所有文件。
+重新启动lovelace适配器后，它将自动包含`cards`目录中的所有文件。
 
 以下定制卡可以成功测试：
 
--大号码卡：https：//github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+-bignumber-card：https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 -simple-thermostat：https：//github.com/nervetattoo/simple-thermostat/releases（采用最新版本）
 -恒温器：https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card（都需要.js和.lib.js文件）
 
@@ -302,7 +307,7 @@ createState('location.latitude', 39.5681295, false, {
 像这样：[https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases)（查找文件`mini-graph-card-bundle.js`）
 
 ##自己的图片
-可以通过与自定义卡相同的配置对话框来加载自定义图像（例如用于背景）。并像这样使用它：
+可以通过与自定义卡相同的配置对话框来加载自定义图像（例如背景图片）。并像这样使用它：
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
@@ -310,7 +315,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-在lovelace配置文件中。阅读有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的更多信息。
+在lovelace配置文件中。阅读更多有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的信息。
 
 ##主题
 可以在ioBroker的配置对话框中定义主题。
@@ -404,6 +409,21 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+＃＃ 语音控制
+来自Web界面的所有命令都将被写入带有`ack=false`的lovelace.X.conversation状态。
+您可以编写一个脚本，该脚本将根据请求做出反应并回答：
+
+```
+on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
+   console.log('Question: ' + obj.state.val);
+   if (obj.state.val.includes('time')) {
+      setState('lovelace.0.conversation', new Date().toString(), true); // true is important. It will say, that this is answer.
+   } else {
+      setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
+   }
+});
+```
+
 ## Lovelace的原始来源
 使用的资源在这里https://github.com/GermanBluefox/home-assistant-polymer。
 
@@ -415,17 +435,33 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 二手版本的home-assistant-frontend@1.0.0
 
 ###如何构建新的Lovelace版本
+首先必须将** https：//github.com/home-assistant/home-assistant-polymer（dev分支）**手动**合并到https://github.com/GermanBluefox/home-assistant-polymer .git（iob）分支。
+
+ioBroker的所有更改都标记有注释`// IoB`。
+目前（2019.11.23）修改了以下文件：
+
+-`.gitignore`-添加了`.idea`忽略
+-`build-scripts / gulp / app.js`-添加了新的gulp任务
+-`build-scripts / gulp / webpack.js`-添加了新的gulp任务
+-`src / entrypoints / core.ts`-修改的身份验证过程
+-`src / data / lovelace.ts`-添加了隐藏栏选项
+-`src / panels / lovelace / hui-root.ts`-添加了通知和语音控制
+-`src / dialogs / notifications / notification-drawer.js`-添加了所有按钮
+-`src / layouts / home-assistant-main.ts`-移除应用程序侧边栏
+
+之后，在`./build`文件夹中签出修改版本。然后。
+
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（例如，通知）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（请参阅前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
-6.`gulp run build-app`发行版或`gulp rundevelop-iob`调试版
-7.在此仓库中，将所有文件从./build/home-assistant-polymer/hass_frontend复制到`。/ hass_frontend`中。
+6.`gulp run build-app`发行版或`gulp rundevelop-iob`调试版。要在更改后构建Web，可以调用`webpack-dev-app`以加快构建速度，但是在该版本准备使用后，无论如何都需要调用`build-app`。
+7.在此仓库中将所有文件从./build/home-assistant-polymer/hass_frontend复制到`。/ hass_frontend`。
 8.启动“ gulp重命名”任务。
 
 ## Changelog
-### 1.0.0 (2019-11-23)
+### 1.0.1 (2019-11-23)
 * (bluefox) Implemented bindings ala vis in markdown
 
 ### 0.2.5 (2019-11-18)
@@ -434,7 +470,7 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 * (algar42) input_boolean processing correct and initial value added to entity
 * (algar42) input_select processing added
 * (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
-* (algar42) Switch entity updated to show two state buttonts in GUI (assumed_state attrbute set to true)
+* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
 * (algar42) Russian translation updated
 * (algar42) Language support added. Lovelace runs with IoB System Language
 

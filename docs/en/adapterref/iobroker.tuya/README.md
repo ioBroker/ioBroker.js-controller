@@ -11,6 +11,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 [![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)](https://nodei.co/npm/iobroker.tuya/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.**
+
 ioBroker adapter to connect to several small and cheap Wifi devices that care connected to the Tuya Cloud and mostly use the Smartlife App/Alexa-Skill. The adapter supports reading real time status updates and controlling of those devices once synced with the respective mobile phone app.
 
 Tuya devices are ESP8266MOD WiFi smart devices from Shenzhen Xenon.
@@ -70,9 +72,11 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
-### 3.1.0 (2019-09-11)
+### 3.1.1 (2019-11-23)
 * (Apollon77) try to get rid of SSL errors with new proxies
 * (Apollon77) New schemas added
+* (Apollon77) Sentry added for error reporting
+* (Apollon77) Compact Mode added
 
 ### 3.0.0 (2019-09-03)
 * (Apollon77) Switch from AnyProxy to mitm ... hopefully get SSL-Proxy working again. Important: The Proxy is called "NodeMITMProxyCA"!
@@ -132,7 +136,7 @@ The work of the adapter would not had been possible without the great work of @c
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
