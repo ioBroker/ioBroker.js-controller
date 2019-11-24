@@ -11,6 +11,9 @@ Odznaki
 Blog
 Kup w Amazon
 Kup to, czego potrzebujesz w Amazon
+anulować
+Nie można subskrybować:
+Nie można anulować subskrypcji:
 Lista zmian
 Kliknij, aby skopiować %s
 Blisko
@@ -28,6 +31,7 @@ Przekaż darowiznę za pomocą przycisku PayPal
 Dynamicznie rozwijająca się społeczność.
 edycja lokalna
 Edytuj na githubie
+E-mail z instrukcjami wysłanymi
 Rozwiń wszystkie
 Wyjaśnienie
 Filtr
@@ -42,6 +46,7 @@ Informacje
 Informacja
 zainstalowany
 Instaluje:
+Wygląda na to, że masz już subskrypcję. Czy chcesz zrezygnować z subskrypcji?
 Javascript jest najpopularniejszym językiem
 Dołącz teraz
 Ostatnia zmiana:
@@ -67,10 +72,12 @@ Czytać
 Biegnie dalej
 Zrzuty ekranu
 Szukaj...
+Wyślij mi e-mail z instrukcjami, jak zrezygnować z subskrypcji
 Pomoc socjalna
 Sortować
 Stabilny:
 Subskrybować
+Subskrybować!
 Wesprzyj nas!
 Przełącz na widok tabeli
 Przełącz na widok kafelków
@@ -82,6 +89,7 @@ Całkowity:
 Ta strona została przetłumaczona automatycznie z „%s”. Pomóż nam przetłumaczyć tę stronę na język angielski, klikając Edytuj poniżej.
 Rodzaj
 Unikalna grafika i piękne interfejsy dla Ciebie.
+Zrezygnować?
 Użyj jednego z najlepszych produktów open source do zarządzania systemem automatyki na miejscu.
 Użytkownicy
 wersje
@@ -105,6 +113,7 @@ Potrzebne są obrazy tylko w przypadku problemów ze skryptami instalacyjnymi.
 Instalacja jest tak prosta, jak napisanie 1 lub 3 linii.
 Zainstaluj Node.js (nie jest wymagane, jeśli jest zainstalowany):
 Zainstaluj ioBroker:
+niepoprawny email
 Blog ioBroker
 ioBroker w prasie
 ioBroker to platforma IoT (obliczenia Fog).
