@@ -42,15 +42,15 @@ body {
 /* used for support us button */
 @keyframes hue-animation {
     0% {
-        filter: hue-rotate(0deg);
+        filter: hue-rotate(82deg);
     }
 
     50% {
-        filter: hue-rotate(100deg);
+        filter: hue-rotate(200deg);
     }
 
     100% {
-        filter: hue-rotate(0deg);
+        filter: hue-rotate(82deg);
     }
 }
 
