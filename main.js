@@ -2808,6 +2808,10 @@ function startInstance(id, wakeUp) {
         case 'daemon':
             if (procs[id] && !procs[id].process) {
                 allInstancesStopped = false;
+                if (procs[id].stopping) {
+                    delete procs[id].stopping;
+                }
+
                 logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
@@ -3140,7 +3144,10 @@ function startInstance(id, wakeUp) {
                     }
                 }
             } else {
-                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
+                if (procs[id].stopping) {
+                    delete procs[id].stopping;
+                }
             }
             break;
 
