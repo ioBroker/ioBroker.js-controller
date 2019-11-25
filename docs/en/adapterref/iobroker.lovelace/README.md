@@ -448,7 +448,7 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
-### 1.0.1 (2019-11-23)
+### 1.0.2 (2019-11-23)
 * (bluefox) Implemented bindings ala vis in markdown
 
 ### 0.2.5 (2019-11-18)
