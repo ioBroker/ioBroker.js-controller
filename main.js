@@ -303,7 +303,7 @@ function createStates(onConnect) {
                 }
             } else
             // If this NAME.0.info.connection, only main controller is handling this
-            if (compactGroupController && id.match(/^[^.]+\.\d+\.info\.connection$/)) {
+            if (!compactGroupController && id.match(/^[^.]+\.\d+\.info\.connection$/)) {
                 // Disabled in 1.5.x
                 // if (state && !state.val) {
                 //     tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
@@ -315,7 +315,7 @@ function createStates(onConnect) {
                 // }
             } else
             // If this system.adapter.NAME.0.alive, only main controller is handling this
-            if (compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
+            if (!compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 if (state && !state.ack) {
                     const enabled = state.val;
                     setImmediate(() => {
