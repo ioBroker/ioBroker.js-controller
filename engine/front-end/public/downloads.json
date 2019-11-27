@@ -8,6 +8,17 @@
     "picture": "windows.png"
   },
   {
+    "file": "ioBroker_Image_RPi_2-3-4_20191127_buster.zip",
+    "linux": "Raspbian light Buster",
+    "date": "20191127",
+    "device": "Raspberry Pi 2-3-4",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 10.17.0</li><li>npm 6.11.3</li></ul>",
+    "picture": "Pi4.png",
+    "user": "pi",
+    "password": "raspberry",
+    "info": "ioBroker_Image_RPi_2-3-4_20191127_buster.md"
+  },
+   {
     "file": "ioBroker_Image_Tinker_piVCCU3_20190813_stretch.zip",
     "linux": "Armbian Stretch Server",
     "date": "20190813",
