@@ -83,7 +83,7 @@ Please send me an info on devices where you have used the library successfully a
 
 ## Changelog
 
-### 3.0.0 (2019-11-2x)
+### 3.0.1 (2019-11-27)
 * BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
 * support compact mode
 * update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
