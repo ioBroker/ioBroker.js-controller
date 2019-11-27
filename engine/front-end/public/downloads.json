@@ -12,7 +12,7 @@
     "linux": "Raspbian light Buster",
     "date": "20191127",
     "device": "Raspberry Pi 2-3-4",
-    "details": "ioBroker minimal Image<br><ul><li>nodejs 10.17.0</li><li>npm 6.9.0</li></ul>",
+    "details": "ioBroker minimal Image<br><ul><li>nodejs 10.17.0</li><li>npm 6.11.3</li></ul>",
     "picture": "Pi4.png",
     "user": "pi",
     "password": "raspberry",
