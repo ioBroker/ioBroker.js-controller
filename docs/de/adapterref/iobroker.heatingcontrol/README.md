@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
+hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -38,7 +38,7 @@ Eigenschaften:
 * Funktion = Funktion zur Erkennung von Thermostaten, Antrieben und Sensoren pro Raum. Es ist eine der Systemaufzählungen
 * timezone = Wird für Cron verwendet, um Cron-Jobs anzupassen
 * Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um automatisch einen Feiertag für heute zu erkennen, geben Sie hier den Pfad ein (z. B. feiertage.0).
-* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
+* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapter Admin geöffnet wird
 * Verwendeter Sensor = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Verwendete Akteure = Wenn Sie Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
 * Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
@@ -97,7 +97,7 @@ Wenn HolidayPresent auf true gesetzt ist, wird in jedem Fall das Profil für Son
 
 Es gibt eine Option, um PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
 
-### Fenster offen
+### Fenster geöffnet
 wenn "use sensors" aktiv ist und der / die Sensor (en) für einen Raum konfiguriert ist / sind
 
 a) Verringern Sie die aktuelle Profiltemperatur bei geöffnetem Fenster (true) um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist konfiguriert ist
@@ -118,7 +118,16 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 
 ## Changelog
 
-### 0.3.6 (2019-11-xx)
+### 0.3.7 (2019-xx-xx)
+Attention: some changes in datapoints!!
+* (René) see issue  #53: moved datapoints for relative lowering into "relative"
+* (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
+* (René) guest present as interface to ical
+
+
+
+
+### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature
