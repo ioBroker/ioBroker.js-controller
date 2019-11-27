@@ -107,6 +107,7 @@ copy to clipboard
 english
 Join now the rapidly growing community, ask questions and get answers from professionals and gurus!
 german
+get cloud
 install on linux
 installed %s times
 You need the images only if you have problems with install scripts.

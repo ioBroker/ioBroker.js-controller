@@ -107,6 +107,7 @@ copiar para área de transferência
 Inglês
 Junte-se agora à comunidade em rápido crescimento, faça perguntas e obtenha respostas!
 alemão
+obter nuvem
 instalar no linux
 vezes instalado %s
 Você só precisa das imagens se tiver problemas com os scripts de instalação.

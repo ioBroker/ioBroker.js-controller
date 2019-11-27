@@ -33,11 +33,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy files to web server
-          uses: appleboy/scp-action@v0.0.4
-          with:
-            host: ${{ secrets.WEB_HOST }}
-            username: ${{ secrets.WEB_USERNAME }}
-            password: ${{ secrets.WEB_PASSWORD }}
-            port: ${{ secrets.WEB_PORT }}
-            source: "engine/front-end/build/**/*"
-            target: "/opt/doc/front-end/buildTest"
+        uses: appleboy/scp-action@v0.0.4
+        with:
+          host: ${{ secrets.WEB_HOST }}
+          username: ${{ secrets.WEB_USERNAME }}
+          password: ${{ secrets.WEB_PASSWORD }}
+          port: ${{ secrets.WEB_PORT }}
+          source: "engine/front-end/build/**/*"
+          target: "/opt/doc/front-end/buildTest"
