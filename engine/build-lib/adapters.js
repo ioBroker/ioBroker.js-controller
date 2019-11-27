@@ -338,7 +338,6 @@ function getReadme(lang, dirName, repo, adapter) {
                             }
                         }
 
-
                         resolve(results);
                     }));
         });

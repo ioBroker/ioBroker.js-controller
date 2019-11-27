@@ -13,7 +13,7 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroke
 
 ## lovelace adapter for ioBroker
 
-With this adapter you can build visualization for ioBroker with Home Assistant Lovelace UI
+With this adapter you can build visualization for ioBroker with Home Assistant Lovelace UI.
 
 ## Configuration
 There are two arts how the entities could be configured:
@@ -21,8 +21,8 @@ There are two arts how the entities could be configured:
 - manual
 
 ### Auto
-In auto mode the similar process will be applied like for `google home` or `material adapter`. 
-  
+In auto mode the similar process will be applied like for `google home` or `material adapter`.
+
 ***Only objects and channel will be detected that have `function`and `room` categories defined***
 
 You can define friendly names and this will be used in entities.
@@ -87,6 +87,28 @@ common: {
     }
 }
 ```
+
+### Select input
+This can be done manually if input_select entity type in custom dialog is selected.
+The list of options to select from should be provide in standard commom.states object:
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+in other words in should also be input select in IoB.
 
 ### Timer
 Timer could be simulated by following script:
@@ -177,6 +199,9 @@ Tested with yr and daswetter. One or more of following objects must have `Functi
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
 
+Tested with AccuWeather driver v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather. 
+Custom Lovelace card created in support of accuweather forecast - https://github.com/algar42/IoB.lovelace.accuweather-card
+
 ### Shopping list
 Shopping list writes the values in form:
 ```
@@ -186,7 +211,7 @@ Shopping list writes the values in form:
 ]
 ```
 into `lovelace.X.control.shopping_list` state.
-   
+
 ### Map
 The objects must look like this one:
 
@@ -247,6 +272,11 @@ or just set manually the entity type to `camera` and write URL into it.
 To hide toolbar you can set the checkbox in the ioBroker configuration dialog on the Themes tab.
 To show it, you can disable it in dialog again or just call the URL with `?toolbar=true` parameter.
 
+### Markdown 
+You can use bindings in markdown like in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
+
+E.g. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` will produce text `Admin adapter is alive` in markdown panel.
+
 ## Custom cards
 ### Upload of custom cards
 To upload the custom card write following:
@@ -256,7 +286,7 @@ To upload the custom card write following:
 After restart of lovelace adapter it will include all files from the `cards` directory automatically.
 
 Following custom cards could be tested successfully:
-- bignumber-card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js 
+- bignumber-card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 - simple-thermostat: https://github.com/nervetattoo/simple-thermostat/releases (take the latest release)
 - thermostat: https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card (both files .js and .lib.js are required)
 
@@ -271,7 +301,7 @@ The custom images (e.g. for background) could be loaded via the same configurati
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
-or 
+or
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
@@ -285,54 +315,54 @@ midnight:
   # Main colors
   primary-color: '#5294E2'                                                        # Header
   accent-color: '#E45E65'                                                         # Accent color
-  dark-primary-color: 'var(--accent-color)'                                       # Hyperlinks                                         
+  dark-primary-color: 'var(--accent-color)'                                       # Hyperlinks
   light-primary-color: 'var(--accent-color)'                                      # Horizontal line in about
-  																			 
-  # Text colors                                                                  
+
+  # Text colors
   primary-text-color: '#FFFFFF'                                                   # Primary text colour, here is referencing dark-primary-color
   text-primary-color: 'var(--primary-text-color)'                                 # Primary text colour
   secondary-text-color: '#5294E2'                                                 # For secondary titles in more info boxes etc.
   disabled-text-color: '#7F848E'                                                  # Disabled text colour
-  label-badge-border-color: 'green'                                               # Label badge border, just a reference value   
-  
-  # Background colors                                                            
+  label-badge-border-color: 'green'                                               # Label badge border, just a reference value
+
+  # Background colors
   primary-background-color: '#383C45'                                             # Settings background
-  secondary-background-color: '#383C45'                                           # Main card UI background  
-  divider-color: 'rgba(0, 0, 0, .12)'                                             # Divider 
-    
-  # Table rows                                                                   
+  secondary-background-color: '#383C45'                                           # Main card UI background
+  divider-color: 'rgba(0, 0, 0, .12)'                                             # Divider
+
+  # Table rows
   table-row-background-color: '#353840'                                           # Table row
   table-row-alternative-background-color: '#3E424B'                               # Table row alternative
-  																			 
-  # Nav Menu                                                                   
+
+  # Nav Menu
   paper-listbox-color: 'var(--primary-color)'                                     # Navigation menu selection hoover
   paper-listbox-background-color: '#2E333A'                                       # Navigation menu background
-  paper-grey-50: 'var(--primary-text-color)'                                   
+  paper-grey-50: 'var(--primary-text-color)'
   paper-grey-200: '#414A59'                                                       # Navigation menu selection
-  																			 
-  # Paper card                                                               
+
+  # Paper card
   paper-card-header-color: 'var(--accent-color)'                                  # Card header text colour
   paper-card-background-color: '#434954'                                          # Card background colour
   paper-dialog-background-color: '#434954'                                        # Card dialog background colour
   paper-item-icon-color: 'var(--primary-text-color)'                              # Icon color
   paper-item-icon-active-color: '#F9C536'                                         # Icon color active
-  paper-item-icon_-_color: 'green'           
-  paper-item-selected_-_background-color: '#434954'                               # Popup item select                      
+  paper-item-icon_-_color: 'green'
+  paper-item-selected_-_background-color: '#434954'                               # Popup item select
   paper-tabs-selection-bar-color: 'green'
-  
-  # Labels 
+
+  # Labels
   label-badge-red: 'var(--accent-color)'                                          # References the brand colour label badge border
   label-badge-text-color: 'var(--primary-text-color)'                             # Now same as label badge border but that's a matter of taste
   label-badge-background-color: '#2E333A'                                         # Same, but can also be set to transparent here
-  
+
   # Switches
   paper-toggle-button-checked-button-color: 'var(--accent-color)'
   paper-toggle-button-checked-bar-color: 'var(--accent-color)'
   paper-toggle-button-checked-ink-color: 'var(--accent-color)'
   paper-toggle-button-unchecked-button-color: 'var(--disabled-text-color)'
   paper-toggle-button-unchecked-bar-color: 'var(--disabled-text-color)'
-  paper-toggle-button-unchecked-ink-color: 'var(--disabled-text-color)'  
-  
+  paper-toggle-button-unchecked-ink-color: 'var(--disabled-text-color)'
+
   # Sliders
   paper-slider-knob-color: 'var(--accent-color)'
   paper-slider-knob-start-color: 'var(--accent-color)'
@@ -342,7 +372,7 @@ midnight:
   paper-slider-secondary-color: 'var(--secondary-background-color)'
   paper-slider-disabled-active-color: 'var(--disabled-text-color)'
   paper-slider-disabled-secondary-color: 'var(--disabled-text-color)'
-  
+
   # Google colors
   google-red-500: '#E45E65'
   google-green-500: '#39E949'
@@ -368,23 +398,85 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Voice control
+All commands from web interface will be written into lovelace.X.conversation state with `ack=false`.
+You can write a script that will react on request and will answer:
+```
+on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
+   console.log('Question: ' + obj.state.val);
+   if (obj.state.val.includes('time')) {
+      setState('lovelace.0.conversation', new Date().toString(), true); // true is important. It will say, that this is answer.
+   } else {
+      setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
+   }
+}); 
+```
+
+## Original sources for lovelace
+Used sources are here https://github.com/GermanBluefox/home-assistant-polymer .
+
 ## Todo
 Security must be taken from current user and not from default_user
 
 ## Development
+### Version
+Used version of home-assistant-frontend@1.0.0
+
 ### How to build the new Lovelace version
+First of all the actual https://github.com/home-assistant/home-assistant-polymer (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (iob) branch.
+
+All changes for ioBroker are marked with comment `// IoB`.
+For now (2019.11.23) following files were modified:
+- `.gitignore` - added `.idea` ignore
+- `build-scripts/gulp/app.js` - Added new gulp task
+- `build-scripts/gulp/webpack.js` - Added new gulp task
+- `src/entrypoints/core.ts` - modified authentication process
+- `src/data/lovelace.ts` - added hide bar option
+- `src/panels/lovelace/hui-root.ts` - added notifications and voice control
+- `src/dialogs/notifications/notification-drawer.js` - added button ack all
+- `src/layouts/home-assistant-main.ts` - remove app sidebar
+
+After that checkout modified version in `./build` folder. Then.
+
 1. go to ./build directory.
-2. `git clone https://github.com/home-assistant/home-assistant-polymer.git`
+2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (see the file list earlier).
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app`
-4. `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
-5. Format index.html
-6. Start `gulp rename` task.
+6. `gulp run build-app` for release or `gulp run develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use. 
+7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
+8. Start `gulp rename` task.
 
 ## Changelog
-### 0.1.4 (2019-08-05)
+### 1.0.2 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
+### 0.2.3 (2019-10-22)
+* (bluefox) The custom settings were corrected
+
+### 0.2.1 (2019-10-15)
+* (bluefox) Processing of empty states was corrected
+
+### 0.2.0 (2019-09-19)
+* (Scrounger) Some bugs on "Custom Dialog" were fixed
+* (Scrounger) bug fix: if value set by lovelace and max is not 100
+* (Scrounger) log warn if no max value set for light entity
+* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
+
+### 0.1.5 (2019-08-26)
 * (bluefox) fixed timestamp conversion
 
 ### 0.1.3 (2019-07-18)
@@ -398,13 +490,13 @@ Security must be taken from current user and not from default_user
 
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker 
+* (bluefox) Lovelace compiled extra for ioBroker
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release
 
 ## License
-   
+
 Copyright 2019, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");

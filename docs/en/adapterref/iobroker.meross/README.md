@@ -11,6 +11,7 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 [![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)](https://nodei.co/npm/iobroker.meross/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors to me as the developer.**
 
 ## Description
 This adapter allows to control Meross devices by connecting to the Meross cloud servers.
@@ -27,11 +28,18 @@ If more devices work (or also not) please report them by opening a GitHub issue.
 
 ## Changelog
 
-### 1.1.0 (2019.07.05)
+### 1.2.x (2019.11.xx)
 * (Apollon77) Add msg100 with Garage Door Reed contact
 * (Apollon77) Add reconnection handling
 * (Apollon77) Add light support (e.g. MSL120 RGB bulb)
 * (Apollon77) Add units and roles for electricity
+* (Apollon77) Add support for MSXH0 (Air Purifyer)
+* (Apollon77) Add support for Hub and Thermostates
+* (Apollon77) Allow to control DND mode (LED) - be aware then if controlled via meross app it my get out of sync!
+* (Apollon77) Integrate sentry.io for automated error/exception reporting
+* (Apollon77) Add support for mts100v3
+* (Apollon77) add Compact mode
+* (Apollon77) add control option for (rgb) lights
 
 ### 1.0.0 (2018.12.16)
 * (Apollon77) finalize and move to 1.0.0

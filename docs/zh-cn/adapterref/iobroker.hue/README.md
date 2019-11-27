@@ -2,37 +2,94 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
+title: ioBroker飞利浦Hue桥适配器
+hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 ---
-![安装数量](http://iobroker.live/badges/hue-stable.svg)
-![NPM版本](http://img.shields.io/npm/v/iobroker.hue.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.hue.svg)
-![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)
-
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.hue
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
-#ioBroker飞利浦Hue Bridge适配器
+![安装数量](http://iobroker.live/badges/hue-stable.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.hue.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.hue.svg)
+![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)
+
+＃ioBroker飞利浦Hue桥适配器
 ==============
 
-##英文：gb：
-通过飞利浦Hue Bridges将飞利浦Hue LED灯泡，Hue LED灯和条纹之友以及其他支持SmartLink的设备（LivingWhites，一些LivingColors）连接到ioBroker。
+##英语：gb：
+此适配器将您的Philips Hue桥与ioBroker连接，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
 
-您必须先将HUE桥与ioBroker链接起来。
+＃＃＃ 设定
+在ioBroker中安装此适配器后，请相应地创建一个适配器实例。接下来，您需要在适配器设置内将Hue桥与ioBroker连接：
 
-1.首先按“查找桥”按钮找到IP地址。仅在未输入IP地址时启用。
-2.找到IP地址后，必须创建USER。为此，按“创建用户”按钮，然后按HUE桥上的“链接”按钮。仅当未输入USER时，才会启用“创建用户”按钮
+1.如果您使用的不是v2，则将端口配置为80（非https），否则应使用443（https）。
+2.单击“查找网桥”按钮以获取网桥的IP地址。这将搜索您环境中的所有网桥。然后选择要连接的网桥。字段“网桥地址”将填充您所选择的色相网桥的IP地址。
+3.接下来，在设置中单击“创建用户”按钮，然后步行至Hue桥接设备（即您的硬件）以按其圆形按钮。您将有30秒钟的时间进行。按下按钮后，应在字段“ Bridge User”中填充生成的字符串。
+4.修改适配器设置中的任何其他选项，然后选择“保存并关闭”。
+5.最后，您已经准备就绪：适配器将生成所有对象，以相应地控制Hue设备。
+
+请注意：如果填写了“网桥地址”字段，则适配器设置按钮“查找网桥”将无效，而如果填写了“网桥用户”字段，则“创建用户”按钮将无效。
+
+###设置
+|名称|描述|
+|---|---|
+| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮检测到它。 |
+| __Port__ | Hue网桥的端口，通常为443（SSL）和80（非SSL）。 |
+| __User__ |网桥用户的用户名。您可以通过按`Create User`按钮并按照屏幕说明进行创建。 |
+| __User__ |网桥用户的用户名。您可以通过按“创建用户”按钮并按照屏幕说明进行创建。 |
+| __忽略场景__ |如果选中，则场景将不会由适配器显示/控制。 |
+| __忽略组__ |如果选中，则适配器将不会显示/控制组。
+| __“旧版”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，请一次删除整个`hue.<instance_number>`命名空间。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的`status`数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，`0`将场景关闭，而`1`将其打开。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
+| __轮询__ |如果选中，则适配器将轮询状态更改，否则只能用于控制指示灯，而不能显示其状态。 |
+| __轮询间隔__ ||定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
 
 ## Deutsch：de：
-Bindet Philips Hue / LivingColors / LivingWhites Lampen ein。
-In den Adapter-Settings muss die IP der Hue Bridge sowie ein用户名konfiguriert werden。 Um einen用户zu aktivieren einmal auf创建用户drückenunddann innerhalb von 30 Sekunden den Button an der Huebridgedrücken。 Dann wird automatisch derUserübergeben。
+Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
+在Adapter-Settings中，用户名konfiguriert werden属于IP der Hue Bridge。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
 
 ##路线图/ Todo
-*自动桥发现
+*自动桥接发现
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
+### 2.4.0 (2019-11-03)
+* (foxriver76) added possibility to control software sensors
+
+### 2.3.1 (2019-11-02)
+* (foxriver76) fixed controlling `on` state of sensors
+
+### 2.2.3 (2019-10-21)
+* (foxriver76) migrate everything to Hue v3
+* (foxriver76) add possibility to turn on/off sensor
+* (foxriver76) add anyOn state for all group
+* (foxriver76) different kinds of fixes for v3 (Osram Plugs, SSL connection, etc)
+
+### 2.1.0 (2019-10-15)
+* (foxriver76) usage and adaptions for node-hue-api v3
+* (foxriver76) ability to turn lights on with last settings
+* (foxriver76) polling interval minimum is now 2 sec
+
+### 2.0.1 (2019-10-04)
+* (foxriver76) fixed bug, that prevented some sensor states getting updated during runtime
+
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -174,5 +231,5 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein用户名konfigurier
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

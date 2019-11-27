@@ -3,6 +3,7 @@
 	ioBroker.virtualpowermeter
 </h1>
 
+![node](https://img.shields.io/node/v/iobroker.virtualpowermeter.svg)
 ![Number of Installations](http://iobroker.live/badges/virtualpowermeter-installed.svg) ![Number of Installations](http://iobroker.live/badges/virtualpowermeter-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.virtualpowermeter.svg)](https://www.npmjs.com/package/iobroker.virtualpowermeter)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.virtualpowermeter.svg)](https://www.npmjs.com/package/iobroker.virtualpowermeter)
 [![Dependency Status](https://img.shields.io/david/Omega236/iobroker.virtualpowermeter.svg)](https://david-dm.org/Omega236/iobroker.virtualpowermeter)
@@ -12,7 +13,7 @@
 
 **Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/Omega236/ioBroker.virtualpowermeter/master.svg)](https://travis-ci.org/Omega236/ioBroker.virtualpowermeter)
 Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Omega236/ioBroker.virtualpowermeter?branch=master&svg=true)](https://ci.appveyor.com/project/Omega236/ioBroker-virtualpowermeter/)
-
+![License](https://img.shields.io/npm/l/iobroker.virtualpowermeter.svg)
 ## virtualpowermeter adapter for ioBroker
 
 Erzeugt Virtuelle Strommesser
@@ -31,7 +32,8 @@ siehe MeinBeispiel.jpg
 
 
 ## Changelog
-
+### 1.0.1
+* (Lutz Sebastian) SecurityUpdates
 ### 1.0.0
 * (Lutz Sebastian) Final Release
 ### 0.2.8

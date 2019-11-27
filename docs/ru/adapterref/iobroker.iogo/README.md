@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
+hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,11 +16,14 @@ hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
 # IoBroker.iogo
 =================
 
-Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
+Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
 Пожалуйста, посетите iogo.nisnagel.de для получения дополнительной информации о том, как начать.
 
 ## Конфигурация
-Вы должны установить данные своей учетной записи (адрес электронной почты / пароль). После этого запустите адаптер.
+Вам нужен действующий лицензионный ключ, чтобы использовать этот адаптер.
+Лицензию можно приобрести после создания счета на https://iogo.nisnagel.de.
+
+Пожалуйста, введите информацию о вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
 
 ## Использование
 Вы можете отправить сообщение всем аутентифицированным пользователям через блок сообщения ```sendTo('iogo', 'New message')``` или конкретному пользователю ```sendTo('iogo', {user: 'Username', text: 'Test message'})```.
@@ -50,7 +53,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-Просто отправьте путь к вашему изображению вместо текста или используйте атрибут url ```sendTo('iogo.0', 'absolute/path/file.png')```
+Просто отправьте путь к изображению вместо текста или используйте атрибут url ```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {
@@ -70,8 +73,8 @@ sendTo('iogo', {
 
 ## Changelog
 
-### 0.4.0
-* (nisio) Changes for ioGo app version 2.0.0+
+### 0.4.x
+* (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x
 * (nisio) added support of compact mode

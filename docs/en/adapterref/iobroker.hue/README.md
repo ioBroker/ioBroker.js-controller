@@ -1,5 +1,3 @@
-# Moved to https://github.com/iobroker-community-adapters/ioBroker.hue
-
 ![Logo](admin/hue.jpeg)
 # ioBroker Philips Hue Bridge Adapter
 ==============
@@ -10,18 +8,83 @@
 [![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)](https://nodei.co/npm/iobroker.hue/)
 
 ## English :gb:
-Connects Philips Hue LED Bulbs, Friends of Hue LED Lamps and Stripes and other 
-SmartLink capable Devices (LivingWhites, some LivingColors) via Philips Hue Bridges to ioBroker.
+This adapter connects your Philips Hue Bridges with ioBroker to control Philips Hue LED bulbs, Friends of Hue LED lamps, stripes, plugs like from Osram, and other SmartLink capable devices (like LivingWhites and some LivingColors).
 
-You must first link you HUE bridge with ioBroker. 
-1. For that find first the IP address by pressing "Find Bridge" button. It is only enabled if no IP address entered.
-2. After IP address is found the USER must be created. For that press the "Create User" button and then press "Link" button on HUE bridge. "Create User" button is only enabled if no USER entered
+### Setup
+Once you have installed this adapter within ioBroker, create an adapter instance accordingly. Next, you need to connect your Hue bridge with ioBroker within the adapter settings:
+1. If you are using another bridge than v2, configure port to 80 (non-https), else 443 (https) should be the way to go.
+2. Click on "Find Bridge" button to get the IP address of your bridge. This will search for all bridges in your environment. Then select the bridge to which you want to connect. The field "Bridge Address" will be populated with the IP address of your chosen Hue bridge.
+3. Next, click on "Create User" button in the settings and then walk to your Hue bridge device, so your hardware, to push its round button. You'll gonna have 30 seconds to proceed. Once you pushed the button, the field "Bridge User" should be populated with a generated string.
+4. Modify any other options in the adapter settings and then select "save and close".
+5. Finally, you should be all set: The adapter will generate all objects to control your Hue devices accordingly.
+
+Please note: Adapter settings button "Find Bridge" will be inactive if field "Bridge Address" is populated, and button "Create User" will be inactive if field "Bridge User" is populated.
+
+### Settings
+|Name|Description|
+|---|---|
+|__Bridge address__|IP address of your Hue bridge, you can try to detect it by pressing `Find Bridge` button.|
+|__Port__|Port of your Hue bridge, normally 443 (SSL) and 80 (non-SSL).|
+|__SSL__|If checked, connecton is secured via SSL, port will automatically change to 443 (it is strongly recommended to use SSL).|
+|__User__|Username of your bridge user. You can create it, by pressing `Create User` button and following the screen instructions.|
+|__Ignore scenes__|If checked, scenes will not be shown/controlled by the adapter.|
+|__Ignore groups__|If checked, groups will not be shown/controlled by the adapter.|
+|__"Legacy" structure__|To support backwards compatibility, it is possible to hold an old object structure in ioBroker. This old structure is `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. The new structure removes `<brdige_name_channel>` and thus makes it necessary to adapt old scripts, etc. If an existing old strcuture is detected by the adapter, the structure will be used without checking the checkbox. However, if migration from old to new structure is desired, delete the whole `hue.<instance_number>` namespace once.
+|__Native turn off/on behaviour__|If checked, the adapter will turn on/off lights in the same fashion as the native Hue app does. Otherwise, lamps will be set to a level of 100 % when switching on.|
+|__Sync software sensors__|Also sync software sensors. These are virtual sensors, e.g. created by Hue Labs scenes. By controlling the `status` datapoint of such a sensor you can start/stop scenes which follow this logic. In most cases `0` turns scene off and `1` turns it on.|
+|__Polling__|If checked, the adapter will poll state changes, otherwise it can only be used to control lamps, not to show their status.|
+|__Polling interval__|Defines how often the states will be polled, and thus updated in ioBroker. Low polling intervals can cause performance issues in some settings. Hence, the minimum allowed polling interval is 2 seconds. If polling interval is set to less than 2 seconds it will be set to 2 seconds during runtime.|
 
 ## Deutsch :de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein. 
 In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf create user drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben. 
 
 ## Changelog
+### 2.4.3 (2019-11-19)
+* (foxriver76) increased version of node-hue-api to fix authentication for old bridge
+
+### 2.4.2 (2019-11-16)
+* (foxriver76) we now use nupnp + upnp to discover bridges (previously only upnp)
+
+### 2.4.1 (2019-11-13)
+* (foxriver76) added possibility to control zones and entertainment areas
+* (foxriver76) log queue retires on debug instead warn
+* (foxriver76) __BETA__: added possibility to control software sensors (Note: this may be handled in a more suitable fashion soon)
+
+### 2.3.1 (2019-11-02)
+* (foxriver76) fixed controlling `on` state of sensors
+
+### 2.2.3 (2019-10-21)
+* (foxriver76) migrate everything to Hue v3
+* (foxriver76) add possibility to turn on/off sensor
+* (foxriver76) add anyOn state for all group
+* (foxriver76) different kinds of fixes for v3 (Osram Plugs, SSL connection, etc)
+
+### 2.1.0 (2019-10-15)
+* (foxriver76) usage and adaptions for node-hue-api v3
+* (foxriver76) ability to turn lights on with last settings
+* (foxriver76) polling interval minimum is now 2 sec
+
+### 2.0.1 (2019-10-04)
+* (foxriver76) fixed bug, that prevented some sensor states getting updated during runtime
+
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -168,7 +231,7 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker
 
 

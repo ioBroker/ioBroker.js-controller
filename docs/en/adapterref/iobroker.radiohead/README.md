@@ -32,9 +32,9 @@ To send data the data is simply written to the state of an outgoing data object 
 
 ## Installation
 
-The adapter is currently available in the *latest* repository.
+The adapter is available in the *stable* repository and can be installed via admin or cli.
 
-Alternatively, it be installed using the URL `https://github.com/crycode-de/ioBroker.radiohead.git`.
+Alternatively, a latest version can be installed using the *latest* repository or the URL `https://github.com/crycode-de/ioBroker.radiohead.git`.
 
 ## Configuration
 
@@ -292,6 +292,9 @@ Each instance of the adapter provides the following information:
 If necessary, the counters of the messages can be reset to 0 by writing to the object `actions.resetCounters`.
 
 ## Changelog
+### 1.0.2 (2019-09-08)
+* (Peter Müller) dependency updates and bugfixes
+
 ### 1.0.1 (2019-07-30)
 * (Peter Müller) license  update
 

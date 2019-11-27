@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-isg! [Logo] (admin / stiebel-isg.png)
-hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
+hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
 ---
 # IoBroker.stiebel-isg ![Logo](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -30,6 +30,18 @@ Hilfe oder Hinweise sind willkommen.
 * Internet Service Gateway (ISG) von Stiebel-Eltron / Tecalor
 
 ## Changelog
+
+### 1.4.10
+
+* bugfix for group definitons
+
+### 1.4.9
+
+* bug in rounding for info-values fixed
+
+### 1.4.8
+
+* update due to security vulnerabilities in dependencies
 
 ### 1.4.7
 
@@ -78,7 +90,7 @@ Hilfe oder Hinweise sind willkommen.
 
 ### 1.2.4
 
-* bug repaired: unnecessary space characters in units removed 
+* bug repaired: unnecessary space characters in units removed
 
 ### 1.2.3
 

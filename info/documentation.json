@@ -38,7 +38,7 @@
             "documentation": [
                 {
                     "title": "ioBroker Homepage",
-                    "link": "http://www.iobroker.net/docu/?lang=de"
+                    "link": "https://www.iobroker.net/#de/intro"
                 },
                 {
                     "title": "smarthome-tricks.de - Tricks und Tipps rund um Dein Smarthome",
@@ -51,6 +51,10 @@
                 {
                     "title": "ioBroker-Tutorial-Reihe",
                     "link": "https://haus-automatisierung.com/iobroker-tutorial-reihe/"
+                },
+                {
+                    "title": "IOBroker Home Automation",
+                    "link": "https://wiki.instar.de/Software/Smarthome/IOBroker/"
                 }
             ],
             "development": [
@@ -78,6 +82,36 @@
                 }
             ],
             "news": [
+                {
+                    "title": "ioBroker – die kostenlose Smart-Home Zentrale",
+                    "link": "https://gacheck.de/iobroker-die-kostenlose-smarthome-zentrale/",
+                    "date": "2019-09-27T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker: Smart-Home-Steuersoftware sicher installieren und betreiben",
+                    "link": "https://www.heise.de/ratgeber/ioBroker-Smart-Home-Steuersoftware-sicher-installieren-und-betreiben-4497372.html",
+                    "date": "2019-08-22T00:00:00.000Z"
+                },
+                {
+                    "title": "Weitergepuzzelt - Die wichtigsten neuen Erweiterungen der Smart-Home-Steuersoftware ioBroker",
+                    "link": "https://www.heise.de/select/ct/2019/18/1566747409688202",
+                    "date": "2019-08-16T00:00:00.000Z"
+                },
+                {
+                    "title": "Funktioniert – ioBroker auf neuem Raspberry Pi 4 installieren",
+                    "link": "https://technikkram.net/2019/07/funktioniert-iobroker-auf-neuem-raspberry-pi-4-installieren",
+                    "date": "2019-07-21T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker auf dem Raspberry Pi installieren und konfigurieren",
+                    "link": "https://www.modius-techblog.de/smart-home/iobroker-auf-dem-raspberry-pi-installieren-und-konfigurieren/",
+                    "date": "2019-05-23T00:00:00.000Z"
+                },
+                {
+                    "title": "ioBroker unter Docker auf der Synology Diskstation (V3)",
+                    "link": "https://buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/",
+                    "date": "2019-05-04T00:00:00.000Z"
+                },
                 {
                     "title": "Alle Smarthome Systeme unter einen Hut – ioBroker vereint das Smart Home",
                     "link": "https://www.techniktest-online.de/testberichte/smarthome/alle-smarthome-systeme-unter-einen-hut-iobroker-vereint-das-smart-home/",
@@ -155,8 +189,20 @@
                     "link": "https://www.youtube.com/playlist?list=PLhZP6yZlpKQ9MFV74PQe5JYNItbLLgfG4"
                 },
                 {
+                    "title": "TeamSpeak SmartHome",
+                    "link": "https://www.youtube.com/channel/UCdQZAiYa6Yw6p10pX49zQDQ"
+                },
+                {
+                    "title": "Einfach nur Chris",
+                    "link": "https://www.youtube.com/channel/UC7mqX5iCL97hGiT8RidtTAw/videos"
+                },
+                {
                     "title": "Verdrahtet",
                     "link": "https://www.youtube.com/playlist?list=PLXwTV9CYYswieFE27l0hc4zWAjuEfC_uG"
+                },
+                {
+                    "title": "Technik Home",
+                    "link": "https://www.youtube.com/playlist?list=PLGu9cYWWmbz58spJMqQSHsp0k1-uzs7Ds"
                 },
                 {
                     "title": "Meister TR",
@@ -191,7 +237,7 @@
                     "link": "https://www.youtube.com/playlist?list=PLLmhoTi2es84dU2JYQsB1HOcXpC28U463"
                 },
                 {
-                    "title": "Sven Topp",
+                    "title": "Svens ioBroker Tutorials",
                     "link": "https://www.youtube.com/channel/UCWNrpBBFbvrK8gAWLDX9QuQ"
                 },
                 {
@@ -204,13 +250,17 @@
                 },
                 {
                     "title": "Michael Mackedanz",
-                    "link": "https://www.youtube.com/channel/UCgBrBIIUrmIjJwJZ7sOLu4A"
+                    "link": "https://www.youtube.com/playlist?list=PLYVHzF4C11Of3WW-o79CbNchwrXgoKW1z"
                 }
             ],
             "other": [
                 {
                     "title": "Wikipedia - ioBroker",
                     "link": "https://de.wikipedia.org/wiki/IoBroker"
+                },
+                {
+                    "title": "ioBroker - Visualisierung erstellen im ioBroker Udemy)",
+                    "link": "https://www.udemy.com/course/iobroker-visualisierung-erstellen/"
                 }
             ]
         },
@@ -228,7 +278,7 @@
             "documentation": [
                 {
                     "title": "ioBroker Homepage",
-                    "link": "http://www.iobroker.net/docu/?lang=en"
+                    "link": "https://www.iobroker.net/#en/intro"
                 }
             ],
             "development": [
@@ -285,7 +335,7 @@
             "documentation": [
                 {
                     "title": "Домашняя страница ioBroker",
-                    "link": "http://www.iobroker.net/docu/?lang=ru"
+                    "link": "https://www.iobroker.net/#ru/intro"
                 },
                 {
                     "title": "ioBroker - Визуализация",
@@ -301,6 +351,11 @@
                 }
             ],
             "news": [
+                {
+                    "title": "Умный дом в контейнерах (ioBroker + Zigbee в Docker)",
+                    "link": "https://pcnews.ru/blogs/umnyj_dom_v_kontejnerah_iobroker__zigbee_v_docker-936255.html",
+                    "date": "2019-11-03T00:00:00.000Z"
+                },
                 {
                     "title": "HomeKit и ioBroker Давайте дружить домами",
                     "link": "https://habr.com/ru/company/iobroker/blog/433798/",
@@ -357,6 +412,10 @@
         },
         "pt": {
             "community": [
+                {
+                    "title": "Fórum de suporte português",
+                    "link": "https://forum.iobroker.net/category/104"
+                }
             ],
             "documentation": [
             ],
@@ -367,6 +426,10 @@
             "news": [
             ],
             "video": [
+                {
+                    "title": "ioBroker Brasil",
+                    "link": "https://www.youtube.com/channel/UCugK_StwrTzqXLbW6o6NKyQ"
+                }
             ],
             "other": [
             ]
@@ -468,6 +531,10 @@
             ],
             "documentation": [
                 {
+                    "title": "ioBroker主页",
+                    "link": "https://www.iobroker.net/#zh-cn/intro"
+                },
+                {
                     "title": "中文文档",
                     "link": "https://doc.iobroker.cn/#/_zh-cn/"
                 }
@@ -532,7 +599,7 @@
                         "pl": "tłumacz ioBroker",
                         "zh-cn": "ioBroker翻译"
                     },
-                    "link": "http://www.iobroker.net:3000/"
+                    "link": "https://translator.iobroker.in/"
                 }
             ],
             "blog": [

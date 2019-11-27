@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
+hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -17,7 +17,7 @@ hash: otY70Vo66QvNd+TNPeQlWUAKCXqWoQWQ0S7TuNOyN7M=
 
 # IoBroker.lovelace
 ## Lovelace Adapter für ioBroker
-Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen
+Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Lovelace-Benutzeroberfläche von Home Assistant erstellen.
 
 ## Aufbau
 Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden können:
@@ -92,6 +92,29 @@ common: {
     }
 }
 ```
+
+### Eingang auswählen
+Dies kann manuell erfolgen, wenn der Entitätstyp input_select im benutzerdefinierten Dialogfeld ausgewählt ist.
+Die Liste der zur Auswahl stehenden Optionen sollte im Standardobjekt commom.states enthalten sein:
+
+```
+"common": {
+    "type": "string",
+    "states": {
+      "1": "select 1",
+      "2": "Select 2",
+      "3": "select 3"
+    },
+    "custom": {
+      "lovelace.0": {
+        "enabled": true,
+        "entity": "input_text",
+        "name": "test_input_select"
+      }
+    }
+```
+
+mit anderen Worten, in sollte auch in IoB input select sein.
 
 ### Timer
 Der Timer kann mit folgendem Skript simuliert werden:
@@ -183,6 +206,9 @@ Getestet mit Jahr und Daswetter. Für eines oder mehrere der folgenden Objekte m
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
 
+Getestet mit dem AccuWeather-Treiber v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
+Benutzerdefinierte Lovelace-Karte zur Unterstützung der AccuWeather-Vorhersage - https://github.com/algar42/IoB.lovelace.accuweather-card
+
 ### Einkaufsliste
 Einkaufsliste schreibt die Werte in Form:
 
@@ -254,6 +280,11 @@ oder setzen Sie den Entitätstyp einfach manuell auf `camera` und schreiben Sie 
 ### Werkzeugleiste verstecken
 Um die Symbolleiste auszublenden, können Sie das Kontrollkästchen im ioBroker-Konfigurationsdialog auf der Registerkarte Themen aktivieren.
 Um es anzuzeigen, können Sie es im Dialog wieder deaktivieren oder einfach die URL mit dem Parameter `?toolbar=true` aufrufen.
+
+### Abschrift
+Sie können Bindungen in Abschriften wie in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects) verwenden.
+
+Z.B. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` erzeugt Text `Admin adapter is alive` im Abschriftenfeld.
 
 ## Benutzerdefinierte Karten
 ### Upload von benutzerdefinierten Karten
@@ -378,35 +409,107 @@ setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "
 setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
+## Stimmenkontrolle
+Alle Befehle vom Webinterface werden mit `ack=false` in den Status lovelace.X.conversation geschrieben.
+Sie können ein Skript schreiben, das auf Anfrage reagiert und antwortet:
+
+```
+on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
+   console.log('Question: ' + obj.state.val);
+   if (obj.state.val.includes('time')) {
+      setState('lovelace.0.conversation', new Date().toString(), true); // true is important. It will say, that this is answer.
+   } else {
+      setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
+   }
+});
+```
+
+## Originalquellen für Lovelace
+Verwendete Quellen sind hier https://github.com/GermanBluefox/home-assistant-polymer.
+
 ## Machen
 Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übernommen werden
 
 ## Entwicklung
+### Ausführung
+Verwendete Version von home-assistant-frontend@1.0.0
+
 ### So erstellen Sie die neue Lovelace-Version
+Zunächst muss der eigentliche https://github.com/home-assistant/home-assistant-polymer (dev branch) manuell in https://github.com/GermanBluefox/home-assistant-polymer eingebunden werden .git (iob) -Zweig
+
+Alle Änderungen für ioBroker sind mit dem Kommentar `// IoB` gekennzeichnet.
+Fürs Erste (2019.11.23) wurden folgende Dateien geändert:
+
+- `.gitignore` -` .idea` ignorieren hinzugefügt
+- `build-scripts / gulp / app.js` - Neue Aufgabe gulp hinzugefügt
+- `build-scripts / gulp / webpack.js` - Neue Aufgabe gulp hinzugefügt
+- `src / entrypoints / core.ts` - Modifizierter Authentifizierungsprozess
+- `src / data / lovelace.ts` - Option zum Ausblenden der Leiste hinzugefügt
+- `src / panels / lovelace / hui-root.ts` - Benachrichtigungen und Sprachsteuerung hinzugefügt
+- `src / dialogs / notifications / notification-drawer.js` - Button ack all hinzugefügt
+- `src / layouts / home-assistant-main.ts` - App-Seitenleiste entfernen
+
+Nach dem Checkout wurde die Version im `./build`-Ordner geändert. Dann.
+
 1. Wechseln Sie in das Verzeichnis ./build.
-2. `git clone https:// github.com / home-assistant / home-assistant-polymer.git`
+2. `git clone https:// github.com / GermanBluefox / home-assistant-polymer.git` Es ist eine Abspaltung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (siehe die Dateiliste weiter oben).
 3. `cd home-assistant-polymer`
 4. `Git Checkout Master`
 5. `npm install`
-6. `gulp run build-app`
-4. `. / Build / home-assistant-polymer / hass_frontend` in`. / Hass_frontend` in diesem Repo
-5. Formatieren Sie index.html
-6. Starten Sie die Aufgabe "gulp rename".
+6. `gulp run build-app` für die Veröffentlichung oder` gulp run develop-iob` für die Debug-Version. Um das Web nach Änderungen zu erstellen, können Sie "webpack-dev-app" aufrufen, um es schneller zu erstellen. Sie müssen jedoch "build-app" aufrufen, nachdem die Version einsatzbereit ist.
+7. Kopieren Sie alle Dateien von `. / Build / home-assistant-polymer / hass_frontend` nach`. / Hass_frontend` in diesem Repo
+8. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
+### 1.0.1 (2019-11-23)
+* (bluefox) Implemented bindings ala vis in markdown
+
+### 0.2.5 (2019-11-18)
+* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
+* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
+* (algar42) input_boolean processing correct and initial value added to entity
+* (algar42) input_select processing added
+* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
+* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
+* (algar42) Russian translation updated
+* (algar42) Language support added. Lovelace runs with IoB System Language
+
+### 0.2.4 (2019-11-05)
+* (ldittmar) Fixed translations
+
+### 0.2.3 (2019-10-22)
+* (bluefox) The custom settings were corrected
+
+### 0.2.1 (2019-10-15)
+* (bluefox) Processing of empty states was corrected
+
+### 0.2.0 (2019-09-19)
+* (Scrounger) Some bugs on "Custom Dialog" were fixed
+* (Scrounger) bug fix: if value set by lovelace and max is not 100
+* (Scrounger) log warn if no max value set for light entity
+* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
+
+### 0.1.5 (2019-08-26)
+* (bluefox) fixed timestamp conversion
+
+### 0.1.3 (2019-07-18)
+* (SchumyHao) If no ACTUAL is discovered, use SET value as switch entity value
+
+### 0.1.2 (2019-07-14)
+* (SchumyHao) Translate Chinese words to pinyin
 
 ### 0.1.1 (2019-06-10)
 * (bluefox) Fixed control of states
 
 ### 0.1.0 (2019-06-06)
 * (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker 
+* (bluefox) Lovelace compiled extra for ioBroker
 
 ### 0.0.3 (2019-06-02)
 * (bluefox) initial release
 
 ## License
-   
+
 Copyright 2019, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");

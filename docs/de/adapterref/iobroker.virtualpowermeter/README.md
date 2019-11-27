@@ -3,8 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.virtualpowermeter/README.md
 title: kein Titel
-hash: HBsrvOqmlVU3gl72E4L7SD4u97k/4ZAYYxiWWwwoumY=
+hash: E04ZmJdpmUttJASwL6vMO8tWk/BvKQa2AYb2A+JFy8c=
 ---
+![Knoten](https://img.shields.io/node/v/iobroker.virtualpowermeter.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/virtualpowermeter-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.virtualpowermeter.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.virtualpowermeter.svg)
@@ -13,25 +14,27 @@ hash: HBsrvOqmlVU3gl72E4L7SD4u97k/4ZAYYxiWWwwoumY=
 ![NPM](https://nodei.co/npm/iobroker.virtualpowermeter.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/Omega236/ioBroker.virtualpowermeter/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Omega236/ioBroker.virtualpowermeter?branch=master&svg=true)
+![Lizenz](https://img.shields.io/npm/l/iobroker.virtualpowermeter.svg)
 
 <h1><img src="admin/virtualpowermeter.png" width="64"/> ioBroker.virtualpowermeter </h1>
 
-## VirtualPowermeter-Adapter für ioBroker
+## Virtualpowermeter adapter für ioBroker
 Erzeugt Virtuelle Strommesser
 
-Im Smarthome hat man viele Geräte, die aber keinen integrierten Powermeter haben.
+Im Smarthome hat man viele Geräte die man zwar umschalten kann, aber keine integrierten Powermeter haben (meist Lichter).
 
-Mit diesem Adapter ist das Ziel zu jedem eingestelltem Datenpunkt (über Custom -> MaxWatt (mindestens 60W)) zwei zusätzliche Datenpunkte zu befüllen -> Energy_Power (zwischen 60 W) und Energy_Total (zwischen 2501,23 Wh).
-Zusätzlich werden Gruppen gebildet (die werden unter virtualpowermeter.0.xxx abgelegt)
+Mit diesem Adapter können zwei zusätzliche Datenpunkte für befüllen -> Energy_Power (beispielsweise 60 W) und Energy_Total (beispielsweise 2501,23 Wh) eingestellt werden.
+Zusätzlich werden Gruppen gebildet (this be under virtualpowermeter.0.xxx abgelegt)
 
-Mit diesen neuen Datenpunkten kann dann eine Einfache Visualiserung durchgeführt werden.
+Mit diesen neuen Datenpunkten kann dann eine einfache Visualisierung durchgeführt werden.
 
-Die neuen Datenpunkte könnten besonders mit Sourceanalytix weiterverarbeitet werden
+Die neuen Datenpunkte (besonders die Gruppen) könnten super mit Sourceanalytix weiterverarbeitet werden
 
 siehe MeinBeispiel.jpg
 
 ## Changelog
-
+### 1.0.1
+* (Lutz Sebastian) SecurityUpdates
 ### 1.0.0
 * (Lutz Sebastian) Final Release
 ### 0.2.8

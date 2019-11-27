@@ -3,115 +3,119 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: CZi/Uz936sc31CRGG3ww4BxxUktNWRerrq/DsAxkpG4=
+hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
 ![安装数量](http://iobroker.live/badges/sbfspot-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.sbfspot.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
-![测试](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
+![测验](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
-#ioBroker.sbfspot
-该适配器使用sbfspot从SMA功率逆变器读取数据。
+＃ioBroker.sbfspot
+该适配器使用sbfspot从SMA电源逆变器读取数据。
 现在支持两种数据库类型（mySQL和sqlite）。
-从版本0.2.3开始，有一个基于flot的自己的vis小部件可用于显示历史数据。
+从0.2.3版开始，有一个基于flo的vis小部件可用于显示历史数据。
 
 ##提示
-*使用来自https://github.com/SBFspot/SBFspot或https://github.com/rg-engineering/SBFspot的sbfspot的最新版本
-*适配器，sbfspot和数据库（mySQL或sqlite）必须在同一系统上运行，例如覆盆子PI
-*可以在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index下找到Raspberry Pi（或类似版本）上的sbfspot安装手册。 PHP / PRODUKTE /软件/插件，妇儿-iobroker-sbfspot
-*对于Raspberry Pi，有一个半自动配置工具，可在https://github.com/SBFspot/sbfspot-config下找到
+*从https://github.com/SBFspot/SBFspot或https://github.com/rg-engineering/SBFspot使用sbfspot的最新版本
+*适配器，sbfspot和数据库（mySQL或sqlite）必须在同一系统上运行，例如树莓派
+*可在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index下找到Raspberry Pi（或类似版本）上sbfspot的安装手册。 php / produkte / software / plugin-fuer-iobroker-sbfspot
+*对于Raspberry Pi，在https://github.com/SBFspot/sbfspot-config下提供了一个半自动配置工具
 
 ＃＃ 已知的问题
-*请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）创建问题，如果您发现错误或新功能
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
 
-## Changelog
+## 2.3.4（2019-10-31）
+*（René）将flot更新到3.0版
 
-### 2.3.3 (2019-02-03)
-* (René) due to install problems downgrade of sqlite3 package
+### 2.3.3（2019-02-03）
+*（René）由于安装问题而将sqlite3软件包降级
 
-### 2.3.1 (2019-02-02)
-* (René) bug fix: with sqlite "today" data were not shown
+### 2.3.1（2019-02-02）
+*（René）错误修复：使用sqlite的“今天”数据未显示
 
-### 2.3.0 (2019-01-20)
-* (René) support of compact mode
-* (René) add additional error information in log
+### 2.3.0（2019-01-20）
+*（René）支持紧凑模式
+*（René）在日志中添加其他错误信息
 
-### 2.2.5 (2018-11-26)
-* (René) upgrade packages
+### 2.2.5（2018-11-26）
+*（René）升级包
 
-### 2.2.5 (2018-11-04)
-* (René) reset yield if no new value from today
+### 2.2.5（2018-11-04）
+*（René）如果今天没有新值可重置收益
 
-### 2.2.4 (2018-08-19)
-* (René) bugfix for ticks on X
+### 2.2.4（2018-08-19）
+*（René）错误修正X
 
 ### 2.2.3
-* (René) the same as 2.2.2
+*（René）与2.2.2相同
 
 ### 2.2.2
-* (René) add timestamp of last update
+*（René）添加上次更新的时间戳
 
 ### 2.2.1
-* (René) close of database connection after last query result is available (e.g. to support more than one inverter)
+*（René）在获得最后一个查询结果后关闭数据库连接（例如，支持多个逆变器）
 
 ### 2.2.0
-* (Nis) background color and border
-* (René) bug fixes in admin3
+*（Nis）背景颜色和边框
+* admin3中的（René）错误修复
 
 ### 2.1.0
-* (René) Support MariaDB
+*（René）支持MariaDB
 
 ### 2.0.1
-* (René) Support of admin3
+*（René）支持admin3
 
 ### 2.0.0
-* (René) since we always use one graph per widget, only one is supported now
-		Attention: widget is not compatible with version 1.x.x; just check settings in widget after installation!
+*（René），因为我们每个小部件始终使用一个图形，所以现在仅支持一个图形
+
+注意：小部件与1.x.x版本不兼容；安装后只需检查小部件中的设置即可！
 
 ### 1.1.0
-* (René) autoscale of y axis
-* (René) color for y axis 
-* (René) adjustable date format 
+*（René）y轴的自动缩放
+* y轴的（René）颜色
+*（René）可调日期格式
 
 ### 1.0.1
-* (René) bug fix for sqlite
+*（René）修复SQLite的错误
 
 ### 1.0.0
-* (René) first stable release
+*（René）首次稳定发行
 
 ### 0.2.6
-* (René) bug fix for android app > 1.0.6
+*（René）bug修复android app> 1.0.6
 
 ### 0.2.5
-* (René) use install date to calculate historical values
+*（René）使用安装日期来计算历史值
 
 ### 0.2.4
-* (René) logo changed
+*（René）徽标已更改
 
 ### 0.2.3
-* (René) adding historical data as datapoint (JSON)
-* (René) new vis widget to show historical data
+*（René）添加历史数据作为数据点（JSON）
+*（René）新的vis小部件可显示历史数据
 
 ### 0.2.2
-* (René) renamed to sbfspot
+*（René）重命名为sbfspot
 
 ### 0.2.1
-* (René) index.html updated
+*（René）index.html更新
 
 ### 0.2.0
-* (René) support of sqlite and license changed to MIT
+*（René）对sqlite和许可证的支持已更改为MIT
 
 ### 0.1.1
-* (René) UTF8 coding
+*（René）UTF8编码
 
 ### 0.1.0
-* (René) first release
+*（René）第一版
 
 ### 0.0.1
-* (René) initial release
+*（René）初始版本
+
+## Changelog
 
 ## License
 Copyright (C) <2017-2019>  <info@rg-engineering.eu>

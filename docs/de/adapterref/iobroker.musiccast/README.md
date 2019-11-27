@@ -3,13 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.musiccast/README.md
 title: ioBroker.musiccast
-hash: XnE4QwDFRjUpKw9w5tMIJ7qYPO7YYoM0zgipGsj69/c=
+hash: tt/h/le4GOU9PDRh7t6r+yzRzstX8rUJyno2AOEsUHM=
 ---
 ![Logo](../../../en/adapterref/iobroker.musiccast/admin/musiccast.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/musiccast-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.musiccast.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.musiccast.svg)
-![Build-Status](https://travis-ci.org/foxthefox/ioBroker.musiccast.svg?branch=master)
+![Build Status](https://travis-ci.org/foxthefox/ioBroker.musiccast.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.musiccast.png?downloads=true)
 
 # IoBroker.musiccast
@@ -24,150 +25,151 @@ von npm
 npm install iobroker.musiccast
 ```
 
-Aktuelle Version von Github (dies funktioniert möglicherweise nicht jedes Mal, wenn die Entwicklung läuft)
+aktuelle Version von Github (dies funktioniert möglicherweise nicht jedes Mal, wenn die Entwicklung läuft)
 
 ```javascript
 npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --production
 ```
 
 ## Die Einstellungen
-Auf der Admin-Seite "+" können IP-Adresse, Geräte-ID, Typ und Name manuell hinzugefügt werden.
-Drücken Sie die Suchtaste für die Erkennung. Wenn Sie über mehrere Geräte verfügen, müssen Sie die Taste mehrmals drücken, bis alle Geräte erkannt werden. Leider wird bei der Erkennung zu diesem Zeitpunkt nur ein Objekt zurückgegeben. Dies könnte eines Ihrer MusicCast-Geräte sein. Wenn der Rücksprung dem bereits vorhandenen Teil der Tabelle entspricht, müssen Sie die Schaltfläche erneut drücken. Manchmal hilft es, die Daminseite zu speichern und wieder zu öffnen.
+Auf der Admin-Seite kann das "+" verwendet werden, um die IP-Adresse, die Geräte-ID, den Typ und den Namen manuell hinzuzufügen.
+Drücken Sie die Suchtaste, um die Suche zu starten. Wenn Sie über mehrere Geräte verfügen, müssen Sie die Taste mehrmals drücken, bis alle Geräte erkannt wurden. Leider gibt die Erkennung jeweils nur ein Objekt zurück, und dies kann jedes Ihrer MusicCast-Geräte sein. Wenn die Rückgabe mit der bereits in der Tabelle enthaltenen identisch ist, müssen Sie erneut auf die Schaltfläche klicken. Manchmal hilft es, die damin-Seite zu speichern und wieder zu öffnen.
 
-In dem unwahrscheinlichen Fall, dass 2 oder mehr Geräte dieselbe ID liefern, ändern Sie eine ID leicht. Ansonsten kann der Adapter nicht zwischen den beiden Geräten unterscheiden.
+In dem unwahrscheinlichen Fall, dass 2 oder mehr Geräte dieselbe ID liefern, ändern Sie eine ID geringfügig. Ansonsten kann der Adapter die 2 Geräte nicht unterscheiden.
 
-Wenn Sie möchten, dass die Wiedergabezeit für die Tracks, die Sie hören, aktualisiert wird, aktivieren Sie das entsprechende Kontrollkästchen. Beachten Sie, dass die Anzahl der Nachrichten erhöht wird (jede Sekunde für jedes Gerät der Pingpong der Updates).
+Wenn Sie möchten, dass die Wiedergabezeit für die Titel, die Sie anhören, aktualisiert wird, aktivieren / aktivieren Sie das entsprechende Kontrollkästchen. Beachten Sie, dass sich die Anzahl der Nachrichten erhöht (jede Sekunde für jedes Gerät das Pingpong der Updates).
 
 ## Verfügbare Objekte
-Folgende Objekte sind derzeit implementiert:
+Folgende Objekte sind aktuell implementiert:
 
 ### Basic (zone)
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
 | {zone} .power | boolean | x | true / false -> ON / Standby |
-| {zone} .zone_b | boolean | | | true / false -> Zielzone ist Zone B |
+| {zone} .zone_b | boolescher Wert |? | true / false -> Zielzone ist Zone B |
 | {zone} .mute | boolean | x | true / false -> stumm / nicht stumm |
-| {zone} .volume | value | x | 0 ... max (max je nach Gerät) |
-| {zone} .act_vol_mode | text | | | tatsächliche Lautstärke im dB-Modus |
-| {zone} .act_vol_val | value | | | tatsächliche Lautstärke in dB-Wert |
-| {zone} .act_vol_unit | text | - | tatsächliche Lautstärkeeinheit (sollte dB sein) |
+| {zone} .volume | value | x | 0 ... max (max. abhängig vom Gerät) |
+| {zone} .act_vol_mode | text |? | aktuelle Lautstärke im dB-Modus |
+| {zone} .act_vol_val | value |? | tatsächliche Lautstärke in dB value |
+| {zone} .act_vol_unit | text | - | tatsächliche Volumeneinheit (sollte dB sein) |
 | {zone} .act_vol_mode_list | text | - | aktuelle Lautstärke in dB-Modi |
-| {zone} .input | text | x | wird je nach Gerät | eingegeben
-| {zone} .input_list | text | - | mögliche Eingaben |
-| {zone} .sound_program | text | x | set sound program |
-| {zone} .sound_program_list | text | - | mögliche Klangprogramme |
-| {zone} .surr_decoder_type | text | | | setze den Surround-Typ |
+| {zone} .input | text | x | eingaben je nach gerät |
+| {zone} .input_list | text | - | mögliche eingaben |
+| {zone} .sound_program | text | x | sound program | setzen |
+| {zone} .sound_program_list | text | - | mögliche soundprogramme |
+| {zone} .surr_decoder_type | text |? | setze Surround-Typ |
 | {zone} .surr_decoder_type_list | text | - | möglicher Surround-Decoder |
-| {zone} .link_control | text | x | Linksteuerung festlegen |
-| {zone} .link_control_list | text | - | mögliche linksteuerungseinstellungen |
-| {zone} .link_audio_delay | text | x | Link-Audioverzögerung einstellen |
-| {zone} .link_audio_delay_list | text | - | mögliche link link audio delay einstellungen |
+| {zone} .link_control | text | x | setze Verbindungssteuerung |
+| {zone} .link_control_list | text | - | mögliche Einstellungen für die Verbindungssteuerung |
+| {zone} .link_audio_delay | text | x | Link-Audio-Verzögerung einstellen |
+| {zone} .link_audio_delay_list | text | - | mögliche Einstellungen für die Audio-Verzögerung von Link-Links |
 | {zone} .clearVoice | boolean | x | clear Sprachsteuerung |
-| {zone} .low | value | x | level EQ niedrig |
+| {zone} .low | value | x | level EQ low |
 | {zone} .mid | value | x | level EQ mid |
-| {zone} .high | value | x | level EQ hoch |
-| {zone} .subwoofer_volume | value | x | Pegel Subwoofer-Lautstärke |
+| {zone} .high | value | x | level EQ high |
+| {zone} .subwoofer_volume | value | x | level subwoofer volume |
 | {zone} .bass | value | x | level bass |
-| {zone} .dreble | value | x | Pegelhöhen |
+| {zone} .treble | value | x | level Höhen |
 | {zone} .tone_control_mode_list | text | - | möglicher Tonsteuerungsmodus |
-| {zone} .tone_mode | boolean | | | Tonsteuermodus |
+| {zone} .tone_mode | boolescher |? | Tonsteuermodus |
 | {zone} .balance | value | x | level balance |
 | {zone} .direct | boolean | x | set direct |
-| {zone} .pure_direct | boolean | x | set pure direkt |
-| {zone} .enhancer | boolean | x | set-Enhancer |
-| {zone} .bass_extension | boolean | x | Basserweiterung setzen |
+| {zone} .pure_direct | boolean | x | setze pure direct |
+| {zone} .enhancer | boolean | x | set enhancer |
+| {zone} .bass_extension | boolean | x | setze Basserweiterung |
 | {zone} .sleep | value | x | sleep timer |
 
 ### Netusb
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
 | netusb.input | value | x | set / actual input |
-| netusb.playPause | boolean | x | set Play / Pause |
+| netusb.playPause | boolean | x | setze Wiedergabe / Pause |
 | netusb.playback | text | - | status net player |
+| netusb.stop | boolean | x | set Stop |
 | netusb.auto_stop | boolean | - | automatisch gestoppt |
-| netusb.next | boolean | x | set Forward |
+| netusb.next | boolean | x | setze Forward |
 | netusb.prev | boolean | x | set Rewind |
 | netusb.shuffle | boolean | x | Shuffle umschalten |
 | netusb.shuffle_stat | text | - | shuffle status |
-| netusb.repeat | boolean | x | Wiederholung umschalten |
-| netusb.repeat_stat | text | - | Wiederholungsstatus |
-| netusb.artist | text | - | Künstlername |
-| netusb.album | text | - | Albumname |
+| netusb.repeat | boolean | x | toggle repeat |
+| netusb.repeat_stat | text | - | repeat status |
+| netusb.artist | text | - | artist name |
+| netusb.album | text | - | album name |
 | netusb.track | text | - | spurname |
 | netusb.albumart_url | text | - | http-Adresse für Albumcover |
 | netusb.albumart_id | value | - | album art id |
-| netusb.play_time | value | - | gespielte Zeit in s |
-| netusb.play_queue_type | text | - | netusb Warteschlangentyp |
+| netusb.play_time | value | - | Spielzeit in s |
+| netusb.play_queue_type | text | - | netusb queue type |
 | netusb.total_time | value | - | Gesamtzeit in s |
-| netusb.recent_info | json | - | geschichte der gespielten gegenstände |
-| netusb.preset_info | json | - | gespeicherte Voreinstellungen / Favoriten |
-| netusb.presetrecallnumber | value | x | ruft das # in der Favoritenliste | auf
+| netusb.recent_info | json | - | Geschichte der gespielten Gegenstände |
+| netusb.preset_info | json | - | gespeicherte Presets / Favoriten |
+| netusb.presetrecallnumber | value | x | rufe das # in der Favoritenliste auf |
 | netusb.usb_devicetype | text | - | Typ des angeschlossenen USB-Geräts |
-| netusb.attribute | value | - | welche Möglichkeiten hat den Dienst, | zu decodieren
+| netusb.attribute | value | - | welche Possibleiolites den Dienst haben, der entschlüsselt werden soll |
 
 ### System
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
 | system.api_version | value | - | API-Version |
 | system.system_version | value | - | Systemversion |
 | system.inputs. {service} | value | - | verfügbarer Eingabedienst |
 | system.inputs. {service} .account_enable | value | - | verfügbarer Eingabedienst aktiviert |
-| system.inputs. {service} .distribution_enable | value | - | verfügbare Verteilungsdatei für Eingabedienste |
-| system.inputs. {service} .play_info_type | value | - | verfügbarer Eingabediensttyp |
+| system.inputs. {service} .distribution_enable | value | - | verfügbarer verteilbarer Eingabedienst |
+| system.inputs. {service} .play_info_type | value | - | verfügbarer Eingabeservice-Typ |
 
 ### CD-Player
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
-| cd.playPause | boolean | x | set Play / Pause |
-cd.playback | text | - | status CD-Spieler |
-| cd.stop | boolean | x | set Stop |
-| cd.next | boolean | x | Vorwärts setzen |
+| cd.playPause | boolean | x | setze Wiedergabe / Pause |
+| cd.playback | text | - | status CD player |
+| cd.stop | boolean | x | setze Stop |
+| cd.next | boolean | x | setze Forward |
 | cd.prev | boolean | x | set Rewind |
-cd.shuffle | boolean | x | Shuffle umschalten |
-cd.shuffle_stat | text | - | shuffle status |
+| cd.shuffle | boolean | x | shuffle umschalten |
+| cd.shuffle_stat | text | - | shuffle status |
 | cd.repeat | boolean | x | Wiederholung umschalten |
-| cd.repeat_stat | text | - | Wiederholungsstatus |
+| cd.repeat_stat | text | - | repeat status |
 | cd.device_stat | text | - | gerätestatus |
 | cd.playtime | value | - | aktuelle Wiedergabezeit |
-| cd.totaltime | value | - | aktuelle Gesamtzeit des Tracks |
-| cd.disctime | value | - | CD Gesamtzeit |
-| cd.tracknumber | value | - | Track aktuell in Wiedergabe |
-| cd.totaltracks | value | - | total CD Titel |
-| cd.artist | text | - | Künstlername |
-| cd.album | text | - | Albumname |
+| cd.totaltime | value | - | Gesamtzeit des aktuellen Titels |
+| cd.disctime | value | - | CD-Gesamtzeit |
+| cd.tracknumber | value | - | aktuelle Wiedergabe verfolgen |
+| cd.totaltracks | value | - | total CD tracks |
+| cd.artist | text | - | artist name |
+| cd.album | text | - | album name |
 | cd.track | text | - | spurname |
 
 ### Tuner
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
-| tuner.common_preset_info | array | - | Voreinstellungsinformationen |
-| tuner.am.preset_info | array | - | Voreingestellte AM-Informationen |
-| tuner.fm.preset_info | array | - | Preset FM Information |
-| tuner.dab.preset_info | array | - | Preset-DAB-Informationen |
-| tuner.am.preset | number | x | AM-Preset-Nummer |
-| tuner.am.freq | number | x | AM-Frequenz in kHz |
-| tuner.am.tuned | boolean | - | AM abgestimmt |
-| tuner.fm.preset | number | x | FM-Preset-Nummer |
+| tuner.common_preset_info | array | - | Informationen zur Voreinstellung |
+| tuner.am.preset_info | array | - | AM-Informationen voreinstellen |
+| tuner.fm.preset_info | array | - | FM-Informationen voreinstellen |
+| tuner.dab.preset_info | array | - | Voreingestellte DAB-Informationen |
+| tuner.am.preset | number | x | AM-Voreinstellungsnummer |
+| tuner.am.freq | number | x | AM frequenz in kHz |
+| tuner.am.tuned | boolean | - | AM tuned |
+| tuner.fm.preset | number | x | FM Festsendernummer |
 | tuner.fm.freq | number | x | UKW-Frequenz in kHz |
-| tuner.fm.tuned | boolean | - | FM abgestimmt |
-| tuner.fm.audio_mode | string | - | UKW Mono / Stereo |
-| tuner.dab.preset | number | x | DAB-Preset-Nummer |
-| tuner.dab.id | Nummer | - | DAB-Stations-ID |
-| tuner.dab.status | string | - | DAB-Status |
-| tuner.dab.freq | number | - | DAB-Frequenz |
-| tuner.dab.category | string | - | primary / secondary |
-| tuner.dab.audio_mode | string | - | DAB Mono / Stereo |
+| tuner.fm.tuned | boolean | - | FM tuned |
+| tuner.fm.audio_mode | string | - | FM mono / stereo |
+| tuner.dab.preset | number | x | DAB-Voreinstellungsnummer |
+| tuner.dab.id | number | - | DAB-Sender-ID |
+| tuner.dab.status | string | - | DAB status |
+| tuner.dab.freq | number | - | DAB frequency |
+| tuner.dab.category | string | - | primär / sekundär |
+| tuner.dab.audio_mode | string | - | DAB mono / stereo |
 | tuner.dab.bit_rate | number | - | DAB-Bitrate in kpbs |
-| tuner.dab.quality | number | - | DAB quality 0-100 |
-| tuner.dab.tune_aid | number | - | DAB-Signal als 0-100 |
+| tuner.dab.quality | number | - | DAB-Qualität 0-100 |
+| tuner.dab.tune_aid | number | - | DAB signal strenth 0-100 |
 | tuner.dab.off_air | boolean | - | DAB off air |
 | tuner.dab.dab_plus | boolean | - | DAB + |
 | tuner.dab.program_type | string | - | DAB-Programmtyp |
-| tuner.dab.ch_label | string | - | DAB CH-Label |
-| tuner.dab.service_label | string | - | DAB-Dienstetikett |
+| tuner.dab.ch_label | string | - | DAB CH label |
+| tuner.dab.service_label | string | - | DAB-Service-Label |
 | tuner.dab.dls | string | - | DAB DLS |
-| tuner.dab.ensemble_label | string | - | DAB-Beschriftung |
-| tuner.dab.initial_scan_progress | number | - | DAB initialer Scanfortschritt 0-100 |
+| tuner.dab.ensemble_label | string | - | DAB-Ensemble-Label |
+| tuner.dab.initial_scan_progress | number | - | Fortschritt des DAB-Startscans 0-100 |
 | tuner.dab.total_station_num | number | - | DAB total stations 0-255 |
 | tuner.rds.program_type | string | - | RDS-Programmtyp |
 | tuner.rds.program_service | string | - | RDS-Programmdienst |
@@ -175,36 +177,39 @@ Objekt | Wert | einstellbar | Beschreibung |
 | tuner.rds.radio_text_b | string | - | RDS-Text B |
 
 ### Uhr
-Objekt | Wert | einstellbar | Beschreibung |
+| Objekt | Wert | einstellbar | Beschreibung |
 |--------|-------|:-:|--------|
-| clock.auto_sync | boolean | x | Automatische Synchronisierung der Uhr |
+| clock.auto_sync | boolean | x | Automatische Uhrensynchronisation |
 | clock.format | string | x | Uhrzeitformat 12h / 24h |
-| clock.alarm_on | boolean | x | Status des Weckalarms ein / aus |
-| clock.volume | number | x | Clock alarm volume |
-| clock.fade_interval | number | x | Intervall für das Weckalarmsignal |
-| clock.fade_type | number | x | Fade-Typ für Clock-Alarm |
-| clock.mode | string | x | Weckalarmmodus an einem Tag / pro Woche |
-| clock.repeat | boolean | x | Weckalarm wiederholen, wenn ein Tag angegeben wird |
-| clock. {day} .enable | boolean | x | Uhr Einstellungsgültigkeit |
-uhr. {day} .time | string | - | Uhrzeit für den Weckalarm hhmm 00-23,00-59 |
-| clock. {day} .beep | boolean | x | Gültigkeit des Signaltons |
-uhr. {day} .playback_type | string | - | Wiedergabewiederholungstyp / voreingestellt |
-uhr. {day}. resume_input | string | - | Clock alarm resume input ID |
-| Uhr. {Tag} .preset_type | Zeichenfolge | - | Vorwahltyp für Uhralarm |
-| Uhr. {Tag} .preset_num | Nummer | - | Vorgabeeingangs-ID für Uhralarm |
-uhr. {day} .preset_netusb_input | string | - | Uhr alarm netusb input ID |
-uhr. {day} .preset_netusb_text | string | - | Uhr alarm netusb text |
-| Uhr. {Tag} .preset_tuner_band | Zeichenfolge | - | Uhr Wecker-Tuner-Band |
-| Uhr. {Tag} .preset_tuner_number | number | - | Taktfrequenz des Radioweckers oder Stations-ID |
+| clock.alarm_on | boolean | x | Uhralarmstatus ein / aus |
+| clock.volume | number | x | Lautstärke des Weckers |
+| clock.fade_interval | number | x | Zeitintervall für Alarmüberblendung |
+| clock.fade_type | number | x | Clock Alarm Fade Type |
+| clock.mode | string | x | Uhrzeitalarmmodus ein / wöchentlich |
+| clock.repeat | boolean | x | Weckalarm wiederholen, wenn ein Tag angegeben ist |
+| clock. {day} .enable | boolean | x | Clock Gültigkeit des Setups |
+| Uhr. {Tag} .Zeit | Zeichenfolge | - | Startzeit des Weckers hhmm 00-23,00-59 |
+| clock. {day} .beep | boolean | x | Clock Beep validity |
+| uhr. {tag} .wiedergabetyp | zeichenfolge | - | uhr alarm wiedergabetyp fortsetzen / voreinstellen |
+| clock. {day} .resume_input | string | - | Weckalarm-Fortsetzeingabe-ID |
+| uhr. {tag} .preset_type | string | - | uhr alarm voreingestellter typ |
+| uhr. {tag} .preset_num | nummer | - | uhr alarm voreingestellt eingangskennung |
+| clock. {day} .preset_netusb_input | string | - | Netusb-Eingangs-ID für Uhrzeitalarm |
+| uhr. {tag} .preset_netusb_text | string | - | uhr alarm netusb text |
+| clock. {day} .preset_tuner_band | string | - | Clock Alarm Tuner Band |
+| clock. {day} .preset_tuner_number | number | - | Clock Alarm Tuner Frequenz oder Sender ID |
 
 ## Machen
 * Unterstützung von Listen
-* Änderung der Interaktionswerte in nette Namensgebung
-* Fastforward / Fastrewind für NETUSB / CD
+* Wechsel der Interaktionswerte zu netter Benennung
+* fastforward / fastrewind für NETUSB / CD
 * Bluetooth
 * Dialogebene
 
 ## Changelog
+#### 0.1.2
+* (Scrounger) correction of type mismatch (string boolean)
+
 #### 0.1.1
 * correction for clock "oneday"
 
@@ -263,4 +268,4 @@ uhr. {day} .preset_netusb_text | string | - | Uhr alarm netusb text |
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2017 - 2019 foxthefox <foxthefox@wysiwis.net>

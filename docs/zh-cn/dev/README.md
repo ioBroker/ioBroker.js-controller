@@ -4,14 +4,14 @@ lastChanged: 21.21.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/README.md
-hash: oQ2tdDrZjwpuVQJU7pkKi7lS62ZeRHE2mL9/+u8N6Ss=
+hash: O0LeFPsq64ReaaHstYx1JUz5tyJarHuKzMMSn70ta2E=
 ---
 ＃适配器开发
-？&gt; ***这是一张通配符***。 <br><br>帮助ioBroker并扩展这篇文章。请注意[ioBroker风格指南](community/styleguidedoc)，以便更容易采用这些更改。
+？&gt; ***这是通配符***。 <br><br>帮助ioBroker并扩展本文。请注意[ioBroker样式指南](community/styleguidedoc)，以便更容易采用更改。
 
 ##有用的链接
 ###翻译帮助
-[http://iobroker.net:3000/](http://iobroker.net:3000/)这将文本翻译成9种语言，结果可直接用于words.js
+[https://translator.iobroker.in/](https://translator.iobroker.in/)它将文本翻译成9种语言，结果可以直接在word.js中使用
 
 图片
 

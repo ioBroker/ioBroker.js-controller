@@ -16,8 +16,211 @@ const utils = require('./build-lib/utils');
 const path = require('path');
 const fs = require('fs');
 const request = require('request');
+const EMPTY = '';
+const fileName = 'temp_words.js';
 
 const dir = __dirname + '/front-end/src/i18n/';
+const languages = {
+    en: {},
+    de: {},
+    ru: {},
+    pt: {},
+    nl: {},
+    fr: {},
+    it: {},
+    es: {},
+    pl: {},
+    'zh-cn': {}
+};
+function lang2data(lang, isFlat) {
+    let str = isFlat ? '' : '{\n';
+    let count = 0;
+    for (const w in lang) {
+        if (lang.hasOwnProperty(w)) {
+            count++;
+            if (isFlat) {
+                str += (lang[w] === '' ? (isFlat[w] || w) : lang[w]) + '\n';
+            } else {
+                const key = '    "' + w.replace(/"/g, '\\"') + '": ';
+                str += key + '"' + lang[w].replace(/"/g, '\\"') + '",\n';
+            }
+        }
+    }
+    if (!count)
+        return isFlat ? '' : '{\n}';
+    if (isFlat) {
+        return str;
+    } else {
+        return str.substring(0, str.length - 2) + '\n}';
+    }
+}
+
+function readWordJs(src) {
+    try {
+        let words;
+        words = fs.readFileSync(src + 'i18n/' + fileName).toString();
+        words = words.substring(words.indexOf('{'), words.length);
+        words = words.substring(0, words.lastIndexOf(';'));
+
+        const resultFunc = new Function('return ' + words + ';');
+
+        return resultFunc();
+    } catch (e) {
+        return null;
+    }
+}
+
+function padRight(text, totalLength) {
+    return text + (text.length < totalLength ? new Array(totalLength - text.length).join(' ') : '');
+}
+
+function writeWordJs(data, src) {
+    let text = '';
+    text += '/*global systemDictionary:true */\n';
+    text += '\'use strict\';\n\n';
+    text += 'systemDictionary = {\n';
+    for (const word in data) {
+        if (data.hasOwnProperty(word)) {
+            text += '    ' + padRight('"' + word.replace(/"/g, '\\"') + '": {', 50);
+            let line = '';
+            for (const lang in data[word]) {
+                if (data[word].hasOwnProperty(lang)) {
+                    line += '"' + lang + '": "' + padRight(data[word][lang].replace(/"/g, '\\"') + '",', 50) + ' ';
+                }
+            }
+            if (line) {
+                line = line.trim();
+                line = line.substring(0, line.length - 1);
+            }
+            text += line + '},\n';
+        }
+    }
+    text += '};';
+    fs.writeFileSync(src + '/i18n/' + fileName, text);
+}
+
+function languagesFlat2words(src) {
+    const dirs = fs.readdirSync(src + 'i18n/flat/');
+    const langs = {};
+    const bigOne = {};
+    const order = Object.keys(languages);
+    dirs.sort((a, b) => {
+        const posA = order.indexOf(a);
+        const posB = order.indexOf(b);
+        if (posA === -1 && posB === -1) {
+            if (a > b)
+                return 1;
+            if (a < b)
+                return -1;
+            return 0;
+        } else if (posA === -1) {
+            return -1;
+        } else if (posB === -1) {
+            return 1;
+        } else {
+            if (posA > posB)
+                return 1;
+            if (posA < posB)
+                return -1;
+            return 0;
+        }
+    });
+    const keys = fs.readFileSync(src + 'i18n/flat/index.txt').toString().split('\n');
+
+    for (let l = 0; l < dirs.length; l++) {
+        if (dirs[l] === 'index.txt') {
+            continue;
+        }
+        let lang = dirs[l];
+        const values = fs.readFileSync(src + 'i18n/flat/' + lang).toString().split('\n');
+        lang = lang.replace('.txt', '');
+        langs[lang] = {};
+        keys.forEach((word, i) => langs[lang][word] = values[i]);
+
+        const words = langs[lang];
+        for (const word in words) {
+            if (words.hasOwnProperty(word)) {
+                bigOne[word] = bigOne[word] || {};
+                if (words[word] !== EMPTY) {
+                    bigOne[word][lang] = words[word];
+                }
+            }
+        }
+    }
+    // read actual words.js
+    const aWords = readWordJs(dir);
+
+    const temporaryIgnore = ['index.txt'];
+    if (aWords) {
+        // Merge words together
+        for (const w in aWords) {
+            if (aWords.hasOwnProperty(w)) {
+                if (!bigOne[w]) {
+                    console.warn('Take from actual words.js: ' + w);
+                    bigOne[w] = aWords[w];
+                }
+                dirs.forEach(lang => {
+                    if (temporaryIgnore.indexOf(lang) !== -1) {
+                        return;
+                    }
+                    !bigOne[w][lang] && console.warn('Missing "' + lang + '": ' + w);
+                });
+            }
+        }
+
+    }
+
+    writeWordJs(bigOne, src);
+}
+
+function words2languagesFlat(src) {
+    const langs = Object.assign({}, languages);
+    const data = readWordJs(src);
+    if (data) {
+        for (const word in data) {
+            if (data.hasOwnProperty(word)) {
+                for (const lang in data[word]) {
+                    if (data[word].hasOwnProperty(lang)) {
+                        const _lang = lang.replace('.txt', '');
+                        langs[_lang][word] = data[word][_lang];
+                        //  pre-fill all other languages
+                        for (const j in langs) {
+                            if (langs.hasOwnProperty(j)) {
+                                langs[j][word] = langs[j][word] || EMPTY;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        const keys = Object.keys(langs.en);
+        keys.sort();
+        for (const l in langs) {
+            if (!langs.hasOwnProperty(l)) {
+                continue;
+            }
+            const obj = {};
+            for (let k = 0; k < keys.length; k++) {
+                obj[keys[k]] = langs[l][keys[k]];
+            }
+            langs[l] = obj;
+        }
+        if (!fs.existsSync(src + 'i18n/')) {
+            fs.mkdirSync(src + 'i18n/');
+        }
+        if (!fs.existsSync(src + 'i18n/flat')) {
+            fs.mkdirSync(src + 'i18n/flat');
+        }
+        for (const ll in langs) {
+            if (!langs.hasOwnProperty(ll))
+                continue;
+            fs.writeFileSync(src + 'i18n/flat/' + ll + '.txt', lang2data(langs[ll], langs.en));
+        }
+        fs.writeFileSync(src + 'i18n/flat/index.txt', keys.join('\n'));
+    } else {
+        console.error('Cannot read or parse ' + fileName);
+    }
+}
 
 gulp.task('i18n=>flat', done => {
     const files = fs.readdirSync(dir).filter(name => name.match(/\.json$/));
@@ -87,6 +290,16 @@ gulp.task('flat=>i18n', done => {
     done();
 });
 
+gulp.task('flat=>words.js', done => {
+    languagesFlat2words(__dirname + '/front-end/src/');
+    done();
+});
+
+gulp.task('words.js=>flat', done => {
+    words2languagesFlat(__dirname + '/front-end/src/');
+    done();
+});
+
 gulp.task('translate', async function () {
     let yandex;
     const i = process.argv.indexOf('--yandex');
@@ -148,19 +361,25 @@ gulp.task('downloadAdapterTest', () => {
 
 // removes adapter from all languages "gulp remove --adapterName"
 gulp.task('remove', done => {
-    let adapter = process.argv[3].replace(/^-+/, '').replace(/^iobroker\./i, '');
-    console.log(process.argv[3].replace(/^-+/, ''));
-    adapter = 'iobroker.' + adapter;
-    consts.LANGUAGES.forEach(lang => {
-        const dir = consts.SRC_DOC_DIR + lang + '/adapterref/' + adapter;
-        if (fs.existsSync(dir)) {
-            try {
-                utils.delDir(dir);
-            } catch (e) {
-                console.error('Cannot delete ' + path.normalize(dir));
+    if (!process.argv[3]) {
+        console.error('Please specify adapter name as "gulp remove --adapterName"');
+    } else {
+        let adapter = process.argv[3].replace(/^-+/, '').replace(/^iobroker\./i, '');
+        console.log(process.argv[3].replace(/^-+/, ''));
+
+        adapter = 'iobroker.' + adapter;
+        consts.LANGUAGES.forEach(lang => {
+            const dir = consts.SRC_DOC_DIR + lang + '/adapterref/' + adapter;
+            if (fs.existsSync(dir)) {
+                try {
+                    utils.delDir(dir);
+                } catch (e) {
+                    console.error('Cannot delete ' + path.normalize(dir));
+                }
             }
-        }
-    });
+        });
+    }
+
     done();
 });
 
@@ -176,12 +395,10 @@ gulp.task('1.blog', () => {
 });
 
 // download all adapters
-gulp.task('2.downloadAdapters', () => {
-    return adapters.buildAdapterContent()
-        .then(content => {
-            console.log(JSON.stringify(content));
-        });
-});
+gulp.task('2.downloadAdapters', () =>
+    adapters.buildAdapterContent()
+        .then(content =>
+            console.log(JSON.stringify(content))));
 
 gulp.task('3.downloadVisCordova', done => {
     request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {

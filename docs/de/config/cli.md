@@ -54,6 +54,10 @@ Befehlsübersicht:
 - [iobroker status](#iobroker-status)
 - [iobroker repo](#iobroker-repo)
 - [iobroker info](#iobroker-info)
+- [iobroker compact status](#iobroker-compact-status)
+- [iobroker compact enable|on|disable|off](#iobroker-compact-enableondisableoff)
+- [iobroker compact adapterName.instance](#iobroker-compact-adapternameinstance)
+- [iobroker cert create](#iobroker-cert-create)
 
 ***Hinweis:*** Mit dem Parameter ```--timeout 5000``` am Ende eines jeden Befehls kann ein Timeout (ms) für die Verbindung zur DB angegeben werden.
 
@@ -627,4 +631,100 @@ adapters count : 176
 Disk size      : 949.9 GiB
 Disk free      : 813.3 GiB
 NPM            : v5.8.0
+```
+
+## iobroker compact status
+**Verfügbar seit js-controller 2.0.0**
+
+Zeigt den Status des Compact-Mode für den aktuellen Host an.
+
+```
+Compact mode for this host is currently enabled
+``` 
+
+## iobroker compact enable|on|disable|off
+**Verfügbar seit js-controller 2.0.0**
+
+Erlaubt die Aktivierung oder Deaktivierung des Compact-Modus für den aktuellen Host. Hierbei wird zuerst der aktuelle Status ausgegeben und dann die durchgeführte Änderung.
+
+```
+Compact mode for this host is currently disabled
+
+Compact mode for this host changed to enabled
+```
+
+## iobroker compact adapterName.instance
+**Verfügbar seit js-controller 2.0.0**
+
+Dieser Befehl erlaubt die COmpact-Modus Konfiguration einer Adapter-Instanz zu prüfen und zu ändern.
+Es werden immer alle EInstellungen (siehe status) angezeigt inklusive der vorgenommenen Änderungen.
+ 
+
+Alle Änderungen können auch bei laufendem ioBroker durchgeführt werden. Die Adapterinstanzen werden ggf neu gestartet.
+
+Folgende Kombinationen stehen zur Verfügung:
+
+### compact adapterName.instance status
+Anzeige des aktuellen Status und der aktuellen Einstellungen der Instanz.
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0
+```
+
+Bedeutung der Felder:
+* Compact mode supported: Der Adapter unterstützt den Compact Mode generell
+* Compact mode enabled: Diese Instanz wird im Compact Modus gestartetCompact mode supported: true
+                                                                     Compact mode enabled:   false --> true
+                                                                     Compact group:          0 --> 1
+
+* Compact group: Die Instanz wird in der Compact-Gruppe gestartet wie angegeben. 0 bedeutet "im Haupt-js-controller-Prozess dieses Hosts" (höheres Risiko, wenigster RAM Bedarf). >0 bedeutet jeweils ein eigener Host-Prozess (weniger Risiko, dafür etwas mehr RAM Bedarf)
+
+### compact adapterName.instance group <group-id>
+
+Setzt die Compact Mode Gruppe der Instanz
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+### compact adapterName.instance <disable|off>
+
+Deaktiviert den Compact Mode für die Instanz.
+```
+Compact mode supported: true
+Compact mode enabled:   true --> false
+Compact group:          1
+Instance settings for "simple-api.0" are changed.
+```
+
+
+### compact adapterName.instance group <enable|on> [group-id]
+
+Aktiviert den Compact Mode für die Instanz und setzt (optional) im gleichen AUfruf die Gruppe
+```
+Compact mode supported: true
+Compact mode enabled:   false --> true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+## iobroker cert create
+
+Generiert ein neues SSL Zertifikat für die ioBroker Installation, trägt diese im System als Standardzertifikat ein und gibt Sie auch aus.
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----
+
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+   
+The object "system.certificates" was updated successfully.
 ```

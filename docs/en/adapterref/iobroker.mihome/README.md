@@ -134,6 +134,9 @@ Under *Objects* the gateway and its learned devices are now displayed:
 The manual was created to the best of my knowledge and belief.
 
 ## Changelog
+### 1.2.9 (2019-11-15)
+* (Diginix) Fixed pressure range and values of Aqara weather sensor
+
 ### 1.2.8 (2019-07-18)
 * (SchumyHao) Change curtain and gateway light role that making them can be detected by type-detector
 

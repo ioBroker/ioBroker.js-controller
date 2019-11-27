@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iot/README.md
 title: ioBroker IoT адаптер
-hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
+hash: WKONbjSZUegXJcU4RVAcYlxkPJlVxq1endd2qgo0O/c=
 ---
 ![логотип](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -13,11 +13,13 @@ hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
 ![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)
 
 # IoBroker IoT Adapter
-Этот адаптер предназначен ТОЛЬКО для связи с Amazon Alexa.
+Этот адаптер предназначен ТОЛЬКО для связи с Amazon Alexa, Google Home и Nightscout.
 Это не для удаленного доступа к вашему экземпляру ioBroker. Для этого используйте адаптер ioBroker.cloud.
 
 ## Настройки
 Для использования облачного адаптера вы должны сначала зарегистрироваться в облаке ioBroker [https://iobroker.pro](https://iobroker.pro).
+
+[Ссылка на настройки типа API Google](https://developers.google.com/actions/smarthome/guides/)
 
 ![вступление](../../../en/adapterref/iobroker.iot/img/intro.png)
 
@@ -40,7 +42,7 @@ hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
 Некоторые группы состоят из смешанных устройств: диммеры и выключатели. Управлять ими можно с помощью команд «ВКЛ» и «ВЫКЛ» и с процентами.
 Если команда «Установить на 30%» и * ВЫКЛ. Уровень «30%», то переключатели будут включены. По команде «Установите на 25%» все переключатели будут выключены.
 
-Кроме того, если команда «ВЫКЛ», адаптер запоминает текущий уровень диммера, если фактическое значение превышает или равно «30%».
+Кроме того, если команда «ВЫКЛ», адаптер запоминает текущий уровень диммера, если фактическое значение больше или равно «30%».
 Позже, когда придет новая команда «ON», адаптер переключит диммер не на 100%, а на уровень в памяти.
 
 Пример:
@@ -190,7 +192,7 @@ or
  * **intent** содержит тип запроса. В настоящее время возможны следующие значения: «askDevice», «controlDevice», «actionStart», «actionEnd», «askWhen», «askWhere», «askWho»
  * **deviceId** содержит идентификатор устройства, идентифицирующий устройство, на которое был отправлен запрос, доставленный Amazon, будет пустой строкой, если не предоставлено
  * **sessionId** содержит sessionId сеанса Skill, должен быть одинаковым, если было произнесено несколько команд, доставленных Amazon, будет пустой строкой, если не предоставлено
- * **userId** содержит идентификатор пользователя от владельца устройства (или, возможно, позже пользователя, который взаимодействовал со скиллом), предоставленный Amazon, будет пустой строкой, если не указан
+ * **userId** содержит идентификатор пользователя от владельца устройства (или, возможно, позже пользователя, который взаимодействовал со скиллом), предоставленный Amazon, будет пустой строкой, если она не указана
 
  Подробнее о том, как слова обнаруживаются и какие типы запросов различает пользовательский навык Alexa, см. На странице https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
@@ -239,7 +241,7 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ```
 
 ### Частное облако
-Если вы используете личное умение / действие / навык для общения с `Alexa/Google Home/Алиса`, то у вас есть возможность использовать экземпляр IoT для обработки запросов от него.
+Если вы используете личный навык / действие / навык для связи с `Alexa/Google Home/Алиса`, у вас есть возможность использовать экземпляр IoT для обработки запросов от него.
 
 Например. для `yandex alice`:
 
@@ -260,6 +262,35 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 - `ifttt` - действует как IFTTT (на самом деле не требуется, но для целей тестирования)
 
 ## Changelog
+### 1.1.8 (2019-09-12)
+* (bluefox) Optimization of googe home communication was done
+
+### 1.1.7 (2019-09-11)
+* (bluefox) The sending rate to google home is limited now
+
+### 1.1.6 (2019-09-11)
+* (TA2k) Room fix for Google Home and LinkedDevices
+
+### 1.1.4 (2019-09-10)
+* (bluefox) decreased keepalive value to fix issue with disconnect
+
+### 1.1.3 (2019-09-09)
+* (TA2k) Google Home problem fixed with LinkedDevices
+
+### 1.1.0 (2019-09-06)
+* (bluefox) Added support of aliases
+
+### 1.0.8 (2019-09-03)
+* (TA2k) Improved support for Google Home
+* (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
+* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Fix update state after Sync
+* (TA2k) Added typical Google Home devices and traits/actions
+* (TA2k) Fix only process update message when Alexa is checked in the options
+
+### 1.0.4 (2019-08-01)
+* (bluefox) Fixed password encoding. Please enter password anew!
+
 ### 1.0.3 (2019-07-30)
 * (bluefox) Fixed language issues for google home and yandex alice
 
@@ -267,16 +298,16 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (bluefox) Support of private skills/actions was added.
 
 ### 1.0.0 (2019-07-14)
-* (TA2k) Google Home list was added 
+* (TA2k) Google Home list was added
 
 ### 0.5.0 (2019-06-29)
-* (bluefox) tried to add yandex Alisa 
+* (bluefox) tried to add yandex Alisa
 
 ### 0.4.3 (2019-04-14)
-* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
+* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home

@@ -2615,10 +2615,48 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
-### 4.1.14 (2019-07-14) 
+### 4.3.4 (2019-10-28)
+* (bluefox) Values are showed in select ID dialog
+* (bluefox) Allow select with $ the schedule objects
+
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
+### 4.3.2 (2019-10-27)
+* (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
+* (AlCalzone) Target ES 2017 in TypeScript (#419)
+* (AlCalzone) Automatically load declarations for 3rd party modules (#422)
+* (bluefox) Functions with non latin text are working now
+
+### 4.3.1 (2019-10-16)
+* (bluefox) Fixed login with non-admin user
+* (bluefox) fixed log
+* (bluefox) Some GUI fixes
+
+### 4.3.0 (2019-10-09)
+* (bluefox) log handlers were implemented
+* (bluefox) fixed the error with $ selector and with disabled subscribes
+
+### 4.2.1 (2019-10-07)
+* (bluefox) implement inter-script communication.
+* (bluefox) Implemented the mirroring on disk
+* (bluefox) Translation for other languages was added
+
+### 4.1.17 (2019-08-xx)
+* (bluefox) Optimization: do not make useless iterations
+* (bluefox) Allow to make requests to sites with self/signed certificates
+
+### 4.1.16 (2019-08-24)
+* (bluefox) Fixed the errors in editor
+
+### 4.1.15 (2019-08-24)
+* (bluefox) Added the polish language to CRON
+* (bluefox) Fixed the import of scripts
+
+### 4.1.14 (2019-07-14)
 * (bluefox) Fixed locale settings
 
-### 4.1.13 (2019-06-02) 
+### 4.1.13 (2019-06-02)
 * (bluefox) fixed Monaco Loading
 * (bluefox) added missing blockly element
 * (AlCalzone) Improved the warning message when assigning a variable of wrong type to a state

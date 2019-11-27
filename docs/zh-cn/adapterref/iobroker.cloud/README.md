@@ -3,78 +3,78 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cloud/README.md
 title: ioBroker云适配器
-hash: EYfY5wDUK2BuMkI34L5pvxHGhym23Qv7P5OrUELenJE=
+hash: IBLnz1jbRRIpQ9d9ohaj94qCGQu1cVDgmgYxxzcIW1g=
 ---
 ![商标](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
 ![安装数量](http://iobroker.live/badges/cloud-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.cloud.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.cloud.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.cloud.svg)
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
-#ioBroker云适配器=================
-此适配器允许从Internet通过ioBroker云连接到ioBroker的本地安装。
+＃ioBroker云适配器
+该适配器允许从互联网通过ioBroker云连接到ioBroker的本地安装。
 
 ##设置
 ### APP-KEY
-要使用云适配器，您应首先获得[https://iobroker.net](https://iobroker.net)上的APP-Key。
+要使用云适配器，您应该首先在[https://iobroker.net](https://iobroker.net)上获得APP-Key。
 
-这是用户可以访问[https://iobroker.net](https://iobroker.net)站点的应用程序密钥。请在那里拿到钥匙并在此处输入。
+这是用户可以在[https://iobroker.net](https://iobroker.net)站点上获得的应用程序密钥。请在那里获取密钥并在此处输入。
 
 ![介绍](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
 ###实例
-来自云适配器的所有请求都将路由到某个WEB实例。用户必须在此处指定WEB实例，该实例将在用户登录https://iobroker.net网站时显示。
+来自云适配器的所有请求将被路由到某些WEB实例。用户必须在此处指定登录到https://iobroker.net站点时将显示给用户的WEB实例。
 
 ###允许自签名证书
-如果您使用标准的iobroker.net云，则可以将其停用。此选项仅在使用自己的云时才重要。
+如果您使用标准的iobroker.net云，则可以将其停用。仅当使用自己的云时，此选项才重要。
 
 ＃＃＃ 语言
-如果选择“默认”语言，则不会翻译设备和枚举的智能名称。如果某些语言指定所有已知名称将被翻译成该语言。
-为了演示目的，可以在多种语言之间快速切换。
+如果选择“默认”语言，则不会翻译设备和枚举的智能名称。如果指定了某种语言，则所有已知名称都将翻译成该语言。
+出于演示目的，可以在多种语言之间快速切换。
 
 ###首先将函数放在名称中
-更改自生成名称中的函数和角色的顺序：
+更改自我生成名称中的功能和角色的顺序：
 
- - 如果错误：“房间功能”，例如“客厅调光器”
- - 如果为真：“功能室”，例如“调光客厅”
+-如果为假：“客房功能”，例如“客厅调光器”
+-如果为true：“多功能厅”，例如“调光客厅”
 
-###连接单词
-您可以定义将放置在功能和房间之间的单词。例如。 “in”和“Dimmer living room”将是“客厅中的调光器”。
+###将单词与
+您可以定义将在功能和房间之间放置的单词。例如。 “在调光器起居室中”和“在调光器起居室中”将是“调光器起居室”。
 
-但是不建议这样做，因为识别引擎必须再分析一个单词，这可能会导致误解。
+但不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
 
-###关闭开关的级别
-一些组由混合设备组成：调光器和开关。允许用“ON”和“OFF”命令以及百分比来控制它们。
-如果命令为“设置为30％”且* OFF级别为“30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
+###开关的OFF等级
+某些组由混合设备组成：调光器和开关。允许使用“ ON”和“ OFF”命令以及百分数来控制它们。
+如果命令为“设置为30％”，而* OFF级别为“ 30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
 
-此外，如果命令为“OFF”，那么如果实际值大于或等于“30％”，则适配器将记住当前的调光器级别。
-稍后当新的“ON”命令到来时，适配器将调光器切换到100％但不是内存级别。
+另外，如果命令为“ OFF”，那么如果实际值大于或等于“ 30％”，则适配器将记住当前的调光器级别。
+稍后，当出现新的“ ON”命令时，适配器会将调光器切换到内存中的电平而不是100％。
 
 例：
 
- - 假设* OFF级*为30％。
- - 虚拟设备“Light”有两个物理设备：* switch *和* dimmer *。
- - 命令：“将灯光设置为40％”。适配器将记住* dimmer *的此值，将其设置为“dimmer”并将*开关*打开。
- - 命令：“关灯”。适配器将*调光器*设置为0％并关闭*开关*。
- - 命令：“打开灯”。 * dimmer * => 40％，* switch * => ON。
- - 命令：“将灯光设置为20％”。 *调光器* => 20％，*开关* =>关闭。调光器的值不会被记住，因为它低于* OFF级别*。
- - 命令：“打开灯”。 * dimmer * => 40％，* switch * => ON。
+-假设* OFF等级*为30％。
+-虚拟设备“ Light”具有两个物理设备：* switch *和* dimmer *。
+-命令：“将灯光设置为40％”。适配器将记住* dimmer *的该值，将其设置为“ dimmer”并打开* switch *。
+-命令：“关灯”。适配器会将* dimmer *设置为0％，并关闭* switch *。
+-命令：“开灯”。 *调光器* => 40％，*开关* =>开。
+-命令：“将灯光设置为20％”。 *调光器* => 20％，*开关* => OFF。调光器的值低于* OFF电平*，因此不会记住。
+-命令：“开灯”。 *调光器* => 40％，*开关* =>开。
 
-ON ###
-您可以选择ON命令的行为来为数字状态。可以选择特定值，或者使用最后的非零值。
+###由ON
+您可以选择将ON命令的行为显示为数字状态。可以选择特定值，或者将使用最后一个非零值。
 
-###写回复
-对于每个命令，将生成文本响应。您可以在此处定义必须写入此文本的对象ID。例如。 *sayit.0.tts.text*
+###写入回应
+对于每个命令，都会生成文本响应。您可以在此处定义对象ID，此文本必须写入其中。例如。 *sayit.0.tts.text*
 
 ###颜色
-刚才英语alexa支持颜色控制。
-该频道必须具有以下角色的4种状态：
+到目前为止，只有英语alexa支持颜色控制。
+通道必须具有以下四个角色的状态：
 
- -  level.color.saturation（检测通道所需），
- -  level.color.hue，
- -  level.dimmer，
- - 开关（可选）
+-level.color.saturation（检测通道所需），
+-level.color.hue，
+-level.dimmer，
+-开关（可选）
 
 ```
 Alexa, set the "device name" to "color"
@@ -83,8 +83,8 @@ Alexa, set the bedroom light to red
 Alexa, change the kitchen to the color chocolate
 ```
 
-###锁定
-为了能够锁定锁，状态必须具有“switch.lock”角色并具有native.LOCK_VALUE以确定锁定状态。
+###锁
+为了能够锁定锁，该状态必须具有角色“ switch.lock”并具有native.LOCK_VALUE才能确定锁定状态。
 
 ```
 Alexa, is "lock name" locked/unlocked
@@ -92,44 +92,44 @@ Alexa, lock the "lock name"
 ```
 
 ##如何生成名称
-适配器尝试生成用于智能家居控制的虚拟设备（例如，Amazon Alexa或Google Home）。
+适配器尝试生成用于智能家居控制的虚拟设备（例如Amazon Alexa或Google Home）。
 
 这是两个重要的枚举：房间和功能。
 
-客房如：起居室，浴室，卧室。
-功能如：光，盲，加热。
+房间就像：客厅，浴室，卧室。
+功能如：灯光，窗帘，暖气。
 
-必须满足以下条件才能在自动生成的列表中获取状态：
+必须满足以下条件才能在自动生成的列表中获得状态：
 
- - 状态必须在某个“函数”枚举中。
- - 如果不直接包含在“函数”中，则状态必须具有角色（“状态”，“切换”或“级别。*”，例如level.dimmer）。
+-状态必须处于某些“功能”枚举中。
+-如果状态未直接包含在“功能”中，则该状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
-可能是频道处于“功能”中，但状态本身不是。
+可能是通道在“功能”中，但未声明自身。
 
- - 状态必须是可写的：common.write = true
- - 状态调光器必须具有common.type作为'数字'
- - 状态加热必须具有common.unit为'°C'，'°F'或'°K'，而common.type为'number'
+-状态必须是可写的：common.write = true
+-状态调光器必须具有common.type作为'number'
+-状态加热必须具有common.unit为'°C'，'°F'或'°K'，并且common.type为'number'
 
 如果状态仅在“功能”中而不在任何“房间”中，则将使用状态名称。
 
-状态名称将从功能和房间生成。例如。 *起居室*中的所有*灯*将被收集在虚拟设备*客厅灯*中。
+状态名称将从功能和房间生成。例如。 “起居室”中的所有“灯”都将收集在虚拟设备“起居室的灯”中。
 用户无法更改此名称，因为它是自动生成的。
-但是，如果枚举名称更改，则此名称也将更改。 （例如功能“灯”改为“灯”，所以*客厅灯*将改为*客厅灯*）
+但是，如果枚举名称更改，该名称也将更改。 （例如，“照明”功能更改为“照明”，因此“起居室照明”将更改为“起居室照明*”）
 
-如果状态具有common.smartName，则将忽略所有规则。在这种情况下，只使用智能名称。
+如果状态具有common.smartName，则将忽略所有规则。在这种情况下，将仅使用智能名称。
 
-如果* common.smartName *为** false **，则状态或枚举不会包含在列表生成中。
+如果* common.smartName *为** false **，则状态或枚举将不包含在列表生成中。
 
-配置对话框可以轻松删除单个状态并将其添加到虚拟组或单个设备。
+通过配置对话框，可以轻松删除单个状态并将其添加到虚拟组或作为单个设备。
 ![组态](../../../en/adapterref/iobroker.cloud/img/configuration.png)
 
-如果该组只有一个状态，则可以重命名，因此将使用状态的smartName。
-如果该组具有多个状态，则必须通过枚举的名称重命名该组。
+如果该组只有一个状态，则可以重命名，为此将使用状态的smartName。
+如果该组具有多个状态，则必须通过枚举名称重命名该组。
 
-要创建自己的组，用户可以在Javascript适配器中安装“场景”适配器或创建“脚本”。
+要创建自己的组，用户可以安装“场景”适配器或在Javascript适配器中创建“脚本”。
 
-###取代
-您可以指定可在设备名称中自动替换的字符串。例如，如果您设置替换为：
+###替换
+您可以指定字符串，可以在设备名称中自动替换它们。例如，如果您将替换设置为：
 
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
@@ -150,7 +150,7 @@ If you call ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``
 
 ```
 
-curl --data“myString”https://iobroker.net/service/custom_test/ <user-app-key>
+curl --data“ myString” https://iobroker.net/service/custom_test/ <用户应用键>
 
 ```
 
@@ -175,6 +175,9 @@ You may write "text2command" in white list, you can send POST request to ```http
 *to do*
 
 ## Changelog
+### 2.8.0 (2019-11-13)
+* (bluefox) Connects your ioBroker server to the ioBroker cloud
+
 ### 2.7.1 (2018-09-07)
 * (Apollon77) Enhancements for Custom Skill
 
@@ -329,3 +332,26 @@ You may write "text2command" in white list, you can send POST request to ```http
 
 ### 0.1.0 (2016-08-01)
 * (bluefox) support of read/write files
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

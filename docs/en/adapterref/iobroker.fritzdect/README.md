@@ -121,8 +121,11 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 ## TODO:
 * universal object names
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
+* FritzDECT500, FritzDECT440 after API release
 
 ## Changelog
+### 0.2.5
+* fixed testing
 ### 0.2.4
 * (Scrounger) correction of type mismatch (string boolean)
 ### 0.2.3

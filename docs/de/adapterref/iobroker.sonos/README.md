@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: vD8CqSsYqg/me8a/h9eTZlJAbNFwzcLNLWkDIjrgk0A=
+hash: mmZYqCeLZ17CE0iJUzEBUkEQCTYS3BGyPlOoGn9mZJA=
 ---
 ![Logo](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -13,24 +13,31 @@ hash: vD8CqSsYqg/me8a/h9eTZlJAbNFwzcLNLWkDIjrgk0A=
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
 # IoBroker.sonos
-Steuern und überwachen Sie den SONOS-Player von ioBroker aus.
+Steuern und überwachen Sie SONOS-Geräte mit ioBroker.
 
-Stellen Sie sicher, dass der Webadapter instanziiert ist und auch ausgeführt wird, um die Verwendung des sayIt-Adapters mit SONOS zuzulassen. Der Web-Adapter ist erforderlich, damit SONOS die von sayIt generierte MP3-Datei lesen kann.
+## Umgang mit Gruppen
+* Zustände zur Behandlung von SONOS-Gruppen:
+  * **`Koordinator`** *: Den Koordinator setzen / holen, also das SONOS-Gerät, das der Master ist und die Gruppe koordiniert. Die IP-Adresse (Kanalname) des SONOS-Geräts muss der Koordinator sein, jedoch mit dem Unterstrich "_" anstelle des Punkts ".". Verwenden Sie also beispielsweise "192_168_0_100" für die IP-Adresse "192.168.0.100". Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem eigenen Kanalnamen (IP).
+  * **`group_volume`** *: das Volumen der Gruppe
+  * **`group_muted`** *: Stummschaltungsstatus der Gruppe.
+  * **`add_to_group`** Fügt dem SONOS-Gerät, unter dem sich dieser Status befindet, ein bestimmtes SONOS-Gerät hinzu. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
+  * **`remove_from_group`** Entfernt ein bestimmtes SONOS-Gerät von dem SONOS-Gerät, unter dem sich dieser Status befindet. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
 
-TODO: Warteschlange mit Covers anzeigen
+*) Diese Status werden aktualisiert, wenn Änderungen in der SONOS-App vorgenommen werden.
 
-## Infos zur Gruppenbearbeitung
-* Status: Koordinator, Gruppenvolumen, Gruppenstummschaltung
-* Alle lesen / schreiben, um auch Änderungen von der Sonos-App zu erhalten
-* "Koordinator" enthält den Kanalnamen des Gruppenmasters (z. B. 192_168_1_99). Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem Namen des eigenen Kanals
+## Verwendung mit dem sayit Adapter
+Die [sayit adapter] (https://github.com/ioBroker/ioBroker.sayit) mit diesem SONOS-Adapter sicherstellen, dass der [Webadapter](https://github.com/ioBroker/ioBroker.web) zu benutzen ist instanziiert und läuft auch. Der Web-Adapter ist erforderlich, damit der SONOS-Adapter die erzeugte MP3-Datei vom sayit-Adapter lesen kann.
 
-## Warnung: Stabilitätsprobleme in Kombination mit sayit Adapter
-Bitte beachten Sie: Der Sonos-Adapter weist Stabilitätsprobleme auf, wenn er in Verbindung mit dem Sayit-Adapter in Text für Sprache verwendet wird. Symptome beobachtet
+### Warnung: Stabilitätsprobleme in Kombination mit sayit Adapter
+Bitte beachten Sie: Dieser SONOS-Adapter weist Stabilitätsprobleme auf, wenn mit dem sayit-Adapter 'text to speech' verwendet wird. Symptome beobachtet:
 
-1. beliebige Volumenänderung auf 0 oder 100%.
-2. Keine Antwort nach einer zufälligen Anzahl von Texten auf die Sprachsequenz
+1. Beliebige Volumenänderung auf 0 oder 100%.
+2. Keine Antwort nach einer zufälligen Anzahl von Texten auf Sprachsequenzen
 
-Problemumgehung für Text to Speech ist die Verwendung der Sonos-http-API. Siehe https://github.com/jishi/node-sonos-http-api
+Problemumgehung für Text to Speech ist die Verwendung von [SONOS HTTP API](https://github.com/jishi/node-sonos-http-api).
+
+## Machen
+* Warteschlange mit Deckblättern anzeigen
 
 ## Aufbau
 - Webserver - [optional] Ob der Webserver aktiviert ist oder nicht

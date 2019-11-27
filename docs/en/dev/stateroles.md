@@ -339,6 +339,16 @@ Special roles for media players
 * date.start     - string or number
 * date.end       - string or number
 
+## Health
+(common.type=number, common.read=true, common.write=false)
+
+* value.health.fat      - body fat index in %
+* value.health.weight   - body weight in kg, lbs
+* value.health.bmi      - bmi index
+* value.health.calories - burned calories
+* value.health.steps    - steps done
+* value.health.bpm      - heart beats per minute
+
 ## Others
 
 * url

@@ -24,6 +24,7 @@ In order to see the info window in the Tab tab, you must first check it as Visib
 </p>
 
 * **Do not show clock** - To hide the clock at the top left.
+* **Hide events (only german)** - Event calendar is not displayed
 * **Show adapter requests** - Displays the panel with the adapter requests.
     * **Adapter requests closed at startup** - The panel with the adapter requests is closed when the Info window starts.
 * **View known errors** - Displays the panel with known errors and requests for installed adapters.
@@ -314,6 +315,30 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+### 1.5.7 (2019-11-12)
+* (ldittmar) add event vis widget
+
+### 1.5.6 (2019-11-05)
+* (ldittmar) Add Repo check for popup
+* (ldittmar) Fix dp type
+
+### 1.5.5 (2019-10-12)
+* (ldittmar) Add NPM and OS check for popup
+
+### 1.5.4 (2019-09-25)
+* (ldittmar) add event calendar
+
+### 1.5.2 (2019-09-24)
+* (ldittmar) show comments for adapter requests
+* (ldittmar) show closed adapter requests
+* (ldittmar) check node version for messages
+
+### 1.4.3 (2019-09-09)
+* (ldittmar) change systeminformation call interval
+* (ThomasBahn) News problem fixed
+* (ldittmar) Update systeminformation library
+* (badenbaden) Fixed russian spelling 
+
 ### 1.4.1 (2019-08-01)
 * (bluefox) Removed default socket.io
 

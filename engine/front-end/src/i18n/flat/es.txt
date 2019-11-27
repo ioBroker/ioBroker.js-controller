@@ -11,6 +11,9 @@ Insignias
 Blog
 Compra en Amazon
 Compra lo que necesites en amazon
+Cancelar
+No puedo suscribirme:
+No se puede cancelar la suscripción:
 Registro de cambios
 Haga clic para copiar %s
 Cerrar
@@ -28,6 +31,7 @@ Descargar
 Comunidad dinámicamente creciente.
 edición local
 Editar en github
+Correo electrónico con instrucciones enviadas
 Expandir todo
 Explicación
 Filtrar
@@ -42,6 +46,7 @@ Información
 Información
 instalado
 Instala:
+Parece que aún estás suscrito. ¿Quieres darte de baja?
 Javascript es el idioma más popular
 Únete ahora
 Último cambio:
@@ -67,10 +72,12 @@ Leer
 Se ejecuta en
 Capturas de pantalla
 Buscar...
+Enviarme un correo electrónico con instrucciones para darse de baja
 Apoyo social
 Ordenar
 Estable:
 Suscribir
+Suscrito!
 ¡Apoyanos!
 Cambiar a vista de tabla
 Cambiar a vista de mosaico
@@ -82,6 +89,7 @@ Total:
 Esta página ha sido traducida automáticamente de "%s". Ayúdenos a traducir esta página al inglés haciendo clic en Editar a continuación.
 Tipo
 Gráficos únicos y hermosas interfaces para ti.
+¿Darse de baja?
 Utilice uno de los mejores productos de código abierto para administrar su sistema de automatización en las instalaciones.
 Usuarios
 versiones
@@ -105,6 +113,7 @@ Solo necesita las imágenes si tiene problemas con los scripts de instalación.
 La instalación es tan fácil como escribir 1 o 3 líneas.
 Instale Node.js (no es necesario si aún está instalado):
 Instalar ioBroker:
+email inválido
 ioBroker Blog
 ioBroker en la prensa
 ioBroker es una plataforma IoT (cloud computing).

@@ -14,6 +14,9 @@ For one widget the jQuery.knob plugin (MIT) from Anthony Terrien is used.
 http://anthonyterrien.com/knob/ or https://github.com/aterrien/jQuery-Knob 
 
 ## Changelog
+### 1.1.3 (2019-10-27)
+* (bluefox) Preparations for js-controller 2.0. Check undefined and nulls.
+
 ### 1.1.2 (2018-06-09)
 * (bluefox) Odometer was fixed while rendering in invisible state
 

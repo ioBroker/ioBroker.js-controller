@@ -120,6 +120,7 @@ const styles = theme => ({
     },
     cardFilter: {
         marginLeft: 10,
+        position: 'relative'
     },
     filterCloseButton: {
         position: 'absolute',

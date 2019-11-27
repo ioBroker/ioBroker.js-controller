@@ -19,12 +19,12 @@ This adapter brings you realtime (1s-interval) energy  power data, aggregated da
 
 Please add an instance of the ioBroker.mqtt - Adapter:
 
-![ioBMQ](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
+![ioBMQ](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
 
 configure the instance as server/broker. Port 1883 as default is ok, feel free to choose any other working.
 Set username and password (you will need this for smappee- and smappee-Adapter configuration:
 
-![ioBMC](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
+![ioBMC](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
 
 In the MQTT-Settings tab, the 'Publish only on change' checkbox has to be checked.
 
@@ -33,15 +33,15 @@ In the MQTT-Settings tab, the 'Publish only on change' checkbox has to be checke
 Open your browser and avigate to the URL: <http://X.X.X.X/smappee.html> (replace X.X.X.X by Smappee's IP address in your network).
 Click the logon/logoff button and use the password "admin" to Logon.
 
-![smplogon](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smplogon.png)
+![smplogon](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smplogon.png)
 
 Go to the "advanced" section an activate the "Advanced" checkbox in the last field of the table.
 
-![smpadv](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
+![smpadv](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpadv.jpeg)
 
 Then you should be here:
 
-![smpmqt](https://github.com/forelleblau/ioBroker.smappee/blob/master/admin/smpmqt.png)
+![smpmqt](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpmqt.png)
 
 Enter your ioBroker´s Ip followed by the port you specified for the mqtt-broker (default is 1883), i.e. tcp://192.168.1.111:1883
 

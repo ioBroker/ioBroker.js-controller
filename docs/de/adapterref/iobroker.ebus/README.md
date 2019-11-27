@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
+hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -16,73 +16,79 @@ hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
 # IoBroker.ebus
 Dieser Adapter liest
 
-- Daten von ebusd mit html
+- Daten von ebusd mit HTML
 
-In diesem Fall muss ebusd laufen und Daten senden können, z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, lastup und from global section werden analysiert. Alle anderen werden im Moment ignoriert.
+In diesem Fall muss ebusd ausgeführt werden und in der Lage sein, Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, lastup und aus dem globalen Bereich werden analysiert. Alle anderen werden momentan ignoriert.
 
-Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefragt werden. Mit dem Befehl 'read -f' wird das Lesen über Ebus erzwungen.
+Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefragt werden. Mit dem Befehl 'read -f' wird das Lesen über ebus erzwungen.
 
-Eine weitere Funktion besteht darin, einen Befehl an ebusd zu senden und eine Antwort zu erhalten, um z. Skripte.
+Ein weiteres Merkmal besteht darin, einen beliebigen Befehl an ebusd zu senden und eine Antwort zu empfangen, um mit z. Skripte.
 
-aktuell unterstützte ebusd-Version: 3.3
+aktuell unterstützte ebusd-version: 3.3
 
 ## Bekannte Probleme
-* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler oder neue Funktionen finden
+* Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
-## Changelog
+## 0.8.2 (2019-11-10)
+* (René) weitere Fehlermeldungen im Datenpunkt "Fehler"
 
-### 0.8.0 (2019-02-24)
-* (René) hcmode2 value 5 = EVU Sperrzeit
+## 0.8.1 (2019-10-31)
+* (René) Update Flot auf Version 3.0
+
+### 0.8.0 (24.02.2019)
+* (René) hcmode2 Wert 5 = EVU Sperrzeit
 
 ### 0.7.0 (2019-01-28)
-* (René) add adjustable timeout
+* (René) einstellbares Timeout hinzufügen
 
-### 0.6.0 (2019-01-06)
-* (René) support of compact mode
+### 0.6.0 (06.01.2019)
+* (René) Unterstützung des Kompaktmodus
 
-### 0.5.5 (2018-11-04)
-* (René) code clean up
+### 0.5.5 (04.11.2018)
+* (René) Code bereinigen
 
 ### 0.5.4
-* (René) arduino support removed
+* (René) Arduino-Unterstützung entfernt
 
 ### 0.5.3
-* (René) add error information
+* (René) füge Fehlerinformationen hinzu
 
 ### 0.5.2
-* (René) bug fix: in vis 1.x some values are not stored
+* (René) Bugfix: In Vis 1.x werden einige Werte nicht gespeichert
 
 ### 0.5.1
-* (René) bug fix: if nothing to poll then skip telnet connection
+* (René) Bugfix: Wenn Sie nichts abrufen möchten, überspringen Sie die Telnet-Verbindung
 
 ### 0.5.0
-* (René) write date over TCP to ebusd
+* (René) schreibe Datum über TCP nach ebusd
 
 ### 0.4.2
-* (René) bug fix for admin V3 
+* (René) Bugfix für Admin V3
 
-### 0.4.1 
-* (René) logo changed 
+### 0.4.1
+* (René) Logo geändert
 
-### 0.4.0 
-* (René) reading data from ebusd 
+### 0.4.0
+* (René) liest Daten aus ebusd
 
-### 0.3.0 
-* (René) support of ebusd 
-* (René) admin3 support
+### 0.3.0
+* (René) Unterstützung von ebusd
+* (René) admin3-Unterstützung
 
 ### 0.2.0
-* (René) add history as JSON for vis
-* (René) add flot based widget to display temperatur, status and power graph
+* (René) füge history als JSON für vis hinzu
+* (René) füge ein flotbasiertes Widget hinzu, um Temperatur-, Status- und Leistungsdiagramme anzuzeigen
 
 ### 0.1.0
-* (René) scheduled adapter instead of deamon
+* (René) geplanter Adapter anstelle von Deamon
 
 ### 0.0.3
-* (René) UTF8 coding
+* (René) UTF8-Codierung
 
 ### 0.0.2
-* (René) initial release
+* (René) Erstveröffentlichung
+
+## Changelog
 
 ## License
 Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>

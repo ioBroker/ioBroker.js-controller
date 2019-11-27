@@ -3,27 +3,26 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
+hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ---
-![安装数量](http://iobroker.live/badges/yeelight-2-installed.svg)
-![版](http://iobroker.live/badges/yeelight-2-stable.svg)
+![商标](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
+
+![安装数量](http://iobroker.live/badges/yeelight-2-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.yeelight-2.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.yeelight-2.svg)
-![特拉维斯-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.yeelight-2.svg)
+![特拉维斯](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
-<!-- -->
+＃ioBroker.yeelight-2
+=================
 
-![商标](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
+[德意志银行](README_de.md)
 
-＃ioBroker.yeelight-2 =================
-[Deutsche Beschreibung hier](README_de.md)
+该适配器控制您的Yeelight设备。该适配器仅适用于admin3。不支持Admin2
 
-此适配器控制您的Yeelight设备。此适配器仅适用于admin3。不支持Admin2
-
-##跳转版
-从0.4.X更改为0.9.X或更高时，必须手动删除对象，以便可以重新创建它们。
+##跳转版本
+从0.4.X更改为0.9.X或更高版本时，必须手动删除对象，以便可以重新创建它们。
 
 ##安装
 对于RGB灯泡，您必须在yeelight应用程序的设置中启用LAN。
@@ -31,51 +30,51 @@ hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
 ![](../../../en/adapterref/iobroker.yeelight-2/admin/lan.jpg)
 
 ##配置
-您可以手动添加设备或在网络中查找设备。基本端口是55443.如果需要，可以更改名称，IP，端口和smartname
+您可以手动添加设备或在网络中查找设备。基本端口是55443。如果需要，可以更改名称，ip，端口和smartname。
 
 ### Smartname
-如果你键入一个智能名称，该设备将添加到iobroker.cloud并可以通过alexa控制。
+如果键入智能名称，则该设备将添加到iobroker.cloud，并且可以由alexa控制。
 
 ###查找设备
-使用此按钮，您可以扫描网络中的设备，如果找到了某些内容，则会将div添加到表格中。扫描网络大约需要20秒。如果找不到设备，则不启用Lan模式或灯泡位于其他网络中。
+使用此按钮，您可以扫描网络中的设备，如果发现有问题，则将设备添加到表中。扫描网络大约需要20秒。如果找不到设备，则表示未启用局域网模式或灯泡在其他网络中。
 
 ## Set_scene
-用法：此方法用于将智能LED直接设置为指定状态。如果智能LED熄灭，则它将首先打开智能LED，然后应用指定的命令。
+用法：此方法用于将智能LED直接设置为指定状态。如果智能LED指示灯熄灭，则它将首先打开智能LED指示灯，然后应用指定的命令。
 
-参数：3~4。
+参数：3〜4
 
- “class”可以是“color”，“hsv”，“ct”，“cf”，“auto_dealy_off”。
+ “类别”可以是“颜色”，“ hsv”，“ ct”，“ cf”，“ auto_dealy_off”。
 
- - “颜色”表示将智能LED更改为指定的颜色和
+-“颜色”表示将智能LED更改为指定的颜色，然后
 
 亮度。
 
- - “hsv”表示将智能LED更改为指定的颜色和亮度。
- - “ct”表示将智能LED更改为指定的ct和亮度。
- - “cf”表示以指定方式启动颜色流。
- - “auto_delay_off”表示将智能LED指示灯打开
+-“ hsv”表示将智能LED更改为指定的颜色和亮度。
+-“ ct”表示将智能LED更改为指定的ct和亮度。
+-“ cf”表示以指定的方式启动颜色流。
+-“ auto_delay_off”表示将智能LED开启到指定的
 
-亮度并启动睡眠定时器以在指定的分钟后关闭灯光。
+在指定的分钟后，打开亮度并启动睡眠计时器以关闭灯。
 
- “val1”，“val2”，“val3”是特定于类的。
+ “ val1”，“ val2”，“ val3”是特定于类的。
 
 请求示例：
 
- - ```['color“，65280,70]``
- - ``[`hsv“，300,70,100]``
- - ``[`ct“，5400,100]``
- - ````[“cf”，0,0，“500,1,255,100,1000,1,16776960,70”]``
- - ``[“auto_delay_off”，50,5]``
+-``[“颜色”，65280，70]“
+-``[“ hsv”，300，70，100]``
+-``[“ ct”，5400，100]``
+-``[“ cf”，0,0，“ 500,1,255,100,1000,1,16776960,70”]“
+-``[“ auto_delay_off”，50，5]``
 
-注意：在“开”和“关”状态下均可接受。
+注意：在“打开”和“关闭”状态下均接受。
 
- 以上示例：
+ 对于以上示例：
 
-  - 第一种是将颜色设置为“652280”和70％亮度。
-  - 第二种是将颜色设置为Hue：300，饱和度：70和最大亮度。
-  - 第三个是将CT设置为500K和100％亮度。
-  - 第四个是在两个流元组上启动无限颜色流。
-  - 第五个是将灯打开到50％亮度，然后关闭
+ -首先是将颜色设置为“ 652280”，亮度设置为70％。
+ -第二种是将颜色设置为“色相：300”，“饱和度：70”和最大亮度。
+ -第三个设置为500K和100％亮度的CT。
+ -第四步是在两个流元组上启动无限的颜色流。
+ -第五种是打开灯光至50％的亮度，然后关闭
 
 5分钟后。
 

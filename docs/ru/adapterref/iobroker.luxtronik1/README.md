@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
+hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 ---
 ![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -11,13 +11,14 @@ hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
 ![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 # IoBroker.luxtronik1
 Адаптер ioBroker для Luxtronik 1 - тепловые насосы - контроллеры (то есть Alpha Innotec, Siemens ...)
 
 Установите адаптер, создайте экземпляр.
-Установите аппаратное обеспечение: то есть адаптер RS232-LAN к последовательному интерфейсу (RS232) основного кабеля тепловых насосов.
-Характеристики: последовательный кабель: связь PINS 2, 3 и 5 (если она не работает, поменяйте контакты 2 и 3). Преобразователь RS232 в LAN: USR TCP232 - 302.
+Установите аппаратное обеспечение: то есть адаптер RS232-LAN к последовательному интерфейсу (RS232) основного разъема тепловых насосов.
+Спецификации: последовательный кабель: связать PINS 2, 3 и 5 (если он не работает, поменяйте контакты 2 и 3) Преобразователь RS232 в LAN: то есть USR TCP232 - 302.
 Настройки последовательного интерфейса: 57600/8 / N / 1, режим: время ожидания сброса TCP-сервера: 0
 
 Установить comfoair - IP-адрес, порт и опрос - intervall
@@ -35,6 +36,10 @@ hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
 Значения в 'control' - канале должны быть установлены с помощью ack = false, чтобы инициировать действие.
 
 ## Changelog
+
+### 0.1.0
+
+-   error-handling on communication errors optimized, adapter restart in case of multiple communication errors.
 
 ### 0.0.7
 

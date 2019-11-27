@@ -4,7 +4,7 @@ lastChanged: 11.08.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/viz/widgets.md
-hash: MFqQmODI369VpLR2C4c5OmX3JichVmmuSddEvsi/EOY=
+hash: PluUjl+xw1lq5O8JDBHv5XTAJU9SlDzZC9hZ5z1o38A=
 ---
 # Widgets
 ## As a general rule
@@ -13,7 +13,7 @@ Widgets ('device, thing') in this context are display elements that in various w
 ## **ioBroker.vis Widgets**
 For the visualization in ioBroker with vis there are different widget sets.
 
--------------------------------------------------------------------------------  
+-------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 
 ### The basic settings of widgets
@@ -37,7 +37,7 @@ The visibility of a widget can be made dependent on the state of a data point.
 | Condition | The widget will be visible if the condition entered here for the o.a. Data point ...
 | Value for the condition | ... corresponds to the value entered here.
 
-#### **General**
+#### **Generally**
 ![](../../de/viz/media/vis_widgets_003_Widget_Allgemein.jpg) The 'General' section is specific to each widget and is described in detail for each widget.
 In this section, the desired data point in the Object ID field is mapped to the widget.
 
@@ -76,10 +76,10 @@ In this section, the desired data point in the Object ID field is mapped to the 
 
 | Attribute | Description |
 |----|----|
-| -width | Thickness of the border | |
-| -style | Line style of the border |
-| -color | border color |
-| -radius | Corner radius of the border; can be at most half of the shorter range of the widget |
+| `-width` | Thickness of the border | |
+| `-color` | Color of the border |
+| `-radius` | corner radius of the border; can be at most half of the shorter range of the widget |
+| `-radius` | corner radius of the border; can be at most half of the shorter range of the widget |
 
 | Attribute | Description |
 |-----|----|
@@ -91,18 +91,18 @@ In this section, the desired data point in the Object ID field is mapped to the 
 
 | Attribute | Description |
 |----|----|
-| padding | Offset from the edge of the widget box |
-| padding-left | Offset on the left side |
-| padding-top | offset on the top |
-| padding-right | offset on the right side |
-| padding-bottom | offset on the lower side |
-| box-shadow | Color of the widget box shadow |
-| margin-top | Top border around the widget (auto,%, px, pt, cm) |
-| margin-right | Right margin around the widget |
-| margin-bottom | bottom margin around the widget |
-| margin-left | Left margin around the widget |
+| `padding` | offset from the edge of the widget box |
+| `padding-top` | offset on the upper side |
+| `padding-right` | offset on the right side |
+| `padding-bottom` | offset on the lower side |
+| `box-shadow` | Shadow color of the widget box |
+| `margin-top` | Top border around the widget (auto,%, px, pt, cm) |
+| `margin-right` | Right margin around the widget |
+| `margin-bottom` | Bottom of the widget |
+| `margin-left` | Left margin around the widget |
+| `margin-left` | Left margin around the widget |
 
 | Attribute | Description |
 |-----|----|
 
-| `padding` | Offset from the edge of the widget box | `padding-left` | offset on the left side | `padding-top` | offset on the upper side | `padding-right` | offset on the right side | `padding-bottom` | Offset on the lower side | `box-shadow` | Color of the widget box shadow | `margin-top` | Top border around the widget (auto,%, px, pt, cm) | `margin-right` | Right margin around the widget | `margin-bottom` | Bottom of the widget | `margin-left` | Left margin around the widget
+| `padding` | Offset from the edge of the widget box | `padding-left` | offset on the left side | `padding-top` | offset on the upper side | `padding-right` | offset on the right side | `padding-bottom` | Offset on the lower side | `box-shadow` | Color of the shadow of the widget box | `margin-top` | Top border around the widget (auto,%, px, pt, cm) | `margin-right` | Right margin around the widget | `margin-bottom` | Bottom of the widget | `margin-left` | Left margin around the widget

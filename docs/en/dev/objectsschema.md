@@ -188,10 +188,11 @@ The tree structure is assembled automatically by names. E.g. ```system.adapter.0
 * `instance` - instance of adapter. Parent has to be of type adapter
 * `meta`     - rarely changing meta information that a adapter or his instances needs
 * `config`   - configurations
-* `script`
-* `user`
-* `group`
-
+* `script`   - scripts
+* `user`     - users
+* `group`    - groups
+* `chart`    - charts
+ 
 
 #### Attributes for specific object types
 
@@ -199,7 +200,7 @@ The tree structure is assembled automatically by names. E.g. ```system.adapter.0
 
 attributes:
 
-* `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file)
+* `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file). As exception the objects with type `meta` could have `common.type=meta.user` or `meta.folder`
 * `common.min`    (optional)
 * `common.max`    (optional)
 * `common.step`   (optional) - increase/decrease interval. E.g. 0.5 for thermostat
@@ -493,9 +494,9 @@ possible values:
 #### Meta
 id
 
- * *&lt;adapter-name&gt;.&lt;instance-number&gt;.meta.&lt;meta-name&gt;*
- * *&lt;adapter-name&gt;.meta.&lt;meta-name&gt;*
- * system.*meta.&lt;meta-name&gt;*
+ * `*&lt;adapter-name&gt;.&lt;instance-number&gt;.meta.&lt;meta-name&gt;*`
+ * `*&lt;adapter-name&gt;.meta.&lt;meta-name&gt;*`
+ * `system.*meta.&lt;meta-name&gt;*`
 
 #### Adapter
 id `system.adapter.<adapter.name>`

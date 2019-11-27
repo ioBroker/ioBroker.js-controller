@@ -5,6 +5,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import Snackbar from '@material-ui/core/Snackbar';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {FaMailBulk as IconEmail} from 'react-icons/fa';
 import {FaEnvelopeOpen as IconSubscribe} from 'react-icons/fa';
@@ -43,6 +48,10 @@ const styles = theme => ({
         background: '#5F6975',
         color: '#5F6975',
         opacity: 0,
+        '&:hover': {
+            backgroundColor: '#8c9ba7',
+            color: '#f7c6c7',
+        }
     },
     buttonFull: {
         width: 200,
@@ -71,8 +80,56 @@ class Subscribe extends Component {
         this.state = {
             email: '',
             inputFocused: '',
-            tooltip: ''
+            tooltip: '',
+            showUnsubscribe: ''
         };
+    }
+
+    renderUnsubscribeDialog() {
+        if (!this.state.showUnsubscribe) {
+            return null;
+        }
+
+        return (<Dialog
+            open={true}
+            fullWidth={true}
+            maxWidth="lg"
+            onClose={() => this.setState({showUnsubscribe: ''})}
+        >
+            <DialogTitle id="alert-dialog-slide-title">{I18n.t('Unsubscribe?')}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    {I18n.t('It seems like you are subscribed yet. Do you want unsubscribe?')}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => this.setState({showUnsubscribe: ''})} color="secondary">
+                    {I18n.t('Cancel')}
+                </Button>
+                <Button onClick={() => this.onUnsubscribe()} color="primary">
+                    {I18n.t('Send me an email with instructions to unsubscribe')}
+                </Button>
+            </DialogActions>
+        </Dialog>);
+    }
+
+    onUnsubscribe() {
+        if (this.state.showUnsubscribe) {
+            const url = `https://emails.iobroker.in/v1/subscriptions?delete=${encodeURIComponent(this.state.email)}&lang=${this.props.language}`;
+            fetch(url)
+                .then(data => data.json())
+                .then(data => {
+                    if (data.result === 'email sent') {
+                        this.setState({tooltip: I18n.t('Email with instructions sent')});
+                    } else {
+                        this.setState({tooltip: I18n.t('Cannot unsubscribe:') + ' ' + I18n.t(data.result), errorTooltip: true});
+                    }
+                })
+                .catch(e => {
+                    this.setState({tooltip: I18n.t('Cannot unsubscribe:') + ' ' + e.toString(), errorTooltip: true});
+                })
+                .then(() => this.setState({showUnsubscribe: ''}));
+        }
     }
 
     onSubscribe() {
@@ -84,12 +141,14 @@ class Subscribe extends Component {
                     .then(data => {
                         if (data.result === 'added') {
                             this.setState({tooltip: I18n.t('Subscribed!')});
+                        } else if (data.result === 'yet exists') {
+                            this.setState({showUnsubscribe: this.state.email});
                         } else {
-                            this.setState({tooltip: I18n.t('Cannot subscribe: ') + I18n.t(data.result), errorTooltip: true});
+                            this.setState({tooltip: I18n.t('Cannot subscribe:') + ' ' + I18n.t(data.result), errorTooltip: true});
                         }
                     })
                     .catch(e => {
-                        this.setState({tooltip: I18n.t('Cannot subscribe: ') + e.toString(), errorTooltip: true});
+                        this.setState({tooltip: I18n.t('Cannot subscribe:') + ' '  + e.toString(), errorTooltip: true});
                     });
             } else {
                 this.setState({tooltip: I18n.t('invalid email'), errorTooltip: true});
@@ -142,6 +201,7 @@ class Subscribe extends Component {
             </Button>
             <div className={this.props.classes.promise + ' ' + (this.state.inputFocused || this.state.email ? this.props.classes.promiseHide : '')}>{I18n.t('We will not spam you. Promise!')}</div>
             {this.renderSnackbar()}
+            {this.renderUnsubscribeDialog()}
         </div>);
     }
 }

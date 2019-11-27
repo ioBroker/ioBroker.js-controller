@@ -77,6 +77,9 @@ The Contact-ID message
 
 ## Changelog
 
+### 1.0.1 (2019.10.14)
+* (Stübi) Bugfixing, Issue #9 
+
 ### 1.0.0 (2019.01.05)
 * (Stübi) Support js-controller compact mode 
 
@@ -112,7 +115,7 @@ The Contact-ID message
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten <thorsten@stueben.de>
+Copyright (c) 2019 Thorsten <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -7,7 +7,6 @@ ioBroker adapter for Wiffi-wz, Weatherman, Wiffi-pump, Rainyman and maybe others
 [![NPM](https://nodei.co/npm/iobroker.wiffi-wz.png?downloads=true)](https://nodei.co/npm/iobroker.wiffi-wz/)
 
 [![Build Status](https://travis-ci.org/t4qjXH8N/ioBroker.wiffi-wz.svg?branch=master)](https://travis-ci.org/t4qjXH8N/ioBroker.wiffi-wz)
-[![Build status](https://ci.appveyor.com/api/projects/status/58b8ygy9slf4oygx/branch/master?svg=true)](https://ci.appveyor.com/project/t4qjXH8N/iobroker-wiffi-wz/branch/master)
 
 This is an [ioBroker](https://github.com/ioBroker/ioBroker) Adapter to retrieve sensor data from Wiffi devices see [Stall.biz](http://www.stall.biz) for more info. 
 
@@ -53,6 +52,9 @@ If any error occurs, please set the adapter loglevel to debug and send me the da
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+#### 2.1.4 (29-Aug-2019)
+- fixed "could not create a state null" error
+
 #### 2.1.3 (27-Jun-2019)
 - compatibility for boolean values and old Wiffi versions
 

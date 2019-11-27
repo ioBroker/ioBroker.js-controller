@@ -25,6 +25,12 @@ current supported ebusd-version: 3.3
    
 ## Changelog
 
+## 0.8.2 (2019-11-10)
+* (René) some more error messages in datapoint "error"
+
+## 0.8.1 (2019-10-31)
+* (René) update flot to version 3.0
+
 ### 0.8.0 (2019-02-24)
 * (René) hcmode2 value 5 = EVU Sperrzeit
 

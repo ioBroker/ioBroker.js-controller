@@ -123,6 +123,32 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+### 3.7.1 (2019-11-20)
+* (bluefox) Easy admin configuration was implemented
+
+### 3.6.12 (2019-11-04)
+* (ldittmar) Add repo check to popup messages
+* (ldittmar) Update Controller-Update info page
+* (Apollon77) update deps
+
+### 3.6.11 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
+### 3.6.10 (2019-10-11)
+* (ldittmar) Add NPM version and OS check to popup messages
+* (bluefox) Log paths were sanitized
+* (bluefox) NPM packages were updated
+
+### 3.6.7 (2019-09-24)
+* (ldittmar) Add Node.JS version check to popup messages
+
+### 3.6.6 (2019-09-18)
+* (SchumyHao) Update Chinese translation
+* (tmikulski) Update translations.json
+
+### 3.6.5 (2019-09-02)
+* (ldittmar) Fix anoying popups from info adapter
+
 ### 3.6.4 (2019-06-03)
 * (bluefox) Update nodejs recommendation message and check to recommend nodejs 10
 
@@ -307,7 +333,7 @@ Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitt
 
 ### 3.0.11 (2018-01-11)
 * (DeepCoreSystem) French update
-* (bluefox) fix error with empty ID 
+* (bluefox) fix error with empty ID
 * (bluefox) add sort by "recently updated"
 * (ldittmar) add readme and issues viewer
 
@@ -318,7 +344,7 @@ Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitt
 
 ### 3.0.7 (2018-01-01)
 * (soef) update instances, objects and other lists
-* (bluefox) rewrite interface with materialize 
+* (bluefox) rewrite interface with materialize
 
 ### 2.0.11 (2017-10-23)
 * (bluefox) Configurable event update disable threshold

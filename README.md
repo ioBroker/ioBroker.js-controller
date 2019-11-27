@@ -8,10 +8,12 @@ Project content:
 
 | Folder | Description |
 |---|---|
+|**admin**|information that directly affects the admin adapter|
 |**archive**|archived informations from older documentions|
 |**blog**|source for blog messages|
 |**docs**|official iobroker documentation source files|
 |**engine**|dynamic webpage generation engine|
+|**info**|Pop-up texts and documentation list for the Info Adapter|
 |**media**|official files and logos|
 
 ## How to build

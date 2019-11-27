@@ -50,6 +50,10 @@ url,                   // optional  - a supplementary URL to show with your mess
 ```
 
 ## Changelog
+
+### 1.1.1 (2019-09-18)
+* (Apollon77) js-controller 2.0 compatibility, dependency updates
+
 ### 1.1.0 (2018-09-02)
 * (bluefox) Admin3 is supported now
 

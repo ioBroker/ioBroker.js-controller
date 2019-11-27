@@ -3,42 +3,44 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
+hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 ![商标](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
 ![安装数量](http://iobroker.live/badges/lgtv-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lgtv.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.lgtv.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.lgtv.svg)
 ![NPM](https://nodei.co/npm/iobroker.lgtv.png?downloads=true)
-![特拉维斯-CI](https://travis-ci.org/SebastianSchultz/ioBroker.lgtv.svg?branch=master)
+![特拉维斯](https://travis-ci.org/SebastianSchultz/ioBroker.lgtv.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
-#ioBroker.lgtv =================
+＃ioBroker.lgtv
+=================
+
 适用于ioBroker的LG WebOS SmartTV适配器
 
-从[ioBroker](https://www.iobroker.net)远程控制LG WebOS SmartTV（2013模型及更高版本）。
+从[ioBroker](https://www.iobroker.net)远程控制LG WebOS SmartTV（2013年及更高版本）。
 
 ---
 
 ##用法：
 通过ioBroker管理界面安装适配器。
-在适配器配置中输入您的LG WebOS电视的IP地址。
-首次连接时，您将在电视屏幕上收到配对提示，您应该允许连接。
+在适配器配置中，输入LG WebOS TV的IP地址。
+首次连接时，您会在电视屏幕上收到一个配对提示，您应该在该提示下进行连接。
 
 ＃＃ 一些例子：
 ```setState('lgtv.0.states.popup', 'Some text!');```
 
-这将显示一个带有文字“Some text！”的弹出窗口。在电视上。
+这将显示一个带有文本“ Some text！”的弹出窗口。在电视上。
 您可以在文本中使用HTML换行符（br）。
 
 ```setState('lgtv.0.states.turnOff', true);```
 
-关掉电视。
+关闭电视。
 
 ```setState('lgtv.0.states.mute', true);```
 
-将电视静音。
+使电视静音。
 
 ```setState('lgtv.0.states.mute', false);```
 
@@ -66,11 +68,11 @@ hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
 
 ```setState('lgtv.0.states.3Dmode', false);```
 
-取消激活电视上的3D模式。
+在电视上禁用3D模式。
 
 ```setState('lgtv.0.states.channel', 7);```
 
-将直播电视切换到频道编号7。
+将直播电视切换到7号频道。
 
 ```setState('lgtv.0.states.launch', 'livetv');```
 
@@ -78,23 +80,23 @@ hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
 
 ```setState('lgtv.0.states.launch', 'smartshare');```
 
-在电视上打开SmartShare应用程序。
+在电视上打开SmartShare应用。
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
-在电视上运行电视用户指南应用程序。
+在电视上运行电视用户指南应用。
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
-在电视上打开Netflix应用程序。
+在电视上打开Netflix App。
 
 ```setState('lgtv.0.states.launch', 'youtube');```
 
-在电视上打开Youtube应用程序。
+在电视上打开YouTube应用。
 
 ```setState('lgtv.0.states.launch', 'prime');```
 
-在电视上打开亚马逊Prime应用程序。
+在电视上打开Amazon Prime应用。
 
 ```setState('lgtv.0.states.launch', 'amazon');```
 
@@ -102,51 +104,87 @@ hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
 
 ```setState('lgtv.0.states.openURL', 'http://www.iobroker.net');```
 
-在电视上打开Web浏览器并导航到www.iobroker.net。
-也可用于打开图像或视频（在浏览器中）。
+在电视上打开Webbrowser并导航到www.iobroker.net。
+也可以用于打开图像或视频（在浏览器中）。
 
-```setState('lgtv.0.states.input', 'AV_1');```
+```setState('lgtv.0.states.input', 'av1');```
 
-将输入和电视切换到AV1。
+将电视的输入切换到AV1。
 
-```setState('lgtv.0.states.input', 'SCART_1');```
+```setState('lgtv.0.states.input', 'scart');```
 
-将输入和电视切换到Scart。
+将电视的输入切换为Scart。
 
-```setState('lgtv.0.states.input', 'COMP_1');```
+```setState('lgtv.0.states.input', 'component');```
 
-将输入和电视切换到组件。
+将电视的输入切换到分量。
 
-```setState('lgtv.0.states.input', 'HDMI_1');```
+```setState('lgtv.0.states.input', 'hdmi1');```
 
-将输入和电视切换到HDMI 1。
+将电视的输入切换到HDMI 1。
 
-```setState('lgtv.0.states.input', 'HDMI_2');```
+```setState('lgtv.0.states.input', 'hdmi2');```
 
-将输入和电视切换到HDMI 2。
+将电视的输入切换到HDMI 2。
 
-```setState('lgtv.0.states.input', 'HDMI_3');```
+```setState('lgtv.0.states.input', 'hdmi3');```
 
-将输入和电视切换到HDMI 3。
+将电视的输入切换到HDMI 3。
+
+```setState('lgtv.0.states.youtube', 'https://www.youtube.com/watch?v=AjSpMQfRmEo'); OR setState('lgtv.0.states.youtube', 'AjSpMQfRmEo');```
+
+播放YouTube视频。
+
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
+
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
+
+发送和响应RAW命令API。
+
+```setState('lgtv.0.remote.*KEY*', true);```
+
+将远程KEY发送到电视。
+
+```setState('lgtv.0.states.power', true/false);```
+
+关闭电视并打开电视（使用WOL，打开电视，仅适用于LAN）。
+
+```setState('lgtv.0.states.soundOutput', 'external_arc');```
+
+通过ARC（HDMI）切换音频输出。
 
 ---
 
 ＃＃ 状态
 渠道
 
-持有当前渠道
+保留当前频道
 
 体积
 
-保持当前音量水平并可以改变音量
+保持当前音量，并可以更改音量
 
 上
 
-电视开启时为真，电视关闭时为假
+电视打开时为true，电视关闭时为false
 
 ---
 
 ## Changelog
+
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
+
+### 1.1.0 (2019-10-10)
+* (instalator) adding object remote.KEY
+* (instalator) fix connect to TV
+* (instalator) add subscribe volume and mute state
+* (instalator) translate admin to RUS
+* (instalator) add Turn On, using WOL
+* (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

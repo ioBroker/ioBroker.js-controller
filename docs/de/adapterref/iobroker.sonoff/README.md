@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: RSDMeYvJdHdLRa0sQZfy3RIpl1BQYRnCBww693bWEvM=
+hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 ---
 ![Logo](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
@@ -13,97 +13,104 @@ hash: RSDMeYvJdHdLRa0sQZfy3RIpl1BQYRnCBww693bWEvM=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.sonoff.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sonoff.png?downloads=true)
 
-# IoBroker Sonoff ===============
-Benötigt node.js 4.0 oder höher.
-
+# IoBroker Sonoff
 ## Verwendungszweck
 Dieser Adapter kommuniziert mit Sonoff-Geräten mit Tasmota-Firmware oder ESP-Geräten über MQTT.
 
 Folgende Themen werden erwartet:
 
-- tele / Gerätename / ZUSTAND
-- tele / Gerätename / SENSOR
-- tele / DeviceNAME / INFOx
-- tele / DeviceNAME / ENERGY
-- cmnd / DeviceNAME / POWERx
-- stat / DeviceNAME / POWERx
-- / Gerätename / BM280 / Temperatur
-- / DeviceNAME / BM280 / Luftfeuchtigkeit
-- / DeviceNAME / BM280 / Temperatur
-- / DeviceNAME / BM280 / Feuchtigkeit
-- / Gerätename / BM280 / Vcc
-- / Gerätename / BM280 / VCC
-- / DeviceNAME / BM280 / Laufzeit
-- / Gerätename / BM280 / RSSI
-- / Gerätename / BM280 / POWER
-- / Gerätename / BM280 / POWER1
-- / Gerätename / BM280 / POWER2
-- / Gerätename / BM280 / POWER3
-- / Gerätename / BM280 / POWER4
-- / DeviceNAME / BM280 / Switch1
-- / DeviceNAME / BM280 / Switch2
-- / DeviceNAME / BM280 / Gesamt
-- / DeviceNAME / BM280 / Today
-- / DeviceNAME / BM280 / heute
-- / DeviceNAME / BM280 / Gestern
-- / DeviceNAME / BM280 / gestern
-- / DeviceNAME / BM280 / Faktor
-- / DeviceNAME / BM280 / Factor
-- / DeviceNAME / BM280 / Power
-- / DeviceNAME / BM280 / Leistung
-- / DeviceNAME / BM280 / Spannung
-- / DeviceNAME / BM280 / Spannung
-- / DeviceNAME / BM280 / Current
-- / DeviceNAME / BM280 / Strom
-- / DeviceNAME / BM280 / Punkt
-- / DeviceNAME / BM280 / Counter1
-- / DeviceNAME / BM280 / Counter2
-- / DeviceNAME / BM280 / Counter3
-- / DeviceNAME / BM280 / Counter4
-- / DeviceNAME / BM280 / Druck
-- / DeviceNAME / BM280 / SeaPressure
-- / DeviceNAME / BM280 / Druck
-- / DeviceNAME / BM280 / Ca. Höhe
-- / DeviceNAME / BM280 / Modul
-- / DeviceNAME / BM280 / Version
-- / DeviceNAME / BM280 / Hostname
-- / DeviceNAME / BM280 / IPAddress
-- / DeviceNAME / BM280 / IP-Adresse
-- / DeviceNAME / BM280 / RestartReason
-- / DeviceNAME / BM280 / Kohlendioxid
-- / DeviceNAME / DHT11 / Beleuchtungsstärke
-- / DeviceNAME / SonoffSC / Light
-- / DeviceNAME / SonoffSC / Noise
-- / DeviceNAME / SonoffSC / AirQuality
-- /DeviceNAME/SDS0X1/PM2.5
-- / Gerätename / SDS0X1 / PM10
-- / Gerätename / SDS0X1 / UvLevel
-- / Gerätename / SDS0X1 / Latitude
-- / Gerätename / SDS0X1 / Längengrad
-- / Gerätename / SR04 / Entfernung
+- `tele / DeviceNAME / STATE`
+- `ele / DeviceNAME / SENSOR`
+- `ele / DeviceNAME / INFOx`
+- `ele / DeviceNAME / ENERGY`
+- `mnd / DeviceNAME / POWERx`
+- `tat / DeviceNAME / POWERx`
+- `/ DeviceNAME / BM280 / Temperature`
+- `/ DeviceNAME / BM280 / Humidity`
+- `/ DeviceNAME / BM280 / Temperatur`
+- `/ DeviceNAME / BM280 / Feuchtigkeit`
+- `/ DeviceNAME / BM280 / Vcc`
+- `/ DeviceNAME / BM280 / VCC`
+- `/ DeviceNAME / BM280 / Laufzeit`
+- `/ DeviceNAME / BM280 / RSSI`
+- `/ DeviceNAME / BM280 / POWER`
+- `/ DeviceNAME / BM280 / POWER1`
+- `/ DeviceNAME / BM280 / POWER2`
+- `/ DeviceNAME / BM280 / POWER3`
+- `/ DeviceNAME / BM280 / POWER4`
+- `/ DeviceNAME / BM280 / Switch1`
+- `/ DeviceNAME / BM280 / Switch2`
+- `/ DeviceNAME / BM280 / Total`
+- `/ DeviceNAME / BM280 / Today`
+- `/ DeviceNAME / BM280 / heute`
+- `/ DeviceNAME / BM280 / Yesterday`
+- `/ DeviceNAME / BM280 / gestern`
+- `/ DeviceNAME / BM280 / Faktor`
+- `/ DeviceNAME / BM280 / Factor`
+- `/ DeviceNAME / BM280 / Power`
+- `/ DeviceNAME / BM280 / Leistung`
+- `/ DeviceNAME / BM280 / Voltage`
+- `/ DeviceNAME / BM280 / Spannung`
+- `/ DeviceNAME / BM280 / Current`
+- `/ DeviceNAME / BM280 / Strom`
+- `/ DeviceNAME / BM280 / Punkt`
+- `/ DeviceNAME / BM280 / Counter1`
+- `/ DeviceNAME / BM280 / Counter2`
+- `/ DeviceNAME / BM280 / Counter3`
+- `/ DeviceNAME / BM280 / Counter4`
+- `/ DeviceNAME / BM280 / Pressure`
+- `/ DeviceNAME / BM280 / SeaPressure`
+- `/ DeviceNAME / BM280 / Druck`
+- `/ DeviceNAME / BM280 / Ca. Höhe "
+- `/ DeviceNAME / BM280 / Module`
+- `/ DeviceNAME / BM280 / Version`
+- `/ DeviceNAME / BM280 / Hostname`
+- `/ DeviceNAME / BM280 / IPAddress`
+- `/ DeviceNAME / BM280 / IPaddress`
+- `/ DeviceNAME / BM280 / RestartReason`
+- `/ DeviceNAME / BM280 / CarbonDioxide`
+- `/ DeviceNAME / DHT11 / Illuminance`
+- `/ DeviceNAME / SonoffSC / Light`
+- `/ DeviceNAME / SonoffSC / Noise`
+- `/ DeviceNAME / SonoffSC / AirQuality`
+- `/ DeviceNAME / SDS0X1 / PM2.5`
+- `/ DeviceNAME / SDS0X1 / PM10`
+- `/ DeviceNAME / SDS0X1 / UvLevel`
+- `/ DeviceNAME / SDS0X1 / Latitude`
+- `/ DeviceNAME / SDS0X1 / Longitude`
+- `/ DeviceNAME / SR04 / Distance`
 
-** Hinweis **: Die Liste kann leicht erweitert werden. Bitte senden Sie *Pull Requests* oder *Debug-Daten* für unbekannte Zustände an den Entwickler (über ein Problem).
+** Hinweis **: Die Liste kann leicht erweitert werden. Bitte senden Sie `Pull Requests` oder *Debug-Daten* für unbekannte Zustände an den Entwickler (per Issue).
 
 ## Automatische Erstellung von Objekten
-In der Web-Konfiguration können Sie feststellen, welche MQTT-Telegramme die neuen Objekte anlegen, die nicht in Standard-Datenpunkten liegen
+In der Web-Konfiguration können Sie festlegen, welche MQTT-Telegramme die neuen Objekte erstellen, die nicht in den Standarddatenpunkten enthalten sind
 
-* TELE_SENSOR erzeugt Objekte aus Tele / xxx / SENSOR-Telegrammen
-* TELE_STATE erstellt Objekte aus Tele / xxx / STATE-Telegrammen
-* STAT_RESULT erzeugt Objekte aus stat / xxx / RESULT-Telegrammen
+* `TELE_SENSOR` erzeugt Objekte aus` tele / xxx / SENSOR` Telegrammen
+* `TELE_STATE` erzeugt Objekte aus` tele / xxx / STATE` Telegrammen
+* `STAT_RESULT` erzeugt Objekte aus` stat / xxx / RESULT` Telegrammen
 
 Normalerweise sollte TELE_SENSOR für die meisten Benutzer ausreichen.
 
 ## Flags für LED-Controller
-Die Moduszustände werden nur erstellt, wenn das Gerät einen der folgenden Zustände hat:
+Die Moduszustände werden nur erstellt, wenn das Gerät einen der folgenden Zustände aufweist:
 
-- 'Rot', 'Grün', 'Blau', 'WW', 'CW', 'Farbe', 'RGB_POWER', 'WW_POWER', 'CW_POWER', 'Hue', 'Saturation'
+- `Rot`,` Grün`, `Blau`,` WW`, `CW`,` Farbe`, `RGB_POWER`,` WW_POWER`, `CW_POWER`,` Farbton`, `Sättigung`
 
 Zustände:
 
-* modeLedExor - Exor für weiße LEDs und Farbleds => wenn die weißen LEDs eingeschaltet sind, werden die Farb-LEDs ausgeschaltet und umgekehrt (Standardeinstellung ist true)
-* modeReadColors - erlaubt das Lesen von Farben aus MQTT (Standardwert false)
+* `modeLedExor` - exor für weiße LEDs und Farb-LEDs => Wenn die weißen LEDs eingeschaltet sind, sind die Farb-LEDs ausgeschaltet und umgekehrt (Standardwert true)
+* `modeReadColors` - ermöglicht das Lesen von Farben aus MQTT (Standard false)
 
 ## Changelog
+
+### 2.3.1 (2019-10-23)
+* (bluefox) Fixed the password input in the configuration
+* (bluefox) Allowed to set the IP interface for server
+* (bluefox) Fixed tests for js-controller 2.0
+* (bluefox) Fixed the monitoring of the client connection
+* (bluefox) Changed "indicator.connected" to "indicator.reachable" for clients
+* (bluefox) Supported `{POWERn: "true"}`
+* (bluefox) Correct processing of `{temp: nan}`
 
 ### 2.2.3 (2019-01-10)
 * (simatec) Support for comapct mode
@@ -128,7 +135,7 @@ Zustände:
 
 ### 2.1.0 (2018-03-30)
 * (gemu2015) Support of the devices control (many thanks :)
-* (gemu2015) Support of many new values 
+* (gemu2015) Support of many new values
 * (modmax) Update alive status of the clients
 * (modmax) Added POWER5-8 and Switch3-4
 

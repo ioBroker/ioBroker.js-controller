@@ -3,64 +3,82 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: UvnJYD84v5/tnMP91+G2jJw4UrQJ5eWwfjmx1JMSXas=
+hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/nuki-stable.svg)
 
 # IoBroker.nuki
-Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock](https://nuki.io/de/) mithilfe der API der Nuki Bridge.
+Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock](https://nuki.io/de/) über die API der Nuki Bridge.
 
 ## Bedarf
 * Ein Nuki Smart Lock (offensichtlich) und eine Nuki-Brücke (Hardware oder Software).
 * Eine laufende Instanz von ioBroker.
 
 ## Verwendungszweck
-Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer bleibt. Die Checkbox "use callback" und der Wert "callback port in ioBroker" sind optional und können gesetzt werden, um die Callback-Funktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird ein Brückengerät mit einem Kanal für jedes Nuki-Schloss erstellt, das mit der angegebenen Nuki-Brücke verbunden ist. Die Kanäle geben den aktuellen Status der Nuki-Sperre als Ausgangsparameter an:
+Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Bridge. Geben Sie beim Erstellen einer Instanz einfach IP-Adresse, Port und Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer gelassen wird. Die Checkbox "Callback verwenden" und der Wert "Callback-Port in ioBroker" sind optional und können gesetzt werden, um die Callback-Funktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jedes Nuki-Schloss ein Brückengerät mit einem Kanal erstellt, das mit der angegebenen Nuki-Brücke verbunden ist. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
 
 * batteryCritical: Anzeige für schwache Batterie
-* lockState: Anzeige, ob Nuki gesperrt ist
+* lockState: Zeigt an, ob Nuki gesperrt ist (nur Nuki Lock)
 * state: Aktueller (numerischer) Sperrstatus (Nuki native)
 * Zeitstempel: Zuletzt aktualisiert
 
-Zusätzlich bieten die Kanäle Eingangsparameter, die eine grundlegende Steuerung des Nuki-Schlosses ermöglichen:
+Zusätzlich bieten die Kanäle Eingangsparameter, die die grundlegende Steuerung des Nuki-Schlosses ermöglichen:
 
-* Aktion: Numerischer Aktionscode zum Einstellen des Nuki-Status (Nuki native)
+* action: Numerischer Aktionscode zum Festlegen des Nuki-Status (Nuki native)
 
-Gültige Eingabewerte sind:
+Gültige Eingabewerte für Sperren sind:
 
-0 (keine Aktion) 1 (Entsperren) 2 (Sperren) 3 (Entriegeln) 4 (Sperren von "n" gehen) 5 (Sperren von "n" gehen mit Entriegeln)
+0 (keine Aktion) 1 (Entsperren) 2 (Sperren) 3 (Entriegeln) 4 (Sperren und Loslassen) 5 (Sperren und Loslassen mit Entriegeln)
 
-* lockAction: Schalter zum Sperren / Entsperren des Nuki (true = unlock; false = lock)
-* openAction: Button zum Entriegeln des Nuki
-* openLocknGoAction: Taste zum Entriegeln und nach einigen Sekunden zum Sperren des Nuki
+* lockAction: Schalter zum Sperren / Entsperren des Nuki (true = entsperren; false = sperren)
+* openAction: Taste zum Entriegeln des Nuki
+* openLocknGoAction: Knopf zum Entriegeln und nach einigen Sekunden zum Verriegeln des Nuki
 * unlockLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
 
-## Zusätzliche Information
-So erhalten Sie Ihre Brückenmarkierung:
+Gültige Eingabewerte für Öffner sind:
 
-* Rufen Sie http:// <bridge_ip>: <bridge_port> / auth von einem beliebigen Browser in Ihrem LAN auf -> Bridge leuchtet seine LED
-* Drücken Sie innerhalb von 30 Sekunden die Taste der Brücke
-* Das Ergebnis des Browseraufrufs sollte folgendermaßen aussehen:
+0 (keine Aktion) 1 (aktiviere rto) 2 (deaktiviere rto) 3 (elektrische Schlagbetätigung) 4 (aktiviere kontinuierlichen Modus) 5 (deaktiviere kontinuierlichen Modus)
+
+* rtoAction: Schalter zum Aktivieren / Deaktivieren der Ring-to-Open-Funktion (true = aktivieren; false = deaktivieren)
+* openAction: Taste zur Betätigung eines elektrischen Schlaggeräts
+* cmActiveAction: Schaltfläche zum Aktivieren des kontinuierlichen Modus
+* cmDeactiveAction: Schaltfläche zum Deaktivieren des kontinuierlichen Modus
+
+## Zusätzliche Information
+So bekommen Sie Ihren Brücken-Token:
+
+* Rufen Sie http:// <bridge_ip>: <bridge_port> / auth in einem beliebigen Browser in Ihrem LAN auf. -> Die Bridge schaltet ihre LED ein
+* Drücken Sie den Knopf der Brücke innerhalb von 30 Sekunden
+* Das Ergebnis des Browseraufrufs sollte ungefähr so aussehen:
 
 {"token": "token123", "success": true} Rückruffunktion:
 
-Wenn die Callback-Funktion verwendet wird, versucht der Adapter, den Callback auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Wenn die Instanz entladen ist, wird der Callback wieder gelöscht. Alle Nuki-Staaten werden von der Nuki-Brücke auf dem neuesten Stand gehalten, wenn der Rückruf aktiviert ist.
-Rückrufe können in jedem Browser mit folgenden URLs festgelegt und entfernt werden:
+Wenn die Rückruffunktion verwendet wird, versucht der Adapter, den Rückruf auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Beim Entladen der Instanz wird der Rückruf wieder gelöscht. Alle Nuki-Zustände werden von der Nuki-Brücke auf dem neuesten Stand gehalten, während der Rückruf aktiviert ist.
+Rückrufe können mit folgenden URLs in jedem Browser festgelegt und entfernt werden:
 
 Einstellen:
 
 * http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken>
 
-Löschen:
+Entfernen:
 
 * http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>
 
 ## Update
-Bei einem Update von 0.1.x auf 0.2.0 oder höher wird empfohlen, vor der Installation der neuen Version alle Instanzen der alten Version zu löschen. Bitte beachten Sie, dass größere Versionsänderungen als auf Patch-Ebene (-> Änderung nur der letzten Ziffer) immer Änderungen an Datenpunkten enthalten können, z. 0,1,3 bis 0,2,0
+Bei einem Update von 0.1.x auf 0.2.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer sind als auf Patch-Ebene (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 0,1,3 bis 0,2,0
 
 ## Changelog
+
+### 1.1.0
+* (smaragdschlange) improvement: support for Nuki Opener
+
+### 1.0.7
+* (smaragdschlange) bug fix: impact on other Nuki-connected gateways
+
+### 1.0.6
+* (smaragdschlange) dependencies update
 
 ### 1.0.5
 * (ldittmar81) add gulp auto translation

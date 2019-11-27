@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
+hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ---
 ![Logo](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -12,11 +12,14 @@ hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.shuttercontrol.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/simatec/iobroker.shuttercontrol.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)
+![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 
 # IoBroker.shuttercontrol
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 ## Shuttercontrol Adapter für ioBroker
 automatische Rollladensteuerung
 
@@ -29,6 +32,15 @@ automatische Steuerung für Rollläden
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.4.1 (20.10.2019)
+* (simatec) Fix update process
+* (simatec) Fix appveyor
+
+### 0.4.0 (28.08.2019)
+* (simatec) Fix shutdown for Elevation
+* (simatec) Fix triggerHeight
+* (simatec) Fix Travis
 
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter

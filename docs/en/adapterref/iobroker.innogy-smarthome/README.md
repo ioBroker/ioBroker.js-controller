@@ -13,6 +13,9 @@ As this project is developed during my spare time, I*m actively looking for help
 
 ## Changelog
 
+### 0.3.3
+    Fixed non switchable variables for new installations (missing native ID)
+
 ### 0.3.2
     Added more Hue properties
 

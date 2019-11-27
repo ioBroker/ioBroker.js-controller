@@ -109,11 +109,18 @@ function createDir(dir) {
     let dirs = [];
     parts.forEach(part => {
         dirs.push(part);
-        !fs.existsSync(dirs.join('/')) && fs.mkdirSync(dirs.join('/'));
+        try {
+            !fs.existsSync(dirs.join('/')) && fs.mkdirSync(dirs.join('/'), {recursive: true});
+        } catch (e) {
+            console.error('Try to create a directory: ' + dirs.join('/'));
+            console.error('Try to create a directory: ' + e.toString());
+            console.error('Actual directory: ' + process.cwd());
+        }
     });
 }
 
 function writeSafe(fileName, data) {
+    fileName = fileName.replace(/\?[^?]*$/, '');
     const parts = fileName.replace(/\\/g, '/').split('/');
     parts.pop();
     createDir(parts.join('/'));

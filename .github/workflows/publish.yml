@@ -1,0 +1,34 @@
+name: Publish
+
+on:
+  #push
+  schedule:
+    - cron:  '0 2 */3 * *'
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - name: Install
+        working-directory: engine
+        run: npm i
+      - name: Gulp default
+        working-directory: engine
+        run: gulp
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git status
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

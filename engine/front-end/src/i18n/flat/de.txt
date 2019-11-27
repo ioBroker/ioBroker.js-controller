@@ -11,6 +11,9 @@ Abzeichen
 Blog
 Bei Amazon kaufen
 Kaufen Sie bei Amazon, was Sie brauchen
+Abbrechen
+Ich kann nicht abonnieren:
+Kann nicht abbestellen:
 Änderungsprotokoll
 Klicken Sie auf %s kopieren
 Schließen
@@ -24,10 +27,11 @@ Einzelheiten
 Dokumentation
 Mit PayPal spenden
 Spenden Sie mit dem PayPal-Button
-Herunterladen
+Downloads
 Dynamisch wachsende Community.
 lokale Bearbeitung
 Auf Github ändern
+E-Mail mit Anweisungen gesendet
 Alle erweitern
 Erklärung
 Filter
@@ -42,6 +46,7 @@ Info
 Information
 Eingerichtet
 Installationen:
+Anscheinend sind Sie bereits angemeldet. Möchten Sie sich abmelden?
 Javascript ist die am weitesten verbreitete Sprache
 Jetzt beitreten
 Zuletzt geändert:
@@ -67,10 +72,12 @@ Lesen
 Läuft auf
 Screenshots
 Suche...
+Senden Sie mir eine E-Mail mit Anweisungen zum Abbestellen
 Community-Unterstützung
 Sortieren
 Stable:
 Abonnieren
+Gezeichnet!
 Unterstütze uns!
 Wechseln Sie zur Tabellenansicht
 Wechseln Sie zur Kachelansicht
@@ -82,6 +89,7 @@ Gesamt:
 Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten klicken, um diese Seite auf Deutsch zu übersetzen, Danke!
 Art
 Einzigartige Grafiken und schöne Schnittstellen für Sie.
+Abmelden?
 Verwenden Sie eines der besten Open Source-Produkte für die Verwaltung Ihres Automatisierungssystems vor Ort.
 Benutzer
 Versionen
@@ -105,6 +113,7 @@ Images werden nur benötigt, wenn Probleme mit Installationsskripten auftreten.
 Die Installation kann einfach mit 1 bis 3 Zeilen Code erfolgen.
 Erst Node.js installieren (wenn noch nicht vorhanden):
 Anschließend ioBroker installieren:
+ungültige E-Mail
 ioBroker Blog
 ioBroker in der Presse
 ioBroker ist eine IoT-Plattform (Fog-Computing).

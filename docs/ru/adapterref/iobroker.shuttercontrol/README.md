@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
+hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ---
 ![логотип](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -12,11 +12,14 @@ hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.shuttercontrol.svg)
 ![Статус зависимости](https://img.shields.io/david/simatec/iobroker.shuttercontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)
+![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 
 # IoBroker.shuttercontrol
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 ## Адаптер shuttercontrol для ioBroker
 автоматизированный Rollladensteuerung
 
@@ -29,6 +32,15 @@ hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.4.1 (20.10.2019)
+* (simatec) Fix update process
+* (simatec) Fix appveyor
+
+### 0.4.0 (28.08.2019)
+* (simatec) Fix shutdown for Elevation
+* (simatec) Fix triggerHeight
+* (simatec) Fix Travis
 
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter

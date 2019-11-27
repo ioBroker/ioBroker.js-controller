@@ -16,9 +16,17 @@ this adapter read out the data from your proxmox installation
 
 
 ## Steps 
+
+## Bugs
+ Connection can not be established with special characters in the password
+
 ## Requirements
+At least Node 8.X.X is needed
 
 ## Changelog
+### 0.5.1 (17.09.2019)
+* (MeisterTR) add act. disk size form vm and lxc and disc size_level
+* (MeisterTR) add start/stop and shutdown for vm an lxc (nodes must be testet my dev is on the node so i cant test stop node)
 ### 0.3.1 (03.10.2018)
 * (MeisterTR) fixed mem_lev, error at install, catch error no node and vm
 ### 0.3.0 (28.09.2018)

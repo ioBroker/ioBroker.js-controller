@@ -237,6 +237,13 @@ Possible options and Parameter:
 - **--simulate**: With this parameter you enable the simulation mode, means that no real write happends and also the analyze-datafiles will not be updated on exit.
 
 ## Changelog
+
+### 1.8.7 (2019-09-02)
+* (paul53) old files should be deleted automatically
+
+### 1.8.6 
+* Fix several smaller issues and optimized some texts
+
 ### 1.8.5 (2018-07-02)
 * (Apollon77) Error fixed in storeState
 

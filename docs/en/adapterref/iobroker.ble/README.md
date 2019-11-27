@@ -40,6 +40,29 @@ If you have any device transmitting specially encoded information via advertisem
 
 ## Changelog
 
+### 0.10.1 (2019-10-13)
+* (AlCalzone) Fixed crash in JS-Controller 2.0
+
+### 0.10.0 (2019-09-26)
+* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+
+### 0.9.2 (2019-09-26)
+* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+
+### 0.9.1 (2019-09-22)
+* (AlCalzone) Fix compact mode crashes
+
+### 0.9.0 (2019-09-04)
+* (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
+* (AlCalzone) `_default` plugin: Create states for manufacturer data
+* (AlCalzone) `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
+
+### 0.8.4 (2019-09-03)
+* (AlCalzone) `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
+
+### 0.8.3 (2019-08-26)
+* (AlCalzone) Add `80:ea:ca` as an alternative mac prefix for FlowerCare
+
 ### 0.8.2 (2019-08-14)
 * (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
 

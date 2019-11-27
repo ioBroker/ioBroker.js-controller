@@ -1,4 +1,12 @@
 [
+    {
+    "file": "win/iobroker-latest-windows-installer.exe",
+    "linux": "Windows 32/64Bit",
+    "date": "20191123",
+    "device": "Windows",
+    "details": "Universal Installer mit br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul>",
+    "picture": "windows.png"
+  },
   {
     "file": "ioBroker_Image_RPi_2-3-4_20191127_buster.zip",
     "linux": "Raspbian light Buster",
@@ -64,14 +72,6 @@
     "user": "pi",
     "password": "raspberry",
     "info": "ioBroker_Image_RPi_2-3-4_20190723_buster.md"
-  },
-  {
-    "file": "win/iobroker-latest-windows-installer.exe",
-    "linux": "Windows",
-    "date": "20190402",
-    "device": "Windows x64",
-    "details": "Universal Installer",
-    "picture": "windows.png"
   },
   {
     "file": "https://hub.docker.com/r/buanet/iobroker/",

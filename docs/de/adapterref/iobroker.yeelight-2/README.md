@@ -3,79 +3,78 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: Kgokgx6YyMwsn8SeX8Yveg0962+Ac+mZW7EAWn2waCw=
+hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ---
-![Anzahl der Installationen](http://iobroker.live/badges/yeelight-2-installed.svg)
-![Ausführung](http://iobroker.live/badges/yeelight-2-stable.svg)
+![Logo](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
+
+![Anzahl der Installationen](http://iobroker.live/badges/yeelight-2-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.yeelight-2.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.yeelight-2.svg)
 ![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
-<!-- -->
+# IoBroker.yeelight-2
+=================
 
-![Logo](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
-
-# IoBroker.yeelight-2 ==================
 [Deutsche Beschreibung hier](README_de.md)
 
 Dieser Adapter steuert Ihr Yeelight-Gerät. Dieser Adapter ist nur für admin3. Admin2 wird nicht unterstützt
 
 ## Jump Version
-Beim Wechsel von 0.4.X auf 0.9.X oder höher müssen die Objekte manuell gelöscht werden, damit sie erneut erstellt werden können.
+Beim Wechsel von 0.4.X zu 0.9.X oder höher müssen die Objekte manuell gelöscht werden, damit sie neu erstellt werden können.
 
 ## Installation
 Für RGB-Lampen müssen Sie das LAN in den Einstellungen der yeelight-App aktivieren.
 
 ![](../../../en/adapterref/iobroker.yeelight-2/admin/lan.jpg)
 
-## Config
-Sie können Geräte manuell hinzufügen oder Geräte im Netzwerk suchen. Der Basisport ist 55443. Wenn Sie möchten, können Sie den Namen, die IP-Adresse, den Port und den Smartnamen ändern
+## Konfig
+Sie können Geräte manuell hinzufügen oder Geräte im Netzwerk suchen. Der Standard-Port ist 55443. Wenn Sie möchten, können Sie den Namen, die IP-Adresse, den Port und den Smart-Namen ändern
 
 ### Smartname
 Wenn Sie einen Smartnamen eingeben, wird das Gerät zur iobroker.cloud hinzugefügt und kann von alexa gesteuert werden.
 
-Gerät suchen
-Mit dieser Schaltfläche können Sie Ihr Netzwerk nach Geräten durchsuchen. Wenn etwas gefunden wird, werden die Divices zur Tabelle hinzugefügt. Es dauert ungefähr 20 Sekunden, um das Netzwerk zu scannen. Wenn die Geräte nicht gefunden werden, ist der LAN-Modus nicht aktiviert oder die Lampen befinden sich in einem anderen Netzwerk.
+### Gerät suchen
+Mit dieser Schaltfläche können Sie Ihr Netzwerk nach Geräten durchsuchen. Wenn etwas gefunden wird, werden die Geräte der Tabelle hinzugefügt. Das Scannen des Netzwerks dauert ca. 20 Sekunden. Wenn die Geräte nicht gefunden werden, ist der LAN-Modus nicht aktiviert oder die Lampen befinden sich in einem anderen Netzwerk.
 
 ## Set_scene
-Verwendung: Mit dieser Methode wird die intelligente LED direkt in den angegebenen Status gesetzt. Wenn die intelligente LED nicht leuchtet, wird zuerst die intelligente LED eingeschaltet und der angegebene Befehl ausgeführt.
+Verwendung: Mit dieser Methode wird die Smart-LED direkt auf den angegebenen Status gesetzt. Wenn die Smart-LED nicht leuchtet, schaltet sie zuerst die Smart-LED ein und wendet dann den angegebenen Befehl an.
 
 Parameter: 3 ~ 4.
 
  "class" kann "color", "hsv", "ct", "cf", "auto_dealy_off" sein.
 
-- "Farbe" bedeutet, die intelligente LED in die angegebene Farbe und zu ändern
+- "Farbe" bedeutet, dass die Smart-LED auf die angegebene Farbe und geändert wird
 
 Helligkeit.
 
-- "hsv" bedeutet, die intelligente LED auf die angegebene Farbe und Helligkeit einzustellen.
-- "ct" bedeutet, dass die intelligente LED auf den angegebenen Wert und die angegebene Helligkeit eingestellt wird.
-- "cf" bedeutet, dass ein Farbfluss auf bestimmte Weise gestartet wird.
-- "auto_delay_off" bedeutet, dass die Smart-LED eingeschaltet ist
+- "hsv" bedeutet, dass die Smart-LED auf die angegebene Farbe und Helligkeit geändert wird.
+- "ct" bedeutet, dass die Smart-LED auf den angegebenen Wert für ct und Helligkeit geändert wird.
+- "cf" bedeutet, dass ein Farbfluss in der angegebenen Weise gestartet wird.
+- "auto_delay_off" bedeutet, dass die Smart-LED auf den angegebenen Wert eingeschaltet wird
 
 Helligkeit und starten Sie einen Sleep-Timer, um das Licht nach den angegebenen Minuten auszuschalten.
 
  "val1", "val2", "val3" sind klassenspezifisch.
 
-Anforderungsbeispiel:
+Beispiel anfordern:
 
-- `` ["Farbe", 65280, 70] ``
-- `` ["hsv", 300, 70, 100] ``
-- `` ["ct", 5400, 100] ``
-- `` ["cf", 0,0, "500,1,255,100,1000,1,16776960,70"] ``
+- "[" color ", 65280, 70]"
+- "[" hsv ", 300, 70, 100]"
+- "[" ct ", 5400, 100]"
+- "[" cf ", 0,0," 500,1,255,100,1000,1,16776960,70 "]"
 - `` ["auto_delay_off", 50, 5] ``
 
-HINWEIS: Der Status "Ein" und "Aus" wird akzeptiert.
+HINWEIS: Akzeptiert sowohl im Status "Ein" als auch im Status "Aus".
 
- Für die obigen Beispiele:
+ Für obige Beispiele:
 
- - Zuerst müssen Sie die Farbe auf "652280" und 70% Helligkeit einstellen.
- - Das zweite ist, Farbe für Farbton: 300, Sättigung: 70 und maximale Helligkeit einzustellen.
- - Der dritte Wert ist auf 500 K und 100% Helligkeit eingestellt.
- - Der vierte Schritt besteht darin, einen unendlichen Farbfluss auf zwei Strömungstupeln zu starten.
- - Der fünfte ist das Licht auf 50% Helligkeit einschalten und dann ausschalten
+ - Die erste ist, die Farbe auf "652280" und 70% Helligkeit einzustellen.
+ - Die zweite Option ist, die Farbe auf Farbton: 300, Sättigung: 70 und maximale Helligkeit einzustellen.
+ - Der dritte ist CT auf 500K und 100% Helligkeit eingestellt.
+ - Der vierte ist, einen unendlichen Farbfluss auf zwei Flusstupeln zu starten.
+ - Der fünfte ist das Einschalten des Lichts auf 50% Helligkeit und dann ausschalten
 
 nach 5 Minuten.
 

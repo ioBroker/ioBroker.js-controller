@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.hue
-hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
+title: ioBroker Philips Hue Bridge Adapter
+hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 ---
-# Nach https://github.com/iobroker-community-adapters/ioBroker.hue verschoben
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hue-stable.svg)
@@ -17,12 +16,33 @@ hash: v7zmfNLhiasLO8F9bgqn05LkkjVXFQQgAr/KItlhCkg=
 ==============
 
 ## English: gb:
-Verbindet Philips Hue LED-Lampen, Friends of Hue LED-Lampen und Stripes und andere SmartLink-fähige Geräte (LivingWhites, einige LivingColors) über Philips Hue Bridges mit ioBroker.
+Dieser Adapter verbindet Ihre Philips Hue Bridges mit ioBroker, um Philips Hue LED-Lampen, Friends of Hue LED-Lampen, Streifen, Stecker wie von Osram und andere SmartLink-fähige Geräte (wie LivingWhites und einige LivingColors) zu steuern.
 
-Sie müssen zuerst Ihre HUE-Bridge mit ioBroker verknüpfen.
+### Konfiguration
+Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als nächstes müssen Sie Ihre Hue Bridge mit ioBroker in den Adaptereinstellungen verbinden:
 
-1. Suchen Sie dazu zuerst die IP-Adresse, indem Sie auf die Schaltfläche "Find Bridge" klicken. Es ist nur aktiviert, wenn keine IP-Adresse eingegeben wurde.
-2. Nachdem die IP-Adresse gefunden wurde, muss der USER erstellt werden. Klicken Sie dazu auf die Schaltfläche "Create User" und anschließend auf die Schaltfläche "Link" auf der HUE Bridge. Die Schaltfläche "Benutzer erstellen" ist nur aktiviert, wenn kein Benutzer eingegeben wurde
+1. Wenn Sie eine andere Bridge als v2 verwenden, konfigurieren Sie den Port auf 80 (nicht https), andernfalls sollte 443 (https) der richtige Weg sein.
+2. Klicken Sie auf die Schaltfläche "Find Bridge", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch werden alle Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Bridge aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Bridge Address" wird mit der IP-Adresse der von Ihnen gewählten Hue Bridge gefüllt.
+3. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Knopf gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
+4. Ändern Sie andere Optionen in den Adaptereinstellungen und wählen Sie dann "Speichern und schließen".
+5. Schließlich sollten Sie fertig sein: Der Adapter generiert alle Objekte, um Ihre Hue-Geräte entsprechend zu steuern.
+
+Bitte beachten Sie: Die Schaltfläche "Find Bridge" für die Adaptereinstellungen ist inaktiv, wenn das Feld "Bridge Address" (Brückenadresse) ausgefüllt ist, und die Schaltfläche "Create User" (Benutzer erstellen) ist inaktiv, wenn das Feld "Bridge User" (Brückenbenutzer) ausgefüllt ist.
+
+### Die Einstellungen
+| Name | Beschreibung |
+|---|---|
+| __Bridge-Adresse__ | IP-Adresse Ihrer Hue-Bridge. Sie können versuchen, sie zu erkennen, indem Sie die Taste `Find Bridge` drücken. |
+| __Port__ | Port Ihrer Hue-Bridge, normalerweise 443 (SSL) und 80 (Nicht-SSL). |
+| __User__ | Benutzername Ihres Bridge-Benutzers. Sie können es erstellen, indem Sie die Taste `Create User` drücken und den Anweisungen auf dem Bildschirm folgen |
+| __User__ | Benutzername Ihres Bridge-Benutzers. Sie können es erstellen, indem Sie auf die Schaltfläche "Benutzer erstellen" klicken und den Anweisungen auf dem Bildschirm folgen |
+| __Ignore scenes__ | Wenn diese Option aktiviert ist, werden Szenen vom Adapter nicht angezeigt / gesteuert. |
+| __Gruppen ignorieren__ | Wenn diese Option aktiviert ist, werden Gruppen vom Adapter nicht angezeigt / gesteuert. |
+| __ "Legacy" -Struktur__ | Um die Abwärtskompatibilität zu unterstützen, ist es möglich, eine alte Objektstruktur in ioBroker zu behalten. Diese alte Struktur ist `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Die neue Struktur entfernt `<brdige_name_channel>` und macht es daher erforderlich, alte Skripte usw. anzupassen. Wenn der Adapter eine vorhandene alte Struktur erkennt, wird die Struktur verwendet, ohne das Kontrollkästchen zu aktivieren. Wenn Sie jedoch von einer alten zu einer neuen Struktur migrieren möchten, löschen Sie den gesamten `hue.<instance_number>`-Namespace einmal. |
+| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Datenpunktes `status` eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet `0` die Szene aus und `1` sie ein |
+| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Status-Datenpunkts eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet "0" die Szene aus und "1" sie ein |
+| __Polling__ | Wenn diese Option aktiviert ist, werden Statusänderungen vom Adapter abgefragt. Andernfalls können Lampen nur gesteuert und nicht angezeigt werden. |
+| __Polling interval__ | Definiert, wie oft die Status abgefragt und somit in ioBroker aktualisiert werden. Niedrige Abfrageintervalle können in einigen Einstellungen zu Leistungsproblemen führen. Daher beträgt das minimal zulässige Abfrageintervall 2 Sekunden. Wenn das Abfrageintervall auf weniger als 2 Sekunden festgelegt ist, wird es während der Laufzeit auf 2 Sekunden festgelegt |
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -33,6 +53,43 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 * Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
+### 2.4.0 (2019-11-03)
+* (foxriver76) added possibility to control software sensors
+
+### 2.3.1 (2019-11-02)
+* (foxriver76) fixed controlling `on` state of sensors
+
+### 2.2.3 (2019-10-21)
+* (foxriver76) migrate everything to Hue v3
+* (foxriver76) add possibility to turn on/off sensor
+* (foxriver76) add anyOn state for all group
+* (foxriver76) different kinds of fixes for v3 (Osram Plugs, SSL connection, etc)
+
+### 2.1.0 (2019-10-15)
+* (foxriver76) usage and adaptions for node-hue-api v3
+* (foxriver76) ability to turn lights on with last settings
+* (foxriver76) polling interval minimum is now 2 sec
+
+### 2.0.1 (2019-10-04)
+* (foxriver76) fixed bug, that prevented some sensor states getting updated during runtime
+
+### 2.0.0 (2019-09-23)
+__ATTENTION: Remove all objects once, ids have changed__
+* (foxriver76) internal optimizations
+* (foxriver76) usage of iobroker testing
+* (foxriver76) add possibility to sync scenes
+* (foxriver76) restart adapter when room is deleted in app
+* (foxriver76) fix .hue value, user had to set 0-360° but adapter set 0-65535
+* (foxriver76) fix .color.temperature
+* (foxriver76) remove unnecessary bridge channel, adapter namespace is the bridge
+* (foxriver76) add "update available" indicator for light bulbs
+* (foxriver76) we now poll the root endpoint instead of (|lights| + |groups| + |sensors|) endpoints every pollingInterval seconds
+* (foxriver76) min poll interval now 3 seconds instead of 5 seconds
+* (foxriver76) add new indicator state 'anyOn'
+
+### 1.2.4 (2019.09.18)
+* (Apollon77) Make compatible with js-controller 2.0
+
 ### 1.2.3 (2019.03.11//2019.07.07)
 * (jens-maus) Refactored command queue handling to use 'bottleneck' package so that command execution are processed with minimum delay.
 
@@ -174,5 +231,5 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 
 Apache 2.0
 
-Copyright (c) 2017-2018 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

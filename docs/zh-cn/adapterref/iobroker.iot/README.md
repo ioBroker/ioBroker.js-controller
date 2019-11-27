@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
+hash: WKONbjSZUegXJcU4RVAcYlxkPJlVxq1endd2qgo0O/c=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -13,11 +13,13 @@ hash: gi1jrml4CUm7XcuVnQ/8DKvQ7P1q6GrV+U56CoZ4EuQ=
 ![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)
 
 ＃ioBroker物联网适配器
-此适配器仅用于与Amazon Alexa通信。
+此适配器仅用于与Amazon Alexa，Google Home和Nightscout进行通信。
 它不适用于远程访问您的ioBroker实例。使用ioBroker.cloud适配器。
 
 ##设置
 要使用云适配器，您应首先在ioBroker云上注册[https://iobroker.pro](https://iobroker.pro)。
+
+[参考谷歌API类型设置](https://developers.google.com/actions/smarthome/guides/)
 
 ![介绍](../../../en/adapterref/iobroker.iot/img/intro.png)
 
@@ -261,6 +263,35 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
  - `ifttt`  - 表现得像IFTTT（实际上不是必需的，但是用于测试目的）
 
 ## Changelog
+### 1.1.8 (2019-09-12)
+* (bluefox) Optimization of googe home communication was done
+
+### 1.1.7 (2019-09-11)
+* (bluefox) The sending rate to google home is limited now
+
+### 1.1.6 (2019-09-11)
+* (TA2k) Room fix for Google Home and LinkedDevices
+
+### 1.1.4 (2019-09-10)
+* (bluefox) decreased keepalive value to fix issue with disconnect
+
+### 1.1.3 (2019-09-09)
+* (TA2k) Google Home problem fixed with LinkedDevices
+
+### 1.1.0 (2019-09-06)
+* (bluefox) Added support of aliases
+
+### 1.0.8 (2019-09-03)
+* (TA2k) Improved support for Google Home
+* (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
+* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Fix update state after Sync
+* (TA2k) Added typical Google Home devices and traits/actions
+* (TA2k) Fix only process update message when Alexa is checked in the options
+
+### 1.0.4 (2019-08-01)
+* (bluefox) Fixed password encoding. Please enter password anew!
+
 ### 1.0.3 (2019-07-30)
 * (bluefox) Fixed language issues for google home and yandex alice
 
@@ -268,16 +299,16 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (bluefox) Support of private skills/actions was added.
 
 ### 1.0.0 (2019-07-14)
-* (TA2k) Google Home list was added 
+* (TA2k) Google Home list was added
 
 ### 0.5.0 (2019-06-29)
-* (bluefox) tried to add yandex Alisa 
+* (bluefox) tried to add yandex Alisa
 
 ### 0.4.3 (2019-04-14)
-* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected". 
+* (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration. 
+* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home

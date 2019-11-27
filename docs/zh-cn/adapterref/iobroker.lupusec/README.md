@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
+hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
-![特拉维斯建设状态](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
+![Travis建立状态](https://travis-ci.org/schmupu/ioBroker.lupusec.svg?branch=master)
 ![AppVeyor构建状态](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.lupusec?branch=master&svg=true)
-![稳定的版本](http://iobroker.live/badges/lupusec-stable.svg)
+![稳定版](http://iobroker.live/badges/lupusec-stable.svg)
 ![安装数量](http://iobroker.live/badges/lupusec-installed.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lupusec.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
@@ -18,82 +18,98 @@ hash: scODMX6X7UOA4FTj8K1sXDdRZEDpR0NMylPW3+qGy3k=
 ＃ioBroker.lupusec
 **需要node.js 8.0或更高版本以及Admin v3！**
 
-该适配器将Lupusec报警系统XT1 Plus，XT2，XT2 Plus和XT3与ioBroker连接起来。
-不支持XT1（不带Plus）。您可以读取Lupusec传感器的状态，如门，窗，水，烟雾传感器和报警系统的状态。
-例如，您可以打开开关，控制快门并布防/撤防警报系统。
+该适配器将Lupusec报警系统XT1 Plus，XT2，XT2 Plus和XT3与ioBroker相连。
+不支持XT1（不带Plus）。您可以读取Lupusec传感器的状态，例如门，窗户，水，烟雾传感器以及警报系统的状态。
+例如，您可以打开开关，控制快门和布防/撤防警报系统。
 
 您可以在此处找到详细信息：[狼疮](https://www.lupus-electronics.de/en)
 
 ##安装
 1.安装适配器
 
-最简单的方法是通过ioBroker中的发现适配器配置lupusec.iobroker适配器。发现适配器搜索Lupusec报警系统的正确IP地址。另一种方法是手动配置它
+最简单的方法是通过ioBroker中的发现适配器来配置lupusec.iobroker适配器。发现适配器搜索Lupusec警报系统的正确IP地址。另一种方法是手动配置
 
 2.手动配置适配器
 
-从Lupusec报警系统中选择IP地址或主机名。如果可能，请选择https（推荐）。
-要仅读取状态，请选择没有写访问权限的用户。如果要更改状态（例如，打开/关闭指示灯或布防/撤防警报），请选择具有写入权限的用户。
-![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您的Lupusec报警系统连接了监控凸轮，您可以在ioBroker中提供它们。 Lupusec适配器通过它自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到摄像头。
-![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)
+从Lupusec警报系统中选择IP地址或主机名。尽可能选择https（推荐）。
+仅读取状态，请选择没有写访问权限的用户。如果要更改状态（例如，打开/关闭灯或布防/撤防警报），请选择具有写权限的用户。
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您将监视摄像机连接到Lupusec警报系统，则可以在ioBroker中提供它们。 Lupusec适配器自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到凸轮。
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)如果您将Nuki开门器连接到Lupusec报警系统，则也可以从ioBroker使用它。在ioBroker实例管理菜单上，您可以输入安装在Nuki门上的Lupusec门传感器。如果现在打开安装Nuki的门，则将具有附加状态“开门”，而只有“解锁”状态。如果Nuki门上没有Lupusec门传感器，则只会看到“锁定”或“锁定”状态。
+![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
 默认情况下，所有Lupusec设备都将显示在ioBroker对象选项卡上。
-完全支持和单独调整是以下设备：
+下列设备完全受支持并经过单独调整：
 
-   - 门触点/窗口触点（类型4）
-   - 水传感器（5型）
-   - 紧急按钮（7型）
-   - 运动探测器/ 360度运动探测器（9型）
-   -  CO传感器（13型）
-   - 烟雾探测器/热探测器（14型）
-   - 里面的警笛（21型）
-   - 状态指示灯/迷你室内警报器（22型）
-   - 电源开关（24型）
-   - 带ZigBee中继器的1通道继电器（24型）
-   - 带ZigBee中继器的2通道继电器（24型）
-   - 键盘（37型）
-   - 玻璃传感器（39型）
-   - 外面警报器（48型）
-   - 电源开关表（48型）
-   - 电表（50型）
-   - 房间传感器V1（54型）
-   -  LCD温度传感器（54型）
-   - 迷你温度（54型）
-   - 热探测器（58型）
-   - 调光器（66型）
-   - 灯开关V2（66型）
-   - 顺化（74型）
-   - 卷帘继电器V1（76型）
-   - 散热器温控器（79型）
-   - 散热器温控器V2（79型）
-   - 光传感器（78型）
-   - 场景交换机V2（类型81）
-   - 冲击传感器（93型）
+  -门触点/窗触点（类型4）
+  -水传感器（5型）
+  -紧急按钮（类型7）
+  -运动检测器/ 360度运动检测器（9类）
+  -CO传感器（13型）
+  -烟雾探测器/热量探测器（类型14）
+  -内部警笛（21型）
+  -状态指示灯/迷你室内警报器（22型）
+  -电源开关（类型24）
+  -带ZigBee中继器的1通道中继器（类型24）
+  -带ZigBee中继器的2通道中继器（类型24）
+  -键盘（37型）
+  -玻璃传感器（39型）
+  -警笛外（48型）
+  -电源开关表（类型48）
+  -电表（50型）
+  -房间传感器V1（54型）
+  -LCD温度传感器（54型）
+  -最低温度（54型）
+  -Nuki开门器（57型）
+  -热量探测器（58型）
+  -调光器（66型）
+  -电灯开关V2（66型）
+  -色相（74型）
+  -卷帘继电器V1（76型）
+  -散热器恒温器（79型）
+  -散热器温度调节器V2（79型）
+  -光线感应器（78型）
+  -场景切换器V2（类型81）
+  -震动感应器（93型）
+  -烟雾探测器V2（类型14）
+  -带调光器V3的入墙继电器（66型）
 
-支持Apple Homekit适配器yahka的两个州apple_home_a1和lupusec.0.status.apple_home_a2。除了lupusec之外，您还可以打开和关闭区域1和2的警报系统。
+支持Apple Homekit适配器yahka的两个状态apple_home_a1和lupusec.0.status.apple_home_a2。除了lupusec状态之外，您还可以打开和关闭区域1和2的警报系统。
 
-如果您拥有上面列表中未列出的设备，请通过Thorsten Stueben <thorsten@stueben.de>与我联系。
+如果您拥有的设备不在上面的列表中，请通过Thorsten Stueben <thorsten@stueben.de>与我联系。
 
 ##对象
-### Lupusec状态
-ioBroker为您提供与Lupusec应用程序相同的状态对象。
+###狼疮状态
+ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_status.png)
 
 ### Lupusec设备
 您可以在“设备”下找到所有受支持的Lupsec传感器和设备。如果缺少设备，请与我联系。
-![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png)传感器或设备的详细视图。在此示例中，您可以看到CO传感器。在CO报警时，状态'alarm_status_ex'变为true，'alarm_status'变为'CO'。
+![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png)传感器或设备的详细视图。在此示例中，您将看到CO传感器。在发生CO警报时，状态“ alarm_status_ex”更改为true，而“ alarm_status”更改为“ CO”。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
 ### Lupusec网络摄像头
-您可以在“网络摄像头”下找到所有连接的监控凸轮。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以进行打开。
+您可以在“网络摄像头”下找到所有已连接的监视摄像头。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以打开。
 ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
-##计划
-以下事项计划在未来：
+### Lupusec Nuki
+您可以在Lupusec设备等“设备”下找到Nuki开门器。 Nuki提供2个州。状态nuki_state向您显示Nuki开门器的实际状态，例如门已锁定或未锁定。使用状态nuki_action，您可以打开，锁定或解锁门。
+![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
-*支持更多传感器/设备
+##已计划
+计划在将来进行以下工作：
+
+*支持更多的传感器/设备
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.2.0 (13.09.2019)
+* (Stübi) Changing error handling of adapter
+* (Stübi) Add Nuki door opener
+
+### 1.1.9 (06.09.2019)
+* (Stübi) Add device: Smoke detector V2
+* (Stübi) Add device: Inwall relay with dimmer V3
 
 ### 1.1.8 (10.06.2019)
 * (Stübi) Add device: 360 PIR motion sensor

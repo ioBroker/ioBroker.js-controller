@@ -3,51 +3,60 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: UvnJYD84v5/tnMP91+G2jJw4UrQJ5eWwfjmx1JMSXas=
+hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
 ![安装数量](http://iobroker.live/badges/nuki-stable.svg)
 
 ＃ioBroker.nuki
-此ioBroker适配器允许使用Nuki Bridge的API来控制和监视[Nuki Smart Lock](https://nuki.io/de/)。
+此ioBroker适配器允许使用Nuki Bridge的API控制和监视[Nuki智能锁](https://nuki.io/de/)。
 
 ＃＃ 要求
-* Nuki Smart Lock（显然）和Nuki（硬件或软件）Bridge。
+* Nuki Smart Lock（显然）和Nuki（硬件或软件）网桥。
 * ioBroker的运行实例。
 
 ##用法
-Nuki适配器的每个实例代表Nuki桥。创建实例时，只需输入Nuki桥的IP地址，端口和令牌即可。该名称是可选的，如果留空则会自动生成。复选框“使用回调”和值“ioBroker中的回调端口”是可选的，可以设置以便使用Nuki的回调函数。保存实例后，将创建一个桥接设备，其中每个Nuki锁定的通道都连接到指定的Nuki桥。通道提供Nuki锁的当前状态作为输出参数：
+Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输入Nuki网桥的IP地址，端口和令牌。该名称是可选的，如果留空则将自动生成。复选框“使用回调”和值“ ioBroker中的回调端口”是可选的，可以进行设置以便利用Nuki的回调功能。保存实例后，将创建一个桥设备，该桥设备具有一个通道，用于连接到指定Nuki桥的每个Nuki锁。通道提供Nuki锁定的当前状态作为输出参数：
 
-* batteryCritical：低电量指示灯
-* lockState：指示Nuki是否被锁定
-* state：当前（数字）锁定状态（Nuki native）
-*时间戳：上次更新
+*电池严重：电池电量低指示器
+* lockState：指示Nuki是否已锁定（仅Nuki Lock）
+*状态：当前（数字）锁定状态（Nuki本机）
+*时间戳：最近更新
 
-此外，通道提供输入参数，可以对Nuki锁进行基本控制：
+此外，通道还提供输入参数，可对Nuki锁进行基本控制：
 
-*动作：用于设置Nuki状态的数字动作代码（Nuki native）
+* action：用于设置Nuki状态的数字操作代码（Nuki本机）
 
-有效输入值为：
+锁的有效输入值为：
 
-0（无动作）1（解锁）2（锁定）3（解锁）4（锁定'n'去）5（锁定'n'去解锁）
+0（无动作）1（解锁）2（锁定）3（解锁）4（锁定“ n”前进）5（锁定“ n”并解锁）
 
-* lockAction：用于锁定/解锁Nuki的开关（true = unlock; false = lock）
+* lockAction：锁定/解锁Nuki的开关（true =解锁； false =锁定）
 * openAction：用于解锁Nuki的按钮
-* openLocknGoAction：用于解锁的按钮，并在几秒钟后锁定Nuki
-* unlockLocknGoAction：用于解锁的按钮，并在几秒钟后锁定Nuki
+* openLocknGoAction：解锁按钮，并在几秒钟后锁定Nuki
+* unlockLocknGoAction：用于解锁并在锁定Nuki几秒钟后的按钮
+
+开罐器的有效输入值为：
+
+0（无动作）1（激活rto）2（禁用rto）3（电击致动）4（激活连续模式）5（取消连续模式）
+
+* rtoAction：启用/禁用“打开振铃”功能的开关（true =激活； false =禁用）
+* openAction：电击致动按钮
+* cmActiveAction：用于激活连续模式的按钮
+* cmDeactiveAction：用于禁用连续模式的按钮
 
 ＃＃ 附加信息
-如何获取桥接令牌：
+如何获取网桥令牌：
 
-*从局域网中的任何浏览器调用http：// <bridge_ip>：<bridge_port> / auth  - >桥接器打开其LED
-*在30秒内按下桥接按钮
-*浏览器调用的结果应该是这样的：
+*从局域网中的任何浏览器调用http：// <bridge_ip>：<bridge_port> / auth-> bridge点亮其LED
+*在30秒内按桥的按钮
+*浏览器调用的结果应如下所示：
 
-{“token”：“token123”，“success”：true}回调函数：
+{“ token”：“ token123”，“ success”：true}回调函数：
 
-如果正在使用回调函数，则适配器将尝试在保存实例时自动在Nuki桥上设置回调。卸载实例时，将再次删除回调。当回调被激活时，所有Nuki州将由Nuki桥保持最新状态。
-可以使用以下网址在任何浏览器中设置和删除回调：
+如果使用了回调函数，则在保存实例时，适配器将尝试在Nuki桥上自动设置回调。实例卸载后，回调将再次被删除。激活回调时，Nuki桥将使所有Nuki状态保持最新。
+可以使用以下网址从任何浏览器中设置和删除回调：
 
 组：
 
@@ -58,9 +67,18 @@ Nuki适配器的每个实例代表Nuki桥。创建实例时，只需输入Nuki�
 * http：// <bridge_ip>：<bridge_port> / callback / remove？id = <callback_id>＆token = <bridgeToken>
 
 ##更新
-从0.1.x更新到0.2.0或更高版本时，建议在安装新版本之前删除旧版本的所有实例。请注意，版本更改大于补丁级别（ - >仅更改最后一位数字）可能始终包含对数据点的更改，例如0.1.3至0.2.0
+从0.1.x更新到0.2.0或更高版本时，建议在安装新版本之前删除所有旧版本的实例。请注意，版本更改大于补丁程序级别（->仅更改最后一位数字）可能始终包含对数据点的更改，例如0.1.3至0.2.0
 
 ## Changelog
+
+### 1.1.0
+* (smaragdschlange) improvement: support for Nuki Opener
+
+### 1.0.7
+* (smaragdschlange) bug fix: impact on other Nuki-connected gateways
+
+### 1.0.6
+* (smaragdschlange) dependencies update
 
 ### 1.0.5
 * (ldittmar81) add gulp auto translation

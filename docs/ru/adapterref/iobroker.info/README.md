@@ -24,6 +24,7 @@ BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adap
 </p>
 
 * **Не показывать часы** - Чтобы скрыть часы в левом верхнем углу.
+* **Скрыть события (только немецкий)** - Календарь событий не отображается
 * **Показать запросы адаптера** - отображает панель с запросами адаптера.
     * **Запросы адаптера закрываются при запуске** - Панель с запросами адаптера закрывается при запуске информационного окна.
 * **Просмотр известных ошибок** - Отображает панель с известными ошибками и запросами на установленные адаптеры.
@@ -316,6 +317,30 @@ $ sudo apt-get install smartmontools
 Записи форума будут отображаться без проблем при доступе к ioBroker через IP или localhost:8081. Но если вы используете имя хоста, такое как meinhaus.de:8081, вы должны получить бесплатный ключ API в Feednami. Чтобы зарегистрироваться, нажмите [здесь](https://toolkit.sekando.com/docs/en/setup/hostnames) и следуйте инструкциям.
 
 ## Changelog
+### 1.5.7 (2019-11-12)
+* (ldittmar) add event vis widget
+
+### 1.5.6 (2019-11-05)
+* (ldittmar) Add Repo check for popup
+* (ldittmar) Fix dp type
+
+### 1.5.5 (2019-10-12)
+* (ldittmar) Add NPM and OS check for popup
+
+### 1.5.4 (2019-09-25)
+* (ldittmar) add event calendar
+
+### 1.5.2 (2019-09-24)
+* (ldittmar) show comments for adapter requests
+* (ldittmar) show closed adapter requests
+* (ldittmar) check node version for messages
+
+### 1.4.3 (2019-09-09)
+* (ldittmar) change systeminformation call interval
+* (ThomasBahn) News problem fixed
+* (ldittmar) Update systeminformation library
+* (badenbaden) Fixed russian spelling 
+
 ### 1.4.1 (2019-08-01)
 * (bluefox) Removed default socket.io
 

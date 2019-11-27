@@ -36,13 +36,24 @@ You find a detailed installation documentation here:
 |ShellySense (SHSEN-1)|verified|not verified|
 |Shelly4Pro (SHSW-44)|verified|not verified|
 |Shelly EM (SHEM)|verified|verified|
-
+|Shelly Flood (SHWT-1)|verified|verified|
+|Shelly Dimmer (SHDM-1)|verified|verified|
 
 ## Changelog
+
+### 3.1.2 (11.10.2019)
+* (Stübi) - Bugfixing. Error message will not only be shown in debug modus
+
+### 3.1.1 (14.09.2019)
+* (Stübi) - Add device Shelly Dimmer
+
+### 3.1.0 (03.09.2019)
+* (Stübi) - Add device Shelly flood
 
 ### 3.0.9 (06.08.2019)
 * (Stübi) - Bugfixing, with the new firmware, Shelly HT sends the humidity by CoAP as it should. Division by 2 removed!
 * (Stübi) - Add status Duration in roller (shutter) mode for CoAP (not working with MQTT) 
+* (Stübi) - Changed role from level to level.brightness for state Gain
 
 ### 3.0.8 (27.07.2019)
 * (Stübi) - Add device Shelly EM 

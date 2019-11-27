@@ -28,12 +28,15 @@ I am using it for monitoring my IT-Infrastructure at home (including home automa
 
 MoMa uses the platform independant library 'systeminformation' (https://github.com/sebhildebrandt/systeminformation) to gather information about the computer. Many of the calls are exposed to be used in timer intervalls - see reference below.
 
-MoMa needs at least nodejs version 8 / ES6.
+MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 
-### 1.2.2 (2019-??-??)
-* (AWhiteKnight) ioBroker adapter/controller updates for windows 
+### 1.2.3 (2019-11-06)
+* (AWhiteKnight) bugfixing, code cleanup 
+
+### 1.2.2 (2019-09-12)
+* (AWhiteKnight) ioBroker adapter/controller updates for windows, issue #24 
 
 ### 1.2.1 (2019-08-12)
 * (AWhiteKnight) Bugfixing on 1.2.0 
@@ -143,6 +146,7 @@ Following functions of **MoMa** are called in interval 4 (default every day):
 * updates - checks for pending updates and shows the amount of updates in moma.meta.\<hostname\>.updates (currently only Ubuntu, Debian, openSUSE, RedHat)
 * checkIob - checks all adapters and the js-controller for available updates 
 * checkBatteries - checks battery state variables (current implemented state names: LOWBAT, LOW_BAT)
+
 
 
 ## License

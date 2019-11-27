@@ -3,10 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
+hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/iqontrol-installed.svg)
+![stabile Version](http://iobroker.live/badges/iqontrol-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -33,19 +35,21 @@ Schnelle Web-App zur Visualisierung.
 ![Beispiel](img/screenshot4.jpg) ![Beispiel](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Läuft in jedem Browser.
-Sie können es als Web-App auf iOS-Homescreen speichern und es sieht aus und fühlt sich an wie eine native App.
 Es ist vollständig anpassbar.
+
+## Zum Startbildschirm hinzufügen
+Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt sich an wie eine native App: ![Hinzufügen zu Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Du brauchst...
 * Nodejs 8 oder höher
 * Web-Adapter mit einer Instanz, die dasselbe Protokoll (http oder https) wie der Admin-Adapter ausführt, socket.IO auf 'integrated' gesetzt und 'Force Web-Sockets' deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu. IQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+    * Steht dies im Widerspruch zu anderen Adaptern, fügen Sie einfach eine weitere Instanz mit den obigen Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Web-Adapter auf http (nicht https) eingestellt sein.
 
 ## Fehlerbehebung
 * Stellen Sie sicher, dass Sie den Abschnitt "Sie brauchen ..." oben auf dieser Seite erfüllt haben
 * Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie bitte die folgenden Schritte aus:
-    * Starten Sie den Upload des Adapters:
+    * Upload des Adapters starten:
 
     \
         ![Hochladen](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
@@ -64,7 +68,7 @@ Sie können Ansichten als eine Art Seite betrachten.
 
 * Erstellen Sie dann Geräte in diesen Ansichten.
 
-Geräte haben eine Rolle, die die Funktion des Geräts bestimmt, welche Symbole verwendet werden usw.
+Geräte haben eine Rolle, die die Funktion des Geräts bestimmt, welche Symbole verwendet werden und so weiter.
 Abhängig von dieser Rolle können Sie mehrere Status mit dem Gerät verknüpfen. Dadurch erhält das Gerät seine Funktionalität.
 Wenn Sie als Rolle "Mit anderer Ansicht verknüpfen" auswählen, können Sie Verknüpfungen zu anderen Ansichten erstellen. Ich schlage vor, Verknüpfungen zu anderen Ansichten mit demselben Hintergrund wie die verknüpfte Ansicht zu erstellen.
 Sie können auch versuchen, mit der Autocreate-Funktion ein vorhandenes Gerät aus dem iobroker-Objektbaum auszuwählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
@@ -78,7 +82,7 @@ Der erste Toolbar-Eintrag ist Ihre 'Home-View', mit der beim Start geladen wird.
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
-Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
+Die kostenlosen eingebauten Demo-Wallpaper sind von www.pexels.com.
 
 ## URL-Parameter
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
@@ -91,7 +95,7 @@ Die kostenlosen eingebauten Demotapeten sind von www.pexels.com.
 * `` https://192.168.1.1: 8082 / iqontrol / index.html? namespace = iqontrol.1 & home = iqontrol.1.Views.Living-Room``
     * Groß- und Kleinschreibung beachten
 
-## Beschreibung der Rollen und zugehörigen Zustände
+## Beschreibung der Rollen und der zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden io-Broker-Status verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem io-broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Status wie möglich zuzuordnen.
 Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräte mit erweiterten Funktionen auszustatten, können Sie diese manuell über die (+) - Taste hinzufügen oder die von Autocreate erstellten Geräte bearbeiten.
@@ -102,8 +106,11 @@ Sie können die Konfiguration von Datenpunkten über das Schlüsselsymbol hinter
 
 * Nur-Lese-Flag setzen
 * Invert-Flag setzen
+* Set Confirm-Flag (zwingt den Benutzer zur Bestätigung, bevor eine Änderung in einen Datenpunkt geschrieben wird)
+* PIN-Code setzen (zwingt den Benutzer, diesen PIN-Code einzugeben, bevor eine Änderung in einen Datenpunkt geschrieben wird - aber Vorsicht: Dies ist nur von geringer Sicherheit, da die PIN im Frontend überprüft wird! Verwenden Sie eine Zahl, um einen Vollbildmodus anzuzeigen -Pin-Pad wenn nach Code gefragt)
 * Legen Sie eine Datenpunkt-ID fest, in die die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
-* Ändern Sie die Datenpunkteinheit
+* Ändern Sie die Einheit des Datenpunkts, und trennen Sie sie für die Werte Null, Singular und Plural
+* Min. Und Max. Des Datenpunkts ändern
 * Ändern Sie den Typ des Datenpunkts
 * Ändern Sie die Rolle des Datenpunkts
 * Setzen oder modifizieren Sie eine Werteliste
@@ -120,10 +127,10 @@ Jede Rolle hat die folgenden drei Zustände:
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen ist dies die Hauptfunktion des Geräts. Sie können ihm io-Broker-Status der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert.
-* *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog.
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Kippschalter generiert
+* *Nummer* - wird mit der entsprechenden Einheit angezeigt und erzeugt einen Schieberegler im Dialog
 * *string* - ein anzuzeigender Text
-* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt.
+* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü erstellt
   * Technisch gesehen ist eine *Werteliste* ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instance> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist :
 
 ````
@@ -135,7 +142,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüssel-Symbol hinter dem Datenpunkt in der Registerkarte Objekte von iobroker, siehe oben).
 
-Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
+Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise der Status eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umschalten zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
@@ -147,7 +154,7 @@ Allerdings ist nicht jeder Typ für jede Rolle sinnvoll. So ist beispielsweise d
 
 ### <img src="img/icons/button.png" width="32"> Taste:
 * **STATE** *any* - jeder gewünschte Zustandstyp
-* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn der Button gedrückt wird
+* **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!), Die dem STATE zugewiesen wird, wenn die Schaltfläche gedrückt wird
 * **OFF_SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter io-Broker-Status!). Falls definiert, wird STATE nach der in den Optionen definierten Zeit oder 100ms auf diesen Wert zurückgesetzt
 
 ### <img src="img/icons/light_on.png" width="32"> Licht:
@@ -160,7 +167,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Lichtfarbe von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
+  * **SÄTTIGUNG** * Anzahl * - Sättigung des Lichts (von weiß bis reine Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status haben und keine weißen LEDs, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * number * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -173,7 +180,7 @@ Optional können Sie folgende Zustände definieren:
     * **RGB** / **# RGB** anstelle von HUE, SATURATION und COLOR_BRIGHTNESS kann das RGB-Format (hex) verwendet werden, optional mit vorangestelltem '#'
     * **RGBW** / **# RGBW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS kann das RGBW-Format (hex) verwendet werden, optional mit vorangestelltem '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex , WW = warmweiß, CW = kaltweiß), optional mit vorangestelltem '#'
-    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB (nur Farbton) -Format (hex) verwenden, optional mit vorangestelltem '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt.
+    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB (nur Farbton) -Format (hex) verwenden, optional mit vorangestelltem '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Hue for Milight** Dies ist der Hue-Wert für Milight-Geräte, bei Verwendung eines anderen Startpunktes im Farbton-Farbkreis:
 
 ````
@@ -188,7 +195,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
   * **EFFECT** * Werteliste * - der abzuspielende Effekt
 * **EFFECT_NEXT** *boolean* - wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen)
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - wenn auf true gesetzt, wird der Effekt beschleunigt / verringert
-* Verschiedenes:
+* Sonstiges:
   * **LEISTUNG** * Zahl * - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
@@ -203,7 +210,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 * **PARTY_TEMPERATURE** *string* - speziell formatierter String zur Definition des Party- oder Urlaubsmodus von Homematic-Thermostaten
-* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematic-Thermostate an
+* **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit der Homematik-Thermostate an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchte-Sensor:
 * **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt wird
@@ -221,29 +228,30 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
-* **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür oder das Fenster geöffnet oder geschlossen ist
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
   * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Fenster offen" oder "Alle geschlossen" anzuzeigen.
 * Respektiere die **Linked-View-Eigenschaft**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Garagentor:
-* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
-  * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "3 Türen offen" oder "Alle geschlossen" anzuzeigen.
-* **TOGGLE** *boolean* - zeigt einen 'Toggle'-Button an und wird bei Betätigung auf true gesetzt.
+  * Sie können auch einen *String* zuweisen, um einen beliebigen Text wie "3 Türen offen" oder "Alle geschlossen" anzuzeigen.
+* **TOGGLE** *boolean* - zeigt einen 'Toggle'-Button an und wird bei Betätigung auf true gesetzt
 
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
-* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist.
+* **STATE** *Boolean* - Zeigt an, ob die Tür geöffnet oder geschlossen ist
 * **LOCK_STATE** *Boolean* - Zeigt an, ob die Tür verriegelt oder entriegelt ist
 * **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der Status in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - wenn auf true gesetzt, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinds in Prozent
-* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden.
-* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird.
-* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird.
-* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (in den Geräteeinstellungen konfigurierbare Tastenbeschriftung) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird.
+* **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Up / Down-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** einen Wert definieren. Falls definiert, wird dieser Wert anstelle von true gesendet, wenn die Up / Down-Taste gedrückt wird
+* **FAVORITE_POSITION** *boolean* - kann zum Aufrufen einer Favoritenposition verwendet werden. Wenn die Favoritentaste (die Beschriftung der Taste kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** einen Wert definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
+* **SLATS_LEVEL** *Anzahl* - Position der Lamellen in Prozent
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
@@ -256,14 +264,16 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
   * Alternativ können Sie eine *Werteliste* zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
   * Sie können auch eine *Zeichenfolge* zuweisen, um einen beliebigen Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsart wie "scharf" und "unscharf" wählen
-    * In den Geräteoptionen können Sie den Wert festlegen, der für "Unscharf" steht, damit das entsprechende Symbol angezeigt wird
+    * In den Geräteoptionen können Sie den Wert definieren, der für "Unscharf" steht, sodass das entsprechende Symbol angezeigt werden kann
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
-* **CHARGING** *boolean* - wenn wahr, wird ein Ladesymbol angezeigt
+* **CHARGING** *boolean* - wenn true, wird ein Ladesymbol angezeigt
+* **LEISTUNG** *Zahl* - Leistungsaufnahme, die in der oberen rechten Ecke klein angezeigt wird
+* **VOLTAGE** *number* - Spannung, die in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/value_on.png" width="32"> Wert:
-* **STATE** *any* - jeder gültige Zustand, der angezeigt werden soll (siehe Abschnitt "Allgemeine Zustände")
+* **STATE** *any* - jeder gültige Status, der angezeigt werden soll (siehe Abschnitt "Allgemeine Status")
 * **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
 ### <img src="img/icons/play_on.png" width="32"> Programm:
@@ -282,12 +292,89 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
 ## Entwickeln
-* Siehe [Funktionsweise des Frontends] (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
+* Schauen Sie sich [Funktionsweise des Frontends] an (Funktionsweise von% 20Principle% 20of% 20Frontend.md)
 
 ****
 
 ## Changelog
 
+### 0.2.11 (2019-10-07)
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+
+### 0.2.10 (2019-10-05)
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
+
+### 0.2.9 (2019-10-02)
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
+
+### 0.2.8 (2019-09-27)
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+
+### 0.2.7 (2019-09-27)
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
+
+### 0.2.6 (2019-09-24)
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+
+### 0.2.5 (2019-09-22)
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
+
+### 0.2.4 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
+
+### 0.2.3 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+
+### 0.2.2 (2019-09-14)
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+
+### 0.2.1 (2019-09-07)
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+
+### 0.2.0 (2019-09-06)
+* (Sebastian Bormann) Added slats level to blind.
+
+### 0.1.15 (2019-09-05)
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
+
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.

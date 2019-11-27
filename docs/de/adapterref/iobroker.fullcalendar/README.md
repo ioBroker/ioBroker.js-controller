@@ -2,25 +2,28 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fullcalendar/README.md
-title: kein Titel
-hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
+title: ioBroker.fullcalendar
+hash: DX6IOtyfD2n6HEHFlbGtHzeGhrPYDF21kseu7lftq5o=
 ---
-![Logo](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png) ioBroker.fullcalendar ===================
+![Logo](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/fullcalendar-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fullcalendar.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.fullcalendar.svg)
 ![NPM](https://nodei.co/npm/iobroker.fullcalendar.png?downloads=true)
 
-Terminpläne mit [vollkalender](https://fullcalendar.io).
+# IoBroker.fullcalendar
+Stundenpläne mit [Vollkalender](https://fullcalendar.io).
 
-Sie dürfen keine externen Ressourcen verwenden, die Planung wird nur in ioBroker verarbeitet und nicht mit externen Diensten wie "Google-Kalender" oder "iTunes" kombiniert.
+Sie dürfen keine externen Ressourcen verwenden, die Planung wird nur in ioBroker verarbeitet und wird nicht mit externen Diensten wie "google calender" oder "iTunes" kombiniert.
 
 ![Beispiel](../../../en/adapterref/iobroker.fullcalendar/img/example.png)
 
-Sie können Ihre Ereignisse mit Kalender steuern und planen, diese regelmäßig zu steuern.
+Sie können Ihre Ereignisse mit dem Kalender steuern und planen, sie regelmäßig zu steuern.
 
 ## Changelog
+### 1.0.0 (2019-11-17)
+* (bluefox) Support of compact mode added
 
 ### 0.2.4 (2017-11-23)
 * Translations
@@ -44,4 +47,4 @@ Sie können Ihre Ereignisse mit Kalender steuern und planen, diese regelmäßig 
 ## License
 CC BY-NC 4.0
 
-Copyright (c) 2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>

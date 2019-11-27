@@ -3,7 +3,7 @@
 const request = require('request');
 const fs = require('fs');
 let lastRequest = null;
-const {Translate} = require('@google-cloud/translate');
+const {Translate} = require('@google-cloud/translate').v2;
 // Your Google Cloud Platform project ID
 const projectId = 'web-site-1377';
 process.env.GOOGLE_APPLICATION_CREDENTIALS = __dirname + '/../google-keys.json';
@@ -65,6 +65,10 @@ async function translateYandex(text, targetLang, yandex) {
 }
 
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+        fs.writeFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+    }
+
     if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
         translate
             .translate(text, {to: targetLang, from: sourceLang})
@@ -595,6 +599,10 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource, fileN
 }
 
 function translateText(fromLang, text, toLang) {
+    if (!text) {
+        return Promise.resolve('');
+    }
+
     // detect LINKS, IMAGES and CODES and if the line has only that, do not translate it
     if (text.trim().match(/^[^\w]*§§[ILJ]+_\d+§§[^\w]*$/)) {
         return Promise.resolve(text);

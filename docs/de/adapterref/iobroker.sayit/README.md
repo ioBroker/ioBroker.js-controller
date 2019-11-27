@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sayit/README.md
 title: ioBroker sagt es Adapter
-hash: UvTKjN3AR/eILEkm2F3ks0+HQsavlk46z4PNwGkZ5gs=
+hash: JBYO2UNE9kZnJexGdPCqTf5yzBarVuUpp9jXtW0zWOc=
 ---
 ![Logo](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -18,13 +18,13 @@ SayIt Adapter kann Text in Sprache umwandeln und auf einigen Geräten wiedergebe
 ## Aufbau
 Aktuell werden folgende Ausgaben unterstützt:
 
-- *Browser* - Der Text wird vom Browser mit geöffneter iobroker.vis Seite abgespielt. Es wird fast von jedem Desktop-Browser und von wenigen mobilen Browsern unterstützt.
+- *Browser* - Der Text wird vom Browser mit der geöffneten Seite iobroker.vis abgespielt. Es wird fast von jedem Desktop-Browser und von wenigen mobilen Browsern unterstützt.
 
 - *[Home24-MediaPlayer] (http://www.home-24.net/index.php?app=media)* - Der Text wird gesendet und auf dem Android-Gerät abgespielt, wenn Home24-MediaPlayer installiert ist. Hierzu wird eine in Android eingebaute Text-to-Speech-Engine verwendet. Der Port kann nicht geändert und auf 50000 eingestellt werden.
 
-- *Home24 - MediaPlayer und [FTP-Server] (https://play.google.com/store/apps/details?id=lutey.FTPServer)* - Der Text wird mit Home24 - MediaPlayer auf dem Android-Gerät gesendet und abgespielt Eingerichtet. Hierfür wird die Google Text to Speech Engine verwendet. Die erzeugte MP3-Datei wird über FTP auf das Android-Gerät kopiert und mit dem Home24-MediaPlayer abgespielt.
+- *Home24 - MediaPlayer und [FTP-Server] (https://play.google.com/store/apps/details?id=lutey.FTPServer)* - Der Text wird mit Home24 - MediaPlayer auf dem Android-Gerät gesendet und abgespielt Eingerichtet. Hierfür wird die Google Text to Speech Engine verwendet. Die erzeugte MP3-Datei wird über FTP auf das Android-Gerät kopiert und mit Home24 - MediaPlayer abgespielt.
 
-    Beide Apps müssen dieselben Home-Verzeichnisse haben. (Zum Beispiel Stammverzeichnis der "SD-Karte").
+    Beide Apps müssen dieselben Home-Verzeichnisse haben. (Zum Beispiel Wurzelverzeichnis von "SD-Karte").
 
 - *System* - Der Text wird vom Betriebssystem abgespielt, auf dem der ioBroker-Adapter ausgeführt wird. Folgende Betriebssysteme werden unterstützt: Windows, Linux, Mac OSx.
 
@@ -79,7 +79,7 @@ Die nützlichsten Funktionen:
 - `` `<prosody volume =" + 6dB "rate =" 90% "> Ich spreche dies </ prosody>` `` - Geschwindigkeits- und Lautstärkeparameter steuern.
 - `` `<say-as interpret-as =" digits "> 12345 </ say-as>` `` - sagen Sie jede Ziffer einzeln.
 
-Weitere [Info](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference).
+Weitere [die Info](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference).
 
 ### Systembefehl
 Wenn Sie ein Programm haben, das Audiodateien lokal oder anderswo abspielen kann, können Sie diesen Befehl hier schreiben. Z.B.
@@ -112,11 +112,11 @@ Z.B. Wenn der Adapter die Engine "Google-English" hat, kann mit der Angabe ```de
 
 Mit ```ru;75;Погода хорошая``` können wir die Verwendung der russischen Sprache und der Lautstärke auf 75% erzwingen.
 
-Sie können die Lautstärke der Ansage in Prozent von der aktuellen oder angegebenen Lautstärke (nicht von der maximalen) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` lautet und "Ansagelautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% abgespielt.
+Sie können die Lautstärke der Ansage in Prozent von der aktuellen oder angegebenen Lautstärke (nicht von der maximalen) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` ist und "Ansagelautstärke" 50% ist, wird die Ansage mit einer Lautstärke von 38% von 100% möglich abgespielt.
 
 Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie dieses Feld leer lassen, werden die Standardeinstellungen verwendet: windows - cmdmp3.exe, OSX - / usr / bin / afplay, linux - mpg321 oder omxplayer (empfohlen).
 
-Um Omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
+Um den Omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
 
 ** Hinweis: ** Die Standardauswahl für Ansagen ist erst nach dem Start der Instanz möglich.
 
@@ -141,12 +141,12 @@ Folgende Werte für Motoren sind möglich:
 
 #### Yandex
 - **ru_YA: Yandex** - Русский
-- **ru_YA_CLOUD: Yandex Cloud** - Русский [Die Yandex.Cloud-API generiert Dateien im OGG-Format. Um ogg-Dateien auf Linux abzuspielen, muss mplayer installiert und als Systemplayer ausgewählt sein.]
+- **ru_YA_CLOUD: Yandex Cloud** - Русский [Die Yandex.Cloud-API generiert Dateien im OGG-Format. Um Ogg-Dateien auf Linux abzuspielen, muss mplayer installiert und als Systemplayer ausgewählt sein.]
 
 #### Amazon polly über Cloud
 - **ru-RU_CLOUD_Female** - Русский - Татьяна
 - **ru-RU_CLOUD_Male** - Русский - Максим
-- **de_CLOUD_Female** - Deutsch - Marlene
+- **de-DE_CLOUD_Female** - Deutsch - Marlene
 - **de-DE_CLOUD_Male** - Deutsch - Hans
 - **en-US_CLOUD_Female** - en-US - Weiblich - Salli
 - **en-US_CLOUD_Male** - en-US - Männlich - Joey
@@ -259,6 +259,9 @@ Folgende Werte für Motoren sind möglich:
 - **(tr-TR_AP_Female)** - tr-TR - Weiblich - Filiz
 
 ## Changelog
+### 1.9.0 (2019-11-06)
+* (algar42) Output file extension is changed dynamically based on the engine selected
+
 ### 1.8.2 (2019-07-11)
 * (bluefox) Web server URL will be updated if web server was updated
 

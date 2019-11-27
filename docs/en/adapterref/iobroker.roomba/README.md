@@ -11,7 +11,6 @@ Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 [![NPM version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.roomba)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)](https://nodei.co/npm/iobroker.roomba/)
 
@@ -300,7 +299,11 @@ You may edit the variable ```message``` to any notification you would like to re
 
 ## Changelog
 
-### 1.0.5 (2019-08-19)
+### 1.0.7 (2019-09-03)
+- (Zefau) fixed bugs occurring when Roomba is on a mission
+- (Zefau) added additional debug logging
+
+### 1.0.6 (2019-08-19)
 - (Zefau) added loading screen to web interface
 
 ### 1.0.5 (2019-08-18)

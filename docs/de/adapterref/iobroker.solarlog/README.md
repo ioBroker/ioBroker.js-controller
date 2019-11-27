@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: U8pUIrorKcYz3knA7868IABMJOl/POaKWry0RlLazCU=
+hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -13,18 +13,29 @@ hash: U8pUIrorKcYz3knA7868IABMJOl/POaKWry0RlLazCU=
 ![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
 
 # IoBroker.solarlog
-Ein ioBroker Adapter für Solarlog - Geräte
+Ein ioBroker-Adapter für Solarlog-Geräte
 
-Das offene JSON-Interface (offene Json-Schnittstelle) muss im Konfigurationsmenü des Solarlog aktiviert sein (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
+Die offene Json-Schnittstelle muss im Konfigurationsmenü des Solarlogs aktiviert werden (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Adapter installieren, Instanz erstellen.
-Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abrufintervall (in Millilsekunden)
+Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Polling - Intervall (in Millisekunden). Da der Adapter viele http-Anfragen an Sie sendet, empfehle ich, das Polling-Intervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die benötigt wird, um mindestens 10 Sekunden abzufragen oder einzustellen.
 
-Prüfen Sie, ob alle Umrichterdaten erfasst sind. !! Das Benutzerpasswort in solarlog muss für diese Option deaktiviert werden !! Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein
+Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !! Das User-Passwort im Solarlog muss für diese Option deaktiviert sein !! Achtung: Damit die Abfrage der Unterzähler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert werden
 
-Getestet am: Solarlog 200PM + / 300PM + / 500 / 1200Meter
+## Hardware
+Getestet auf: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
+
+SolarLog 50: Es sind keine JSON-Interface @ SolarLog 50-Geräte geöffnet. Bestimmte Werte in den Kanälen 'info' und 'status' lauten daher 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Präferenzen in einem entsprechenden Problem.
 
 ## Changelog
+
+### 1.0.0
+
+-   Reads now devicetypes, -brands and -classes. Sets correct params for batteries. Displays self-consumption @'status'
+
+### 0.1.6
+
+-   Reads now battery data
 
 ### 0.1.5
 

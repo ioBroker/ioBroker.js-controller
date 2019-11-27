@@ -7,21 +7,21 @@ lastChanged: "11.08.2019"
 
 ## Generell
 
-Widgets ('Gerät, Ding') sind in diesem Zusammenhang Anzeigeelemente, die auf verschiedene Weisen 
+Widgets ('Gerät, Ding') sind in diesem Zusammenhang Anzeigeelemente, die auf verschiedene Weisen
 Zahlen, Texte, Bilder oder Diagramme darstellen und Interaktionsmöglichkeiten bieten.
 
 ## **ioBroker.vis Widgets**
 
 Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 
--------------------------------------------------------------------------------  
--------------------------------------------------------------------------------  
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 ### Die Grundeinstellungen von Widgets
- 
+
 #### Generell
 
-![001_Widget_Generell](media/vis_widgets_001_Widget_Generell.jpg)  
+![001_Widget_Generell](media/vis_widgets_001_Widget_Generell.jpg)
 
 | Attribut|Beschreibung|
 |-----|----|
@@ -35,7 +35,7 @@ Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 #### **Sichtbarkeit**
 
 Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig gemacht werden.
-![002_Widget_Sichtbarkeit](media/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)  
+![002_Widget_Sichtbarkeit](media/vis_widgets-2_002_Widget_Sichtbarkeit.jpg)
 
 
 | Attribut|Beschreibung|
@@ -47,16 +47,16 @@ Die Sichtbarkeit eines Widgets kann von dem Zustand eines Datenpunktes abhängig
 #### **Allgemein**
 
 ![](media/vis_widgets_003_Widget_Allgemein.jpg)
-Der Abschnitt 'Allgemein' ist für jedes Widget spezifisch 
-und wird bei den einzelnen Widgets näher beschrieben. 
-In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.  
+Der Abschnitt 'Allgemein' ist für jedes Widget spezifisch
+und wird bei den einzelnen Widgets näher beschrieben.
+In diesem Abschnitt wird der gewünschte Datenpunkt in dem Feld Object ID dem Widget zugeordnet.
 
 ***
-Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten 
+Die **CSS Einstellungen** des Widgets finden sich in den folgenden Menüpunkten
 und können den eigenen Wünschen angepasst werden:
 
 #### **CSS allgemein**
-![](media/vis_widgets_004_CSS_allgemein.jpg)  
+![](media/vis_widgets_004_CSS_allgemein.jpg)
 
 | Attribut|Beschreibung|
 |-----|----|
@@ -71,7 +71,7 @@ und können den eigenen Wünschen angepasst werden:
 
 #### CSS Font & Text
 
-![005_CSS_Font_Text](media/vis_widgets_005_CSS_Font_Text.jpg)  
+![005_CSS_Font_Text](media/vis_widgets_005_CSS_Font_Text.jpg)
 
 | Attribut|Beschreibung|
 |-----|----| 
@@ -89,7 +89,7 @@ und können den eigenen Wünschen angepasst werden:
 
 #### **CSS-Hintergrund**
 
-![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)  
+![006_CSS_Hintergrund](media/vis_widgets_006_CSS_Hintergrund.jpg)
 
 | Attribut | Beschreibung |
 |-----|-----| 
@@ -105,14 +105,14 @@ und können den eigenen Wünschen angepasst werden:
 
 #### **CSS Border**
 
-![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)  
+![007_CSS_Border](media/vis_widgets_007_CSS_Border.jpg)
 
 |Attribut|Beschreibung|
 |----|----|
-|-width|Dicke der Umrandung|  |
-|-style|Linienart der Umrandung|  
-|-color|Farbe der Umrandung| 
-|-radius|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein|  
+|`-width`|Dicke der Umrandung|  |
+|`-style`|Linienart der Umrandung|
+|`-color`|Farbe der Umrandung|
+|`-radius`|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein|
 
 | Attribut|Beschreibung|
 |-----|----| 
@@ -122,20 +122,20 @@ und können den eigenen Wünschen angepasst werden:
 | `-radius`|Eckenradius der Umrandung; kann höchstens die Hälfte der kürzeren Strecke des Widgets sein
 
 #### CSS Schatten und Abstand
-![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)  
+![008_CSS_Schatten_Abstand](media/vis_widgets_008_CSS_Schatten_Abstand.jpg)
 
-|Attribut|Beschreibung|  
+|Attribut|Beschreibung|
 |----|----|
-|padding|Versatz vom Rand der Widget-Box|  
-|padding-left|Versatz auf der linken Seite|  
-|padding-top|Versatz auf der oberen Seite|  
-|padding-right|Versatz auf der rechten Seite|  
-|padding-bottom|Versatz auf der unteren Seite|  
-|box-shadow|Farbe des Schattens der Widget-Box|  
-|margin-top|Oberer Rand um das Widget (auto, %, px, pt, cm)|  
-|margin-right|Rechter Rand um das Widget|  
-|margin-bottom|Unterer Rand um das Widget|  
-|margin-left|Linker Rand um das Widget|
+|`padding`|Versatz vom Rand der Widget-Box|
+|`padding-left`|Versatz auf der linken Seite|
+|`padding-top`|Versatz auf der oberen Seite|
+|`padding-right`|Versatz auf der rechten Seite|
+|`padding-bottom`|Versatz auf der unteren Seite|
+|`box-shadow`|Farbe des Schattens der Widget-Box|
+|`margin-top`|Oberer Rand um das Widget (auto, %, px, pt, cm)|
+|`margin-right`|Rechter Rand um das Widget|
+|`margin-bottom`|Unterer Rand um das Widget|
+|`margin-left`|Linker Rand um das Widget|
 
 | Attribut|Beschreibung|
 |-----|----| 

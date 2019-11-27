@@ -15,9 +15,35 @@
 
 Notfall-Informations- und Nachrichten-App
 
+https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html
+
+https://warnung.bund.de/
+
 ### Getting started
 
+
+Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
+
+Liste der AGS mit Strg+F suchen:
+
+https://warnung.bund.de/assets/json/suche_channel.json
+
 ## Changelog
+
+### 0.0.13
+
+-   (tomboxi) Identifierliste hinzugefügt.
+
+### 0.0.12
+
+-   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+
+### 0.0.8
+
+-   (tomboxi) Katwarn Warnungen hinzugefügt.
+### 0.0.7
+
+-   (tomboxi) BiwApp Warnungen hinzugefügt.
 
 ### 0.0.6
 

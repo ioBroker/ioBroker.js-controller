@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.moma/README.md
 title: без названия
-hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
+hash: /18eY0rfu6ZFjyRax1iWpVkbXlO+pvLYm5mjCn/7nQc=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -17,7 +17,7 @@ hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 <h1><img src="admin/moma.png" width="64"/> ioBroker.moma </h1>
 
 ## Адаптер moma для ioBroker
-** MoMa **- это адаптер для** Mo **мониторинга и** Ma **обслуживания домашней автоматизации на базе ioBroker.
+** MoMa **- это адаптер для** Mo **мониторинга и** Ma **поддержки установки домашней автоматизации на базе ioBroker.
 ** MoMa** предназначена для домашних (автоматизированных) установок, которые немного сложнее, чем одна машина, работающая на одной или небольшом количестве машин, выполняющая некоторую базовую балансировку нагрузки в одной сети.
 
 Он не предназначен для замены инструментов администрирования, таких как **Puppet** **Chef** **Salt** или **Ansible** Они предназначены для больших сред с большим количеством компьютеров и способны к удаленной установке пакетов. **MoMa** сможет только удаленно обновлять существующие установки, без удаленной установки и без удаленной конфигурации.
@@ -26,7 +26,7 @@ hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 
 MoMa использует независимую от платформы библиотеку 'systeminformation' (https://github.com/sebhildebrandt/systeminformation) для сбора информации о компьютере. Многие из вызовов могут быть использованы в интервальных таймерах - см. Ссылку ниже.
 
-Для MoMa требуется как минимум версия nodejs 8 / ES6.
+Для MoMa требуется как минимум версия nodejs 8 / ES9 / ECMAScript2018.
 
 ## Монтаж
 Доступно в репозитории ioBroker «последние»
@@ -37,7 +37,7 @@ npm установить iobroker.moma
 
 Работает также в средах с несколькими хостами - убедитесь, что перед установкой выбран правильный экземпляр.
 
-** Внимание: ** В настоящее время вам необходимо установить экземпляр Admin-Adapter на каждом подчиненном устройстве в качестве обходного пути.
+** Внимание: ** В настоящее время вам нужно установить экземпляр Admin-Adapter на каждом подчиненном устройстве в качестве обходного пути.
 Admin-Adapter не обязательно должен быть активным!
 
 ## Основная концепция
@@ -48,7 +48,7 @@ Admin-Adapter не обязательно должен быть активным
 GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
 Основная идея - иметь + дерево для каждого экземпляра (moma. \ <Instance-id \>), содержащее всю информацию о машине, на которой работает экземпляр.
-+ общее дерево (moma.meta), ниже которого каждый экземпляр создает устройство \ <hostname \>, содержащее ссылку на экземпляр и некоторую информацию о мониторинге.
++ общее дерево (moma.meta), ниже которого каждый экземпляр создает устройство \ <hostname \>, содержащее ссылку на экземпляр и некоторую информацию мониторинга.
 + админка для обслуживания (обновления операционной системы, js-контроллера, адаптеров)
 
 ## Ссылка
@@ -95,8 +95,8 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 * networkInterfaces - доступные сетевые интерфейсы
 * графика - информация о компьютерах, видеокартах и подключенных мониторах
 * inetLatency - проверка интернет-задержки на 8.8.8.8
-* dockerInfo - Общая информация о Docker - для правильной работы требуется «adduser iobroker docker» на компьютере.
-* dockerContainers - Список всех контейнеров Docker - для правильной работы на компьютере необходим «докер adobser iobroker».
+* dockerInfo - Общая информация о docker - для правильной работы необходим «adduser iobroker docker» на машине
+* dockerContainers - список всех Docker-контейнеров - требуется, чтобы на компьютере был установлен «adduser iobroker docker», прежде чем он будет работать правильно
 
 Следующие функции системной информации библиотеки вызываются в интервале 4 (по умолчанию каждый день):
 
@@ -113,21 +113,25 @@ GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
 ## Changelog
 
-### 1.1.4 (2019-07-22)
-* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
-                 Update of Adapters and JS-Controller.
+### 1.2.3 (20??-??-??)
+* (AWhiteKnight) bugfixing, code cleanup 
 
-### 1.1.3 (2019-07-03)
-* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
+### 1.2.2 (2019-09-12)
+* (AWhiteKnight) ioBroker adapter/controller updates for windows, issue #24 
 
-### 1.1.2 (2019-06-05)
-* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
+### 1.2.1 (2019-08-12)
+* (AWhiteKnight) Bugfixing on 1.2.0 
 
-### 1.1.1 (2019-05-23)
-* (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
+### 1.2.0 (2019-07-26)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.4, 
+                 check for update of Adapters and JS-Controller in Interval 4,
+				 dockerInfo, dockerContainers in Interval 3,
+				 moma admin-tab with update buttons for os, js-controller, adapters.
 
 ### 1.1.0 (2019-05-20)
-* (AWhiteKnight) Performance optimization. Fix of issue #24. Check internet latency.
+* (AWhiteKnight) Performance optimization,
+				 partial fix of Issu #24,
+				 Check internet latency.
 
 ### 1.0.0 (2019-05-11)
 * (AWhiteKnight) First release for adapter list 'stable'.

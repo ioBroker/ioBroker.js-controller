@@ -99,6 +99,20 @@ Result:
 ```
 Of course the data point *javascript.0.test* must exist.
 
+Additionally the type of value could be defined:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+and ack flag could be defined too:
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
+
+
+
 ### toggle
     toggles value:
 - boolean: true => false, false => true
@@ -123,7 +137,7 @@ Of course the data point *javascript.0.test* must exist.
 ### query
     If a data source (History, SQL) has been specified, the data from the specified data points are read out for the specified period, otherwise only the current value is read out.
     This command is needed for the Grafana JSON / SimpleJSON Plugin.
-    
+
 ### help
 Gives [this](#usage) output back
 
@@ -146,12 +160,12 @@ Read state value as text. You can specify more ids divided by semicolon
 
 <pre>http://ip:8087/getPlainValue/admin.0.memHeapTotal</pre>
 
-<pre>   
+<pre>
   31.19
-</pre>  
+</pre>
 
 <pre>http://ip:8087/getPlainValue/admin.0.memHeapTotal, admin.0.memHeapUsed</pre>
-<pre>  
+<pre>
   31.19
   17.52
 </pre>
@@ -533,6 +547,23 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+
+### 2.3.3 (2019-11-16)
+* (bluefox) Added response code for unknown commands
+
+### 2.3.2 (2019-10-18)
+* (Apollon77) Fix Admin 3 support
+
+### 2.3.1 (2019-10-12)
+* (bluefox) Admin 3 is now supported
+* (bluefox) NPM packages were updated
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

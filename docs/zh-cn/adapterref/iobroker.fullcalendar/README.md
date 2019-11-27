@@ -2,25 +2,28 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fullcalendar/README.md
-title: 无题
-hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
+title: ioBroker.fullcalendar
+hash: DX6IOtyfD2n6HEHFlbGtHzeGhrPYDF21kseu7lftq5o=
 ---
-![商标](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png)ioBroker.fullcalendar=================
+![商标](../../../en/adapterref/iobroker.fullcalendar/admin/fullcalendar.png)
 
 ![安装数量](http://iobroker.live/badges/fullcalendar-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fullcalendar.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.fullcalendar.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.fullcalendar.svg)
 ![NPM](https://nodei.co/npm/iobroker.fullcalendar.png?downloads=true)
 
-使用[fullcalendar](https://fullcalendar.io)进行计划。
+＃ioBroker.fullcalendar
+带有[全日历](https://fullcalendar.io)的时间表。
 
-您不得使用任何外部资源，仅在ioBroker中处理调度，并且不会与“google calender”或“iTunes”等任何外部服务结合使用。
+您不得使用任何外部资源，调度仅在ioBroker中处理，并且不会与任何外部服务（例如“ google calender”或“ iTunes”）结合使用。
 
 ![例](../../../en/adapterref/iobroker.fullcalendar/img/example.png)
 
-您可以使用日历控制事件，并可以计划定期控制它们。
+您可以使用日历来控制事件，并可以计划定期对其进行控制。
 
 ## Changelog
+### 1.0.0 (2019-11-17)
+* (bluefox) Support of compact mode added
 
 ### 0.2.4 (2017-11-23)
 * Translations
@@ -44,4 +47,4 @@ hash: 0MlngfmNf5al/K9LTrm9va08IX4o+Owhjt6jFCqoqKs=
 ## License
 CC BY-NC 4.0
 
-Copyright (c) 2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>

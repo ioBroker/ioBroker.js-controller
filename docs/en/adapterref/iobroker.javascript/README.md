@@ -65,6 +65,11 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [isScriptActive](#isscriptactive)
     - [name](#name)
     - [instance](#instance)
+    - [messageTo](#messageto)
+    - [onMessage](#onmessage)
+    - [onMessageUnregister](#onmessageunregister)
+    - [onLog](#onlog)
+    - [onLogUnregister](#onlogunregister)
 
 - [Scripts activity](#scripts-activity)
 - [Changelog](#changelog)
@@ -389,6 +394,8 @@ Function "on" returns handler back. This handler can be used by unsubscribe.
 
 *Notice:* by default only states with quality 0x00 will be passed to callback function. If you want to get all events, add {q: '*'} to pattern structure.
 
+*Notice:* from 4.3.2 it is possible to write type of trigger as second parameter: `on('my.id.0', 'any', obj => console.log(obj.state.val));`
+
 ### subscribe - same as **[on](#on---subscribe-on-changes-or-updates-of-some-state)**
 
 ### unsubscribe
@@ -694,10 +701,10 @@ Same as setState but with delay in milliseconds. You can clear all running delay
 
 ```js
 // Switch ON the light in the kitchen in one second
-setStateDelayed('Kitchen.Light.Lamp', true,  1000); 
+setStateDelayed('Kitchen.Light.Lamp', true,  1000);
 
 // Switch OFF the light in the kitchen in 5 seconds and let first timeout run.
-setStateDelayed('Kitchen.Light.Lamp', false, 5000, false, function () { 
+setStateDelayed('Kitchen.Light.Lamp', false, 5000, false, function () {
     log('Lamp is OFF');
 });
 ```
@@ -773,10 +780,10 @@ getState(id);
 Returns state with the given id in the following form:
 ```js
 {
-    val: value, 
-    ack: true/false, 
-    ts: timestamp, 
-    lc: lastchanged, 
+    val: value,
+    ack: true/false,
+    ts: timestamp,
+    lc: lastchanged,
     from: origin
 }
 ```
@@ -910,7 +917,7 @@ To get specific information about messages you must read the documentation for p
 Example:
 
 ```js
-sendTo('telegram', {user: 'UserName', text: 'Test message'};
+sendTo('telegram', {user: 'UserName', text: 'Test message'});
 ```
 
 Some adapters also support responses to the send messages. (e.g. history, sql, telegram)
@@ -1065,7 +1072,7 @@ Format of selector:
 "name[commonAttr=something1](enumName=something2){nativeName=something3}[id=idfilter][state.id=idfilter]"
 ```
 
-name can be: state, channel or device
+name can be: state, channel, device or schedule
 "idfilter" can have wildcards '*'
 
 Prefixes ***(not implemented - should be discussed)*** :
@@ -1082,6 +1089,7 @@ Prefixes ***(not implemented - should be discussed)*** :
 - `$('channel{TYPE=BLIND}[state.id=*.LEVEL]')` - Get all shutter of Homematic
 - `$('channel[role=switch](rooms=Living room)[state.id=*.STATE]').setState(false)` - Switch all states with .STATE of channels with role "switch" in "Living room" to false
 - `$('channel[state.id=*.STATE](functions=Windows)').each(function (id, i) {log(id);});` - print all states of enum "windows" in log
+- `$('schedule[id=*65]').each(function (id, i) {log(id);});` - print all schedules with 65 at the end
 
 
 - `$('.switch §"Living room")` - Take states with all switches in 'Living room' ***(not implemented - should be discussed)***
@@ -1306,6 +1314,93 @@ log('Script ' + name + ' started by ' + instance + '!');
 
 It is not a function. It is a variable with javascript instance, that is visible in script's scope.
 
+### messageTo
+```
+messageTo({instance: 'instance', script: 'script.js.common.scriptName', message: 'messageName'}, data, {timeout: 1000}, result =>
+    console.log(JSON.stringify(result)));
+```
+
+Sends via the "message bus" the message to some other script. Or even to some handler in the same script.
+
+Timeout for callback is 5 seconds by default.
+
+The target could be shorted to:
+
+```
+messageTo('messageName', data, result =>
+    console.log(JSON.stringify(result)));
+```
+
+Callback and options are optional and timeout is by default 5000 milliseconds (if callback provided).
+
+```
+messageTo('messageName', dataWithNoResponse);
+```
+
+### onMessage
+```
+onMessage('messageName', (data, callback) => {console.log('Received data: ' + data); callback(null, Date.now())});
+```
+
+Subscribes on message bus and delivers response via callback.
+The response from script which sends response as first will be accepted as answer, all other answers will be ignored.
+
+### onMessageUnregister
+```
+const id = onMessage('messageName', (data, callback) => {console.log(data); callback(Date.now())});
+
+// unsubscribe specific handler
+onMessageUnregister(id);
+// or unsubscribe by name
+onMessageUnregister('messageName');
+```
+
+Unsubscribes from this message.
+
+### onLog
+```
+onLog('error', data => {
+    sendTo('telegram.0', {user: 'UserName', text: data.message});
+    console.log('Following was sent to telegram: ' + data.message);
+});
+```
+
+Subscribes on logs with specified severity.
+
+*Important:* you cannot output logs in handler with the same severity to avoid infinite loops.
+
+E.g. this will produce no logs:
+```
+onLog('error', data => {
+    console.error('Error: ' + data.message);
+});
+```
+
+To receive all logs the `*` could be used. In this case the log output in handler will be disabled at all.
+
+```
+onLog('*', data => {
+    console.error('Error: ' + data.message); // will produce no logs
+});
+```
+
+### onLogUnregister
+```
+function logHandler(data) {
+    console.error('Error: ' + data.message);
+}
+const id = onLog('warn', logHandler);
+
+// unsubscribe by ID
+onLogUnregister(id);
+// or unsubscribe by function handler
+onLogUnregister(logHandler);
+// or unsubscribe all handlers with specific severity
+onLogUnregister('warn');
+```
+
+Unsubscribes from this logs.
+
 ## Option - "Do not subscribe all states on start"
 There are two modes of subscribe on states:
 - Adapter subscribes on all changes at start and receives all changes of all states (it is easy to use getStates(id), but required more CPU and RAM):
@@ -1331,10 +1426,48 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
-### 4.1.14 (2019-07-14) 
+### 4.3.4 (2019-10-28)
+* (bluefox) Values are showed in select ID dialog
+* (bluefox) Allow select with $ the schedule objects
+
+### 4.3.3 (2019-10-28)
+* (bluefox) Search in scripts was corrected
+
+### 4.3.2 (2019-10-27)
+* (AlCalzone) Fix syntax help for Node.js runtime methods (#418)
+* (AlCalzone) Target ES 2017 in TypeScript (#419)
+* (AlCalzone) Automatically load declarations for 3rd party modules (#422)
+* (bluefox) Functions with non latin text are working now
+
+### 4.3.1 (2019-10-16)
+* (bluefox) Fixed login with non-admin user
+* (bluefox) fixed log
+* (bluefox) Some GUI fixes
+
+### 4.3.0 (2019-10-09)
+* (bluefox) log handlers were implemented
+* (bluefox) fixed the error with $ selector and with disabled subscribes
+
+### 4.2.1 (2019-10-07)
+* (bluefox) implement inter-script communication.
+* (bluefox) Implemented the mirroring on disk
+* (bluefox) Translation for other languages was added
+
+### 4.1.17 (2019-08-xx)
+* (bluefox) Optimization: do not make useless iterations
+* (bluefox) Allow to make requests to sites with self/signed certificates
+
+### 4.1.16 (2019-08-24)
+* (bluefox) Fixed the errors in editor
+
+### 4.1.15 (2019-08-24)
+* (bluefox) Added the polish language to CRON
+* (bluefox) Fixed the import of scripts
+
+### 4.1.14 (2019-07-14)
 * (bluefox) Fixed locale settings
 
-### 4.1.13 (2019-06-02) 
+### 4.1.13 (2019-06-02)
 * (bluefox) fixed Monaco Loading
 * (bluefox) added missing blockly element
 * (AlCalzone) Improved the warning message when assigning a variable of wrong type to a state

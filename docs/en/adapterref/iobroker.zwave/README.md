@@ -80,7 +80,6 @@ If all of those commands don't work, the following process might:
 ## Configuration
 Within Admin Settings you can set following Attributes
 
-- Force objects re-init (ReInitialize all Objects within ioBroker)
 - USB name (the USB Port of your Z-Wave stick)
 - Logging (enable logging to OZW_Log.txt)
 - Console Output (copy logging to the console, Logs all to ioBroker.log)
@@ -154,6 +153,30 @@ Following global Actions are current supported:
 - Danfoss Z Thermostat 014G0013
 
 ## Changelog
+
+### 1.7.1
+* (cburghardt) Updated openzwave
+
+### 1.7.0
+* (cburghardt) Added multi-instance associations
+
+### 1.6.3
+* (cburghardt) Update openzwave version
+* (cburghardt) Verify that the correct version of openzwave is installed by checking the manufacturer revision
+* (cburghardt) Don't refresh the association menu directly after adding or removing for sleeping devices as it is not updated
+* (cburghardt) Add `removeFailedNode` command
+
+### 1.6.1
+* (cburghardt) Fix issues 75 and 76
+
+### 1.6.0
+* (cburghardt) Cleanup obsolete states on startup
+* (cburghardt) Added confirmation dialog for hard reset
+* (cburghardt) Translation fixes
+* (cburghardt) Removed non-existing `getNeighbors` function
+* (cburghardt) Display network map
+* (cburghardt) Allow manual input of a serial port together with the selection
+* (cburghardt) Suppress permission denied warnings during installation
 
 ### 1.5.1
 * (cburghardt) The *refresh node* command no longer excludes the node

@@ -3,32 +3,44 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: GGZkaDlkbT8xshFTHdvbZxz/SRlcxBr4QsofFBrVx+o=
+hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ---
 ![商标](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
 ![安装数量](http://iobroker.live/badges/shuttercontrol-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.shuttercontrol.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.shuttercontrol.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.shuttercontrol.svg)
 ![依赖状态](https://img.shields.io/david/simatec/iobroker.shuttercontrol.svg)
-![已知的漏洞](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol/badge.svg)
+![已知漏洞](https://snyk.io/test/github/simatec/ioBroker.shuttercontrol/badge.svg)
+![特拉维斯](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/simatec/ioBroker.shuttercontrol/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.shuttercontrol?branch=master&svg=true)
 
-#ioBroker.shuttercontrol
-适用于ioBroker的## shuttercontrol适配器
-automatische Rollladensteuerung
+＃ioBroker.shuttercontrol
+**如果您愿意，请考虑捐赠：**
 
-[Deutsche Beschreibung hier](docs/de/shuttercontrol.md)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
-百叶窗的自动控制
+## IoBroker的快门控制适配器
+自动轧制
+
+[德意志银行](docs/de/shuttercontrol.md)
+
+百叶窗自动控制
 
 [英文说明在这里](docs/en/shuttercontrol.md)
 
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.4.1 (20.10.2019)
+* (simatec) Fix update process
+* (simatec) Fix appveyor
+
+### 0.4.0 (28.08.2019)
+* (simatec) Fix shutdown for Elevation
+* (simatec) Fix triggerHeight
+* (simatec) Fix Travis
 
 ### 0.3.2 (09.07.2019)
 * (simatec) Added state check for all shutter

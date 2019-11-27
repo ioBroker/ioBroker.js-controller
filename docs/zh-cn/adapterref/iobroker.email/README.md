@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.email/README.md
 title: ioBroker电子邮件
-hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
+hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
 ---
 ![商标](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -12,17 +12,17 @@ hash: Up9QORNYs5evvk3H0uVAADU/hy0TdlwMx1YfRNKIug0=
 ![下载](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-#ioBroker电子邮件
+＃ioBroker电子邮件
 从ioBroker发送电子邮件。
 
-整个工作使得[nodemailer](https://github.com/nodemailer/nodemailer)和ioBroker只使用它。
+整个工作使[nodemailer](https://github.com/nodemailer/nodemailer)和ioBroker都使用它。
 
-**此适配器需要nodejs 6.x或更高版本!! **
+**此适配器需要nodejs 6.x或更高版本！**
 
-要使用Gmail，您可能需要在Gmail帐户中配置“允许安全性较低的应用”，除非您使用的是2FA，在这种情况下您必须创建应用专用密码。您还可能需要通过“允许访问您的Google帐户”来解锁您的帐户才能使用SMTP。
+要使用Gmail，您可能需要在Gmail帐户中配置“允许安全程度较低的应用程序”，除非您使用的是2FA，在这种情况下，您必须创建“应用程序专用”密码。您还可能需要使用“允许访问您的Google帐户”来解锁帐户才能使用SMTP。
 
 ##用法
-要从ScriptEngine发送电子邮件，只需写：
+要从ScriptEngine发送电子邮件，只需编写：
 
 ```
 // send email to all instances of email adapter
@@ -63,46 +63,49 @@ sendTo("email", {
 要从其他适配器发送电子邮件，请使用** adapter.sendTo **函数。
 
 ##支持的服务
- -  1und1
- - 美国在线
- -  DebugMail.io
- -  DynectEmail
- -  FastMail
- -  GandiMail
- -  Gmail
+-1und1
+-美国在线
+-DebugMail.io
+-Dynect电子邮件
+-快速邮件
+-GandiMail
+-Gmail
 - 去吧爸爸
- -  GodaddyAsia
- -  GodaddyEurope
- -  hot.ee
- -  Hotmail
- -  iCloud
- -  ith
- -  mail.ee
- -  Mail.ru
- -  Mailgun
- -  Mailjet
- -  Mandrill
- -  Naver
- -  Office365
- -  OpenMailBox
- - 邮戳
- -  QQ
- -  QQex
- -  SendCloud
- -  SendGrid
- -  SES
- -  SES-US-EAST-1
- -  SES-US-WEST-2
- -  SES-EU-WEST-1
- -  Sparkpost
- - 雅虎
- -  Yandex
- -  Zoho
- - 特定于用户（手动定义服务器，端口和安全性）
+-GodaddyAsia
+-GodaddyEurope
+-hot.ee
+-Hotmail
+-iCloud
+-第
+-mail.ee
+-Mail.ru
+-Mailgun
+-Mailjet
+-山d
+-纳韦尔
+-Office365
+-OpenMailBox
+-邮戳
+-QQ
+-QQex
+-SendCloud
+-SendGrid
+-SES
+-SES-US-EAST-1
+-SES-US-WEST-2
+-SES-EU-WEST-1
+-Sparkpost
+-雅虎
+-Yandex
+-Zoho
+-特定于用户（手动定义的服务器，端口和安全性）
 
-对于其他服务，请参阅** Nodemailer **的文档：`§§LLLLL_0§§`
+有关其他服务，请参阅** Nodemailer **的文档：`§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.5 (2019-09-18)
+* (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
+
 ### 1.0.4 (2018-03-26)
 * (skraw.iobroker) Add ith
 

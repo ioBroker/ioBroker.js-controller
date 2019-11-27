@@ -1,5 +1,5 @@
 ---
-title:       "Admin"
+title:       "Aufzählungen"
 lastChanged: "14.09.2018"
 ---
 

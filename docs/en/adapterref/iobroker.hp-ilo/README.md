@@ -28,6 +28,9 @@ Supporting ILO interfaces from V2 upwards.
 
 ## Changelog
 
+### 1.0.5 (2019-11-11)
+* (SebastianSchultz) Changed test scripts
+
 ### 1.0.1 (2019-01-21)
 * (SebastianSchultz) Added compact mode
 

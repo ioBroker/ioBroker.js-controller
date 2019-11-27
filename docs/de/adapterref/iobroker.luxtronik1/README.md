@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
+hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 ---
 ![Logo](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -11,30 +11,35 @@ hash: AbUHvOwsX7KDYdFPCF20o6DlMsHDwiIBV0DhjISrSN4=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
 ![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 # IoBroker.luxtronik1
-Ein ioBroker-Adapter für Luxtronik 1 - Wärmepumpenregler (z. B. Alpha Innotec, Siemens ...)
+Ein ioBroker Adapter für Luxtronik 1 - Wärmepumpen - Steuerungen (d. H. Alpha Innotec, Siemens ...)
 
 Adapter installieren, Instanz erstellen.
-Installieren Sie die Hardware: RS232-zu-LAN-Adapter an die serielle Schnittstelle (RS232) des Hauptpumpen der Wärmepumpe.
-Technische Daten: Seriennummer: Verbindungs-PINs 2, 3 und 5 (wenn dies nicht funktioniert, Pin 2 und 3 ändern). RS232-zu-LAN-Konverter: USR TCP232 - 302.
+Installieren Sie die Hardware: d. H. Den RS232-LAN-Adapter an die serielle Schnittstelle (RS232) des Hauptbords der Wärmepumpe.
+Technische Daten: serielle Schnittstelle: PINS 2, 3 und 5 verbinden (falls dies nicht funktioniert, Pin 2 und 3 wechseln) RS232 zu LAN-Konverter: d. H. USR TCP232 - 302.
 Einstellungen serielle Schnittstelle: 57600/8 / N / 1, Modus: TCP-Server Reset Timeout: 0
 
-Setze comfoair - IP-Adresse, Port und Polling - Intervall
+Stellen Sie comfoair ein - IP-Adresse, Port und Polling - Intervall
 
-Getestet an luxtronik 1 und AlphaInnotec Wärmepumpe
+Getestet mit luxtronik 1 und AlphaInnotec Wärmepumpe
 
-Liest verschiedene Werte und Werte Ihrer Wärmepumpe (Temperaturen, Fehler, Laufzeit, ...).
-Steuert Luxtronik 1 durch Setzen von Werten im 'Control' - Kanal. Steuert die folgenden Werte:
+Liest verschiedene Werte und Statistiken Ihrer Wärmepumpe (Temperaturen, Fehler, Laufzeit, ...).
+Steuert Luxtronik 1 durch Einstellen von Werten im 'control' - Kanal. Steuert die folgenden Werte:
 
 - Warmwassertemperatureinstellung
-- Heizungsmodus
-- Heißwasser - Modus
-- Heizkurve (Differenz, Endpunkt, Startpunkt, nächtliche Reduktion).
+- Heizbetrieb
+- Heißwasserbetrieb
+- Heizkurve (Differenz, Endpunkt, Startpunkt, Nachtabsenkung).
 
 Werte im 'control' - Kanal müssen mit ack = false gesetzt werden, um eine Aktion auszulösen.
 
 ## Changelog
+
+### 0.1.0
+
+-   error-handling on communication errors optimized, adapter restart in case of multiple communication errors.
 
 ### 0.0.7
 

@@ -29,7 +29,8 @@ const styles = theme => ({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundImage: 'url(' + BackImage + ')',
-        height: 'calc(100vh - 50px)'
+        height: 'calc(100vh - 50px)',
+        textAlign: 'center',
     },
     title: {
         margin: 'auto',
@@ -55,6 +56,22 @@ const styles = theme => ({
     },
     titleDescription: {
         fontSize: 24,
+    },
+    cloudButton: {
+        marginTop: 100,
+        paddingTop: 25,
+        width: 200,
+        height: 45,
+        borderRadius: 100,
+        textTransform: 'uppercase',
+        background: '#3399CC',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontSize: 20,
+        marginLeft: 'calc(50% - 100px)',
+        opacity: 0.9,
+        fontFamily: 'Audiowide, sans-serif',
+        cursor: 'pointer'
     },
 
     darkPart: theme.palette.darkPart,
@@ -110,6 +127,13 @@ class Intro extends Component {
         </div>);
     }
 
+    renderCloud() {
+        const smallMargin = window.screen.height < 500;
+
+
+        return (<div style={smallMargin ? {marginTop: 10}: undefined} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>get cloud</div>)
+    }
+
     // What differs ioBroker from other open source automation platforms?
     //
     // - Comprehensive visualization
@@ -140,6 +164,7 @@ class Intro extends Component {
                         <div  className={this.props.classes.titleDescription}>Open source automation platform</div>
                     </div>
                 </div>
+                {this.renderCloud()}
                 {!this.props.mobile ? (<LinusShell
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}

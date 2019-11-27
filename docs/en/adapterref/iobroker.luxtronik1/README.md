@@ -5,14 +5,14 @@
 ![Number of Installations](http://iobroker.live/badges/luxtronik1-installed.svg) ![Number of Installations](http://iobroker.live/badges/luxtronik1-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 
-[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/)
+[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)](https://greenkeeper.io/)
 
 An ioBroker adapter for Luxtronik 1 - heatpump - controllers (i.e. Alpha Innotec, Siemens...)
 
 Install adapter, create instance.
 Install hardware: i.e. RS232 to LAN adapter to the serial interface (RS232) of the heatpumps mainbord.
 Specs: serial cabe: link PINS 2, 3 and 5  (if it does not work, change pins 2 and 3)
-RS232 to LAN converter: USR TCP232 – 302.
+RS232 to LAN converter: i.e. USR TCP232 – 302.
 Settings serial interface : 57600/8/N/1 , Mode :TCP-Server
 Reset Timeout:0
 
@@ -31,6 +31,10 @@ Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the 
 Values in the 'control' - channel have to be set with ack=false to trigger an action.
 
 ## Changelog
+
+### 0.1.0
+
+-   error-handling on communication errors optimized, adapter restart in case of multiple communication errors.
 
 ### 0.0.7
 

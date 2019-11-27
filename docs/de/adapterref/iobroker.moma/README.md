@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.moma/README.md
 title: kein Titel
-hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
+hash: /18eY0rfu6ZFjyRax1iWpVkbXlO+pvLYm5mjCn/7nQc=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -17,7 +17,7 @@ hash: RIb0oeC04hlEuwRmIapgmfM8Jr5gJhCziyh1PS0BzI4=
 <h1><img src="admin/moma.png" width="64"/> ioBroker.moma </h1>
 
 ## Moma Adapter für ioBroker
-** MoMa **ist ein Adapter für die Überwachung und Wartung einer auf ioBroker basierenden Hausautomationsinstallation.
+** MoMa **ist ein Adapter für die Überwachung und Wartung einer ioBroker-basierten Hausautomationsinstallation.
 ** MoMa** zielt auf Heiminstallationen (Automatisierungsinstallationen) ab, die etwas komplexer sind als eine einzelne Maschine, die auf einer oder einer kleinen Anzahl von Maschinen läuft und einen grundlegenden Lastenausgleich innerhalb eines Netzwerks durchführt.
 
 Es ist nicht als Ersatz für Administrations-Tools wie **Puppet** **Chef** **Salt** oder **Ansible** gedacht.
@@ -27,7 +27,7 @@ Ich verwende es, um meine IT-Infrastruktur zu Hause (einschließlich der Heimaut
 
 MoMa verwendet die plattformunabhängige Bibliothek "Systeminformationen" (https://github.com/sebhildebrandt/systeminformation), um Informationen über den Computer zu sammeln. Viele der Anrufe können in Zeitintervallen verwendet werden - siehe Referenz weiter unten.
 
-MoMa benötigt mindestens nodejs Version 8 / ES6.
+MoMa benötigt mindestens nodejs Version 8 / ES9 / ECMAScript2018.
 
 ## Installation
 Verfügbar im ioBroker-Repository 'latest'
@@ -48,7 +48,7 @@ Forum: https://forum.iobroker.net/topic/22026/neuer-adapter-iobroker-moma
 
 GitHub: https://github.com/AWhiteKnight/ioBroker.moma
 
-Grundlegende Idee ist, für jede Instanz (moma. \ <Instanz-ID \>) einen Baum zu haben, der alle Informationen zu der Maschine enthält, auf der die Instanz ausgeführt wird.
+Grundlegende Idee ist, für jede Instanz (moma. \ <Instanz-ID \>) einen Baum zu haben, der alle Informationen der Maschine enthält, auf der die Instanz ausgeführt wird.
 + ein allgemeiner Baum (moma.meta), unter dem jede Instanz ein Gerät \ <Hostname \> erstellt, das einen Verweis auf die Instanz und einige Überwachungsinformationen enthält.
 + ein Admin-Tab für die Wartung (Updates des Betriebssystems, des js-Controllers, der Adapter)
 
@@ -109,26 +109,30 @@ Folgende Funktionen der Bibliothekssysteminformation werden in Intervall 4 aufge
 Folgende Funktionen von **MoMa** werden in Intervall 4 aufgerufen (Standard jeden Tag):
 
 * updates - prüft auf ausstehende Updates und zeigt die Anzahl der Updates in moma.meta. \ <Hostname \>. updates an (derzeit nur Ubuntu, Debian, openSUSE, RedHat)
-* checkIob - Überprüft alle Adapter und den js-controller auf verfügbare Updates
+* checkIob - Überprüft alle Adapter und den js-Controller auf verfügbare Updates
 * checkBatteries - Überprüft Batteriezustandsvariablen (aktuell implementierte Zustandsnamen: LOWBAT, LOW_BAT)
 
 ## Changelog
 
-### 1.1.4 (2019-07-22)
-* (AWhiteKnight) Library 'systeminformation' version 4.14.x, 
-                 Update of Adapters and JS-Controller.
+### 1.2.3 (20??-??-??)
+* (AWhiteKnight) bugfixing, code cleanup 
 
-### 1.1.3 (2019-07-03)
-* (AWhiteKnight) Bugfixes, Library 'systeminformation' version 4.13.1, dockerInfo in Interval 3
+### 1.2.2 (2019-09-12)
+* (AWhiteKnight) ioBroker adapter/controller updates for windows, issue #24 
 
-### 1.1.2 (2019-06-05)
-* (AWhiteKnight) intensive logging in debug mode silly to find reason for issue #24
+### 1.2.1 (2019-08-12)
+* (AWhiteKnight) Bugfixing on 1.2.0 
 
-### 1.1.1 (2019-05-23)
-* (AWhiteKnight) dockerContainers in Interval 3. Library 'systeminformation' version 4.5.1
+### 1.2.0 (2019-07-26)
+* (AWhiteKnight) Library 'systeminformation' version 4.14.4, 
+                 check for update of Adapters and JS-Controller in Interval 4,
+				 dockerInfo, dockerContainers in Interval 3,
+				 moma admin-tab with update buttons for os, js-controller, adapters.
 
 ### 1.1.0 (2019-05-20)
-* (AWhiteKnight) Performance optimization. Fix of issue #24. Check internet latency.
+* (AWhiteKnight) Performance optimization,
+				 partial fix of Issu #24,
+				 Check internet latency.
 
 ### 1.0.0 (2019-05-11)
 * (AWhiteKnight) First release for adapter list 'stable'.

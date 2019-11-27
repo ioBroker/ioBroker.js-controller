@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.proxmox/README.md
 title: ioBroker.proxmox
-hash: mlb7o9szaXMRHkYexpPhjW/npqfJBzqaoUpp0Sh6MaA=
+hash: ZT1/mtpdXzxKTr9inR426GZ7McKFUNaMke7stIR+xEw=
 ---
 ![логотип](../../../en/adapterref/iobroker.proxmox/admin/logo.png)
 
@@ -13,14 +13,24 @@ hash: mlb7o9szaXMRHkYexpPhjW/npqfJBzqaoUpp0Sh6MaA=
 ![NPM](https://nodei.co/npm/iobroker.proxmox.png?downloads=true)
 ![Трэвис-CI](https://api.travis-ci.org/iobroker-community-adapters/ioBroker.proxmox.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.proxmox?branch=master&svg=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.proxmox.svg)
 
-# IoBroker.proxmox =================
-этот адаптер считывает данные с вашей установки Proxmox
+# IoBroker.proxmox
+=================
+
+этот адаптер считывает данные из вашей установки Proxmox
 
 ## Шаги
+## Ошибки
+ Соединение не может быть установлено с помощью специальных символов в пароле
+
 ## Требования
+Нужен как минимум Node 8.X.X
 
 ## Changelog
+### 0.5.0 (17.09.2019)
+* (MeisterTR) add act. disk size form vm and lxc
+* (MeisterTR) add start/stop and shutdown for vm an lxc (nodes must be testet my dev is on the node so i cant test stop node)
 ### 0.3.1 (03.10.2018)
 * (MeisterTR) fixed mem_lev, error at install, catch error no node and vm
 ### 0.3.0 (28.09.2018)

@@ -46,6 +46,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### 2.8.1 (2019-09-08)
+* (René) bug fix: some datapoints were created as number instead of string
+
 ### 2.8.0 (2019-03-19)
 * (René) moon and wind icon set added in admin !!path to wind icons changed!!
 * (René) path to customized icon set added 

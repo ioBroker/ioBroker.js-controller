@@ -33,7 +33,8 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ### 1.0.5 (18.04.2019)
 * (Stübi) Bugfixing 
-* (Stübi) Using new API. With this API livestreaming and snapshots are possible
+* (Stübi) Using new API. With this API livestreaming and snapshots are possible (work still in progress and not supported in this version)
+* (Stübi) Fixed an error with js-controller 2.0. You need at least this version with js-controller 2.0
 
 ### 1.0.4 (17.04.2019)
 * (Stübi) Bugfixing for Ring Pro 

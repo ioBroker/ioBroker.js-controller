@@ -61,7 +61,7 @@
   * [Vis](viz/vis)
     * en:Widgets;de:Widgets;ru:Виджеты;zh-cn:小部件
       * [Allgemeine Einstellungen](viz/widgets)
-      * [Widget Sets](viz/widgetsets)
+      * en:Widget sets;de:Widgetsätze;ru:Наборы виджетов;zh-cn:小工具集
         * [Basic](viz/basic)
         * [Fancyswitch](viz/fancyswitch)
         * [Hqwidgets](viz/hqwidgets)
@@ -69,7 +69,6 @@
         * [Jquimfd](viz/jquimfd)
         * [Metro](viz/metro)
         * [Rgraph](viz/rgraph)
-      * [Widgets Help old](viz/widgethelp_old)
   * [App](viz/app)
 
 * en:Logic & Automation;de:Logik & Automatisierung;ru:Автоматизация;zh-cn:自动化设计
@@ -82,6 +81,7 @@
   * [Best Practices](logic/examples)
 
 * en:Cloud-Services & Apps;de:Cloud-Services & Apps;ru:Облачные сервисы & Apps;zh-cn:云服务
+  * [IoT](cloud/iot)
   * [Introduction](cloud/README)
   * [Visualisations](cloud/viz)
   * [Editors](cloud/editor)
@@ -133,6 +133,7 @@
   * [Adapter reference](dev/adapterref)
   * [Object schema](dev/objectsschema)
   * [State roles](dev/stateroles)
+  * [Aliases](dev/aliases)
   * [Template](dev/adaptertemplate)
   * [Adapter tests](dev/adaptertesting)
   * [Adapter doc template](dev/adapterdoctemplate)

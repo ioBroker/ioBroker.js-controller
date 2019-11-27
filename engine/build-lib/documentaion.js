@@ -72,6 +72,12 @@ async function processContent(filePath) {
                 const words = await translateTitle(line.substring(pos + 1));
                 const link = words.link;
                 if (link) {
+                    // ignore links if en/"link" does not exist
+                    if (!fs.existsSync(path.join(consts.SRC_DOC_DIR, 'en', link))) {
+                        console.error(`DOCUMENT ${link} does not exist, but listed in content.md!`);
+                        return;
+                    }
+                    // check if this file exists in en
                     delete words.link;
                 }
                 const obj = {
@@ -83,6 +89,7 @@ async function processContent(filePath) {
                 levels[level].pages = levels[level].pages || {};
                 levels[level].pages[words.en] = obj;
                 levels[level + 1] = obj;
+
                 if (words.en === 'FAQ') {
                     obj.pages = obj.pages || {};
                     const files = fs.readdirSync(path.join(consts.SRC_DOC_DIR, 'de', 'faq')).filter(name => name.match(/^_\d/)).sort();

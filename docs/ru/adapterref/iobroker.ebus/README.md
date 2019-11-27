@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
+hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -26,63 +26,69 @@ hash: Rbyv/H2zPSeycUuOm08Y3ade5q4BNLoBo+HlUTnDYe8=
 
 текущая поддерживаемая ebusd-версия: 3.3
 
-## Известные вопросы
+## Известные проблемы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или пожелаете новых функций
 
-## Changelog
+## 0.8.2 (2019-11-10)
+* (René) еще несколько сообщений об ошибках в datapoint "error"
+
+## 0.8.1 (2019-10-31)
+* (René) обновление flot до версии 3.0
 
 ### 0.8.0 (2019-02-24)
-* (René) hcmode2 value 5 = EVU Sperrzeit
+* (René) значение hcmode2 5 = EVU Sperrzeit
 
 ### 0.7.0 (2019-01-28)
-* (René) add adjustable timeout
+* (Рене) добавить регулируемое время ожидания
 
 ### 0.6.0 (2019-01-06)
-* (René) support of compact mode
+* (Рене) поддержка компактного режима
 
 ### 0.5.5 (2018-11-04)
-* (René) code clean up
+* (Рене) код очистить
 
 ### 0.5.4
-* (René) arduino support removed
+* (René) удалена поддержка arduino
 
 ### 0.5.3
-* (René) add error information
+* (René) добавить информацию об ошибке
 
 ### 0.5.2
-* (René) bug fix: in vis 1.x some values are not stored
+* (René) исправление ошибки: в vis 1.x некоторые значения не сохраняются
 
 ### 0.5.1
-* (René) bug fix: if nothing to poll then skip telnet connection
+* (René) исправление ошибки: если нечего опрашивать, пропустите соединение telnet
 
 ### 0.5.0
-* (René) write date over TCP to ebusd
+* (Рене) записать дату по TCP в ebusd
 
 ### 0.4.2
-* (René) bug fix for admin V3 
+* (Рене) исправление ошибки для администратора V3
 
-### 0.4.1 
-* (René) logo changed 
+### 0.4.1
+* (Рене) логотип изменен
 
-### 0.4.0 
-* (René) reading data from ebusd 
+### 0.4.0
+* (Рене) чтение данных из ebusd
 
-### 0.3.0 
-* (René) support of ebusd 
-* (René) admin3 support
+### 0.3.0
+* (Рене) поддержка ebusd
+* (René) поддержка admin3
 
 ### 0.2.0
-* (René) add history as JSON for vis
-* (René) add flot based widget to display temperatur, status and power graph
+* (Рене) добавить историю как JSON для виз
+* (René) добавить виджет, основанный на флоте, для отображения графика температуры, состояния и мощности
 
 ### 0.1.0
-* (René) scheduled adapter instead of deamon
+* (Рене) запланированный адаптер вместо deamon
 
 ### 0.0.3
-* (René) UTF8 coding
+* (Рене) кодировка UTF8
 
 ### 0.0.2
-* (René) initial release
+* (Рене) первый выпуск
+
+## Changelog
 
 ## License
 Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>

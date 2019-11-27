@@ -23,6 +23,10 @@ Before using you must first pair the devcies with ioBroker.
 E.g. for thermostats press longer the "boost" button till the countdown will start.
 
 ## Changelog
+### 1.1.2 (2019-08-28)
+* (Arne Stenmanns) user enabled paringmode
+* (bowao) fixes for measured value of the wallthermostat
+
 ### 1.1.1 (2019-07-05)
 * (bowao) fixes and optimizations
 
@@ -35,7 +39,7 @@ E.g. for thermostats press longer the "boost" button till the countdown will sta
 * (bowao) optimize error handling for incomplete packages
 
 ### 1.0.0 (2018-10-20)
-* (Arne Stenmannsr) Wall thermostat was added
+* (Arne Stenmanns) Wall thermostat was added
 
 ### 0.5.3 (2018-03-25)
 * (skraw.iobroker) Optimize logic to send commands and scanning

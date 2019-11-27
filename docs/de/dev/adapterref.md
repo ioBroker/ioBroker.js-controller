@@ -1,50 +1,42 @@
 ---
-title:       "Adapterrefenz"
-lastChanged: "14.09.2018"
-editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/adapterref.md"
+title: Adapterreferenz
+lastChanged: 14.09.2018
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapterref.md
+translatedFrom: en
+translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
+hash: lCaAYyGYT33kci9oYxYkr7SWzn3rr/fyB3M5yi2yLOQ=
 ---
+# Adapterreferenz
+## Datenstruktur - Objekte und Zustände
+Ein Adapter in ioBroker ist ein eigenständiger Prozess, der Objekte und Zustände in einem zentralen Datenspeicher liest und schreibt. Die Datenspeicherung kann als Datenbank (redis / couchDB) oder nur als Textdatei dargestellt werden, der Verbindungsweg ist jedoch immer der gleiche - über die API. Dies bedeutet, dass sich der Entwickler nicht darum kümmern sollte, um welche Datenbank es sich handelt und wie die Daten dort gespeichert und bereitgestellt werden.
 
-# Adapterrefenz
+Es gibt zwei Arten von Daten im Speicher:
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können.
+* Objekte
+* Zustände
 
-@@@ Sub-Struktur: https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
-und IDE, nodejs-versionen, eigener tag, mehr ROllen, Typen sonstwas ... @@@
+Objekte sind statische Beschreibungen einiger Datenpunkte. Zustände sind die dynamischen Werte von Datenpunkten. Normalerweise gibt es also für jeden Zustand ein Objekt mit Beschreibung. (Aber nicht umgekehrt).
 
-## Data structure - Objects and states
+Objekte beschreiben zusätzlich:
 
-An adapter in ioBroker is an independent process, that reads and writes objects and states in a central data storage. Data storage can be represented as database (redis/couchDB) or just text file, but the connection way is always the same - via API. That means, the developer should not care about what the database it is and how the data will be stored and delivered there.
+* Konfiguration von Hosts
+* Beschreibung der Adapter
+* Konfiguration von Adapterinstanzen
+* Inhalt der Konfigurations-HTML-Dateien
+* Inhalt der WEB-Dateien
+* Aufzählungen
+* Benutzer
+* Hierarchien von Zuständen (Kanäle und Geräte)
 
-There are two types of data in the storage:
+Sie können die Objekte und die aktuellen Statuswerte im Admin-Adapter auf der Registerkarte "Objekte" untersuchen.
 
-* Objects
-* States
+Der Name des Objekts besteht aus verschiedenen Teilen. Jeder Teil wird durch "." von einander. Es gibt ein Systemobjekt (Name beginnt mit _ oder "system.") Und Adapterobjekte (Name beginnt mit adapterName).
 
-Objects are static descriptions of some data point. States are the dynamic values of data points. So normally for every state there is a object with description. (But not vice versa).
+Hinweis: hier und hier ist adapterName der Name des Adapters, den ein Entwickler erstellen möchte.
 
-Objects additionally describe:
+Die Zustände können in Kanälen und die Kanäle in Geräten gruppiert werden. Hier ist ein Beispiel für homematische Gruppen und Kanäle:
 
-* configuration of hosts
-* description of adapters
-* configuration of adapter instances
-* content of configuration HTML files
-* content of WEB files
-* enumerations
-* users
-* hierarchies of states (channels and devices)
-
-You can explore the objects and the current state values in admin adapter on the "Objects"-tab.
-
-The name of object consists of different parts. Every part is divided by "." from each other. There is a system objects (name starts with _ or "system.") and adapter objects (name starts with adapterName).
-
-Note: here and forth adapterName is the name of the adapter that a developer wants to create.
-
-The states can be grouped in channels and the channels in devices. Here is a example of Homematic groups and channels:
-
+```
 * hm-rpc.0.IEQ1234567 - device
   * hm-rpc.0.IEQ1234567.0 - channel
     * hm-rpc.0.IEQ1234567.0.INFO - state
@@ -52,91 +44,90 @@ The states can be grouped in channels and the channels in devices. Here is a exa
   * hm-rpc.0.IEQ1234567.0 - channel
     * hm-rpc.0.IEQ1234567.0.STATE - state
     * hm-rpc.0.IEQ1234567.0.BATTERY - state
+```
 
-The state ID must always start with channel name and channel name with device name. E.g. in the state name hm-rpc.0.IEQ1234567.0.INFO above, the part hm-rpc.0.IEQ1234567.0 is the channel name and hm-rpc.0.IEQ1234567 is the device name.
+Die Status-ID muss immer mit dem Kanalnamen und dem Kanalnamen mit dem Gerätenamen beginnen. Z.B. Im obigen Status hm-rpc.0.IEQ1234567.0.INFO ist der Teil hm-rpc.0.IEQ1234567.0 der Kanalname und hm-rpc.0.IEQ1234567 der Gerätename.
 
-It is used to build the coordination of device, channels and states in hierarchy.
+Es wird verwendet, um die Koordination von Geräten, Kanälen und Zuständen in einer Hierarchie aufzubauen.
 
-?> Note: If adapter is not so complex, the devices and even channels can be omitted.
+?> Hinweis: Wenn der Adapter nicht so komplex ist, können die Geräte und sogar Kanäle weggelassen werden.
 
-**Adapter** is just the package of files and placed in node_modules directory. For every adapter the description of this adapter can be found in object "system.adapter.adapterName". It is just the fields "common" and "native" from the io-package.json file. This entry is created automatically when iobroker install adapterName or iobroker add adapterName called. If the adapter was installed with npm install iobroker.adapterName no entry will be created till first instance creation. But it is not so important. The required for "updates" information will be read from io-package.json directly. Full list of common settings for adapter can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
+** Adapter ** ist nur das Paket von Dateien und wird im Verzeichnis node_modules abgelegt. Für jeden Adapter finden Sie die Beschreibung dieses Adapters im Objekt "system.adapter.adapterName". Es sind nur die Felder "common" und "native" aus der Datei io-package.json. Dieser Eintrag wird automatisch erstellt, wenn iobroker install adapterName oder iobroker add adapterName aufruft. Wenn der Adapter mit npm install iobroker.adapterName installiert wurde, wird bis zur ersten Instanzerstellung kein Eintrag erstellt. Aber es ist nicht so wichtig. Die für "Updates" erforderlichen Informationen werden direkt aus io-package.json gelesen. Eine vollständige Liste der allgemeinen Einstellungen für den Adapter finden Sie unter [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
 
-**Instance** is an instance of adapter. Depending on type of adapter more than one instance can be created , but for some adapters there is no use to create more than one instance. E.g. in case of vis or rickshaw only one instance can be created. This behavior is controlled by flags in io-package.json.
+** Instanz ** ist eine Instanz des Adapters. Je nach Adaptertyp kann mehr als eine Instanz erstellt werden. Bei einigen Adaptern kann jedoch nicht mehr als eine Instanz erstellt werden. Z.B. Im Falle von Vis oder Rikscha kann nur eine Instanz erstellt werden. Dieses Verhalten wird durch Flags in io-package.json gesteuert.
 
-For each instance the configuration object can be found in the data storage under "system.adapter.adapterName.X" ID, where X is the adapter instance number. It contains the settings for this instance of the adapter. Normally it consist of "common" and "native" settings. Common settings are:
+Für jede Instanz befindet sich das Konfigurationsobjekt im Datenspeicher unter der ID "system.adapter.adapterName.X", wobei X die Nummer der Adapterinstanz ist. Es enthält die Einstellungen für diese Instanz des Adapters. Normalerweise besteht es aus "allgemeinen" und "nativen" Einstellungen. Allgemeine Einstellungen sind:
 
-* `enabled`: true/false;
-* `host`: host name where this instance must run;
+* `enabled`: wahr / falsch;
+* `host`: Hostname, unter dem diese Instanz ausgeführt werden muss;
 * `mode`: none, daemon, subscribe, schedule, once;
 
-Description can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance).
+Beschreibung kann [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance) gefunden werden.
 
-`Native` settings consist of specific configurations for this adapter, e.g.: IP address of device, device settings and so on.
+`Native` Einstellungen bestehen aus spezifischen Konfigurationen für diesen Adapter, z. B .: IP-Adresse des Geräts, Geräteeinstellungen usw.
 
-?> Note: Instances can run on different hosts (in multi-hosts systems) and the adapters can have different version on different hosts.
+?> Hinweis: Instanzen können auf verschiedenen Hosts (in Systemen mit mehreren Hosts) ausgeführt werden und die Adapter können auf verschiedenen Hosts unterschiedliche Versionen haben.
 
-All adapter instance object IDs starts with adapterName.X, where X is number of adapter instance.
+Alle Objekt-IDs der Adapterinstanz beginnen mit adapterName.X, wobei X die Nummer der Adapterinstanz ist.
 
-Objects have different types for different purposes.
+Objekte haben unterschiedliche Typen für unterschiedliche Zwecke.
 
-For every adapter (not the instance) the following objects will be created automatically:
+Für jeden Adapter (nicht die Instanz) werden die folgenden Objekte automatisch erstellt:
 
-* `system.adapter.adapterName`: Description of adapter (like name, version number, ...)
-* `adapterName`: Object that consists of HTML/JS/CSS files from "www" directory of adapter. This object will be created only if "www" directory is found in adapter package.
-* `adapterName.admin`: Object that consists of HTML/JS/CSS files from "admin" directory of adapter package.
+* `system.adapter.adapterName`: Beschreibung des Adapters (wie Name, Versionsnummer, ...)
+* `adapterName`: Objekt, das aus HTML / JS / CSS-Dateien aus dem Verzeichnis" www "des Adapters besteht. Dieses Objekt wird nur erstellt, wenn das Verzeichnis "www" im Adapterpaket gefunden wird.
+* `adapterName.admin`: Objekt, das aus HTML / JS / CSS-Dateien aus dem" admin "-Verzeichnis des Adapterpakets besteht.
 
-For every adapter instance 'X', the following objects will be created automatically:
+Für jede Adapterinstanz 'X' werden die folgenden Objekte automatisch erstellt:
 
-* `system.adapter.adapterName.X`: configuration of adapter instance
-* `system.adapter.adapterName.X.alive`: indication if instance alive (send messages every 30 seconds)
-* `system.adapter.adapterName.X.connected`: indication if instance is connected to data storage, because it can be connected, but because of deadlock can not send alive messages.
-* `system.adapter.adapterName.X.memHeapTotal`: memory usage
-* `system.adapter.adapterName.X.memHeapUsed`: memory usage
-* `system.adapter.adapterName.X.memRss`: memory usage
-* `system.adapter.adapterName.X.uptime`: How many seconds adapter runs.
+* `system.adapter.adapterName.X`: Konfiguration der Adapterinstanz
+* `system.adapter.adapterName.X.alive`: Angabe, ob die Instanz aktiv ist (Nachrichten alle 30 Sekunden senden)
+* `system.adapter.adapterName.X.connected`: Gibt an, ob die Instanz mit dem Datenspeicher verbunden ist, da sie verbunden werden kann, aber aufgrund eines Deadlocks keine aktiven Nachrichten senden kann.
+* `system.adapter.adapterName.X.memHeapTotal`: Speichernutzung
+* `system.adapter.adapterName.X.memHeapUsed`: Speichernutzung
+* `system.adapter.adapterName.X.memRss`: Speichernutzung
+* `system.adapter.adapterName.X.uptime`: Wie viele Sekunden der Adapter ausgeführt wird.
 
-Explanation of memory states can be found [here](http://stackoverflow.com/questions/12023359/what-do-the-return-values-of-node-js-process-memoryusage-stand-for).
+Erklärung der Speicherzustände finden Sie in [Hier](http://stackoverflow.com/questions/12023359/what-do-the-return-values-of-node-js-process-memoryusage-stand-for).
 
-If adapter has mode 'none' or 'once', then alive, uptime, ... objects will not be created.
-Directory structure of adapter
+Wenn der Adapter den Modus 'Keine' oder 'Einmal' hat, werden keine Objekte mit aktiver Betriebszeit erstellt.
+Verzeichnisstruktur des Adapters
 
-Adapter package must have some mandatory directories and files:
+Das Adapterpaket muss einige obligatorische Verzeichnisse und Dateien enthalten:
 
-* admin (mandatory directory)
-  * index.html
-  * xxx.png - optional, better if it has name adapterName.png (any image formats are supported: jpeg, jpg, svg, bmp, ...)
-* www - (optional directory)
-* lib - (mandatory directory, because of utils.js)
-  * utils.js
-* package.json - mandatory
-* io-package.json - mandatory
-* main.js - mandatory (can be adapterName.js)
+* `admin` (Pflichtverzeichnis)
+  * `index.html`
+  * `xxx.png` - optional, besser mit dem Namen` adapterName.png` (alle Bildformate werden unterstützt: jpeg, jpg, svg, bmp, ...)
+* `www` - (optionales Verzeichnis)
+* `lib` - (obligatorisches Verzeichnis, wegen` utils.js`)
+  * `utils.js`
+* `package.json` - obligatorisch
+* `io-package.json` - obligatorisch
+* `main.js` - obligatorisch (kann` adapterName.js` sein)
 
-Note: lib/utils.js is a common file for all adapters, used to detect the position of js-controller and accordingly path to iobroker.js-controller/lib/adapter.js. Most actual utils.js can be downloaded here. Do not change this file.
+Hinweis: lib / utils.js ist eine gemeinsame Datei für alle Adapter, mit der die Position von js-controller und der entsprechende Pfad zu iobroker.js-controller / lib / adapter.js ermittelt werden. Die meisten aktuellen utils.js können hier heruntergeladen werden. Ändern Sie diese Datei nicht.
 
-## File naming
+## Dateiname
+Der Adapter muss einer Namenskonvention folgen, damit er vom ioBroker-Controller akzeptiert und gestartet werden kann.
 
-Adapter must must follow some naming convention to be accepted and started by ioBroker controller.
+* Auf Github (oder anderswo) muss es den Namen *io **B** roker.adapterName* haben.
+* Wenn der Adapter auf npm verfügbar sein soll, muss er den Namen iobroker.adapterName haben, da npm keine Großbuchstaben in Paketnamen zulässt. Es kann in package.json definiert werden
+* GUI-HTML-Datei für die Konfiguration des Adapters muss den Namen admin / index.html haben. Es können mehr Dateien im "admin" -Verzeichnis sein, aber index.html muss existieren.
+* Die Startdatei des Adapters muss den Namen main.js oder adapterName.js haben.
+* Der Name des Adapters muss eindeutig sein, in Kleinbuchstaben, ohne Sonderzeichen und ohne Leerzeichen. "-", "_" sind im Namen des Adapters erlaubt.
 
-* On github (or somewhere else) it must have name *io**B**roker.adapterName*.
-* If the adapter will be available on npm it must have name iobroker.adapterName, because npm doe snot allow capital letters in package names. It can be defined in in package.json
-* GUI html file for configuration of adapter must have name admin/index.html. It can be more files in the "admin" directory, but index.html must exist.
-* The start file of adapter must have name main.js or adapterName.js.
-* Name of adapter must be unique, lowercase, with no special characters and without spaces. "-", "_" are allowed in the name of adapter.
+## Struktur von io-package.json
+io-package.json wird von js-controller verwendet, um Informationen zum Adapter anzuzeigen und zu wissen, wie er zu behandeln ist. Eine vollständige Beschreibung aller Felder im gemeinsamen Teil finden Sie hier
 
-## Structure of io-package.json
+io-package.json wird von "admin" gelesen, um die Online-Version des Adapters herauszufinden.
 
-io-package.json is used by js-controller to show information about adapter and to know how to treat it. Complete description of all fields in common part can be found here
+### Gemeinsame Felder
+Die wichtigsten gemeinsamen Bereiche sind:
 
-io-package.json will be read by "admin" to find out the online version of adapter.
-Common fields
-
-Most important fields in common are:
-
-* name: mandatory. Name of adapter without "ioBroker.", like adapterName and not "ioBroker.adapterName"
-* version: mandatory. Must be same as in package.json.
-* title: mandatory. Short name of adapter, like "Adapter name"
-* desc: mandatory. Description of adapter. It can be a string like, "This adapter does this and that" or can be an object like:
+* `name`: obligatorisch. Name des Adapters ohne "ioBroker.", Wie "adapterName" und nicht "ioBroker.adapterName"
+* `version`: obligatorisch Muss mit package.json identisch sein.
+* `title`: Pflichtfeld. Kurzname des Adapters, wie "Adaptername"
+* `desc`: obligatorisch. Beschreibung des Adapters. Es kann eine Zeichenfolge wie "Dieser Adapter erledigt dies und das" oder ein Objekt wie:
 
 ```
 {
@@ -146,36 +137,36 @@ Most important fields in common are:
 }
 ```
 
-If no entry exists for the current language, the description in english will be shown.
+Wenn für die aktuelle Sprache kein Eintrag vorhanden ist, wird die Beschreibung in Englisch angezeigt.
 
-* platform: mandatory. Actually only "Javascript/Node.js" is supported.
-* mode: mandatory. The mode how the adapter will be started.
-* enabled: optional. When set to true, the instance will be activated after addition.
-* license": license name under what the adapter is licensed;
-* loglevel": initial log level that will be set after creation of instance. Can be "debug", "info", "warn" or "error"
-* readme": link to readme page in internet. Used by admin adapter to show the link if "?" button clicked.
-* icon": icon name (not the path) of adapter icon. This icon must be in admin directory of adapter.
-* extIcon: icon path in internet to show the icon for adapter if the adapter is not yet installed.
-* keywords: key words as array to enable search in admin adapter.
-* localLink: link to adapter "www" files (or adapter server). "http://192.168.0.100"
-* type: following types are possible: hardware, social, storage, visual, api, scripting, weather, other, connection.
-* messagebox: optional. Must be set to true if adapter should receive system messages.
+* `Plattform`: obligatorisch. Momentan wird nur `Javascript / Node.js` unterstützt.
+* `mode`: obligatorisch. Der Modus, in dem der Adapter gestartet wird.
+* `enabled`: optional. Bei true wird die Instanz nach dem Hinzufügen aktiviert.
+* `license`: Lizenzname unter dem der Adapter lizenziert ist;
+* `loglevel`: Die anfängliche Protokollebene, die nach dem Erstellen der Instanz festgelegt wird. Kann `debug`,` info`, `warn` oder` error` sein
+* `Liesmich: Link zur Liesmich-Seite im Internet. Wird vom Administratoradapter verwendet, um den Link anzuzeigen, wenn "?" Schaltfläche angeklickt.
+* `icon`: Symbolname (nicht der Pfad) des Adaptersymbols. Dieses Symbol muss sich im Administratorverzeichnis des Adapters befinden.
+* `extIcon`: Symbolpfad im Internet, um das Symbol für den Adapter anzuzeigen, wenn der Adapter noch nicht installiert ist.
+* `keywords`: Schlüsselwörter als Array, um die Suche im Admin-Adapter zu ermöglichen.
+* `localLink`: Link zu Adapter" www "-Dateien (oder Adapterserver). http://192.168.0.100
+* `Typ`: Folgende Typen sind möglich:` Hardware, Social, Storage, Visual, API, Scripting, Wetter, Sonstiges, Verbindung`.
+* `messagebox`: optional. Muss auf true gesetzt werden, wenn der Adapter Systemmeldungen empfangen soll.
 
-Note: localLink can have special keys, that will be replaced by real values.
+Hinweis: localLink kann spezielle Schlüssel haben, die durch echte Werte ersetzt werden.
 
-* %ip%: will be replaced with IP address defined in first "web" instance.
-* %field%, where field is attribute from "native" part of configuration of adapter instance.
+* `% ip%`: wird durch die in der ersten "Web" -Instanz definierte IP-Adresse ersetzt.
+* `% field%`, wobei field ein Attribut aus dem `nativen` Teil der Konfiguration der Adapterinstanz ist.
 
-E.g. "http://%ip%:%port%" will be shown as "http://192.168.0.1:8080", where "192.168.0.1" is IP address from "web" adapter and 8080 is value from "system.adapter.adapterName.X => native.port".
-Object fields
+Z.B. `http://%ip%:%port%` werden als "http://192.168.0.1:8080" angezeigt, wobei "192.168.0.1" die IP-Adresse vom "Web" -Adapter und 8080 der Wert von `system.adapter.adapterName.X => native.port` ist.
 
-objects - static objects for all instances of adapter (xxx.object) By installation of adapter (not the instance creation) some predefined objects (normally that describe something) can be created automatically. These objects must not depend on some specific instance and are common for all instances of this adapter. For example hm-rpc adapter has the structure description of all HomeMatic devices.
+### Objektfelder
+objects - statische Objekte für alle Instanzen des Adapters (xxx.object) Durch die Installation des Adapters (nicht die Instanzerstellung) können einige vordefinierte Objekte (normalerweise, die etwas beschreiben) automatisch erstellt werden. Diese Objekte müssen nicht von einer bestimmten Instanz abhängen und gelten für alle Instanzen dieses Adapters. Zum Beispiel hat der hm-rpc-Adapter die Strukturbeschreibung aller HomeMatic-Geräte.
 
-Additionally the new views can be defined. In SQL they are called "stored procedure" and in couchDB - views.
+Zusätzlich können die neuen Ansichten definiert werden. In SQL heißen sie "Stored Procedure" und in couchDB - Views.
 
-Note: do not mix with "vis" views.
+Hinweis: Nicht mit `vis`-Ansichten mischen.
 
-For view definitions the javascript language is used. Here is the sample:
+Für Ansichtsdefinitionen wird die Javascript-Sprache verwendet. Hier ist das Beispiel:
 
 ```
 {
@@ -192,9 +183,10 @@ For view definitions the javascript language is used. Here is the sample:
 }
 ```
 
-Here are two views defined for hm-rpc adapter: "listDevices" and "paramsetDescription". They returns the set of filtered by view condition objects from data store. It can effective (if CouchDB used) request the specified list of objects.
+Hier sind zwei Ansichten für den hm-rpc-Adapter definiert: `listDevices` und `paramsetDescription`.
+Sie geben die Menge der nach Ansichtsbedingungen gefilterten Objekte aus dem Datenspeicher zurück. Es kann effektiv (wenn CouchDB verwendet wird) die angegebene Liste von Objekten anfordern.
 
-To use view:
+So verwenden Sie die Ansicht:
 
 ```
 adapter.objects.getObjectView('hm-rpc', 'listDevices',
@@ -214,17 +206,16 @@ adapter.objects.getObjectView('hm-rpc', 'listDevices',
 );
 ```
 
-Usage of startkey and endkey can be found on the same page too.
+Die Verwendung von `startkey` und `endkey` finden Sie ebenfalls auf derselben Seite.
 
-Note: usage of views is optional and demands from developer basic knowledge level about CouchDB.
+Hinweis: Die Verwendung von Ansichten ist optional und erfordert vom Entwickler grundlegende Kenntnisse über CouchDB.
 
-### Instance object fields
+### Instanzobjektfelder
+Einige spezifische Objekte oder Objekte mit Typzuständen können in `instanceObjects` von `io-package.json` definiert werden.
 
-Some specific objects or objects with type states can be defined in instanceObjects of io-package.json.
+Für jede erstellte Instanz werden alle Einträge aus dem Feld `instanceObjects` erstellt.
 
-For every created instance all entries from instanceObjects field will be created.
-
-For instance adapter hm-rpc creates state "updated" for every instance to give a signal to other adapter, that some new devices are appeared in the data store and that they must be processed by hm-rega.
+Zum Beispiel erzeugt der Adapter `hm-rpc` den Status `updated` für jede Instanz, um einem anderen Adapter zu signalisieren, dass einige neue Geräte im Datenspeicher vorhanden sind und dass sie von `hm-rega` verarbeitet werden müssen.
 
 ```
 "instanceObjects": [
@@ -241,25 +232,25 @@ For instance adapter hm-rpc creates state "updated" for every instance to give a
 ]
 ```
 
-There is no need to give the full path of object and it cannot be done, because adapter instance is unknown. You can use special word "%INSTANCE%" in common.name to show the it in the name of object. For instance:
+Es ist nicht erforderlich, den vollständigen Pfad des Objekts anzugeben, und dies ist nicht möglich, da die Adapterinstanz unbekannt ist.
+Sie können das spezielle Wort `%INSTANCE%` in `common.name` verwenden, um es im Namen des Objekts anzuzeigen. Zum Beispiel:
 
 ```
 "name": "Some new devices added in hm-rpc.%INSTANCE%",
 ```
 
-Will be expanded to
+Wird erweitert um
 
 ```
 "name": "Some new devices added in hm-rpc.0,
 ```
 
-by creation of first instance.
+durch die Erstellung der ersten Instanz.
 
-### package.json
+### Package.json
+package.json ist die Standardbeschreibungsdatei für npm-Pakete. Die vollständige Beschreibung finden Sie unter https://docs.npmjs.com/files/package.json.
 
-package.json is the npm packet standart description file and the full description can be found under https://docs.npmjs.com/files/package.json.
-
-Short structure of package.json:
+Kurzstruktur von `package.json`:
 
 ```
 {
@@ -297,78 +288,80 @@ Short structure of package.json:
 }
 ```
 
-!> All fields are mandatory. devDependencies should be inside too to enable the grunt tasks.
+!> Alle Felder sind Pflichtfelder. `devDependencies` sollten auch drinnen sein, um die Grunzaufgaben zu ermöglichen.
 
-### Deploying
-
-It is suggested to have the code on github. After the code is stable and lets to install adapter you can share you adapter to other user by asking them to install adapter as follow:
+### Bereitstellen
+Es wird empfohlen, den Code auf Github zu haben. Nachdem der Code stabil ist und Sie den Adapter installieren können, können Sie den Adapter für andere Benutzer freigeben, indem Sie sie auffordern, den Adapter wie folgt zu installieren:
 
 ```
 npm install https://github.com/yourName/iobroker.adapterName/tarball/master/
 ```
 
-If everything is OK and you have got positive feedback from users you can publish adapter on npm. It would be good if before publishing you will create realease on github.
+Wenn alles in Ordnung ist und Sie positives Feedback von Benutzern erhalten haben, können Sie den Adapter auf npm veröffentlichen.
+Es wäre gut, wenn Sie vor der Veröffentlichung eine Veröffentlichung auf Github erstellen würden.
 
-Publishing can be done with following command:
+Das Veröffentlichen kann mit dem folgenden Befehl erfolgen:
 
 ```
 npm publish
 ```
 
-Call it in the adapter directory. Be sure, that you deleted all other files except required (e.g. .idea) or add them to ".gitignore" file.
+Rufen Sie es im Adapterverzeichnis auf. Stellen Sie sicher, dass Sie alle anderen Dateien mit Ausnahme der erforderlichen (z. B. `.idea`) gelöscht oder zur `.gitignore`-Datei hinzugefügt haben.
 
-Of course you must first create the account on npm
+Natürlich müssen Sie zuerst den Account auf npm erstellen
 
-?> Note: you cannot publish twice the code with the same version. Increase version in package.json and io-package.json before publishing.
+?> Hinweis: Sie können den Code nicht zweimal mit derselben Version veröffentlichen. Erhöhen Sie die Version in `package.json` und `io-package.json` vor der Veröffentlichung.
 
-After the adapter is tested and other users find it useful, it can be taken into common repository, so it can be installed via "admin" adapter.
+Nachdem der Adapter getestet wurde und andere Benutzer ihn nützlich finden, kann er in ein gemeinsames Repository übernommen und über den Adapter `admin` installiert werden.
 
-## How to create own adapter
+## Wie erstelle ich einen eigenen Adapter?
+Unter https://github.com/ioBroker/ioBroker.template finden Sie eine Vorlage für Ihren eigenen Adapter.
 
-Please check https://github.com/ioBroker/ioBroker.template for a template of your own adapter.
+Wenn Sie ein Widget oder einen Adapter mit einem Widget erstellen möchten, suchen Sie unter [ioBroker.vis-template] (https://github.com/ioBroker/ioBroker.vis-template) nach einer Vorlage für Ihren eigenen Adapter.
 
-If you want to create a widget or an adapter with a widget please check [ioBroker.vis-template]https://github.com/ioBroker/ioBroker.vis-template) for a template of your own adapter.
-
-### Structure of main.js
-
+### Struktur von main.js
 ```
 var utils = require(__dirname + '/lib/utils'); // Get common adapter utils - mandatory
 ```
 
-This line loads module lib/utils.js. It has common for all adapters function to find the root of iobroker.js-controller. Because adapter can be installed in three different paths:
+Diese Zeile lädt das Modul `lib/utils.js`. Es ist allen Adapterfunktionen gemeinsam, die Wurzel von `iobroker.js-controller` zu finden.
+Da der Adapter in drei verschiedenen Pfaden installiert werden kann:
 
-* .../iobroker/node_modules/iobroker.adapterName - this is standard path and suggested to use
-* .../iobroker.js-controller/node_modules/iobroker.adapterName - used by debugging
-* .../iobroker.js-controller/adapter/adapterName - old style (deprecated)
+* `... / iobroker / node_modules / iobroker.adapterName` - Dies ist ein Standardpfad, der empfohlen wird
+* `... / iobroker.js-controller / node_modules / iobroker.adapterName` - Wird beim Debuggen verwendet
+* `... / iobroker.js-controller / adapter / adapterName` - alter Stil (veraltet)
 
-utils.js do nothing except looks for iobroker.js-controller/lib/adapter.js file and loads it.
+utils.js sucht nur nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
 
 ```
 var adapter = utils.adapter('adapterName'); // - mandatory
 ```
 
-This line creates the object "Adapter" with name "adapterName". It loads all configuration for adapterName.X instance where X is the instance number of adapter.
+Diese Zeile erzeugt das Objekt `adapter` mit dem Namen `adapterName`. Es wird die gesamte Konfiguration für die `adapterName.X`-Instanz geladen, wobei X die Instanznummer des Adapters ist.
 
-js-controller starts adapter as fork of own process with two parameters: instance and log level; like:
+`js-controller` startet einen Adapter als Fork des eigenen Prozesses mit zwei Parametern: Instanz und Log-Level; mögen:
 
 ```
 child_process.fork('pathToAdapter/main.js', '0 info');
 ```
 
-It is all will be automatically processed in adapter.js and developer of the adapter must not care about it.
+Es wird alles automatisch in `adapter.js` verarbeitet und Entwickler des Adapters müssen sich nicht darum kümmern.
 
-Adapter supports 3 other start flags:
+Adapter unterstützt 3 weitere Startflags:
 
-* --install - Starts adapter even if no configuration exists. Used by adapter to execute some install procedure by installation of adapter.
-* --force - Starts adapter even if it is disabled in configuration
-* --logs - Show logs in the console, if they shown only in log table.
+* `--install` - Startet den Adapter, auch wenn keine Konfiguration vorhanden ist. Wird vom Adapter verwendet, um eine Installationsprozedur durch Installation des Adapters auszuführen.
+* `--force` - Startet den Adapter, auch wenn er in der Konfiguration deaktiviert ist
+* `--logs` - Zeigt Protokolle in der Konsole an, wenn sie nur in der Protokolltabelle angezeigt werden.
 
+```
 var myPacket1= require('myPacket1'); // add own module
+```
 
-Then you can load all other modules that required in adapter, like 'fs', 'require' and so on. Just do not forget to declare them in package.json.
-Options of adapter
+Dann können Sie alle anderen Module, die im Adapter benötigt werden, wie `fs`, `require` usw. laden.
+Vergessen Sie nur nicht, sie in `package.json` zu deklarieren.
 
-You can create adapter object with just by name, like utils.adapter('adapterName') or with additional parameters, like:
+### Optionen des Adapters
+Sie können Adapterobjekte nur mit Namen wie `utils.adapter('adapterName')` oder mit zusätzlichen Parametern wie:
 
 ```
 var adapter = utils.adapter({
@@ -391,7 +384,7 @@ var adapter = utils.adapter({
 });
 ```
 
-All handlers can be simulated by events (see below), like:
+Alle Handler können durch Ereignisse (siehe unten) simuliert werden, wie:
 
 ```
 adapter.on('ready', function () {
@@ -399,32 +392,32 @@ adapter.on('ready', function () {
 });
 ```
 
-### Attributes of adapter object
+### Attribute des Adapterobjekts
+Wie Sie das Objekt `adapter` mit angelegt haben
 
-As you created "Adapter" object with
-
+```
 var adapter = utils.adapter('adapterName');
+```
 
-following attributes will be created in this object instance:
+In dieser Objektinstanz werden folgende Attribute angelegt:
 
-* name - Name of adapter, e.g "adapterName"
-* host - Host name, where the adapter instance runs
-* instance - instance number of this adapter instance
-* namespace - Namespace of adapter objects, e.g "adapterName.0"
-* config - native part of adapter settings
-* common - common part of adapter settings
-* systemConfig - content of iobroker-data/iobroker.json (only if options.systemConfig = true)
-* adapterDir - path to the adapter folder
-* ioPack - content of io-package.json
-* pack - content of package.json
-* log - logger object
-* version - adapter version
-* states - (experts only)
-* objects - (experts only)
-* connected - if adapter connected to host
+* `name` - Name des Adapters, z. B.` adapterName`
+* `host` - Hostname, auf dem die Adapterinstanz ausgeführt wird
+* `instance` - Instanznummer dieser Adapterinstanz
+* `Namespace` - Namespace von Adapterobjekten, z. B.` adapterName.0`
+* `config` - nativer Teil der Adaptereinstellungen
+* `common` - gemeinsamer Teil der Adaptereinstellungen
+* `systemConfig` - Inhalt von` iobroker-data / iobroker.json` (nur wenn `options.systemConfig = true`)
+* `adapterDir` - Pfad zum Adapterordner
+* `ioPack` - Inhalt von` io-package.json`
+* `pack` - Inhalt von` package.json`
+* `log` - Loggerobjekt
+* `version` - Adapterversion
+* "Staaten" - (nur für Experten)
+* `Objekte` - (nur für Experten)
+* `connected` - wenn der Adapter mit dem Host verbunden ist
 
-#### Most important events
-
+#### Wichtigste Ereignisse
 ```
 adapter.on('objectChange', function (id, obj) {
     adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
@@ -442,7 +435,7 @@ adapter.on('stateChange', function (id, state) {
 });
 ```
 
-!> *Entry point*. Make all initialisations in main, because before "ready" there is no configuration.
+!> *Einstiegspunkt* Nehmen Sie alle Initialisierungen in main vor, da vor "ready" keine Konfiguration vorhanden ist.
 
 ```
 adapter.on('ready', function () {
@@ -450,9 +443,8 @@ adapter.on('ready', function () {
 });
 ```
 
-#### Logging
-
-It is very important to have the ability to log the events for debug and controlling purposes. Following functions can be used to log the events:
+#### Protokollierung
+Es ist sehr wichtig, dass die Ereignisse zu Debug- und Steuerungszwecken protokolliert werden können. Folgende Funktionen können zur Protokollierung der Ereignisse verwendet werden:
 
 ```
 adapter.log.debug("debug message"); // log message with debug level
@@ -461,216 +453,238 @@ adapter.log.warn("warning");        // log message with info warn
 adapter.log.error("error");         // log message with info error
 ```
 
-There is no need to indicate the origin or time of the message. These attributes will be added automatically, e.g.:
+Es ist nicht erforderlich, den Ursprung oder die Uhrzeit der Nachricht anzugeben. Diese Attribute werden automatisch hinzugefügt, z.
 
 ```
 admin-0 2015-07-10 17:35:52 info successful connection to socket.io from xx.yy.17.17
 ```
 
-Of course console.log, console.debug or console.error could be used too, but these messages will be visible only if adapter started manually in console or programming IDE.
+Natürlich können auch `console.log`, `console.debug` oder `console.error` verwendet werden, aber diese Meldungen werden nur angezeigt, wenn der Adapter manuell in der Konsole oder in der Programmier-IDE gestartet wurde.
 
-#### Instance configuration
+#### Instanzkonfiguration
+Es gibt ein Attribut des Adapterobjekts zum Lesen der Konfiguration der Instanz: `adapter.config`.
+Dieses Objekt besteht aus `native` Teilobjekt `system.adapter.adapterName.X`. Z.B. wenn `io-package.json` so aussieht:
 
-There is an attribute of adapter object to read the configuration of the instance: "adapter.config". This object consist of "native" part of object "system.adapter.adapterName.X". E.g. if io-package.json looks like:
-
+```
 {
-* "common": {
-* * "name": "adapterName"
-* },
-* "native": {
-* * "location": "Stuttgart",
-* * "language": ""
-* }
+   "common": {
+       "name": "adapterName"
+   },
+   "native": {
+       "location": "Stuttgart",
+       "language": ""
+   }
 }
+```
 
-So the adapter.config is equal to:
+Der `adapter.config` ist also gleich:
 
+```
 {
-* "location": "Stuttgart",
-* "language": ""
+   "location": "Stuttgart",
+   "language": ""
 }
+```
 
-and has the data entered by user in configuration dialog. You can access the **common **part of instance configuration with attribute "common" of object "adapter". E.g. for the shown io-package.json "adapter.common" will be:
+und hat die vom Benutzer im Konfigurationsdialog eingegebenen Daten. Sie können auf den **gemeinsamen** Teil der Instanzkonfiguration mit dem Attribut "common" des Objekts "adapter" zugreifen. Z.B. Für die angezeigte io-package.json "adapter.common" lautet:
 
+```
 {
    "name": "adapterName"
 }
+```
 
-To access the ioBroker configuration (stored in file iobroker-data/iobroker.json) set the adapter option systemConfig to true.
+Um auf die ioBroker-Konfiguration zuzugreifen (gespeichert in der Datei `iobroker-data/iobroker.json`), setzen Sie die Adapteroption §§SSS_1§ auf true.
 
+```
 var adapter = utils.adapter({
-* name:* *   'adapterName',  // adapter name
-* systemConfig:  true* * * // load ioBroker configuration into systemConfig
+    name: 'adapterName',  // adapter name
+    systemConfig:  true // load ioBroker configuration into systemConfig
 });
+```
 
-To get the global date format the option "useFormatDate" must be set to true:
+Um das globale Datumsformat zu erhalten, muss die Option `useFormatDate` auf true gesetzt sein:
 
+```
 var adapter = utils.adapter({
-* name:* *   'adapterName',  // adapter name
-* useFormatDate:  true* *    // load from system.config the global date format
+    name: 'adapterName',  // adapter name
+    useFormatDate:  true  // load from system.config the global date format
 });
+```
 
-Date format will be available under adapter.dateFormat.
+Das Datumsformat ist unter adapter.dateFormat verfügbar.
 
-All other configurations can be read manually with getForeignObject function.
-How to read state
+Alle anderen Konfigurationen können manuell mit der Funktion `getForeignObject` gelesen werden.
+Wie man den Zustand liest
 
-There are two modes to read states in ioBroker adapter:
+Es gibt zwei Modi zum Lesen von Status im ioBroker-Adapter:
 
-* event subscription (suggested)
-* polling
+* Event-Abo (empfohlen)
+* Umfrage
 
-To subscribe on own events the following command must be called:
+Um eigene Events zu abonnieren, muss der folgende Befehl aufgerufen werden:
 
-adapter.subscribeStates('*'); // subscribe on all variables of this adapter instance with pattern "adapterName.X.*"
-adapter.subscribeStates('memory*'); // subscribe on all variables of this adapter instance with pattern "adapterName.X.memory*"
+`adapter.subscribeStates('*');` // alle Variablen dieser Adapterinstanz mit Muster `adapterName.X.*` abonnieren
 
-To subscribe on other events:
+`adapter.subscribeStates('memory*');` // alle Variablen dieser Adapterinstanz mit Muster `adapterName.X.memory*` abonnieren
 
-adapter.subscribeForeignStates('yr.*.forecast.html'); // subscribe on variable "forecast.html" of all adapter instances "yr".
+Andere Veranstaltungen abonnieren:
 
-Wildcard "*" can be used in both functions.
+`adapter.subscribeForeignStates('yr.*.forecast.html');` // Subskribieren auf Variable `forecast.html` aller Adapterinstanzen `yr`.
 
-After that you will get the event "stateChange" and can do something with this value. After subscription you will not get the actual state, because events will come only on change. To get the initial state you should perform "poll" one time at start (normally in "ready" event).
+Der Platzhalter "*" kann in beiden Funktionen verwendet werden.
 
-Polling To read own states at start or to read the values with interval use function adapter.getState, like here:
+Danach erhalten Sie das Ereignis `stateChange` und können mit diesem Wert etwas anfangen.
+Nach dem Abonnement erhalten Sie nicht den aktuellen Status, da Ereignisse nur bei Änderung eintreten.
+Um den Ausgangszustand zu erhalten, sollten Sie beim Start einmal "poll" ausführen (normalerweise bei "ready" -Ereignis).
 
+Polling Um eigene Zustände beim Start zu lesen oder die Werte mit Intervall zu lesen, verwenden Sie die Funktion `adapter.getState`, wie hier:
+
+```
 adapter.getState('myState', function (err, state) {
-*
-* adapter.log.info(
-* *   'State ' + adapter.namespace + '.myState -' +
-* *   '  Value: '* * + state.val +
-* *   ', ack: '* *   + state.ack +
-* *   ', time stamp: '   + state.ts  +
-* *   ', last changed: ' + state.lc
-* );
 
+  adapter.log.info(
+      'State ' + adapter.namespace + '.myState -' +
+      '  Value: '    + state.val +
+      ', ack: '      + state.ack +
+      ', time stamp: '   + state.ts  +
+      ', last changed: ' + state.lc
+  );
 });
+```
 
-Pay attention, that result will be returned asynchronous.
+Beachten Sie, dass das Ergebnis asynchron zurückgegeben wird.
 
-To read states of other adapters you should use adapter.getForeignState function. No wildcards are supported.
+Um den Status anderer Adapter zu lesen, sollten Sie die Funktion `adapter.getForeignState` verwenden. Es werden keine Platzhalter unterstützt.
 
-#### Commands and Statuses
+#### Befehle und Status
+Wir sollten zwischen Befehlen und Zuständen unterscheiden, wenn wir über Zustände sprechen. "Command" hat ein "ack" -Flag als "false" und wird vom Benutzer (über vis, Javascript-Adapter, Admin) gesendet, um die Geräte oder einen bestimmten Adapter zu steuern. Normalerweise sind Adapter (z. B. Homematic) für alle eigenen Änderungen angemeldet, und wenn sich ein Status mit ack = false ändert, versuchen sie, diesen Befehl auszuführen (z. B. Licht an).
 
-We should distinguish between commands and statuses, when we are talking about states. "Command" has ack flag as false and will be sent by user (over vis, javascript-adapter, admin) to control the devices or specific adapter. Normally adapters (e.g. homematic) are subscribed on all own changes and if some state changes with ack=false, they will try to execute this command (e.g. light on).
+"Status" hat das Kennzeichen "`ack`" true "und zeigt an, dass es sich um ein Gerät oder einen Dienst handelt.
+Z.B. Wenn der Wetteradapter eine neue Wettervorhersage erhalten hat, wird diese mit `ack=true` veröffentlicht, oder wenn das Homematic Thermometer eine neue Temperatur misst, wird diese ebenfalls mit `ack=true` veröffentlicht.
+Auch wenn der Benutzer das Licht physisch einschaltet, wird der neue Status mit `ack=true` veröffentlicht.
 
-"Status" has "ack" flag as true and indicate that it is from device or service. E.g. if the weather adapter got new weather forecast, it will be published with ack=true or if homematic thermometer measures new temperature, it will be published with ack=true too. Even if the user physically will switch the light on, the new state will be published with ack=true.
+`Ack=false` werden normalerweise durch die Ausführung nach der Antwort vom Gerät überschrieben.
 
-Ack=false will be normally overwritten by execution after the response from device.
+Z.B. wenn der Benutzer in `vis` die Taste gedrückt und den Befehl `hm-rpc.0.kitchen.light=ON` gesendet hat.
+Der Socket-io-Adapter sendet den neuen Status mit `kitchen.light = {val: 1, ack: false}` an die `hm-rpc.0`-Instanz.
 
-E.g. if the user in "vis" has pressed the button and sent command "hm-rpc.0.kitchen.light"=ON. The Socketio adapter will send to the hm-rpc.0 instance the new state with "kitchen.light" = {val: 1, ack: false}.
+Der Homematic-Adapter ist für alle Zustände von `hm-rpc.0` abonniert. Wenn der neue Zustand mit `ack=false` empfangen wird, sendet er den neuen Wert an den physischen Switch.
 
-Homematic adapter is subscribed for all states of hm-rpc.0 and if the new state will be received with ack=false, it sends the new value to the physical switch.
+Der physische Switch führt den Befehl aus und sendet den neuen eigenen Status EIN an den `hm-rpc`-Adapter.
+Der Adapter `hm-rpc.0` veröffentlicht den neuen Status des Zustands `hm-rpc.0.kitchen.light={val: 1, ack: true}` (mit Zeitstempeln).
 
-Physical switch executes the command and sends to hm-rpc adapter the new own state ON. The hm-rpc.0 adapter publishes the new status of state "hm-rpc.0.kitchen.light"={val: 1, ack: true} (with time stamps).
+Diese Änderung wird vom hm-rpc-Adapter nicht ausgeführt, da ack true ist. Und dies ist eine Bestätigung vom physischen Gerät.
 
-This change will not be executed by hm-rpc adapter, because ack is true. And this is an acknowledgment from physical device.
+#### Wie schreibe ich Zustand
+Zustände können als Befehle oder als Status geschrieben werden. Dafür müssen `adapter.setState` und `adapter.setForeignState` verwendet werden:
 
-#### How to write state
+`adapter.setForeignState('otherAdapter.X.someState', 1);` // Anderen Adapter steuern (es ist nicht erforderlich, den eigenen Status zu steuern, wir können dies direkt tun)
 
-States can be written as commands or as statuses. For that adapter.setState and adapter.setForeignState must be used:
+`adapter.setState('myState', 1, true);` // neuen Status des eigenen Staates anzeigen
 
-adapter.setForeignState('otherAdapter.X.someState', 1); // Control other adapter (there is no need to control own state, we can do it directly)
-adapter.setState('myState', 1, true); // indicate new status of own state
-adapter.setState('myState', {val: 1, ack: true}); // the same as above
+`adapter.setState('myState', {val: 1, ack: true});` // wie oben
 
+```
 adapter.setState('myState', 1, true, function (err) {
-*  // analyse if the state could be set (because of permissions)
-*  if (err) adapter.log.error(err);
+   // analyse if the state could be set (because of permissions)
+   if (err) adapter.log.error(err);
 });
+```
 
-Note: Following commands are identical
+Hinweis: Die folgenden Befehle sind identisch
 
+```
 adapter.setState('myState', 1, false);
 adapter.setState('myState', 1);
+```
 
-#### Structure of state
+#### Staatsstruktur
+State ist ein Javascript-Objekt mit folgenden Attributen:
 
-State is a javascript object with following attributes:
+* `val`: Zustandswert (Sollwert oder Istwert)
+* `ack`: Richtungsflagge. false für den gewünschten Wert und true für den tatsächlichen Wert. Voreinstellung: false (Befehl)
+* `ts`: Zeitstempel in Millisekunden zwischen dem 1. Januar 1970 und dem angegebenen Datum. Ergebnis der Methode getTime () des Javascript-Objekts Date. Voreinstellung: aktuelle Uhrzeit.
+* `lc`: Zeitstempel der letzten Änderung. Gleiches Format wie ts, aber der Zeitstempel der Wertänderung. Es kann sein, dass der Wert aktualisiert wird, aber der Wert bleibt gleich. In diesem Fall wird lc nicht geändert.
+* `from`: Name der Adapterinstanz, die den Wert festlegt, z. "system.adapter.web.0" (bei vis)
+* `expire`: (optional) es besteht die möglichkeit das expire timeout in sekunden einzustellen. Nach dieser Zeit wird die Variable auf "null" gesetzt. Es wird z.B. durch "aktive" Zustände der Adapterinstanzen. Wenn die Adapterinstanz in 30 Sekunden nicht den Status "Aktiv" auslöst, wird sie als inaktiv markiert. Verwenden Sie den folgenden Code, um den Status mit Ablauf festzulegen: setState ('variable', {val: true, expire: 30})
+* `q`: (optional) Qualität. Siehe hier die Beschreibung
 
-* val: Value of state (desired value or actual value)
-* ack: direction flag. false for desired value and true for actual value. Default: false (command)
-* ts: time stamp as the number of milliseconds between midnight of January 1, 1970 and the specified date. Result of method getTime() of Javascript object Date. Default: actual time.
-* lc: last change time stamp. Same format as ts, but the time stamp of value change. It can be so that the value will be updated, but the value will stay the same. In this case lc will not be changed.
-* from: name of the adapter instance, that set the value, e.g. "system.adapter.web.0" (In case of vis)
-* expire: (optional) there is a possibility to set the expire timeout in seconds. After this period of time the variable will be set to "null". It will be used e.g. by "active" states of the adapter instances. If adapter instance will not trigger "active" state in 30 seconds it will be marked as down. To set state with expiration use following code setState('variable', {val: true, expire: 30})
-* q: (optional) Quality. See here the description
+Betriebsarten des Adapters
 
-Running modes of adapter
+Adapter kann in verschiedenen Modi ausgeführt werden. Der Modus für den Adapter kann über das Attribut common.mode definiert werden.
 
-Adapter can run in different modes. The mode for adapter can me defined over common.mode attribute.
+* `none` - dieser Adapter wird nicht gestartet.
+* `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
+* `subscribe` - wird gestartet, wenn state system.adapter ... alive auf true wechselt. Wird beendet, wenn .alive in false geändert wird, und setzt .alive auf false, wenn der Prozess beendet wird (wird nicht neu gestartet, wenn der Prozess beendet wird).
+* `Zeitplan` - wird nach Zeitplan in system.adapter ... common.schedule gestartet - reagiert auf Änderungen von .schedule durch Neuplanung mit neuem Status
+* `once` - Dieser Adapter wird jedes Mal gestartet, wenn sich das system.adapter .. -Objekt ändert. Es wird nach Beendigung nicht neu gestartet.
 
-* none - this adapter will not be started.
-* daemon - always running process (will be restarted if process exits)
-* subscribe - is started when state system.adapter...alive changes to true. Is killed when .alive changes to false and sets .alive to false if process exits (will not be restarted when process exits)
-* schedule - is started by schedule found in system.adapter...common.schedule - reacts on changes of .schedule by rescheduling with new state
-* once - this adapter will be started every time the system.adapter.. object changed. It will not be restarted after termination.
+Normalerweise sollten Adapter den Modus-Daemon verwenden.
 
-Normally adapters should use mode daemon.
+Wenn der Adapter nur alle X Minuten etwas überprüft, sollte er den Modus `schedule` verwenden und den Cron-Zeitplan in common.schedule definieren (z. B. `1 * * * *` - jede Stunde).
 
-If adapter just checks something every X minutes it should use mode "schedule" and define cron schedule in common.schedule (e.g. "1 * * * *" - every hour)
+#### So lesen Sie ein Objekt
+Objekte können mit dem Befehl getObject oder getForeignObject gelesen werden:
 
-#### How to read object
-
-Objects can be read with getObject or getForeignObject command:
-
+```
 adapter.getForeignObject('otherAdapter.X.someState', function (err, obj) {
-* if (err) {
-* * adapter.log.error(err);
-* } else {
-* * adapter.log.info(JSON.stringify(obj));
-* }
+  if (err) {
+    adapter.log.error(err);
+  } else {
+    adapter.log.info(JSON.stringify(obj));
+  }
 });
 
 adapter.getObject('myObject', function (err, obj) {
 
-});  
-
-Functions are always asynchronous.
-
-Objects of adapter must be organized in devices, channels and states.
-
-See: getForeignObjects, findForeignObject, getForeignObject, getDevices, getChannels, getStatesOf
-
-#### How to write object
-
-To write the objects generally two functions can be used: setObject, setForeignObject. But there are many help functions to modify objects:
-
-* extendObject, extendForeignObject,
-* delObject, delForeignObject,
-* setObjectNotExists, setForeignObjectNotExists
-* createDevice, deleteDevice
-* createChannel, deleteChannel,
-* createState, deleteState
-* addStateToEnum, deleteStateFromEnum
-
-extendObject is just reads object, merges with given one and write object back.
-
-Difference between xxxObject and xxxForeignObject is that xxxObject automatically extends the object id with "adapter.instance." text.
-
-Functions are always asynchronous.
-
-adapter.getForeignObject('otherAdapter.X.someState', function (err, obj) {
-* if (err) {
-* * adapter.log.error(err);
-* } else {
-* * adapter.log.info(JSON.stringify(obj));
-* * obj.native = {}; // modify object
-* * adapter.setForeignObject(obj._id, obj, function (err) {
-* * * if (err) adapter.log.error(err);
-* * });
-* }
 });
+```
 
-#### info.connection
+Funktionen sind immer asynchron.
 
-If the adapter establishes and monitors some connection (e.g. to controlled device), it should create and maintenance info.connection variable.
+Objekte des Adapters müssen in Geräten, Kanälen und Zuständen organisiert sein.
 
-If it happens, the status of connection will be shown in the instance's list in "admin" and if desired, the quality of states will be set up depends on the connection status.
+Siehe: getForeignObjects, findForeignObject, getForeignObject, getDevices, getChannels, getStatesOf
 
-## Functions
+#### So schreiben Sie ein Objekt
+Zum Schreiben der Objekte können im Allgemeinen zwei Funktionen verwendet werden: `setObject, setForeignObject`. Es gibt jedoch viele Hilfefunktionen zum Ändern von Objekten:
 
+* `extendObject, extendForeignObject`
+* `delObject, delForeignObject`
+* `setObjectNotExists, setForeignObjectNotExists`
+* `createDevice, deleteDevice`
+* `createChannel, deleteChannel`
+* `createState, deleteState`
+* `addStateToEnum, deleteStateFromEnum`
+
+extendObject liest nur das Objekt, führt es mit dem angegebenen zusammen und schreibt das Objekt zurück.
+
+Der Unterschied zwischen `xxxObject` und `xxxForeignObject` besteht darin, dass `xxxObject` die Objekt-ID automatisch um `adapter.instance.` erweitert.
+
+Funktionen sind immer asynchron.
+
+```
+adapter.getForeignObject('otherAdapter.X.someState', function (err, obj) {
+  if (err) {
+    adapter.log.error(err);
+  } else {
+    adapter.log.info(JSON.stringify(obj));
+    obj.native = {}; // modify object
+    adapter.setForeignObject(obj._id, obj, function (err) {
+      if (err) adapter.log.error(err);
+    });
+  }
+});
+```
+
+#### Info.connection
+Wenn der Adapter eine Verbindung herstellt und überwacht (z. B. zu einem gesteuerten Gerät), sollte er eine `info.connection`-Variable erstellen und warten.
+
+In diesem Fall wird der Verbindungsstatus in der Liste der Instanz in `admin` angezeigt. Falls gewünscht, hängt die Qualität der Status vom Verbindungsstatus ab.
+
+## Funktionen
+```
 * setObject = function setObject(id, obj, callback)
 * extendObject = function extendObject(id, obj, callback)
 * setForeignObject = function setForeignObject(id, obj, callback)
@@ -747,29 +761,30 @@ If it happens, the status of connection will be shown in the instance's list in 
 * log.info(msg)
 * log.warn(msg)
 * log.error(msg)
+```
 
-## Events
-
+## Veranstaltungen
+```
 * ready
 * objectChange(id, obj) (Warning obj can be null if deleted)
 * message(obj)
 * stateChange(id, state) (Warning state can be null if deleted)
 * unload
+```
 
-### How to create instance
+### So erstellen Sie eine Instanz
+Vor der Veröffentlichung in npm: In ioBroker / node_modules kopieren, zu `admin` wechseln und Instanz hinzufügen Nach der Veröffentlichung in npm: Zu §§SSS_1§ wechseln und `npm install iobroker.xxx --production --no-optional --logevel=error` schreiben, zu `admin` wechseln und hinzufügen Beispiel
 
-Before published to npm: copy into ioBroker/node_modules, go to "admin" and add instance After published at npm: go to ioBroker/ and write `npm install iobroker.xxx --production --no-optional --logevel=error`, go to `admin` and add instance
-How to debug
+## Debuggen
+* Starten Sie ioBroker
+* Instanz des Adapters hinzufügen
+* Instanz des Adapters deaktivieren
+* Starten Sie WebStorm
+* Erstellen Sie eine Konfiguration für das Debugging mit node.js
+* Flags für die Anwendung: `--force, instance, log level` (Sie können den Adapter als` node xxx.js 1 debug --force` starten, 1 ist Instanzindex (standardmäßig 0, debug ist log level und `- -force` bedeutet "enabled: false" Einstellungen ignorieren)
 
-* Start ioBroker
-* Add instance of adapter
-* Disable instance of adapter
-* Start WebStorm
-* Create Configuration for Debug with node.js
-* Flags for application: `--force, instance, log level` (you can start the adapter as `node xxx.js 1 debug --force`, 1 is instance index (by default 0, debug is log level and `--force` means ignore "enabled: false" settings)
-
-## admin.html
-
+## Admin.html
+```
 * function showMessage(message, title, icon)
 * function getObject(id, callback)
 * function getState(id, callback)
@@ -785,5 +800,6 @@ How to debug
 * function enumName2Id(enums, name)
 * function editTable(tabId, cols, values, top, onChange)
 * function getTableResult(tabId, cols)
+```
 
-## Best practice
+## Beste Übung

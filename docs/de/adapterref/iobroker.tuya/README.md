@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: FQuOKSYg/ch0EXF2hAJZgh2YQAhojPsALwQ+gbC/vgI=
+hash: ITcFjoWgbOVJgbLYwtz9JlPem9GwgnE7neC7mwnrJt4=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
@@ -16,6 +16,8 @@ hash: FQuOKSYg/ch0EXF2hAJZgh2YQAhojPsALwQ+gbC/vgI=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 # IoBroker.tuya
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. **
+
 ioBroker-Adapter zur Verbindung mit mehreren kleinen und billigen WLAN-Geräten, die mit der Tuya Cloud verbunden sind und hauptsächlich die Smartlife App / Alexa-Skill verwenden. Der Adapter unterstützt das Lesen von Echtzeit-Statusaktualisierungen und die Steuerung dieser Geräte, sobald sie mit der jeweiligen Handy-App synchronisiert sind.
 
 Tuya-Geräte sind ESP8266MOD WiFi-Smart-Geräte von Shenzhen Xenon.
@@ -35,15 +37,15 @@ Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalit
 Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesynchronisierung durchführen (siehe nächste ...)
 
 ### Erweiterte Funktionalität nach Gerätesynchronisation
-Um die volle Funktionalität des Adapters zu erhalten und Geräte mit der neuen verschlüsselten Firmware zu unterstützen, muss dem Adapter ein Verschlüsselungsschlüssel bekannt sein.
+Um die volle Funktionalität des Adapters zu erhalten und auch Geräte mit der neuen verschlüsselten Firmware zu unterstützen, muss dem Adapter ein Verschlüsselungsschlüssel bekannt sein.
 
-Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, sie über die verwendete mobile App abzurufen. Dazu stellt der Adapter einen Proxy bereit, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
+Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, sie über die verwendete mobile App abzurufen. Zu diesem Zweck stellt der Adapter einen Proxy bereit, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
 
 ** Wichtiger Hinweis für iOS-Benutzer: ** Der hier beschriebene Proxy-Ansatz funktioniert nicht mehr. Sobald Sie Smart Life App Version 3.10 oder höher haben, ist die Kommunikation von der App für den Proxy nicht mehr sichtbar. Es funktioniert jedoch immer noch mit allen Android-App-Versionen. Der beste Ansatz ist daher ein Androis-Emulator, wie unter https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- beschrieben. ger% C3% A4te / 19
 
 Dazu müssen Sie zunächst ein benutzerdefiniertes Root-Zertifikat auf Ihrem Mobilgerät hinzufügen.
 Wenn Sie in der Konfiguration der Adapterinstanz auf "Start Proxy" klicken, wird das Zertifikat für Ihr System erstellt und zeigt einen QR-Code zum Download-Speicherort an. Im Idealfall scannen Sie den QR-Code mit Ihrem Mobilgerät und folgen Sie den Anweisungen, um dieses Root-Zertifikat hinzuzufügen und ihm zu vertrauen.
-Wenn der QR-Code-Speicherort nicht erreichbar ist (kann bei Verwendung von Docker oder ähnlichem vorkommen), öffnen Sie den "Proxy Web Info Port" in Ihrem Browser und klicken Sie in der Navigation auf "Root-CA", um die CA-Datei herunterzuladen.
+Wenn der QR-Code-Speicherort nicht erreichbar ist (kann bei Verwendung von Docker oder ähnlichem vorkommen), öffnen Sie den "Proxy Web Info Port" in Ihrem Browser und klicken Sie in der Navigation auf "Root-CA". Sie können auch die CA-Datei herunterladen.
 
 Stellen Sie nun sicher, dass Sie die entsprechende Tuya Smart App schließen / beenden.
 Fügen Sie anschließend den Proxy-Port und den ioBroker-Host als "Manual" -Proxy für Ihre WLAN-Verbindung auf Ihrem Mobiltelefon hinzu.
@@ -70,6 +72,23 @@ Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb, @kueb
 * Dokumentation verbessern
 
 ## Changelog
+
+### 3.1.1 (2019-11-23)
+* (Apollon77) try to get rid of SSL errors with new proxies
+* (Apollon77) New schemas added
+* (Apollon77) Sentry added for error reporting
+* (Apollon77) Compact Mode added
+
+### 3.0.0 (2019-09-03)
+* (Apollon77) Switch from AnyProxy to mitm ... hopefully get SSL-Proxy working again. Important: The Proxy is called "NodeMITMProxyCA"!
+
+### 2.0.4 (2019-08-01)
+* (Apollon77) New schemas added
+* (Apollon77) removed a check so that also devices that use other message formats can be read
+
+### 2.0.3 (2019-07-11)
+* (Apollon77) New schemas added
+* (Apollon77) removed a check so that also devices that use other message formats can be read
 
 ### 2.0.2 (2019-06-27)
 * (Apollon77) New schemas added
@@ -118,7 +137,7 @@ Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb, @kueb
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

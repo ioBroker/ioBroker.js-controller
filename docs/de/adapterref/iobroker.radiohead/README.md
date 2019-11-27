@@ -32,9 +32,9 @@ Zum Senden von Daten werden die Daten einfach in den State des konfigurierten Ob
 
 ## Installation
 
-Der Adapter ist aktuell über das *latest*-Repository verfügbar.
+Der Adapter ist über das *stable*-Repository verfügbar und kann somit ganz normal über die Adminoberfläche oder die Kommandozeile installiert werden.
 
-Alternativ kann er über die URL `https://github.com/crycode-de/ioBroker.radiohead.git` installiert werden.
+Alternativ kann eine ggf. vorhandene Vorabversion über das *latest*-Repository oder über die URL `https://github.com/crycode-de/ioBroker.radiohead.git` installiert werden.
 
 ## Konfiguration
 
@@ -289,6 +289,9 @@ Jede Instanz des Adapters stellt die folgenden Informationen bereit:
 Die Zähler der Nachrichten können bei Bedarf durch ein Schreiben in das Objekt `actions.resetCounters` auf 0 zurückgesetzt werden.
 
 ## Changelog
+### 1.0.2 (2019-09-08)
+* (Peter Müller) dependency updates and bugfixes
+
 ### 1.0.1 (2019-07-30)
 * (Peter Müller) license  update
 

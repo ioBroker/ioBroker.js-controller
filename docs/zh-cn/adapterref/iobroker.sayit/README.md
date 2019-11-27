@@ -2,91 +2,91 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sayit/README.md
-title: ioBroker说适配器
-hash: UvTKjN3AR/eILEkm2F3ks0+HQsavlk46z4PNwGkZ5gs=
+title: ioBroker sayit适配器
+hash: JBYO2UNE9kZnJexGdPCqTf5yzBarVuUpp9jXtW0zWOc=
 ---
 ![商标](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
 ![安装数量](http://iobroker.live/badges/sayit-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sayit.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sayit.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sayit.svg)
 ![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)
 
-#ioBroker sayit adapter
+＃ioBroker sayit适配器
 SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ##配置
 支持以下实际输出：
 
- -  *浏览器*  - 文本将由浏览器在打开的iobroker.vis页面上播放。它几乎被每个桌面浏览器和少数mobily浏览器支持。
+-*浏览器*-文本将由打开iobroker.vis页面的浏览器播放。几乎所有台式机浏览器和少数便携式浏览器都支持它。
 
- -  * [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*  - 文本将通过安装Home24  -  MediaPlayer发送并播放到Android设备。为此将用于构建Android文本到语音引擎。端口无法更改并设置为50000。
+-* [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*-文本将被发送并播放到安装了Home24-MediaPlayer的Android设备上。为此，将使用内置在Android文本到语音引擎中的引擎。无法更改该端口并将其设置为50000。
 
- -  * Home24  -  MediaPlayer和[FTP服务器]（https://play.google.com/store/apps/details?id=lutey.FTPServer）*  - 将使用Home24在Android设备上发送和播放文本 -  MediaPlayer安装。对于这将使用谷歌文本到语音引擎。生成的mp3文件将通过FTP复制到Android设备并与Home24  -  MediaPlayer一起播放。
+-* Home24-MediaPlayer和[FTP服务器]（https://play.google.com/store/apps/details?id=lutey.FTPServer）*-文本将通过Home24-MediaPlayer在Android设备上发送和播放已安装。为此，将使用Google文本语音引擎。生成的mp3文件将通过FTP复制到android设备并与Home24-MediaPlayer一起播放。
 
-    两个应用程序都必须具有相同的主目录。 （例如\“sd card \”的根目录）。
+    两个应用程序必须具有相同的主目录。 （例如\“ sd卡\”的根目录）。
 
- - *System* - 文本将由运行ioBroker适配器的OS播放。支持以下操作系统：Windows，Linux，Mac OSx。
+-*系统*-文本将由运行ioBroker适配器的OS播放。支持以下操作系统：Windows，Linux，Mac OSx。
 
- -  * Windows引擎*  - 文本将由windows运行，其中sayIt适配器运行。对于这将使用Windows文本到语音引擎，应该由用户预先配置。您可以查看[此处]（http://windows.microsoft.com/en-us/windows/setting-speech-options#1TC=windows-7）如何设置它。
+-* Windows引擎*-文本将在运行sayIt适配器的Windows上播放。为此，将使用Windows文本到语音引擎，该引擎应由用户预先配置。您可以在[此处]（http://windows.microsoft.com/zh-cn/windows/setting-speech-options#1TC=windows-7）中进行设置。
 
- - *Sonos* - 在sonos设备上播放文字。确保已启用Web Adaptor。需要启用SONOS才能读取生成的mp3文件。
+-* Sonos *-在Sonos设备上播放文本。确保已启用Web适配器。需要使SONOS能够读取生成的mp3文件。
 
- - *Chromecast* - 在Chromecast设备上播放文字。
+-* Chromecast *-在Chromecast设备上播放文字。
 
- - *MPD* - 在音乐播放器守护程序上播放文本。仅使用** http **作为Web适配器，不要使用https。
+-* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于网络适配器，请勿使用https。
 
-要在RaspberryPI或Linux系统上启用文本到语音，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
+要在RaspberryPI或linux系统上启用文本语音转换，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
 
-可以通过将其名称写入对象来播放mp3 / wav文件。 （例如“/vis.0/main/img/door-bell.mp3”）
+可以通过将其名称写入对象来播放mp3 / wav文件。 （例如“ /vis.0/main/img/door-bell.mp3”）
 
-必须先加载该文件。
+必须先加载文件。
 
 ### TTS引擎
 线上：
 
- - 谷歌：英语，德语，俄语，意大利语，西班牙语，法语
- -  Yandex：俄罗斯人
+-Google：英语，德语，俄语，意大利语，西班牙语，法语
+-Yandex：俄语
 
-要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将于2019年1月1日禁用，并由Yandex.cloud取代]要使用Yandex.cloud，您应在此处注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取Auth令牌和API指令中描述的文件夹ID。
+要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在这里注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
 
- -  Ivona：英语，德语，俄语，意大利语，西班牙语，法语，Dansk，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
+-Ivona：英语，德语，俄语，意大利语，西班牙语，法语，丹麦语，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
 
-        要使用Amazon（Ivona）语音，您需要获取访问密钥和密钥[这里](http://www.ivona.com/us/for-business/speech-cloud/)。
+        要使用Amazon（Ivona）语音，您需要获取访问密钥和秘密密钥[这里](http://www.ivona.com/us/for-business/speech-cloud/)。
 
 - 云：
 
-        要使用云语音，您需要配置云适配器。 （可以禁用它，但必须配置）。此服务使用AWS Polly，可以直接使用。
+        要使用云语音，您需要配置云适配器。 （可以禁用它，但必须对其进行配置）。该服务使用AWS Polly，可以直接使用。
 
- - 亚马逊网络服务Polly：
+-Amazon Web Services Polly：
 
-        要使用AWS Polly语音，您需要创建访问密钥和密钥[这里]（https://console.aws.amazon.com/iam/home）。亚马逊文档可以找到[这里](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)。
+        要使用AWS Polly语音，您需要创建访问密钥和秘密密钥[此处]（https://console.aws.amazon.com/iam/home）。您可以在[这里找到Amazon文档](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)。
 
 离线：
 
- -  PicoTTS（仅限linux）：英语，德语，意大利语，西班牙语，法语
+-PicoTTS（仅Linux）：英语，德语，意大利语，西班牙语，法语
 
 对于PicoTTS，必须安装以下软件包：libttspico-utils和lame。
-安装命令：'sudo apt-get install libttspico-utils lame'
+安装命令：“ sudo apt-get install libttspico-utils me脚”
 
-###云和Amazon Web Services Polly文本格式
-您可以使用[语音合成标记语言](http://docs.aws.amazon.com/polly/latest/dg/ssml.html)格式化文本。
+### Cloud and Amazon Web Services Polly文本格式
+您可以使用[语音合成标记语言](http://docs.aws.amazon.com/polly/latest/dg/ssml.html)设置文本格式。
 
 最有用的功能：
 
- - `````<break time =“3s”/>``` - 暂停x秒（最长10秒）。
- - ````<emphasis> big </ emphasis>``` - 强调一些词。
- - ````<韵律音量=“+ 6dB”率=“90％”>我说这个</韵律>``` - 控制速度和音量参数。
- - ````say-as interpre-as =“digits”> 12345 </ say-as>``` - 分别说出每一个数字。
+-```<break time =“ 3s” />```--暂停x秒（最多10秒）。
+-```<emphasis> big </ emphasis>```-强调一些单词。
+-```<prosody volume =“ + 6dB” rate =“ 90％”>我在说</ prosody>```-控制速度和音量参数。
+-```<say-as interpret-as =“ digits”> 12345 </ say-as>```-分别说出每个数字。
 
 更多[信息](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference)。
 
 ###系统命令
-如果您有一些程序，可以在本地或其他地方播放音频文件，您可以在此处编写此命令。例如。
+如果您有一些程序可以在本地或其他地方播放音频文件，则可以在此处编写此命令。例如。
 
 ```myCustomPlayer --option```
 
-如果选择了** System **输出，则sayit适配器将在本地系统上执行以下命令：
+如果选择了“系统”输出，那么sayit适配器将在本地系统上执行以下命令：
 
 ```myCustomPlayer --option /opt/iobroker/node_modules/iobroker.sayit/say.mp3```
 
@@ -94,171 +94,174 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ```myCustomPlayer --option "%s" > /dev/null```
 
-说它会从中```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null```。
+sayIt将根据它生成```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null```。
 
 ##用法
-SayIt适配器不能单独使用。它必须通过javascript适配器或来自特定小部件的“vis”进行控制。
-创建适配器实例后，可以找到以下对象：
+SayIt适配器不能单独使用。必须通过javascript适配器或带有特定窗口小部件的“ vis”进行控制。
+创建适配器实例后，将可以找到以下对象：
 
- -  sayit.N.tts.text：要说的短语。
- -  sayit.N.tts.volume：播放短语将使用的音量。
- -  sayit.N.tts.playing：如果正在播放文本则为true，否则为false。仅支持“windows”和“system”播放模式。
- -  sayit.N.tts.cachetext：要缓存的短语，然后可以在没有互联网的情况下使用。
+-sayit.N.tts.text：要说的短语。
+-sayit.N.tts.volume：播放该短语将使用的音量。
+-sayit.N.tts.playing：如果正在播放文本，则为true，否则为false。仅支持“ Windows”和“系统”播放模式。
+-sayit.N.tts.cachetext：要缓存的词组，然后无需互联网即可使用。
 
-   例如。您可以手动输入“无互联网”，如果ping到google.com是否定的，请将“No internet”写入“tts.text”，它会发音。当然，必须启用缓存。
+   例如。您可以在此处手动输入“没有互联网”，如果对google.com的ping否定，请将“没有互联网”写入“ tts.text”，它将发音。当然必须启用缓存。
 
-State **tts.text** 持扩展语法，因此langugage / engine和volume可以与文本一起定义。它用于启用多语言text2speech引擎。
-例如。如果适配器具有引擎“Google-english”，则可以使用短语```de:Sag es```强制使用Google-Deustch语音引擎。
+状态** tts.text **支持扩展语法，因此可以将语言/引擎和音量与文本一起定义。它用于启用多语言text2speech引擎。
+例如。如果适配器具有引擎“ Google-english”，则可以使用词组```de:Sag es```强制使用Google-Deustch语音引擎。
 
-使用```ru;75;Погода хорошая```，我们可以强制使用俄语和75％的音量。
+使用§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
 
-您可以从当前或给定的卷（而不是从最大值）指定公告的百分比。例如。如果命令是```de;75;Gutes Wetter```并且“宣布音量”是50％，则宣布将从100％可能播放38％的音量。
+您可以从当前或给定的音量（不是最大）中指定百分比的公告音量。例如。如果命令是```de;75;Gutes Wetter```§且“播音音量”为50％，则播音将以100％可能的38％的音量播放。
 
-也可以指定播放mp3文件的系统命令。如果将其留空，将使用默认设置：windows  -  cmdmp3.exe，OSX  -  / usr / bin / afplay，linux  -  mpg321或omxplayer（推荐）。
+也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：Windows-cmdmp3.exe，OSX-/ usr / bin / afplay，Linux-mpg321或omxplayer（推荐）。
 
-安装omxplayer编写```sudo apt-get install omxplayer```或编写```sudo apt-get install mpg321```来安装mpg321。
+要安装omxplayer，请写```sudo apt-get install omxplayer```或写```sudo apt-get install mpg321```来安装mpg321。
 
-**注意：**只有在实例启动后才能进行默认的通知选择。
+**注意：**仅在实例启动后才可以进行默认的公告选择。
 
-###优先事项
-要在排队的文本中立即发音，您有两种可能：
+###优先级
+要在文本排队的情况下立即发音，您有两种可能：
 
- - 放置“！”作为文本中的第一个字符，因此该文本将在当前文本之后立即发音。
- - 将true写入“tts.clearQueue”状态，队列将被清除。之后，您可以将新文本写入“tts.text”，但所有排队的文本都会被丢弃。
+-放置“！”作为文本中的第一个字符，因此该文本将在当前文本后立即发音。
+-将true写入“ tts.clearQueue”状态，队列将被清除。之后，您可以将新文本写入“ tts.text”，但是所有排队的文本都将被丢弃。
 
 ＃＃＃ 引擎
-可以使用以下引擎值：
+以下是引擎的值：
 
 ＃＃＃＃ 谷歌
- - **en** - 英文
- - **de** - Deutsch
- - **pl** - Polski
- - **ru** - Русский
- - **uk** - український
- -  **它**  -  Italiano
- - **es** - Espaniol
- - **fr** - Français
+-** zh **-英语
+-** de **-德语
+-** pl **-Polski
+-** ru **-Русский
+-** uk **-український
+-**-意大利文
+-**是**-西班牙文
+-** fr **-法语
 
 #### Yandex
- - **ru_YA：Yandex** - Русский
- - **ru_YA_CLOUD：Yandex Cloud** - Русский[Yandex.Cloud API生成OGG格式的文件。要在linux上播放ogg文件，应安装并选择系统播放器作为系统播放器]
+-** ru_YA：Yandex **-Русский
+-** ru_YA_CLOUD：Yandex Cloud **-Русский[Yandex.Cloud API生成OGG格式的文件。要在linux上播放ogg文件，应安装mplayer并将其选择为系统播放器]
 
-####亚马逊polly通过云
- - **ru-RU_CLOUD_Female** - Русский - Татьяна
- - **ru-RU_CLOUD_Male** - Русский - Максим
- - **de-DE_CLOUD_Female** - Deutsch - Marlene
- - **de-DE_CLOUD_Male** - Deutsch - Hans
- - **en-US_CLOUD_Female** - en-US - 女性 - Salli
- - **en-US_CLOUD_Male** - en-US - 男 - Joey
- - **da-DK_CLOUD_Female** - da-DK - 女性 - 眼镜蛇
- - **da-DK_CLOUD_Male** - da-DK - 男 - Mads
- - **en-AU_CLOUD_Female** - en-AU - 女 - 妮可
- - **en-AU_CLOUD_Male** - en-AU - 男 - 罗素
- - **en-GB_CLOUD_Female_Amy** - en-GB - 女性 - 艾米
- - **en-GB_CLOUD_Male** - en-GB - 男 - Brian
- - **en-GB_CLOUD_Female_Emma** - en-GB - 女 - 艾玛
- - **en-GB-WLS_CLOUD_Female** - en-GB-WLS - 女性 - 格温妮丝
- - **en-GB-WLS_CLOUD_Male** - en-GB-WLS - 男性 - Geraint
- - **cy-GB_CLOUD_Female** - cy-GB - 女性 - 格温妮丝
- - **cy-GB_CLOUD_Male** - cy-GB - 男性 - Geraint
- - **en-IN_CLOUD_Female** - en-IN - 女性 - Raveena
- - **en-US_CLOUD_Male_Chipmunk** - en-US - 男性 - 花栗鼠
- - **en-US_CLOUD_Male_Eric** - en-US - 男 - Eric
- - **en-US_CLOUD_Female_Ivy** - en-US - 女性 - 常春藤
- - **en-US_CLOUD_Female_Jennifer** - en-US - 女性 - Jennifer
- - **en-US_CLOUD_Male_Justin** - en-US - 男 - 贾斯汀
- - **en-US_CLOUD_Female_Kendra** - en-US - 女性 - 肯德拉
- - **en-US_CLOUD_Female_Kimberly** - en-US - 女性 - 金佰利
- - **es-ES_CLOUD_Female** - es-ES - 女性 - Conchita
- - **es-ES_CLOUD_Male** - es-ES - 男 - 恩里克
- - **es-US_CLOUD_Female** - es-US - 女性 - 佩内洛普
- - **es-US_CLOUD_Male** - es-US - 男 - Miguel
- - **fr-CA_CLOUD_Female** - fr-CA - 女性 - Chantal
- - **fr-FR_CLOUD_Female** - fr-FR - 女性 - Celine
- - **fr-FR_CLOUD_Male** - fr-FR - 男 - Mathieu
- - **is-IS_CLOUD_Female** - is-IS - 女性 - 多拉
- - **is-IS_CLOUD_Male** - is-IS - 男 - 卡尔
- - **it-IT_CLOUD_Female** - it-IT - 女性 - Carla
- - **it-IT_CLOUD_Male** - it-IT - 男 - Giorgio
- - **nb-NO_CLOUD_Female** - nb-NO - 女性 - Liv
- - **nl-NL_CLOUD_Female** - nl-NL - 女 - 乐天
- - **nl-NL_CLOUD_Male** - nl-NL - 男 - 鲁本
- - **pl-PL_CLOUD_Female_Agnieszka** - pl-PL - 女性 - Agnieszka
- - **pl-PL_CLOUD_Male_Jacek** - pl-PL - 男 - Jacek
- - **pl-PL_CLOUD_Female_Ewa** - pl-PL - 女性 - Ewa
- - **pl-PL_CLOUD_Male_Jan** - pl-PL - 男 - Jan
- - **pl-PL_CLOUD_Female** - pl-PL - 女性 - Maja
- - **pt-BR_CLOUD_Female** - pt-BR - 女性 - 维多利亚
- - **pt-BR_CLOUD_Male** - pt-BR - 男 - 里卡多
- - **pt-PT_CLOUD_Male** - pt-PT-男 - Cristiano
- - **pt-PT_CLOUD_Female** - pt-PT - 女 - Ines
- - **ro-RO_CLOUD_Female** - ro-RO - 女性 - 卡门
- - **sv-SE_CLOUD_Female** - sv-SE - 女性 - Astrid
- - **tr-TR_CLOUD_Female** - tr-TR - 女性 - Filiz
+####通过云的Amazon polly
+-** ru-RU_CLOUD_Female **-Русский-Татьяна
+-** ru-RU_CLOUD_Male **-Русский-Максим
+-** de-DE_CLOUD_Female **-德意志-马琳
+-** de-DE_CLOUD_Male **-德意志-汉斯
+-** zh-CN_CLOUD_Female **-zh-CN-女-Salli
+-** zh-CN_CLOUD_Male **-zh-CN-男性-Joey
+-** da-DK_CLOUD_Female **-da-DK-女性-眼镜蛇
+-** da-DK_CLOUD_Male **-da-DK-男性-Mads
+-** zh-AU_CLOUD_Female **-zh-AU-女-妮可
+-** zh-AU_CLOUD_Male **-zh-AU-马累-罗素
+-** zh-CN_CLOUD_Female_Amy **-zh-CN-女-艾米
+-** en-GB_CLOUD_Male **-en-GB-男性-Brian
+-** zh-CN_CLOUD_Female_Emma **-zh-CN-女-艾玛
+-** en-GB-WLS_CLOUD_Female **-en-GB-WLS-女-Gwyneth
+-** en-GB-WLS_CLOUD_Male **-en-GB-WLS-男性-格林
+-** cy-GB_CLOUD_Female **-cy-GB-女-Gwyneth
+-** cy-GB_CLOUD_Male **-cy-GB-男性-格林
+-** en-IN_CLOUD_Female **-en-IN-女-Raveena
+-** zh-CN_CLOUD_Male_Chipmunk **-zh-CN-男性-花栗鼠
+-** en-US_CLOUD_Male_Eric **-zh-CN-男性-Eric
+-** zh-CN_CLOUD_Female_Ivy **-zh-CN-女-常春藤
+-** zh-CN_CLOUD_Female_Jennifer **-zh-CN-女-Jennifer
+-** zh-CN_CLOUD_Male_Justin **-zh-CN-男性-贾斯汀
+-** zh-CN_CLOUD_Female_Kendra **-zh-CN-女-Kendra
+-** zh-CN_CLOUD_Female_Kimberly **-zh-CN-女-Kimberly
+-** es-ES_CLOUD_Female **-es-ES-女性-Conchita
+-** es-ES_CLOUD_Male **-es-ES-男性-Enrique
+-** es-US_CLOUD_Female **-es-US-女性-Penelope
+-** es-US_CLOUD_Male **-es-US-男性-Miguel
+-** fr-CA_CLOUD_Female **-fr-CA-女性-Chantal
+-** fr-FR_CLOUD_Female **-fr-FR-女性-Celine
+-** fr-FR_CLOUD_Male **-fr-FR-男性-Mathieu
+-** is-IS_CLOUD_Female **-is-IS-女性-Dora
+-** is-IS_CLOUD_Male **-is-IS-男性-Karl
+-** it-IT_CLOUD_Female **-it-IT-女性-Carla
+-** it-IT_CLOUD_Male **-it-IT-男性-Giorgio
+-** nb-NO_CLOUD_Female **-nb-NO-女性-Liv
+-** NL-NL_CLOUD_Female **-NL-NL-女-乐天
+-** NL-NL_CLOUD_Male **-NL-NL-男性-鲁本
+-** pl-PL_CLOUD_Female_Agnieszka **-pl-PL-女性-Agnieszka
+-** pl-PL_CLOUD_Male_Jacek **-pl-PL-男性-Jacek
+-** pl-PL_CLOUD_Female_Ewa **-pl-PL-女性-Ewa
+-** pl-PL_CLOUD_Male_Jan **-pl-PL-男性-1月
+-** pl-PL_CLOUD_Female **-pl-PL-女-Maja
+-** pt-BR_CLOUD_Female **-pt-BR-女性-Vitoria
+-** pt-BR_CLOUD_Male **-pt-BR-男性-Ricardo
+-** pt-PT_CLOUD_Male **-pt-PT-男性-克里斯蒂亚诺
+-** pt-PT_CLOUD_Female **-pt-PT-女性-Ines
+-** ro-RO_CLOUD_Female **-ro-RO-女性-Carmen
+-** sv-SE_CLOUD_Female **-sv-SE-女-Astrid
+-** tr-TR_CLOUD_Female **-tr-TR-女-Filiz
 
 #### Pico TTS
- - **en-US** - Englisch US
- - **en-GB** - Englisch GB
- - **de-DE** - Deutsch
- - **it-IT** - Italiano
- - **es-ES** - Espaniol
- - **fr-FR** - Français
+-** zh-CN **-美国英语
+-** zh-CN **-英国英语
+-** DE-DE **-德语
+-** it-IT **-Italiano
+-** ES-ES **-西班牙文
+-** fr-FR **-法语
 
-####亚马逊polly直接
- -  **（ru-RU_AP_Female）**  - Русский - Татьяна
- -  **（ru-RU_AP_Male）**  - Русский - Максим
- -  **（de-DE_AP_Female）**  -  Deutsch  -  Marlene
- -  **（de-DE_AP_Female_Vicki）**  -  Deutsch  -  Vicki
- -  **（de-DE_AP_Male）**  - 德意志 - 汉斯
- -  **（en-US_AP_Female）**  -  en-US  - 女性 -  Salli
- -  **（en-US_AP_Male）**  -  en-US  - 男 -  Joey
- -  **（da-DK_AP_Female）**  -  da-DK  - 女性 - 眼镜蛇
- -  **（da-DK_AP_Male）**  -  da-DK  - 男 -  Mads
- -  **（en-AU_AP_Female）**  -  en-AU  - 女 - 妮可
- -  **（en-AU_AP_Male）**  -  en-AU  - 男 - 罗素
- -  **（zh-CN_AP_Female_Amy）**  -  en-GB  - 女性 - 艾米
- -  **（en-GB_AP_Male）**  -  en-GB  - 男 -  Brian
- -  **（en-GB_AP_Female_Emma）**  -  en-GB  - 女性 - 艾玛
- -  **（zh-CN-WLS_AP_Female）**  -  en-GB-WLS  - 女性 - 格温妮丝
- -  **（zh-CN-WLS_AP_Male）**  -  en-GB-WLS  - 男性 -  Geraint
- -  **（cy-GB_AP_Female）**  -  cy-GB  - 女性 - 格温妮丝
- -  **（cy-GB_AP_Male）**  -  cy-GB  - 男性 -  Geraint
- -  **（en-IN_AP_Female）**  -  en-IN  - 女性 -  Raveena
- -  **（en-US_AP_Male_Chipmunk）**  -  en-US  - 男性 - 花栗鼠
- -  **（en-US_AP_Male_Eric）**  -  en-US  - 男 -  Eric
- -  **（en-US_AP_Female_Ivy）**  -  en-US  - 女性 - 常春藤
- -  **（en-US_AP_Female_Jennifer）**  -  en-US  - 女性 -  Jennifer
- -  **（en-US_AP_Male_Justin）**  -  en-US  - 男 - 贾斯汀
- -  **（en-US_AP_Female_Kendra）**  -  en-US  - 女性 - 肯德拉
- -  **（en-US_AP_Female_Kimberly）**  -  en-US  - 女性 - 金伯利
- -  **（es-ES_AP_Female）**  -  es-ES  - 女性 -  Conchita
- -  **（es-ES_AP_Male）**  -  es-ES  - 男 - 恩里克
- -  **（es-US_AP_Female）**  -  es-US  - 女性 - 佩内洛普
- -  **（es-US_AP_Male）**  -  es-US  - 男 -  Miguel
- -  **（fr-CA_AP_Female）**  -  fr-CA  - 女性 -  Chantal
- -  **（fr-FR_AP_Female）**  -  fr-FR  - 女性 -  Celine
- -  **（fr-FR_AP_Male）**  -  fr-FR  - 男 -  Mathieu
- -  **（is-IS_AP_Female）**  - 是 - 女 - 多拉
- -  **（is-IS_AP_Male）**  - 是 -  IS  - 男 - 卡尔
- -  **（it-IT_AP_Female）**  -  it-IT  - 女性 -  Carla
- -  **（it-IT_AP_Male）**  -  it-IT  - 男 -  Giorgio
- -  **（nb-NO_AP_Female）**  -  nb-NO  - 女 -  Liv
- -  **（nl-NL_AP_Female）**  -  nl-NL  - 女 - 乐天
- -  **（nl-NL_AP_Male）**  -  nl-NL  - 男 - 鲁本
- -  **（pl-PL_AP_Female_Agnieszka）**  -  pl-PL  - 女性 -  Agnieszka
- -  **（pl-PL_AP_Male_Jacek）**  -  pl-PL  - 男 -  Jacek
- -  **（pl-PL_AP_Female_Ewa）**  -  pl-PL  - 女性 -  Ewa
- -  **（pl-PL_AP_Male_Jan）**  -  pl-PL  - 男 -  Jan
- -  **（pl-PL_AP_Female）**  -  pl-PL  - 女性 -  Maja
- -  **（pt-BR_AP_Female）**  -  pt-BR  - 女性 - 维多利亚
- -  **（pt-BR_AP_Male）**  -  pt-BR  - 男 - 里卡多
- -  **（pt-PT_AP_Male）**  -  pt-PT-男 - 克里斯蒂亚诺
- -  **（pt-PT_AP_Female）**  -  pt-PT  - 女性 -  Ines
- -  **（ro-RO_AP_Female）**  -  ro-RO  - 女性 - 卡门
- -  **（sv-SE_AP_Female）**  -  sv-SE  - 女性 -  Astrid
- -  **（tr-TR_AP_Female）**  -  tr-TR  - 女性 - 菲利兹
+####亚马逊Polly Direct
+-**（ru-RU_AP_Female）**-Русский-Татьяна
+-**（ru-RU_AP_Male）**-Русский-Максим
+-**（de-DE_AP_Female）**-德语-马琳
+-**（de-DE_AP_Female_Vicki）**-德语-Vicki
+-**（de-DE_AP_Male）**-德意志-汉斯
+-**（zh-CN_AP_Female）**-zh-美国-女-Salli
+-**（zh-CN_AP_Male）**-zh-CN-男性-Joey
+-**（da-DK_AP_Female）**-da-DK-女性-眼镜蛇
+-**（da-DK_AP_Male）**-da-DK-男性-Mads
+-**（zh-AU_AP_Female）**-zh-AU-女性-妮可
+-**（zh-AU_AP_Male）**-zh-AU-男性-罗素
+-**（zh-CN_AP_Female_Amy）**-zh-GB-女-艾米
+-**（zh-CN_AP_Male）**-zh-GB-男性-Brian
+-**（zh-CN_AP_Female_Emma）**-zh-CN-女-艾玛
+-**（zh-CN-WLS_AP_Female）**-zh-GB-WLS-女-Gwyneth
+-**（zh-CN-WLS_AP_Male）**-zh-CN-WLS-男性-格林
+-**（cy-GB_AP_Female）**-cy-GB-女性-Gwyneth
+-**（cy-GB_AP_Male）**-cy-GB-男性-格林
+-**（zh-IN_AP_Female）**-zh-IN-女-Raveena
+-**（zh-CN_AP_Male_Chipmunk）**-zh-CN-男性-花栗鼠
+-**（zh-CN_AP_Male_Eric）**-zh-CN-男性-Eric
+-**（zh-CN_AP_Female_Ivy）**-zh-CN-女性-常春藤
+-**（zh-CN_AP_Female_Jennifer）**-zh-CN-女性-Jennifer
+-**（zh-CN_AP_Male_Justin）**-zh-美国-男性-贾斯汀
+-**（zh-CN_AP_Female_Kendra）**-zh-CN-女-Kendra
+-**（zh-CN_AP_Female_Kimberly）**-zh-美国-女-Kimberly
+-**（es-ES_AP_Female）**-es-ES-女性-Conchita
+-**（es-ES_AP_Male）**-es-ES-男性-Enrique
+-**（es-US_AP_Female）**-es-US-女性-Penelope
+-**（es-US_AP_Male）**-es-US-男性-Miguel
+-**（fr-CA_AP_Female）**-fr-CA-女性-Chantal
+-**（fr-FR_AP_Female）**-fr-FR-女性-Celine
+-**（fr-FR_AP_Male）**-fr-FR-男性-Mathieu
+-**（is-IS_AP_Female）**-is-IS-女性-Dora
+-**（is-IS_AP_Male）**-is-IS-男性-Karl
+-**（it-IT_AP_Female）**-it-IT-女性-Carla
+-**（it-IT_AP_Male）**-it-IT-男性-Giorgio
+-**（nb-NO_AP_Female）**-nb-NO-女性-Liv
+-**（nl-NL_AP_Female）**-nl-NL-女-乐天
+-**（nl-NL_AP_Male）**-nl-NL-男性-鲁本
+-**（pl-PL_AP_Female_Agnieszka）**-pl-PL-女性-Agnieszka
+-**（pl-PL_AP_Male_Jacek）**-pl-PL-男性-Jacek
+-**（pl-PL_AP_Female_Ewa）**-pl-PL-女性-Ewa
+-**（pl-PL_AP_Male_Jan）**-pl-PL-男性-一月
+-**（pl-PL_AP_Female）**-pl-PL-女性-Maja
+-**（pt-BR_AP_Female）**-pt-BR-女性-Vitoria
+-**（pt-BR_AP_Male）**-pt-BR-男性-Ricardo
+-**（pt-PT_AP_Male）**-pt-PT-男性-克里斯蒂亚诺
+-**（pt-PT_AP_Female）**-pt-PT-女性-Ines
+-**（ro-RO_AP_Female）**-ro-RO-女性-卡门
+-**（sv-SE_AP_Female）**-sv-SE-女性-Astrid
+-**（tr-TR_AP_Female）**-tr-TR-女性-Filiz
 
 ## Changelog
+### 1.9.0 (2019-11-06)
+* (algar42) Output file extension is changed dynamically based on the engine selected
+
 ### 1.8.2 (2019-07-11)
 * (bluefox) Web server URL will be updated if web server was updated
 

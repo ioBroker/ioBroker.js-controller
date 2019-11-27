@@ -39,6 +39,9 @@ Before you must create the directroy */mnt/1wire* with command `mkdir /mnt/1wire
 http://sourceforge.net/projects/owfs/
 
 ## Changelog
+### 0.6.2 (2019-10-29)
+* (RustyThePropellerHead) Improved data integrity when reading from local OWFS via file system
+
 ### 0.6.1 (2018-07-11)
 * (bluefox) compact mode supported
 * (lvogt) Added data points counter.A/.B/.ALL from DS2423 to config page
@@ -94,7 +97,7 @@ http://sourceforge.net/projects/owfs/
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018, bluefox
+Copyright (c) 2015-2019, bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

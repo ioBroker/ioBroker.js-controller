@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
+hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 ![логотип](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -14,7 +14,9 @@ hash: 9PTarqLZmBfNEPK/Fa5CvxUzVwaHGZYD/EpD21P4SO0=
 ![Трэвис-CI](https://travis-ci.org/SebastianSchultz/ioBroker.lgtv.svg?branch=master)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
-# IoBroker.lgtv =================
+# IoBroker.lgtv
+=================
+
 LG WebOS SmartTV адаптер для ioBroker
 
 Дистанционное управление LG WebOS SmartTV (модели 2013 года и выше) из [ioBroker](https://www.iobroker.net).
@@ -66,7 +68,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.3Dmode', false);```
 
-Деактивирует режим 3D на телевизоре.
+Отключение режима 3D на телевизоре.
 
 ```setState('lgtv.0.states.channel', 7);```
 
@@ -82,7 +84,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
-Запускает приложение «Руководство пользователя телевизора» на телевизоре.
+Запускает приложение Руководство пользователя телевизора на телевизоре.
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
@@ -105,29 +107,51 @@ LG WebOS SmartTV адаптер для ioBroker
 Открывает веб-браузер на телевизоре и переходит на www.iobroker.net.
 Может также использоваться для открытия изображений или видео (в браузере).
 
-```setState('lgtv.0.states.input', 'AV_1');```
+```setState('lgtv.0.states.input', 'av1');```
 
 Переключает входной сигнал телевизора на AV1.
 
-```setState('lgtv.0.states.input', 'SCART_1');```
+```setState('lgtv.0.states.input', 'scart');```
 
 Переключает iput ой телевизора на Scart.
 
-```setState('lgtv.0.states.input', 'COMP_1');```
+```setState('lgtv.0.states.input', 'component');```
 
 Переключает входной сигнал телевизора на компонентный.
 
-```setState('lgtv.0.states.input', 'HDMI_1');```
+```setState('lgtv.0.states.input', 'hdmi1');```
 
-Переключает вход телевизора на HDMI 1.
+Переключение входа телевизора на HDMI 1.
 
-```setState('lgtv.0.states.input', 'HDMI_2');```
+```setState('lgtv.0.states.input', 'hdmi2');```
 
-Переключает входной сигнал телевизора на HDMI 2.
+Переключает вход телевизора на HDMI 2.
 
-```setState('lgtv.0.states.input', 'HDMI_3');```
+```setState('lgtv.0.states.input', 'hdmi3');```
 
-Переключение входа телевизора на HDMI 3.
+Переключает входной сигнал телевизора на HDMI 3.
+
+```setState('lgtv.0.states.youtube', 'https://www.youtube.com/watch?v=AjSpMQfRmEo'); OR setState('lgtv.0.states.youtube', 'AjSpMQfRmEo');```
+
+Воспроизвести видео с YouTube.
+
+```setState('lgtv.0.states.raw', '{"url": "ssap://system.launcher/launch", "cmd": "{id: 'netflix'}" }');```
+
+```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
+
+Отправка и ответ RAW команды API.
+
+```setState('lgtv.0.remote.*KEY*', true);```
+
+Отправить удаленный ключ к телевизору.
+
+```setState('lgtv.0.states.power', true/false);```
+
+Выключите телевизор и включите телевизор (TurnOn, работает только локальная сеть, используя WOL).
+
+```setState('lgtv.0.states.soundOutput', 'external_arc');```
+
+Переключите аудиовыход через ARC (HDMI).
 
 ---
 
@@ -147,6 +171,20 @@ LG WebOS SmartTV адаптер для ioBroker
 ---
 
 ## Changelog
+
+### 1.1.1 (2019-10-26)
+* (instalator) fix error reconect
+* (instalator) fix raw object
+* (instalator) add mac address to admin settings
+
+### 1.1.0 (2019-10-10)
+* (instalator) adding object remote.KEY
+* (instalator) fix connect to TV
+* (instalator) add subscribe volume and mute state
+* (instalator) translate admin to RUS
+* (instalator) add Turn On, using WOL
+* (instalator) adding new different objects
+* (SebastianSchultz) changed roles "button" to "switch" for compatibility for iot- & cloud-adapter
 
 ### 1.0.8 (2019-03-15)
 * (SebastianSchultz) general NPM update

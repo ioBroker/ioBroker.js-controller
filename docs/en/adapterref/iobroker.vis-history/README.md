@@ -17,6 +17,9 @@ For sparklines is used the [jquery plugin](http://omnipotent.net/jquery.sparklin
 
 ## Changelog
 
+### 1.0.0 (2019-10-01)
+- (bluefox) update table too if the value has been only updated 
+
 ### 0.2.7 (2017-05-29)
 - (Apollon77) small fixes on Title (http://forum.iobroker.net/viewtopic.php?f=23&t=3111&start=20#p68971) and getHistory parameters
 

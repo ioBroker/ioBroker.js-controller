@@ -306,6 +306,9 @@ On some web-sockets clients there is performance problem with communication. Som
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
 ## Changelog
+### 2.1.2 (2019-09-28)
+* (Apollon77) optimize shutdown for compact mode
+
 ### 2.1.1 (2018-06-09)
 * (bluefox) Used socket.io Version 1.7.2
 * (bluefox) Fix authentication problem

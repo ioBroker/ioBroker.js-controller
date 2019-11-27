@@ -2,71 +2,80 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.multicast/README.md
-title: 适用于ioBroker的Multicast-APi适配器
-hash: FQYT5r9hyrzBqOoXag+7OuaWV4F3/7g10pxhyHnPha0=
+title: ioBroker的Multicast-APi适配器
+hash: c3cMlDxkT43iLtk4oAmyMCvXhCXzTRsP+0z0Y0td2TQ=
 ---
+![安装数量](http://iobroker.live/badges/iobroker.multicastsvg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.multicast.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.multicast.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.multicast.svg)
 ![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.multicast.svg)
-![已知的漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.multicast/badge.svg)
+![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.multicast/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.multicast.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.multicast/master.svg)
+![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.multicast/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.multicast?branch=master&svg=true)
 
 <h1>
 
 <img  src="admin/multicast.png"  width="64"/> ioBroker.multicast
 
-</ H1>
+</ h1>
 
-#iubBroker的Multicast-APi适配器
-此适配器提供基于多播通信协议的API，以向具有自定义固件的设备发送和接收状态。
+＃ioBroker的Multicast-APi适配器
+该适配器提供基于多播通信协议的API，以使用自定义固件向设备发送和接收状态。
 
-这个适配器的目的是：
+该适配器的目的是：
 
-*提供http post和MQTT protokoll的替代方案
-*基于多播通信和JSON格式的数据传输，提供统一的API
-*配备零接触适配器以集成任何以太网设备（例如：基于ESP的电路板eq Wemos D1 mini），如Vansware / Gosound智能插头或其他自定义构建自动化。
+*提供http帖子和MQTT协议的替代方法
+*具有基于多播通信和JSON格式的数据传输的统一API
+*配备零接触适配器以集成任何以太网设备（例如：基于ESP的主板eq Wemos D1 mini），例如Vansware / Gosound智能插头或其他自定义构建自动化。
 
 ###零接触？
-APi的构建方式不需要在适配器本身或要使用的设备中使用最终用户的额外配置。
-我使用wifi传输，只能提供wifi凭证（基于lan的设备将自动处理）。
-这需要二进制文件的开发者在相关芯片组（如基于ESP的芯片组）上闪现的努力。
+APi的构建不需要在适配器本身或要使用的设备中使用最终用户的任何其他配置。
+如果使用wifi传输，则仅需提供wifi凭据（基于lan的设备将被完全自动处理）。
+这需要二进制文件的开发人员将其刷新到相关芯片组（如基于ESP的芯片组）上。
 
-当固件遵循APi的所有规则时（请参见下文），通信将按如下方式处理：
+当固件遵循APi的所有规则（请参见下文）时，通信将按以下方式处理：
 
 *设备通过UDP多播发送状态值
-*适配器识别此消息并检查ioBroker中是否存在此设备的状态
+*适配器识别此消息，并检查ioBroker中是否存在该设备的状态
 
 ####新设备
-从上一条消息开始，适配器指示未找到任何设备，以下例程将被处理：
+根据先前的消息，适配器指示未找到设备，将处理以下例程：
 
 * ioBroker发送广播消息以初始化设备
-*设备向ioBroker发送alle状态和相关结构
+*设备将Alle状态和相关结构发送到ioBroker
 * ioBroker创建新设备和所有必需的状态
-*创建所有状态后，ioBroker会向设备发送握手“准备接收数据”
-*设备开始间隔或通过更改发送状态（由设备开发人员编程）
+*创建所有状态后，ioBroker会向设备“准备接收数据”发送握手
+*设备开始按时间间隔或通过更改发送他的状态（由设备开发者编程）
 
 ####现有设备重新连接
-从上一条消息开始，适配器指示设备已经存在，以下例程将被处理：
+根据先前的消息，适配器指示的设备已经存在，将处理以下例程：
 
 * ioBroker检查配置是否设置为“恢复”
-*激活恢复后，ioBroker会将所有状态（exept信息状态）发送到设备
-*当收到所有状态时，de设备向ioBroker发送握手“准备接收数据”
-* ioBroker证实
-*设备开始间隔或通过更改发送状态（由设备开发人员编程）
+*激活还原后，ioBroker会将所有状态（例如信息状态）发送到设备
+*收到所有状态后，de设备将向ioBroker发送“准备接收数据”的握手
+* ioBroker确认
+*设备开始按时间间隔或通过更改发送他的状态（由设备开发者编程）
 
-####状态变化
-构建适配器以发送最多5次重试，以确保设备接收到所有状态更改。此过程按如下方式处理：
+####状态更改
+该适配器可发送最多5次重试，以确保设备收到所有状态更改。此过程按以下方式处理：
 
 * ioBroker中的状态已更改
-*适配器识别值更改并将新值发送到设备
-*设备必须在500ms内确认消息
+*适配器识别值更改，并将新值发送到设备
+*设备必须在500毫秒内确认消息
 *如果未确认消息，适配器将再次重新发送该值
-*这将最多处理5次重试，之后错误消息将指示通信丢失
+*这将最多处理5次重试，之后将显示错误消息，指示通信丢失
 
 ### APi结构和文档
-{待完成/正在进行中}
+{待完成/进行中}
+
+##待办事项：
+* [x]优化状态重试，不要每排队500ms再触发一次
+* [x]如果接收到Harbeat并且与设备的连接为FALSE，则发送恢复数据
+* []实施状态（值列表的功能）
+* []实现排队，在设备状态更改后等待20毫秒，并发送具有所有状态更新的阵列
+* []通过API实现过期值
+* [x]正确处理主机名和主机名更改
 
 ## Changelog
 

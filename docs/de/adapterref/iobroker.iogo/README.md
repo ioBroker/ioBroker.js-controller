@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
+hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 ---
 ![Logo](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,11 +16,14 @@ hash: bXtkq3tB/zDkbC3CUQsYHt1Ah4xu4hqiVn2KN7uMFOc=
 # IoBroker.iogo
 =================
 
-Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen (https://play.google.com/store/apps/details?id=de.nisnagel.iogo).
+Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen: https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
 Bitte besuchen Sie iogo.nisnagel.de für weitere Informationen zum Einstieg.
 
 ## Aufbau
-Sie sollten Ihre Kontoinformationen (E-Mail / Passwort) einstellen. Danach starten Sie den Adapter.
+Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter zu verwenden.
+Eine Lizenz kann nach Erstellung eines Accounts unter https://iogo.nisnagel.de erworben werden.
+
+Bitte geben Sie Ihre Kontoinformationen (E-Mail / Passwort) in die Instanzkonfiguration ein.
 
 ## Verwendungszweck
 Sie können Nachrichten an alle authentifizierten Benutzer über die Nachrichtenbox ```sendTo('iogo', 'New message')``` oder an bestimmte Benutzer ```sendTo('iogo', {user: 'Username', text: 'Test message'})``` senden.
@@ -70,8 +73,8 @@ sendTo('iogo', {
 
 ## Changelog
 
-### 0.4.0
-* (nisio) Changes for ioGo app version 2.0.0+
+### 0.4.x
+* (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)
 
 ### 0.3.x
 * (nisio) added support of compact mode

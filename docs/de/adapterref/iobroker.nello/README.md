@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: KHMCB9HRsYdH9J1r0p0yPnDhlS6GNyjrldwjCBn1gE0=
+hash: sHOaOz5BHT+mJFohoByLSWXfJTnKJ3ic0dCYB0egWGo=
 ---
 ![Logo](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
@@ -32,7 +32,8 @@ Entwickler können die Javascript-Implementierung der nello.io-API über https:/
 5. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-integration-using-iobrokerjavascript)
    1. [Tür mit Alexa öffnen] (# open-door-using-alexa)
    2. [Lassen Sie sich von Alexa über den Türring informieren] (# let-alexa-inform-you-about-door-ring)
-   3. [Lassen Sie sich von farbigen Lampen über den Türring informieren] (# Lassen Sie sich von farbigen Lampen über den Türring informieren)
+   3. [Lassen Sie sich vom Telegramm über den Klingelton informieren] (# Lassen Sie sich vom Telegramm über den Klingelton informieren)
+   4. [Lassen Sie sich von farbigen Lampen über den Türring informieren] (# Lassen Sie sich von farbigen Lampen über den Türring informieren)
 6. [Credits] (# Credits)
 7. [Changelog] (# changelog)
 8. [Lizenz] (# Lizenz)
@@ -139,7 +140,7 @@ Der Adpater ioBroker.cloud / ioBroker.iot empfängt das Ereignis von nello und s
 3. Fügen Sie `` `custom_nello``` hinzu (stellen Sie sicher, dass der Begriff, der an` `custom_``` angehängt ist, mit dem in Schritt 2 aufgeführten Wort übereinstimmt).
 4. Fügen Sie Ihren API-Schlüssel hinzu, sodass die URL möglicherweise wie folgt aussieht: https:// iobroker.net / service / custom_nello / xxxxxx```.
 5. Gehen Sie zur Konfiguration **nello adapter** und fügen Sie den Link in "_ioBroker.iot Service URL_" (in Option 1) ein.
-6. Speichern Sie die nello Adapter-Einstellungen und warten Sie, bis der Adapter (neu) gestartet wurde. Rufen Sie dann an Ihrer Tür an und überprüfen Sie, ob der Status von ioBroker.cloud erstellt wurde. Den Zustand `` custom_nello``` finden Sie in den ioBroker-Objekten über `` cloud.0.services```.
+6. Speichern Sie die nello Adapter-Einstellungen und warten Sie, bis der Adapter (neu) gestartet wurde. Dann klingeln Sie an Ihrer Tür und überprüfen Sie, ob der Status von ioBroker.cloud erstellt wurde. Sie finden den Status "custom_nello" in den ioBroker-Objekten über "cloud.0.services".
 7. Nachdem der Status erfolgreich erstellt wurde, starten Sie den nello Adapter erneut, um sicherzustellen, dass der nello Adapter diesen neu erstellten Cloud-Status abonniert
 
 #### Option 2: DynDNS-URL
@@ -308,8 +309,8 @@ var L = {
 
 on({id: 'nello.0.ID.events.feed', change: 'any'}, function(obj)
 {
-   var events = JSON.parse(obj.state.val);
-   if (events.length === 0) return;
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
 
    var event = events[events.length-1];
    if (event.action == 'deny')
@@ -330,6 +331,65 @@ _ (aktualisiert am 02.01.2019, um auch die Geo-Option mit einer bestimmten Alexa
 
 Basierend auf der Aktion der Veranstaltung werden Sie von Alexa über das Öffnen der Tür oder das Erkennen der Türklingel informiert.
 ** WICHTIG **: Ersetzen Sie #Ihre TÜR-ID # (auch #) durch Ihre Nelltür-ID.
+
+### Lassen Sie sich von Telegram über den Klingelton informieren
+Dies erfordert den ioBroker-Adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram#iobroker-telegram-adapter).
+
+Um den Telegramm-Messenger nutzen zu können, definieren wir eine Funktion ```msg```. Platzieren Sie die folgende Funktion in einem Skript im "globalen" Ordner von ioBroker.javascript (Sie können sie in dieselbe wie oben platzieren).
+
+```javascript
+/**
+ * Send something with Telegram
+ *
+ * @param       {string}        content         Content to send via Telegram
+ * @param       {string}  		[user='']		User to send the content to
+ * @return      void
+ *
+ */
+function msg(content, user = '')
+{
+    const CONFIG = {
+        text: content,
+        parse_mode: 'HTML'
+    };
+
+    sendTo('telegram', user ? Object.assign({user: user}, CONFIG) : CONFIG);
+}
+```
+
+Sie können diese Funktion in ioBroker.javascript verwenden, um mit ```msg('Hello World')``` etwas an Telegramm zu senden. Sie können ```msg('Hello World', 'User')``` verwenden, um den Inhalt an einen bestimmten Benutzer zu senden.
+
+Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript (oder verwenden Sie das oben erstellte) und fügen Sie den folgenden Listener hinzu:
+
+```javascript
+var L = {
+   'actionRingUnknown': 'Es hat geklingelt',
+   'actionOpenName': '%name% hat die Tür geöffnet',
+   'actionOpenGeo': '%name% hat das Haus betreten',
+   'actionOpen': 'Die Haustür wurde geöffnet'
+};
+
+on({id: 'nello.0.ID.events.feed', change: 'any'}, function(obj)
+{
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
+
+   var event = events[events.length-1];
+   if (event.action == 'deny')
+      msg(L.actionRingUnknown);
+
+   else if (event.action == 'swipe')
+      msg(L.actionOpenName.replace(/%name%/gi, event.data.name));
+
+   else if (event.action == 'geo')
+      msg(L.actionOpenGeo.replace(/%name%/gi, event.data.name));
+
+   else
+      msg(L.actionOpen);
+});
+```
+
+Basierend auf der Aktion des Ereignisses informiert Sie Telegramm über das Öffnen der Tür oder das Erkennen der Türklingel.
 
 ### Lassen Sie sich von farbigen Lampen über den Türring informieren
 Diese Funktionalität erfordert einen Adapter, der farbige / RGB-Lampen einstellen kann, z. ioBroker.hue (https://github.com/ioBroker/ioBroker.hue).
@@ -442,8 +502,8 @@ var rgb = {
 
 on({id: 'nello.0.#YOUR DOOR ID#.events.feed', change: 'any'}, function(obj)
 {
-    var events = JSON.parse(obj.state.val);
-    if (events.length === 0) return;
+   var events = obj && obj.state && JSON.parse(obj.state.val);
+   if (!events || events.length == 0) return;
 
     var event = events[events.length-1];
     if (event.action == 'deny')

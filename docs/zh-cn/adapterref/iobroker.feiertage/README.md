@@ -11,26 +11,35 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.feiertage/README.md
 title: ioBroker.feiertage
-hash: qYlYYqvosUfbrKQMNrhWrO1zVhlTljZdm86GWXv9XIM=
+hash: LCkDOioMHElQsEWf0/+/KDRtr1cLoWGbmJ3sBvdAzjM=
 ---
 ![徽标](../../../de/adapterref/iobroker.feiertage/../../admin/feiertage.png)
 
 ＃ioBroker.feedage
-## Description
-此适配器提供日期，截止日期的持续时间以及下一个德国假日的名称，并提供今天，明天或后天是公众假期的信息。
+##说明
+该适配器提供日期，到该日期为止的持续时间（以天为单位）以及下一个德国假日的名称，并提供有关今天，明天或后天是公共假日的信息。
 
-##数据点
-![旧文本](../../../de/adapterref/iobroker.feiertage/img/DatapointsScreenshot.jpg "截图数据点")
+##个数据点
+![旧文字](../../../de/adapterref/iobroker.feiertage/img/DatapointsScreenshot.jpg "屏幕截图数据点")
 
 ##设置
-可以选择填写数据点时应考虑的假期。
+可以选择填充数据点时应考虑的假期。
 
-![旧文本](../../../de/adapterref/iobroker.feiertage/img/SettingScreenshot.jpg "截图设置")
+![旧文字](../../../de/adapterref/iobroker.feiertage/img/SettingScreenshot.jpg "屏幕截图设置")
 
 ##激活
-适配器每天午夜开始。不需要更频繁的开始。
+适配器每天在午夜启动。无需更频繁地启动。
+
+##其他
+当然，可以使用不同的假期选择来创建适配器的其他实例。所以你可以，例如涵盖度假者的不同要求。 [快门控制适配器](https://github.com/simatec/ioBroker.shuttercontrol/blob/master/docs/de/shuttercontrol.md#extra-einstellungen)是一个示例应用程序。
 
 ## Changelog
+### 1.0.13 (2019-09-20)
+* (pix) Offsets corrected
+
+### 1.0.12 (2019-08-26)
+* (pix) Added Weltkindertag (Thuringa)
+
 ### 1.0.11 (2018-10-29)
 * (pix) Added Mariä Empfängnis for AUT
 
@@ -133,9 +142,9 @@ hash: qYlYYqvosUfbrKQMNrhWrO1zVhlTljZdm86GWXv9XIM=
 
 ## License
 
-The MIT License (MIT)
-
 Copyright (c) 2019 pix
+
+The MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

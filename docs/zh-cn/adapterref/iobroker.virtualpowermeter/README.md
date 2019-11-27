@@ -3,35 +3,38 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.virtualpowermeter/README.md
 title: 无题
-hash: HBsrvOqmlVU3gl72E4L7SD4u97k/4ZAYYxiWWwwoumY=
+hash: E04ZmJdpmUttJASwL6vMO8tWk/BvKQa2AYb2A+JFy8c=
 ---
+![节点](https://img.shields.io/node/v/iobroker.virtualpowermeter.svg)
 ![安装数量](http://iobroker.live/badges/virtualpowermeter-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.virtualpowermeter.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.virtualpowermeter.svg)
 ![依赖状态](https://img.shields.io/david/Omega236/iobroker.virtualpowermeter.svg)
-![已知的漏洞](https://snyk.io/test/github/Omega236/ioBroker.virtualpowermeter/badge.svg)
+![已知漏洞](https://snyk.io/test/github/Omega236/ioBroker.virtualpowermeter/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.virtualpowermeter.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/Omega236/ioBroker.virtualpowermeter/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Omega236/ioBroker.virtualpowermeter?branch=master&svg=true)
+![执照](https://img.shields.io/npm/l/iobroker.virtualpowermeter.svg)
 
 <h1><img src="admin/virtualpowermeter.png" width="64"/> ioBroker.virtualpowermeter </h1>
 
-适用于ioBroker的## virtualpowermeter适配器
+##用于ioBroker的virtualpowermeter适配器
 Erzeugt Virtuelle Strommesser
 
-Im Smarthome帽子男人vieleGerätedieman zwar schalten kann，diese aber keinen integrierten Powermeter haben（meist Lichter）。
+我是Smarthome的帽子生产商，生产商是zwar schalten kann，生产商是Powermeter haben（迈克·利希特）。
 
-Mit diesem Adapter ist das Ziel zu jedem eingestelltem Datenpunkt（überCustom - > MaxWatt（z.B.60W））zweizusätzlicheDatenpunktezubefüllen - > Energy_Power（z.B。60 W）und Energy_Total（z.B。2501,23 Wh）。
-ZusätzlichwerdenGruppen gebildet（diese werden unter virtualpowermeter.0.xxx abgelegt）die die summe der einzelnen Datenpunkte darstellt
+Mit Diesem Adapter ist das Ziel zu jedem eingestelltem Datenpunkt（überCustom-> MaxWatt（z.B. 60W））zweizusätzlicheDatenpunkte zubefüllen-> Energy_Power（z.B. 60 W）和Energy_Total（z.B. 2501,23 Wh）。
+Zusätzlichwerden Gruppen gebildet（virtualpowermeter.0.xxx的死者werden）死因总和
 
-Mit diesen neuen Datenpunkten kann dann eine EinfacheVisualiserungdurchgeführtwerden。
+您可以在这里找到更多信息。
 
-Die neuen Datenpunkte（besonders die Gruppen）könntensupermit Sourceanalytix weiterverarbeitet werden
+Die neuen Datenpunkte（Gruppen的遗迹）超级麻将Sourceanalytix weiterverarbeitet werden
 
 siehe MeinBeispiel.jpg
 
 ## Changelog
-
+### 1.0.1
+* (Lutz Sebastian) SecurityUpdates
 ### 1.0.0
 * (Lutz Sebastian) Final Release
 ### 0.2.8

@@ -16,7 +16,7 @@ USE AT YOUR OWN RISK!!! ABSOLUTELY NO WARRANTY FOR DAMAGES, ETC.!!!
 
 Help or hints are welcome.
 
-## Steps 
+## Steps
 
 1. Install the adpater
 
@@ -24,9 +24,21 @@ Help or hints are welcome.
 
 ## Requirements
 
-* stiebel-eltron/tecalor internet service gateway (ISG)   
+* stiebel-eltron/tecalor internet service gateway (ISG)
 
 ## Changelog
+
+### 1.4.10
+
+* bugfix for group definitons
+
+### 1.4.9
+
+* bug in rounding for info-values fixed
+
+### 1.4.8
+
+* update due to security vulnerabilities in dependencies
 
 ### 1.4.7
 
@@ -75,7 +87,7 @@ Help or hints are welcome.
 
 ### 1.2.4
 
-* bug repaired: unnecessary space characters in units removed 
+* bug repaired: unnecessary space characters in units removed
 
 ### 1.2.3
 

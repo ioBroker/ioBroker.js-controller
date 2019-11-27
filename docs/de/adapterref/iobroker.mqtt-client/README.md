@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mqtt-client/README.md
 title: ioBroker.mqtt-client
-hash: 6qFhuG22DX3ZziD5rAKORxAIVJLyjGaQEtw6IgmNcKo=
+hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 ---
 ![Logo](../../../en/adapterref/iobroker.mqtt-client/admin/mqtt-client.png)
 
@@ -12,64 +12,68 @@ hash: 6qFhuG22DX3ZziD5rAKORxAIVJLyjGaQEtw6IgmNcKo=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mqtt-client.svg)
 ![NPM](https://nodei.co/npm/iobroker.mqtt-client.png?downloads=true)
 
-# IoBroker.mqtt-client =====================
+# IoBroker.mqtt-client
 ## Adaptereinstellungen
-![Adapter](../../../en/adapterref/iobroker.mqtt-client/settings.png)
+![Adapter](../../../en/adapterref/iobroker.mqtt-client/img/settings.png)
 
-### Zu Thema und Nachricht verbinden
-Der ```on connect message``` wird bei jedem Verbindungsaufbau des Clients mit dem Server in den ```on connect topic``` veröffentlicht.
+### Beim Verbinden von Thema und Nachricht
+Die ```on connect message``` werden jedes Mal im ```on connect topic``` veröffentlicht, wenn der Client eine Verbindung zum Server herstellt oder eine neue Verbindung herstellt.
 
-### Last wird Thema und Nachricht
-Der ```last will message``` wird bei jedem Verbindungsaufbau des Clients mit dem Server in den ```last will topic``` veröffentlicht.
+### Letztes Thema und Nachricht
+Die ```last will message``` werden jedes Mal im ```last will topic``` veröffentlicht, wenn der Client eine Verbindung zum Server herstellt oder eine neue Verbindung herstellt.
 Der Server speichert diese Nachricht und sendet sie an seine Abonnenten, wenn der Client die Verbindung trennt.
 
-### Abonnements
-Kommagetrennte Liste von Themen, die nicht durch vorhandene Zustände abgedeckt werden.
-Empfangene Nachrichten werden in Zustände innerhalb des Namensraums des Adapters (z. B. mqtt.0) konvertiert und abonniert.
+### Abos
+Kommagetrennte Liste von Themen, die nicht von bestehenden Staaten abgedeckt werden.
+Empfangene Nachrichten werden in Status innerhalb des Adapter-Namespaces (z. B. mqtt.0) konvertiert und abonniert.
 Sie können Themen entfernen, nachdem alle Status erstellt wurden.
 
-### Veröffentlichungspräfix
+### Präfix veröffentlichen
 Bei der Veröffentlichung wird dies allen Themen vorangestellt.
 Standard ist leer (kein Präfix).
 
-### Abonnieren Präfix
-Bei der Anmeldung wird dies allen Themen vorangestellt.
+### Präfix abonnieren
+Beim Abonnieren wird dies allen Themen vorangestellt.
 Standard ist leer (kein Präfix).
 
-## Zustandseinstellungen
-![Zustand](../../../en/adapterref/iobroker.mqtt-client/dialog.png)
+## Statuseinstellungen
+![Zustand](../../../en/adapterref/iobroker.mqtt-client/img/dialog.png)
 
 ### Aktiviert
-Aktiviert oder deaktiviert die mqtt-Client-Funktionalität für diesen Status.
-Durch das Deaktivieren werden alle Einstellungen des Mqtt-Clients aus diesem Status gelöscht.
+Aktiviert oder deaktiviert die mqtt-client-Funktionalität für diesen Status.
+Durch Deaktivieren werden alle mqtt-client-Einstellungen aus diesem Status gelöscht.
 
 ### Thema
-Das Thema, in dem dieser Status veröffentlicht und von diesem veröffentlicht wurde.
-default: state-ID in ein Mqtt-Thema konvertiert.
+Das Thema, für das dieser Status veröffentlicht und abonniert wurde.
+Standard: Status-ID in ein mqtt-Thema konvertiert.
 
 ### Veröffentlichen
-* `` `` `` `Zustand wird veröffentlicht
-* `` `changes only``` wird nur veröffentlicht, wenn sich der Wert ändert
-* `` `as object``` full state wird als Objekt veröffentlicht
+* `` `enable``` state wird veröffentlicht
+* `` `change only``` state wird nur veröffentlicht, wenn sich sein Wert ändert
+* `` `als Objekt``` Der gesamte Status wird als Objekt veröffentlicht
 * `` `qos``` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-* `` `` ```` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
+* Siehe <http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
 
 ### Abonnieren
-* `` `` `` `Thema wird abonniert und der Status wird entsprechend aktualisiert
-* `` `changes only``` state wird nur geschrieben, wenn sich der Wert geändert hat
-* `` `as object```-Nachrichten werden als Objekte interpretiert
+* `` `enable``` wird abonniert und der Status entsprechend aktualisiert
+* `` `change only``` state wird nur geschrieben, wenn sich der Wert ändert
+* `` `als Objekt``` Nachrichten werden als Objekte interpretiert
 * `` `qos``` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-* `` `ack``` bei Statusaktualisierungen wird das Ack-Flag entsprechend gesetzt
+* `` `ack``` on state updates das ack flag wird entsprechend gesetzt
 
 #### Hinweis
-* Wenn ack auf true gesetzt ist, werden Objekte ack überschrieben, siehe `` as object '`
-* Um Nachrichtenschleifen zu verhindern, wenn sowohl Publizieren als auch Abonnieren aktiviert sind, ist `` changes only``` für das Abonnieren immer aktiviert
+* Wenn ack auf true gesetzt ist, überschreibt es Objekte ack, siehe `` as object```
+* um Nachrichtenschleifen zu vermeiden, wenn sowohl Publizieren als auch Abonnieren aktiviert sind `` Nur Änderungen``` ist immer zum Abonnieren aktiviert
 
 ## MACHEN
-* Test Präfixe
-* Verbinden / Wiederverbinden ohne saubere Sitzung
+* Testpräfixe
+* Connect / Reconnect ohne saubere Sitzung
 
 ## Changelog
+### 1.2.0 (2019-10-14)
+* (bluefox) Used MQTT 5.0
+* (bluefox) Support of js-controller 2.0 was added
+
 ### 1.1.1 (2018-01-30)
 * (bluefox) small fixes
 
@@ -85,7 +89,7 @@ default: state-ID in ein Mqtt-Thema konvertiert.
 ### 0.3.2 (2016-11-18)
 * (Pmant) fix initial object parsing
 * (Pmant) fix objects view
- 
+
 ### 0.3.1 (2016-11-16)
 * (Pmant) fix crash
 
@@ -103,3 +107,26 @@ default: state-ID in ein Mqtt-Thema konvertiert.
 
 ### 0.1.0 (2016-06-08)
 * (Pmant) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016-2019 Pmant
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

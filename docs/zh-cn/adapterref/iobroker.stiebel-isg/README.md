@@ -2,33 +2,45 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.stiebel-isg/README.md
-title: ioBroker.stiebel-isg！[Logo]（admin / stiebel-isg.png）
-hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
+title: ioBroker.stiebel-isg！[徽标]（admin / stiebel-isg.png）
+hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
 ---
 ![安装数量](http://iobroker.live/badges/stiebel-isg-stable.svg)
 ![建立状态](https://api.travis-ci.org/unltdnetworx/ioBroker.stiebel-isg.svg?branch=master)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.stiebel-isg.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.stiebel-isg.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.stiebel-isg.svg)
 ![NPM](https://nodei.co/npm/iobroker.stiebel-isg.png?downloads=true)
 
 ＃ioBroker.stiebel-isg![商标](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 =================
 
-此适配器用于从stiebel-eltron / tecalor互联网服务网关（ISG）读取值并控制设备。
+该适配器可用于从stiebel-eltron / tecalor Internet服务网关（ISG）读取值并控制设备。
 
-使用自己承担风险！绝对不保证损害等等。
+自行承担风险！！！绝对不为损坏提供保修，等等！！！
 
 欢迎提供帮助或提示。
 
 ＃＃ 脚步
 1.安装adpater
 
-2.从你的stiebel-isg。[x]  - 对象中获取值。
+2.从您的stiebel-isg。[x]对象中获取值。
 
 ＃＃ 要求
 * stiebel-eltron / tecalor互联网服务网关（ISG）
 
 ## Changelog
+
+### 1.4.10
+
+* bugfix for group definitons
+
+### 1.4.9
+
+* bug in rounding for info-values fixed
+
+### 1.4.8
+
+* update due to security vulnerabilities in dependencies
 
 ### 1.4.7
 
@@ -77,7 +89,7 @@ hash: JmhB/Hp0ooWrLtoy98i9UXaene9hyWkBypvKl132OH8=
 
 ### 1.2.4
 
-* bug repaired: unnecessary space characters in units removed 
+* bug repaired: unnecessary space characters in units removed
 
 ### 1.2.3
 

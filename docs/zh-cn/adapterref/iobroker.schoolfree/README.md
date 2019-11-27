@@ -3,66 +3,77 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: aAgpzMQSPRFzfXLU6vJ8g9hjY9lngmIhTi6UkHFu6Jo=
+hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
 ---
 ![商标](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
 ![安装数量](http://iobroker.live/badges/schoolfree-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.schoolfree.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.schoolfree.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.schoolfree.svg)
 ![依赖状态](https://img.shields.io/david/simatec/iobroker.schoolfree.svg)
-![已知的漏洞](https://snyk.io/test/github/simatec/ioBroker.schoolfree/badge.svg)
-![特拉维斯-CI](http://img.shields.io/travis/simatec/ioBroker.schoolfree/master.svg)
+![已知漏洞](https://snyk.io/test/github/simatec/ioBroker.schoolfree/badge.svg)
+![特拉维斯](http://img.shields.io/travis/simatec/ioBroker.schoolfree/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/simatec/ioBroker.schoolfree?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
-#ioBroker.schoolfree
-适用于ioBroker的## schoolfree适配器
+＃ioBroker.schoolfree
+##适用于ioBroker的schoolfree适配器
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
 ### Deutsche Beschreibung：
-Schoolfree ist einAdapterfüriobrokerInstallationen。
-Mit dem Adapter lassen sich die Schulferien auswerten und inDatenpunkteübergeben。
-DieDatenpunktekönnenomitfürweitereFunktionen wie Heizungssteuerungen，Rolladen- und Anwesenheitssteuerungen ausgewertet und verarbeitet werden。
+校内免费安装适配器。
+在Datenpunkteübergeben的Schmiterien auswerten und Mit dem Adapter。
+Die Datenpunktekönnensomitfürweitere Funktionen wie Heizungssteuerungen，Rolladen- and Anwesenheitssteuerungen ausgewertet and verarbeitet werden。
 
-Der aktuelle Bezug vonTerminenfürdieSchulferienerfolgtüberdieAPI von https://www.mehr-schulferien.de
+API的https://www.mehr-schulferien.de
 
-Aktuell werden die Schulferien und freienTagefürDeutschlandunterstützt。
+德国和德国之间的友谊。
 
-Folgende Datenpunkte stehen mitSchoolfreefürdieweitere VerarbeitungzurVerfügung：
+从学校到学校的日程安排：
 
-* info.current.end：DatumfürdasEnde der aktuellen Ferien
-* info.current.name:Bezeichnung der aktuellen Schulferien
-* info.current.start:Fartdatum der aktuellen Ferien
-*info.next.end:GatumfürdasEndedernächstenFerien
-* info.next.name:BezeichnungdernächstenSchulferien
-* info.next.start:StartdatumdernächstenFerien
-* info.today：Switchfürdenaktuellen状态heute（true / false）
-* info.tomorrow：Switchfürdenaktuellen状态morgen（true / false）
+* info.current.end：Datumfürdas Ende der aktuellen Ferien
+* info.current.name：Bezeichnung der aktuellen Schulferien
+* info.current.start：开始日期
+* info.next.end：费恩（Fer das Ende dernächstenFerien）
+*信息名称：Bezeichnung dernächstenSchulferien
+* info.next.start：开始日期Ferien
+*今日信息：切换状态列表（真/假）
+* info。明天：Switch forfürden aktuellen Status morgen（true / false）
 
 *************************************************************************************************************************************
 
 ###英文说明：
-Schoolfree是iobroker安装的适配器。
-使用适配器，可以评估学校假期并将其转移到数据点。
-因此，可以评估和处理数据点以用于其他功能，例如加热控制，快门和存在控制。
+Schoolfree是用于iobroker安装的适配器。
+使用适配器，可以评估学校假期并将其传输到数据点。
+因此，可以针对其他功能（例如加热控制，快门和存在控制）评估和处理数据点。
 
-目前的学校假期订阅是通过https://www.mehr-schulferien.de的API
+当前的学校假期订阅是通过https://www.mehr-schulferien.de的API进行的
 
-目前，支持德国的学校假期和休假。
+目前，支持德国的学校假期和放假时间。
 
-以下数据点可供Schoolfree进一步处理：
+以下数据点可用于Schoolfree进行进一步处理：
 
 * info.current.end：当前假期结束的日期
 * info.current.name：当前学校假期的名称
-* info.current.start：当前假日的开始日期
+* info.current.start：当前假期的开始日期
 * info.next.end：下一个假期结束的日期
 * info.next.name：下一个学校假期的名称
 * info.next.start：下一个假期的开始日期
-* info.today：今天切换当前状态（true / false）
-* info.tomorrow：明天切换当前状态（true / false）
+*今天的信息：今天切换为当前状态（是/否）
+* info。明天：明天切换为当前状态（对/错）
 
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.3.1 (28.10.2019)
+* (simatec) Fix start after install
+
+### 0.3.0 (18.10.2019)
+* (simatec) end of node 6 support
+* (simatec) changed dateformat
 
 ### 0.2.2 (04.06.2019)
 * (simatec)new object structure

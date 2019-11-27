@@ -17,6 +17,26 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.17
+
+-   add connection via ODB Adapter (Adapter App)
+
+### 0.0.16
+
+-   fix fueling will not recording probably
+
+### 0.0.15
+
+-   fix soc history bug, add basic price and  adapter restart every 6h
+
+### 0.0.14
+
+-   fix when webpage streams are not reachable
+
+### 0.0.13
+
+-   add hard reconnect after 6h for stream data
+
 ### 0.0.12
 
 -   add gas prices via tankerkönig

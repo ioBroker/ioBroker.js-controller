@@ -129,6 +129,18 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.6.6 (2019-11-21)
+* (foxriver76) improved error handling in widget
+
+### 1.6.5 (2019-09-22)
+* (foxriver76) re-auth when bearer token is no longer valid
+
+### 1.6.3 (2019-08-28)
+* (foxriver76) fixed bug which only allowed one registered event handler
+* (foxriver76) by using obj with wid instead of var because vis handles global variables of widgets global
+* (foxriver76) now more bring widgets can be used in one vis project
+* (foxriver76) bump version of textFit to 2.3.1 -> 2.4.0 and use minified version
+
 ### 1.6.2 (2019-08-04)
 * (foxriver76) also use translations for enumSentence and notifiations (e. g. email)
 

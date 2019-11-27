@@ -3,16 +3,17 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: 5ikYMO9N6xRwzYabxcpGt0/3qRMjI8H71DF8VB/w2CQ=
+hash: dd89TC8+mUVZyhj0EwZ7Du9fDTn0IgeGmiVSl27FBOc=
 ---
 ![商标](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
-![安装数量](http://iobroker.live/badges/knx-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.knx.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.knx.svg)
 ![NPM](https://nodei.co/npm/iobroker.knx.png?downloads=true)
 
-＃ioBroker.knx =================
+＃ioBroker.knx
+=================
+
 ##说明
 EN：此适配器允许从ETS导入knxproj文件。它生成KNX-groupaddresses和ioBroker之间的转换，并将设备放入房间（尤其是MobileUI）。
 
@@ -20,9 +21,6 @@ EN：此适配器允许从ETS导入knxproj文件。它生成KNX-groupaddresses�
 
 开始之前：应该在您的ETS项目中设置com.Objects的每个DPT。每个设备都应该分类到您的设施结构中。
 
-##在1.0.19暂时暂停
-###版本1.0.18的注意：对于将来的版本，我已经将“boolean”的值从1和0更改为true false，因为它应该是。实际上，检查脚本是否使用“true”和“false”而不是0和1
-###ACHTUNGfür版本1.0.18：FürzukünfigeVersowenwurden dieWertefürdenDPT1.xxx boolean wurde von 1 bzw 0 auf true bzw false gesetzt。 Deshalb sind alle Scripte auf diese Auswertung hinzuspüfen。
 ＃＃ 特征：
 *导入knxproj文件
 *生成类似ETS的对象结构
@@ -76,10 +74,21 @@ Hier wird死于GAS anhand der GAR ID的erzeugt und ebenfalls死于DPT的zugeordn
 
 ### 3）Herausfinden der Schalt- und Statusaddressen
 在dem ETS Export sind die Schalt- und Statusadressen nicht hinterlegt。 SomitführeicheineÄhnlichkeitsprüfungransupGruppenadressnamen durch mit der Auswertung auf status und state。
-WirdeinPärchengefunden，dessenÄhnlichkeitmehrals 70％beträgt，dann wird angenommen，das die GA1 die Schaltadresse und GA2 die Statusadresse ist。 DabeiehältGA1das write = true und read = false und GA2 das write = false und read = true。
+WirdeinPärchengefunden，dessenÄhnlichkeitmehrals 90％beträgt，dann wird angenommen，das die GA1 die Schaltadresse und GA2 die Statusadresse ist。 DabeiehältGA1das write = true und read = false und GA2 das write = false und read = true。
 Ausserdem werden die DPT abgeglichen aus der jeweilig korrespondierenden GA。 Aus diesem Grund ist es schwierig，Pärchenzufinden，wenn die Gruppenadressbeschriftungen nicht konsistent sind。
 
-### 4）ErzeugenderDatenpunktpärchen（im folgenden DPP）
+Weiterhin werden die dendenGerätekonfigurationenbetrachtet。 Dabei werden die Flags wie folgt umgesetzt：
+
+| KNX ||| iobroker |||
+|莱森| Schreiben | Übertragen| Lesen | Schreiben | Erklärung|
+|-----------------------------------------------------------|
+| -  | -  | -  | -  | -  | der wertwirdüberGroupValueResponseaktualiesiert |
+| x | -  | -  | x | x | ein TriggerdarauflöstGroupValueReadaus |
+| -  | x | -  | -  | x | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus |
+| -  | -  | x | x | -  | der WertwirdüberGroupValueResponseaktualisiert |
+| x | -  | x | x | x | ein TriggerdarauflöstGroupValueReadaus |
+
+### 4）Erzeugen der Datenpunktpaaren（im folgenden DPP）
 Ein DPP wird erzeugt，wenn die GA，GAR und der DPT .....ind。 Mit diesen DPP arbeitet der Adapter。 Fehlen也死于DPT的einer GA，weil sie auf keiner der o。 A. Wege gefunden werden konnte，所以w w f f f f GA GA DP DP DP DP DP DP DP DP DP DP DP DP DP DP B.::::::::::::::::::::::::::::::::::::
 
 Im Idealfall werdensomitfüreinenSchaltkanal 2 DPP erzeugt。 Das erste ist das Schalten。在diesem ist die GAR ID des Status DPP hinterlegt。 Das zweite ist dann das Status DPP ohne weitere Refenrenz。
@@ -111,6 +120,36 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 *需要节点版本> 8.9.4！
 
 ## Changelog
+### 1.0.33 (2019-09-12)
+* fixed bug while writing to bus
+* added units to states
+* fixed "read/write of undefined" error
+
+### 1.0.32 (2019-09-03)
+* updated importer for ETS V5.7.2, some changes in KNX-stack statemachine
+
+### 1.0.31
+* some fixes on ETS5.7.2 importer
+* small changes in knx-stack statemachine
+* added (again) phys address to admin config dialog
+
+### 1.0.31
+* fixed bug in deviceTree generation
+
+### 1.0.30
+* new Importer for ETS5.7.2 knxproj files
+* extended accepted Datapointtypes
+* new adapter configuration menu
+* implemented a switch for the user to decide to use "true" and "false" or "0" or "1" for binary values
+* fixed bug in GroupValue_Read
+* implemented a selector for local network interface for KNX to Gateway communiction
+* extended State Object for later features
+* fixed some small other bugs
+
+### 1.0.20
+* fixed bug in handling KNX-data packages, which occures periodical reconnects
+* fixed bug in KNX-projectfile upload procedure
+
 ### 1.0.19
 * reverted to true/false handling for DPT1.x
 

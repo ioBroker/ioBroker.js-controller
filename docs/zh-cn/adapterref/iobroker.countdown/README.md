@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: Zev4uVyABT0yxwZxD5Oz+mujy9UL8xc4M5AO6iz8v3A=
+hash: 6m4E+5DhMPAtwRejIliYG6m+WNCHVJYCBw+/CSuNbx4=
 ---
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -46,7 +46,7 @@ ioBroker的倒计时适配器---------------------------------------------- ----
 |小时|倒数结束前的小时数（不是全部！）|
 |天|倒计时结束的天数（不是全部！）|
 |月|倒计时结束的月份（不是全部！）|
-|年|倒计时结束的年份（不是全部！）|
+|年|倒数结束的年份（不是全部！）|
 |名称|倒计时名称|
 | endDate |倒计时结束日期 - 在设置定义中格式化 |
 | inWordsShort |分钟，小时，...的组合值 - 例如1Y 5M 4D |
@@ -60,14 +60,16 @@ ioBroker的倒计时适配器---------------------------------------------- ----
 *可以添加脚本作为参数，并在倒计时结束时启动它
 *可以在addminutes和其他添加功能中使用加号和减号
 
-## 0.5.0（2019-07-04）
-*（jack-blackson）调整表格中的数据
-*（jack-blackson）错误修正日期导入
+## 1.0.4（2019-08-25）
+*（jack-blackson）重新发布的信息
 
-## 0.6.0（2019-07-06）
-*（jack-blackson）可调日期格式，用于输入和输出
-*（jack-blackson）用sendto删除倒计时
-*（jack-blackson）从现在开始按天/月/周添加倒计时的能力
+## 1.0.3（2019-08-10）
+*（jack-blackson）紧凑模式的变化
+*（jack-blackson）各种错误修正
+*（jack-blackson）现在可以使用适配器的多个实例
+
+## 1.0.2（2019-07-22）
+*（jack-blackson）发行版
 
 ## 0.7.0（2019-07-07）
 *（jack-blackson）错误修正
@@ -75,26 +77,28 @@ ioBroker的倒计时适配器---------------------------------------------- ----
 设置中的*（jack-blackson）数据点现在可以编辑
 *（杰克 - 布莱克森）增加了总数。几个星期
 
-## 1.0.2（2019-07-22）
-*（jack-blackson）发行版
+## 0.6.0（2019-07-06）
+*（jack-blackson）可调日期格式，用于输入和输出
+*（jack-blackson）用sendto删除倒计时
+*（jack-blackson）从现在开始按天/月/周添加倒计时的能力
 
-## 1.0.3（2019-08-10）
-*（jack-blackson）紧凑模式的变化
-*（jack-blackson）各种错误修正
-*（jack-blackson）现在可以使用适配器的多个实例
+## 0.5.0（2019-07-04）
+*（jack-blackson）调整表格中的数据
+*（jack-blackson）错误修正日期导入
+
+### 0.4.0（2019-06-04）
+*（jack-blackson）重组 - 现在可以使用sendto或手动使用datapoint创建警报
+
+### 0.3.0（2019-05-24）
+*（jack-blackson）增加了总天数和小时数
+
+### 0.2.0（2019-05-21）
+*（jack-blackson）调整套餐
+
+### 0.1.0（2019-04-29）
+*（jack-blackson）初始版本
 
 ## Changelog
-### 0.1.0 (2019-04-29)
-* (jack-blackson) initial version
-
-### 0.2.0 (2019-05-21)
-* (jack-blackson) adjusted packages
-
-### 0.3.0 (2019-05-24)
-* (jack-blackson) added total No. of days and hours
-
-### 0.4.0 (2019-06-04)
-* (jack-blackson) restructuring - creation of alarms with sendto or manually with datapoint is now possible
 
 ## License
 The MIT License (MIT)

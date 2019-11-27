@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.upnp/README.md
 title: ioBroker.upnp
-hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
+hash: fLFkntZ34BVfHeFIN9BgSFM5pbg/hJ7cZwTZSm8/U00=
 ---
 ![логотип](../../../en/adapterref/iobroker.upnp/admin/upnp-discovery.png)
 
@@ -13,8 +13,6 @@ hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
 ![Образ](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
 # IoBroker.upnp
-ВАЖНО: этот адаптер находится в состоянии бета-версии.
-
 *** Нужен узел 4.x +! ***
 
 1. [Deutsch] (# german_description)
@@ -43,8 +41,8 @@ Dient der Kommunikation und Interaktion mit allen UPnP-Fähigen Geräten.
 
 #### Было ли это UPnP?
 UPnP = универсальный подключи и играй. Первый этап стандартизации в области коммуникаций и исследований в области здравоохранения.
-Dazu gibt es sogenannte „Schemas“, diese werden в форме einer xml Datei dargestellt. Вся информация о программном обеспечении и услугах Dienste die Sie Bereit Stellen. Damit diese Dienste auch Nutzbar sind, wird auch eine Beschreibung zu jedem Dienst mitgeliefert. Diese Beschreibung folgt dem für den Dienst festgelegten Schema, dadurch können schnell Informationen and Befehle ausgetauscht werden ohne das es nötig ist zu wissen um Welches Modell on the Welchem Hersteller das Gerät oder as is is is. В настоящее время он имеет дело со стандартными стандартами Mediengeräte и Software genutzt. Seit einiger Zeit gibt es Bestrebungen auch die Kommunikation des IoT - Internet of Things «со своей диетологией Standardisierung zu vereinheitlichen.
-Dazu wurde 2016 от «Фонда открытого подключения», посвященного вопросам поддержки форумов UPnP, и до сих пор не прошедших проверку на соответствие стандартам.
+Dazu gibt es sogenannte „Schemas“, diese werden в форме einer xml Datei dargestellt. Вся информация о программном обеспечении и услугах Dienste die Sie Bereit Stellen. Damit diese Dienste auch Nutzbar sind, wird auch eine Beschreibung zu jedem Dienst mitgeliefert. Diese Beschreibung folgt dem für den Dienst festgelegten Schema, dadurch können schnell Informationen and Befehle ausgetauscht werden ohne das es nötig ist zu wissen um Welches Modell on the Welchem Hersteller das Gerät oder is is is is. В настоящее время он имеет дело со стандартными стандартами Mediengeräte и Software genutzt. Seit einiger Zeit gibt es Bestrebungen auch die Kommunikation des «IoT - Интернет вещей» и новый стандарт безопасности.
+Dazu wurde 2016 от «Открытого фонда связи», посвященного вопросам организации форумов UPnP, и до сих пор не прошедших проверку.
 
 #### Funktionsbeschreibung
 Der Adapter führt beim ersten Начните вещание в прямом эфире в прямом эфире и в эфире. Die Antworten enthalten den Link zu den xml Dateien der Dienste. Anhand der xml Dateien werden die Objekte в ioBroker erzeugt und mit allen verfügbaren Informationen befüllt.
@@ -59,13 +57,13 @@ Jedes Gerät oder Программное обеспечение умирает �
 
 - sendEvents = Bedeutung bis jetzt Unbekannt.
 - allowValues = Струны умирают.
-- минимум = Gibt den niedrigsten Zahlen wert an der Akzeptiert wird
+- минимум = Gibt den niedrigsten Zahlen wert an der Akzeptiert wird.
 - максимум = Gibt den höchsten Zahlen wert an der Akzeptiert wird.
 - step = Gibt an in welchen Schritten ein Wert verändert werden kann.
 
-** кнопка - ** «запрос» в Befehl der an das Gerät / den Dienst. Dieses Objekt Hat Im Regelfall в Unterobjekt, аргумент.
+** кнопка - ** «запрос» в Befehl der an das Gerät / den Dienst geschickt werden kann und von diesem Akzztitiert wird. Dieses Objekt Hat Im Regelfall в Unterobjekt, аргумент.
 
-** Аргумент - ** Это в Унтеробъекте фон Эйнер-Канал. Der Type is „gemischt“ da er nicht vorgegeben wird. В статье «Объективные факты» говорится, что аргументом является аргумент Андерса Сеина.
+** Аргумент - ** Это в Унтеробъекте фон Эйнер-Канал. Der Type is „gemischt“ da er nicht vorgegeben wird. В документе «Родные и дети» говорится о доводах и доводах Андерса Сеина.
 Bisher bekannte уроженцы:
 
 - direction = Gibt die Richtung an in der der Informationsfluss statt findet.
@@ -86,25 +84,27 @@ Die folgenden Objekte finden sich für jedes Gerät / jeden Dienst und werden zu
 
 ** Sid - ** Dies als идентификация по подписке. Diese sid wird jedesmal vom host erzeugt wenn eine Подписка на клиентское приложение angefordert wird. Die sid läuft nach einer vom host определен Zeit ab, daher wird sie immer wieder Aktualisiert. Sie gilt nur für einen bestimmten Dienst.
 
+** запрос - ** отправка einen SOAP-запрос mit den gegebenen Optionen
+
 ### UPnP Objekte
-Умеренный в гелистетене. Обьект финден січ им UPnP Standard and / oder den Geräte- / Dinestbeschreibungen. Es handelt sich hier nicht um eine Vollständige liste аллергия Objekte, Diese Auswahl и Objekten stellt lediglich häufig vorkommende Objekte dar.
+Умеренный по своему усмотрению. Es handelt sich hier nicht um eine Vollständige liste аллергия Objekte, Diese Auswahl и Objekten stellt lediglich häufig vorkommende Objekte dar.
 
 ** (A_ARG_TYPE_) InstanceID - ** Die InstanceID is it am Häufigsten zu finden und wird zwingend benjtigt da sie die Instanz eines Dienstes angibt der angesprochen werden soll. In den meisten fellen ist die InstanceID = 0. Diese ID wird bei jeder Сообщение о событии vin einem Dienst und jedem Befehl der a einen Dienst gesendet wird, mit übergeben.
 
-** (A_ARG_TYPE_) Канал (*) - ** Канал Das Objekt findet sich im Zusammenhang mit Audio / Video Diensten. Ein Channel muss zum Beispiel angegeben wern wenn die Lautstärke verändert werden soll. Mögliche Werte können Beispielsweise «Мастер», «LF» или «RF». В «Beispiel steht» «Master» для Allgemeine Lautstärke, «LF» für links vorne и „RF“ für rechts vorne. Wenn jetzt die Lautstärke nur rechts vorne verändert werden soll, gibt man „RF“ bei Channel an.
+** (A_ARG_TYPE_) Канал (*) - ** Канал Das Objekt findet sich im Zusammenhang mit Audio / Video Diensten. Ein Channel muss zum Beispiel angegeben wern wenn die Lautstärke verändert werden soll. Mögliche Werte können Beispielsweise «Мастер», «LF» или «RF». В «Beispiel steht» Master «Für die Allgemeine Lautstärke», «LF» für links vorne и «RF» for für rechts vorne. Wenn jetzt die Lautstärke nur rechts vorne verändert werden soll, gibt man „RF“ bei Channel an.
 
-** (Установить / Получить) Громкость (*) - ** Громкость звука Объект поиска с помощью Audio / Video Diensten. В настоящее время мы не можем найти ничего нового, кроме того, что в настоящее время не существует. Dieses Objekt hat immer einen Mindestwert und einen Maximalwert den man angeben kann, in den meisten fällen liegt der Wertebereich zwischen 0 and 100. Die Schrittweite обычно в течение 1, более поздних сроках, когда-либо в конце концов.
+** (Установить / Получить) Громкость (*) - ** Громкость звука Объект поиска с помощью Audio / Video Diensten. В настоящее время мы не можем найти ничего нового, кроме того, что в настоящее время не существует. Dieses Objekt hat immer einen Mindestwert und einen Maximalwert den man angeben kann, in den meisten fällen liegt der Wertebereich zwischen 0 und 100. Die Schrittweite обычно в течение 1, более поздних сроках года, день рождения.
 
 ### Steuerung
-** кнопка - ** «запрос» Eine Action Stellt Einen Befehl dar, der an das Gerät / den Dienst geschickt werden kann. Zu jeder Action gehören auch Argumente, die Zwingend angegeben werden müssen. Экстренный человек действия - их роль Rolle / роль, dort steht «действие». Beschreibt man die Action Действие с «отправить» вир дер дер Befehl и Das Gerät / den Dienst Gesendet.
+** кнопка - ** "запрос" Zu jeder Action gehören auch Argumente, die Zwingend angegeben werden müssen. Экстренный человек действия - их роль Rolle / роль, dort steht «действие». Beschreibt man die Action Действие с «отправить» вир дер дер Befehl и Das Gerät / den Dienst Gesendet.
 
-** state.argument.x - ** Muss zwingend bei einer Действие angegeben werden, wenn unter Rolle "state.argument.in" ist. Mögliche Werte die angegeben werden können / müssen findet man in der «Связанная переменная состояния». Имя пользователя Dieser «Связанная переменная состояния» ist im Objekt unter «native» -> «relatedStateVariable». Die Argumente müssen in einer bestimmten Reihenfolge angegeben werden, hierzu gibt es «native» -> Argument_No. Ein Argument erkennt человек сейнер ролл / роль, дорт стехт «аргумент». Manche strings müssen mit einem „“ “in den Datenpunkt geschrieben werden. Es kann nicht pauschal beantwortet werden wann das der Fall ist, aber bei komplexen strings wie zum Beispiel URL-адрес Канн дас дер Фаль. Hier Hilft Nur Ausprobieren. Будет ли человек в "einem Argument übergeben muss man" "verwenden".
+** state.argument.x - ** Muss zwingend bei einer Действие angegeben werden, wenn unter Rolle "state.argument.in" ist. Mögliche Werte die angegeben werden können / müssen findet man in der «Связанная переменная состояния». Имя пользователя Dieser «Связанная переменная состояния» ist im Objekt unter «native» -> «relatedStateVariable». Die Argumente müssen in einer bestimmten Reihenfolge angegeben werden, hierzu gibt es «native» -> Argument_No. Ein Argument erkennt человек сейнер ролл / роль, дорт стехт «аргумент». Manche strings müssen mit einem „“ “in den Datenpunkt geschrieben werden. Es kann nicht pauschal beantwortet werden wann das der Fall ist, aber bei komplexen strings wie zum Beispiel URL-адрес Канн-дас-дер-Фолл. Hier Hilft Nur Ausprobieren. Будет ли человек в "einem Argument übergeben muss man" "verwenden".
 
-** (Связанное состояние) Переменная - ** Es handelt sich um Переменная переменная для даты и даты рождения. In den Native‘s der Variablen finden sich verschiedene Informationen:
+** (родственное состояние) Переменная - ** Es handelt sich um Переменная переменная для даты рождения. In den Native‘s der Variablen finden sich verschiedene Informationen:
 
 - allowValues = gibt Auskunft über die möglichen Inhalte der Переменная переменная была аргументом Аргумент с целью действий Действие gesendet werden kann.
---imum = der niedrigste Wert den die Переменная enthalten kann oder als Аргумент mit einer Action gesendet werden kann.
-- maximum = der höchste Wert den die Переменная enthalten kann oder als Аргумент с указанием действия gesendet werden kann.
+--imum = der niedrigste Wert den die Переменная enthalten kann oder als Аргумент mit einer Действие gesendet werden kann.
+- maximum = der höchste Wert den die Переменная enthalten kann oder als Аргумент mit einer Действие gesendet werden kann.
 - step = gibt an in welchen Schritten ein Wert angegeben wird.
 - sendEvents =? Mögliche Werte sind «да» или «нет». Es is aber völlig unklar была шляпой das zu bedeuten. Die Annahme dass die Werte für diese Переменная nur dann von einem Gerät / Dienst automatisch gesendet wern wenn „yes“ bei sendEvents steht hat sich nicht bestätigt.
 
@@ -118,16 +118,16 @@ schedule("*/10 * * * * *",  function () {
 });
 ```
 
-Es gibt auch die Möglichkeit от «запроса» заявляет, что Polling über Admin einzustellen.
+Es gibt auch die Möglichkeit bei dem "request" Objekt das Polling im Admin einzustellen. Dafür Klickt man auf das Schraubenschlüssel Symbol bei dem Objekt.
 
 ### Geräte / Dienst Spezifische Besonderheiten
 ** Sonos: ** Für QPlay ist es nicht möglich eine Подписка zu erstellen. Möglicherweise ist hierfür eine Autentifikation notwendig
 
-** Мост Филлипса Хюэ 2: ** Внедрение стандартов UPnP в Мосте Хуэй 2 - Фехлерхафт, Уолб Хью Мост 2 - Звар Гефунден Вирд Джедоч Нихт через UPnP.
+** Мост Филиппа Хюэ 2: ** Внедрение стандартов UPnP в Мосте Хуэй 2 - Фехлерхафт, Уэстбаль - Мост Хюэ 2 zwar gefunden wird jedoch nicht через UPnP ansprechbar ist.
 
 ** Yamaha: ** Verwendet eine auf dem UPnP Стандартный API-интерфейс basierende, окончательный вариант даты и времени. Derzeit wird das vom UPnP Адаптер nicht unterstützt.
 
-** Sony: ** Verwendet eine ScalarWebApi genannte Schnittstelle die über UPnP ansprechbar ist jedoch ein eigenes Daten Формат verwendet. Derzeit wird das vom UPnP Адаптер nicht unterstützt.
+** Sony. Derzeit wird das vom UPnP Адаптер nicht unterstützt.
 
 ** Amazon Kindle: ** Stellt einen UPnP Dienst bereit, Jedoch Wird Keine UPnP-Dienstbeschreibung geliefert und kann daher nicht genutzt werden.
 
@@ -167,7 +167,7 @@ UPnP = универсальный подключи и играй. Попытка
 ### Общие объекты
 Следующие объекты находятся для каждого устройства / службы и необходимы для администрирования. Они не являются частью стандарта UPnP или устройства / инструкции по эксплуатации соответствующего устройства.
 
-** Alive - ** для устройства / службы установлено значение "true" и через x секунд для адаптера значение "null", если устройство / служба снова не установили значение "true" Время истечения зависит от максимального времени жизни живого сигнала, заданного устройством. Когда устройство выходит из системы, состояние устанавливается на «ложь». Можно установить для этого объекта значение «true» вручную или с помощью сценария, но это следует делать только в том случае, если вы уверены, что устройство / служба достижимы. Если для параметра «Alive» вручную установлено значение «true», его также следует вручную установить «false», если в этом больше нет необходимости, в противном случае могут возникнуть ошибки.
+** Alive - ** для устройства / службы установлено значение "true" и через x секунд для адаптера значение "null", если устройство / служба снова не установило значение "true". Время истечения зависит от максимального времени жизни живого сигнала, заданного устройством. Когда устройство выходит из системы, состояние устанавливается на «ложь». Можно установить для этого объекта значение «true» вручную или с помощью сценария, но это следует делать только в том случае, если вы уверены, что устройство / служба достижимы. Если для параметра «Alive» вручную установлено значение «true», его также следует вручную установить «false», если в этом больше нет необходимости, в противном случае могут возникнуть ошибки.
 
 ** Sid - ** Служит для идентификации подписки. Эта страница создается хостом каждый раз, когда от клиента запрашивается подписка. Sid запускается через время, определенное хостом, поэтому он обновляется снова и снова. Это действительно только для конкретной услуги.
 
@@ -217,7 +217,11 @@ schedule("*/10 * * * * *",  function () {
 ** Amazon Kindle: ** Предоставляет услугу UPnP, но описание услуги UPnP не предоставляется и поэтому не может быть использовано.
 
 ## Changelog
-### 1.0.12 (2019-06-12)
+
+### 1.0.15 (2019-08-27)
+* (jey-cee) make control of devices work again (including player controls)
+
+### 1.0.14 (2019-08-04)
 * (bluefox) Tried to fix error with player
 
 ### 1.0.11 (2019-03-07)

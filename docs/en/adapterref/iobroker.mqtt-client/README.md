@@ -1,6 +1,5 @@
 ![Logo](admin/mqtt-client.png)
 # ioBroker.mqtt-client
-===================
 
 ![Number of Installations](http://iobroker.live/badges/mqtt-client-installed.svg) ![Number of Installations](http://iobroker.live/badges/mqtt-client-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mqtt-client.svg)](https://www.npmjs.com/package/iobroker.mqtt-client)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mqtt-client.svg)](https://www.npmjs.com/package/iobroker.mqtt-client)
@@ -8,7 +7,7 @@
 [![NPM](https://nodei.co/npm/iobroker.mqtt-client.png?downloads=true)](https://nodei.co/npm/iobroker.mqtt-client/)
 
 ## Adapter Settings
-![Adapter](settings.png)
+![Adapter](img/settings.png)
 
 ### on connect topic and message
 The ```on connect message``` is published to the ```on connect topic``` every time the client connects or reconnects to the server.
@@ -17,8 +16,8 @@ The ```on connect message``` is published to the ```on connect topic``` every ti
 The ```last will message``` is published to the ```last will topic``` every time the client connects or reconnects to the server.
 The Server will store this message and send it to its subscribers when the client disconnects.
 
-### subscriptions 
-Comma separated list of topics that are not covered by existing states. 
+### subscriptions
+Comma separated list of topics that are not covered by existing states.
 Received messages are converted to states within the adapters namespace (e.g. mqtt.0) and subscribed.
 You can remove topics after all states have been created.
 
@@ -31,10 +30,10 @@ When subscribing this will be prepended to all topics.
 Default is empty (no prefix).
 
 ## State Settings
-![State](dialog.png)
+![State](img/dialog.png)
 
 ### enabled
-Enables or disables the mqtt-client functionality for this state. 
+Enables or disables the mqtt-client functionality for this state.
 Disabling will delete any mqtt-client settings from this state.
 
 ### topic
@@ -59,7 +58,18 @@ default: state-ID converted to a mqtt topic.
 * when ack is set to true it will overwrite objects ack, see ```as object```
 * to prevent message loops, if both publish and subscribe are enabled ```changes only``` is always on for subscribe
 
+## TODO
+* test prefixes
+* connect/reconnect without clean session
+
 ## Changelog
+### 1.2.1 (2019-10-17)
+* (algar42) Fix adapter restarting
+* (algar42) Fix mqtt issues
+
+### 1.2.0 (2019-10-14)
+* (bluefox) Support of js-controller 2.0 was added
+
 ### 1.1.1 (2018-01-30)
 * (bluefox) small fixes
 
@@ -75,7 +85,7 @@ default: state-ID converted to a mqtt topic.
 ### 0.3.2 (2016-11-18)
 * (Pmant) fix initial object parsing
 * (Pmant) fix objects view
- 
+
 ### 0.3.1 (2016-11-16)
 * (Pmant) fix crash
 
@@ -94,6 +104,25 @@ default: state-ID converted to a mqtt topic.
 ### 0.1.0 (2016-06-08)
 * (Pmant) initial commit
 
-## TODO
-* test prefixes
-* connect/reconnect without clean session
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016-2019 Pmant
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

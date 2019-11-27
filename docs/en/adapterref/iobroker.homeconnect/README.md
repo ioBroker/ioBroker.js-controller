@@ -74,6 +74,27 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 ## Changelog
 
+### 0.0.27 (13.11.2019)
+
+-   (ta2k) improve option selecting
+
+### 0.0.26 (04.11.2019)
+
+-   (ta2k) fix boolean settings
+
+### 0.0.25 (08.09.2019)
+
+-   (ta2k) fix compact mode
+-   (ta2k) reduce query per minute to prevent too much request error
+
+### 0.0.24 (08.09.2019)
+
+-   (ta2k) improve error messaging
+  
+### 0.0.22 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
 ### 0.0.22 (26.07.2019)
 
 -   (ta2k) bugfixing

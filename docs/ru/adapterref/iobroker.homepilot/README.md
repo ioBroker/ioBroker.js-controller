@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
+hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 ---
 ![логотип](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
@@ -16,6 +16,8 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 # IoBroker.homepilot
+Для адаптера требуется, чтобы прошивка базовой станции Homepilot была ниже версии 5.0 (ранее сентября 2019 года). Более новыми или обновленными станциями можно управлять с помощью [ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20)
+
 : de: [Dokumentation](/docs/de/doc_homepilot_de.md)
 
 : uk: [Документация](/docs/en/doc_homepilot_en.md)
@@ -28,7 +30,7 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 
 : fr: [Документация](/docs/en/doc_homepilot_en.md)
 
-: it: [и документации](/docs/en/doc_homepilot_en.md)
+: это: [и документации](/docs/en/doc_homepilot_en.md)
 
 : es: [Документационный](/docs/en/doc_homepilot_en.md)
 
@@ -42,6 +44,12 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 Вклад приветствуется!
 
 ## Changelog
+### 1.1.3 (2019-09-23)
++ (christofkac) Added support for Connect Actor
+
+### 1.1.2 (2019-09-02)
++ (Apollon77) Update testing for nodejs12
+
 ### 1.1.1 (2019-01-09)
 + (homecineplexx) Added new device "Troll Comfort DuoFern"
 

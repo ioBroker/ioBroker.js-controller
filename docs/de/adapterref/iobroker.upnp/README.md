@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.upnp/README.md
 title: ioBroker.upnp
-hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
+hash: fLFkntZ34BVfHeFIN9BgSFM5pbg/hJ7cZwTZSm8/U00=
 ---
 ![Logo](../../../en/adapterref/iobroker.upnp/admin/upnp-discovery.png)
 
@@ -13,8 +13,6 @@ hash: zbYTjN9EkG7QUp56ty2BCSqYG1r0JxrFC1QOKagJl0U=
 ![Bild](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
 # IoBroker.upnp
-WICHTIG: Bei diesem Adapter handelt es sich um einen BETA-Status.
-
 *** Node 4.x + benötigt! ***
 
 1. [Deutsch] (# german_description)
@@ -63,7 +61,7 @@ Bisher implementierte native's:
 - maximum = Gibt den höchsten Wert an der Akzeptiert wird.
 - step = Gibt an, in welchen Schritten ein Wert verändert werden kann.
 
-** button - ** "request" (Anfordern) This object hat in regelfall a under object, the argument.
+** button - ** "request" (Anfordern) kann und von diesem Aktzeptiert werden. This object hat in regelfall a under object, the argument.
 
 ** argument - ** ist ein Unterobjekt von einer Aktion-Channel. Der Typ ist „gemischt“ da er nicht vorgegeben wird. In the native’s of the Objects find be different information, you can from argument to argument different its.
 Bisher bekannte Muttersprachler:
@@ -86,10 +84,12 @@ Die folgenden Objekte finden Sie für jedes Gerät / jeden Dienst und werden zur
 
 ** Sid - ** Dient als identifikation der Subscription. This sid is every time from the host if a subscription from a client used to be used. The sid running to the host based time, also is always again updated. Sie gilt nur für einen bestimmten Dienst.
 
+** request - ** sendet einen SOAP request mit den angegebenen Optionen
+
 ### UPnP Objekte
 Die hier auf gelisteten Objekte finden sich im UPnP Standard und / oder den Geräte- / Dinestbeschreibungen. Es wird hier nicht um eine vollständige Liste aller Objekte gebeten, diese Auswahl an Objekten stellt lediglich häufig vorkommende Objekte dar.
 
-** (A_ARG_TYPE_) InstanceID - ** Die InstanceID ist die häufigste Instanz, die benötigt wird, um eine Instanz zu finden, die angesprochen werden soll. In den meisten Fällen ist die InstanceID = 0. Diese ID wird bei jeder Ereignismeldung von einem Dienst und jedem Befehl, der an einen Dienst gesendet wird, übergeben.
+** (A_ARG_TYPE_) InstanceID - ** Die InstanceID ist die häufigste Instanz, die benötigt wird, um einen Dienst zu finden, der angesprochen werden soll. In den meisten Fällen ist die InstanceID = 0. Diese ID wird bei jeder Ereignismeldung von einem Dienst und jedem Befehl, der an einen Dienst gesendet wird, übergeben.
 
 ** (A_ARG_TYPE_) Channel (*) - ** Das Channel-Objekt findet sich im Zusammenhang mit Audio / Video Diensten. Ein Channel muss zum Beispiel angegeben werden, wenn die Lautstärke verändert werden soll. Mögliche Werte können beispielsweise „Master“, „LF“ oder „RF“ sein. In diesem Beispiel steht „Master“ für die Allgemeine Lautstärke, „LF“ für Links vorne und „RF“ für rechts vorne. Wenn jetzt die Lautstärke geändert wird, gibt man „RF“ bei Channel an.
 
@@ -118,16 +118,16 @@ schedule("*/10 * * * * *",  function () {
 });
 ```
 
-Es gibt auch die Möglichkeit bei den "Anfrage" Zuständen das Polling über Admin einzustellen.
+Es gibt auch die Möglichkeit bei dem "request" Objekt das Polling im Admin einzustellen. Dafür klickt man auf den Schraubenschlüssel Symbol bei dem Objekt.
 
 ### Geräte / Dienst Spezifische Besonderheiten
 ** Sonos: ** Für QPlay ist es nicht möglich ein Abonnement zu erstellen. Möglicherweise ist dadurch eine Autentifikation notwendig
 
-** Phillips Hue Bridge 2: ** Die Implementierung der UPnP-Standards in der Hue Bridge 2 ist fehlerhaft, weshalb die Hue Bridge 2 zwar gefunden wird, jedoch nicht über UPnP ansprechbar ist.
+** Phillips Hue Bridge 2: ** Die Implementierung der UPnP-Standards in der Hue Bridge 2 ist fehlerhaft.
 
 ** Yamaha: ** Verwendet eine auf dem UPnP-Standard basierende API, jedoch ein eigenes Datenformat verwendet. Derzeit wird das vom UPnP Adapter nicht unterstützt.
 
-** Sony: ** Verwendet eine ScalarWebApi welche Schnittstelle über UPnP ansprechbar ist jedoch ein eigenes Datenformat verwendet. Derzeit wird das vom UPnP Adapter nicht unterstützt.
+** Sony: ** Verwendet eine ScalarWebApi, die über UPnP ansprechbar ist, jedoch ein eigenes Datenformat verwendet. Derzeit wird das vom UPnP Adapter nicht unterstützt.
 
 ** Amazon Kindle: ** Stellt einen UPnP-Dienst bereit, jedoch wird keine UPnP-Dienstbeschreibung geliefert und kann daher nicht genutzt werden.
 
@@ -217,7 +217,11 @@ Sie können die Abfrage in admin über die Objektkonfiguration aktivieren.
 ** Amazon Kindle: ** Bietet einen UPnP-Dienst, es wird jedoch keine UPnP-Dienstbeschreibung bereitgestellt und kann daher nicht verwendet werden.
 
 ## Changelog
-### 1.0.12 (2019-06-12)
+
+### 1.0.15 (2019-08-27)
+* (jey-cee) make control of devices work again (including player controls)
+
+### 1.0.14 (2019-08-04)
 * (bluefox) Tried to fix error with player
 
 ### 1.0.11 (2019-03-07)

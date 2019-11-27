@@ -2,22 +2,22 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
-title: 简单的API
-hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
+title: 简单API
+hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
 ---
 ![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
 ![安装数量](http://iobroker.live/badges/simple-api-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.simple-api.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.simple-api.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.simple-api.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.simple-api.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.simple-api.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.simple-api.png?downloads=true)
 
-#Simple-api
-这是RESTFul接口，用于从ioBroker读取对象和状态，以及通过HTTP Get / Post请求写入/控制状态。
+＃简单API
+这是RESTFul接口，用于从ioBroker读取对象和状态，并通过HTTP Get / Post请求写入/控制状态。
 
 ##用法
-在浏览器中调用```http://ipaddress:8087/help```以获取有关API的帮助。结果是：
+在浏览器```http://ipaddress:8087/help```中调用以获取有关API的帮助。结果是：
 
 ```
 {
@@ -39,7 +39,7 @@ hash: NU/ASH5oDUPKo5V5ywigX+HJJDXUrsPD9MOK4WgvGZ0=
 ```
 
 ### GetPlainValue
-打电话：
+致电例如：
 
 ```
 http://ipaddress:8087/getPlainValue/system.adapter.admin.0.alive
@@ -51,8 +51,8 @@ http://ipaddress:8087/getPlainValue/system.adapter.admin.0.alive
 true
 ```
 
-### Get
-打电话：
+###得到
+致电例如：
 
 ```
 http://ipaddress:8087/get/system.adapter.admin.0.alive
@@ -92,10 +92,10 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    获取具有一个请求的许多状态，按请求中的列表顺序返回为对象数组，并将id / val / ts作为子对象返回
+    通过一个请求获得多个状态，以请求中的列表顺序作为对象数组返回，并以id / val / ts作为子对象
 
-### Set
-打电话：
+###设置
+致电例如：
 
 ```
 http://ipaddress:8087/set/javascript.0.test?value=1
@@ -122,125 +122,147 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
 }
 ```
 
-当然数据点* javascript.0.test *必须存在。
+当然，数据点* javascript.0.test *必须存在。
+
+另外，可以定义值的类型：
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
+```
+
+ack标志也可以定义：
+
+```
+http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
+```
 
 ###切换
-    切换价值：
+    切换值：
 
- - 布尔值：true => false，false => true
- - 无限制的数字：x => 100-x
- - 带限制的数字：x => max  - （x  -  min）
+-布尔值：true => false，false => true
+-无限制的数字：x => 100-x
+-有限制的数字：x =>最大值-（x-最小值）
 
 ### SetBulk
-    用一个请求设置许多状态。此请求也支持POST方法，因为POST数据应该在正文而不是URL。
+    通过一个请求设置多个状态。该请求也支持POST方法，因为POST数据应该在正文中，而不是URL。
 
 ### SetValueFromBody
-    允许设置由POST正文内容设置的给定状态的值。
+    允许通过POST正文内容设置给定State的值。
 
 ###对象
 ＃＃＃ 状态
 ###搜索
-是否设置了配置中的数据源（History，SQL），然后仅列出数据源已知的数据点。
-如果已激活“列出所有数据点”选项或未指定数据源，则将列出所有数据点。
+如果在配置中设置了数据源（History，SQL），则仅列出该数据源已知的数据点。
+如果已激活“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
 Grafana JSON / SimpleJSON插件需要此命令。
 
 ###查询
-如果指定了数据源（历史记录，SQL），则会在指定的时间段内读取指定数据点的数据，否则仅读取当前值。
+如果已指定数据源（History，SQL），则将在指定时间段内从指定数据点读取数据，否则仅读取当前值。
 Grafana JSON / SimpleJSON插件需要此命令。
 
 ＃＃＃ 救命
-给出[这个](#usage)输出
+返回[这个](#usage)输出
 
 ##安装
 ```node iobroker.js add simple-api```
 
 ##用法
-假设，我们没有安全性，服务器在默认端口8087上运行。
+假设我们没有安全性，并且服务器在默认端口8087上运行。
 
 对于所有查询，可以指定状态的名称或ID。
 
-对于返回JSON的每个requiest，您可以设置参数* prettyPrint *以获得人类可读形式的输出。
+对于每个返回JSON的要求，您都可以设置参数* prettyPrint *，以人类可读的形式获取输出。
 
-如果启用了身份验证，则必须使用其他两个字段： <pre> ？用户=管理员＆传= iobroker </pre>
+如果启用身份验证，则必须填写其他两个字段： <pre> ？user = admin＆pass = iobroker </pre>
 
 ### GetPlainValue
-将状态值读为文本。您可以指定更多的ID除以分号
+读取状态值作为文本。您可以指定更多ID除以分号
 
-<pre> HTTP：// IP：8087 / getPlainValue / admin.0.memHeapTotal </pre>
+<pre> http：// ip：8087 / getPlainValue / admin.0.memHeapTotal </pre>
 
 <pre> 31.19 </pre>
 
-<pre> http：// ip：8087 / getPlainValue / admin.0.memHeapTotal,admin.0.memHeapUsed </pre><pre> 31.19 17.52 </pre>
+<pre> http：// ip：8087 / getPlainValue / admin.0.memHeapTotal，admin.0.memHeapUsed </pre><pre> 31.19 17.52 </pre>
 
-### Get
-将状态和对象数据作为json读取。您可以指定更多的ID除以分号。
+###得到
+将状态和状态的对象数据读取为json。您可以指定更多的ID，以分号分隔。
 如果请求了多个ID，则将返回JSON数组。
 
-<pre> HTTP：//本地主机：8087 / GET / admin.0.memHeapTotal / prettyPrint </pre>
+<pre> http：// localhost：8087 / get / admin.0.memHeapTotal /？prettyPrint </pre>
 
-<pre> {“val”：31.19，“ack”：true，“ts”：1423154619，“from”：“system.adapter.admin.0”，“lc”：1423153989，“_ id”：“system.adapter.admin。 0.memHeapTotal“，”type“：”state“，”common“：{”name“：”admin.0.memHeapTotal“，”type“：”number“，”role“：”indicator.state“，”unit“ “：”MB“，”history“：{”enabled“：true，”changesOnly“：true，”minLength“：480，”maxLength“：960，”retention“：604800，”debounce“：10000}}，”原生“：{}} </pre>
+<pre> {“ val”：31.19，“ ack”：true，“ ts”：1423154619，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _ id”：“ system.adapter.admin。 0.memHeapTotal”，“ type”：“ state”，“ common”：{“ name”：“ admin.0.memHeapTotal”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit” “：” MB“，”历史记录“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}，”本机”：{}} </pre>
 
-<pre> HTTP：// IP：8087 / GET / admin.0.memHeapTotal，admin.0.memHeapUsed / prettyPrint </pre><pre> [{“val”：31.19，“ack”：true，“ts”：1423154544，“from”：“system.adapter.admin.0”，“lc”：1423153989，“_ id”：“system.adapter.admin .0.memHeapTotal“，”type“：”state“，”common“：{”name“：”admin.0.memHeapTotal“，”type“：”number“，”role“：”indicator.state“，” unit“：”MB“，”history“：{”enabled“：true，”changesOnly“：true，”minLength“：480，”maxLength“：960，”retention“：604800，”debounce“：10000}}， “native”：{}}，{“val”：16.25，“ack”：true，“ts”：1423154544，“from”：“system.adapter.admin.0”，“lc”：1423154544，“_ id” ：“system.adapter.admin.0.memHeapUsed”，“type”：“state”，“common”：{“name”：“admin.0.memHeapUsed”，“type”：“number”，“role”： “indicator.state”，“unit”：“MB”，“history”：{“enabled”：true，“changesOnly”：true，“minLength”：480，“maxLength”：960，“retention”：604800，“ debounce“：10000}}，”native“：{}}] </pre>
+<pre> http：// ip：8087 / get / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint </pre><pre> [{“ val”：31.19，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin .0.memHeapTotal”，“类型”：“状态”，“公共”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“ unit“：” MB“，” history“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}， “ native”：{}}，{“ val”：16.25，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423154544，“ _id” ：“” system.adapter.admin.0.memHeapUsed“，” type“：”状态“，” common“：{”名称“：” admin.0.memHeapUsed“，” type“：”数字“，”角色“： “ indicator.state”，“ unit”：“ MB”，“ history”：{“ enabled”：true，“ changesOnly”：true，“ minLength”：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}] </pre>
 
 ### GetBulk
-使用时间戳读取更多ID的状态。您可以指定更多的ID除以分号。
-始终返回JSON数组。
+读取带有时间戳的更多ID的状态。您可以指定更多的ID，以分号分隔。
+始终会返回JSON数组。
 
-<pre> HTTP：// IP：8087 / GETBULK / admin.0.memHeapTotal，admin.0.memHeapUsed / prettyPrint </pre>
+<pre> http：// ip：8087 / getBulk / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint </pre>
 
-<pre> {“admin.0.memHeapTotal”：{“val”：31.19，“ts”：1423154754}，“admin.0.memHeapUsed”：{“val”：15.6，“ts”：1423154754}} </pre>
+<pre> {“ admin.0.memHeapTotal”：{“ val”：31.19，“ ts”：1423154754}，“ admin.0.memHeapUsed”：{“ val”：15.6，“ ts”：1423154754}} </pre>
 
-### Set
-写入具有指定ID的状态。你可以用毫秒来指定* wait *选项来等待驱动程序的回答。
+###设置
+用指定的ID写入状态。您可以指定* wait *选项（以毫秒为单位）以等待驱动程序的答复。
 
-<pre> HTTP：// IP：8087 /组/ HM-rpc.0.IEQ12345.LEVEL值= 1＆prettyPrint </pre><pre> {“id”：“hm-rpc.0.IEQ12345.LEVEL”，“value”：1} </pre>
+<pre> http：// ip：8087 / set / hm-rpc.0.IEQ12345.LEVEL？value = 1＆prettyPrint </pre><pre> {“ id”：“ hm-rpc.0.IEQ12345.LEVEL”，“ value”：1} </pre>
 
-<pre> HTTP：// IP：8087 /组/ HM-rpc.0.IEQ12345.LEVEL值= 1＆等待= 5000＆prettyPrint </pre><pre> {“val”：1，“ack”：true，“ts”：1423155399，“from”：“hm-rpc.0.IEQ12345.LEVEL”，“lc”：1423155399} </pre>
+<pre> http：// ip：8087 / set / hm-rpc.0.IEQ12345.LEVEL？value = 1＆wait = 5000＆prettyPrint </pre><pre> {“ val”：1，“ ack”：是的，“ ts”：1423155399，“ from”：“ hm-rpc.0.IEQ12345.LEVEL”，“ lc”：1423155399} </pre>
 
-如果在指定时间内没有收到答案，则返回* null *值。
-在第一种情况下，答案将立即返回，* ack *为false。在第二种情况下* ack *为真。这意味着它是来自司机的回应。
+如果在指定的时间内没有收到答案，则将返回* null *值。
+在第一种情况下，答案将立即返回，并且* ack *为假。在第二种情况下，* ack *为true。这意味着那是驾驶员的回应。
 
 ### SetBulk
- - 在一个请求中写入大量ID。
+-在一个请求中写入大量ID。
 
-<pre> HTTP：// IP：8087 / setBulk HM-rpc.0.FEQ1234567：1.LEVEL = 0.7＆Anwesenheit = 0＆prettyPrint </pre><pre> [{“id”：“hm-rpc.0.FEQ1234567：1.LEVEL”，“val”：“0.7”}，{“error”：“error：datapoint \”Anwesenheit \“not found”}] </pre>您也可以将此请求作为POST发送。
+<pre> http：// ip：8087 / setBulk？hm-rpc.0.FEQ1234567：1.LEVEL = 0.7＆Anwesenheit = 0＆prettyPrint </pre><pre> [{“ id”：“ hm-rpc.0.FEQ1234567：1.LEVEL”，“ val”：“ 0.7”}，{“ error”：“错误：未找到数据点\” Anwesenheit \“”}] </pre>您也可以通过POST发送此请求。
 
 ###对象
-获取模式的所有对象的列表。如果没有指定模式，则将返回所有对象作为JSON数组。
+获取模式的所有对象的列表。如果未指定任何模式，则将返回所有对象作为JSON数组。
 
-<pre> HTTP：// IP：8087 /对象prettyPrint？ </pre><pre> {“system.adapter.admin.0.uptime”：{“_ id”：“system.adapter.admin.0.uptime”，“type”：“state”，“common”：{“name”：“admin。 0.uptime“，”键入“：”数字“，”角色“：”indicator.state“，”unit“：”秒“}，”native“：{}}，”system.adapter.admin.0.memRss “：{”_ id“：”system.adapter.admin.0.memRss“，”type“：”state“，”common“：{”name“：”admin.0.memRss“，”desc“：”Resident set size“，”type“：”number“，”role“：”indicator.state“，”unit“：”MB“，”history“：{”enabled“：true，”changesOnly“：true，”minLength“ ：480，“maxLength”：960，“保留”：604800，“debounce”：10000}}，“native”：{}}，...
+<pre> http：// ip：8087 / objects？prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，“ system.adapter.admin.0.memRss” “：{” _id“：” system.adapter.admin.0.memRss“，” type“：”州“，” common“：{” name“：” admin.0.memRss“，” desc“：”常驻设置大小”，“类型”：“数字”，“角色”：“ indicator.state”，“单位”：“ MB”，“历史记录”：{“启用”：true，“ changesOnly”：true，“ minLength” ：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}，...
 </pre>
 
-获取适配器system.adapter.admin.0的所有控件对象： <pre> HTTP：// IP：8087 /对象图案= system.adapter.admin.0 * prettyPrint </pre><pre> {“system.adapter.admin.0.uptime”：{“_ id”：“system.adapter.admin.0.uptime”，“type”：“state”，“common”：{“name”：“admin。 0.uptime“，”键入“：”数字“，”角色“：”indicator.state“，”unit“：”秒“}，”原生“：{}}，...
+获取适配器system.adapter.admin.0的所有控制对象： <pre> http：// ip：8087 / objects？pattern = system.adapter.admin.0 *＆prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，...
 
-</ PRE>
+</ pre>
 
 ＃＃＃ 状态
-获取模式的所有状态列表。如果没有指定模式，则将返回所有状态为JSON数组。
+获取模式的所有状态的列表。如果未指定任何模式，则将返回所有状态为JSON数组。
 
-<pre> HTTP：// IP：8087 /状态prettyPrint </pre><pre> {“system.adapter.admin.0.uptime”：{“val”：32176，“ack”：true，“ts”：1423156164，“from”：“system.adapter.admin.0”，“lc”： 1423156164}，“system.adapter.admin.0.memRss”：{“val”：41.14，“ack”：true，“ts”：1423156164，“from”：“system.adapter.admin.0”，“lc “：1423156119}，”system.adapter.admin.0.memHeapTotal“：{”val“：31.19，”ack“：true，”ts“：1423156164，”from“：”system.adapter.admin.0“， “lc”：1423155084}，...
+<pre> http：// ip：8087 / states？prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” val“：32176，” ack“：true，” ts“：1423156164，” from“：” system.adapter.admin.0“，” lc“： 1423156164}，“ system.adapter.admin.0.memRss”：{“ val”：41.14，“ ack”：true，“ ts”：1423156164，“ from”：“ system.adapter.admin.0”，“ lc “：1423156119}，” system.adapter.admin.0.memHeapTotal“：{” val“：31.19，” ack“：true，” ts“：1423156164，” from“：” system.adapter.admin.0“， “ lc”：1423155084}，...
 </pre>
 
- 获取适配器system.adapter.admin.0的所有控件对象：
+ 获取适配器system.adapter.admin.0的所有控制对象：
 
-<pre> HTTP：// IP：8087 /状态模式= system.adapter.admin.0 * prettyPrint </pre><pre> {“system.adapter.admin.0.uptime”：{“val”：32161，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0”，“lc”： 1423156149}，“system.adapter.admin.0.memRss”：{“val”：41.14，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0”，“lc “：1423156119}，”system.adapter.admin.0.memHeapTotal“：{”val“：31.19，”ack“：true，”ts“：1423156149，”from“：”system.adapter.admin.0“， “lc”：1423155084}，“system.adapter.admin.0.memHeapUsed”：{“val”：19.07，“ack”：true，“ts”：1423156149，“from”：“system.adapter.admin.0 “，”lc“：1423156149}，”system.adapter.admin.0.connected“：{”val“：true，”ack“：true，”ts“：1423156149，”from“：”system.adapter.admin .0“，”lc“：1423128324，”expire“：28100}，”system.adapter.admin.0.alive“：{”val“：true，”ack“：true，”ts“：1423156149，”来自“：”system.adapter.admin.0“，”lc“：1423128324，”expire“：28115}} </pre>
+<pre> http：// ip：8087 / states？pattern = system.adapter.admin.0 *＆prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” val“：32161，” ack“：true，” ts“：1423156149，” from“：” system.adapter.admin.0“，” lc“： 1423156149}，“ system.adapter.admin.0.memRss”：{“ val”：41.14，“ ack”：true，“ ts”：1423156149，“ from”：“ system.adapter.admin.0”，“ lc “：1423156119}，” system.adapter.admin.0.memHeapTotal“：{” val“：31.19，” ack“：true，” ts“：1423156149，” from“：” system.adapter.admin.0“， “ lc”：1423155084}，“ system.adapter.admin.0.memHeapUsed”：{“ val”：19.07，“ ack”：true，“ ts”：1423156149，“ from”：“ system.adapter.admin.0 “，” lc“：1423156149}，” system.adapter.admin.0.connected“：{” val“：true，” ack“：true，” ts“：1423156149，” from“：” system.adapter.admin .0“，” lc“：1423128324，” expire“：28100}，” system.adapter.admin.0.alive“：{” val“：true，” ack“：true，” ts“：1423156149，”来自“：” system.adapter.admin.0“，” lc“：1423128324，” expire“：28115}} </pre>
 
 ###搜索
-是否设置了配置中的数据源（History，SQL），然后仅列出数据源已知的数据点。
-如果已激活“列出所有数据点”选项或未指定数据源，则将列出所有数据点。
+如果在配置中设置了数据源（History，SQL），则仅列出该数据源已知的数据点。
+如果已激活“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
 
-<pre> HTTP：// IP：8087 /搜索模式= system.adapter.admin.0 * prettyPrint </pre><pre> {“system.adapter.admin.0.outputCount”，“system.adapter.admin.0.inputCount”，“system.adapter.admin.0.uptime”，“system.adapter.admin.0.memRss”，“ system.adapter.admin.0.memHeapTotal“，”system.adapter.admin.0.memHeapUsed“，”system.adapter.admin.0.cputime“，”system.adapter.admin.0.cpu“，”system。 adapter.admin.0.connected“，”system.adapter.admin.0.alive“} </pre>
+<pre> http：// ip：8087 / search？pattern = system.adapter.admin.0 *＆prettyPrint </pre><pre> {“ system.adapter.admin.0.outputCount”，“ system.adapter.admin.0.inputCount”，“ system.adapter.admin.0.uptime”，“ system.adapter.admin.0.memRss”，“ system.adapter.admin.0.memHeapTotal”，“ system.adapter.admin.0.memHeapUsed”，“ system.adapter.admin.0.cputime”，“ system.adapter.admin.0.cpu”，“系统。 adapter.admin.0.connected“，” system.adapter.admin.0.alive“} </pre>
 
 ###查询
-如果指定了数据源（历史记录，SQL），则会在指定的时间段内读取指定数据点中的数据。
+如果已指定数据源（历史记录，SQL），则将在指定期间内读取来自指定数据点的数据。
 
-<pre> HTTP：// IP：8087 /查询/ system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed / prettyPrint＆dateFrom = 2019-06-08T01：00：00.000Z＆dateTo = 2019-06-08T01： 00：10.000Z </pre><pre> [{“target”：“system.host.iobroker-dev.load”，“datapoints”：[[0.12,1559955600000]，[0.46,1559955601975]，[0.44,1559955610000]]}，{“target”：“system .host.iobroker-dev.memHeapUsed“，”datapoints“：[[23.01,1559955600000]，[22.66,1559955601975]，[22.69,1559955610000]]}] </pre>
+<pre> http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆dateFrom = 2019-06-08T01：00：00.000Z＆dateTo = 2019-06-08T01： 00：10.000Z </pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“ datapoints”：[[0.12，1559955600000]，[0.46，1559955601975]，[0.44，1559955610000]]}，{“ target”：“系统.host.iobroker-dev.memHeapUsed“，”数据点“：[[23.01，1559955600000]，[22.66，1559955601975]，[22.69，1559955610000]]}] </pre>
 
-如果未指定数据源或传递noHistory参数，则仅读取数据点的当前值。
+如果未指定数据源或传递了noHistory参数，则仅读取数据点的当前值。
 
-<pre> HTTP：// IP：8087 /查询/ system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed / prettyPrint＆noHistory =真的吗？ </pre><pre> [{“target”：“system.host.iobroker-dev.load”，“datapoints”：[[0.58,1559970500342]]}，{“target”：“system.host.iobroker-dev.memHeapUsed”，“datapoints “：[[21.53,1559970500342]]}] </pre>
+<pre> http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆noHistory = true </pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“数据点”：[[0.58，1559970500342]]}，{“ target”：“ system.host.iobroker-dev.memHeapUsed”，“数据点“：[[21.53，1559970500342]]}] </pre>
 
 ## Changelog
+### 2.3.0 (2019-10-10)
+* (bluefox) Admin 3 is now supported
+* (bluefox) NPM packages were updated
+
+### 2.2.0 (2019-09-10)
+* (bluefox) New flags are supported: ack and type
+* (bluefox) Return error codes as JSON if no pretty print defined
+
+### 2.1.2 (2019-09-05)
+* (Apollon77) fix compact mode
 
 ### 2.1.0 (2019-07-05)
 * (Marco.K) Added command set for the Grafana plugins JSON / SimpleJSON. Usage see https://forum.iobroker.net/topic/23033/aufruf-modifikation-simpleapi-adapter-iobroker-als-datenquelle-f%C3%BCr-grafana

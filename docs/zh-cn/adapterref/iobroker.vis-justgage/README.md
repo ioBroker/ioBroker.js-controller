@@ -3,16 +3,37 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-justgage/README.md
 title: 无题
-hash: K8U6q94vcNzU/+h53ADbypPKBqwFgLV3H62PRsBBNVs=
+hash: vTmk1SqhvY9JRffyzcvN9pkapEIjiN+2+bhClIwKJxs=
 ---
-![商标](../../../en/adapterref/iobroker.vis-justgage/admin/justgage.png)ioBroker.vis-justgage ============
+![商标](../../../en/adapterref/iobroker.vis-justgage/admin/justgage.png)ioBroker.vis-justgage
 
-[justGage](http://justgage.com/)iBroker的小部件。
+============
 
-![截图](../../../en/adapterref/iobroker.vis-justgage/img/widgets.png)
+[正义规](http://justgage.com/)ioBroker的小部件。
+
+![屏幕截图](../../../en/adapterref/iobroker.vis-justgage/img/widgets.png)
+
+##指针选项
+可以定义指针选项：
+
+```
+{
+  "toplength": null,
+  "bottomlength": null,
+  "bottomwidth": null,
+  "stroke": "none",
+  "stroke_width": 0,
+  "stroke_linecap": "square",
+  "color": "#000000"
+}
+```
+
+它必须是有效的JSON对象。不允许单配额！可以在这里找到有关指针选项的更多信息：https://github.com/toorshia/justgage#pointer-options
 
 ## Changelog
-### 1.0.0 (2017-11-16)
+![Number of Installations](http://iobroker.live/badges/vis-justgage-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-justgage-stable.svg)
+### 1.0.1 (2019-10-07)
+- (bluefox) fixed min max
 
 ### 0.7.1 (2016-12-14)
 - (Pmant) change max brightness to max brightness of initial color
@@ -22,7 +43,7 @@ hash: K8U6q94vcNzU/+h53ADbypPKBqwFgLV3H62PRsBBNVs=
 - (jens-maus) add value multiplier
 
 ### 0.6.1 (2016-11-25)
-- (blufox) Update justgage.js
+- (bluefox) Update justgage.js
 
 ### 0.6.0 (2016-07-31)
 - (Pmant) add no-gradient-option to Justgage widget
@@ -68,5 +89,5 @@ hash: K8U6q94vcNzU/+h53ADbypPKBqwFgLV3H62PRsBBNVs=
 - (Pmant) initial checkin
 
 ## License
- Copyright (c) 2015-2016 Pmant
- MIT
+Copyright (c) 2015-2019 Pmant <patrickmo@gmx.de>
+MIT

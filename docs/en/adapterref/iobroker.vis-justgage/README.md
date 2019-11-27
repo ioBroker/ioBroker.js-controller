@@ -6,8 +6,26 @@ ioBroker.vis-justgage
 
 ![Screenshot](img/widgets.png)
 
+## Pointer options
+There is a possibility to define the pointer options:
+```
+{
+  "toplength": null,
+  "bottomlength": null,
+  "bottomwidth": null,
+  "stroke": "none",
+  "stroke_width": 0,
+  "stroke_linecap": "square",
+  "color": "#000000"
+}
+```
+It must be valid JSON object. Single quotas are not allowed!
+More about pointer options could be found here: https://github.com/toorshia/justgage#pointer-options
+
 ## Changelog
-![Number of Installations](http://iobroker.live/badges/vis-justgage-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-justgage-stable.svg) ### 1.0.0 (2017-11-16)
+![Number of Installations](http://iobroker.live/badges/vis-justgage-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-justgage-stable.svg)
+### 1.0.1 (2019-10-07)
+- (bluefox) fixed min max
 
 ### 0.7.1 (2016-12-14)
 - (Pmant) change max brightness to max brightness of initial color
@@ -17,7 +35,7 @@ ioBroker.vis-justgage
 - (jens-maus) add value multiplier
 
 ### 0.6.1 (2016-11-25)
-- (blufox) Update justgage.js
+- (bluefox) Update justgage.js
 
 ### 0.6.0 (2016-07-31)
 - (Pmant) add no-gradient-option to Justgage widget
@@ -63,5 +81,5 @@ ioBroker.vis-justgage
 - (Pmant) initial checkin
 
 ## License
- Copyright (c) 2015-2016 Pmant
- MIT
+Copyright (c) 2015-2019 Pmant <patrickmo@gmx.de>
+MIT

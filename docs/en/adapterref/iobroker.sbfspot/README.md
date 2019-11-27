@@ -25,6 +25,9 @@ Since version 0.2.3 there is a own vis widget based on flot available to show hi
 
 ## Changelog
 
+## 2.3.4 (2019-10-31)
+* (René) update flot to version 3.0
+
 ### 2.3.3 (2019-02-03)
 * (René) due to install problems downgrade of sqlite3 package
 

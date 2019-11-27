@@ -16,6 +16,25 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 **Note:** If in select ID dialog of the ioBroker node you cannot find some variable, restart node-red instance. By restarting the new list of objects will be created.
 
 ## Changelog
+### 1.13.2 (2019-11-24)
+* (SchumyHao) Set state name, role, type and readonly state in node and msg
+
+### 1.13.1 (2019-10-23)
+* (RustyThePropellerHead) Logging elevated from debug to info for debug-nodes with console output 
+
+### 1.13.0 (2019-10-20)
+* (WolfspiritM) Get Object node added
+
+### 1.12.0 (2019-10-06)
+* (Apollon77) Allow to enable/diable the projects feature via Admin
+* (Apollon77) Upgrade to node.red 1.0.1 and also add all now extra npm packages to stay compatible
+
+### 1.10.1 (2019-09-20)
+* (Apollon77) Make sure also checkState calls are executed after ioBroker databases are initialized
+
+### 1.10.0 (2019-09-15)
+* (Apollon77) Used newer version of node-red 0.20.8 and updated other dependencies
+
 ### 1.9.0 (2019-07-08)
 * (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
 

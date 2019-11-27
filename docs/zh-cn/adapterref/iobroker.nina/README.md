@@ -3,24 +3,52 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: D/wb6g5D8l09HJDjgNuTnBsgEYgyDYY9TcTPAmgsAyY=
+hash: /l80m4JRm4EQrQ96YQen6Y46NuiLRHXqY6rh1NVE0rM=
 ---
 ![商标](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nina.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.nina.svg)
 ![依赖状态](https://img.shields.io/david/TA2k/iobroker.nina.svg)
-![已知的漏洞](https://snyk.io/test/github/TA2k/ioBroker.nina/badge.svg)
+![已知漏洞](https://snyk.io/test/github/TA2k/ioBroker.nina/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.nina.png?downloads=true)
 ![特拉维斯-CI](http://img.shields.io/travis/TA2k/ioBroker.nina/master.svg)
 
 ＃ioBroker.nina
-## Nina适用于ioBroker的适配器
-Notfall-Informations- und Nachrichten-App
+## IoBroker的Nina适配器
+Notfall-Informations-和Nachrichten-App
+
+https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html
+
+https://warnung.bund.de/
 
 ＃＃＃ 入门
+模具AGS负责设计AGS eingeben。
+
+Liste der AGS mit Strg + F例如：
+
+https://warnung.bund.de/assets/json/suche_channel.json
 
 ## Changelog
+
+### 0.0.13
+
+-   (tomboxi) Identifierliste hinzugefügt.
+
+### 0.0.12
+
+-   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+
+### 0.0.8
+
+-   (tomboxi) Katwarn Warnungen hinzugefügt.
+### 0.0.7
+
+-   (tomboxi) BiwApp Warnungen hinzugefügt.
+
+### 0.0.6
+
+-   (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
 
 ### 0.0.5
 

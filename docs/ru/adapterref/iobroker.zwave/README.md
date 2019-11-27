@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.zwave/README.md
 title: ioBroker zwave Адаптер
-hash: MOnafPN3SVLChdx3C9Oqj/6x3xtrLHFZZIq5xCd9rdg=
+hash: CLW9bI1lIyxKiU2eXBY314KMIp5jHUAnDwy7F/Fl8IQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
 
@@ -12,13 +12,15 @@ hash: MOnafPN3SVLChdx3C9Oqj/6x3xtrLHFZZIq5xCd9rdg=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.zwave.svg)
 ![NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
 
-# IoBroker Адаптер zwave ==============
+# IoBroker Адаптер zwave
+==============
+
 Поддержка Zwave с openzwave.
 
-Для этого адаптера используется достаточно неплохой поддерживаемый модуль npm: https://github.com/OpenZWave/node-openzwave-shared Вы должны узнать, как называется USB-порт Z-Wave флешки и настроить его в настройках адаптера.
+Для этого адаптера используется достаточно неплохой поддерживаемый модуль npm: https://github.com/OpenZWave/node-openzwave-shared. Вы должны узнать, как называется USB-порт Z-Wave флешки и настроить его в настройках адаптера.
 
 ## Важная информация
-- При первом запуске адаптеру требуется некоторое время, чтобы вычислить все объекты в iobroker.
+- При первом запуске адаптеру требуется некоторое время, чтобы рассчитать все объекты в iobroker.
 - Если вы добавляете устройство, дайте адаптеру выполнить свою работу и немного подождите.
 - Если устройство не отображается на включенном сайте регистрации, оно не полностью импортируется в ioBroker.
 
@@ -42,7 +44,7 @@ apt-get install pkg-config libudev-dev build-essential curl unzip
 
 2. `sudo nano / boot / config.txt`
 
-Посмотрите на каждую из следующих строк. Если они закомментированы в `#`, удалите это. Если они не существуют, добавьте их в конец файла:
+Посмотрите на каждую из следующих строк. Если они закомментированы с `#`, удалите это. Если они не существуют, добавьте их в конец файла:
 
 * `dtoverlay = pi3-miniuart-bt`
 * `enable_uart = 1`
@@ -52,14 +54,14 @@ apt-get install pkg-config libudev-dev build-essential curl unzip
 
 ### Первый старт
 Модуль GPIO обычно имеет адрес, подобный `/dev/ttyAMA0` или `/dev/ttyACM0`.
-Флэш-накопитель USB находится в разделе `/dev/ttyUSB0` или `/dev/ttyUSB1`.
+Флэш-накопитель USB можно найти в разделе `/dev/ttyUSB0` или `/dev/ttyUSB1`.
 
 - Зайдите в админ iobroker и добавьте адаптер Zwave (установка довольно долгая, наберитесь терпения)
 - Запустите новый экземпляр адаптера zwave и выберите адрес устройства контроллера из выпадающего меню в интерфейсе администратора.
 - Если ваше устройство не обнаружено, проверьте его или попробуйте вручную ввести его адрес, когда адаптер выключен.
-- Дождитесь, пока индикатор на вкладке «Экземпляры» не загорится зеленым или в журнале iobroker не появится сообщение «Сканирование завершено».
+- Подождите, пока индикатор на вкладке «Экземпляры» не загорится зеленым или в журнале iobroker не появится сообщение «Сканирование завершено».
 
-### Известные вопросы
+### Известные проблемы
 Если вы получаете следующую (или похожую) ошибку после запуска адаптера
 
 ```
@@ -95,7 +97,6 @@ sudo ldconfig /usr/local/lib64
 ## Конфигурация
 В настройках администратора вы можете установить следующие атрибуты
 
-- Принудительно повторно инициализировать объекты (Реинициализировать все объекты внутри ioBroker)
 - USB-имя (USB-порт вашей Z-Wave флешки)
 - ведение журнала (включите ведение журнала в OZW_Log.txt)
 - Вывод на консоль (копирование логирования в консоль, запись всех в ioBroker.log)
@@ -113,11 +114,11 @@ sudo ldconfig /usr/local/lib64
  - Конфигурация: /opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml в Linux
 
 ## Устройство добавить или удалить
-Если вы добавляете или удаляете устройство, это занимает 60 секунд. Затем страница автоматически перезагружается.
+Если вы добавляете или удаляете устройство, это займет 60 секунд. Затем страница автоматически перезагружается.
 
 Если вы измените имя или местоположение, это займет 5 секунд. Затем страница автоматически перезагружается.
 
-## Характеристики
+## Особенности
 В OpenZWave Configurator вы можете видеть все узлы и их классы.
 
 Следующие действия в настоящее время поддерживаются (только с контекстным меню):
@@ -144,15 +145,15 @@ sudo ldconfig /usr/local/lib64
 - Переместите конфигурацию и файл журнала в путь по умолчанию iobroker (/ opt / iobroker / log, / opt / iobroker / data / files / zwave)
 - Языковая поддержка (английский, немецкий, русский)
 
-## Проверенное оборудование
+## Протестированное оборудование
 ### ZWave
 - USB-флешка ZME_UZB1
 - RazBerry GPIO Board для RaspBerry (1/2)
 
 ### Фибаро
 - FGBS001 Универсальный бинарный датчик
-- Двойной Реле FGS222 2x1,5 кВт
-- FGWPE Стенная вилка
+- FGS222 Двойное реле, 2x1,5 кВт
+- Штепсельная вилка FGWPE
 - FGSS001 Датчик дыма
 - датчик движения FGMS001
 - FGS-223 Двойной выключатель 2
@@ -164,6 +165,44 @@ sudo ldconfig /usr/local/lib64
 - Danfoss Z Термостат 014G0013
 
 ## Changelog
+
+### 1.7.0
+* (cburghardt) Added multi-instance associations
+
+### 1.6.3
+* (cburghardt) Update openzwave version
+* (cburghardt) Verify that the correct version of openzwave is installed by checking the manufacturer revision
+* (cburghardt) Don't refresh the association menu directly after adding or removing for sleeping devices as it is not updated
+* (cburghardt) Add `removeFailedNode` command
+
+### 1.6.1
+* (cburghardt) Fix issues 75 and 76
+
+### 1.6.0
+* (cburghardt) Cleanup obsolete states on startup
+* (cburghardt) Added confirmation dialog for hard reset
+* (cburghardt) Translation fixes
+* (cburghardt) Removed non-existing `getNeighbors` function
+* (cburghardt) Display network map
+* (cburghardt) Allow manual input of a serial port together with the selection
+* (cburghardt) Suppress permission denied warnings during installation
+
+### 1.5.1
+* (cburghardt) The *refresh node* command no longer excludes the node
+
+### 1.5.0
+* (AlCalzone) Update OpenZWave dependency to version 1.6
+
+### 1.4.2
+* (AlCalzone) Also escape spaces in state IDs.
+
+### 1.4.1
+* (AlCalzone) Pinned version of OpenZWave to 1.4 because 1.6 is not compatible yet
+
+### 1.4.0
+* (AlCalzone) Fixed breaks with OpenZWave 1.6
+* (AlCalzone) Switched to new testing
+* (AlCalzone) Support for compact mode
 
 ### 1.3.2 (2018-11-28)
 * (AlCalzone) Replace all chars in state IDs that are forbidden in JS-Controller 1.5+
@@ -268,7 +307,7 @@ sudo ldconfig /usr/local/lib64
 
 ## License
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>, husky-koglhof <husky.koglhof@icloud.com>
 
 SOFTWARE NOTICE AND LICENSE
 

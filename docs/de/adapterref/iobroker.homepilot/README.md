@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
+hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 ---
 ![Logo](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
@@ -16,6 +16,8 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 # IoBroker.homepilot
+Für den Adapter muss die Firmware der Homepilot-Basisstation niedriger als v5.0 sein (vor September 2019). Neuere oder aktualisierte Sender können mit [ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20) verwaltet werden
+
 : de: [Dokumentation](/docs/de/doc_homepilot_de.md)
 
 : uk: [Dokumentation](/docs/en/doc_homepilot_en.md)
@@ -24,7 +26,7 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 
 : portugal: [Documentação](/docs/en/doc_homepilot_en.md)
 
-: niederlande: [Dokumentation](/docs/en/doc_homepilot_en.md)
+: Niederlande: [Dokumentation](/docs/en/doc_homepilot_en.md)
 
 : fr: [Dokumentation](/docs/en/doc_homepilot_en.md)
 
@@ -35,13 +37,19 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 : polen: [Dokumentacja](/docs/en/doc_homepilot_en.md)
 
 ## Roadmap
-* 1.4.0 zeigt eine Liste aller installierten Duofern-Produkte in Ihrem Netzwerk im Einstellungsfenster an
-* 1.5.0 Objektbaum in "homepilot.0.device.channel.state" umordnen
+* 1.4.0 Im Einstellungsfenster wird eine Liste aller in Ihrem Netzwerk installierten Duofern-Produkte angezeigt
+* 1.5.0 Objektbaum neu anordnen zu "homepilot.0.device.channel.state"
 * 2.0.0 Live-Daten von der Homepilot-Station abrufen (zwave)
 
 Beiträge sind willkommen!
 
 ## Changelog
+### 1.1.3 (2019-09-23)
++ (christofkac) Added support for Connect Actor
+
+### 1.1.2 (2019-09-02)
++ (Apollon77) Update testing for nodejs12
+
 ### 1.1.1 (2019-01-09)
 + (homecineplexx) Added new device "Troll Comfort DuoFern"
 

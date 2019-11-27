@@ -20,6 +20,7 @@ Supported USB Adapters:
 
 + [iM871A](http://www.wireless-solutions.de/products/gateways/wirelessadapter)
 + [CUL](http://shop.busware.de/product_info.php/products_id/29?osCsid=eab2ce6ef5efc95dbdf61396ca256b6e)
++ [Amber 8465-M](https://www.amber-wireless.de/en/amb8465-m.html)
 
 #### Configuration
 

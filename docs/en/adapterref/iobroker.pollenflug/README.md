@@ -107,6 +107,9 @@ on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
 
 ## Changelog
 
+### 1.0.4 (19.10.2019)
+* (Stübi) Bugfixing
+
 ### 1.0.3 (12.04.2019)
 * (Stübi) Bugfixing, changing logo size
 

@@ -3,10 +3,12 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
+hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
+![Количество установок](http://iobroker.live/badges/iqontrol-installed.svg)
+![Стабильная версия](http://iobroker.live/badges/iqontrol-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.iqontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Статус зависимости](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
@@ -33,16 +35,18 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 ![пример](img/screenshot4.jpg) ![пример](../../../en/adapterref/iobroker.iqontrol/img/screenshot3.jpg)
 
 Работает в любом браузере.
-Вы можете сохранить его как веб-приложение на домашнем экране iOS, и оно будет выглядеть как родное приложение.
 Это полностью настраиваемый.
+
+## Добавить на домашний экран
+Вы можете сохранить его как веб-приложение на главном экране, и оно будет выглядеть как «родное» приложение: ![Добавить в Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Тебе нужно...
 * Nodejs 8 или выше
 * Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
-    * Если это вступает в конфликт с другими адаптерами, просто добавьте еще один экземпляр с вышеуказанными настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
-* Для подключения через *iobroker.pro-Cloud* оба, admin и web-адаптер должны быть установлены на http (не https)
+    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
+* Для подключения через *iobroker.pro-Cloud* и admin, и web-адаптер должны быть установлены на http (не https)
 
-## Поиск проблемы
+## Поиск неисправностей
 * Убедитесь, что вы выполнили раздел «Вам нужно ...» вверху этой страницы
 * Если после обновления что-то не работает, как ожидается, попробуйте выполнить следующие действия:
     * Начать загрузку адаптера:
@@ -95,15 +99,18 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 Каждое устройство имеет роль, которая определяет функцию устройства. Каждая роль генерирует набор состояний, которые могут быть связаны с соответствующим состоянием io-брокера.
 Если вы используете функцию автоматического создания, вы можете выбрать существующее устройство из дерева объектов io-broker. Autocreate пытается выяснить роль и сопоставить как можно больше состояний.
 Это будет работать только для известных устройств. Для неизвестных устройств, а также для предоставления устройствам расширенных функций, вы можете добавить их вручную с помощью кнопки (+) - или отредактировать устройства, созданные с помощью автоматического создания.
-Чтобы отредактировать роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
+Чтобы отредактировать роль и состояния устройства, нажмите на карандаш за устройством. Ниже вы найдете краткое описание ролей и используемых состояний:
 
 ### Изменение конфигурации Datapoint
 Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне настройки устройства или на вкладке объектов iobroker. Здесь вы можете:
 
 * Установить флажок только для чтения
 * Установите флаг инвертирования
+* Установить флажок подтверждения (заставляет пользователя подтвердить перед записью изменения в точку данных)
+* Установить ПИН-код (вынуждает пользователя вводить этот ПИН-код до того, как изменение будет записано в точку данных - но будьте осторожны: это только из-за низкого уровня безопасности, потому что ПИН проверяется во внешнем интерфейсе! Используйте номер для отображения в полноэкранном режиме -pin-pad, если запрашивается код)
 * Установите идентификатор точки данных, в который записываются целевые значения (если у вас есть разные точки данных для фактического и целевого значения)
-* Изменить единицу назначения данных
+* Изменить единицу назначения данных, разделить на ноль, единственное и множественное число
+* Изменить минимальное и максимальное значения datapoint
 * Изменить тип назначения данных
 * Изменить роль datapoint
 * Установить или изменить список значений
@@ -116,15 +123,15 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 * **ADDITIONAL_INFO** *массив* - массив точек данных, которые будут отображаться в нижней части информационного диалога
 * **BATTERY** *boolean* - при значении true или *number* - при значении менее 10% будет отображаться небольшой значок разряда батареи
 * **ОШИБКА** *логическое* - при значении true будет отображаться маленький значок с восклицательным знаком
-* **UNREACH** *логический* - при значении true будет отображаться маленький значок беспроводной сети
+* **UNREACH** *boolean* - при значении true будет отображаться маленький значок беспроводной сети
 
 Почти все роли имеют состояние STATE и / или LEVEL. В большинстве случаев это представляет собой основную функцию устройства. Вы можете назначить ему состояния io-broker следующих типов:
 
-* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, он попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не предназначен только для чтения, в диалоговом окне появится сальто-переключатель.
-* *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге.
+* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы щелкнете по значку плитки, она попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне появится сальто-переключатель
+* *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге
 * *string* - текст для отображения
-* *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
-  * Технически, *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
+* *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, он создаст раскрывающееся меню в диалоговом окне.
+  * Технически *value-list* - это значение с соответствующим переводом-списком, определенным в объекте 'common.custom.iqontrol. <Instance> .states', 'native.states' или 'common.states' объекта datapoint :
 
 ````
 "native": {
@@ -141,7 +148,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 * Не имеет больше состояний
 * **связанный-вид-свойство** открывается напрямую
 
-### <img src="img/icons/switch_on.png" width="32"> Switch, <img src="img/icons/fan_on.png" width="32"> Поклонник:
+### <img src="img/icons/switch_on.png" width="32"> Switch, <img src="img/icons/fan_on.png" width="32"> Вентилятор:
 * **STATE** *boolean* - отображать и устанавливать вкл / выкл
 * **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
@@ -154,7 +161,7 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
 Каждый источник света может иметь одно или оба из следующих состояний:
 
 * **STATE** *логическое* - показать и установить вкл / выкл
-* **LEVEL** *number* - показать и установить уровень освещенности
+* **УРОВЕНЬ** *число* - показать и установить уровень освещенности
 
 По желанию вы можете определить следующие состояния:
 
@@ -173,8 +180,8 @@ hash: /8RaSTWwjxhMlS6+MK4vkOr9KrQNcJlNk417FlI5aIU=
     * **RGB** / **# RGB** вместо использования HUE, SATURATION и COLOR_BRIGHTNESS вы можете использовать RGB-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW- или RGBCWWW (hex) , WW = теплый белый, CW = холодный белый), необязательно с начальным '#'
-    * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (шестнадцатеричный), опционально с начальным '#'. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается.
-    * **Hue for Milight** это значение оттенка для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
+    * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (hex), опционально с начальным символом #. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается
+    * **Hue for Milight** это значение Hue для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -212,8 +219,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/brightness_light.png" width="32"> Яркость-Sensor:
-* **STATE** *число* - яркость, которая будет отображаться в нижней части устройства
-* **BRIGHTNESS** *number* - яркость, которая будет отображаться маленьким в верхнем правом углу
+* **STATE** *number* - яркость, которая будет отображаться в нижней части устройства
+* **BRIGHTNESS** *number* - яркость, которая будет отображаться маленьким шрифтом в верхнем правом углу
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/motion_on.png" width="32"> Датчик движения:
@@ -221,58 +228,61 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь или окно.
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон».
-  * Вы также можете назначить *строку* для отображения любого текста, например «3 открытых окна» или «все закрыто».
+* **STATE** *boolean* - отображать, открыта или закрыта дверь или окно
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон»
+  * Вы также можете назначить *строку* для отображения любого текста, такого как «3 открытых окна» или «все закрыто»
 * Уважайте **свойство связанных просмотров**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Гаражная дверь:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь.
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон».
-  * Вы также можете назначить *строку* для отображения любого текста, такого как «3 двери открыты» или «все закрыты».
-* **TOGGLE** *boolean* - отображает кнопку Toggle и устанавливается в значение true, если нажата.
+* **STATE** *логический* - отображать, открыта или закрыта дверь
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон»
+  * Вы также можете назначить *строку* для отображения любого текста, такого как «3 двери открыты» или «все закрыты»
+* **TOGGLE** *boolean* - отображает кнопку Toggle и устанавливается в значение true, если нажата
 
 ### <img src="img/icons/door_locked.png" width="32"> Дверь с замком:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь.
+* **STATE** *логический* - отображать, открыта или закрыта дверь
 * **LOCK_STATE** *логический* - отображать, заблокирована или разблокирована дверь
 * **LOCK_STATE_UNCERTAIN** *boolean* - если true, STATE будет отображаться курсивом, чтобы показать, что точная позиция блокировки неизвестна
-* **LOCK_OPEN** *boolean* - если установлено значение true, дверь полностью откроется
+* **LOCK_OPEN** *boolean* - при значении true дверь полностью откроется
 
 ### <img src="img/icons/blind_middle.png" width="32"> Слепой:
 * **УРОВЕНЬ** *число* - высота блайндов в процентах
-* **DIRECTION** *список значений* - может быть Stop, Up и Down. Значения, которые представляют Стоп, Вверх, Вниз и Неизвестно, могут быть настроены.
-* **STOP** *boolean* - устанавливается в значение true, если нажата кнопка остановки.
-* **UP** / **DOWN** *boolean* - устанавливается в значение true, если нажата кнопка вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо или в дополнение к LEVEL). Дополнительно вы можете определить значение с помощью **UP_SET_VALUE** / **DOWN_SET_VALUE** точек данных. Если определено, это значение будет отправлено вместо true, когда нажата кнопка «вверх / вниз».
-* **FAVORITE_POSITION** *логический* - может использоваться для вызова любимой позиции. Если нажата кнопка «Избранное» (заголовок кнопки можно настроить в настройках устройства), на эту точку данных будет отправлено значение true. Дополнительно вы можете определить значение с помощью **FAVORITE_POSITION_SET_VALUE** Datapoint. Если определено, это значение будет отправлено вместо true, когда нажата любимая кнопка.
+* **DIRECTION** *список значений* - может быть Stop, Up и Down. Значения, которые представляют Стоп, Вверх, Вниз и Неизвестно, могут быть настроены
+* **STOP** *boolean* - устанавливается в true, если нажата кнопка остановки
+* **UP** / **DOWN** *boolean* - устанавливается в значение true, если нажата кнопка вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо или в дополнение к LEVEL). Дополнительно вы можете определить значение с помощью **UP_SET_VALUE** / **DOWN_SET_VALUE** точек данных. Если определено, это значение будет отправлено вместо true, когда нажата кнопка вверх / вниз
+* **FAVORITE_POSITION** *логический* - может использоваться для вызова любимой позиции. Если нажать кнопку «Избранное» (заголовок кнопки можно настроить в настройках устройства), на эту точку данных будет отправлено значение true. Дополнительно вы можете определить значение с помощью **FAVORITE_POSITION_SET_VALUE** Datapoint. Если определено, это значение будет отправлено вместо true, когда нажата любимая кнопка
+* **SLATS_LEVEL** *number* - положение планок в процентах
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
-  * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ»
+  * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже"
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/alarm_on.png" width="32"> Тревога:
 * **STATE** *логическое* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ».
-  * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже".
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ»
+  * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже"
 * **CONTROL_MODE** *список значений* - выбрать режим работы, такой как «Постановка на охрану» и «Снятие с охраны»
     * В параметрах устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен значок представления
 
 ### <img src="img/icons/battery_full.png" width="32"> Батарея:
 * **STATE** *число* - уровень заряда батареи в процентах
 * **CHARGING** *boolean* - если true, отображается значок зарядки
+* **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
+* **VOLTAGE** *number* - напряжение, которое будет отображаться маленьким шрифтом в правом верхнем углу
 
-### <img src="img/icons/value_on.png" width="32"> Значение:
+### <img src="img/icons/value_on.png" width="32"> Стоимость:
 * **СОСТОЯНИЕ** *любое* - любое допустимое состояние, которое будет отображаться (посмотрите раздел общих состояний)
 * **LEVEL** *number* - создаст слайдер в диалоге
 
 ### <img src="img/icons/play_on.png" width="32"> Программа:
-* **STATE** *boolean* - при значении true программа будет запущена
+* **STATE** *boolean* - если установлено значение true, программа будет запущена
 
 ### <img src="img/icons/play.png" width="32"> Сцена:
 * **STATE** *boolean* - отображается, если сцена активна. Если установлено значение true, сцена будет запущена
 
-### <img src="img/icons/popup.png" width="32"> Неожиданно возникнуть:
+### <img src="img/icons/popup.png" width="32"> Выскакивать:
 * **STATE** *any* - может использоваться для отображения дополнительной информации
 * **URL** CONSTANT *string* - этот URL будет открыт как всплывающее окно внутри всплывающего окна
 * **HTML** CONSTANT *string* - эта разметка будет отображаться во всплывающем окне, если URL не указан
@@ -288,6 +298,83 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.2.11 (2019-10-07)
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+
+### 0.2.10 (2019-10-05)
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
+
+### 0.2.9 (2019-10-02)
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
+
+### 0.2.8 (2019-09-27)
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+
+### 0.2.7 (2019-09-27)
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
+
+### 0.2.6 (2019-09-24)
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+
+### 0.2.5 (2019-09-22)
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
+
+### 0.2.4 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
+
+### 0.2.3 (2019-09-15)
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+
+### 0.2.2 (2019-09-14)
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+
+### 0.2.1 (2019-09-07)
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+
+### 0.2.0 (2019-09-06)
+* (Sebastian Bormann) Added slats level to blind.
+
+### 0.1.15 (2019-09-05)
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
+
+### 0.1.14 (2019-09-01)
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+
+### 0.1.13 (2019-08-28)
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
+
+### 0.1.12 (2019-08-28)
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+
+### 0.1.11 (2019-08-26)
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
 * (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
 * (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.

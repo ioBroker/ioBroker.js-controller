@@ -28,7 +28,23 @@ It is required to let all services be available under one web server.
 If authentication is enabled and the user enters 5 times invalid password during one minute, he must wait at least one minute till next attempt.
 After 15th wrong attempt the user must wait 1 hour.
 
+## "Stay logged in" option
+If this options is selected the user stays logged in for one month.
+If not, the user will stay logged in for the configured "login timeout".
+
 ## Changelog
+### 2.4.10 (2019-11-07)
+* (bluefox) Workaround for material was added
+
+### 2.4.9 (2019-11-04)
+* (Apollon77) permission errors fixed when whitelist had at least one entry
+
+### 2.4.8 (2019-10-16)
+* (bluefox) Fixed login of non-admin user
+
+### 2.4.6 (2019-10-12)
+* (bluefox) Fixed issue with simple-api
+
 ### 2.4.4 (2019-06-27)
 * (bluefox) Fixed issue with socket.io.js not found
 
@@ -91,7 +107,7 @@ After 15th wrong attempt the user must wait 1 hour.
 
 ### 2.0.3 (2017-04-01)
  * (bluefox) catch errors for invalid objects
- 
+
 ### 2.0.2 (2017-02-08)
 * (bluefox) fix selectID dialog
 
@@ -205,7 +221,7 @@ After 15th wrong attempt the user must wait 1 hour.
 
 ### 1.1.1 (2015-11-01)
 * (bluefox) some files were missed on npm
-* 
+*
 ### 1.1.0 (2015-11-01)
 * (bluefox) update jquery UI libs
 
@@ -259,10 +275,10 @@ After 15th wrong attempt the user must wait 1 hour.
 
 ### 0.2.3 (2015-02-12)
 * (bluefox) add simple api
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.2 (2015-01-20)
-* (bluefox) update select ID dialog 
+* (bluefox) update select ID dialog
 
 ### 0.2.1 (2015-01-18)
 * (bluefox) update select ID dialog

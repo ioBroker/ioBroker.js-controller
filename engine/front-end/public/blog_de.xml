@@ -3,8 +3,18 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Neuigkeiten, Ankündigungen und Ideen zu ioBroker]]></description>
         <link>https://www.iobroker.net/#de/blog</link>
-        <lastBuildDate>Sat, 24 Aug 2019 10:22:16 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 14 Oct 2019 06:00:00 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[js-controller 2.0]]></title>
+            <description><![CDATA[
+                <p>Hallo ioBroker-Community,</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2019_10_14</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2019_10_14</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Mon, 14 Oct 2019 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Windows-Installer]]></title>
             <description><![CDATA[

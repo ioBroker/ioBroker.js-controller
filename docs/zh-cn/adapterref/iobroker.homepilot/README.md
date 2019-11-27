@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
+hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 ---
 ![商标](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
@@ -11,14 +11,16 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.homepilot.svg)
 ![下载](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
 ![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
-![Codacy徽章](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
+![编码徽章](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
 ![特拉维斯-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 ＃ioBroker.homepilot
+适配器需要Homepilot基站的固件版本低于v5.0（2019年9月之前）。可以使用[ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20)管理更新或更新的电台
+
 ：de：[Dokumentation](/docs/de/doc_homepilot_de.md)
 
-：英国：[文档](/docs/en/doc_homepilot_en.md)
+：uk：[文档](/docs/en/doc_homepilot_en.md)
 
 ：ru：[Документация](/docs/en/doc_homepilot_en.md)
 
@@ -28,20 +30,26 @@ hash: mMK5ZFW4cbjWAzOJ4lrSJq2wvWBpFHUebZGzBj01kr0=
 
 ：fr：[文档](/docs/en/doc_homepilot_en.md)
 
-：它：[Documentazione](/docs/en/doc_homepilot_en.md)
+：it：[Documentazione](/docs/en/doc_homepilot_en.md)
 
 ：es：[Documentación](/docs/en/doc_homepilot_en.md)
 
-：波兰：[Dokumentacja](/docs/en/doc_homepilot_en.md)
+：poland：[Dokumentacja](/docs/en/doc_homepilot_en.md)
 
 ##路线图
 * 1.4.0在设置窗口中获取网络中所有已安装的duofern产品的列表
-* 1.5.0将对象树重新排列为“homepilot.0.device.channel.state”
-* 2.0.0从Homepilot站获取实时数据（zwave）
+* 1.5.0将对象树重新排列为“ homepilot.0.device.channel.state”
+* 2.0.0从Homepilot站（zwave）获取实时数据
 
 欢迎捐款！
 
 ## Changelog
+### 1.1.3 (2019-09-23)
++ (christofkac) Added support for Connect Actor
+
+### 1.1.2 (2019-09-02)
++ (Apollon77) Update testing for nodejs12
+
 ### 1.1.1 (2019-01-09)
 + (homecineplexx) Added new device "Troll Comfort DuoFern"
 
