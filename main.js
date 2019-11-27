@@ -3630,9 +3630,20 @@ function init(compactGroupId) {
         title += compactGroupObjectPrefix + compactGroup;
 
         isDaemon = true;
-    }
-    else {
+    } else {
         stopTimeout += 5000;
+    }
+
+    // If bootstrap file detected, it must be deleted, but give time for bootstrap process to use this file
+    if (fs.existsSync('/etc/iob-vendor-secret.json')) {
+        setTimeout(() => {
+            console.log('Deleted /etc/iob-vendor-secret.json');
+            try {
+                fs.unlinkSync('/etc/iob-vendor-secret.json');
+            } catch (e) {
+                console.error('Cannot delete /etc/iob-vendor-secret.json: ' + e.toString());
+            }
+        }, 30000);
     }
 
     process.title = title;
@@ -3839,12 +3850,10 @@ function init(compactGroupId) {
     });
 }
 
-
 if (typeof module !== 'undefined' && module.parent) {
     // normally used for legacy compatibility and compact group support
     module.exports.init = init;
-}
-else {
+} else {
     // for direct calls
     init();
 }
