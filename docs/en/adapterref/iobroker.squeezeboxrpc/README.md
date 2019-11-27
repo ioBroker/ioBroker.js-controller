@@ -144,6 +144,7 @@ btnRewind         | Previous song
 btnPreset_*       | 1-6 buttons to define in player or server
 cmdGeneral        | a general command field to send commands to the player. every field must enclosed by quotation marks. parameters musst be seperated by comma. Example: "play","1"
 cmdPlayFavorite   | to play a favorite set the id of the favorite
+cmdPlayUrl        | to play a url´example "http://50.7.77.114:8101/;"
 cmdGoTime         | jump to a absolut position by specifying a number of seconds or jump relative with a + or - at the beginning of the seconds. Example 100,-50,+50
 
 For more information visit the CLI-documentation:

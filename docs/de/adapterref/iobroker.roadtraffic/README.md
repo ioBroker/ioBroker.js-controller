@@ -3,37 +3,38 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: Ejk9bvs8M8TCDQBOLAEAJ5prrYoMaM1LdHgVm29BGwo=
+hash: IUmLDzAkE5Cb6dAckIUOdrK6ff5u79VdmrRKAR9jGpw=
 ---
 ![Logo](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/roadtraffic-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.roadtraffic.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.roadtraffic.svg)
 ![Tests](https://travis-ci.org/BuZZy1337/ioBroker.roadtraffic.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.roadtraffic.png?downloads=true)
 
-# IoBroker.roadtraffic ===================
+# IoBroker.roadtraffic
 ## Über diesen Adapter
-Dieser Adapter verwendet die Google Maps-API, um den Verkehr auf Ihren Routen zu überprüfen. Sie können mehrere Routen konfigurieren. Der Adapter überprüft die tatsächliche Verkehrssituation und zeigt Ihnen an, wie lange Ihre Reise dauert. (Im Moment wird die Zeit in Sekunden gespeichert).
-Der Adapter befindet sich derzeit in einem sehr frühen Stadium. Ich plane, einen Wecker zu implementieren - damit Sie dem Adapter mitteilen können, wann Sie bei der Arbeit sein müssen - und was geschehen soll, wenn es Zeit ist, zu verlassen / aufzuwachen (Start Radio spielen und eine Ansage wie "Anscheinend gibt es einen Verkehrsstau auf Ihrer Route. Sie müssen jetzt aufstehen, um nicht bei der Arbeit zu spät zu sein!"
-Fühlen Sie sich frei, einige Feature-Requests hier auf Github zu erstellen - öffnen Sie einfach eine Ausgabe dafür! ;)
+Dieser Adapter verwendet die Google Maps-API, um den Verkehr auf Ihren Routen zu überprüfen. Sie können mehrere Routen konfigurieren. Der Adapter überprüft die aktuelle Verkehrssituation und zeigt an, wie lange Ihre Reise dauern wird. (Im Moment spart es die Zeit in Sekunden).
+Der Adapter befindet sich momentan in einem sehr frühen Stadium. Ich plane, einen Wecker einzurichten, damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen und was passieren soll, wenn er aufsteht / aufwacht (Start) spiele Radio und mache eine Ansage wie "Es scheint, als stünde ein Stau auf deiner Route. Du musst jetzt aufstehen, um nicht zu spät zur Arbeit zu kommen!" auf Alexa etc.) ..
+Fühlen Sie sich frei, einige Feature-Anfragen hier auf Github zu erstellen - eröffnen Sie einfach eine Ausgabe dafür! ;)
 
-## Fertig machen
-Zuallererst: Möglicherweise machen Sie sich Sorgen über den Schritt "Rechnungskonto und Zahlungsmethode einrichten", nach dem Google Sie möglicherweise bei der Erstellung des Kontos fragt, um den API-Schlüssel zu erhalten. Keine Sorge! Google gibt Ihnen jeden Monat ein Guthaben von 200 $. (Weitere Informationen finden Sie unter https://cloud.google.com/maps-platform/pricing/sheet/). Sie können ~ 40.000 Anfragen pro Monat kostenlos erledigen.
+## Beginnen
+Zuallererst: Möglicherweise sind Sie besorgt über den Schritt "Einrichten des Abrechnungskontos und der Zahlungsmethode", nach dem Sie von Google möglicherweise gefragt werden, wenn Sie das Konto erstellen, um den API-Schlüssel zu erhalten. Machen Sie sich keine Sorgen! Google gewährt Ihnen ein Guthaben von 200 US-Dollar pro Monat. Weitere Informationen erhalten Sie unter https://cloud.google.com/maps-platform/pricing/sheet/. Sie können ~ 40.000 Anfragen pro Monat kostenlos stellen.
 
 So lass uns gehen:
 
-1. Gehen Sie zu https://cloud.google.com/maps-platform/?apis=routes und melden Sie sich mit Ihrem Google-Konto an (oder erstellen Sie ein neues Konto, falls Sie noch keinen haben).
+1. Gehen Sie zu https://cloud.google.com/maps-platform/?apis=routes und melden Sie sich mit Ihrem Google-Konto an (oder erstellen Sie ein neues Konto, falls Sie noch keines haben).
 
-![Liesmich1](../../../en/adapterref/iobroker.roadtraffic/img/Readme1.png)
+![Readme1](../../../en/adapterref/iobroker.roadtraffic/img/Readme1.png)
 
-2. Wählen Sie einen Namen für Ihr Projekt. Sie können hier eingeben, was Sie möchten. Der Name dient nur zur Identifikation, falls in Ihrem Google-Konto mehrere Projekte laufen.
+2. Wählen Sie einen Namen für Ihr Projekt. Hier können Sie eingeben, was Sie wollen. Der Name dient nur zur Identifikation, falls Sie mehr als ein Projekt in Ihrem Google-Konto haben.
 
 ![Readme2](../../../en/adapterref/iobroker.roadtraffic/img/Readme2.png)
 
-3. Richten Sie die Abrechnungs- und Zahlungsmethode für das Google-Konto ein (wie oben erwähnt - machen Sie sich keine Sorgen - Sie erhalten 200 $ Gutschrift pro Monat von Google für Ihr Abrechnungskonto).
+3. Richten Sie die Abrechnungs- und Zahlungsmethode für das Google-Konto ein (wie oben erwähnt - keine Sorge - Sie erhalten 200 $ Guthaben pro Monat von Google für Ihr Abrechnungskonto).
 
-Wenn Sie sich immer noch Sorgen machen, überprüfen Sie diese Seite: https://cloud.google.com/maps-platform/pricing/sheet/).
+Wenn Sie immer noch besorgt sind, lesen Sie diese Seite: https://cloud.google.com/maps-platform/pricing/sheet/).
 
 ![Readme3](../../../en/adapterref/iobroker.roadtraffic/img/Readme3.png)
 
@@ -41,17 +42,17 @@ Wenn Sie sich immer noch Sorgen machen, überprüfen Sie diese Seite: https://cl
 
 ![Readme4](../../../en/adapterref/iobroker.roadtraffic/img/Readme4.png)
 
-5. Kopieren Sie Ihren API-Schlüssel in die Zwischenablage.
+5. Und kopieren Sie Ihren API-Schlüssel in die Zwischenablage.
 
 ![Readme5](../../../en/adapterref/iobroker.roadtraffic/img/Readme5.png)
 
-6. Öffnen Sie die Instancesettings des roadtraffic-Adapters in ioBroker und fügen Sie Ihren Google-API-Schlüssel in das Eingabefeld ein.
+6. Öffnen Sie die Instancesettings des roadtraffic Adapters in ioBroker und fügen Sie Ihren Google API Key in das Eingabefeld ein.
 
 Danach können Sie auf das "Plus-Symbol" klicken, um Ihre erste Route einzurichten.
 
 ![Readme6](../../../en/adapterref/iobroker.roadtraffic/img/Readme6.png)
 
-Nachdem Sie alle Informationen zum Konfigurationsdialogfeld eingegeben haben, klicken Sie auf "Speichern & Schließen".
+Nachdem Sie alle Informationen in den Konfigurationsdialog eingegeben haben, klicken Sie auf "Speichern & Schließen".
 Der Adapter sollte jetzt neu starten und Sie können loslegen!
 
 ## Changelog

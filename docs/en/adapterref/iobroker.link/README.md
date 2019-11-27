@@ -23,7 +23,7 @@ While you can configure a port forwading on your router and so access your local
 - link-cloud provides an audit log 
 - multiple local ioBroker installations can be accessed through the same UI of the link-cloud server
 - ioBroker.link adapter acts as a reverse proxy and allows to access other server/devices in your local network that support HTTP/TCP/UDP protocols
-- your can grunt a temporaly or permanent access to your local ioBroker installation to a 3<sup>rd</sup> person, e.g. to troubleshoot device outages, without a need to reveal your password or manage credentials
+- your can grant a temporaly or permanent access to your local ioBroker installation to a 3<sup>rd</sup> person, e.g. to troubleshoot device outages, without a need to reveal your password or manage credentials
 
 ### How a connection to my local ioBroker installation can be established if there is no public IP and no ports opened?
 The link-cloud never connects to your local installation, it's the ioBroker.link adapter which runs locally and initiates a connection to the link-cloud in case there is a connection request.
@@ -58,10 +58,10 @@ A connection to local devices supportng HTTP protocol is made via the browser of
 ### My local device supports only TCP/UDP protocol. Is a connection to TCP/UDP devices also possible?
 Yes. In order to connect to local TCP/UDP devices please use ioBroker.link-box: https://www.npmjs.com/package/iobroker.link-box
 
-### How do I grunt an access to my local ioBroker installation?
-Anyone who should be grunted access to a local ioBroker installation has to be explicitly configured in the ioBroker.link adapter settings. No one has access by default. That means that you also have to configure yourself in order to be able to connect to your own local ioBroker installation.
+### How do I grant an access to my local ioBroker installation?
+Anyone who should be granted access to a local ioBroker installation has to be explicitly configured in the ioBroker.link adapter settings. No one has access by default. That means that you also have to configure yourself in order to be able to connect to your own local ioBroker installation.
 
-### How and where do I create the user that I'd like to grunt the access to my local installation?
+### How and where do I create the user that I'd like to grant the access to my local installation?
 First you have to create a free account at https://iobroker.pro. Once created, you can configure the registered e-mail in the ioBroker.link adapter _Allowed users_ setting. No password has to be provided in the adapter cconfiguration.
 
 ### I have already an account on https://iobroker.pro. Can I use it for the link-cloud?
@@ -74,7 +74,7 @@ Yes. There are no dependencies between these two services. You can use them sepa
 The link-cloud doesn't use the https://iobroker.pro accounts. No information associated with https://iobroker.pro accounts is transferred/available to the link-cloud. The link-cloud just federates the authentication to the https://iobroker.pro. The authorization, in their turn, is handled completely by the link-cloud.
 
 ### How can I revoke access to my local installation?
-You can revoke the access permissions grunted to individual persons by removing their e-mails from the _Allowed user_ setting of the ioBroker.link adapter. Alternatively you can totally prevent access to your local installation by leaving _Allowed users_ setting empty. Also stopping or removing the ioBroker.link adapter will prevent any access via the link-cloud.
+You can revoke the access permissions granted to individual persons by removing their e-mails from the _Allowed user_ setting of the ioBroker.link adapter. Alternatively you can totally prevent access to your local installation by leaving _Allowed users_ setting empty. Also stopping or removing the ioBroker.link adapter will prevent any access via the link-cloud.
 
 ### Do I have any charges while using the link-cloud?
 At the moment there are no charges applied and the link-cloud is completely free to use. It's also independant whether you use your free or paid https://iobroker.pro account. Please be aware this might be changed in the future.
@@ -83,7 +83,7 @@ At the moment there are no charges applied and the link-cloud is completely free
 Even this simple service requires infrustructure running around the clock and produces costs. Ensuring the high availability of this service, troubleshooting the outages and improving or adding new functionality consumes a significant amount of our time. To consecrate ourselves on further development we need chips. That would allow our wives to go shopping and give us more time to pay attention to this project.
 
 ### What are the limitations of the link-cloud?
-At the moment only a single connection can be opened to a local ioBroker installation. That means if multiple users are grunted access permissions to a local installation only one user at a time is able to connect to. Also the only connection per user is allowed. That means the same user, grunted access permission to multiple local installations, can access only one installation at a time.
+At the moment only a single connection can be opened to a local ioBroker installation. That means if multiple users are granted access permissions to a local installation only one user at a time is able to connect to. Also the only connection per user is allowed. That means the same user, granted access permission to multiple local installations, can access only one installation at a time.
 
 ### How can I track who and when has accessed my local installation?
 All requested connections' meta data is persisted and can be viewed under https://iobroker.link.
@@ -104,9 +104,9 @@ Defines how often your adapter polls the link-cloud for pending connection reque
 Recommended setting: 10
 
 ### Allowed users
-Defines the existing https://iobroker.pro accounts that have to be grunted access permissions to your local ioBroker installation.
+Defines the existing https://iobroker.pro accounts that have to be granted access permissions to your local ioBroker installation.
 
-In case you want to grunt the access to yourself and your wife and assuming you have provided me@gmail.com and darling@gmail.com while creating the https://iobroker.pro accounts the _Allowed users_ setting will contain these both e-mail addresses.
+In case you want to grant the access to yourself and your wife and assuming you have provided me@gmail.com and darling@gmail.com while creating the https://iobroker.pro accounts the _Allowed users_ setting will contain these both e-mail addresses.
 
 ## Adapter configuration :: Devices
 Here you define a list of devices that will be accessable via the link-cloud.
@@ -145,6 +145,9 @@ To access your router's Web-UI you might have a configuration as follows:
 
 
 ## Changelog
+### 0.5.2 (2019-11-26)
+* (bluefox) Added user enability
+
 ### 0.4.4 (2019-07-16)
 * (gh-got) closing tunnels in case server considers an agent as offline
 * (gh-got) fixed timeout to query active connection status

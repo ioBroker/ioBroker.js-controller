@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: Ejk9bvs8M8TCDQBOLAEAJ5prrYoMaM1LdHgVm29BGwo=
+hash: IUmLDzAkE5Cb6dAckIUOdrK6ff5u79VdmrRKAR9jGpw=
 ---
 ![логотип](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
+![Количество установок](http://iobroker.live/badges/roadtraffic-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.roadtraffic.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.roadtraffic.svg)
 ![тесты](https://travis-ci.org/BuZZy1337/ioBroker.roadtraffic.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.roadtraffic.png?downloads=true)
 
-# IoBroker.roadtraffic =================
+# IoBroker.roadtraffic
 ## Об этом адаптере
 Этот адаптер использует Google Maps API для проверки трафика на ваших маршрутах. Вы можете настроить несколько маршрутов, и адаптер проверит фактическую ситуацию с трафиком и покажет, сколько времени займет ваше путешествие. (На данный момент это экономит время в секундах).
-Адаптер сейчас находится на ранней стадии развития. Я планирую внедрить будильник, чтобы вы могли сообщить адаптеру, в какое время вы должны быть на работе, и что должно произойти, когда пора уходить / просыпаться (Пуск играть на радио и сделать объявление типа «Похоже, что на вашем маршруте есть пробки. Вам нужно встать сейчас, чтобы не опоздать на работу!» на Алексе и т. д.) ..
+Адаптер сейчас находится на ранней стадии. Я планирую включить будильник - чтобы вы могли сказать Адаптеру, в какое время вы должны быть на работе, - и что должно произойти, когда пора уходить / просыпаться (Пуск включите радио и сделайте объявление типа «Похоже, что на вашем маршруте пробка. Вам нужно встать сейчас, чтобы не опоздать на работу!» на Алексе и т. д.) ..
 Не стесняйтесь создавать некоторые запросы к функциям здесь, на Github - просто откройте для этого вопрос! ;)
 
 ## Начиная
@@ -45,7 +46,7 @@ hash: Ejk9bvs8M8TCDQBOLAEAJ5prrYoMaM1LdHgVm29BGwo=
 
 ![Readme5](../../../en/adapterref/iobroker.roadtraffic/img/Readme5.png)
 
-6. Откройте настройки экземпляров адаптера roadtraffic в ioBroker и вставьте свой ключ API Google в поле ввода.
+6. Откройте настройки экземпляра адаптера roadtraffic в ioBroker и вставьте свой ключ API Google в поле ввода.
 
 После этого вы можете нажать «Plus-Icon», чтобы настроить свой первый маршрут.
 

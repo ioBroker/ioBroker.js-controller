@@ -17,6 +17,18 @@ Alternative Z-Wave implementation
 
 ## Changelog
 
+### 0.3.1
+
+-   Fixed a crash from v0.3.0
+
+### 0.3.0
+
+-   Updated `zwave-js` from to v2.0.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#200-2019-11-26). Notable improvements include:
+    -   Added configuration files for over 1000 devices. This improves support for some older devices and greatly improves the `Configuration CC`.
+    -   `Basic` CC is now hidden if a node support other Actuator CCs
+    -   Fixed `Binary Sensor` support
+-   Improved generation of state names for complex property names
+
 ### 0.2.1
 
 -   The network map now correctly displays the nodes' IDs

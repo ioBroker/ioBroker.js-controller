@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: q+ng2GBTpnlxb2ssirYc3z7tBpC33gefZ1G13TGbfeY=
+hash: xnD8N0Iy6xNIN45LSO3mTEj+W0qT0gB4cRrQcNsnEYk=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -12,16 +12,16 @@ hash: q+ng2GBTpnlxb2ssirYc3z7tBpC33gefZ1G13TGbfeY=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.squeezeboxrpc.svg)
 ![Travis](https://img.shields.io/travis/oweitman/ioBroker.squeezeboxrpc.svg)
 ![AppVeyor Build Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-squeezeboxrpc.svg)
-![GitHub Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
+![GitHub-Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
 
 # IoBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
 Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Daten abzurufen und Befehle an den Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)) zu senden, um angeschlossene Geräte wie z
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
-* Himbeer-Pi mit zusätzlichem Audio-Modul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
+* Himbeer-Pi mit zusätzlichem Audiomodul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
 * mit Plugins für Chromecast, Airplay oder UPnP / DLNA-Geräte
 
-Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen und eine Verbindung zu verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und mehr herstellen
+Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen, sich mit verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und vielem mehr verbinden
 
 Warum noch ein Squeezebox Adapter?
 
@@ -73,7 +73,7 @@ Zustand | Beschreibung ----------------- | ------------------------------ Name |
 ### Spieler
 für jeden Spieler Der Modus zeigt an, ob Sie den Wert ändern können. Die durchgeführte Aktion wird im Attribut beschrieben
 
-state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zur Artwork-Bitrate | R / - | Bitrate der Spur Connected | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielers Modus | R / - | play / pause / stop Spielername | R / - | Name des Spielers PlayerID | R / - | Spieler ID Wiedergabeliste | R / - | Die aktuelle Playlist als JSON PlaylistCurrentIndex | R / W | Gehe zu einer absoluten Position, indem du den Trackindex angibst, oder gehe relativ mit einem + oder - am Anfang. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Song wiederholen (1) / Playlist (2) / nicht wiederholen (0) PlaylistShuffle | R / W | Wiedergabeliste mischen (1) / Album mischen (2) / nicht mischen (0) Power | R / W | Hole / Setze PowerState des Spielers aus (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Liedes Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Liedzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) Url | R / - | URL des Tracks / Streams Lautstärke | R / W | get / set Lautstärke des Players (0-100) Zustand | R / W | Wiedergabestatus abrufen / festlegen: Pause (0), Wiedergabe (1), Stopp (2)
+state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zur Artwork-Bitrate | R / - | Bitrate der Spur Connected | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielers Modus | R / - | Abspielen / Anhalten / Stoppen Spielername | R / - | Name des Spielers PlayerID | R / - | Spieler ID Wiedergabeliste | R / - | Die aktuelle Playlist als JSON PlaylistCurrentIndex | R / W | Gehen Sie zu einer absoluten Position, indem Sie den Trackindex angeben, oder gehen Sie relativ mit einem + oder - am Anfang. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Song wiederholen (1) / Playlist (2) / nicht wiederholen (0) PlaylistShuffle | R / W | Wiedergabeliste mischen (1) / Album mischen (2) / nicht mischen (0) Power | R / W | Hole / Setze PowerState des Spielers aus (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Liedes Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Liedzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) Url | R / - | URL des Tracks / Streams Lautstärke | R / W | get / set Lautstärke des Players (0-100) Zustand | R / W | Wiedergabestatus abrufen / festlegen: Pause (0), Wiedergabe (1), Stopp (2)
 
 Die Wiedergabeliste enthält die folgenden Attribute, sofern diese in LMS verfügbar sind.
 Somme-Attribute hängen von der Art der Songs ab (Stream / Datei / ...). Alle Attribute sind schreibgeschützt
@@ -82,7 +82,7 @@ Attribut | Beschreibung ----------------- | ------------------------------------
 
 zusätzliche definierte Buttons:
 
-taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen, die im Player oder Server definiert werden sollen Ein allgemeines Befehlsfeld zum Senden von Befehlen an den Player. Jedes Feld muss in Anführungszeichen gesetzt werden. Parameter müssen durch Komma getrennt werden. Beispiel: "play", "1" cmdPlayFavorite | um einen Favoriten abzuspielen, setzen Sie die ID des Favoriten cmdGoTime | Zu einer absoluten Position springen, indem Sie eine Anzahl von Sekunden angeben oder mit einem + oder - am Anfang der Sekunden relativ springen. Beispiel 100, -50, + 50
+taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen, die im Player oder Server definiert werden sollen Ein allgemeines Befehlsfeld zum Senden von Befehlen an den Player. Jedes Feld muss in Anführungszeichen gesetzt werden. Parameter müssen durch Komma getrennt werden. Beispiel: "play", "1" cmdPlayFavorite | um einen Favoriten abzuspielen, setzen Sie die ID des Favoriten cmdPlayUrl | um ein URL-Beispiel abzuspielen "http://50.7.77.114:8101/;" cmdGoTime | Zu einer absoluten Position springen, indem eine Anzahl von Sekunden angegeben wird, oder relativ mit einem + oder - am Anfang der Sekunden springen. Beispiel 100, -50, + 50
 
 Weitere Informationen finden Sie in der CLI-Dokumentation:
 
@@ -93,7 +93,7 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren
 * füge ID zu den Spielerzuständen hinzu
 * Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
-* Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player
+* Implementieren eines Befehlsstatus, um benutzerdefinierte Befehle (über JSON) für Server und Player zu platzieren
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
 * ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
 * ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu

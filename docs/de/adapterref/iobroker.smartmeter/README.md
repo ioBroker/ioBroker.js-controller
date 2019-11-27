@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
+hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,15 +18,17 @@ hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
 # IoBroker.smartmeter
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um ihre Daten zur Verfügung zu stellen.
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
 
-*** Der Adapter benötigt nodejs 4.x, um zu funktionieren! ***
+Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um deren Daten verfügbar zu machen.
 
-*** Für diesen Adapter muss git aktuell installiert sein! ***
+*** Der Adapter benötigt nodejs 4.x um zu funktionieren! ***
+
+*** Für diesen Adapter muss ein Git installiert sein! ***
 
 ## Derzeit bekannte Probleme
 * Dieser Adapter verwendet die Serialport Library. Dies kann eine längere Installationszeit bedeuten, wenn es kompiliert werden muss
-* Es scheint, dass die Speicherbehandlung manchmal nicht optimal ist und beim Lesen von Daten zu Abstürzen mit SIGABRT oder SIGSEGV führen kann. Der iobroker Controller startet den Adapter automatisch neu. 2-3 Loglines sind hier der einzige Effekt :-)
+* Es scheint, dass die Speicherbehandlung manchmal nicht optimal ist und beim Lesen von Daten zu Abstürzen mit SIGABRT oder SIGSEGV führen kann. iobroker Controller startet den Adapter automatisch neu, daher sind 2-3 Loglines der einzige Effekt :-)
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -39,55 +41,62 @@ Unterstützte Protokolle:
 * **Json-Efr** OBIS-Daten von EFR Smart Grid Hub (JSON-Format)
 
 ### Datentransfer
-* **Serial Receiving** Empfangen durch serielle Push-Daten (Smartmeter sendet Daten ohne Anforderung in regelmäßigen Abständen). Wird hauptsächlich für SML verwendet
-* **Serielle bidirektionale Kommunikation** D0-Protokoll in den Modi A, B, C und D (Modus E wird derzeit NICHT unterstützt!) Mit Wakeup-, Signon-, Potis. ACK- und Daten-Nachrichten zum Auslesen von Daten (Programmier- / Schreibmodus bisher nicht implementiert)
+* **Serieller Empfang** Empfang über serielle Push-Daten (Smartmeter sendet Daten in regelmäßigen Abständen ohne Aufforderung). Wird hauptsächlich für SML verwendet
+* **Serielle bidirektionale Kommunikation** D0-Protokoll in den Modi A, B, C und D (Modus E wird derzeit NICHT unterstützt!) Mit Wakeup-, Signon-, Pot. ACK- und Data-Messages zum Auslesen von Daten (Programmier- / Schreibmodus noch nicht implementiert)
 * **Http-Requests** Lesen Sie Daten über HTTP, indem Sie eine definierte URL anfordern
 * **Lokale Dateien** Liest Daten aus einer lokalen Datei
 
 ### Datenanforderungsintervall
-Anzahl der Sekunden bis zum nächsten Request oder Anhalten des seriellen Empfangs, Wert 0 kann direkt nach Beendigung einer Nachricht neu gestartet werden.
+Wartezeit in Sekunden bis zur nächsten Anforderung oder Unterbrechung des seriellen Empfangs. Der Wert 0 kann direkt nach Beendigung einer Nachricht neu gestartet werden.
 
-Standard: ist 300 (= 5 Minuten)
+Standardeinstellung: 300 (= 5 Minuten)
 
-### Serielle Geräte-Baudrate
-Baudrate für die erste serielle Verbindung, wenn nicht Standardwerte pro Transporttyp definiert sind (9600 für SerialResponseTransprt und 300 für SerialRequestResponseTransport)
+### Baudrate des seriellen Geräts
+Baudrate für die erste serielle Verbindung, falls nicht definiert Standardwerte pro Transporttyp verwendet werden (9600 für SerialResponseTransprt und 300 für SerialRequestResponseTransport)
 
 ### D0: SignOn-Message-Befehl
-Befehl für SignIn-Message, Standard "?" Pflichtfelder abfragen, andere Werte je nach Gerät.
-Beispiel: Der 2WR5-Wärmezähler verwendet "#", um mehr Daten abzufragen (optionale Felder zusammen mit allen obligatorischen Feldern)
+Befehl für SignIn-Nachricht, Standard "?" um Pflichtfelder abzufragen, andere Werte je nach Gerät.
+Beispiel: Der Wärmezähler 2WR5 verwendet "#", um viel mehr Daten abzufragen (optionale Felder zusammen mit allen Pflichtfeldern)
 
-### D0: Modus überschreiben
-Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die den Spezifikationen nicht entsprechen und daher Probleme verursachen. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.
+### D0: Mode-Overwrite
+Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die nicht den Spezifikationen entsprechen und daher Probleme mit sich bringen. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.
 
-* Modus A: keine Baudratenumschaltung, keine Ack-Message
+* Mode A: keine Baudratenumschaltung, keine Ack-Message
 * Modus B: Baudratenumschaltung, keine Bestätigungsmeldung
 * Modus C: Baudratenumschaltung und Ack-Message erforderlich
 * Modus D: Keine Baudratenumschaltung, Baudrate immer 2400
-* Modus E: Baudratenumschaltung und Ack-Message erforderlich, Benutzerdefinierte Protokolle, werden nicht korrekt unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
+* Modus E: Baudratenumschaltung und Ack-Message erforderlich, Benutzerdefinierte Protokolle, werden derzeit nicht unterstützt !! Kontaktieren Sie mich, wenn Sie einen solchen Smartmeter haben
 
 ### D0: Baudrate-Umschaltung-Überschreiben
-Der Adapter versucht, die Baudrate für die Datennachrichten zu bestimmen, wie in den Protokollspezifikationen definiert. Aber wie beim Mode liefern einige Smartmeter hier falsche Daten. SO können Sie dies verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie das Feld leer, um die vom Smart Meter definierte Baudratenumschaltung zu verwenden.
+Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie im Modus liefern einige Smartmeter hier falsche Daten. SO können Sie dies verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie dieses Feld leer, um die vom Smart Meter festgelegte Baudratenumschaltung zu verwenden.
 
 ## Adapter wird getestet mit ...
-... wenigstens:
+... mindestens:
 
 * Hager eHz Energy Meter (mehrere, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5)
 * EMH-Energiezähler
 * EFR SmartGridHub
-* Siemens 2WR5-Leser von einer Wärmestation
+* Siemens 2WR5 Lesegerät von einer Wärmestation
 * Elster AS1440
 * Iskraemeco MT174
 * Iskraemeco MT175
 * Itron EM214 Typ 720
-* Niederländisches intelligentes Messgerät mit DSRM-Protokoll (Verwenden Sie "Nur serielles Gerät, das nur Daten liest" und "D0" als Protokoll).
+* Niederländisches Smart Meter mit DSRM-Protokoll (als Protokoll "Nur Daten vom seriellen Gerät lesen" und "D0" verwenden)
 
-Bitte senden Sie mir Informationen zu Geräten, bei denen Sie die Bibliothek erfolgreich verwendet haben. Ich werde sie hier hinzufügen.
+Bitte senden Sie mir Informationen zu Geräten, auf denen Sie die Bibliothek erfolgreich verwendet haben, und ich werde sie hier hinzufügen.
 
 ## Machen
-* Update der Sml-Unterstützung auf 1.0.4 (falls erforderlich)
-* docs für die Webseite
+* Aktualisieren Sie die Sml-Unterstützung auf 1.0.4 (falls erforderlich)
+* Dokumente für die Webseite
 
 ## Changelog
+
+### 3.0.0 (2019-11-2x)
+* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* support compact mode
+* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
 * BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
@@ -169,7 +178,7 @@ Bitte senden Sie mir Informationen zu Geräten, bei denen Sie die Bibliothek erf
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

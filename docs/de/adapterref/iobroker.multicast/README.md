@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.multicast/README.md
 title: Multicast-APi-Adapter für ioBroker
-hash: c3cMlDxkT43iLtk4oAmyMCvXhCXzTRsP+0z0Y0td2TQ=
+hash: q9P+dKbo0sOiMRzNZtcvNZeRKKVrO/MNErDTv4Nkn1o=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/iobroker.multicastsvg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.multicast.svg)
@@ -32,12 +32,12 @@ Zweck dieses Adapters war:
 ### Zero Touch?
 Der APi ist so aufgebaut, dass keine zusätzliche Konfiguration des Endbenutzers im Adapter selbst oder auf dem zu verwendenden Gerät erforderlich ist.
 Wenn die WLAN-Übertragung verwendet wird, muss nur der WLAN-Berechtigungsnachweis angegeben werden (LAN-basierte Geräte werden vollautomatisch verarbeitet).
-Dies erfordert die Anstrengung des Entwicklers der Binärdatei, um auf dem zugehörigen Chipsatz (wie ESP-basierten Chipsätzen) geflasht zu werden.
+Dazu muss der Entwickler der Binärdatei auf dem entsprechenden Chipsatz (wie bei ESP-basierten Chipsätzen) einen Flash durchführen.
 
 Wenn die Firmware allen Regeln des APi folgt (siehe weiter unten), wird die Kommunikation wie folgt behandelt:
 
 * Gerät sendet Statuswerte per UDP-Multicast
-* Der Adapter erkennt diese Nachricht und prüft, ob Status für dieses Gerät in ioBroker vorhanden sind
+* Der Adapter erkennt diese Meldung und prüft, ob Status für dieses Gerät in ioBroker vorhanden sind
 
 #### Neues Gerät
 In der vorherigen Meldung hat der Adapter angegeben, dass kein Gerät gefunden wurde. Die folgende Routine wird ausgeführt:
@@ -49,16 +49,16 @@ In der vorherigen Meldung hat der Adapter angegeben, dass kein Gerät gefunden w
 * Das Gerät sendet seine Zustände in Intervallen oder durch Änderungen (wie vom Entwickler des Geräts programmiert).
 
 #### Wiederverbindung vorhandener Geräte
-Aus der vorherigen Nachricht, dass das vom Adapter angegebene Gerät bereits vorhanden ist, wird die folgende Routine behandelt:
+Aus der vorherigen Meldung, dass das vom Adapter angegebene Gerät bereits vorhanden ist, wird die folgende Routine behandelt:
 
 * ioBroker prüft, ob die Konfiguration auf "Wiederherstellen" eingestellt ist
 * Wenn die Wiederherstellung aktiviert ist, sendet ioBroker alle Status (außer Info-Status) an das Gerät
-* Wenn alle Zustände empfangen wurden, sendet das Gerät einen Handshake an ioBroker "bereit, Daten zu empfangen".
+* Wenn alle Zustände empfangen wurden, sendet das Gerät einen Handshake an ioBroker "bereit zum Empfang von Daten".
 * ioBroker bestätigt
 * Das Gerät sendet seine Zustände in Intervallen oder durch Änderungen (wie vom Entwickler des Geräts programmiert).
 
 #### Statusänderungen
-Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sicherzustellen, dass alle Statusänderungen vom Gerät empfangen werden. Diese Prozedur wird wie folgt gehandhabt:
+Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sicherzustellen, dass alle Statusänderungen vom Gerät empfangen werden. Dieser Vorgang wird wie folgt behandelt:
 
 * Status wird in ioBroker geändert
 * Der Adapter erkennt die Wertänderung und sendet den neuen Wert an das Gerät
@@ -70,14 +70,23 @@ Der Adapter ist so aufgebaut, dass er bis zu fünf Mal wiederholt sendet, um sic
 {zu erledigen / in Bearbeitung}
 
 ## To-Do geplant:
-* [x] Zustandswiederholung optimieren, nicht alle 500ms mehr feuern
-* [x] Sende Wiederherstellungsdaten, wenn Harbeat empfangen wird und die Verbindung zum Gerät FALSE ist
-* [] Zustände implementieren (Fähigkeit zur Werteliste)
-* [] Implementiere die Warteschlange, warte 20ms nach dem Statuswechsel auf das Gerät und sende das Array mit allen Statusaktualisierungen
+* [] Implementieren Sie die Warteschlange, warten Sie 20 ms nach dem Statuswechsel auf das Gerät und senden Sie das Array mit allen Statusaktualisierungen
 * [] Ablaufwert per API implementieren
+* [x] Zustandswiederholung optimieren, nicht alle 500ms weitere Warteschlange abfeuern
+* [x] Sende Wiederherstellungsdaten, wenn Harbeat empfangen wird und die Verbindung zum Gerät FALSE ist
+* [x] Implementiere Zustände (Fähigkeit zur Werteliste)
 * [x] Richtige Behandlung von Hostnamen- und Hostnamenänderungen
 
 ## Changelog
+
+### 0.1.2
+* (Dutchman) Optimise state retry, dont fire every 500ms more queuing
+* (Dutchman) Correct handling of hostname and hostname changes
+
+### 0.1.1
+* (Dutchman) Send recovery data if Harbeat is received and connection to device is FALSE
+* (Dutchman) Implement states (capability for value list)
+
 
 ### 0.1.0
 

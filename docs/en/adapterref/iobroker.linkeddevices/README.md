@@ -37,6 +37,11 @@ This adapter is inspired from [virtual devices script by Pman](https://forum.iob
 
 ## Changelog
 
+### 1.1.0
+* (Scrounger) option to merge linkedObject on adapter restart added
+* (Scrounger) string to number conversion added
+* (algar42) russian translation corrected
+
 ### 1.0.1
 * (Scrounger) adapter configuration: repair function added
 * (Scrounger) receive system messages added

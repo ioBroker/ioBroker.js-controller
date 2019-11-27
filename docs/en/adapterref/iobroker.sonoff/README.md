@@ -96,6 +96,9 @@ States:
 
 ## Changelog
 
+### 2.3.3 (2019-11-27)
+* (bluefox) Error with empty packet was caught
+
 ### 2.3.2 (2019-10-23)
 * (bluefox) Fixed the password input in the configuration
 * (bluefox) Allowed to set the IP interface for server

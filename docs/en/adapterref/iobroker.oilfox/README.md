@@ -15,6 +15,9 @@ This adapter allows to get data from the oilfox sensor via the Oilfox Website.
 
 ## Changelog
 
+### 2.1.0 (2019.11.26)
+* (jogibear9988) fix first run
+
 ### 2.0.1 (2019.11.23)
 * (jogibear9988) update to new api
 

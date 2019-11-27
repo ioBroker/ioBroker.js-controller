@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
+hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -78,7 +78,7 @@ oder du benutzt einfach `lovelace.X.control.alarm (entity_id = alarm_control_pan
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
 Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` sowie die optionalen Werte für `step` hinzugefügt.
-Wenn Sie die Auf- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
+Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
 
 ```
 common: {
@@ -315,7 +315,7 @@ oder
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-in der Lovelace Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
+in Lovelace Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
 
 ## Themes
 Die Themen können im Konfigurationsdialog von ioBroker definiert werden.
@@ -449,7 +449,7 @@ Fürs Erste (2019.11.23) wurden folgende Dateien geändert:
 - `src / dialogs / notifications / notification-drawer.js` - Button ack all hinzugefügt
 - `src / layouts / home-assistant-main.ts` - App-Seitenleiste entfernen
 
-Nach dem Checkout wurde die Version im `./build`-Ordner geändert. Dann.
+Nach dem Auschecken wurde die Version im Ordner `./build` geändert. Dann.
 
 1. Wechseln Sie in das Verzeichnis ./build.
 2. `git clone https:// github.com / GermanBluefox / home-assistant-polymer.git` Es ist eine Abspaltung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (siehe die Dateiliste weiter oben).
@@ -461,8 +461,12 @@ Nach dem Checkout wurde die Version im `./build`-Ordner geändert. Dann.
 8. Starten Sie die Aufgabe "gulp rename".
 
 ## Changelog
-### 1.0.1 (2019-11-23)
+### 1.0.5 (2019-11-27)
+* (algar42) getting back broken update of internal_entities
+
+### 1.0.4 (2019-11-25)
 * (bluefox) Implemented bindings ala vis in markdown
+* (bluefox) protect access to states
 
 ### 0.2.5 (2019-11-18)
 * (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
