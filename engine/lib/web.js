@@ -50,7 +50,11 @@ function init() {
 
     app.app.use(express.static(path.join(__dirname, '..', config.public)));
 
-    app.app.use(bodyParser.json({limit: 50000000, type:'application/json'}));
+    app.app.use(bodyParser.json({limit: 50000000, type: 'application/json'}));
+
+    // redirect install scripts
+    app.app.get('/fix.sh', (req, res) => res.redirect(301, 'https://iobroker.net/fix.sh'));
+    app.app.get('/install.sh', (req, res) => res.redirect(301, 'https://iobroker.net/install.sh'));
 
     app.app.post('/', bruteforce.prevent, (req, res) => {
         if (!req.query.file) {
