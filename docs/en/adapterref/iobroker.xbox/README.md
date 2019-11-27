@@ -316,7 +316,7 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
-### 0.5.10 (2019-11-13)
+### 0.5.11 (2019-11-27)
 * (foxriver76) we not try to install apt packages any longer if already installed
 
 ### 0.5.8

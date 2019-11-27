@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.multicast/README.md
 title: ioBroker的Multicast-APi适配器
-hash: c3cMlDxkT43iLtk4oAmyMCvXhCXzTRsP+0z0Y0td2TQ=
+hash: q9P+dKbo0sOiMRzNZtcvNZeRKKVrO/MNErDTv4Nkn1o=
 ---
 ![安装数量](http://iobroker.live/badges/iobroker.multicastsvg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.multicast.svg)
@@ -31,10 +31,10 @@ hash: c3cMlDxkT43iLtk4oAmyMCvXhCXzTRsP+0z0Y0td2TQ=
 
 ###零接触？
 APi的构建不需要在适配器本身或要使用的设备中使用最终用户的任何其他配置。
-如果使用wifi传输，则仅需提供wifi凭据（基于lan的设备将被完全自动处理）。
+如果使用wifi传输，则仅需提供wifi凭据（基于LAN的设备将被完全自动处理）。
 这需要二进制文件的开发人员将其刷新到相关芯片组（如基于ESP的芯片组）上。
 
-当固件遵循APi的所有规则（请参见下文）时，通信将按以下方式处理：
+当固件遵循APi的所有规则（请参阅下文）时，通信将按以下方式处理：
 
 *设备通过UDP多播发送状态值
 *适配器识别此消息，并检查ioBroker中是否存在该设备的状态
@@ -53,7 +53,7 @@ APi的构建不需要在适配器本身或要使用的设备中使用最终用�
 
 * ioBroker检查配置是否设置为“恢复”
 *激活还原后，ioBroker会将所有状态（例如信息状态）发送到设备
-*收到所有状态后，de设备将向ioBroker发送“准备接收数据”的握手
+*当接收到所有状态时，设备将向ioBroker发送“准备接收数据”的握手
 * ioBroker确认
 *设备开始按时间间隔或通过更改发送他的状态（由设备开发者编程）
 
@@ -70,14 +70,23 @@ APi的构建不需要在适配器本身或要使用的设备中使用最终用�
 {待完成/进行中}
 
 ##待办事项：
+* []实现排队，在设备状态改变后等待20毫秒，并发送具有所有状态更新的阵列
+* []通过API实现过期值
 * [x]优化状态重试，不要每排队500ms再触发一次
 * [x]如果接收到Harbeat并且与设备的连接为FALSE，则发送恢复数据
-* []实施状态（值列表的功能）
-* []实现排队，在设备状态更改后等待20毫秒，并发送具有所有状态更新的阵列
-* []通过API实现过期值
+* [x]实施状态（值列表的功能）
 * [x]正确处理主机名和主机名更改
 
 ## Changelog
+
+### 0.1.2
+* (Dutchman) Optimise state retry, dont fire every 500ms more queuing
+* (Dutchman) Correct handling of hostname and hostname changes
+
+### 0.1.1
+* (Dutchman) Send recovery data if Harbeat is received and connection to device is FALSE
+* (Dutchman) Implement states (capability for value list)
+
 
 ### 0.1.0
 

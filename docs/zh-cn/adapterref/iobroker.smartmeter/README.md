@@ -3,91 +3,100 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
+hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 ---
 ![商标](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
-![Greenkeeper徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)
 ![安装数量](http://iobroker.live/badges/smartmeter-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.smartmeter.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)
-![特拉维斯-CI](http://img.shields.io/travis/Apollon77/ioBroker.smartmeter/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)
+![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.smartmeter/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.smartmeter?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.smartmeter.png?downloads=true)
 
 ＃ioBroker.smartmeter
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-这个适用于ioBroker的适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误。**
+
+ioBroker的此适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。
 
 ***适配器需要nodejs 4.x才能工作！***
 
-***此适配器需要安装git才能安装！***
+***此适配器当前需要安装git才能安装！***
 
-##目前已知的问题
-*此适配器使用Serialport Library。如果需要编译，这可能意味着更长的安装时间
-*似乎内存处理有时不是最理想的，并且在读取数据时可能导致SIGABRT或SIGSEGV崩溃。 iobroker Controller将自动重启适配器，因此2-3个对数线是唯一的效果:-)
+##当前已知的问题
+*此适配器使用串行端口库。如果需要编译，这可能意味着更长的安装时间
+*似乎内存处理有时不是最佳的，并且在读取数据期间可能导致SIGABRT或SIGSEGV崩溃。 iobroker Controller将自动重新启动适配器，因此2-3条日志行是这里唯一的效果:-)
 
 ##参数说明
-ioBroker-Forum-Thread：http：//forum.iobroker.net/viewtopic.php？f = 23＆t = 5047＆p = 54973
+ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
 
 ###数据协议
 支持的协议：
 
-* **Sml** SML（SmartMeterLanguage）为二进制格式
-* **D0** D0（基于IEC 62056-21：2002 / IEC 61107 / EN 61107）为ASCII格式（目前不支持二进制协议模式E）
-* **Json-Efr** 来自EFR智能电网中心的OBIS数据（JSON格式）
+* **SML** SML（SmartMeterLanguage）为二进制格式
+* **D0** D0（基于IEC 62056-21：2002 / IEC 61107 / EN 61107）为ASCII格式（当前不支持二进制协议模式E）
+* **Json-Efr** 来自EFR Smart Grid Hub的OBIS数据（JSON格式）
 
 ＃＃＃ 数据传输
-* **串行接收**：通过串行推送数据接收（智能电表无需定期发送任何请求即可发送数据）。主要用于SML
-* **串行双向通信**：模式A，B，C和D中的D0协议（模式E不支持！），具有唤醒，登录，电位。用于读出数据的ACK和数据消息（目前尚未实现编程/写入模式）
-* **Http-Requests** 通过请求定义的URL，通过HTTP读取数据
-* **本地文件**：从本地文件中读取数据
+* **串行接收**：通过串行推送数据接收（智能仪表定期发送数据，而无需任何请求）。主要用于SML
+* **双向双向通讯**：模式A，B，C和D（当前不支持模式E！）的D0协议，带有Wakeup-，Signon-，pot。 ACK和数据消息以读取数据（到目前为止尚未实现编程/写入模式）
+* **Http-Requests** 通过HTTP请求定义的URL读取数据
+* **本地文件**：从本地文件读取数据
 
 ###数据请求间隔
-等待下一个请求或暂停串行接收的秒数，值0可以在完成一条消息后直接重启，
+等待下一个请求或暂停串行接收的秒数，值0可能在完成一条消息后立即重新启动，
 
-默认值：是300（= 5分钟）
+默认值：300（= 5分钟）
 
 ###串行设备波特率
-初始串行连接的波特率，如果未定义，则使用每种传输类型的默认值（对于SerialResponseTransprt为9600，对于SerialRequestResponseTransport为300）
+初始串行连接的波特率，如果未定义，则使用每种传输类型的默认值（SerialResponseTransprt为9600，SerialRequestResponseTransport为300）
 
 ### D0：SignOn-Message命令
-SignIn-Message命令，默认为“？”查询必填字段，其他值取决于设备。
-示例：2WR5热表使用“＃”查询更多数据（可选字段和所有必填字段）
+登录消息命令，默认为“？”查询必填字段，其他值取决于设备。
+示例：2WR5温度计使用“＃”查询更多数据（可选字段以及所有必填字段）
 
 ### D0：模式覆盖
-适配器尝试确定规范中定义的D0协议模式。有些设备不符合规范，因此会带来问题。使用此选项可以覆盖确定的协议模式。
+适配器尝试确定规范中定义的D0协议模式。有些设备不符合规格，因此会带来问题。使用此选项可以覆盖确定的协议模式。
 
-*模式A：没有波特率转换，没有Ack-Message
-*模式B：波特率转换，无Ack-Message
-*模式C：需要波特率转换和Ack-Message
+*模式A：无波特率转换，无确认消息
+*模式B：波特率转换，无确认消息
+*模式C：需要波特率转换和确认消息
 *模式D：无波特率转换，波特率始终为2400
-*模式E：需要波特率转换和Ack-Message，自定义协议，目前不支持!!如果您有这样的智能电表，请与我联系
+*模式E：需要波特率转换和确认消息，自定义协议，暂不支持！如果您有这样的智能电表，请与我联系
 
-### D0：Baudrate-Changeover-Overwrite
-适配器尝试确定协议规范中定义的数据消息的波特率。但与模式一样，某些智能电表在这里提供了错误的数据。因此，您可以根据需要使用它来覆盖数据消息的波特率。留空以使用智能电表定义的波特率转换。
+### D0：波特率-转换-覆盖
+适配器尝试确定协议规范中定义的数据消息的波特率。但是，与“模式”一样，某些智能仪表在此处提供错误的数据。因此，您可以根据需要使用它来覆盖数据消息的波特率。保留为空以使用智能仪表定义的波特率转换。
 
 ##适配器已经过测试...
 ... 至少：
 
-* Hager eHz Energy Meter（多个，例如eHZ-IW8E2A5L0EK2P，EHZ363W5，）
-* EMH能量计
+* Hager eHz电能表（多个，例如eHZ-IW8E2A5L0EK2P，EHZ363W5，）
+* EMH电能表
 * EFR SmartGridHub
-*来自加热站的西门子2WR5读卡器
+*来自热站的Siemens 2WR5阅读器
 * Elster AS1440
-* Iskraemeco MT174
-* Iskraemeco MT175
+*伊斯克拉梅科MT174
+*伊斯克拉梅科MT175
 * Itron EM214 Typ 720
-*荷兰智能电表使用DSRM协议（使用“仅串行设备读取数据”和“D0”作为协议）
+*使用DSRM协议的荷兰智能电表（使用“仅串行设备读取数据”和“ D0”作为协议）
 
-请将有关您已成功使用该库的设备的信息发送给我，我将在此处添加。
+请向我发送有关成功使用该库的设备的信息，我将在此处添加它。
 
 ＃＃ 去做
 *将Sml支持更新为1.0.4（如果需要）
 *网页文档
 
 ## Changelog
+
+### 3.0.0 (2019-11-2x)
+* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* support compact mode
+* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
 * BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
@@ -169,7 +178,7 @@ SignIn-Message命令，默认为“？”查询必填字段，其他值取决于
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

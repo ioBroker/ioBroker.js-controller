@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
+hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ---
 ![логотип](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -21,19 +21,26 @@ hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
 ## Описание
 Этот адаптер позволяет управлять устройствами Meross, подключаясь к облачным серверам Meross.
 
-Вам необходимо предоставить свои учетные данные для входа в облако. Адаптер подключается к вашей облачной учетной записи и подписывается на все данные устройства через MQTT. Из-за этого устройства должны быть подключены к их облаку. В настоящее время не известно ни одного способа локального управления устройствами.
+Вам необходимо предоставить свои учетные данные для входа в Cloud. Адаптер подключается к вашей облачной учетной записи и подписывается на все данные устройства через MQTT. Из-за этого устройства должны быть подключены к их облаку. В настоящее время не известно ни одного способа локального управления устройствами.
 
 Один экземпляр адаптера покажет все устройства из одной учетной записи Meross Cloud и позволит управлять ими.
 
 ## Известные рабочие устройства
 * mss425e
 * mss310
+* MSS620 EU / UK
 
-Если больше устройств работает (или нет), пожалуйста, сообщите о них, открыв проблему с GitHub.
+Если работает больше устройств (или нет), сообщите об этом, открыв проблему с GitHub.
 
 ## Changelog
 
-### 1.2.x (2019.11.xx)
+### 1.3.4 (2019.11.26)
+* (Apollon77) Add Temperature/Humidity support for MTS100
+
+### 1.3.1 (2019.11.25)
+* (Apollon77) Add names to hub sub devices
+
+### 1.3.0 (2019.11.25)
 * (Apollon77) Add msg100 with Garage Door Reed contact
 * (Apollon77) Add reconnection handling
 * (Apollon77) Add light support (e.g. MSL120 RGB bulb)

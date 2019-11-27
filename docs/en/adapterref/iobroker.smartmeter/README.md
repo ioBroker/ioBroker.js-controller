@@ -12,6 +12,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 [![NPM](https://nodei.co/npm/iobroker.smartmeter.png?downloads=true)](https://nodei.co/npm/iobroker.smartmeter/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors to me as the developer.**
+
 This adapter for ioBroker allows the reading and parsing of smartmeter protocols that follow the OBIS number logic to make their data available.
 
 ***The Adapter needs nodejs 4.x to work!***
@@ -80,6 +82,13 @@ Please send me an info on devices where you have used the library successfully a
 * docs for webpage
 
 ## Changelog
+
+### 3.0.0 (2019-11-2x)
+* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* support compact mode
+* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
 * BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
@@ -162,7 +171,7 @@ Please send me an info on devices where you have used the library successfully a
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

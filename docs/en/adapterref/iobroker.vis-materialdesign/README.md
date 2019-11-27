@@ -251,6 +251,16 @@ Working Widget Example can be found [here](https://forum.iobroker.net/topic/2619
 
 ## Changelog
 
+### 0.2.7
+* (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
+* (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set
+* (Scrounger): Line History Chart Widget: option to append text to yAxis values added
+* (Scrounger): Switch Widget: color options added
+* (Scrounger): chartjs lib updated to v2.9.3
+* (Scrounger): round-slider: lib updated to v0.3.7
+* (Scrounger): Table Widget: wordwrap & width option added
+* (Scrounger): Chart Widgets: option for background color of diagram area added
+
 ### 0.2.4
 * (Scrounger): Round Slider Widget bug fixes
 * (Scrounger): Line History Chart Widget: null value bug fix

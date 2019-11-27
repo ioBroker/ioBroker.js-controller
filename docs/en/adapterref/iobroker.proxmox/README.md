@@ -24,6 +24,8 @@ this adapter read out the data from your proxmox installation
 At least Node 8.X.X is needed
 
 ## Changelog
+### 0.5.2 (27.11.2019)
+* (DutchmanNL) Fix issue with special character in password, now you can use $/&/* etc
 ### 0.5.1 (17.09.2019)
 * (MeisterTR) add act. disk size form vm and lxc and disc size_level
 * (MeisterTR) add start/stop and shutdown for vm an lxc (nodes must be testet my dev is on the node so i cant test stop node)
