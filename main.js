@@ -84,7 +84,8 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-
+const VENDOR_BOOTSTRAP_FILE = '/etc/iob-vendor-secret.json';
+const VENDOR_FILE           = '/etc/iob-vendor.json';
 let updateIPsTimer          = null;
 
 const uploadTasks           = [];
@@ -1551,36 +1552,35 @@ function setMeta() {
                 tools.createUuid(objects, uuid => {
                     uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
-                    const fileName = '/etc/iob-vendor-secret.json';
-                    if (fs.existsSync(fileName)) {
+                    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                         try {
-                            const startScript = require(fileName);
+                            const startScript = require(VENDOR_BOOTSTRAP_FILE);
                             if (startScript.password) {
                                 const Vendor = require('./lib/setup/setupVendor');
                                 const vendor = new Vendor({objects});
 
-                                vendor.checkVendor('/etc/iob-vendor.json', startScript.password).then(() => {
+                                vendor.checkVendor(VENDOR_FILE, startScript.password).then(() => {
                                     console.log(`Synchronised vendor information.`);
                                     try {
-                                        fs.unlinkSync(fileName);
+                                        fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                     } catch (e) {
-                                        console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
+                                        console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                                     }
                                 }).catch(err => {
                                     console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
                                     try {
-                                        fs.unlinkSync(fileName);
+                                        fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                     } catch (e) {
-                                        console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
+                                        console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                                     }
                                 });
                             }
                         } catch (_e) {
-                            console.error(`Cannot parse ${fileName}`);
+                            console.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}`);
                             try {
-                                fs.unlinkSync(fileName);
+                                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
-                                console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
+                                console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                             }
                         }
                     }
@@ -3642,13 +3642,13 @@ function init(compactGroupId) {
     }
 
     // If bootstrap file detected, it must be deleted, but give time for bootstrap process to use this file
-    if (fs.existsSync('/etc/iob-vendor-secret.json')) {
+    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
-            console.log('Deleted /etc/iob-vendor-secret.json');
+            console.log(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
             try {
-                fs.unlinkSync('/etc/iob-vendor-secret.json');
+                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
             } catch (e) {
-                console.error('Cannot delete /etc/iob-vendor-secret.json: ' + e.toString());
+                console.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
             }
         }, 30000);
     }
