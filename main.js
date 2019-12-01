@@ -1549,7 +1549,6 @@ function setMeta() {
                 tools.createUuid(objects, uuid => {
                     uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
-                    logger && logger.info(hostLogPrefix + ' Detect vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                         logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                         try {
@@ -1571,13 +1570,21 @@ function setMeta() {
                                         }
                                     }).catch(err => {
                                         logger && logger.error(`Cannot update vendor information: ${JSON.stringify(err.toString())}`);
+                                        try {
+                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                        } catch (e) {
+                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                        }
                                     });
                             }
                         } catch (e) {
                             logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                            try {
+                                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                            } catch (e) {
+                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                            }
                         }
-                    } else {
-                        logger && logger.info(hostLogPrefix + ' vendor file ' + VENDOR_BOOTSTRAP_FILE + ' not found');
                     }
                 });
             }
