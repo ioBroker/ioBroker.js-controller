@@ -1553,13 +1553,15 @@ function setMeta() {
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                         logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                         try {
-                            const startScript = require(VENDOR_BOOTSTRAP_FILE);
+                            let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
+                            startScript = JSON.parse(startScript);
+
                             if (startScript.password) {
                                 const Vendor = require('./lib/setup/setupVendor');
                                 const vendor = new Vendor({objects});
 
                                 logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
-                                vendor.checkVendor(VENDOR_FILE, startScript.password)
+                                vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                     .then(() => {
                                         logger && logger.info(`Synchronised vendor information.`);
                                         try {
@@ -3669,10 +3671,10 @@ function init(compactGroupId) {
             try {
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                    console.log(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
+                    logger && logger.info(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
                 }
             } catch (e) {
-                console.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                logger && logger.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
             }
         }, 30000);
     }
