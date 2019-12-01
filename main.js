@@ -1549,37 +1549,39 @@ function setMeta() {
                 tools.createUuid(objects, uuid => {
                     uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
-                    logger && logger.info(hostLogPrefix + ' Detect vendor file');
+                    logger && logger.info(hostLogPrefix + ' Detect vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                        logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                         try {
                             const startScript = require(VENDOR_BOOTSTRAP_FILE);
                             if (startScript.password) {
                                 const Vendor = require('./lib/setup/setupVendor');
                                 const vendor = new Vendor({objects});
 
+                                logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
                                 vendor.checkVendor(VENDOR_FILE, startScript.password)
                                     .then(() => {
-                                        console.log(`Synchronised vendor information.`);
+                                        logger && logger.info(`Synchronised vendor information.`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                                         }
                                     }).catch(err => {
-                                        console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
+                                        logger && logger.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                                         }
                                     });
                             }
-                        } catch (_e) {
-                            console.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}`);
+                        } catch (e) {
+                            logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                             try {
                                 fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
-                                console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                             }
                         }
                     } else {
