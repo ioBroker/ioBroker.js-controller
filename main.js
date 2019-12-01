@@ -1548,36 +1548,43 @@ function setMeta() {
         extendObjects(tasks, () => {
             // create UUID if not exist
             if (!compactGroupController) {
-                tools.createUuid(objects, uuid =>
-                    uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid));
-            }
+                tools.createUuid(objects, uuid => {
+                    uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
-            if (fs.existsSync('/etc/iob-vendor-secret.json')) {
-                try {
-                    const startScript = require('/etc/iob-vendor-secret.json');
-                    if (startScript.password) {
-                        const Vendor = require('./lib/setup/setupVendor');
-                        const vendor = new Vendor({objects});
+                    const fileName = '/etc/iob-vendor-secret.json';
+                    if (fs.existsSync(fileName)) {
+                        try {
+                            const startScript = require(fileName);
+                            if (startScript.password) {
+                                const Vendor = require('./lib/setup/setupVendor');
+                                const vendor = new Vendor({objects});
 
-                        vendor.checkVendor('/etc/iob-vendor.json', startScript.password).then(() => {
-                            console.log(`Synchronised vendor information.`);
-                            try {
-                                fs.unlinkSync('/etc/iob-vendor-secret.json');
-                            } catch (e) {
-                                console.error('Cannot delete file /etc/iob-vendor-secret.json: ' + e.toString());
+                                vendor.checkVendor('/etc/iob-vendor.json', startScript.password).then(() => {
+                                    console.log(`Synchronised vendor information.`);
+                                    try {
+                                        fs.unlinkSync(fileName);
+                                    } catch (e) {
+                                        console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
+                                    }
+                                }).catch(err => {
+                                    console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
+                                    try {
+                                        fs.unlinkSync(fileName);
+                                    } catch (e) {
+                                        console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
+                                    }
+                                });
                             }
-                        }).catch(err => {
-                            console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
+                        } catch (_e) {
+                            console.error(`Cannot parse ${fileName}`);
                             try {
-                                fs.unlinkSync('/etc/iob-vendor-secret.json');
+                                fs.unlinkSync(fileName);
                             } catch (e) {
-                                console.error('Cannot delete file /etc/iob-vendor-secret.json: ' + e.toString());
+                                console.error(`Cannot delete file ${fileName}: ${e.toString()}`);
                             }
-                        });
+                        }
                     }
-                } catch (_e) {
-                    console.error('Cannot parse /etc/iob-vendor-secret.json');
-                }
+                });
             }
         });
     });
