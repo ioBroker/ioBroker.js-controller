@@ -84,7 +84,7 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-const VENDOR_BOOTSTRAP_FILE = '/etc/iob-vendor-secret.json';
+const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE           = '/etc/iob-vendor.json';
 let updateIPsTimer          = null;
 
@@ -727,9 +727,9 @@ function changeHost(objs, oldHostname, newHostname, callback) {
             logger.info(hostLogPrefix + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
             obj.from = 'system.host.' + tools.getHostName();
             obj.ts = Date.now();
-            objects.setObject(obj._id, obj, (/* err */) => {
-                setImmediate(() => changeHost(objs, oldHostname, newHostname, callback));
-            });
+
+            objects.setObject(obj._id, obj, (/* err */) =>
+                setImmediate(() => changeHost(objs, oldHostname, newHostname, callback)));
         } else {
             setImmediate(() => changeHost(objs, oldHostname, newHostname, callback));
         }
@@ -861,13 +861,10 @@ function checkHost(callback) {
                         logger.info(hostLogPrefix + ' Delete host ' + oldId);
 
                         // delete host object
-                        objects.delObject(oldId, () => {
-
+                        objects.delObject(oldId, () =>
                             // delete all hosts states
-                            objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) => {
-                                delObjects(doc.rows, () => callback && callback());
-                            });
-                        });
+                            objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) =>
+                                delObjects(doc.rows, () => callback && callback())));
                     });
                 }
             });
@@ -1552,6 +1549,7 @@ function setMeta() {
                 tools.createUuid(objects, uuid => {
                     uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
+                    logger && logger.info(hostLogPrefix + ' Detect vendor file');
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                         try {
                             const startScript = require(VENDOR_BOOTSTRAP_FILE);
@@ -1559,30 +1557,33 @@ function setMeta() {
                                 const Vendor = require('./lib/setup/setupVendor');
                                 const vendor = new Vendor({objects});
 
-                                vendor.checkVendor(VENDOR_FILE, startScript.password).then(() => {
-                                    console.log(`Synchronised vendor information.`);
-                                    try {
-                                        fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                    } catch (e) {
-                                        console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
-                                    }
-                                }).catch(err => {
-                                    console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
-                                    try {
-                                        fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                    } catch (e) {
-                                        console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
-                                    }
-                                });
+                                vendor.checkVendor(VENDOR_FILE, startScript.password)
+                                    .then(() => {
+                                        console.log(`Synchronised vendor information.`);
+                                        try {
+                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                        } catch (e) {
+                                            console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                        }
+                                    }).catch(err => {
+                                        console.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
+                                        try {
+                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                        } catch (e) {
+                                            console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                        }
+                                    });
                             }
                         } catch (_e) {
                             console.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}`);
                             try {
-                                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
                                 console.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                             }
                         }
+                    } else {
+                        logger && logger.info(hostLogPrefix + ' vendor file ' + VENDOR_BOOTSTRAP_FILE + ' not found');
                     }
                 });
             }
@@ -2258,7 +2259,9 @@ function getInstances() {
                 logger.debug(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
                 console.log(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
-                if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (!instance.common.webExtension || !instance.native.webInstance)) count++;
+                if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (!instance.common.webExtension || !instance.native.webInstance)) {
+                    count++;
+                }
             }
 
             if (count > 0) {
@@ -2299,14 +2302,27 @@ function instanceRelevantForThisController(instance, _ipArr) {
  * @returns {boolean} instance needs to be handled by this host (true) or not
  */
 function checkAndAddInstance(instance, ipArr) {
-    if (!ipArr.includes(instance.common.host) && instance.common.host !== hostname) return false;
+    if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
+        return false;
+    }
+
+    // update host name to current host if host name is empty
+    if (!instance.common.host) {
+        instance.common.host = hostname;
+        objects.setObject(instance._id, instance, err =>
+            err ?
+                logger.info(`Set hostname ${hostname} for ${instance._id}`) :
+                logger.error(`Cannot update hostname for ${instance._id}: ${e.toString()}`));
+    }
 
     hostAdapter[instance._id] = hostAdapter[instance._id] || {};
     if (!hostAdapter[instance._id].config) {
         hostAdapter[instance._id].config = JSON.parse(JSON.stringify(instance));
     }
 
-    if (!instanceRelevantForThisController(instance, ipArr)) return false;
+    if (!instanceRelevantForThisController(instance, ipArr)) {
+        return false;
+    }
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode) {
             compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {instances: []};
@@ -2330,7 +2346,9 @@ function initInstances() {
 
     // Start first admin
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) continue;
+        if (!procs.hasOwnProperty(id)) {
+            continue;
+        }
 
         if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
             if (id.startsWith('system.adapter.admin')) {
@@ -2355,7 +2373,9 @@ function initInstances() {
     }
 
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) continue;
+        if (!procs.hasOwnProperty(id)) {
+            continue;
+        }
 
         if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
             if (!id.startsWith('system.adapter.admin')) {
@@ -3644,9 +3664,11 @@ function init(compactGroupId) {
     // If bootstrap file detected, it must be deleted, but give time for bootstrap process to use this file
     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
-            console.log(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
             try {
-                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                    fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                    console.log(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
+                }
             } catch (e) {
                 console.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
             }
