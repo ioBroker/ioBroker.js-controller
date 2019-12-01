@@ -1570,7 +1570,7 @@ function setMeta() {
                                             logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
                                         }
                                     }).catch(err => {
-                                        logger && logger.error(`Cannot update vendor information: ${JSON.stringify(err)}`);
+                                        logger && logger.error(`Cannot update vendor information: ${JSON.stringify(err.toString())}`);
                                     });
                             }
                         } catch (e) {
@@ -2305,8 +2305,9 @@ function checkAndAddInstance(instance, ipArr) {
         instance.common.host = hostname;
         objects.setObject(instance._id, instance, err =>
             err ?
-                logger.info(`Set hostname ${hostname} for ${instance._id}`) :
-                logger.error(`Cannot update hostname for ${instance._id}: ${e.toString()}`));
+                logger.error(`Cannot update hostname for ${instance._id}: ${err.toString()}`) :
+                logger.info(`Set hostname ${hostname} for ${instance._id}`));
+
     }
 
     hostAdapter[instance._id] = hostAdapter[instance._id] || {};
