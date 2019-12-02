@@ -1,7 +1,13 @@
 # Changelog
 
-## 2.2.x (2019-12-xx) Release D??? 
-WIP!!
+## 2.2.0 (2019-12-02) Release Dina
+* (bluefox) CLI: check if object exists by "state set" command and other fixes
+* (Apollon77) Make sure adapter with longer stopTimeouts can be restarted as usual; the "stopping" flag was blocking the restart logic
+*  (Apollon77) make sure adapters can be stopped again with setting .alive to false
+* (Apollon77) optimize questions on `setup custom`
+* (Apollon77) fix log file rotation; additionally old logs are now packed with gz
+* (bluefox) Fixed rights by object creation
+* (bluefox) Add support for vendorspecific logic and database initialization
 
 ## 2.1.1 (2019-11-22) Release Christina
 * (bluefox) Fix host deletion
