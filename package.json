@@ -42,17 +42,17 @@
     "socket.io-client": "2.3.0",
     "tar": "^5.0.5",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^4.2.1",
-    "yargs": "^15.0.1"
+    "winston-daily-rotate-file": "^4.3.0",
+    "yargs": "^15.0.2"
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.6",
+    "@types/node": "^12.12.14",
     "@types/yargs": "^13.0.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.2",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",

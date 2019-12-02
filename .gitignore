@@ -17,6 +17,7 @@ cache
 /test/coverage
 /test/report
 /conf/sources-dist.json
-/package-lock.json
 /.npmrc
 /lib/objects/objectsInRedis.js
+/lib/objects/tools.js
+lib/objects/lua
