@@ -179,8 +179,13 @@ Here is a list of problems encountered so far and their solutions, if any.
     If you have not set up your Iobroker installation with the installer script and your user has a different name, please replace it with your user in the command "iobroker".
 
 ## Changelog
-### 1.2.1 (27.11.2019)
+### 1.3.1 (02.12.2019)
 * (bluefox) Added information about latest backup
+* (simatec) some Bug fix
+* (simatec) add new translation
+* (simatec) Fix translation
+* (simatec) Default backup renamed to ioBroker backup
+* (simatec) delete old objects
 
 ### 1.3.0 (22.11.2019)
 * (simatec) support end for the total backup
