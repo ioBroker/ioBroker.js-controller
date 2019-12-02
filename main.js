@@ -2064,6 +2064,36 @@ function processMessage(msg) {
             }
             break;
 
+        case 'getHostInfoShort':
+            if (msg.callback && msg.from) {
+                // same as getHostInfo, but faster because delivers less information
+                // node.js --version
+                // uptime
+                const cpus = os.cpus();
+                const data = {
+                    Platform:        os.platform(),
+                    Architecture:    os.arch(),
+                    CPUs:            cpus.length,
+                    Speed:           cpus[0].speed,
+                    Model:           cpus[0].model,
+                    RAM:             os.totalmem(),
+                    'System uptime': Math.round(os.uptime()),
+                    'Node.js':       process.version
+                };
+
+                if (data.Platform === 'win32') {
+                    data.Platform = 'Windows';
+                } else
+                if (data.Platform === 'darwin') {
+                    data.Platform = 'OSX';
+                }
+
+                sendTo(msg.from, msg.command, data, msg.callback);
+            } else {
+                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+            }
+            break;
+
         case 'delLogs': {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
             fs.existsSync(__dirname +       '/log/' + tools.appName + '.log') && fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
