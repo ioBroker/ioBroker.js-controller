@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.link/README.md
 title: ioBroker.link
-hash: 9ros7x9xULUX5EdRrAUPqZSbv5lizmiKP7T4wtj6fOM=
+hash: CLxN+J/uSp2u4LH5EMxQstiIuFeA0HFA4HD1Sbr47bs=
 ---
 ![Logo](../../../en/adapterref/iobroker.link/admin/link.png)
 
@@ -19,16 +19,16 @@ Dieser Adapter ermöglicht eine sichere Verbindung über die [ioBroker.link](htt
 Mit diesem Adapter können Sie eine sichere Verbindung zu einer lokalen ioBroker-Installation und anderen Servern / Geräten in Ihrem lokalen Netzwerk hinter einem DSL-Modem / Router / einer Firewall herstellen. Die Verbindung wird über die öffentlich zugängliche ioBroker.link-Cloud (Link-Cloud) hergestellt. Auch mehrere lokale ioBroker-Installationen können über die Link-Cloud eingerichtet und aufgerufen werden.
 
 ### Was ist der Unterschied zu einer Portweiterleitung, die ich auf meinem Router konfigurieren könnte?
-Während Sie auf Ihrem Router einen Port forwading konfigurieren können, um von überall auf Ihre lokale ioBroker-Installation zuzugreifen, bietet die Link-Cloud die folgenden Hauptvorteile:
+Während Sie eine Portweiterleitung auf Ihrem Router konfigurieren können, um von überall auf Ihre lokale ioBroker-Installation zuzugreifen, bietet die Link-Cloud die folgenden Hauptvorteile:
 
-- Es müssen keine Ports zum Internet auf Ihrem Router geöffnet sein
+- Es müssen keine Ports auf Ihrem Router zum Internet geöffnet werden
 - Für Ihre lokale ioBroker-Installation ist weder eine öffentliche IP-Adresse noch ein (dynamischer) DNS-Name erforderlich
 - Link-Cloud kümmert sich um Authentifizierung und Autorisierung
 - Link-Cloud sichert eine Verbindung mit SSL / TLS
 - Link-Cloud bietet ein Audit-Protokoll
 - Auf mehrere lokale ioBroker-Installationen kann über dieselbe Benutzeroberfläche des Link-Cloud-Servers zugegriffen werden
 - Der ioBroker.link-Adapter fungiert als Reverse-Proxy und ermöglicht den Zugriff auf andere Server / Geräte in Ihrem lokalen Netzwerk, die HTTP / TCP / UDP-Protokolle unterstützen
-- Ihr können gewähren einen temporaly oder permanenten Zugriff auf Ihre lokalen ioBroker Installation auf eine <sup>3.</sup> Person, zum Beispiel zu beheben Gerät Ausfälle, ohne die Notwendigkeit , Ihr Passwort zu offenbaren oder Anmeldeinformationen verwalten
+- Ihr können gewähren einen temporären oder permanenten Zugriff auf Ihre lokalen ioBroker Installation auf eine <sup>3.</sup> Person, zum Beispiel zu beheben Gerät Ausfälle, ohne die Notwendigkeit , Ihr Passwort zu offenbaren oder Anmeldeinformationen verwalten
 
 ### Wie kann eine Verbindung zu meiner lokalen ioBroker-Installation hergestellt werden, wenn keine öffentliche IP und keine Ports geöffnet sind?
 Die Link-Cloud stellt keine Verbindung zu Ihrer lokalen Installation her. Der ioBroker.link-Adapter wird lokal ausgeführt und initiiert eine Verbindung zur Link-Cloud, falls eine Verbindungsanforderung vorliegt.
@@ -40,7 +40,7 @@ Eine Verbindungsanfrage ist die Absicht, eine Verbindung zu einer lokalen ioBrok
 Ein ioBroker.link-Adapter prüft regelmäßig, ob Verbindungsanforderungen vorliegen, indem er die Link-Cloud abfragt. Sie können das Abfrageintervall in den Einstellungen des ioBroker.link-Adapters einrichten.
 
 ### Wie kann ich sicherstellen, dass der ioBroker.link-Adapter eine Verbindung zur Link-Cloud und nicht zu einem Mann in der Mitte herstellt?
-Der ioBoker.link-Adapter kann nur eine Verbindung zu einem Server herstellen, der ein für iobroker.link ausgestelltes gültiges SSL-Zertifikat aufweist.
+Der ioBroker.link-Adapter kann nur eine Verbindung zu einem Server herstellen, der ein für ioBroker.link ausgestelltes gültiges SSL-Zertifikat aufweist.
 
 ### Wie identifiziert und autorisiert die Link-Cloud alle ioBroker.link-Adapter, die anstehende Verbindungsanfragen abfragen oder eine Verbindung herstellen?
 Jeder ioBroker.link-Adapter generiert ein eigenes eindeutiges 2048-Bit-Schlüsselpaar. Bei der Registrierung bei link-cloud überträgt ein Adapter seinen öffentlichen Schlüssel. Bei jeder nachfolgenden Anforderung an die Link-Cloud (Prüfung auf ausstehende Verbindungsanforderungen, Akzeptieren oder Ablehnen einer ausstehenden Verbindung, Schließen einer offenen Verbindung usw.) autorisiert sich der Adapter selbst, indem er ein JSON-Web-Token (JWT) bereitstellt, das mit dem privaten Schlüssel des Adapters signiert ist . Die Link-Cloud überprüft die Signatur von JWT anhand des gespeicherten öffentlichen Schlüssels und akzeptiert die Verbindung oder lehnt sie ab.
@@ -85,7 +85,7 @@ Sie können die einzelnen Personen gewährten Zugriffsberechtigungen widerrufen,
 Momentan fallen keine Gebühren an und die Nutzung der Link-Cloud ist völlig kostenlos. Es ist auch unabhängig davon, ob Sie Ihr kostenloses oder bezahltes https://iobroker.pro Konto verwenden. Bitte beachten Sie, dass sich dies in Zukunft ändern kann.
 
 ### Warum planen Sie, diesen einfachen Service in Rechnung zu stellen?
-Selbst dieser einfache Service erfordert eine Infrastruktur, die rund um die Uhr läuft und Kosten verursacht. Das Sicherstellen der hohen Verfügbarkeit dieses Dienstes, das Beheben von Ausfällen und das Verbessern oder Hinzufügen neuer Funktionen beanspruchen einen erheblichen Teil unserer Zeit. Um uns der Weiterentwicklung zu widmen, brauchen wir Chips. Das würde es unseren Frauen ermöglichen, einkaufen zu gehen und uns mehr Zeit zu geben, diesem Projekt Aufmerksamkeit zu schenken.
+Selbst dieser einfache Service erfordert eine rund um die Uhr laufende Infrastruktur und verursacht Kosten. Das Sicherstellen der hohen Verfügbarkeit dieses Dienstes, das Beheben von Ausfällen und das Verbessern oder Hinzufügen neuer Funktionen beanspruchen einen erheblichen Teil unserer Zeit. Um uns der Weiterentwicklung zu widmen, brauchen wir Chips. Das würde es unseren Frauen ermöglichen, einkaufen zu gehen und uns mehr Zeit zu geben, diesem Projekt Aufmerksamkeit zu schenken.
 
 ### Was sind die Einschränkungen der Link-Cloud?
 Derzeit kann nur eine einzige Verbindung zu einer lokalen ioBroker-Installation hergestellt werden. Wenn also mehreren Benutzern Zugriffsberechtigungen für eine lokale Installation erteilt werden, kann jeweils nur ein Benutzer eine Verbindung herstellen. Auch die einzige Verbindung pro Benutzer ist erlaubt. Dies bedeutet, dass derselbe Benutzer, dem die Zugriffsberechtigung für mehrere lokale Installationen erteilt wurde, jeweils nur auf eine Installation zugreifen kann.
@@ -125,14 +125,14 @@ Der frei gewählte Name des Geräts. Es hilft bei der Verbindung über die Link-
 Die IP-Adresse eines Geräts, das in Ihrem lokalen Netzwerk verbunden werden soll. Sie können anstelle der IP-Adresse einen Hostnamen, z. B. _localhost_, angeben. Beachten Sie jedoch, dass dieser Name auf dem Computer, auf dem der ioBroker-Link-Adapter ausgeführt wird, auflösbar sein muss und Hostnamen nicht für UDP-Geräte verwendet werden können.
 
 ### Hafen
-Die Portnummer, über die Ihr Gerät eingehende Verbindungen empfängt.
+Die Portnummer, die Ihr Gerät für eingehende Verbindungen verwendet.
 
 ### Art
 - TCP - für Geräte, die das TCP- und / oder HTTP-Protokoll unterstützen
 - UDP - für Geräte, die das UDP-Protokoll unterstützen
 
 ## Adapter configuration :: Beispiel für die Gerätekonfiguration
-Um Ihr ioBroker.admin-Web-UI über die Link-Cloud zugänglich zu machen, konfigurieren Sie es unter _Adapter configuration :: Devices_ wie folgt:
+Um Ihr ioBroker.admin Web-UI über die Link-Cloud zugänglich zu machen, konfigurieren Sie es unter _Adapter configuration :: Devices_ wie folgt:
 
 - aktiviert: aktiviert
 - name: ioBrokerAdminWebUI (oder welcher Name auch immer)
@@ -149,6 +149,10 @@ Um auf die Web-UI Ihres Routers zuzugreifen, haben Sie möglicherweise folgende 
 - Geben Sie Folgendes ein: TCP
 
 ## Changelog
+### 0.5.5 (2019-12-02)
+* (gh-got) multi-factor connection approval
+* (gh-got) Implemented the acknowledgment via telegram
+
 ### 0.5.2 (2019-11-26)
 * (bluefox) Added user enability
 

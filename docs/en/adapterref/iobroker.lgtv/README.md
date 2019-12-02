@@ -203,6 +203,7 @@ is true when TV is on and false if TV is off
 ## Changelog
 
 ### 1.1.1 (2019-10-26)
+* (instalator) Safe keyfile to /opt/iobroker [issues #52](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/52) 
 * (instalator) fix error reconect
 * (instalator) fix raw object
 * (instalator) add mac address to admin settings

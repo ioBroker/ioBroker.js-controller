@@ -179,6 +179,8 @@ Here is a list of problems encountered so far and their solutions, if any.
     If you have not set up your Iobroker installation with the installer script and your user has a different name, please replace it with your user in the command "iobroker".
 
 ## Changelog
+### 1.2.1 (27.11.2019)
+* (bluefox) Added information about latest backup
 
 ### 1.3.0 (22.11.2019)
 * (simatec) support end for the total backup

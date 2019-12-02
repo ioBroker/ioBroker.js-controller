@@ -122,14 +122,13 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.7 (2019-xx-xx)
+### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
 * (René) see issue  #53: moved datapoints for relative lowering into "relative"
 * (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
 * (René) guest present as interface to ical
-
-
-
+* (René) see issue #52: support radar adapter
+* (René) all external states checked when adapter starts
 
 ### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!

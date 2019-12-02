@@ -72,6 +72,14 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
+### 3.1.9 (2019-11-30)
+* (Apollon77) New schemas added
+* (Apollon77) Improve error handling for proxy web port
+
+### 3.1.8 (2019-11-28)
+* (Apollon77) New schemas added
+* (Apollon77) Add check for invalid proxy port
+
 ### 3.1.7 (2019-11-26)
 * (Apollon77) New schemas added
 

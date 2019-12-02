@@ -30,6 +30,15 @@ If more devices work (or also not) please report them by opening a GitHub issue.
 
 ## Changelog
 
+### 1.3.7 (2019.12.01)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.6 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.5 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
 ### 1.3.4 (2019.11.26)
 * (Apollon77) Add Temperature/Humidity support for MTS100
 

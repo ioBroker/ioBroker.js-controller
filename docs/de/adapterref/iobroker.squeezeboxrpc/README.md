@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: xnD8N0Iy6xNIN45LSO3mTEj+W0qT0gB4cRrQcNsnEYk=
+hash: b6Hcr4yfY/k0AaysOTbCZMEVAeLhR/Bghsc/wMg/bZE=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -15,6 +15,9 @@ hash: xnD8N0Iy6xNIN45LSO3mTEj+W0qT0gB4cRrQcNsnEYk=
 ![GitHub-Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
 
 # IoBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
+<!--
+-->
+
 Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Daten abzurufen und Befehle an den Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)) zu senden, um angeschlossene Geräte wie z
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
@@ -30,7 +33,7 @@ Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protoko
 
 ## Eigenschaften
 - Die meisten Daten, die der LMS-Service zur Verfügung stellt, sind im Adapter verfügbar
-- Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Bildmaterial und die Wiedergabeliste
+- Detaillierte Informationen zu Player-Status, Songtitel, Interpret, Album, Bildmaterial und Wiedergabeliste
 - Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Wiedergabelistenindex (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
 - Alle Favoriten und alle Unterebenen vom Server
 - Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Benutzeroberflächen für die Steuerung zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungs- und Zufallsmodus auswählen).
@@ -93,7 +96,7 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren
 * füge ID zu den Spielerzuständen hinzu
 * Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
-* Implementieren eines Befehlsstatus, um benutzerdefinierte Befehle (über JSON) für Server und Player zu platzieren
+* Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
 * ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
 * ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu

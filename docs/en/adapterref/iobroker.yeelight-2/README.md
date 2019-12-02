@@ -70,6 +70,8 @@ NOTE: Accepted on both "on" and "off" state.
 after 5 minutes.
 
 ## Changelog
+### 1.0.1 (2019-12-01)
+* (MeisterTR) add Pedant
 ### 1.0.1 (2018-12-08)
 * (MeisterTR) push version, added set_scene
 ### 0.9.6 (2018-12-08)

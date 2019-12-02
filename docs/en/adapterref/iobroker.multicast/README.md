@@ -81,6 +81,15 @@ The adapter is build to send up to 5-times a retry to ensure all state changes a
 
 ## Changelog
 
+### 0.1.4
+* (DutchmanNL) Fix Device Name
+* (DutchmanNL) improved way of handling info channel values compatible with old firmware
+
+### 0.1.3
+* (Dutchman) Optimise state retry, dont fire every 500ms more queuing
+* (Dutchman) Send recovery data if Harbeat is received and connection to device is FALSE
+* (Dutchman) Implement states (capability for value list)
+
 ### 0.1.2
 * (Dutchman) Optimise state retry, dont fire every 500ms more queuing
 * (Dutchman) Correct handling of hostname and hostname changes
