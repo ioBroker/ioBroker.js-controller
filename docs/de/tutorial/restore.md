@@ -95,7 +95,7 @@ Diese Tutorial bezieht sich aber auf ein lokal gespeichertes Backup.
 Wenn ioBroker Backup erfolgreich abgelegt wurde, wird jetzt Backitup geöffent und der Tab „Wiederherstellen“ geöffnet.
 Dort die „Backup-Quelle“ auf Lokal stellen und im Anschluss speichern.
 
-![Restore Tab](/media/restore/1575301096581-restoretab.jpg) 
+![Restore Tab](media/restore/1575301096581-restoretab.jpg) 
 
 Wenn ALLE  Instanzen nach dem Restore automatisch starten sollen, muss dafür die Option „Start aller Adapter nach dem Restore“ aktiviert und im Anschluss gespeichert werden.
 Sollte das Backup auf einem anderen Host wiederhergestellt werden, sollte diese Option nicht genutzt werden, da vor dem Start der einzelnen Instanzen die IP-Adressen gegebenenfalls angepasst werden müssen.
@@ -105,7 +105,7 @@ Nach dem Speichern können über den Button „Backups abrufen“ die vorhandene
 Das gerade per FTP kopierte Backup sollte in der Liste unter „iobroker“ auftauchen.
 Dieses nun auswählen.
 
-![Auswahl Backups](/media/restore/1575301146928-restoreliste.jpg) 
+![Auswahl Backups](media/restore/1575301146928-restoreliste.jpg) 
 
 Nach der Auswahl gibt es einen Hinweis, dass iobroker für den Restore gestoppt und im Anschluss wieder gestartet wird.
 
@@ -113,12 +113,12 @@ Nach der Auswahl gibt es einen Hinweis, dass iobroker für den Restore gestoppt 
 
 Hier habt ihr den eigentlichen Wiederherstellungsvorgang gestartet.
 
-![Restore läuft](/media/restore/1575301208033-restore.jpg) 
+![Restore läuft](media/restore/1575301208033-restore.jpg) 
 
 Dies kann je nach Leistung des Systems und Größe der alten ioBroker Installation etwas Zeit brauchen.
 Im Normalfall sollte der restore nach ca. 10-15 Minuten erledigt und ioBroker wieder gestartet sein.
 
-![Restore fertig](/media/restore/1575301228008-restorefinish.jpg) 
+![Restore fertig](media/restore/1575301228008-restorefinish.jpg) 
 
 Falls sich die Anzeige nicht ändert,  ab und an mal das Browserfenster mit F5 aktualisieren.
 
@@ -126,7 +126,7 @@ In ganz seltenen Fällen kommt es vor, dass ioBroker nicht automatisch nach Rest
 Falls dies der Fall oder nicht sicher ist, ob der Restore noch läuft,kann man mit dem installierten Tool htop schauen, ob der Restore noch läuft, oder bereits beendet ist.
 Dafür gebt im Terminal einfach ```htop``` eingeben. Die Ausgabe sollte dann in etwa so ausschauen.
 
-![htop](/media/restore/1575363981959-htop.jpg) 
+![htop](media/restore/1575363981959-htop.jpg) 
 
 In den Prozessen, die von htop angezeigt werden darf **keiner** der im Bild markierten Prozesse mehr vorhanden sein.
 Sollte dies der Fall sein, dann htop mit "F10" beenden und über das Terminal folgenden Befehl ausführen.
@@ -150,7 +150,7 @@ Ihr könnt die Redis-Datenbank, die Zigbee-Datenbank, die mySql-Datenbank und eu
 
 Die Liste der abgerufenen Backups würde dann wie hier im Beispiel aussehen.
 
-![komplette Liste](/media/restore/1575362131512-fullliste.jpg) 
+![komplette Liste](media/restore/1575362131512-fullliste.jpg) 
 
 *****************************************************************************************************************************************
 
