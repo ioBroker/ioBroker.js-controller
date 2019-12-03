@@ -109,7 +109,7 @@ Dieses nun auswählen.
 
 Nach der Auswahl gibt es einen Hinweis, dass iobroker für den Restore gestoppt und im Anschluss wieder gestartet wird.
 
-![Start Restore](/media/restore/1575301175231-restorestart.jpg) 
+![Start Restore](media/restore/1575301175231-restorestart.jpg) 
 
 Hier habt ihr den eigentlichen Wiederherstellungsvorgang gestartet.
 
@@ -187,8 +187,8 @@ cd /opt/iobroker
 iobroker restore <Dateiname eures Backups>
 ```
 
-%(#ff0000)[**Hierbei ist aber ganz wichtig, dass nur ein ioBroker Backup mit dieser Methode wiederherstellt werden kann. 
-Ein Redis-Backup, Zigbee-Backup, mySql-Backup, oder die History-Daten kann mit diesem Befehl nicht herstellt werden**.]
+!> **Hierbei ist aber ganz wichtig, dass nur ein ioBroker Backup mit dieser Methode wiederherstellt werden kann. 
+Ein Redis-Backup, Zigbee-Backup, mySql-Backup, oder die History-Daten kann mit diesem Befehl nicht herstellt werden**.
 
 Hierfür wird Backitup benötigt, da diese speziell mit Backitup erstellt wurden.
 
