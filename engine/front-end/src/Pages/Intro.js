@@ -60,7 +60,6 @@ const styles = theme => ({
     cloudButton: {
         marginTop: 100,
         paddingTop: 25,
-        width: 200,
         height: 45,
         borderRadius: 100,
         textTransform: 'uppercase',
@@ -68,7 +67,6 @@ const styles = theme => ({
         color: '#FFFFFF',
         textAlign: 'center',
         fontSize: 20,
-        marginLeft: 'calc(50% - 100px)',
         opacity: 0.9,
         fontFamily: 'Audiowide, sans-serif',
         cursor: 'pointer'
@@ -130,8 +128,13 @@ class Intro extends Component {
     renderCloud() {
         const smallMargin = window.screen.height < 500;
 
+        const long = I18n.getLanguage() === 'ru';
 
-        return (<div style={smallMargin ? {marginTop: 10}: undefined} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>get cloud</div>)
+        return (<div style={{
+            marginTop: smallMargin ? 10 : undefined,
+            width: long ? 300 : 200,
+            marginLeft: long ? 'calc(50% - 150px)' : 'calc(50% - 100px)'
+        }} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>{I18n.t('get cloud')}</div>)
     }
 
     // What differs ioBroker from other open source automation platforms?

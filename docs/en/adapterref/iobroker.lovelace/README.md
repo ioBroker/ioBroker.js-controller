@@ -199,7 +199,7 @@ Tested with yr and daswetter. One or more of following objects must have `Functi
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
 
-Tested with AccuWeather driver v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather. 
+Tested with AccuWeather driver v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
 Custom Lovelace card created in support of accuweather forecast - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Shopping list
@@ -272,7 +272,7 @@ or just set manually the entity type to `camera` and write URL into it.
 To hide toolbar you can set the checkbox in the ioBroker configuration dialog on the Themes tab.
 To show it, you can disable it in dialog again or just call the URL with `?toolbar=true` parameter.
 
-### Markdown 
+### Markdown
 You can use bindings in markdown like in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
 
 E.g. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` will produce text `Admin adapter is alive` in markdown panel.
@@ -409,7 +409,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
    } else {
       setState('lovelace.0.conversation', 'Sorry I don\'t know, what do you want', true); // true is important. It will say, that this is answer.
    }
-}); 
+});
 ```
 
 ## Original sources for lovelace
@@ -443,13 +443,17 @@ After that checkout modified version in `./build` folder. Then.
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app` for release or `gulp run develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use. 
+6. `gulp run build-app` for release or `gulp run develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use.
 7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
 8. Start `gulp rename` task.
 
 ## Changelog
-### 1.0.2 (2019-11-23)
+### 1.0.5 (2019-11-27)
+* (algar42) getting back broken update of internal_entities
+
+### 1.0.4 (2019-11-25)
 * (bluefox) Implemented bindings ala vis in markdown
+* (bluefox) protect access to states
 
 ### 0.2.5 (2019-11-18)
 * (algar42) Dimmer light is now switched on with the previous brightness level and not 100%

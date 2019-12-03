@@ -105,18 +105,13 @@ function addHeader(text, header) {
 }
 
 function createDir(dir) {
-    const parts = dir.replace(/\\/g, '/').split('/');
-    let dirs = [];
-    parts.forEach(part => {
-        dirs.push(part);
-        try {
-            !fs.existsSync(dirs.join('/')) && fs.mkdirSync(dirs.join('/'), {recursive: true});
-        } catch (e) {
-            console.error('Try to create a directory: ' + dirs.join('/'));
-            console.error('Try to create a directory: ' + e.toString());
-            console.error('Actual directory: ' + process.cwd());
-        }
-    });
+    try {
+        !fs.existsSync(dir) && fs.mkdirSync(dir, {recursive: true});
+    } catch (e) {
+        console.error('Try to create a directory: ' + dir);
+        console.error('Try to create a directory: ' + e.toString());
+        console.error('Actual directory: ' + process.cwd());
+    }
 }
 
 function writeSafe(fileName, data) {

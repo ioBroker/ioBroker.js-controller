@@ -17,77 +17,81 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.18
+
+- Bugfixing
+
 ### 0.0.17
 
--   add connection via ODB Adapter (Adapter App)
+- add connection via ODB Adapter (Adapter App)
 
 ### 0.0.16
 
--   fix fueling will not recording probably
+- fix fueling will not recording probably
 
 ### 0.0.15
 
--   fix soc history bug, add basic price and  adapter restart every 6h
+- fix soc history bug, add basic price and  adapter restart every 6h
 
 ### 0.0.14
 
--   fix when webpage streams are not reachable
+- fix when webpage streams are not reachable
 
 ### 0.0.13
 
--   add hard reconnect after 6h for stream data
+- add hard reconnect after 6h for stream data
 
 ### 0.0.12
 
--   add gas prices via tankerkönig
+- add gas prices via tankerkönig
 
 ### 0.0.11
 
--   minor fixes
+- minor fixes
 
 ### 0.0.10
 
--   fix socket refresh
+- fix socket refresh
 
 ### 0.0.9
 
--   move code base to app add auxheat.
--   Auf App API umgestellt. Standheizung jetzt möglich.
+- move code base to app add auxheat.
+- Auf App API umgestellt. Standheizung jetzt möglich.
 
 ### 0.0.8
 
--   decrease reconnect for all sockets
+- decrease reconnect for all sockets
 
 ### 0.0.7
 
--   improve door open functionality add detailed state for door status
+- improve door open functionality add detailed state for door status
 
 ### 0.0.6
 
--   fix issue with door data
+- fix issue with door data
 
 ### 0.0.5
 
--   fix issue no data after 1h
+- fix issue no data after 1h
 
 ### 0.0.4
 
--   relogin every hour, field to enter vin manually
--   Relogin jede Stunde, Feld zum manuellen eintragen der FIN
+- relogin every hour, field to enter vin manually
+- Relogin jede Stunde, Feld zum manuellen eintragen der FIN
 
 ### 0.0.3
 
--   fix no values after 1h bug, add realtime values like preconditioning
--   Keine Daten nach 1h Bug gefixt. Echtzeitwerte hinzugefügt wie Vorklimatisierung
+- fix no values after 1h bug, add realtime values like preconditioning
+- Keine Daten nach 1h Bug gefixt. Echtzeitwerte hinzugefügt wie Vorklimatisierung
 
 ### 0.0.2
 
--   add remote control for Door lock, Window lock and preconditioning
--   Tür und Fenster öffnen und Vorklimatisierung hinzugefügt.
+- add remote control for Door lock, Window lock and preconditioning
+- Tür und Fenster öffnen und Vorklimatisierung hinzugefügt.
 
 ### 0.0.1
 
--   (tombox) initial release
+- (tombox) initial release
 
 ## License
 

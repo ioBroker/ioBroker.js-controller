@@ -5,9 +5,12 @@
 [![Number of Installations](http://iobroker.live/badges/squeezeboxrpc-installed.svg)](https://github.com/oweitman/ioBroker.squeezeboxrpc)
 [![NPM version](http://img.shields.io/npm/v/iobroker.squeezeboxrpc.svg)](https://www.npmjs.com/package/iobroker.squeezeboxrpc)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.squeezeboxrpc.svg)](https://www.npmjs.com/package/iobroker.squeezeboxrpc)
+<!--
 [![Travis](https://img.shields.io/travis/oweitman/ioBroker.squeezeboxrpc.svg)](https://travis-ci.org/oweitman/ioBroker.squeezeboxrpc/)
+-->
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-squeezeboxrpc.svg)](https://ci.appveyor.com/project/oweitman/iobroker-squeezeboxrpc)
 [![GitHub issues](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)](https://github.com/oweitman/ioBroker.squeezeboxrpc/issues)
+
 
 This is an alternative Adapter that uses the JSON/RPC-Protokoll to get data and send commands to the Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server))
 for controlling connected devices like 
@@ -144,6 +147,7 @@ btnRewind         | Previous song
 btnPreset_*       | 1-6 buttons to define in player or server
 cmdGeneral        | a general command field to send commands to the player. every field must enclosed by quotation marks. parameters musst be seperated by comma. Example: "play","1"
 cmdPlayFavorite   | to play a favorite set the id of the favorite
+cmdPlayUrl        | to play a url´example "http://50.7.77.114:8101/;"
 cmdGoTime         | jump to a absolut position by specifying a number of seconds or jump relative with a + or - at the beginning of the seconds. Example 100,-50,+50
 
 For more information visit the CLI-documentation:

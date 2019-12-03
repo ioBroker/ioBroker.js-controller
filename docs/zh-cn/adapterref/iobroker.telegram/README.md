@@ -3,37 +3,37 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: 1Bjep1eOMl3zub539VLi/Z+5ykymigkNSOdY5OmXnjk=
+hash: 3gUX37ZjaRU+kloaRUSblN655foTMhHsBRYtYr6RC54=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
 ![安装数量](http://iobroker.live/badges/telegram-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.telegram.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.telegram.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.telegram.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.telegram.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.telegram.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.telegram.png?downloads=true)
 
-#ioBroker电报适配器
+＃ioBroker电报适配器
 ##配置
-请[@BotFather](https://telegram.me/botfather)创建新的bot```/newbot```。
+要求[@BotFather](https://telegram.me/botfather)创建新的漫游器```/newbot```。
 
 系统将要求您输入机器人的名称，然后输入用户名。
-之后你会得到令牌。
+之后，您将获得令牌。
 
-![截图](../../../en/adapterref/iobroker.telegram/img/chat.png)
+![屏幕截图](../../../en/adapterref/iobroker.telegram/img/chat.png)
 
-您应该在配置对话框中设置通信密码。在此之后启动适配器。
+您应该在配置对话框中设置通信密码。此后，启动适配器。
 
-要开始与机器人对话，您需要使用“/ password phrase”对用户进行身份验证，其中**短语**是您配置的密码。因此，使用您在Telegram中生成的Bot打开一个新对话，然后您需要输入passwort作为第一个命令。
+要与您的机器人进行对话，您需要使用“ / passwordphrase”对用户进行身份验证，其中“ phrase **”是您配置的密码。因此，在Telegram中与您生成的Bot进行新的对话，然后您需要输入密码作为第一个命令。
 
-**注意：**您可以使用简短形式的“/ p短语”。
+**注意：**您可以使用缩写形式“ / p短语”。
 
-要添加好的头像图片，请输入`/setuserpic`并上传他想要的图片（512x512像素），如此[商标](img/logo.png)。
+要添加精美的头像图片，请输入`/setuserpic`并上传所需的图片（512x512像素），例如[商标](img/logo.png)。
 
-您可以通过messageBox`sendTo('telegram', 'Test message')`或特定用户`sendTo('telegram', '@userName Test message')`向所有经过身份验证的用户发送消息。
-用户必须先进行身份验证。
+您可以通过messageBox`sendTo('telegram', 'Test message')`向所有经过身份验证的用户或特定用户`sendTo('telegram', '@userName Test message')`发送消息。
+用户必须先经过身份验证。
 
-您也可以这样指定用户：
+您也可以通过这种方式指定用户：
 
 ```
 sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
@@ -41,19 +41,19 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-如果您使用上面的示例，请注意您必须将“UserName”替换为要将消息发送到的用户的firstname或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的“Store username not firstname”设置）如果设置了该选项且用户未在其电报帐户中指定公共用户名，则适配器将继续使用用户。请记住，如果用户稍后设置了公共用户名（在对机器人进行身份验证之后），则下次用户向僵尸程序发送消息时，保存的名字将被用户名替换。
+如果使用上面的示例，请注意，必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项，并且用户未在电报帐户中指定公用用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
 
 可以指定多个收件人（只需用逗号分隔用户名）。
-例如：收件人：“User1，User4，User5”
+例如：收件人：“ User1，User4，User5”
 
-您也可以通过状态发送消息，只需设置状态*“telegram.INSTANCE.communicate.response”*，其值为*“@ userName Test message”*。
+您也可以通过状态发送消息，只需将状态*“ telegram.INSTANCE.communicate.response” *设置为值*“ @ userName测试消息” *。
 
 ##用法
-您可以使用带有[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器的电报。有预定义的通信模式，您可以以文本形式命令回家。
+您可以将电报与[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器一起使用。有预定义的通信模式，您可以以文本形式命令您回家。
 
-要发送照片，只需发送文件路径而不是文本或URL：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`。
+要发送照片，只需发送文件而不是文本或URL的路径即可：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
 
-示例如何将网络摄像头的屏幕截图发送到电报：
+示例如何从网络摄像头向电报发送屏幕截图：
 
 ```
 var request = require('request');
@@ -86,18 +86,18 @@ on("someState", function (obj) {
 
 以下消息保留用于操作：
 
- -  *输入*  - 用于短信，
- - *upload_photo* - 用于照片，
- - *upload_video* - 用于视频，
- - *record_video* - 用于视频，
- - *record_audio* - 用于音频，
- - *upload_audio* - 用于音频，
- - *upload_document* - 用于文档，
- - *find_location* - 用于位置数据
+-*键入*-对于短信，
+-* upload_photo *-用于照片，
+-* upload_video *-对于视频，
+-* record_video *-对于视频，
+-* record_audio *-用于音频，
+-* upload_audio *-用于音频，
+-* upload_document *-对于文档，
+-* find_location *-用于位置数据
 
 在这种情况下，将发送动作命令。
 
-电报API的描述可以在[这里](https://core.telegram.org/bots/api)中找到，您可以使用此api中定义的所有选项，只需将其包含在发送对象中即可。例如。：
+可以在[这里](https://core.telegram.org/bots/api)中找到电报API的描述，您可以使用此api中定义的所有选项，只需将其包含在send对象中即可。例如。：
 
 ```
 sendTo('telegram.0', {
@@ -107,21 +107,21 @@ sendTo('telegram.0', {
 });
 ```
 
-**可能的选择**：
+**可能的选项**：
 
- - *disable_notification* 以静默方式发送消息。 iOS用户不会收到通知，Android用户会收到没有声音的通知。 （所有类型）
- - *parse_mode* 发送Markdown或HTML，如果您希望Telegram应用程序在机器人的消息中显示粗体，斜体，固定宽度的文本或内嵌URL。可能的值：“Markdown”，“HTML”（消息）
- - *disable_web_page_preview* 禁用此消息中链接的链接预览（消息）
- -  *标题*：文档，照片或视频的标题，0-200个字符（视频，音频，照片，文档）
- -  *持续时间*：以秒为单位发送的视频或音频的持续时间（音频，视频）
- -  *执行者*：音频文件的执行者（音频）
- - *title* 音频文件的音轨名称（音频）
- -  *宽*：视频宽度（视频）
- -  *身高*：视频高度（视频）
+-* disable_notification *：静默发送消息。 iOS用户将不会收到通知，Android用户将不会收到通知。 （所有类型）
+-* parse_mode *：如果希望Telegram应用在机器人的消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
+-* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
+-*说明*：用于文档，图片或视频的标题，0-200个字符（视频，音频，图片，文档）
+-*持续时间*：以秒为单位发送视频或音频的持续时间（音频，视频）
+-*表演者*：音频文件的表演者（音频）
+-*标题*：音频文件的轨道名称（音频）
+-*宽度*：视频宽度（视频）
+-*高度*：视频高度（视频）
 
-适配器尝试检测消息的类型（照片，视频，音频，文档，标签，动作，位置）取决于消息中的文本，如果文本是现有文件的路径，它将按照类型发送。
+适配器尝试检测消息的类型（照片，视频，音频，文档，标签，动作，位置）取决于消息中的文本（如果文本是现有文件的路径），它将根据类型发送。
 
-将在属性纬度上检测位置：
+将根据属性纬度检测位置：
 
 ```
 sendTo('telegram.0', {
@@ -131,10 +131,10 @@ sendTo('telegram.0', {
 });
 ```
 
-###明确的消息类型
-如果要将数据作为缓冲区发送，则可以定义额外的消息类型。
+###显式消息
+如果您想将数据发送为缓冲区，则可以定义其他消息类型。
 
-以下类型可能：*贴纸*，*视频*，*文档*，*音频*，*照片*。
+可以使用以下类型：*贴纸*，*视频*，*文档*，*音频*，*照片*。
 
 ```
 sendTo('telegram.0', {
@@ -144,7 +144,7 @@ sendTo('telegram.0', {
 ```
 
 ###键盘
-您可以在客户端显示键盘** ReplyKeyboardMarkup **：
+您可以在客户端中显示键盘** ReplyKeyboardMarkup **：
 
 ```
 sendTo('telegram.0', {
@@ -160,7 +160,7 @@ sendTo('telegram.0', {
 });
 ```
 
-您可以阅读更多[这里]（https://core.telegram.org/bots/api#replykeyboardmarkup）和[这里]](https://core.telegram.org/bots#keyboards)。
+您可以阅读更多的[此处]（https://core.telegram.org/bots/api#replykeyboardmarkup）和[此处](https://core.telegram.org/bots#keyboards)。
 
 您可以在客户端中显示键盘** InlineKeyboardMarkup **：
 
@@ -177,12 +177,12 @@ sendTo('telegram', {
 });
 ```
 
-您可以阅读更多[这里]（https://core.telegram.org/bots/api#inlinekeyboardmarkup）和[这里](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)。
+您可以阅读更多的[此处]（https://core.telegram.org/bots/api#inlinekeyboardmarkup）和[此处](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)。
 
-**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要通知用户（例如，没有指定任何可选参数），也必须通过调用answerCallbackQuery来做出反应。*
+**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也必须通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
 
 ### AnswerCallbackQuery
-使用此方法发送从内联键盘发送的回调查询的答案。答案将作为聊天屏幕顶部的通知或警报显示给用户。成功时，返回* True *。
+使用此方法将答案发送给从嵌入式键盘发送的回调查询。答案将作为通知显示在用户的聊天屏幕顶部或作为警报。成功后，将返回* True *。
 
 ```
 if (command ==="1_2") {
@@ -196,18 +196,38 @@ if (command ==="1_2") {
 }
 ```
 
-您可以阅读更多[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegrambotanswercallbackquerycallbackqueryid-text-showalert-options--promise)。
+您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegrambotanswercallbackquerycallbackqueryid-text-showalert-options--promise)。
+
+＃＃＃ 题
+您可以发送电文消息，下一个答案将在回调中返回。
+可以在配置中设置超时，默认情况下为60秒。
+
+```
+sendTo('telegram.0', 'ask', {
+    user: user, // optional
+    text: 'Aure you sure?',
+    reply_markup: {
+        inline_keyboard: [
+            // two buttons could be on one line too, but here they are on different
+            [{ text: 'Yes!',  callback_data: '1' }], // first line
+            [{ text: 'No...', callback_data: '0' }]  // second line
+        ]
+    }
+}, msg => {
+    console.log('user says ' + msg.data);
+});
+```
 
 ##聊天ID
-从版本0.4.0开始，您可以使用聊天ID将消息发送到聊天室。
+从0.4.0版开始，您可以使用聊天ID将消息发送到聊天。
 
 `sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ##更新消息
-以下方法允许您更改消息历史记录中的现有消息，而不是发送带有操作结果的新消息。这对于使用回调查询的*内联键盘*的消息最有用，但也可以帮助减少与常规聊天机器人的对话中的混乱。
+通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*嵌入式键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
 
 ### EditMessageText
-使用此方法编辑机器人或机器人发送的文本（对于内联机器人）。成功时，如果机器人发送编辑的消息，则返回编辑的消息，否则返回* True *。
+使用此方法来编辑由机器人或通过机器人（对于嵌入式机器人）发送的文本。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
 
 ```
 if (command === "1_2") {
@@ -230,7 +250,7 @@ if (command === "1_2") {
 }
 ```
 
-*或最后留言的新文字：*
+*或上一封邮件的新文本：*
 
 ```
 if (command ==="1_2") {
@@ -247,10 +267,10 @@ if (command ==="1_2") {
 }
 ```
 
-您可以阅读更多[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagetexttext-options--promise)。
+您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagetexttext-options--promise)。
 
 ### EditMessageReplyMarkup
-使用此方法仅编辑机器人或机器人发送的消息的回复标记（对于内联机器人）。成功时，如果机器人发送编辑的消息，则返回编辑的消息，否则返回* True *。
+使用此方法仅编辑由漫游器或通过漫游器（对于嵌入式漫游器）发送的邮件的答复标记。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
 
 ```
 if (command === "1_2") {
@@ -273,14 +293,14 @@ if (command === "1_2") {
 }
 ```
 
-您可以阅读更多[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagereplymarkupreplymarkup-options--promise)。
+您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagereplymarkupreplymarkup-options--promise)。
 
 ### DeleteMessage
-使用此方法删除包含服务消息的消息，但具有以下限制：
+使用此方法可以删除一条消息，包括服务消息，但有以下限制：
 
- - 只有在48小时前发送的消息才能删除。
+-仅在少于48小时之前发送过的邮件才能删除。
 
-成功时返回* True *。
+成功返回* True *。
 
 ```
 if (command === "delete") {
@@ -296,19 +316,19 @@ if (command === "delete") {
 }
 ```
 
-您可以阅读更多[这里](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage)。
+您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage)。
 
 ##特殊命令
-### / state stateName  - 读取状态值
-如果你现在是ID，你可以请求state的值：
+### / state stateName-读取状态值
+如果现在使用ID，则可以请求state的值：
 
 ```
 /state system.adapter.admin.0.memHeapTotal
 > 56.45
 ```
 
-### / state stateName value  - 设置状态值
-如果你现在是ID，你可以设置state的值：
+### / state stateName值-设置状态值
+如果现在使用ID，则可以设置状态值：
 
 ```
 /state hm-rpc.0.JEQ0ABCDE.3.STOP true
@@ -316,28 +336,31 @@ if (command === "delete") {
 ```
 
 ##轮询或服务器模式
-如果使用轮询模式，则适配器默认每300毫秒轮询一次电报服务器以进行更新。它使用流量和消息可以延迟到轮询间隔。轮询间隔可以在适配器配置中定义。
+如果使用轮询模式，则默认情况下，适配器每300毫秒对电报服务器进行一次轮询以进行更新。它使用流量，并且消息可能会延迟最长轮询间隔。轮询间隔可以在适配器配置中定义。
 
-要使用服务器模式，您必须可以从Internet访问ioBroker实例（例如，使用noip.com动态DNS服务）。
+要使用服务器模式，您的ioBroker实例必须可以通过互联网访问（例如，使用noip.com动态DNS服务）。
 
-电报只能用于HTTPS服务器，但您可以使用** let的加密**证书。
+电报只能与HTTPS服务器一起使用，但是您可以使用“让我们加密”证书。
 
 必须为服务器模式提供以下设置：
 
- - 网址 - 格式为https://yourdomain.com:8443。
- -  IP  -  IP地址，服务器将被绑定。默认值0.0.0.0。如果您不确定，请不要更改它。
- - 端口 - 实际上只有443,80,88,8443个端口由电报支持，但您可以通过路由器将端口转发到任何端口。
- - 公共证书 - 必要时，如果**禁止加密**被禁用。
- - 私钥 - 必需，如果**允许加密**被禁用。
- - 连锁证书（可选）
- - 让我们加密选项 - 很容易设置**让我们加密**证书。请阅读[here]（https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates）。
+-URL-格式为https://yourdomain.com:8443。
+-IP-IP地址，将绑定服务器。默认值为0.0.0.0。如果不确定，请不要更改它。
+-端口-电报实际上仅支持443、80、88、8443端口，但是您可以通过路由器将端口转发给任何一个端口。
+-公共证书-如果禁用“允许加密”，则为必需。
+-私钥-如果禁用“允许加密”，则为必填项。
+-连锁证书（可选）
+-让我们加密选项-设置“让我们加密”证书非常容易。请阅读[here]（https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates）。
 
 去做：
 
- - 场地
- - 对话框
+-场地
+-对话
 
 ## Changelog
+### 1.4.4 (2019-11-27)
+* (bluefox) New sendTo message "ask" was added (see [Question](#question) )
+
 ### 1.4.3 (2019-02-21)
 * (BuZZy1337) Bugfix for not yet completely implemented feature
 

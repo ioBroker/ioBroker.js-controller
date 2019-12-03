@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
+hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -23,17 +23,24 @@ Mit diesem Adapter können Sie Meross-Geräte steuern, indem Sie eine Verbindung
 
 Sie müssen Ihre Cloud-Anmeldeinformationen angeben. Der Adapter stellt eine Verbindung zu Ihrem Cloud-Konto her und abonniert alle Gerätedaten über MQTT. Aus diesem Grund müssen die Geräte mit ihrer Cloud verbunden sein. Derzeit ist keine Möglichkeit bekannt, die Geräte lokal zu steuern.
 
-Eine Adapter-Instanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
+Eine Adapterinstanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
 
 ## Bekannte Arbeitsgeräte
 * mss425e
 * mss310
+* MSS620 EU / UK
 
 Wenn mehr Geräte funktionieren (oder auch nicht), melden Sie dies bitte durch Öffnen eines GitHub-Problems.
 
 ## Changelog
 
-### 1.2.x (2019.11.xx)
+### 1.3.4 (2019.11.26)
+* (Apollon77) Add Temperature/Humidity support for MTS100
+
+### 1.3.1 (2019.11.25)
+* (Apollon77) Add names to hub sub devices
+
+### 1.3.0 (2019.11.25)
 * (Apollon77) Add msg100 with Garage Door Reed contact
 * (Apollon77) Add reconnection handling
 * (Apollon77) Add light support (e.g. MSL120 RGB bulb)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
+hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -24,11 +24,11 @@ hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
 *当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
-*每个房间均支持无限制的恒温器，执行器和传感器
+*支持每个房间无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）
-*与Feiertag-Adapter或任何其他接口，以检测公众假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
+*与Feiertag-Adapter或任何其他接口，以检测公共假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
 *手动控制温度超过一定时间
 *预定加热时间
 *稍后将提供可视化示例
@@ -46,7 +46,7 @@ hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一-周日，或周一-周五和周六/周日或每天）
-*配置文件数量=如果需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
+*配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
 *““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
@@ -78,10 +78,10 @@ hash: evtIAAY4mTnSy5Mq2nSgTrbQJDqh7Kph2yhZ5uiuRXM=
 | LastProgramRun |显示适配器运行的最后一次时间 |
 
 ###温度降低/升高
-| DP名称|说明|相对降低的目标温度|绝对降低的目标温度|
+| DP名称|描述|相对降低的目标温度|绝对降低的目标温度|
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
 |来宾增加温度，因为客人想变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
-| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前轮廓温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
+| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
 |现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
@@ -118,7 +118,16 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 
 ## Changelog
 
-### 0.3.6 (2019-11-xx)
+### 0.3.7 (2019-xx-xx)
+Attention: some changes in datapoints!!
+* (René) see issue  #53: moved datapoints for relative lowering into "relative"
+* (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
+* (René) guest present as interface to ical
+
+
+
+
+### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature

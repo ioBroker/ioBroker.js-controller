@@ -1,1 +1,1 @@
-# Generelle Fragen
+# Antworten für Fortgeschrittener

@@ -107,6 +107,7 @@ copy to clipboard
 english
 forum-text
 german
+get cloud
 install on linux
 installed %s times
 instruction1

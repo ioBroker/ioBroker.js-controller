@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
+hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -28,7 +28,7 @@ hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 ###自动
 在自动模式下，类似的过程将应用于`google home`或`material adapter`。
 
-***仅检测到定义了`function`和`room`类别的对象和通道***
+***仅会检测到已定义`function`和`room`类别的对象和通道***
 
 您可以定义友好名称，这将在实体中使用。
 
@@ -275,11 +275,11 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-或者只是将实体类型手动设置为`camera`并将URL写入其中。
+或者只是手动将实体类型设置为`camera`并将URL写入其中。
 
 ###隐藏工具栏
 要隐藏工具栏，可以在“主题”选项卡上的ioBroker配置对话框中设置复选框。
-要显示它，可以再次在对话框中将其禁用，或者仅使用`?toolbar=true`参数调用URL。
+要显示它，您可以再次在对话框中禁用它，或者仅使用`?toolbar=true`参数调用URL。
 
 ### Markdown
 您可以像[iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)中那样在markdown中使用绑定。
@@ -292,7 +292,7 @@ createState('location.latitude', 39.5681295, false, {
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
 
-重新启动lovelace适配器后，它将自动包含`cards`目录中的所有文件。
+重新启动lovelace适配器后，它将自动包括`cards`目录中的所有文件。
 
 以下定制卡可以成功测试：
 
@@ -307,7 +307,7 @@ createState('location.latitude', 39.5681295, false, {
 像这样：[https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases)（查找文件`mini-graph-card-bundle.js`）
 
 ##自己的图片
-可以通过与自定义卡相同的配置对话框来加载自定义图像（例如背景图片）。并像这样使用它：
+可以通过与自定义卡相同的配置对话框来加载自定义图像（例如用于背景）。并像这样使用它：
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
@@ -315,7 +315,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-在lovelace配置文件中。阅读更多有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的信息。
+在lovelace配置文件中。阅读有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的更多信息。
 
 ##主题
 可以在ioBroker的配置对话框中定义主题。
@@ -440,7 +440,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ioBroker的所有更改都标记有注释`// IoB`。
 目前（2019.11.23）修改了以下文件：
 
--`.gitignore`-添加了`.idea`忽略
+-`.gitignore`-添加了`.idea`ignore
 -`build-scripts / gulp / app.js`-添加了新的gulp任务
 -`build-scripts / gulp / webpack.js`-添加了新的gulp任务
 -`src / entrypoints / core.ts`-修改的身份验证过程
@@ -449,7 +449,7 @@ ioBroker的所有更改都标记有注释`// IoB`。
 -`src / dialogs / notifications / notification-drawer.js`-添加了所有按钮
 -`src / layouts / home-assistant-main.ts`-移除应用程序侧边栏
 
-之后，在`./build`文件夹中签出修改版本。然后。
+之后，在`./build`文件夹中签出修改后的版本。然后。
 
 1.转到./build目录。
 2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（请参阅前面的文件列表）。
@@ -461,8 +461,12 @@ ioBroker的所有更改都标记有注释`// IoB`。
 8.启动“ gulp重命名”任务。
 
 ## Changelog
-### 1.0.1 (2019-11-23)
+### 1.0.5 (2019-11-27)
+* (algar42) getting back broken update of internal_entities
+
+### 1.0.4 (2019-11-25)
 * (bluefox) Implemented bindings ala vis in markdown
+* (bluefox) protect access to states
 
 ### 0.2.5 (2019-11-18)
 * (algar42) Dimmer light is now switched on with the previous brightness level and not 100%

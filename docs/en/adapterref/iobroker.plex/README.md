@@ -126,8 +126,30 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ## Changelog
 
-### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
-- Remote Player Control
+### 0.8.5 (2019-12-01)
+- (Zefau) fixed missing user / library statistics
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.4 (2019-11-07)
+- (Zefau) added support for remote player control via cloud / iot adapter
+- (Zefau) added thumbnail to notifications as well as web interface of adapter
+- (Zefau) fixed icons within the web interface of adapter
+
+### 0.8.3 (2019-11-06)
+- (Zefau) fixed player controls (error when triggering `start`, `stop`, etc.)
+- (Zefau) added additional states to `event` channel
+
+### 0.8.1 (2019-11-02)
+- (Zefau) fixed error `Cannot read property 'forEach' of undefined`
+
+### 0.8.0 (2019-10-28)
+- (Zefau) added support for Plex Notifications including customization in adapter settings
+- (Zefau) added count of streams [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
+- (Zefau) reworked cleaning up states when new webhook is received [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
+
+### 0.7.0 (2019-10-17)
+- (Zefau) reworked duty cycle (clean up of outdated / old states)
+- (Zefau) fixed incorrect states [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
 
 ### 0.6.0 (2019-08-19)
 - (Zefau) replaced password with token authentication

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
+hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 ---
 ![логотип](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,15 +18,17 @@ hash: BkclHlQZa18om+0WsiTUS5k15xa2gQwlXdKSIEOX8AU=
 # IoBroker.smartmeter
 [![Изменение климата] (https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
+** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. **
+
 Этот адаптер для ioBroker позволяет считывать и анализировать протоколы smartmeter, которые следуют числовой логике OBIS, чтобы сделать их данные доступными.
 
 *** Для работы адаптера требуется nodejs 4.x! ***
 
 *** Для этого адаптера в настоящее время должен быть установлен git! ***
 
-## В настоящее время известные проблемы
+## Известные в настоящее время проблемы
 * Этот адаптер использует библиотеку Serialport. Это может означать более длительное время установки, если его нужно скомпилировать
-* Кажется, что обработка памяти иногда неоптимальная и может привести к сбоям с SIGABRT или SIGSEGV во время чтения данных. iobroker Controller автоматически перезапустит Адаптер, поэтому единственный эффект здесь - 2-3 loglines :-)
+* Кажется, что обработка памяти иногда неоптимальна и может привести к сбоям с SIGABRT или SIGSEGV во время чтения данных. iobroker Controller автоматически перезапустит Адаптер, поэтому единственный эффект здесь - 2-3 loglines :-)
 
 ## Описание параметров
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -56,7 +58,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 Команда для входа в сообщение, по умолчанию "?" запрашивать обязательные поля, другие значения в зависимости от устройства.
 Пример: 2WR5 Heatmeter использует «#» для запроса намного большего количества данных (необязательные поля вместе со всеми обязательными)
 
-### D0: режим перезаписи
+### D0: перезапись режима
 Адаптер пытается определить режим протокола D0, как определено в спецификациях. Есть некоторые устройства, которые не соответствуют спецификациям и поэтому создают проблемы. Используя эту опцию, вы можете перезаписать определенный режим протокола.
 
 * Режим A: нет смены скорости передачи, нет Ack-сообщения
@@ -66,10 +68,10 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 * Режим E: необходимо изменить скорость передачи и Ack-сообщение, пользовательские протоколы не поддерживаются! Свяжитесь со мной, если у вас есть такой смартметр
 
 ### D0: Baudrate-Changeover-Overwrite
-Адаптер пытается определить скорость передачи для сообщений данных, как определено в спецификациях протокола. Но, как и в случае с режимом, некоторые смартметры предоставляют здесь неверные данные. Таким образом, вы можете использовать это, чтобы перезаписать скорость передачи для сообщения данных по мере необходимости. Оставьте пустым, чтобы использовать переключение скорости передачи данных, как определено интеллектуальным счетчиком.
+Адаптер пытается определить скорость передачи сообщений данных, как определено в спецификациях протокола. Но, как и в случае с режимом, некоторые смартметры предоставляют здесь неверные данные. Таким образом, вы можете использовать это, чтобы перезаписать скорость передачи для сообщения данных по мере необходимости. Оставьте пустым, чтобы использовать переключение скорости передачи данных, как определено интеллектуальным счетчиком.
 
 ## Адаптер протестирован с ...
-... по крайней мере:
+... как минимум:
 
 * Hager eHz Energy Meter (несколько, например, eHZ-IW8E2A5L0EK2P, EHZ363W5,)
 * EMH Счетчик энергии
@@ -79,7 +81,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 * Iskraemeco MT174
 * Iskraemeco MT175
 * Itron EM214 Typ 720
-* Голландский интеллектуальный счетчик, использующий протокол DSRM (в качестве протокола используйте «только данные чтения последовательного устройства» и «D0»)
+* Голландский интеллектуальный счетчик, использующий протокол DSRM (используйте «только данные чтения последовательного устройства» и «D0» в качестве протокола)
 
 Пожалуйста, пришлите мне информацию об устройствах, где вы успешно использовали библиотеку, и я добавлю ее здесь.
 
@@ -88,6 +90,13 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 * документы для веб-страницы
 
 ## Changelog
+
+### 3.0.0 (2019-11-2x)
+* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* support compact mode
+* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
 * BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
@@ -169,7 +178,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

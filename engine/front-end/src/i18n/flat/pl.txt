@@ -107,6 +107,7 @@ skopiuj do schowka
 język angielski
 Dołącz do szybko rozwijającej się społeczności, zadawaj pytania i uzyskaj odpowiedzi!
 Niemiecki
+uzyskać chmurę
 Instalacja w systemie Linux
 zainstalowanych %s razy
 Potrzebne są obrazy tylko w przypadku problemów ze skryptami instalacyjnymi.

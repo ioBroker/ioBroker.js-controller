@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
+hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -16,7 +16,7 @@ hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.lovelace?branch=master&svg=true)
 
 # IoBroker.lovelace
-## Адаптер lovelace для ioBroker
+## Адаптер ловелас для ioBroker
 С помощью этого адаптера вы можете создавать визуализацию для ioBroker с помощью интерфейса Home Assistant Lovelace.
 
 ## Конфигурация
@@ -33,7 +33,7 @@ hash: DgP5n8s8dSB+c7FpaWeorM7JG/+10nEvJrfi2fLKxIo=
 Вы можете определить дружественные имена, и это будет использоваться в сущностях.
 
 ### Руководство по эксплуатации
-Объекты могут быть определены вручную в дереве объектов, таких как sql или history. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
+Объекты могут быть определены вручную в дереве объектов, например, sql или histroy. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
 С помощью этого метода могут быть созданы только простые объекты, такие как input_number, input_text или input_boolean. Он не может иметь более одного состояния или атрибута.
 
 ## Панели
@@ -78,7 +78,7 @@ createState(
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
 Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
-Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
+Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «номер»:
 
 ```
 common: {
@@ -114,7 +114,7 @@ common: {
     }
 ```
 
-другими словами, в также следует вводить select в IoB.
+другими словами, вход также должен быть выбран в IoB.
 
 ### Таймер
 Таймер может быть смоделирован следующим скриптом:
@@ -275,14 +275,14 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-или просто вручную установите тип сущности на `camera` и запишите в него URL.
+или просто вручную установите тип объекта на `camera` и запишите в него URL-адрес.
 
 ### Скрыть панель инструментов
 Чтобы скрыть панель инструментов, вы можете установить флажок в диалоговом окне конфигурации ioBroker на вкладке Темы.
 Чтобы показать его, вы можете снова отключить его в диалоговом окне или просто вызвать URL с параметром `?toolbar=true`.
 
 ### Уценка
-Вы можете использовать привязки в уценке как в [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
+Вы можете использовать привязки в уценке, как в [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
 
 Например. Текст `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` выведет текст `Admin adapter is alive` на панели уценки.
 
@@ -434,7 +434,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ### Версия
 Используемая версия home-assistant-frontend@1.0.0
 
-### Как построить новую версию Lovelace
+### Как собрать новую версию Lovelace
 Прежде всего фактический https://github.com/home-assistant/home-assistant-polymer (ветвь разработчика) необходимо **вручную** объединить с https://github.com/GermanBluefox/home-assistant-polymer. .git (iob) ветка.
 
 Все изменения для ioBroker помечены комментарием `// IoB`.
@@ -446,7 +446,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 - `src / entrypoints / core.ts` - модифицированный процесс аутентификации
 - `src / data / lovelace.ts` - добавлена опция скрытия панели
 - `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
-- `src / dialogs / notifications / messages-pocket.js` - добавлена кнопка подтверждения всех
+- `src / dialogs / notifications /tification-box.js` - добавлена кнопка подтверждения всех
 - `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
 
 После этого извлечения измененная версия в папке `./build`. Затем.
@@ -461,8 +461,12 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 8. Запустите задачу gulp rename.
 
 ## Changelog
-### 1.0.1 (2019-11-23)
+### 1.0.5 (2019-11-27)
+* (algar42) getting back broken update of internal_entities
+
+### 1.0.4 (2019-11-25)
 * (bluefox) Implemented bindings ala vis in markdown
+* (bluefox) protect access to states
 
 ### 0.2.5 (2019-11-18)
 * (algar42) Dimmer light is now switched on with the previous brightness level and not 100%

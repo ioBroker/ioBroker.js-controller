@@ -23,12 +23,29 @@ One Adapter instance will show all devices from one Meross Cloud account and all
 ## Known working devices
 * mss425e
 * mss310
+* MSS620 EU/UK
+
 
 If more devices work (or also not) please report them by opening a GitHub issue.
 
 ## Changelog
 
-### 1.2.x (2019.11.xx)
+### 1.3.7 (2019.12.01)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.6 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.5 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.4 (2019.11.26)
+* (Apollon77) Add Temperature/Humidity support for MTS100
+
+### 1.3.1 (2019.11.25)
+* (Apollon77) Add names to hub sub devices
+
+### 1.3.0 (2019.11.25)
 * (Apollon77) Add msg100 with Garage Door Reed contact
 * (Apollon77) Add reconnection handling
 * (Apollon77) Add light support (e.g. MSL120 RGB bulb)

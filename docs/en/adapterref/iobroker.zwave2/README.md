@@ -16,38 +16,54 @@
 Alternative Z-Wave implementation
 
 ## Changelog
+<!-- 
+	Placeholder for next versions:
+	### __WORK IN PROGRESS__
+-->
+
+### 0.3.3 (2019-12-01)
+* Updated `zwave-js` to v2.1.0. This includes the following changes:
+	* Support for the `Meter CC`
+	* Support for unsigned configuration parameters
+
+### 0.3.2 (2019-11-28)
+* Fixed a crash when property(Key) names contain weird punctuation
+
+### 0.3.1
+* Fixed a crash from v0.3.0
+
+### 0.3.0
+* Updated `zwave-js` to v2.0.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#200-2019-11-26). Notable improvements include:
+	* Added configuration files for over 1000 devices. This improves support for some older devices and greatly improves the `Configuration CC`.
+	* `Basic` CC is now hidden if a node support other Actuator CCs
+	* Fixed `Binary Sensor` support
+* Improved generation of state names for complex property names
 
 ### 0.2.1
-
--   The network map now correctly displays the nodes' IDs
+* The network map now correctly displays the nodes' IDs
 
 ### 0.2.0
-
--   Update `zwave-js` from v1.5.0 to v1.7.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#170-2019-11-03). Notable improvements include:
-    -   Complete `Multi Channel` support
-    -   Improved `Multilevel Switch` support
--   improve value/metadata logging and change loglevel to debug
--   use unit from value metadata
--   use translated property keys to name states
+* Update `zwave-js` from v1.5.0 to v1.7.0. For the full list of changes, see [here](https://github.com/AlCalzone/node-zwave-js/blob/master/CHANGELOG.md#170-2019-11-03). Notable improvements include:
+	* Complete `Multi Channel` support
+	* Improved `Multilevel Switch` support
+* improve value/metadata logging and change loglevel to debug
+* use unit from value metadata
+* use translated property keys to name states
 
 ### 0.1.3
-
--   Update `zwave-js` dependency. Notable improvements include:
-    -   Support for `Time` and `Time Parameters` CCs. This automatically sets the correct time on supporting nodes.
-    -   Support for `Battery` CC v2
-    -   Cleanup of CC values
--   Update misc. dependencies
+* Update `zwave-js` dependency. Notable improvements include:
+	* Support for `Time` and `Time Parameters` CCs. This automatically sets the correct time on supporting nodes.
+	* Support for `Battery` CC v2
+	* Cleanup of CC values
+* Update misc. dependencies
 
 ### 0.1.2
-
--   Several bugfixes and working admin menu
+* Several bugfixes and working admin menu
 
 ### 0.0.1
-
--   initial release
+* initial release
 
 ## License
-
 MIT License
 
 Copyright (c) 2019 AlCalzone

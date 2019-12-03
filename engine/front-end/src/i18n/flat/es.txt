@@ -107,6 +107,7 @@ copiar al portapapeles
 Inglés
 ¡Únase ahora a la comunidad en rápido crecimiento, haga preguntas y obtenga respuestas!
 alemán
+obtener nube
 instalar en Linux
 %s instalada veces
 Solo necesita las imágenes si tiene problemas con los scripts de instalación.

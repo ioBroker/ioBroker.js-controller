@@ -78,7 +78,7 @@ Features:
 | CurrentProfile      | select current profile (1 based, means profile 1 use datapoints under heatingcontrol.0.Profiles.0 ) | 
 | LastProgramRun      | shows last time when adapter run                                                                    | 
 
-### temperature descrease / increase
+### temperature decrease / increase
 
 | DP name           | description                                                | target temperature for relative decrease                                       | target temperature for absolute decrease                      |
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
@@ -122,7 +122,15 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.6 (2019-11-xx)
+### 0.3.7 (2019-11-29)
+Attention: some changes in datapoints!!
+* (René) see issue  #53: moved datapoints for relative lowering into "relative"
+* (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
+* (René) guest present as interface to ical
+* (René) see issue #52: support radar adapter
+* (René) all external states checked when adapter starts
+
+### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature

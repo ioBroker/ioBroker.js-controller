@@ -1,6 +1,6 @@
 ![Logo](admin/roadtraffic.png)
 # ioBroker.roadtraffic
-=================
+![Number of Installations](http://iobroker.live/badges/roadtraffic-installed.svg) ![Number of Installations](http://iobroker.live/badges/roadtraffic-stable.svg) =================
 
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.roadtraffic.svg)](https://www.npmjs.com/package/iobroker.roadtraffic)

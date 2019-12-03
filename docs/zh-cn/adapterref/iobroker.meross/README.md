@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
+hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
-![保镖徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
 ![安装数量](http://iobroker.live/badges/meross-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meross.svg)
@@ -28,12 +28,19 @@ hash: hgYkyoR8TxFQ8JBLQDH2LeTYZOpI0vfGUTZHfwo2HDI=
 ##已知的工作设备
 * mss425e
 * mss310
+* MSS620欧盟/英国
 
 如果有更多设备可用（或无法运行），请通过打开GitHub问题进行报告。
 
 ## Changelog
 
-### 1.2.x (2019.11.xx)
+### 1.3.4 (2019.11.26)
+* (Apollon77) Add Temperature/Humidity support for MTS100
+
+### 1.3.1 (2019.11.25)
+* (Apollon77) Add names to hub sub devices
+
+### 1.3.0 (2019.11.25)
 * (Apollon77) Add msg100 with Garage Door Reed contact
 * (Apollon77) Add reconnection handling
 * (Apollon77) Add light support (e.g. MSL120 RGB bulb)

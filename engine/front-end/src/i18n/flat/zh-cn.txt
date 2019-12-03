@@ -107,6 +107,7 @@ Windows，Linux，OSX，Raspberry Pi，ARM或PC
 英语
 社区正快速发展，欢迎现在加入，提出问题并获得答案！
 德语
+得到云
 在Linux上安装
 安装%s次
 只有在安装脚本出现问题时，才需要使用镜像安装。

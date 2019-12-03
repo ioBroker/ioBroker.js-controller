@@ -192,6 +192,26 @@ if (command ==="1_2") {
 
 You can read more [here](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegrambotanswercallbackquerycallbackqueryid-text-showalert-options--promise).
 
+### Question
+You can send to telegram the message and the next answer will be returned in callback. 
+Timeout can be set in configuration and by default is 60 seconds.
+
+```
+sendTo('telegram.0', 'ask', {
+    user: user, // optional
+    text: 'Aure you sure?',
+    reply_markup: {
+        inline_keyboard: [
+            // two buttons could be on one line too, but here they are on different
+            [{ text: 'Yes!',  callback_data: '1' }], // first line
+            [{ text: 'No...', callback_data: '0' }]  // second line
+        ]
+    }
+}, msg => {
+    console.log('user says ' + msg.data);
+});
+``` 
+
 ## Chat ID
 From version 0.4.0 you can use chat ID to send messages to chat.
 
@@ -330,6 +350,9 @@ TODO:
 - dialogs
 
 ## Changelog
+### 1.4.4 (2019-11-27)
+* (bluefox) New sendTo message "ask" was added (see [Question](#question) )
+
 ### 1.4.3 (2019-02-21)
 * (BuZZy1337) Bugfix for not yet completely implemented feature
 
