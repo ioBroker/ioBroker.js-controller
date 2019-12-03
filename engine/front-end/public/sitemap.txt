@@ -181,6 +181,7 @@ https://doc.iobroker.net/#de/documentation/tutorial/admin.md
 https://doc.iobroker.net/#de/documentation/tutorial/flot.md
 https://doc.iobroker.net/#de/documentation/tutorial/history.md
 https://doc.iobroker.net/#de/documentation/tutorial/logic.md
+https://doc.iobroker.net/#de/documentation/tutorial/restore.md
 https://doc.iobroker.net/#de/documentation/tutorial/setup.md
 https://doc.iobroker.net/#de/documentation/tutorial/updates.md
 https://doc.iobroker.net/#de/documentation/tutorial/viz.md
@@ -319,6 +320,7 @@ https://doc.iobroker.net/#en/documentation/tutorial/admin.md
 https://doc.iobroker.net/#en/documentation/tutorial/flot.md
 https://doc.iobroker.net/#en/documentation/tutorial/history.md
 https://doc.iobroker.net/#en/documentation/tutorial/logic.md
+https://doc.iobroker.net/#en/documentation/tutorial/restore.md
 https://doc.iobroker.net/#en/documentation/tutorial/setup.md
 https://doc.iobroker.net/#en/documentation/tutorial/updates.md
 https://doc.iobroker.net/#en/documentation/tutorial/viz.md
@@ -457,6 +459,7 @@ https://doc.iobroker.net/#ru/documentation/tutorial/admin.md
 https://doc.iobroker.net/#ru/documentation/tutorial/flot.md
 https://doc.iobroker.net/#ru/documentation/tutorial/history.md
 https://doc.iobroker.net/#ru/documentation/tutorial/logic.md
+https://doc.iobroker.net/#ru/documentation/tutorial/restore.md
 https://doc.iobroker.net/#ru/documentation/tutorial/setup.md
 https://doc.iobroker.net/#ru/documentation/tutorial/updates.md
 https://doc.iobroker.net/#ru/documentation/tutorial/viz.md
@@ -595,6 +598,7 @@ https://doc.iobroker.net/#zh-cn/documentation/tutorial/admin.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/flot.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/history.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/logic.md
+https://doc.iobroker.net/#zh-cn/documentation/tutorial/restore.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/setup.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/updates.md
 https://doc.iobroker.net/#zh-cn/documentation/tutorial/viz.md

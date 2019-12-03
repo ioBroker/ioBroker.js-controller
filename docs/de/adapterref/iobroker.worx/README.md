@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
+hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 ---
 ![Logo](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
@@ -11,12 +11,12 @@ hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
 ![stabile Version](http://iobroker.live/badges/worx-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.worx.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/MeisterTR/ioBroker.worx/badge.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/MeisterTR/ioBroker.worx/master.svg)
+![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)
 
 # IoBroker.worx
-[![Abhängigkeiten Status] (https://david-dm.org/MeisterTR/iobroker.worx/status.svg)](https://david-dm.org/MeisterTR/iobroker.worx)
+[![Abhängigkeiten Status] (https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
 
 ## Worx Adapter für ioBroker
 Steuerung über Cloud und MQTT
@@ -31,6 +31,14 @@ Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom
 - Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Kurve beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem sich die Schaufeln zu drehen beginnen.
 
 ## Changelog
+### 1.0.0 (03.12.2019)
+* (MeisterTR) bump Version
+* (MeisterTR) transfer to community
+### 0.4.0 (03.08.2019)
+* (MeisterTR) fix multimower
+* (MeisterTR) change loglevel
+* (MeisterTR) fix online Status
+
 ### 0.3.1 (12.06.2019)
 * (MeisterTR) add delay for edgecut in config
 * (MeisterTR) fix mowtime error

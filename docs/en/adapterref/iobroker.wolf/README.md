@@ -1,13 +1,10 @@
-![Logo](admin/wolf_logo.png)
-# ioBroker.wolf
-
-======================
-
-![Number of Installations](http://iobroker.live/badges/wolf-installed.svg) ![Number of Installations](http://iobroker.live/badges/wolf-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.wolf.svg)](https://www.npmjs.com/package/iobroker.wolf)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.wolf.svg)](https://www.npmjs.com/package/iobroker.wolf)
-
-[![NPM](https://nodei.co/npm/iobroker.wolf.png?downloads=true)](https://nodei.co/npm/iobroker.wolf/)
-
+---
+BADGE-Number of Installations: http://iobroker.live/badges/wolf-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.wolf.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.wolf.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.wolf.png?downloads=true
+---
+# iobroker.wolf
 ## Areas of application: heating / solar / domestic ventilation
 The adapter can evaluate a maximum of 4 of the following heaters via the ISM8i:
    * Gas condensing unit: CGB-2 (includes: CGW-2, CGS-2, CSZ-2), MGK-2
@@ -25,27 +22,12 @@ Maximum number of individual modules:
    * Max. 1 solar module (SM1 or SM2) sm (1)
    * Max. 1 Split air/water heatpump (BWL-1-S) hg (0)
    A residential ventilation unit of the CWL Excellent series can also be evaluated and operated with the ISM8i.
-   
-## Einsatzbereiche: Heizung / Solar / Wohnraumlüftung
-Der Adapter kann über das ISM8i maximal 4  von den nachfolgenden Heizgeräten auswerten:
-  * Gasbrennwertgerät: CGB-2 (beinhaltet: CGW-2, CGS-2, CSZ-2), MGK-2 
-  * Öl Brennwertkessel:   TOB 
-  * Split-Wärmepumpe:  BWL-1-S 
-  * Wohnraumlüftung CWL Excellent
-  Es ist immer ein System-Bedienmodul BM-2 oder Anzeigemodul AM erforderlich. 
-  Weiterhin können zusätzliche Komponenten wie Mischermodul MM, Kaskadenmodul KM, Solarmodul SM1 oder SM2, im eBusSystem vorhanden sein. 
-  
-  Maximale Anzahl der einzelnen Module: 
-  * max. 4 Heizgeräte hg(1)-hg(4)
-  * max. 3 Mischer mm(1)- mm(3)
-  * max. 4 Bediengeräte (BM-2) bm(1) -bm(4)
-  * max. 1 Kaskadenmodul km(1) 
-  * max. 1 Solarmodul (SM1 oder SM2) sm(1)
-  * max. 1 Split-Luft/Wasser-Wärmepumpe (BWL-1-S) hg(0)
-  Ein Wohnraumlüftungsgerät der Baureihe CWL Excellent kann mit dem ISM8i ebenfalls ausgewertet und bedient werden. 
-
 
 ## Changelog
+### 1.1.1 [2019.12.02]
+* (schweigel) Fixed: DPT_Date is wrong
+* (schweigel) Fixed: CWL - DPT_TimeOfDay - error
+ 
 ### 1.1.0 [2019.09.13]
 * (RustyThePropellerHead) ISM8i Firmware v1.50 Update to be able to use the new DataPoints (FW Released in 2016)
                           * As a side note the GLT °C boiler setpoint is defined and read as a 1°C resolution, but you can send the boiler setpoint commands with 0.1°C resolution
@@ -99,11 +81,6 @@ Der Adapter kann über das ISM8i maximal 4  von den nachfolgenden Heizgeräten a
 
 ### 0.0.1 [2015.10.08]
 * (smiling_Jack) first release
-
-
-
-
-
 
 ## License
 

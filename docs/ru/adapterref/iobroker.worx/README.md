@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
+hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 ---
 ![логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
@@ -11,12 +11,12 @@ hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
 ![Стабильная версия](http://iobroker.live/badges/worx-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.worx.svg)
-![Известные уязвимости](https://snyk.io/test/github/MeisterTR/ioBroker.worx/badge.svg)
+![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/MeisterTR/ioBroker.worx/master.svg)
+![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)
 
 # IoBroker.worx
-[![Статус зависимостей] (https://david-dm.org/MeisterTR/iobroker.worx/status.svg)](https://david-dm.org/MeisterTR/iobroker.worx)
+[![Статус зависимостей] (https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
 
 ## WORX адаптер для ioBroker
 управление через облако и mqtt
@@ -24,13 +24,21 @@ hash: q3qiXsEpzyky1I/1CpfgxTE74q7wQ2ddAe8q5BAaKnw=
 Этот адаптер соединяет ioBroker с вашим Landroid S / M / L через Cloud.
 Температура, время кошения, уровень заряда батареи и другие данные считываются из газонокосилки. Адаптер может управлять газонокосилкой, и вы можете изменять параметры конфигурации, например, время косилки.
 
-<img src="admin/worx_ada2.png" alt="Рисование" width="100%"/>
+<img src="admin/worx_ada2.png" alt="рисунок" width="100%"/>
 
 ## Настройки
 - для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи WORX в конфигурации.
-- Задержка срезания кромки: если срезание кромки начинается по кривой или изгибу, газонокосилка может потерять провод и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой начинают вращаться лопасти.
+- Задержка срезания кромки: если срез кромки начинается по кривой или изгибу, газонокосилка может потерять провод и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой начинают вращаться лопасти.
 
 ## Changelog
+### 1.0.0 (03.12.2019)
+* (MeisterTR) bump Version
+* (MeisterTR) transfer to community
+### 0.4.0 (03.08.2019)
+* (MeisterTR) fix multimower
+* (MeisterTR) change loglevel
+* (MeisterTR) fix online Status
+
 ### 0.3.1 (12.06.2019)
 * (MeisterTR) add delay for edgecut in config
 * (MeisterTR) fix mowtime error

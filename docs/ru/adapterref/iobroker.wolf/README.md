@@ -1,25 +1,20 @@
 ---
+BADGE-Number of Installations: http://iobroker.live/badges/wolf-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.wolf.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.wolf.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.wolf.png?downloads=true
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wolf/README.md
-title: ioBroker.wolf
-hash: hJN1wPthOOw6ah76o1cwsTXamihFDd930aCLfCEEqgw=
+title: iobroker.wolf
+hash: pDtMB9foXkJXjjQ5/dxzpSFjGTXi8W15I1kZGV8qa3E=
 ---
-![логотип](../../../en/adapterref/iobroker.wolf/admin/wolf_logo.png)
-
-![Количество установок](http://iobroker.live/badges/wolf-stable.svg)
-![Версия NPM](http://img.shields.io/npm/v/iobroker.wolf.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.wolf.svg)
-![NPM](https://nodei.co/npm/iobroker.wolf.png?downloads=true)
-
-# IoBroker.wolf
-======================
-
+# Iobroker.wolf
 ## Области применения: отопление / солнечная / домашняя вентиляция
-Адаптер может оценить максимум 4 из следующих нагревателей через ISM8i:
+Адаптер может оценивать максимум 4 из следующих нагревателей через ISM8i:
 
    * Газоконденсатная установка: КГБ-2 (включает в себя: CGW-2, CGS-2, CSZ-2), МГК-2
-   * Масляный конденсационный котел: TOB
+   * Нефтяной конденсационный котел: TOB
    * Сплит тепловой насос: BWL-1-S
    * Вентиляция в гостиной CWL Отлично
 
@@ -37,29 +32,11 @@ hash: hJN1wPthOOw6ah76o1cwsTXamihFDd930aCLfCEEqgw=
 
    Жилой вентиляционный блок серии CWL Excellent также может быть оценен и эксплуатироваться с ISM8i.
 
-## Einsatzbereiche: Heizung / Solar / Wohnraumlüftung
-Der Adapter kann über das ISM8i не более 4 номеров от Heizgeräten auswerten:
-
-  * Gasbrennwertgerät: CGB-2 (beinhaltet: CGW-2, CGS-2, CSZ-2), МГК-2
-  * Öl Brennwertkessel: TOB
-  * Split-Wärmepumpe: BWL-1-S
-  * Wohnraumlüftung CWL Отлично
-
-Es ist immer ein System-Bedienmodul BM-2 oder Anzeigemodul AM erforderlich.
-Weiterhin können zusätzliche Komponenten wie Mischermodul MM, Kaskadenmodul KM, Solarmodul SM1 oder SM2, im eBusSystem vorhanden sein.
-
-  Maximale Anzahl der einzelnen Модуль:
-
-  * Макс. 4 Heizgeräte hg (1) -hg (4)
-  * Макс. 3 Mischer мм (1) - мм (3)
-  * Макс. 4 Bediengeräte (BM-2) BM (1) -BM (4)
-  * Макс. 1 Kaskadenmodul км (1)
-  * Макс. 1 Solarmodul (SM1 или SM2) см (1)
-  * Макс. 1 Split-Luft / Wasser-Wärmepumpe (BWL-1-S) рт.ст. (0)
-
-  Ein Wohnraumlüftungsgerät der Baureihe CWL Отлично подходит для ISM8i ebenfalls ausgewertet и bedient werden.
-
 ## Changelog
+### 1.1.1 [2019.12.02]
+* (schweigel) Fixed: DPT_Date is wrong
+* (schweigel) Fixed: CWL - DPT_TimeOfDay - error
+ 
 ### 1.1.0 [2019.09.13]
 * (RustyThePropellerHead) ISM8i Firmware v1.50 Update to be able to use the new DataPoints (FW Released in 2016)
                           * As a side note the GLT °C boiler setpoint is defined and read as a 1°C resolution, but you can send the boiler setpoint commands with 0.1°C resolution

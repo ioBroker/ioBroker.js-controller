@@ -1,83 +1,100 @@
 ---
+BADGE-Build Status: https://travis-ci.org/ioBroker/ioBroker.ical.svg?branch=master
+BADGE-Number of Installations: http://iobroker.live/badges/ical-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.ical.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.ical.svg
+BADGE-Github Issues: http://githubbadges.herokuapp.com/ioBroker/ioBroker.ical/issues.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.ical.png?downloads=true
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ical/README.md
-title: Перемещено на https://github.com/iobroker-community-adapters/ioBroker.ical
-hash: /dEGEh2OLhnN7Vq4SjzGTuFNCsZByXWpYSt6YkdfhlQ=
+title: ioBroker iCal адаптер
+hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 ---
-# Перемещено на https://github.com/iobroker-community-adapters/ioBroker.ical
-![логотип](../../../en/adapterref/iobroker.ical/admin/ical.png) ioBroker Адаптер iCal =================
+![логотип](../../../en/adapterref/iobroker.ical/ical.png)
 
-![Статус сборки](https://travis-ci.org/ioBroker/ioBroker.ical.svg?branch=master)
-![Количество установок](http://iobroker.live/badges/ical-stable.svg)
-![Версия NPM](http://img.shields.io/npm/v/iobroker.ical.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.ical.svg)
-![Github Issues](http://githubbadges.herokuapp.com/ioBroker/ioBroker.ical/issues.svg)
-![NPM](https://nodei.co/npm/iobroker.ical.png?downloads=true)
-
-Этот адаптер позволяет читать файлы .ics с определенного URL-адреса и анализировать его (Google Calendar или iCal). В качестве альтернативы можно использовать локальный файл .ics (используйте абсолютный путь к файлу вместо URL)
-
-Siehe deustche [Версия hier](README-de.md) (устаревший !!).
-
-## Установить
-```
-node iobroker.js add ical
-```
-
+# ioBroker Адаптер iCal Этот адаптер позволяет считывать файлы .ics с определенного URL-адреса и анализировать его (Календарь Google или iCal).
+В качестве альтернативы можно использовать локальный файл `.ics` (использовать абсолютный путь к файлу вместо URL)
 ## Использование
 На основе адаптера iCal для (CCU.IO) [https://github.com/hobbyquaker/ccu.io/tree/master/adapter/ical] от vader722
 
 ### Адаптер iCal
-Адаптер iCal для ioBroker считывает файлы календаря в формате «.ics» с указанного URL-адреса и записывает события, которые находятся в заданном интервале времени, в переменную ioBroker. В качестве альтернативы можно использовать локальный файл .ics (используйте абсолютный путь к файлу вместо URL).
-Они могут отображаться в VIS с помощью виджета «Basic html - String (unescaped)».
+Адаптер iCal для ioBroker считывает файлы календаря в формате `.ics` с указанного URL-адреса и записывает события, которые находятся в заданном интервале времени, в переменную ioBroker. В качестве альтернативы можно использовать локальный файл .ics (используйте абсолютный путь к файлу вместо URL).
+Они могут отображаться в VIS с помощью виджета `basic html - String (unescaped)`.
 
-Es werden 2 Variablen angelegt
+Создаются две переменные:
 
-Переменная iCalReadTrigger iCalEvents Die iCalReadTrigger dime zum Triggern des Einlesevorgangs. В настройках den merenre URL-адреса очень важны, в фоновом режиме. Die Kalender werden dann nacheinander eingelesen und das Ergebnis zusammengefasst. Альтернатива Канн Дем Лезебефель, URL-адрес mitgegeben werden, um z.B. zeitweilig einen andderen Kalender einzulesen.
+- `iCalReadTrigger`
+- `iCalEvents`
 
-zum Einlesen von den defaultURLs muss der String «читать» в переменной Переменный iCalReadTrigger geschrieben werden.
-zum Einlesen von einer believebigen URL muss der String «читать https:// ...» в переменной iCalReadTrigger geschrieben werden.
-Das Ergebnis liefert der iCal Адаптер в переменной iCalEvents.
+Переменная `iCalReadTrigger` используется для запуска процесса чтения.
+В настройках можно указать несколько URL-адресов, с которых читается календарь.
+Затем календари читаются последовательно, и результат суммируется.
+В качестве альтернативы, команде чтения также может быть задан URL, например, временно читать другой календарь.
 
-Все о проверке в iCalReadTrigger wird der Check-Vorgang auf События на выставке Gelesenen Daten ohne erneutes einlesen der Daten ausgelöst.
+Для чтения в defaultURL, строка `read` должна быть записана в переменную `iCalReadTrigger`.
 
-Альтернативный вариант адаптера для автоматического определения оптимального уровня доступа к календарю (nur mit der defaultURL). Dazu in den Settings с изменяемым параметром RunEveryMinutes das Abfrageintervall (in Minuten) einstellen.
+Чтобы прочитать любой URL-адрес, строка `read https: // ...` должна быть записана в переменную `iCalReadTrigger`.
 
-Bedeutung der Optionen im Konfigfile:
+Результат возвращает адаптер iCal в переменной `iCalEvents`.
 
-- «Предварительный просмотр»: 7 heisst, dass Termine 7 Tage im voraus angezeigt werden
-- "RunEveryMinutes": 30 минут, 30 дней в неделю. Bei 0 Wird Nicht Automatisch Eingelesen
-- «colorize»: true Termine am heutigen Tag werden rot gefärbt, Termine am morgigen Tag оранжевый, diese Опция überstimmt die Опция everyCalOneColor
-- "отладка": ложь, верность, истина. Ausgaben ins CCU.IO
-- "defColor": "белый" костюм фестиваля Standardfarbe der Kalendereinträge
-- "fulltime": "" legt fest durch welchen String bei ganztägigen Terminen die Uhrzeit 00:00 ersetzt wird. Bei Leerzeichen (Zwischen Den Hochkommas) Вирд Дир
-- "replaceDates": true Bei true wird bei heutigen Terminen das heutige Datum durch den String todayString ersetzt (z.B. "Heute"). Bei Morgigen Terminen durch den String
-- "EveryCalOneColor": "false Bei True Wird Bei Mehreren Kalendern Jeder Kalender в Einer Festzulegenden Farbe Eingefärbt. Ist Die Вариант раскрасить Gesetzt, функция не умирает!
-- "Calendar1": {"calURL": "http://11111.ics", URL-адрес Календеров "calColor": "white" Farbe des Kalenders, wenn die Опция "everyCalOneColor" gesetzt ist} es können believebig viele Kalender eingetragen werden , Im Standard Konfigfile sind 2 Kalender eingetragen.
-- "События": {"Urlaub": {"enabled": true, # legt fest, ob das Событие медведя "display": false # legt fest, ob das Событие в демке iCalEvents angezeigt wird, oder nur ausgewertet wird} } Durch setzen eines Events (в формате Beispiel «Urlaub»), werden die Kalender nach dem Строка «Urlaub» durchsucht. Sollte ein Termin mit dem Stichwort «Urlaub» в einem Kalender stehen, так что странный автоматизированный режим с указанием Namen Urlaub auf True gesetzt. Ist der Termin vorbei, Wird der State Wieder auf false Gesetzt. Es wird für jeden Tag des Предварительный просмотр Zeitraums ein Status angelegt. Achtung! Es wird nach einem Подстрока gesucht, д.ч. Эйн Эйнтраг им Календер «Урлауб», Вир Геннаус Эркант Ви Ви Эйнтраг «Урлауб Эльтерн». Dies ist beim festlegen der Ereignisse zu berücksichtigen.
+При записи `check` в` iCalReadTrigger` проверка событий запускается для считанных данных без повторного считывания данных.
 
-Durch Anpassen der css im VIS können die Styles von heutigen (Стандартная гниль) и morgigen Terminen (Стандартный апельсин) festegelegt werden: iCalWarn (Zeilenanfang Kalendereintrag heute) iCalPreWarn (Zeilenanfang Kaledereintilenor - Заленгенский корень) Заледенский заленгенский корень
+Кроме того, адаптер также может автоматически запрашивать календари через определенный интервал (только с помощью `defaultURL`).
+Для этого установите в настройках интервал опроса (в минутах) с помощью переменной runEveryMinutes.
 
-### Календер
-#### Apple iCloud Kalender
-Apple iCloud Kalender können angezeigt werden, wenn sie vorher freigegeben werden. Am besten einen eigenen Kalender für die Homematic anlegen, da der Kalender fuer alle freigegeben wird.
-Dazu mit der rechten Maustaste auf dem Kalender в приложении App Klicken und Freigabeeinstellungen auswählen. Jetzt einen Haken bei "Öffentlicher Kalender" устанавливает и уравнивает ссылки. WICHTIG: умри, начинай с веб-сайта: // p0X-cale .....
-"webcal" muss durch "http" ersetzt werden. Укажите URL-адрес в настройках ден. По умолчаниюURL eintragen, oder sie bei «read URL» angeben, также z.B. "readURL http://p-03-calendarws.icloud.com/xxxxxxxxx"
+Значение параметров в файле конфигурации:
 
-#### Google Kalender
-Zum Einbinden eines Google Kalenders muss die Kalendereinstellung des Google Kalenders aufgerufen werden (с правой стороны, "бегущий файл"). Укажите URL-адрес, указанный на странице "ICAL". Символ neben dem Feld "Privatadresse". Укажите URL-адрес в настройках ден. По умолчаниюURL eintragen, oder sie bei «read URL» angeben, также z.B. «readURL https://www.google.com/calendar/ical/xxxxxxxx/basic.ics».
+- `Предварительный просмотр ': 7 # означает, что встречи отображаются за 7 дней
+- `runEveryMinutes`: 30 # означает, что адаптер автоматически перематывает календарь каждые 30 минут. Если 0 не читается автоматически
+- `colorize`: true # Сегодняшние встречи будут окрашены в красный цвет, завтрашние встречи будут оранжевыми, эта опция переопределяет опцию everyCalOneColor
+- `debug`: false # если true, расширенный вывод записывается в журнал CCU.IO
+- `defColor`:` white` # устанавливает цвет по умолчанию для записей календаря
+- `fulltime`:` `# определяет, на какую строку время 00:00 заменяется для встреч на весь день. Для пробелов (между кавычками) время пропускается для встреч на весь день
+- `replaceDates`: true # Если true, сегодняшняя дата заменяется строкой todayString (например, Today). Завтра встречи через строку
+- `everyCalOneColor`: false # Если true, для нескольких календарей каждый календарь будет окрашен в цвет, который будет указан. Если опция colorize установлена, это не будет работать!
+- `Calendar1`:
+- "calURL": "http://11111.ics", URL-адрес календаря
+- «calColor»: «белый» цвет календаря, если установлена опция «everyCalOneColor».
 
-#### OwnCloud Kalender
-Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in Kalenderansicht in OwnCloud diesen Kalender als gesharten Kalender freigeben und dort den Ссылка zum Kalender anzeigen lassen und diese URL (https://owncloud.xxxxxx.de/remote / USER / xxxxxxx_shared_by_xxxxxx? Export) entsprechend in den ioBroker.ical Adapter mit Nutzername und Passwort angeben.
+Можно ввести любое количество календарей. Стандартный файл конфигурации содержит 2 календаря.
+
+- «События»:
+- `имя`:" отпуск ":
+- `enabled`: true # определяет, будет ли событие редактироваться
+- `display`: false # определяет, будет ли событие также отображаться в iCalEvents или только оценивается
+
+Устанавливая событие (в данном примере «отпуск»), в календарях ищется строка «отпуск».
+Если в календаре есть встреча с ключевым словом «отпуск», то автоматически устанавливается состояние «Праздник имени», установленное в «Истина». Если встреча закончена, состояние сбрасывается на false.
+Статус создается для каждого дня периода предварительного просмотра. Опасность! Ищется подстрока, т.е. Запись в календаре «Отпуск» признается так же, как и Запись «Отпуск родителей». Это необходимо учитывать при настройке событий.
+
+Настраивая CSS в VIS, можно установить стили сегодняшних (стандартный красный) и завтрашних дат (стандартный оранжевый):
+
+- `iCalWarn` - Новая запись календаря сегодня
+- `iCalPreWarn` - начало записи в календаре завтра
+- `iCalNormal` - конец строки с сегодняшнего дня
+- `iCalNormal2` - завтрашний конец строки
+
+### Календарь
+#### Apple iCloud Calendar
+Календари Apple iCloud можно просматривать, если они были опубликованы ранее. Лучше всего создать свой собственный календарь для Homematic, так как календарь будет доступен всем.
+Для этого щелкните правой кнопкой мыши календарь в приложении «Календарь» и выберите «Настройки общего доступа». Теперь проверьте «Public Calendar» и скопируйте отображаемый URL. ВАЖНО: URL начинается с webcal: // p0X-cale .....
+`webcal` должен быть заменен ` http`. Затем введите этот URL либо в настройках по умолчаниюURL, либо укажите его в `read URL`, например. `readURL http: // p-03-calendarws.icloud.com / xxxxxxxxx`
+
+#### Календарь Google
+Чтобы включить Календарь Google, необходимо перейти к настройке календаря Календаря Google (щелкнуть мышью на «стрелке вниз» рядом с календарем). URL-адрес календаря можно найти, нажав на символ `ICAL` рядом с полем «Частный адрес». Затем введите этот URL либо в настройках по умолчаниюURL, либо укажите его в `read URL`, например. `readURL https: // www.google.com / calendar / ical / xxxxxxxx / basic.ics`.
+
+#### Календарь OwnCloud
+Чтобы включить жесткий календарь OwnCloud, вы должны утвердить этот календарь в представлении календаря в OwnCloud как календарь Hardcourt и указать ссылку.
 
 ### CSS
 В сгенерированный HTML включены два вида классов CSS, чтобы обеспечить свободу проектирования.
 
-#### Классы CSS, основанные на времени
+#### Классы CSS на основе времени
 * _iCalNormal _ / _ iCalNormal2_: Событие, начатое до сегодняшнего дня (и продолжающее выполняться) или позднее, как через 3 дня, цвет по умолчанию без CSS и без цвета календаря - это настроенный цвет адаптера
-* _iCalWarn _ / _ iCalWarn2_: событие начинается сегодня, цвет по умолчанию без CSS и без цвета календаря - «красный»
-* _iCalPreWarn _ / _ iCalPreWarn2_: Событие начинается завтра, цвет по умолчанию без CSS и без календаря - «оранжевый»
-* _iCalPrePreWarn _ / _ iCalPrePreWarn2_: событие начинается послезавтра, цвет по умолчанию без CSS и без цвета календаря - «желтый»
+* _iCalWarn _ / _ iCalWarn2_: Событие начинается сегодня, цвет по умолчанию без CSS и без календаря - «красный»
+* _iCalPreWarn _ / _ iCalPreWarn2_: Событие начнется завтра, цвет по умолчанию без CSS и без календаря - «оранжевый»
+* _iCalPrePreWarn _ / _ iCalPrePreWarn2_: Событие начинается послезавтра, цвет по умолчанию без CSS и без цвета календаря - «желтый»
 
 Первый класс CSS (например, iCalNormal) используется для части даты и времени HTML, а второй класс CSS (например, iCalNormal2) используется для имени события.
 
@@ -140,7 +157,7 @@ Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in Kalenderan
 * _iCal- <calendername> _: этот класс используется для части даты и времени HTML
 * _iCal-> calendername2> _: этот класс используется для имени события
 
-Чтобы установить эти CSS-классы, вам также нужно использовать основанный на времени CSS-класс, например, _.icalNormal2.iCal- <calendername> 2_:
+Чтобы установить эти классы CSS, вам также нужно использовать класс CSS, основанный на времени, например, _.icalNormal2.iCal- <calendername> 2_:
 
 ```
 .icalNormal2.iCal-Google2{
@@ -168,14 +185,12 @@ DESCRIPTION:MyDescription
 LOCATION:MyLocation
 ```
 
-Черный список: если вы хотите исключить все события определенного местоположения, используйте `LOCATION:MyLocation` или простые `MyLocation` или 2 местоположения `LOCATION:MyLocation;LOCATION:SomewhereElse`.
+Черный список: если вы хотите исключить все события определенного местоположения, используйте `LOCATION:MyLocation` или простой `MyLocation` или 2 местоположения `LOCATION:MyLocation;LOCATION:SomewhereElse`.
 Белый список: если вы хотите включить только события определенного местоположения, используйте регулярное выражение, например, `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/` или для 2 местоположений `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
 
-## Сделать
-* README должен быть английским
-* `data.trigger` не поддерживает опцию` check`
-
 ## Changelog
+### 1.7.2 (2019-12-02)
+* (bluefox) Documentation was changed
 
 ### 1.7.1 (2019-01-08)
 * (twonky4) Fixed issue with UTC of until in recurring appointments
@@ -306,7 +321,7 @@ LOCATION:MyLocation
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

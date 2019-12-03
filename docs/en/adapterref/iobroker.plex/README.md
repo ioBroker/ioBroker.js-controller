@@ -126,6 +126,11 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ## Changelog
 
+### 0.8.6 (2019-12-02)
+- (Zefau) added further states to Tautulli Notification (see [README-tautulli.md](https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md))
+- (Zefau) fixed design issue with select-box in the adapter settings
+- (Zefau) fixed not showing thumbnails in adapter web view (when not using a secure connection)
+
 ### 0.8.5 (2019-12-01)
 - (Zefau) fixed missing user / library statistics
 - (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))

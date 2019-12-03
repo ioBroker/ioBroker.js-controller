@@ -5,12 +5,12 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.worx.svg)](https://www.npmjs.com/package/iobroker.worx)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.worx.svg)](https://www.npmjs.com/package/iobroker.worx)
-[![dependencies Status](https://david-dm.org/MeisterTR/iobroker.worx/status.svg)](https://david-dm.org/MeisterTR/iobroker.worx)
-[![Known Vulnerabilities](https://snyk.io/test/github/MeisterTR/ioBroker.worx/badge.svg)](https://snyk.io/test/github/MeisterTR/ioBroker.worx)
+[![dependencies Status](https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
+[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx)
 
 [![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)](https://nodei.co/npm/iobroker.worx/)
 
-**Tests:** [![Travis-CI](http://img.shields.io/travis/MeisterTR/ioBroker.worx/master.svg)](https://travis-ci.org/MeisterTR/ioBroker.worx)
+**Tests:** [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)](https://travis-ci.org/iobroker-community-adapter/ioBroker.worx)
 
 ## worx adapter for ioBroker
 
@@ -27,6 +27,9 @@ The adapter can control the mower and you can change config params like mowtimes
 - Delay for Edgecut : If the edgecut starts in a curve or bend, the lawnmower may lose the wire and stop with a fault, or the blades may not rotate. For this purpose, the starting point at which the blades start to rotate can be set.
 
 ## Changelog
+### 1.0.0 (03.12.2019)
+* (MeisterTR) bump Version
+* (MeisterTR) transfer to community
 ### 0.4.0 (03.08.2019)
 * (MeisterTR) fix multimower
 * (MeisterTR) change loglevel

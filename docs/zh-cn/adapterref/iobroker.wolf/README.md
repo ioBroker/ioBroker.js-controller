@@ -1,20 +1,15 @@
 ---
+BADGE-Number of Installations: http://iobroker.live/badges/wolf-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.wolf.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.wolf.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.wolf.png?downloads=true
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wolf/README.md
-title: ioBroker.wolf
-hash: hJN1wPthOOw6ah76o1cwsTXamihFDd930aCLfCEEqgw=
+title: iobroker.wolf
+hash: pDtMB9foXkJXjjQ5/dxzpSFjGTXi8W15I1kZGV8qa3E=
 ---
-![商标](../../../en/adapterref/iobroker.wolf/admin/wolf_logo.png)
-
-![安装数量](http://iobroker.live/badges/wolf-stable.svg)
-![NPM版本](http://img.shields.io/npm/v/iobroker.wolf.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.wolf.svg)
-![NPM](https://nodei.co/npm/iobroker.wolf.png?downloads=true)
-
-＃ioBroker.wolf
-======================
-
+＃iobroker.wolf
 ##应用领域：供暖/太阳能/家庭通风
 通过ISM8i，适配器最多可以评估以下4个加热器：
 
@@ -37,29 +32,11 @@ hash: hJN1wPthOOw6ah76o1cwsTXamihFDd930aCLfCEEqgw=
 
    也可以使用ISM8i对CWL Excellent系列的住宅通风装置进行评估和操作。
 
-## Einsatzbereiche：Heizung / Solar /Wohnraumlüftung
-Der Adapter kannüberdas ISM8i最多4个目录：
-
-  *Gasbrennwertgerät：CGB-2（Beinhaltet：CGW-2，CGS-2，CSZ-2），MGK-2
-  *ÖlBrennwertkessel：TOB
-  *分体式水泵：BWL-1-S
-  *WohnraumlüftungCWL优秀
-
-浸入系统中的Bedienmodul BM-2或Anzeigemodul AM erforderlich。
-WeiterhinkönnenzusätzlicheKomponenten wie Mischermodul MM，Kaskadenmodul KM，Solarmodul SM1 oder SM2，eBusSystem vorhanden sein。
-
-  Maximale Anzahl der einzelnen模块：
-
-  *最大4Heizgerätehg（1）-hg（4）
-  *最大3 Mischer毫米（1）-毫米（3）
-  *最大4Bediengeräte（BM-2）bm（1）-bm（4）
-  *最大1 Kaskadenmodul公里（1）
-  *最大1个阳模（SM1或SM2）sm（1）
-  *最大1分离式进气/瓦瑟泵（BWL-1-S）hg（0）
-
-  鲍威尔（Baureihe）CWL的出色表现ISM8i堪称一流的典范，同时也为卧床不起。
-
 ## Changelog
+### 1.1.1 [2019.12.02]
+* (schweigel) Fixed: DPT_Date is wrong
+* (schweigel) Fixed: CWL - DPT_TimeOfDay - error
+ 
 ### 1.1.0 [2019.09.13]
 * (RustyThePropellerHead) ISM8i Firmware v1.50 Update to be able to use the new DataPoints (FW Released in 2016)
                           * As a side note the GLT °C boiler setpoint is defined and read as a 1°C resolution, but you can send the boiler setpoint commands with 0.1°C resolution

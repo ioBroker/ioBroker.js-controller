@@ -1,87 +1,104 @@
 ---
+BADGE-Build Status: https://travis-ci.org/ioBroker/ioBroker.ical.svg?branch=master
+BADGE-Number of Installations: http://iobroker.live/badges/ical-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.ical.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.ical.svg
+BADGE-Github Issues: http://githubbadges.herokuapp.com/ioBroker/ioBroker.ical/issues.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.ical.png?downloads=true
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ical/README.md
-title: 已移至https://github.com/iobroker-community-adapters/ioBroker.ical
-hash: /dEGEh2OLhnN7Vq4SjzGTuFNCsZByXWpYSt6YkdfhlQ=
+title: ioBroker iCal适配器
+hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 ---
-![建立状态](https://travis-ci.org/ioBroker/ioBroker.ical.svg?branch=master)
-![安装数量](http://iobroker.live/badges/ical-stable.svg)
-![NPM版本](http://img.shields.io/npm/v/iobroker.ical.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.ical.svg)
-![Github问题](http://githubbadges.herokuapp.com/ioBroker/ioBroker.ical/issues.svg)
-![NPM](https://nodei.co/npm/iobroker.ical.png?downloads=true)
+![商标](../../../en/adapterref/iobroker.ical/ical.png)
 
-＃已移至https://github.com/iobroker-community-adapters/ioBroker.ical
-![商标](../../../en/adapterref/iobroker.ical/admin/ical.png)ioBrokeriCal适配器=================
-
-此适配器允许从特定URL读取.ics文件并解析它（Google Calendar或iCal）。或者，也可以使用本地.ics文件（使用文件的绝对路径而不是URL）
-
-Siehedeustche[版本hier](README-de.md)（过时!!）。
-
-##安装
-```
-node iobroker.js add ical
-```
-
+＃ioBroker iCal适配器此适配器允许从特定URL读取.ics文件并进行解析（Google日历或iCal）。
+或者，可以使用本地`.ics`文件（使用文件的绝对路径而不是URL）
 ##用法
-来自vader722的iCal适配器（CCU.IO）[https://github.com/hobbyquaker/ccu.io/tree/master/adapter/ical]
+基于适用于（CCU.IO）的iCal适配器[https://github.com/hobbyquaker/ccu.io/tree/master/adapter/ical]来自vader722
 
 ###适配器iCal
-ioBroker的iCal适配器从指定的URL读取“.ics”格式的日历文件，并将位于预定义时间间隔内的事件写入ioBroker变量。或者，可以使用本地.ics文件（使用文件的绝对路径而不是URL）。
-他们可以使用“基本的html  -  String（非转义）”小部件在VIS中显示。
+用于ioBroker的iCal适配器从指定的URL读取`.ics`格式的日历文件，并将事件（以预定义的时间间隔）写入ioBroker变量中。另外，也可以使用本地.ics文件（使用文件的绝对路径代替URL）。
+可以使用`basic html - String (unescaped)`小部件在VIS中显示它们。
 
-Es werden 2 Variablen angelegt
+创建两个变量：
 
-iCalReadTrigger iCalEvents模具变量iCalReadTrigger dum Zum Triggern des Einlesevorgangs。在设置könnenmehrereURL hinterlegt werden，von welchen der Kalender eingelesen wird。 Die Kalender werden dann nacheinander eingelesen und das Ergebnis zusammengefasst。 Alternativ kann dem Lesebefehl auch eine URL mitgegeben werden，um z.B. zeitweilig einen anderen Kalender einzulesen。
+-`iCalReadTrigger`
+-`iCalEvents`
 
-zum Einlesen von den defaultURLs muss der String“read”in die Variable iCalReadTrigger geschrieben werden。
-zum Einlesen von einer beliebigen URL muss der String“read https：// ...”in die Variable iCalReadTrigger geschrieben werden。
-Das Ergebnis liefert der iCal Adapter in die Variable iCalEvents。
+变量`iCalReadTrigger`用于触发读入过程。
+在设置中，可以放置几个URL，从中读取日历。
+然后依次读取日历并汇总结果。
+可替代地，还可以给读取命令一个URL，例如URL。暂时阅读另一个日历。
 
-Durch schreiben von“check”in iCalReadTrigger wird der Check-Vorgang auf Events auf die gelesenen Daten ohne erneutes einlesen derDatenusgelöst。
+要读取defaultURL，必须将字符串`read`写入变量`iCalReadTrigger`中。
 
-Alternativ kann der Adapter auch automatisch in einem definierbaren Intervall die Kalender abfragen（nur mit der defaultURL）。 Dazu in den Settings mit der Variablen runEveryMinutes das Abfrageintervall（in Minuten）einstellen。
+要从任何URL读取，必须将字符串`read https: // ...`写入变量`iCalReadTrigger`中。
 
-Bedeutung der Optionen im Konfigfile：
+结果返回变量`iCalEvents`中的iCal适配器。
 
- - “预览”：7 heisst，dass Termine 7 Tage im voraus angezeigt werden
- - “runEveryMinutes”：30 bedeutet dass der Adapter automatisch alle 30min den Kalender neu einliesst。 Bei 0 wird nicht automatisch eingelesen
- - “colorize”：真正的Termine am heutigen Tag werdenrotgeefärbt，Termine am morgigen Tag orange，dieseOptionüberstimmtdieoption everyCalOneColor
- - “debug”：false bei true werden erweiterte Ausgaben ins CCU.IO Log geschrieben
- - “defColor”：“white”legt die StandardfarbederKalendereinträgefest
- - “fulltime”：“”legt fest durch welchen StringbeiganztägigenTerminendie Uhrzeit 00:00 ersetzt wird。 Bei Leerzeichen（zwischen den Hochkommas）wird dir UhrzeitbeiganztägigenTerminenweggelassen
- - “replaceDates”：true Bei true wird bei heutigen Terminen das heutige Datum durch den String todayString ersetzt（z.B。“Heute”）。 Bei morgigen Terminen durch den String tomorrowString
- - “everyCalOneColor”：“false Bei true wird bei mehreren Kalendern jeder Kalender in einer festzulegendenFarbeeingefärbt.Istdie Option colorize gesetzt，funktioniert die nicht！
- - “Calendar1”：{“calURL”：“http：//11111.ics”，URL des Kalenders“calColor”：“white”Farbe des Kalenders，wenn die选项“everyCalOneColor”gesetzt ist}eskönnennigbigviele Kalender eingetragen werden 。 Im Standard Konfigfile sind 2 Kalender eingetragen。
- - “事件”：{“Urlaub”：{“启用”：true，＃legt fest，ob das Event bearbeitet wird“display”：false＃legt fest，ob das event auch in dem iCalEvents angezeigt wird，oder nur ausgewertet wird} } Durch setzen eines Events（在diesem Beispiel“Urlaub”中），werden die Kalender nach dem String“Urlaub”durchsucht。 Sollte ein Termin mit dem Stichwort“Urlaub”in einem Kalender stehen，so yemat automatisch eine State mit dem Namen Urlaub auf True gesetzt。 Ist der Termin vorbei，wird der state wieder auf false gesetzt。 EswirdfürjedenTag des preview Zeitraums ein Status angelegt。 ACHTUNG！ Es wird nach einem Substring gesucht，d.h。 ein Eintrag im Kalender“Urlaub”wird genauso erkannt wie ein Eintrag“Urlaub Eltern”。 Dies ist beim festlegen der Ereignissezuberücksichtigen。
+通过将`check`写入` iCalReadTrigger`，将在读取的数据上触发事件检查，而无需重新读取数据。
 
-Durch Anpassen der css imVISkönnendieStyles von heutigen（Standard rot）und morgigen Terminen（Standard Orange）festegelegt werden：iCalWarn（Zeilenanfang Kalendereintrag heute）iCalPreWarn（Zeilenanfang Kalendereintrag morgen）iCalNormal（Zeilenende von heute）iCalNormal2（Zeilenende von morgen）
+或者，适配器还可以按可定义的时间间隔自动查询日历（仅使用`defaultURL`）。
+为此，请使用变量runEveryMinutes在设置中设置轮询间隔（以分钟为单位）。
 
-### Kalender
-#### Apple iCloud Kalender
-Apple iCloudKalenderkönnenangezeigtwerden，wenn sie vorher freigegeben werden。 Am besten einen eigenenKalenderfürdieHomematic anlegen，da der Kalender fuer alle freigegeben wird。
-Dazu mit der rechten Maustaste auf dem Kalender in der Kalender App klicken undFreigabeeinstellungenauswählen。 Jetzt einen Haken bei“ÖffentlicherKalender”setzen und die angezeigte URL kopieren。 WICHTIG：die url beginnt mit webcal：// p0X-cale .....
-“webcal”muss durch“http”ersetzt werden。 Diese URL dann entweder in den Settings bei defaultURL eintragen，oder sie bei“read URL”angeben，also z.B. “readURL http://p-03-calendarws.icloud.com/xxxxxxxxx”
+配置文件中选项的含义：
 
-#### Google Kalender
-Zum Einbinden eines Google Kalenders muss die Kalendereinstellung des Google Kalenders aufgerufen werden（mit der Maus auf“runter Pfeil”neben dem Kalender klicken）。 Die URL des Kalenders bekommt man durch klicken auf das“ICAL”Symbol neben dem Feld“Privatadresse”。 Diese URL dann entweder in den Settings bei defaultURL eintragen，oder sie bei“read URL”angeben，also z.B. “readURL https://www.google.com/calendar/ical/xxxxxxxx/basic.ics”。
+-`preview`：7＃表示约会提前7天显示
+-`runEveryMinutes`：30＃表示适配器每30分钟自动重新记录一次日历。如果没有自动读取0
+-`colorize`：true＃今天的约会将被涂成红色，明天的约会将被涂成橙色，此选项将覆盖选项everyCalOneColor
+-`debug`：false＃如果为true，则将扩展输出写入CCU.IO日志
+-`defColor`：`white`＃设置日历项的默认颜色
+-`fulltime`：``＃确定全天约会用哪个字符串替换00:00时间。对于空格（引号之间），全天约会将省略时间
+-`replaceDates`：true＃如果为true，则将今天的日期替换为字符串todayString（例如Today）。明天通过字符串明日约会
+-`everyCalOneColor`：false＃如果为true，则多个日历将使每个日历以指定的颜色上色。如果设置了colorize选项，则将不起作用！
+-`Calendar1`：
+-“ calURL”：“ http：//11111.ics”，日历的URL
+-“ calColor”：如果设置了“ everyCalOneColor”选项，则为日历的“白色”颜色。
 
-#### OwnCloud Kalender
-Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in der Kalenderansicht in OwnCloud diesen Kalender als gesharten Kalender freigeben und dort den Link zum Kalender anzeigen lassen und diese URL（https://owncloud.xxxxxx.de/remote.php/dav/calendars / USER / xxxxxxx_shared_by_xxxxxx？export）entsprechend in den ioBroker.ical Adapter mit Nutzername und Passwort angeben。
+可以输入任意数量的日历。标准配置文件包含2个日历。
+
+-`事件`：
+-`name`：“假期”：
+-`enabled`：true＃确定事件是否将被编辑
+-`display`：false＃确定该事件是否也显示在iCalEvents中，还是仅评估
+
+通过设置事件（在此示例中为“ vacation”），可以在日历中搜索字符串“ vacation”。
+如果日历中包含关键字“假期”的约会，则会自动将“名称假日”设置为“真”。如果约会结束，则状态将重置为false。
+在预览期间的每一天都会创建一个状态。危险！搜索一个子串，i。日历“假期”中的条目以及“假日父母”条目均被识别。设置事件时必须考虑到这一点。
+
+通过在VIS中调整CSS，可以设置今天（标准红色）和明天（标准橙色）的样式：
+
+-`iCalWarn`-今天的换行日历条目
+-`iCalPreWarn`-明天开始行日历输入
+-`iCalNormal`-今天的行尾
+-`iCalNormal2`-明天的结束
+
+###日历
+#### Apple iCloud日历
+如果先前已共享，则可以查看Apple iCloud日历。最好为Homematic创建自己的日历，因为该日历将与所有人共享。
+为此，请在“日历”应用中右键单击日历，然后选择“共享设置”。现在检查“公共日历”并复制显示的URL。重要提示：网址以webcal开头：// p0X-cale .....
+`webcal`必须替换为` http`。然后在defaultURL的设置中输入此URL，或在`read URL`中指定它。 `readURL http: // p-03-calendarws.icloud.com / xxxxxxxxx`
+
+#### Google日历
+要包括Google日历，您必须转到Google日历日历设置（鼠标单击日历旁边的“向下箭头”）。通过单击“专用地址”字段旁边的`ICAL`符号可以找到日历的URL。然后在defaultURL的设置中输入此URL，或者在`read URL`中指定它。 `readURL https: // www.google.com / calendar / ical / xxxxxxxx / basic.ics`。
+
+#### OwnCloud日历
+要包括OwnCloud的硬日历，您必须在OwnCloud的日历视图中将该日历批准为硬地日历，并在其中链接。
 
 ### CSS
-在生成的HTML中，包含两种css类以允许设计自由。
+在生成的HTML中，包括两种CSS类，以允许设计自由。
 
 ####基于时间的CSS类
-* _iCalNormal _ / _ iCalNormal2_：事件在今天之前开始（并且仍在运行）或之后在3天内开始，没有CSS且没有日历颜色的默认颜色是配置的适配器颜色
-* _iCalWarn _ / _ iCalWarn2_：事件今天开始，没有CSS且没有日历颜色的默认颜色是“红色”
-* _iCalPreWarn _ / _ iCalPreWarn2_：明天开始活动，没有CSS且没有日历颜色的默认颜色是“橙色”
-* _iCalPrePreWarn _ / _ iCalPrePreWarn2_：事件开始后天，没有CSS且没有日历颜色的默认颜色是“黄色”
+* _iCalNormal _ / _ iCalNormal2_：此事件在今天（仍在运行）之前或之后（三天内）开始，默认颜色（不带CSS且不带日历色）是配置的适配器颜色
+* _iCalWarn _ / _ iCalWarn2_：事件从今天开始，没有CSS且没有calendercolor的默认颜色是“红色”。
+* _iCalPreWarn _ / _ iCalPreWarn2_：活动明天开始，没有CSS和没有calendercolor的默认颜色是“橙色”。
+* _iCalPrePreWarn _ / _ iCalPrePreWarn2_：事件从明天开始开始，没有CSS且没有日历颜色的默认颜色为“黄色”。
 
-第一个CSS类（例如iCalNormal）用于HTML的日期和时间部分，第二个CSS类（例如iCalNormal2）用于事件名称。
+第一个CSS类（例如iCalNormal2）用于HTML的日期和时间部分，第二个CSS类（例如iCalNormal2）用于事件名称。
 
-那些用于格式化输出的CSS类的CSS示例有点不同（例如，日期/时间左+粗体和事件名右...）：
+这些CSS类用于格式化输出格式的CSS示例（例如，日期/时间为左+粗体，事件名称为右...）：
 
 ```
 .icalWarn{
@@ -135,12 +152,12 @@ Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in der Kalend
 ```
 
 ####基于日历的CSS类
-每个span还具有基于事件所在日历名称分配的CSS类。适配器配置中定义的“日历名称”用于此（空格由下划线替换）。
+每个跨度还根据事件所在的日历的名称分配了一个CSS类。为此，将在适配器配置中定义的“日历名称”用于此（空格由下划线代替）。
 
-* _iCal- <calendername> _：此类用于HTML的日期和时间部分
+* _iCal- <日历名称> _：此类用于HTML的日期和时间部分
 * _iCal-> calendername2> _：此类用于事件名称
 
-要设置这些CSS类，您还需要使用基于时间的CSS类，例如_.icalNormal2.iCal- <calendername> 2_：
+要设置这些CSS类，您还需要使用基于时间的CSS类，例如_.icalNormal2.iCal- <日历名称> 2_：
 
 ```
 .icalNormal2.iCal-Google2{
@@ -157,10 +174,10 @@ Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in der Kalend
 <span style="font-weight: bold; color: red"><span class="icalWarn iCal-calendar-today">1.1.2018  ganzer Tag</span></span><span style="font-weight:normal;color:red"><span class='icalWarn2 iCal-calendar-today2'> Today Event</span></span><br/>
 ```
 
-##过滤器
-在实例选项中，可以按日历维护过滤器。它必须是以分号分隔的列表。如果启用选项`Filter as regular expression`，则过滤器将被解释为正则表达式。在日历刷新期间，将排除按描述，位置或摘要匹配的所有事件。
+##筛选
+在实例选项中，可以为每个日历维护一个过滤器。它必须是用分号分隔的列表。如果启用选项`Filter as regular expression`，则过滤器将解释为正则表达式。在日历刷新期间，将排除按描述，位置或摘要匹配的所有事件。
 
-搜索模式是：
+搜索模式为：
 
 ```
 SUMMARY:MySummary
@@ -168,14 +185,12 @@ DESCRIPTION:MyDescription
 LOCATION:MyLocation
 ```
 
-黑名单：如果要排除特定位置的所有事件，请使用`LOCATION:MyLocation`或简单`MyLocation`或2个位置`LOCATION:MyLocation;LOCATION:SomewhereElse`。
-白名单：如果您只想包含特定位置的事件，请使用正则表达式，如`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/`或2个位置`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
-
-＃＃ 去做
-*自述文件应该是英文的
-*`data.trigger`不支持`check`选项
+黑名单：如果要排除特定位置的所有事件，请使用`LOCATION:MyLocation`或简单的`MyLocation`或2个位置`LOCATION:MyLocation;LOCATION:SomewhereElse`。
+白名单：如果只想包含特定位置的事件，请使用正则表达式，如`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/`或2个位置`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
 
 ## Changelog
+### 1.7.2 (2019-12-02)
+* (bluefox) Documentation was changed
 
 ### 1.7.1 (2019-01-08)
 * (twonky4) Fixed issue with UTC of until in recurring appointments
@@ -306,7 +321,7 @@ LOCATION:MyLocation
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

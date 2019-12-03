@@ -1,7 +1,7 @@
 ![Number of Installations](http://iobroker.live/badges/yeelight-2-installed.svg) ![Number of Installations](http://iobroker.live/badges/yeelight-2-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.yeelight-2.svg)](https://www.npmjs.com/package/iobroker.yeelight-2)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.yeelight-2.svg)](https://www.npmjs.com/package/iobroker.yeelight-2)
-[![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)](https://travis-ci.org/MeisterTR/ioBroker.yeelight-2)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)](https://ci.appveyor.com/project/MeisterTR/ioBroker-yeelight-2/)
+[![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.yeelight-2)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/ioBroker-yeelight-2/)
 
 [![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)](https://nodei.co/npm/iobroker.yeelight-2/)
 
@@ -70,8 +70,9 @@ NOTE: Accepted on both "on" and "off" state.
 after 5 minutes.
 
 ## Changelog
-### 1.0.1 (2019-12-01)
+### 1.0.3 (2019-12-01)
 * (MeisterTR) add Pedant
+* (MeisterTR) transfer to community
 ### 1.0.1 (2018-12-08)
 * (MeisterTR) push version, added set_scene
 ### 0.9.6 (2018-12-08)
