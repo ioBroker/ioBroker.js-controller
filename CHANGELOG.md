@@ -8,6 +8,7 @@
 * (Apollon77) fix log file rotation; additionally old logs are now packed with gz
 * (bluefox) Fixed rights by object creation
 * (bluefox) Add support for vendor specific logic and database initialization
+* (Apollon77) make sure restart of instances work in all cases
 
 ## 2.1.1 (2019-11-22) Release Christina
 * (bluefox) Fix host deletion

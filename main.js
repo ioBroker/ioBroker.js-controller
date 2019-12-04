@@ -2064,36 +2064,6 @@ function processMessage(msg) {
             }
             break;
 
-        case 'getHostInfoShort':
-            if (msg.callback && msg.from) {
-                // same as getHostInfo, but faster because delivers less information
-                // node.js --version
-                // uptime
-                const cpus = os.cpus();
-                const data = {
-                    Platform:        os.platform(),
-                    Architecture:    os.arch(),
-                    CPUs:            cpus.length,
-                    Speed:           cpus[0].speed,
-                    Model:           cpus[0].model,
-                    RAM:             os.totalmem(),
-                    'System uptime': Math.round(os.uptime()),
-                    'Node.js':       process.version
-                };
-
-                if (data.Platform === 'win32') {
-                    data.Platform = 'Windows';
-                } else
-                if (data.Platform === 'darwin') {
-                    data.Platform = 'OSX';
-                }
-
-                sendTo(msg.from, msg.command, data, msg.callback);
-            } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
-            }
-            break;
-
         case 'delLogs': {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
             fs.existsSync(__dirname +       '/log/' + tools.appName + '.log') && fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
@@ -3398,7 +3368,7 @@ function stopInstance(id, force, callback) {
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-                            //delete procs[id].process;
+                            delete procs[id].process;
                         }
 
                         if (typeof callback === 'function') {
@@ -3412,14 +3382,16 @@ function stopInstance(id, force, callback) {
                     timeout = setTimeout(() => {
                         timeout = null;
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
-                            logger.info(hostLogPrefix + ' stopInstance timeout "' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
+                            logger.info(hostLogPrefix + ' stopInstance timeout ' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
                             try {
                                 procs[id].process.kill(); // call stop directly in adapter.js or call kill of process
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-                            //delete procs[id].process;
+                            delete procs[id].process;
+                        } else if (!compactGroupController && procs[id] && procs[id].process) { // was compact mode in an other group
+                            delete procs[id].process; // we consider that the other group controler managed to stop it
                         }
                         if (typeof callback === 'function') {
                             callback();
@@ -3448,7 +3420,7 @@ function stopInstance(id, force, callback) {
                                 } catch (e) {
                                     logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                                 }
-                                //delete procs[id].process;
+                                delete procs[id].process;
                             }
                         }, timeoutDuration);
                     }); // if started let it end itself as first try
