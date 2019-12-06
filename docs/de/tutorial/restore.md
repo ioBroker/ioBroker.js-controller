@@ -85,8 +85,6 @@ Dies geschieht über den Reiter "Adapter". Dort nach Backitup suchen und über d
 Ist die Installation abgeschlossen, legt ihr euer zuvor vom alten System erstelltes „ioBroker Backup“ auf eurem neuen System mit einem sftp Programm wie zum Beispiel 
 FileZilla oder WinSCP in dem Pfad /opt/iobroker/backups ab.
 
-Wenn noch kein Backup erstellt wurde muss dieses Verzeichnis zuvor erstellt werden.
-
 Backitup kann auch eine Restore vom NAS, Dropbox oder Google Drive ausführen, aber die lokale Variante birgt am wenigsten Möglichkeiten für Probleme.
 
 Wenn bereits Erfahrungen mit dem mounten vom NAS vorliegen, kann dies auch gerne genutzt werden,zumal man dann auch direkt auf das bestehende Verzeichnis der alten Installation zugreifen kann.
