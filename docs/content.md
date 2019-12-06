@@ -54,6 +54,7 @@
   * [Data logging](tutorial/history)
   * [Charts](tutorial/flot)
   * [Updates](tutorial/updates)
+  * [Restore](tutorials/restore)
 
 * en:Visualisations;de:Visualisierungen;ru:Визуализация;zh-cn:可视化页面
   * [Introduction](viz/README)
