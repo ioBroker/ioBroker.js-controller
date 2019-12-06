@@ -108,6 +108,10 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.5.0 (2019-12-05)
+* (foxriver76) no longer use adapter.objects
+* (foxriver76) js-controller v > 2 required
+
 ### 2.4.12 (2019-09-26)
 * (foxriver76) fixed bug which lead to alarm counter showing number of service messages
 

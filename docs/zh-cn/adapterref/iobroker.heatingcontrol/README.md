@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
+hash: nhbMa+lLhoap/A+aaH1qqjxnKQEuPNVQ0E2CnClJ1bU=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -24,7 +24,7 @@ hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
 *当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
-*支持每个房间无限制的恒温器，执行器和传感器
+*每个房间均支持无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）
@@ -41,7 +41,7 @@ hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
-*如果没有加热时间=仅对执行器有效，请使用执行器。定义没有加热时间时如何设置执行器
+*如果没有加热时间，则使用执行器=仅对执行器有效。定义没有加热时间时如何设置执行器
 *如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
 
 ###个人资料
@@ -71,18 +71,18 @@ hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 **应设置当前状态的名称和OID
 
 ＃＃ 数据点
-| DP名称|说明|
+| DP名称|描述|
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | ActivePeriodActive |如果关闭，则将不使用配置文件。 |
 | CurrentProfile |选择当前配置文件（基于1，表示配置文件1使用heatingcontrol.0.Profiles.0下的数据点）|
 | LastProgramRun |显示适配器运行的最后一次时间 |
 
 ###温度降低/升高
-| DP名称|描述|相对降低的目标温度|绝对降低的目标温度|
+| DP名称|说明|相对降低的目标温度|绝对降低的目标温度|
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
-|来宾增加温度，因为客人想变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
+|来宾升高温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
 | PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
-|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
+|现在|我们在场，如果我们不在场降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
 *在两种情况下，仅使用一次降脂（在适配器的先前版本中，可以使用一次以上的脱脂剂）
@@ -109,23 +109,28 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 *加热控制0.存在
 *加热控制0.HolidayPresent
 *加热控制0.缺席
+* heatingcontrol.0.GuestsPresent
 
 ＃＃ 要求
-*需要节点版本8或更高版本
+*需要8版或更高版本的节点
 
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ## Changelog
 
-### 0.3.7 (2019-xx-xx)
+### 0.3.8 (2019-12-xx)
+* (René) see issue  #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
+* (René) PartyNow support by iCal 
+
+
+### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
 * (René) see issue  #53: moved datapoints for relative lowering into "relative"
 * (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
 * (René) guest present as interface to ical
-
-
-
+* (René) see issue #52: support radar adapter
+* (René) all external states checked when adapter starts
 
 ### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!
@@ -134,6 +139,7 @@ Attention: some changes in datapoints!!
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
 * (René) only one event is used to lower temperature
 * (René) add interface to ical (path to vacation and path to holiday present datapoints)
+* (René) support of more then one instance
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name

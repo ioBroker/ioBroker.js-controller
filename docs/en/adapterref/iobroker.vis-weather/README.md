@@ -30,6 +30,11 @@ You might need to enable "NextDaysDetailed".
 
 ## Changelog
 
+### 2.4.1 (2019-12-05)
+* (René) see issue #20: scaling problem solved 
+* (René) see issue #22: bugfix colors for axis labeling 
+* (René) color adjustment for axis and tick lables 
+* (René) see issue #23: names for legend adjustable
 
 ### 2.4.0 (2019-10-31)
 * (René) legend added

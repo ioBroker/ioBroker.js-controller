@@ -16,6 +16,10 @@ tado° ensures a comfortable and healthy climate while saving up to 31% on your 
 
 ## Changelog
 
+### 0.1.4 Fixed Clear Overlay & Open Window
+* (DutchmanNL) Fixed Clear Overlay to Boolean
+* (DutchmanNL) Fixed datapoints for OpenWindow 
+
 ### 0.1.3 Several fixes for reported error's
 * (DutchmanNL) boilerId / onDemandLogRetrievalEnabled / openWindowDetected / onDemandLogRetrievalEnabled
 * (DutchmanNL) Open Window detection implemented, only by device not by room

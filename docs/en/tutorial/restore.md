@@ -4,7 +4,7 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/tutorial/restore.md
-hash: 0ceR9FakhtxaiiG2KAOB/LFMMTHAlkxYIFzKyZ3l4Vw=
+hash: PdKXVqljYzqz8sIsT9661nR4t5rhUnRIN98FYdrp0w8=
 ---
 # Basics
 How to properly restore ioBroker installation on a Linux system?
@@ -58,7 +58,7 @@ This step is only a recommendation and is not mandatory.
 curl -sL https://iobroker.net/fix.sh | bash –
 ```
 
-With the small tool "htop" you can see very well all running processes, which can be very useful not only for the restore interesting but generally.
+With the small tool "htop" you can see very well all running processes, which not only for the restore interesting but generally very useful.
 this will be installed as follows:
 
 In the console, run the following command:
@@ -80,14 +80,12 @@ This is done via the tab "Adapter". There look for Backitup and over the (+) ins
 
 When the installation is complete, you put your previously created from the old system "ioBroker Backup" on your new system with a sftp program such as FileZilla or WinSCP in the path / opt / iobroker / backups.
 
-If no backup has been created yet, this directory must be created beforehand.
-
 Backitup can also perform a restore from the NAS, Dropbox, or Google Drive, but the local variant has the least chance of problems.
 
 If you already have experience with mounting from the NAS, this can also be used gladly, especially since then you can directly access the existing directory of the old installation.
 However, this tutorial refers to a locally saved backup.
 
-If ioBroker Backup was successfully saved, Backitup will now be opened and the "Restore" tab will be opened.
+If ioBroker Backup was successfully saved, Backitup will now be opened and the "Restore" tab will open.
 There, set the "Backup Source" to Local and save afterwards.
 
 ![Restore Tab](../../de/tutorial/media/restore/1575301096581-restoretab.jpg)
@@ -141,7 +139,7 @@ Depending on the size of the installation and speed of your computer and the Int
 
 Congratulations, now the newly installed system is done with all settings, scripts, visualizations, etc.
 
-With Backitup there is still the possibility to restore further data, if it has been saved in advance on the old system.
+With Backitup there is still the possibility to restore further data, if it has been saved on the old system in advance.
 You can restore the Redis database, the Zigbee database, the mySql database, and your history data using the same steps described above.
 
 The list of retrieved backups would then look like this example.
@@ -177,7 +175,7 @@ Afterwards please check if everything is stopped with the following commands:
 iobroker status
 ```
 
-If all issues are correct and iobroker has stopped, you can now restore the console using the following commands:
+If all issues are correct and iobroker has been stopped, the following commands can be used to restore the console:
 
 ```
 cd /opt/iobroker
@@ -200,10 +198,10 @@ Again, all adapters will be reinstalled individually by ioBroker over npm.
 This may take a while, depending on the size of your installation, the Internet speed, and the performance of the system.
 The current status can be tracked in the "Log" tab.
 
-Now it is done and the system is reinstalled and all settings, scripts, visualizations, etc. are restored.
+Now it is done and the system is reinstalled and all settings, scripts, visualizations etc. are restored.
 
 ### Conclusion:
 Basically, both variants lead to the same result.
-If you have little experience with terminal commands and feel insecure, then Backitup is on the safe side.
+If you have little experience with terminal commands and feel insecure, then you're on the safe side with Backitup.
 
 However, if you want to see exactly what is happening on your system, you should choose the manual version via the console. Here you can see every single process in detail in the terminal.

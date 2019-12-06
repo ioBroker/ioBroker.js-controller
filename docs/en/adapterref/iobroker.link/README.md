@@ -142,7 +142,7 @@ To access your router's Web-UI you might have a configuration as follows:
 - Type: TCP
 
 ## Changelog
-### 0.5.5 (2019-12-02)
+### 0.5.6 (2019-12-02)
 * (gh-got) multi-factor connection approval
 * (gh-got) Implemented the acknowledgment via telegram
 

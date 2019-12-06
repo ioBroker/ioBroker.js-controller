@@ -49,6 +49,12 @@ After the first start the devices must be scanned. It can be done in the configu
 - Configuration dialog to define type of variables.
 
 ## Changelog
+### 0.5.5 (2019-12-05)
+* (bluefox) Relay inputs were corrected
+
+### 0.5.4 (2019-12-04)
+* (bluefox) Connection indication was corrected
+
 ### 0.5.1 (2019-11-29)
 * (bluefox) Finger scanner supported
 * (bluefox) Added possibility to set the analog mode

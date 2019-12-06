@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
+hash: nhbMa+lLhoap/A+aaH1qqjxnKQEuPNVQ0E2CnClJ1bU=
 ---
 ![логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -83,10 +83,10 @@ hash: fLBPFr0Plw+KiYN6NFjVT5NjjbpiEbdSan//SUhFdcU=
 | Гости присутствуют | повысить температуру, потому что гости хотят, чтобы было теплее | увеличить текущую температуру профиля с помощью Profiles.0.room.GuestIncrease | установить цель в Profiles.0.room.absolute.GuestIncrease |
 | PartyNow | понизить температуру, потому что становится жарко »| уменьшить текущую температуру профиля с помощью Profiles.0.room.PartyDecrease | установить цель в Profiles.0.room.absolute.PartyDecrease |
 | Настоящее | мы присутствуем, если нас нет, понижаем температуру | уменьшить текущую температуру профиля с помощью Profiles.0.room.AbsentDecrease | установить целевое значение в Profiles.0.room.absolute.AbsentDecrease |
-| VacationAbsent | мы отсутствуют, поэтому снижаемся и в выходные | уменьшить текущую температуру профиля с помощью Profiles.0.room.VacationAbsentDecrease | установить целевое значение для Profiles.0.room.absolute.VacationAbsentDecrease |
+| VacationAbsent | мы отсутствуют, поэтому снижаемся и в выходные дни | уменьшить текущую температуру профиля с помощью Profiles.0.room.VacationAbsentDecrease | установить целевое значение для Profiles.0.room.absolute.VacationAbsentDecrease |
 
 * в обоих сценариях используется только одно понижение (в предыдущей версии адаптера можно было использовать более одного обезжиривания)
-* в абсолютном сценарии обезжиривания используются только целевые значения, не равные 0 °C. Если вам не нужно опускаться для определенной комнаты, сохраняйте значения понижения при 0 ° C.
+* в абсолютном сценарии обезжиривания используются только целевые значения, не равные 0 °C. Если вам не нужно какое-либо понижение для определенной комнаты, сохраняйте значения понижения при 0 ° C.
 
 ## Другие
 * HolidayPresent
@@ -109,6 +109,7 @@ a) уменьшить текущую температуру профиля, ко
 * Heatingcontrol.0. Присутствует
 * HeatingControl.0. HolidayPresent
 * Heatingcontrol.0. VacationAbsent
+* heatingcontrol.0. Гость-подарок
 
 ## Требования
 * Требуется версия узла 8 или выше
@@ -118,14 +119,18 @@ a) уменьшить текущую температуру профиля, ко
 
 ## Changelog
 
-### 0.3.7 (2019-xx-xx)
+### 0.3.8 (2019-12-xx)
+* (René) see issue  #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
+* (René) PartyNow support by iCal 
+
+
+### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
 * (René) see issue  #53: moved datapoints for relative lowering into "relative"
 * (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
 * (René) guest present as interface to ical
-
-
-
+* (René) see issue #52: support radar adapter
+* (René) all external states checked when adapter starts
 
 ### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!
@@ -134,6 +139,7 @@ Attention: some changes in datapoints!!
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
 * (René) only one event is used to lower temperature
 * (René) add interface to ical (path to vacation and path to holiday present datapoints)
+* (René) support of more then one instance
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name
