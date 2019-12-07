@@ -495,7 +495,7 @@ function createObjects(onConnect) {
                 logger.debug(hostLogPrefix + ' object change ' + id + ' (from: ' + (obj ? obj.from : null) + ')');
                 // known adapter
                 if (procs[id]) {
-                    // adapter deleted
+                    // if adapter deleted
                     if (!obj) {
                         // deleted: also remove from instance list of compactGroup
                         if (!compactGroupController && procs[id].config.common.compactGroup && compactProcs[procs[id].config.common.compactGroup] && compactProcs[procs[id].config.common.compactGroup].instances && compactProcs[procs[id].config.common.compactGroup].instances.includes(id)) {
