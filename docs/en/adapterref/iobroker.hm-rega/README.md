@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -41,7 +41,7 @@ An instance of the adapter is installed via the ioBroker Admin interface.
 
 When the installation is complete, the configuration window opens automatically.
 
-Before the actual configuration, the instance of the HM-RPC adapter (created together with this adapter) or, if required, further HM-RPC instances should be created and configured.
+Before the actual configuration, the instance of the HM-RPC adapter (created with this adapter) or, if required, additional HM-RPC instances should be created and configured.
 
 ## Configuration
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png) **Menu top**
@@ -87,7 +87,7 @@ Once all settings have been made, the configuration page is closed with the "sav
 ### Instance
 ![](../../../de/adapterref/iobroker.hm-rega/media/44785b82964bcdc198565b1681787dc0.png) **Instance and signal**
 
-In the area *Instances* of the ioBroker you can now find the created instance (s). On the left, the traffic light system visualizes whether the adapter is activated or connected to the CCU.
+In the area *Instances* of the ioBroker you will now find the created instance (s). On the left, the traffic light system visualizes whether the adapter is activated or connected to the CCU.
 
 If you place the mouse pointer on a symbol, you will get detailed information.
 

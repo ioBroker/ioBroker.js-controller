@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: IUmLDzAkE5Cb6dAckIUOdrK6ff5u79VdmrRKAR9jGpw=
+hash: C0ie6JZL/eQQhMg5NGoauwuMTSxMbTPk1V2UqAKGEGc=
 ---
 ![Logo](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -15,47 +15,48 @@ hash: IUmLDzAkE5Cb6dAckIUOdrK6ff5u79VdmrRKAR9jGpw=
 
 # IoBroker.roadtraffic
 ## Über diesen Adapter
-Dieser Adapter verwendet die Google Maps-API, um den Verkehr auf Ihren Routen zu überprüfen. Sie können mehrere Routen konfigurieren. Der Adapter überprüft die aktuelle Verkehrssituation und zeigt an, wie lange Ihre Reise dauern wird. (Im Moment spart es die Zeit in Sekunden).
-Der Adapter befindet sich momentan in einem sehr frühen Stadium. Ich plane, einen Wecker einzurichten, damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen und was passieren soll, wenn er aufsteht / aufwacht (Start) spiele Radio und mache eine Ansage wie "Es scheint, als stünde ein Stau auf deiner Route. Du musst jetzt aufstehen, um nicht zu spät zur Arbeit zu kommen!" auf Alexa etc.) ..
+Dieser Adapter verwendet die HERE.com-API, um den Verkehr auf Ihren Routen zu überprüfen. Sie können mehrere Routen konfigurieren. Der Adapter überprüft die aktuelle Verkehrssituation und zeigt an, wie lange Ihre Reise dauern wird.
+Der Adapter befindet sich gerade in einem frühen Stadium. Ich plane, einen Wecker zu implementieren - damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen - und was passieren soll, wenn die Zeit zum Verlassen / Aufwachen verstrichen ist (Spiel starten) Radio und mache eine Ansage wie "Es scheint, als ob ein Stau auf deiner Route ist. Du musst jetzt aufstehen, um nicht zu spät zur Arbeit zu kommen!" Auf Alexa etc.) ..
 Fühlen Sie sich frei, einige Feature-Anfragen hier auf Github zu erstellen - eröffnen Sie einfach eine Ausgabe dafür! ;)
 
 ## Beginnen
-Zuallererst: Möglicherweise sind Sie besorgt über den Schritt "Einrichten des Abrechnungskontos und der Zahlungsmethode", nach dem Sie von Google möglicherweise gefragt werden, wenn Sie das Konto erstellen, um den API-Schlüssel zu erhalten. Machen Sie sich keine Sorgen! Google gewährt Ihnen ein Guthaben von 200 US-Dollar pro Monat. Weitere Informationen erhalten Sie unter https://cloud.google.com/maps-platform/pricing/sheet/. Sie können ~ 40.000 Anfragen pro Monat kostenlos stellen.
-
 So lass uns gehen:
 
-1. Gehen Sie zu https://cloud.google.com/maps-platform/?apis=routes und melden Sie sich mit Ihrem Google-Konto an (oder erstellen Sie ein neues Konto, falls Sie noch keines haben).
+1. Gehen Sie zu https://developer.here.com/sign-up?create=Freemium-Basic&keepState=true&step=account und erstellen Sie ein HERE.com Free Developer-Konto (Freemium).
 
-![Readme1](../../../en/adapterref/iobroker.roadtraffic/img/Readme1.png)
+![Here1](../../../en/adapterref/iobroker.roadtraffic/img/Here1.png)
 
-2. Wählen Sie einen Namen für Ihr Projekt. Hier können Sie eingeben, was Sie wollen. Der Name dient nur zur Identifikation, falls Sie mehr als ein Projekt in Ihrem Google-Konto haben.
+2. Stellen Sie sicher, dass Freemium ausgewählt ist und füllen Sie das Formular auf der linken Seite aus. (Vorname, Nachname, E-Mail, ..)
 
-![Readme2](../../../en/adapterref/iobroker.roadtraffic/img/Readme2.png)
+![Here2](../../../en/adapterref/iobroker.roadtraffic/img/Here2.png)
 
-3. Richten Sie die Abrechnungs- und Zahlungsmethode für das Google-Konto ein (wie oben erwähnt - keine Sorge - Sie erhalten 200 $ Guthaben pro Monat von Google für Ihr Abrechnungskonto).
+3. Klicken Sie auf Für HIER-Konto registrieren ... und vergessen Sie nicht, das Kontrollkästchen (Akzeptieren Sie die Servicebedingungen usw.) anzukreuzen.
 
-Wenn Sie immer noch besorgt sind, lesen Sie diese Seite: https://cloud.google.com/maps-platform/pricing/sheet/).
+![Here3](../../../en/adapterref/iobroker.roadtraffic/img/Here3.png)
 
-![Readme3](../../../en/adapterref/iobroker.roadtraffic/img/Readme3.png)
+4. Noch einmal - stimmen Sie den Allgemeinen Geschäftsbedingungen zu und klicken Sie auf die Schaltfläche "Codierung starten".
 
-4. Beenden Sie Ihr Google API-Setup
+![Here4](../../../en/adapterref/iobroker.roadtraffic/img/Here4.png)
 
-![Readme4](../../../en/adapterref/iobroker.roadtraffic/img/Readme4.png)
+5. Auf der nächsten Seite befinden Sie sich bereits in Ihrem HERE.com-Dashboard. Suchen Sie nach der REST & XYZ HUB API / CLI und klicken Sie auf "App ID und App Code generieren".
 
-5. Und kopieren Sie Ihren API-Schlüssel in die Zwischenablage.
+![Here5](../../../en/adapterref/iobroker.roadtraffic/img/Here5.png)
 
-![Readme5](../../../en/adapterref/iobroker.roadtraffic/img/Readme5.png)
+6. Öffnen Sie die Instancesettings des roadtraffic Adapters in ioBroker und kopieren Sie die App ID und den App Code in die Felder.
 
-6. Öffnen Sie die Instancesettings des roadtraffic Adapters in ioBroker und fügen Sie Ihren Google API Key in das Eingabefeld ein.
+Klicken Sie auf das Plus-Symbol und erstellen Sie Ihre erste Route.
 
-Danach können Sie auf das "Plus-Symbol" klicken, um Ihre erste Route einzurichten.
-
-![Readme6](../../../en/adapterref/iobroker.roadtraffic/img/Readme6.png)
+![Here6](../../../en/adapterref/iobroker.roadtraffic/img/Here6.png)
 
 Nachdem Sie alle Informationen in den Konfigurationsdialog eingegeben haben, klicken Sie auf "Speichern & Schließen".
 Der Adapter sollte jetzt neu starten und Sie können loslegen!
 
 ## Changelog
+### 0.1.0 (2019-12-08)
+* (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)
+
+### 0.0.2 (2019-02-27)
+* (BuZZy1337) Release to latest repository
 
 ### 0.0.1
 * (BuZZy1337) initial release

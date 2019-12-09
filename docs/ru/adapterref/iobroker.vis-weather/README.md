@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-погода
-hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
+hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,7 +14,7 @@ hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен DasWetter-Adpater или weatherunderground-Adapter ...
+Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен работающий DasWetter-Adpater или weatherunderground-Adapter ...
 
 В Weatherunderground вам нужен прогноз на следующие 36 часов.
 В DasWetter.com вам нужна одна из четырех структур данных прогноза. Вы можете выбрать тот, который вы хотите отобразить.
@@ -27,10 +27,31 @@ hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 Обычно OID создаются автоматически при выборе экземпляра или структуры данных. Когда вы получите «OID недоступен», проверьте, используете ли вы «NextDaysDetailed» в DasWetter.
 Возможно, вам потребуется включить «NextDaysDetailed».
 
-## Известные вопросы
+## Известные проблемы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
+
+### 2.5.1 (2019-12-08)
+* (René) alignment of bars with marking
+* (René) position of tick labels of Y axis changed
+
+### 2.5.0 (2019-12-07)
+* (René) see issue #20: scaling problem solved 
+* (René) see issue #22: bugfix colors for axis labeling 
+* (René) color adjustment for axis and tick lables 
+* (René) more adjustments for ticks on Y axis
+* (René) see issue #23: names for legend adjustable
+
+### 2.4.0 (2019-10-31)
+* (René) legend added
+
+### 2.3.2 (2019-10-24)
+* (René) add logs for issue #20
+* (René) update flot to version 3.0
+
+### 2.3.1 (2019-07-13)
+* (René) bug fix: missing timer added
 
 ### 2.3.0 (2019-03-25)
 * (René) markings added

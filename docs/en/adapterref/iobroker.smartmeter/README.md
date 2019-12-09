@@ -83,9 +83,9 @@ Please send me an info on devices where you have used the library successfully a
 
 ## Changelog
 
-### 3.0.5 (2019-12-05)
+### 3.0.6 (2019-12-07)
 * serial port configuration further optimized
-* update smartmeter-obis lib to fix some edge case errors
+* update smartmeter-obis lib to fix some edge case errors and serial close handling
 
 ### 3.0.3 (2019-11-30)
 * serial port configuration further optimized

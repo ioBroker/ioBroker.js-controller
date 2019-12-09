@@ -135,6 +135,9 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.12.1 (2019-12-06)
+* (foxriver76) fixed problem with max values of value lists
+
 ### 1.12.0 (2019-12-05)
 * (foxriver76) no longer use adapter.objects
 * (foxriver76) js-controller v > 2 required

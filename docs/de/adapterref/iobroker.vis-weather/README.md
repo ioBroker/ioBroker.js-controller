@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-weather/README.md
-title: ioBroker.vis-weather
-hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
+title: ioBroker.vis-Wetter
+hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,23 +14,44 @@ hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder WeatherUnterground. Sie benötigen DasWetter-Adpater oder WeatherUnterground-Adapter.
+Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground an. Sie benötigen den DasWetter-Adpater oder Weatherunderground-Adapter, der ebenfalls ausgeführt wird ...
 
-Bei wetterbedingtem Wetter müssen Sie die Vorhersage der nächsten 36 Stunden aktivieren.
-In DasWetter.com benötigen Sie eine von vier aktivierten Prognosedatenstrukturen. Sie können den auswählen, den Sie anzeigen möchten.
+Bei schlechtem Wetter müssen Sie die Vorhersage für die nächsten 36 Stunden aktivieren.
+In DasWetter.com muss eine von vier Prognosedatenstrukturen aktiviert sein. Sie können den anzuzeigenden auswählen.
 
-## Hinweise / Wiki
-### Prognostundenstunden definieren
-Standardmäßig zeigt das Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (Wunderground). Wenn Sie es vorziehen, nur z. 10 Stunden Vorhersage, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
+## Notizen / Wiki
+### Prognosestunden definieren
+Standardmäßig zeigt das Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (wunderground). Wenn Sie es vorziehen, nur z. 10 Stunden Vorhersage, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
 
 ### OIDs werden bei Verwendung von DasWetter nicht automatisch erstellt
-Normalerweise werden OIDs automatisch erstellt, wenn Sie die Instanz- oder Datenstruktur auswählen. Wenn Sie "keine OIDs verfügbar" erhalten, prüfen Sie, ob Sie in "DasWetter" "NextDaysDetailed" verwenden.
+Normalerweise werden OIDs automatisch erstellt, wenn Sie eine Instanz oder Datenstruktur auswählen. Wenn Sie "keine OIDs verfügbar" erhalten, überprüfen Sie, ob Sie "NextDaysDetailed" in DasWetter verwenden.
 Möglicherweise müssen Sie "NextDaysDetailed" aktivieren.
 
 ## Bekannte Probleme
-* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+* Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
+
+### 2.5.1 (2019-12-08)
+* (René) alignment of bars with marking
+* (René) position of tick labels of Y axis changed
+
+### 2.5.0 (2019-12-07)
+* (René) see issue #20: scaling problem solved 
+* (René) see issue #22: bugfix colors for axis labeling 
+* (René) color adjustment for axis and tick lables 
+* (René) more adjustments for ticks on Y axis
+* (René) see issue #23: names for legend adjustable
+
+### 2.4.0 (2019-10-31)
+* (René) legend added
+
+### 2.3.2 (2019-10-24)
+* (René) add logs for issue #20
+* (René) update flot to version 3.0
+
+### 2.3.1 (2019-07-13)
+* (René) bug fix: missing timer added
 
 ### 2.3.0 (2019-03-25)
 * (René) markings added

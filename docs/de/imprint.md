@@ -1,19 +1,19 @@
 ---
 title:       "Impressum"
-lastChanged: "14.09.2018"
+lastChanged: "09.12.2019"
 ---
 # Impressum
 
 ## Angaben gemäß § 5 TMG:
 **Firma:** ioBroker GmbH
 
-**Addresse:** Lorenzstr. 16, 76135 Karlsruhe, Deutschland
+**Adresse:** Lorenzstr. 16, 76135 Karlsruhe, Deutschland
 
 **HR-Nummer:** HRB 727797 Amtsgericht Mannheim
 
 **Umsatzsteuer-Identifikationsnummer gem. § 27a UStG:** DE 312299367
 
-**Vertretungsberechtiger Geschäftsführer:** Khaeva Veronika
+**Vertretungsberechtigte Geschäftsführerin:** Khaeva Veronika
 
 ## Kontakt
 **E-Mail:** 	info@iobroker.net

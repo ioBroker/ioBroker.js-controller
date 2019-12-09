@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
+hash: flLd7JA0Bb7FWP3vBgHH5/HsmNefVJVTVeyA2Y1UDS0=
 ---
 ![логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
 

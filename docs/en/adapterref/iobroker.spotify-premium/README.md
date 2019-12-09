@@ -28,6 +28,10 @@ See also the [Spotify Developer API Documentation](https://developer.spotify.com
 10. copy that url and put it to `spotify-premium.0.authorization.authorizationReturnUri`
 11. the value in `spotify-premium.0.authorization.authorized` turns to true if everything was successful
 
+#### [Video tutorial](https://www.youtube.com/watch?v=n0m9201qABU)
+[![How to authorize](https://img.youtube.com/vi/n0m9201qABU/0.jpg "https://www.youtube.com/watch?v=n0m9201qABU")](https://www.youtube.com/watch?v=n0m9201qABU)
+
+
 ### States
 All states are described in admin.
 

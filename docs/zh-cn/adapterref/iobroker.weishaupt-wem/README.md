@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.weishaupt-wem/README.md
 title: ioBroker.weishaupt-wem
-hash: IqsQ4zF7LaGFo0WfA5V2IAz+kcKBdv+18rWMpdTAdKk=
+hash: sykXgAjoKQjyRTzx0fq16BxLCU0tq36dN1W8krdMqSU=
 ---
 ![商标](../../../en/adapterref/iobroker.weishaupt-wem/admin/weishaupt-wem.png)
 
@@ -19,12 +19,14 @@ hash: IqsQ4zF7LaGFo0WfA5V2IAz+kcKBdv+18rWMpdTAdKk=
 weishaupt WEM门户适配器
 
 ##自定义Befehl
-请自定义URL和eww的自定义Befehlbenötigst。
-在WEM门户网站中添加URL选项，然后在Chrome浏览器中添加元素，然后在STRG + F服务器中添加元素名称=“ RDWWriteParameter”，并在URL中添加URL。
-Fürden Werte nach <选择价值和价值的Werperen und als州的Wert eintragen。
-z.B.：https://www.wemportal.com/Web/UControls...，208557
+请自定义URL和eww的自定义Befehlbenötigst。在WEM门户网站中添加URL选项，然后在Chrome浏览器中添加元素，然后在STRG + F服务器中添加元素名称=“ RDWWriteParameter”，并在URL中添加URL。 Fürden Werte nach <option suchen und den gewünschten Wert unter value kopieren und als state Wert eintragen.
+z.B.: <https://www.wemportal.com/Web/UControls...,> 208557
 
 ## Changelog
+
+### 0.0.7
+
+* (ta2k) fix for Status label
 
 ### 0.0.5
 

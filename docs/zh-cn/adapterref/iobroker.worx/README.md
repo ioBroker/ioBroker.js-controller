@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
+hash: flLd7JA0Bb7FWP3vBgHH5/HsmNefVJVTVeyA2Y1UDS0=
 ---
 ![商标](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
@@ -22,7 +22,7 @@ hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 通过云和mqtt控制
 
 该适配器通过Cloud将ioBroker与您的Landroid S / M / L连接。
-从割草机上读取温度，割草时间，电池电量和其他各种数据适配器可以控制割草机，您可以更改割草时间等配置参数。
+从割草机读取温度，割草时间，电池电量和其他各种数据适配器可以控制割草机，并且您可以更改割草时间等配置参数。
 
 <img src="admin/worx_ada2.png" alt="画画" width="100%"/>
 

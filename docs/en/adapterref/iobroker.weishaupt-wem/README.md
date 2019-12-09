@@ -1,4 +1,5 @@
 ![Logo](admin/weishaupt-wem.png)
+
 # ioBroker.weishaupt-wem
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.weishaupt-wem.svg)](https://www.npmjs.com/package/iobroker.weishaupt-wem)
@@ -19,9 +20,13 @@ Adapter for weishaupt WEM Portal
 Für ein Custom Befehl benötigst du die URL und den gewünschten Wert.
 Für die URL einfach die Option im WEM Portal mit Chrome aufrufen und dann rechte Maustate Untersuchen dann unter Elements/Elemente mit STRG+F nach iframe suchen mit dem name="RDWWriteParameter" die URL nach src mit rechts Klick Link kopieren raus kopieren.
 Für den Werte nach <option suchen und den gewünschten Wert unter value kopieren und als state Wert eintragen.
-z.B.: https://www.wemportal.com/Web/UControls..., 208557
+z.B.: <https://www.wemportal.com/Web/UControls...,> 208557
 
 ## Changelog
+
+### 0.0.7
+
+* (ta2k) fix for Status label
 
 ### 0.0.5
 

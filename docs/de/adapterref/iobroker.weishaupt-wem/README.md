@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.weishaupt-wem/README.md
 title: ioBroker.weishaupt-wem
-hash: IqsQ4zF7LaGFo0WfA5V2IAz+kcKBdv+18rWMpdTAdKk=
+hash: sykXgAjoKQjyRTzx0fq16BxLCU0tq36dN1W8krdMqSU=
 ---
 ![Logo](../../../en/adapterref/iobroker.weishaupt-wem/admin/weishaupt-wem.png)
 
@@ -19,12 +19,14 @@ hash: IqsQ4zF7LaGFo0WfA5V2IAz+kcKBdv+18rWMpdTAdKk=
 Adapter für das weishaupt WEM Portal
 
 ## Custom Befehl
-Für einen benutzerdefinierten Befehl benötigst du die URL und den gewünschten Wert.
-Für die URL einfach die Option im WEM-Portal mit Chrome aufrufen und dann die rechte Maustaste betätigen.
-Für den Wert nach <Option suchen und den gewünschten Wert unter value copy and as state Wert eintragen.
-z.B .: https://www.wemportal.com/Web/UControls ..., 208557
+Für einen benutzerdefinierten Befehl benötigst du die URL und den gewünschten Wert. Für die URL einfach die Option im WEM Portal mit Chrome aufrufen und dann mit der rechten Maustaste Untersuchen und dann unter Elements / Elements mit STRG + F nach iframe suchen mit dem name = &quot;RDWWriteParameter&quot;. Für den Werte nach <option suchen und den gewünschten Wert unter value kopieren und als state Wert eintragen.
+z.B.: <https://www.wemportal.com/Web/UControls...,> 208557
 
 ## Changelog
+
+### 0.0.7
+
+* (ta2k) fix for Status label
 
 ### 0.0.5
 

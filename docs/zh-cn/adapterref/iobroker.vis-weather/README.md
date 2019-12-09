@@ -3,34 +3,55 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis天气
-hash: UmpcM/Dwgmg34iWyLhXsxzG4KfpLqcH0e5by9aMM3tI=
+hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
 ![安装数量](http://iobroker.live/badges/vis-weather-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.vis-weather.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
-![测试](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
+![测验](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
-＃ioBroker.vis-weather
-这个vis-widget显示来自DasWetter.com或weatherunderground的天气预报数据你需要DasWetter-Adpater或weatherunderground-适配器运行...
+＃ioBroker.vis-天气
+该可视组件显示来自DasWetter.com或weatherunderground的天气预报数据。您还需要运行DasWetter-Adpater或weatherunderground-Adapter ...
 
-在weatherunderground，您需要预测未来36小时启用。
-在DasWetter.com中，您需要启用四种预测数据结构之一。您可以选择要显示的那个。
+在地下天气中，您需要启用下一个36小时的预测。
+在DasWetter.com中，您需要启用四个预测数据结构之一。您可以选择要显示的那个。
 
-## Notes / wiki
-###定义预测小时数
-默认情况下，预测图显示40小时（DasWetter）或36小时（wunderground）。如果你愿意只显示例如预测10小时，只需删除vis-edit中oid_groups下不必要的OID。
+##注释/ Wiki
+###定义预报时间
+默认情况下，预测图显示40小时（DaSWetter）或36小时（地下）。如果您只想显示例如预测10小时，只需在vis-edit中删除oid_groups下不必要的OID。
 
-###使用DasWetter时不会自动创建OID
-通常，当您选择实例或数据结构时，将自动创建OID。当你得到“没有OID可用”时，检查你是否在DasWetter中使用“NextDaysDetailed”。
-您可能需要启用“NextDaysDetailed”。
+使用DasWetter时不会自动创建### OID
+通常，当您选择实例或数据结构时，会自动创建OID。当您收到“没有可用的OID”时，请检查是否在DasWetter中使用“ NextDaysDetailed”。
+您可能需要启用“ NextDaysDetailed”。
 
 ＃＃ 已知的问题
-*请在[github]（https://github.com/rg-engineering/ioBroker.vis-weather/issues）创建问题，如果您发现错误或新功能
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.vis-weather/issues）上创建问题
 
 ## Changelog
+
+### 2.5.1 (2019-12-08)
+* (René) alignment of bars with marking
+* (René) position of tick labels of Y axis changed
+
+### 2.5.0 (2019-12-07)
+* (René) see issue #20: scaling problem solved 
+* (René) see issue #22: bugfix colors for axis labeling 
+* (René) color adjustment for axis and tick lables 
+* (René) more adjustments for ticks on Y axis
+* (René) see issue #23: names for legend adjustable
+
+### 2.4.0 (2019-10-31)
+* (René) legend added
+
+### 2.3.2 (2019-10-24)
+* (René) add logs for issue #20
+* (René) update flot to version 3.0
+
+### 2.3.1 (2019-07-13)
+* (René) bug fix: missing timer added
 
 ### 2.3.0 (2019-03-25)
 * (René) markings added

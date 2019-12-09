@@ -1,3 +1,8 @@
+:heavy_exclamation_mark: | **nello API has been shut down.** This adapter will thus not work.
+------------ | -------------
+
+________________________
+
 ![Logo](admin/nello.png)
 # ioBroker.nello
 nello one connects your intercom with your smartphone and Wi-Fi. This adapter connects your nello one to ioBroker using the official API (https://nellopublicapi.docs.apiary.io/).

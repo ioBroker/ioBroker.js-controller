@@ -3,10 +3,8 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: sHOaOz5BHT+mJFohoByLSWXfJTnKJ3ic0dCYB0egWGo=
+hash: 9mYaOuhtrAZlJJyFGdwkd5IDvGd7MlrkrbIjH4DUI2U=
 ---
-![Logo](../../../en/adapterref/iobroker.nello/admin/nello.png)
-
 ![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/nello-installed.svg)
 ![stabile Version](http://iobroker.live/badges/nello-stable.svg)
@@ -15,6 +13,13 @@ hash: sHOaOz5BHT+mJFohoByLSWXfJTnKJ3ic0dCYB0egWGo=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nello.svg)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)
 ![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)
+
+: heavy_exclamation_mark: | **nello API wurde heruntergefahren.** Dieser Adapter wird daher nicht funktionieren.
+------------ | -------------
+
+________________________
+
+![Logo](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
 # IoBroker.nello nello one verbindet Ihre Gegensprechanlage mit Ihrem Smartphone und Wi-Fi. Dieser Adapter verbindet Ihr nello one über die offizielle API (https://nellopublicapi.docs.apiary.io/) mit ioBroker.
 Entwickler können die Javascript-Implementierung der nello.io-API über https://github.com/Zefau/nello.io finden.
@@ -41,7 +46,7 @@ Entwickler können die Javascript-Implementierung der nello.io-API über https:/
 ## Eigenschaften
 Die folgenden Funktionen werden mit diesem Adapter geliefert:
 
-- Rufe __alle Orte__ von deinem Nello ab, einschließlich `Adresse` und` Zeitfenster` ([siehe Staaten] (# Staaten) für eine vollständige Liste)
+- Rufen Sie __alle Orte__ von Ihrem Nello ab, einschließlich `Adresse` und` Zeitfenster` ([siehe Staaten] (# Staaten) für eine vollständige Liste)
 - Zeitfenster über ioBroker hinzufügen und löschen
 - Empfangen Sie alle Arten von Events von nello, wenn Ihre Türklingel läutet:
   - __deny__: Wenn Nello einen Klingelton erkennt, die Tür jedoch weder durch ein Zeitfenster noch durch ein Homezone-Ereignis geöffnet wird.
@@ -83,7 +88,7 @@ Wenn Sie ioBroker.nello erfolgreich schnell eingerichtet haben, finden Sie Ihre 
 |:------- |:----- |:------------- |
 | Adresse | - | Adressdaten des Standorts |
 | Adresse | Adresse | Vollständige Adresse des Standorts |
-| Adresse | stadt | Stadt des Ortes |
+| Adresse | Stadt | Stadt des Ortes |
 | Adresse | Land | Land des Standorts |
 | Adresse | Zustand | Zustand des Standorts |
 | Adresse | Straße | Straße mit der Nummer des Ortes |
@@ -138,9 +143,9 @@ Der Adpater ioBroker.cloud / ioBroker.iot empfängt das Ereignis von nello und s
 1. Gehen Sie zu den Adaptereinstellungen von ioBroker.cloud und navigieren Sie zur Registerkarte _Services and IFTTT_.
 2. Fügen Sie den Begriff "_nello_" zur "_Weißliste für Dienste_" hinzu und kopieren Sie den Link für die benutzerdefinierten Dienste ("_Folgenden Link für benutzerdefinierten Dienst_ verwenden"), der wie "` `https://iobroker.net/service" aussieht / `` `.
 3. Fügen Sie `` `custom_nello``` hinzu (stellen Sie sicher, dass der Begriff, der an` `custom_``` angehängt ist, mit dem in Schritt 2 aufgeführten Wort übereinstimmt).
-4. Fügen Sie Ihren API-Schlüssel hinzu, sodass die URL möglicherweise wie folgt aussieht: https:// iobroker.net / service / custom_nello / xxxxxx```.
-5. Gehen Sie zur Konfiguration **nello adapter** und fügen Sie den Link in "_ioBroker.iot Service URL_" (in Option 1) ein.
-6. Speichern Sie die nello Adapter-Einstellungen und warten Sie, bis der Adapter (neu) gestartet wurde. Dann klingeln Sie an Ihrer Tür und überprüfen Sie, ob der Status von ioBroker.cloud erstellt wurde. Sie finden den Status "custom_nello" in den ioBroker-Objekten über "cloud.0.services".
+4. Fügen Sie Ihren API-Schlüssel hinzu, sodass die URL schließlich wie folgt aussieht: https:// iobroker.net / service / custom_nello / xxxxxx```.
+5. Wechseln Sie zu **nello adapter configuration** und fügen Sie den Link in "_ioBroker.iot Service URL_" (in Option 1) ein.
+6. Speichern Sie die nello Adapter-Einstellungen und warten Sie, bis der Adapter (neu) gestartet wurde. Rufen Sie dann an Ihrer Tür an und überprüfen Sie, ob der Status von ioBroker.cloud erstellt wurde. Den Zustand `` custom_nello``` finden Sie in den ioBroker-Objekten über `` cloud.0.services```.
 7. Nachdem der Status erfolgreich erstellt wurde, starten Sie den nello Adapter erneut, um sicherzustellen, dass der nello Adapter diesen neu erstellten Cloud-Status abonniert
 
 #### Option 2: DynDNS-URL
@@ -153,7 +158,7 @@ Wenn Sie keine DynDNS-Adresse und keine Ahnung haben, wovon ich spreche, lesen S
 3. Fertig. Sie haben jetzt zusätzliche Zustände in Ihrem Nello-Baum innerhalb des Kanals "Ereignisse" und alle Ereignisse werden in einen Zustand mit dem Namen "Feed" geschrieben.
 
 #### Log
-Unabhängig von der gewählten Option finden Sie bei erfolgreicher Einrichtung von ioBroker.nello zusätzlich Folgendes im ioBroker-Protokoll:
+Unabhängig von der von Ihnen gewählten Option finden Sie bei erfolgreicher Einrichtung von ioBroker.nello zusätzlich Folgendes im ioBroker-Protokoll:
 
 ```
 nello.0	2018-11-24 21:29:48.220	info	Listener attached to uri https://XXXX.XXXXX.XX:YYYY.
@@ -197,7 +202,7 @@ Wenn Sie ioBroker.nello erfolgreich für Fortgeschrittene eingerichtet haben, we
 
 ** Anmerkung: Sie werden _nur_ diese Zustände sehen, wenn Sie ioBroker.nello erfolgreich eingerichtet haben UND ein erstes Ereignis als erkannt (jemand hat an Ihrem geklingelt)! **
 
-Der Status "Feed" liefert eine JSON aller vom Webhook registrierten Ereignisse. Hierbei handelt es sich um ein Array von Objekten, bei denen jedes Objekt die folgenden Angaben enthält (Einzelheiten finden Sie unter https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/add-/-update-webhook):
+Der "Feed" -Status liefert eine JSON aller vom Webhook registrierten Ereignisse. Hierbei handelt es sich um ein Array von Objekten, bei denen jedes Objekt die folgenden Angaben enthält (Einzelheiten finden Sie unter https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/add-/-update-webhook):
 
 - **Aktion** Ablehnen, Streichen, Tw oder Geo
 - **Daten**:
@@ -265,14 +270,14 @@ Erstellen Sie nun ein neues Skript im Ordner "common" mit der Funktion:
 cloud('nello.0.#YOUR DOOR ID#._openDoor', 'Tür öffnen');
 ```
 
-Ersetzen Sie **# IHRE TÜR-ID #** (ersetzen Sie auch #) durch die ID der Tür, die Sie öffnen möchten. Sie finden die ID im Statusbaum von ioBroker.nello (Registerkarte "Objekte" von ioBroker).
+Ersetzen Sie **# YOUR DOOR ID #** (ersetzen Sie auch #) durch die ID der Tür, die Sie öffnen möchten. Sie finden die ID im ioBroker.nello-Statusbaum (Registerkarte "Objekte" von ioBroker).
 
-Suchen / entdecken Sie eventuell neue Geräte in Ihrer Alexa-App, erstellen Sie eine Routine in der Alexa-App (z. B. "Alexa, open door") und weisen Sie ihr den neu entdeckten Status zu. Fertig! Jetzt kannst du Alexa sagen, sie soll dir die Tür öffnen.
+Suchen / entdecken Sie eventuell neue Geräte in Ihrer Alexa-App, erstellen Sie eine Routine in der Alexa-App (z. B. "Alexa, open door") und weisen Sie ihr den neu entdeckten Status zu. Fertig! Jetzt kannst du Alexa sagen, dass sie dir die Tür öffnen soll.
 
 ### Lassen Sie sich von Alexa über den Türring informieren
 Dies erfordert den ioBroker-Adapter ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
 
-Um die Sprachausgabe von Alexa nutzen zu können, definieren wir eine Funktion ```say```. Platzieren Sie die folgende Funktion in einem Skript im "globalen" Ordner von ioBroker.javascript (Sie können sie in dieselbe wie oben platzieren). **WICHTIG** Ersetzen Sie #Ihre ALEXA ID # (auch # ersetzen) durch Ihre Alexa ID. Sie finden die Alexa ID im Objektbaum von ioBroker ```alexa2.0.Echo-Devices```.
+Um die Sprachausgabe von Alexa zu nutzen, definieren wir eine Funktion ```say```. Platzieren Sie die folgende Funktion in einem Skript im "globalen" Ordner von ioBroker.javascript (Sie können sie in dieselbe wie oben platzieren). **WICHTIG** Ersetzen Sie #Ihre ALEXA ID # (auch # ersetzen) durch Ihre Alexa ID. Sie finden die Alexa ID im Objektbaum von ioBroker ```alexa2.0.Echo-Devices```.
 
 ```javascript
 /**
@@ -295,7 +300,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 
 _ (aktualisiert am 18.11.2018, um die Sprachausgabe von mehreren alexa-Geräten gleichzeitig zu unterstützen) _
 
-Sie können diese Funktion in ioBroker.javascript verwenden, um eine Phrase mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
+Sie können diese Funktion in ioBroker.javascript verwenden, um einen Ausdruck mit Alexa ```say('Hello World')``` oder ```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])``` für die Sprachausgabe von mehreren Geräten auszusprechen.
 
 Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript (oder verwenden Sie das oben erstellte) und fügen Sie den folgenden Listener hinzu:
 
@@ -330,7 +335,7 @@ on({id: 'nello.0.ID.events.feed', change: 'any'}, function(obj)
 _ (aktualisiert am 02.01.2019, um auch die Geo-Option mit einer bestimmten Alexa-Phrase wiederzugeben) _
 
 Basierend auf der Aktion der Veranstaltung werden Sie von Alexa über das Öffnen der Tür oder das Erkennen der Türklingel informiert.
-** WICHTIG **: Ersetzen Sie #Ihre TÜR-ID # (auch #) durch Ihre Nelltür-ID.
+** WICHTIG **: Ersetzen Sie #Ihre Tür-ID # (auch #) durch Ihre Nello-Tür-ID.
 
 ### Lassen Sie sich von Telegram über den Klingelton informieren
 Dies erfordert den ioBroker-Adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram#iobroker-telegram-adapter).
@@ -394,7 +399,7 @@ Basierend auf der Aktion des Ereignisses informiert Sie Telegramm über das Öff
 ### Lassen Sie sich von farbigen Lampen über den Türring informieren
 Diese Funktionalität erfordert einen Adapter, der farbige / RGB-Lampen einstellen kann, z. ioBroker.hue (https://github.com/ioBroker/ioBroker.hue).
 
-Um die Farblampen verwenden zu können, müssen die Funktionen ```color``` und ```colors``` definiert werden. Platzieren Sie die folgenden Funktionen in einem Skript im "globalen" Ordner von ioBroker.javascript (Sie können sie in dieselbe wie oben platzieren):
+Um die Farblampen verwenden zu können, müssen die Funktionen ```color``` und ```colors``` definiert werden. Platzieren Sie die folgenden Funktionen in einem Skript in dem "globalen" Ordner von ioBroker.javascript (Sie können es in demselben wie oben platzieren):
 
 ```javascript
 /**
@@ -484,7 +489,7 @@ function colors(devices, hues, delay = 3000, start = 0)
 }
 ```
 
-_ (aktualisiert am 2019-01-20, um das Problem [# 11](https://github.com/Zefau/ioBroker.nello/issues/11) zu beheben) _
+_ (aktualisiert am 20.01.2019 zur Behebung des Problems [# 11](https://github.com/Zefau/ioBroker.nello/issues/11)) _
 
 Sie können diese Funktionen in ioBroker.javascript verwenden, um eine beliebige Lampe einzufärben, z. durch ```color('hue.0.Philips_hue.Lamp', {'r': 0, 'g': 255, 'b': 0})``` (Farbe grün) oder ```color(['hue.0.Philips_hue.Lamp1', 'hue.0.Philips_hue.Lamp2'], {'r': 0, 'g': 255, 'b': 0})```, um mehrere Geräte einzufärben.
 
@@ -533,7 +538,7 @@ on({id: 'nello.0.#YOUR DOOR ID#.events.feed', change: 'any'}, function(obj)
 ```
 
 Basierend auf der Aktion des Ereignisses werden die Lampen mit den definierten Werten gefärbt.
-** WICHTIG **: Ersetzen Sie ** # IHRE LAMPE # ** (auch # ersetzen) durch den Zustand der Lampe, die Sie färben möchten. Ersetzen Sie ** # IHRE TÜR-ID # ** (ersetzen Sie auch #) durch Ihre nello Tür-ID.
+** WICHTIG **: Ersetzen Sie ** # IHRE LAMPE # ** (auch # ersetzen) durch den Zustand der Lampe, die Sie färben möchten. Ersetzen Sie ** # IHRE TÜR-ID # ** (ersetzen Sie auch #) durch Ihre Nello-Tür-ID.
 
 ## Credits
 Icons von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> von <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com werden</a> von <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> lizenziert

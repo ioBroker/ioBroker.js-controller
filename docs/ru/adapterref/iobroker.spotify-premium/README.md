@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.spotify-premium/README.md
 title: ioBroker.spotify-премиум
-hash: VC8iDfuna8C9AU1rEvVR6IkgVHpMy0+A4FKZDg0ySI0=
+hash: n2jEQC0jrrFBhr1SjbtjlnpZnTo1ziQGAthZx8HKQc4=
 ---
 ![логотип](../../../en/adapterref/iobroker.spotify-premium/admin/spotify-premium.png)
 
@@ -33,6 +33,9 @@ hash: VC8iDfuna8C9AU1rEvVR6IkgVHpMy0+A4FKZDg0ySI0=
 9. браузер будет перенаправлен на неверный URL. Если возникает ошибка `неверный перенаправить URI`, пожалуйста, проверьте шаг 3
 10. скопируйте этот URL и поместите его в `spotify-premium.0.authorization.authorizationReturnUri`
 11. значение в `spotify-premium.0.authorization.authorized` становится равным true, если все прошло успешно
+
+#### [Видеоурок](https://www.youtube.com/watch?v=n0m9201qABU)
+[![Как авторизоваться] (https://img.youtube.com/vi/n0m9201qABU/0.jpg "https://www.youtube.com/watch?v=n0m9201qABU")](https://www.youtube.com/watch?v=n0m9201qABU)
 
 ### Состояния
 Все состояния описаны в админ.

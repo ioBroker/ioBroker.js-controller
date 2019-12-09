@@ -350,6 +350,9 @@ TODO:
 - dialogs
 
 ## Changelog
+### 1.4.5 (2019-12-08)
+* (bluefox) Allowed writeOnly states in telegram
+
 ### 1.4.4 (2019-11-27)
 * (bluefox) New sendTo message "ask" was added (see [Question](#question) )
 

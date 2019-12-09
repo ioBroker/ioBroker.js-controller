@@ -154,6 +154,9 @@ Following global Actions are current supported:
 
 ## Changelog
 
+### 2.0.0
+* (cburghardt) Added ldconfig to installation and upgraded openzwave. Fixes #99. Please run the permission fixer first.
+
 ### 1.7.2
 * (cburghardt) Fixed a crash
 

@@ -41,6 +41,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.1.3 (07.12.2019)
+* (Stübi) - Bugfixing. Add power state to Shelly dimmer in MQTT mode
+
 ### 3.1.2 (11.10.2019)
 * (Stübi) - Bugfixing. Error message will not only be shown in debug modus
 

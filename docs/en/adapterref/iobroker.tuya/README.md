@@ -72,6 +72,10 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
+### 3.1.12 (2019-12-07)
+* (Apollon77) New schemas added
+* (Apollon77) Dependency update
+
 ### 3.1.11 (2019-12-06)
 * (Apollon77) New schemas added
 * (Apollon77) Dependency update

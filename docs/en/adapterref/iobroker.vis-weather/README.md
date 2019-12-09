@@ -14,8 +14,6 @@ You need DasWetter-Adpater or weatherunderground-Adapter running as well...
 In weatherunderground you need forecast of next 36 hours enabled.
 In DasWetter.com you need one of four forecast data structures enabled. You can select the one you want to display. 
 
-
-
 ## Notes / wiki
 ### Define Forecast hours
 By default the forecast diagram shows 40 hours (DasWetter) or 36 hours (wunderground). If you prefer to only show e.g. 10 hours forecast, simply delete the unnecessary OIDs under oid_groups in vis-edit. 
@@ -24,16 +22,20 @@ By default the forecast diagram shows 40 hours (DasWetter) or 36 hours (wundergr
 Normally OID's will be created automatically when you select instance or data structure. When you get "no OID's available" then check whether you use "NextDaysDetailed" in DasWetter. 
 You might need to enable "NextDaysDetailed".
 
-
 ## known issues
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.vis-weather/issues) if you find bugs or whish new features
 
 ## Changelog
 
-### 2.4.1 (2019-12-05)
+### 2.5.1 (2019-12-08)
+* (René) alignment of bars with marking
+* (René) position of tick labels of Y axis changed
+
+### 2.5.0 (2019-12-07)
 * (René) see issue #20: scaling problem solved 
 * (René) see issue #22: bugfix colors for axis labeling 
 * (René) color adjustment for axis and tick lables 
+* (René) more adjustments for ticks on Y axis
 * (René) see issue #23: names for legend adjustable
 
 ### 2.4.0 (2019-10-31)

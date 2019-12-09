@@ -3,18 +3,23 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nello/README.md
 title: ioBroker.nello
-hash: sHOaOz5BHT+mJFohoByLSWXfJTnKJ3ic0dCYB0egWGo=
+hash: 9mYaOuhtrAZlJJyFGdwkd5IDvGd7MlrkrbIjH4DUI2U=
 ---
-![商标](../../../en/adapterref/iobroker.nello/admin/nello.png)
-
 ![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![安装数量](http://iobroker.live/badges/nello-installed.svg)
 ![稳定版](http://iobroker.live/badges/nello-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nello.svg)
 ![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.nello.svg?branch=master)
-![下载](https://img.shields.io/npm/dm/iobroker.nello.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.nello.svg)
 ![环保管理员徽章](https://badges.greenkeeper.io/Zefau/ioBroker.nello.svg)
 ![NPM](https://nodei.co/npm/iobroker.nello.png?downloads=true)
+
+：heavy_exclamation_mark：| ** nello API已关闭。**因此该适配器不起作用。
+------------ | -------------
+
+________________________
+
+![商标](../../../en/adapterref/iobroker.nello/admin/nello.png)
 
 ＃ioBroker.nello nello one可将您的对讲机与智能手机和Wi-Fi连接。该适配器使用官方API（https://nellopublicapi.docs.apiary.io/）将您的nello一个连接到ioBroker。
 开发人员可以通过https://github.com/Zefau/nello.io找到nello.io API的javascript实现。
@@ -32,8 +37,8 @@ hash: sHOaOz5BHT+mJFohoByLSWXfJTnKJ3ic0dCYB0egWGo=
 5. [使用ioBroker.javascript进行智能家居/ Alexa集成]（＃smart-home--alexa-integration-using-iobrokerjavascript）
    1. [使用Alexa打开门]（＃open-door-using-alexa）
    2. [让Alexa告知您有关门环的信息]（＃let-alexa-告知您关于门环的信息）
-   3. [让电报告知您有关门铃的信息]（＃let-telegram-inform-you-about-door-ring）
-   4. [让彩色灯通知您有关门环的信息]（＃letted彩色灯告知您关于门环的信息）
+   3. [让电报通知您有关门环的信息]（＃let-telegram-inform-you-about-door-ring）
+   4. [让彩色灯通知您有关门环的信息]（＃leted-colored-lamps通知您关于门环的信息）
 6. [学分]（＃credits）
 7. [变更日志]（＃changelog）
 8. [许可证]（＃license）
@@ -77,7 +82,7 @@ nello.0	2018-11-24 21:29:47.342	info	starting. Version X.X.X in /opt/iobroker/no
 ```
 
 ＃＃＃＃ 状态
-如果您成功快速设置ioBroker.nello，您将在“ ** nello.0。**”中找到您的门作为设备。门的格式为_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_。在每个设备内，创建以下通道和状态：
+如果成功快速设置ioBroker.nello，您将在“ ** nello.0。**”中找到您的门作为设备。门的格式为_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_。在每个设备中，创建以下通道和状态：
 
 |频道|州|描述 |
 |:------- |:----- |:------------- |
@@ -93,7 +98,7 @@ nello.0	2018-11-24 21:29:47.342	info	starting. Version X.X.X in /opt/iobroker/no
 | timeWindows | -|位置的时间窗|
 | timeWindows | indexedTimeWindows |所有时间窗的索引|
 | timeWindows | deleteAllTimeWindows |删除所有时间窗口|
-| timeWindows | **createTimeWindow** \ * |用于创建新时间窗口的JSON对象（[文档](#adding-a-new-time-window)）|
+| timeWindows | **createTimeWindow** \ * |用于创建新时间窗口的JSON对象（[文献资料](#adding-a-new-time-window)）|
 | timeWindows.0000000000000000000 | -|时间窗口：时间窗口的说明|
 | timeWindows.0000000000000000000 |启用|说明是否启用了时间窗口|
 | timeWindows.0000000000000000000 | icalObj |日历数据的JSON对象|
@@ -110,7 +115,7 @@ nello.0	2018-11-24 21:29:47.342	info	starting. Version X.X.X in /opt/iobroker/no
 
 \ * _突出显示的状态将在更改后触发/执行操作_
 
-**备注：如果您已成功快速设置ioBroker.nello，您将仅查看这些状态！**
+**备注：如果您已成功快速设置ioBroker.nello，您将仅查看那些状态！**
 
 ###高级设置
 ####选项1：ioBroker.cloud / ioBroker.iot自定义URL（推荐）
@@ -119,12 +124,12 @@ ioBroker.cloud / ioBroker.iot adpater将从nello接收事件并将其写入状�
 
 ##### IoBroker.iot
 1.转到ioBroker.iot的适配器设置，然后导航到_Services和IFTTT_选项卡。
-2.将术语“ _nello_”添加到“服务的_白名单_”，然后复制自定义服务的链接（“ _为自定义服务使用以下链接”），看起来像是“ https://service.iobroker.in / V1 / iotService？服务= custom_ <SERVICE_NAME> &key=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&user=email@domain.com&data= <SOME_TEXT>```。
+2.将术语“ _nello_”添加到“服务的_白名单_”，然后复制自定义服务的链接（“ _为自定义服务使用以下链接_”），其外观类似于“ https://service.iobroker.in / v1 / iotService？service = custom_ <SERVICE_NAME> &key=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&user=email@domain.com&data= <SOME_TEXT>`。
 
    ![第2步](../../../en/adapterref/iobroker.nello/screenshots/step-2.jpg)
 
 3.用服务名称“ custom_nello”替换“ custom_ <SERVICE_NAME>”（确保附加到“ custom_”的术语与步骤2中列入白名单的单词匹配）。此外，删除`＆data = <SOME_TEXT>`由于没有必要。
-4.转到“ nello适配器配置”，然后将链接粘贴到“ _ioBroker.iot服务URL _”（在选项1中）。
+4.转到** nello适配器配置**并将链接粘贴到“ _ioBroker.iot服务URL _”（在选项1中）。
 
    ![第四步](../../../en/adapterref/iobroker.nello/screenshots/step-4.jpg)
 
@@ -136,24 +141,24 @@ ioBroker.cloud / ioBroker.iot adpater将从nello接收事件并将其写入状�
 
 ##### IoBroker.cloud
 1.转到ioBroker.cloud的适配器设置，然后导航到_Services和IFTTT_选项卡。
-2.将术语“ _nello_”添加到“服务的_白名单_”，然后复制自定义服务的链接（“ _为自定义服务使用以下链接”），其外观类似于“ https://iobroker.net/service /```。
+2.将术语“ _nello_”添加到“服务的_白名单_”并复制自定义服务的链接（“ _为自定义服务使用以下链接_”），其外观类似于“ https://iobroker.net/service /```。
 3.添加“ custom_nello”（确保“ custom_`”后面的术语与步骤2中列入白名单的词匹配）。
 4.添加您的API密钥，因此URL最终看起来像是“ https：// iobroker.net / service / custom_nello / xxxxxx`”。
-5.转到** nello适配器配置**并将链接粘贴到“ _ioBroker.iot服务URL _”（在选项1中）。
+5.转到** nello适配器配置**，并将链接粘贴到“ _ioBroker.iot服务URL _”（在选项1中）。
 6.保存nello适配器设置，然后等待（重新）启动适配器。然后，在您的家门口响起并确认状态已由ioBroker.cloud创建。您可以通过“ cloud.0.services”在ioBroker对象中找到名为“ custom_nello”的状态。
 7.成功创建状态后，请再次重新启动nello适配器，以确保nello适配器订阅了此新创建的云状态
 
 ####选项2：DynDNS URL
 要接收事件（门铃），您也可以在ioBroker.nello适配器设置中提供一个外部URL（带有端口）。
 该URL（包括端口）将发送到nello API并进行注册。如果API注册了门铃，则API会将此信息推送到提供的URL。请参阅https://en.wikipedia.org/wiki/Webhook了解更多信息。
-如果您没有DynDNS地址，也不知道我在说什么，请参阅https://www.howtogeek.com/66438/how-to-easily-access-your-home-network-from-anywhere-与-DDNS /。
+如果您没有DynDNS地址，也不知道我在说什么，请参阅https://www.howtogeek.com/66438/how-to-e-easily-access-your-home-network-from-anywhere- with-ddns /。
 
 1.将包含您选择的端口的外部DynDNS地址放入ioBroker.nello适配器设置中
 2.在路由器中打开您选择的端口，并将其路由到ioBroker
 3.完成。现在，您的nello树中的“事件”通道中将具有其他状态，并且所有事件都被写入名为“ feed”的状态。
 
 ####日志
-独立于您选择的选项，如果成功成功设置了ioBroker.nello，您还将在ioBroker日志中找到以下内容：
+如果您成功地高级设置了ioBroker.nello，则与选择的选项无关，您还将在ioBroker日志中找到以下内容：
 
 ```
 nello.0	2018-11-24 21:29:48.220	info	Listener attached to uri https://XXXX.XXXXX.XX:YYYY.
@@ -190,14 +195,14 @@ nello.0	2018-11-24 21:38:48.322	info	Received data from the webhook listener (ac
 
 |频道|州|描述 |
 |:------- |:----- |:------------- |
-|大事记-|地点事件|
+|大事记-|活动地点|
 |大事记饲料活动提要/事件历史记录|
 |大事记refreshedDateTime |最后一个事件的DateTime |
 |大事记refreshedTimestamp |最后一个事件的时间戳|
 
-**备注：如果您已经成功进行了高级设置ioBroker.nello并确认了第一个事件（有人在打您的电话），您将_仅_看到那些状态！**
+**备注：如果您已成功成功设置ioBroker.nello并确认了第一个事件（有人在打您的电话），您将_仅_查看那些状态！**
 
-“提要”状态将提供Webhook注册的所有事件的JSON。这将是一个对象数组，每个对象都提供以下内容（有关详细信息，请参见https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/add-/-update-webhook）：
+“提要”状态将提供Webhook注册的所有事件的JSON。这将是一个对象数组，其中每个对象都提供以下内容（有关详细信息，请参阅https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/add-/-update-webhook）：
 
 -**操作**：拒绝，滑动，tw或geo
 -**数据**：
@@ -215,7 +220,7 @@ nello.0	2018-11-24 21:38:48.322	info	Received data from the webhook listener (ac
 {"name":"<NAME>","ical":"<iCal-String>"}
 ```
 
-可以在Nello API文档（https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/create-a-new-time-window）中找到iCal-String的格式。 **使用```\r\n```**分隔各个元素很重要。
+可以在Nello API文档（https://nellopublicapi.docs.apiary.io/#reference/0/locations-collection/create-a-new-time-window）中找到iCal-String的格式。 **使用§§JJJJJ_0_0§§**分隔各个元素很重要。
 
 时间窗口示例：
 
@@ -232,7 +237,7 @@ nello.0	2018-11-24 21:38:48.322	info	Received data from the webhook listener (ac
 ###使用Alexa打开门
 这需要ioBroker适配器ioBroker.cloud（https://github.com/ioBroker/ioBroker.cloud）。
 
-将以下函数保存在ioBroker的“脚本”选项卡的“全局”文件夹中的脚本中：
+在ioBroker的“脚本”选项卡的“全局”文件夹中的脚本中保存以下功能：
 
 ```javascript
 /**
@@ -267,7 +272,7 @@ cloud('nello.0.#YOUR DOOR ID#._openDoor', 'Tür öffnen');
 
 用您要打开的门的ID替换**＃YOUR DOOR ID＃**（还要替换＃）。您可以在ioBroker.nello状态树（ioBroker的“对象”选项卡）中找到ID。
 
-最终，在您的Alexa应用程序中搜索/发现新设备，并在Alexa应用程序中创建一个例程（例如“ Alexa，开门”）并将新发现的状态分配给它。完了！现在，您可以告诉Alexa为您打开门。
+最终，在您的Alexa应用程序中搜索/发现新设备，并在Alexa应用程序中创建一个例程（例如“ Alexa，开门”）并将新发现的状态分配给它。完蛋了！现在，您可以告诉Alexa为您打开门。
 
 ###让Alexa告知您有关门铃的信息
 这需要ioBroker适配器ioBroker.alexa2（https://github.com/Apollon77/ioBroker.alexa2）。
@@ -295,7 +300,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 
 _（于2018-11-18更新，一次支持从多个Alexa设备输出语音）_
 
-您可以在ioBroker.javascript中使用此功能，以使用Alexa```say('Hello World')```或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```的短语从多个设备输出语音。
+您可以在ioBroker.javascript中使用此功能，使用Alexa§§JJJJJ_0_0§或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```来说出短语，以从多个设备输出语音。
 
 在ioBroker.javascript的“ common”文件夹中创建一个脚本（或使用上面创建的脚本），然后向其中添加以下侦听器：
 
@@ -335,7 +340,7 @@ _（已于2019-01-02更新，以也反映具有特定Alexa短语的地理选项�
 ###让Telegram通知您有关门铃的信息
 这需要ioBroker适配器ioBroker.telegram（https://github.com/iobroker-community-adapters/ioBroker.telegram#iobroker-telegram-adapter）。
 
-为了使用Telegram Messenger，我们定义一个函数```msg```§。将以下函数放在ioBroker.javascript的“全局”文件夹中的脚本中（您可以将其放在与上面相同的位置）。
+为了使用Telegram Messenger，我们定义了一个函数```msg```§。将以下函数放在ioBroker.javascript的“全局”文件夹中的脚本中（您可以将其放在与上面相同的位置）。
 
 ```javascript
 /**
@@ -357,7 +362,7 @@ function msg(content, user = '')
 }
 ```
 
-您可以在ioBroker.javascript中使用此功能，以使用§§JJJJJ_0_0§§将任何内容发送到Telegram。您可以使用```msg('Hello World', 'User')```将内容发送给特定用户。
+您可以在ioBroker.javascript中使用此功能，使用§§JJJJJ_0_0§§将任何内容发送到Telegram。您可以使用```msg('Hello World', 'User')```将内容发送给特定用户。
 
 在ioBroker.javascript的“ common”文件夹中创建一个脚本（或使用上面创建的脚本），然后向其中添加以下侦听器：
 
@@ -536,7 +541,7 @@ on({id: 'nello.0.#YOUR DOOR ID#.events.feed', change: 'any'}, function(obj)
 **重要**：将**＃LAMP LAMP＃**（也替换为＃）替换为您要着色的灯的状态。用您的nello门ID替换**＃YOUR DOOR ID＃**（也请替换＃）。
 
 ##学分
-<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>从<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>制作的图标已获得<a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享BY 3.0" target="_blank">CC 3.0 BY</a>许可
+<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享BY 3.0" target="_blank">CC 3.0 BY</a>许可
 
 ## Changelog
 
