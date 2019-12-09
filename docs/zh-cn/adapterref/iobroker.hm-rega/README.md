@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
+hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ---
 ![徽标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -100,7 +100,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 第一个文件夹是CCU中包含的程序。
 
-CCU和信息文件夹包含网关的基本信息。
+CCU和info文件夹包含网关的基本信息。
 占空比的百分比（如果已激活）。
 
 最后，列出在CCU中创建的变量

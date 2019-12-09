@@ -182,6 +182,12 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.3.3 (09.12.2019)
+* (simatec) Fix Webinterface for Restore
+* (simatec) Fix MySql Backup
+* (simatec) Added some debug logs for Restore
+* (simatec) some Bug Fix
+
 ### 1.3.2 (04.12.2019)
 * (simatec) Add Webinterface for Restore
 * (simatec) Bug fix

@@ -4,7 +4,7 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/tutorial/restore.md
-hash: XRWMH0ssI6i1cdQZvkzC7mxxLOtV1gF9ARP8fTcBX78=
+hash: PdKXVqljYzqz8sIsT9661nR4t5rhUnRIN98FYdrp0w8=
 ---
 # Basics
 How to properly restore ioBroker installation on a Linux system?
@@ -12,7 +12,7 @@ How to properly restore ioBroker installation on a Linux system?
 ### Foreword:
 Since some users with a Restore do very hard, here is a step by step instructions for the restore after a crash, or even after a hardware change, system change or other help.
 
-Basically you can say one thing in advance: a restore is done in a few minutes if done correctly and nobody needs to be afraid.
+In principle, one can say one thing in advance: a restore is done with the right execution in a few minutes and nobody needs to be afraid.
 
 At the end, all data is available again and a new system has been set up.
 
@@ -36,7 +36,7 @@ Objects type: redis
 States  type: redis
 ```
 
-If objects type and / or states are "redis", you must install the Redis server on the new system.
+If objects type and / or states type "redis", you must install the Redis server on the new system.
 If both types are "file", then the Redis server is not needed.
 
 If you no longer have access to the old system and you do not know what was previously configured, then install in any case the Redis server in advance.
@@ -135,7 +135,7 @@ In the instances you can see which adapters are installed so gradually.
 All adapters that are still in the installation or in the waiting loop do not have an icon in the instances yet.
 Please do not restart ioBroker, at most occasionally update the view with F5 until all instances have an icon.
 
-Depending on the size of the installation and speed of your computer and the internet connection, this can easily take 2-3 hours.
+Depending on the size of the installation and speed of your computer and the Internet connection, this can easily take 2-3 hours.
 
 Congratulations, now the newly installed system is done with all settings, scripts, visualizations, etc.
 
@@ -175,7 +175,7 @@ Afterwards please check if everything is stopped with the following commands:
 iobroker status
 ```
 
-If all issues are correct and iobroker has been stopped, the following commands can be used to restore the console:
+If all issues are correct and iobroker has been stopped, you can now restore the console using the following commands:
 
 ```
 cd /opt/iobroker
@@ -202,6 +202,6 @@ Now it is done and the system is reinstalled and all settings, scripts, visualiz
 
 ### Conclusion:
 Basically, both variants lead to the same result.
-If you have little experience with terminal commands and feel insecure, then Backitup is on the safe side.
+If you have little experience with terminal commands and feel insecure, then you're on the safe side with Backitup.
 
 However, if you want to see exactly what is happening on your system, you should choose the manual version via the console. Here you can see every single process in detail in the terminal.

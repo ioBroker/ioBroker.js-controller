@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
+hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -77,7 +77,7 @@ Here the user can specify which information is taken over by the CCU in ioBroker
 - Names: Activates the transfer of the plaintext names of the data points from the CCU
 - Favorites: Activates the acquisition and listing of favorites
 - Rooms: Activates the takeover of the rooms and a listing of them
-- Trades: Activates the acquisition of the trades and a listing of the same
+- Trades: Activates the acquisition of trades and a listing of the same
 
 ### Additional Settings area
 Here the user can decide whether https (encrypted and secure connection) should be used. If enabled, the user name and password are required

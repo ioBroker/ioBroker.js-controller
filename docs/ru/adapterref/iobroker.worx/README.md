@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: flLd7JA0Bb7FWP3vBgHH5/HsmNefVJVTVeyA2Y1UDS0=
+hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 ---
 ![логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
@@ -27,7 +27,7 @@ hash: flLd7JA0Bb7FWP3vBgHH5/HsmNefVJVTVeyA2Y1UDS0=
 <img src="admin/worx_ada2.png" alt="рисунок" width="100%"/>
 
 ## Настройки
-- для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи WORX в конфигурации.
+- для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи worx в Конфиг.
 - Задержка срезания кромки: если срез кромки начинается по кривой или изгибу, газонокосилка может потерять провод и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой начинают вращаться лопасти.
 
 ## Changelog

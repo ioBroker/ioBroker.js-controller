@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: nhbMa+lLhoap/A+aaH1qqjxnKQEuPNVQ0E2CnClJ1bU=
+hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -108,8 +108,9 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 
 * Heizungssteuerung.0.Präsent
 * Heizungssteuerung.0.Ferienpräsent
-* heizungsregelung.0.Ferienabsent
+* Heizungsregelung.0.VacationAbsent
 * HeizungControl.0.GuestsPresent
+* heizungssteuerung.0.PartyNow
 
 ## Bedarf
 * Node Version 8 oder höher ist erforderlich
@@ -120,8 +121,9 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ## Changelog
 
 ### 0.3.8 (2019-12-xx)
-* (René) see issue  #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
+* (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
+* (René) if useAcors: show how many actors are active (as a datapoint)
 
 
 ### 0.3.7 (2019-11-29)
