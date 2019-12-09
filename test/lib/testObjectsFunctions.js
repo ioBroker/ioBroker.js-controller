@@ -443,6 +443,86 @@ function register(it, expect, context) {
         });
     });
 
+    // setForeignObject merge of custom settings
+    it(testName + 'Try to merge custom settings', done => {
+        context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+                common: {
+                    name: 'Some name',
+                    custom: {
+                        history: {enabled: true}
+                    }
+                },
+                native: {
+                    ppparam: 11
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+                context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+                    common: {
+                        name: 'Some name',
+                        custom: {
+                            material: {enabled: true}
+                        }
+                    },
+                    native: {
+                        ppparam: 12
+                    },
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.null;
+                    context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
+                        expect(err).to.be.null;
+
+                        expect(obj1.common.custom.material).to.be.ok;
+                        expect(obj1.common.custom.history).to.be.ok;
+                        done();
+                    });
+                });
+            });
+    });
+
+    // setForeignObject merge of custom settings
+    it(testName + 'Try to delete custom settings', done => {
+        context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+                common: {
+                    name: 'Some name',
+                    custom: {
+                        history: {enabled: true}
+                    }
+                },
+                native: {
+                    ppparam: 11
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+                context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+                    common: {
+                        name: 'Some name',
+                        custom: {
+                            material: null,
+                            history: null,
+                        }
+                    },
+                    native: {
+                        ppparam: 12
+                    },
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.null;
+                    context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
+                        expect(err).to.be.null;
+
+                        expect(obj1.common.custom).to.be.not.ok;
+                        done();
+                    });
+                });
+            });
+    });
+
     // getObjectView
     it(testName + 'Try to get object view', done => {
         // create the view
