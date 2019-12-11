@@ -13,6 +13,9 @@ This adapter allows to communicate with a HomematicIP CloudAccessPoint via the R
 ## Installation
 This Adapter needs node-js in version >= 8.6
 
+Here a Step-by-Step Installation Video on YouTube 
+https://youtu.be/kXWfJRUYJIA
+
 ## Info
 
 Most Homematic IP devices are already working with the latest adapter version. 
@@ -37,7 +40,7 @@ For example direct connections between devices have no events in the app and can
 to coreGreenberet for his python lib (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Diskussion in ioBroker Forum
-https://forum.iobroker.net/viewtopic.php?f=36&t=21000#p220517
+https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 
 ## Adapter Request auf GitHub
 https://github.com/ioBroker/AdapterRequests/issues/62

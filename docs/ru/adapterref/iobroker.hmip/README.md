@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Облако Адаптер AccessPoint
-hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
+hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 ---
 ![логотип](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -14,17 +14,19 @@ hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
-# IoBroker Адаптер HomeMatic IP Cloud AccessPoint
+# IoBroker Адаптер точки доступа HomeMatic IP CloudPoint
 ## Описание
 Этот адаптер позволяет обмениваться данными с HomematicIP CloudAccessPoint через API отдыха Homematic IP Cloud.
 
-## Монтаж
+## Установка
 Этому адаптеру нужны node-js в версии> = 8.6
+
+Вот пошаговое видео по установке на YouTube https://youtu.be/kXWfJRUYJIA
 
 ## Информация
 Большинство IP-устройств Homematic уже работают с последней версией адаптера.
 
-Я буду улучшать это постоянно, но это займет время. Любая помощь от сообщества, например, Запрос на тягу будет высоко оценен.
+Я буду постоянно его улучшать, но это займет время. Любая помощь от сообщества, например, Запрос на тягу будет высоко оценен.
 
 Для не работающих устройств HmIP, пожалуйста, создайте проблему с этой информацией (пожалуйста, по одному на устройство и, если возможно, техническое имя в теме).
 Переключите регистрацию адаптера в ioBroker в глупый режим и добавьте json устройства, которое напечатано в журнал в выпуске.
@@ -39,16 +41,22 @@ hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
 ## Настройки
 * введите свой SGTIN (задняя часть точки доступа) и PIN-код (если он был установлен ранее) и подтвердите данные нажатием синей светодиодной кнопки. Это создаст токен аутентификации.
 
-## Спасибо
+## Благодарность
 в coreGreenberet за его библиотеку Python (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Дискуссия в форуме ioBroker
-https://forum.iobroker.net/viewtopic.php?f=36&t=21000#p220517
+https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 
 ## Запрос адаптера на GitHub
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 0.0.12
+* (jogibear9988) multiple fixes
+
+### 0.0.11
+* (jogibear9988) multiple fixes
 
 ### 0.0.10
 * (jogibear9988) added ping/pong, enable setBoots, more units, more hardware

@@ -33,7 +33,7 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 
 ## Changelog
-### 1.0.2 (2019-10-xx)
+### 1.0.2 (2019-10-22)
 * (Peter Müller) Minimum required js-conntroller version is now 1.5.7
 
 ### 1.0.1 (2019-10-14)

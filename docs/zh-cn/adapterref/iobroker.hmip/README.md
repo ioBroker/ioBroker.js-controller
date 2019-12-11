@@ -2,53 +2,61 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hmip/README.md
-title: ioBroker HomeMatic IP云AccessPoint适配器
-hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
+title: ioBroker HomeMatic IP Cloud AccessPoint适配器
+hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 ---
 ![商标](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
 ![安装数量](http://iobroker.live/badges/hmip-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hmip.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.hmip.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![建立状态](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 ＃ioBroker HomeMatic IP Cloud AccessPoint适配器
 ##说明
-此适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint进行通信
+该适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint通信
 
 ##安装
-此适配器需要版本> = 8.6的node-js
+此适配器需要版本大于等于8.6的node-js
+
+这是YouTube上的分步安装视频https://youtu.be/kXWfJRUYJIA
 
 ##信息
 大多数Homematic IP设备已经在使用最新的适配器版本。
 
-我会不断改进它，但这需要时间。通过例如社区提供的任何帮助Pull Request将受到高度赞赏。
+我会不断改进它，但是这需要时间。社区的任何帮助，例如拉取请求将不胜感激。
 
-如果没有使用HmIP设备，请使用此信息创建一个问题（请为每个设备提供一个问题，如果可能，请在主题中提供技术名称）。
-将ioBroker中的适配器登录切换到愚蠢模式，并将打印到设备的json添加到问题中的日志中。
-我可能还需要一个状态变化的json。
+对于无法正常使用的HmIP设备，请创建与此信息有关的问题（每台设备一个，如果可能，请在主题中提供技术名称）。
+将在ioBroker中登录的适配器切换为傻模式，并将打印的设备的json添加到问题中的日志中。
+我可能还需要状态更改的json。
 
 谢谢
 
-##重要信息可以使用此适配器完成的任务
-！您只能使用此适配器触发事件，可通过原始Homematic IP应用程序触发。
-例如，设备之间的直接连接在应用程序中没有事件，也不能通过此适配器触发！
+##重要信息此适配器可以做什么
+!!!您只能使用可通过原始Homematic IP应用程序触发的此适配器来触发事件。
+例如，设备之间的直接连接在应用程序中没有事件，也无法通过此适配器触发！！！
 
 ##设置
-*输入您的SGTIN（接入点后面）和PIN（如果之前设置），并通过按下蓝色LED按钮验证数据。这将创建一个身份验证令牌。
+*输入您的SGTIN（接入点的背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮验证数据。这将创建一个身份验证令牌。
 
 ＃＃ 谢谢
-到coreGreenberet为他的python lib（https://github.com/coreGreenberet/homematicip-rest-api）
+向coreGreenberet获取他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
 
-## Diskussion in ioBroker Forum
-https://forum.iobroker.net/viewtopic.php?f=36&t=21000#p220517
+## IoBroker论坛中的Diskussion
+https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 
-## Adapter Request auf GitHub
+##适配器请求auf GitHub
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 0.0.12
+* (jogibear9988) multiple fixes
+
+### 0.0.11
+* (jogibear9988) multiple fixes
 
 ### 0.0.10
 * (jogibear9988) added ping/pong, enable setBoots, more units, more hardware

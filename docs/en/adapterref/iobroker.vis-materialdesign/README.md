@@ -251,6 +251,12 @@ Working Widget Example can be found [here](https://forum.iobroker.net/topic/2619
 
 ## Changelog
 
+### 0.2.9
+* (Scrounger): translations added
+* (Scrounger): select Widget: color options added
+* (Scrounger): slider Widget: color options added
+* (Scrounger): bug fixes
+
 ### 0.2.7
 * (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
 * (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set

@@ -2,53 +2,61 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
-title: ioBroker HomeMatic IP-Cloud-AccessPoint-Adapter
-hash: fS8rqMEwf/UAtQcMWUi7uOElSKwPS3muB8UHLj9b3I4=
+title: ioBroker HomeMatic IP Cloud AccessPoint-Adapter
+hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hmip-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hmip.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)
-![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
+![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
-# IoBroker HomeMatic IP Cloud AccessPoint Adapter
+# IoBroker HomeMatic IP Cloud AccessPoint-Adapter
 ## Beschreibung
 Dieser Adapter ermöglicht die Kommunikation mit einem HomematicIP CloudAccessPoint über die Rest-API der Homematic IP Cloud
 
 ## Installation
-Dieser Adapter benötigt Node-js in Version> = 8.6
+Dieser Adapter benötigt Node-Js in Version> = 8.6
+
+Hier ein schrittweises Installationsvideo auf YouTube https://youtu.be/kXWfJRUYJIA
 
 ## Info
 Die meisten Homematic IP-Geräte arbeiten bereits mit der neuesten Adapterversion.
 
-Ich werde es ständig verbessern, aber es wird Zeit brauchen. Jede Hilfe von der Community durch z. Pull Request wäre sehr dankbar.
+Ich werde es ständig verbessern, aber es wird einige Zeit dauern. Jede Hilfe von der Gemeinschaft durch z.B. Pull Request wäre sehr dankbar.
 
-Für nicht funktionierende HmIP-Geräte legen Sie bitte ein Problem mit dieser Information an (bitte eines pro Gerät und wenn möglich den technischen Namen im Betreff).
-Wechseln Sie die Adapterprotokollierung in ioBroker in den Silly-Modus und fügen Sie den Json des Geräts hinzu, der in der Protokolldatei in der Ausgabe gedruckt wird.
-Ich brauche vielleicht auch einen Json einer Zustandsänderung.
+Wenn HmIP-Geräte nicht funktionieren, erstellen Sie bitte ein Problem mit dieser Information (bitte eine pro Gerät und wenn möglich den technischen Namen im Betreff).
+Schalten Sie die Adapterprotokollierung in ioBroker in den Silly-Modus und fügen Sie den JSON-Wert des Geräts hinzu, der im Protokoll des Problems gedruckt wird.
+Möglicherweise brauche ich auch einen Statuswechsel.
 
 Vielen Dank
 
-## Wichtige Informationen, was mit diesem Adapter gemacht werden kann
-!!! Sie können mit diesem Adapter nur Ereignisse auslösen, die über die ursprüngliche IP-App von Homematic ausgelöst werden können.
-Beispielsweise haben direkte Verbindungen zwischen Geräten keine Ereignisse in der App und können auch nicht durch diesen Adapter ausgelöst werden !!!
+## Wichtige Info, was mit diesem Adapter gemacht werden kann
+!!! Sie können mit diesem Adapter nur Ereignisse auslösen, die über die ursprüngliche Homematic IP-App ausgelöst werden können.
+Beispielsweise haben direkte Verbindungen zwischen Geräten keine Ereignisse in der App und können auch nicht über diesen Adapter ausgelöst werden !!!
 
 ## Die Einstellungen
-* Geben Sie Ihre SGTIN (Rückseite des Zugangspunkts) und die PIN (falls zuvor festgelegt) ein, und bestätigen Sie die Daten durch Drücken der blauen LED-Taste. Dadurch wird ein Authentifizierungstoken erstellt.
+* Geben Sie Ihre SGTIN (Rückseite des Access Points) und die PIN (falls zuvor festgelegt) ein und bestätigen Sie die Daten durch Drücken der blauen LED-Taste. Dadurch wird ein Authentifizierungstoken erstellt.
 
 ## Vielen Dank
-zu coreGreenberet für seine Python-Bibliothek (https://github.com/coreGreenberet/homematicip-rest-api)
+an coreGreenberet für seine Python-Bibliothek (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Diskussion im ioBroker Forum
-https://forum.iobroker.net/viewtopic.php?f=36&t=21000#p220517
+https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 
 ## Adapter Request auf GitHub
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 0.0.12
+* (jogibear9988) multiple fixes
+
+### 0.0.11
+* (jogibear9988) multiple fixes
 
 ### 0.0.10
 * (jogibear9988) added ping/pong, enable setBoots, more units, more hardware

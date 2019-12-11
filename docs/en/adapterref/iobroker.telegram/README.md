@@ -350,7 +350,7 @@ TODO:
 - dialogs
 
 ## Changelog
-### 1.4.5 (2019-12-08)
+### 1.4.6 (2019-12-09)
 * (bluefox) Allowed writeOnly states in telegram
 
 ### 1.4.4 (2019-11-27)
