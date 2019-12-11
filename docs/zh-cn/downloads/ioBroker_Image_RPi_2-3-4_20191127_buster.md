@@ -3,13 +3,13 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/downloads/ioBroker_Image_RPi_2-3-4_20191127_buster.md
 title: Raspberry Pi2 / 3/4 Buster的ioBroker图像20191127
-hash: FK1FYRcyPvZIVS+M8eiw+wTnwmhbNAjRkBIsAXN23OA=
+hash: NpNX09q/cxysJvJptolRsFtxi4rBhgFAkCb+5zdnbJo=
 ---
 ＃ioBroker图像用于Raspberry Pi2 / 3/4 Buster 20191127
 ##创建μ-SD卡
 这是Raspberry Pi2，Pi3，Pi3 B +或Pi4的SD卡映像。
 
-该映像是在具有4GB RAM的Raspberry Pi4上创建的，但也应在所有提及的映像上运行。适用于8 GB及更大的卡。但是，建议的最小大小为16 GB。
+该映像是在具有4GB RAM的Raspberry Pi4上创建的，但也应在所有提及的映像上运行。它适用于8 GB和更大的卡。但是，建议的最小大小为16 GB。
 还是建议使用16GB卡，这样一来，描述的单元格就不会总是相同。
 
 将图像解压缩，然后使用Balena Etcher程序将其写入SD卡。 Etcher可用于不同的操作系统。
@@ -24,7 +24,7 @@ hash: FK1FYRcyPvZIVS+M8eiw+wTnwmhbNAjRkBIsAXN23OA=
 *用户：`pi`，
 *密码：`raspberry`
 
-截至2019年11月27日，Node-js已安装在10.17.0版中，当然还有iobroker通过js-controller **v2.1.1** 安装程序进行安装。
+截至2019年11月27日，Node-js已安装在版本10.17.0中，当然还有iobroker在安装程序上通过js-controller **v2.1.1** 装。
 
 这是仅包含管理，信息和发现适配器的**最小安装**。
 仍然必须创建和配置其他适配器及其实例。
@@ -38,7 +38,15 @@ hash: FK1FYRcyPvZIVS+M8eiw+wTnwmhbNAjRkBIsAXN23OA=
 ##第一次启动后
 Rapberry Pi首次启动后，请使用`sudo raspi-config`进行以下设置：
 
-点1：`Change User passwort`（分配给用户的专有密码`Pi`）点2：`Network Options – Hostname`（如有必要，请更改Raspberry Pi的名称）如果更改了主机名，则默认值为`raspberrypi`是，然后请在控制台中的安装目录`iobroker host this`中输入第7点：`Advanced Options – Expand filesystem`（将根文件系统扩展到使用的SD卡的最大大小）可能仍在第4点：§§SSSSS_6§进行调整。默认设置适用于德国
+*第1点：“更改用户密码”（分配给用户Pi的自己的密码）
+
+*第2点：“网络选项-主机名”（更改Raspberry Pi的名称，默认为raspberrypi`）
+
+如果主机名更改，请在安装目录的控制台中输入`iobroker host this`
+
+*第7点：“高级选项-扩展文件系统”（将根文件系统扩展到所用SD卡的最大大小）
+
+*如有必要，仍在第4点：“本地化选项”中进行调整。默认设置适用于德国
 
 ##系统更新
 由于自下载时创建映像以来可能已有一段时间，因此您应该首先更新系统。

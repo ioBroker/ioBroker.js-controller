@@ -41,6 +41,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.1.4 (11.12.2019)
+* (Stübi) - Bugfixing, auto update new firmware
+
 ### 3.1.3 (07.12.2019)
 * (Stübi) - Bugfixing. Add power state to Shelly dimmer in MQTT mode
 

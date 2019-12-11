@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/downloads/ioBroker_Image_RPi_2-3-4_20191127_buster.md
 title: ioBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
-hash: FK1FYRcyPvZIVS+M8eiw+wTnwmhbNAjRkBIsAXN23OA=
+hash: NpNX09q/cxysJvJptolRsFtxi4rBhgFAkCb+5zdnbJo=
 ---
 # IoBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
 ## Creating a μ-SD card
@@ -38,7 +38,15 @@ The image is localized for Germany. If using in other environments please adjust
 ## After the first start
 After the first start of the Rapberry Pi, please make the following settings with `sudo raspi-config`:
 
-Point 1: `Change User passwort` (Own password assigned to the user `Pi`) Point 2: `Network Options – Hostname` (change the name of the Raspberry Pi if necessary) The default is `raspberrypi`) if the host name is changed is, please then in the console in the installation directory `iobroker host this` enter point 7: `Advanced Options – Expand filesystem` (Extend the root filesystem up to the maximum size of the SD card used) possibly still under point 4: §§SSSSS_6§ § Make adjustments. The default settings apply to Germany
+* Point 1: `Change User password` (own password for the user` Pi` assigned)
+
+* Point 2: `Network Options - Hostname` (change the name of the Raspberry Pi, default is` raspberrypi`)
+
+If the hostname is changed, please enter `iobroker host this` in the console in the installation directory
+
+* Item 7: `Advanced Options - Expand filesystem` (Extend the root filesystem up to the maximum size of the used SD card)
+
+* if necessary still under point 4: `Localization Options` make adjustments. The default settings apply to Germany
 
 ## System Update
 As it may have been some time since the image was created at the time of the download, you should first update the system.
@@ -47,7 +55,7 @@ To bring Linux and nodejs up to date versions, you can do the following on the c
 
 ```sudo apt-get update && sudo apt-get upgrade -y```
 
-In addition, you should check whether there are already updates to the already installed adapters and the js controller (see tab Hosts).
+In addition, you should check whether there are already updates to the already installed adapters and the js-controller (see tab Hosts).
 
 In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already pre-installed.
 
