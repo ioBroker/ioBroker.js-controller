@@ -36,11 +36,14 @@ Das Image ist für Deutschland lokalisiert. Bei Nutzung in anderen Umgebungen bi
 ## Nach dem ersten Start
 Nach dem ersten Starten des Rapberry Pi bitte mit `sudo raspi-config` folgende Einstellungen vornehmen:
 
-Punkt 1: `Change User passwort` (Eigenes Passwort für den User `Pi` vergeben)
-Punkt 2: `Network Options – Hostname` (Namen des Raspberry Pi ggf. ändern. Vorgabe ist `raspberrypi`)
+* Punkt 1: `Change User passwort` (Eigenes Passwort für den User `Pi` vergeben)
+
+* Punkt 2: `Network Options – Hostname` (Namen des Raspberry Pi ggf. ändern. Vorgabe ist `raspberrypi`)
 wenn der Hostname geändert wird, bitte anschließend in der Konsole im Installationsverzeichnis `iobroker host this` eingeben
-Punkt 7: `Advanced Options – Expand filesystem` (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
-ggf. noch unter Punkt 4: `Localisation Options` Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
+
+* Punkt 7: `Advanced Options – Expand filesystem` (Erweitern des root-filesystems bis zur maximalen Größe der verwendeten SD-Karte)
+
+* ggf. noch unter Punkt 4: `Localisation Options` Anpassungen vornehmen. Die Voreinstellungen gelten für Deutschland
  
 
  
