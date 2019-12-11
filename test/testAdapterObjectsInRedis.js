@@ -18,7 +18,7 @@ if (!isExecute) {
         isExecute = !!path;
     } catch (e) { /* OK */ }
 }
-const   context  = {
+const context = {
     objects: null,
     name: textName
 };

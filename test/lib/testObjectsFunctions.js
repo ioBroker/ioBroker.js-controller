@@ -485,7 +485,8 @@ function register(it, expect, context) {
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to delete custom settings', done => {
-        context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+        const id = context.adapterShortName + '.0.' + gid;
+        context.adapter.setForeignObject(id, {
                 common: {
                     name: 'Some name',
                     custom: {
@@ -499,21 +500,64 @@ function register(it, expect, context) {
             },
             err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+                context.adapter.setForeignObject(id, {
                     common: {
                         name: 'Some name',
+                        desc: 'Hello',
                         custom: {
                             material: null,
                             history: null,
                         }
                     },
                     native: {
-                        ppparam: 12
+                        bluefox: 14
                     },
                     type: 'state'
                 }, err => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
+                    context.adapter.getForeignObject(id, (err, obj1) => {
+                        expect(err).to.be.null;
+
+                        expect(obj1.common.custom).to.be.not.ok;
+                        done();
+                    });
+                });
+            });
+    });
+
+    // setForeignObject merge of custom settings
+    it(testName + 'Try to delete custom settings in new object', done => {
+        const id = context.adapterShortName + '.0.' + gid + '6';
+        context.adapter.setForeignObject(id, {
+                common: {
+                    name: 'Some name',
+                    custom: {
+                        history: {enabled: true}
+                    }
+                },
+                native: {
+                    ppparam: 11
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+                context.adapter.setForeignObject(id, {
+                    common: {
+                        name: 'Some name',
+                        desc: 'Hello',
+                        custom: {
+                            material: null,
+                            history: null,
+                        }
+                    },
+                    native: {
+                        bluefox: 14
+                    },
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.null;
+                    context.adapter.getForeignObject(id, (err, obj1) => {
                         expect(err).to.be.null;
 
                         expect(obj1.common.custom).to.be.not.ok;

@@ -10,12 +10,11 @@ let   objects  = null;
 let   states   = null;
 const textName = 'File';
 const tests    = require('./lib/testObjects');
-const   context  = {
+const context  = {
     objects: null,
     name: textName
 };
-
-describe(textName + ' Test Objects File-SocketIo', function() {
+describe(textName + ' Test Objects File-SocketIo', function () {
     before(textName + ' Start js-controller', function (_done) {
         this.timeout(2000);
 
