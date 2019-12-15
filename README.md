@@ -16,7 +16,6 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 * [Changelog](CHANGELOG.md)
 * Official web site: https://www.iobroker.net
 * Forum: https://forum.iobroker.net
-* ioBroker wiki: https://github.com/ioBroker/ioBroker/wiki/Home-(English)
 * Explanation of the concept: https://github.com/iobroker/iobroker
 
 ----------------------------------------------------------------------
