@@ -21,7 +21,7 @@
     "debug": "^4.1.1",
     "decache": "^4.5.1",
     "event-stream": "^4.0.1",
-    "iobroker.objects-redis": "^1.2.12",
+    "iobroker.objects-redis": "^1.2.13",
     "ioredis": "^4.14.1",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.2.2",
@@ -42,7 +42,7 @@
     "socket.io-client": "2.3.0",
     "tar": "^5.0.5",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^4.3.0",
+    "winston-daily-rotate-file": "^4.4.0",
     "yargs": "^15.0.2"
   },
   "devDependencies": {

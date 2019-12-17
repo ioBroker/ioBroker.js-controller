@@ -3873,6 +3873,8 @@ function init(compactGroupId) {
 
     process.on('uncaughtException', err => {
         if (compactGroupController) {
+            console.error(err.message || err);
+            if (err.stack) console.error(err.stack);
             stop();
             return;
         }
