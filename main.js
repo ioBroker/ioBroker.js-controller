@@ -3194,7 +3194,7 @@ function startInstance(id, wakeUp) {
                 }
 
                 if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix, expire: 180}); // give 180 seconds to terminate
                 }
 
                 // catch error output
