@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-Wetter
-hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
+hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,7 +14,11 @@ hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground an. Sie benötigen den DasWetter-Adpater oder Weatherunderground-Adapter, der ebenfalls ausgeführt wird ...
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
+Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground
 
 Bei schlechtem Wetter müssen Sie die Vorhersage für die nächsten 36 Stunden aktivieren.
 In DasWetter.com muss eine von vier Prognosedatenstrukturen aktiviert sein. Sie können den anzuzeigenden auswählen.
@@ -31,6 +35,10 @@ Möglicherweise müssen Sie "NextDaysDetailed" aktivieren.
 * Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
+
+
+### 2.5.2 (2019-12-xx)
+* (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
 * (René) alignment of bars with marking

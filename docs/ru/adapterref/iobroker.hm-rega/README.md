@@ -108,7 +108,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ### FAQ
 
 ## Changelog
-### 2.5.0 (2019-12-05)
+### 2.5.1 (2019-12-14)
 * (foxriver76) no longer use adapter.objects
 * (foxriver76) js-controller v > 2 required
 

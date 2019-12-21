@@ -29,6 +29,9 @@ Der Adapter startet jeden Tag um Mitternacht. Ein häufigeres Starten ist nicht 
 Es können natürlich weitere Instanzen des Adapters mit abweichenden Feiertagsauswahlen angelegt werden. So kann man z.B. die unterschiedlichen Anforderungen bei Feiertagsarbeitern abdecken. Eine Beispielanwendung ist der [Shuttercontrol Adapter](https://github.com/simatec/ioBroker.shuttercontrol/blob/master/docs/de/shuttercontrol.md#extra-einstellungen)
 
 ## Changelog
+### 1.0.14 (2019-12-19)
+* (pix) National day in Switzerland added
+
 ### 1.0.13 (2019-09-20)
 * (pix) Offsets corrected
 

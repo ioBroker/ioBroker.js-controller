@@ -3,13 +3,12 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
+hash: n1lrpEniOSNdTJPhXYpr74N+pzHkxWVNnX3UPJa37bc=
 ---
 ![логотип](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
-![Статус сборки Трэвис](https://travis-ci.org/foxriver76/ioBroker.bring.svg?branch=master)
-![Статус сборки](https://ci.appveyor.com/api/projects/status/r7whpsbjfqn18toe/branch/master?svg=true)
-![Количество установок](http://iobroker.live/badges/bring-stable.svg)
+![Количество установок](http://iobroker.live/badges/bring-installed.svg)
+![Стабильная версия](http://iobroker.live/badges/bring-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.bring.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.bring.svg)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
@@ -17,6 +16,8 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 
 # IoBroker.bring
 ===========================
+
+![Статус сборки](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
 
 ## Состояния
 Описание созданных состояний см. Ниже.
@@ -47,7 +48,7 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые в настоящее время находятся в вашем списке покупок.
+*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые в настоящее время находятся в вашем списке покупок.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *list* .recentContent / *list* .recentContentHtml / NoHead
@@ -56,7 +57,7 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые недавно были в вашем списке покупок.
+*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит элементы, которые недавно были в вашем списке покупок.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *список* .removeItem
@@ -96,7 +97,7 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строки JSON / HTML, отформатированные в виде списка или HTML-таблицы. Содержит пользователей, которые являются частью списка покупок, а также их адрес электронной почты.
+*Только для чтения строки json / html, отформатированные в виде списка или HTML-таблицы. Содержит пользователей, которые являются частью списка покупок, а также их адрес электронной почты.
 Таблицы NoHead Html не содержат заголовков таблиц.*
 
 * *список* .count
@@ -105,7 +106,7 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Номер | R |
 
-   *Только для чтения число, которое представляет количество элементов списка в списке.*
+   *Только для чтения число, которое представляет количество содержащихся элементов списка.*
 
 * *список* .messageTrigger
 
@@ -113,7 +114,7 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Кнопка | R / W |
 
-*Если вы нажмете эту кнопку, список покупок будет отправлен в настроенные экземпляры, e. г. Pushover, Telegram или / и E-Mail.*
+*Если вы нажмете эту кнопку, список покупок будет отправлен в настроенные экземпляры, e. грамм. Pushover, Telegram или / и E-Mail.*
 
 * *список* .enumSentence
 
@@ -121,8 +122,8 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     |:---:|:---:|
     | Строка | R |
 
-*Только для чтения строка, которая содержит перечисление пунктов списка покупок в удобной для восприятия форме.
-Это может быть использовано e. г. для вывода голоса через умных помощников.*
+*Только для чтения строка, которая содержит перечисление элементов списка покупок в удобной для восприятия форме.
+Это может быть использовано e. грамм. для вывода голоса через умных помощников.*
 
 * *список* перевод
 
@@ -133,6 +134,21 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
     *Только для чтения строка json, которая содержит словарь для перевода имен швейцарских предметов на язык списка.*
 
 ## Changelog
+### 1.6.6 (2019-11-21)
+* (foxriver76) improved error handling in widget
+
+### 1.6.5 (2019-09-22)
+* (foxriver76) re-auth when bearer token is no longer valid
+
+### 1.6.3 (2019-08-28)
+* (foxriver76) fixed bug which only allowed one registered event handler
+* (foxriver76) by using obj with wid instead of var because vis handles global variables of widgets global
+* (foxriver76) now more bring widgets can be used in one vis project
+* (foxriver76) bump version of textFit to 2.3.1 -> 2.4.0 and use minified version
+
+### 1.6.2 (2019-08-04)
+* (foxriver76) also use translations for enumSentence and notifiations (e. g. email)
+
 ### 1.6.1 (2019-07-13)
 * (foxriver76) fixed bug, that prevent html states and other from being set
 

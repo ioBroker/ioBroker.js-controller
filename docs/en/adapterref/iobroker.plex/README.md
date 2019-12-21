@@ -126,6 +126,17 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ## Changelog
 
+### 0.8.9 (2019-12-14)
+- (Zefau) updated dependencies
+- (Zefau) fixed missing spaces in events (and thus Adapter Web View)
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.8 (2019-12-05)
+- (Zefau) fixed player controls
+
+### 0.8.7 (2019-12-02)
+- (Zefau) fixed error with http / https settings
+
 ### 0.8.6 (2019-12-02)
 - (Zefau) added further states to Tautulli Notification (see [README-tautulli.md](https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md))
 - (Zefau) fixed design issue with select-box in the adapter settings

@@ -37,6 +37,9 @@ This adapter is inspired from [virtual devices script by Pman](https://forum.iob
 
 ## Changelog
 
+### 1.1.1
+* (Scrounger) string to number bug fix
+
 ### 1.1.0
 * (Scrounger) option to merge linkedObject on adapter restart added
 * (Scrounger) string to number conversion added

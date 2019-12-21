@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
+hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -19,6 +19,10 @@ hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
 ## Адаптер устройства для ioBroker
 Управляйте и создавайте устройства для использования в других адаптерах, таких как material, iot, ...
 
+** Важно: включить вкладку в админке, как логи и скрипты **
+
+![экран](../../../en/adapterref/iobroker.devices/img/screen.png)
+
 ## Сделать
 - добавить иконки для всех состояний каналов
 - добавить описания для состояний
@@ -27,6 +31,12 @@ hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
 - определить, установлен ли js-контроллер 2.0
 
 ## Changelog
+
+### 0.2.0 (2019-12-20)
+* (bluefox) Backend was removed
+
+### 0.1.8 (2019-11-13)
+* (bluefox) Allowed the clone of devices
 
 ### 0.1.7 (2019-09-15)
 * (bluefox) work in progress

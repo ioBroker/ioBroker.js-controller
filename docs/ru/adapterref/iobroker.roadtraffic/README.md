@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: C0ie6JZL/eQQhMg5NGoauwuMTSxMbTPk1V2UqAKGEGc=
+hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
 ---
 ![логотип](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -30,7 +30,7 @@ hash: C0ie6JZL/eQQhMg5NGoauwuMTSxMbTPk1V2UqAKGEGc=
 
 ![здесь 2](../../../en/adapterref/iobroker.roadtraffic/img/Here2.png)
 
-3. Нажмите «Зарегистрироваться для получения учетной записи ЗДЕСЬ» и не забудьте поставить галочку (в соответствии с Условиями обслуживания и т. Д.).
+3. Нажмите «Зарегистрироваться для получения учетной записи ЗДЕСЬ ...» и не забудьте поставить галочку (в соответствии с Условиями обслуживания и т. Д.).
 
 ![Here3](../../../en/adapterref/iobroker.roadtraffic/img/Here3.png)
 
@@ -38,20 +38,24 @@ hash: C0ie6JZL/eQQhMg5NGoauwuMTSxMbTPk1V2UqAKGEGc=
 
 ![Here4](../../../en/adapterref/iobroker.roadtraffic/img/Here4.png)
 
-5. На следующей странице вы уже находитесь на панели инструментов HERE.com. Найдите API / CLI REST & XYZ HUB и нажмите «Создать идентификатор приложения и код приложения».
+5. На следующей странице вы уже находитесь на панели инструментов HERE.com. Найдите раздел REST и нажмите «Создать приложение».
 
 ![Here5](../../../en/adapterref/iobroker.roadtraffic/img/Here5.png)
 
-6. Откройте настройки экземпляра адаптера roadtraffic в ioBroker и скопируйте в поля идентификатор приложения и код приложения.
-
-Нажмите значок «Плюс» и создайте свой первый маршрут.
+6. Нажмите «Создать ключ API» - вы получите ключ API. Откройте настройки экземпляра адаптера roadtraffic в ioBroker и вставьте ключ API в поле конфигурации.
 
 ![Here6](../../../en/adapterref/iobroker.roadtraffic/img/Here6.png)
+
+7. Щелкните значок «Плюс» в настройках экземпляра и создайте свой первый маршрут.
 
 После того, как вы ввели всю информацию в диалог настроек, нажмите «Сохранить и закрыть».
 Адаптер должен перезагрузиться, и вы готовы к работе!
 
 ## Changelog
+### 0.1.1 (2019-12-13)
+* (BuZZy1337) HERE.com changed the Authentication.
+* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes))
+
 ### 0.1.0 (2019-12-08)
 * (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)
 

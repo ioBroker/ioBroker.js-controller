@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
+hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -19,6 +19,10 @@ hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
 ## Geräte Adapter für ioBroker
 Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie Material, iot, ...
 
+** Wichtig: Aktiviere Tab in Admin, wie Log und Skripte **
+
+![Bildschirm](../../../en/adapterref/iobroker.devices/img/screen.png)
+
 ## Machen
 - Fügen Sie Symbole für alle Zustände von Kanälen hinzu
 - Beschreibungen für Staaten hinzufügen
@@ -27,6 +31,12 @@ Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie 
 - erkenne ob js-controller 2.0 installiert ist
 
 ## Changelog
+
+### 0.2.0 (2019-12-20)
+* (bluefox) Backend was removed
+
+### 0.1.8 (2019-11-13)
+* (bluefox) Allowed the clone of devices
 
 ### 0.1.7 (2019-09-15)
 * (bluefox) work in progress

@@ -4,69 +4,69 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: fxqCnt9dyq6pvLDK+LxhsmUfrM+qGb5piy2Mkn23PXM=
+hash: +9KkGvDJvUveJ02nsS48om8AmoOjywSgZJz/9MM+TGA=
 ---
-Linux下的＃ioBroker安装
-！>本手册不适用于网站的完成图像！
+＃在Linux上安装ioBroker
+！>这些说明不适用于网站的最终图片！
 
-ioBroker的安装例程已经彻底检修，并修复了一些安装问题（安装程序，启动程序等）。
+ioBroker的安装例程已被完全修订，并且某些安装问题（安装用户，自动启动等）已得到修复。
 
-现在通过脚本完成安装，该脚本在运行时会执行所需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“iobroker”，以及一个相关的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
+现在，通过脚本完成安装，该脚本在运行时包含所需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“ iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
 
-如果重新加载脚本太危险，脚本可以事先在[这个链接](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下进行检查。
+如果重新加载脚本太危险，则可以在[这个连结](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下事先检查脚本。
 
-此ioBroker安装指南使用带有System Stretch的Raspberry PI示例显示Linux上的安装。安装nodejs和ioBroker的实际指令几乎可以用于所有其他Linux系统。
+ioBroker的此安装指南以带有System Stretch的Raspberry PI为例显示了在Linux上的安装。几乎所有其他Linux系统都可以使用安装nodejs和ioBroker的实际说明。
 
-由于在安装过程中依赖于其他软件包或其他安装，因此可能会一次又一次地出现特殊功能。
+由于依赖于其他软件包或其他安装，因此在安装过程中始终会有特殊功能。
 
-如果有任何问题，请在论坛中发布。
+如果您还有任何疑问，请在论坛中发布。
 
-根据此处发布的指令，每个内核更新（如果可用）也会自动更新node.js版本。
+根据此处发布的说明，node.js版本会随每次内核更新（如果有）自动更新。
 
-##需要硬件
+##必需的硬件
 ### Raspberry Pi 2/3，
-或任何其他硬件与常见的Linux（Debian，Ubuntu等），甚至是Mac。
+或任何其他具有常见Linux（Debian，Ubuntu等）的硬件，或Mac。
 
-我们建议不要使用Pi 1作为主人。这还不够强大（500 MB RAM等）。由于硬件不同，本手册无论如何都不适合Pi 1。
+我们不建议将Pi 1用作主机。它根本不够强大（500 MB RAM等）。由于硬件不同，这些说明始终不适用于Pi 1。
 
-即使是Pi 2或Pi 3也只有最大值。 1 GB RAM。对于15个适配器实例来说，这应该足够了，但除此之外，它可能很少。每个适配器实例需要大约40 MB（有时200 MB或更多）的RAM。因此，在启用更多适配器实例之前，应始终关注RAM的使用情况 - 最终可以使用1 GB的RAM。
+Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍然足够，但除此之外，它可能变得稀缺。每个适配器实例需要大约40 MB（有时需要200MB甚至更多）的RAM。因此，在激活其他适配器实例之前，您应始终注意RAM的利用率-1 GB RAM是有限的。
 
 ###电源
-拥有良好的电力供应非常重要。在电力供应不足的情况下，可以预期稳定性问题
+拥有良好的电源很重要。在电源较弱的情况下，可能会出现稳定性问题
 
-###记忆卡
-或SSD，USB棒等（取决于使用的硬件）
+###存储卡
+或SSD，USB记忆棒等（取决于所用的硬件）
 
-##需要/重要的链接
-*下载图片：https：//www.raspberrypi.org/downloads/raspbian/
-* Win32DiskImager：https：//sourceforge.net/projects/win32diskimager/ **或**
-* Balena Etcher：https：//www.balena.io/etcher/
-* Putty：http：//www.putty.org/
+##必需/重要链接
+*下载图片：https://www.raspberrypi.org/downloads/raspbian/
+* Win32DiskImager：https://sourceforge.net/projects/win32diskimager/ **或**
+* Balena Etcher：https://www.balena.io/etcher/
+*油灰：http：//www.putty.org/
 
 ##安装说明
-###安装操作系统
-*根据您使用的硬件安装所需的基本操作系统（Raspian Stretch，Ubuntu，Debian等）。
+###操作系统安装
+*根据所使用的硬件，安装所需的基本操作系统（Raspian Stretch，Ubuntu，Debian等）。
 
-有关相应版本的帮助和说明，请参见相应的支持页面，Youtube等。
+有关相应版本的帮助和说明可在相应的支持页面，YouTube等上找到。
 
-*只有通过SSH或sftp进行root访问才是绝对必要的，** CAN **也是
+*仅当绝对需要通过SSH或sftp进行root访问时，才可以** CAN **
 
-SSH的root访问权限将被解锁。
+可以激活SSH的根访问权限。
 
-我们建议反对它的众所周知的安全方面。对于ioBroker的安装，使用sudo命令并在相应的命令前面就足够了。
+我们基于已知的安全性方面建议不要这样做。对于ioBroker的安装，只需使用sudo命令并将其放在相应命令的前面即可。
 
 ###安装Node.js
-降级期间还将使用以下说明。
+降级时也应使用以下说明。
 
-目前推荐的版本是节点10.x;用js-controller 1.5.7也节点8.x，然后在步骤4.1。用8.x“替换”10.x“。
+当前推荐的版本是节点10.x。使用js-controller 1.5.7和8.x节点，然后执行步骤4.1。将“ 10.x”替换为“ 8.x”。
 
-！> Debian Buster需要node.js v10.x !!
+！> Debian Buster需要node.js v10.x！
 
-<span style="color:red">不建议使用奇数nodejs版本，因为它们是开发版本。</span>
+<span style="color:red">通常不建议使用奇数版本的nodejs，因为它们是开发人员版本。</span>
 
-1.系统更新：``sudo apt-get update && sudo apt-get upgrade``
+1.系统更新：``sudo apt-get update && sudo apt-get upgrade''
 
-根据所使用的操作系统，也可以使用``sudo apt update && sudo apt upgrade``执行更新。
+根据所使用的操作系统，也可以使用“`sudo apt update && sudo apt upgrade`”来执行更新。
 
 2.测试nodejs和npm的现有版本。
 
@@ -76,9 +76,9 @@ SSH的root访问权限将被解锁。
 
     ``npm -v``
 
-仅当** ALL **这些命令不产生结果（即不再显示版本号）时，转到本节的第4步，否则，或者如果版本与您想要的版本不匹配：
+仅当** ALL **这些命令没有结果（即不再显示版本号）时才继续执行本节的步骤4，否则，或者如果版本与所需版本不符，请事先执行以下操作：
 
-3.卸载现有节点和node.js版本
+3.卸载现有的node＆node.js版本
 
     ``sudo apt-get --purge remove node``
 
@@ -88,7 +88,7 @@ SSH的root访问权限将被解锁。
 
     ``sudo reboot``
 
-4.重新安装适用于Linux和Raspberry 2/3的Node.js.
+4.重新安装适用于Linux和Raspberry 2/3的Node.js
 
     ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
 
@@ -96,28 +96,28 @@ SSH的root访问权限将被解锁。
 
     ``sudo reboot``
 
-安装后，命令“node -v”和“nodejs -v”必须返回相同的版本号。
+安装后，命令“ node -v”和“ nodejs -v”必须返回相同的版本号。
 
-    如果``node -v``生成错误消息，如“未找到”，请输入
+    如果``node -v``生成类似“未找到”的错误消息，请
 
     在控制台上执行``sudo ln -s /usr/local/bin/nodejs /usr/bin/node``。
 
-如果版本不同，请重新执行[安装Node.js](#installation-nodejs)部分
+如果版本不同，请再次浏览[安装Node.js](#installation-nodejs)部分
 
-    作为最后一项检查，请使用``npm -v``检查npm的版本。
+    作为最后检查，请使用``npm -v``检查npm的版本。
 
-如果这导致版本<6，请使用``sudo -H npm install -g npm@6``进行npm更新
+如果这导致版本小于6，请使用``sudo -H npm install -g npm@6``进行npm更新。
 
-###安装ioBroker
-安装可以通过用户pi完成，也可以通过用户root完成。
+### IoBroker安装
+可以使用pi用户或root用户来完成安装。
 
-在控制台运行：
+在控制台上运行：
 
 ``curl -sL https://iobroker.net/install.sh | bash -``
 
 ---
 
-安装分4个步骤完成：
+安装分为四个步骤：
 
 ``Installing prerequisites (1/4)``
 
@@ -135,30 +135,30 @@ SSH的root访问权限将被解锁。
 
 ---
 
-现在通过Web浏览器中的指定IP调用ioBroker：``http://<IP-Adresse>:8081``
+现在，通过Web浏览器中的指定IP调用ioBroker：``http://<IP-Adresse>:8081``
 
 **注：**
 
-使用安装例程，命令从1月初到1月中旬：
+通过安装例程，这些命令从一月初到一月中旬生效：
 
 * iobroker停止
 * iobroker开始
-* iobroker重启
-* iobroker状态
+* iobroker重新启动
+* iobroker身份
 
-不再了这是Linux的一个特性 - 而不是ioBroker！
+不再。这是Linux的功能-不是ioBroker！
 
-而不是那个
+相反必须
 
-* sudo systemctl stop iobroker
+* sudo systemctl停止iobroker
 
-或者使用其他等同物
+或使用其他等效项
 
-此外，它可能会出现权利问题。
+供股也可能出现。
 
-在这种情况下，请使用安装程序修复程序：
+在这种情况下，请使用安装修复程序：
 
-``curl -sL https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/fix_installation.sh | bash -``
+``curl -sL https://iobroker.net/fix.sh | bash -``
 
 论坛中的更多信息：
 

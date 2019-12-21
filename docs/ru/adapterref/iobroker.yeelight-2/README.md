@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
+hash: 6AC/HUPUiT+GyYNY6GrP3bC5jW5oKgY63rQwR2GCI9g=
 ---
 ![логотип](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
 
@@ -15,8 +15,6 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
 # IoBroker.yeelight-2
-=================
-
 [Deutsche Beschreibung hier](README_de.md)
 
 Этот адаптер управляет вашим устройством Yeelight. этот адаптер только для admin3. Admin2 не поддерживается
@@ -24,7 +22,7 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ## Перейти к версии
 При изменении с 0.4.X на 0.9.X или выше, объекты должны быть удалены вручную, чтобы их можно было воссоздать.
 
-## Монтаж
+## Установка
 для ламп RGB необходимо включить локальную сеть в настройках приложения yeelight.
 
 ![](../../../en/adapterref/iobroker.yeelight-2/admin/lan.jpg)
@@ -52,7 +50,7 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 - «hsv» означает изменение интеллектуального светодиода на указанный цвет и яркость.
 - «ct» означает изменение интеллектуального светодиода на указанные ct и яркость.
 - «cf» означает запуск цветового потока указанным способом.
-- «auto_delay_off» означает включение интеллектуального светодиода для указанного
+- «auto_delay_off» означает включить интеллектуальный светодиод для указанного
 
 Яркость и запустить таймер сна, чтобы выключить свет через указанные минуты.
 
@@ -79,6 +77,9 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 через 5 минут.
 
 ## Changelog
+### 1.0.3 (2019-12-01)
+* (MeisterTR) add Pedant
+* (MeisterTR) transfer to community
 ### 1.0.1 (2018-12-08)
 * (MeisterTR) push version, added set_scene
 ### 0.9.6 (2018-12-08)
@@ -125,3 +126,25 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 
 
 base from: adb backup https://github.com/cahek2202/ioBroker.yeelight
+
+The MIT License (MIT)
+
+Copyright (c) 2018-2019 MeisterTR <meistertr.smarthome@gmail.com>, cahek2202 <cahek2202@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

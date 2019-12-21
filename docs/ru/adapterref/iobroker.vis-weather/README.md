@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-погода
-hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
+hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,23 +14,31 @@ hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен работающий DasWetter-Adpater или weatherunderground-Adapter ...
 
 В Weatherunderground вам нужен прогноз на следующие 36 часов.
 В DasWetter.com вам нужна одна из четырех структур данных прогноза. Вы можете выбрать тот, который вы хотите отобразить.
 
 ## Notes / wiki
-### Определить прогнозные часы
-По умолчанию диаграмма прогноза показывает 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например, Прогноз на 10 часов, просто удалите ненужные OID под oid_groups в vis-edit.
+### Определить прогноз часов
+По умолчанию диаграмма прогноза показывает 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например Прогноз на 10 часов, просто удалите ненужные OID под oid_groups в vis-edit.
 
 ### OID не создаются автоматически при использовании DasWetter
 Обычно OID создаются автоматически при выборе экземпляра или структуры данных. Когда вы получите «OID недоступен», проверьте, используете ли вы «NextDaysDetailed» в DasWetter.
 Возможно, вам потребуется включить «NextDaysDetailed».
 
-## Известные проблемы
+## Известные вопросы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
+
+
+### 2.5.2 (2019-12-xx)
+* (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
 * (René) alignment of bars with marking

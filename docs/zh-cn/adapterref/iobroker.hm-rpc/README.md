@@ -135,6 +135,9 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.12.2 (2019-12-19)
+* (foxriver76) fix issue on https with less robust ccu emulations
+
 ### 1.12.1 (2019-12-06)
 * (foxriver76) fixed problem with max values of value lists
 

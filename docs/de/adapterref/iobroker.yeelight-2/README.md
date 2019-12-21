@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
+hash: 6AC/HUPUiT+GyYNY6GrP3bC5jW5oKgY63rQwR2GCI9g=
 ---
 ![Logo](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
 
@@ -15,8 +15,6 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
 # IoBroker.yeelight-2
-=================
-
 [Deutsche Beschreibung hier](README_de.md)
 
 Dieser Adapter steuert Ihr Yeelight-Gerät. Dieser Adapter ist nur für admin3. Admin2 wird nicht unterstützt
@@ -30,7 +28,7 @@ Für RGB-Lampen müssen Sie das LAN in den Einstellungen der yeelight-App aktivi
 ![](../../../en/adapterref/iobroker.yeelight-2/admin/lan.jpg)
 
 ## Konfig
-Sie können Geräte manuell hinzufügen oder Geräte im Netzwerk suchen. Der Standard-Port ist 55443. Wenn Sie möchten, können Sie den Namen, die IP-Adresse, den Port und den Smart-Namen ändern
+Sie können Geräte manuell hinzufügen oder Geräte im Netzwerk suchen. Der Standardport ist 55443. Wenn Sie möchten, können Sie den Namen, die IP-Adresse, den Port und den Smartnamen ändern
 
 ### Smartname
 Wenn Sie einen Smartnamen eingeben, wird das Gerät zur iobroker.cloud hinzugefügt und kann von alexa gesteuert werden.
@@ -79,6 +77,9 @@ HINWEIS: Akzeptiert sowohl im Status "Ein" als auch im Status "Aus".
 nach 5 Minuten.
 
 ## Changelog
+### 1.0.3 (2019-12-01)
+* (MeisterTR) add Pedant
+* (MeisterTR) transfer to community
 ### 1.0.1 (2018-12-08)
 * (MeisterTR) push version, added set_scene
 ### 0.9.6 (2018-12-08)
@@ -125,3 +126,25 @@ nach 5 Minuten.
 
 
 base from: adb backup https://github.com/cahek2202/ioBroker.yeelight
+
+The MIT License (MIT)
+
+Copyright (c) 2018-2019 MeisterTR <meistertr.smarthome@gmail.com>, cahek2202 <cahek2202@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

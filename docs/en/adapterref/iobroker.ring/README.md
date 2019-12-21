@@ -31,6 +31,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.0.6 (20.12.2019)
+* (Stübi) Bugfixing. Login with username and password changed
+
 ### 1.0.5 (18.04.2019)
 * (Stübi) Bugfixing 
 * (Stübi) Using new API. With this API livestreaming and snapshots are possible (work still in progress and not supported in this version)

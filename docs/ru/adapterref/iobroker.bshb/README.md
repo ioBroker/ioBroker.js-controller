@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: bRzRBfSTK2GqCjr0D4mcdmHCknwaIntY6LUPkuzQjZE=
+hash: /V/1fGlTf6mgFX7TfPiMF9C1c3y3Bd3V2yR2BDlTGBI=
 ---
 ![логотип](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
@@ -21,11 +21,17 @@ hash: bRzRBfSTK2GqCjr0D4mcdmHCknwaIntY6LUPkuzQjZE=
 
 [Контроллер Bosch Smart Home](https://www.bosch-smarthome.com/de/de/produkte/smart-system-solutions/smart-home-controller)
 
-Для этого он использует библиотеку [Бош-смарт-дом-мост](https://github.com/holomekc/bosch-smart-home-bridge), которая использует информацию из официального [Контроллер Bosch для умного дома Local REST API](https://github.com/BoschSmartHome/bosch-shc-api-docs).
+Для этого он использует библиотеку [Бош-смарт-дом-мост](https://github.com/holomekc/bosch-smart-home-bridge), которая использует информацию из официального [Контроллер Bosch Smart Home для локального REST API](https://github.com/BoschSmartHome/bosch-shc-api-docs).
+
+Обсуждение на форуме ioBroker для адаптера BSHB: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
 
 Работа в процессе. Обратная связь приветствуется.
 
 ## Changelog
+
+### 0.1.0
+* (holomekc) certificate and private key are handled in ioBroker and can be content or file reference
+* (holomekc) update to newer bridge version
 
 ### 0.0.14
 * (holomekc) optimizations and cleanup

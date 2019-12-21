@@ -72,6 +72,13 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
+### 3.1.14 (2019-12-20)
+* (Apollon77) New schemas added
+* (APollon77) prevent usage of invalid Port numbers
+
+### 3.1.13 (2019-12-11)
+* (Apollon77) New schemas added
+
 ### 3.1.12 (2019-12-07)
 * (Apollon77) New schemas added
 * (Apollon77) Dependency update

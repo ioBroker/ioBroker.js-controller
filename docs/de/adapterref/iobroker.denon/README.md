@@ -3,12 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.denon/README.md
 title: ioBroker.denon
-hash: PbP9s502vcIwTE0uffmmvzQ/IsVADkYEGzDwWycVtJY=
+hash: BlX625S3P0m2QVIM3AKO1+mPrfanelGSY8L4MK6odSM=
 ---
 ![Logo](../../../en/adapterref/iobroker.denon/admin/denon.png)
 
-![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.denon.svg?branch=master)
-![Build-Status](https://ci.appveyor.com/api/projects/status/mwkeddgjpgnpef5n/branch/master?svg=true)
 ![Anzahl der Installationen](http://iobroker.live/badges/denon-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.denon.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.denon.svg)
@@ -17,6 +15,8 @@ hash: PbP9s502vcIwTE0uffmmvzQ/IsVADkYEGzDwWycVtJY=
 
 # IoBroker.denon
 ===========================
+
+![Build Status](https://github.com/foxriver76/ioBroker.denon/workflows/Test%20and%20Release/badge.svg)
 
 ## Installation
 Sie können den Adapter entweder über die ioBroker-Weboberfläche oder über npm auf Ihrem lokalen Computer installieren.
@@ -149,7 +149,7 @@ Der Adapter erstellt die folgenden Schaltflächen:
 #### Kanal: Einstellungen
 * settings.subwooferLevelDown / settings.subwooferTwoLevelDown
 
-   *Verringern Sie den Subwoofer-Pegel durch Drücken der Taste.*
+   *Reduzieren Sie den Subwoofer-Pegel durch Drücken der Taste.*
 
 * settings.subwooferLevelUp / settings.subwooferTwoLevelUp
 
@@ -210,7 +210,7 @@ Folgende Zustände werden vom Adapter erzeugt:
     | string | R |
 
 *Zeichenfolge im JSON-Array-Format, die die aktuell gespeicherten Favoriten nach ID und Kanal darstellt.
-Die Namen der einzelnen Kanäle sind auf 20 Stellen begrenzt. Sie können den aktuellen Kanal unter einer ID speichern, indem Sie settings.savePreset festlegen, und einen Kanal laden, indem Sie settings.loadPreset auf die entsprechende ID festlegen.*
+Die Namen der einzelnen Kanäle sind auf 20 Stellen begrenzt. Sie können den aktuellen Kanal unter einer ID speichern, indem Sie settings.savePreset festlegen und einen Kanal laden, indem Sie settings.loadPreset auf die entsprechende ID festlegen.*
 
 #### Kanal: zoneMain / zone2 / zone3
 * zoneMain.volume / zone2.volume / zone3.volume
@@ -385,7 +385,7 @@ setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your
 
    *Nur-Lese-Zeichenfolge, die den Inhalt Ihres AVR-Displays enthält. Es hat neun Zustände 0 - 9.*
 
-   *ANZEIGEINHALT WIRD NICHT FÜR HEOS AVR'S UNTERSTÜTZT*
+   *DISPLAY-INHALT WIRD FÜR HEOS AVR'S NICHT UNTERSTÜTZT*
 
 * Bildschirmhelligkeit
 
@@ -505,7 +505,7 @@ setState('denon.0.settings.expertCommand', 'ECOON'); // Turns Main Zone ECO mode
     |:---:|:---:|
     | string | R / W |
 
-*Wenn Sie bestimmte Antworten in `settings.expertReadingResult` speichern möchten, müssen Sie RegEx auf diesen Status einstellen.
+*Wenn Sie bestimmte Antworten in `settings.expertReadingResult` speichern möchten, müssen Sie einen RegEx auf diesen Status einstellen.
 RegEx muss so eingestellt sein, dass ein RegEx-Konstruktor es verwenden kann. Es wird empfohlen, einen [RegEx-Tester](https://regexr.com/) zu verwenden.
 Stellen Sie `/` nicht am Anfang oder Ende der RegEx ein.*
 
@@ -652,7 +652,7 @@ Der Status wird nur erstellt, wenn er von Ihrem AVR unterstützt wird.*
     |:---:|:---:|
     | string | R / W |
 
-   *String-Wert zur Auswahl des Referenzpegel-Offsets mit folgender Codierung:*
+   *String-Wert zur Auswahl des Referenzpegel-Offsets mit der folgenden Codierung:*
 
    *0: 0 dB*
 
@@ -688,7 +688,7 @@ setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level 
 
    *'Strom'*
 
-   *'Brauch'*
+   *'Benutzerdefiniert'*
 
    *'ISF Day'*
 
@@ -716,7 +716,7 @@ setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct
     |:---:|:---:|
     | boolean | R / W |
 
-   *Boolesche Anzeige, die angibt, ob das Setup-Menü derzeit geöffnet oder geschlossen ist. Sie können es mit diesem Status öffnen und schließen.*
+   *Boolescher Indikator, der angibt, ob das Setup-Menü derzeit geöffnet oder geschlossen ist. Sie können es mit diesem Status öffnen und schließen.*
 
 * settings.savePreset
 

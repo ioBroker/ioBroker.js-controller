@@ -2,9 +2,9 @@
 # ioBroker Philips Hue Bridge Adapter
 ==============
 
+![Build Status](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 ![Number of Installations](http://iobroker.live/badges/hue-installed.svg) ![Number of Installations](http://iobroker.live/badges/hue-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.hue.svg)](https://www.npmjs.com/package/iobroker.hue)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hue.svg)](https://www.npmjs.com/package/iobroker.hue)
-
 [![NPM](https://nodei.co/npm/iobroker.hue.png?downloads=true)](https://nodei.co/npm/iobroker.hue/)
 
 ## English :gb:
@@ -40,6 +40,10 @@ Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
 In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf create user drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben. 
 
 ## Changelog
+### 2.4.7 (2019-12-14)
+* (foxriver76) do not set default values on every adapter start
+* (foxriver76) this is now done only on object creation
+
 ### 2.4.6 (2019-12-06)
 * (foxriver76) log unhandeld promise rejections
 * (foxriver76) fix potential issue for negative temperature values

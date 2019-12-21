@@ -67,7 +67,15 @@ https://github.com/hdering/homematic_verbrauchszaehler
 * [x] Make it selectable to store analytics for complete year or only selectable periode
 * [x] ensure all values are stored when adapter shuts down to prevent data gaps
 
+## Support me
+If you like my work, please feel free to provide a personal donation  
+(this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
+
+### 0.3.0   
+* (Dutchman) m³ Implemented
 
 ### 0.2.5
 * (xXBJXx) Fix wrong storage of start meter values
@@ -224,7 +232,7 @@ https://github.com/hdering/homematic_verbrauchszaehler
 ## License
 MIT License
 
-Copyright (c) 2019 Dutchman
+Copyright (c) 2018 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

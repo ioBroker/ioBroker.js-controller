@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
+hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
@@ -20,6 +20,8 @@ hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
 
 [![Изменение климата] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
+** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. **
+
 Этот адаптер для ioBroker подключается к M-Bus Master через TCP или последовательный порт для предоставления статуса и подробной информации о подключенных устройствах M-Bus.
 
 ## Описание параметров
@@ -30,7 +32,7 @@ IP-адрес и порт M-Bus Master / Gateway при использовани
 Последовательный порт и скорость передачи данных M-Bus Master / Gateway.
 
 ### Обновить интервал
-Интервал в секундах для обновления данных. По умолчанию (если пусто) 3600 с (1 час). Подумайте, как устройства на шине M-Bus питаются, чтобы предотвратить разрядку батарей. Если вы установите интервал в 0, то устройство будет считываться только один раз при запуске адаптера, но больше не будет автоматически.
+Интервал в секундах для обновления данных. По умолчанию (если пусто) 3600 с (1 час). Подумайте, как устройства на шине M-Bus питаются, чтобы предотвратить разрядку батарей. Если вы установите интервал на 0, то устройство будет считываться только один раз при запуске адаптера, но больше не автоматически.
 
 ### Идентификаторы устройств
 Вы можете использовать основной (1-250) и дополнительный (16 символов) идентификаторы M-Bus
@@ -42,6 +44,15 @@ IP-адрес и порт M-Bus Master / Gateway при использовани
 * зашифрованная обработка полезной нагрузки (если это необходимо кому-либо)
 
 ## Changelog
+
+### 2.1.0 (2019-12-18)
+* add compact mode
+* move to more flexible serial port configuration
+* add Sentry for error reporting
+
+### 2.0.0 (2019-10-16)
+* (lvogt) **BREAKING CHANGE** better handling for values with changing scaling based on the value - maybe incompatible with old values!
+* (lvogt) add setting to force kWh values for energy
 
 ### 1.1.1 (2018-12-10)
 * (Apollon77) make sure adapter is not communicating too fast at the beginning
@@ -76,7 +87,7 @@ IP-адрес и порт M-Bus Master / Gateway при использовани
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

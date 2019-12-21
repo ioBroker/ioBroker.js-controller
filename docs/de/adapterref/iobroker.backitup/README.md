@@ -2,6 +2,9 @@
 BADGE-Number of Installations: http://iobroker.live/badges/backitup-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.backitup.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.backitup.svg
+BADGE-Dependency Status: https://img.shields.io/david/simatec/iobroker.backitup.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/simatec/ioBroker.backitup/badge.svg
+BADGE-Travis-CI: http://img.shields.io/travis/simatec/ioBroker.backitup/master.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.backitup.png?downloads=true
 ---
 Backitup ist eine Backuplösung, mit der das zyklische Sichern einer IoBroker-Installation sowie einer Homematic CCU möglich ist.
@@ -182,11 +185,27 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
-### 1.3.3 (09.12.2019)
+### 1.3.6 (18.12.2019)
+* (simatec) Fix historyList for compact-mode
+* (simatec) Added ack for history states
+
+### 1.3.5 (17.12.2019)
+* (simatec) Fix compact-mode for history
+
+### 1.3.4 (15.12.2019)
+* (simatec) Fix hide passwords
+
+### 1.3.3 (14.12.2019)
 * (simatec) Fix Webinterface for Restore
 * (simatec) Fix MySql Backup
 * (simatec) Added some debug logs for Restore
 * (simatec) some Bug Fix
+* (simatec) Messagebox for restore list
+* (simatec) hide password on log
+* (simatec) Added password hiding
+* (simatec) Clean Code
+* (simatec) detected history path
+* (simatec) Fix deteced
 
 ### 1.3.2 (04.12.2019)
 * (simatec) Add Webinterface for Restore

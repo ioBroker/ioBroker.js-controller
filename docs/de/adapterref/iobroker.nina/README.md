@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: /l80m4JRm4EQrQ96YQen6Y46NuiLRHXqY6rh1NVE0rM=
+hash: muyPiU+IM905WvLP//oa10+jTD1jcQHvlRDGnlxqp0Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -18,53 +18,63 @@ hash: /l80m4JRm4EQrQ96YQen6Y46NuiLRHXqY6rh1NVE0rM=
 ## Nina Adapter für ioBroker
 Notfall-Informations- und Nachrichten-App
 
-https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
 
-https://warnung.bund.de/
+<https://warnung.bund.de/>
 
-### Loslegen
+### Fertig machen
 Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
 
 Liste der AGS mit Strg + F suchen:
 
-https://warnung.bund.de/assets/json/suche_channel.json
+<https://warnung.bund.de/assets/json/suche_channel.json>
+
+### Error Request error {"errno": "EPROTO", "code": "EPROTO", "syscall": "write"}
+Die Webseite hat eine alte Verschlüsselung bei Debian Buster und RP4 muss folgende temporäre Änderung vorgenommen werden:
+
+Änderungen in der /etc/ssl/openssl.cnf von:
+
+[system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 2
+
+in: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
 
 ### 0.0.13
 
--   (tomboxi) Identifierliste hinzugefügt.
+- (tomboxi) Identifierliste hinzugefügt.
 
 ### 0.0.12
 
--   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+- (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
 
 ### 0.0.8
 
--   (tomboxi) Katwarn Warnungen hinzugefügt.
+- (tomboxi) Katwarn Warnungen hinzugefügt.
+
 ### 0.0.7
 
--   (tomboxi) BiwApp Warnungen hinzugefügt.
+- (tomboxi) BiwApp Warnungen hinzugefügt.
 
 ### 0.0.6
 
--   (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
+- (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
 
 ### 0.0.5
 
--   (tomboxi) Option für Beispielwarnung
+- (tomboxi) Option für Beispielwarnung
 
 ### 0.0.4
 
--   (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
+- (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
 
 ### 0.0.3
 
--   (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
+- (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
 
 ### 0.0.1
 
--   (tomboxi) initial release
+- (tomboxi) initial release
 
 ## License
 

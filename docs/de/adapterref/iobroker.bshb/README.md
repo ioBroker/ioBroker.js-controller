@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: bRzRBfSTK2GqCjr0D4mcdmHCknwaIntY6LUPkuzQjZE=
+hash: /V/1fGlTf6mgFX7TfPiMF9C1c3y3Bd3V2yR2BDlTGBI=
 ---
 ![Logo](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
@@ -23,9 +23,15 @@ Dieser Adapter ermöglicht die Kommunikation mit Bosch Smart Home-Geräten.
 
 Zu diesem Zweck wird die Bibliothek [Bosch-Smart-Home-Brücke](https://github.com/holomekc/bosch-smart-home-bridge) verwendet, die die Informationen der offiziellen [Lokale REST-API für Bosch Smart Home Controller](https://github.com/BoschSmartHome/bosch-shc-api-docs) verwendet.
 
+Diskussion im ioBroker-Forum zum BSHB-Adapter: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
+
 In Arbeit. Feedback erwünscht.
 
 ## Changelog
+
+### 0.1.0
+* (holomekc) certificate and private key are handled in ioBroker and can be content or file reference
+* (holomekc) update to newer bridge version
 
 ### 0.0.14
 * (holomekc) optimizations and cleanup

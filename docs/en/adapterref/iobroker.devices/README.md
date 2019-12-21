@@ -15,6 +15,10 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroke
 
 Manage and create devices for using it in other adapters like material, iot,...
 
+**Important: enable tab in admin, like log and scripts**
+
+![Screen](img/screen.png)
+
 ## ToDo
 - add icons for all states of channels
 - add descriptions for states
@@ -23,6 +27,9 @@ Manage and create devices for using it in other adapters like material, iot,...
 - detect if js-controller 2.0 installed
 
 ## Changelog
+
+### 0.2.0 (2019-12-20)
+* (bluefox) Backend was removed
 
 ### 0.1.8 (2019-11-13)
 * (bluefox) Allowed the clone of devices

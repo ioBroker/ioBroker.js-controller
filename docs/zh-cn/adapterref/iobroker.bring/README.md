@@ -3,40 +3,41 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
+hash: n1lrpEniOSNdTJPhXYpr74N+pzHkxWVNnX3UPJa37bc=
 ---
 ![商标](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
-![建立状态Travis](https://travis-ci.org/foxriver76/ioBroker.bring.svg?branch=master)
-![建立状态](https://ci.appveyor.com/api/projects/status/r7whpsbjfqn18toe/branch/master?svg=true)
-![安装数量](http://iobroker.live/badges/bring-stable.svg)
+![安装数量](http://iobroker.live/badges/bring-installed.svg)
+![稳定版](http://iobroker.live/badges/bring-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.bring.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.bring.svg)
-![Greenkeeper徽章](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.bring.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
 ![NPM](https://nodei.co/npm/iobroker.bring.png?downloads=true)
 
 ＃ioBroker.bring
 ===========================
 
+![建立状态](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
+
 ＃＃ 状态
 有关创建状态的说明，请参见下文。
 
 ###频道：信息
-* info.connection
+*信息连接
 
     |数据类型|权限|
     |:---:|:---:|
     |布尔| R |
 
-   *只读布尔指示符。如果您的经纪人在登录时登录，则状态为真，否则为假。*
+   *只读的布尔指标。如果您的经纪人随身登录，则状态为true，否则为false。*
 
 * info.user
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-   *只读字符串。包含登录用户的名称。*
+   *只读字符串。包含已登录用户的名称。*
 
 ###购物清单
 对于每个购物清单，将创建具有以下状态的渠道：
@@ -45,67 +46,67 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-*只读json / html字符串格式化为列表或html表。包含您购物清单上当前的商品。
-NoHead Html表格没有表格标题。*
+*只读格式为列表或html表的json / html字符串。包含当前在您的购物清单上的商品。
+NoHead Html表是不带表头的*。
 
 * *list* .recentContent / *list* .recentContentHtml / NoHead
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-*只读json / html字符串格式化为列表或html表。包含最近在您的购物清单上的项目。
-NoHead Html表格没有表格标题。*
+*只读格式为列表或html表的json / html字符串。包含最近在您的购物清单上的商品。
+NoHead Html表是不带表头的*。
 
 * *list* .removeItem
 
     |数据类型|权限|
     |:---:|:---:|
-    |串| R / W |
+    |字符串| R / W |
 
-*选择应从购物清单和最近的内容列表中删除的项目。
-当Bring确认命令时，将确认状态！ API。*
+*选择应从购物清单和近期内容清单中删除的项目。
+当Bring！确认命令时，将确认状态。 API。*
 
 * *list* .moveToRecentContent
 
     |数据类型|权限|
     |:---:|:---:|
-    |串| R / W |
+    |字符串| R / W |
 
 *选择应移动或添加到最近内容列表的项目。
-当Bring确认命令时，将确认状态！ API。*
+当Bring！确认命令时，将确认状态。 API。*
 
 * *list* .saveItem
 
     |数据类型|权限|
     |:---:|:---:|
-    |串| R / W |
+    |字符串| R / W |
 
-*选择应添加到购物清单的项目。您还可以通过以下架构设置状态来指定项目的其他信息：*
+*选择应添加到购物清单中的商品。您还可以通过以下模式设置状态，从而指定项目的其他信息：*
 
 ```Apple, 2.50 $, the green ones```
 
-*注意，逗号后面的所有内容都描述了规范。
-当Bring确认命令时，将确认状态！ API。*
+*请注意，逗号后面的所有内容均描述了规范。
+当Bring！确认命令时，将确认状态。 API。*
 
 * *list* .users / *list* .usersHtml / NoHead
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-*只读json / html字符串格式化为列表或html表。包含作为购物清单一部分的用户以及他们的电子邮件地址。
-NoHead Html表格没有表格标题。*
+*只读格式为列表或html表的json / html字符串。包含属于购物清单的用户以及他们的电子邮件地址。
+NoHead Html表是不带表头的*。
 
-* *list* .count
+* *列表* .count
 
     |数据类型|权限|
     |:---:|:---:|
-    |数| R |
+    | number | R |
 
-   *只读号码，表示列表中包含的项目数。*
+   *只读数字，代表列表中包含的项目数。*
 
 * *list* .messageTrigger
 
@@ -113,26 +114,41 @@ NoHead Html表格没有表格标题。*
     |:---:|:---:|
     |按钮| R / W |
 
-*如果按此按钮，购物清单将被发送到配置的实例，例如： G。 Pushover，Telegram或/和E-Mail。*
+*如果按此按钮，购物清单将发送到已配置的实例，例如G。推送，电报或/和电子邮件。*
 
 * *list* .enumSentence
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-*只读字符串，其中包含可说形式的购物清单项目的枚举。
-这可以使用e。 G。通过智能助手进行语音输出。*
+*只读字符串，其中包含以可说形式列出的购物清单项目。
+可以使用e。 G。用于通过智能助手进行语音输出。*
 
-* *list* .translation
+* *列表*。翻译
 
     |数据类型|权限|
     |:---:|:---:|
-    |字符串| R |
+    | string | R |
 
-    *只读json字符串，其中包含一个字典，用于将瑞士项目名称转换为列表语言。*
+    *只读json字符串，其中包含将瑞士项目名称翻译为列表语言的字典。*
 
 ## Changelog
+### 1.6.6 (2019-11-21)
+* (foxriver76) improved error handling in widget
+
+### 1.6.5 (2019-09-22)
+* (foxriver76) re-auth when bearer token is no longer valid
+
+### 1.6.3 (2019-08-28)
+* (foxriver76) fixed bug which only allowed one registered event handler
+* (foxriver76) by using obj with wid instead of var because vis handles global variables of widgets global
+* (foxriver76) now more bring widgets can be used in one vis project
+* (foxriver76) bump version of textFit to 2.3.1 -> 2.4.0 and use minified version
+
+### 1.6.2 (2019-08-04)
+* (foxriver76) also use translations for enumSentence and notifiations (e. g. email)
+
 ### 1.6.1 (2019-07-13)
 * (foxriver76) fixed bug, that prevent html states and other from being set
 

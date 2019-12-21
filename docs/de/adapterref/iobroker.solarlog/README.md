@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
+hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -11,6 +11,7 @@ hash: fZFPcSXo+tAujriSpAATqqkmQxrf7j0/rHG32ob4ZPw=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.solarlog.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.solarlog.svg)
 ![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.solarlog.svg)
 
 # IoBroker.solarlog
 Ein ioBroker-Adapter für Solarlog-Geräte
@@ -20,7 +21,9 @@ Die offene Json-Schnittstelle muss im Konfigurationsmenü des Solarlogs aktivier
 Adapter installieren, Instanz erstellen.
 Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Polling - Intervall (in Millisekunden). Da der Adapter viele http-Anfragen an Sie sendet, empfehle ich, das Polling-Intervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die benötigt wird, um mindestens 10 Sekunden abzufragen oder einzustellen.
 
-Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !! Das User-Passwort im Solarlog muss für diese Option deaktiviert sein !! Achtung: Damit die Abfrage der Unterzähler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert werden
+Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !! Das User-Passwort im Solarlog muss für diese Option deaktiviert sein !! Achtung: Damit die Abfrage der Unterzähler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert werden.
+
+Prognose: Optional ruft der Adapter Prognosedaten über die Forecast.Solar-API ab. Tatsächlich werden die Gesamt-kWh von heute und morgen vorhergesagt und stündlich aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte eröffnen Sie eine Ausgabe).
 
 ## Hardware
 Getestet auf: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
@@ -28,6 +31,14 @@ Getestet auf: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 SolarLog 50: Es sind keine JSON-Interface @ SolarLog 50-Geräte geöffnet. Bestimmte Werte in den Kanälen 'info' und 'status' lauten daher 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Präferenzen in einem entsprechenden Problem.
 
 ## Changelog
+
+### 1.2.0
+
+-   Shows now forecast data: todays and tomorrows total kWh. Completed translations in words.js.
+
+### 1.1.0
+
+-   Shows detailed information on self - consumption. Imports yearly & monthly historic data.
 
 ### 1.0.0
 

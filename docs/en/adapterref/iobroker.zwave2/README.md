@@ -21,11 +21,34 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.6.1 (2019-12-18)
+* Enabled scrolling in the device list
+
+### 0.6.0 (2019-12-17)
+* Improved handling of sleeping nodes
+* New interactive network healing process in the configuration UI
+
+### 0.5.2 (2019-12-14)
+* Fixed installation issues with `alcalzone-shared`
+
+### 0.5.1 (2019-12-13)
+* A new settings page has been added with a device overview and buttons to add and remove nodes from the network
+* Minor bugfixes
+
+### 0.4.0 (2019-12-11)
+* The network map is now drawn correctly when there are only unconnected nodes
+* Nodes and command classes are now represented with device and channel objects
+* Updated `zwave-js` to v2.2.0. This includes the following changes:
+	* Less errors are logged when opening the serial port fails
+	* Accessing a node's or endpoint's `commandClasses` property with `Symbol`s no longer causes a crash. *(This should not be an issue in ioBroker)*
+	* Revised querying logic for devices without Z-Wave+ or Lifeline associations
+	* Added support for `Indicator CC`
+
 ### 0.3.4 (2019-12-07)
 * Non-critical errors from `zwave-js` are now logged instead of crashing the adapter
 * Fixed a crash that happens when the object for a state is missing
 * When the Z-Wave driver fails to start, an error is now logged instead of crashing the adapter
-* The adapter settings are no longer polluted with the `serialports` list from the frontend.
+* The adapter settings are no longer polluted with the `serialports` list from the frontend
 
 ### 0.3.3 (2019-12-01)
 * Updated `zwave-js` to v2.1.0. This includes the following changes:

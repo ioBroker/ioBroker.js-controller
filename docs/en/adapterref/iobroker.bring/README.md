@@ -2,9 +2,8 @@
 # ioBroker.bring
 ===========================
 
-[![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.bring.svg?branch=master)](https://travis-ci.org/foxriver76/ioBroker.bring)
-[![Build status](https://ci.appveyor.com/api/projects/status/r7whpsbjfqn18toe/branch/master?svg=true)](https://ci.appveyor.com/project/foxriver76/iobroker-bring/branch/master)
-![Number of Installations](http://iobroker.live/badges/bring-installed.svg) ![Number of Installations](http://iobroker.live/badges/bring-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.bring.svg)](https://www.npmjs.com/package/iobroker.bring)
+![Build Status](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
+![Number of Installations](http://iobroker.live/badges/bring-installed.svg) ![Stable version](http://iobroker.live/badges/bring-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.bring.svg)](https://www.npmjs.com/package/iobroker.bring)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.bring.svg)](https://www.npmjs.com/package/iobroker.bring)
 [![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)](https://greenkeeper.io/)
 

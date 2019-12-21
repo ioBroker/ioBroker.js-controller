@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yeelight-2/README.md
 title: ioBroker.yeelight-2
-hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
+hash: 6AC/HUPUiT+GyYNY6GrP3bC5jW5oKgY63rQwR2GCI9g=
 ---
 ![商标](../../../en/adapterref/iobroker.yeelight-2/admin/yeelight.png)
 
@@ -15,8 +15,6 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 ![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)
 
 ＃ioBroker.yeelight-2
-=================
-
 [德意志银行](README_de.md)
 
 该适配器控制您的Yeelight设备。该适配器仅适用于admin3。不支持Admin2
@@ -36,10 +34,10 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 如果键入智能名称，则该设备将添加到iobroker.cloud，并且可以由alexa控制。
 
 ###查找设备
-使用此按钮，您可以扫描网络中的设备，如果发现有问题，则将设备添加到表中。扫描网络大约需要20秒。如果找不到设备，则表示未启用局域网模式或灯泡在其他网络中。
+使用此按钮，您可以扫描网络中的设备，如果发现问题，设备将添加到表中。扫描网络大约需要20秒。如果找不到设备，则表示未启用局域网模式，或者灯泡在其他网络中。
 
 ## Set_scene
-用法：此方法用于将智能LED直接设置为指定状态。如果智能LED指示灯熄灭，则它将首先打开智能LED指示灯，然后应用指定的命令。
+用法：此方法用于将智能LED直接设置为指定状态。如果智能指示灯熄灭，则它将首先打开智能指示灯，然后应用指定的命令。
 
 参数：3〜4
 
@@ -72,13 +70,16 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 
  -首先是将颜色设置为“ 652280”，亮度设置为70％。
  -第二种是将颜色设置为“色相：300”，“饱和度：70”和最大亮度。
- -第三个设置为500K和100％亮度的CT。
+ -第三个将CT设置为500K，亮度设置为100％。
  -第四步是在两个流元组上启动无限的颜色流。
  -第五种是打开灯光至50％的亮度，然后关闭
 
 5分钟后。
 
 ## Changelog
+### 1.0.3 (2019-12-01)
+* (MeisterTR) add Pedant
+* (MeisterTR) transfer to community
 ### 1.0.1 (2018-12-08)
 * (MeisterTR) push version, added set_scene
 ### 0.9.6 (2018-12-08)
@@ -125,3 +126,25 @@ hash: wDWdWZngi4yY2tvEIk9nlPOBTlLqkwqMQfNSRCw9xlk=
 
 
 base from: adb backup https://github.com/cahek2202/ioBroker.yeelight
+
+The MIT License (MIT)
+
+Copyright (c) 2018-2019 MeisterTR <meistertr.smarthome@gmail.com>, cahek2202 <cahek2202@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

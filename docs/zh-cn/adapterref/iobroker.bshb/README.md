@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: bRzRBfSTK2GqCjr0D4mcdmHCknwaIntY6LUPkuzQjZE=
+hash: /V/1fGlTf6mgFX7TfPiMF9C1c3y3Bd3V2yR2BDlTGBI=
 ---
 ![商标](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
@@ -23,9 +23,15 @@ hash: bRzRBfSTK2GqCjr0D4mcdmHCknwaIntY6LUPkuzQjZE=
 
 为此，它使用[博世智能家居桥](https://github.com/holomekc/bosch-smart-home-bridge)库，该库使用来自官方[博世智能家居控制器本地REST API](https://github.com/BoschSmartHome/bosch-shc-api-docs)的信息。
 
+BSHB适配器的ioBroker论坛讨论：https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
+
 工作正在进行中。反馈表示赞赏。
 
 ## Changelog
+
+### 0.1.0
+* (holomekc) certificate and private key are handled in ioBroker and can be content or file reference
+* (holomekc) update to newer bridge version
 
 ### 0.0.14
 * (holomekc) optimizations and cleanup

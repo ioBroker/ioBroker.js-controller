@@ -20,6 +20,9 @@ Set the propper device (example /dev/ttyUSB0) in adapter config.
 
 ## Changelog
 
+### 0.1.1
+* (DutchmanNL) Set state to NULL if no data received within 2 seconds.
+
 ### 0.1.0
 * (Andiling) error in device modes corrected
 

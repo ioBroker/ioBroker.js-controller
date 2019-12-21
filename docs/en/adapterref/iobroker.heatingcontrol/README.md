@@ -13,6 +13,9 @@
 [![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
 
 
+**If you like it, please consider a donation:**
+                                                                          
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 
 
@@ -124,11 +127,19 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.8 (2019-12-xx)
+### 0.3.10 (2019-12-xx)
+* (René) see issue #54: stop override with OverrideTemperature =0
+* (René) new priority for lowering reasons
+
+### 0.3.9 (2019-12-14)
+* (René) see issue #60: sensor delay
+* (René) see issue #57: support of the same sensor for different rooms
+* (René) bug fix: "AbsentDecrease not defined" for relative lowering
+
+### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
-* (René) if useAcors: show how many actors are active (as a datapoint)
-
+* (René) if useActuators: show how many actors are active (as a datapoint)
 
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
@@ -160,8 +171,6 @@ Attention: some changes in datapoints!!
 * (René) see issue #16: new datapoint "state" per room to show reason for temperatur change 
 * (René) change format of LastProgramRun date / time
 
-
-
 ### 0.3.2 (2019-11-01)
 * (René) try to convert temperature to number if NaN
 * (René) see issue #33: check for heating period when adapter starts
@@ -172,7 +181,6 @@ Attention: some changes in datapoints!!
 * (René) show message in admin when adapter is not online
 * (René) pre-define devicelist; add dummy thermostat, if list is empty
 
-
 ### 0.3.0 (2019-10-27)
 * (René) see issue #20 + #24: start and end of heating period is configurable in admin 
 * (René) see issue #24: use external data point to set internal "present" data point 
@@ -180,14 +188,12 @@ Attention: some changes in datapoints!!
 * (René) see issue #35: delete of devices
 * (René) reset DeleteAll at next admin start 
 
-
 ### 0.2.3 (2019-09-20)
 * (René) see issue #19: handling of enums created in iobroker admin fixed
 * (René) see issue #13: check order of periods; if order is wrong (next time is smaller than previous) then time si not used for cron and a warning appears in log
 * (René) see issue #21: check temperatures after changing of period settings (e.g. time)
 * (René) see issue #25: select OID for target and current of thermostat in admin overworked
 * (René) change datapoint type from bool to boolean
-
 
 ### 0.2.2 (2019-09-13)
 * (René) see issue #14: description of datapoint time changed ('from' instead 'until')

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tado/README.md
 title: ioBroker.tado
-hash: QyeWXala5Z4Oykq9OXIm6O9mQXW+U2OVBDfaw2I0Se0=
+hash: QU/K688hdQZb138mx6bivShC+3fIcL/BFBznWd29LDQ=
 ---
 ![安装数量](http://iobroker.live/badges/tado-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tado.svg)
@@ -19,10 +19,27 @@ hash: QyeWXala5Z4Oykq9OXIm6O9mQXW+U2OVBDfaw2I0Se0=
 ## Tado ioBroker适配器
 tado°确保舒适健康的气候，同时节省多达31％的暖气费用。
 
+＃＃ 支持我
+如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.tado/master/admin/button.png）](http://paypal.me/DutchmanNL)]
+
 ## Changelog
+
+### 0.1.5  
+* (DutchmanNL) Fix switching on/off heating & related auto mode
+* (DutchmanNL) Fix switching some incorrect logging
+
+### 0.1.4 Fixed Clear Overlay, Open Window & log error's
+* (DutchmanNL) Fixed Clear Overlay to Boolean
+* (DutchmanNL) Fixed datapoints for OpenWindow 
+* (DutchmanNL) Fixed setting overlay correctly for manuel temperature changes (use previous setting instead of always manual)
+* (DutchmanNL) Fixed error message Cannot read property 'percentage' of undefined"
+
+### 0.1.3 Several fixes for reported error's
+* (DutchmanNL) boilerId / onDemandLogRetrievalEnabled / openWindowDetected / onDemandLogRetrievalEnabled
+* (DutchmanNL) Open Window detection implemented, only by device not by room
+
 ### 0.1.2 Bug fix
 * (DutchmanNL) Room temperature setting (overlay) fixed
-
 
 ### 0.1.1 Write API information to states
 * (DutchmanNL) Write API information to states

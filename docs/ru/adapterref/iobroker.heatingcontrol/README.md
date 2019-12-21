@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
+hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 ---
 ![логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,9 +14,13 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 ![Трэвис-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
 
 # IoBroker.HeatingControl
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Адаптер для управления вашей системой отопления.
 
-Особенности:
+Функции:
 
 * Контроль заданных уровней температуры всех термостатов в соответствии с расписанием
 * Настройка нескольких периодов отопления для каждого дня и ночи
@@ -34,7 +38,7 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 * Пример визуализации будет предоставлен позже
 
 ## Настройки
-### Главный
+### Основной
 * Функция = Функция, используемая для обнаружения термостатов, исполнительных механизмов и датчиков в помещении. Это один из перечислений системы
 * часовой пояс = для использования cron для настройки заданий cron
 * Путь к Feiertag - Adapter = если вы хотите использовать Feiertag-Adapter для автоматического определения выходного дня на сегодня, то укажите здесь путь (например, feiertage.0)
@@ -47,8 +51,8 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 ### Профиль
 * Тип профиля = поддерживается три различных типа профиля (понедельник - воскресенье или понедельник - пятница и суббота / воскресенье или каждый день)
 * количество профилей = если вам нужно больше, то в профиле увеличьте это значение. Затем вы можете выбрать, какой профиль будет использоваться.
-* количество периодов = определяет, сколько ежедневных секций с различной температурой вам нужно Чем больше вы установите, тем больше точек данных будет создано. Лучше использовать низкое значение (например, 5)
-* "официальный выходной, например, воскресенье = если вы хотите установить целевые температуры в праздничные дни, например, в воскресенье, включите эту опцию. В противном случае настройки выходных дней такие же, как в обычные дни.
+* количество периодов = определить, сколько ежедневных секций с различной температурой вам нужно Чем больше вы установите, тем больше точек данных будет создано. Лучше использовать низкое значение (например, 5)
+* "официальный выходной, например, воскресенье = если вы хотите установить целевые температуры в праздничные дни, например, в воскресенье, включите эту опцию. В противном случае настройки выходных дней такие же, как и в обычные дни.
 * HeatingPeriod = дата начала и окончания периода нагрева. Используется для установки «HeatingPeriodActive»
 
 ### Устройства
@@ -57,7 +61,7 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 
 ### Редактировать комнату
 * здесь вы можете проверить и установить идентификаторы объектов для термостатов, приводов и датчиков
-* Вы можете добавить вручную новые термостаты, приводы или датчики. Просто нажмите кнопку +. Тогда вы получите пустую строку, которую необходимо заполнить. Кнопка «Правка» открывает список доступных устройств в системе.
+* Вы можете добавить вручную новые термостаты, приводы или датчики. Просто нажмите кнопку +. Тогда вы получите пустую строку, которую нужно заполнить. Кнопка «Правка» открывает список доступных устройств в системе.
 * термостаты:
 
 ** должны быть заданы имя, целевой температурный OID и текущий температурный OID.
@@ -82,8 +86,8 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
 | Гости присутствуют | повысить температуру, потому что гости хотят, чтобы было теплее | увеличить текущую температуру профиля с помощью Profiles.0.room.GuestIncrease | установить цель в Profiles.0.room.absolute.GuestIncrease |
 | PartyNow | понизить температуру, потому что становится жарко »| уменьшить текущую температуру профиля с помощью Profiles.0.room.PartyDecrease | установить цель в Profiles.0.room.absolute.PartyDecrease |
-| Настоящее | мы присутствуем, если нас нет, понижаем температуру | уменьшить текущую температуру профиля с помощью Profiles.0.room.AbsentDecrease | установить целевое значение для Profiles.0.room.absolute.AbsentDecrease |
-| VacationAbsent | мы отсутствуют, поэтому снижаемся и в выходные | уменьшить текущую температуру профиля с помощью Profiles.0.room.VacationAbsentDecrease | установить целевое значение для Profiles.0.room.absolute.VacationAbsentDecrease |
+| Настоящее | мы присутствуем, если нас нет, понижаем температуру | уменьшить текущую температуру профиля с помощью Profiles.0.room.AbsentDecrease | установить целевое значение в Profiles.0.room.absolute.AbsentDecrease |
+| VacationAbsent | мы отсутствуют, поэтому снижаемся и в выходные дни | уменьшить текущую температуру профиля с помощью Profiles.0.room.VacationAbsentDecrease | установить целевое значение для Profiles.0.room.absolute.VacationAbsentDecrease |
 
 * в обоих сценариях используется только одно понижение (в предыдущей версии адаптера можно было использовать более одного обезжиривания)
 * в абсолютном сценарии обезжиривания используются только целевые значения, не равные 0 °C. Если вам не нужно какое-либо понижение для определенной комнаты, сохраняйте значения понижения при 0 ° C.
@@ -98,7 +102,7 @@ hash: fhiu+jXiQ3t4BoR0YltgGg6f5WSImwhpFFYeP9Gzj+s=
 Существует возможность обрабатывать PublicHoliday как воскресенье. Эта опция может быть включена в админке.
 
 ### Окно открыто
-если «Использовать датчики» активен и датчики настроены для комнаты, то
+если «Использовать датчики» активны и датчики настроены для комнаты, то
 
 a) уменьшить текущую температуру профиля, когда окно открыто (true), с помощью Profiles.0.room.WindowOpenDecrease, если настроено относительное уменьшение; b) установить целевое значение на Profiles.0.room.absolute.WindowOpenDecrease, когда окно открыто (true), если абсолютное уменьшение настроен
 
@@ -106,7 +110,7 @@ a) уменьшить текущую температуру профиля, ко
 Вы можете использовать свой календарь, чтобы изменить точки данных в адаптере.
 Просто настройте события из ical в админке. Поддерживаются
 
-* Heatingcontrol.0. Присутствует
+* HeatingControl.0. Присутствует
 * HeatingControl.0. HolidayPresent
 * Heatingcontrol.0. VacationAbsent
 * heatingcontrol.0. Гость-подарок
@@ -120,11 +124,19 @@ a) уменьшить текущую температуру профиля, ко
 
 ## Changelog
 
-### 0.3.8 (2019-12-xx)
+### 0.3.10 (2019-12-xx)
+* (René) see issue #54: stop override with OverrideTemperature =0
+* (René) new priority for lowering reasons
+
+### 0.3.9 (2019-12-14)
+* (René) see issue #60: sensor delay
+* (René) see issue #57: support of the same sensor for different rooms
+* (René) bug fix: "AbsentDecrease not defined" for relative lowering
+
+### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
-* (René) if useAcors: show how many actors are active (as a datapoint)
-
+* (René) if useActuators: show how many actors are active (as a datapoint)
 
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
@@ -156,8 +168,6 @@ Attention: some changes in datapoints!!
 * (René) see issue #16: new datapoint "state" per room to show reason for temperatur change 
 * (René) change format of LastProgramRun date / time
 
-
-
 ### 0.3.2 (2019-11-01)
 * (René) try to convert temperature to number if NaN
 * (René) see issue #33: check for heating period when adapter starts
@@ -168,7 +178,6 @@ Attention: some changes in datapoints!!
 * (René) show message in admin when adapter is not online
 * (René) pre-define devicelist; add dummy thermostat, if list is empty
 
-
 ### 0.3.0 (2019-10-27)
 * (René) see issue #20 + #24: start and end of heating period is configurable in admin 
 * (René) see issue #24: use external data point to set internal "present" data point 
@@ -176,14 +185,12 @@ Attention: some changes in datapoints!!
 * (René) see issue #35: delete of devices
 * (René) reset DeleteAll at next admin start 
 
-
 ### 0.2.3 (2019-09-20)
 * (René) see issue #19: handling of enums created in iobroker admin fixed
 * (René) see issue #13: check order of periods; if order is wrong (next time is smaller than previous) then time si not used for cron and a warning appears in log
 * (René) see issue #21: check temperatures after changing of period settings (e.g. time)
 * (René) see issue #25: select OID for target and current of thermostat in admin overworked
 * (René) change datapoint type from bool to boolean
-
 
 ### 0.2.2 (2019-09-13)
 * (René) see issue #14: description of datapoint time changed ('from' instead 'until')

@@ -2,7 +2,7 @@
 # ioBroker.sonnen
 ===========================
 
-[![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.sonnen.svg?branch=master)](https://travis-ci.org/foxriver76/ioBroker.sonnen)[![Build status](https://ci.appveyor.com/api/projects/status/9c3a9qlw4ut32hbu/branch/master?svg=true)](https://ci.appveyor.com/project/foxriver76/iobroker-sonnen/branch/master)
+![Build Status](https://github.com/foxriver76/ioBroker.sonnen/workflows/Test%20and%20Release/badge.svg)
 ![Number of Installations](http://iobroker.live/badges/sonnen-installed.svg) ![Number of Installations](http://iobroker.live/badges/sonnen-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
 [![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg)](https://greenkeeper.io/)

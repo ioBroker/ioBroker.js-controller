@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis天气
-hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
+hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -14,9 +14,13 @@ hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 ＃ioBroker.vis-天气
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 该可视组件显示来自DasWetter.com或weatherunderground的天气预报数据。您还需要运行DasWetter-Adpater或weatherunderground-Adapter ...
 
-在地下天气中，您需要启用下一个36小时的预测。
+在地下天气中，您需要启用接下来的36小时的预测。
 在DasWetter.com中，您需要启用四个预测数据结构之一。您可以选择要显示的那个。
 
 ##注释/ Wiki
@@ -31,6 +35,10 @@ hash: oLgIX6fudg37vEvtlfC+Q41lYvkTY6kpFCIOp/g0QR0=
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.vis-weather/issues）上创建问题
 
 ## Changelog
+
+
+### 2.5.2 (2019-12-xx)
+* (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
 * (René) alignment of bars with marking

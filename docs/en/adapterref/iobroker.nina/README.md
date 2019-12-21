@@ -15,55 +15,70 @@
 
 Notfall-Informations- und Nachrichten-App
 
-https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
 
-https://warnung.bund.de/
+<https://warnung.bund.de/>
 
 ### Getting started
-
 
 Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
 
 Liste der AGS mit Strg+F suchen:
 
-https://warnung.bund.de/assets/json/suche_channel.json
+<https://warnung.bund.de/assets/json/suche_channel.json>
+
+### error Request error{"errno":"EPROTO","code":"EPROTO","syscall":"write"}
+
+Die Webseite hat eine alte Verschlüsselung bei Debian Buster und RP4 muss folgende temporäre Änderung vorgenommen werden:
+
+Änderungen in der /etc/ssl/openssl.cnf von:
+
+[system_default_sect]
+MinProtocol = TLSv1.2
+CipherString = DEFAULT@SECLEVEL=2
+
+in:
+[system_default_sect]
+MinProtocol = TLSv1.2
+CipherString = DEFAULT@SECLEVEL=1
 
 ## Changelog
 
 ### 0.0.13
 
--   (tomboxi) Identifierliste hinzugefügt.
+- (tomboxi) Identifierliste hinzugefügt.
 
 ### 0.0.12
 
--   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+- (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
 
 ### 0.0.8
 
--   (tomboxi) Katwarn Warnungen hinzugefügt.
+- (tomboxi) Katwarn Warnungen hinzugefügt.
+
 ### 0.0.7
 
--   (tomboxi) BiwApp Warnungen hinzugefügt.
+- (tomboxi) BiwApp Warnungen hinzugefügt.
 
 ### 0.0.6
 
--   (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
+- (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
 
 ### 0.0.5
 
--   (tomboxi) Option für Beispielwarnung
+- (tomboxi) Option für Beispielwarnung
 
 ### 0.0.4
 
--   (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
+- (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
 
 ### 0.0.3
 
--   (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
+- (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
 
 ### 0.0.1
 
--   (tomboxi) initial release
+- (tomboxi) initial release
 
 ## License
 

@@ -1,6 +1,4 @@
 ---
-BADGE-Build Status Travis: https://travis-ci.org/foxriver76/ioBroker.xbox.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/s1we3cpcbxm97upp/branch/master?svg=true
 BADGE-Number of Installations: http://iobroker.live/badges/xbox-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.xbox.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.xbox.svg

@@ -81,6 +81,9 @@ The adapter is build to send up to 5-times a retry to ensure all state changes a
 
 ## Changelog
 
+### 0.1.5
+* (Dutchman & Andiling) Stable-Release candidate
+
 ### 0.1.4
 * (DutchmanNL) Fix Device Name
 * (DutchmanNL) improved way of handling info channel values compatible with old firmware

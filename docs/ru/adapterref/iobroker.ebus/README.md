@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
+hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -14,6 +14,10 @@ hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
 
 # IoBroker.ebus
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Этот адаптер читает
 
 - данные из ebusd с использованием HTML
@@ -26,8 +30,11 @@ hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 
 текущая поддерживаемая ebusd-версия: 3.3
 
-## Известные проблемы
+## Известные вопросы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или пожелаете новых функций
+
+## 1.0.0 (2019-12-хх)
+* (Рене) обновление до моего собственного флота 3.0
 
 ## 0.8.2 (2019-11-10)
 * (René) еще несколько сообщений об ошибках в datapoint "error"
@@ -36,7 +43,7 @@ hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 * (René) обновление flot до версии 3.0
 
 ### 0.8.0 (2019-02-24)
-* (René) значение hcmode2 5 = EVU Sperrzeit
+* (René) hcmode2 значение 5 = EVU Sperrzeit
 
 ### 0.7.0 (2019-01-28)
 * (Рене) добавить регулируемое время ожидания
@@ -51,7 +58,7 @@ hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 * (René) удалена поддержка arduino
 
 ### 0.5.3
-* (René) добавить информацию об ошибке
+* (Рене) добавить информацию об ошибке
 
 ### 0.5.2
 * (René) исправление ошибки: в vis 1.x некоторые значения не сохраняются

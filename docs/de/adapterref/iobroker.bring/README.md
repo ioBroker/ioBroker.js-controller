@@ -3,13 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bring/README.md
 title: ioBroker.bring
-hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
+hash: n1lrpEniOSNdTJPhXYpr74N+pzHkxWVNnX3UPJa37bc=
 ---
 ![Logo](../../../en/adapterref/iobroker.bring/admin/bring.png)
 
-![Build Status Travis](https://travis-ci.org/foxriver76/ioBroker.bring.svg?branch=master)
-![Build-Status](https://ci.appveyor.com/api/projects/status/r7whpsbjfqn18toe/branch/master?svg=true)
-![Anzahl der Installationen](http://iobroker.live/badges/bring-stable.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/bring-installed.svg)
+![stabile Version](http://iobroker.live/badges/bring-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.bring.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.bring.svg)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
@@ -17,6 +16,8 @@ hash: /Wjo9AQ70gH4PJhPIemLunXGyFwECi5//bKRPvuagFg=
 
 # IoBroker.bring
 ===========================
+
+![Build Status](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
 
 ## Zustände
 Eine Beschreibung der erstellten Zustände finden Sie unten.
@@ -133,6 +134,21 @@ Dies kann z. G. für die Sprachausgabe über intelligente Assistenten.*
     *Read only json string, der ein Wörterbuch enthält, um die Schweizer Artikelnamen in die Listensprache zu übersetzen.*
 
 ## Changelog
+### 1.6.6 (2019-11-21)
+* (foxriver76) improved error handling in widget
+
+### 1.6.5 (2019-09-22)
+* (foxriver76) re-auth when bearer token is no longer valid
+
+### 1.6.3 (2019-08-28)
+* (foxriver76) fixed bug which only allowed one registered event handler
+* (foxriver76) by using obj with wid instead of var because vis handles global variables of widgets global
+* (foxriver76) now more bring widgets can be used in one vis project
+* (foxriver76) bump version of textFit to 2.3.1 -> 2.4.0 and use minified version
+
+### 1.6.2 (2019-08-04)
+* (foxriver76) also use translations for enumSentence and notifiations (e. g. email)
+
 ### 1.6.1 (2019-07-13)
 * (foxriver76) fixed bug, that prevent html states and other from being set
 

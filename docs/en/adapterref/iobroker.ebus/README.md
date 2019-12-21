@@ -8,6 +8,12 @@
 
 [![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)](https://nodei.co/npm/iobroker.ebus/)
 
+**If you like it, please consider a donation:**
+                                                                          
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
+
+
 This adapter reads
 - data from ebusd using html
 In this case ebusd must run and must be able to send data to e.g. explorer via http://IP:port/data (http://192.168.0.123:8889/data)
@@ -24,6 +30,9 @@ current supported ebusd-version: 3.3
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.ebus/issues) if you find bugs or whish new features
    
 ## Changelog
+
+## 1.0.0 (2019-12-xx)
+* (René) update to my own flot 3.0
 
 ## 0.8.2 (2019-11-10)
 * (René) some more error messages in datapoint "error"

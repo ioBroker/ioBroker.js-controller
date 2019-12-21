@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
+hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -14,18 +14,38 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
 # IoBroker.sbfspot
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Этот адаптер считывает данные с силовых преобразователей SMA, используя sbfspot.
 Теперь поддерживаются оба типа базы данных (mySQL и sqlite).
-Начиная с версии 0.2.3, существует собственный виджет vis, основанный на flot, для отображения исторических данных.
+Начиная с версии 0.2.3, есть собственный виджет vis, основанный на flot, для отображения исторических данных.
+
+## Установка
+следуйте инструкциям по установке sbfspot по адресу https://github.com/SBFspot/SBFspot/wiki
+
+[детальная установка на системы на основе оружия](docs/en/install_arm.md)
 
 ## Подсказки
-* используйте последнюю версию из sbfspot с https://github.com/SBFspot/SBFspot или с https://github.com/rg-engineering/SBFspot
+* используйте последнюю версию из sbfspot с https://github.com/SBFspot/SBFspot
 * адаптер, sbfspot и базы данных (mySQL или sqlite) должны работать в одной системе, например Raspberry Pi
 * Руководство по установке sbfspot на Raspberry Pi (или аналогичном) можно найти по адресу https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite или https://www.rg-engineering.eu/index. PHP / Продукты / программное обеспечение / плагин-Fuer-iobroker-sbfspot
 * для Raspberry Pi есть полуавтоматический инструмент настройки, доступный по адресу https://github.com/SBFspot/sbfspot-config
 
-## Известные проблемы
+## Известные вопросы
+* иногда установка пакета npm sqlite3 завершается неудачно.
+
+в этом случае переустановите все пакеты npm
+
+> cd /opt/iobroker/node_modules/iobroker.sbfspot> sudo npm install
+
+иногда для успешной установки всех необходимых пакетов необходимо вызывать npm intall более одного раза
+
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
+
+## 2.4.0 (2019-12-хх)
+* (Рене) обновление до моего собственного флота 3.0
 
 ## 2.3.4 (2019-10-31)
 * (René) обновление flot до версии 3.0
@@ -44,7 +64,7 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 * (René) пакеты обновлений
 
 ### 2.2.5 (2018-11-04)
-* (René) сбросить доходность, если нет нового значения за сегодняшний день
+* (Рене) сбросить доходность, если нет нового значения с сегодняшнего дня
 
 ### 2.2.4 (2018-08-19)
 * (René) исправление для тиков на X
@@ -74,7 +94,7 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 Внимание: виджет не совместим с версией 1.x.x; просто проверьте настройки в виджете после установки!
 
 ### 1.1.0
-* (Рене) автомасштабирование оси у
+* (René) автомасштабирование оси y
 * (Рене) цвет для оси у
 * (Рене) регулируемый формат даты
 

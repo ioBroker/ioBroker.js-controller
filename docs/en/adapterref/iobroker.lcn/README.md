@@ -40,6 +40,37 @@ To apply the valid convert functions to variables, the variables must have the v
 - **value.sun.azimuth** - sun azimuth
 - **value.sun.elevation** - sun elevation
 
+## Settings
+- Reconnect interval(sec) - how often adapters tries to connect. Default ever 30 seconds. 
+- Connect timeout(ms) - how long adapter waits for connection response inclusive authentication. Default 6 seconds. 
+- Scan response timeout(ms) - how long adapter waits for answers by scan of modules.
+- Response timeout(ms) - timeout for control commands
+- Ping Interval(sec) - how often adapter sends ping requests 
+- Ping response timeout(ms) - timeout for ping requests
+- IN/OUT Relays are the same - if the "out" and "in" relays are the same thing or if these relays are different ones. 
+```
+// =====================  Same relays =============================
+//                                    +-------+
+// ----------------- OUT -----------> |       |
+//                                    | Relay |
+// <----------------- IN ------------ |       |
+//                                    +-------+
+// 
+// 
+// ======================  Different relays =======================
+//                                    +-------+
+//                                    |       |
+// ----------------- OUT -----------> | Relay |
+//                                    |       |
+//                                    +-------+
+// 
+//                                    +--------+
+//                                    | Sensor |
+// <----------------- IN ------------ |   or   |
+//                                    | Relay  |
+//                                    +--------+
+```
+
 ## How to use
 After the first start the devices must be scanned. It can be done in the configuration dialog with scan button
 
@@ -49,6 +80,13 @@ After the first start the devices must be scanned. It can be done in the configu
 - Configuration dialog to define type of variables.
 
 ## Changelog
+### 0.6.3 (2019-12-18)
+* (bluefox) General relays mode implemented
+
+### 0.6.2 (2019-12-07)
+* (bluefox) Detected delayed responses
+* (bluefox) Dynamical creation of states is implemented
+
 ### 0.5.5 (2019-12-05)
 * (bluefox) Relay inputs were corrected
 

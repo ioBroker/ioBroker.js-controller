@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
+hash: sTG65f0ejF9UmC0jh/+K+XPxy/PQnqFqVQdxJQjldPw=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -12,7 +12,7 @@ hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
 ![稳定版](http://iobroker.live/badges/lupusec-stable.svg)
 ![安装数量](http://iobroker.live/badges/lupusec-installed.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lupusec.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 ＃ioBroker.lupusec
@@ -33,7 +33,7 @@ hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
 
 从Lupusec警报系统中选择IP地址或主机名。尽可能选择https（推荐）。
 仅读取状态，请选择没有写访问权限的用户。如果要更改状态（例如，打开/关闭灯或布防/撤防警报），请选择具有写权限的用户。
-![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您将监视摄像机连接到Lupusec警报系统，则可以在ioBroker中提供它们。 Lupusec适配器自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到凸轮。
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您将监视摄像机连接到Lupusec警报系统，则可以在ioBroker中提供它们。 Lupusec适配器自己查找所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到凸轮。
 ![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)如果您将Nuki开门器连接到Lupusec报警系统，则也可以从ioBroker使用它。在ioBroker实例管理菜单上，您可以输入安装在Nuki门上的Lupusec门传感器。如果现在打开安装Nuki的门，则将具有附加状态“开门”，而只有“解锁”状态。如果Nuki门上没有Lupusec门传感器，则只会看到“锁定”或“锁定”状态。
 ![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
@@ -45,24 +45,26 @@ hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
   -紧急按钮（类型7）
   -运动检测器/ 360度运动检测器（9类）
   -CO传感器（13型）
-  -烟雾探测器/热量探测器（类型14）
+  -烟雾探测器/热量探测器（14型）
   -内部警笛（21型）
   -状态指示灯/迷你室内警报器（22型）
   -电源开关（类型24）
   -带ZigBee中继器的1通道中继器（类型24）
   -带ZigBee中继器的2通道中继器（类型24）
+  -转接器V2（类型26）
   -键盘（37型）
   -玻璃传感器（39型）
+  -内部警笛（45型）
   -警笛外（48型）
   -电源开关表（类型48）
-  -电表（50型）
+  -电表（类型50）
   -房间传感器V1（54型）
   -LCD温度传感器（54型）
   -最低温度（54型）
   -Nuki开门器（57型）
   -热量探测器（58型）
   -调光器（66型）
-  -电灯开关V2（66型）
+  -灯开关V2（66型）
   -色相（74型）
   -卷帘继电器V1（76型）
   -散热器恒温器（79型）
@@ -102,6 +104,14 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.2.3 (06.09.2019)
+* (Stübi) Add device: Repeater V2
+* (Stübi) Add device: Siren inside (Battery version without Zigbee repeater)
+
+### 1.2.1 (14.10.2019)
+* (Stübi) Bugfixing (Issue #9)
+* (Stübi) Bugfixing: if the name of a device is empty, the name was changed all the time between NaN and ''  
 
 ### 1.2.0 (13.09.2019)
 * (Stübi) Changing error handling of adapter
@@ -191,7 +201,7 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

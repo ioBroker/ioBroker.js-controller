@@ -15,7 +15,9 @@ Install adapter, create instance.
 Set Solarlog - IP-adress (192.XXX.X.XXX), port (optional) and polling - intervall (in millilseconds). Since the adapter sends a lot of http-requests to you solarlog, I recommend not to set the polling-intervall too dense. Check your debug-log for the time needed to poll or set at least 10s.
 
 Check if all inverter - data is collected. !! The user-password in solarlog has to be deactivated for this option!!
-Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein
+Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein.
+
+Forecast: optionally, the adapter gets forecast - data using the Forecast.Solar API. Actually, the todays and tomorrows total kWh are predicted, refreshing every hour. More detailed or additional data is available on request (pls open an issue).
 
 ## Hardware
 
@@ -25,6 +27,10 @@ Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
 SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain values in the 'info' and the 'status' channel will be 'ACCESS DENIED'. If you prefer another solution, please open an issue or post your preferences in a corresponding issue.
 
 ## Changelog
+
+### 1.2.0
+
+-   Shows now forecast data: todays and tomorrows total kWh. Completed translations in words.js.
 
 ### 1.1.0
 

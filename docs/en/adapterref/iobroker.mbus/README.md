@@ -13,6 +13,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 [![NPM](https://nodei.co/npm/iobroker.mbus.png?downloads=true)](https://nodei.co/npm/iobroker.mbus/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors to me as the developer.**
+
 This adapter for ioBroker connects to a M-Bus Master via TCP or serial to provide the status and details of connected M-Bus devices.
 
 ## Description of parameters
@@ -35,6 +37,11 @@ In the created states for each device one state exists called "updateNow". When 
 * encrypted payload handling (if needed by anyone)
 
 ## Changelog
+
+### 2.1.0 (2019-12-18)
+* add compact mode
+* move to more flexible serial port configuration
+* add Sentry for error reporting
 
 ### 2.0.0 (2019-10-16)
 * (lvogt) **BREAKING CHANGE** better handling for values with changing scaling based on the value - maybe incompatible with old values!

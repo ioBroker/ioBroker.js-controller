@@ -26,6 +26,9 @@ Only selected holidays count in the process.
 The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
+### 1.0.14 (2019-12-19)
+* (pix) National day in Switzerland added
+
 ### 1.0.13 (2019-09-20)
 * (pix) Offsets corrected
 

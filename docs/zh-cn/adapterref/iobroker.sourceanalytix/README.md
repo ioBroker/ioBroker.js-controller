@@ -2,77 +2,92 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
-title: [Beta  - 已发布] SourceAnalytix
-hash: Ar3csPWlLCr3Mbrnwh11QGKUzvlyGx1rHsICAQy2YPE=
+title: [测试版-已发布] SourceAnalytix
+hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
 ---
-![测试](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
+![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-＃[Beta  - 已发布] SourceAnalytix
+＃[测试版-已发布] SourceAnalytix
 ##警告，此适配器需要节点8或更高！
 ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表值。
-您需要从设备输入数据（Wh，l / h或m3的总量），此适配器将：
+您需要设备提供的数据作为输入（使用的Wh，l / h或m3总量），此适配器将：
 
-*每日，每周，每月，每季度，每年跟踪消费
-*计算成本（当前价格可配置）
+*每天，每周，每月，每季度，每年跟踪消耗
+*计算成本（当前价格是可配置的）
 *可用于功耗，液体和气体
 *输入值可以是wh / kWh / m3 / l
 
 ＃＃ 如何
 * [ ] 去做
 
-这个适配器是根源，感谢pix回2016年https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+此适配器的起源归功于pix早在2016年https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
-由@hadering改进并在github上发布https://github.com/hdering/homematic_verbrauchszaehler
+@hadering对此进行了改进，并发布在github https://github.com/hdering/homematic_verbrauchszaehler
 
 ＃＃ 已知的问题
-* []期间计算可选但尚未实施
-* []季度未计算
-* []月度成本价格尚未在计算中实施
-* [x]存储尚未实现的当前仪表值
-* [x]米值可选但尚未实施
-* [x]适配器重启需要添加新对象的计算
-* [x]成本类型交付的最终状态未被写入
+* []期间计算可选，但尚未实施
+* []个季度未计算
+* []尚未在计算中实施的每月费用价格
+* [x]存储尚未实现的电流表值
+* [x]仪表值可选，但尚未实现
+* [x]适配器重新启动以添加新对象的计算
+*未写入成本类型交付的[x]状态
 * [x]设备名称别名不正确
-* [x]翻译
+* [x]个翻译
 
 ＃＃ 去做
 * []文档
-* []成本默认值为0，如果未提供，则显示错误消息
-* []基于仪表值的重新计算（可按日期配置）
-* []计算季度值
-* []为适配器设置中可配置的前[x]天，[x]周，[x]月，[x]季度，[x]年添加对象状态
+* []成本默认值为0，如果未提供则显示错误消息
+* []根据仪表值重新计算（可按日期配置）
+* []计算四分之一数值
+* []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
 * []代码优化
-* [x]存储每个州的仪表值
+* [x]每种状态的仪表值存储
 * [x]紧凑模式
-* [x]添加对wh值计算的支持
+* [x]添加了对Wh值计算的支持
 * [x]修复基本翻译
-* [x]就绪状态值并存储到状态
-* [x]将仪表值写入“启动”状态以用于计算
-* [x]可配置的每个州的intervall
-* [x]每个州的可配置单位
-* [x]每个州的可配置成本价格
+* [x]个就绪状态值并存储到状态
+* [x]将仪表值写入“开始”状态以用于计算
+* [x]每个状态的可配置间隔
+* [x]每个状态的可配置单位
+* [x]每个州的可配置成本价
 * [x]每个州的可配置单价
-* [x]用于成本或收入的状态
+* [x]状态用于成本或收入
 * [x]消耗量计算
-* [x]成本计算
-* [x]可调节的测量起点
+* [x]费用计算
+* [x]可调的测量起点
 * [x]支持多种设备状态
 * [x]将仪表值写入要在计算中使用的对象
-* [x]配置适配器设置（目前只支持发现的演示对象）
-* [x]删除临时状态以进行计算
+*适配器设置中的[x]配置（当前仅支持Discover的演示对象）
+* [x]删除临时状态进行计算
 * [x]计算m3值
 * [x]使用设备名称的别名
-* [x]可配置的数据点（是/否），用于成本，消耗和计量值
-* [x]可选择存储整年的分析或仅存储可选择的周期
-* [x]确保在适配器关闭时存储所有值以防止数据间隔
+* [x]个可配置的数据点（是/否），用于成本，消耗量和仪表值
+* [x]可以选择存储整年的分析数据，也可以仅存储可选的期间
+* [x]确保在适配器关闭时存储所有值，以防止数据间隔
+
+＃＃ 支持我
+如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.2.281
+### 0.3.0   
+* (Dutchman) m³ Implemented
+
+### 0.2.5
+* (xXBJXx) Fix wrong storage of start meter values
+
+### 0.2.41
+* (Dutchman) Fix wrong storage of daily reset of meter values
+
+### 0.2.3
+* (Xoroles & Dutchman) fix watt calculation, thank you @Xoroles !
+
+### 0.2.29
 * (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 
 ### 0.2.276

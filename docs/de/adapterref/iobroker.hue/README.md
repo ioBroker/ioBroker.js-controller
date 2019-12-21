@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: ioBroker Philips Hue Bridge Adapter
-hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
+hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -15,15 +15,17 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 # IoBroker Philips Hue Bridge Adapter
 ==============
 
+![Build Status](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
+
 ## English: gb:
 Dieser Adapter verbindet Ihre Philips Hue Bridges mit ioBroker, um Philips Hue LED-Lampen, Friends of Hue LED-Lampen, Streifen, Stecker wie von Osram und andere SmartLink-fähige Geräte (wie LivingWhites und einige LivingColors) zu steuern.
 
-### Konfiguration
+### Installieren
 Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als nächstes müssen Sie Ihre Hue Bridge mit ioBroker in den Adaptereinstellungen verbinden:
 
 1. Wenn Sie eine andere Bridge als v2 verwenden, konfigurieren Sie den Port auf 80 (nicht https), andernfalls sollte 443 (https) der richtige Weg sein.
 2. Klicken Sie auf die Schaltfläche "Find Bridge", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch werden alle Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Bridge aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Bridge Address" wird mit der IP-Adresse der von Ihnen gewählten Hue Bridge gefüllt.
-3. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Knopf gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
+3. Klicken Sie anschließend in den Einstellungen auf die Schaltfläche "Benutzer erstellen" und gehen Sie zu Ihrem Hue Bridge-Gerät, also Ihrer Hardware, um die runde Schaltfläche zu drücken. Sie haben 30 Sekunden Zeit, um fortzufahren. Sobald Sie den Button gedrückt haben, sollte das Feld "Bridge User" mit einem generierten String gefüllt sein.
 4. Ändern Sie andere Optionen in den Adaptereinstellungen und wählen Sie dann "Speichern und schließen".
 5. Schließlich sollten Sie fertig sein: Der Adapter generiert alle Objekte, um Ihre Hue-Geräte entsprechend zu steuern.
 
@@ -53,8 +55,30 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername k
 * Automatische Benutzereinstellung über Bridge Link Button
 
 ## Changelog
-### 2.4.0 (2019-11-03)
-* (foxriver76) added possibility to control software sensors
+### 2.4.7 (2019-12-14)
+* (foxriver76) do not set default values on every adapter start
+* (foxriver76) this is now done only on object creation
+
+### 2.4.6 (2019-12-06)
+* (foxriver76) log unhandeld promise rejections
+* (foxriver76) fix potential issue for negative temperature values
+
+### 2.4.4 (2019-11-27)
+* (foxriver76) only stringify huge jsons if necessary
+* (foxriver76) prevent possible double polling at adapter start
+* (foxriver76) use timeouts instead of interval
+* (foxriver76) improved performance
+
+### 2.4.3 (2019-11-19)
+* (foxriver76) increased version of node-hue-api to fix authentication for old bridge
+
+### 2.4.2 (2019-11-16)
+* (foxriver76) we now use nupnp + upnp to discover bridges (previously only upnp)
+
+### 2.4.1 (2019-11-13)
+* (foxriver76) added possibility to control zones and entertainment areas
+* (foxriver76) log queue retires on debug instead warn
+* (foxriver76) __BETA__: added possibility to control software sensors (Note: this may be handled in a more suitable fashion soon)
 
 ### 2.3.1 (2019-11-02)
 * (foxriver76) fixed controlling `on` state of sensors

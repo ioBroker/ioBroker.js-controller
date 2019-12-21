@@ -47,8 +47,10 @@ Fully supported and individually adapted are following devices:
   - Power Switch (Type 24)
   - 1 channel relay with ZigBee repeater (Type 24)
   - 2 channel relay with ZigBee repeater (Type 24)
+  - Repater V2 (Type 26)
   - Keypad (Type 37)
   - Glass sensor (Type 39)
+  - Siren inside (Type 45)
   - Siren outside (Type 48)
   - Power Switch Meter (Type 48)
   - Electric Meter (Type 50)
@@ -95,6 +97,10 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 ![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
 
 ## Changelog
+
+### 1.2.3 (06.09.2019)
+* (Stübi) Add device: Repeater V2
+* (Stübi) Add device: Siren inside (Battery version without Zigbee repeater)
 
 ### 1.2.1 (14.10.2019)
 * (Stübi) Bugfixing (Issue #9)

@@ -191,6 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.12.2 (2019-12-19)
+* (foxriver76) fix issue on https with less robust ccu emulations
+
 ### 1.12.1 (2019-12-06)
 * (foxriver76) fixed problem with max values of value lists
 

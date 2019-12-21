@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
+hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -14,18 +14,38 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
 # IoBroker.sbfspot
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Dieser Adapter liest mit sbfspot Daten von SMA Wechselrichtern.
 Jetzt werden beide Datenbanktypen (mySQL und sqlite) unterstützt.
 Seit Version 0.2.3 gibt es ein eigenes vis-Widget auf Flot-Basis, das historische Daten anzeigt.
 
+## Installation
+Bitte folgen Sie den Installationsanweisungen für sbfspot unter https://github.com/SBFspot/SBFspot/wiki
+
+[detaillierte Installation auf armbasierten Systemen](docs/en/install_arm.md)
+
 ## Hinweise
-* Verwenden Sie die neueste Version von sbfspot von https://github.com/SBFspot/SBFspot oder von https://github.com/rg-engineering/SBFspot
+* Verwenden Sie die neueste Version von sbfspot unter https://github.com/SBFspot/SBFspot
 * Adapter, sbfspot und Datenbanken (mySQL oder sqlite) müssen auf demselben System ausgeführt werden, z. Himbeer-PI
 * Das Installationshandbuch für sbfspot auf Raspberry Pi (oder ähnlichem) finden Sie unter https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite oder https://www.rg-engineering.eu/index. php / produkte / software / plugin-fuer-iobroker-sbfspot
 * Für Raspberry Pi steht unter https://github.com/SBFspot/sbfspot-config ein halbautomatisches Konfigurationstool zur Verfügung
 
 ## Bekannte Probleme
+* Manchmal schlägt die Installation des npm-Pakets sqlite3 fehl.
+
+In diesem Fall installieren Sie alle npm-Pakete neu
+
+> cd /opt/iobroker/node_modules/iobroker.sbfspot> sudo npm install
+
+Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pakete erfolgreich zu installieren
+
 * Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 2.4.0 (2019-12-xx)
+* (René) Update auf meinen eigenen Flot 3.0
 
 ## 2.3.4 (2019-10-31)
 * (René) Update Flot auf Version 3.0

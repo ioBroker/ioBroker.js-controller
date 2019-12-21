@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
+hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -14,18 +14,38 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
 ＃ioBroker.sbfspot
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 该适配器使用sbfspot从SMA电源逆变器读取数据。
 现在支持两种数据库类型（mySQL和sqlite）。
 从0.2.3版开始，有一个基于flo的vis小部件可用于显示历史数据。
 
+##安装
+请按照https://github.com/SBFspot/SBFspot/wiki下的sbfspot安装说明进行操作
+
+[在基于手臂的系统上的详细安装](docs/en/install_arm.md)
+
 ##提示
-*从https://github.com/SBFspot/SBFspot或https://github.com/rg-engineering/SBFspot使用sbfspot的最新版本
+*使用来自https://github.com/SBFspot/SBFspot的sbfspot的最新版本
 *适配器，sbfspot和数据库（mySQL或sqlite）必须在同一系统上运行，例如树莓派
 *可在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index下找到Raspberry Pi（或类似版本）上sbfspot的安装手册。 php / produkte / software / plugin-fuer-iobroker-sbfspot
 *对于Raspberry Pi，在https://github.com/SBFspot/sbfspot-config下提供了一个半自动配置工具
 
 ＃＃ 已知的问题
+*有时npm软件包sqlite3的安装失败。
+
+在这种情况下，请重新安装所有npm软件包
+
+> cd /opt/iobroker/node_modules/iobroker.sbfspot> sudo npm安装
+
+有时必须多次调用npm intall才能成功安装所有必需的软件包
+
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+
+## 2.4.0（2019-12-xx）
+*（René）更新到我自己的flot 3.0
 
 ## 2.3.4（2019-10-31）
 *（René）将flot更新到3.0版
@@ -74,12 +94,12 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 注意：小部件与1.x.x版本不兼容；安装后只需检查小部件中的设置即可！
 
 ### 1.1.0
-*（René）y轴的自动缩放
+*（René）y轴自动缩放
 * y轴的（René）颜色
 *（René）可调日期格式
 
 ### 1.0.1
-*（René）修复SQLite的错误
+*（René）修复SQLite错误
 
 ### 1.0.0
 *（René）首次稳定发行
@@ -94,7 +114,7 @@ hash: H35jC6h/n9Gh+hmU2Jqe7BvaNZe8+id1JmRgM0alWGg=
 *（René）徽标已更改
 
 ### 0.2.3
-*（René）添加历史数据作为数据点（JSON）
+*（René）将历史数据添加为数据点（JSON）
 *（René）新的vis小部件可显示历史数据
 
 ### 0.2.2

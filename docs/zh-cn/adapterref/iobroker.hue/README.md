@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
 title: ioBroker飞利浦Hue桥适配器
-hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
+hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ---
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -14,6 +14,8 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 
 ＃ioBroker飞利浦Hue桥适配器
 ==============
+
+![建立状态](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 
 ##英语：gb：
 此适配器将您的Philips Hue桥与ioBroker连接，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
@@ -32,7 +34,7 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 ###设置
 |名称|描述|
 |---|---|
-| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮检测到它。 |
+| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮来检测它。 |
 | __Port__ | Hue网桥的端口，通常为443（SSL）和80（非SSL）。 |
 | __User__ |网桥用户的用户名。您可以通过按`Create User`按钮并按照屏幕说明进行创建。 |
 | __User__ |网桥用户的用户名。您可以通过按“创建用户”按钮并按照屏幕说明进行创建。 |
@@ -42,7 +44,7 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 | __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的`status`数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，`0`将场景关闭，而`1`将其打开。 |
 | __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
 | __轮询__ |如果选中，则适配器将轮询状态更改，否则只能用于控制指示灯，而不能显示其状态。 |
-| __轮询间隔__ ||定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
+| __轮询间隔__ |定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
 
 ## Deutsch：de：
 Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
@@ -53,8 +55,30 @@ Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
-### 2.4.0 (2019-11-03)
-* (foxriver76) added possibility to control software sensors
+### 2.4.7 (2019-12-14)
+* (foxriver76) do not set default values on every adapter start
+* (foxriver76) this is now done only on object creation
+
+### 2.4.6 (2019-12-06)
+* (foxriver76) log unhandeld promise rejections
+* (foxriver76) fix potential issue for negative temperature values
+
+### 2.4.4 (2019-11-27)
+* (foxriver76) only stringify huge jsons if necessary
+* (foxriver76) prevent possible double polling at adapter start
+* (foxriver76) use timeouts instead of interval
+* (foxriver76) improved performance
+
+### 2.4.3 (2019-11-19)
+* (foxriver76) increased version of node-hue-api to fix authentication for old bridge
+
+### 2.4.2 (2019-11-16)
+* (foxriver76) we now use nupnp + upnp to discover bridges (previously only upnp)
+
+### 2.4.1 (2019-11-13)
+* (foxriver76) added possibility to control zones and entertainment areas
+* (foxriver76) log queue retires on debug instead warn
+* (foxriver76) __BETA__: added possibility to control software sensors (Note: this may be handled in a more suitable fashion soon)
 
 ### 2.3.1 (2019-11-02)
 * (foxriver76) fixed controlling `on` state of sensors

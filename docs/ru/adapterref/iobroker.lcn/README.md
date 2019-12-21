@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lcn/README.md
 title: ioBroker.lcn
-hash: fqNOdd76eIu4H7mYnlg3q/hxtJukZdAZ2vLp8u0uEyw=
+hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
 ---
 ![логотип](../../../en/adapterref/iobroker.lcn/admin/lcn.png)
 
@@ -47,6 +47,38 @@ hash: fqNOdd76eIu4H7mYnlg3q/hxtJukZdAZ2vLp8u0uEyw=
 - **значение.сун.азимута** - азимут солнца
 - **значение.sun.elevation** - высота солнца
 
+## Настройки
+- Интервал повторного подключения (с) - как часто адаптеры пытаются подключиться. По умолчанию когда-либо 30 секунд.
+- Тайм-аут соединения (мс) - как долго адаптер ожидает ответа на соединение, включая аутентификацию. По умолчанию 6 секунд.
+- Время ожидания ответа сканирования (мс) - сколько времени адаптер ожидает ответов при сканировании модулей.
+- Время ожидания ответа (мс) - время ожидания для команд управления
+- Ping Interval (sec) - как часто адаптер отправляет запросы ping
+- Время ожидания ответа на пинг (мс) - время ожидания для запросов на проверку связи
+- Реле IN / OUT одинаковы - если реле «out» и «in» - это одно и то же или эти реле разные.
+
+```
+// =====================  Same relays =============================
+//                                    +-------+
+// ----------------- OUT -----------> |       |
+//                                    | Relay |
+// <----------------- IN ------------ |       |
+//                                    +-------+
+//
+//
+// ======================  Different relays =======================
+//                                    +-------+
+//                                    |       |
+// ----------------- OUT -----------> | Relay |
+//                                    |       |
+//                                    +-------+
+//
+//                                    +--------+
+//                                    | Sensor |
+// <----------------- IN ------------ |   or   |
+//                                    | Relay  |
+//                                    +--------+
+```
+
 ## Как пользоваться
 После первого запуска устройства должны быть отсканированы. Это можно сделать в диалоговом окне конфигурации с помощью кнопки сканирования.
 
@@ -56,6 +88,26 @@ hash: fqNOdd76eIu4H7mYnlg3q/hxtJukZdAZ2vLp8u0uEyw=
 - Конфигурационный диалог для определения типа переменных.
 
 ## Changelog
+### 0.6.3 (2019-12-18)
+* (bluefox) General relays mode implemented
+
+### 0.6.2 (2019-12-07)
+* (bluefox) Detected delayed responses
+* (bluefox) Dynamical creation of states is implemented
+
+### 0.5.5 (2019-12-05)
+* (bluefox) Relay inputs were corrected
+
+### 0.5.4 (2019-12-04)
+* (bluefox) Connection indication was corrected
+
+### 0.5.1 (2019-11-29)
+* (bluefox) Finger scanner supported
+* (bluefox) Added possibility to set the analog mode
+* (bluefox) Relay outputs are supported now
+
+### 0.4.4 (2019-11-26)
+* (bluefox) Fixed error by parsing of acknowledgement
 
 ### 0.4.2 (2019-06-12)
 * (bluefox) Support of old measure values was added

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
+hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 ---
 ![商标](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -19,6 +19,10 @@ hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
 ## IoBroker的设备适配器
 管理和创建在其他适配器（例如材料，物联网，...等）中使用该设备的设备
 
+**重要提示：在管理员中启用标签，例如日志和脚本**
+
+![屏幕](../../../en/adapterref/iobroker.devices/img/screen.png)
+
 ＃＃ 去做
 -为频道的所有状态添加图标
 -添加状态说明
@@ -27,6 +31,12 @@ hash: wjSUmYtb3MjMFnPJgsHfvmW9uVKkpCtk2Ebl9y2wgYg=
 -检测是否安装了js-controller 2.0
 
 ## Changelog
+
+### 0.2.0 (2019-12-20)
+* (bluefox) Backend was removed
+
+### 0.1.8 (2019-11-13)
+* (bluefox) Allowed the clone of devices
 
 ### 0.1.7 (2019-09-15)
 * (bluefox) work in progress

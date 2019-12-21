@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
-title: [Beta-veröffentlicht] SourceAnalytix
-hash: Ar3csPWlLCr3Mbrnwh11QGKUzvlyGx1rHsICAQy2YPE=
+title: [Beta - Veröffentlicht] SourceAnalytix
+hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
 ---
-# [Beta-veröffentlicht] SourceAnalytix
+# [Beta - Veröffentlicht] SourceAnalytix
 
 ![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -13,11 +13,11 @@ hash: Ar3csPWlLCr3Mbrnwh11QGKUzvlyGx1rHsICAQy2YPE=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-## Achtung, dieser Adapter benötigt Knoten 8 oder höher !!!
-Mit ioBroker SourceAnalytix können Sie die Verbrauchs-, Kosten- und Zählerwerte Ihrer Geräte nachverfolgen.
-Sie benötigen Daten als Eingabe (Gesamtmenge an Wh, l / h oder m3) von Ihren Geräten, und dieser Adapter wird:
+## Achtung, dieser Adapter benötigt Node 8 oder höher !!!
+Mit ioBroker SourceAnalytix können Sie Verbrauchs-, Kosten- und Zählerwerte für Ihre Geräte nachverfolgen.
+Sie benötigen Daten als Eingabe (Gesamtmenge von Wh, l / h oder m3) von Ihren Geräten und dieser Adapter wird:
 
-* Trace Verbrauch täglich, wöchentlich, monatlich, vierteljährlich, jährlich
+* Verfolgen Sie den Verbrauch täglich, wöchentlich, monatlich, vierteljährlich, jährlich
 * Kosten berechnen (aktueller Preis ist konfigurierbar)
 * Kann für Stromverbrauch, Flüssigkeiten und GAS verwendet werden
 * Eingabewerte können wh / kWh / m3 / l sein
@@ -25,55 +25,70 @@ Sie benötigen Daten als Eingabe (Gesamtmenge an Wh, l / h oder m3) von Ihren Ge
 ## Wie man
 * [ ] Machen
 
-Dieser Adapter hat Wurzeln dank dank pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Dieser Adapter hat Wurzeln dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
-Welches wurde von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht
+Das wurde von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht
 
 ## Bekannte Probleme
 * [] Periodenberechnung wählbar, aber noch nicht implementiert
 * [] Viertel nicht berechnet
-* [] monatlicher Kostenpreis, der noch nicht in die Berechnung übernommen wurde
-* [x] Aktuelle, noch nicht implementierte Zählerwerte speichern
+* [] monatlicher Einstandspreis noch nicht kalkuliert
+* [x] Aktuelle Zählerwerte speichern, die noch nicht implementiert sind
 * [x] Zählerwert wählbar, aber noch nicht implementiert
-* [x] Adapter-Neustart erforderlich, um die Berechnung neuer Objekte hinzuzufügen
-* [x] Statest für Kostenart Lieferung wird nicht geschrieben
-* [x] Gerätename-Alias nicht korrekt
+* [x] Neustart des Adapters erforderlich, um die Berechnung neuer Objekte hinzuzufügen
+* [x] Statest für Kostenart Lieferung werden nicht geschrieben
+* [x] Aliasname des Geräts nicht korrekt
 * [x] Übersetzungen
 
 ## Machen
 * [] Dokumentation
-* [] Kostenvorgabewert auf 0 mit Fehlermeldung, falls nicht angegeben
-* [] Rekalkalierung basierend auf Zählerwerten (konfigurierbar nach Datum)
+* [] Standardwert für Kosten auf 0 mit Fehlermeldung, falls nicht angegeben
+* [] Neukalibrierung basierend auf Zählerwerten (konfigurierbar nach Datum)
 * [] Berechnungen für Viertelwerte
-* [] fügt Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzu, konfigurierbar in Adaptereinstellungen
+* [] Objektstatus für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzufügen, konfigurierbar in den Adaptereinstellungen
 * [] Code-Optimierung
 * [x] Speicherung von Zählerwerten für jeden Zustand
 * [x] Kompaktmodus
-* [x] Unterstützung für die Berechnung der Wh-Werte hinzufügen
-* [x] Grundübersetzungen korrigieren
-* [x] Statuswerte bereit und in Zuständen speichern
-* [x] Schreibe den Zählerwert in den "Start" -Zustand, um ihn in Berechnungen zu verwenden
-* [x] konfigurierbares Intervall für jeden Status
+* [x] Unterstützung für die Berechnung von wh-Werten hinzufügen
+* [x] Grundlegende Übersetzungen korrigieren
+* [x] Bereitschaftsstatuswerte und Speicherung in Status
+* [x] Zählerwert in den "Start" -Zustand schreiben, um ihn für Berechnungen zu verwenden
+* [x] konfigurierbares Intervall für jeden Zustand
 * [x] konfigurierbare Einheit für jeden Status
-* [x] konfigurierbarer Einstandspreis für jeden Bundesstaat
-* [x] konfigurierbarer Stückpreis für jeden Staat
-* [x] Status, der für Kosten oder Einkommen verwendet wird
+* [x] konfigurierbarer Selbstkostenpreis für jeden Staat
+* [x] konfigurierbarer Einheitspreis für jeden Staat
+* [x] Staat, der für Kosten oder Verdienst verwendet wird
 * [x] Verbrauchsberechnung
-* [x] Kostenberechnung
+* [x] Kostenkalkulation
 * [x] einstellbarer Startpunkt der Messung
 * [x] Unterstützung mehrerer Gerätezustände
-* [x] Schreibe einen Zählerwert in ein Objekt, das in Berechnungen verwendet werden soll
-* [x] -Konfiguration in den Adaptereinstellungen (derzeit werden nur Demoobjekte der Erkennung unterstützt)
+* [x] Zählerwert in das Objekt schreiben, um es in Berechnungen zu verwenden
+* [x] Konfiguration in den Adaptereinstellungen (derzeit werden nur Demo-Objekte von Discovery unterstützt)
 * [x] temporäre Zustände für Berechnungen löschen
 * [x] Berechnung für m3-Werte
-* [x] verwendet den Alias des Gerätenamens
+* [x] Alias des Gerätenamens verwenden
 * [x] konfigurierbare Datenpunkte (Ja / Nein) für Kosten, Verbrauch und Zählerwerte
-* [x] Machen Sie es wählbar, Analysen für das gesamte Jahr oder nur für einen Zeitraum zu speichern
-* [x] Stellen Sie sicher, dass alle Werte gespeichert werden, wenn der Adapter heruntergefahren wird, um Datenlücken zu vermeiden
+* [x] Wählen Sie diese Option aus, um Analysen für das gesamte Jahr oder nur für einen auswählbaren Zeitraum zu speichern
+* [x] Sicherstellen, dass alle Werte beim Herunterfahren des Adapters gespeichert werden, um Datenlücken zu vermeiden
+
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende übermitteln (dies ist ein persönlicher Spendenlink für DutchmanNL, kein Bezug zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.2.281
+### 0.3.0   
+* (Dutchman) m³ Implemented
+
+### 0.2.5
+* (xXBJXx) Fix wrong storage of start meter values
+
+### 0.2.41
+* (Dutchman) Fix wrong storage of daily reset of meter values
+
+### 0.2.3
+* (Xoroles & Dutchman) fix watt calculation, thank you @Xoroles !
+
+### 0.2.29
 * (Dutchman) implemented w to kWh calculations :) with thanks to @AlCalzone and @andiling !
 
 ### 0.2.276

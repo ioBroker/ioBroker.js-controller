@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
+hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -14,6 +14,10 @@ hash: dnwDQvgOjGk3G1QfiGVYoF96UsN8t3aIQKtw6Z0pbc4=
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
 
 # IoBroker.ebus
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Dieser Adapter liest
 
 - Daten von ebusd mit HTML
@@ -28,6 +32,9 @@ aktuell unterstützte ebusd-version: 3.3
 
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 1.0.0 (2019-12-xx)
+* (René) Update auf meinen eigenen Flot 3.0
 
 ## 0.8.2 (2019-11-10)
 * (René) weitere Fehlermeldungen im Datenpunkt "Fehler"
@@ -76,8 +83,8 @@ aktuell unterstützte ebusd-version: 3.3
 * (René) admin3-Unterstützung
 
 ### 0.2.0
-* (René) füge history als JSON für vis hinzu
-* (René) füge ein flotbasiertes Widget hinzu, um Temperatur-, Status- und Leistungsdiagramme anzuzeigen
+* (René) Verlauf als JSON für vis hinzufügen
+* (René) füge ein flottenbasiertes Widget hinzu, um Temperatur-, Status- und Leistungsdiagramme anzuzeigen
 
 ### 0.1.0
 * (René) geplanter Adapter anstelle von Deamon

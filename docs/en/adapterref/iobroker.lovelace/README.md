@@ -448,6 +448,9 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.7 (2019-12-17)
+* (bluefox) Invalid objects will be filtered out.
+
 ### 1.0.6 (2019-12-06)
 * (bluefox) Fixed disconnection behavior
 

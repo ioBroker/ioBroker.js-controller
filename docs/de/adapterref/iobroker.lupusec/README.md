@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: iJ8gpRubqG4y8QhVSRJ3b19JyxSByvMs26cNSI74Syo=
+hash: sTG65f0ejF9UmC0jh/+K+XPxy/PQnqFqVQdxJQjldPw=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -51,8 +51,10 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
   - Netzschalter (Typ 24)
   - 1 Kanal Relais mit ZigBee Repeater (Typ 24)
   - 2 Kanal Relais mit ZigBee Repeater (Typ 24)
+  - Repater V2 (Typ 26)
   - Tastatur (Typ 37)
   - Glassensor (Typ 39)
+  - Sirene innen (Typ 45)
   - Sirene außen (Typ 48)
   - Leistungsschalter-Messgerät (Typ 48)
   - Stromzähler (Typ 50)
@@ -92,16 +94,24 @@ Alle angeschlossenen Überwachungskameras finden Sie unter 'Webcams'. Sie könne
 ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
 ### Lupusec Nuki
-Sie finden Ihren Nuki-Türöffner unter "Geräte" wie die Lupusec-Geräte. Der Nuki bietet 2 Zustände. Der Zustand nuki_state zeigt Ihnen den aktuellen Zustand des Nuki-Türöffners an, als wäre die Tür verriegelt oder entriegelt. Mit dem Status nuki_action können Sie Ihre Tür öffnen, schließen oder aufschließen.
+Sie finden Ihren Nuki-Türöffner unter "Geräte" wie die Lupusec-Geräte. Der Nuki bietet 2 Zustände. Der Zustand nuki_state zeigt Ihnen den aktuellen Zustand des Nuki-Türöffners an, als ob die Tür verriegelt oder entriegelt ist. Mit dem Zustand nuki_action können Sie Ihre Tür öffnen, verriegeln oder entriegeln.
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
 ## Geplant
 Folgende Dinge sind in der Zukunft geplant:
 
-* Unterstützung für mehr Sensoren / Geräte
+* Unterstützt mehr Sensoren / Geräte
 * Verfassen einer Dokumentation für jeden Sensor / jedes Gerät
 
 ## Changelog
+
+### 1.2.3 (06.09.2019)
+* (Stübi) Add device: Repeater V2
+* (Stübi) Add device: Siren inside (Battery version without Zigbee repeater)
+
+### 1.2.1 (14.10.2019)
+* (Stübi) Bugfixing (Issue #9)
+* (Stübi) Bugfixing: if the name of a device is empty, the name was changed all the time between NaN and ''  
 
 ### 1.2.0 (13.09.2019)
 * (Stübi) Changing error handling of adapter
@@ -191,7 +201,7 @@ Folgende Dinge sind in der Zukunft geplant:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

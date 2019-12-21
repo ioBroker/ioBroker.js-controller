@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: C0ie6JZL/eQQhMg5NGoauwuMTSxMbTPk1V2UqAKGEGc=
+hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
 ---
 ![Logo](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -19,7 +19,7 @@ Dieser Adapter verwendet die HERE.com-API, um den Verkehr auf Ihren Routen zu ü
 Der Adapter befindet sich gerade in einem frühen Stadium. Ich plane, einen Wecker zu implementieren - damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen - und was passieren soll, wenn die Zeit zum Verlassen / Aufwachen verstrichen ist (Spiel starten) Radio und mache eine Ansage wie "Es scheint, als ob ein Stau auf deiner Route ist. Du musst jetzt aufstehen, um nicht zu spät zur Arbeit zu kommen!" Auf Alexa etc.) ..
 Fühlen Sie sich frei, einige Feature-Anfragen hier auf Github zu erstellen - eröffnen Sie einfach eine Ausgabe dafür! ;)
 
-## Beginnen
+## Fertig machen
 So lass uns gehen:
 
 1. Gehen Sie zu https://developer.here.com/sign-up?create=Freemium-Basic&keepState=true&step=account und erstellen Sie ein HERE.com Free Developer-Konto (Freemium).
@@ -38,20 +38,24 @@ So lass uns gehen:
 
 ![Here4](../../../en/adapterref/iobroker.roadtraffic/img/Here4.png)
 
-5. Auf der nächsten Seite befinden Sie sich bereits in Ihrem HERE.com-Dashboard. Suchen Sie nach der REST & XYZ HUB API / CLI und klicken Sie auf "App ID und App Code generieren".
+5. Auf der nächsten Seite befinden Sie sich bereits in Ihrem HERE.com-Dashboard. Suchen Sie nach dem Abschnitt "REST" und klicken Sie auf "App generieren".
 
 ![Here5](../../../en/adapterref/iobroker.roadtraffic/img/Here5.png)
 
-6. Öffnen Sie die Instancesettings des roadtraffic Adapters in ioBroker und kopieren Sie die App ID und den App Code in die Felder.
-
-Klicken Sie auf das Plus-Symbol und erstellen Sie Ihre erste Route.
+6. Klicken Sie auf "Create API Key" - Sie erhalten einen API Key. Öffnen Sie die Instancesettings des roadtraffic Adapters in ioBroker und fügen Sie den API Key in das Konfigurationsfeld ein.
 
 ![Here6](../../../en/adapterref/iobroker.roadtraffic/img/Here6.png)
+
+7. Klicken Sie in den Instanzeinstellungen auf das Plus-Symbol und erstellen Sie Ihre erste Route.
 
 Nachdem Sie alle Informationen in den Konfigurationsdialog eingegeben haben, klicken Sie auf "Speichern & Schließen".
 Der Adapter sollte jetzt neu starten und Sie können loslegen!
 
 ## Changelog
+### 0.1.1 (2019-12-13)
+* (BuZZy1337) HERE.com changed the Authentication.
+* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes))
+
 ### 0.1.0 (2019-12-08)
 * (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)
 

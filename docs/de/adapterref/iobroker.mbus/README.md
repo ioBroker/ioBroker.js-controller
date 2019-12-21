@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
+hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
@@ -20,28 +20,39 @@ hash: Gjrb+CcOb4g9PdBG54BC4Df+XcV8bkV7H2M7PLugvkE=
 
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
-Dieser Adapter für ioBroker stellt über TCP oder seriell eine Verbindung zu einem M-Bus-Master her, um den Status und die Details der angeschlossenen M-Bus-Geräte anzuzeigen.
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
+
+Dieser Adapter für ioBroker verbindet sich über TCP oder seriell mit einem M-Bus-Master, um den Status und die Details der angeschlossenen M-Bus-Geräte anzuzeigen.
 
 ## Beschreibung der Parameter
-### Gateway IP / TCP-Port
-IP-Adresse und Port des M-Bus Master / Gateway bei Verwendung von TCP.
+### Gateway IP / TCP Port
+IP-Adresse und Port des M-Bus Masters / Gateways bei Verwendung von TCP.
 
 ### Serielle Schnittstelle / Baudrate
-Serielle Schnittstelle und Baudrate des M-Bus Master / Gateways.
+Serielle Schnittstelle und Baudrate von M-Bus Master / Gateway.
 
 ### Updateintervall
-Intervall in Sekunden zum Aktualisieren der Daten. Der Standardwert (falls leer) ist 3600s (1h). Berücksichtigen Sie, wie die Geräte am M-Bus-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu verhindern. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Start des Adapters nur einmal gelesen, jedoch nicht mehr automatisch.
+Intervall in Sekunden zum Aktualisieren der Daten. Die Standardeinstellung (falls leer) ist 3600s (1h). Überlegen Sie, wie die Geräte am M-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu vermeiden. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Adapterstart nur einmal gelesen, dann aber nicht mehr automatisch.
 
 ### Geräte-IDs
-Sie können primäre (1-250) und sekundäre (16 Zeichen) M-Bus-IDs verwenden
+Sie können primäre (1-250) und sekundäre (16 Zeichen lange) M-Bus-IDs verwenden
 
 ## Wie lese ich das Gerät auf Anfrage?
-In den erstellten Zuständen für jedes Gerät gibt es einen Zustand namens "UpdateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, startet das Intervall neu, nachdem die Daten empfangen wurden.
+In den erstellten Zuständen für jedes Gerät existiert ein Zustand mit dem Namen "updateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, wird das Intervall neu gestartet, nachdem die Daten empfangen wurden.
 
 ## Machen
-* verschlüsselte Nutzdatenbehandlung (falls von jedem benötigt)
+* verschlüsselte Nutzlastverarbeitung (falls von irgendjemandem benötigt)
 
 ## Changelog
+
+### 2.1.0 (2019-12-18)
+* add compact mode
+* move to more flexible serial port configuration
+* add Sentry for error reporting
+
+### 2.0.0 (2019-10-16)
+* (lvogt) **BREAKING CHANGE** better handling for values with changing scaling based on the value - maybe incompatible with old values!
+* (lvogt) add setting to force kWh values for energy
 
 ### 1.1.1 (2018-12-10)
 * (Apollon77) make sure adapter is not communicating too fast at the beginning
@@ -76,7 +87,7 @@ In den erstellten Zuständen für jedes Gerät gibt es einen Zustand namens "Upd
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

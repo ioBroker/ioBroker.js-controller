@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hue/README.md
 title: ioBroker Philips Hue Мостовой адаптер
-hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
+hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ---
 ![логотип](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -14,6 +14,8 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 
 # IoBroker Адаптер Philips Hue Bridge
 ==============
+
+![Статус сборки](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 
 ## Английский: gb:
 Этот адаптер соединяет ваши мосты Philips Hue с ioBroker для управления светодиодными лампами Philips Hue, светодиодными лампами Friends of Hue, полосами, штекерами, такими как Osram, и другими устройствами с поддержкой SmartLink (такими как LivingWhites и некоторые LivingColors).
@@ -27,12 +29,12 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 4. Измените любые другие параметры в настройках адаптера и затем выберите «сохранить и закрыть».
 5. Наконец, у вас все должно быть готово: адаптер сгенерирует все объекты для соответствующего управления вашими устройствами Hue.
 
-Обратите внимание: кнопка настроек адаптера «Найти мост» будет неактивной, если заполнено поле «Адрес моста», а кнопка «Создать пользователя» будет неактивной, если заполнено поле «Пользователь моста».
+Обратите внимание: кнопка настроек адаптера «Найти мост» будет неактивна, если заполнено поле «Адрес моста», а кнопка «Создать пользователя» будет неактивной, если заполнено поле «Пользователь моста».
 
 ### Настройки
 | Имя | Описание |
 |---|---|
-| __Bridge address__ | IP-адрес вашего моста Hue, вы можете попытаться обнаружить его, нажав кнопку `Find Bridge`. |
+| __Bridge address__ | IP-адрес вашего моста Hue, вы можете попытаться определить его, нажав кнопку `Find Bridge`. |
 | __Port__ | Порт вашего моста Hue, обычно 443 (SSL) и 80 (не-SSL). |
 | __User__ | Имя пользователя вашего моста. Вы можете создать его, нажав кнопку `Create User` и следуя инструкциям на экране. |
 | __User__ | Имя пользователя вашего моста. Вы можете создать его, нажав кнопку «Создать пользователя» и следуя инструкциям на экране. |
@@ -42,7 +44,7 @@ hash: qaTb9f8zGzmO0dmnUjXgjgF5V6qBjjO3bzei+3qVS00=
 | __Синхронизировать программные датчики__ | Также синхронизировать программные датчики. Это виртуальные датчики, например созданные сцены Hue Labs. Управляя назначением данных `status` такого датчика, вы можете запускать / останавливать сцены, которые следуют этой логике. В большинстве случаев `0` выключает сцену, а `1` включает ее. |
 | __Синхронизировать программные датчики__ | Также синхронизировать программные датчики. Это виртуальные датчики, например созданные сцены Hue Labs. Управляя назначением данных `status` такого датчика, вы можете запускать / останавливать сцены, которые следуют этой логике. В большинстве случаев `0` выключает сцену, а` 1` включает ее. |
 | __Polling__ | Если этот флажок установлен, адаптер будет запрашивать изменения состояния, в противном случае его можно использовать только для управления лампами, а не для отображения их состояния. |
-| __Polling interval__ | Определяет, как часто состояния будут опрашиваться и, таким образом, обновляться в ioBroker. Низкие интервалы опроса могут вызвать проблемы с производительностью в некоторых настройках. Следовательно, минимально допустимый интервал опроса составляет 2 секунды. Если интервал опроса установлен менее чем на 2 секунды, он будет установлен на 2 секунды во время выполнения. |
+| __Polling interval__ | Определяет, как часто состояния будут опрашиваться и, следовательно, обновляться в ioBroker. Низкие интервалы опроса могут вызвать проблемы с производительностью в некоторых настройках. Следовательно, минимально допустимый интервал опроса составляет 2 секунды. Если интервал опроса установлен менее чем на 2 секунды, он будет установлен на 2 секунды во время выполнения. |
 
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
@@ -53,8 +55,30 @@ Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
 * Автоматическая настройка пользователя с помощью кнопки моста
 
 ## Changelog
-### 2.4.0 (2019-11-03)
-* (foxriver76) added possibility to control software sensors
+### 2.4.7 (2019-12-14)
+* (foxriver76) do not set default values on every adapter start
+* (foxriver76) this is now done only on object creation
+
+### 2.4.6 (2019-12-06)
+* (foxriver76) log unhandeld promise rejections
+* (foxriver76) fix potential issue for negative temperature values
+
+### 2.4.4 (2019-11-27)
+* (foxriver76) only stringify huge jsons if necessary
+* (foxriver76) prevent possible double polling at adapter start
+* (foxriver76) use timeouts instead of interval
+* (foxriver76) improved performance
+
+### 2.4.3 (2019-11-19)
+* (foxriver76) increased version of node-hue-api to fix authentication for old bridge
+
+### 2.4.2 (2019-11-16)
+* (foxriver76) we now use nupnp + upnp to discover bridges (previously only upnp)
+
+### 2.4.1 (2019-11-13)
+* (foxriver76) added possibility to control zones and entertainment areas
+* (foxriver76) log queue retires on debug instead warn
+* (foxriver76) __BETA__: added possibility to control software sensors (Note: this may be handled in a more suitable fashion soon)
 
 ### 2.3.1 (2019-11-02)
 * (foxriver76) fixed controlling `on` state of sensors

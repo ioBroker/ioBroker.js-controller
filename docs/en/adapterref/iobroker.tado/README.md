@@ -14,11 +14,22 @@
 
 tado° ensures a comfortable and healthy climate while saving up to 31% on your heating bill.
 
+## Support me
+If you like my work, please feel free to provide a personal donation  
+(this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !  
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.tado/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
 
-### 0.1.4 Fixed Clear Overlay & Open Window
+### 0.1.5  
+* (DutchmanNL) Fix switching on/off heating & related auto mode
+* (DutchmanNL) Fix switching some incorrect logging
+
+### 0.1.4 Fixed Clear Overlay, Open Window & log error's
 * (DutchmanNL) Fixed Clear Overlay to Boolean
 * (DutchmanNL) Fixed datapoints for OpenWindow 
+* (DutchmanNL) Fixed setting overlay correctly for manuel temperature changes (use previous setting instead of always manual)
+* (DutchmanNL) Fixed error message Cannot read property 'percentage' of undefined"
 
 ### 0.1.3 Several fixes for reported error's
 * (DutchmanNL) boilerId / onDemandLogRetrievalEnabled / openWindowDetected / onDemandLogRetrievalEnabled
