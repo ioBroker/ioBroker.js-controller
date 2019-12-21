@@ -10,6 +10,12 @@
 * (bluefox) Add support for vendor specific logic and database initialization
 * (Apollon77) make sure restart of instances work in all cases
 * (AlCalzone) fix `iobroker start all` to not hang after starting all instances
+* (Apollon77) make sure auto rotation for logs work now with winston and make sure "old style manual cleanup" too
+* (Apollon77) fix error when 'iobroker url' is called without any parameter
+* (Apollon77) separate system and user/adapter subscribes, introduce "changeUser" trigger for States and Objects
+* (Apollon77) Also allow ÄÖÜäöü as characters for first character
+* (Apollon77) Also log exceptions for compact group controller
+* (Apollon77) Update dependencies
 
 ## 2.1.1 (2019-11-22) Release Christina
 * (bluefox) Fix host deletion
