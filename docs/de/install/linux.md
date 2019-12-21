@@ -186,7 +186,7 @@ Außerdem konnte es zu Rechteproblemen kommen.
 
 In diesem Fall bitte den Installations-Fixer anwenden:
 
-``curl -sL https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/fix_installation.sh | bash -``
+``curl -sL https://iobroker.net/fix.sh | bash -``
 
 
  
