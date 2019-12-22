@@ -338,10 +338,11 @@ the target state could contain a power measurement value in Wh (because an adapt
 and the alias could use the same value calculated as kWh.
 
 As of now (js-controller 2.0.0 release) there are no front-ends to configure alias.
-To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section:
+To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
 ```
 {
+    _id: "alias.0.aliasName",
     common: {
         name: 'Test AliasC',
         type: 'number',
@@ -367,9 +368,9 @@ The following fields are allowed in the alias structure:
 To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
 
 ```
-iobroker object set common.alias.id=here.the.target.id
-iobroker object set common.alias.read="read-func"
-iobroker object set common.alias.write="write-func"
+iobroker object set alias.0.aliasName common.alias.id=state.id.of.target
+iobroker object set alias.0.aliasName common.alias.read="read-func"
+iobroker object set alias.0.aliasName common.alias.write="write-func"
 ```
 
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
