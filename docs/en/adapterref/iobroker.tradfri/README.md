@@ -67,6 +67,12 @@ The result object `ret` looks as follows:
 
 ## Changelog
 
+### 2.5.1 (2019-12-23)
+* Made it possible to operate plugs using virtual groups
+
+### 2.5.0 (2019-12-22)
+* Allow more device types in virtual groups
+
 ### 2.4.7 (2019-11-18)
 * Fixed small display issues with 3rd party bulbs
 

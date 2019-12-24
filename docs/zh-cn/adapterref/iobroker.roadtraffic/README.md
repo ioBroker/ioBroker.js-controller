@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
+hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 ---
 ![商标](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -38,7 +38,7 @@ hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
 
 ![这里4](../../../en/adapterref/iobroker.roadtraffic/img/Here4.png)
 
-5.在下一页，您已经在HERE.com仪表板上。查找REST部分，然后单击“ Generate App”。
+5.在下一页上，您已经在HERE.com仪表板上。查找REST部分，然后单击“ Generate App”。
 
 ![这里5](../../../en/adapterref/iobroker.roadtraffic/img/Here5.png)
 
@@ -51,10 +51,34 @@ hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
 在将所有信息输入到配置对话框后，单击“保存并关闭”。
 适配器现在应该重新启动，您就可以开始了！
 
+##闹钟
+在实例设置中，可以通过选中“启用警报时钟功能”来启用警报时钟。
+您应该已安装Alexa2适配器，并且已将其设置为在Alexa2实例设置中使用推送连接。
+选择要由适配器控制的Alexa设备，然后输入要在触发警报时播放的TuneIn StationID。
+警报音量的范围是0-100。
+使用“说话”字符串，您可以控制Alexa的广播。
+默认值为：Guten Morgen％name。贝阿克杜勒出版社（Bei aktueller Verkehrslage）发行了。
+
+Alexa开始播放指定的TuneIn电台后15秒，将宣布弦乐。
+例如，如果您有一个名为“ Daniel”的路线，并且警报触发器Alexa会说：Guten Morgen Daniel。在29分钟的Arbeit大会上亮相。
+
+如果只希望适配器开始播放TuneIn Station，并且不收到任何通知，则将“说起”字符串保留为空。
+
+每条路线都有7个警报通道（周一至周日）。
+在每个通道中，您都有以下状态：
+
+*到达时间：输入您想要到达目的地的时间（例如：07：30是早上7点半）。
+*洗澡时间：输入您要添加到旅行持续时间的时间。 （例如：45为45分钟。假设您已将Arrivaltime设置为10：00，Bathtime设置为30 Minute，并且当前旅行时间是1小时。那么适配器将在08:30触发（Arrivaltime-Bathtime-Travelduration）。
+*已启用：如果要启用当天的警报，则设置为true
+*已触发：触发警报时，适配器会将此状态设置为true。 （例如，您可以将其与自己的脚本一起使用。。）触发状态将在相应日期的00:00重置为false。 （周六触发器将在周六00:00设置为false）。
+
 ## Changelog
+### 0.2.0 (2019-12-21)
+* (BuZZy1337) Alarm-Clock implemented. (See Readme "Alarm-Clock" section for details)
+
 ### 0.1.1 (2019-12-13)
 * (BuZZy1337) HERE.com changed the Authentication.
-* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes))
+* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes)
 
 ### 0.1.0 (2019-12-08)
 * (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: 3GNg5U61bVzmvAJjPUT1XYz/q5dqqkVKAu327pb9qMk=
+hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 ---
 ![Logo](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -51,10 +51,34 @@ So lass uns gehen:
 Nachdem Sie alle Informationen in den Konfigurationsdialog eingegeben haben, klicken Sie auf "Speichern & Schließen".
 Der Adapter sollte jetzt neu starten und Sie können loslegen!
 
+## Wecker
+In den Instancesettings können Sie den Wecker aktivieren, indem Sie das Kontrollkästchen "Enable Alarm-Clock feature" aktivieren.
+In den Alexa2-Instanzeinstellungen sollte der Alexa2-Adapter für die Verwendung der Push-Verbindung installiert und eingestellt sein.
+Wählen Sie das Alexa-Gerät aus, das vom Adapter gesteuert werden soll, und geben Sie die TuneIn StationID ein, die beim Auslösen des Alarms abgespielt werden soll.
+Die Alarmlautstärke reicht von 0-100.
+Mit dem Speak-String können Sie die Ansage von Alexa steuern.
+Standard ist: Guten Morgen% name. Bei aktueller Verkehrslage benötigst du% dur zur Arbeit.
+
+15 Sekunden nachdem Alexa mit der Wiedergabe der angegebenen TuneIn Station begonnen hat, wird die Saite angesagt.
+Wenn Sie zum Beispiel eine Route mit dem Namen 'Daniel' haben und der Alarm ausgelöst wird, sagt Alexa: Guten Morgen Daniel. Bei aktueller Verkehrslage benötigst du 29 Minuten zur Arbeit.
+
+Lassen Sie die Speak-Zeichenfolge leer, wenn der Adapter nur die TuneIn-Station abspielen soll und keine Ansage erhalten soll.
+
+Jede Route hat 7 Alarmkanäle (Montag-Sonntag).
+In jedem Channel gibt es folgende Zustände:
+
+* Ankunftszeit: Geben Sie die Zeit ein, zu der Sie an Ihrem Ziel sein möchten (Beispiel: 07:30 Uhr ist halb acht Uhr morgens).
+* Badezeit: Geben Sie die Uhrzeit ein, zu der Sie zur Reisedauer hinzugefügt werden möchten. (Beispiel: 45 ist 45 Minuten. Nehmen wir an, Sie haben die Ankunftszeit auf 10:00, die Badezeit auf 30 Minuten und die aktuelle Reisedauer auf 1 Stunde eingestellt. Dann wird der Adapter um 08:30 Uhr ausgelöst (Ankunftszeit - Badezeit - Reisedauer).
+* enabled: Auf true setzen, wenn Sie den Alarm für diesen Tag aktivieren möchten
+* ausgelöst: Der Adapter setzt diesen Status auf true, wenn der Alarm ausgelöst wird. (Sie können es beispielsweise mit eigenen Skripten verwenden.) Der ausgelöste Status wird am entsprechenden Tag um 00:00 Uhr auf false zurückgesetzt. (Der Samstagstrigger wird am Samstag um 00:00 Uhr auf false gesetzt.)
+
 ## Changelog
+### 0.2.0 (2019-12-21)
+* (BuZZy1337) Alarm-Clock implemented. (See Readme "Alarm-Clock" section for details)
+
 ### 0.1.1 (2019-12-13)
 * (BuZZy1337) HERE.com changed the Authentication.
-* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes))
+* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes)
 
 ### 0.1.0 (2019-12-08)
 * (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)

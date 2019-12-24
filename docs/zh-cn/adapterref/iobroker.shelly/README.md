@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
+hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -38,6 +38,7 @@ hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 | Shelly2LED（SH2LED）|已验证|已验证|
 | ShellyPlug（SHPLG-1）|已验证|已验证|
 | ShellyPlug S（SHPLG-1）|已验证|已验证|
+| ShellyPlug 2（SHPLG-2）|已验证|已验证|
 | ShellySense（SHSEN-1）|已验证|未验证|
 | Shelly4Pro（SHSW-44）|已验证|未验证|
 | Shelly EM（SHEM）|已验证|已验证|
@@ -45,6 +46,18 @@ hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 | Shelly Dimmer（SHDM-1）|已验证|已验证|
 
 ## Changelog
+
+### 3.1.5 (23.12.2019)
+* (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
+
+### 3.1.4 (11.12.2019)
+* (Stübi) - Bugfixing, auto update new firmware
+
+### 3.1.3 (07.12.2019)
+* (Stübi) - Bugfixing. Add power state to Shelly dimmer in MQTT mode
+
+### 3.1.2 (11.10.2019)
+* (Stübi) - Bugfixing. Error message will not only be shown in debug modus
 
 ### 3.1.1 (14.09.2019)
 * (Stübi) - Add device Shelly Dimmer

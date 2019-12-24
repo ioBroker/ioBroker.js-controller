@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
+hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -30,8 +30,8 @@ Eigenschaften:
 * Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
 * Es werden unbegrenzt Thermostat, Stellantrieb und Sonde pro Raum unterstützt
 * Thermostat, Stellantrieb und Sensor werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
-* Räume können in der Administrationsoberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
-* Sensor wird verwendet, um die Zieltemperatur zu senken (z. B. wenn ein Fenster geöffnet ist)
+* Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
+* Sensor wird verwendet, um die Zieltemperatur zu verringern (z. B. wenn ein Fenster offen ist); optional mit SensorDelay
 * Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
 * manuelle Übersteuerung der Temperatur für eine bestimmte Zeit
 * vordefinierte Heizperiode
@@ -44,7 +44,7 @@ Eigenschaften:
 * Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um automatisch einen Feiertag für heute zu erkennen, geben Sie hier den Pfad ein (z. B. feiertage.0).
 * Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Verwendeter Sensor = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
-* Verwendete Akteure = Wenn Sie Aktoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
+* Aktoren verwendet = wenn Sie Aktoren direkt vom Adapter aus ansteuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
 * Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
 * Antriebe verwenden, wenn kein Thermostat vorhanden ist = nur gültig mit Antrieben. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktor haben, können Sie diese dauerhaft ein- oder ausschalten
 
@@ -101,10 +101,12 @@ Wenn HolidayPresent auf true gesetzt ist, wird in jedem Fall das Profil für Son
 
 Es gibt eine Option, um PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
 
-### Fenster offen
+### Fenster geöffnet
 wenn "use sensors" aktiv ist und der / die Sensor (en) für einen Raum konfiguriert ist / sind
 
 a) Verringern Sie die aktuelle Profiltemperatur bei geöffnetem Fenster (true) um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist konfiguriert ist
+
+optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann die Verzögerung des Sensors verhindern, dass er in sehr kurzen Zeiten wieder normal wird.
 
 ## Ical Unterstützung
 Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
@@ -127,6 +129,9 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ### 0.3.10 (2019-12-xx)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
+* (René) handling of actuators without thermostat
+* (René) see issue #66: handle lowering in time between 0:00 and first period
+* (René) see issue #64: import of configuration fixed
 
 ### 0.3.9 (2019-12-14)
 * (René) see issue #60: sensor delay
@@ -136,7 +141,7 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
-* (René) if useActuators: show how many actors are active (as a datapoint)
+* (René) if useActuators: show how many actuators are active (as a datapoint)
 
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!

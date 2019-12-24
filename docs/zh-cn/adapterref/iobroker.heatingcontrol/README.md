@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
+hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -24,14 +24,14 @@ hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 
 *根据时间表控制所有恒温器的设定温度水平
 *为白天和黑夜配置多个供暖时段
-*支持各种homematic和max！温控器
+*支持各种homematic和max！恒温器
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
 *当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
 *每个房间均支持无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
-*传感器用于降低目标温度（例如，如果窗户打开）
+*传感器用于降低目标温度（例如，如果窗户打开）；可选配SensorDelay
 *与Feiertag-Adapter或任何其他接口，以检测公共假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
 *手动控制温度超过一定时间
 *预定加热时间
@@ -45,14 +45,14 @@ hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
-*如果没有加热时间，则使用执行器=仅对执行器有效。定义没有加热时间时如何设置执行器
+*如果没有加热时间=仅对执行器有效，请使用执行器。定义没有加热时间时如何设置执行器
 *如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一-周日，或周一-周五和周六/周日或每天）
 *配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
@@ -75,7 +75,7 @@ hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 **应设置当前状态的名称和OID
 
 ＃＃ 数据点
-| DP名称|说明|
+| DP名称|描述|
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | ActivePeriodActive |如果关闭，则将不使用配置文件。 |
 | CurrentProfile |选择当前配置文件（基于1，表示配置文件1使用heatingcontrol.0.Profiles.0下的数据点）|
@@ -86,7 +86,7 @@ hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
 |来宾升高温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
 | PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
-|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
+|现在|我们在场，如果我们不在场降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
 *在两种情况下，仅使用一次降脂（在适配器的先前版本中，可以使用一次以上的脱脂剂）
@@ -106,6 +106,8 @@ hash: y1tS1XfZgV9o5mivV0HpbTrLUV4/CXWCZE3N1rSQils=
 
 a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前窗口温度（true）时通过Profiles.0.room.WindowOpenDecrease b）将窗口打开时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease（true）如果绝对降低已配置
 
+可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
+
 ##医疗支持
 您可以使用日历来更改适配器中的数据点。
 只需在admin中从ical配置事件即可。支持的是
@@ -117,7 +119,7 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * heatingcontrol.0.PartyNow
 
 ＃＃ 要求
-*需要节点版本8或更高版本
+*需要8版或更高版本的节点
 
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
@@ -127,6 +129,9 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 ### 0.3.10 (2019-12-xx)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
+* (René) handling of actuators without thermostat
+* (René) see issue #66: handle lowering in time between 0:00 and first period
+* (René) see issue #64: import of configuration fixed
 
 ### 0.3.9 (2019-12-14)
 * (René) see issue #60: sensor delay
@@ -136,7 +141,7 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 ### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
-* (René) if useActuators: show how many actors are active (as a datapoint)
+* (René) if useActuators: show how many actuators are active (as a datapoint)
 
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!

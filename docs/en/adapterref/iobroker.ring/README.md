@@ -31,8 +31,12 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.0.7 (24.12.2019)
+* (Stübi) Improvements
+
 ### 1.0.6 (20.12.2019)
-* (Stübi) Bugfixing. Login with username and password changed
+* (Stübi) Bugfixing: Login with username and password changed
+* (Stübi) New feature (BETA): Now you can make snapshots in jpg and a livestream in mp4 format. Unfortunately the snapshot / livestream does not work always! 
 
 ### 1.0.5 (18.04.2019)
 * (Stübi) Bugfixing 

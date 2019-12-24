@@ -33,6 +33,7 @@ You find a detailed installation documentation here:
 |Shelly2LED (SH2LED)|verified|verified|
 |ShellyPlug (SHPLG-1) |verified|verified|
 |ShellyPlug S (SHPLG-1) |verified|verified|
+|ShellyPlug 2 (SHPLG-2) |verified|verified|
 |ShellySense (SHSEN-1)|verified|not verified|
 |Shelly4Pro (SHSW-44)|verified|not verified|
 |Shelly EM (SHEM)|verified|verified|
@@ -40,6 +41,9 @@ You find a detailed installation documentation here:
 |Shelly Dimmer (SHDM-1)|verified|verified|
 
 ## Changelog
+
+### 3.1.5 (23.12.2019)
+* (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
 
 ### 3.1.4 (11.12.2019)
 * (Stübi) - Bugfixing, auto update new firmware

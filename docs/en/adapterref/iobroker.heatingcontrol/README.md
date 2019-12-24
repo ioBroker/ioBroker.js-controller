@@ -31,7 +31,7 @@ Features:
 * unlimited thermostat, actuator and sonsor per room are supported
 * Thermostat, actuator and sensor are automatically detected per room. The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
-* sensor is used to reduce target temperature (e.g. if a window is open)
+* sensor is used to reduce target temperature (e.g. if a window is open); optionally with SensorDelay
 * interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
 * manual temperature override for a certain time
 * predefined heating period
@@ -45,7 +45,7 @@ Features:
 * Path to Feiertag - Adapter = if you wnat to use Feiertag-Adapter to dectect automatically public holiday for today then set the path here (e.g. feiertage.0)
 * delete all devices when admin opens = should be disabled. Enable it only when you need to delete all room, actuator and sensor settings. A device search will be executed when adapter admin opens
 * sensor used = if you have window sensors and you want to decrease target temperature when window is open then enable that option
-* actors used = if you want to control actuators directly from adapter. Just in case there is no direct connection between thermostat and actuator.
+* actuators used = if you want to control actuators directly from adapter. Just in case there is no direct connection between thermostat and actuator.
 * use actuators if no heating period = only valid with actuators. Defines how actuators are set when no heating period is active
 * use actuators if no thermostat available = only valid with actuators. If you have rooms without thermostat but with heating actuator you can switche them on or off permanantly
 
@@ -108,6 +108,8 @@ if "use sensors" is active and sensor(s) for a room is / are configured then
 a) decrease current profile temperature when window is open (true) by Profiles.0.room.WindowOpenDecrease if relative decrease is configured
 b) set target to Profiles.0.room.absolute.WindowOpenDecrease when window is open (true) if  absolute decrease is configured
 
+optionally a delay can be used. If window is opened only for a short time sensor delay can avoid from reduce and back to normal in very short times.
+
 ## ical support
 you can use your calendar to change datapoints in adapter.
 Just configure events from ical in admin. Supported are
@@ -130,6 +132,9 @@ Just configure events from ical in admin. Supported are
 ### 0.3.10 (2019-12-xx)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
+* (René) handling of actuators without thermostat
+* (René) see issue #66: handle lowering in time between 0:00 and first period
+* (René) see issue #64: import of configuration fixed
 
 ### 0.3.9 (2019-12-14)
 * (René) see issue #60: sensor delay
@@ -139,7 +144,7 @@ Just configure events from ical in admin. Supported are
 ### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
-* (René) if useActuators: show how many actors are active (as a datapoint)
+* (René) if useActuators: show how many actuators are active (as a datapoint)
 
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!

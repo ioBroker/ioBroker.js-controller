@@ -29,6 +29,13 @@ You must first link to deConz.
 Required node.js >= 0.12.
 
 ## Changelog
+
+### 1.2.0
+* fix adapter crash when deConz is not reachable
+* show connection state as adapter state
+* add auto reconnect to deconz
+* add new objects for thermostat support and others
+
 ### 1.1.3
 * Changed default port to 80
 * (mplogas) fixed config save 

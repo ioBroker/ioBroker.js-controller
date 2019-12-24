@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
+hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -20,7 +20,7 @@ hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP или MQTT.
 По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Более подробную информацию об устройстве вы найдете здесь: [изобилующий раковинами](https://shelly.cloud/)
 
-## Монтаж
+## Установка
 Вы найдете подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
 
 ## Поддерживаемые устройства
@@ -32,12 +32,13 @@ hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 | Shelly H & T (SHHT-1) | проверено | проверено |
 | Shelly Smoke (SHSM-01) | проверено | проверено |
 | Shelly 1 1PM (SHSW-PM) | проверено | проверено |
-| Shelly 2.5 (SHSW-25) | проверено | проверено |
+| Шелли 2.5 (SHSW-25) | проверено | проверено |
 | ShellyRGBW (SHRGBWW-01) | проверено | проверено |
 | ShellyRGBW2 (SHRGBW2) | проверено | проверено |
 | Shelly2LED (SH2LED) | проверено | проверено |
 | ShellyPlug (SHPLG-1) | проверено | проверено |
 | ShellyPlug S (SHPLG-1) | проверено | проверено |
+| ShellyPlug 2 (SHPLG-2) | проверено | проверено |
 | ShellySense (SHSEN-1) | проверено | не проверено |
 | Shelly4Pro (SHSW-44) | проверено | не проверено |
 | Shelly EM (SHEM) | проверено | проверено |
@@ -45,6 +46,18 @@ hash: owpdSYJQDBV0mOVp6B7E1uzQzW+AfNmpIWcnNEsJSZ4=
 | Шелли Диммер (ШДМ-1) | проверено | проверено |
 
 ## Changelog
+
+### 3.1.5 (23.12.2019)
+* (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
+
+### 3.1.4 (11.12.2019)
+* (Stübi) - Bugfixing, auto update new firmware
+
+### 3.1.3 (07.12.2019)
+* (Stübi) - Bugfixing. Add power state to Shelly dimmer in MQTT mode
+
+### 3.1.2 (11.10.2019)
+* (Stübi) - Bugfixing. Error message will not only be shown in debug modus
 
 ### 3.1.1 (14.09.2019)
 * (Stübi) - Add device Shelly Dimmer

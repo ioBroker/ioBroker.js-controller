@@ -1,8 +1,6 @@
 ![Logo](admin/influxdb.png)
 # ioBroker.influxdb
 
-========================
-
 ![Number of Installations](http://iobroker.live/badges/influxdb-installed.svg) ![Number of Installations](http://iobroker.live/badges/influxdb-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.influxdb.svg)](https://www.npmjs.com/package/iobroker.influxdb)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.influxdb.svg)](https://www.npmjs.com/package/iobroker.influxdb)
 [![Tests](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)](https://travis-ci.org/ioBroker/ioBroker.history)
@@ -247,6 +245,9 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 
 ## Changelog
+## 1.7.0 (2019-12-23)
+* (bluefox) Support of compact mode
+
 ## 1.6.0 (2018-06-19)
 * (Apollon77) Add option to log datapoints as other ID (alias) to easier migrate devices and such
 
@@ -371,7 +372,7 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 bluefox
+Copyright (c) 2015-2019 bluefox, apollon77
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

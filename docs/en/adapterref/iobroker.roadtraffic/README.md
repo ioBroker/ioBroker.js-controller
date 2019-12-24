@@ -44,11 +44,36 @@ So lets go:
 After you entered all informations to the config dialog click "Save & Close".
 The Adapter should now restart and you are ready to go!
 
+## Alarm-Clock
+In the Instancesettings you can enable the Alarm-Clock by checking the "Enable Alarm-Clock feature".
+You should have the Alexa2 Adapter installed & set to use push connection in the Alexa2 Instancesettings.
+Select the Alexa-Device you want to be controlled by the Adapter and enter the TuneIn StationID you want to get played when the alarm is triggered.
+The Alarm-Volume has a range from 0-100.
+With the Speak string you can control the announcement of Alexa.
+Default is:
+Guten Morgen %name. Bei aktueller Verkehrslage benötigst du %dur zur Arbeit.
+
+15 Seconds after Alexa started playing the specified TuneIn Station the String will be announced.
+If you for example have a Route named 'Daniel' and the Alarm triggers Alexa will say:
+Guten Morgen Daniel. Bei aktueller Verkehrslage benötigst du 29 Minuten zur Arbeit.
+
+Leave the Speak string empty if you only want the Adapter to start playing the TuneIn Station and dont get any announcement.
+
+Every Route has 7 Alarm-Channels (Monday-Sunday).
+In each Channel you have following states:
+* arrivaltime: Enter the Time you want to be at your destination (Example: 07:30 is half past seven in the morning).
+* bathtime: Enter the Time you want to be added to the travelduration. (Example: 45 is 45 Minutes. Lets say you have set Arrivaltime to 10:00, Bathtime to 30 Minutes and the current travelduration is 1 hour. Then the Adapter will trigger at 08:30 (Arrivaltime - Bathtime - Travelduration).
+* enabled: set to true if you want to enable the Alarm for that day
+* triggered: the Adapter will set this state to true when the Alarm is triggered. (You can use it with own scripts for example..) The triggered state will be reset to false at 00:00 on the corresponding day. (Saturday trigger will be set to false at Saturday 00:00).
+
 
 ## Changelog
+### 0.2.0 (2019-12-21)
+* (BuZZy1337) Alarm-Clock implemented. (See Readme "Alarm-Clock" section for details)
+
 ### 0.1.1 (2019-12-13)
 * (BuZZy1337) HERE.com changed the Authentication.
-* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes))
+* (BuZZy1337) Prepare for Alarm.. (NOT WORKING YET!!! - But needed to push this version because of authentication changes)
 
 ### 0.1.0 (2019-12-08)
 * (BuZZy1337) Using HERE.com instead of Google API (READ THE UPDATED README!!)

@@ -21,6 +21,12 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.6.2 (2019-12-22)
+* When nodes are removed, the channel objects are now also removed
+* `BasicCC` commands from some devices are now mapped to more specific CCs
+* Fixed the interview procedure for `IndicatorCC`
+* Fixed some causes for crashs
+
 ### 0.6.1 (2019-12-18)
 * Enabled scrolling in the device list
 
