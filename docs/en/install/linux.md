@@ -154,7 +154,7 @@ instead must
 
 or the other equivalents are used
 
-Rights issues could also arise.
+Permission issues could also arise.
 
 In this case please use the installation fixer:
 
