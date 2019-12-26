@@ -267,8 +267,7 @@ function createStates(onConnect) {
         change: (id, state) => {
             inputCount++;
             if (!id) {
-                logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
-                return;
+                return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
             if (id.match(/.logging$/)) {
@@ -377,7 +376,6 @@ function createStates(onConnect) {
                     logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
                 }
                 states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
-                return;
             }
             /* it is not used because of code before
             else
