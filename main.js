@@ -3185,8 +3185,7 @@ function startInstance(id, wakeUp) {
                         procs[id].process = compactProcs[instance.common.compactGroup].process;
                         procs[id].startedAsCompactGroup = true;
                     }
-                }
-                else {
+                } else {
                     states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
                 }
                 if (!procs[id].process) { // We were not able or should not start as compact mode
