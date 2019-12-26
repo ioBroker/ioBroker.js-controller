@@ -80,14 +80,8 @@ function startController(options, callback) {
 
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
-            if (!options.objects.simulateFallback) {
-                console.log('Used class for Objects: objectsInMemServer');
-                Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
-            }
-            else {
-                console.log('Used class for Objects: objectsInMemServerSocketIo');
-                Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerSocketIo'));
-            }
+            console.log('Used class for Objects: objectsInMemServer');
+            Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
         } else if (options.objects.type === 'redis') {
             try {
                 console.log('Used class for Objects: objectsInRedis');
@@ -108,14 +102,8 @@ function startController(options, callback) {
     // Just open in memory DB itself
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
-            if (!options.states.simulateFallback) {
-                console.log('Used class for States: statesInMemServer');
-                States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
-            }
-            else {
-                console.log('Used class for States: statesInMemServerSocketIo');
-                States = require(path.join(rootDir, 'lib/states/statesInMemServerSocketIo'));
-            }
+            console.log('Used class for States: statesInMemServer');
+            States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
         } else {
             console.log('Used class for States: statesInRedis');
             States = require(path.join(rootDir, 'lib/states/statesInRedis'));
