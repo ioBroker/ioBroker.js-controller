@@ -80,8 +80,8 @@ function startController(options, callback) {
 
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
-            console.log('Used class for Objects: objectsInMemServer');
-            Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
+            console.log('Used class for Objects: objectsInMemServerRedis');
+            Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
         } else if (options.objects.type === 'redis') {
             try {
                 console.log('Used class for Objects: objectsInRedis');
@@ -93,7 +93,7 @@ function startController(options, callback) {
         }
     } else {
         console.log('Used class for Objects: objectsInMemServer');
-        Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServer'));
+        Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
     }
 
     const _objectsInst = new Objects(settingsObjects);
@@ -102,15 +102,15 @@ function startController(options, callback) {
     // Just open in memory DB itself
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
-            console.log('Used class for States: statesInMemServer');
-            States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
+            console.log('Used class for States: statesInMemServerRedis');
+            States = require(path.join(rootDir, 'lib/states/statesInMemServerRedis'));
         } else {
             console.log('Used class for States: statesInRedis');
             States = require(path.join(rootDir, 'lib/states/statesInRedis'));
         }
     } else {
-        console.log('Used class for States: statesInMemServer');
-        States = require(path.join(rootDir, 'lib/states/statesInMemServer'));
+        console.log('Used class for States: statesInMemServerRedis');
+        States = require(path.join(rootDir, 'lib/states/statesInMemServerRedis'));
     }
 
     const settingsStates = {
