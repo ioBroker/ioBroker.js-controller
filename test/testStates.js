@@ -35,15 +35,13 @@ describe('States: Test states in File-Redis', function() {
         setup.startController({
             objects: {
                 dataDir: dataDir,
-                onChange: function (id, _obj) {
-                    console.log('object changed. ' + id);
-                }
+                onChange: (id, _obj) => console.log('object changed. ' + id)
             },
             states: {
                 dataDir: dataDir,
-                onChange: function (id, state) {
+                onChange: (id, state) => {
                     console.log('state changed. ' + id);
-                    if (onStatesChanged) onStatesChanged(id, state);
+                    onStatesChanged && onStatesChanged(id, state);
                 }
             }
         },
@@ -54,8 +52,7 @@ describe('States: Test states in File-Redis', function() {
             expect(objects).to.be.ok;
             expect(states).to.be.ok;
             _done();
-        }
-        );
+        });
     });
 
     it('States: should setState', function (done) {
@@ -68,7 +65,7 @@ describe('States: Test states in File-Redis', function() {
                 expect(state.ts).to.be.ok;
                 expect(state.q).to.be.equal(0);
 
-                states.getState(testID, function (err, state) {
+                states.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
                     expect(state.val).to.be.equal(1);
@@ -80,15 +77,13 @@ describe('States: Test states in File-Redis', function() {
             }
         };
 
-        states.setState(testID, 1, function (err) {
-            expect(err).to.be.not.ok;
-        });
+        states.setState(testID, 1, err =>
+            expect(err).to.be.not.ok);
     });
 
     after('States: Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(function () {
-            setTimeout(done, 2000);
-        });
+        setup.stopController(() =>
+            setTimeout(done, 2000));
     });
 });

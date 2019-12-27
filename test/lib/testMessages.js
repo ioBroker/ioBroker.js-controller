@@ -42,24 +42,6 @@ function register(it, expect, context) {
             });
         });
     });
-    it(testName + 'check lenMessage', function (done) {
-        context.states.lenMessage(gid, function (err, length) {
-            expect(length).to.be.not.ok;
-            done();
-        });
-    });
-    it(testName + 'check getMessage', function (done) {
-        context.states.getMessage(gid, function (err, msg) {
-            expect(msg).to.be.not.ok;
-            done();
-        });
-    });
-    it(testName + 'check delMessage', function (done) {
-        context.states.delMessage(gid, 5, function (err) {
-            expect(err).to.be.not.ok;
-            done();
-        });
-    });
     it(testName + 'check unsubscribeMessage', function (done) {
         context.states.unsubscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;

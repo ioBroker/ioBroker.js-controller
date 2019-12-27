@@ -275,8 +275,6 @@ function createStates(onConnect) {
             } else
             // If this is messagebox, only the main controller is handling the host messages
             if (!compactGroupController && id === 'messagebox.' + hostObjectPrefix) {
-                // Read it from fifo list
-                states.delMessage(hostObjectPrefix, state._id);
                 const obj = state;
                 if (obj) {
                     // If callback stored for this request
@@ -402,8 +400,7 @@ function createStates(onConnect) {
             }
             // logs and cleanups are only handled by the main controller process
             if (!compactGroupController) {
-                if (states.clearAllLogs) states.clearAllLogs();
-                if (states.clearAllMessages) states.clearAllMessages();
+                states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
             }
             initMessageQueue();
@@ -3183,8 +3180,7 @@ function startInstance(id, wakeUp) {
                         procs[id].process = compactProcs[instance.common.compactGroup].process;
                         procs[id].startedAsCompactGroup = true;
                     }
-                }
-                else {
+                } else {
                     states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
                 }
                 if (!procs[id].process) { // We were not able or should not start as compact mode
@@ -3871,6 +3867,8 @@ function init(compactGroupId) {
 
     process.on('uncaughtException', err => {
         if (compactGroupController) {
+            console.error(err.message || err);
+            if (err.stack) console.error(err.stack);
             stop();
             return;
         }

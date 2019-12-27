@@ -62,16 +62,10 @@ function testAdapter(options) {
             },
             dirname: __dirname + '/',
             name: context.adapterShortName,
-            objectChange: (id, obj) => {
-                if (context.onAdapterObjectChanged) {
-                    context.onAdapterObjectChanged(id, obj);
-                }
-            },
-            stateChange: (id, state) => {
-                if (context.onAdapterStateChanged) {
-                    context.onAdapterStateChanged(id, state);
-                }
-            },
+            objectChange: (id, obj) =>
+                context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
+            stateChange: (id, state) =>
+                context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
             unload: callback => {
                 if (context.onAdapterUnload) context.onAdapterUnload(callback);
             },
@@ -352,7 +346,7 @@ function testAdapter(options) {
                             expect(adapterStopped).to.be.true;
                             setTimeout(done, 2000);
                         }, 2000);
-                    }, 3000 + (process.platform === 'win32' ? 20000 : 0));
+                    }, 3000 + (process.platform === 'win32' ? 5000 : 0));
                 } else {
                     setTimeout(done, 2000);
                 }
