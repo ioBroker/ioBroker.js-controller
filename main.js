@@ -267,8 +267,7 @@ function createStates(onConnect) {
         change: (id, state) => {
             inputCount++;
             if (!id) {
-                logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
-                return;
+                return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
             if (id.match(/.logging$/)) {
@@ -375,7 +374,6 @@ function createStates(onConnect) {
                     logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
                 }
                 states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
-                return;
             }
             /* it is not used because of code before
             else
@@ -3190,7 +3188,7 @@ function startInstance(id, wakeUp) {
                 }
 
                 if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix, expire: 180}); // give 180 seconds to terminate
                 }
 
                 // catch error output
