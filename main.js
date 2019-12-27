@@ -276,8 +276,6 @@ function createStates(onConnect) {
             } else
             // If this is messagebox, only the main controller is handling the host messages
             if (!compactGroupController && id === 'messagebox.' + hostObjectPrefix) {
-                // Read it from fifo list
-                states.delMessage(hostObjectPrefix, state._id);
                 const obj = state;
                 if (obj) {
                     // If callback stored for this request
@@ -404,8 +402,7 @@ function createStates(onConnect) {
             }
             // logs and cleanups are only handled by the main controller process
             if (!compactGroupController) {
-                if (states.clearAllLogs) states.clearAllLogs();
-                if (states.clearAllMessages) states.clearAllMessages();
+                states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
             }
             initMessageQueue();

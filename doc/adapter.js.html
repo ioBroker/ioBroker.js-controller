@@ -2879,8 +2879,6 @@ function Adapter(options) {
                 } else
                 // If this is messagebox
                 if (id === 'messagebox.system.adapter.' + that.namespace &amp;&amp; state) {
-                    // Read it from fifo list
-                    that.states.delMessage('system.adapter.' + that.namespace, state._id);
                     var obj = state;
                     if (obj) {
                         // If callback stored for this request
@@ -3789,14 +3787,6 @@ function Adapter(options) {
 
         that.destroySession = function destroySession(id, callback) {
             that.states.destroySession(id, callback);
-        };
-
-        that.getMessage = function getMessage(callback) {
-            that.states.getMessage('system.adapter.' + that.namespace, callback);
-        };
-
-        that.lenMessage = function lenMessage(callback) {
-            that.states.lenMessage('system.adapter.' + that.namespace, callback);
         };
 
         // Write binary block into redis, e.g image
