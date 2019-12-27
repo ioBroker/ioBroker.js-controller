@@ -18,6 +18,7 @@
 * (Apollon77) Update dependencies
 * (bluefox) remove getMessage and lenMessage from adapter methods because deprecated since long time
 * (Apollon77) Remove Socket.io compatibility layer - master/slave systems coming from 1.5 need to update to 2.0 or manually!
+* (Apollon77) make options parameter for getObjectList optional again
 
 ## 2.1.1 (2019-11-22) Release Christina
 * (bluefox) Fix host deletion
