@@ -48,8 +48,7 @@ describe(textName + ' Test Objects File-Redis', function() {
 
     after(textName + ' Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(function () {
-            setTimeout(done, 2000);
-        });
+        setup.stopController(() =>
+            setTimeout(done, 2000));
     });
 });

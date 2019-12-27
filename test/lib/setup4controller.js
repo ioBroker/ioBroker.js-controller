@@ -116,8 +116,8 @@ function startController(options, callback) {
     const settingsStates = {
         connection: {
             options : {
-                auth_pass : null,
-                retry_max_delay : 15000
+                auth_pass: null,
+                retry_max_delay: 15000
             },
             type:           options.states.type     || 'file',
             host:           options.states.host     || '127.0.0.1',

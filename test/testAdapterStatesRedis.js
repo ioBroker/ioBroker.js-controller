@@ -3,20 +3,21 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-
+return;
 const testAdapter = require(__dirname + '/lib/testAdapter');
 const dataDir = __dirname + '/../tmp/data-redis';
 
 const statesConfig = {
     options : {
         auth_pass: null,
-        retry_max_delay: 100
+        retry_max_delay: 100,
+        retry_max_count: 2
     },
     type:           'redis',
     host:           '127.0.0.1',
     port:           6379
 };
-let  isExecute = require('fs').existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
+let isExecute = require('fs').existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
 if (!isExecute) {
     try {
         const path = require.resolve('iobroker.objects-redis');
