@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.2.0",
+        "version": "2.2.2",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",

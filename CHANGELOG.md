@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.2 (2019-12-27) Release Dina
+* (Apollon77) readd getMessages to adapter.js and remove in controller 2.4 later to prevent to many adapter incompatibilities now
+
 ## 2.2.1 (2019-12-27) Release Dina
 * (bluefox) CLI: check if object exists by "state set" command and other fixes
 * (Apollon77) Make sure adapter with longer stopTimeouts can be restarted as usual; the "stopping" flag was blocking the restart logic
