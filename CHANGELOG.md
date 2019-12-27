@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.x (2019-12-02) Release Dina
+## 2.2.1 (2019-12-27) Release Dina
 * (bluefox) CLI: check if object exists by "state set" command and other fixes
 * (Apollon77) Make sure adapter with longer stopTimeouts can be restarted as usual; the "stopping" flag was blocking the restart logic
 * (Apollon77) make sure adapters can be stopped again with setting .alive to false
@@ -13,9 +13,11 @@
 * (Apollon77) make sure auto rotation for logs work now with winston and make sure "old style manual cleanup" too
 * (Apollon77) fix error when 'iobroker url' is called without any parameter
 * (Apollon77) separate system and user/adapter subscribes, introduce "changeUser" trigger for States and Objects
-* (Apollon77) Also allow ÄÖÜäöü as characters for first character
+* (Apollon77) Also allow ÄÖÜäöüа-яА-Я as characters for first character
 * (Apollon77) Also log exceptions for compact group controller
 * (Apollon77) Update dependencies
+* (bluefox) remove getMessage and lenMessage from adapter methods because deprecated since long time
+* (Apollon77) Remove Socket.io compatibility layer - master/slave systems coming from 1.5 need to update to 2.0 or manually!
 
 ## 2.1.1 (2019-11-22) Release Christina
 * (bluefox) Fix host deletion

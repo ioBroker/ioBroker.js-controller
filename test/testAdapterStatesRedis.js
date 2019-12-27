@@ -3,7 +3,6 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-return;
 const testAdapter = require(__dirname + '/lib/testAdapter');
 const dataDir = __dirname + '/../tmp/data-redis';
 

@@ -92,7 +92,7 @@ function startController(options, callback) {
             }
         }
     } else {
-        console.log('Used class for Objects: objectsInMemServer');
+        console.log('Used class for Objects: objectsInMemServerRedis');
         Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
     }
 
