@@ -1714,7 +1714,7 @@ function processMessage(msg) {
                     logger.error(`stderr: ${stderr}`);
                 });
             } else {
-                logger.warning(hostLogPrefix + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
+                logger.warn(hostLogPrefix + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
             }
 
             break;
