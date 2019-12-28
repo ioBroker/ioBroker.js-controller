@@ -129,8 +129,10 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
+### 0.3.13 (2019-12-28)
+* (René) bugfix create cron jobs for profile type 3 (daily)
 
-### 0.3.11 (2019-12-27)
+### 0.3.12 (2019-12-27)
 * (René) bugfix exception in CheckTemperatureChange [ReferenceError: RoomState is not defined] 
 
 ### 0.3.11 (2019-12-27)
