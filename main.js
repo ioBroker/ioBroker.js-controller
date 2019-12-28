@@ -2019,9 +2019,8 @@ function processMessage(msg) {
                             lines.push(stats.size);
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
-                        .on('error', () => {  // done
-                            sendTo(msg.from, msg.command, [stats.size], msg.callback);
-                        });
+                        .on('error', () => // done
+                            sendTo(msg.from, msg.command, [stats.size], msg.callback));
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
@@ -2067,6 +2066,7 @@ function processMessage(msg) {
                 const cpus = os.cpus();
                 const data = {
                     Platform:        os.platform(),
+                    os:              process.platform,
                     Architecture:    os.arch(),
                     CPUs:            cpus.length,
                     Speed:           cpus[0].speed,
