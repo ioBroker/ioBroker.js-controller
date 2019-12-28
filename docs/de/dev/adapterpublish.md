@@ -6,13 +6,17 @@ editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/dev/ada
 
 # Veröffentlichen eines Adapters
 Bevor über das veröffentlichen eines Adapters nachgedacht wird, sollte dieser im
-[Forum Test Thread](https://forum.iobroker.net/viewforum.php?f=36) zum testen angeboten werden. Sollten die Tests
+[Forum Test Thread](https://forum.iobroker.net/category/91/tester) zum testen angeboten werden. Sollten die Tests
 erfolgreich verlaufen und der Adapter stabil laufen, sollte dieser vorerst in das Latest-Repository aufgenommen werden.
-<br/><br/>
+<br/><br/>body weight
 Sollte dar Adapter auf einer bestimmten Versionsnummer stabil laufen, darf dieser gerne in das Stable Repository
 überführt werden. Hierzu ist die Eigeneinschätzung des Entwicklers im Zusammenspiel mit den Nutzerrückmeldungen gefragt.
 
+***Weitere aktuelle Anforderungen finden Sie hier:*** https://github.com/ioBroker/ioBroker.repositories/blob/master/README.md
+
 ## Anforderungen für das Latest Repository
+0. Benutze [https://adapter-check.iobroker.in/](https://adapter-check.iobroker.in/) um Adapter-Repo zu testen.
+
 1. Das Github Repository des Adapters sollte ein großes B in ioBroker haben, während es in der package.json klein
 geschrieben sein muss, da ``npm`` keine Großbuchstaben zulässt.
 
@@ -195,6 +199,7 @@ Beispiel:
 - **general** - Generelle Adapter wie Admin, Web, Discovery
 - **geoposition** - Geolokalisierung von Objekten oder Personen
 - **hardware** - Unterschiedliche Multifunktionshardware wie Arduino, ESP, Bluetooth, ...
+- **health** - Blutdruck, Herzschlag, Körpergewicht, ...
 - **household** - Küchengeräte, Staubsauger, usw.
 - **infrastructure** - Netzwerk, NAS, Drucker, Telefone
 - **iot-systems** - Andere Smart Home Systeme (Hard- & Software)

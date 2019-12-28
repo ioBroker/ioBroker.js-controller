@@ -2,116 +2,116 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
-title: TR: ioBroker.vis-materialdesign
+title: ioBroker.vis-materialdesign
 hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
 ---
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
-![TR: stable version](http://iobroker.live/badges/vis-materialdesign.svg)
-![TR: NPM version](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
-![TR: Number of Installations](http://iobroker.live/badges/vis-materialdesign-installed.svg)
-![TR: Downloads](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
-![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
-![TR: NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
-![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
+![稳定版](http://iobroker.live/badges/vis-materialdesign.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
+![安装数量](http://iobroker.live/badges/vis-materialdesign-installed.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
+![依赖状态](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
+![已知漏洞](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
+![特拉维斯](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
 
-TR: # ioBroker.vis-materialdesign
-TR: ## Material Design Widgets for ioBroker VIS
-[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+＃ioBroker.vis-materialdesign
+## IoBroker VIS的材料设计小部件
+[![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-TR: Material Design Widgets uses the following libraries:
+Material Design Widgets使用以下库：
 
-TR: * [Google material components for the web](https://github.com/material-components/material-components-web)
-TR: * [Vuetify](https://github.com/vuetifyjs/vuetify)
-TR: * [chartjs](https://www.chartjs.org/)
-TR: * [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
+* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
+* [Vuetify]（https://github.com/vuetifyjs/vuetify）
+* [chartjs]（https://www.chartjs.org/）
+* [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
 
-TR: ### Supported Browser
-TR: https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+###支持的浏览器
+https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-TR: ### Supported Browser for vibrate on mobil devices function
-TR: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
+###受支持的浏览器可在移动设备上振动功能
+https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
-TR: ### ioBroker App
-TR: not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
+### IoBroker应用
+无法正常运行，需要由应用程序标记，请参见https://github.com/ioBroker/ioBroker.vis.cordova
 
-TR: ## Button Toggle
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
+##按钮切换
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
 
-TR: ## Card
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
+##卡
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
 
-TR: ## Icon Button
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
+##图标按钮
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
-TR: ## List
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
+##清单
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
 
-TR: ## Progress
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
+##进展
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
 
-TR: ## Slider
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
+##滑块
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+下表中未列出的设置是不言自明的。
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/slider.png"></td> <td>initDelay</td> <td>If the slider is not visible or operable after loading the runtime, then this value must be increased. Entry is made in milliseconds.<br>For example, increase by 250 steps until the slider works.</td> </tr> </tbody> </table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/slider.png"></td><td>初始化延迟</td><td>如果在加载运行时后滑块不可见或不可操作，则必须增加该值。输入以毫秒为单位。 <br>例如，增加250步，直到滑块起作用。 </td></tr></tbody></table>
 
-TR: ## Round Slider
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
+##圆形滑块
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
-TR: ## Switch
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
+##开关
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
-TR: ## Top App Bar with Navigation Drawer
-TR: Information:
+##带有导航抽屉的顶部应用栏
+信息：
 
-TR: * Top App Bar use the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter - configuration is the same, search the forum for working examples.
-TR: * App Bar position is hardcoded and always appears in the upper left corner. Only width and height are adjustable. In the editor you can move the widget, but these settings will not be applied!
-TR: * In the editor, effects such as scrolling, etc. are not displayed correctly or behave differently!
-TR: * Checkbox "persistent" must be activated!
-TR: * oid must be set to a datapoint from typ number (like the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter)
+*顶部应用栏使用VIS Adapter的[小部件8中的视图]（https://www.iobroker.net/#en/documentation/viz/basic.md）-配置相同，请在论坛上搜索工作示例。
+*应用栏的位置是硬编码的，始终显示在左上角。仅宽度和高度是可调的。在编辑器中，您可以移动窗口小部件，但是这些设置将不会应用！
+*在编辑器中，滚动等效果无法正确显示或表现不同！
+*必须激活复选框“永久”！
+* oid必须从类型号设置为数据点（例如VIS Adapter的[小部件8中的视图]（https://www.iobroker.net/#en/documentation/viz/basic.md））
 
-TR: ##### Layout modal:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
+#####布局模式：
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
 
-TR: ##### Layout dismissible:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
+#####可忽略的版式：
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
 
-TR: ##### Layout permanent:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
+#####永久布局：
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-TR: ### Submenu
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
+###子菜单
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+下表中未列出的设置是不言自明的。
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td> <td>views[x]</td> <td>To activate submenu, you have to add multiple views seperated with '|' into the view field, see screenshots</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td> <td>label[x]</td> <td>To change the text of the items, you have to put a json object into the label field with the index of the view field.<br> Example:<br>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>意见[x] </td><td>要激活子菜单，您必须添加多个以&#39;|&#39;分隔的视图进入查看字段，查看屏幕截图</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
 
-TR: `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
+`{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
-TR: Result: see screenshot</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td> <td>icon[x]</td> <td>To change the icons of the items, you have to put a json object into the icons field with the index of the view field.<br> Example:<br>
+结果：查看屏幕截图</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td>图标[x] </td><td>要更改项目的图标，您必须将json对象放入带有视图字段索引的icons字段中。 <br>例： <br>
 
-TR: `{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
+`{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
 
-TR: Result: see screenshot</td> </tr> </tbody> </table>
+结果：查看屏幕截图</ td> </ tr> </ tbody> </ table>
 
-TR: ## Charts
-TR: ### Line History Chart:
-TR: > Required Adapter: [TR: SQL](https://github.com/ioBroker/ioBroker.sql), [History](https://github.com/ioBroker/ioBroker.history) or [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
+##图表
+###线路历史记录图表：
+>必需的适配器：[SQL]（https://github.com/ioBroker/ioBroker.sql），[历史记录]（https://github.com/ioBroker/ioBroker.history）或[InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)！
 
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+下表中未列出的设置是不言自明的。
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td> <td>adapter instance</td> <td>Instance for the sql or history adapter</td> </tr> <tr> <td>aggregation</td> <td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">link</a></td> </tr> <tr> <td>max. number of data points to be displayed</td> <td>Number of maximum data points to display</td> </tr> <tr> <td>time interval between the data points in [s]</td> <td>Optional setting, overrides the 'count' setting.<br>Distance between the individual data points in seconds.<br>For example, if you want to display data points every minute, you have to enter 60 here</td> </tr> <tr> <td>controlling time interval using object</td> <td>Id of a datapoint to change the time interval of the chart. The data point must be a string and may contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">the linked values</a><br>For example, you can use a button here to change the display of the chart during runtime</td> </tr> <tr> <td>boolean object for update</td> <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td> <td>time formats of x-axis</td> <td>Change the time format of the X-axis. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td> <td>tooltip time formats</td> <td>Change the time format of the tooltip. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> </tbody> </table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。数据点必须是字符串，并且可以包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接的值</a> <br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
 
-TR: ## Table
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
+##表
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
 
-TR: ##### Input Data
-TR: Input data must be a json array of objects, example:
+＃＃＃＃＃ 输入数据
+输入数据必须是对象的json数组，例如：
 
 ```
 [
@@ -123,18 +123,18 @@ TR: Input data must be a json array of objects, example:
 ]
 ```
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=2><img src="doc/en/media/table_general.png"></td> <td>switch</td> <td>Datapoint from type string with input data as shown above</td> </tr> <tr> <td>data as JSON</td> <td>Optional, input data as shown above if no oid datapoint is set</td> </tr> <tr> <td rowspan=4><img src="doc/en/media/table_column.png"></td> <td>colType[x]</td> <td>If image is selected, object property must have the path to the image (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>)</td> </tr> <tr> <td>prefix[x]</td> <td>Prefix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>suffix[x]</td> <td>Suffix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>object name for sorting[x]</td> <td>Here you can define an other object property that should be used for sorting.</td> </tr> </tbody> </table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td>开关</td><td>带有输入数据的类型字符串的数据点，如上所示</td></tr><tr><td>数据作为JSON </td><td>可选，如果未设置oid数据点，则输入如上所示的数据</td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [x] </td><td>如果选择了图像，则对象属性必须具有图像的路径（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">请参见上文</a> ） </td></tr><tr><td>前缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">请参见下文</a> ）和html的前缀</td></tr><tr><td>后缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">见下文</a> ）和html的后缀</td></tr><tr><td>用于排序的对象名称[x] </td><td>在这里，您可以定义另一个用于排序的对象属性。 </td></tr></tbody></table>
 
-TR: ##### internal object binding
-TR: prefix & suffix supports table internal object binding -> you can access other properties of object by using
+#####内部对象绑定
+前缀和后缀支持表内部对象绑定->您可以使用来访问对象的其他属性
 
 ```
 #[obj.'propertyName']
 ```
 
-TR: Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>.
+示例请<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">参见上面</a> 。
 
-TR: Working Widget Example can be found [TR: here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+可以找到工作窗口小部件示例[这里](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
 ## Changelog
 

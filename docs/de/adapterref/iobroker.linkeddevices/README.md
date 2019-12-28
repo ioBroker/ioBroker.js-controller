@@ -2,33 +2,33 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.linkeddevices/README.md
-title: TR: no title
+title: kein Titel
 hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ---
-![TR: Number of Installations](http://iobroker.live/badges/linkeddevices-installed.svg)
-![TR: NPM version](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
-![TR: Downloads](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
-![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
-![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
-![TR: NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
-![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/linkeddevices-installed.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
 
-TR: <h1> <img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
+<h1><img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
 
-TR: ## linkeddevices adapter for ioBroker
-[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+## Linkeddevices adapter für ioBroker
+[![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-TR: linkeddevices creates linked objects (datapoints) of devices with a self-defined structure. This makes it possible to create a structure in ioBroker, where all objects are centralized, e.g. to be used in vis views or scripts. This offers for example the advantage that with hardware exchange, only the linked objects must be recreated and all vis views and scripts works again.
+linkeddevices erzeugt verknüpfte Objekte (Datenpunkte) von Geräten mit einer selbst definierten Struktur. Dadurch ist es möglich, in ioBroker eine Struktur zu erstellen, in der alle Objekte zentralisiert sind, z. zur Verwendung in vis-Ansichten oder Skripten. Dies bietet beispielsweise den Vorteil, dass beim Hardware-Austausch nur die verknüpften Objekte neu erstellt werden müssen und alle vis-Ansichten und Skripte wieder funktionieren.
 
-TR: With the adapter you can also convert objects or convert them to other types (not yet fully implemented).
+Mit dem Adapter können Sie auch Objekte konvertieren oder in andere Typen konvertieren (noch nicht vollständig implementiert).
 
-![TR: Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
+![Struktur](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
 
-TR: This adapter is inspired from [TR: virtual devices script by Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
+Dieser Adapter ist inspiriert von [Skript für virtuelle Geräte von Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
 
-TR: ## Configuration
-TR: * [English description](doc/en/README.md)
-TR: * [deutsche Beschreibung](doc/de/README.md)
+## Aufbau
+* [Englische Beschreibung] (doc / en / README.md)
+* [english description] (doc / de / README.md)
 
 ## Changelog
 

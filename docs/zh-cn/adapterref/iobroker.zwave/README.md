@@ -2,165 +2,165 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.zwave/README.md
-title: TR: ioBroker zwave Adapter
+title: ioBroker zwave适配器
 hash: DFbRqkOUZcuOYRUedUea+lMPrIkDEvq95drsHf88jTg=
 ---
-![TR: Logo](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
+![商标](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
 
-![TR: Number of Installations](http://iobroker.live/badges/zwave-stable.svg)
-![TR: NPM version](http://img.shields.io/npm/v/iobroker.zwave.svg)
-![TR: Downloads](https://img.shields.io/npm/dm/iobroker.zwave.svg)
-![TR: NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
+![安装数量](http://iobroker.live/badges/zwave-stable.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.zwave.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.zwave.svg)
+![NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
 
-TR: # ioBroker zwave Adapter
-TR: Zwave support with openzwave.
+＃ioBroker zwave适配器
+Zwave支持openzwave。
 
-TR: For this adapter is used rather good supported npm module: https://github.com/OpenZWave/node-openzwave-shared You should find out what the name has USB port of the Z-Wave stick and setup it in the adapter settings.
+对于此适配器，使用了受良好支持的npm模块：https://github.com/OpenZWave/node-openzwave-shared您应该找出Z-Wave棒的USB端口名称，并在适配器设置中进行设置。
 
-TR: ## Important Information
-TR: - On first run, the Adapter needs some time, to calculate all Objects within iobroker.
-TR: - If you add a Device, let the adapter do it's job and wait a little bit.
-TR: - If a Device is not visible within the included Admistration Site, it's not fully imported into ioBroker.
+##重要信息
+-首次运行时，适配器需要一些时间来计算iobroker中的所有对象。
+-如果添加设备，则让适配器完成其工作，然后稍等片刻。
+-如果设备在随附的管理站点中不可见，则表示该设备未完全导入ioBroker。
 
-TR: ## Installation
-TR: First of all, Implementation is tested only on ARM Linux (e.g. Raspberry Pi (2)).
-You need a fully Development Environment (gcc, make,...)
+##安装
+首先，仅在ARM Linux（例如Raspberry Pi（2））上测试实现。
+您需要一个完整的开发环境（gcc，make等）
 
-TR: ### Install additional packages
-TR: On some systems it will be necessary to install additional packages. Therefore run the following on the console before installing the adapter:
+###安装其他软件包
+在某些系统上，有必要安装其他软件包。因此，在安装适配器之前，请在控制台上运行以下命令：
 
 ```bash
 apt-get install pkg-config libudev-dev build-essential curl unzip
 ```
 
-TR: ### Raspberry Pi3 only: Activate GPIO UART
-TR: On Raspberry Pi 3, the UART is by default occupied by the bluetooth module. To activate it for use with a GPIO module, follow these steps:
+###仅适用于Raspberry Pi3：激活GPIO UART
+在Raspberry Pi 3上，默认情况下，UART由蓝牙模块占用。要激活它以与GPIO模块一起使用，请按照以下步骤操作：
 
-TR: 1. `sudo nano /boot/cmdline.txt`
-TR: 	1. remove `console=serial0,115200`
-TR: 	1. save the file and close it
+1.`sudo nano / boot / cmdline.txt`
+1.删除“ console = serial0,115200”
+1.保存文件并关闭
 
-TR: 2. `sudo nano /boot/config.txt`
+2.`sudo nano / boot / config.txt`
 
-TR: Look for each of the following lines. If they are commented out with a `#`, remove that. If they don't exist, add them to the end of the file:
+查找以下各行。如果使用`#`注释掉了它们，则将其删除。如果它们不存在，请将它们添加到文件末尾：
 
-TR: 	* `dtoverlay=pi3-miniuart-bt`
-TR: 	* `enable_uart=1`
-TR: 	* `force_turbo=1`
+*`dtoverlay = pi3-miniuart-bt`
+*`enable_uart = 1`
+*`force_turbo = 1`
 
-TR: 3. reboot
+3.重启
 
-TR: ### First start
-TR: The GPIO module usually has an address like `/dev/ttyAMA0` or `/dev/ttyACM0`.
-The USB stick can be found under `/dev/ttyUSB0` or `/dev/ttyUSB1`.
+###第一次开始
+GPIO模块通常具有类似于`/dev/ttyAMA0`或`/dev/ttyACM0`§的地址。
+可以在`/dev/ttyUSB0`或`/dev/ttyUSB1`下找到USB记忆棒。
 
-TR: - Go into iobroker admin and add the Zwave Adapter (the installation is rather long, be patient)
-TR: - Start the new zwave Adapter instance and select the controller device's address from the dropdown in the admin UI.
-TR: - If your device is not detected, check it or try to manually enter its address when the adapter is turned off.
-TR: - Wait until the indicator in the "Instances" tab turns green or the message "zwave.0 Scan completed" is found in the iobroker log.
+-进入iobroker管理员并添加Zwave适配器（安装时间相当长，请耐心等待）
+-启动新的zwave Adapter实例，然后从管理UI的下拉列表中选择控制器设备的地址。
+-如果未检测到设备，请在关闭适配器后对其进行检查或尝试手动输入其地址。
+-等待直到“实例”选项卡中的指示器变为绿色，或者在iobroker日志中找到消息“ zwave.0扫描已完成”。
 
-TR: ### Known issues
-TR: If you get the following (or similar) error after starting the adapter
+＃＃＃ 已知的问题
+如果启动适配器后出现以下（或类似的）错误
 
 ```
 libopenzwave.so.1.4: cannot open shared object file: No such file or directory
 ```
 
-TR: you can fix it by running
+您可以通过运行来修复它
 
 ```
 sudo ldconfig
 ```
 
-TR: or
+要么
 
 ```
 sudo ldconfig /usr/local
 ```
 
-TR: or
+要么
 
 ```
 sudo ldconfig /usr/local/lib64
 ```
 
-TR: If all of those commands don't work, the following process might:
+如果所有这些命令都不起作用，则可能会执行以下过程：
 
-TR: 1. `sudo nano /etc/ld.so.conf.d/zwave.conf`
-TR: 	1. enter `/usr/local/lib64`
-TR: 	1. quit the editor with `CTRL+X`, confirm with `Y` to save the changes
+1.`sudo nano / etc / ld.so.conf.d / zwave.conf`
+1.输入`/ usr / local / lib64`
+1.使用“ CTRL + X”退出编辑器，使用“ Y”确认以保存更改
 
-TR: 1. `sudo ldconfig`
+1.`sudo ldconfig`
 
-TR: ## Configuration
-TR: Within Admin Settings you can set following Attributes
+##配置
+在管理设置中，您可以设置以下属性
 
-TR: - USB name (the USB Port of your Z-Wave stick)
-TR: - Logging (enable logging to OZW_Log.txt)
-TR: - Console Output (copy logging to the console, Logs all to ioBroker.log)
-TR: - Save Config (write an XML network layout create a /zwcfg_<HOMEID>.xml on linux)
-TR: - Driver Attempts (try this many times before giving up)
-TR: - Poll Interval (interval between polls in milliseconds)
-TR: - Suppress Refresh (do not send updates if nothing changed)
+-USB名称（Z-Wave棒的USB端口）
+-记录（启用记录到OZW_Log.txt）
+-控制台输出（将日志记录复制到控制台，全部记录到ioBroker.log）
+-保存配置（编写XML网络布局，在Linux上创建/zwcfg_<HOMEID>.xml）
+-驾驶员尝试（放弃前请尝试多次）
+-轮询间隔（轮询之间的间隔，以毫秒为单位）
+-禁止刷新（如果没有更改，则不发送更新）
 
-![TR: admin-settings](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
+![管理员设置](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
 
-TR: ## Logfiles / Configuration Settings
-TR: If you have installed iobroker into default Folder:
+##日志文件/配置设置
+如果您已将iobroker安装到默认文件夹中：
 
-TR:  - Logfile: /opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt on linux
-TR:  - Configuration: /opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml on linux
+ -日志文件：/opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt在Linux上
+ -配置：Linux上的/opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml
 
-TR: ## Device add or remove
-TR: If you add or remove a device, it takes 60 seconds. Then the page is automatically reloaded.
+##设备添加或删除
+如果添加或删除设备，则需要60秒钟。然后页面将自动重新加载。
 
-TR: If you change the Name or Location, it takes 5 seconds. Then the page is automatically reloaded.
+如果更改名称或位置，则需要5秒钟。然后页面将自动重新加载。
 
-TR: ## Features
-TR: Within OpenZWave Configurator you can see all Nodes and their classes.
+＃＃ 特征
+在OpenZWave Configurator中，您可以查看所有节点及其类。
 
-TR: Following Actions are current supported (only with context menu):
+当前支持以下操作（仅在上下文菜单中）：
 
-TR: - Set Name and Set Location for Node itself
-TR: - Change Value of a class
+-设置节点本身的名称和位置
+-改变课程价值
 
-TR: Following global Actions are current supported:
+当前支持以下全局操作：
 
-TR: - Add Nodes
-TR: - Remove Nodes
-TR: - Refresh Nodes (Refresh Nodes from ioBroker Communication)
+-添加节点
+-删除节点
+-刷新节点（通过ioBroker通信刷新节点）
 
-TR: ## Todo
-TR: ### ZWave Specific
-TR: - Scenes
-TR: - Group Management
-TR: - Polling
-TR: - Controller Commands
-TR: - Configuration Commands
+＃＃ 去做
+### ZWave特定
+-场景
+-集团管理
+-轮询
+-控制器命令
+-配置命令
 
-TR: ### Global
-TR: - Test more Hardware
-TR: - Move config and logfile into iobroker default path (/opt/iobroker/log, /opt/iobroker/data/files/zwave)
-TR: - Language Support (English, German, Russian)
+###全球
+-测试更多硬件
+-将配置和日志文件移至iobroker默认路径（/ opt / iobroker / log，/ opt / iobroker / data / files / zwave）
+-语言支持（英语，德语，俄语）
 
-TR: ## Tested Hardware
-TR: ### ZWave
-TR: - ZME_UZB1 USB Stick
-TR: - RazBerry GPIO Board for RaspBerry (1/2)
+##经过测试的硬件
+### ZWave
+-ZME_UZB1 USB记忆棒
+-用于RaspBerry的RazBerry GPIO板（1/2）
 
-TR: ### Fibaro
-TR: - FGBS001 Universal Binary Sensor
-TR: - FGS222 Double Relay Switch 2x1.5kW
-TR: - FGWPE Wall Plug
-TR: - FGSS001 Smoke Sensor
-TR: - FGMS001 Motion Sensor
-TR: - FGS-223 Double Switch 2
-TR: - FGR-222 Roller Shutter 2
-TR: - FGDW-002 Door/Window Sensor 2
+### Fibaro
+-FGBS001通用二进制传感器
+-FGS222双继电器开关2x1.5kW
+-FGWPE墙塞
+-FGSS001烟雾传感器
+-FGMS001运动传感器
+-FGS-223双开关2
+-FGR-222卷帘门2
+-FGDW-002门窗传感器2
 
-TR: ### Danfoss
-TR: - Danfoss Living Connect Room Thermostat (type 0003, id 8010)
-TR: - Danfoss Z Thermostat 014G0013
+###丹佛斯
+-丹佛斯Living Connect Room恒温器（类型0003，ID 8010）
+-丹佛斯Z温控器014G0013
 
 ## Changelog
 

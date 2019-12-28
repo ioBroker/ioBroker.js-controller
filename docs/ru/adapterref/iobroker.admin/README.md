@@ -170,6 +170,10 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 3.7.3 (2019-12-28)
+* (bluefox) Added the filter of the running instances
+* (bluefox) The incompatible adapters will be hidden
+
 ### 3.7.1 (2019-11-20)
 * (bluefox) Easy admin configuration was implemented
 

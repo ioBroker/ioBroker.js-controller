@@ -169,6 +169,18 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.24
+ * volumebar didnt get events between the segments, change clickevent and calculation
+### 0.8.23
+ * adjust dependencies to remove vulnerabilities in dependend packages. alos remove travis due of unresolvable build-failures for win+node10/12
+### 0.8.22
+ * due to iobroker.controller 2.0 a command in the api changed (socket to vis.conn._socket)
+### 0.8.21
+ * add command für playing urls
+### 0.8.20
+ * remove node v6 test setting
+### 0.8.19
+ * shorten news history
 ### 0.8.18 (2019-06-27)
 * last minute changes.
 ### 0.8.17 (2019-06-26)

@@ -2,116 +2,116 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-materialdesign/README.md
-title: TR: ioBroker.vis-materialdesign
+title: ioBroker.vis-materialdesign
 hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
 ---
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
-![TR: stable version](http://iobroker.live/badges/vis-materialdesign.svg)
-![TR: NPM version](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
-![TR: Number of Installations](http://iobroker.live/badges/vis-materialdesign-installed.svg)
-![TR: Downloads](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
-![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
-![TR: NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
-![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
+![стабильная версия](http://iobroker.live/badges/vis-materialdesign.svg)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
+![Количество установок](http://iobroker.live/badges/vis-materialdesign-installed.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
+![Статус зависимости](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
+![Известные уязвимости](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
 
-TR: # ioBroker.vis-materialdesign
-TR: ## Material Design Widgets for ioBroker VIS
-[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+# IoBroker.vis-materialdesign
+## Виджеты дизайна материалов для ioBroker VIS
+[![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-TR: Material Design Widgets uses the following libraries:
+Material Design Widgets использует следующие библиотеки:
 
-TR: * [Google material components for the web](https://github.com/material-components/material-components-web)
-TR: * [Vuetify](https://github.com/vuetifyjs/vuetify)
-TR: * [chartjs](https://www.chartjs.org/)
-TR: * [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
+* [Компоненты материалов Google для Интернета] (https://github.com/material-components/material-components-web)
+* [Vuetify] (https://github.com/vuetifyjs/vuetify)
+* [chartjs] (https://www.chartjs.org/)
+* [круглый слайдер из томасловена] (https://github.com/thomasloven/round-slider)
 
-TR: ### Supported Browser
-TR: https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+### Поддерживаемый браузер
+https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-TR: ### Supported Browser for vibrate on mobil devices function
-TR: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
+### Поддерживается браузер для функции вибрации на мобильных устройствах
+https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
-TR: ### ioBroker App
-TR: not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
+### Приложение ioBroker
+не работает, должно быть реализовано приложением, см. https://github.com/ioBroker/ioBroker.vis.cordova
 
-TR: ## Button Toggle
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
+## Кнопка Toggle
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
 
-TR: ## Card
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
+## Открытка
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
 
-TR: ## Icon Button
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
+## Кнопка со значком
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
-TR: ## List
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
+## Список
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
 
-TR: ## Progress
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
+## Прогресс
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
 
-TR: ## Slider
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
+## Слайдер
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/slider.png"></td> <td>initDelay</td> <td>If the slider is not visible or operable after loading the runtime, then this value must be increased. Entry is made in milliseconds.<br>For example, increase by 250 steps until the slider works.</td> </tr> </tbody> </table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/slider.png"></td><td> initDelay </td><td> Если ползунок не отображается или не работает после загрузки среды выполнения, то это значение необходимо увеличить. Запись производится в миллисекундах. <br> Например, увеличивайте на 250 шагов, пока слайдер не заработает. </td></tr></tbody></table>
 
-TR: ## Round Slider
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
+## Round Slider
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
-TR: ## Switch
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
+## Переключатель
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
-TR: ## Top App Bar with Navigation Drawer
-TR: Information:
+## Верхняя панель приложений с навигационным ящиком
+Информация:
 
-TR: * Top App Bar use the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter - configuration is the same, search the forum for working examples.
-TR: * App Bar position is hardcoded and always appears in the upper left corner. Only width and height are adjustable. In the editor you can move the widget, but these settings will not be applied!
-TR: * In the editor, effects such as scrolling, etc. are not displayed correctly or behave differently!
-TR: * Checkbox "persistent" must be activated!
-TR: * oid must be set to a datapoint from typ number (like the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter)
+* В верхней панели приложений используется [вид в виджете 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) адаптера VIS - конфигурация такая же, ищите на форуме рабочие примеры.
+* Позиция App Bar жестко закодирована и всегда отображается в верхнем левом углу. Только ширина и высота регулируются. В редакторе вы можете переместить виджет, но эти настройки не будут применены!
+* В редакторе такие эффекты, как прокрутка и т. Д., Отображаются неправильно или ведут себя иначе!
+* Флажок "постоянный" должен быть активирован!
+* oid должен быть установлен на точку данных из номера типа (например, [вид в виджете 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) адаптера VIS)
 
-TR: ##### Layout modal:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
+##### Макет модальный:
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
 
-TR: ##### Layout dismissible:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
+##### Макет запрещен:
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
 
-TR: ##### Layout permanent:
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
+##### Макет постоянного:
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-TR: ### Submenu
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
+### Подменю
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td> <td>views[x]</td> <td>To activate submenu, you have to add multiple views seperated with '|' into the view field, see screenshots</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td> <td>label[x]</td> <td>To change the text of the items, you have to put a json object into the label field with the index of the view field.<br> Example:<br>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> просмотров [х] </td><td> Чтобы активировать подменю, вы должны добавить несколько представлений, разделенных &#39;|&#39; в поле зрения, смотрите скриншоты </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> метка [х] </td><td> Чтобы изменить текст элементов, вы должны поместить объект json в поле метки с индексом поля представления. <br> Пример: <br>
 
-TR: `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
+`{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
-TR: Result: see screenshot</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td> <td>icon[x]</td> <td>To change the icons of the items, you have to put a json object into the icons field with the index of the view field.<br> Example:<br>
+Результат: см. Скриншот </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td> значок [х] </td><td> Чтобы изменить значки элементов, необходимо поместить объект json в поле значков с индексом поля просмотра. <br> Пример: <br>
 
-TR: `{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
+`{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
 
-TR: Result: see screenshot</td> </tr> </tbody> </table>
+Результат: см. Скриншот </ td> </ tr> </ tbody> </ table>
 
-TR: ## Charts
-TR: ### Line History Chart:
-TR: > Required Adapter: [TR: SQL](https://github.com/ioBroker/ioBroker.sql), [History](https://github.com/ioBroker/ioBroker.history) or [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
+## Графики
+### Диаграмма истории линий:
+> Требуемый адаптер: [SQL] (https://github.com/ioBroker/ioBroker.sql), [History] (https://github.com/ioBroker/ioBroker.history) или [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
 
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
 
-TR: Settings that are not listed in the table below are self-explanatory.
+Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td> <td>adapter instance</td> <td>Instance for the sql or history adapter</td> </tr> <tr> <td>aggregation</td> <td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">link</a></td> </tr> <tr> <td>max. number of data points to be displayed</td> <td>Number of maximum data points to display</td> </tr> <tr> <td>time interval between the data points in [s]</td> <td>Optional setting, overrides the 'count' setting.<br>Distance between the individual data points in seconds.<br>For example, if you want to display data points every minute, you have to enter 60 here</td> </tr> <tr> <td>controlling time interval using object</td> <td>Id of a datapoint to change the time interval of the chart. The data point must be a string and may contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">the linked values</a><br>For example, you can use a button here to change the display of the chart during runtime</td> </tr> <tr> <td>boolean object for update</td> <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td> <td>time formats of x-axis</td> <td>Change the time format of the X-axis. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td> <td>tooltip time formats</td> <td>Change the time format of the tooltip. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> </tbody> </table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td> экземпляр адаптера </td><td> Экземпляр для адаптера sql или history </td></tr><tr><td> агрегирование </td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">ссылка на сайт</a> </td></tr><tr><td> Максимум. количество отображаемых точек данных </td><td> Количество максимальных точек данных для отображения </td></tr><tr><td> интервал времени между точками данных в [с] </td><td> Необязательный параметр, переопределяет параметр «количество». <br> Расстояние между отдельными точками данных в секундах. <br> Например, если вы хотите отображать точки данных каждую минуту, вам нужно ввести 60 здесь </td></tr><tr><td> управление временным интервалом с использованием объекта </td><td> Идентификатор точки данных для изменения временного интервала графика. Точка данных должна быть строкой и может содержать <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">связанные значения</a> <br> Например, вы можете использовать кнопку здесь, чтобы изменить отображение графика во время выполнения </td></tr><tr><td> логический объект для обновления </td><td> Идентификатор adatapoint запускает обновление графика вручную. <br> Например, вы можете использовать кнопку здесь, чтобы обновить диаграмму во время выполнения </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> форматы времени оси X </td><td> Изменить формат времени оси X. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> форматы времени всплывающей подсказки </td><td> Изменить формат времени всплывающей подсказки. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr></tbody></table>
 
-TR: ## Table
-![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
+## Стол
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
 
-TR: ##### Input Data
-TR: Input data must be a json array of objects, example:
+##### Входные данные
+Входные данные должны быть массивом json объектов, например:
 
 ```
 [
@@ -123,18 +123,18 @@ TR: Input data must be a json array of objects, example:
 ]
 ```
 
-TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=2><img src="doc/en/media/table_general.png"></td> <td>switch</td> <td>Datapoint from type string with input data as shown above</td> </tr> <tr> <td>data as JSON</td> <td>Optional, input data as shown above if no oid datapoint is set</td> </tr> <tr> <td rowspan=4><img src="doc/en/media/table_column.png"></td> <td>colType[x]</td> <td>If image is selected, object property must have the path to the image (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>)</td> </tr> <tr> <td>prefix[x]</td> <td>Prefix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>suffix[x]</td> <td>Suffix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>object name for sorting[x]</td> <td>Here you can define an other object property that should be used for sorting.</td> </tr> </tbody> </table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td> переключатель </td><td> Datapoint из строки типа с входными данными, как показано выше </td></tr><tr><td> данные в формате JSON </td><td> Необязательно, введите данные, как показано выше, если не установлена точка назначения oid </td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [х] </td><td> Если изображение выбрано, свойство объекта должно иметь путь к изображению ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">см. Выше</a> ) </td></tr><tr><td> Префикс [х] </td><td> Можно использовать префикс для свойства объекта, привязки внутреннего объекта ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">см. Ниже</a> ) и HTML </td></tr><tr><td> Суффикс [х] </td><td> Можно использовать суффикс для свойства объекта, привязки внутреннего объекта ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">см. Ниже</a> ) и HTML </td></tr><tr><td> имя объекта для сортировки [x] </td><td> Здесь вы можете определить другое свойство объекта, которое должно использоваться для сортировки. </td></tr></tbody></table>
 
-TR: ##### internal object binding
-TR: prefix & suffix supports table internal object binding -> you can access other properties of object by using
+##### Привязка внутреннего объекта
+префикс и суффикс поддерживает привязку внутреннего объекта таблицы -> вы можете получить доступ к другим свойствам объекта, используя
 
 ```
 #[obj.'propertyName']
 ```
 
-TR: Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>.
+Пример см <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">. Выше</a> .
 
-TR: Working Widget Example can be found [TR: here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+Пример рабочего виджета можно найти [Вот](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
 ## Changelog
 

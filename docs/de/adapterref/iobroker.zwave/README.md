@@ -2,165 +2,165 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.zwave/README.md
-title: TR: ioBroker zwave Adapter
+title: ioBroker zwave Adapter
 hash: DFbRqkOUZcuOYRUedUea+lMPrIkDEvq95drsHf88jTg=
 ---
-![TR: Logo](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
+![Logo](../../../en/adapterref/iobroker.zwave/admin/zwave.png)
 
-![TR: Number of Installations](http://iobroker.live/badges/zwave-stable.svg)
-![TR: NPM version](http://img.shields.io/npm/v/iobroker.zwave.svg)
-![TR: Downloads](https://img.shields.io/npm/dm/iobroker.zwave.svg)
-![TR: NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
+![Anzahl der Installationen](http://iobroker.live/badges/zwave-stable.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.zwave.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.zwave.svg)
+![NPM](https://nodei.co/npm/iobroker.zwave.png?downloads=true)
 
-TR: # ioBroker zwave Adapter
-TR: Zwave support with openzwave.
+# IoBroker zwave Adapter
+Zwave Unterstützung mit Openzwave.
 
-TR: For this adapter is used rather good supported npm module: https://github.com/OpenZWave/node-openzwave-shared You should find out what the name has USB port of the Z-Wave stick and setup it in the adapter settings.
+Für diesen Adapter wird eher ein gut unterstütztes npm-Modul verwendet: https://github.com/OpenZWave/node-openzwave-shared Sie sollten herausfinden, wie der Name USB-Anschluss des Z-Wave-Sticks hat und diesen in den Adaptereinstellungen einrichten.
 
-TR: ## Important Information
-TR: - On first run, the Adapter needs some time, to calculate all Objects within iobroker.
-TR: - If you add a Device, let the adapter do it's job and wait a little bit.
-TR: - If a Device is not visible within the included Admistration Site, it's not fully imported into ioBroker.
+## Wichtige Informationen
+- Beim ersten Start benötigt der Adapter einige Zeit, um alle Objekte in iobroker zu berechnen.
+- Wenn Sie ein Gerät hinzufügen, lassen Sie den Adapter die Arbeit erledigen und warten Sie ein wenig.
+- Wenn ein Gerät auf der enthaltenen Administrations-Site nicht sichtbar ist, wird es nicht vollständig in ioBroker importiert.
 
-TR: ## Installation
-TR: First of all, Implementation is tested only on ARM Linux (e.g. Raspberry Pi (2)).
-You need a fully Development Environment (gcc, make,...)
+## Installation
+Zunächst wird die Implementierung nur unter ARM Linux (z. B. Raspberry Pi (2)) getestet.
+Sie benötigen eine vollständige Entwicklungsumgebung (gcc, make, ...)
 
-TR: ### Install additional packages
-TR: On some systems it will be necessary to install additional packages. Therefore run the following on the console before installing the adapter:
+### Zusätzliche Pakete installieren
+Auf einigen Systemen müssen zusätzliche Pakete installiert werden. Führen Sie daher vor der Installation des Adapters Folgendes auf der Konsole aus:
 
 ```bash
 apt-get install pkg-config libudev-dev build-essential curl unzip
 ```
 
-TR: ### Raspberry Pi3 only: Activate GPIO UART
-TR: On Raspberry Pi 3, the UART is by default occupied by the bluetooth module. To activate it for use with a GPIO module, follow these steps:
+### Nur Raspberry Pi3: GPIO UART aktivieren
+Auf Raspberry Pi 3 ist der UART standardmäßig vom Bluetooth-Modul belegt. Gehen Sie folgendermaßen vor, um es für die Verwendung mit einem GPIO-Modul zu aktivieren:
 
-TR: 1. `sudo nano /boot/cmdline.txt`
-TR: 	1. remove `console=serial0,115200`
-TR: 	1. save the file and close it
+1. `sudo nano / boot / cmdline.txt`
+1. entfernen Sie `console = serial0,115200`
+1. Speichern Sie die Datei und schließen Sie sie
 
-TR: 2. `sudo nano /boot/config.txt`
+2. `sudo nano / boot / config.txt`
 
-TR: Look for each of the following lines. If they are commented out with a `#`, remove that. If they don't exist, add them to the end of the file:
+Suchen Sie nach den folgenden Zeilen. Wenn sie mit einem `#` auskommentiert sind, entfernen Sie diesen. Wenn sie nicht vorhanden sind, fügen Sie sie am Ende der Datei hinzu:
 
-TR: 	* `dtoverlay=pi3-miniuart-bt`
-TR: 	* `enable_uart=1`
-TR: 	* `force_turbo=1`
+* `dtoverlay = pi3-miniuart-bt`
+* `enable_uart = 1`
+* `force_turbo = 1`
 
-TR: 3. reboot
+3. neu starten
 
-TR: ### First start
-TR: The GPIO module usually has an address like `/dev/ttyAMA0` or `/dev/ttyACM0`.
-The USB stick can be found under `/dev/ttyUSB0` or `/dev/ttyUSB1`.
+### Erster Start
+Das GPIO-Modul hat normalerweise eine Adresse wie `/dev/ttyAMA0` oder `/dev/ttyACM0`.
+Den USB-Stick finden Sie unter `/dev/ttyUSB0` oder `/dev/ttyUSB1`.
 
-TR: - Go into iobroker admin and add the Zwave Adapter (the installation is rather long, be patient)
-TR: - Start the new zwave Adapter instance and select the controller device's address from the dropdown in the admin UI.
-TR: - If your device is not detected, check it or try to manually enter its address when the adapter is turned off.
-TR: - Wait until the indicator in the "Instances" tab turns green or the message "zwave.0 Scan completed" is found in the iobroker log.
+- Gehen Sie zu iobroker admin und fügen Sie den Zwave Adapter hinzu (die Installation ist ziemlich lang, haben Sie etwas Geduld)
+- Starten Sie die neue zwave Adapter-Instanz und wählen Sie die Adresse des Controller-Geräts aus der Dropdown-Liste in der Admin-Benutzeroberfläche aus.
+- Wenn Ihr Gerät nicht erkannt wird, überprüfen Sie es oder versuchen Sie, die Adresse manuell einzugeben, wenn der Adapter ausgeschaltet ist.
+- Warten Sie, bis die Anzeige auf der Registerkarte "Instances" grün leuchtet oder die Meldung "zwave.0 Scan completed" im iobroker-Protokoll angezeigt wird.
 
-TR: ### Known issues
-TR: If you get the following (or similar) error after starting the adapter
+### Bekannte Probleme
+Wenn Sie nach dem Starten des Adapters die folgende (oder eine ähnliche) Fehlermeldung erhalten
 
 ```
 libopenzwave.so.1.4: cannot open shared object file: No such file or directory
 ```
 
-TR: you can fix it by running
+Sie können es beheben, indem Sie ausführen
 
 ```
 sudo ldconfig
 ```
 
-TR: or
+oder
 
 ```
 sudo ldconfig /usr/local
 ```
 
-TR: or
+oder
 
 ```
 sudo ldconfig /usr/local/lib64
 ```
 
-TR: If all of those commands don't work, the following process might:
+Wenn all diese Befehle nicht funktionieren, kann der folgende Prozess ausgeführt werden:
 
-TR: 1. `sudo nano /etc/ld.so.conf.d/zwave.conf`
-TR: 	1. enter `/usr/local/lib64`
-TR: 	1. quit the editor with `CTRL+X`, confirm with `Y` to save the changes
+1. `sudo nano / etc / ld.so.conf.d / zwave.conf`
+1. Geben Sie `/ usr / local / lib64` ein
+1. Verlassen Sie den Editor mit STRG + X und bestätigen Sie mit Y, um die Änderungen zu speichern
 
-TR: 1. `sudo ldconfig`
+1. `sudo ldconfig`
 
-TR: ## Configuration
-TR: Within Admin Settings you can set following Attributes
+## Aufbau
+In den Admin-Einstellungen können Sie folgende Attribute festlegen
 
-TR: - USB name (the USB Port of your Z-Wave stick)
-TR: - Logging (enable logging to OZW_Log.txt)
-TR: - Console Output (copy logging to the console, Logs all to ioBroker.log)
-TR: - Save Config (write an XML network layout create a /zwcfg_<HOMEID>.xml on linux)
-TR: - Driver Attempts (try this many times before giving up)
-TR: - Poll Interval (interval between polls in milliseconds)
-TR: - Suppress Refresh (do not send updates if nothing changed)
+- USB-Name (der USB-Port Ihres Z-Wave-Sticks)
+- Protokollierung (Protokollierung in OZW_Log.txt aktivieren)
+- Konsolenausgabe (Kopierprotokollierung in die Konsole, Protokolliert alle in ioBroker.log)
+- Save Config (schreibe ein XML-Netzwerk-Layout und erstelle eine /zwcfg_<HOMEID>.xml unter Linux)
+- Treiberversuche (versuchen Sie dies mehrmals, bevor Sie aufgeben)
+- Abfrageintervall (Intervall zwischen Abfragen in Millisekunden)
+- Aktualisierung unterdrücken (keine Aktualisierungen senden, wenn sich nichts geändert hat)
 
-![TR: admin-settings](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
+![Admin-Einstellungen](../../../en/adapterref/iobroker.zwave/img/admin-settings.png)
 
-TR: ## Logfiles / Configuration Settings
-TR: If you have installed iobroker into default Folder:
+## Logfiles / Konfigurationseinstellungen
+Wenn Sie iobroker in den Standardordner installiert haben:
 
-TR:  - Logfile: /opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt on linux
-TR:  - Configuration: /opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml on linux
+ - Logdatei: /opt/iobroker/node_modules/iobroker.zwave/node_modules/openzwave-shared/OZW_Log.txt unter Linux
+ - Konfiguration: /opt/iobroker/node_modules/iobroker.zwave/node_modules/zwcfg_<HOMEID>.xml unter Linux
 
-TR: ## Device add or remove
-TR: If you add or remove a device, it takes 60 seconds. Then the page is automatically reloaded.
+## Gerät hinzufügen oder entfernen
+Wenn Sie ein Gerät hinzufügen oder entfernen, dauert es 60 Sekunden. Dann wird die Seite automatisch neu geladen.
 
-TR: If you change the Name or Location, it takes 5 seconds. Then the page is automatically reloaded.
+Wenn Sie den Namen oder den Ort ändern, dauert es 5 Sekunden. Dann wird die Seite automatisch neu geladen.
 
-TR: ## Features
-TR: Within OpenZWave Configurator you can see all Nodes and their classes.
+## Eigenschaften
+In OpenZWave Configurator können Sie alle Knoten und ihre Klassen sehen.
 
-TR: Following Actions are current supported (only with context menu):
+Folgende Aktionen werden aktuell unterstützt (nur mit Kontextmenü):
 
-TR: - Set Name and Set Location for Node itself
-TR: - Change Value of a class
+- Legen Sie den Namen und den Ort für den Knoten selbst fest
+- Wert einer Klasse ändern
 
-TR: Following global Actions are current supported:
+Folgende globale Aktionen werden derzeit unterstützt:
 
-TR: - Add Nodes
-TR: - Remove Nodes
-TR: - Refresh Nodes (Refresh Nodes from ioBroker Communication)
+- Knoten hinzufügen
+- Knoten entfernen
+- Knoten aktualisieren (Knoten aus ioBroker-Kommunikation aktualisieren)
 
-TR: ## Todo
-TR: ### ZWave Specific
-TR: - Scenes
-TR: - Group Management
-TR: - Polling
-TR: - Controller Commands
-TR: - Configuration Commands
+## Machen
+### ZWave-spezifisch
+- Szenen
+- Gruppenmanagement
+- Umfrage
+- Controller-Befehle
+- Konfigurationsbefehle
 
-TR: ### Global
-TR: - Test more Hardware
-TR: - Move config and logfile into iobroker default path (/opt/iobroker/log, /opt/iobroker/data/files/zwave)
-TR: - Language Support (English, German, Russian)
+### Global
+- Testen Sie mehr Hardware
+- Verschieben Sie die Konfigurations- und Protokolldatei in den Standardpfad von iobroker (/ opt / iobroker / log, / opt / iobroker / data / files / zwave).
+- Sprachunterstützung (Englisch, Deutsch, Russisch)
 
-TR: ## Tested Hardware
-TR: ### ZWave
-TR: - ZME_UZB1 USB Stick
-TR: - RazBerry GPIO Board for RaspBerry (1/2)
+## Getestete Hardware
+### ZWave
+- USB-Stick ZME_UZB1
+- RazBerry GPIO Board für RaspBerry (1/2)
 
-TR: ### Fibaro
-TR: - FGBS001 Universal Binary Sensor
-TR: - FGS222 Double Relay Switch 2x1.5kW
-TR: - FGWPE Wall Plug
-TR: - FGSS001 Smoke Sensor
-TR: - FGMS001 Motion Sensor
-TR: - FGS-223 Double Switch 2
-TR: - FGR-222 Roller Shutter 2
-TR: - FGDW-002 Door/Window Sensor 2
+### Fibaro
+- Universal-Binärsensor FGBS001
+- Doppelrelaisschalter FGS222 2x1,5 kW
+- FGWPE-Wandstecker
+- Rauchmelder FGSS001
+- Bewegungssensor FGMS001
+- Doppelschalter FGS-223 2
+- FGR-222 Rollladen 2
+- FGDW-002 Tür- / Fenstersensor 2
 
-TR: ### Danfoss
-TR: - Danfoss Living Connect Room Thermostat (type 0003, id 8010)
-TR: - Danfoss Z Thermostat 014G0013
+### Danfoss
+- Danfoss Living Connect Raumthermostat (Typ 0003, ID 8010)
+- Danfoss Z Thermostat 014G0013
 
 ## Changelog
 
