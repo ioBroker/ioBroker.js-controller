@@ -350,6 +350,9 @@ TODO:
 - dialogs
 
 ## Changelog
+### 1.4.7 (2019-12-27)
+* (Apollon77) Make compatible with js-controller 2.3
+
 ### 1.4.6 (2019-12-09)
 * (bluefox) Allowed writeOnly states in telegram
 

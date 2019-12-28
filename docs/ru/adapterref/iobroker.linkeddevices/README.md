@@ -2,35 +2,86 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.linkeddevices/README.md
-title: без названия
-hash: 5iPnnZJG/j2E5kYMQgXXzJCv7PFT9Oyp9RSMOwddB/w=
+title: TR: no title
+hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ---
-![Версия NPM](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
-![Количество установок](http://iobroker.live/badges/linkeddevices-installed.svg)
-![Статус зависимости](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
-![Известные уязвимости](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
+![TR: Number of Installations](http://iobroker.live/badges/linkeddevices-installed.svg)
+![TR: NPM version](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
+![TR: Downloads](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
+![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
+![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
+![TR: NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
+![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
 
-<h1><img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
+TR: <h1> <img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
 
-## Адаптер связанных устройств для ioBroker
-[![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHPPW474N5CKQ&source=url)
+TR: ## linkeddevices adapter for ioBroker
+[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Связанные устройства создают связанные объекты (точки данных) устройств с определенной структурой. Это позволяет создать структуру в ioBroker, где все объекты централизованы, например, для использования в представлениях или сценариях. Это дает, например, преимущество в том, что при аппаратном обмене должны быть воссозданы только связанные объекты, и все виды представлений и сценарии снова будут работать.
+TR: linkeddevices creates linked objects (datapoints) of devices with a self-defined structure. This makes it possible to create a structure in ioBroker, where all objects are centralized, e.g. to be used in vis views or scripts. This offers for example the advantage that with hardware exchange, only the linked objects must be recreated and all vis views and scripts works again.
 
-С помощью адаптера вы также можете конвертировать объекты или преобразовывать их в другие типы (еще не полностью реализованные).
+TR: With the adapter you can also convert objects or convert them to other types (not yet fully implemented).
 
-![Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
+![TR: Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
 
-Этот адаптер вдохновлен [скрипт виртуальных устройств от Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
+TR: This adapter is inspired from [TR: virtual devices script by Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
 
-## Конфигурация
-* [Английское описание] (doc / en / README.md)
-* [deutsche Beschreibung] (doc / de / README.md)
+TR: ## Configuration
+TR: * [English description](doc/en/README.md)
+TR: * [deutsche Beschreibung](doc/de/README.md)
 
 ## Changelog
+
+### 1.1.1
+* (Scrounger) string to number bug fix
+
+### 1.1.0
+* (Scrounger) option to merge linkedObject on adapter restart added
+* (Scrounger) string to number conversion added
+* (algar42) russian translation corrected
+
+### 1.0.1
+* (Scrounger) adapter configuration: repair function added
+* (Scrounger) receive system messages added
+
+### 1.0.0
+* (Scrounger) bug fixes
+
+### 0.5.6
+* (Scrounger) bug fixes
+
+### 0.5.5
+* (Scrounger) custom dialog: role change for linked object added
+* (Scrounger) adapter configuration: auto generate globale script - check if object always linked added
+* (SchumyHao, Scrounger) create channel objects for linked Objects
+* (Scrounger) adapter configuration: layout revised, progressbar added
+* (Scrounger) custom dialog: layout revised
+
+### 0.5.0
+* (Scrounger) custom dialog: suggestion dropdown list added to input fields
+* (Scrounger) adapter configuration: button to remove links added
+* (Scrounger) expert settings: Converter string (readonly) to duration, date and / or datetime added
+* (Scrounger) adapter configuration: layout revised
+* (Scrounger) expert settings number: allow negative values for min / max
+* (Scrounger) adapter configuration: auto generate globale script - optional create setState funtion for readonly objects
+* (Scrounger) adapter configuration: auto generate globale script - now optional recognize also manual created objects
+* (Scrounger) bug fixes
+
+### 0.4.1
+* (Scrounger) Bug fix: auto generate globale script for [Javascript Script Engine](https://github.com/iobroker/ioBroker.javascript/blob/master/README.md) with variables for all linked Object
+
+### 0.4.0
+* (Scrounger) expertsettings for string: convert to boolean
+* (Scrounger) custom settings of linked object: added button to open custom settings of parent object
+* (Scrounger) adapter configuration: auto generate globale script for [Javascript Script Engine](https://github.com/iobroker/ioBroker.javascript/blob/master/README.md) with variables for all linked Object
+* (Scrounger) Bug fix: native data stored in linked object if available
+* (Scrounger) bug fixes
+
+### 0.3.2
+* (Scrounger) expertsettings for string: add prefix and suffix to string
+* (Scrounger) expertsettings for number (readonly): convert to duration
+* (Scrounger) expertsettings for number (readonly): convert to date, time or datetime
+* (Scrounger) bug fixes
 
 ### 0.3.0
 * (Scrounger) linked devices overview added to adapter configuration

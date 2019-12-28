@@ -2,60 +2,60 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
-title: 核心理念
-hash: n3+1+dfUm8MwoOIj0Sns9VxKdeVMf/JLbSGZ9B+4pek=
+title: TR: Core Concept
+hash: 8Mh7hofRJIFbY6Z0z7qwfY1rz+sDJnaMTFOdfSuaqGg=
 ---
-＃核心概念
-ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
+TR: # Core Concept
+TR: There are two fundamentally different data-types in ioBroker. So called **states**(`states`) and **objects**.
 
-对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下文，特定对象类型需要哪些可用的对象类型以及哪些强制属性。适配器模块将为您提供诸如setObject，getObject等功能。
+TR: Objects represent rarely changing and larger data, like meta-data of your systems devices, configurations and additional files. Every Object has to have an attribute "type". See below for more information what object types are available and which mandatory attributes a object of a specific type needs. Functions like setObject, getObject, ... are provided to you by the adapter module.
 
-状态代表系统中经常变化的数据，例如f.e.如果指示灯亮起或熄灭，运动检测器检测到某种运动，起居室的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
+TR: States represent often changing data in your system, like f.e. if a lamp is on or off, if a motion detector detected some motion, the temperature of your living room or if the button of a remote control is pressed. Contrary to objects states can be used to trigger actions and states can create history data. To work with states there are several functions in the adapter module like setState, getState and so on.
 
-对于每个状态，还必须存在一个带有`type=state`的对应对象。
+TR: For every state there also has to exist a corresponding object with `type=state`.
 
-以下各章介绍了数据库架构。
+TR: The following chapters describe Database Schema.
 
-## ID
-ID是一个字符串，最大长度为240字节，层次结构，以点分隔。
+TR: ## IDs
+TR: ID is a string with a maximum length of 240 bytes, hierarchically structured, levels separated by dots.
 
-ID中禁止使用以下字符：`[]*,;'"&#96;<>\\?`。
+TR: Following characters are prohibited to use in IDs: `[]*,;'"&#96;<>\\?`.
 
-不建议也使用`^$()/`。
+TR: It is not suggested to use `^$()/` too.
 
-ID具有不同的级别。每个级别由点确定。示例：`system.adapter.admin.0`
+TR: The ID has different levels. Each level is determined by dot. Example: `system.adapter.admin.0`
 
--`system`-是系统对象的名称空间
--`adapter`-适配器配置的名称空间
--`admin`-适配器名称
--0-适配器实例
+TR: - `system` - is namespace for system objects
+TR: - `adapter` - namespace for adapter configs
+TR: - `admin` - adapter name
+TR: - `0` - adapter instance
 
-或其他示例`hm-rpc.1.ABC110022.2.VALUE`：
+TR: Or other example `hm-rpc.1.ABC110022.2.VALUE`:
 
--`hm-rpc`-是适配器的名称
--`1`-适配器实例
--`ABC110022`-设备地址
--`2`-频道名称
--`VALUE`-状态名称
+TR: - `hm-rpc` - is name of adapter
+TR: - `1` - adapter instance
+TR: - `ABC110022` - device address
+TR: - `2` - channel name
+TR: - `VALUE` - state name
 
-##命名空间
-*`system.`-系统对象和状态
-*`system.host.`-控制器进程
-*`system.config.`-系统设置，如默认语言
-*`system.meta.`-系统元数据
-*`system.user.`-用户
-*`system.group.`-组
-*`system.adapter。<适配器名称>`-适配器的默认配置
-*`<适配器名称> .`-特定适配器的对象。
-*`<适配器名称> .meta.`-此适配器的所有实例使用的公共元数据
-*`<适配器名称>。<实例号> .`-适配器实例名称空间
-*枚举。-枚举
-*`history.`-历史数据
-*`scripts.`-脚本引擎脚本
-*`scripts.js.`-javascript脚本引擎脚本
-*`scripts.py.`-python脚本引擎脚本（未来）
+TR: ## Namespaces
+TR: * `system.`             - System objects and states
+TR: * `system.host.`        - Controller processes
+TR: * `system.config.`      - System settings, like default language
+TR: * `system.meta.`        - System meta data
+TR: * `system.user.`        - Users
+TR: * `system.group.`       - Groups
+TR: * `system.adapter.<adapter-name>` - default config of an adapter
+TR: * `<adapter-name>.`     - objects for specific adapter.
+TR: * `<adapter-name>.meta.` - common meta-data used by all instances of this adapter
+TR: * `<adapter-name>.<instance-number>.` - An adapters instance namespace
+TR: * `enum.`               - Enumerations
+TR: * `history.`            - History Data
+TR: * `scripts.`            - Script Engine Scripts
+TR: * `scripts.js.`         - javascript Script Engine Scripts
+TR: * `scripts.py.`         - python Script Engine Scripts (future)
 
-###命名空间system.config。
+TR: ### Namespace system.config.
 ```
 {
     _id:   id,
@@ -75,7 +75,7 @@ ID具有不同的级别。每个级别由点确定。示例：`system.adapter.ad
 }
 ```
 
-###命名空间system.host。＆lt; hostname＆gt;
+TR: ### Namespace system.host.&lt;hostname&gt;
 ```
 {
     _id:   id,
@@ -116,24 +116,24 @@ ID具有不同的级别。每个级别由点确定。示例：`system.adapter.ad
 };
 ```
 
-<a id="states"></a>
+TR: <a id="states"></a>
 
-＃＃ 状态
-getState方法和stateChange事件传递具有除过期以外的所有属性的对象
+TR: ## States
+TR: getState method and stateChange event delivers an object with all attributes except expire
 
-对于`setState`方法，除`val`之外的所有内容都是可选的，`from`由`setState`方法自动设置。 `ack`默认为false，按预期设置`ts`和`lc`
+TR: for `setState` method everything except `val` is optional, `from` is set automatically by the `setState` method. `ack` defaults to false, `ts` and `lc` are set as expected
 
-getState / stateChange / setState对象的属性：
+TR: attributes for getState/stateChange/setState object:
 
-*`val`-实际值-可以是JSON-“可编码”的任何类型
-*`ack`-一个布尔型标志，指示目标系统是否已确认该值
-*`ts`-指示状态的最后更新的unix时间戳（以毫秒为单位）
-*`lc`-UNIX时间戳，指示状态的实际值的最后一次更改（以毫秒为单位）
-*`from`-完成`setState`的适配器实例
-*`user`-用户名，用于设置值
-*`expire`-一个整数值，可用于设置在给定秒数后到期的状态。可以与`setValue`一起使用。该值过期后，它将从redisDB中消失。
-*`c`-此状态更改的注释。
-*`q`-质量。具有以下状态的编号：
+TR: * `val`    - the actual value - can be any type that is JSON-"encodable"
+TR: * `ack`    - a boolean flag indicating if the target system has acknowledged the value
+TR: * `ts`     - a unix timestamp indicating the last update of the state (in milliseconds)
+TR: * `lc`     - a unix timestamp indicating the last change of the state's actual value (in milliseconds)
+TR: * `from`   - adapter instance that did the `setState`
+TR: * `user`   - user name, that set the value
+TR: * `expire` - a integer value that can be used to set states that expire after a given number of seconds. Can be used ony with `setValue`. After the value expires, it disappears from redisDB.
+TR: * `c`      - comment for this state change.
+TR: * `q`      - quality. Number with following states:
 
 ```
   0x00 - 00000000 - good (can be undefined or null)
@@ -156,136 +156,136 @@ getState / stateChange / setState对象的属性：
   0x84 - 10000100 - sensor reports error
 ```
 
-每个* state *必须由state类型的对象表示，该对象包含该状态的Meta-Data。见下文。
+TR: Every *state* has to be represented by an object of the type state containing Meta-Data for the state. See below.
 
-##对象
-###强制属性
-每个对象中必须存在以下属性：
+TR: ## Objects
+TR: ### Mandatory attributes
+TR: Following attributes have to exist in every object:
 
-*`_id`
-*`type`-可能的值见下文
-*`common`-包含ioBroker特定抽象属性的对象
-*`native`-包含目标系统一致属性的对象
+TR: * `_id`
+TR: * `type`        - see below for possible values
+TR: * `common`      - an object containing ioBroker specific abstraction properties
+TR: * `native`      - an object containing congruent properties of the target system
 
-###可选属性
-*`common.name`-对象的名称（可选，但严格建议填写）
+TR: ### Optional attributes
+TR: * `common.name` - the name of the object (optional but strictly suggested to fill it)
 
-###树结构
-树结构是按名称自动组装的。例如。 ```system.adapter.0.admin```是`system.adapter.0.admin.uptime`的父级。将此名称约定与点“。”一起用作级别分隔符。
+TR: ### Tree structure
+TR: The tree structure is assembled automatically by names. E.g. ```system.adapter.0.admin``` is parent for `system.adapter.0.admin.uptime`. Use this name convention with point ".", as divider of levels.
 
-###对象类型
-*`state`-父级应该是通道，设备，实例或主机的类型
-*`channel`-反对组织一个或多个状态。父母应该是设备。
-*`device`-阻止对一个或多个通道或状态进行分组。除适配器实例名称空间外，不应有任何父项。
-*`enum`-持有共同点数组的对象。成员指向状态，通道，设备或文件。枚举可以有一个父枚举（可能是树结构）
-*`host`-运行控制器进程的主机
-*`adapter`-适配器的默认配置。存在状态也表示适配器已成功安装。 （建议：应具有一个属性，其中包含安装它的主机的数组）
-*`instance`-适配器的实例。父级必须是适配器类型
-*`meta`-很少更改适配器或其实例所需的元信息
-*`config`-配置
-*`script`-脚本
-*`user`-用户
-*`group`-组
-*`图表`-图表
+TR: ### Object types
+TR: * `state`    - parent should be of type channel, device, instance or host
+TR: * `channel`  - object to group one or more states. Parent should be device.
+TR: * `device`   - object to group one or more channels or state. Should have no parent except adapter instance namespace.
+TR: * `enum`     - objects holding a array in common.members that points to states, channels, devices or files. enums can have a parent enum (tree-structure possible)
+TR: * `host`     - a host that runs a controller process
+TR: * `adapter`  - the default config of an adapter. presence also indicates that the adapter is successfully installed. (suggestion: should have an attribute holding an array of the hosts where it is installed)
+TR: * `instance` - instance of adapter. Parent has to be of type adapter
+TR: * `meta`     - rarely changing meta information that a adapter or his instances needs
+TR: * `config`   - configurations
+TR: * `script`   - scripts
+TR: * `user`     - users
+TR: * `group`    - groups
+TR: * `chart`    - charts
 
-####特定对象类型的属性
-#####状态
-属性：
+TR: #### Attributes for specific object types
+TR: ##### State
+TR: attributes:
 
-*`common.type`（可选-（默认为blend ==任何类型）（可能的值：数字，字符串，布尔值，数组，对象，混合对象，文件）。作为例外，类型为meta的对象可以具有common .type = meta.user`或`meta.folder`
-*`common.min`（可选）
-*`common.max`（可选）
-*`common.step`（可选）-增加/减少间隔。例如。调温器为0.5
-*`common.unit`（可选）
-*`common.def`（可选-默认值）
-*`common.defAck`（可选-如果设置了common.def，则此值用作ack标志，js-controller 2.0.0+）
-*`common.desc`（可选，字符串）
-*`common.read`（布尔值，强制的）-如果状态可读则为true
-*`common.write`（布尔值，强制性）-如果状态为可写，则为true
-*`common.role`（字符串，强制性）-状态的角色（在用户界面中用于指示要选择哪个小部件，请参见下文）
-*类型号的`common.states`（可选）属性，带有可能状态的对象{'value'：'valueName'，'value2'：'valueName2'，0：'OFF'，1：'ON'}
-*`common.workingID`（字符串，可选）-如果此状态具有助手状态WORKING。如果前几部分与实际名称相同，则必须在此处写上全名或最后一部分。用于HM.LEVEL，通常值为“ WORKING”
+TR: * `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file). As exception the objects with type `meta` could have `common.type=meta.user` or `meta.folder`
+TR: * `common.min`    (optional)
+TR: * `common.max`    (optional)
+TR: * `common.step`   (optional) - increase/decrease interval. E.g. 0.5 for thermostat
+TR: * `common.unit`   (optional)
+TR: * `common.def`    (optional - the default value)
+TR: * `common.defAck` (optional - if common.def is set this value is used as ack flag, js-controller 2.0.0+)
+TR: * `common.desc`   (optional, string)
+TR: * `common.read`   (boolean, mandatory) - true if state is readable
+TR: * `common.write`  (boolean, mandatory) - true if state is writable
+TR: * `common.role`   (string,  mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
+TR: * `common.states` (optional) attribute of type number with object of possible states {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
+TR: * `common.workingID` (string, optional) - if this state has helper state WORKING. Here must be written the full name or just the last part if the first parts are the same with actual. Used for HM.LEVEL and normally has value "WORKING"
 
-#####状态`common.history`
-历史记录功能需要历史记录适配器或任何其他类型为历史记录的存储适配器
+TR: ##### State `common.history`
+TR: History function needs the history adapter or any other storage adapter of type history
 
-当达到最大值时，fifo长度会减小为最小值。设置为null或保留未定义状态以使用默认值
+TR: fifo length is reduced to min when max is hit. set to null or leave undefined to use defaults
 
-有关传输的列表，请参阅历史记录适配器自述文件
+TR: for a list of transports see history adapter README
 
-*`common.history`（可选）
-*`common.history。<HISTORY-INSTANCE> .changesOnly`（可选，布尔值，如果为true，则仅记录值更改）
-*`common.history。<HISTORY-INSTANCE> .enabled`（布尔值）
+TR: * `common.history` (optional)
+TR: * `common.history.<HISTORY-INSTANCE>.changesOnly` (optional, boolean, if true only value changes are logged)
+TR: * `common.history.<HISTORY-INSTANCE>.enabled` (boolean)
 
-#####状态`common.role`
-*`common.role`（指示该状态应如何在用户界面中表示）
+TR: ##### State `common.role`
+TR: * `common.role` (indicates how this state should be represented in user interfaces)
 
-[可能的值](stateroles.md)
+[TR: possible values](stateroles.md)
 
-####频道
-#####频道`common.role`§（可选）
-建议：通道对象common.role应该/可以暗示一组强制性和/或可选状态子对象
+TR: #### Channel
+TR: ##### Channel `common.role` (optional)
+TR: suggestion: the channel-objects common.role should/could imply a set of mandatory and/or optional state-child-objects
 
-可能的值：
+TR: possible values:
 
-*`info`-货币或股票价格，燃油价格，邮政信箱插入等
-*`calendar`-
-*`forecast`-天气预报
+TR: * `info`          - Currency or shares rate, fuel prices, post box insertion and stuff like that
+TR: * `calendar`      -
+TR: * `forecast`      - weather forecast
 
-*`媒体-普通媒体频道
-*`media.music`-媒体播放器，例如SONOS，YAMAHA等
-*`media.tv`-电视
-*`media.tts`-文字转语音
+TR: * `media         - common media channel
+TR: * `media.music`   - media player, like SONOS, YAMAHA and so on
+TR: * `media.tv`      - TV
+TR: * `media.tts`     - text to speech
 
-*`thermo`-监视或控制温度，湿度等
-*`thermo.heat`
-*`thermo.cool`
+TR: * `thermo`        - Monitor or control the temperature, humidity and so on
+TR: * `thermo.heat`
+TR: * `thermo.cool`
 
-*`blind`-百叶窗控制
+TR: * `blind`             - Window blind control
 
-*`光`
-*`light.dimmer`-调光器
-*`light.switch`-灯光开关。
-*`light.color`-具有颜色更改功能的灯光控制
-*`light.color.rgb`-以RGB设置颜色
-*`light.color.rgbw`-以RGBW设置颜色
-*`light.color.hsl`-以色相/饱和度/亮度设置颜色（色相光-LivingColors ...）
-*`light.color.hslct`-在“色相/饱和度/亮度”或“色温”中设置颜色（色相扩展色光）
-*`light.color.ct`-色温K
+TR: * `light`
+TR: * `light.dimmer`      - Light dimmer
+TR: * `light.switch`      - Light switch.
+TR: * `light.color`       - Light control with ability of color changing
+TR: * `light.color.rgb`   - Set color in RGB
+TR: * `light.color.rgbw`  - Set color in RGBW
+TR: * `light.color.hsl`   - Set color in Hue/Saturation/Luminance (Hue color light - LivingColors...)
+TR: * `light.color.hslct` - Set color in Hue/Saturation/Luminance or Color Temperature (Hue extended color light)
+TR: * `light.color.ct`    - color temperature K
 
-*`switch`-一些通用的开关
+TR: * `switch`            - Some generic switch
 
-*`sensor`-例如车窗或门触点，漏水传感器，火灾传感器
-*`sensor.door`-打开，关闭
-*`sensor.door.lock`-打开，关闭，锁定
-*`sensor.window`-打开，关闭
-*`sensor.window.3`-打开，倾斜，关闭
-*`sensor.water`-真（警报），假（无警报）
-*`sensor.fire`-正确（警报），错误（无警报）
-*`sensor.CO2`-真（警报），假（无警报）
+TR: * `sensor`            - E.g. window or door contact, water leak sensor, fire sensor
+TR: * `sensor.door`       - open, close
+TR: * `sensor.door.lock`  - open, close, locked
+TR: * `sensor.window`     - open, close
+TR: * `sensor.window.3`   - open, tilt, close
+TR: * `sensor.water`      - true(alarm), false (no alarm)
+TR: * `sensor.fire`       - true(alarm), false (no alarm)
+TR: * `sensor.CO2`        - true(alarm), false (no alarm)
 
 *
 
-*`警报`-一些警报
+TR: * `alarm`             - some alarm
 
-*`phone`-炸弹盒，赛车场等
+TR: * `phone`             - fritz box, speedport and so on
 
-*`button`-类似墙壁开关或电视遥控器，其中每个按钮都处于.play，.stop，.pause之类的状态
-*`remote`-具有状态的电视或其他遥控器是具有按下值的字符串，例如“播放”，“停止”，“暂停”
+TR: * `button`            - like wall switch or TV remote, where every button is a state like .play, .stop, .pause
+TR: * `remote`            - TV or other remotes with state is string with pressed values, e.g. "PLAY", "STOP", "PAUSE"
 
-*`meta-有关设备的信息
-*`meta.version`-设备版本
-*`meta.config`-从设备配置
+TR: * `meta`              - Information about device
+TR: * `meta.version`      - device version
+TR: * `meta.config`       - configuration from device
 * ...
 
-####频道说明
-~~属性名称可以由适配器自由定义，用** bold **字体编写的名称除外。~~
+TR: #### Channel descriptions
+TR: ~~The names of the attributes can be free defined by adapter, except ones written with **bold** font.~~
 
-“ W”-common.write = true
+TR: "W" - common.write=true
 
-“ M”-必选
+TR: "M" - Mandatory
 
-#####每个通道/设备的可选状态
+TR: ##### Optional states for every channel/device
 ```javascript
 // state-working (optional)
 {
@@ -354,12 +354,12 @@ getState / stateChange / setState对象的属性：
 }
 ```
 
-#####`light.switch`-属性说明
-| **称** |** common.role **|** M **|** W **|** common.type **|** 明** | ------------- |：-------------------------- |：-----：| ：-----：| ------------------------------------
+TR: ##### `light.switch` - Attributes description
+TR: | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description** | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 
-|州|开关| X | X |布尔|
-|描述| text.description | | | |
-| mmm | indicator.maintenance.mmm | | | | mmm =低矮或不可达或其他 |
+| TR: | state         | switch                    |   X   |   X   | boolean         |
+| TR: | description   | text.description          |       |       |                 |
+| mmm           | indicator.maintenance.mmm |       |       |                 | mmm = lowbat or unreach or whatever |
 
 ```
 // SWITCH CHANNEL
@@ -392,7 +392,7 @@ getState / stateChange / setState对象的属性：
 
 ```
 
-#####`light.dimmer`-属性说明
+TR: ##### `light.dimmer` - Attributes description
 ```
 // DIMMER CHANNEL
 {
@@ -429,7 +429,7 @@ getState / stateChange / setState对象的属性：
 
 ```
 
-#####`blind`-属性说明
+TR: ##### `blind` - Attributes description
 ```
 // BLIND CHANNEL
 {
@@ -461,129 +461,129 @@ getState / stateChange / setState对象的属性：
 }
 ```
 
-#####`phone`-属性说明
-| **称** |** common.role **|** M **|** W **|** common.type **|** 明** | `ringing_number`| `text.phone_number`| | | `string`|
+TR: ##### `phone` - Attributes description
+TR: | **Name**         | **common.role**          | **M** | **W** | **common.type** | **Description** | `ringing_number` | `text.phone_number`      |       |       | `string`        |
 
-| `ringing`| `indicator`| | | `boolean`|
-| `ringing` | `指标`| | |布尔值|
+| TR: | `ringing`        | `indicator`              |       |       | `boolean`       |
+| TR: | `ringing`        | `indicator`              |       |       | `boolean`       |
 
 ...
 
-####设备
-####枚举
-*`common.members`-（可选）枚举成员ID的数组
+TR: #### Device
+TR: #### Enum
+TR: * `common.members` - (optional) array of enum member IDs
 
-####元
-ID
+TR: #### Meta
+TR: id
 
- *`* <适配器名称>。<实例编号> .meta。<meta-name> *`
- *`*＆lt;适配器名称＆gt; .meta。＆lt;元名称＆gt; *`
- *`system。* meta。＆lt;元名称＆gt; *`
+TR:  * `*&lt;adapter-name&gt;.&lt;instance-number&gt;.meta.&lt;meta-name&gt;*`
+TR:  * `*&lt;adapter-name&gt;.meta.&lt;meta-name&gt;*`
+TR:  * `system.*meta.&lt;meta-name&gt;*`
 
-####适配器
-id`system.adapter.<adapter.name>`
+TR: #### Adapter
+TR: id `system.adapter.<adapter.name>`
 
-*注意：*所有标志都是可选的，除非特殊标记为“强制性”。
+TR: *Notice:* all flags are optional except special marked as **mandatory**.
 
-*`common.name`-**必填**不带“ ioBroker”的适配器的名称。
-*`common.title`-适配器的较长名称（不建议使用）以在admin中显示
-*`common.titleLang`-**必填**所有支持的语言（如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}的适配器的更长名称
-*`common.mode`-**必填**可能的值见下
-*`common.version`-**必需**可用版本
-*`common.installedVersion`-**必须安装的版本
-*`common.enabled`-强制性[true / false]值应为false，因此默认情况下禁用新实例
-*`common.platform`-**必需**可能的值：Javascript / Node.js，更多
-*`common.webservers`-Web服务器实例的数组，应提供适配器www文件夹中的内容
-*`common.noRepository`-[true / false]如果适配器随初始安装一起提供或具有自己的存储库
-*`common.messagebox`-如果支持消息框，则为true。如果是，将创建对象system.adapter。＆lt; adapter.name＆gt; adapter.instance＆gt.messagebox，以将消息发送给适配器（用于电子邮件，推送，...;
-*`common.subscribe`-变量名，自动订阅
-*`common.subscribable`-必须使用sendTo订阅此适配器的变量以启用更新
-*`common.wakeup`-
-*`common.availableModes`-common.mode的值，如果可能有多个模式
-*`common.localLink`-链接到该适配器的Web服务。例如，从管理员到http：// localhost：5984 / _utils以获取蒲团
-*`common.logTransporter`-如果此适配器从其他主机和适配器接收日志（例如在某处散布日志）
-*`common.nondeletable`-[true / false]该适配器无法删除或更新。它将与控制器一起更新。
-*`common.icon`-本地图标的名称（应位于子目录“ admin”中）
-*`common.extIcon`-链接到已卸载适配器的外部图标。通常在github上。
-*`common.logLevel`-调试，信息，警告或错误
-*`common.supportStopInstance`-[true / false]如果适配器支持信号stopInstance（需要** messagebox **）。该信号将在停止前发送到适配器。 （如果问题发生在SIGTERM上，则使用）
-*`common.allowInit`-[true / false]如果设置更改或适配器已启动，则允许将“计划的”适配器称为“不在时间表中”。
-*`common.onlyWWW`-对控制器说[true / false]，该适配器只有html文件，没有main.js，如人力车
-*`common.singleton`-适配器在整个系统中只能安装一次
-*`common.singletonHost`-适配器只能在一台主机上安装一次
-*`common.allowInit`-[true / false]允许计划的适配器在配置更改后启动一次，然后按计划启动
-*`common.config.width`-配置对话框的默认宽度
-*`common.config.height`-配置对话框的默认高度
-*`common.config.minWidth`-配置对话框的最小宽度
-*`common.config.minHeight`-配置对话框的最小高度
-*`common.os`-支持的操作系统的字符串或数组，例如[“ linux”，“ darwin”]
-*`common.stopBeforeUpdate`-[true / false]如果适配器必须在更新前停止
-*`common.adminTab.singleton`-[true / false]如果适配器具有用于管理员的TAB。对于所有实例，只会显示一个TAB。
-*`common.adminTab.name`-管理员中TAB的名称
-*`common.adminTab.link`-TAB中iframe的链接。您可以像这样使用参数替换：“ http：//％ip％：％port％”。 IP将被主机IP取代。 “端口”将从native.port中提取。
-*`common.adminTab.ignoreConfigUpdate`-如果更改了配置，则不更新配置TAB（以启用TAB中的配置设置）
-*`common.restartAdapters`-具有适配器名称的阵列，必须在安装此适配器后重新启动它，例如[“可见”]
-*`common.preserveSettings`-具有实例公共属性名称的字符串（或数组），不会被删除。例如。 “ history”，因此通过setState（'system.adapter.mqtt.0“，{..}），即使新对象没有此字段，也不会删除common.history字段。要删除该属性，必须明确用```common：{history：null}```完成。
-*`common.noConfig`-[true / false]不显示实例的配置对话框
-*`common.stopTimeout`-超时，以毫秒为单位，直到适配器关闭。默认值500ms。
-*`common.unsafePerm`-[true / false]如果必须使用“ npm --unsafe-perm”参数安装软件包
-*`common.supportCustoms`-[true / false]如果适配器支持每种状态的设置。它必须在管理员中具有custom.html文件。样本可以在ioBroker.history中找到
-*`common.getHistory`-[true / false]如果适配器支持getHistory消息
-*`common.blockly`-[true / false]如果适配器具有用于块的自定义块。 （需要admin / blockly.js）
-*`common.webExtendable`-[true / false]如果此适配器中的Web服务器可以使用代理，simple-api之类的插件/扩展名进行扩展
-*`common.webExtension`-用于连接网络扩展名的相对文件名。例如。在相对于适配器根目录的simple-api“ lib / simpleapi.js”中。此外，native.webInstance要求说出该扩展名的位置。空意味着，它必须作为自己的Web服务运行。 “ *”表示每个Web服务器都必须包含它。
-*`common.welcomeScreen`-页面数组，应显示在“网络” index.html页面上。 [“ vis / edit.html”，“ vis / index.html”]或[{“ link”：“ vis / edit.html”，“ name”：“ Vis编辑器”，“ img”：“ vis / img / edit.png“，” color“：” blue“}，” vis / index.html“]
-*`common.unchanged`-（系统）请不要使用此标志。这是通知系统的标志，必须在admin中显示配置对话框。
-*`common.serviceStates`-[true / false或path]如果适配器可以传递其他状态。如果是，路径适配器/lib/states.js将被调用，并提供以下参数功能（对象，状态，实例，配置，回调）。函数必须传递点数组，其值类似于函数（err，result）{result = [{id：'id1'，val：1}，{id：'id2'，val：2}]}
-*`common.nogit`-如果为true，则无法直接从github安装
-*`common.materialize`-如果适配器支持> admin3（具体化样式）
-*`common.materializeTab`-如果适配器支持> tab的admin3（具体化样式）
-*`common.dataFolder`-相对于iobroker-data的文件夹，适配器存储数据。该文件夹将被备份并自动恢复。您可以在其中使用变量'％INSTANCE％'。
-*`common.webPreSettings`-网络服务器适配器必须包含在info.js中的参数列表。 （示例材料）
-*`common.apt-get`-此适配器所需的debian软件包列表（当然只有debian）
-*`common.eraseOnUpload`-上传前擦除目录中所有先前的数据
-*`common.webByVersion`-将版本显示为Web适配器中的前缀（通常-ip：port / material，webByVersion-ip：port / 1.2.3 / material）
-*`common.noIntro`-从不在管理员的“简介/概述”屏幕上显示此适配器的实例（如图标，小部件）
-*`common.expert`-仅在admin中的专家模式下显示此对象
-*`common.compact`-对控制器说，如果需要，此适配器可以在同一过程中启动
+TR: * `common.name`               - **mandatory** name of adapter without "ioBroker."
+TR: * `common.title`              - (deprecated) longer name of adapter to show in admin
+TR: * `common.titleLang`          - **mandatory** longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}
+TR: * `common.mode`               - **mandatory** possible values see below
+TR: * `common.version`            - **mandatory** available version
+TR: * `common.installedVersion`   - **mandatory** installed version
+TR: * `common.enabled`            - **mandatory** [true/false] value should be false so new instances are disabled by default
+TR: * `common.platform`           - **mandatory** possible values: Javascript/Node.js, more coming
+TR: * `common.webservers`         - array of web server's instances that should serve content from the adapters www folder
+TR: * `common.noRepository`       - [true/false] if adapter delivered with initial installation or has own repository
+TR: * `common.messagebox`         - true if message box supported. If yes, the object system.adapter.&lt;adapter.name&gt&lt;adapter.instance&gt.messagebox will be created to send messges to adapter (used for email, pushover,...;
+TR: * `common.subscribe`          - name of variable, that is subscribed automatically
+TR: * `common.subscribable`       - variables of this adapter must be subscribed with sendTo to enable updates
+TR: * `common.wakeup`             -
+TR: * `common.availableModes`     - values for common.mode if more than one mode is possible
+TR: * `common.localLink`          - link to the web service of this adapter. E.g to http://localhost:5984/_utils for futon from admin
+TR: * `common.logTransporter`     - if this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere)
+TR: * `common.nondeletable`       - [true/false] this adapter cannot be deleted or updated. It will be updated together with controller.
+TR: * `common.icon`               - name of the local icon (should be located in subdirectory "admin")
+TR: * `common.extIcon`            - link to external icon for uninstalled adapters. Normally on github.
+TR: * `common.logLevel`           - debug, info, warn or error
+TR: * `common.supportStopInstance`- [true/false] if adapter supports signal stopInstance (**messagebox** required). The signal will be sent before stop to the adapter. (used if the problems occured with SIGTERM)
+TR: * `common.allowInit`          - [true/false] allow for "scheduled" adapter to be called "not in the time schedule", if settings changed or adapter started.
+TR: * `common.onlyWWW`            - [true/false] say to controller, that adapter has only html files and no main.js, like rickshaw
+TR: * `common.singleton`          - adapter can be installed only once in whole system
+TR: * `common.singletonHost`      - adapter can be installed only once on one host
+TR: * `common.allowInit`          - [true/false] allow scheduled adapter start once after configuration changed and then by schedule
+TR: * `common.config.width`       - default width for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.height`      - default height for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.minWidth`    - minimal width for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.minHeight`   - minimal height for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.os`                 - string or array of supported operation systems, e.g ["linux", "darwin"]
+TR: * `common.stopBeforeUpdate`   - [true/false] if adapter must be stopped before update
+TR: * `common.adminTab.singleton` - [true/false] if adapter has TAB for admin. Only one TAB for all instances will be shown.
+TR: * `common.adminTab.name`      - name of TAB in admin
+TR: * `common.adminTab.link`      - link for iframe in the TAB. You can use parameters replacement like this: "http://%ip%:%port%". IP will be replaced with host IP. "port" will be extracted from native.port.
+TR: * `common.adminTab.ignoreConfigUpdate` - do not update config TAB if configuration changed (to enable configure settings in TAB)
+TR: * `common.restartAdapters`    - array with names of adapter that must be restarted after this adapter is installed, e.g. ["vis"]
+TR: * `common.preserveSettings`   - string (or array) with names of attributes in common of instance, which will not be deleted. E.g. "history", so by setState('system.adapter.mqtt.0", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with ```common:{history: null}```.
+TR: * `common.noConfig`           - [true/false] do not show configuration dialog for instance
+TR: * `common.stopTimeout`        - timeout in ms to wait, till adapter shut down. Default 500ms.
+TR: * `common.unsafePerm`         - [true/false] if the package must be installed with "npm --unsafe-perm" parameter
+TR: * `common.supportCustoms`     - [true/false] if the adapter support settings for every state. It has to have custom.html file in admin. Sample can be found in ioBroker.history
+TR: * `common.getHistory`         - [true/false] if adapter supports getHistory message
+TR: * `common.blockly`            - [true/false] if adapter has custom blocks for blockly. (admin/blockly.js required)
+TR: * `common.webExtendable`      - [true/false] if web server in this adapter can be extended with plugin/extensions like proxy, simple-api
+TR: * `common.webExtension`       - relative filename to connect the web extension. E.g. in simple-api "lib/simpleapi.js" relative to the adapter root directory. Additionally is native.webInstance required to say where this extension will be included. Empty means, it must run as own web service. "*" means every web server must include it.
+TR: * `common.welcomeScreen`      - array of pages, that should be shown on the "web" index.html page. ["vis/edit.html", "vis/index.html"] or [{"link": "vis/edit.html", "name": "Vis editor", "img": "vis/img/edit.png", "color": "blue"}, "vis/index.html"]
+TR: * `common.unchanged`          - (system) please do not use this flag. It is a flag to inform the system, that configuration dialog must be shown in admin.
+TR: * `common.serviceStates`      - [true/false or path] if adapter can deliver additional states. If yes, the path adapter/lib/states.js will be called and it give following parameters function (objects, states, instance, config, callback). The function must deliver the array of points with values like function (err, result) { result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
+TR: * `common.nogit`              - if true, no install from github directly is possible
+TR: * `common.materialize`        - if adapter supports > admin3 (materialize style)
+TR: * `common.materializeTab`     - if adapter supports > admin3  for tab (materialize style)
+TR: * `common.dataFolder`         - folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it.
+TR: * `common.webPreSettings`     - list of parameters that must be included into info.js by webServer adapter. (Example material)
+TR: * `common.libs`               - list of debian/centos packages, that required for this adapter (of course only OS with apt, apt-get, yum as package managers)
+TR: * `common.eraseOnUpload`      - erase all previous data in the directory before upload
+TR: * `common.webByVersion`       - show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)
+TR: * `common.noIntro`            - never show instances of this adapter on Intro/Overview screen in admin (like icons, widgets)
+TR: * `common.expert`             - show this object only in expert mode in admin
+TR: * `common.compact`            - says to controller that this adapter can be started in the same process if desired
 
-####实例
-id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
+TR: #### instance
+TR: id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-*`common.host`-适配器应在其上启动的（强制性）主机-对象* system.host。＆lt; host＆gt; *必须存在
-*`common.enabled`-（强制性）
-*`common.mode`-（强制性）可能的值，请参见下文
+TR: *`common.host`    - (mandatory) host where the adapter should be started at - object* ystem.host.&lt;host&gt;* must exist
+TR: * `common.enabled`    - (mandatory)
+TR: * `common.mode`       - (mandatory) possible values see below
 
-#####适配器/实例common.mode
-*`none`-此适配器不会启动进程
-*`daemon`-始终运行的进程（如果进程退出，将重新启动）
-*`subscribe`-在状态* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *并被杀死（如果进程退出，则将* .alive *设置为* false *）（进程退出时将不重新启动）
-*`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。
-*`once`-每次更改system.adapter.yyy.x对象时，都会启动此适配器。终止后将不会重新启动。
+TR: ##### adapter/instance common.mode
+TR: * `none`        - this adapter doesn't start a process
+TR: * `daemon`      - always running process (will be restarted if process exits)
+TR: * `subscribe`   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
+TR: * `schedule`    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
+TR: * `once`        - this adapter will be started every time the system.adapter.yyy.x object changed. It will not be restarted after termination.
 
-####主机
-id`system.host.<host>`
+TR: #### host
+TR: id `system.host.<host>`
 
-*`common.name`-f.e. `system.host.banana`
-*`common.process`
-*`common.version`
-*`common.platform`
-*`common.cmd`
-*`common.hostname`-f.e.香蕉
-*`common.address`-IP地址字符串数组
+TR: * `common.name`       - f.e. `system.host.banana`
+TR: * `common.process`
+TR: * `common.version`
+TR: * `common.platform`
+TR: * `common.cmd`
+TR: * `common.hostname`   - f.e. `banana`
+TR: * `common.address`    - array of ip address strings
 
-####配置
-####脚本
-*`common.platform`-（必填）可能的值`Javascript / Node.js`（以后还会有更多）
-*`common.enabled`-（强制）是否激活脚本
-*`common.source`-（强制性）脚本源
-*`common.engine`-（可选）*脚本引擎*应该运行此脚本的实例（例如'javascript.0'）-如果自动选择省略的引擎
+TR: #### config
+TR: #### script
+TR: * `common.platform`   - (mandatory) possible Values `Javascript/Node.js` (more to come)
+TR: * `common.enabled`    - (mandatory) is script activated or not
+TR: * `common.source`     - (mandatory) the script source
+TR: *`common.engine`   - (optional)* cript engine* instance that should run this script (f.e. 'javascript.0') - if omitted engine is automatically selected
 
-####个用户
-*`common.name`-（必填）用户名（区分大小写）
-*`common.password`-（必填）MD5密码哈希
+TR: #### user
+TR: * `common.name`       - (mandatory) Name of user (Case sensitive)
+TR: * `common.password`   - (mandatory) MD5 Hash of password
 
-####组
-*`common.name`-（必填）组名
-*`common.members`-（强制）用户对象ID数组
-*`common.desc`-（可选）组用途描述
+TR: #### group
+TR: * `common.name`       - (mandatory) name of the group
+TR: * `common.members`    - (mandatory) array of user-object IDs
+TR: * `common.desc`       - (optional) group purpose description

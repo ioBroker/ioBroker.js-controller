@@ -72,7 +72,11 @@ The work of the adapter would not had been possible without the great work of @c
 
 ## Changelog
 
-### 3.1.15 (2019-12-20)
+### 3.1.16 (2019-12-26)
+* (Apollon77) New schemas added
+* (Apollon77) prevent crash when proxy request had no hosts array
+
+### 3.1.15 (2019-12-24)
 * (Apollon77) New schemas added
 * (Apollon77) prevent usage of invalid Port numbers
 

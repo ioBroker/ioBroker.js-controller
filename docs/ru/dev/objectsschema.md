@@ -2,60 +2,60 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/objectsschema.md
-title: Основная концепция
-hash: n3+1+dfUm8MwoOIj0Sns9VxKdeVMf/JLbSGZ9B+4pek=
+title: TR: Core Concept
+hash: 8Mh7hofRJIFbY6Z0z7qwfY1rz+sDJnaMTFOdfSuaqGg=
 ---
-# Основная концепция
-В ioBroker есть два принципиально разных типа данных. Так называемые **состояния** (`states`) и **объекты**
+TR: # Core Concept
+TR: There are two fundamentally different data-types in ioBroker. So called **states**(`states`) and **objects**.
 
-Объекты представляют редко изменяющиеся и большие данные, такие как метаданные устройств вашей системы, конфигурации и дополнительные файлы. Каждый объект должен иметь атрибут «тип». Ниже приведена дополнительная информация о том, какие типы объектов доступны и какие обязательные атрибуты нужны объекту определенного типа. Такие функции, как setObject, getObject, ... предоставляются вам модулем адаптера.
+TR: Objects represent rarely changing and larger data, like meta-data of your systems devices, configurations and additional files. Every Object has to have an attribute "type". See below for more information what object types are available and which mandatory attributes a object of a specific type needs. Functions like setObject, getObject, ... are provided to you by the adapter module.
 
-Состояния представляют собой часто изменяющиеся данные в вашей системе, например, например. если лампа включена или выключена, если детектор движения обнаружил какое-либо движение, температуру вашей гостиной или нажатие кнопки пульта дистанционного управления. В противоположность объектам состояния могут использоваться для запуска действий, а состояния могут создавать исторические данные. Для работы с состояниями в модуле адаптера есть несколько функций, таких как setState, getState и так далее.
+TR: States represent often changing data in your system, like f.e. if a lamp is on or off, if a motion detector detected some motion, the temperature of your living room or if the button of a remote control is pressed. Contrary to objects states can be used to trigger actions and states can create history data. To work with states there are several functions in the adapter module like setState, getState and so on.
 
-Для каждого состояния также должен существовать соответствующий объект с `type=state`.
+TR: For every state there also has to exist a corresponding object with `type=state`.
 
-Следующие главы описывают схему базы данных.
+TR: The following chapters describe Database Schema.
 
-## Идентификаторы
-ID - это строка длиной не более 240 байтов, иерархически структурированная, уровни разделены точками.
+TR: ## IDs
+TR: ID is a string with a maximum length of 240 bytes, hierarchically structured, levels separated by dots.
 
-Следующие символы запрещены для использования в идентификаторах: `[]*,;'"&#96;<>\\?`.
+TR: Following characters are prohibited to use in IDs: `[]*,;'"&#96;<>\\?`.
 
-Также не рекомендуется использовать `^$()/`.
+TR: It is not suggested to use `^$()/` too.
 
-Идентификатор имеет разные уровни. Каждый уровень определяется точкой. Пример: `system.adapter.admin.0`
+TR: The ID has different levels. Each level is determined by dot. Example: `system.adapter.admin.0`
 
-- `system` - пространство имен для системных объектов
-- `adapter` - пространство имен для конфигураций адаптера
-- `admin` - имя адаптера
-- `0` - экземпляр адаптера
+TR: - `system` - is namespace for system objects
+TR: - `adapter` - namespace for adapter configs
+TR: - `admin` - adapter name
+TR: - `0` - adapter instance
 
-Или другой пример `hm-rpc.1.ABC110022.2.VALUE`:
+TR: Or other example `hm-rpc.1.ABC110022.2.VALUE`:
 
-- `hm-rpc` - это имя адаптера
-- `1` - экземпляр адаптера
-- `ABC110022` - адрес устройства
-- `2` - название канала
-- `VALUE` - название государства
+TR: - `hm-rpc` - is name of adapter
+TR: - `1` - adapter instance
+TR: - `ABC110022` - device address
+TR: - `2` - channel name
+TR: - `VALUE` - state name
 
-## Пространства имен
-* `system`. - Системные объекты и состояния
-* `system.host. - Контроллер процессов
-* `system.config` - системные настройки, такие как язык по умолчанию
-* `system.meta`. - Системные метаданные
-* `system.user. - Пользователи
-* `system.group. - Группы
-* `system.adapter. <имя-адаптера>` - конфигурация адаптера по умолчанию
-* `<имя-адаптера> .` - объекты для конкретного адаптера.
-* `<имя-адаптера> .meta` - общие метаданные, используемые всеми экземплярами этого адаптера
-* `<имя-адаптера>. <номер-экземпляра> .` - пространство имен экземпляра адаптера
-* enum. - Перечисления
-* `история`. История данных
-* `scripts. - Скрипты движка скриптов
-* `scripts.js.` - скрипты javascript Script Engine
-* `scripts.py` - скрипты Python Engine Script (будущее)
+TR: ## Namespaces
+TR: * `system.`             - System objects and states
+TR: * `system.host.`        - Controller processes
+TR: * `system.config.`      - System settings, like default language
+TR: * `system.meta.`        - System meta data
+TR: * `system.user.`        - Users
+TR: * `system.group.`       - Groups
+TR: * `system.adapter.<adapter-name>` - default config of an adapter
+TR: * `<adapter-name>.`     - objects for specific adapter.
+TR: * `<adapter-name>.meta.` - common meta-data used by all instances of this adapter
+TR: * `<adapter-name>.<instance-number>.` - An adapters instance namespace
+TR: * `enum.`               - Enumerations
+TR: * `history.`            - History Data
+TR: * `scripts.`            - Script Engine Scripts
+TR: * `scripts.js.`         - javascript Script Engine Scripts
+TR: * `scripts.py.`         - python Script Engine Scripts (future)
 
-### Пространство имен system.config.
+TR: ### Namespace system.config.
 ```
 {
     _id:   id,
@@ -75,7 +75,7 @@ ID - это строка длиной не более 240 байтов, иера
 }
 ```
 
-### Пространство имен system.host. &lt; hostname &gt;
+TR: ### Namespace system.host.&lt;hostname&gt;
 ```
 {
     _id:   id,
@@ -116,24 +116,24 @@ ID - это строка длиной не более 240 байтов, иера
 };
 ```
 
-<a id="states"></a>
+TR: <a id="states"></a>
 
-## Состояния
-Метод getState и событие stateChange доставляют объект со всеми атрибутами, кроме expire.
+TR: ## States
+TR: getState method and stateChange event delivers an object with all attributes except expire
 
-для метода `setState` все, кроме `val` является необязательным, `from` устанавливается автоматически методом `setState`. `ack` по умолчанию имеет значение false, `ts` и `lc` установлены, как ожидается
+TR: for `setState` method everything except `val` is optional, `from` is set automatically by the `setState` method. `ack` defaults to false, `ts` and `lc` are set as expected
 
-атрибуты для объекта getState / stateChange / setState:
+TR: attributes for getState/stateChange/setState object:
 
-* `val` - фактическое значение - может быть любого типа, который является JSON-" кодируемым "
-* `ack` - логический флаг, указывающий, подтвердило ли целевая система значение
-* `ts` - отметка времени Unix, указывающая последнее обновление состояния (в миллисекундах)
-* `lc` - метка времени Unix, указывающая последнее изменение фактического значения состояния (в миллисекундах)
-* `from` - экземпляр адаптера, который сделал` setState`
-* `user` - имя пользователя, которое устанавливает значение
-* `expire` - целочисленное значение, которое можно использовать для установки состояний, срок действия которых истекает через заданное количество секунд. Может использоваться только с `setValue`. После истечения срока действия значение исчезает из redisDB.
-* `c` - комментарий для этого изменения состояния.
-* `q` - качество. Номер со следующими состояниями:
+TR: * `val`    - the actual value - can be any type that is JSON-"encodable"
+TR: * `ack`    - a boolean flag indicating if the target system has acknowledged the value
+TR: * `ts`     - a unix timestamp indicating the last update of the state (in milliseconds)
+TR: * `lc`     - a unix timestamp indicating the last change of the state's actual value (in milliseconds)
+TR: * `from`   - adapter instance that did the `setState`
+TR: * `user`   - user name, that set the value
+TR: * `expire` - a integer value that can be used to set states that expire after a given number of seconds. Can be used ony with `setValue`. After the value expires, it disappears from redisDB.
+TR: * `c`      - comment for this state change.
+TR: * `q`      - quality. Number with following states:
 
 ```
   0x00 - 00000000 - good (can be undefined or null)
@@ -156,136 +156,136 @@ ID - это строка длиной не более 240 байтов, иера
   0x84 - 10000100 - sensor reports error
 ```
 
-Каждое *состояние* должно быть представлено объектом типа состояния, содержащего метаданные для состояния. Смотри ниже.
+TR: Every *state* has to be represented by an object of the type state containing Meta-Data for the state. See below.
 
-## Объекты
-### Обязательные атрибуты
-Следующие атрибуты должны существовать в каждом объекте:
+TR: ## Objects
+TR: ### Mandatory attributes
+TR: Following attributes have to exist in every object:
 
-* `_id`
-* `type` - смотрите ниже возможные значения
-* `common` - объект, содержащий свойства абстракции, характерные для ioBroker
-* `native` - объект, содержащий конгруэнтные свойства целевой системы
+TR: * `_id`
+TR: * `type`        - see below for possible values
+TR: * `common`      - an object containing ioBroker specific abstraction properties
+TR: * `native`      - an object containing congruent properties of the target system
 
-### Необязательные атрибуты
-* `common.name` - название объекта (необязательно, но строго рекомендуется его заполнить)
+TR: ### Optional attributes
+TR: * `common.name` - the name of the object (optional but strictly suggested to fill it)
 
-### Древовидная структура
-Древовидная структура собирается автоматически по именам. Например. ```system.adapter.0.admin``` является родителем для `system.adapter.0.admin.uptime`. Используйте это соглашение об имени с точкой ".", Как разделитель уровней.
+TR: ### Tree structure
+TR: The tree structure is assembled automatically by names. E.g. ```system.adapter.0.admin``` is parent for `system.adapter.0.admin.uptime`. Use this name convention with point ".", as divider of levels.
 
-### Типы объектов
-* `state` - родитель должен иметь тип channel, device, instance или host
-* `канал` - объект для группировки одного или нескольких состояний. Родитель должен быть устройством.
-* `устройство` - объект для группировки одного или нескольких каналов или состояния. Не должно иметь родителя, кроме пространства имен экземпляра адаптера.
-* `enum` - объекты, содержащие массив в common.members, который указывает на состояния, каналы, устройства или файлы. перечисления могут иметь родительское перечисление (возможна древовидная структура)
-* `host` - хост, который запускает процесс контроллера
-* `adapter` - конфигурация адаптера по умолчанию. Наличие также указывает, что адаптер успешно установлен. (предложение: должен иметь атрибут, содержащий массив хостов, на которых он установлен)
-* `instance` - экземпляр адаптера. Родитель должен быть типа адаптер
-* `meta` - редко меняющая мета-информацию, которая нужна адаптеру или его экземплярам
-* `config` - настройки
-* `script` - скрипты
-* `user` - пользователи
-* `группа` - группы
-* `chart` - диаграммы
+TR: ### Object types
+TR: * `state`    - parent should be of type channel, device, instance or host
+TR: * `channel`  - object to group one or more states. Parent should be device.
+TR: * `device`   - object to group one or more channels or state. Should have no parent except adapter instance namespace.
+TR: * `enum`     - objects holding a array in common.members that points to states, channels, devices or files. enums can have a parent enum (tree-structure possible)
+TR: * `host`     - a host that runs a controller process
+TR: * `adapter`  - the default config of an adapter. presence also indicates that the adapter is successfully installed. (suggestion: should have an attribute holding an array of the hosts where it is installed)
+TR: * `instance` - instance of adapter. Parent has to be of type adapter
+TR: * `meta`     - rarely changing meta information that a adapter or his instances needs
+TR: * `config`   - configurations
+TR: * `script`   - scripts
+TR: * `user`     - users
+TR: * `group`    - groups
+TR: * `chart`    - charts
 
-#### Атрибуты для определенных типов объектов
-##### Государственный
-атрибуты:
+TR: #### Attributes for specific object types
+TR: ##### State
+TR: attributes:
 
-* `common.type` (необязательно - (по умолчанию смешанный == любой тип) (возможные значения: число, строка, логическое значение, массив, объект, смешанный, файл). В качестве исключения объекты с типом` meta` могут иметь `common .type = meta.user` или `meta.folder`
-* `common.min` (необязательно)
-* `common.max` (необязательно)
-* `common.step` (необязательно) - интервал увеличения / уменьшения. Например. 0,5 для термостата
-* `common.unit` (необязательно)
-* `common.def` (необязательно - значение по умолчанию)
-* `common.defAck` (необязательно - если установлен common.def, это значение используется как флаг ack, js-controller 2.0.0+)
-* `common.desc` (необязательно, строка)
-* `common.read` (логическое, обязательное) - true, если состояние доступно для чтения
-* `common.write` (логическое, обязательное) - true, если состояние доступно для записи
-* `common.role` (строка, обязательная) - роль состояния (используется в пользовательских интерфейсах для указания, какой виджет выбрать, см. ниже)
-* `common.states` (необязательный) атрибут номера типа с объектом возможных состояний {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
-* `common.workingID` (строка, необязательно) - если это состояние имеет вспомогательное состояние WORKING. Здесь должно быть написано полное имя или только последняя часть, если первые части совпадают с фактическими. Используется для HM.LEVEL и обычно имеет значение «РАБОТАЕТ»
+TR: * `common.type`   (optional - (default is mixed==any type) (possible values: number, string, boolean, array, object, mixed, file). As exception the objects with type `meta` could have `common.type=meta.user` or `meta.folder`
+TR: * `common.min`    (optional)
+TR: * `common.max`    (optional)
+TR: * `common.step`   (optional) - increase/decrease interval. E.g. 0.5 for thermostat
+TR: * `common.unit`   (optional)
+TR: * `common.def`    (optional - the default value)
+TR: * `common.defAck` (optional - if common.def is set this value is used as ack flag, js-controller 2.0.0+)
+TR: * `common.desc`   (optional, string)
+TR: * `common.read`   (boolean, mandatory) - true if state is readable
+TR: * `common.write`  (boolean, mandatory) - true if state is writable
+TR: * `common.role`   (string,  mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
+TR: * `common.states` (optional) attribute of type number with object of possible states {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
+TR: * `common.workingID` (string, optional) - if this state has helper state WORKING. Here must be written the full name or just the last part if the first parts are the same with actual. Used for HM.LEVEL and normally has value "WORKING"
 
-##### Штат `common.history`
-Для функции истории необходим адаптер истории или любой другой адаптер хранения истории типов
+TR: ##### State `common.history`
+TR: History function needs the history adapter or any other storage adapter of type history
 
-Длина FIFO уменьшается до минимума при достижении максимума. установить на ноль или оставить неопределенным, чтобы использовать значения по умолчанию
+TR: fifo length is reduced to min when max is hit. set to null or leave undefined to use defaults
 
-список транспортов см. в истории адаптера README.
+TR: for a list of transports see history adapter README
 
-* `common.history` (необязательно)
-* `common.history. <HISTORY-INSTANCE> .changesOnly` (необязательно, логическое значение, если регистрируются только изменения значения true)
-* `common.history. <HISTORY-INSTANCE> .enabled` (логическое)
+TR: * `common.history` (optional)
+TR: * `common.history.<HISTORY-INSTANCE>.changesOnly` (optional, boolean, if true only value changes are logged)
+TR: * `common.history.<HISTORY-INSTANCE>.enabled` (boolean)
 
-##### Штат `common.role`
-* `common.role` (указывает, как это состояние должно быть представлено в пользовательских интерфейсах)
+TR: ##### State `common.role`
+TR: * `common.role` (indicates how this state should be represented in user interfaces)
 
-[возможные значения](stateroles.md)
+[TR: possible values](stateroles.md)
 
-#### Канал
-##### Канал `common.role` (необязательно)
-предложение: канал-объекты common.role должен / может подразумевать набор обязательных и / или необязательных состояний-дочерних объектов
+TR: #### Channel
+TR: ##### Channel `common.role` (optional)
+TR: suggestion: the channel-objects common.role should/could imply a set of mandatory and/or optional state-child-objects
 
-возможные значения:
+TR: possible values:
 
-* `info` - курс валюты или акций, цены на топливо, вставка почтовых ящиков и тому подобное
-* `календарь` -
-* `прогноз` - прогноз погоды
+TR: * `info`          - Currency or shares rate, fuel prices, post box insertion and stuff like that
+TR: * `calendar`      -
+TR: * `forecast`      - weather forecast
 
-* `media - общий медиа канал
-* `media.music` - медиаплеер, вроде SONOS, YAMAHA и т. д.
-* `media.tv` - ТВ
-* `media.tts` - текст в речь
+TR: * `media         - common media channel
+TR: * `media.music`   - media player, like SONOS, YAMAHA and so on
+TR: * `media.tv`      - TV
+TR: * `media.tts`     - text to speech
 
-* `thermo` - контролировать или контролировать температуру, влажность и т. д.
-* `thermo.heat`
-* `thermo.cool`
+TR: * `thermo`        - Monitor or control the temperature, humidity and so on
+TR: * `thermo.heat`
+TR: * `thermo.cool`
 
-* `шторка '- управление жалюзи
+TR: * `blind`             - Window blind control
 
-* `свет`
-* `light.dimmer` - светлый диммер
-* `light.switch` - выключатель света.
-* `light.color` - управление светом с возможностью изменения цвета
-* `light.color.rgb` - установить цвет в RGB
-* `light.color.rgbw` - установить цвет в RGBW
-* `light.color.hsl` - Установить цвет в оттенках / насыщенности / яркости (цветовой тон оттенка - LivingColors ...)
-* `light.color.hslct` - установка цвета в оттенках / насыщенности / яркости или цветовой температуре (цветовой оттенок расширенный)
-* `light.color.ct` - цветовая температура K
+TR: * `light`
+TR: * `light.dimmer`      - Light dimmer
+TR: * `light.switch`      - Light switch.
+TR: * `light.color`       - Light control with ability of color changing
+TR: * `light.color.rgb`   - Set color in RGB
+TR: * `light.color.rgbw`  - Set color in RGBW
+TR: * `light.color.hsl`   - Set color in Hue/Saturation/Luminance (Hue color light - LivingColors...)
+TR: * `light.color.hslct` - Set color in Hue/Saturation/Luminance or Color Temperature (Hue extended color light)
+TR: * `light.color.ct`    - color temperature K
 
-* `switch` - какой-то общий переключатель
+TR: * `switch`            - Some generic switch
 
-* `датчик` - напр. оконный или дверной контакт, датчик протечки воды, датчик пожара
-* `sensor.door` - открыть, закрыть
-* `sensor.door.lock` - открыть, закрыть, заблокировать
-* `sensor.window` - открыть, закрыть
-* `sensor.window.3` - открыть, наклонить, закрыть
-* `sensor.water` - true (тревога), false (без тревоги)
-* `sensor.fire` - true (тревога), false (без тревоги)
-* `sensor.CO2` - true (тревога), false (без тревоги)
+TR: * `sensor`            - E.g. window or door contact, water leak sensor, fire sensor
+TR: * `sensor.door`       - open, close
+TR: * `sensor.door.lock`  - open, close, locked
+TR: * `sensor.window`     - open, close
+TR: * `sensor.window.3`   - open, tilt, close
+TR: * `sensor.water`      - true(alarm), false (no alarm)
+TR: * `sensor.fire`       - true(alarm), false (no alarm)
+TR: * `sensor.CO2`        - true(alarm), false (no alarm)
 
 *
 
-* `тревога` - немного тревоги
+TR: * `alarm`             - some alarm
 
-* `телефон` - фритч бокс, спидпорт и тд
+TR: * `phone`             - fritz box, speedport and so on
 
-* `button` - как настенный выключатель или пульт ДУ телевизора, где каждая кнопка находится в состоянии .play, .stop, .pause
-* `remote` - телевизор или другие пульты с указанием состояния - это строка с нажатыми значениями, например, "PLAY", "STOP", "PAUSE"
+TR: * `button`            - like wall switch or TV remote, where every button is a state like .play, .stop, .pause
+TR: * `remote`            - TV or other remotes with state is string with pressed values, e.g. "PLAY", "STOP", "PAUSE"
 
-* `meta` - информация об устройстве
-* `meta.version` - версия устройства
-* `meta.config` - настройка с устройства
+TR: * `meta`              - Information about device
+TR: * `meta.version`      - device version
+TR: * `meta.config`       - configuration from device
 * ...
 
-#### Описания каналов
-~~ Имена атрибутов могут быть свободно определены адаптером, кроме тех, которые написаны шрифтом **bold** ~~
+TR: #### Channel descriptions
+TR: ~~The names of the attributes can be free defined by adapter, except ones written with **bold** font.~~
 
-"W" - common.write = true
+TR: "W" - common.write=true
 
-"М" - обязательно
+TR: "M" - Mandatory
 
-##### Необязательные состояния для каждого канала / устройства
+TR: ##### Optional states for every channel/device
 ```javascript
 // state-working (optional)
 {
@@ -354,12 +354,12 @@ ID - это строка длиной не более 240 байтов, иера
 }
 ```
 
-##### `light.switch` - Описание атрибутов
-| **Имя** | **common.role** | **М** | **W** | **common.type** | **Описание** | ------------- |: -------------------------- |: -----: | -----: | ----------------- | ---
+TR: ##### `light.switch` - Attributes description
+TR: | **Name**      | **common.role**           | **M** | **W** | **common.type** | **Description** | ------------- |:--------------------------|:-----:|:-----:|-----------------|---
 
-| состояние | переключатель | X | X | логическое значение |
-| описание | text.description | | | |
-| ммм | Indicator.maintenance.mmm | | | | ммм = низкий бит или недостигнут или что-то |
+| TR: | state         | switch                    |   X   |   X   | boolean         |
+| TR: | description   | text.description          |       |       |                 |
+| mmm           | indicator.maintenance.mmm |       |       |                 | mmm = lowbat or unreach or whatever |
 
 ```
 // SWITCH CHANNEL
@@ -392,7 +392,7 @@ ID - это строка длиной не более 240 байтов, иера
 
 ```
 
-##### `light.dimmer` - Описание атрибутов
+TR: ##### `light.dimmer` - Attributes description
 ```
 // DIMMER CHANNEL
 {
@@ -429,7 +429,7 @@ ID - это строка длиной не более 240 байтов, иера
 
 ```
 
-##### `blind` - Описание атрибутов
+TR: ##### `blind` - Attributes description
 ```
 // BLIND CHANNEL
 {
@@ -461,129 +461,129 @@ ID - это строка длиной не более 240 байтов, иера
 }
 ```
 
-##### `phone` - Описание атрибутов
-| **Имя** | **common.role** | **М** | **W** | **common.type** | **Описание** | `ringing_number` | `text.phone_number` | | | `string` |
+TR: ##### `phone` - Attributes description
+TR: | **Name**         | **common.role**          | **M** | **W** | **common.type** | **Description** | `ringing_number` | `text.phone_number`      |       |       | `string`        |
 
-| `ringing` | `indicator` | | | `boolean` |
-| `звонит` | `индикатор` | | | `логическое` |
+| TR: | `ringing`        | `indicator`              |       |       | `boolean`       |
+| TR: | `ringing`        | `indicator`              |       |       | `boolean`       |
 
 ...
 
-#### Устройство
-#### Enum
-* `common.members` - (необязательно) массив идентификаторов членов перечисления
+TR: #### Device
+TR: #### Enum
+TR: * `common.members` - (optional) array of enum member IDs
 
-#### Мета
-Я бы
+TR: #### Meta
+TR: id
 
- * `* &lt; имя-адаптера &gt;. & lt; номер-экземпляра & gt; .meta. & lt; имя-мета & gt; *`
- * `* &lt; имя-адаптера &gt; .meta. & lt; имя-мета & gt; *`
- * `system. *meta. &lt; meta-name &gt;*
+TR:  * `*&lt;adapter-name&gt;.&lt;instance-number&gt;.meta.&lt;meta-name&gt;*`
+TR:  * `*&lt;adapter-name&gt;.meta.&lt;meta-name&gt;*`
+TR:  * `system.*meta.&lt;meta-name&gt;*`
 
-#### Адаптер
-id `system.adapter.<adapter.name>`
+TR: #### Adapter
+TR: id `system.adapter.<adapter.name>`
 
-* Примечание: * все флаги являются необязательными, кроме специальных, отмеченных как **обязательные**
+TR: *Notice:* all flags are optional except special marked as **mandatory**.
 
-* `common.name` - **обязательное** имя адаптера без« ioBroker ».
-* `common.title` - (устарело) длинное имя адаптера для отображения в админке
-* `common.titleLang` - **обязательно** длинное имя адаптера на всех поддерживаемых языках, таких как {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}
-* `common.mode` - **обязательные** возможные значения см. ниже
-* `common.version` - **обязательная** доступная версия
-* `common.installedVersion` - **обязательная** установленная версия
-* `common.enabled` - **обязательное** значение [true / false] должно быть ложным, поэтому новые экземпляры по умолчанию отключены
-* `common.platform` - **обязательные** возможные значения: Javascript / Node.js, еще больше
-* `common.webservers` - массив экземпляров веб-сервера, которые должны обслуживать контент из папки www адаптеров
-* `common.noRepository` - [true / false], если адаптер поставляется с начальной установкой или имеет собственный репозиторий
-* `common.messagebox` - true, если поддерживается окно сообщения. Если да, будет создан объект system.adapter. &lt; имя-адаптера & gt &lt; adapter.instance & gt.messagebox для отправки сообщений адаптеру (используется для электронной почты, отправки по почте, ...;
-* `common.subscribe` - имя переменной, которая подписывается автоматически
-* `common.subscribeable` - переменные этого адаптера должны быть подписаны с sendTo для включения обновлений
-* `common.wakeup` -
-* `common.availableModes` - значения для common.mode, если возможно более одного режима
-* `common.localLink` - ссылка на веб-сервис этого адаптера. Например, http:// localhost: 5984 / _utils для футона от администратора
-* `common.logTransporter` - если этот адаптер получает журналы от других хостов и адаптеров (например, где-то их обрабатывает)
-* `common.nondeletable` - [true / false] этот адаптер нельзя удалить или обновить. Он будет обновляться вместе с контроллером.
-* `common.icon` - имя локального значка (должен находиться в подкаталоге« admin »)
-* `common.extIcon` - ссылка на внешний значок для неустановленных адаптеров. Обычно на github.
-* `common.logLevel` - отладка, информация, предупреждение или ошибка
-* `common.supportStopInstance`- [true / false], если адаптер поддерживает сигнал stopInstance (требуется **окно сообщения** . Сигнал будет отправлен до остановки на адаптер. (используется, если проблемы возникли с SIGTERM)
-* `common.allowInit` - [true / false] позволяет« запланированному »адаптеру называться« не в расписании », если изменились настройки или запущен адаптер.
-* `common.onlyWWW` - [true / false] сообщает контроллеру, что в адаптере есть только html-файлы и нет main.js, например, рикша
-* `common.singleton` - адаптер может быть установлен только один раз на всю систему
-* `common.singletonHost` - адаптер может быть установлен только один раз на одном хосте
-* `common.allowInit` - [true / false] разрешить запуск запланированного адаптера один раз после изменения конфигурации, а затем по расписанию
-* `common.config.width` - ширина по умолчанию для диалогового окна конфигурации
-* `common.config.height` - высота по умолчанию для диалогового окна конфигурации
-* `common.config.minWidth` - минимальная ширина для диалогового окна конфигурации
-* `common.config.minHeight` - минимальная высота для диалога конфигурации
-* `common.os` - строка или массив поддерживаемых операционных систем, например [" linux "," darwin "]
-* `common.stopBeforeUpdate` - [true / false], если адаптер должен быть остановлен перед обновлением
-* `common.adminTab.singleton` - [true / false], если в адаптере есть TAB для администратора. Будет показан только один TAB для всех экземпляров.
-* `common.adminTab.name` - имя вкладки в админке
-* `common.adminTab.link` - ссылка для iframe в TAB. Вы можете использовать замену параметров следующим образом: «http://% ip%:% port%». IP будет заменен на IP-адрес хоста. "порт" будет извлечен из native.port.
-* `common.adminTab.ignoreConfigUpdate` - не обновлять TAB конфигурации, если конфигурация изменена (чтобы включить настройки конфигурации в TAB)
-* `common.restartAdapters` - массив с именами адаптера, который необходимо перезапустить после установки этого адаптера, например, [ "Визави"]
-* `common.preserveSettings` - строка (или массив) с именами атрибутов, общих для экземпляра, которые не будут удалены. Например. "history", поэтому с помощью setState ('system.adapter.mqtt.0 ", {..}) поле common.history не будет удалено, даже если новый объект не имеет этого поля. Чтобы удалить атрибут, оно должно быть явно сделано с `` `common: {history: null}` ``.
-* `common.noConfig` - [true / false], например, не показывать диалог конфигурации
-* `common.stopTimeout` - время ожидания в мс для ожидания отключения адаптера. По умолчанию 500мс.
-* `common.unsafePerm` - [true / false], если пакет должен быть установлен с параметром« npm --unsafe-perm »
-* `common.supportCustoms` - [true / false], если адаптер поддерживает настройки для каждого состояния. Он должен иметь файл custom.html в админке. Образец можно найти в ioBroker.history
-* `common.getHistory` - [true / false], если адаптер поддерживает сообщение getHistory
-* `common.blockly` - [true / false], если в адаптере есть пользовательские блоки для blockly. (admin / blockly.js требуется)
-* `common.webExtendable` - [true / false], если веб-сервер в этом адаптере можно расширить с помощью плагинов / расширений, таких как proxy, simple-api
-* `common.webExtension` - относительное имя файла для подключения веб-расширения. Например. в simple-api "lib / simpleapi.js" относительно корневого каталога адаптера. Кроме того, native.webInstance должен указывать, куда будет включено это расширение. Пустой означает, что он должен работать как собственный веб-сервис. «*» означает, что каждый веб-сервер должен включать его.
-* `common.welcomeScreen` - массив страниц, который должен отображаться на странице« web »index.html. ["vis / edit.html", "vis / index.html"] или [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
-* `common.unchanged` - (система), пожалуйста, не используйте этот флаг. Это флаг, информирующий систему о том, что диалоговое окно конфигурации должно быть показано администратором.
-* `common.serviceStates` - [истина / ложь или путь], если адаптер может доставлять дополнительные состояния. Если да, то будет вызван адаптер пути / lib / states.js, который предоставит функцию следующих параметров (объекты, состояния, экземпляр, config, callback). Функция должна выдавать массив точек со значениями, такими как function (err, result) {result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
-* `common.nogit` - если true, установка с github напрямую невозможна
-* `common.materialize` - если адаптер поддерживает> admin3 (стиль материализации)
-* `common.materializeTab` - если адаптер поддерживает> admin3 для вкладки (стиль материализации)
-* `common.dataFolder` - папка относительно iobroker-data, в которой адаптер хранит данные. Эта папка будет заархивирована и восстановлена автоматически. Вы можете использовать переменную "% INSTANCE%" в нем.
-* `common.webPreSettings` - список параметров, которые должны быть включены в info.js адаптером webServer. (Пример материала)
-* `common.apt-get` - список пакетов Debian, которые требуются для этого адаптера (конечно, только Debian)
-* `common.eraseOnUpload` - стирать все предыдущие данные в каталоге перед загрузкой
-* `common.webByVersion` - показывать версию в качестве префикса в веб-адаптере (обычно - ip: порт / материал, webByVersion - ip: порт / 1.2.3 / материал)
-* `common.noIntro` - никогда не показывать экземпляры этого адаптера на экране Intro / Overview в admin (например, значки, виджеты)
-* `common.expert` - показывать этот объект только в экспертном режиме в админке
-* `common.compact` - сообщает контроллеру, что при желании этот адаптер может быть запущен в том же процессе
+TR: * `common.name`               - **mandatory** name of adapter without "ioBroker."
+TR: * `common.title`              - (deprecated) longer name of adapter to show in admin
+TR: * `common.titleLang`          - **mandatory** longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}
+TR: * `common.mode`               - **mandatory** possible values see below
+TR: * `common.version`            - **mandatory** available version
+TR: * `common.installedVersion`   - **mandatory** installed version
+TR: * `common.enabled`            - **mandatory** [true/false] value should be false so new instances are disabled by default
+TR: * `common.platform`           - **mandatory** possible values: Javascript/Node.js, more coming
+TR: * `common.webservers`         - array of web server's instances that should serve content from the adapters www folder
+TR: * `common.noRepository`       - [true/false] if adapter delivered with initial installation or has own repository
+TR: * `common.messagebox`         - true if message box supported. If yes, the object system.adapter.&lt;adapter.name&gt&lt;adapter.instance&gt.messagebox will be created to send messges to adapter (used for email, pushover,...;
+TR: * `common.subscribe`          - name of variable, that is subscribed automatically
+TR: * `common.subscribable`       - variables of this adapter must be subscribed with sendTo to enable updates
+TR: * `common.wakeup`             -
+TR: * `common.availableModes`     - values for common.mode if more than one mode is possible
+TR: * `common.localLink`          - link to the web service of this adapter. E.g to http://localhost:5984/_utils for futon from admin
+TR: * `common.logTransporter`     - if this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere)
+TR: * `common.nondeletable`       - [true/false] this adapter cannot be deleted or updated. It will be updated together with controller.
+TR: * `common.icon`               - name of the local icon (should be located in subdirectory "admin")
+TR: * `common.extIcon`            - link to external icon for uninstalled adapters. Normally on github.
+TR: * `common.logLevel`           - debug, info, warn or error
+TR: * `common.supportStopInstance`- [true/false] if adapter supports signal stopInstance (**messagebox** required). The signal will be sent before stop to the adapter. (used if the problems occured with SIGTERM)
+TR: * `common.allowInit`          - [true/false] allow for "scheduled" adapter to be called "not in the time schedule", if settings changed or adapter started.
+TR: * `common.onlyWWW`            - [true/false] say to controller, that adapter has only html files and no main.js, like rickshaw
+TR: * `common.singleton`          - adapter can be installed only once in whole system
+TR: * `common.singletonHost`      - adapter can be installed only once on one host
+TR: * `common.allowInit`          - [true/false] allow scheduled adapter start once after configuration changed and then by schedule
+TR: * `common.config.width`       - default width for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.height`      - default height for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.minWidth`    - minimal width for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.config.minHeight`   - minimal height for configuration dialog (deprecated - valid only for admin2)
+TR: * `common.os`                 - string or array of supported operation systems, e.g ["linux", "darwin"]
+TR: * `common.stopBeforeUpdate`   - [true/false] if adapter must be stopped before update
+TR: * `common.adminTab.singleton` - [true/false] if adapter has TAB for admin. Only one TAB for all instances will be shown.
+TR: * `common.adminTab.name`      - name of TAB in admin
+TR: * `common.adminTab.link`      - link for iframe in the TAB. You can use parameters replacement like this: "http://%ip%:%port%". IP will be replaced with host IP. "port" will be extracted from native.port.
+TR: * `common.adminTab.ignoreConfigUpdate` - do not update config TAB if configuration changed (to enable configure settings in TAB)
+TR: * `common.restartAdapters`    - array with names of adapter that must be restarted after this adapter is installed, e.g. ["vis"]
+TR: * `common.preserveSettings`   - string (or array) with names of attributes in common of instance, which will not be deleted. E.g. "history", so by setState('system.adapter.mqtt.0", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with ```common:{history: null}```.
+TR: * `common.noConfig`           - [true/false] do not show configuration dialog for instance
+TR: * `common.stopTimeout`        - timeout in ms to wait, till adapter shut down. Default 500ms.
+TR: * `common.unsafePerm`         - [true/false] if the package must be installed with "npm --unsafe-perm" parameter
+TR: * `common.supportCustoms`     - [true/false] if the adapter support settings for every state. It has to have custom.html file in admin. Sample can be found in ioBroker.history
+TR: * `common.getHistory`         - [true/false] if adapter supports getHistory message
+TR: * `common.blockly`            - [true/false] if adapter has custom blocks for blockly. (admin/blockly.js required)
+TR: * `common.webExtendable`      - [true/false] if web server in this adapter can be extended with plugin/extensions like proxy, simple-api
+TR: * `common.webExtension`       - relative filename to connect the web extension. E.g. in simple-api "lib/simpleapi.js" relative to the adapter root directory. Additionally is native.webInstance required to say where this extension will be included. Empty means, it must run as own web service. "*" means every web server must include it.
+TR: * `common.welcomeScreen`      - array of pages, that should be shown on the "web" index.html page. ["vis/edit.html", "vis/index.html"] or [{"link": "vis/edit.html", "name": "Vis editor", "img": "vis/img/edit.png", "color": "blue"}, "vis/index.html"]
+TR: * `common.unchanged`          - (system) please do not use this flag. It is a flag to inform the system, that configuration dialog must be shown in admin.
+TR: * `common.serviceStates`      - [true/false or path] if adapter can deliver additional states. If yes, the path adapter/lib/states.js will be called and it give following parameters function (objects, states, instance, config, callback). The function must deliver the array of points with values like function (err, result) { result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
+TR: * `common.nogit`              - if true, no install from github directly is possible
+TR: * `common.materialize`        - if adapter supports > admin3 (materialize style)
+TR: * `common.materializeTab`     - if adapter supports > admin3  for tab (materialize style)
+TR: * `common.dataFolder`         - folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it.
+TR: * `common.webPreSettings`     - list of parameters that must be included into info.js by webServer adapter. (Example material)
+TR: * `common.libs`               - list of debian/centos packages, that required for this adapter (of course only OS with apt, apt-get, yum as package managers)
+TR: * `common.eraseOnUpload`      - erase all previous data in the directory before upload
+TR: * `common.webByVersion`       - show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)
+TR: * `common.noIntro`            - never show instances of this adapter on Intro/Overview screen in admin (like icons, widgets)
+TR: * `common.expert`             - show this object only in expert mode in admin
+TR: * `common.compact`            - says to controller that this adapter can be started in the same process if desired
 
-#### Экземпляр
-id *system.adapter. &lt; имя адаптера &gt;. & lt; номер экземпляра & gt;*
+TR: #### instance
+TR: id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 
-* `common.host` - (обязательный) хост, на котором должен запускаться адаптер - объект *system.host. &lt; host &gt;* должен существовать
-* `common.enabled` - (обязательно)
-* `common.mode` - (обязательные) возможные значения см. ниже
+TR: *`common.host`    - (mandatory) host where the adapter should be started at - object* ystem.host.&lt;host&gt;* must exist
+TR: * `common.enabled`    - (mandatory)
+TR: * `common.mode`       - (mandatory) possible values see below
 
-##### Адаптер / экземпляр common.mode
-* `none` - этот адаптер не запускает процесс
-* `daemon` - всегда запущенный процесс (будет перезапущен при выходе из процесса)
-* `subscribe` - запускается, когда состояние *system.adapter. &lt; имя-адаптера &gt;. & lt; номер-экземпляра & gt; .alive* меняется на *true* Уничтожается при изменении *.alive* на *false* и установке *.alive* на *false* при выходе из процесса (** не ** будет перезапущен при выходе из процесса)
-* `schedule` - запускается по расписанию, найденному в *system.adapter. &lt; имя-адаптера &gt;. & lt; instance-number & gt; .schedule* - реагирует на изменения *.schedule* путем перепланирования с новым состоянием
-* `Once` - этот адаптер будет запускаться при каждом изменении объекта system.adapter.yyy.x. Он не будет перезапущен после завершения.
+TR: ##### adapter/instance common.mode
+TR: * `none`        - this adapter doesn't start a process
+TR: * `daemon`      - always running process (will be restarted if process exits)
+TR: * `subscribe`   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
+TR: * `schedule`    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
+TR: * `once`        - this adapter will be started every time the system.adapter.yyy.x object changed. It will not be restarted after termination.
 
-#### Хост
-id `system.host.<host>`
+TR: #### host
+TR: id `system.host.<host>`
 
-* `common.name` - например `system.host.banana`
-* `common.process`
-* `common.version`
-* `common.platform`
-* `common.cmd`
-* `common.hostname` - например `banana`
-* `common.address` - массив строк IP-адресов
+TR: * `common.name`       - f.e. `system.host.banana`
+TR: * `common.process`
+TR: * `common.version`
+TR: * `common.platform`
+TR: * `common.cmd`
+TR: * `common.hostname`   - f.e. `banana`
+TR: * `common.address`    - array of ip address strings
 
-#### Config
-#### Скрипт
-* `common.platform` - (обязательные) возможные значения` Javascript / Node.js` (еще не все)
-* `common.enabled` - (обязательно) активирован скрипт или нет
-* `common.source` - (обязательно) исходный код скрипта
-* `common.engine` - (необязательно) *скрипт-движок* экземпляр, который должен запускать этот скрипт (например, 'javascript.0') - если пропущенный движок выбран автоматически
+TR: #### config
+TR: #### script
+TR: * `common.platform`   - (mandatory) possible Values `Javascript/Node.js` (more to come)
+TR: * `common.enabled`    - (mandatory) is script activated or not
+TR: * `common.source`     - (mandatory) the script source
+TR: *`common.engine`   - (optional)* cript engine* instance that should run this script (f.e. 'javascript.0') - if omitted engine is automatically selected
 
-#### Пользователь
-* `common.name` - (обязательно) Имя пользователя (с учетом регистра)
-* `common.password` - (обязательно) MD5 Хэш пароля
+TR: #### user
+TR: * `common.name`       - (mandatory) Name of user (Case sensitive)
+TR: * `common.password`   - (mandatory) MD5 Hash of password
 
-#### Группа
-* `common.name` - (обязательно) название группы
-* `common.members` - (обязательный) массив идентификаторов пользовательских объектов
-* `common.desc` - (необязательно) описание назначения группы
+TR: #### group
+TR: * `common.name`       - (mandatory) name of the group
+TR: * `common.members`    - (mandatory) array of user-object IDs
+TR: * `common.desc`       - (optional) group purpose description

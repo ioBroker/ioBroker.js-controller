@@ -270,6 +270,9 @@ Drag& drop a switch widget on your view, connect it to the Object ID of a switch
 Important: The user is in charge of connecting the correct data points to the widgets. You can connect a real value to a binary status (e.g. light bulb), so the light bulb will show “on” once the real value is >1.0. That’s all, folks, pretty easy and straight forward, huh?
 
 ## Changelog
+### 1.1.6 (2019.12.27)
+* (Apollon77) reconnection handling on timeouts optimized
+
 ### 1.1.4 (2018.07.10)
 * (Apollon77) Support for nodejs 10 on windows
 

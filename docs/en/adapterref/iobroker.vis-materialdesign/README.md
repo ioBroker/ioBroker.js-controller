@@ -13,14 +13,22 @@
 **Tests:**: [![Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)](https://travis-ci.org/Scrounger/ioBroker.vis-materialdesign)
 
 ## Material Design Widgets for IoBroker VIS
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHPPW474N5CKQ&source=url)
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Material Design Widgets based on [Google material components web library](https://github.com/material-components/material-components-web).
-
-Charts based on [chartjs library](https://www.chartjs.org/).
+Material Design Widgets uses the following libraries:
+* [Google material components for the web](https://github.com/material-components/material-components-web)
+* [Vuetify](https://github.com/vuetifyjs/vuetify)
+* [chartjs](https://www.chartjs.org/)
+* [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
 
 ### Supported Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+
+### Supported Browser for vibrate on mobil devices function
+https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
+
+### ioBroker App
+not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
 
 ## Button Toggle
 ![Logo](doc/en/media/buttons.gif)
@@ -61,8 +69,6 @@ Settings that are not listed in the table below are self-explanatory.
 
 ## Round Slider
 ![Logo](doc/en/media/round_slider.gif)
-
-Based on [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
 
 ## Switch
 ![Logo](doc/en/media/switch.gif)
@@ -250,6 +256,14 @@ Working Widget Example can be found [here](https://forum.iobroker.net/topic/2619
 
 
 ## Changelog
+
+### 0.2.22
+* (Scrounger): library material-components-web updated to v4.0.0
+* (Scrounger): Table: support for objects added
+* (Scrounger): List: layout checkbox disabled added
+* (Scrounger): vuetify slider added -> old slider will be removed in version 0.3.x
+* (Scrounger): vuetify library v2.1.15 added
+* (Scrounger): bug fixes
 
 ### 0.2.9
 * (Scrounger): translations added

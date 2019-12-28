@@ -2,109 +2,116 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
-title: ioBroker.vis-materialdesign
-hash: LPbONeBhVG+lpgVFNacUFboup+8X2LBTK5KlDGcR62w=
+title: TR: ioBroker.vis-materialdesign
+hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
 ---
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
-![stabile Version](http://iobroker.live/badges/vis-materialdesign.svg)
-![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
-![Anzahl der Installationen](http://iobroker.live/badges/vis-materialdesign-installed.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
+![TR: stable version](http://iobroker.live/badges/vis-materialdesign.svg)
+![TR: NPM version](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
+![TR: Number of Installations](http://iobroker.live/badges/vis-materialdesign-installed.svg)
+![TR: Downloads](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
+![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
+![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
+![TR: NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
+![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
 
-# IoBroker.vis-materialdesign
-## Material Design Widgets für ioBroker VIS
-[![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHPPW474N5CKQ&source=url)
+TR: # ioBroker.vis-materialdesign
+TR: ## Material Design Widgets for ioBroker VIS
+[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Material Design Widgets basierend auf [Webbibliothek für Google-Materialkomponenten](https://github.com/material-components/material-components-web).
+TR: Material Design Widgets uses the following libraries:
 
-Diagramme basierend auf [chartjs Bibliothek](https://www.chartjs.org/).
+TR: * [Google material components for the web](https://github.com/material-components/material-components-web)
+TR: * [Vuetify](https://github.com/vuetifyjs/vuetify)
+TR: * [chartjs](https://www.chartjs.org/)
+TR: * [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
 
-### Unterstützter Browser
-https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+TR: ### Supported Browser
+TR: https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-## Button Umschalten
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
+TR: ### Supported Browser for vibrate on mobil devices function
+TR: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
-## Card
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
+TR: ### ioBroker App
+TR: not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
 
-## Icon Button
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
+TR: ## Button Toggle
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
 
-## Liste
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
+TR: ## Card
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
 
-## Fortschritt
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
+TR: ## Icon Button
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
-## Schieberegler
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
+TR: ## List
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
 
-Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+TR: ## Progress
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/slider.png"></td><td> initDelay </td><td> Wenn der Schieberegler nach dem Laden der Laufzeit nicht sichtbar oder bedienbar ist, muss dieser Wert erhöht werden. Die Eingabe erfolgt in Millisekunden. <br> Erhöhen Sie beispielsweise um 250 Schritte, bis der Schieberegler funktioniert. </td></tr></tbody></table>
+TR: ## Slider
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
-## Runder Schieberegler
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
+TR: Settings that are not listed in the table below are self-explanatory.
 
-Basierend auf [rundschieber von thomasloven](https://github.com/thomasloven/round-slider)
+TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/slider.png"></td> <td>initDelay</td> <td>If the slider is not visible or operable after loading the runtime, then this value must be increased. Entry is made in milliseconds.<br>For example, increase by 250 steps until the slider works.</td> </tr> </tbody> </table>
 
-## Schalter
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
+TR: ## Round Slider
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
-## Top App Bar mit Navigationsleiste
-Information:
+TR: ## Switch
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
-* Top App Bar verwenden Sie die [Ansicht in Widget 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) von VIS Adapter - Konfiguration ist die gleiche, durchsuchen Sie das Forum nach Arbeitsbeispielen.
-* Die Position der App-Leiste ist fest codiert und wird immer in der oberen linken Ecke angezeigt. Nur Breite und Höhe sind einstellbar. Im Editor können Sie das Widget verschieben, diese Einstellungen werden jedoch nicht übernommen!
-* Im Editor werden Effekte wie Scrollen usw. nicht richtig angezeigt oder verhalten sich anders!
-* Checkbox "persistent" muss aktiviert sein!
-* oid muss auf einen Datenpunkt vom Typ number gesetzt sein (wie die [Ansicht in Widget 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) von VIS Adapter)
+TR: ## Top App Bar with Navigation Drawer
+TR: Information:
 
-##### Layout modal:
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
+TR: * Top App Bar use the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter - configuration is the same, search the forum for working examples.
+TR: * App Bar position is hardcoded and always appears in the upper left corner. Only width and height are adjustable. In the editor you can move the widget, but these settings will not be applied!
+TR: * In the editor, effects such as scrolling, etc. are not displayed correctly or behave differently!
+TR: * Checkbox "persistent" must be activated!
+TR: * oid must be set to a datapoint from typ number (like the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter)
 
-##### Layout nicht zulässig:
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
+TR: ##### Layout modal:
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
 
-##### Layout permanent:
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
+TR: ##### Layout dismissible:
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
 
-### Untermenü
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
+TR: ##### Layout permanent:
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+TR: ### Submenu
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> Ansichten [x] </td><td> Um das Untermenü zu aktivieren, müssen Sie mehrere mit &#39;|&#39; getrennte Ansichten hinzufügen. in das Ansichtsfeld, siehe Screenshots </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> label [x] </td><td> Um den Text der Elemente zu ändern, müssen Sie ein JSON-Objekt in das Beschriftungsfeld mit dem Index des Ansichtsfelds einfügen. <br> Beispiel: <br>
+TR: Settings that are not listed in the table below are self-explanatory.
 
-`{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
+TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td> <td>views[x]</td> <td>To activate submenu, you have to add multiple views seperated with '|' into the view field, see screenshots</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td> <td>label[x]</td> <td>To change the text of the items, you have to put a json object into the label field with the index of the view field.<br> Example:<br>
 
-Ergebnis: siehe Screenshot </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td> icon [x] </td><td> Um die Symbole der Elemente zu ändern, müssen Sie ein JSON-Objekt in das Feld Symbole mit dem Index des Ansichtsfelds einfügen. <br> Beispiel: <br>
+TR: `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
-`{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
+TR: Result: see screenshot</td> </tr> <tr> <td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td> <td>icon[x]</td> <td>To change the icons of the items, you have to put a json object into the icons field with the index of the view field.<br> Example:<br>
 
-Ergebnis: siehe Screenshot </ td> </ tr> </ tbody> </ table>
+TR: `{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
 
-## Charts
-### Linienverlaufsdiagramm:
-> Erforderlicher Adapter: [SQL] (https://github.com/ioBroker/ioBroker.sql), [Verlauf] (https://github.com/ioBroker/ioBroker.history) oder [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
+TR: Result: see screenshot</td> </tr> </tbody> </table>
 
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
+TR: ## Charts
+TR: ### Line History Chart:
+TR: > Required Adapter: [TR: SQL](https://github.com/ioBroker/ioBroker.sql), [History](https://github.com/ioBroker/ioBroker.history) or [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
 
-Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td> Adapterinstanz </td><td> Instanz für den SQL- oder Verlaufsadapter </td></tr><tr><td> Anhäufung </td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">Verknüpfung</a> </td></tr><tr><td> max. Anzahl der anzuzeigenden Datenpunkte </td><td> Anzahl der maximal anzuzeigenden Datenpunkte </td></tr><tr><td> Zeitintervall zwischen den Datenpunkten in [s] </td><td> Optionale Einstellung, überschreibt die Einstellung &#39;count&#39;. <br> Abstand zwischen den einzelnen Datenpunkten in Sekunden. <br> Wenn Sie beispielsweise Datenpunkte jede Minute anzeigen möchten, müssen Sie hier 60 eingeben </td></tr><tr><td> Zeitintervall über Objekt steuern </td><td> ID eines Datenpunkts zum Ändern des Zeitintervalls des Diagramms. Der Datenpunkt muss eine Zeichenfolge sein und kann <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">die verknüpften Werte enthalten</a> <br> Sie können hier beispielsweise eine Schaltfläche verwenden, um die Anzeige des Diagramms zur Laufzeit zu ändern </td></tr><tr><td> Boolesches Objekt für die Aktualisierung </td><td> ID von adatapoint, um eine manuelle Aktualisierung des Diagramms auszulösen. <br> Sie können hier beispielsweise eine Schaltfläche verwenden, um das Diagramm zur Laufzeit zu aktualisieren </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> Zeitformate der x-Achse </td><td> Ändern Sie das Zeitformat der X-Achse. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a> <br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> Tooltip-Zeitformate </td><td> Ändern Sie das Zeitformat des Tooltips. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a> <br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a> </td></tr></tbody></table>
+TR: Settings that are not listed in the table below are self-explanatory.
 
-## Tabelle
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
+TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td> <td>adapter instance</td> <td>Instance for the sql or history adapter</td> </tr> <tr> <td>aggregation</td> <td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">link</a></td> </tr> <tr> <td>max. number of data points to be displayed</td> <td>Number of maximum data points to display</td> </tr> <tr> <td>time interval between the data points in [s]</td> <td>Optional setting, overrides the 'count' setting.<br>Distance between the individual data points in seconds.<br>For example, if you want to display data points every minute, you have to enter 60 here</td> </tr> <tr> <td>controlling time interval using object</td> <td>Id of a datapoint to change the time interval of the chart. The data point must be a string and may contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">the linked values</a><br>For example, you can use a button here to change the display of the chart during runtime</td> </tr> <tr> <td>boolean object for update</td> <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td> <td>time formats of x-axis</td> <td>Change the time format of the X-axis. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> <tr> <td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td> <td>tooltip time formats</td> <td>Change the time format of the tooltip. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td> </tr> </tbody> </table>
 
-##### Eingabedaten
-Eingabedaten müssen ein JSON-Array von Objekten sein. Beispiel:
+TR: ## Table
+![TR: Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
+
+TR: ##### Input Data
+TR: Input data must be a json array of objects, example:
 
 ```
 [
@@ -116,20 +123,44 @@ Eingabedaten müssen ein JSON-Array von Objekten sein. Beispiel:
 ]
 ```
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td> Schalter </td><td> Datenpunkt vom Typ string mit Eingabedaten wie oben gezeigt </td></tr><tr><td> Daten als JSON </td><td> Optional, geben Sie die Daten wie oben gezeigt ein, wenn kein OID-Datenpunkt festgelegt ist </td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [x] </td><td> Wenn Bild ausgewählt ist, muss die Objekteigenschaft den Pfad zum Bild haben ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">siehe oben</a> ) </td></tr><tr><td> Präfix [x] </td><td> Präfix für Objekteigenschaft, interne Objektbindung ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">siehe unten</a> ) und HTML können verwendet werden </td></tr><tr><td> Suffix [x] </td><td> Suffix für Objekteigenschaft, interne Objektbindung ( <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">siehe unten</a> ) und HTML können verwendet werden </td></tr><tr><td> Objektname zum Sortieren [x] </td><td> Hier können Sie eine andere Objekteigenschaft definieren, die zum Sortieren verwendet werden soll. </td></tr></tbody></table>
+TR: <table> <thead> <tr> <th>Screenshot</th> <th>Setting</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td rowspan=2><img src="doc/en/media/table_general.png"></td> <td>switch</td> <td>Datapoint from type string with input data as shown above</td> </tr> <tr> <td>data as JSON</td> <td>Optional, input data as shown above if no oid datapoint is set</td> </tr> <tr> <td rowspan=4><img src="doc/en/media/table_column.png"></td> <td>colType[x]</td> <td>If image is selected, object property must have the path to the image (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>)</td> </tr> <tr> <td>prefix[x]</td> <td>Prefix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>suffix[x]</td> <td>Suffix for object property, internal object binding (<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">see below</a>) and html can be used</td> </tr> <tr> <td>object name for sorting[x]</td> <td>Here you can define an other object property that should be used for sorting.</td> </tr> </tbody> </table>
 
-##### Interne Objektbindung
-Präfix & Suffix unterstützt die tabelleninterne Objektbindung -> Sie können mithilfe von auf andere Objekteigenschaften zugreifen
+TR: ##### internal object binding
+TR: prefix & suffix supports table internal object binding -> you can access other properties of object by using
 
 ```
 #[obj.'propertyName']
 ```
 
-Beispiel <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">siehe oben</a> .
+TR: Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>.
 
-Working Widget Beispiel kann [Hier](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113) gefunden werden
+TR: Working Widget Example can be found [TR: here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
 ## Changelog
+
+### 0.2.22
+* (Scrounger): library material-components-web updated to v4.0.0
+* (Scrounger): Table: support for objects added
+* (Scrounger): List: layout checkbox disabled added
+* (Scrounger): vuetify slider added -> old slider will be removed in version 0.3.x
+* (Scrounger): vuetify library v2.1.15 added
+* (Scrounger): bug fixes
+
+### 0.2.9
+* (Scrounger): translations added
+* (Scrounger): select Widget: color options added
+* (Scrounger): slider Widget: color options added
+* (Scrounger): bug fixes
+
+### 0.2.7
+* (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
+* (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set
+* (Scrounger): Line History Chart Widget: option to append text to yAxis values added
+* (Scrounger): Switch Widget: color options added
+* (Scrounger): chartjs lib updated to v2.9.3
+* (Scrounger): round-slider: lib updated to v0.3.7
+* (Scrounger): Table Widget: wordwrap & width option added
+* (Scrounger): Chart Widgets: option for background color of diagram area added
 
 ### 0.2.4
 * (Scrounger): Round Slider Widget bug fixes

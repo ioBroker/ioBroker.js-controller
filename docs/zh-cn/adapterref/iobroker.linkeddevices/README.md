@@ -2,35 +2,86 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.linkeddevices/README.md
-title: 无题
-hash: 5iPnnZJG/j2E5kYMQgXXzJCv7PFT9Oyp9RSMOwddB/w=
+title: TR: no title
+hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ---
-![NPM版本](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
-![安装数量](http://iobroker.live/badges/linkeddevices-installed.svg)
-![依赖状态](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
-![已知的漏洞](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
+![TR: Number of Installations](http://iobroker.live/badges/linkeddevices-installed.svg)
+![TR: NPM version](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
+![TR: Downloads](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
+![TR: Dependency Status](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
+![TR: Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
+![TR: NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
+![TR: Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
 
-<h1><img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
+TR: <h1> <img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
 
-适用于ioBroker的## linkeddevices适配器
-[![贝宝（https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YHPPW474N5CKQ&source=url)
+TR: ## linkeddevices adapter for ioBroker
+[![TR: paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-linkeddevices创建具有自定义结构的设备的链接对象（数据点）。这使得可以在ioBroker中创建一个结构，其中所有对象都是集中的，例如，用于vis视图或脚本。这提供了例如以下优点：通过硬件交换，仅必须重新创建链接对象并且所有可见视图和脚本再次起作用。
+TR: linkeddevices creates linked objects (datapoints) of devices with a self-defined structure. This makes it possible to create a structure in ioBroker, where all objects are centralized, e.g. to be used in vis views or scripts. This offers for example the advantage that with hardware exchange, only the linked objects must be recreated and all vis views and scripts works again.
 
-使用适配器，您还可以转换对象或将其转换为其他类型（尚未完全实现）。
+TR: With the adapter you can also convert objects or convert them to other types (not yet fully implemented).
 
-![Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
+![TR: Strukture](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
 
-此适配器的灵感来自[Pman的虚拟设备脚本](https://forum.iobroker.net/topic/7751/virtual-devices)。
+TR: This adapter is inspired from [TR: virtual devices script by Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
 
-##配置
-* [英文描述]（doc / en / README.md）
-* [deutsche Beschreibung]（doc / de / README.md）
+TR: ## Configuration
+TR: * [English description](doc/en/README.md)
+TR: * [deutsche Beschreibung](doc/de/README.md)
 
 ## Changelog
+
+### 1.1.1
+* (Scrounger) string to number bug fix
+
+### 1.1.0
+* (Scrounger) option to merge linkedObject on adapter restart added
+* (Scrounger) string to number conversion added
+* (algar42) russian translation corrected
+
+### 1.0.1
+* (Scrounger) adapter configuration: repair function added
+* (Scrounger) receive system messages added
+
+### 1.0.0
+* (Scrounger) bug fixes
+
+### 0.5.6
+* (Scrounger) bug fixes
+
+### 0.5.5
+* (Scrounger) custom dialog: role change for linked object added
+* (Scrounger) adapter configuration: auto generate globale script - check if object always linked added
+* (SchumyHao, Scrounger) create channel objects for linked Objects
+* (Scrounger) adapter configuration: layout revised, progressbar added
+* (Scrounger) custom dialog: layout revised
+
+### 0.5.0
+* (Scrounger) custom dialog: suggestion dropdown list added to input fields
+* (Scrounger) adapter configuration: button to remove links added
+* (Scrounger) expert settings: Converter string (readonly) to duration, date and / or datetime added
+* (Scrounger) adapter configuration: layout revised
+* (Scrounger) expert settings number: allow negative values for min / max
+* (Scrounger) adapter configuration: auto generate globale script - optional create setState funtion for readonly objects
+* (Scrounger) adapter configuration: auto generate globale script - now optional recognize also manual created objects
+* (Scrounger) bug fixes
+
+### 0.4.1
+* (Scrounger) Bug fix: auto generate globale script for [Javascript Script Engine](https://github.com/iobroker/ioBroker.javascript/blob/master/README.md) with variables for all linked Object
+
+### 0.4.0
+* (Scrounger) expertsettings for string: convert to boolean
+* (Scrounger) custom settings of linked object: added button to open custom settings of parent object
+* (Scrounger) adapter configuration: auto generate globale script for [Javascript Script Engine](https://github.com/iobroker/ioBroker.javascript/blob/master/README.md) with variables for all linked Object
+* (Scrounger) Bug fix: native data stored in linked object if available
+* (Scrounger) bug fixes
+
+### 0.3.2
+* (Scrounger) expertsettings for string: add prefix and suffix to string
+* (Scrounger) expertsettings for number (readonly): convert to duration
+* (Scrounger) expertsettings for number (readonly): convert to date, time or datetime
+* (Scrounger) bug fixes
 
 ### 0.3.0
 * (Scrounger) linked devices overview added to adapter configuration

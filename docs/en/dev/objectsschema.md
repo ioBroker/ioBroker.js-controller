@@ -530,10 +530,10 @@ id `system.adapter.<adapter.name>`
 * `common.singleton`          - adapter can be installed only once in whole system
 * `common.singletonHost`      - adapter can be installed only once on one host
 * `common.allowInit`          - [true/false] allow scheduled adapter start once after configuration changed and then by schedule
-* `common.config.width`       - default width for configuration dialog
-* `common.config.height`      - default height for configuration dialog
-* `common.config.minWidth`    - minimal width for configuration dialog
-* `common.config.minHeight`   - minimal height for configuration dialog
+* `common.config.width`       - default width for configuration dialog (deprecated - valid only for admin2)
+* `common.config.height`      - default height for configuration dialog (deprecated - valid only for admin2)
+* `common.config.minWidth`    - minimal width for configuration dialog (deprecated - valid only for admin2)
+* `common.config.minHeight`   - minimal height for configuration dialog (deprecated - valid only for admin2)
 * `common.os`                 - string or array of supported operation systems, e.g ["linux", "darwin"]
 * `common.stopBeforeUpdate`   - [true/false] if adapter must be stopped before update
 * `common.adminTab.singleton` - [true/false] if adapter has TAB for admin. Only one TAB for all instances will be shown.
@@ -558,7 +558,7 @@ id `system.adapter.<adapter.name>`
 * `common.materializeTab`     - if adapter supports > admin3  for tab (materialize style)
 * `common.dataFolder`         - folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it.
 * `common.webPreSettings`     - list of parameters that must be included into info.js by webServer adapter. (Example material)
-* `common.apt-get`            - list of debian packages, that required for this adapter (of course only debian)
+* `common.libs`               - list of debian/centos packages, that required for this adapter (of course only OS with apt, apt-get, yum as package managers)
 * `common.eraseOnUpload`      - erase all previous data in the directory before upload
 * `common.webByVersion`       - show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)
 * `common.noIntro`            - never show instances of this adapter on Intro/Overview screen in admin (like icons, widgets)
